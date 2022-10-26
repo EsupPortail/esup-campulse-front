@@ -1,4 +1,4 @@
-export type AppTitle = string
+export type HomeTitle = string
 
 /**
  *  HomeCard Model
@@ -9,7 +9,8 @@ export interface HomeCard {
     title: string,
     description: string,
     imagePath: string,
-    imageAlt: string
+    imageAlt: string,
+    link: string
 }
 
 export type HomeCards = HomeCard[]
