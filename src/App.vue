@@ -5,6 +5,10 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <header>
     <div class="wrapper">
+      <div class="platform">
+        <img src="./assets/logo.svg">
+        <p>PLATEFORME</p>
+      </div>
       <nav>
         <RouterLink to="/">Accueil</RouterLink>
         <RouterLink to="/charte">Charte</RouterLink>
@@ -17,7 +21,32 @@ import { RouterLink, RouterView } from 'vue-router'
   <RouterView/>
 </template>
 
-<style>
-@import "@/assets/base.css";
+<style lang="sass">
+@import "@/assets/base.css"
+
+.wrapper
+  background-color: red
+
+nav
+  display: flex
+  justify-content: flex-end
+
+  RouterLink
+    padding-right: 10px
+
+
+.platform
+  display: flex
+  float: left
+  background-color: green
+
+  img
+    width: 50px
+    height: 50px
+
+  p
+    align-items: center
+    justify-content: center
+
 
 </style>

@@ -24,6 +24,5 @@ const store = useHomeCards()
   </main>
 </template>
 
-<style>
-
+<style lang="sass">
 </style>
