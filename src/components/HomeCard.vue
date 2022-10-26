@@ -3,7 +3,7 @@ defineProps({
     title: String,
     description: String,
     imagePath: String,
-    imageAlt: String
+    imageAlt: String,
 })
 </script>
 

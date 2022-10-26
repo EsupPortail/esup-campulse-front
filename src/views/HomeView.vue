@@ -4,42 +4,22 @@ import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import HomeCard from '@/components/HomeCard.vue'
 import { HomeCards, AppTitle } from '#/index'
+import { useHomeCards } from '@/stores/homeCards'
 
-const Title = ref<AppTitle>('Bienvenue sur la plateforme')
-
-const Cards = ref<HomeCards>([
-  {
-    title: "Charte des associations du site Alsace",
-    description: "Lorem ipsum description",
-    imagePath: "@/assets/logo.svg",
-    imageAlt: "Logo charte"
-  },
-  {
-    title: "Annuaire des associations",
-    description: "Lorem ipsum description",
-    imagePath: "@/assets/logo.svg",
-    imageAlt: "Logo annuaire"
-  },
-  {
-    title: "Commission d'aide aux projets étudiants",
-    description: "Lorem ipsum description",
-    imagePath: "@/assets/logo.svg",
-    imageAlt: "Logo commissions"
-  }
-])
-
+const title = ref<AppTitle>('Bienvenue sur la plateforme')
+const cards = useHomeCards()
 </script>
 
 <template>
   <main>
     <Header></Header>
-    <h1>{{ Title }}</h1>
-    <HomeCard v-for="(Card, index) in Cards"
-          :title="Card.title"
-          :description="Card.description"
-          :imagePath="Card.imagePath"
-          :imageAlt="Card.imageAlt"
-          :key="index"
+    <h1>{{ title }}</h1>
+    <HomeCard v-for="(card, index) in cards"
+      :title="card.title"
+      :description="card.description"
+      :imagePath="card.imagePath"
+      :imageAlt="card.imageAlt"
+      :key="index"
     />
     <Footer></Footer>
   </main>
