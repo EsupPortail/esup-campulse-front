@@ -9,13 +9,6 @@ defineProps({
 </script>
 
 <template>
-  <!--<div class="card">
-    <a :href="link">
-      <img :src="imagePath" :alt="imageAlt" />
-      <h2>{{ title }}</h2>
-      <p>{{ description }}</p>
-    </a>
-  </div>-->
   <div class="q-pa-md row items-start q-gutter-md">
     <a :href="link">
       <q-card class="my-card">
