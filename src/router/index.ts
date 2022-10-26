@@ -26,6 +26,11 @@ const router = createRouter({
       path: '/cape',
       name: 'commission',
       component: () => import('@/views/HomeView.vue'),
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/LoginBaseView.vue'),
     }
   ]
 })

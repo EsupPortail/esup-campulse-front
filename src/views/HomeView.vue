@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
 import HomeCard from '@/components/HomeCard.vue'
 import type { HomeTitle } from '#/index'
 import { useHomeCards } from '@/stores/homeCards'
@@ -12,7 +10,6 @@ const store = useHomeCards()
 
 <template>
   <main>
-    <Header></Header>
     <h1>{{ homeTitle }}</h1>
     <section>
       <HomeCard v-for="(card, index) in store.cards"
@@ -24,7 +21,6 @@ const store = useHomeCards()
         :key="index"
       />
     </section>
-    <Footer></Footer>
   </main>
 </template>
 
