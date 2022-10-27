@@ -25,4 +25,11 @@ const store = useHomeCards()
 </template>
 
 <style lang="sass">
+h1
+  text-align: center
+
+@media screen and (max-width: 400px)
+  h1
+    font-size: 2.3em
+
 </style>
