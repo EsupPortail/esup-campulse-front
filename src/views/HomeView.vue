@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import HomeCard from '@/components/HomeCard.vue'
 import type { HomeTitle } from '#/index'
-import { useHomeCards } from '@/stores/homeCards'
+import { useHomeCards } from '@/stores/contentStore'
 
 const homeTitle = ref<HomeTitle>('Bienvenue sur la plateforme')
 const store = useHomeCards()
