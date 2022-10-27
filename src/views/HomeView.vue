@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import HomeCard from '@/components/HomeCard.vue'
-import type { HomeTitle } from '#/index'
 import {useHomeBanner, useHomeCards} from '@/stores/contentStore'
-import HomeBanner from "@/components/HomeBanner.vue";
+import HomeCard from '@/components/LayoutHomeCard.vue'
+import HomeBanner from "@/components/LayoutHomeBanner.vue";
+import type { HomeTitle } from '#/index'
+
 
 const homeTitle = ref<HomeTitle>('Bienvenue sur la plateforme')
 const cards = useHomeCards()
@@ -32,8 +33,9 @@ const homeBanner = useHomeBanner()
   </main>
 </template>
 
-<style lang="sass">
-h1
-  text-align: center
-
+<style scoped lang="sass">
+section
+  display: flex
+  justify-content: center
+  padding: 2em
 </style>

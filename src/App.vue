@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import HeaderLayout from '@/components/HeaderLayout.vue'
-import FooterLayout from '@/components/FooterLayout.vue'
+import HeaderLayout from '@/components/LayoutHeader.vue'
+import FooterLayout from '@/components/LayoutFooter.vue'
 </script>
 
 <template>
@@ -23,5 +23,8 @@ import FooterLayout from '@/components/FooterLayout.vue'
 .q-layout
   max-width: 1280px
   margin: 0 auto
+
+h1
+  text-align: center
 
 </style>

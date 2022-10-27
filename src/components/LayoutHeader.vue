@@ -29,6 +29,7 @@ nav
 .li
   color: white
   padding: 0.3em
+  text-decoration: none
 
 .li:hover
   background-color: rgba(255, 255, 255, 0.3)

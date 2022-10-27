@@ -28,14 +28,7 @@ defineProps({
   </section>
 </template>
 
-<style lang="sass">
-
-section
-  display: flex
-  justify-content: center
-  padding: 2em
-
-
+<style scoped lang="sass">
 .card
   width: 100%
   min-height: 25em
