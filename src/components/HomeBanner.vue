@@ -1,7 +1,8 @@
 <script setup lang="ts">
 defineProps({
   title: String,
-  description: String
+  description: String,
+  isDisplayed: Boolean
 })
 </script>
 

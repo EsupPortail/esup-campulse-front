@@ -6,7 +6,7 @@ import {useHomeBanner, useHomeCards} from '@/stores/contentStore'
 import HomeBanner from "@/components/HomeBanner.vue";
 
 const homeTitle = ref<HomeTitle>('Bienvenue sur la plateforme')
-const store = useHomeCards()
+const cards = useHomeCards()
 const homeBanner = useHomeBanner()
 </script>
 
@@ -14,13 +14,13 @@ const homeBanner = useHomeBanner()
   <main>
     <h1>{{ homeTitle }}</h1>
 
-    <HomeBanner
+    <HomeBanner v-if="homeBanner.banner.isDisplayed"
       :title="homeBanner.banner.title"
       :description="homeBanner.banner.description"
     />
 
     <section>
-      <HomeCard v-for="(card, index) in store.cards"
+      <HomeCard v-for="(card, index) in cards.cards"
         :title="card.title"
         :description="card.description"
         :imagePath="card.imagePath"

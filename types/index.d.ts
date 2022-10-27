@@ -18,7 +18,8 @@ export type HomeCards = HomeCard[]
 
 export interface HomeBanner {
     title: string,
-    description: string
+    description: string,
+    isDisplayed: boolean
 }
 
 export type HomeBannerView = HomeBanner
