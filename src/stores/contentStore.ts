@@ -1,8 +1,13 @@
 import { defineStore } from 'pinia'
 import type { HomeCards } from '#/index'
+import type { HomeBannerView } from "#/index"
 
 interface HomeCardsStore {
     cards: HomeCards
+}
+
+interface HomeBannerStore {
+    banner: HomeBannerView
 }
 
 export const useHomeCards = defineStore('homeCards', {
@@ -30,5 +35,14 @@ export const useHomeCards = defineStore('homeCards', {
                 link: "/cape"
             }
         ]
+    })
+})
+
+export const useHomeBanner = defineStore('homeBanner', {
+    state: (): HomeBannerStore => ({
+        banner: {
+            title: 'INFORMATIONS: Commission de CAPE le 10 décembre 2022',
+            description: "Porteur de projet ou association, vous serez inviter à présenter votre projet"
+        }
     })
 })

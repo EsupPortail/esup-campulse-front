@@ -2,15 +2,23 @@
 import { ref } from 'vue'
 import HomeCard from '@/components/HomeCard.vue'
 import type { HomeTitle } from '#/index'
-import { useHomeCards } from '@/stores/contentStore'
+import {useHomeBanner, useHomeCards} from '@/stores/contentStore'
+import HomeBanner from "@/components/HomeBanner.vue";
 
 const homeTitle = ref<HomeTitle>('Bienvenue sur la plateforme')
 const store = useHomeCards()
+const homeBanner = useHomeBanner()
 </script>
 
 <template>
   <main>
     <h1>{{ homeTitle }}</h1>
+
+    <HomeBanner
+      :title="homeBanner.banner.title"
+      :description="homeBanner.banner.description"
+    />
+
     <section>
       <HomeCard v-for="(card, index) in store.cards"
         :title="card.title"
@@ -27,9 +35,5 @@ const store = useHomeCards()
 <style lang="sass">
 h1
   text-align: center
-
-@media screen and (max-width: 400px)
-  h1
-    font-size: 2.3em
 
 </style>
