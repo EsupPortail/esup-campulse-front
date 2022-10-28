@@ -4,7 +4,7 @@ import FormLocalLogin from '@/components/FormLocalLogin.vue'
 
 <template>
   <h1>Connexion</h1>
-  <div class="no-account">Je n'ai pas de compte <span><a href="#">Créer un compte</a></span></div>
+  <div class="no-account">Je n'ai pas de compte <span><q-btn color="secondary" label="Créer un compte" /></span></div>
   <q-card class="card">
     <q-card-section>
       <div class="card-content">
@@ -43,8 +43,11 @@ import FormLocalLogin from '@/components/FormLocalLogin.vue'
 
 .no-account
   text-align: center
-  font-size: 1.3em
-  margin-bottom: 10px
+  font-size: 1.5em
+  margin-bottom: 30px
   display: flex
   flex-direction: column
+
+.no-account span
+  margin-top: 10px
 </style>
