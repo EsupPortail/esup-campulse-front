@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { useUserLoginStore } from '@/stores/loginUserStore'
+
+const store = useUserLoginStore()
 </script>
 
 <template>
@@ -14,7 +17,9 @@ import { RouterLink } from 'vue-router'
         <RouterLink to="/charte">Charte</RouterLink>
         <RouterLink to="/annuaire">Annuaire</RouterLink>
         <RouterLink to="/cape">CAPE</RouterLink>
-        <RouterLink to="/login">Connexion</RouterLink>
+        <RouterLink to="/login" v-if="!store.user.first_name">Connexion</RouterLink>
+        <!-- if user is logged in -->
+        <div class="user-avatar" v-if="store.user.first_name"><span>{{ store.userNameFirstLetter }}</span></div>
       </nav>
     </q-toolbar>
   </q-header>
@@ -37,4 +42,21 @@ nav > *
 
 nav > *:hover
   background-color: rgba(255, 255, 255, 0.3)
+
+.user-avatar
+  width: 32px
+  height: 32px
+  border-radius: 50%
+  border: 2px solid #fff
+  position: relative
+  margin-left: 5px
+
+.user-avatar span
+  position: absolute
+  text-align: center
+  font-size: 30px
+  line-height: 0
+  top: 15px
+  left: 6px
+
 </style>

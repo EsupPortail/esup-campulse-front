@@ -12,18 +12,24 @@ export const useUserLoginStore = defineStore('UserLogin', {
     state: (): UserLoginStore => ({
         user: {
             username: '',
-            password: ''
+            password: '',
+            first_name: ''
         }
     }),
-    getters: {},
+    getters: {
+        userNameFirstLetter(state): string {
+            return state.user.first_name.charAt(0)
+        }
+    },
     actions: {
         login() {
-            const url = 'api/token/'
+            const url = '/dj-rest-auth/login/'
                 return _axios.post(url, this.user)
                     .then(response => {
-                        const {access, refresh} = response.data
+                        const {access, refresh, user} = response.data
                         localStorage.setItem('access', access)
                         localStorage.setItem('refresh', refresh)
+                        this.user.first_name = user.first_name
                     })
                     .then(() => (
                         router.push({name: 'home'})
@@ -33,3 +39,5 @@ export const useUserLoginStore = defineStore('UserLogin', {
         }
     }
 })
+
+

@@ -21,4 +21,4 @@ export interface User {
     is_cas: string | null;
 }
 
-export type UserLogin = Pick<User, "username" | "password">;
+export type UserLogin = Pick<User, "username" | "password" | "first_name">;
