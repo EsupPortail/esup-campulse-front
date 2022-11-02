@@ -7,18 +7,18 @@
  *  is_enabled_person, last_login_date_person, token_reset_date_person
  */
 export interface User {
-    id_person: number;
-    username_person: string;
-    password_person: string | null;
-    email_person: string;
-    firstname_person: string;
-    lastname_person: string;
-    cas_id_person: string | null;
-    is_enabled_person: boolean;
-    last_login_date_person: string | null; // ??
-    token_reset_date_person: string | null; // ??
-    // roles: string[];
+    id: number;
+    password: string | null;
+    last_login: string | null;
+    is_superuser: boolean;
+    username: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    is_staff: boolean;
+    is_active: boolean;
+    date_joined: string;
+    is_cas: string | null;
 }
 
-// export type UserAPIDetail = User
-// export type UserAPIList = Omit<User, 'roles'>[]
+export type UserLogin = Pick<User, "username" | "password">;

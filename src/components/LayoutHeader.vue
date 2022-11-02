@@ -8,29 +8,33 @@ import { RouterLink } from 'vue-router'
       <!--<q-avatar>
         <img src="@/assets/logo.svg" alt="Logo de PlanA">
       </q-avatar>-->
-      <q-toolbar-title>PlanA</q-toolbar-title>
+      <q-toolbar-title><RouterLink to="/" class="home-link">PlanA</RouterLink></q-toolbar-title>
       <nav>
-        <RouterLink to="/" class="li">Accueil</RouterLink>
-        <RouterLink to="/charte" class="li">Charte</RouterLink>
-        <RouterLink to="/annuaire" class="li">Annuaire</RouterLink>
-        <RouterLink to="/cape" class="li">CAPE</RouterLink>
-        <RouterLink to="/login" class="li">Connexion</RouterLink>
+        <RouterLink to="/">Accueil</RouterLink>
+        <RouterLink to="/charte">Charte</RouterLink>
+        <RouterLink to="/annuaire">Annuaire</RouterLink>
+        <RouterLink to="/cape">CAPE</RouterLink>
+        <RouterLink to="/login">Connexion</RouterLink>
       </nav>
     </q-toolbar>
   </q-header>
 </template>
 
 <style lang="sass">
-/** Nav **/
+.home-link
+  color: white
+  text-decoration: none
+  font-size: 1.3em
+
 nav
   display: flex
   justify-content: flex-end
 
-.li
+nav > *
   color: white
   padding: 0.3em
   text-decoration: none
 
-.li:hover
+nav > *:hover
   background-color: rgba(255, 255, 255, 0.3)
 </style>

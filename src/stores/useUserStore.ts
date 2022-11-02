@@ -7,7 +7,7 @@ interface UserStateStore {
   users: UserAPIList[]
 }
 
-const useUserStore = defineStore('User', {
+export const useUserStore = defineStore('User', {
   state: (): UserStateStore => ({
     users: []
   }),

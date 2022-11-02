@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import FormLocalLogin from '@/components/FormLocalLogin.vue'
+
 </script>
 
 <template>
   <h1>Connexion</h1>
-  <div class="no-account">Je n'ai pas de compte <span><q-btn color="secondary" label="Créer un compte" /></span></div>
   <q-card class="card">
     <q-card-section>
       <div class="card-content">
         <span class="card-title">Je suis membre de l'Université de Strasbourg</span>
         Connexion avec un compte CAS
       </div>
-      <q-btn label="Connexion" type="button" color="primary"/>
+      <div class="btn-group">
+        <q-btn label="Connexion" type="button" color="primary"/>
+        <q-btn color="secondary" label="Créer un compte" />
+      </div>
     </q-card-section>
   </q-card>
   <q-card class="card">
@@ -41,13 +44,7 @@ import FormLocalLogin from '@/components/FormLocalLogin.vue'
 .card-title
   font-size: 1.4em
 
-.no-account
-  text-align: center
-  font-size: 1.5em
-  margin-bottom: 30px
+.btn-group
   display: flex
-  flex-direction: column
-
-.no-account span
-  margin-top: 10px
+  gap: 10px
 </style>
