@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { useUserLoginStore } from "@/stores/useUserStore"
+import { useUserStore } from "@/stores/useUserStore"
 
-const store = useUserLoginStore()
+const userStore = useUserStore()
 
 </script>
 
 <template>
-  <div class="q-pa-md" v-if="store.user.first_name" >
+  <div class="q-pa-md" v-if="userStore.user" >
     <q-btn-dropdown color="cyan" no-caps @click="onMainClick" align="between" padding="0">
       <template v-slot:label>
         <div class="row items-center no-wrap">
 
           <div class="avatar">
-            <q-avatar color="primary" text-color="white" size="2em">{{ store.userNameFirstLetter }}</q-avatar>
+            <q-avatar color="primary" text-color="white" size="2em">{{ userStore.userNameFirstLetter }}</q-avatar>
           </div>
 
           <div class="text-center">
-            <p>{{ store.user.first_name }}</p>
+            <p>{{ userStore.user.first_name }}</p>
           </div>
 
         </div>

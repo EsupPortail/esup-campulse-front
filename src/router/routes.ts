@@ -9,39 +9,39 @@ const routes: RouteRecordRaw[] = [
         children: [
             {
                 path: '',
-                name: 'home',
+                name: 'Home',
                 component: () => import('@/views/HomeView.vue'),
             },
             {
-                path: '/annuaire',
-                name: 'directory',
+                path: 'directory',
+                name: 'Directory',
                 component: () => import('@/views/HomeView.vue'),
             },
             {
-                path: '/charte',
-                name: 'charter',
-                component: () => import('@/views/HomeView.vue'),
-                meta: {requiresAuth: true}
-            },
-            {
-                path: '/cape',
-                name: 'commission',
+                path: 'charter',
+                name: 'Charter',
                 component: () => import('@/views/HomeView.vue'),
                 meta: {requiresAuth: true}
             },
             {
-                path: '/login',
-                name: 'login',
+                path: 'commission',
+                name: 'Commission',
+                component: () => import('@/views/HomeView.vue'),
+                meta: {requiresAuth: true}
+            },
+            {
+                path: 'login',
+                name: 'Login',
                 component: () => import('@/views/LoginView.vue'),
             },
             {
-                path: '/logout',
-                name: 'logout',
+                path: 'logout',
+                name: 'Logout',
                 component: () => import('@/views/LogoutView.vue'),
             },
             {
-                path: '/dashboard',
-                name: 'dashboard',
+                path: 'dashboard',
+                name: 'Dashboard',
                 component: () => import('@/views/DashboardView.vue'),
             }
         ]

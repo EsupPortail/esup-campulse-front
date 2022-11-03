@@ -16,21 +16,21 @@ export const useHomeCards = defineStore('homeCards', {
                 description: "Lorem ipsum description",
                 imagePath: "src/assets/unistra.jpg",
                 imageAlt: "Logo charte",
-                link: '/charte'
+                link: '/charter'
             },
             {
                 title: "Annuaire des associations",
                 description: "Lorem ipsum description",
                 imagePath: "src/assets/unistra.jpg",
                 imageAlt: "Logo annuaire",
-                link: "/annuaire"
+                link: "/directory"
             },
             {
                 title: "Commission d'aide aux projets étudiants",
                 description: "Lorem ipsum description",
                 imagePath: "src/assets/unistra.jpg",
                 imageAlt: "Logo commissions",
-                link: "/cape"
+                link: "/commission"
             }
         ]
     })

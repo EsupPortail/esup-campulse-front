@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import { useUserLoginStore } from '@/stores/useUserStore'
+import { useUserStore } from '@/stores/useUserStore'
 import type { UserLogin } from "#/user"
 import { ref } from 'vue'
 
 const user = ref<UserLogin>({
   username: '',
-  password: '',
-  first_name: ''
+  password: ''
 })
 
-const store = useUserLoginStore()
+const userStore = useUserStore()
 
-function onLogin() {
-  store.user.username = user.value.username
-  store.user.password = user.value.password
-  store.login()
+function logIn() {
+  userStore.logIn(user.value.username, user.value.password)
 }
 </script>
 
 <template>
   <q-form
-      @submit="onLogin"
+      @submit="logIn"
       class="q-gutter-md"
   >
     <q-input
