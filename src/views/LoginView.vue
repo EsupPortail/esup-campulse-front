@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
 
+const casUrl = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent("http://localhost:3000/cas-login")}`
 </script>
 
 <template>
@@ -12,7 +13,7 @@ import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
         Connexion avec un compte CAS
       </div>
       <div class="btn-group">
-        <q-btn label="Connexion" type="button" color="primary"/>
+        <q-btn label="Connexion" type="a" color="primary" :href="casUrl"/>
         <q-btn color="secondary" label="Créer un compte" />
       </div>
     </q-card-section>
