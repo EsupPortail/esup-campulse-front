@@ -1,21 +1,22 @@
 import { defineStore } from 'pinia'
 import _axios from '@/plugins/axios'
-import type { User } from "#/user"
+import type { User } from '#/user'
 import router  from '@/router'
+import axios from "axios";
 
 
 interface UserStore {
-  user: User | null
+    user: User | undefined
 }
 
-export const useUserStore = defineStore('UserLogin', {
+export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
-        user: null
+        user: undefined
     }),
 
     getters: {
-        userNameFirstLetter(state): string | null {
-            return state.user.first_name.charAt(0)
+        userNameFirstLetter(state): string | undefined {
+            return state.user?.first_name.charAt(0)
         }
     },
 
@@ -28,16 +29,27 @@ export const useUserStore = defineStore('UserLogin', {
             const url = '/dj-rest-auth/login/'
             return _axios.post(url, {username: username, password: password})
                 .then(response => {
-                    const {access, refresh, user} = response.data
-                    localStorage.setItem('access', access)
-                    localStorage.setItem('refresh', refresh)
+                    const {access_token, refresh_token, user} = response.data
+                    localStorage.setItem('access', access_token)
+                    localStorage.setItem('refresh', refresh_token)
                     this.user = user
+                    // this.isLogged = true
                 })
                 .then(() => (
                         router.push({name: 'Home'})
                     )
                 )
         },
+        isAuth():boolean {
+            const accessToken = localStorage.getItem('access')
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken
+            axios.get('/dj-rest-auth/login/').then(response => {
+                this.user = response.data.user
+            }).catch(error => {
+                    return false
+                })
+            return true
+        }
     }
 })
 

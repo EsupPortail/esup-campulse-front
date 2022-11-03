@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/useUserStore'
-import type { UserLogin } from "#/user"
+import type { UserLogin } from '#/user'
 import { ref } from 'vue'
 
 const user = ref<UserLogin>({

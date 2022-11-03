@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import routes from './routes'
+import routes from '@/router/routes'
+import { useUserStore } from "@/stores/useUserStore"
 
 
 const router = createRouter({
@@ -7,12 +8,15 @@ const router = createRouter({
   routes,
 })
 
-
-router.beforeEach(async (to) => {
-  if (to.meta.requiresAuth) {
-    await router.push({name: 'login'})
-  }
+router.beforeEach((to) => {
+    if (to.meta.requiresAuth) {
+        if (localStorage.getItem('access') == null) {
+            return ({name: 'Login'})
+        }
+        if (!useUserStore().isAuth()) {
+            return ({name: 'Login'})
+        }
+    }
 })
-
 
 export default router

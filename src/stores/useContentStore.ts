@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { HomeCards } from '#/index'
-import type { HomeBannerView } from "#/index"
+import type { HomeBannerView } from '#/index'
 
 // Homepage cards
 

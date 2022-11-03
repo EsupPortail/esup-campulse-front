@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useUserStore } from "@/stores/useUserStore"
+import { useUserStore } from '@/stores/useUserStore'
 
 const userStore = useUserStore()
 
 </script>
 
 <template>
-  <div class="q-pa-md" v-if="userStore.user" >
+  <div class="q-pa-md" v-if="userStore.isAuth()">
     <q-btn-dropdown color="cyan" no-caps @click="onMainClick" align="between" padding="0">
       <template v-slot:label>
         <div class="row items-center no-wrap">
@@ -16,7 +16,7 @@ const userStore = useUserStore()
           </div>
 
           <div class="text-center">
-            <p>{{ userStore.user.first_name }}</p>
+           <!-- <p>{{ userStore.user.first_name }}</p> -->
           </div>
 
         </div>
