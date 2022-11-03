@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <p> Dasboard view </p>
+  <p> Dashboard view </p>
 
 </template>
 

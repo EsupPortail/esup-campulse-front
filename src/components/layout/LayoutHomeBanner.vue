@@ -2,13 +2,12 @@
 defineProps({
   title: String,
   description: String,
-  isDisplayed: Boolean
+  is_displayed: Boolean
 })
 </script>
 
 <template>
-
-    <q-banner class="bg-primary text-white">
+    <q-banner v-if="is_displayed" class="bg-primary text-white">
       <q-card-section>
         <div class="text-h6">{{ title }}</div>
       </q-card-section>
@@ -19,8 +18,6 @@ defineProps({
     </q-banner>
 </template>
 
-<style lang="sass">
-
-
+<style scoped lang="sass">
 
 </style>

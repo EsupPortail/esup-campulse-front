@@ -14,11 +14,11 @@ import i18n from '@/plugins/i18n'
 /**
  * App initialisation
  */
-
+const pinia = createPinia()
 const app = createApp(App)
 
 app.use(i18n)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(Quasar, {
     plugins: {},

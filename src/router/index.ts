@@ -7,6 +7,7 @@ const router = createRouter({
   routes,
 })
 
+
 router.beforeEach(async (to) => {
   if (to.meta.requiresAuth) {
     await router.push({name: 'login'})

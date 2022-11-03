@@ -1,23 +1,43 @@
 import { defineStore } from 'pinia'
-import type { UserAPIList } from '#/index'
 import _axios from '@/plugins/axios'
-import { ref } from 'vue'
+import type { UserLogin } from "#/user"
+import router  from '@/router'
 
-interface UserStateStore {
-  users: UserAPIList[]
+
+interface UserLoginStore {
+  user: UserLogin
 }
 
-export const useUserStore = defineStore('User', {
-  state: (): UserStateStore => ({
-    users: []
+export const useUserLoginStore = defineStore('UserLogin', {
+  state: (): UserLoginStore => ({
+    user: {
+      username: '',
+      password: '',
+      first_name: ''
+    }
   }),
-
-  getters: {},
-
+  getters: {
+    userNameFirstLetter(state): string {
+      return state.user.first_name.charAt(0)
+    }
+  },
   actions: {
-    async fetchUsers() {
-      const { data } = await _axios.get<UserAPIList[]>('/users')
-      this.users = data
+    login() {
+      const url = '/dj-rest-auth/login/'
+      return _axios.post(url, this.user)
+          .then(response => {
+            const {access, refresh, user} = response.data
+            localStorage.setItem('access', access)
+            localStorage.setItem('refresh', refresh)
+            this.user.first_name = user.first_name
+          })
+          .then(() => (
+                  router.push({name: 'home'})
+              )
+          )
+
     }
   }
 })
+
+

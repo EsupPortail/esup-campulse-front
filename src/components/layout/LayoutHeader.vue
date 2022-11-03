@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { useUserLoginStore } from '@/stores/loginUserStore'
-import LayoutNavProfileButton from "@/components/LayoutNavProfileButton.vue";
+import { useUserLoginStore } from '@/stores/useUserStore'
+import LayoutHeaderProfileButton from "@/components/layout/LayoutHeaderProfileButton.vue"
 
-const store = useUserLoginStore()
+const userStore = useUserLoginStore()
 </script>
 
 <template>
@@ -18,8 +18,8 @@ const store = useUserLoginStore()
         <RouterLink to="/charte">Charte</RouterLink>
         <RouterLink to="/annuaire">Annuaire</RouterLink>
         <RouterLink to="/cape">CAPE</RouterLink>
-        <RouterLink to="/login" v-if="!store.user.first_name">Connexion</RouterLink>
-        <LayoutNavProfileButton />
+        <RouterLink to="/login" v-if="!userStore.user.first_name">Connexion</RouterLink>
+        <LayoutHeaderProfileButton />
       </nav>
     </q-toolbar>
   </q-header>

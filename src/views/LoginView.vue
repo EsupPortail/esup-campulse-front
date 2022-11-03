@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FormLocalLogin from '@/components/FormLocalLogin.vue'
+import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
 
 </script>
 

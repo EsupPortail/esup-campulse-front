@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {useHomeBanner, useHomeCards} from '@/stores/contentStore'
-import HomeCard from '@/components/LayoutHomeCard.vue'
-import HomeBanner from "@/components/LayoutHomeBanner.vue";
+import {useHomeBanner, useHomeCards} from '@/stores/useContentStore'
+import HomeCard from '@/components/layout/LayoutHomeCard.vue'
+import HomeBanner from "@/components/layout/LayoutHomeBanner.vue";
 import type { HomeTitle } from '#/index'
 
 
@@ -12,12 +12,12 @@ const homeBanner = useHomeBanner()
 </script>
 
 <template>
-  <main>
     <h1>{{ homeTitle }}</h1>
 
-    <HomeBanner v-if="homeBanner.banner.isDisplayed"
+    <HomeBanner
       :title="homeBanner.banner.title"
       :description="homeBanner.banner.description"
+      :is_displayed="homeBanner.banner.isDisplayed"
     />
 
     <section>
@@ -30,7 +30,6 @@ const homeBanner = useHomeBanner()
         :key="index"
       />
     </section>
-  </main>
 </template>
 
 <style scoped lang="sass">

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useUserLoginStore } from '@/stores/loginUserStore'
+import { useUserLoginStore } from '@/stores/useUserStore'
 import type { UserLogin } from "#/user"
 import { ref } from 'vue'
 
 const user = ref<UserLogin>({
-  username : '',
-  password: ''
+  username: '',
+  password: '',
+  first_name: ''
 })
 
 const store = useUserLoginStore()
