@@ -38,7 +38,10 @@ export const useUserStore = defineStore('userStore', {
                 .then(() => (
                         router.push({name: 'Home'})
                     )
-                )
+                ).catch(error => {
+                    window.confirm("Erreur identifiants, veuillez réessayer.")
+                    console.log(error)
+                })
         },
         isAuth():boolean {
             const access = localStorage.getItem('access')
@@ -51,8 +54,20 @@ export const useUserStore = defineStore('userStore', {
                 })
             console.log('ok')
             return true
+        },
+        register(first_name: string, last_name: string, email: string, phone: string | null,
+                 asso_name: string | null, asso_has_office_status: boolean) {
+            const url = '/users/auth/registration/'
+            const data = { first_name: first_name, last_name: last_name, email: email,
+            phone: phone, asso_name: asso_name, asso_has_office_status: asso_has_office_status }
+
+            _axios.post(url, data).then(response => {
+                console.log(response)
+            })
+                .catch(error => {
+                    console.log(error)
+                })
         }
     }
 })
-
 

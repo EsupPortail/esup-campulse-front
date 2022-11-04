@@ -87,6 +87,11 @@ const routes: RouteRecordRaw[] = [
                 path: 'dashboard',
                 name: 'Dashboard',
                 component: () => import('@/views/DashboardView.vue'),
+            },
+            {
+                path: 'register',
+                name: 'Registration',
+                component: () => import('@/views/RegisterView.vue'),
             }
         ]
     }
