@@ -1,4 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
+import _axios from '@/plugins/axios'
+import router from '@/router/index'
 
 
 const routes: RouteRecordRaw[] = [
@@ -36,9 +38,30 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'cas-login',
-                name: 'CAS Login',
+                name: 'CASLogin',
                 component: () => import('@/views/CASLoginView.vue'),
-                async beforeEnter(to) {
+                beforeEnter(to) {
+                    _axios({
+                        method: 'post',
+                        url: '/users/auth/cas/login/',
+                        data: {
+                            ticket: to.query.ticket,
+                            service: 'http://localhost:3000/cas-login'
+                        },
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => {
+                        const {access_token, refresh_token, user} = response.data
+                        console.log(user)
+                        localStorage.setItem('access', access_token)
+                        localStorage.setItem('refresh', refresh_token)
+                    }).then(() => (
+                        router.push({name: 'Home'})
+                    ))
+                }
+                // old code using fetch
+                /*async beforeEnter(to) {
                     const response = await fetch('http://localhost:8000/users/auth/cas/login/', {
                         method: 'POST',
                         // mode: 'no-cors',
@@ -53,7 +76,7 @@ const routes: RouteRecordRaw[] = [
                     const data = await response.json();
                     console.log(data);
                     return { name: 'Login' };
-                }
+                }*/
             },
             {
                 path: 'logout',
