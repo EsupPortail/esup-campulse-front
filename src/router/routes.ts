@@ -17,18 +17,18 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'directory',
                 name: 'Directory',
-                component: () => import('@/views/HomeView.vue'),
+                component: () => import('@/views/DirectoryView.vue'),
             },
             {
                 path: 'charter',
                 name: 'Charter',
-                component: () => import('@/views/HomeView.vue'),
+                component: () => import('@/views/CharterView.vue'),
                 meta: { requiresAuth: true }
             },
             {
                 path: 'commission',
                 name: 'Commission',
-                component: () => import('@/views/HomeView.vue'),
+                component: () => import('@/views/CommissionView.vue'),
                 meta: { requiresAuth: true }
             },
             {
@@ -60,23 +60,6 @@ const routes: RouteRecordRaw[] = [
                         router.push({name: 'Home'})
                     ))
                 }
-                // old code using fetch
-                /*async beforeEnter(to) {
-                    const response = await fetch('http://localhost:8000/users/auth/cas/login/', {
-                        method: 'POST',
-                        // mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            ticket: to.query.ticket,
-                            service: "http://localhost:3000/cas-login"
-                        })
-                    })
-                    const data = await response.json();
-                    console.log(data);
-                    return { name: 'Login' };
-                }*/
             },
             {
                 path: 'logout',

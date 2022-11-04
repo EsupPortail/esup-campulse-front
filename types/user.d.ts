@@ -1,4 +1,5 @@
 // WIP : prototype based on current back
+import type { UserAssociations } from '#/association'
 
 /**
  *  User Model
@@ -6,6 +7,8 @@
  *  @params: id_person, username_person, password_person, email_person, firstname_person, lastname_person, cas_id_person,
  *  is_enabled_person, last_login_date_person, token_reset_date_person
  */
+
+
 export interface User {
     id: number;
     password: string | null;
@@ -21,11 +24,8 @@ export interface User {
     date_joined: string;
     is_cas: string | null;
     // status: string;
-    asso_name: string | null;
-    asso_has_office_status: boolean;
+    associations: UserAssociations | null
 }
 
 export type UserLogin = Pick<User, "username" | "password">;
-export type UserRegister = Pick<User, "first_name" | "last_name" | "email" |
-                                      "phone" | "asso_name" | "asso_has_office_status">
-
+export type UserRegister = Pick<User, "first_name" | "last_name" | "email" | "phone" | "associations">

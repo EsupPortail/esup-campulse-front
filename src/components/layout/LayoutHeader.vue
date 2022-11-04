@@ -19,7 +19,7 @@ const userStore = useUserStore()
         <RouterLink to="/directory">Annuaire</RouterLink>
         <RouterLink to="/commission">CAPE</RouterLink>
         <RouterLink to="/login" v-if="!userStore.user">Connexion</RouterLink>
-        <LayoutHeaderProfileButton />
+        <!--<LayoutHeaderProfileButton />-->
       </nav>
     </q-toolbar>
   </q-header>

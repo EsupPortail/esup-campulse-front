@@ -4,10 +4,15 @@ import FormLocalRegister from "@/components/form/FormLocalRegister.vue";
 </script>
 
 <template>
-  <FormLocalRegister> </FormLocalRegister>
+  <h1>Inscription</h1>
+    <q-card class="card">
+      <q-card-section>
+        <FormLocalRegister />
+      </q-card-section>
+    </q-card>
 </template>
 
 <style scoped lang="sass">
-
-
+.card
+  margin-bottom: 30px
 </style>

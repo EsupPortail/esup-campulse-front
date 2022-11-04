@@ -8,17 +8,20 @@ const user = ref<UserRegister>({
   last_name: '',
   email: '',
   phone: '',
-  asso_name: '',
-  asso_has_office_status: false
+  associations: []
 })
 
+const emailValidation = ref('')
+
 const userStore = useUserStore()
+
+const counter = ref(1)
 
 </script>
 
 <template>
   <q-form
-      @submit="register"
+      @submit="userStore.register"
       class="q-gutter-md"
   >
 
@@ -46,7 +49,7 @@ const userStore = useUserStore()
 
     <q-input
         filled
-        v-model="user.email"
+        v-model="emailValidation"
         label="E-mail"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Veuillez renseigner votre adresse E-mail']"
@@ -60,22 +63,24 @@ const userStore = useUserStore()
         :rules="[ val => val && val.length > 0 || 'Veuillez renseigner un numéro de téléphone valide']"
     />
 
-    <q-input
-        filled
-        v-model="user.asso_name"
-        label="Association dont vous êtes membre (facultatif)"
-        lazy-rules
-    />
+    <div>
+        <q-input
+            filled
+            v-model="user.associations[0].name"
+            label="Association dont vous êtes membre (facultatif)"
+            lazy-rules
+        />
 
-    <q-checkbox v-model="user.asso_has_office_status" label="Membre du bureau de l'association" />
+        <q-checkbox v-model="user.associations[0].has_office_status" label="Membre du bureau de l'association" />
+    </div>
 
-
+    <div class="btn-group">
+      <q-btn label="Envoyer" type="submit" color="primary"/>
+    </div>
 
   </q-form>
 </template>
 
-<style lang="sass">
-.btn-group
-  display: flex
-  gap: 10px
+<style scoped lang="sass">
+
 </style>d

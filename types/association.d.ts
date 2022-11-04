@@ -34,3 +34,10 @@ export interface Association {
     id_association_field: number;
 }
 
+interface UserAssociation {
+    name: string;
+    has_office_status: boolean;
+}
+
+export type UserAssociations = UserAssociation[]
+
