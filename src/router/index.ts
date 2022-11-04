@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '@/router/routes'
-import { useUserStore } from "@/stores/useUserStore"
+import { useUserStore } from '@/stores/useUserStore'
 
 
 const router = createRouter({
@@ -8,12 +8,14 @@ const router = createRouter({
   routes,
 })
 
+
 router.beforeEach((to) => {
     if (to.meta.requiresAuth) {
         if (localStorage.getItem('access') == null) {
             return ({name: 'Login'})
         }
-        if (!useUserStore().isAuth()) {
+        const userStore = useUserStore()
+        if (!userStore.isAuth) {
             return ({name: 'Login'})
         }
     }

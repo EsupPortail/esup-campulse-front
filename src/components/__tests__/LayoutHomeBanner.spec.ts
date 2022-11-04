@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { config, mount } from '@vue/test-utils'
 import i18n from '@/plugins/i18n'
 import { Quasar } from 'quasar'
-import LayoutHomeBanner from '../layout/LayoutHomeBanner.vue'
+import LayoutHomeBanner from '@/components/layout/LayoutHomeBanner.vue'
 
 // Set mount options
 config.global.plugins = [

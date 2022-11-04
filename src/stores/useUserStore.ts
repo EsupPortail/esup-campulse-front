@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import _axios from '@/plugins/axios'
 import type { User } from '#/user'
 import router  from '@/router'
-import axios from "axios";
+import axios from 'axios'
 
 
 interface UserStore {
@@ -26,7 +26,7 @@ export const useUserStore = defineStore('userStore', {
             this.user = await data.json()
         },
         logIn(username: string | null, password: string | null) {
-            const url = '/dj-rest-auth/login/'
+            const url = '/users/auth/login/'
             return _axios.post(url, {username: username, password: password})
                 .then(response => {
                     const {access_token, refresh_token, user} = response.data
@@ -41,13 +41,15 @@ export const useUserStore = defineStore('userStore', {
                 )
         },
         isAuth():boolean {
-            const accessToken = localStorage.getItem('access')
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken
-            axios.get('/dj-rest-auth/login/').then(response => {
+            const access = localStorage.getItem('access')
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+            _axios.post('/users/auth/login/').then(response => {
                 this.user = response.data.user
             }).catch(error => {
+                console.log(error)
                     return false
                 })
+            console.log('ok')
             return true
         }
     }
