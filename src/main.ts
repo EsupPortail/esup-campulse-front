@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import { Quasar } from 'quasar'
+import { Quasar, Notify } from 'quasar'
+
 import quasarLang from 'quasar/lang/fr'
 import quasarIconSet from 'quasar/icon-set/svg-mdi-v6'
 import '@quasar/extras/mdi-v6/mdi-v6.css'
@@ -21,7 +22,12 @@ app.use(i18n)
 app.use(pinia)
 app.use(router)
 app.use(Quasar, {
-    plugins: {},
+    plugins: {
+        Notify
+    },
+    config: {
+        notify: {}
+    },
     lang: quasarLang,
     iconSet: quasarIconSet
 })

@@ -40,26 +40,6 @@ const routes: RouteRecordRaw[] = [
                 path: 'cas-login',
                 name: 'CASLogin',
                 component: () => import('@/views/CASLoginView.vue'),
-                beforeEnter(to) {
-                    _axios({
-                        method: 'post',
-                        url: '/users/auth/cas/login/',
-                        data: {
-                            ticket: to.query.ticket,
-                            service: 'http://localhost:3000/cas-login'
-                        },
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        const {access_token, refresh_token, user} = response.data
-                        console.log(user)
-                        localStorage.setItem('access', access_token)
-                        localStorage.setItem('refresh', refresh_token)
-                    }).then(() => (
-                        router.push({name: 'Home'})
-                    ))
-                }
             },
             {
                 path: 'logout',

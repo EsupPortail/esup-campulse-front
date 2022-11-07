@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
 
-const casUrl = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent("http://localhost:3000/cas-login")}`
+const casUrl = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL + "/cas-login")}`
 </script>
 
 <template>

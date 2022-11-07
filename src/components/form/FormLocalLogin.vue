@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/useUserStore'
-import type { UserLogin } from '#/user'
-import { ref } from 'vue'
+import {useUserStore} from '@/stores/useUserStore'
+import type {UserLogin} from '#/user'
+import {ref} from 'vue'
+import {useQuasar} from "quasar";
+import {useRouter} from "vue-router";
 
 const user = ref<UserLogin>({
   username: '',
@@ -10,8 +12,24 @@ const user = ref<UserLogin>({
 
 const userStore = useUserStore()
 
-function logIn() {
-  userStore.logIn(user.value.username, user.value.password)
+const {notify} = useQuasar()
+const router = useRouter()
+
+async function logIn() {
+  try {
+    await userStore.logIn(
+        '/users/auth/login/',
+        {
+          username: user.value.username,
+          password: user.value.password as string
+        }
+    )
+    await router.push({name: 'Home'})
+  } catch (e) {
+    notify({
+      message: 'Erreur identifiants, veuillez réessayer.'
+    })
+  }
 }
 
 </script>
@@ -40,9 +58,9 @@ function logIn() {
 
     <div class="btn-group">
       <q-btn label="Connexion" type="submit" color="primary"/>
-      <q-btn color="secondary" label="Créer un compte" href="/register" />
+      <q-btn color="secondary" label="Créer un compte" href="/register"/>
     </div>
-    <q-btn label="Mot de passe oublié ?" type="reset" color="primary" flat class="q-sm" />
+    <q-btn label="Mot de passe oublié ?" type="reset" color="primary" flat class="q-sm"/>
   </q-form>
 </template>
 

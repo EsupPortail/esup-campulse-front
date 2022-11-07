@@ -24,9 +24,19 @@ export interface User {
     is_active: boolean;
     date_joined: string;
     is_cas: string | null;
-    // status: string;
-    associations: UserAssociations | null
+    status: 'admin' | 'user';
+    associations: UserAssociations | null;
 }
 
 export type UserLogin = Pick<User, "username" | "password">;
 export type UserRegister = Pick<User, "first_name" | "last_name" | "email" | "phone" | "associations">
+
+interface LoginLocale {
+    username: string;
+    password: string;
+}
+
+interface CasLogin {
+    ticket: string;
+    service: string
+}
