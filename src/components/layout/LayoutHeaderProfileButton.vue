@@ -2,11 +2,10 @@
 import { useUserStore } from '@/stores/useUserStore'
 
 const userStore = useUserStore()
-
 </script>
 
 <template>
-  <div class="q-pa-md" v-if="userStore.isAuth">
+  <div class="q-pa-md">
     <q-btn-dropdown color="cyan" no-caps @click="onMainClick" align="between" padding="0">
       <template v-slot:label>
         <div class="row items-center no-wrap">
@@ -45,7 +44,6 @@ const userStore = useUserStore()
 
 
 <style scoped lang="sass">
-
 p
   font-size: 1.3em
   margin: 0
