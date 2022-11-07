@@ -28,7 +28,7 @@ export interface User {
     associations: UserAssociations | null;
 }
 
-export type UserLogin = Pick<User, "username" | "password">;
+export type UserLogin = Pick<User, "username" | "password">
 export type UserRegister = Pick<User, "first_name" | "last_name" | "email" | "phone" | "associations">
 
 interface LoginLocale {

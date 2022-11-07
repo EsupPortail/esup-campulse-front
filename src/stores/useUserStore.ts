@@ -1,6 +1,6 @@
-import {defineStore} from 'pinia'
+import { defineStore } from 'pinia'
 import _axios from '@/plugins/axios'
-import type {User, LoginLocale, CasLogin} from '#/user'
+import type { User, LoginLocale, CasLogin, UserRegister } from '#/user'
 
 
 interface UserStore {
@@ -29,20 +29,17 @@ export const useUserStore = defineStore('userStore', {
             localStorage.setItem('refresh', refresh_token)
             this.user = user
         },
-        register(first_name: string, last_name: string, email: string, phone: string | null,
-                 asso_name: string | null, asso_has_office_status: boolean) {
-            const url = '/users/auth/registration/'
+        register(url: string, newUser: UserRegister) {
             const data = {
-                first_name: first_name, last_name: last_name, email: email,
-                phone: phone, asso_name: asso_name, asso_has_office_status: asso_has_office_status
+                first_name: newUser.first_name,
+                last_name: newUser.last_name,
+                email: newUser.email,
+                phone: newUser.phone,
+                associations: newUser.associations
             }
-
             _axios.post(url, data).then(response => {
                 console.log(response)
             })
-                .catch(error => {
-                    console.log(error)
-                })
         }
     }
 })

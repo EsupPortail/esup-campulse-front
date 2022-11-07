@@ -14,7 +14,7 @@ const casUrl = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponen
       </div>
       <div class="btn-group">
         <q-btn label="Connexion" type="a" color="primary" :href="casUrl"/>
-        <q-btn color="secondary" label="Créer un compte" />
+        <RouterLink to="register"><q-btn color="secondary" label="Créer un compte" /></RouterLink>
       </div>
     </q-card-section>
   </q-card>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-import FormLocalRegister from "@/components/form/FormLocalRegister.vue";
+import FormLocalRegister from '@/components/form/FormLocalRegister.vue'
 </script>
 
 <template>
