@@ -1,6 +1,7 @@
 // WIP : prototype based on current back
 import type { UserAssociations } from '#/association'
 
+
 /**
  *  User Model
  *  Interact front-back

@@ -15,8 +15,6 @@ const emailValidation = ref('')
 
 const userStore = useUserStore()
 
-const counter = ref(1)
-
 </script>
 
 <template>

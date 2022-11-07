@@ -43,17 +43,14 @@ export const useUserStore = defineStore('userStore', {
                     console.log(error)
                 })
         },
-        isAuth():boolean {
+        isAuth() {
             const access = localStorage.getItem('access')
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
-            _axios.post('/users/auth/login/').then(response => {
-                this.user = response.data.user
-            }).catch(error => {
-                console.log(error)
+            _axios.post('/users/auth/token/verify/').then(() => {
+                return true
+            }).catch(() => {
                     return false
                 })
-            console.log('ok')
-            return true
         },
         register(first_name: string, last_name: string, email: string, phone: string | null,
                  asso_name: string | null, asso_has_office_status: boolean) {
