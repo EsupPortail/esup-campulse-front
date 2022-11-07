@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import type { HomeCards } from '#/index'
-import type { HomeBannerView } from '#/index'
+import type { HomeCards, HomeBannerView } from '#/index'
+
 
 // Homepage cards
 
@@ -33,7 +33,7 @@ export const useHomeCards = defineStore('homeCards', {
                 link: "/commission"
             }
         ]
-    })
+    }),
 })
 
 // Homepage banner
@@ -46,7 +46,7 @@ export const useHomeBanner = defineStore('homeBanner', {
     state: (): HomeBannerStore => ({
         banner: {
             title: 'INFORMATIONS: Commission de CAPE le 10 décembre 2022',
-            description: "Porteur de projet ou association, vous serez inviter à présenter votre projet",
+            description: "Porteur de projet ou association, vous serez invité à présenter votre projet",
             isDisplayed: true
         }
     })

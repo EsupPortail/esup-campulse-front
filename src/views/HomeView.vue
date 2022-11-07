@@ -2,17 +2,15 @@
 import { ref } from 'vue'
 import {useHomeBanner, useHomeCards} from '@/stores/useContentStore'
 import HomeCard from '@/components/layout/LayoutHomeCard.vue'
-import HomeBanner from "@/components/layout/LayoutHomeBanner.vue";
-import type { HomeTitle } from '#/index'
+import HomeBanner from '@/components/layout/LayoutHomeBanner.vue'
 
 
-const homeTitle = ref<HomeTitle>('Bienvenue sur la plateforme')
 const cards = useHomeCards()
 const homeBanner = useHomeBanner()
 </script>
 
 <template>
-    <h1>{{ homeTitle }}</h1>
+    <h1>{{ $t("home.title") }}</h1>
 
     <HomeBanner
       :title="homeBanner.banner.title"

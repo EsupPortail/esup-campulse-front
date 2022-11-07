@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import _axios from "@/plugins/axios";
 import router from "@/router";
 import {useUserStore} from "@/stores/useUserStore";
 import {onMounted} from "vue";
