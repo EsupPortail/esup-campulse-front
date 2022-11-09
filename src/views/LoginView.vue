@@ -9,7 +9,7 @@ const casUrl = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponen
   <q-card class="card">
     <q-card-section>
       <div class="card-content">
-        <span class="card-title">Je suis membre de l'Université de Strasbourg</span>
+        <span class="card-title">Je suis étudiant ou personnel de l'Université de Strasbourg</span>
         Connexion avec un compte CAS
       </div>
       <div class="btn-group">

@@ -1,7 +1,3 @@
-// WIP : prototype based on current back
-import type { UserAssociations } from '#/association'
-
-
 /**
  *  User Model
  *  Interact front-back
@@ -25,11 +21,11 @@ export interface User {
     date_joined: string;
     is_cas: string | null;
     status: 'admin' | 'user';
-    associations: UserAssociations | null;
+    // associations: UserAssociations | null;
 }
 
 export type UserLogin = Pick<User, "username" | "password">
-export type UserRegister = Pick<User, "first_name" | "last_name" | "email" | "phone" | "associations">
+export type UserRegister = Pick<User, "first_name" | "last_name" | "email" | "phone">
 
 interface LoginLocale {
     username: string;
@@ -40,3 +36,10 @@ interface CasLogin {
     ticket: string;
     service: string
 }
+
+interface UserAssociation {
+    name: string;
+    has_office_status: boolean;
+}
+
+export type UserAssociations = UserAssociation[]
