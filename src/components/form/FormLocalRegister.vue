@@ -11,6 +11,7 @@ const {notify} = useQuasar()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
+  username: '',
   first_name: '',
   last_name: '',
   email: '',
@@ -56,7 +57,7 @@ const userStore = useUserStore()
 async function register() {
   try {
     if (newUser.value.email === emailVerification.value) {
-      await userStore.userRegister(newUser.value)
+      await userStore.userLocalRegister(newUser.value)
       if (newUserAssociations.value) {
         await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
       }

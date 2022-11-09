@@ -25,7 +25,7 @@ export interface User {
 }
 
 export type UserLogin = Pick<User, "username" | "password">
-export type UserRegister = Pick<User, "first_name" | "last_name" | "email" | "phone">
+export type UserRegister = Pick<User, "username", "first_name" | "last_name" | "email" | "phone">
 
 interface LoginLocale {
     username: string;

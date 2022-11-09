@@ -29,8 +29,13 @@ export const useUserStore = defineStore('userStore', {
             localStorage.setItem('refresh', refresh_token)
             this.user = user
         },
-        async userRegister(newUser: UserRegister) {
+        async userLocalRegister(newUser: UserRegister) {
             await _axios.post('/users/auth/registration/', newUser)
+        },
+        async userCASRegister(newUserInfo: string | null) {
+            const access = localStorage.getItem('access')
+            _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+            await _axios.patch('/users/auth/user/', {phone: newUserInfo})
         },
         async userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
             for (let i = 0; i < newUserAssociations.length; i++) {

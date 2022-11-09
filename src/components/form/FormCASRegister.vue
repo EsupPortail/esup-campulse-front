@@ -14,6 +14,7 @@ const route = useRoute()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
+  username: '',
   first_name: '',
   last_name: '',
   email: '',
@@ -31,7 +32,10 @@ onMounted(async () => {
           service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
         }
       )
-      const {user} = response.data
+      const {access_token, refresh_token, user} = response.data
+      localStorage.setItem('access', access_token)
+      localStorage.setItem('refresh', refresh_token)
+      newUser.value.username = user.username
       newUser.value.first_name = user.first_name
       newUser.value.last_name = user.last_name
       newUser.value.email = user.email
@@ -88,15 +92,9 @@ const emailVerification = ref<string>('')
 const userStore = useUserStore()
 async function register() {
   try {
-    if (newUser.value.email === emailVerification.value) {
-      await userStore.userRegister(newUser.value)
-      if (newUserAssociations.value) {
-        await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
-      }
-    } else {
-      notify({
-        message: 'Les deux adresses mail ne sont pas identiques'
-      })
+    await userStore.userCASRegister(newUser.value.phone)
+    if (newUserAssociations.value) {
+      await userStore.userAssociationsRegister(newUser.value.username, newUserAssociations.value)
     }
   } catch (e) {
     notify({
@@ -114,6 +112,7 @@ async function register() {
 
     <q-input
         filled
+        disable
         v-model="newUser.first_name"
         label="Prénom *"
         lazy-rules
@@ -122,6 +121,7 @@ async function register() {
 
     <q-input
         filled
+        disable
         v-model="newUser.last_name"
         label="Nom *"
         lazy-rules
@@ -130,6 +130,7 @@ async function register() {
 
     <q-input
         filled
+        disable
         v-model="newUser.email"
         label="Adresse mail *"
         lazy-rules
@@ -138,6 +139,7 @@ async function register() {
 
     <q-input
         filled
+        disable
         v-model="emailVerification"
         label="Vérification de l'adresse mail *"
         lazy-rules
