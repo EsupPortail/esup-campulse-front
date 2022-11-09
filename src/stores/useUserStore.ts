@@ -32,11 +32,12 @@ export const useUserStore = defineStore('userStore', {
         async userRegister(newUser: UserRegister) {
             await _axios.post('/users/auth/registration/', newUser)
         },
-        async userAssociationsRegister(newUserUsername: string, newUserAssociations: UserAssociations) {
+        async userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
             for (let i = 0; i < newUserAssociations.length; i++) {
                 await _axios.post('/users/association/', {
-                    user: newUserUsername,
-                    association: newUserAssociations[i]
+                    user: username,
+                    association: newUserAssociations[i].id,
+                    has_office_status: newUserAssociations[i].has_office_status
                 })
             }
         }

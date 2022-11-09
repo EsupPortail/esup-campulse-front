@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/useUserStore'
-import type {UserRegister, UserAssociations, UserAssociation} from '#/user'
+import type {UserRegister, UserAssociations} from '#/user'
 import type {Association, AssociationList} from '#/association'
-import _axios from 'axios'
+import _axios from '@/plugins/axios'
 import {useQuasar} from 'quasar'
 import {onMounted, ref} from 'vue'
+import router from '@/router'
+import {useRoute} from 'vue-router'
 
 
 const {notify} = useQuasar()
+const route = useRoute()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
@@ -17,6 +20,36 @@ const newUser = ref<UserRegister>({
   phone: ''
 })
 
+// Load user infos from CAS
+onMounted(async () => {
+  try {
+    if (route.query.ticket) {
+      const response = await _axios.post(
+    '/users/auth/cas/login/',
+  {
+          ticket: route.query.ticket as string,
+          service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
+        }
+      )
+      const {user} = response.data
+      newUser.value.first_name = user.first_name
+      newUser.value.last_name = user.last_name
+      newUser.value.email = user.email
+      emailVerification.value = user.email
+    } else {
+      notify({
+        message: 'Pas de ticket.'
+      })
+      await router.push({name: 'Login'})
+    }
+  } catch (e) {
+    notify({
+      message: 'Erreur d\'authentification CAS.'
+    })
+    await router.push({name: 'Login'})
+  }
+})
+
 // Setup newUser's associations
 const newUserAssociations = ref<UserAssociations>([])
 
@@ -24,7 +57,7 @@ const newUserAssociations = ref<UserAssociations>([])
 const associations = ref<AssociationList>([])
 async function loadAssociations() {
   try {
-    associations.value = (await _axios.get<Association[]>('http://localhost:8000/associations/')).data
+    associations.value = (await _axios.get<Association[]>('/associations/')).data
         .map(association => ({
           value: association.id,
           label: association.name
@@ -71,7 +104,6 @@ async function register() {
     })
   }
 }
-
 </script>
 
 <template>

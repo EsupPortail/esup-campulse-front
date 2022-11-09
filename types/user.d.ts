@@ -38,7 +38,7 @@ interface CasLogin {
 }
 
 interface UserAssociation {
-    name: string;
+    id: number | null;
     has_office_status: boolean;
 }
 
