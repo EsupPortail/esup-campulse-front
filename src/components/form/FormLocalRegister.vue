@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/useUserStore'
-import type { UserRegister, UserAssociations } from '#/user'
+import type {UserRegister, UserAssociations, UserAssociation} from '#/user'
 import type {Association, AssociationList} from '#/association'
 import _axios from 'axios'
 import {useQuasar} from 'quasar'
@@ -18,12 +18,7 @@ const newUser = ref<UserRegister>({
 })
 
 // Setting newUser's associations
-const newUserAssociations = ref<UserAssociations>([
-  {
-    name: '',
-    has_office_status: false
-  }
-])
+const newUserAssociations = ref<UserAssociations>([])
 
 // Loading associations list
 const associations = ref<AssociationList>([])
@@ -40,16 +35,25 @@ async function loadAssociations() {
     })
   }
 }
-
 onMounted(loadAssociations)
 
+// Add or remove new multiple associations
+function addAssociation() {
+  newUserAssociations.value.push({
+    name: '',
+    has_office_status: false
+  })
+}
+function removeAssociation(index: number) {
+  newUserAssociations.value.splice(index, 1)
+}
 
 // Register newUser
 const userStore = useUserStore()
 async function register() {
   try {
     await userStore.userRegister(newUser.value)
-    if (newUserAssociations.value[0].name) {
+    if (newUserAssociations.value) {
       await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
     }
   } catch (e) {
@@ -107,12 +111,23 @@ async function register() {
         :rules="[ val => val && val.length > 0 || 'Veuillez renseigner un numéro de téléphone valide']"
     />
 
-    <q-select filled v-model="newUserAssociations[0].name" :options="associations" map-options emit-value label="Choisissez votre association" />
+    <q-separator />
 
+    <span>Je suis membre d'une association</span>
 
-    <q-checkbox v-model="newUserAssociations[0].has_office_status" label="Membre du bureau de l'association" />
+    <div v-for="(association, index) in newUserAssociations" :key="index">
+      <q-select filled v-model="association.name" :options="associations" map-options emit-value label="Choisissez votre association" />
+      <q-checkbox v-model="association.has_office_status" label="Je suis membre du bureau de l'association" />
+      <div>
+        <q-btn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" label="Supprimer l'association" />
+      </div>
+      <q-separator />
+    </div>
+    <div>
+      <q-btn v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" label="Ajouter une association" />
+    </div>
 
-    <div class="btn-group">
+    <div>
       <q-btn label="Envoyer" type="submit" color="primary"/>
     </div>
 
@@ -120,5 +135,12 @@ async function register() {
 </template>
 
 <style scoped lang="sass">
+span
+  font-size: 1.5em
 
-</style>d
+.q-separator
+  margin: 10px 0 10px 0
+
+.q-btn
+  margin: 10px 0 10px 0
+</style>
