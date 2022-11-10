@@ -219,6 +219,9 @@ async function register() {
 .q-separator
   margin: 10px 0 10px 0
 
+.q-input + .q-separator
+  margin-left: 15px
+
 .q-btn
   margin: 10px 0 10px 0
 </style>
