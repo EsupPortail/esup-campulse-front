@@ -44,12 +44,7 @@ onMounted(async () => {
       newUser.value.email = user.email
       emailVerification.value = user.email
       isCAS.value = true
-    } /*else {
-      notify({
-        message: 'Pas de ticket.'
-      })
-      await router.push({name: 'Login'})
-    }*/
+    }
   } catch (e) {
     notify({
       message: 'Erreur d\'authentification CAS.'

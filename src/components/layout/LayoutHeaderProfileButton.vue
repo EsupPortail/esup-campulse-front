@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/useUserStore'
+import {RouterLink} from 'vue-router'
 
 const userStore = useUserStore()
 </script>
 
 <template>
   <div class="q-pa-md">
-    <q-btn-dropdown color="cyan" no-caps @click="onMainClick" align="between" padding="0">
+    <q-btn-dropdown color="cyan" no-caps align="between" padding="0">
       <template v-slot:label>
         <div class="row items-center no-wrap">
 
@@ -22,7 +23,7 @@ const userStore = useUserStore()
       </template>
 
       <q-list>
-        <q-item clickable v-close-popup @click="onItemClick">
+        <q-item clickable v-close-popup>
           <q-item-section>
             <q-item-label>
               <RouterLink to="/dashboard" class="label">Mon espace</RouterLink>
@@ -30,7 +31,7 @@ const userStore = useUserStore()
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-close-popup @click="onItemClick">
+        <q-item clickable v-close-popup>
           <q-item-section>
             <q-item-label>
               <RouterLink to="/logout" class="label" style="color:red">Déconnexion</RouterLink>

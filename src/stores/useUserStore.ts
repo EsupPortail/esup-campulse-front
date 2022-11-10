@@ -3,6 +3,7 @@ import _axios from '@/plugins/axios'
 import type {User, LocalLogin, CasLogin, UserRegister, UserAssociations} from '#/user'
 
 
+
 interface UserStore {
     user: User | undefined
 }
@@ -45,6 +46,10 @@ export const useUserStore = defineStore('userStore', {
                     has_office_status: newUserAssociations[i].has_office_status
                 })
             }
+        },
+        logOut() {
+            localStorage.clear()
+            this.user = undefined
         }
     }
 })
