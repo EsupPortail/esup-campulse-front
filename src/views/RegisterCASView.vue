@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import FormCASRegister from '@/components/form/FormCASRegister.vue'
+import FormRegister from '@/components/form/FormRegister.vue'
 </script>
 
 <template>
   <h1>Inscription</h1>
   <q-card class="card">
     <q-card-section>
-      <FormCASRegister />
+      <FormRegister />
     </q-card-section>
   </q-card>
 </template>

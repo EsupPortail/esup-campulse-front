@@ -10,6 +10,7 @@ async function loadUser() {
     const userStore = useUserStore()
     _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
     const response = await _axios.get(import.meta.env.VITE_APP_BASE_URL + '/users/auth/user/')
+    // TO DO : if user is validated
     userStore.user = response.data
   }
 }

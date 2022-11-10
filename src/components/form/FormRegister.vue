@@ -1,20 +1,61 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/useUserStore'
-import type {UserRegister, UserAssociations, UserAssociation} from '#/user'
+import type {UserRegister, UserAssociations} from '#/user'
 import type {Association, AssociationList} from '#/association'
-import _axios from 'axios'
+import _axios from '@/plugins/axios'
 import {useQuasar} from 'quasar'
 import {onMounted, ref} from 'vue'
+import router from '@/router'
+import {useRoute} from 'vue-router'
 
 
 const {notify} = useQuasar()
+const route = useRoute()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
+  username: '',
   first_name: '',
   last_name: '',
   email: '',
   phone: ''
+})
+
+// Checking if newUser is CAS
+const isCAS = ref<boolean>(false)
+
+// Load user infos from CAS
+onMounted(async () => {
+  try {
+    if (route.query.ticket) {
+      const response = await _axios.post(
+          '/users/auth/cas/login/',
+          {
+            ticket: route.query.ticket as string,
+            service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
+          }
+      )
+      const {access_token, refresh_token, user} = response.data
+      localStorage.setItem('access', access_token)
+      localStorage.setItem('refresh', refresh_token)
+      newUser.value.username = user.username
+      newUser.value.first_name = user.first_name
+      newUser.value.last_name = user.last_name
+      newUser.value.email = user.email
+      emailVerification.value = user.email
+      isCAS.value = true
+    } /*else {
+      notify({
+        message: 'Pas de ticket.'
+      })
+      await router.push({name: 'Login'})
+    }*/
+  } catch (e) {
+    notify({
+      message: 'Erreur d\'authentification CAS.'
+    })
+    await router.push({name: 'Login'})
+  }
 })
 
 // Setup newUser's associations
@@ -24,7 +65,7 @@ const newUserAssociations = ref<UserAssociations>([])
 const associations = ref<AssociationList>([])
 async function loadAssociations() {
   try {
-    associations.value = (await _axios.get<Association[]>('http://localhost:8000/associations/')).data
+    associations.value = (await _axios.get<Association[]>('/associations/')).data
         .map(association => ({
           value: association.id,
           label: association.name
@@ -55,15 +96,34 @@ const emailVerification = ref<string>('')
 const userStore = useUserStore()
 async function register() {
   try {
-    if (newUser.value.email === emailVerification.value) {
-      await userStore.userRegister(newUser.value)
+    // if newUser isCAS
+    if (isCAS.value) {
+      // patch new infos
+      await userStore.userCASRegister(newUser.value.phone)
+      // if newUser associations
       if (newUserAssociations.value) {
-        await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
+        await userStore.userAssociationsRegister(newUser.value.username, newUserAssociations.value)
       }
-    } else {
-      notify({
-        message: 'Les deux adresses mail ne sont pas identiques'
-      })
+      // TO DO : clean local storage
+    }
+    // if newUser !isCAS
+    else {
+      // verify email
+      if (newUser.value.email === emailVerification.value) {
+        // post infos
+        await userStore.userLocalRegister(newUser.value)
+        // if newUser associations
+        if (newUserAssociations.value) {
+          await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
+        }
+      }
+      // notify if email is not verified
+      else {
+        notify({
+          message: 'Les deux adresses mail ne sont pas identiques'
+        })
+        return
+      }
     }
   } catch (e) {
     notify({
@@ -71,7 +131,6 @@ async function register() {
     })
   }
 }
-
 </script>
 
 <template>
@@ -82,6 +141,7 @@ async function register() {
 
     <q-input
         filled
+        :disable="!!isCAS"
         v-model="newUser.first_name"
         label="Prénom *"
         lazy-rules
@@ -90,6 +150,7 @@ async function register() {
 
     <q-input
         filled
+        :disable="!!isCAS"
         v-model="newUser.last_name"
         label="Nom *"
         lazy-rules
@@ -98,6 +159,7 @@ async function register() {
 
     <q-input
         filled
+        :disable="!!isCAS"
         v-model="newUser.email"
         label="Adresse mail *"
         lazy-rules
@@ -106,6 +168,7 @@ async function register() {
 
     <q-input
         filled
+        :disable="!!isCAS"
         v-model="emailVerification"
         label="Vérification de l'adresse mail *"
         lazy-rules
