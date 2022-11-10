@@ -99,7 +99,8 @@ async function register() {
       if (newUserAssociations.value) {
         await userStore.userAssociationsRegister(newUser.value.username, newUserAssociations.value)
       }
-      // TO DO : clean local storage
+      // clear localStorage
+      await localStorage.clear()
     }
     // if newUser !isCAS
     else {

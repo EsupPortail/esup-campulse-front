@@ -1,7 +1,9 @@
 import {beforeEach, describe, it, expect} from 'vitest'
-import {createPinia, setActivePinia} from "pinia";
+import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
 import type {User} from '#/user'
+import router from '@/router'
+
 
 // mock User
 const user: User | undefined = {
@@ -20,6 +22,10 @@ const user: User | undefined = {
     is_cas: null,
     status: 'user'
 }
+
+// mock access_token
+const access_token = '0123456789'
+
 
 
 describe('User store', () => {
@@ -53,6 +59,23 @@ describe('User store', () => {
             userStore.user.first_name = 'john'
 
             expect(userStore.userNameFirstLetter).not.toBe('j')
+        })
+    })
+    describe('User logout', () => {
+        it('should clear local storage', () => {
+            localStorage.setItem('access', access_token)
+            const userStore = useUserStore()
+            userStore.user = user
+            userStore.logOut()
+
+            expect(localStorage.getItem('access')).toBeNull()
+        })
+        it('should clear user data', () => {
+            const userStore = useUserStore()
+            userStore.user = user
+            userStore.logOut()
+
+            expect(userStore.user).toBeUndefined()
         })
     })
 })
