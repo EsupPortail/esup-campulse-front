@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/useUserStore'
-import _axios from 'axios'
-import axios from 'axios'
+import _axios from '@/plugins/axios'
 
 
 async function loadUser() {
   const access = localStorage.getItem('access')
   if (access) {
     const userStore = useUserStore()
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+    _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
     const response = await _axios.get(import.meta.env.VITE_APP_BASE_URL + '/users/auth/user/')
-    console.log(response.data)
+    // TO DO : if user is validated
     userStore.user = response.data
   }
 }

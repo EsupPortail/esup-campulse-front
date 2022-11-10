@@ -10,8 +10,8 @@
  *  id_association_component, id_association_field
  */
 export interface Association {
-    id_association: number;
-    name_association: string;
+    id: number;
+    name: string;
     username_association: string;
     acronym_association: string | null;
     path_logo_association: string | null;
@@ -34,10 +34,5 @@ export interface Association {
     id_association_field: number;
 }
 
-interface UserAssociation {
-    name: string;
-    has_office_status: boolean;
-}
-
-export type UserAssociations = UserAssociation[]
-
+export type AssociationName = Pick<Association, "name_association">
+export type AssociationList = {value: number, label: string}[]

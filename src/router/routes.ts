@@ -54,7 +54,12 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'register',
                 name: 'Registration',
-                component: () => import('@/views/RegisterView.vue'),
+                component: () => import('@/views/RegisterLocalView.vue'),
+            },
+            {
+                path: 'cas-register',
+                name: 'CASRegistration',
+                component: () => import('@/views/RegisterCASView.vue'),
             }
         ]
     }
