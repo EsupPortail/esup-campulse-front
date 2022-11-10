@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import _axios from '@/plugins/axios'
-import type {User, LoginLocale, CasLogin, UserRegister, UserAssociations} from '#/user'
+import type {User, LocalLogin, CasLogin, UserRegister, UserAssociations} from '#/user'
 
 
 interface UserStore {
@@ -17,12 +17,12 @@ export const useUserStore = defineStore('userStore', {
         isAdmin: (state: UserStore): boolean => state.user?.status === 'admin',
         isAuth: (state: UserStore): boolean => !!state.user,
         userNameFirstLetter(state): string | undefined {
-            return state.user?.first_name.charAt(0)
+            return state.user?.first_name.charAt(0).toUpperCase()
         }
     },
 
     actions: {
-        async logIn(url: string, data: LoginLocale | CasLogin) {
+        async logIn(url: string, data: LocalLogin | CasLogin) {
             const response = await _axios.post(url, data)
             const {access_token, refresh_token, user} = response.data
             localStorage.setItem('access', access_token)
