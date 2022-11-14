@@ -34,5 +34,4 @@ export interface Association {
     id_association_field: number;
 }
 
-export type AssociationName = Pick<Association, "name_association">
 export type AssociationList = {value: number, label: string}[]

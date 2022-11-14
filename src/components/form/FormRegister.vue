@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/useUserStore'
-import type {UserRegister, UserAssociations} from '#/user'
+import type {UserRegister, UserAssociations, UserGroup, GroupList, NewUserGroups} from '#/user'
 import type {Association, AssociationList} from '#/association'
 import _axios from '@/plugins/axios'
+import axios, { AxiosError } from 'axios'
 import {useQuasar} from 'quasar'
 import {onMounted, ref} from 'vue'
 import router from '@/router'
@@ -47,16 +48,42 @@ onMounted(async () => {
     }
   } catch (e) {
     notify({
+      type: 'negative',
       message: 'Erreur d\'authentification CAS.'
     })
     await router.push({name: 'Login'})
   }
 })
 
+// Setup newUser's groups
+const newUserGroups = ref<NewUserGroups>([])
+
+// Loading group list
+const groups = ref<GroupList>([])
+async function loadGroups() {
+  try {
+    const response = (await _axios.get<UserGroup[]>('/users/groups/')).data
+    response.forEach(function (group) {
+      if (group.name !== 'Administrateur') {
+        groups.value.push({
+          value: group.id,
+          label: group.name
+        })
+      }
+    })
+  } catch (e) {
+    notify({
+      type: 'negative',
+      message: 'Erreur lors du chargement du formulaire, veuillez rafraichir la page.'
+    })
+  }
+}
+onMounted(loadGroups)
+
 // Setup newUser's associations
 const newUserAssociations = ref<UserAssociations>([])
 
-// Loading associations list
+// Loading association list
 const associations = ref<AssociationList>([])
 async function loadAssociations() {
   try {
@@ -67,6 +94,7 @@ async function loadAssociations() {
         }))
   } catch (e) {
     notify({
+      type: 'negative',
       message: 'Erreur lors du chargement du formulaire, veuillez rafraichir la page.'
     })
   }
@@ -100,7 +128,12 @@ async function register() {
         await userStore.userAssociationsRegister(newUser.value.username, newUserAssociations.value)
       }
       // clear localStorage
-      await localStorage.clear()
+      localStorage.clear()
+      // notify registration was successfull
+      notify({
+        type: 'positive',
+        message: 'Inscription réussie. Votre compte va être validé par un gestionnaire.'
+      })
     }
     // if newUser !isCAS
     else {
@@ -112,19 +145,38 @@ async function register() {
         if (newUserAssociations.value) {
           await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
         }
+        // notify registration was successfull
+        notify({
+          type: 'positive',
+          message: 'Inscription réussie. Votre compte va être validé par un gestionnaire.'
+        })
       }
       // notify if email is not verified
       else {
         notify({
-          message: 'Les deux adresses mail ne sont pas identiques'
+          type: 'negative',
+          message: 'Les deux adresses mail ne sont pas identiques.'
         })
         return
       }
     }
-  } catch (e) {
-    notify({
-      message: 'Erreur lors de l\'inscription'
-    })
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const data = error.response?.data
+      if (data.email) {
+        notify({
+          type: 'negative',
+          message: 'Cette adresse mail est déjà associée à un compte. Veuillez vous connecter.'
+        })
+        await router.push({name: 'Login'})
+      }
+      else {
+        notify({
+          type: 'negative',
+          message: 'Une erreur est survenue lors de l\'inscription, veuillez réessayer.'
+        })
+      }
+    }
   }
 }
 </script>
@@ -180,6 +232,16 @@ async function register() {
         lazy-rules
     />
 
+    <!-- Status choice -->
+    <q-select
+        filled
+        v-model="newUserGroups"
+        :options="groups"
+        map-options
+        emit-value
+        label="Sélectionnez votre statut" />
+    <!-- -->
+
     <q-separator />
 
     <div class="add-association-info">Je suis membre d'une ou plusieurs associations
@@ -187,7 +249,7 @@ async function register() {
     </div>
 
     <div v-for="(association, index) in newUserAssociations" :key="index">
-      <q-select filled v-model="association.id" :options="associations" map-options emit-value label="Choisissez votre association" />
+      <q-select filled v-model="association.id" :options="associations" map-options emit-value label="Sélectionnez votre association" />
       <q-checkbox v-model="association.has_office_status" label="Je suis membre du bureau de l'association" />
       <div>
         <q-btn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" label="Supprimer l'association" />

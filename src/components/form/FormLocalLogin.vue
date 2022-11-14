@@ -2,8 +2,8 @@
 import {useUserStore} from '@/stores/useUserStore'
 import type {UserLogin} from '#/user'
 import {ref} from 'vue'
-import {useQuasar} from "quasar";
-import {useRouter} from "vue-router";
+import {useQuasar} from 'quasar'
+import {useRouter} from 'vue-router'
 
 const user = ref<UserLogin>({
   username: '',
@@ -42,9 +42,9 @@ async function logIn() {
     <q-input
         filled
         v-model="user.username"
-        label="Adresse E-mail"
+        label="Adresse mail"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez renseigner votre adresse E-mail']"
+        :rules="[ (val, rules) => rules.email(val) || 'Veuillez renseigner votre adresse mail']"
     />
 
     <q-input

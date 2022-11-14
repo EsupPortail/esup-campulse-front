@@ -24,8 +24,8 @@ export interface User {
     // associations: UserAssociations | null;
 }
 
+// Login
 export type UserLogin = Pick<User, "username" | "password">
-export type UserRegister = Pick<User, "username", "first_name" | "last_name" | "email" | "phone">
 
 interface LocalLogin {
     username: string;
@@ -34,12 +34,26 @@ interface LocalLogin {
 
 interface CasLogin {
     ticket: string;
-    service: string
+    service: string;
 }
 
+// Register
+export type UserRegister = Pick<User, "username", "first_name" | "last_name" | "email" | "phone">
+
+// User association
 interface UserAssociation {
     id: number | null;
     has_office_status: boolean;
 }
 
 export type UserAssociations = UserAssociation[]
+
+// User status
+export interface UserGroup {
+    id: number;
+    name: string;
+}
+
+export type GroupList = {value: number, label: string}[]
+
+export type NewUserGroups = number | null[]

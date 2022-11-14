@@ -2,7 +2,6 @@ import {beforeEach, describe, it, expect} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
 import type {User} from '#/user'
-import router from '@/router'
 
 
 // mock User
