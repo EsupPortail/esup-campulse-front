@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/useUserStore'
-import type {UserRegister, UserAssociations, UserGroup, GroupList, NewUserGroups} from '#/user'
+import type {UserRegister, UserAssociations, UserGroup, GroupList} from '#/user'
 import type {Association, AssociationList} from '#/association'
 import _axios from '@/plugins/axios'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {onMounted, ref} from 'vue'
 import router from '@/router'
@@ -56,7 +56,7 @@ onMounted(async () => {
 })
 
 // Setup newUser's groups
-const newUserGroups = ref<NewUserGroups>([])
+const newUserGroups = ref<number[]>([6])
 
 // Loading group list
 const groups = ref<GroupList>([])
@@ -232,15 +232,12 @@ async function register() {
         lazy-rules
     />
 
-    <!-- Status choice -->
-    <q-select
-        filled
+    <q-option-group
         v-model="newUserGroups"
         :options="groups"
-        map-options
-        emit-value
-        label="Sélectionnez votre statut" />
-    <!-- -->
+        color="primary"
+        type="checkbox"
+    />
 
     <q-separator />
 
@@ -282,4 +279,7 @@ async function register() {
 
 .q-btn
   margin: 10px 0 10px 0
+
+.tooltip-btn
+  margin-left: 5px
 </style>

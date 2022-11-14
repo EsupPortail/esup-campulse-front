@@ -55,5 +55,3 @@ export interface UserGroup {
 }
 
 export type GroupList = {value: number, label: string}[]
-
-export type NewUserGroups = number | null[]
