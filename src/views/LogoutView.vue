@@ -11,7 +11,8 @@ onMounted(async () => {
   userStore.logOut()
   await router.push({name: 'Home'})
   notify({
-    message: 'Déconnection réussie'
+    type: 'positive',
+    message: 'Déconnection réussie.'
   })
 })
 </script>

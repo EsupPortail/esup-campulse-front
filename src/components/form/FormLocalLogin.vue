@@ -25,8 +25,13 @@ async function logIn() {
         }
     )
     await router.push({name: 'Home'})
+    notify({
+      type: 'positive',
+      message: 'Connexion réussie.'
+    })
   } catch (e) {
     notify({
+      type: 'negative',
       message: 'Erreur identifiants, veuillez réessayer.'
     })
   }
