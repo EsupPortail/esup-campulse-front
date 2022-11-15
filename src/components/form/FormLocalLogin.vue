@@ -63,9 +63,9 @@ async function logIn() {
 
     <div class="btn-group">
       <q-btn label="Connexion" type="submit" color="primary"/>
-      <q-btn color="secondary" label="Créer un compte" href="/register"/>
+      <q-btn color="secondary" label="Créer un compte" to="/register"/>
     </div>
-    <q-btn label="Mot de passe oublié ?" type="reset" color="primary" flat class="q-sm"/>
+    <q-btn label="Mot de passe oublié ?" color="primary" flat class="q-sm" to="/password-reset"/>
   </q-form>
 </template>
 

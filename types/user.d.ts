@@ -40,6 +40,12 @@ interface CasLogin {
 // Register
 export type UserRegister = Pick<User, "username", "first_name" | "last_name" | "email" | "phone">
 
+// Password reset
+export interface PasswordReset {
+    newPassword1: '',
+    newPassword2: ''
+}
+
 // User association
 interface UserAssociation {
     id: number | null;
