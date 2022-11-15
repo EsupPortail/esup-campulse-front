@@ -1,17 +1,38 @@
 <script setup lang="ts">
+import { useQuasar } from 'quasar'
 import { RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/useUserStore'
 import _axios from '@/plugins/axios'
 
+const { notify } = useQuasar()
 
 async function loadUser() {
   const access = localStorage.getItem('access')
   if (access) {
     const userStore = useUserStore()
-    _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
-    const response = await _axios.get(import.meta.env.VITE_APP_BASE_URL + '/users/auth/user/')
-    // TO DO : if user is validated
-    userStore.user = response.data
+    try {
+      _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+      const response = await _axios.get(import.meta.env.VITE_APP_BASE_URL + '/users/auth/user/')
+      userStore.user = response.data
+    } catch (e) {
+      if (e.response.status === 401) {
+        try {
+          const refreshResponse = await _axios.post(import.meta.env.VITE_APP_BASE_URL + '/users/auth/token/refresh/', {
+            refresh: localStorage.getItem('refresh')
+          })
+          localStorage.setItem('access', refreshResponse.data.access)
+          _axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access')
+          const responseAuth = await _axios.get(import.meta.env.VITE_APP_BASE_URL + '/users/auth/user/')
+          userStore.user = responseAuth.data
+        } catch (e) {
+          userStore.logOut()
+          notify({
+            type: 'negative',
+            message: 'Votre compte a été déconnecté, veuillez vous reconnecter.'
+          })
+        } 
+      }
+    }
   }
 }
 loadUser()

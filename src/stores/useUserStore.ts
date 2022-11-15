@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import _axios from '@/plugins/axios'
-import type {User, LocalLogin, CasLogin, UserRegister, UserAssociations} from '#/user'
-
+import type { User, LocalLogin, CasLogin, UserRegister, UserAssociations } from '#/user'
+import router from '@/router'
 
 
 interface UserStore {
@@ -25,7 +25,7 @@ export const useUserStore = defineStore('userStore', {
     actions: {
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const response = await _axios.post(url, data)
-            const {access_token, refresh_token, user} = response.data
+            const { access_token, refresh_token, user } = response.data
             localStorage.setItem('access', access_token)
             localStorage.setItem('refresh', refresh_token)
             this.user = user
@@ -36,7 +36,7 @@ export const useUserStore = defineStore('userStore', {
         async userCASRegister(newUserInfo: string | null) {
             const access = localStorage.getItem('access')
             _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
-            await _axios.patch('/users/auth/user/', {phone: newUserInfo})
+            await _axios.patch('/users/auth/user/', { phone: newUserInfo })
         },
         async userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
             for (let i = 0; i < newUserAssociations.length; i++) {
@@ -47,9 +47,11 @@ export const useUserStore = defineStore('userStore', {
                 })
             }
         },
-        logOut() {
-            localStorage.clear()
+        async logOut() {
+            localStorage.removeItem('access')
+            localStorage.removeItem('refresh')
             this.user = undefined
+            await router.push({ name: 'Login' })
         }
     }
 })
