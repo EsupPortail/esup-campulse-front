@@ -68,6 +68,11 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/RegisterSuccessfulView.vue')
             },
             {
+                path: 'register-verify-email',
+                name: 'RegistrationVerifyEmail',
+                component: () => import('@/views/RegisterVerifyEmailView.vue')
+            },
+            {
                 path: 'password-reset',
                 name: 'PasswordReset',
                 component: () => import('@/views/PasswordResetView.vue')
