@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 import _axios from '@/plugins/axios'
 
+const { t } = useI18n()
 const { notify } = useQuasar()
 const email = ref<string>()
 const isReset = ref<boolean>(false)
@@ -14,7 +16,7 @@ async function reset() {
   } catch (e) {
     notify({
       type: 'negative',
-      message: 'Adresse email non reconnue, veuillez réessayer.'
+      message: t('notifications.negative.unknown-email')
     })
   }
 
@@ -23,8 +25,8 @@ async function reset() {
 
 <template>
   <div>
-    <p v-if="!isReset">Veuillez saisir l'adresse mail avec laquelle vous vous connectez d'habitude. Un mail de réinitialisation de mot de passe vous sera envoyé. Cliquez sur le lien dans le mail pour choisir un nouveau mot de passe.</p>
-    <p v-if="isReset">Votre demande a bien été prise en compte, consultez votre boîte mail.</p>
+    <p v-if="!isReset">{{ $t("forms.password-reset-instructions") }}</p>
+    <p v-if="isReset">{{ $t("forms.password-reset-ok") }}</p>
   </div>
   <q-form
       v-if="!isReset"
@@ -34,11 +36,11 @@ async function reset() {
     <q-input
         filled
         v-model="email"
-        label="Adresse mail"
+        :label="$t('forms.email')"
         lazy-rules
-        :rules="[ (val, rules) => rules.email(val) || 'Veuillez renseigner votre adresse mail']"
+        :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
     />
-    <q-btn label="Envoyer" type="submit" color="primary"/>
+    <q-btn :label="$t('forms.send')" type="submit" color="primary"/>
   </q-form>
 </template>
 
@@ -51,4 +53,5 @@ async function reset() {
 div
   text-align: center
   font-size: 1.2em
+
 </style>

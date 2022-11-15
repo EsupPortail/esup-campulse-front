@@ -7,6 +7,7 @@ interface HomeCardsStore {
     cards: HomeCards
 }
 
+// TODO Translations.
 export const useHomeCards = defineStore('homeCards', {
     state: (): HomeCardsStore => ({
         cards: [

@@ -6,10 +6,10 @@ import { RouterLink } from 'vue-router'
   <q-footer elevated>
     <q-toolbar>
       <div class="footer-text">
-        <q-toolbar-title>2017-2022 - PLATEFORME - Tous droits réservés</q-toolbar-title>
-        <RouterLink to="/" class="li-footer">A propos</RouterLink>
-        <RouterLink to="/" class="li-footer">Mentions légales</RouterLink>
-        <RouterLink to="/" class="li-footer">Contact</RouterLink>
+        <q-toolbar-title>{{ $t("footer.copyright") }}</q-toolbar-title>
+        <RouterLink to="/" class="li-footer">{{ $t("footer.about") }}</RouterLink>
+        <RouterLink to="/" class="li-footer">{{ $t("footer.legal-notice") }}</RouterLink>
+        <RouterLink to="/" class="li-footer">{{ $t("footer.contact") }}</RouterLink>
       </div>
     </q-toolbar>
   </q-footer>

@@ -16,7 +16,7 @@ const userStore = useUserStore()
           </div>
 
           <div class="text-center">
-           <p>Mon compte</p>
+           <p>{{ $t("header.my-account") }}</p>
           </div>
 
         </div>
@@ -26,7 +26,7 @@ const userStore = useUserStore()
         <q-item clickable v-close-popup>
           <q-item-section>
             <q-item-label>
-              <RouterLink to="/dashboard" class="label">Mon espace</RouterLink>
+              <RouterLink to="/dashboard" class="label">{{ $t("header.my-profile") }}</RouterLink>
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -34,7 +34,7 @@ const userStore = useUserStore()
         <q-item clickable v-close-popup>
           <q-item-section>
             <q-item-label>
-              <RouterLink to="/logout" class="label" style="color:red">Déconnexion</RouterLink>
+              <RouterLink to="/logout" class="label" style="color:red">{{ $t("header.logout") }}</RouterLink>
             </q-item-label>
           </q-item-section>
         </q-item>

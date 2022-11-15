@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <p>Dashboard view</p>
+  <p>{{ $t("home.dashboard") }}</p>
 </template>
 
 <style>

@@ -3,7 +3,7 @@ import FormProfilePasswordEdit from '@/components/form/FormProfilePasswordEdit.v
 </script>
 
 <template>
-  <h1>Modification du mot de passe</h1>
+  <h1>{{ $t("password.edit-password") }}</h1>
   <FormProfilePasswordEdit />
 </template>
 

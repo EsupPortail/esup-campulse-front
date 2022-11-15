@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import type { PasswordReset } from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
 
+const { t } = useI18n()
 const { notify } = useQuasar()
 const route = useRoute()
 
@@ -29,19 +31,19 @@ async function resetConfirm() {
       await router.push({ name: 'Login' })
       notify({
         type: 'positive',
-        message: 'Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.'
+        message: t('notifications.posutive.password-reseted')
       })
     } catch (e) {
       // TODO
       notify({
         type: 'negative',
-        message: 'Erreur de requête.'
+        message: t('notifications.negative.invalid-request')
       })
     }
   }
   notify({
     type: 'negative',
-    message: 'Les deux mots de passe ne sont pas identiques.'
+    message: t('notifications.negative.different-passwords')
   })
 }
 </script>
@@ -55,19 +57,19 @@ async function resetConfirm() {
         filled
         type="password"
         v-model="newPassword.newPassword1"
-        label="Nouveau mot de passe"
+        :label="$t('forms.new-password')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez saisir votre nouveau mot de passe']"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-new-password')]"
     />
     <q-input
         filled
         type="password"
         v-model="newPassword.newPassword2"
-        label="Répéter votre nouveau mot de passe"
+        :label="$t('forms.repeat-new-password')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez répéter votre nouveau mot de passe']"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-repeat-new-password')]"
     />
-    <q-btn label="Envoyer" type="submit" color="primary"/>
+    <q-btn :label="$t('forms.send')" type="submit" color="primary"/>
   </q-form>
 </template>
 

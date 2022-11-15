@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { useRoute } from "vue-router";
-import { useQuasar } from "quasar";
-import router from "@/router";
-import { useUserStore } from "@/stores/useUserStore";
+import { onMounted } from "vue"
+import { useI18n } from "vue-i18n"
+import { useRoute } from "vue-router"
+import { useQuasar } from "quasar"
+import router from "@/router"
+import { useUserStore } from "@/stores/useUserStore"
 
+const { t } = useI18n()
 const { notify } = useQuasar()
 const route = useRoute()
 const userStore = useUserStore()
@@ -22,12 +24,14 @@ onMounted(async () => {
       await router.push({ name: 'Home' })
     } else {
       notify({
-        message: 'Pas de ticket.'
+        type: 'negative',
+        message: t('notifications.negative.no-ticket')
       })
     }
   } catch (e) {
     notify({
-      message: 'Erreur d\'authentification CAS.'
+      type: 'negative',
+      message: t('notifications.negative.cas-authentication-error')
     })
   }
 })

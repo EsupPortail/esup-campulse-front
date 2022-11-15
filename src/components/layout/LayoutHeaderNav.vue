@@ -7,11 +7,11 @@ const userStore = useUserStore()
 
 <template>
   <nav>
-    <RouterLink to="/">Accueil</RouterLink>
-    <RouterLink to="/charter">Charte</RouterLink>
-    <RouterLink to="/directory">Annuaire</RouterLink>
-    <RouterLink to="/commission">CAPE</RouterLink>
-    <RouterLink to="/login" v-if="!userStore.isAuth">Connexion</RouterLink>
+    <RouterLink to="/">{{ $t("header.home") }}</RouterLink>
+    <RouterLink to="/charter">{{ $t("header.charter") }}</RouterLink>
+    <RouterLink to="/directory">{{ $t("header.directory") }}</RouterLink>
+    <RouterLink to="/commission">{{ $t("header.commission") }}</RouterLink>
+    <RouterLink to="/login" v-if="!userStore.isAuth">{{ $t("header.login") }}</RouterLink>
     <LayoutHeaderProfileButton  v-if="userStore.isAuth"/>
   </nav>
 </template>
@@ -29,4 +29,5 @@ nav > *
 
 nav > *:hover
   background-color: rgba(255, 255, 255, 0.3)
+
 </style>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 import type { PasswordEdit } from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
 
+const { t } = useI18n()
 const { notify } = useQuasar()
 
 const editPassword = ref<PasswordEdit>({
@@ -27,19 +29,19 @@ async function passwordConfirm() {
       await router.push({ name: 'Home' })
       notify({
         type: 'positive',
-        message: 'Votre mot de passe a bien été modifié.'
+        message: t('notifications.posutive.password-changed')
       })
     } catch (e) {
       // TODO
       notify({
         type: 'negative',
-        message: 'Erreur de requête.'
+        message: t('notifications.negative.invalid-request')
       })
     }
   } else {
     notify({
       type: 'negative',
-      message: 'Les deux nouveaux mots de passe ne sont pas identiques.'
+      message: t('notifications.negative.different-passwords')
     })
   }
 }
@@ -54,27 +56,27 @@ async function passwordConfirm() {
         filled
         type="password"
         v-model="editPassword.oldPassword"
-        label="Mot de passe actuel"
+        :label="$t('forms.old-password')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez saisir votre ancien mot de passe']"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-old-password')]"
     />
     <q-input
         filled
         type="password"
         v-model="editPassword.newPassword1"
-        label="Nouveau mot de passe"
+        :label="$t('forms.new-password')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez saisir votre nouveau mot de passe']"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-new-password')]"
     />
     <q-input
         filled
         type="password"
         v-model="editPassword.newPassword2"
-        label="Répéter votre nouveau mot de passe"
+        :label="$t('forms.repeat-new-password')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez répéter votre nouveau mot de passe']"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-repeat-new-password')]"
     />
-    <q-btn label="Envoyer" type="submit" color="primary"/>
+    <q-btn :label="$t('forms.send')" type="submit" color="primary"/>
   </q-form>
 </template>
 
