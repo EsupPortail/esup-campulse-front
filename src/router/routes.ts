@@ -12,12 +12,12 @@ const routes: RouteRecordRaw[] = [
             {
                 path: '',
                 name: 'Home',
-                component: () => import('@/views/HomeView.vue'),
+                component: () => import('@/views/HomeView.vue')
             },
             {
                 path: 'directory',
                 name: 'Directory',
-                component: () => import('@/views/DirectoryView.vue'),
+                component: () => import('@/views/DirectoryView.vue')
             },
             {
                 path: 'charter',
@@ -34,12 +34,12 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'login',
                 name: 'Login',
-                component: () => import('@/views/LoginView.vue'),
+                component: () => import('@/views/LoginView.vue')
             },
             {
                 path: 'cas-login',
                 name: 'CASLogin',
-                component: () => import('@/views/CASLoginView.vue'),
+                component: () => import('@/views/CASLoginView.vue')
             },
             {
                 path: 'logout',
@@ -50,17 +50,22 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'dashboard',
                 name: 'Dashboard',
-                component: () => import('@/views/DashboardView.vue'),
+                component: () => import('@/views/DashboardView.vue')
             },
             {
                 path: 'register',
                 name: 'Registration',
-                component: () => import('@/views/RegisterLocalView.vue'),
+                component: () => import('@/views/RegisterLocalView.vue')
             },
             {
                 path: 'cas-register',
                 name: 'CASRegistration',
-                component: () => import('@/views/RegisterCASView.vue'),
+                component: () => import('@/views/RegisterCASView.vue')
+            },
+            {
+                path: 'password-reset',
+                name: 'PasswordReset',
+                component: () => import('@/views/PasswordResetView.vue')
             }
         ]
     }
