@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/useUserStore'
-import type {UserRegister, UserAssociations, UserGroup, GroupList} from '#/user'
-import type {Association, AssociationList} from '#/association'
-import _axios from '@/plugins/axios'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
 import axios from 'axios'
-import {useQuasar} from 'quasar'
-import {onMounted, ref} from 'vue'
+import type { Association, AssociationList } from '#/association'
+import type { UserRegister, UserAssociations, UserGroup, GroupList } from '#/user'
+import _axios from '@/plugins/axios'
+import { useUserStore } from '@/stores/useUserStore'
 import router from '@/router'
-import {useRoute} from 'vue-router'
 
-
-const {notify} = useQuasar()
 const route = useRoute()
+const { notify } = useQuasar()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
@@ -36,7 +35,7 @@ onMounted(async () => {
             service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
           }
       )
-      const {access_token, refresh_token, user} = response.data
+      const { access_token, refresh_token, user } = response.data
       localStorage.setItem('access', access_token)
       localStorage.setItem('refresh', refresh_token)
       newUser.value.username = user.username
@@ -74,7 +73,7 @@ async function loadGroups() {
   } catch (e) {
     notify({
       type: 'negative',
-      message: 'Erreur lors du chargement du formulaire, veuillez rafraichir la page.'
+      message: 'Erreur lors du chargement du formulaire, veuillez recharger la page.'
     })
   }
 }
@@ -95,7 +94,7 @@ async function loadAssociations() {
   } catch (e) {
     notify({
       type: 'negative',
-      message: 'Erreur lors du chargement du formulaire, veuillez rafraichir la page.'
+      message: 'Erreur lors du chargement du formulaire, veuillez recharger la page.'
     })
   }
 }
@@ -130,7 +129,7 @@ async function register() {
       // clear localStorage
       localStorage.clear()
       // notify registration was successfull
-      await router.push({name: 'RegistrationSuccessful'})
+      await router.push({ name: 'RegistrationSuccessful' })
     }
     // if newUser !isCAS
     else {
@@ -143,7 +142,7 @@ async function register() {
           await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
         }
         // notify registration was successfull
-        await router.push({name: 'RegistrationSuccessful'})
+        await router.push({ name: 'RegistrationSuccessful' })
       }
       // notify if email is not verified
       else {
@@ -162,7 +161,7 @@ async function register() {
           type: 'negative',
           message: 'Cette adresse mail est déjà associée à un compte. Veuillez vous connecter.'
         })
-        await router.push({name: 'Login'})
+        await router.push({ name: 'Login' })
       }
       else {
         notify({
@@ -203,7 +202,7 @@ async function register() {
         filled
         :disable="!!isCAS"
         v-model="newUser.email"
-        label="Adresse mail *"
+        label="Adresse email *"
         lazy-rules
         :rules="[ (val, rules) => rules.email(val) || 'Veuillez renseigner votre adresse mail']"
     />
@@ -212,7 +211,7 @@ async function register() {
         filled
         :disable="!!isCAS"
         v-model="emailVerification"
-        label="Vérification de l'adresse mail *"
+        label="Vérification de l'adresse email *"
         lazy-rules
         :rules="[ (val, rules) => rules.email(val) || 'Veuillez renseigner votre adresse mail']"
     />

@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useQuasar } from 'quasar'
 import _axios from '@/plugins/axios'
 
-// const {notify} = useQuasar()
+const { notify } = useQuasar()
 const email = ref<string>()
 const isReset = ref<boolean>(false)
 
 async function reset() {
   try {
-    await _axios.post('/users/auth/password/reset/', {email: email.value})
+    await _axios.post('/users/auth/password/reset/', { email: email.value })
     isReset.value = true
   } catch (e) {
-    // TODO
+    notify({
+      type: 'negative',
+      message: 'Adresse email non reconnue, veuillez réessayer.'
+    })
   }
 
 }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import _axios from '@/plugins/axios'
-import router from '@/router'
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 import type { PasswordEdit } from '#/user'
+import _axios from '@/plugins/axios'
+import router from '@/router'
 
 const { notify } = useQuasar()
 
@@ -24,12 +24,13 @@ async function passwordConfirm() {
             new_password2: editPassword.value.newPassword2
           }
       )
-      await router.push({name: 'Home'})
+      await router.push({ name: 'Home' })
       notify({
         type: 'positive',
         message: 'Votre mot de passe a bien été modifié.'
       })
     } catch (e) {
+      // TODO
       notify({
         type: 'negative',
         message: 'Erreur de requête.'
@@ -38,7 +39,7 @@ async function passwordConfirm() {
   } else {
     notify({
       type: 'negative',
-      message: 'Les 2 nouveaux mots de passe ne sont pas identiques.'
+      message: 'Les deux nouveaux mots de passe ne sont pas identiques.'
     })
   }
 }

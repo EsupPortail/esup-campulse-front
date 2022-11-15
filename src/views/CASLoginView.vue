@@ -1,13 +1,14 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useQuasar } from "quasar";
 import router from "@/router";
-import {useUserStore} from "@/stores/useUserStore";
-import {onMounted} from "vue";
-import {useQuasar} from "quasar";
-import {useRoute} from "vue-router";
+import { useUserStore } from "@/stores/useUserStore";
 
-const userStore = useUserStore()
+const { notify } = useQuasar()
 const route = useRoute()
-const {notify} = useQuasar()
+const userStore = useUserStore()
+
 onMounted(async () => {
   try {
     if (route.query.ticket) {
@@ -18,10 +19,10 @@ onMounted(async () => {
             service: import.meta.env.VITE_APP_FRONT_URL + '/cas-login'
           }
       )
-      await router.push({name: 'Home'})
+      await router.push({ name: 'Home' })
     } else {
       notify({
-        message: 'Pas de ticket'
+        message: 'Pas de ticket.'
       })
     }
   } catch (e) {

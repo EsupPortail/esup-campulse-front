@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
 import { RouterView } from 'vue-router'
-import { useUserStore } from '@/stores/useUserStore'
+import { useQuasar } from 'quasar'
 import _axios from '@/plugins/axios'
+import { useUserStore } from '@/stores/useUserStore'
 
 const { notify } = useQuasar()
 

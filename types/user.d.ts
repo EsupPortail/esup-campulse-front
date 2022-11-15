@@ -5,7 +5,6 @@
  *  is_enabled_person, last_login_date_person, token_reset_date_person
  */
 
-
 export interface User {
     id: number;
     password: string | null;

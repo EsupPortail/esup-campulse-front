@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import router from "@/router";
+import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
 import _axios from '@/plugins/axios'
-import {onMounted} from "vue";
-import {useQuasar} from "quasar";
-import {useRoute} from "vue-router";
+import router from '@/router'
 
+const { notify } = useQuasar()
 const route = useRoute()
-const {notify} = useQuasar()
+
 onMounted(async () => {
   if (route.query.key) {
     try {

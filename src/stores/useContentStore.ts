@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import type { HomeCards, HomeBannerView } from '#/index'
 
-
 // Homepage cards
 
 interface HomeCardsStore {

@@ -1,7 +1,4 @@
 import type { RouteRecordRaw } from 'vue-router'
-import _axios from '@/plugins/axios'
-import router from '@/router/index'
-
 
 const routes: RouteRecordRaw[] = [
     {

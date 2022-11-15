@@ -1,8 +1,7 @@
-import {beforeEach, describe, it, expect} from 'vitest'
-import {createPinia, setActivePinia} from 'pinia'
-import {useUserStore} from '@/stores/useUserStore'
-import type {User} from '#/user'
-
+import { beforeEach, describe, it, expect } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import type { User } from '#/user'
+import { useUserStore } from '@/stores/useUserStore'
 
 // mock User
 const user: User | undefined = {
@@ -24,8 +23,6 @@ const user: User | undefined = {
 
 // mock access_token
 const access_token = '0123456789'
-
-
 
 describe('User store', () => {
     beforeEach(() => {

@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
-import _axios from '@/plugins/axios'
 import type { User, LocalLogin, CasLogin, UserRegister, UserAssociations } from '#/user'
+import _axios from '@/plugins/axios'
 import router from '@/router'
-
 
 interface UserStore {
     user: User | undefined
 }
-
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({

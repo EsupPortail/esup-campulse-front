@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
   </q-footer>
 </template>
 
-<style lang="sass">
+<style scoped lang="sass">
 .q-toolbar
   justify-content: center
 

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import {useUserStore} from '@/stores/useUserStore'
-import {onMounted} from 'vue'
+import { onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 import router from '@/router'
-import {useQuasar} from 'quasar'
+import { useUserStore } from '@/stores/useUserStore'
 
+const { notify } = useQuasar()
 const userStore = useUserStore()
-const {notify} = useQuasar()
 
 onMounted(async () => {
   userStore.logOut()
-  await router.push({name: 'Home'})
+  await router.push({ name: 'Home' })
   notify({
     type: 'positive',
-    message: 'Déconnection réussie.'
+    message: 'Déconnexion réussie.'
   })
 })
 </script>
@@ -21,5 +21,6 @@ onMounted(async () => {
   <div></div>
 </template>
 
-<style>
+<style scoped lang="sass">
+
 </style>

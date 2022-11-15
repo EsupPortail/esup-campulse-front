@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import LayoutHeader from '@/components/layout/LayoutHeader.vue'
 import LayoutContent from '@/components/layout/LayoutContent.vue'
 import LayoutFooter from '@/components/layout/LayoutFooter.vue'
