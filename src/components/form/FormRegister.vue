@@ -130,10 +130,7 @@ async function register() {
       // clear localStorage
       localStorage.clear()
       // notify registration was successfull
-      notify({
-        type: 'positive',
-        message: 'Inscription réussie. Votre compte va être validé par un gestionnaire.'
-      })
+      await router.push({name: 'RegistrationSuccessful'})
     }
     // if newUser !isCAS
     else {
@@ -146,10 +143,7 @@ async function register() {
           await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
         }
         // notify registration was successfull
-        notify({
-          type: 'positive',
-          message: 'Inscription réussie. Votre compte va être validé par un gestionnaire.'
-        })
+        await router.push({name: 'RegistrationSuccessful'})
       }
       // notify if email is not verified
       else {
