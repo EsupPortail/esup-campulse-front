@@ -46,6 +46,13 @@ export interface PasswordReset {
     newPassword2: ''
 }
 
+// Profile password edition
+export interface PasswordEdit {
+    oldPassword: '',
+    newPassword1: '',
+    newPassword2: ''
+}
+
 // User association
 interface UserAssociation {
     id: number | null;
@@ -60,4 +67,4 @@ export interface UserGroup {
     name: string;
 }
 
-export type GroupList = {value: number, label: string}[]
+export type GroupList = { value: number, label: string }[]

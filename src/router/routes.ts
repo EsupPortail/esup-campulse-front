@@ -81,7 +81,12 @@ const routes: RouteRecordRaw[] = [
                 path: 'password-reset-confirm',
                 name: 'PasswordResetConfirm',
                 component: () => import('@/views/PasswordResetConfirmView.vue')
-            }
+            },
+            {
+                path: 'profile-password-edit',
+                name: 'ProfilePasswordEdit',
+                component: () => import('@/views/ProfilePasswordEditView.vue')
+            },
         ]
     }
 ]

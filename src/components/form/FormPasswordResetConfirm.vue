@@ -50,6 +50,7 @@ async function resetConfirm() {
   >
     <q-input
         filled
+        type="password"
         v-model="newPassword.newPassword1"
         label="Nouveau mot de passe"
         lazy-rules
@@ -57,6 +58,7 @@ async function resetConfirm() {
     />
     <q-input
         filled
+        type="password"
         v-model="newPassword.newPassword2"
         label="Nouveau mot de passe"
         lazy-rules
