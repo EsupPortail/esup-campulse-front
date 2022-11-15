@@ -4,7 +4,7 @@ import type { User, LocalLogin, CasLogin, UserRegister, UserAssociations } from 
 import router from '@/router'
 
 
-interface UserStore {
+export interface UserStore {
     user: User | undefined
 }
 

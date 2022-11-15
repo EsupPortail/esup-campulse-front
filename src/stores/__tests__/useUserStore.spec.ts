@@ -1,11 +1,21 @@
-import {beforeEach, describe, it, expect} from 'vitest'
+import {beforeEach, describe, it, expect, vi, afterEach} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
 import type {User} from '#/user'
+import _axios from '@/plugins/axios'
+import type { AxiosResponse } from "axios";
 
+
+// mock Axios
+vi.mock('@/plugins/axios', () => {
+    return {
+        default: {post: vi.fn()}
+    }
+})
+const mockedAxios = vi.mocked(_axios, true)
 
 // mock User
-const user: User | undefined = {
+const user: User = {
     id: 1,
     password: 'motdepasse',
     last_login: null,
@@ -25,56 +35,56 @@ const user: User | undefined = {
 // mock access_token
 const access_token = '0123456789'
 
-
+setActivePinia(createPinia())
+let userStore = useUserStore()
 
 describe('User store', () => {
     beforeEach(() => {
-        setActivePinia(createPinia())
+        userStore = useUserStore()
+        userStore.user = user
+    })
+    afterEach(() => {
+        mockedAxios.post.mockRestore()
     })
     describe('User auth', () => {
         it('should be true if user has data', () => {
-            const userStore = useUserStore()
-            userStore.user = user
-
             expect(userStore.isAuth).toBeTruthy()
         })
         it('should be false if user has no data', () => {
-            const userStore = useUserStore()
             userStore.user = undefined
-
             expect(userStore.isAuth).toBeFalsy()
         })
     })
     describe('User avatar', () => {
         it('should display capitalized first letter of firstname', () => {
-            const userStore = useUserStore()
-            userStore.user = user
-
             expect(userStore.userNameFirstLetter).toBe('J')
         })
         it('should not display first letter of firstname in lower case', () => {
-            const userStore = useUserStore()
-            userStore.user = user
-            userStore.user.first_name = 'john'
-
+            (userStore.user as User).first_name = 'john'
             expect(userStore.userNameFirstLetter).not.toBe('j')
         })
     })
     describe('User logout', () => {
         it('should clear local storage', () => {
             localStorage.setItem('access', access_token)
-            const userStore = useUserStore()
-            userStore.user = user
             userStore.logOut()
-
             expect(localStorage.getItem('access')).toBeNull()
         })
         it('should clear user data', () => {
-            const userStore = useUserStore()
-            userStore.user = user
             userStore.logOut()
-
             expect(userStore.user).toBeUndefined()
+        })
+    })
+    describe('User login', () => {
+        it('should populate user data', () => {
+            mockedAxios.post.mockResolvedValueOnce({data: {user}} as AxiosResponse)
+            userStore.logIn('url', {username: user.username, password: user.password as string})
+            expect(userStore.user).toBeTruthy()
+        })
+        it('should call API only once', () => {
+            mockedAxios.post.mockResolvedValueOnce({data: {}} as AxiosResponse)
+            userStore.logIn('url', {username: user.username, password: user.password as string})
+            expect(mockedAxios.post).toHaveBeenCalledOnce()
         })
     })
 })
