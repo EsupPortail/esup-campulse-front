@@ -4,10 +4,7 @@ import FormPassWordReset from '@/components/form/FormPasswordReset.vue'
 
 <template>
   <h1>Mot de passe oublié</h1>
-  <FormPassWordReset v-if="!isReset"/>
-  <div v-if="isReset">
-    <p>Votre demande a bien été prise en compte. Consultez votre boîte mail.</p>
-  </div>
+  <FormPassWordReset />
 </template>
 
 <style scoped lang="sass">
