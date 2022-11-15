@@ -10,10 +10,9 @@ async function loadUser() {
   const access = localStorage.getItem('access')
   if (access) {
     const userStore = useUserStore()
-    _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
     try {
+      _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
       const response = await _axios.get(import.meta.env.VITE_APP_BASE_URL + '/users/auth/user/')
-      // TODO : if user is validated
       userStore.user = response.data
     } catch (e) {
       if (e.response.status === 401) {
@@ -22,6 +21,9 @@ async function loadUser() {
             refresh: localStorage.getItem('refresh')
           })
           localStorage.setItem('access', refreshResponse.data.access)
+          _axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access')
+          const responseAuth = await _axios.get(import.meta.env.VITE_APP_BASE_URL + '/users/auth/user/')
+          userStore.user = responseAuth.data
         } catch (e) {
           userStore.logOut()
           notify({
