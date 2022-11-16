@@ -18,6 +18,13 @@ function setBearer() {
     _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
 }
 
+// Refresh token
+async function refreshToken() {
+    const refresh = localStorage.getItem('refresh')
+    const response = await _axios.post('/users/auth/token/refresh/', {refresh})
+    localStorage.setItem('access', response.data.access)
+}
+
 // Register functions
 async function userLocalRegister(newUser: UserRegister) {
     await _axios.post('/users/auth/registration/', newUser)
@@ -45,5 +52,6 @@ export {
     userLocalRegister,
     setTokens,
     removeTokens,
-    //
+    refreshToken,
+    setBearer,
 }
