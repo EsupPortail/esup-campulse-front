@@ -29,7 +29,7 @@ async function passwordConfirm() {
       await router.push({ name: 'Home' })
       notify({
         type: 'positive',
-        message: t('notifications.posutive.password-changed')
+        message: t('notifications.positive.password-changed')
       })
     } catch (e) {
       // TODO
