@@ -10,6 +10,7 @@ export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
         newUser: undefined,
+        isCAS: false,
         groups: []
     }),
 
@@ -46,6 +47,7 @@ export const useUserStore = defineStore('userStore', {
             const { access_token, refresh_token, user } = response.data
             setTokens(access_token, refresh_token)
             this.newUser = user
+            this.isCAS = true
         },
         async getGroups() {
             this.groups = (await _axios.get<UserGroup[]>('/users/groups/')).data

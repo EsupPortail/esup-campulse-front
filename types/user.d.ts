@@ -26,9 +26,13 @@ export interface User {
 // User store
 export interface UserStore {
     user: User | undefined,
-    newUser: User | undefined,
+    newUser: NewUser | undefined,
+    isCAS: boolean,
     groups: UserGroup[]
 }
+
+// newUser
+export type NewUser = Pick<User, "username", "first_name", "last_name", "email", "phone">
 
 // Login
 export type UserLogin = Pick<User, "username" | "password">
@@ -48,15 +52,15 @@ export type UserRegister = Pick<User, "username", "first_name" | "last_name" | "
 
 // Password reset
 export interface PasswordReset {
-    newPassword1: '',
-    newPassword2: ''
+    newPassword1: string;
+    newPassword2: string;
 }
 
 // Profile password edition
 export interface PasswordEdit {
-    oldPassword: '',
-    newPassword1: '',
-    newPassword2: ''
+    oldPassword: string;
+    newPassword1: string;
+    newPassword2: string;
 }
 
 // User association

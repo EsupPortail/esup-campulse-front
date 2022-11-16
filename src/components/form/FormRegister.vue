@@ -28,9 +28,6 @@ const newUser = ref<UserRegister>({
 const emailVerification = ref<string | undefined>('')
 // Setup newUser's associations
 const newUserAssociations = ref<UserAssociations>([])
-// Checking if newUser is CAS
-// TODO refactor
-const isCAS = ref<boolean>(false)
 // Setup newUser's groups
 const newUserGroups = ref<number[]>([6])
 
@@ -44,13 +41,9 @@ async function loadCASUser() {
     if (route.query.ticket) {
       const userStore = useUserStore()
       await userStore.loadCASUser(route.query.ticket as string)
-      // TODO refactoring !!
-      newUser.value.username = userStore.newUser?.username
-      newUser.value.first_name = userStore.newUser?.first_name
-      newUser.value.last_name = userStore.newUser?.last_name
-      newUser.value.email = userStore.newUser?.email
-      emailVerification.value = userStore.newUser?.email
-      isCAS.value = true
+      newUser.value = userStore.newUser
+      emailVerification.value = newUser.value.email
+      // isCAS.value = true
     }
   } catch (e) {
     notify({
@@ -61,7 +54,7 @@ async function loadCASUser() {
   }
 }
 
-// Loading group list
+// Load group list
 async function loadGroups() {
   try {
     await userStore.getGroups()
@@ -73,7 +66,7 @@ async function loadGroups() {
   }
 }
 
-// Loading association list
+// Load association list
 async function loadAssociations() {
   try {
     await associationStore.getAssociations()
@@ -99,7 +92,7 @@ function removeAssociation(index: number) {
 // Register newUser
 async function register() {
   try {
-    if (isCAS.value) {
+    if (userStore.isCAS) {
       if (newUser.value.phone) {
         await userCASRegister(newUser.value.phone)
       }
@@ -154,7 +147,7 @@ async function register() {
 
     <q-input
         filled
-        :disable="!!isCAS"
+        :disable="!!userStore.isCAS"
         v-model="newUser.first_name"
         :label="$t('forms.first-name')"
         lazy-rules
@@ -163,7 +156,7 @@ async function register() {
 
     <q-input
         filled
-        :disable="!!isCAS"
+        :disable="!!userStore.isCAS"
         v-model="newUser.last_name"
         :label="$t('forms.last-name')"
         lazy-rules
@@ -172,7 +165,7 @@ async function register() {
 
     <q-input
         filled
-        :disable="!!isCAS"
+        :disable="!!userStore.isCAS"
         v-model="newUser.email"
         :label="$t('forms.email')"
         lazy-rules
@@ -181,7 +174,7 @@ async function register() {
 
     <q-input
         filled
-        :disable="!!isCAS"
+        :disable="!!userStore.isCAS"
         v-model="emailVerification"
         :label="$t('forms.repeat-email')"
         lazy-rules
