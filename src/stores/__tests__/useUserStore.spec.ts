@@ -92,5 +92,14 @@ describe('User store', () => {
         })
 
     })
+    describe('Load CAS user', () => {
+        beforeEach(() => {
+            mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
+        })
+        it('should populate newUser data', () => {
+            userStore.loadCASUser('ticket')
+            expect(userStore.newUser).toBeTruthy()
+        })
+    })
 })
 

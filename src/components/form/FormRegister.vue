@@ -31,21 +31,14 @@ const isCAS = ref<boolean>(false)
 onMounted(async () => {
   try {
     if (route.query.ticket) {
-      const response = await _axios.post(
-          '/users/auth/cas/login/',
-          {
-            ticket: route.query.ticket as string,
-            service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-          }
-      )
-      const { access_token, refresh_token, user } = response.data
-      localStorage.setItem('access', access_token)
-      localStorage.setItem('refresh', refresh_token)
-      newUser.value.username = user.username
-      newUser.value.first_name = user.first_name
-      newUser.value.last_name = user.last_name
-      newUser.value.email = user.email
-      emailVerification.value = user.email
+      const userStore = useUserStore()
+      await userStore.loadCASUser(route.query.ticket as string)
+      // TODO refactoring !!
+      newUser.value.username = userStore.newUser?.username
+      newUser.value.first_name = userStore.newUser?.first_name
+      newUser.value.last_name = userStore.newUser?.last_name
+      newUser.value.email = userStore.newUser?.email
+      emailVerification.value = userStore.newUser?.email
       isCAS.value = true
     }
   } catch (e) {
@@ -115,7 +108,7 @@ function removeAssociation(index: number) {
 }
 
 // Verify Email
-const emailVerification = ref<string>('')
+const emailVerification = ref<string | undefined>('')
 
 // Register newUser
 async function register() {

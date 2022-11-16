@@ -1,16 +1,15 @@
 import { defineStore } from 'pinia'
-import type { User, LocalLogin, CasLogin } from '#/user'
+import type { UserStore, LocalLogin, CasLogin } from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
 import { setTokens, removeTokens } from '@/services/userService'
+import type {LocationQueryValue} from "vue-router";
 
-export interface UserStore {
-    user: User | undefined
-}
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
-        user: undefined
+        user: undefined,
+        newUser: undefined
     }),
 
     getters: {
@@ -32,6 +31,12 @@ export const useUserStore = defineStore('userStore', {
             removeTokens()
             this.user = undefined
             await router.push({ name: 'Login' })
+        },
+        async loadCASUser(ticket: string) {
+            const response = await _axios.post('/users/auth/cas/login/', {ticket, service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'})
+            const { access_token, refresh_token, user } = response.data
+            setTokens(access_token, refresh_token)
+            this.newUser = user
         }
     }
 })

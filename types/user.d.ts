@@ -23,6 +23,12 @@ export interface User {
     // associations: UserAssociations | null;
 }
 
+// User store
+export interface UserStore {
+    user: User | undefined,
+    newUser: User | undefined
+}
+
 // Login
 export type UserLogin = Pick<User, "username" | "password">
 
