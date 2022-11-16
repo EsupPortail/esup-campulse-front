@@ -33,6 +33,7 @@ const user: User = {
 
 // mock access_token
 const access_token = '0123456789'
+const refresh_token = '0123456789'
 
 setActivePinia(createPinia())
 let userStore = useUserStore()
@@ -75,16 +76,21 @@ describe('User store', () => {
         })
     })
     describe('User login', () => {
-        it('should populate user data', () => {
-            mockedAxios.post.mockResolvedValueOnce({ data: { user } } as AxiosResponse)
+        beforeEach(() => {
+            mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
             userStore.logIn('url', { username: user.username, password: user.password as string })
-            expect(userStore.user).toBeTruthy()
         })
         it('should call API only once', () => {
-            mockedAxios.post.mockResolvedValueOnce({ data: {} } as AxiosResponse)
-            userStore.logIn('url', { username: user.username, password: user.password as string })
             expect(mockedAxios.post).toHaveBeenCalledOnce()
         })
+        it('should populate user data', () => {
+            expect(userStore.user).toBeTruthy()
+        })
+        it('should set user\'s access and refresh tokens', () => {
+            expect(localStorage.getItem('access')).toBe(access_token)
+            expect(localStorage.getItem('refresh')).toBe(refresh_token)
+        })
+
     })
 })
 
