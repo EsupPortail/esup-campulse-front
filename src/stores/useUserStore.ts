@@ -3,7 +3,7 @@ import type { User, LocalLogin, CasLogin, UserRegister, UserAssociations } from 
 import _axios from '@/plugins/axios'
 import router from '@/router'
 
-interface UserStore {
+export interface UserStore {
     user: User | undefined
 }
 
