@@ -9,6 +9,7 @@ import type { UserRegister, UserAssociations, UserGroup, GroupList } from '#/use
 import _axios from '@/plugins/axios'
 import { useUserStore } from '@/stores/useUserStore'
 import router from '@/router'
+import { userLocalRegister, userCASRegister, userAssociationsRegister } from '@/services/userService'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -117,20 +118,19 @@ function removeAssociation(index: number) {
 const emailVerification = ref<string>('')
 
 // Register newUser
-const userStore = useUserStore()
 async function register() {
   try {
     // if newUser isCAS
     if (isCAS.value) {
       // patch new infos
-      await userStore.userCASRegister(newUser.value.phone)
+      await userCASRegister(newUser.value.phone)
       // if newUser associations
       if (newUserAssociations.value) {
-        await userStore.userAssociationsRegister(newUser.value.username, newUserAssociations.value)
+        await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
       }
       // clear localStorage
       localStorage.clear()
-      // notify registration was successfull
+      // notify registration was successful
       await router.push({ name: 'RegistrationSuccessful' })
     }
     // if newUser !isCAS
@@ -138,12 +138,12 @@ async function register() {
       // verify email
       if (newUser.value.email === emailVerification.value) {
         // post infos
-        await userStore.userLocalRegister(newUser.value)
+        await userLocalRegister(newUser.value)
         // if newUser associations
         if (newUserAssociations.value) {
-          await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
+          await userAssociationsRegister(newUser.value.email, newUserAssociations.value)
         }
-        // notify registration was successfull
+        // notify registration was successful
         await router.push({ name: 'RegistrationSuccessful' })
       }
       // notify if email is not verified
