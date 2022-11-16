@@ -95,10 +95,14 @@ describe('User store', () => {
     describe('Load CAS user', () => {
         beforeEach(() => {
             mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
+            userStore.loadCASUser('ticket')
         })
         it('should populate newUser data', () => {
-            userStore.loadCASUser('ticket')
             expect(userStore.newUser).toBeTruthy()
+        })
+        it('should set user\'s access and refresh tokens', () => {
+            expect(localStorage.getItem('access')).toBe(access_token)
+            expect(localStorage.getItem('refresh')).toBe(refresh_token)
         })
     })
 })

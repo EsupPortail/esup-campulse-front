@@ -3,7 +3,6 @@ import type { UserStore, LocalLogin, CasLogin } from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
 import { setTokens, removeTokens } from '@/services/userService'
-import type {LocationQueryValue} from "vue-router";
 
 
 export const useUserStore = defineStore('userStore', {
