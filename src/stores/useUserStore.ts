@@ -20,11 +20,13 @@ export const useUserStore = defineStore('userStore', {
     },
 
     actions: {
-        async logIn(url: string, data: LocalLogin | CasLogin) {
-            const response = await _axios.post(url, data)
+        async logIn(data: LocalLogin | CasLogin) {
+            const response = await _axios.post('/users/auth/login/', data)
             const { access_token, refresh_token, user } = response.data
             setTokens(access_token, refresh_token)
             this.user = user
+            // TODO : push to previous page
+            await router.push({ name: 'Home' })
         },
         async logOut() {
             removeTokens()

@@ -1,7 +1,7 @@
 import type { UserAssociations, UserRegister } from "#/user";
 import _axios from "@/plugins/axios";
 
-// Utils
+// Tokens
 function setTokens(access: string, refresh: string) {
     localStorage.setItem('access', access)
     localStorage.setItem('refresh', refresh)
@@ -32,8 +32,6 @@ async function userAssociationsRegister(username: string, newUserAssociations: U
         })
     }
 }
-
-
 
 
 export {
