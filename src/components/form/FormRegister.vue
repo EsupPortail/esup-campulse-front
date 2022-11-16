@@ -63,14 +63,12 @@ const newUserGroups = ref<number[]>([6])
 const groups = ref<GroupList>([])
 async function loadGroups() {
   try {
-    const response = (await _axios.get<UserGroup[]>('/users/groups/')).data
+    const response = (await _axios.get<UserGroup[]>('/groups/')).data
     response.forEach(function (group) {
-      if (group.name !== 'Administrateur') {
-        groups.value.push({
-          value: group.id,
-          label: group.name
-        })
-      }
+      groups.value.push({
+        value: group.id,
+        label: group.name
+      })
     })
   } catch (e) {
     notify({
