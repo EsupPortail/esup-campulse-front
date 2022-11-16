@@ -1,41 +1,43 @@
 import type { UserAssociations, UserRegister } from "#/user";
 import _axios from "@/plugins/axios";
 
+
+
 // Tokens
-function setTokens(access: string, refresh: string) {
+export function setTokens(access: string, refresh: string) {
     localStorage.setItem('access', access)
     localStorage.setItem('refresh', refresh)
 }
 
-function removeTokens() {
+export function removeTokens() {
     localStorage.removeItem('access')
     localStorage.removeItem('refresh')
 }
 
 // Set bearer
-function setBearer() {
+export function setBearer() {
     const access = localStorage.getItem('access')
     _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
 }
 
 // Refresh token
-async function refreshToken() {
+export async function refreshToken() {
     const refresh = localStorage.getItem('refresh')
-    const response = await _axios.post('/users/auth/token/refresh/', {refresh})
-    localStorage.setItem('access', response.data.access)
+    const access = (await _axios.post('/users/auth/token/refresh/', {refresh})).data.access
+    localStorage.setItem('access', access)
 }
 
 // Register functions
-async function userLocalRegister(newUser: UserRegister) {
+export async function userLocalRegister(newUser: UserRegister) {
     await _axios.post('/users/auth/registration/', newUser)
 }
 
-async function userCASRegister(newUserInfo: string | null) {
+export async function userCASRegister(newUserInfo: string | null) {
     setBearer()
     await _axios.patch('/users/auth/user/', { phone: newUserInfo })
 }
 
-async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
+export async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
     for (let i = 0; i < newUserAssociations.length; i++) {
         await _axios.post('/users/association/', {
             user: username,
@@ -45,13 +47,10 @@ async function userAssociationsRegister(username: string, newUserAssociations: U
     }
 }
 
+export async function passwordReset(email: string) {
+    await _axios.post('/users/auth/password/reset/', { email })
+}
 
-export {
-    userAssociationsRegister,
-    userCASRegister,
-    userLocalRegister,
-    setTokens,
-    removeTokens,
-    refreshToken,
-    setBearer,
+export async function passwordResetConfirm(uid: string, token: string, new_password1: string, new_password2: string) {
+    await _axios.post('/users/auth/password/reset/confirm/',{uid, token, new_password1, new_password2})
 }

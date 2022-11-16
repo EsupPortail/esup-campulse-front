@@ -3,7 +3,7 @@ import type {UserStore, LocalLogin, CasLogin, GroupList} from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
 import {setTokens, removeTokens, setBearer} from '@/services/userService'
-import type {UserGroup} from "#/user";
+import type {User, UserGroup} from "#/user";
 
 
 export const useUserStore = defineStore('userStore', {
@@ -44,12 +44,12 @@ export const useUserStore = defineStore('userStore', {
         },
         async loadUser() {
             setBearer()
-            const response = await _axios.get('/users/auth/user/')
-            this.user = response.data
+            this.user = (await _axios.get<User>('/users/auth/user/')).data
         },
         async loadCASUser(ticket: string) {
-            const response = await _axios.post('/users/auth/cas/login/', {ticket, service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'})
-            const { access_token, refresh_token, user } = response.data
+            const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
+            const data = (await _axios.post('/users/auth/cas/login/', {ticket, service})).data
+            const { access_token, refresh_token, user } = data
             setTokens(access_token, refresh_token)
             this.newUser = user
             this.isCAS = true
