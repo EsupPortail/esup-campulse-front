@@ -4,9 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import axios from 'axios'
-import type { Association, AssociationList } from '#/association'
-import type { UserRegister, UserAssociations, UserGroup, GroupList } from '#/user'
-import _axios from '@/plugins/axios'
+import { useAssociationStore } from "@/stores/useAssociationStore";
+import type { UserRegister, UserAssociations } from '#/user'
 import { useUserStore } from '@/stores/useUserStore'
 import router from '@/router'
 import { userLocalRegister, userCASRegister, userAssociationsRegister } from '@/services/userService'
@@ -14,6 +13,8 @@ import { userLocalRegister, userCASRegister, userAssociationsRegister } from '@/
 const { t } = useI18n()
 const route = useRoute()
 const { notify } = useQuasar()
+const userStore = useUserStore()
+const associationStore = useAssociationStore()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
@@ -23,12 +24,22 @@ const newUser = ref<UserRegister>({
   email: '',
   phone: ''
 })
-
+// Verify Email
+const emailVerification = ref<string | undefined>('')
+// Setup newUser's associations
+const newUserAssociations = ref<UserAssociations>([])
 // Checking if newUser is CAS
+// TODO refactor
 const isCAS = ref<boolean>(false)
+// Setup newUser's groups
+const newUserGroups = ref<number[]>([6])
+
+onMounted(loadCASUser)
+onMounted(loadAssociations)
+onMounted(loadGroups)
 
 // Load user infos from CAS
-onMounted(async () => {
+async function loadCASUser() {
   try {
     if (route.query.ticket) {
       const userStore = useUserStore()
@@ -48,24 +59,12 @@ onMounted(async () => {
     })
     await router.push({ name: 'Login' })
   }
-})
-
-// Setup newUser's groups
-const newUserGroups = ref<number[]>([6])
+}
 
 // Loading group list
-const groups = ref<GroupList>([])
 async function loadGroups() {
   try {
-    const response = (await _axios.get<UserGroup[]>('/users/groups/')).data
-    response.forEach(function (group) {
-      if (group.name !== 'Administrateur') {
-        groups.value.push({
-          value: group.id,
-          label: group.name
-        })
-      }
-    })
+    await userStore.getGroups()
   } catch (e) {
     notify({
       type: 'negative',
@@ -73,20 +72,11 @@ async function loadGroups() {
     })
   }
 }
-onMounted(loadGroups)
-
-// Setup newUser's associations
-const newUserAssociations = ref<UserAssociations>([])
 
 // Loading association list
-const associations = ref<AssociationList>([])
 async function loadAssociations() {
   try {
-    associations.value = (await _axios.get<Association[]>('/associations/')).data
-        .map(association => ({
-          value: association.id,
-          label: association.name
-        }))
+    await associationStore.getAssociations()
   } catch (e) {
     notify({
       type: 'negative',
@@ -94,7 +84,6 @@ async function loadAssociations() {
     })
   }
 }
-onMounted(loadAssociations)
 
 // Add or remove new multiple associations
 function addAssociation() {
@@ -107,39 +96,27 @@ function removeAssociation(index: number) {
   newUserAssociations.value.splice(index, 1)
 }
 
-// Verify Email
-const emailVerification = ref<string | undefined>('')
-
 // Register newUser
 async function register() {
   try {
-    // if newUser isCAS
     if (isCAS.value) {
-      // patch new infos
-      await userCASRegister(newUser.value.phone)
-      // if newUser associations
+      if (newUser.value.phone) {
+        await userCASRegister(newUser.value.phone)
+      }
       if (newUserAssociations.value) {
         await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
       }
-      // clear localStorage
       localStorage.clear()
-      // notify registration was successful
       await router.push({ name: 'RegistrationSuccessful' })
     }
-    // if newUser !isCAS
     else {
-      // verify email
       if (newUser.value.email === emailVerification.value) {
-        // post infos
         await userLocalRegister(newUser.value)
-        // if newUser associations
         if (newUserAssociations.value) {
           await userAssociationsRegister(newUser.value.email, newUserAssociations.value)
         }
-        // notify registration was successful
         await router.push({ name: 'RegistrationSuccessful' })
       }
-      // notify if email is not verified
       else {
         notify({
           type: 'negative',
@@ -222,7 +199,7 @@ async function register() {
 
     <q-option-group
         v-model="newUserGroups"
-        :options="groups"
+        :options="userStore.groupList"
         color="primary"
         type="checkbox"
     />
@@ -234,7 +211,7 @@ async function register() {
     </div>
 
     <div v-for="(association, index) in newUserAssociations" :key="index">
-      <q-select filled v-model="association.id" :options="associations" map-options emit-value :label="$t('forms.select-association')" />
+      <q-select filled v-model="association.id" :options="associationStore.associationList" map-options emit-value :label="$t('forms.select-association')" />
       <q-checkbox v-model="association.has_office_status" :label="$t('forms.im-in-association-office')" />
       <div>
         <q-btn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
@@ -270,5 +247,4 @@ async function register() {
 
 .tooltip-btn
   margin-left: 5px
-
 </style>

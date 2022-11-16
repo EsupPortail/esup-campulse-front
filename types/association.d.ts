@@ -34,4 +34,9 @@ export interface Association {
     id_association_field: number;
 }
 
+interface AssociationStore {
+    association: Association | undefined,
+    associations: Association[]
+}
+
 export type AssociationList = {value: number, label: string}[]

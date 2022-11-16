@@ -26,7 +26,8 @@ export interface User {
 // User store
 export interface UserStore {
     user: User | undefined,
-    newUser: User | undefined
+    newUser: User | undefined,
+    groups: UserGroup[]
 }
 
 // Login
@@ -73,3 +74,4 @@ export interface UserGroup {
 }
 
 export type GroupList = { value: number, label: string }[]
+

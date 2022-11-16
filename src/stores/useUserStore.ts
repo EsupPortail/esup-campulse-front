@@ -1,24 +1,32 @@
 import { defineStore } from 'pinia'
-import type { UserStore, LocalLogin, CasLogin } from '#/user'
+import type {UserStore, LocalLogin, CasLogin, GroupList} from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
 import { setTokens, removeTokens } from '@/services/userService'
+import type {UserGroup} from "#/user";
 
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
-        newUser: undefined
+        newUser: undefined,
+        groups: []
     }),
 
     getters: {
         isAdmin: (state: UserStore): boolean => state.user?.status === 'admin',
         isAuth: (state: UserStore): boolean => !!state.user,
-        userNameFirstLetter(state): string | undefined {
+        userNameFirstLetter: (state: UserStore): string | undefined => {
             return state.user?.first_name.charAt(0).toUpperCase()
+        },
+        groupList: (state: UserStore): GroupList => {
+            return state.groups
+                .map(group => ({
+                    value: group.id,
+                    label: group.name
+                }))
         }
     },
-
     actions: {
         async logIn(data: LocalLogin | CasLogin) {
             const response = await _axios.post('/users/auth/login/', data)
@@ -38,6 +46,9 @@ export const useUserStore = defineStore('userStore', {
             const { access_token, refresh_token, user } = response.data
             setTokens(access_token, refresh_token)
             this.newUser = user
+        },
+        async getGroups() {
+            this.groups = (await _axios.get<UserGroup[]>('/users/groups/')).data
         }
     }
 })

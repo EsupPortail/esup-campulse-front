@@ -12,14 +12,19 @@ function removeTokens() {
     localStorage.removeItem('refresh')
 }
 
+// Set bearer
+function setBearer() {
+    const access = localStorage.getItem('access')
+    _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+}
+
 // Register functions
 async function userLocalRegister(newUser: UserRegister) {
     await _axios.post('/users/auth/registration/', newUser)
 }
 
 async function userCASRegister(newUserInfo: string | null) {
-    const access = localStorage.getItem('access')
-    _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+    setBearer()
     await _axios.patch('/users/auth/user/', { phone: newUserInfo })
 }
 
