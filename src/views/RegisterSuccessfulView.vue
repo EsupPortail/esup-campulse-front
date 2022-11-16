@@ -5,8 +5,8 @@
 <template>
   <h1>Demande d'inscription réussie</h1>
     <div>
-      <p>Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail.</p>
-      <RouterLink to="/">Retour à l'accueil</RouterLink>
+      <p>{{ $t("register.registration-ok") }}</p>
+      <RouterLink to="/">{{ $t("register.back-to-home") }}</RouterLink>
     </div>
 </template>
 

@@ -1,13 +1,16 @@
-<script lang="ts" setup>
-import router from "@/router";
-import {useUserStore} from "@/stores/useUserStore";
-import {onMounted} from "vue";
-import {useQuasar} from "quasar";
-import {useRoute} from "vue-router";
+<script setup lang="ts">
+import { onMounted } from "vue"
+import { useI18n } from "vue-i18n"
+import { useRoute } from "vue-router"
+import { useQuasar } from "quasar"
+import router from "@/router"
+import { useUserStore } from "@/stores/useUserStore"
 
-const userStore = useUserStore()
+const { t } = useI18n()
+const { notify } = useQuasar()
 const route = useRoute()
-const {notify} = useQuasar()
+const userStore = useUserStore()
+
 onMounted(async () => {
   try {
     if (route.query.ticket) {
@@ -18,15 +21,17 @@ onMounted(async () => {
             service: import.meta.env.VITE_APP_FRONT_URL + '/cas-login'
           }
       )
-      await router.push({name: 'Home'})
+      await router.push({ name: 'Home' })
     } else {
       notify({
-        message: 'Pas de ticket'
+        type: 'negative',
+        message: t('notifications.negative.no-ticket')
       })
     }
   } catch (e) {
     notify({
-      message: 'Erreur d\'authentification CAS.'
+      type: 'negative',
+      message: t('notifications.negative.cas-authentication-error')
     })
   }
 })

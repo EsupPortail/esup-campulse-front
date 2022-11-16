@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Associations } from '#/association'
 
-
 interface AssociationStore {
     associations: Associations
 }

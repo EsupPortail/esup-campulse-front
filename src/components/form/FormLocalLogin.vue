@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import {useUserStore} from '@/stores/useUserStore'
-import type {UserLogin} from '#/user'
-import {ref} from 'vue'
-import {useQuasar} from 'quasar'
-import {useRouter} from 'vue-router'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
+import type { UserLogin } from '#/user'
+import { useUserStore } from '@/stores/useUserStore'
 
 const user = ref<UserLogin>({
   username: '',
   password: ''
 })
 
-const userStore = useUserStore()
-
-const {notify} = useQuasar()
+const { t } = useI18n()
+const { notify } = useQuasar()
 const router = useRouter()
+const userStore = useUserStore()
 
 async function logIn() {
   try {
@@ -24,15 +25,15 @@ async function logIn() {
           password: user.value.password as string
         }
     )
-    await router.push({name: 'Home'})
+    await router.push({ name: 'Home' })
     notify({
       type: 'positive',
-      message: 'Connexion réussie.'
+      message: t('notifications.positive.logout-success')
     })
   } catch (e) {
     notify({
       type: 'negative',
-      message: 'Erreur identifiants, veuillez réessayer.'
+      message: t('notifications.negative.unknown-credentials')
     })
   }
 }
@@ -47,30 +48,31 @@ async function logIn() {
     <q-input
         filled
         v-model="user.username"
-        label="Adresse mail"
+        :label="$t('forms.email')"
         lazy-rules
-        :rules="[ (val, rules) => rules.email(val) || 'Veuillez renseigner votre adresse mail']"
+        :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
     />
 
     <q-input
         filled
         type="password"
         v-model="user.password"
-        label="Mot de passe"
+        :label="$t('forms.password')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez saisir votre mot de passe']"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-password')]"
     />
 
     <div class="btn-group">
-      <q-btn label="Connexion" type="submit" color="primary"/>
-      <q-btn color="secondary" label="Créer un compte" to="/register"/>
+      <q-btn :label="$t('forms.login')" type="submit" color="primary"/>
+      <q-btn :label="$t('forms.create-account')" color="secondary" to="/register"/>
     </div>
-    <q-btn label="Mot de passe oublié ?" color="primary" flat class="q-sm" to="/password-reset"/>
+    <q-btn :label="$t('forms.reset-password')" color="primary" flat class="q-sm" to="/password-reset"/>
   </q-form>
 </template>
 
-<style lang="sass">
+<style scoped lang="sass">
 .btn-group
   display: flex
   gap: 10px
+
 </style>

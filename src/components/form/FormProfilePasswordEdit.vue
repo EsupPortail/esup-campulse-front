@@ -1,37 +1,35 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
-import type { PasswordReset } from '#/user'
+import type { PasswordEdit } from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
 
 const { t } = useI18n()
 const { notify } = useQuasar()
-const route = useRoute()
 
-const newPassword = ref<PasswordReset>({
+const editPassword = ref<PasswordEdit>({
+  oldPassword: '',
   newPassword1: '',
   newPassword2: ''
 })
 
-async function resetConfirm() {
-  if (newPassword.value.newPassword1 === newPassword.value.newPassword2) {
+async function passwordConfirm() {
+  if (editPassword.value.newPassword1 === editPassword.value.newPassword2) {
     try {
       await _axios.post(
-          '/users/auth/password/reset/confirm/',
+          '/users/auth/password/change/',
           {
-            uid: route.query.uid,
-            token: route.query.token,
-            new_password1: newPassword.value.newPassword1,
-            new_password2: newPassword.value.newPassword2
+            old_password: editPassword.value.oldPassword,
+            new_password1: editPassword.value.newPassword1,
+            new_password2: editPassword.value.newPassword2
           }
       )
-      await router.push({ name: 'Login' })
+      await router.push({ name: 'Home' })
       notify({
         type: 'positive',
-        message: t('notifications.posutive.password-reseted')
+        message: t('notifications.posutive.password-changed')
       })
     } catch (e) {
       // TODO
@@ -40,23 +38,32 @@ async function resetConfirm() {
         message: t('notifications.negative.invalid-request')
       })
     }
+  } else {
+    notify({
+      type: 'negative',
+      message: t('notifications.negative.different-passwords')
+    })
   }
-  notify({
-    type: 'negative',
-    message: t('notifications.negative.different-passwords')
-  })
 }
 </script>
 
 <template>
   <q-form
-      @submit="resetConfirm"
+      @submit="passwordConfirm"
       class="q-gutter-md"
-  >
+  > 
     <q-input
         filled
         type="password"
-        v-model="newPassword.newPassword1"
+        v-model="editPassword.oldPassword"
+        :label="$t('forms.old-password')"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 || $t('forms.required-old-password')]"
+    />
+    <q-input
+        filled
+        type="password"
+        v-model="editPassword.newPassword1"
         :label="$t('forms.new-password')"
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-new-password')]"
@@ -64,7 +71,7 @@ async function resetConfirm() {
     <q-input
         filled
         type="password"
-        v-model="newPassword.newPassword2"
+        v-model="editPassword.newPassword2"
         :label="$t('forms.repeat-new-password')"
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-repeat-new-password')]"

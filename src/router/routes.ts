@@ -1,7 +1,4 @@
 import type { RouteRecordRaw } from 'vue-router'
-import _axios from '@/plugins/axios'
-import router from '@/router/index'
-
 
 const routes: RouteRecordRaw[] = [
     {
@@ -68,6 +65,11 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/RegisterSuccessfulView.vue')
             },
             {
+                path: 'register-verify-email',
+                name: 'RegistrationVerifyEmail',
+                component: () => import('@/views/RegisterVerifyEmailView.vue')
+            },
+            {
                 path: 'password-reset',
                 name: 'PasswordReset',
                 component: () => import('@/views/PasswordResetView.vue')
@@ -76,7 +78,12 @@ const routes: RouteRecordRaw[] = [
                 path: 'password-reset-confirm',
                 name: 'PasswordResetConfirm',
                 component: () => import('@/views/PasswordResetConfirmView.vue')
-            }
+            },
+            {
+                path: 'profile-password-edit',
+                name: 'ProfilePasswordEdit',
+                component: () => import('@/views/ProfilePasswordEditView.vue')
+            },
         ]
     }
 ]

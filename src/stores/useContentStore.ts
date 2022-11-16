@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import type { HomeCards, HomeBannerView } from '#/index'
 
-
 // Homepage cards
 
 interface HomeCardsStore {
     cards: HomeCards
 }
 
+// TODO Translations.
 export const useHomeCards = defineStore('homeCards', {
     state: (): HomeCardsStore => ({
         cards: [

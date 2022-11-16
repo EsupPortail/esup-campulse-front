@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import {useHomeBanner, useHomeCards} from '@/stores/useContentStore'
 import HomeCard from '@/components/layout/LayoutHomeCard.vue'
 import HomeBanner from '@/components/layout/LayoutHomeBanner.vue'
+import { useHomeBanner, useHomeCards } from '@/stores/useContentStore'
 
-
-const cards = useHomeCards()
 const homeBanner = useHomeBanner()
+const cards = useHomeCards()
 </script>
 
 <template>

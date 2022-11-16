@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/useUserStore'
-import type {UserRegister, UserAssociations, UserGroup, GroupList} from '#/user'
-import type {Association, AssociationList} from '#/association'
-import _axios from '@/plugins/axios'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
 import axios from 'axios'
-import {useQuasar} from 'quasar'
-import {onMounted, ref} from 'vue'
+import type { Association, AssociationList } from '#/association'
+import type { UserRegister, UserAssociations, UserGroup, GroupList } from '#/user'
+import _axios from '@/plugins/axios'
+import { useUserStore } from '@/stores/useUserStore'
 import router from '@/router'
-import {useRoute} from 'vue-router'
 
-
-const {notify} = useQuasar()
+const { t } = useI18n()
 const route = useRoute()
+const { notify } = useQuasar()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
@@ -36,7 +37,7 @@ onMounted(async () => {
             service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
           }
       )
-      const {access_token, refresh_token, user} = response.data
+      const { access_token, refresh_token, user } = response.data
       localStorage.setItem('access', access_token)
       localStorage.setItem('refresh', refresh_token)
       newUser.value.username = user.username
@@ -49,9 +50,9 @@ onMounted(async () => {
   } catch (e) {
     notify({
       type: 'negative',
-      message: 'Erreur d\'authentification CAS.'
+      message: t('notifications.negative.cas-authentication-error')
     })
-    await router.push({name: 'Login'})
+    await router.push({ name: 'Login' })
   }
 })
 
@@ -74,7 +75,7 @@ async function loadGroups() {
   } catch (e) {
     notify({
       type: 'negative',
-      message: 'Erreur lors du chargement du formulaire, veuillez rafraichir la page.'
+      message: t('notifications.negative.form-error')
     })
   }
 }
@@ -95,7 +96,7 @@ async function loadAssociations() {
   } catch (e) {
     notify({
       type: 'negative',
-      message: 'Erreur lors du chargement du formulaire, veuillez rafraichir la page.'
+      message: t('notifications.negative.form-error')
     })
   }
 }
@@ -130,7 +131,7 @@ async function register() {
       // clear localStorage
       localStorage.clear()
       // notify registration was successfull
-      await router.push({name: 'RegistrationSuccessful'})
+      await router.push({ name: 'RegistrationSuccessful' })
     }
     // if newUser !isCAS
     else {
@@ -143,13 +144,13 @@ async function register() {
           await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
         }
         // notify registration was successfull
-        await router.push({name: 'RegistrationSuccessful'})
+        await router.push({ name: 'RegistrationSuccessful' })
       }
       // notify if email is not verified
       else {
         notify({
           type: 'negative',
-          message: 'Les deux adresses mail ne sont pas identiques.'
+          message: t('notifications.negative.different-emails')
         })
         return
       }
@@ -160,14 +161,14 @@ async function register() {
       if (data.email) {
         notify({
           type: 'negative',
-          message: 'Cette adresse mail est déjà associée à un compte. Veuillez vous connecter.'
+          message: t('notifications.negative.email-used')
         })
-        await router.push({name: 'Login'})
+        await router.push({ name: 'Login' })
       }
       else {
         notify({
           type: 'negative',
-          message: 'Une erreur est survenue lors de l\'inscription, veuillez réessayer.'
+          message: t('notifications.negative.invalid-request')
         })
       }
     }
@@ -185,44 +186,44 @@ async function register() {
         filled
         :disable="!!isCAS"
         v-model="newUser.first_name"
-        label="Prénom *"
+        :label="$t('forms.first-name')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez renseigner votre prénom']"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-first-name')]"
     />
 
     <q-input
         filled
         :disable="!!isCAS"
         v-model="newUser.last_name"
-        label="Nom *"
+        :label="$t('forms.last-name')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Veuillez renseigner votre nom']"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
     />
 
     <q-input
         filled
         :disable="!!isCAS"
         v-model="newUser.email"
-        label="Adresse mail *"
+        :label="$t('forms.email')"
         lazy-rules
-        :rules="[ (val, rules) => rules.email(val) || 'Veuillez renseigner votre adresse mail']"
+        :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
     />
 
     <q-input
         filled
         :disable="!!isCAS"
         v-model="emailVerification"
-        label="Vérification de l'adresse mail *"
+        :label="$t('forms.repeat-email')"
         lazy-rules
-        :rules="[ (val, rules) => rules.email(val) || 'Veuillez renseigner votre adresse mail']"
+        :rules="[ (val, rules) => rules.email(val) || $t('forms.required-repeat-email')]"
     />
 
     <q-input
         filled
         v-model="newUser.phone"
-        label="Numéro de téléphone (faculatif)"
+        :label="$t('forms.phone')"
         mask="## ## ## ## ##"
-        hint="Exemple : 06 00 00 00 00"
+        hint="Format : 06 00 00 00 00"
         lazy-rules
     />
 
@@ -235,24 +236,24 @@ async function register() {
 
     <q-separator />
 
-    <div class="add-association-info">Je suis membre d'une ou plusieurs associations
-      <span>J'ajoute les associations dont je fais partie</span>
+    <div class="add-association-info">{{ $t("forms.im-from-association") }}
+      <span>{{ $t("forms.im-in-association") }}</span>
     </div>
 
     <div v-for="(association, index) in newUserAssociations" :key="index">
-      <q-select filled v-model="association.id" :options="associations" map-options emit-value label="Sélectionnez votre association" />
-      <q-checkbox v-model="association.has_office_status" label="Je suis membre du bureau de l'association" />
+      <q-select filled v-model="association.id" :options="associations" map-options emit-value :label="$t('forms.select-association')" />
+      <q-checkbox v-model="association.has_office_status" :label="$t('forms.im-in-association-office')" />
       <div>
-        <q-btn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" label="Supprimer l'association" />
+        <q-btn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
       </div>
       <q-separator />
     </div>
     <div>
-      <q-btn v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" label="Ajouter une association" />
+      <q-btn v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" :label="$t('forms.add-association')" />
     </div>
 
     <div>
-      <q-btn label="Envoyer" type="submit" color="primary"/>
+      <q-btn :label="$t('forms.send')" type="submit" color="primary"/>
     </div>
 
   </q-form>
@@ -276,4 +277,5 @@ async function register() {
 
 .tooltip-btn
   margin-left: 5px
+
 </style>

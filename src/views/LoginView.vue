@@ -10,20 +10,20 @@ const CASUrlRegister = `https://cas-dev.unistra.fr/cas/login?service=${encodeURI
   <q-card class="card">
     <q-card-section>
       <div class="card-content">
-        <span class="card-title">Je suis étudiant ou personnel de l'Université de Strasbourg</span>
-        Connexion avec un compte CAS
+        <span class="card-title">{{ $t("login.im-cas-user") }}</span>
+        {{ $t("login.login-with-cas") }}
       </div>
       <div class="btn-group">
-        <q-btn label="Connexion" type="a" color="primary" :href="CASUrlLogin"/>
-        <q-btn color="secondary" label="Créer un compte" :href="CASUrlRegister" />
+        <q-btn :label="$t('login.login')" color="primary" :href="CASUrlLogin" type="a"/>
+        <q-btn :label="$t('login.create-account')" color="secondary" :href="CASUrlRegister" />
       </div>
     </q-card-section>
   </q-card>
   <q-card class="card">
     <q-card-section>
       <div class="card-content">
-        <span class="card-title">Je suis extérieur à l'Université de Strasbourg</span>
-        Connexion avec un compte externe
+        <span class="card-title">{{ $t("login.im-not-cas-user") }}</span>
+        {{ $t("login.login-without-cas") }}
       </div>
       <FormLocalLogin />
     </q-card-section>

@@ -1,5 +1,5 @@
-import {describe, it, expect} from 'vitest'
-import {mount} from '@vue/test-utils'
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
 import LayoutHomeBanner from '@/components/layout/LayoutHomeBanner.vue'
 
 describe('LayoutHomeBanner', () => {

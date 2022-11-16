@@ -1,3 +1,3 @@
 <template>
-  <h1>Annuaire des associations</h1>
+  <h1>{{ $t("home.directory") }}</h1>
 </template>

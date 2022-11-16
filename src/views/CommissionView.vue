@@ -1,3 +1,3 @@
 <template>
-  <h1>CAPE</h1>
+  <h1>{{ $t("home.commission") }}</h1>
 </template>

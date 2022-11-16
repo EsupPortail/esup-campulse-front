@@ -3,7 +3,7 @@ import FormPasswordResetConfirm from '@/components/form/FormPasswordResetConfirm
 </script>
 
 <template>
-  <h1>Nouveau mot de passe</h1>
+  <h1>{{ $t("password.new-password") }}</h1>
   <FormPasswordResetConfirm />
 </template>
 

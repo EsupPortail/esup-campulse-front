@@ -1,5 +1,96 @@
 {
   "home": {
+    "charter": "Charte des associations",
+    "commission": "Commission d'aide aux projets étudiants",
+    "dashboard": "Tableau de bord",
+    "directory": "Annuaire des associations",
     "title": "Bienvenue sur la plateforme"
+  },
+  "header": {
+    "charter": "Charte",
+    "commission": "CAPE",
+    "directory": "Annuaire",
+    "home": "Accueil",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "my-account": "Mon compte",
+    "my-profile": "Mon espace",
+    "title": "Assopolis"
+  },
+  "footer": {
+    "about": "À propos",
+    "contact": "Contact",
+    "copyright": "2017-2022 - PLATEFORME - Tous droits réservés",
+    "legal-notice": "Mentions légales"
+  },
+  "login": {
+    "create-account": "Créer un compte",
+    "im-cas-user": "Je suis étudiant ou personnel de l'Université de Strasbourg.",
+    "im-not-cas-user": "Je suis extérieur à l'Université de Strasbourg.",
+    "login": "Connexion",
+    "login-with-cas": "Connexion avec un compte CAS",
+    "login-without-cas": "Connexion avec un compte externe"
+  },
+  "password": {
+    "edit-password": "Modification du mot de passe",
+    "new-password": "Nouveau mot de passe",
+    "reset-password": "Mot de passe oublié"
+  },
+  "register": {
+    "back-to-home": "Retour à l'accueil",
+    "register": "Inscription",
+    "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
+  },
+  "forms": {
+    "add-association": "Ajouter une association",
+    "create-account": "Créer un compte",
+    "delete-association": "Supprimer l'association",
+    "email": "Adresse email",
+    "first-name": "Prénom",
+    "im-from-association": "Je suis membre d'une ou plusieurs associations",
+    "im-in-association": "J'ajoute les associations dont je fais partie",
+    "im-in-association-office": "Je suis membre du bureau de l'association",
+    "last-name": "Nom de famille",
+    "login": "Connexion",
+    "new-password": "Nouveau mot de passe",
+    "old-password": "Mot de passe actuel",
+    "repeat-email": "Répéter l'adresse email",
+    "repeat-new-password": "Répéter le nouveau mot de passe",
+    "password": "Mot de passe",
+    "password-reset-instructions": "Veuillez saisir l'adresse mail avec laquelle vous vous connectez d'habitude. Un mail de réinitialisation de mot de passe vous sera envoyé. Cliquez sur le lien dans le mail pour choisir un nouveau mot de passe.",
+    "password-reset-ok": "Votre demande a bien été prise en compte, consultez votre boîte mail.",
+    "phone": "Numéro de téléphone",
+    "required-email": "Veuillez renseigner votre adresse mail.",
+    "required-first-name": "Veuillez renseigner votre prénom.",
+    "required-last-name": "Veuillez renseigner votre nom de famille.",
+    "required-password": "Veuillez saisir votre mot ancien de passe.",
+    "required-old-password": "Veuillez saisir votre mot de passe.",
+    "required-new-password": "Veuillez saisir votre nouveau mot de passe.",
+    "required-repeat-email": "Veuillez répéter votre adresse email.",
+    "required-repeat-new-password": "Veuillez répéter votre nouveau mot de passe.",
+    "reset-password": "Mot de passe oublié ?",
+    "select-association": "Sélectionner une association",
+    "send": "Envoyer"
+  },
+  "notifications": {
+    "negative": {
+      "cas-authentication-error": "Erreur d'authentification CAS.",
+      "different-emails": "Les deux adresses email ne sont pas identiques.",
+      "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
+      "email-used": "Cette adresse email est déjà associée à un compte. Veuillez vous connecter.",
+      "form-error": "Erreur lors du chargement du formulaire, veuillez recharger la page.",
+      "invalid-request": "Requête invalide.",
+      "invalid-token": "Jeton invalide.",
+      "no-ticket": "Pas de ticket.",
+      "unknown-credentials": "Identifiants non reconnus, veuillez réessayer.",
+      "unknown-email": "'Adresse email non reconnue, veuillez réessayer."
+    },
+    "positive": {
+      "login-success": "Connexion réussie.",
+      "logout-success": "Déconnexion réussie.",
+      "password-changed": "Votre mot de passe a bien été modifié.",
+      "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
+      "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation."
+    }
   }
 }
