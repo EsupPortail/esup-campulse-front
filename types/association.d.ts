@@ -3,35 +3,35 @@
 /**
  *  Association Model
  *  Interact front-back
- *  @params: id_association, name_association, username_association, acronym_association, path_logo_association,
- *  description_association, activities_association, address_association, phone_association, email_association,
- *  siret_association, website_association, student_amount_association, is_enabled_association, created_date_association,
- *  approval_date_association, last_goa_association, cga_date_association, id_association_status, id_association_institution
- *  id_association_component, id_association_field
+ *  @params: id, name, username, acronym, path_logo,
+ *  description, activities, address, phone, email,
+ *  siret, website, student_amount, is_enabled, created_date,
+ *  approval_date, last_goa, cga_date, id_status, id_institution
+ *  id_component, id_field
  */
 export interface Association {
     id: number;
     name: string;
-    username_association: string;
-    acronym_association: string | null;
-    path_logo_association: string | null;
-    description_association: string | null;
-    activities_association: string | null;
-    address_association: string | null;
-    phone_association: string | null;
-    email_association: string | null;
-    siret_association: number | null;
-    website_association: string | null;
-    student_amount_association: number | null;
-    is_enabled_association: boolean | null;
-    created_date_association: string | null;
-    approval_date_association: string | null;
-    last_goa_date_association: string | null;
-    cga_date_association: string | null;
-    id_association_status: number;
-    id_association_institution: number;
-    id_association_component: number;
-    id_association_field: number;
+    username: string;
+    acronym: string | null;
+    path_logo: string | null;
+    description: string | null;
+    activities: string | null;
+    address: string | null;
+    phone: string | null;
+    email: string | null;
+    siret: number | null;
+    website: string | null;
+    student_amount: number | null;
+    is_enabled: boolean | null;
+    created_date: string | null;
+    approval_date: string | null;
+    last_goa_date: string | null;
+    cga_date: string | null;
+    id_status: number;
+    id_institution: number;
+    id_component: number;
+    id_field: number;
 }
 
-export type AssociationList = {value: number, label: string}[]
+export type AssociationList = { value: number, label: string }[]

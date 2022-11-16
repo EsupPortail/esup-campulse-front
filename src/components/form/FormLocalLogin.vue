@@ -28,7 +28,7 @@ async function logIn() {
     await router.push({ name: 'Home' })
     notify({
       type: 'positive',
-      message: t('notifications.positive.logout-success')
+      message: t('notifications.positive.login-success')
     })
   } catch (e) {
     notify({
