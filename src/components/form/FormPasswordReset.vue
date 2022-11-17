@@ -14,12 +14,23 @@ async function reset() {
     await passwordReset(email.value as string)
     isReset.value = true
   } catch (e) {
+    let errorMessage = null
+    switch (e.response.status) {
+      case 404:
+        errorMessage = t('notifications.negative.unknown-email')
+        break;
+      case 403:
+        errorMessage = t('notifications.negative.restricted-email')
+        break;
+      default:
+        errorMessage = t('notifications.negative.invalid-request')
+        break;
+    }
     notify({
       type: 'negative',
-      message: t('notifications.negative.unknown-email')
+      message: errorMessage
     })
   }
-
 }
 </script>
 

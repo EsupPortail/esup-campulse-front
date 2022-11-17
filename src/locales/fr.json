@@ -82,8 +82,9 @@
       "invalid-request": "Requête invalide.",
       "invalid-token": "Jeton invalide.",
       "no-ticket": "Pas de ticket.",
+      "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
       "unknown-credentials": "Identifiants non reconnus, veuillez réessayer.",
-      "unknown-email": "'Adresse email non reconnue, veuillez réessayer."
+      "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail."
     },
     "positive": {
       "login-success": "Connexion réussie.",
