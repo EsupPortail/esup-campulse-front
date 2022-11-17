@@ -39,7 +39,7 @@ export async function userCASRegister(newUserInfo: string | null) {
 
 export async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
     for (let i = 0; i < newUserAssociations.length; i++) {
-        await _axios.post('/users/association/', {
+        await _axios.post('/users/associations/', {
             user: username,
             association: newUserAssociations[i].id,
             has_office_status: newUserAssociations[i].has_office_status

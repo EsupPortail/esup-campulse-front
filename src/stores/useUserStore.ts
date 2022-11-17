@@ -29,8 +29,8 @@ export const useUserStore = defineStore('userStore', {
         }
     },
     actions: {
-        async logIn(data: LocalLogin | CasLogin) {
-            const response = await _axios.post('/users/auth/login/', data)
+        async logIn(url: string, data: LocalLogin | CasLogin) {
+            const response = await _axios.post(url, data)
             const { access_token, refresh_token, user } = response.data
             setTokens(access_token, refresh_token)
             this.user = user
@@ -55,7 +55,7 @@ export const useUserStore = defineStore('userStore', {
             this.isCAS = true
         },
         async getGroups() {
-            this.groups = (await _axios.get<UserGroup[]>('/users/groups/')).data
+            this.groups = (await _axios.get<UserGroup[]>('/groups/')).data
         }
     }
 })

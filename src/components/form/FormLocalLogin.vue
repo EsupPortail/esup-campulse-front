@@ -17,7 +17,7 @@ const userStore = useUserStore()
 
 async function logIn() {
   try {
-    await userStore.logIn({username: user.value.username, password: user.value.password as string})
+    await userStore.logIn('/users/auth/login/', {username: user.value.username, password: user.value.password as string})
     notify({
       type: 'positive',
       message: t('notifications.positive.login-success')
