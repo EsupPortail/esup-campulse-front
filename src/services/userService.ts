@@ -47,7 +47,7 @@ export async function userAssociationsRegister(username: string, newUserAssociat
         await _axios.post('/users/associations/', {
             user: username,
             association: newUserAssociations[i].id,
-            has_office_status: newUserAssociations[i].has_office_status
+            has_office_status: newUserAssociations[i].hasOfficeStatus
         })
     }
 }
@@ -63,6 +63,6 @@ export async function passwordReset(email: string) {
     await _axios.post('/users/auth/password/reset/', { email })
 }
 
-export async function passwordResetConfirm(uid: string, token: string, new_password1: string, new_password2: string) {
-    await _axios.post('/users/auth/password/reset/confirm/', { uid, token, new_password1, new_password2 })
+export async function passwordResetConfirm(uid: string, token: string, newPassword1: string, newPassword2: string) {
+    await _axios.post('/users/auth/password/reset/confirm/', { uid, token, newPassword1, newPassword2 })
 }
