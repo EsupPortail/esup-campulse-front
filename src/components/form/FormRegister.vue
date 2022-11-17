@@ -8,7 +8,7 @@ import { useAssociationStore } from "@/stores/useAssociationStore";
 import type { UserRegister, UserAssociations } from '#/user'
 import { useUserStore } from '@/stores/useUserStore'
 import router from '@/router'
-import { userLocalRegister, userCASRegister, userAssociationsRegister } from '@/services/userService'
+import { userLocalRegister, userCASRegister, userAssociationsRegister, userGroupsRegister } from '@/services/userService'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -29,7 +29,7 @@ const emailVerification = ref<string | undefined>('')
 // Setup newUser's associations
 const newUserAssociations = ref<UserAssociations>([])
 // Setup newUser's groups
-const newUserGroups = ref<number[]>([6])
+const newUserGroups = ref<number[]>([5])
 
 onMounted(loadCASUser)
 onMounted(loadAssociations)
@@ -108,6 +108,7 @@ async function register() {
         if (newUserAssociations.value) {
           await userAssociationsRegister(newUser.value.email, newUserAssociations.value)
         }
+        await userGroupsRegister(newUser.value.email, newUserGroups.value)
         await router.push({ name: 'RegistrationSuccessful' })
       }
       else {
