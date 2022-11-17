@@ -21,9 +21,9 @@ async function passwordConfirm() {
       await _axios.post(
           '/users/auth/password/change/',
           {
-            old_password: editPassword.value.oldPassword,
-            new_password1: editPassword.value.newPassword1,
-            new_password2: editPassword.value.newPassword2
+            oldPassword: editPassword.value.oldPassword,
+            newPassword1: editPassword.value.newPassword1,
+            newPassword2: editPassword.value.newPassword2
           }
       )
       await router.push({ name: 'Home' })

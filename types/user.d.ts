@@ -8,17 +8,17 @@
 export interface User {
     id: number;
     password: string | null;
-    last_login: string | null;
-    is_superuser: boolean;
+    lastLogin: string | null;
+    isSuperuser: boolean;
     username: string;
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     phone: string | null;
     email: string;
-    is_staff: boolean;
-    is_active: boolean;
-    date_joined: string;
-    is_cas: string | null;
+    isStaff: boolean;
+    isActive: boolean;
+    dateJoined: string;
+    isCas: string | null;
     status: 'admin' | 'user';
     // associations: UserAssociations | null;
 }
@@ -66,7 +66,7 @@ export interface PasswordEdit {
 // User association
 interface UserAssociation {
     id: number | null;
-    has_office_status: boolean;
+    hasOfficeStatus: boolean;
 }
 
 export type UserAssociations = UserAssociation[]

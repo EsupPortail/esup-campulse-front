@@ -17,23 +17,23 @@ const mockedAxios = vi.mocked(_axios, true)
 const user: User = {
     id: 1,
     password: 'motdepasse',
-    last_login: null,
-    is_superuser: false,
+    lastLogin: null,
+    isSuperuser: false,
     username: 'john.lennon@bbc.com',
-    first_name: 'John',
-    last_name: 'Lennon',
+    firstName: 'John',
+    lastName: 'Lennon',
     phone: null,
     email: 'john.lennon@bbc.com',
-    is_staff: false,
-    is_active: false,
-    date_joined: '',
-    is_cas: null,
+    isStaff: false,
+    isActive: false,
+    dateJoined: '',
+    isCas: null,
     status: 'user'
 }
 
 // mock access_token
-const access_token = '0123456789'
-const refresh_token = '0123456789'
+const accessToken = '0123456789'
+const refreshToken = '0123456789'
 
 setActivePinia(createPinia())
 let userStore = useUserStore()
@@ -60,13 +60,13 @@ describe('User store', () => {
             expect(userStore.userNameFirstLetter).toBe('J')
         })
         it('should not display first letter of firstname in lower case', () => {
-            (userStore.user as User).first_name = 'john'
+            (userStore.user as User).firstName = 'john'
             expect(userStore.userNameFirstLetter).not.toBe('j')
         })
     })
     describe('User logout', () => {
         it('should clear local storage', () => {
-            localStorage.setItem('access', access_token)
+            localStorage.setItem('access', accessToken)
             userStore.logOut()
             expect(localStorage.getItem('access')).toBeNull()
         })
@@ -77,8 +77,8 @@ describe('User store', () => {
     })
     describe('User login', () => {
         beforeEach(() => {
-            mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
-            userStore.logIn('url', {username: user.username, password: user.password as string})
+            mockedAxios.post.mockResolvedValueOnce({ data: { user, accessToken, refreshToken } } as AxiosResponse)
+            userStore.logIn('url', { username: user.username, password: user.password as string })
         })
         it('should call API only once', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
@@ -87,22 +87,22 @@ describe('User store', () => {
             expect(userStore.user).toBeTruthy()
         })
         it('should set user\'s access and refresh tokens', () => {
-            expect(localStorage.getItem('access')).toBe(access_token)
-            expect(localStorage.getItem('refresh')).toBe(refresh_token)
+            expect(localStorage.getItem('access')).toBe(accessToken)
+            expect(localStorage.getItem('refresh')).toBe(refreshToken)
         })
 
     })
     describe('Load CAS user', () => {
         beforeEach(() => {
-            mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
+            mockedAxios.post.mockResolvedValueOnce({ data: { user, accessToken, refreshToken } } as AxiosResponse)
             userStore.loadCASUser('ticket')
         })
         it('should populate newUser data', () => {
             expect(userStore.newUser).toBeTruthy()
         })
         it('should set user\'s access and refresh tokens', () => {
-            expect(localStorage.getItem('access')).toBe(access_token)
-            expect(localStorage.getItem('refresh')).toBe(refresh_token)
+            expect(localStorage.getItem('access')).toBe(accessToken)
+            expect(localStorage.getItem('refresh')).toBe(refreshToken)
         })
     })
 })
