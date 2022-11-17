@@ -13,19 +13,11 @@ const user = ref<UserLogin>({
 
 const { t } = useI18n()
 const { notify } = useQuasar()
-const router = useRouter()
 const userStore = useUserStore()
 
 async function logIn() {
   try {
-    await userStore.logIn(
-        '/users/auth/login/',
-        {
-          username: user.value.username,
-          password: user.value.password as string
-        }
-    )
-    await router.push({ name: 'Home' })
+    await userStore.logIn('/users/auth/login/', {username: user.value.username, password: user.value.password as string})
     notify({
       type: 'positive',
       message: t('notifications.positive.login-success')

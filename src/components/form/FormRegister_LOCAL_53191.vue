@@ -4,17 +4,15 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import axios from 'axios'
-import { useAssociationStore } from "@/stores/useAssociationStore";
-import type { UserRegister, UserAssociations } from '#/user'
+import type { Association, AssociationList } from '#/association'
+import type { UserRegister, UserAssociations, UserGroup, GroupList } from '#/user'
+import _axios from '@/plugins/axios'
 import { useUserStore } from '@/stores/useUserStore'
 import router from '@/router'
-import { userLocalRegister, userCASRegister, userAssociationsRegister } from '@/services/userService'
 
 const { t } = useI18n()
 const route = useRoute()
 const { notify } = useQuasar()
-const userStore = useUserStore()
-const associationStore = useAssociationStore()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
@@ -24,26 +22,30 @@ const newUser = ref<UserRegister>({
   email: '',
   phone: ''
 })
-// Verify Email
-const emailVerification = ref<string | undefined>('')
-// Setup newUser's associations
-const newUserAssociations = ref<UserAssociations>([])
-// Setup newUser's groups
-const newUserGroups = ref<number[]>([6])
 
-onMounted(loadCASUser)
-onMounted(loadAssociations)
-onMounted(loadGroups)
+// Checking if newUser is CAS
+const isCAS = ref<boolean>(false)
 
 // Load user infos from CAS
-async function loadCASUser() {
+onMounted(async () => {
   try {
     if (route.query.ticket) {
-      const userStore = useUserStore()
-      await userStore.loadCASUser(route.query.ticket as string)
-      newUser.value = userStore.newUser
-      emailVerification.value = newUser.value.email
-      // isCAS.value = true
+      const response = await _axios.post(
+          '/users/auth/cas/login/',
+          {
+            ticket: route.query.ticket as string,
+            service: import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
+          }
+      )
+      const { access_token, refresh_token, user } = response.data
+      localStorage.setItem('access', access_token)
+      localStorage.setItem('refresh', refresh_token)
+      newUser.value.username = user.username
+      newUser.value.first_name = user.first_name
+      newUser.value.last_name = user.last_name
+      newUser.value.email = user.email
+      emailVerification.value = user.email
+      isCAS.value = true
     }
   } catch (e) {
     notify({
@@ -52,12 +54,22 @@ async function loadCASUser() {
     })
     await router.push({ name: 'Login' })
   }
-}
+})
 
-// Load group list
+// Setup newUser's groups
+const newUserGroups = ref<number[]>([6])
+
+// Loading group list
+const groups = ref<GroupList>([])
 async function loadGroups() {
   try {
-    await userStore.getGroups()
+    const response = (await _axios.get<UserGroup[]>('/groups/')).data
+    response.forEach(function (group) {
+      groups.value.push({
+        value: group.id,
+        label: group.name
+      })
+    })
   } catch (e) {
     notify({
       type: 'negative',
@@ -65,11 +77,20 @@ async function loadGroups() {
     })
   }
 }
+onMounted(loadGroups)
 
-// Load association list
+// Setup newUser's associations
+const newUserAssociations = ref<UserAssociations>([])
+
+// Loading association list
+const associations = ref<AssociationList>([])
 async function loadAssociations() {
   try {
-    await associationStore.getAssociations()
+    associations.value = (await _axios.get<Association[]>('/associations/')).data
+        .map(association => ({
+          value: association.id,
+          label: association.name
+        }))
   } catch (e) {
     notify({
       type: 'negative',
@@ -77,6 +98,7 @@ async function loadAssociations() {
     })
   }
 }
+onMounted(loadAssociations)
 
 // Add or remove new multiple associations
 function addAssociation() {
@@ -89,27 +111,40 @@ function removeAssociation(index: number) {
   newUserAssociations.value.splice(index, 1)
 }
 
+// Verify Email
+const emailVerification = ref<string>('')
+
 // Register newUser
+const userStore = useUserStore()
 async function register() {
   try {
-    if (userStore.isCAS) {
-      if (newUser.value.phone) {
-        await userCASRegister(newUser.value.phone)
-      }
+    // if newUser isCAS
+    if (isCAS.value) {
+      // patch new infos
+      await userStore.userCASRegister(newUser.value.phone)
+      // if newUser associations
       if (newUserAssociations.value) {
-        await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
+        await userStore.userAssociationsRegister(newUser.value.username, newUserAssociations.value)
       }
+      // clear localStorage
       localStorage.clear()
+      // notify registration was successfull
       await router.push({ name: 'RegistrationSuccessful' })
     }
+    // if newUser !isCAS
     else {
+      // verify email
       if (newUser.value.email === emailVerification.value) {
-        await userLocalRegister(newUser.value)
+        // post infos
+        await userStore.userLocalRegister(newUser.value)
+        // if newUser associations
         if (newUserAssociations.value) {
-          await userAssociationsRegister(newUser.value.email, newUserAssociations.value)
+          await userStore.userAssociationsRegister(newUser.value.email, newUserAssociations.value)
         }
+        // notify registration was successfull
         await router.push({ name: 'RegistrationSuccessful' })
       }
+      // notify if email is not verified
       else {
         notify({
           type: 'negative',
@@ -147,7 +182,7 @@ async function register() {
 
     <q-input
         filled
-        :disable="!!userStore.isCAS"
+        :disable="!!isCAS"
         v-model="newUser.first_name"
         :label="$t('forms.first-name')"
         lazy-rules
@@ -156,7 +191,7 @@ async function register() {
 
     <q-input
         filled
-        :disable="!!userStore.isCAS"
+        :disable="!!isCAS"
         v-model="newUser.last_name"
         :label="$t('forms.last-name')"
         lazy-rules
@@ -165,7 +200,7 @@ async function register() {
 
     <q-input
         filled
-        :disable="!!userStore.isCAS"
+        :disable="!!isCAS"
         v-model="newUser.email"
         :label="$t('forms.email')"
         lazy-rules
@@ -174,7 +209,7 @@ async function register() {
 
     <q-input
         filled
-        :disable="!!userStore.isCAS"
+        :disable="!!isCAS"
         v-model="emailVerification"
         :label="$t('forms.repeat-email')"
         lazy-rules
@@ -192,7 +227,7 @@ async function register() {
 
     <q-option-group
         v-model="newUserGroups"
-        :options="userStore.groupList"
+        :options="groups"
         color="primary"
         type="checkbox"
     />
@@ -204,7 +239,7 @@ async function register() {
     </div>
 
     <div v-for="(association, index) in newUserAssociations" :key="index">
-      <q-select filled v-model="association.id" :options="associationStore.associationList" map-options emit-value :label="$t('forms.select-association')" />
+      <q-select filled v-model="association.id" :options="associations" map-options emit-value :label="$t('forms.select-association')" />
       <q-checkbox v-model="association.has_office_status" :label="$t('forms.im-in-association-office')" />
       <div>
         <q-btn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
@@ -240,4 +275,5 @@ async function register() {
 
 .tooltip-btn
   margin-left: 5px
+
 </style>

@@ -3,7 +3,6 @@ import { onMounted } from "vue"
 import { useI18n } from "vue-i18n"
 import { useRoute } from "vue-router"
 import { useQuasar } from "quasar"
-import router from "@/router"
 import { useUserStore } from "@/stores/useUserStore"
 
 const { t } = useI18n()
@@ -14,14 +13,7 @@ const userStore = useUserStore()
 onMounted(async () => {
   try {
     if (route.query.ticket) {
-      await userStore.logIn(
-          '/users/auth/cas/login/',
-          {
-            ticket: route.query.ticket as string,
-            service: import.meta.env.VITE_APP_FRONT_URL + '/cas-login'
-          }
-      )
-      await router.push({ name: 'Home' })
+      await userStore.logIn('/users/auth/cas/login/', {ticket: route.query.ticket as string, service: import.meta.env.VITE_APP_FRONT_URL + '/cas-login'})
     } else {
       notify({
         type: 'negative',

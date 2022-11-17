@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
-import _axios from '@/plugins/axios'
+import { passwordReset } from '@/services/userService'
 
 const { t } = useI18n()
 const { notify } = useQuasar()
@@ -11,7 +11,7 @@ const isReset = ref<boolean>(false)
 
 async function reset() {
   try {
-    await _axios.post('/users/auth/password/reset/', { email: email.value })
+    await passwordReset(email.value as string)
     isReset.value = true
   } catch (e) {
     notify({

@@ -78,7 +78,7 @@ describe('User store', () => {
     describe('User login', () => {
         beforeEach(() => {
             mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
-            userStore.logIn('url', { username: user.username, password: user.password as string })
+            userStore.logIn({ username: user.username, password: user.password as string })
         })
         it('should call API only once', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
@@ -91,6 +91,19 @@ describe('User store', () => {
             expect(localStorage.getItem('refresh')).toBe(refresh_token)
         })
 
+    })
+    describe('Load CAS user', () => {
+        beforeEach(() => {
+            mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
+            userStore.loadCASUser('ticket')
+        })
+        it('should populate newUser data', () => {
+            expect(userStore.newUser).toBeTruthy()
+        })
+        it('should set user\'s access and refresh tokens', () => {
+            expect(localStorage.getItem('access')).toBe(access_token)
+            expect(localStorage.getItem('refresh')).toBe(refresh_token)
+        })
     })
 })
 

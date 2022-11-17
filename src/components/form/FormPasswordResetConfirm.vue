@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import type { PasswordReset } from '#/user'
-import _axios from '@/plugins/axios'
 import router from '@/router'
+import { passwordResetConfirm } from "@/services/userService";
 
 const { t } = useI18n()
 const { notify } = useQuasar()
@@ -19,32 +19,25 @@ const newPassword = ref<PasswordReset>({
 async function resetConfirm() {
   if (newPassword.value.newPassword1 === newPassword.value.newPassword2) {
     try {
-      await _axios.post(
-          '/users/auth/password/reset/confirm/',
-          {
-            uid: route.query.uid,
-            token: route.query.token,
-            new_password1: newPassword.value.newPassword1,
-            new_password2: newPassword.value.newPassword2
-          }
-      )
+      await passwordResetConfirm(route.query.uid as string, route.query.token as string, newPassword.value.newPassword1, newPassword.value.newPassword2)
       await router.push({ name: 'Login' })
       notify({
         type: 'positive',
-        message: t('notifications.posutive.password-reseted')
+        message: t('notifications.positive.password-reseted')
       })
     } catch (e) {
-      // TODO
       notify({
         type: 'negative',
         message: t('notifications.negative.invalid-request')
       })
     }
   }
-  notify({
-    type: 'negative',
-    message: t('notifications.negative.different-passwords')
-  })
+  else {
+    notify({
+      type: 'negative',
+      message: t('notifications.negative.different-passwords')
+    })
+  }
 }
 </script>
 
