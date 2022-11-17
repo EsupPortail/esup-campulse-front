@@ -43,7 +43,6 @@ export const useUserStore = defineStore('userStore', {
             await router.push({ name: 'Login' })
         },
         async getUser() {
-            setBearer()
             this.user = (await _axios.get<User>('/users/auth/user/')).data
         },
         unLoadUser() {

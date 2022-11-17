@@ -41,19 +41,17 @@ export async function loadUser() {
     const userStore = useUserStore()
     if (access) {
         try {
+            setBearer()
             await userStore.getUser()
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 try {
                     await refreshToken()
+                    setBearer()
                     await userStore.getUser()
                 } catch (error) {
                     await userStore.logOut()
                     // TODO : throw error in component
-                    /*notify({
-                        type: 'negative',
-                        message: 'Votre compte a été déconnecté, veuillez vous reconnecter.'
-                    })*/
                 }
             }
         }

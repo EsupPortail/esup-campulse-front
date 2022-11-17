@@ -4,32 +4,17 @@ import type { AxiosResponse } from "axios";
 import type { User } from '#/user'
 import _axios from '@/plugins/axios'
 import { useUserStore } from '@/stores/useUserStore'
+import {user} from '~/mocks/user.mock'
+import {tokens} from '~/mocks/tokens.mock'
 
 // mock Axios
 vi.mock('@/plugins/axios', () => {
     return {
-        default: { post: vi.fn() }
+        default: { post: vi.fn(), get: vi.fn() }
     }
 })
 const mockedAxios = vi.mocked(_axios, true)
 
-// mock User
-const user: User = {
-    id: 1,
-    password: 'motdepasse',
-    last_login: null,
-    is_superuser: false,
-    username: 'john.lennon@bbc.com',
-    first_name: 'John',
-    last_name: 'Lennon',
-    phone: null,
-    email: 'john.lennon@bbc.com',
-    is_staff: false,
-    is_active: false,
-    date_joined: '',
-    is_cas: null,
-    status: 'user'
-}
 
 // mock access_token
 const access_token = '0123456789'
@@ -67,8 +52,10 @@ describe('User store', () => {
     describe('User logout', () => {
         it('should clear local storage', () => {
             localStorage.setItem('access', access_token)
+            localStorage.setItem('refresh', refresh_token)
             userStore.logOut()
             expect(localStorage.getItem('access')).toBeNull()
+            expect(localStorage.getItem('refresh')).toBeNull()
         })
         it('should clear user data', () => {
             userStore.logOut()
@@ -103,6 +90,13 @@ describe('User store', () => {
         it('should set user\'s access and refresh tokens', () => {
             expect(localStorage.getItem('access')).toBe(access_token)
             expect(localStorage.getItem('refresh')).toBe(refresh_token)
+        })
+    })
+    describe('Get user', () => {
+        it('should populate user data', () => {
+            mockedAxios.get.mockResolvedValueOnce({ data: user } as AxiosResponse)
+            userStore.getUser()
+            expect(userStore.user).toBeTruthy()
         })
     })
 })
