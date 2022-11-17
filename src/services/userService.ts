@@ -1,8 +1,11 @@
 import type { UserAssociations, UserRegister } from "#/user";
 import _axios from "@/plugins/axios";
+import {useUserStore} from "@/stores/useUserStore";
+import axios from "axios";
 
 
 // TODO refactor token
+
 // Tokens
 export function setTokens(access: string, refresh: string) {
     localStorage.setItem('access', access)
@@ -21,15 +24,40 @@ export function setBearer() {
 }
 
 // Remove bearer
-export function removeBearer() {
-    _axios.defaults.headers.common['Authorization'] = undefined
-}
+/*export function removeBearer() {
+    if (_axios.defaults) { _axios.defaults.headers.common['Authorization'] = undefined }
+}*/
 
 // Refresh token
 export async function refreshToken() {
     const refresh = localStorage.getItem('refresh')
     const access = (await _axios.post('/users/auth/token/refresh/', { refresh })).data.access
     localStorage.setItem('access', access)
+}
+
+// Load User
+export async function loadUser() {
+    const access = localStorage.getItem('access')
+    const userStore = useUserStore()
+    if (access) {
+        try {
+            await userStore.getUser()
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                try {
+                    await refreshToken()
+                    await userStore.getUser()
+                } catch (error) {
+                    await userStore.logOut()
+                    // TODO : throw error in component
+                    /*notify({
+                        type: 'negative',
+                        message: 'Votre compte a été déconnecté, veuillez vous reconnecter.'
+                    })*/
+                }
+            }
+        }
+    }
 }
 
 // Register functions
