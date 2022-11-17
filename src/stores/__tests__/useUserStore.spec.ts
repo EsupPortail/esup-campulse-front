@@ -78,7 +78,7 @@ describe('User store', () => {
     describe('User login', () => {
         beforeEach(() => {
             mockedAxios.post.mockResolvedValueOnce({ data: { user, accessToken, refreshToken } } as AxiosResponse)
-            userStore.logIn({ username: user.username, password: user.password as string })
+            userStore.logIn('url', { username: user.username, password: user.password as string })
         })
         it('should call API only once', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()

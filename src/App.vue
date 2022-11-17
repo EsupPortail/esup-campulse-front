@@ -4,11 +4,12 @@ import { useQuasar } from 'quasar'
 import { useUserStore } from '@/stores/useUserStore'
 import axios from "axios";
 import { refreshToken } from "@/services/userService";
+import { loadUser} from "@/services/userService";
 
 
 const { notify } = useQuasar()
 
-async function loadUser() {
+/*async function loadUser() {
   const access = localStorage.getItem('access')
   if (access) {
     const userStore = useUserStore()
@@ -31,8 +32,8 @@ async function loadUser() {
       }
     }
   }
-}
-loadUser()
+}*/
+//loadUser()
 
 </script>
 

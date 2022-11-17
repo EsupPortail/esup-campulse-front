@@ -2,9 +2,8 @@ import { defineStore } from 'pinia'
 import type { UserStore, LocalLogin, CasLogin, GroupList } from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
-import { setTokens, removeTokens, setBearer, removeBearer } from '@/services/userService'
+import { setTokens, removeTokens, setBearer } from '@/services/userService'
 import type { User, UserGroup } from "#/user";
-
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -42,12 +41,12 @@ export const useUserStore = defineStore('userStore', {
             this.unLoadUser()
             await router.push({ name: 'Login' })
         },
-        async loadUser() {
+        async getUser() {
             setBearer()
             this.user = (await _axios.get<User>('/users/auth/user/')).data
         },
         unLoadUser() {
-            removeBearer()
+            // removeBearer()
             this.user = undefined
         },
         async loadCASUser(ticket: string) {
