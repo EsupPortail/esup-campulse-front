@@ -23,7 +23,7 @@ export function setBearer() {
 // Refresh token
 export async function refreshToken() {
     const refresh = localStorage.getItem('refresh')
-    const access = (await _axios.post('/users/auth/token/refresh/', {refresh})).data.access
+    const access = (await _axios.post('/users/auth/token/refresh/', { refresh })).data.access
     localStorage.setItem('access', access)
 }
 
@@ -47,10 +47,17 @@ export async function userAssociationsRegister(username: string, newUserAssociat
     }
 }
 
+export async function userGroupsRegister(username: string, newUserGroups: number[]) {
+    await _axios.post('/users/groups/', {
+        user: username,
+        groups: newUserGroups,
+    })
+}
+
 export async function passwordReset(email: string) {
     await _axios.post('/users/auth/password/reset/', { email })
 }
 
 export async function passwordResetConfirm(uid: string, token: string, new_password1: string, new_password2: string) {
-    await _axios.post('/users/auth/password/reset/confirm/',{uid, token, new_password1, new_password2})
+    await _axios.post('/users/auth/password/reset/confirm/', { uid, token, new_password1, new_password2 })
 }
