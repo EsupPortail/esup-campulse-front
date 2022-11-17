@@ -5,7 +5,6 @@ import type { User } from '#/user'
 import _axios from '@/plugins/axios'
 import { useUserStore } from '@/stores/useUserStore'
 import {user} from '~/mocks/user.mock'
-import {tokens} from '~/mocks/tokens.mock'
 
 // mock Axios
 vi.mock('@/plugins/axios', () => {
@@ -15,10 +14,9 @@ vi.mock('@/plugins/axios', () => {
 })
 const mockedAxios = vi.mocked(_axios, true)
 
-
 // mock access_token
-const access_token = '0123456789'
-const refresh_token = '0123456789'
+const accessToken = '0123456789'
+const refreshToken = '0123456789'
 
 setActivePinia(createPinia())
 let userStore = useUserStore()
@@ -45,7 +43,7 @@ describe('User store', () => {
             expect(userStore.userNameFirstLetter).toBe('J')
         })
         it('should not display first letter of firstname in lower case', () => {
-            (userStore.user as User).first_name = 'john'
+            (userStore.user as User).firstName = 'john'
             expect(userStore.userNameFirstLetter).not.toBe('j')
         })
     })
@@ -64,8 +62,8 @@ describe('User store', () => {
     })
     describe('User login', () => {
         beforeEach(() => {
-            mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
-            userStore.logIn('url', {username: user.username, password: user.password as string})
+            mockedAxios.post.mockResolvedValueOnce({ data: { user, accessToken, refreshToken } } as AxiosResponse)
+            userStore.logIn('url', { username: user.username, password: user.password as string })
         })
         it('should call API only once', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
@@ -74,22 +72,22 @@ describe('User store', () => {
             expect(userStore.user).toBeTruthy()
         })
         it('should set user\'s access and refresh tokens', () => {
-            expect(localStorage.getItem('access')).toBe(access_token)
-            expect(localStorage.getItem('refresh')).toBe(refresh_token)
+            expect(localStorage.getItem('access')).toBe(accessToken)
+            expect(localStorage.getItem('refresh')).toBe(refreshToken)
         })
 
     })
     describe('Load CAS user', () => {
         beforeEach(() => {
-            mockedAxios.post.mockResolvedValueOnce({ data: { user, access_token, refresh_token } } as AxiosResponse)
+            mockedAxios.post.mockResolvedValueOnce({ data: { user, accessToken, refreshToken } } as AxiosResponse)
             userStore.loadCASUser('ticket')
         })
         it('should populate newUser data', () => {
             expect(userStore.newUser).toBeTruthy()
         })
         it('should set user\'s access and refresh tokens', () => {
-            expect(localStorage.getItem('access')).toBe(access_token)
-            expect(localStorage.getItem('refresh')).toBe(refresh_token)
+            expect(localStorage.getItem('access')).toBe(accessToken)
+            expect(localStorage.getItem('refresh')).toBe(refreshToken)
         })
     })
     describe('Get user', () => {

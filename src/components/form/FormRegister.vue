@@ -19,8 +19,8 @@ const associationStore = useAssociationStore()
 // Setting newUser data
 const newUser = ref<UserRegister>({
   username: '',
-  first_name: '',
-  last_name: '',
+  firstName: '',
+  lastName: '',
   email: '',
   phone: ''
 })
@@ -82,7 +82,7 @@ async function loadAssociations() {
 function addAssociation() {
   newUserAssociations.value.push({
     id: null,
-    has_office_status: false
+    hasOfficeStatus: false
   })
 }
 function removeAssociation(index: number) {
@@ -149,7 +149,7 @@ async function register() {
     <q-input
         filled
         :disable="!!userStore.isCAS"
-        v-model="newUser.first_name"
+        v-model="newUser.firstName"
         :label="$t('forms.first-name')"
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-first-name')]"
@@ -158,7 +158,7 @@ async function register() {
     <q-input
         filled
         :disable="!!userStore.isCAS"
-        v-model="newUser.last_name"
+        v-model="newUser.lastName"
         :label="$t('forms.last-name')"
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
@@ -206,7 +206,7 @@ async function register() {
 
     <div v-for="(association, index) in newUserAssociations" :key="index">
       <q-select filled v-model="association.id" :options="associationStore.associationList" map-options emit-value :label="$t('forms.select-association')" />
-      <q-checkbox v-model="association.has_office_status" :label="$t('forms.im-in-association-office')" />
+      <q-checkbox v-model="association.hasOfficeStatus" :label="$t('forms.im-in-association-office')" />
       <div>
         <q-btn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
       </div>

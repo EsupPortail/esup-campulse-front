@@ -14,7 +14,7 @@ export interface Association {
     name: string;
     username: string;
     acronym: string | null;
-    path_logo: string | null;
+    pathLogo: string | null;
     description: string | null;
     activities: string | null;
     address: string | null;
@@ -22,16 +22,16 @@ export interface Association {
     email: string | null;
     siret: number | null;
     website: string | null;
-    student_amount: number | null;
-    is_enabled: boolean | null;
-    created_date: string | null;
-    approval_date: string | null;
-    last_goa_date: string | null;
-    cga_date: string | null;
-    id_status: number;
-    id_institution: number;
-    id_component: number;
-    id_field: number;
+    studentAmount: number | null;
+    isEnabled: boolean | null;
+    createdDate: string | null;
+    approvalDate: string | null;
+    lastGoaDate: string | null;
+    cgaDate: string | null;
+    idStatus: number;
+    idInstitution: number;
+    idComponent: number;
+    idField: number;
 }
 
 interface AssociationStore {
@@ -39,4 +39,4 @@ interface AssociationStore {
     associations: Association[]
 }
 
-export type AssociationList = {value: number, label: string}[]
+export type AssociationList = { value: number, label: string }[]
