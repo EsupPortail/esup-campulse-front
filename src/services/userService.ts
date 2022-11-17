@@ -2,7 +2,7 @@ import type { UserAssociations, UserRegister } from "#/user";
 import _axios from "@/plugins/axios";
 
 
-
+// TODO refactor token
 // Tokens
 export function setTokens(access: string, refresh: string) {
     localStorage.setItem('access', access)
@@ -18,6 +18,11 @@ export function removeTokens() {
 export function setBearer() {
     const access = localStorage.getItem('access')
     _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+}
+
+// Remove bearer
+export function removeBearer() {
+    _axios.defaults.headers.common['Authorization'] = undefined
 }
 
 // Refresh token
