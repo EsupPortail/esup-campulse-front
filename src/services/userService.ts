@@ -85,6 +85,7 @@ export async function userGroupsRegister(username: string, newUserGroups: number
     })
 }
 
+// Password reset functions
 export async function passwordReset(email: string) {
     await _axios.post('/users/auth/password/reset/', { email })
 }
