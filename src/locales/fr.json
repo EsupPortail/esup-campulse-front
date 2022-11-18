@@ -70,7 +70,8 @@
     "required-repeat-new-password": "Veuillez répéter votre nouveau mot de passe.",
     "reset-password": "Mot de passe oublié ?",
     "select-association": "Sélectionner une association",
-    "send": "Envoyer"
+    "send": "Envoyer",
+    "status": "Votre statut"
   },
   "notifications": {
     "negative": {

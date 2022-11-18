@@ -5,12 +5,12 @@ import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 </script>
 
 <template>
-  <q-header elevated height-hint="98">
-    <q-toolbar>
-      <q-toolbar-title><RouterLink to="/" class="home-link">{{ $t("header.title") }}</RouterLink></q-toolbar-title>
+  <QHeader elevated height-hint="98">
+    <QToolbar>
+      <QToolbarTitle><RouterLink to="/" class="home-link">{{ $t("header.title") }}</RouterLink></QToolbarTitle>
       <LayoutHeaderNav />
-    </q-toolbar>
-  </q-header>
+    </QToolbar>
+  </QHeader>
 </template>
 
 <style scoped lang="sass">
@@ -18,5 +18,4 @@ import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
   color: white
   text-decoration: none
   font-size: 2em
-
 </style>

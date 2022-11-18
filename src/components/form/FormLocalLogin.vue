@@ -32,19 +32,18 @@ async function logIn() {
 </script>
 
 <template>
-  <q-form
+  <QForm
       @submit="logIn"
       class="q-gutter-md"
   >
-    <q-input
+    <QInput
         filled
         v-model="user.username"
         :label="$t('forms.email')"
         lazy-rules
         :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
     />
-
-    <q-input
+    <QInput
         filled
         type="password"
         v-model="user.password"
@@ -52,18 +51,16 @@ async function logIn() {
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-password')]"
     />
-
     <div class="btn-group">
-      <q-btn :label="$t('forms.login')" type="submit" color="primary"/>
-      <q-btn :label="$t('forms.create-account')" color="secondary" to="/register"/>
+      <QBtn :label="$t('forms.login')" type="submit" color="primary"/>
+      <QBtn :label="$t('forms.create-account')" color="secondary" to="/register"/>
     </div>
-    <q-btn :label="$t('forms.reset-password')" color="primary" flat class="q-sm" to="/password-reset"/>
-  </q-form>
+    <QBtn :label="$t('forms.reset-password')" color="primary" flat class="q-sm" to="/password-reset"/>
+  </QForm>
 </template>
 
 <style scoped lang="sass">
 .btn-group
   display: flex
   gap: 10px
-
 </style>

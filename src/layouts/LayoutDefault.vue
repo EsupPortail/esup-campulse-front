@@ -5,11 +5,11 @@ import LayoutFooter from '@/components/layout/LayoutFooter.vue'
 </script>
 
 <template>
-  <q-layout view="hHh lpR fFf">
+  <QLayout view="hHh lpR fFf">
     <LayoutHeader />
     <LayoutContent />
     <LayoutFooter />
-  </q-layout>
+  </QLayout>
 </template>
 
 <style scoped lang="sass">

@@ -4,8 +4,10 @@ import { RouterView } from 'vue-router'
 
 <template>
   <QPageContainer>
+    <main>
       <Suspense>
         <router-view/>
       </Suspense>
+    </main>
   </QPageContainer>
 </template>

@@ -141,12 +141,11 @@ async function register() {
 </script>
 
 <template>
-  <q-form
+  <QForm
       @submit="register"
       class="q-gutter-md"
   >
-
-    <q-input
+    <QInput
         filled
         :disable="!!userStore.isCAS"
         v-model="newUser.firstName"
@@ -154,8 +153,7 @@ async function register() {
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-first-name')]"
     />
-
-    <q-input
+    <QInput
         filled
         :disable="!!userStore.isCAS"
         v-model="newUser.lastName"
@@ -163,8 +161,7 @@ async function register() {
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
     />
-
-    <q-input
+    <QInput
         filled
         :disable="!!userStore.isCAS"
         v-model="newUser.email"
@@ -172,8 +169,7 @@ async function register() {
         lazy-rules
         :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
     />
-
-    <q-input
+    <QInput
         filled
         :disable="!!userStore.isCAS"
         v-model="emailVerification"
@@ -181,8 +177,7 @@ async function register() {
         lazy-rules
         :rules="[ (val, rules) => rules.email(val) || $t('forms.required-repeat-email')]"
     />
-
-    <q-input
+    <QInput
         filled
         v-model="newUser.phone"
         :label="$t('forms.phone')"
@@ -190,55 +185,50 @@ async function register() {
         hint="Format : 06 00 00 00 00"
         lazy-rules
     />
-
-    <q-option-group
-        v-model="newUserGroups"
-        :options="userStore.groupList"
-        color="primary"
-        type="checkbox"
-    />
-
-    <q-separator />
-
-    <div class="add-association-info">{{ $t("forms.im-from-association") }}
-      <span>{{ $t("forms.im-in-association") }}</span>
-    </div>
-
-    <div v-for="(association, index) in newUserAssociations" :key="index">
-      <q-select filled v-model="association.id" :options="associationStore.associationList" map-options emit-value :label="$t('forms.select-association')" />
-      <q-checkbox v-model="association.hasOfficeStatus" :label="$t('forms.im-in-association-office')" />
-      <div>
-        <q-btn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
-      </div>
-      <q-separator />
-    </div>
-    <div>
-      <q-btn v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" :label="$t('forms.add-association')" />
-    </div>
-
-    <div>
-      <q-btn :label="$t('forms.send')" type="submit" color="primary"/>
-    </div>
-
-  </q-form>
+    <fieldset>
+      <legend class="legend-big">{{ $t('forms.status') }}</legend>
+      <QOptionGroup
+          v-model="newUserGroups"
+          :options="userStore.groupList"
+          color="primary"
+          type="checkbox"
+      />
+    </fieldset>
+    <QSeparator />
+    <fieldset>
+      <legend class="legend-big">{{ $t("forms.im-from-association") }}</legend>
+      <fieldset>
+        <legend>{{ $t("forms.im-in-association") }}</legend>
+        <div v-for="(association, index) in newUserAssociations" :key="index">
+          <QSelect filled v-model="association.id" :options="associationStore.associationList" map-options emit-value :label="$t('forms.select-association')" />
+          <QCheckbox v-model="association.hasOfficeStatus" :label="$t('forms.im-in-association-office')" />
+          <QBtn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
+          <QSeparator />
+        </div>
+        <QBtn v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" :label="$t('forms.add-association')" />
+      </fieldset>
+    </fieldset>
+    <QBtn :label="$t('forms.send')" type="submit" color="primary"/>
+  </QForm>
 </template>
 
 <style scoped lang="sass">
-.add-association-info
+.legend-big
   font-size: 1.5em
-  span
-    font-size: 0.7em
-    display: block
 
 .q-separator
-  margin: 10px 0 10px 0
+  margin: 10px 0
 
-.q-input + .q-separator
+fieldset + .q-separator
   margin-left: 15px
 
 .q-btn
-  margin: 10px 0 10px 0
+  margin: 15px 0
+  display: block
 
-.tooltip-btn
-  margin-left: 5px
+.q-btn[type="submit"]
+  margin: 0 0 5px 15px
+
+fieldset
+  border: none
 </style>
