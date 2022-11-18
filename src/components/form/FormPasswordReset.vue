@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 import { passwordReset } from '@/services/userService'
+import axios from 'axios'
 
 const { t } = useI18n()
 const { notify } = useQuasar()
@@ -13,46 +14,50 @@ async function reset() {
   try {
     await passwordReset(email.value as string)
     isReset.value = true
-  } catch (e) {
-    let errorMessage = null
-    switch (e.response.status) {
-      case 404:
-        errorMessage = t('notifications.negative.unknown-email')
-        break;
-      case 403:
-        errorMessage = t('notifications.negative.restricted-email')
-        break;
-      default:
-        errorMessage = t('notifications.negative.invalid-request')
-        break;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      let errorMessage = null
+      switch (error.response?.status) {
+        case 404:
+          errorMessage = t('notifications.negative.unknown-email')
+          break;
+        case 403:
+          errorMessage = t('notifications.negative.restricted-email')
+          break;
+        default:
+          errorMessage = t('notifications.negative.invalid-request')
+          break;
+      }
+      notify({
+        type: 'negative',
+        message: errorMessage
+      })
     }
-    notify({
-      type: 'negative',
-      message: errorMessage
-    })
   }
 }
 </script>
 
 <template>
-  <div>
-    <p v-if="!isReset">{{ $t("forms.password-reset-instructions") }}</p>
-    <p v-if="isReset">{{ $t("forms.password-reset-ok") }}</p>
+  <div v-if="isReset" class="instructions">
+    <p>{{ $t("forms.password-reset-ok") }}</p>
   </div>
-  <q-form
+  <QForm
       v-if="!isReset"
       @submit="reset"
       class="q-gutter-md"
   >
-    <q-input
-        filled
-        v-model="email"
-        :label="$t('forms.email')"
-        lazy-rules
-        :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
-    />
-    <q-btn :label="$t('forms.send')" type="submit" color="primary"/>
-  </q-form>
+    <fieldset>
+      <legend class="instructions">{{ $t("forms.password-reset-instructions") }}</legend>
+      <QInput
+          filled
+          v-model="email"
+          :label="$t('forms.email')"
+          lazy-rules
+          :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
+      />
+      <QBtn :label="$t('forms.send')" type="submit" color="primary"/>
+    </fieldset>
+  </QForm>
 </template>
 
 <style scoped lang="sass">
@@ -61,8 +66,14 @@ async function reset() {
   width: 100%
   margin: auto
 
-div
+.instructions
   text-align: center
   font-size: 1.2em
 
+fieldset
+  padding-top: 30px
+  border: none
+
+.q-btn
+  margin-top: 10px
 </style>
