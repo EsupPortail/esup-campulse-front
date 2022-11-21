@@ -59,7 +59,7 @@
   },
   "register": {
     "back-to-home": "Retour à l'accueil",
-    "register": "Inscription",
+    "register": "Demande d'inscription",
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
   },
   "forms": {
@@ -88,10 +88,11 @@
     "required-password": "Veuillez saisir votre mot ancien de passe.",
     "required-old-password": "Veuillez saisir votre mot de passe.",
     "required-new-password": "Veuillez saisir votre nouveau mot de passe.",
-    "required-repeat-email": "Les 2 adresses mail ne sont pas identiques.",
+    "required-repeat-email": "Les deux adresses mail ne sont pas identiques.",
     "required-repeat-new-password": "Veuillez répéter votre nouveau mot de passe.",
     "required-status": "Veuillez choisir votre statut. Maximum 2 statuts autorisés.",
     "reset-password": "Mot de passe oublié ?",
+    "passwords-are-not-equal": "Les deux mots de passe ne sont pas identiques.",
     "select-association": "Sélectionner une association",
     "send": "Envoyer",
     "status": "Votre statut"

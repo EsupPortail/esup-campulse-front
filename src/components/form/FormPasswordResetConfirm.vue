@@ -60,7 +60,10 @@ async function resetConfirm() {
         v-model="newPassword.newPassword2"
         :label="$t('forms.repeat-new-password')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || $t('forms.required-repeat-new-password')]"
+        :rules="[
+          val => val && val.length > 0 || $t('forms.required-repeat-new-password'),
+          val => val && val === newPassword.newPassword1 || $t('forms.passwords-are-not-equal')
+        ]"
     />
     <QBtn :label="$t('forms.send')" type="submit" color="primary"/>
   </QForm>
