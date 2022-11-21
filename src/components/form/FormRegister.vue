@@ -29,7 +29,10 @@ const emailVerification = ref<string | undefined>('')
 // Setup newUser's associations
 const newUserAssociations = ref<UserAssociations>([])
 // Setup newUser's groups
-const newUserGroups = ref<number[]>([5])
+/*const studentGroup = function () {
+  return userStore.groupList.find(({label}) => label === 'Étudiant')
+}*/
+const newUserGroups = ref<number[]>()
 
 onMounted(loadCASUser)
 onMounted(loadAssociations)
@@ -58,6 +61,9 @@ async function loadCASUser() {
 async function loadGroups() {
   try {
     await userStore.getGroups()
+    if (userStore.studentGroup) {
+      newUserGroups.value = [userStore.studentGroup.id]
+    }
   } catch (e) {
     notify({
       type: 'negative',

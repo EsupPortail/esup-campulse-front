@@ -25,6 +25,9 @@ export const useUserStore = defineStore('userStore', {
                     value: group.id,
                     label: group.name
                 }))
+        },
+        studentGroup: (state: UserStore): UserGroup | undefined => {
+            return state.groups.find(({name}) => name === 'Étudiant')
         }
     },
     actions: {
