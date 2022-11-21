@@ -78,7 +78,7 @@ export async function userAssociationsRegister(username: string, newUserAssociat
     }
 }
 
-export async function userGroupsRegister(username: string, newUserGroups: number[]) {
+export async function userGroupsRegister(username: string, newUserGroups: number[] | undefined) {
     await _axios.post('/users/groups/', {
         user: username,
         groups: newUserGroups,
