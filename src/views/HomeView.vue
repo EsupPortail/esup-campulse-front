@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import HomeCard from '@/components/layout/LayoutHomeCard.vue'
 import HomeBanner from '@/components/layout/LayoutHomeBanner.vue'
-import { useHomeBanner, useHomeCards } from '@/stores/useContentStore'
+import { useHomeContent } from '@/stores/useContentStore'
 
-const homeBanner = useHomeBanner()
-const cards = useHomeCards()
+const home = useHomeContent()
 </script>
 
 <template>
     <h1>{{ $t("home.title") }}</h1>
 
     <HomeBanner
-      :title="homeBanner.banner.title"
-      :description="homeBanner.banner.description"
-      :is_displayed="homeBanner.banner.isDisplayed"
+      :title="home.banner.title"
+      :description="home.banner.description"
+      :is_displayed="home.banner.isDisplayed"
     />
 
     <section>
-      <HomeCard v-for="(card, index) in cards.cards"
+      <HomeCard v-for="(card, index) in home.cards"
         :title="card.title"
         :description="card.description"
         :imagePath="card.imagePath"

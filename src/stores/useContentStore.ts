@@ -1,53 +1,37 @@
 import { defineStore } from 'pinia'
-import type { HomeCards, HomeBannerView } from '#/index'
+import type { HomeStore } from '#/index'
+import i18n from '@/plugins/i18n'
 
-// Homepage cards
 
-interface HomeCardsStore {
-    cards: HomeCards
-}
-
-// TODO Translations.
-export const useHomeCards = defineStore('homeCards', {
-    state: (): HomeCardsStore => ({
+export const useHomeContent = defineStore('homeContent', {
+    state: (): HomeStore => ({
         cards: [
             {
-                title: "Charte des associations du site Alsace",
-                description: "Lorem ipsum description",
+                title: i18n.global.t("home.cards.charter.title"),
+                description: i18n.global.t("home.cards.charter.description"),
                 imagePath: "src/assets/unistra.jpg",
-                imageAlt: "Logo charte",
+                imageAlt: i18n.global.t("home.cards.charter.imageAlt"),
                 link: '/charter'
             },
             {
-                title: "Annuaire des associations",
-                description: "Lorem ipsum description",
+                title: i18n.global.t("home.cards.directory.title"),
+                description: i18n.global.t("home.cards.directory.description"),
                 imagePath: "src/assets/unistra.jpg",
-                imageAlt: "Logo annuaire",
+                imageAlt: i18n.global.t("home.cards.directory.imageAlt"),
                 link: "/directory"
             },
             {
-                title: "Commission d'aide aux projets étudiants",
-                description: "Lorem ipsum description",
+                title: i18n.global.t("home.cards.commission.title"),
+                description: i18n.global.t("home.cards.commission.description"),
                 imagePath: "src/assets/unistra.jpg",
-                imageAlt: "Logo commissions",
+                imageAlt: i18n.global.t("home.cards.commission.imageAlt"),
                 link: "/commission"
             }
-        ]
-    }),
-})
-
-// Homepage banner
-
-interface HomeBannerStore {
-    banner: HomeBannerView
-}
-
-export const useHomeBanner = defineStore('homeBanner', {
-    state: (): HomeBannerStore => ({
+        ],
         banner: {
-            title: 'INFORMATIONS: Commission de CAPE le 10 décembre 2022',
-            description: "Porteur de projet ou association, vous serez invité à présenter votre projet",
+            title: i18n.global.t("home.banner.title"),
+            description: i18n.global.t("home.banner.description"),
             isDisplayed: true
         }
-    })
+    }),
 })

@@ -1,5 +1,3 @@
-export type HomeTitle = string
-
 /**
  *  HomeCard Model
  *  Card displayed on the home view and redirects to another view.
@@ -21,4 +19,7 @@ export interface HomeBanner {
     isDisplayed: boolean
 }
 
-export type HomeBannerView = HomeBanner
+interface HomeStore {
+    cards: HomeCards,
+    banner: HomeBanner
+}
