@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { useQuasar } from 'quasar'
+import {QInput, useQuasar} from 'quasar'
 import axios from 'axios'
 import { useAssociationStore } from "@/stores/useAssociationStore";
 import type { UserRegister, UserAssociations } from '#/user'
@@ -29,10 +29,11 @@ const emailVerification = ref<string | undefined>('')
 // Setup newUser's associations
 const newUserAssociations = ref<UserAssociations>([])
 // Setup newUser's groups
-/*const studentGroup = function () {
-  return userStore.groupList.find(({label}) => label === 'Étudiant')
-}*/
-const newUserGroups = ref<number[]>()
+const newUserGroups = ref<number[]>([])
+// isValid if min 1 choice and max 2 choices
+const groupChoiceIsValid = computed(() => {
+  return newUserGroups.value.length > 0 && newUserGroups.value.length <= 2
+})
 
 onMounted(loadCASUser)
 onMounted(loadAssociations)
@@ -62,7 +63,7 @@ async function loadGroups() {
   try {
     await userStore.getGroups()
     if (userStore.studentGroup) {
-      newUserGroups.value = [userStore.studentGroup.id]
+      newUserGroups.value.push(userStore.studentGroup.id)
     }
   } catch (e) {
     notify({
@@ -97,19 +98,20 @@ function removeAssociation(index: number) {
 
 // Register newUser
 async function register() {
-  try {
-    if (userStore.isCAS) {
-      if (newUser.value.phone) {
-        await userCASRegister(newUser.value.phone)
+  if (groupChoiceIsValid.value) {
+    try {
+      if (userStore.isCAS) {
+        if (newUser.value.phone) {
+          await userCASRegister(newUser.value.phone)
+        }
+        if (newUserAssociations.value) {
+          await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
+        }
+        // refactor
+        localStorage.clear()
+        await router.push({ name: 'RegistrationSuccessful' })
       }
-      if (newUserAssociations.value) {
-        await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
-      }
-      localStorage.clear()
-      await router.push({ name: 'RegistrationSuccessful' })
-    }
-    else {
-      if (newUser.value.email === emailVerification.value) {
+      else {
         await userLocalRegister(newUser.value)
         if (newUserAssociations.value) {
           await userAssociationsRegister(newUser.value.email, newUserAssociations.value)
@@ -117,29 +119,22 @@ async function register() {
         await userGroupsRegister(newUser.value.email, newUserGroups.value)
         await router.push({ name: 'RegistrationSuccessful' })
       }
-      else {
-        notify({
-          type: 'negative',
-          message: t('notifications.negative.different-emails')
-        })
-        return
-      }
-    }
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const data = error.response?.data
-      if (data.email) {
-        notify({
-          type: 'negative',
-          message: t('notifications.negative.email-used')
-        })
-        await router.push({ name: 'Login' })
-      }
-      else {
-        notify({
-          type: 'negative',
-          message: t('notifications.negative.invalid-request')
-        })
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data
+        if (data.email) {
+          notify({
+            type: 'negative',
+            message: t('notifications.negative.email-used')
+          })
+          await router.push({ name: 'Login' })
+        }
+        else {
+          notify({
+            type: 'negative',
+            message: t('notifications.negative.invalid-request')
+          })
+        }
       }
     }
   }
@@ -148,57 +143,63 @@ async function register() {
 
 <template>
   <QForm
-      @submit="register"
-      class="q-gutter-md"
+    @submit="register"
+    class="q-gutter-md"
   >
     <QInput
-        filled
-        :disable="!!userStore.isCAS"
-        v-model="newUser.firstName"
-        :label="$t('forms.first-name')"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || $t('forms.required-first-name')]"
+      filled
+      :disable="!!userStore.isCAS"
+      v-model="newUser.firstName"
+      :label="$t('forms.first-name')"
+      lazy-rules
+      :rules="[ val => val && val.length > 0 || $t('forms.required-first-name')]"
     />
     <QInput
-        filled
-        :disable="!!userStore.isCAS"
-        v-model="newUser.lastName"
-        :label="$t('forms.last-name')"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
+      filled
+      :disable="!!userStore.isCAS"
+      v-model="newUser.lastName"
+      :label="$t('forms.last-name')"
+      lazy-rules
+      :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
     />
     <QInput
-        filled
-        :disable="!!userStore.isCAS"
-        v-model="newUser.email"
-        :label="$t('forms.email')"
-        lazy-rules
-        :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
+      filled
+      :disable="!!userStore.isCAS"
+      v-model="newUser.email"
+      :label="$t('forms.email')"
+      lazy-rules
+      :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
     />
     <QInput
-        filled
-        :disable="!!userStore.isCAS"
-        v-model="emailVerification"
-        :label="$t('forms.repeat-email')"
-        lazy-rules
-        :rules="[ (val, rules) => rules.email(val) || $t('forms.required-repeat-email')]"
+      filled
+      :disable="!!userStore.isCAS"
+      v-model="emailVerification"
+      :label="$t('forms.repeat-email')"
+      lazy-rules
+      :rules="[ (val, rules) => rules.email(val) && val === newUser.email || $t('forms.required-repeat-email')]"
     />
     <QInput
-        filled
-        v-model="newUser.phone"
-        :label="$t('forms.phone')"
-        mask="## ## ## ## ##"
-        hint="Format : 06 00 00 00 00"
-        lazy-rules
+      filled
+      v-model="newUser.phone"
+      :label="$t('forms.phone')"
+      mask="## ## ## ## ##"
+      hint="Format : 06 00 00 00 00"
+      lazy-rules
     />
     <fieldset>
       <legend class="legend-big">{{ $t('forms.status') }}</legend>
-      <QOptionGroup
+      <QField
+        :hint="$t('forms.status-hint')"
+        :error="!groupChoiceIsValid"
+        :error-message="$t('forms.required-status')"
+      >
+        <QOptionGroup
           v-model="newUserGroups"
           :options="userStore.groupList"
           color="primary"
           type="checkbox"
-      />
+        />
+      </QField>
     </fieldset>
     <QSeparator />
     <fieldset>
