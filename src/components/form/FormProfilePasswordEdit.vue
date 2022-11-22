@@ -48,11 +48,11 @@ async function passwordConfirm() {
 </script>
 
 <template>
-  <q-form
+  <QForm
       @submit="passwordConfirm"
       class="q-gutter-md"
   > 
-    <q-input
+    <QInput
         filled
         type="password"
         v-model="editPassword.oldPassword"
@@ -60,7 +60,7 @@ async function passwordConfirm() {
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-old-password')]"
     />
-    <q-input
+    <QInput
         filled
         type="password"
         v-model="editPassword.newPassword1"
@@ -68,7 +68,7 @@ async function passwordConfirm() {
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-new-password')]"
     />
-    <q-input
+    <QInput
         filled
         type="password"
         v-model="editPassword.newPassword2"
@@ -76,8 +76,8 @@ async function passwordConfirm() {
         lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-repeat-new-password')]"
     />
-    <q-btn :label="$t('forms.send')" type="submit" color="primary"/>
-  </q-form>
+    <QBtn :label="$t('forms.send')" type="submit" color="primary"/>
+  </QForm>
 </template>
 
 <style scoped lang="sass">

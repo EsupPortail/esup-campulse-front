@@ -7,12 +7,12 @@ const userStore = useUserStore()
 
 <template>
   <div class="q-pa-md">
-    <q-btn-dropdown color="cyan" no-caps align="between" padding="0">
+    <QBtnDropdown color="cyan" no-caps align="between" padding="0">
       <template v-slot:label>
         <div class="row items-center no-wrap">
 
           <div class="avatar">
-            <q-avatar color="primary" text-color="white" size="2em">{{ userStore.userNameFirstLetter }}</q-avatar>
+            <QAvatar color="primary" text-color="white" size="2em">{{ userStore.userNameFirstLetter }}</QAvatar>
           </div>
 
           <div class="text-center">
@@ -39,7 +39,7 @@ const userStore = useUserStore()
           </q-item-section>
         </q-item>
       </q-list>
-    </q-btn-dropdown>
+    </QBtnDropdown>
   </div>
 </template>
 

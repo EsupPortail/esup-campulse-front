@@ -7,27 +7,27 @@ const CASUrlRegister = `https://cas-dev.unistra.fr/cas/login?service=${encodeURI
 
 <template>
   <h1>Connexion</h1>
-  <q-card class="card">
-    <q-card-section>
+  <QCard class="card">
+    <QCardSection>
       <div class="card-content">
         <span class="card-title">{{ $t("login.im-cas-user") }}</span>
         {{ $t("login.login-with-cas") }}
       </div>
       <div class="btn-group">
-        <q-btn :label="$t('login.login')" color="primary" :href="CASUrlLogin" type="a"/>
-        <q-btn :label="$t('login.create-account')" color="secondary" :href="CASUrlRegister" />
+        <QBtn :label="$t('login.login')" color="primary" :href="CASUrlLogin" type="a"/>
+        <QBtn :label="$t('login.create-account')" color="secondary" :href="CASUrlRegister" />
       </div>
-    </q-card-section>
-  </q-card>
-  <q-card class="card">
-    <q-card-section>
+    </QCardSection>
+  </QCard>
+  <QCard class="card">
+    <QCardSection>
       <div class="card-content">
         <span class="card-title">{{ $t("login.im-not-cas-user") }}</span>
         {{ $t("login.login-without-cas") }}
       </div>
       <FormLocalLogin />
-    </q-card-section>
-  </q-card>
+    </QCardSection>
+  </QCard>
 </template>
 
 <style scoped lang="sass">

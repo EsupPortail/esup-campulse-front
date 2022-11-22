@@ -12,17 +12,17 @@ defineProps({
   <section>
     <div class="q-pa-md row items-start q-gutter-md">
       <RouterLink :to="link">
-        <q-card class="card">
+        <QCard class="card">
           <img :src="imagePath" :alt="imageAlt">
 
-          <q-card-section>
+          <QCardSection>
             <div class="text-h6">{{ title }}</div>
-          </q-card-section>
+          </QCardSection>
 
-          <q-card-section class="q-pt-none">
+          <QCardSection class="q-pt-none">
             {{ description }}
-          </q-card-section>
-        </q-card>
+          </QCardSection>
+        </QCard>
       </RouterLink>
     </div>
   </section>

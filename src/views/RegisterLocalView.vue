@@ -4,11 +4,11 @@ import FormRegister from '@/components/form/FormRegister.vue'
 
 <template>
   <h1>{{ $t("register.register") }}</h1>
-  <q-card class="card">
-    <q-card-section>
+  <QCard class="card">
+    <QCardSection>
       <FormRegister />
-    </q-card-section>
-  </q-card>
+    </QCardSection>
+  </QCard>
 </template>
 
 <style scoped lang="sass">

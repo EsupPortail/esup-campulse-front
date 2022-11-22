@@ -3,16 +3,16 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <q-footer elevated>
-    <q-toolbar>
+  <QFooter elevated>
+    <QToolbar>
       <div class="footer-text">
         <q-toolbar-title>{{ $t("footer.copyright") }}</q-toolbar-title>
         <RouterLink to="/" class="li-footer">{{ $t("footer.about") }}</RouterLink>
         <RouterLink to="/" class="li-footer">{{ $t("footer.legal-notice") }}</RouterLink>
         <RouterLink to="/" class="li-footer">{{ $t("footer.contact") }}</RouterLink>
       </div>
-    </q-toolbar>
-  </q-footer>
+    </QToolbar>
+  </QFooter>
 </template>
 
 <style scoped lang="sass">

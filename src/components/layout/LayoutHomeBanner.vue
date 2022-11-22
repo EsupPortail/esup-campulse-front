@@ -7,15 +7,15 @@ defineProps({
 </script>
 
 <template>
-    <q-banner v-if="is_displayed" class="bg-primary text-white">
-      <q-card-section>
+    <QBanner v-if="is_displayed" class="bg-primary text-white">
+      <QCardSection>
         <div class="text-h6">{{ title }}</div>
-      </q-card-section>
+      </QCardSection>
 
-      <q-card-section class="q-pt-none">
+      <QCardSection class="q-pt-none">
         {{ description }}
-      </q-card-section>
-    </q-banner>
+      </QCardSection>
+    </QBanner>
 </template>
 
 <style scoped lang="sass">

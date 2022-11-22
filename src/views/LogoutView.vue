@@ -10,7 +10,7 @@ const { notify } = useQuasar()
 const userStore = useUserStore()
 
 onMounted(async () => {
-  userStore.logOut()
+  await userStore.logOut()
   await router.push({ name: 'Home' })
   notify({
     type: 'positive',
