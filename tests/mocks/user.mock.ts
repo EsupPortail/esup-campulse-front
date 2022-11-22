@@ -40,6 +40,8 @@ export const groups: UserGroup[] = [
     }
 ]
 
+export const newUserGroups: number[] = [1, 3]
+
 export const groupList = groups.map(
     group => ({
         value: group.id,
@@ -60,4 +62,8 @@ export const userAssociations: UserAssociations = [
         id: 3,
         hasOfficeStatus: false
     },
+    {
+        id: 4,
+        hasOfficeStatus: false
+    }
 ]
