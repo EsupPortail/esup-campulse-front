@@ -15,7 +15,7 @@ DISTANT_REPO="git@git.unistra.fr:di/plan_a/front.git" #$(git config --get remote
 WORKING_DIR="$TEMP/git-clone"
 DEST_PATH="/var/www/static/plan_a/"
 
-# Shall we install ningx config files ?
+# Shall we install nginx config files ?
 SETUP_NGINX=true
 
 # Shall we use sentry ?
