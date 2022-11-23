@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build:test": "vue-tsc --noEmit && vite build --mode test",
-    "build:preprod": "vue-tsc --noEmit && vite build --mode pprd",
-    "build:prod": "vue-tsc --noEmit && vite build --mode prod",
+    "build:test": "vue-tsc --noEmit && vite build --mode deploy_test",
+    "build:preprod": "vue-tsc --noEmit && vite build --mode deploy_pprd",
+    "build:prod": "vue-tsc --noEmit && vite build --mode deploy_prod",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
