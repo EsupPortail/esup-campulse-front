@@ -20,11 +20,11 @@ const app = createApp(App)
 // Sentry init
 Sentry.init({
     app,
-    dsn: "https://0f5879c20bc94abf8eebe0e744484223@sentry.app.unistra.fr/55",
+    dsn: import.meta.env.VITE_APP_SENTRY_DSN,
     integrations: [
         new BrowserTracing({
             routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-            tracingOrigins: ["localhost", "my-site-url.com", /^\//],
+            tracingOrigins: ['localhost', import.meta.env.VITE_APP_FRONT_URL]
         }),
     ],
     // Set tracesSampleRate to 1.0 to capture 100%

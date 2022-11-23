@@ -47,7 +47,7 @@ case "$ENVIRONMENT" in
         TARGET=("${PREPROD_HOSTS[@]}")
         HOST="$PREPROD_NGINX_CONF"
         TARGET_NGINX_CONF="$HOST.conf"
-        SOURCE_ENV_FILE=".env.deploy_preprod"
+        SOURCE_ENV_FILE=".env.deploy_pprd"
 	;;
     prod)
         TARGET=("${PROD_HOSTS[@]}")
