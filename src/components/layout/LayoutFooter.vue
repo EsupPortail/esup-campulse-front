@@ -6,7 +6,7 @@ import { RouterLink } from 'vue-router'
   <QFooter elevated>
     <QToolbar>
       <div class="footer-text">
-        <q-toolbar-title>{{ $t("footer.copyright") }}</q-toolbar-title>
+        <QToolbarTitle>{{ $t("footer.copyright") }}</QToolbarTitle>
         <RouterLink to="/" class="li-footer">{{ $t("footer.about") }}</RouterLink>
         <RouterLink to="/" class="li-footer">{{ $t("footer.legal-notice") }}</RouterLink>
         <RouterLink to="/" class="li-footer">{{ $t("footer.contact") }}</RouterLink>
@@ -32,5 +32,4 @@ import { RouterLink } from 'vue-router'
 
 .li-footer:last-child:after
   content: none
-
 </style>
