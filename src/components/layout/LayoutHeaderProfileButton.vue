@@ -22,23 +22,23 @@ const userStore = useUserStore()
         </div>
       </template>
 
-      <q-list>
-        <q-item clickable v-close-popup>
-          <q-item-section>
-            <q-item-label>
+      <QList>
+        <QItem clickable v-close-popup>
+          <QItemSection>
+            <QItemLabel>
               <RouterLink to="/dashboard" class="label">{{ $t("header.my-profile") }}</RouterLink>
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+            </QItemLabel>
+          </QItemSection>
+        </QItem>
 
-        <q-item clickable v-close-popup>
-          <q-item-section>
-            <q-item-label>
+        <QItem clickable v-close-popup>
+          <QItemSection>
+            <QItemLabel>
               <RouterLink to="/logout" class="label" style="color:red">{{ $t("header.logout") }}</RouterLink>
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
+            </QItemLabel>
+          </QItemSection>
+        </QItem>
+      </QList>
     </QBtnDropdown>
   </div>
 </template>
@@ -75,5 +75,4 @@ p
 
 .label:hover
   background-color: rgba(255, 255, 255, 0.3)
-
 </style>

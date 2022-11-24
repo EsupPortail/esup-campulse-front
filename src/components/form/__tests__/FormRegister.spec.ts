@@ -1,38 +1,38 @@
-import {describe, it, expect, beforeEach, afterEach} from 'vitest'
-import {tokens} from '~/mocks/tokens.mock'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {newUser, user, userAssociations, newUserGroups} from '~/mocks/user.mock'
-import * as userService from '@/services/userService'
-import type {AxiosResponse} from 'axios'
+import {describe, it, expect, beforeEach} from 'vitest'
+import {config, mount} from '@vue/test-utils'
 import {useUserStore} from '@/stores/useUserStore'
 import {createPinia, setActivePinia} from 'pinia'
-import { useRoute } from 'vue-router'
-
-// loadCASUser
-// loadAssociations
-// loadGroups
-
-// disables inputs if CAS
-// does a lot of things with adding and removing associations
+import FormRegister from '@/components/form/FormRegister.vue'
+import {Quasar} from 'quasar'
+import i18n from '@/plugins/i18n'
+import { nextTick } from 'vue'
 
 
+/*// does a lot of things with adding and removing associations
 setActivePinia(createPinia())
 let userStore = useUserStore()
-const route = useRoute()
 
-describe('Load CAS User', () => {
+// Set mount options
+config.global.plugins = [
+    i18n,
+    Quasar,
+]
+
+describe('Form register', () => {
     beforeEach(() => {
         userStore = useUserStore()
     })
-    /*afterEach(() => {
-        mockedAxios.post.mockRestore()
-    })*/
-    // it should not execute without ticket
-    it('should not execute without ticket', () => {
-        const ticket = route.query.ticket
-
+    describe('Add new association should ', () => {
+        it('should add a new fieldset', async () => {
+            const wrapper = mount(FormRegister)
+            const addAssociation = wrapper.find('.q-btn[label="$t(\'forms.add-association\')"]')
+            await addAssociation.trigger('click')
+            await nextTick()
+            const updateModelValue = wrapper.emitted('update:modelValue')
+            expect(updateModelValue).toHaveLength(1)
+        })
     })
-    // it should display CAS user infos in form
-    // it should disable certain inputs
-})
+})*/
+
+
 

@@ -6,7 +6,7 @@ import { RouterView } from 'vue-router'
   <QPageContainer>
     <main>
       <Suspense>
-        <router-view/>
+        <RouterView/>
       </Suspense>
     </main>
   </QPageContainer>

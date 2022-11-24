@@ -4,7 +4,6 @@ import {useUserStore} from "@/stores/useUserStore";
 import axios from "axios";
 
 
-// TODO refactor token
 
 // Tokens
 export function setTokens(access: string, refresh: string) {

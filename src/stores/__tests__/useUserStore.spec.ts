@@ -1,18 +1,11 @@
 import { beforeEach, describe, it, expect, vi, afterEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { AxiosResponse } from 'axios'
-import _axios from '@/plugins/axios'
+import { mockedAxios} from '~/mocks/axios.mock'
 import { useUserStore } from '@/stores/useUserStore'
 import {tokens} from '~/mocks/tokens.mock'
 import {user, groups, groupList} from '~/mocks/user.mock'
 
-// Axios
-vi.mock('@/plugins/axios', () => {
-    return {
-        default: { post: vi.fn(), get: vi.fn() }
-    }
-})
-const mockedAxios = vi.mocked(_axios, true)
 
 
 setActivePinia(createPinia())
@@ -21,13 +14,14 @@ let userStore = useUserStore()
 describe('User store', () => {
     beforeEach(() => {
         userStore = useUserStore()
-        userStore.user = user
+        // userStore.user = user
     })
     afterEach(() => {
         mockedAxios.post.mockRestore()
     })
-    describe('User auth', () => {
+    describe('isAuth', () => {
         it('should be true if user has data', () => {
+            userStore.user = user
             expect(userStore.isAuth).toBeTruthy()
         })
         it('should be false if user has no data', () => {
@@ -37,12 +31,17 @@ describe('User store', () => {
     })
     describe('User avatar', () => {
         it('should display capitalized first letter of firstname', () => {
+            userStore.user = user
             expect(userStore.userNameFirstLetter).toBe('J')
         })
         it('should not display first letter of firstname in lower case', () => {
             userStore.user = user
             userStore.user.firstName = 'john'
             expect(userStore.userNameFirstLetter).not.toBe('j')
+        })
+        it('should not be displayed if user !isAuth', () => {
+            userStore.user = undefined
+            expect(userStore.userNameFirstLetter).toBeUndefined()
         })
     })
     describe('User logout', () => {
@@ -63,7 +62,7 @@ describe('User store', () => {
             mockedAxios.post.mockResolvedValueOnce({ data: { user, accessToken: tokens.access, refreshToken: tokens.refresh } } as AxiosResponse)
             userStore.logIn('url', { username: user.username, password: user.password as string })
         })
-        it('should call API only once', () => {
+        it('should call API once', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
         })
         it('should populate user data', () => {
@@ -92,9 +91,10 @@ describe('User store', () => {
         })
     })
     describe('Get user', () => {
-        it('should populate user data', () => {
+        it('should populate user data', async () => {
+            userStore.user = undefined
             mockedAxios.get.mockResolvedValueOnce({ data: user } as AxiosResponse)
-            userStore.getUser()
+            await userStore.getUser()
             expect(userStore.user).toEqual(user)
         })
     })
@@ -116,6 +116,12 @@ describe('User store', () => {
         it('should create an array of value and label for each group', () => {
             userStore.groups = groups
             expect(userStore.groupList).toEqual(groupList)
+        })
+    })
+    describe('Student group', () => {
+        it('should return the student group object', () => {
+            userStore.groups = groups
+            expect(userStore.studentGroup).toEqual(groups[1])
         })
     })
 })

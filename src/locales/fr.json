@@ -41,7 +41,7 @@
   "footer": {
     "about": "À propos",
     "contact": "Contact",
-    "copyright": "2017-2022 - PLATEFORME - Tous droits réservés",
+    "copyright": "2017-2022 - Assopolis - Tous droits réservés",
     "legal-notice": "Mentions légales"
   },
   "login": {
@@ -60,22 +60,23 @@
   "register": {
     "back-to-home": "Retour à l'accueil",
     "register": "Demande d'inscription",
+    "register-success": "Demande d'inscription réussie",
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
   },
   "forms": {
     "add-association": "Ajouter une association",
     "create-account": "Créer un compte",
     "delete-association": "Supprimer l'association",
-    "email": "Adresse email",
+    "email": "Adresse mail",
     "first-name": "Prénom",
-    "im-from-association": "Je suis membre d'une ou plusieurs associations",
-    "im-in-association": "J'ajoute les associations dont je fais partie",
+    "im-from-association": "Les associations étudiantes dont je fais partie",
+    "im-in-association": "J'ajoute mes associations étudiantes :",
     "im-in-association-office": "Je suis membre du bureau de l'association",
     "last-name": "Nom de famille",
     "login": "Connexion",
     "new-password": "Nouveau mot de passe",
     "old-password": "Mot de passe actuel",
-    "repeat-email": "Répéter l'adresse email",
+    "repeat-email": "Répéter l'adresse mail",
     "repeat-new-password": "Répéter le nouveau mot de passe",
     "status-hint": "Si vous êtes étudiant ou étudiante membre d'une association, porteur ou porteuse de projet individuel, choississez le statut \"Étudiant ou Étudiante\".",
     "password": "Mot de passe",
@@ -90,7 +91,7 @@
     "required-new-password": "Veuillez saisir votre nouveau mot de passe.",
     "required-repeat-email": "Les deux adresses mail ne sont pas identiques.",
     "required-repeat-new-password": "Veuillez répéter votre nouveau mot de passe.",
-    "required-status": "Veuillez choisir votre statut. Maximum 2 statuts autorisés.",
+    "required-status": "Veuillez choisir votre statut. Maximum deux statuts autorisés.",
     "reset-password": "Mot de passe oublié ?",
     "passwords-are-not-equal": "Les deux mots de passe ne sont pas identiques.",
     "select-association": "Sélectionner une association",
