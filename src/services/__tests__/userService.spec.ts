@@ -1,4 +1,4 @@
-import {describe, it, expect, beforeEach, afterEach} from 'vitest'
+import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {tokens} from '~/mocks/tokens.mock'
 import {mockedAxios} from '~/mocks/axios.mock'
 import {newUser, user, userAssociations, newUserGroups} from '~/mocks/user.mock'
@@ -6,9 +6,6 @@ import * as userService from '@/services/userService'
 import type {AxiosResponse} from 'axios'
 import {useUserStore} from '@/stores/useUserStore'
 import {createPinia, setActivePinia} from 'pinia'
-
-
-// TODO : set bearer
 
 
 setActivePinia(createPinia())
@@ -37,24 +34,31 @@ describe('User service', () => {
         })
         describe('Refresh token', () => {
             beforeEach(() => {
-                mockedAxios.post.mockResolvedValueOnce({ data: tokens.access } as AxiosResponse)
+                userService.setTokens(tokens.access, tokens.refresh)
+                mockedAxios.post.mockResolvedValueOnce({ data: {access: tokens.accessRefreshed} } as AxiosResponse)
                 userService.refreshToken()
             })
-            it('should set a new access token', () => {
-                userService.setTokens(tokens.access, tokens.refresh)
-                expect(localStorage.getItem('access')).toBe(tokens.access)
+            it('should set a new access token',() => {
+                expect(localStorage.getItem('access')).toEqual(tokens.accessRefreshed)
             })
 
-            it('should call API on /users/auth/token/refresh/ with refresh token as data', () => {
-                expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/auth/token/refresh/', { refresh: tokens.refresh })
+            it('should call API on /users/auth/token/refresh/ with refresh token as data',  () => {
+                expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/token/refresh/', { refresh: tokens.refresh })
             })
         })
+        /*describe('Set bearer', () => {
+            it('should set the access token as authorization header', () => {
+                userService.setBearer()
+                expect(mockedAxios.defaults.headers.common['Authorization']).toBe('Bearer ' + tokens.access)
+            })
+        })*/
     })
     describe('Load user', () => {
         beforeEach(() => {
             userStore = useUserStore()
         })
         it('should not execute if not access token', () => {
+            userService.removeTokens()
             userService.loadUser()
             expect(userStore.user).toBeUndefined()
         })

@@ -32,7 +32,7 @@ export const groups: UserGroup[] = [
     },
     {
         id: 2,
-        name: 'Etudiant'
+        name: 'Étudiante ou Étudiant'
     },
     {
         id: 3,

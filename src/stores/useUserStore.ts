@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import type { UserStore, LocalLogin, CasLogin, GroupList } from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
-import { setTokens, removeTokens, setBearer } from '@/services/userService'
+import { setTokens, removeTokens } from '@/services/userService'
 import type { User, UserGroup } from "#/user";
 
 export const useUserStore = defineStore('userStore', {
@@ -14,7 +14,7 @@ export const useUserStore = defineStore('userStore', {
     }),
 
     getters: {
-        isAdmin: (state: UserStore): boolean => state.user?.status === 'admin',
+        // isAdmin: (state: UserStore): boolean => state.user?.status === 'admin',
         isAuth: (state: UserStore): boolean => !!state.user,
         userNameFirstLetter: (state: UserStore): string | undefined => {
             return state.user?.firstName.charAt(0).toUpperCase()

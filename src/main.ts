@@ -18,20 +18,19 @@ const pinia = createPinia()
 const app = createApp(App)
 
 // Sentry init
-Sentry.init({
-    app,
-    dsn: import.meta.env.VITE_APP_SENTRY_DSN,
-    integrations: [
-        new BrowserTracing({
-            routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-            tracingOrigins: ['localhost', import.meta.env.VITE_APP_FRONT_URL]
-        }),
-    ],
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 1.0,
-})
+if (import.meta.env.PROD) {
+    Sentry.init({
+        app,
+        dsn: import.meta.env.VITE_APP_SENTRY_DSN,
+        integrations: [
+            new BrowserTracing({
+                routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+                tracingOrigins: ['localhost', import.meta.env.VITE_APP_FRONT_URL, /^\//]
+            }),
+        ],
+        tracesSampleRate: 1.0,
+    })
+}
 
 app.use(i18n)
 app.use(pinia)
