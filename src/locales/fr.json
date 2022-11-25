@@ -113,7 +113,7 @@
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
       "no-ticket": "Pas de ticket.",
       "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
-      "unknown-credentials": "Identifiants non reconnus, veuillez réessayer.",
+      "unknown-credentials": "L'identifiant et/ou le mot de passe sont erronés, veuillez réessayer.",
       "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail."
     },
     "positive": {
