@@ -38,8 +38,16 @@ async function reset() {
 </script>
 
 <template>
-  <div v-if="isReset" class="instructions">
-    <p>{{ $t("forms.password-reset-ok") }}</p>
+  <div class="instructions">
+    <QBanner v-if="!isReset" class="bg-grey-3">
+      <template v-slot:avatar>
+        <QIcon name="mdi-information-outline" color="primary" size="md" />
+      </template>
+      <strong>{{ $t("forms.password-reset-cas") }}</strong>
+      <template v-slot:action>
+      </template>
+    </QBanner>
+    <p v-if="isReset" >{{ $t("forms.password-reset-ok") }}</p>
   </div>
   <QForm
       v-if="!isReset"
@@ -61,14 +69,16 @@ async function reset() {
 </template>
 
 <style scoped lang="sass">
-.q-form
+.instructions
+  font-size: 1.2em
+
+  p
+    text-align: center
+
+.q-form, .instructions
   max-width: 720px
   width: 100%
   margin: auto
-
-.instructions
-  text-align: center
-  font-size: 1.2em
 
 fieldset
   padding-top: 30px
