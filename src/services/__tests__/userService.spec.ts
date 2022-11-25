@@ -1,4 +1,4 @@
-import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
+import {describe, it, expect, beforeEach, afterEach} from 'vitest'
 import {tokens} from '~/mocks/tokens.mock'
 import {mockedAxios} from '~/mocks/axios.mock'
 import {newUser, user, userAssociations, newUserGroups} from '~/mocks/user.mock'
@@ -48,6 +48,7 @@ describe('User service', () => {
         })
         /*describe('Set bearer', () => {
             it('should set the access token as authorization header', () => {
+                userService.setTokens(tokens.access, tokens.refresh)
                 userService.setBearer()
                 expect(mockedAxios.defaults.headers.common['Authorization']).toBe('Bearer ' + tokens.access)
             })
@@ -78,12 +79,18 @@ describe('User service', () => {
                 expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/auth/registration/', newUser)
             })
         })
-        /*describe('from CAS', () => {
-            it('should set bearer before call', () => {
+        describe('from CAS', () => {
+            beforeEach(() => {
+                userService.setTokens(tokens.access, tokens.refresh)
                 userService.userCASRegister('new info to patch')
-                expect(userService.setBearer).toHaveBeenCalledOnce()
             })
-        })*/
+            it('should call API once', () => {
+                expect(mockedAxios.patch).toHaveBeenCalledOnce()
+            })
+            it('should call API on /users/auth/user/ with new info to patch', () => {
+                expect(mockedAxios.patch).toHaveBeenCalledWith('/users/auth/user/', {phone: 'new info to patch'})
+            })
+        })
         describe('Association register', () => {
             beforeEach(() => {
                 userService.userAssociationsRegister(newUser.username, userAssociations)

@@ -19,7 +19,9 @@ export function removeTokens() {
 // Set bearer
 export function setBearer() {
     const access = localStorage.getItem('access')
-    _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+    if (_axios.defaults?.headers) {
+        _axios.defaults.headers.common['Authorization'] = 'Bearer ' + access
+    }
 }
 
 // Remove bearer
