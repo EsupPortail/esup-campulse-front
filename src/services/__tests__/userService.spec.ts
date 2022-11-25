@@ -2,6 +2,7 @@ import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {tokens} from '~/mocks/tokens.mock'
 import {mockedAxios} from '~/mocks/axios.mock'
 import {newUser, user, userAssociations, newUserGroups} from '~/mocks/user.mock'
+import type {Mock} from 'vitest'
 import * as userService from '@/services/userService'
 import type {AxiosResponse} from 'axios'
 import {useUserStore} from '@/stores/useUserStore'
@@ -13,7 +14,7 @@ let userStore = useUserStore()
 
 describe('User service', () => {
     afterEach(() => {
-        mockedAxios.post.mockRestore()
+        (mockedAxios.post as Mock).mockRestore()
     })
     describe('Tokens', () => {
         beforeEach(() => {
@@ -34,8 +35,7 @@ describe('User service', () => {
         })
         describe('Refresh token', () => {
             beforeEach(() => {
-                userService.setTokens(tokens.access, tokens.refresh)
-                mockedAxios.post.mockResolvedValueOnce({ data: {access: tokens.accessRefreshed} } as AxiosResponse)
+                (mockedAxios.post as Mock).mockResolvedValueOnce({ data: {access: tokens.accessRefreshed} } as AxiosResponse)
                 userService.refreshToken()
             })
             it('should set a new access token',() => {

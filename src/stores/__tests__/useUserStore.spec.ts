@@ -1,11 +1,11 @@
-import { beforeEach, describe, it, expect, vi, afterEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import type { AxiosResponse } from 'axios'
-import { mockedAxios} from '~/mocks/axios.mock'
-import { useUserStore } from '@/stores/useUserStore'
+import type {Mock} from 'vitest'
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
+import {createPinia, setActivePinia} from 'pinia'
+import type {AxiosResponse} from 'axios'
+import {mockedAxios} from '~/mocks/axios.mock'
+import {useUserStore} from '@/stores/useUserStore'
 import {tokens} from '~/mocks/tokens.mock'
-import {user, groups, groupList} from '~/mocks/user.mock'
-
+import {groupList, groups, user} from '~/mocks/user.mock'
 
 
 setActivePinia(createPinia())
@@ -17,7 +17,7 @@ describe('User store', () => {
         // userStore.user = user
     })
     afterEach(() => {
-        mockedAxios.post.mockRestore()
+        (mockedAxios.post as Mock).mockRestore()
     })
     describe('isAuth', () => {
         it('should be true if user has data', () => {
@@ -59,7 +59,7 @@ describe('User store', () => {
     })
     describe('User login', () => {
         beforeEach(() => {
-            mockedAxios.post.mockResolvedValueOnce({ data: { user, accessToken: tokens.access, refreshToken: tokens.refresh } } as AxiosResponse)
+            (mockedAxios.post as Mock).mockResolvedValueOnce({ data: { user, accessToken: tokens.access, refreshToken: tokens.refresh } } as AxiosResponse)
             userStore.logIn('url', { username: user.username, password: user.password as string })
         })
         it('should call API once', () => {
@@ -76,7 +76,7 @@ describe('User store', () => {
     })
     describe('Load CAS user', () => {
         beforeEach(() => {
-            mockedAxios.post.mockResolvedValueOnce({ data: { user, accessToken: tokens.access, refreshToken: tokens.refresh } } as AxiosResponse)
+            (mockedAxios.post as Mock).mockResolvedValueOnce({ data: { user, accessToken: tokens.access, refreshToken: tokens.refresh } } as AxiosResponse)
             userStore.loadCASUser('ticket')
         })
         it('should populate newUser data', () => {
@@ -92,8 +92,8 @@ describe('User store', () => {
     })
     describe('Get user', () => {
         it('should populate user data', async () => {
-            userStore.user = undefined
-            mockedAxios.get.mockResolvedValueOnce({ data: user } as AxiosResponse)
+            // userStore.user = undefined
+            (mockedAxios.get as Mock).mockResolvedValueOnce({ data: user } as AxiosResponse)
             await userStore.getUser()
             expect(userStore.user).toEqual(user)
         })
@@ -107,7 +107,7 @@ describe('User store', () => {
     })
     describe('Get groups', () => {
         it('should get user groups', async () => {
-            mockedAxios.get.mockResolvedValueOnce({ data: groups } as AxiosResponse)
+            (mockedAxios.get as Mock).mockResolvedValueOnce({ data: groups } as AxiosResponse)
             await userStore.getGroups()
             expect(userStore.groups).toEqual(groups)
         })
