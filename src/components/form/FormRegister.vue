@@ -9,6 +9,7 @@ import type { UserRegister, UserAssociations } from '#/user'
 import { useUserStore } from '@/stores/useUserStore'
 import router from '@/router'
 import { userLocalRegister, userCASRegister, userAssociationsRegister, userGroupsRegister } from '@/services/userService'
+import LayoutGDPRConsent from '@/components/layout/LayoutGDPRConsent.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -34,6 +35,7 @@ const newUserGroups = ref<number[]>([])
 const groupChoiceIsValid = computed(() => {
   return newUserGroups.value.length > 0 && newUserGroups.value.length <= 2
 })
+const hasConsent = ref<boolean>(false)
 
 onMounted(loadCASUser)
 onMounted(loadAssociations)
@@ -99,43 +101,51 @@ function removeAssociation(index: number) {
 // Register newUser
 async function register() {
   if (groupChoiceIsValid.value) {
-    try {
-      if (userStore.isCAS) {
-        if (newUser.value.phone) {
-          await userCASRegister(newUser.value.phone)
-        }
-        if (newUserAssociations.value) {
-          await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
-        }
-        // refactor
-        localStorage.clear()
-        await router.push({ name: 'RegistrationSuccessful' })
-      }
-      else {
-        await userLocalRegister(newUser.value)
-        if (newUserAssociations.value) {
-          await userAssociationsRegister(newUser.value.email, newUserAssociations.value)
-        }
-        await userGroupsRegister(newUser.value.email, newUserGroups.value)
-        await router.push({ name: 'RegistrationSuccessful' })
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const data = error.response?.data
-        if (data.email) {
-          notify({
-            type: 'negative',
-            message: t('notifications.negative.email-used')
-          })
-          await router.push({ name: 'Login' })
+    if (hasConsent.value) {
+      try {
+        if (userStore.isCAS) {
+          if (newUser.value.phone) {
+            await userCASRegister(newUser.value.phone)
+          }
+          if (newUserAssociations.value) {
+            await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
+          }
+          // TODO refactor
+          localStorage.clear()
+          await router.push({ name: 'RegistrationSuccessful' })
         }
         else {
-          notify({
-            type: 'negative',
-            message: t('notifications.negative.invalid-request')
-          })
+          await userLocalRegister(newUser.value)
+          if (newUserAssociations.value) {
+            await userAssociationsRegister(newUser.value.email, newUserAssociations.value)
+          }
+          await userGroupsRegister(newUser.value.email, newUserGroups.value)
+          await router.push({ name: 'RegistrationSuccessful' })
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const data = error.response?.data
+          if (data.email) {
+            notify({
+              type: 'negative',
+              message: t('notifications.negative.email-used')
+            })
+            await router.push({ name: 'Login' })
+          }
+          else {
+            notify({
+              type: 'negative',
+              message: t('notifications.negative.invalid-request')
+            })
+          }
         }
       }
+    }
+    else {
+      notify({
+        type: 'negative',
+        message: t('notifications.negative.need-gdpr-consent')
+      })
     }
   }
 }
@@ -212,9 +222,11 @@ async function register() {
           <QBtn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
           <QSeparator />
         </div>
-        <QBtn v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" :label="$t('forms.add-association')" />
+        <QBtn class="add-association" v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" :label="$t('forms.add-association')" />
       </fieldset>
     </fieldset>
+    <QSeparator />
+    <LayoutGDPRConsent :has-consent="hasConsent" @update-consent="hasConsent = !hasConsent" />
     <QBtn :label="$t('forms.send')" type="submit" color="primary"/>
   </QForm>
 </template>
@@ -232,6 +244,9 @@ fieldset + .q-separator
 .q-btn
   margin: 15px 0
   display: block
+
+.add-association
+  margin: 15px 0 0 0
 
 .q-btn[type="submit"]
   margin: 0 0 5px 15px
