@@ -1,4 +1,8 @@
 {
+  "404": {
+    "title": "Contenu introuvable",
+    "description": "404"
+  },
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",

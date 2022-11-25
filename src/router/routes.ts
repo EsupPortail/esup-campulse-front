@@ -7,6 +7,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/layouts/LayoutDefault.vue'),
         children: [
             {
+                path:'404-not-found',
+                name: '404',
+                component: () => import('@/views/404View.vue')
+            },
+            {
                 path: '',
                 name: 'Home',
                 component: () => import('@/views/HomeView.vue')
