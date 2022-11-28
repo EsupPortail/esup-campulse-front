@@ -74,16 +74,20 @@ export async function userAssociationsRegister(username: string, newUserAssociat
         await _axios.post('/users/associations/', {
             user: username,
             association: newUserAssociations[i].id,
-            has_office_status: newUserAssociations[i].hasOfficeStatus
+            hasOfficeStatus: newUserAssociations[i].hasOfficeStatus
         })
     }
 }
 
 export async function userGroupsRegister(username: string, newUserGroups: number[] | undefined) {
     await _axios.post('/users/groups/', {
-        user: username,
+        username: username,
         groups: newUserGroups,
     })
+}
+
+export async function verifyEmail(key: string) {
+    await _axios.post('/users/auth/registration/verify-email/', { key: key })
 }
 
 // Password reset functions
