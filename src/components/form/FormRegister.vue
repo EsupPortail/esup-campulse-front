@@ -110,6 +110,7 @@ async function register() {
           if (newUserAssociations.value) {
             await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
           }
+          await userGroupsRegister(newUser.value.username, newUserGroups.value)
           // TODO refactor
           localStorage.clear()
           await router.push({ name: 'RegistrationSuccessful' })
