@@ -72,7 +72,6 @@ describe('User store', () => {
             expect(localStorage.getItem('access')).toBe(tokens.access)
             expect(localStorage.getItem('refresh')).toBe(tokens.refresh)
         })
-
     })
     describe('Load CAS user', () => {
         beforeEach(() => {
@@ -89,12 +88,45 @@ describe('User store', () => {
             expect(localStorage.getItem('access')).toBe(tokens.access)
             expect(localStorage.getItem('refresh')).toBe(tokens.refresh)
         })
+        it('should be called once', () => {
+            expect(mockedAxios.post).toHaveBeenCalledOnce()
+        })
+        it('should call API on /users/auth/cas/login/', () => {
+            const service = 'http://localhost:3000/cas-register'
+            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/cas/login/', {ticket: 'ticket', service})
+        })
     })
     describe('Get user', () => {
-        it('should populate user data', async () => {
-            // userStore.user = undefined
+        beforeEach(() => {
             (mockedAxios.get as Mock).mockResolvedValueOnce({ data: user } as AxiosResponse)
-            await userStore.getUser()
+            userStore.getUser()
+        })
+        afterEach(() => {
+            (mockedAxios.get as Mock).mockRestore()
+        })
+        it('should populate user data', () => {
+            // userStore.user = undefined
+            expect(userStore.user).toEqual(user)
+        })
+        it('should be called once', () => {
+            expect(mockedAxios.get).toHaveBeenCalledOnce()
+        })
+        it('should call API on /users/auth/user/', () => {
+            expect(mockedAxios.get).toHaveBeenCalledWith('/users/auth/user/')
+        })
+    })
+    describe('Check user validity', () => {
+        it('should set user to undefined if not valid', () => {
+            // user is validated by default
+            userStore.user = user
+            userStore.user.isValidatedByAdmin = false
+            userStore.checkUserValidity()
+            expect(userStore.user).toBeUndefined()
+        })
+        it('should keep user data if valid', () => {
+            userStore.user = user
+            userStore.user.isValidatedByAdmin = true
+            userStore.checkUserValidity()
             expect(userStore.user).toEqual(user)
         })
     })
@@ -106,10 +138,21 @@ describe('User store', () => {
         })
     })
     describe('Get groups', () => {
-        it('should get user groups', async () => {
+        beforeEach(() => {
             (mockedAxios.get as Mock).mockResolvedValueOnce({ data: groups } as AxiosResponse)
-            await userStore.getGroups()
+            userStore.getGroups()
+        })
+        afterEach(() => {
+            (mockedAxios.get as Mock).mockRestore()
+        })
+        it('should get user groups', () => {
             expect(userStore.groups).toEqual(groups)
+        })
+        it('should be called once', () => {
+            expect(mockedAxios.get).toHaveBeenCalledOnce()
+        })
+        it('should call API on /groups/', () => {
+            expect(mockedAxios.get).toHaveBeenCalledWith('/groups/')
         })
     })
     describe('Group list', () => {

@@ -120,6 +120,17 @@ describe('User service', () => {
             })
         })
     })
+    describe('Verify email', () => {
+        beforeEach(() => {
+            userService.verifyEmail('key')
+        })
+        it('should be called once', () => {
+            expect(mockedAxios.post).toHaveBeenCalledOnce()
+        })
+        it('should call API on /users/auth/registration/verify-email/ with key as data', () => {
+            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/registration/verify-email/', {key: 'key'})
+        })
+    })
     describe('Password reset', () => {
         beforeEach(() => {
             userService.passwordReset(user.email)

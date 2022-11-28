@@ -14,7 +14,7 @@ export const user: User = {
     isActive: false,
     dateJoined: '',
     isCas: null,
-    status: 'user'
+    isValidatedByAdmin: true
 }
 
 export const newUser: NewUser = {
