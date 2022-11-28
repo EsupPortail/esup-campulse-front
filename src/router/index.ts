@@ -9,23 +9,29 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from) => {
   const userStore = useUserStore()
   await loadUser()
   if (to.meta.requiresAuth && !userStore.isAuth) {
     return { name: 'Login' }
   }
+  // If no specific queries in url
   if (to.name == 'PasswordResetConfirm' && !to.query.uid && !to.query.token) {
     return { name: '404' }
   }
+  if (to.name == 'RegistrationVerifyEmail' && !to.query.key) {
+    return { name: '404' }
+  }
+  // If to registration successful and not from register
+  if (to.name == 'RegistrationSuccessful' && from.name !== 'Registration') {
+    return { name: '404' }
+  }
+  // If user is auth
   if (userStore.isAuth) {
     if (to.name == 'Registration' || to.name == 'Login') {
       return { name: 'Dashboard' }
     }
-    /*if (to.name === 'Login') {
-      return ({ name: 'Dashboard' })
-    }*/
-    if (to.name == 'PasswordReset') {
+    else if (to.name == 'PasswordReset') {
       return { name: 'ProfilePasswordEdit' }
     }
   }
