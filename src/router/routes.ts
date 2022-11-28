@@ -7,11 +7,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/layouts/LayoutDefault.vue'),
         children: [
             {
-                path:'404-not-found',
-                name: '404',
-                component: () => import('@/views/404View.vue')
-            },
-            {
                 path: '',
                 name: 'Home',
                 component: () => import('@/views/HomeView.vue')
@@ -89,6 +84,16 @@ const routes: RouteRecordRaw[] = [
                 name: 'ProfilePasswordEdit',
                 component: () => import('@/views/ProfilePasswordEditView.vue')
             },
+            // This must be last
+            {
+                path: '404-not-found',
+                name: '404',
+                component: () => import('@/views/404View.vue')
+            },
+            {
+                path: '/:catchAll(.*)',
+                redirect: {name: '404'}
+            }
         ]
     }
 ]
