@@ -1,26 +1,26 @@
 /**
  *  User Model
  *  Interact front-back
- *  @params: id_person, username_person, password_person, email_person, firstname_person, lastname_person, cas_id_person,
- *  is_enabled_person, last_login_date_person, token_reset_date_person
+ *  @params: // TODO
  */
 
 export interface User {
-    id: number;
-    password: string | null;
-    lastLogin: string | null;
-    isSuperuser: boolean;
-    username: string;
-    firstName: string;
-    lastName: string;
-    phone: string | null;
-    email: string;
-    isStaff: boolean;
-    isActive: boolean;
-    dateJoined: string;
-    isCas: string | null;
-    status: 'admin' | 'user';
-    // associations: UserAssociations | null;
+    id: number,
+    password: string | null,
+    // lastLogin: string | null,
+    // isSuperuser: boolean,
+    username: string,
+    firstName: string,
+    lastName: string,
+    phone: string | null,
+    email: string,
+    // isStaff: boolean,
+    // isActive: boolean,
+    // dateJoined: string,
+    isCas: boolean,
+    // associations: UserAssociations | null,
+    isValidatedByAdmin: boolean | null,
+    groups: UserGroup[],
 }
 
 // User store
@@ -38,13 +38,13 @@ export type NewUser = Pick<User, "username", "first_name", "last_name", "email",
 export type UserLogin = Pick<User, "username" | "password">
 
 interface LocalLogin {
-    username: string;
-    password: string;
+    username: string,
+    password: string
 }
 
 interface CasLogin {
-    ticket: string;
-    service: string;
+    ticket: string,
+    service: string
 }
 
 // Register
@@ -52,29 +52,29 @@ export type UserRegister = Pick<User, "username", "first_name" | "last_name" | "
 
 // Password reset
 export interface PasswordReset {
-    newPassword1: string;
-    newPassword2: string;
+    newPassword1: string,
+    newPassword2: string
 }
 
 // Profile password edition
 export interface PasswordEdit {
-    oldPassword: string;
-    newPassword1: string;
-    newPassword2: string;
+    oldPassword: string,
+    newPassword1: string,
+    newPassword2: string
 }
 
 // User association
 interface UserAssociation {
-    id: number | null;
-    hasOfficeStatus: boolean;
+    id: number | null,
+    hasOfficeStatus: boolean
 }
 
 export type UserAssociations = UserAssociation[]
 
 // User status
 export interface UserGroup {
-    id: number;
-    name: string;
+    id: number,
+    name: string
 }
 
 export type GroupList = { value: number, label: string }[]
