@@ -43,20 +43,37 @@ onMounted(loadGroups)
 
 // Load user infos from CAS
 async function loadCASUser() {
-  try {
-    if (route.query.ticket) {
+  if (route.query.ticket || userStore.newUser && userStore.isCas) {
+    try {
       const userStore = useUserStore()
       await userStore.loadCASUser(route.query.ticket as string)
       newUser.value = userStore.newUser
       emailVerification.value = newUser.value.email
-      // isCAS.value = true
+    } catch (error) {
+      // If CAS user registration is incomplete
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        // If CAS user data can be got correctly, we can populate the form with the data
+        if (userStore.newUser && userStore.isCas) {
+          newUser.value = userStore.newUser
+          emailVerification.value = newUser.value.email
+        }
+        // If CAS user data can not be populated
+        else {
+          await router.push({ name: 'Login' })
+          notify({
+            type: 'negative',
+            message: t('notifications.negative.cas-authentication-error')
+          })
+        }
+      }
+      else {
+        await router.push({ name: 'Login' })
+        notify({
+          type: 'negative',
+          message: t('notifications.negative.cas-authentication-error')
+        })
+      }
     }
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.cas-authentication-error')
-    })
-    await router.push({ name: 'Login' })
   }
 }
 
@@ -103,7 +120,7 @@ async function register() {
   if (groupChoiceIsValid.value) {
     if (hasConsent.value) {
       try {
-        if (userStore.isCAS) {
+        if (userStore.isCas) {
           if (newUser.value.phone) {
             await userCASRegister(newUser.value.phone)
           }
@@ -111,8 +128,7 @@ async function register() {
             await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
           }
           await userGroupsRegister(newUser.value.username, newUserGroups.value)
-          // TODO refactor
-          localStorage.clear()
+          await userStore.logOut()
           await router.push({ name: 'RegistrationSuccessful' })
         }
         else {
@@ -159,7 +175,7 @@ async function register() {
   >
     <QInput
       filled
-      :disable="!!userStore.isCAS"
+      :disable="!!userStore.isCas"
       v-model="newUser.firstName"
       :label="$t('forms.first-name')"
       lazy-rules
@@ -167,7 +183,7 @@ async function register() {
     />
     <QInput
       filled
-      :disable="!!userStore.isCAS"
+      :disable="!!userStore.isCas"
       v-model="newUser.lastName"
       :label="$t('forms.last-name')"
       lazy-rules
@@ -175,7 +191,7 @@ async function register() {
     />
     <QInput
       filled
-      :disable="!!userStore.isCAS"
+      :disable="!!userStore.isCas"
       v-model="newUser.email"
       :label="$t('forms.email')"
       lazy-rules
@@ -183,7 +199,7 @@ async function register() {
     />
     <QInput
       filled
-      :disable="!!userStore.isCAS"
+      :disable="!!userStore.isCas"
       v-model="emailVerification"
       :label="$t('forms.repeat-email')"
       lazy-rules
@@ -218,12 +234,34 @@ async function register() {
       <fieldset>
         <legend>{{ $t("forms.im-in-association") }}</legend>
         <div v-for="(association, index) in newUserAssociations" :key="index">
-          <QSelect filled v-model="association.id" :options="associationStore.associationList" map-options emit-value :label="$t('forms.select-association')" />
-          <QCheckbox v-model="association.hasOfficeStatus" :label="$t('forms.im-in-association-office')" />
-          <QBtn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
+          <QSelect
+              filled
+              v-model="association.id"
+              :options="associationStore.associationList"
+              map-options
+              emit-value
+              :label="$t('forms.select-association')"
+          />
+          <QCheckbox
+              v-model="association.hasOfficeStatus"
+              :label="$t('forms.im-in-association-office')"
+          />
+          <QBtn
+              @click="removeAssociation(index)"
+              outline color="red"
+              icon="mdi-minus-circle-outline"
+              :label="$t('forms.delete-association')"
+          />
           <QSeparator />
         </div>
-        <QBtn class="add-association" v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" :label="$t('forms.add-association')" />
+        <QBtn
+            class="add-association"
+            v-if="newUserAssociations.length < 5"
+            @click="addAssociation"
+            outline color="primary"
+            icon="mdi-plus-circle-outline"
+            :label="$t('forms.add-association')"
+        />
       </fieldset>
     </fieldset>
     <QSeparator />

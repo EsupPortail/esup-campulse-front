@@ -1,4 +1,4 @@
-import type {User, NewUser, UserGroup, UserAssociations} from '#/user'
+import type {User, UserGroup, UserAssociations, UserRegister} from '#/user'
 
 export const user: User = {
     id: 1,
@@ -46,7 +46,7 @@ export const nonValidatedUser: User = {
     ]
 }
 
-export const newUser: NewUser = {
+export const newUser: UserRegister = {
     username: 'john.lennon@bbc.com',
     firstName: 'John',
     lastName: 'Lennon',

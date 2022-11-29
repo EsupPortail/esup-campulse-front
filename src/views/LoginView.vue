@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
+import { useUserStore } from '@/stores/useUserStore'
+
+const userStore = useUserStore()
+const newUser = userStore.newUser
 
 const CASUrlLogin = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL + "/cas-login")}`
 const CASUrlRegister = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL + "/cas-register")}`
@@ -14,8 +18,9 @@ const CASUrlRegister = `https://cas-dev.unistra.fr/cas/login?service=${encodeURI
         {{ $t("login.login-with-cas") }}
       </div>
       <div class="btn-group">
-        <QBtn :label="$t('login.login')" color="primary" :href="CASUrlLogin" type="a"/>
-        <QBtn :label="$t('login.create-account')" color="secondary" :href="CASUrlRegister" />
+        <QBtn :label="$t('login.login')" color="primary" :href="CASUrlLogin" />
+        <QBtn v-if="newUser && newUser.isCas" :label="$t('login.create-account')" color="secondary" to="/register" />
+        <QBtn v-else :label="$t('login.create-account')" color="secondary" :href="CASUrlRegister" />
       </div>
     </QCardSection>
   </QCard>

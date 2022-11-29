@@ -9,12 +9,12 @@ export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
         newUser: undefined,
-        isCAS: false,
         groups: []
     }),
 
     getters: {
         isAuth: (state: UserStore): boolean => !!state.user,
+        isCas: (state: UserStore): boolean | undefined => state.user?.isCas || state.newUser?.isCas,
         userNameFirstLetter: (state: UserStore): string | undefined => {
             return state.user?.firstName.charAt(0).toUpperCase()
         },
@@ -36,7 +36,6 @@ export const useUserStore = defineStore('userStore', {
             if (user.isValidatedByAdmin) {
                 setTokens(accessToken, refreshToken)
                 this.user = user
-                // TODO : push to previous page
                 await router.push({ name: 'Dashboard' })
             }
             else {
@@ -47,20 +46,32 @@ export const useUserStore = defineStore('userStore', {
         async logOut() {
             removeTokens()
             this.unLoadUser()
+            this.unLoadNewUser()
             await router.push({ name: 'Login' })
         },
         async getUser() {
             const user = (await _axios.get<User>('/users/auth/user/')).data
-            if (user.isValidatedByAdmin) {
-                this.user = user
+            // Check user validity
+            if (!user.isValidatedByAdmin) {
+                // Specific case for CAS user data which can persist until complete registration
+                if (user.isCas) {
+                    this.newUser = user
+                }
+                // If user is not a CAS user, logOut
+                else {
+                    await this.logOut()
+                }
             }
             else {
-                this.user = undefined
+                this.user = user
             }
         },
         unLoadUser() {
             // removeBearer()
             this.user = undefined
+        },
+        unLoadNewUser() {
+            this.newUser = undefined
         },
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
@@ -68,7 +79,6 @@ export const useUserStore = defineStore('userStore', {
             const { accessToken, refreshToken, user } = data
             setTokens(accessToken, refreshToken)
             this.newUser = user
-            this.isCAS = true
         },
         async getGroups() {
             this.groups = (await _axios.get<UserGroup[]>('/groups/')).data

@@ -29,6 +29,28 @@ describe('User store', () => {
             expect(userStore.isAuth).toBeFalsy()
         })
     })
+    describe('isCas', () => {
+        it('should be true if user isCas', () => {
+            userStore.user = user
+            userStore.user.isCas = true
+            expect(userStore.isCas).toBeTruthy()
+        })
+        it('should be false is user !isCas', () => {
+            userStore.user = user
+            userStore.user.isCas = false
+            expect(userStore.isCas).toBeFalsy()
+        })
+        it('should be true if newUser isCas', () => {
+            userStore.newUser = user
+            userStore.newUser.isCas = true
+            expect(userStore.isCas).toBeTruthy()
+        })
+        it('should be false is newUser !isCas', () => {
+            userStore.newUser = user
+            userStore.newUser.isCas = false
+            expect(userStore.isCas).toBeFalsy()
+        })
+    })
     describe('User avatar', () => {
         it('should display capitalized first letter of firstname', () => {
             userStore.user = user
@@ -94,9 +116,6 @@ describe('User store', () => {
         })
         it('should populate newUser data', () => {
             expect(userStore.newUser).toEqual(user)
-        })
-        it('should set isCAS to true', () => {
-            expect(userStore.isCAS).toBeTruthy()
         })
         it('should set user\'s access and refresh tokens', () => {
             expect(localStorage.getItem('access')).toBe(tokens.access)
