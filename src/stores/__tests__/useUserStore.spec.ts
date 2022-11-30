@@ -17,7 +17,8 @@ describe('User store', () => {
         // userStore.user = user
     })
     afterEach(() => {
-        (mockedAxios.post as Mock).mockRestore()
+        mockedAxios.post.mockRestore()
+        // vi.restoreAllMocks
     })
     describe('isAuth', () => {
         it('should be true if user has data', () => {
@@ -82,8 +83,14 @@ describe('User store', () => {
     describe('User login', () => {
         describe('If user is validated by admin', () => {
             beforeEach(() => {
-                (mockedAxios.post as Mock).mockResolvedValueOnce({ data: { user, accessToken: tokens.access, refreshToken: tokens.refresh } } as AxiosResponse)
-                userStore.logIn('url', { username: user.username, password: user.password as string })
+                (mockedAxios.post as Mock).mockResolvedValueOnce({
+                    data: {
+                        user,
+                        accessToken: tokens.access,
+                        refreshToken: tokens.refresh
+                    }
+                } as AxiosResponse)
+                userStore.logIn('url', {username: user.username, password: user.password as string})
             })
             afterEach(() => {
                 (mockedAxios.post as Mock).mockRestore()
@@ -111,7 +118,13 @@ describe('User store', () => {
     })
     describe('Load CAS user', () => {
         beforeEach(() => {
-            (mockedAxios.post as Mock).mockResolvedValueOnce({ data: { user, accessToken: tokens.access, refreshToken: tokens.refresh } } as AxiosResponse)
+            (mockedAxios.post as Mock).mockResolvedValueOnce({
+                data: {
+                    user,
+                    accessToken: tokens.access,
+                    refreshToken: tokens.refresh
+                }
+            } as AxiosResponse)
             userStore.loadCASUser('ticket')
         })
         it('should populate newUser data', () => {
@@ -132,7 +145,7 @@ describe('User store', () => {
     describe('Get user', () => {
         describe('If user is validated by admin', () => {
             beforeEach(() => {
-                (mockedAxios.get as Mock).mockResolvedValueOnce({ data: user } as AxiosResponse)
+                (mockedAxios.get as Mock).mockResolvedValueOnce({data: user} as AxiosResponse)
                 userStore.getUser()
             })
             afterEach(() => {
@@ -151,7 +164,7 @@ describe('User store', () => {
         })
         describe('If user is not validated by admin', () => {
             beforeEach(() => {
-                (mockedAxios.get as Mock).mockResolvedValueOnce({ data: nonValidatedUser } as AxiosResponse)
+                (mockedAxios.get as Mock).mockResolvedValueOnce({data: nonValidatedUser} as AxiosResponse)
                 userStore.getUser()
             })
             it('should not populate user data if user is not validated by admin', () => {
@@ -168,7 +181,7 @@ describe('User store', () => {
     })
     describe('Get groups', () => {
         beforeEach(() => {
-            (mockedAxios.get as Mock).mockResolvedValueOnce({ data: groups } as AxiosResponse)
+            (mockedAxios.get as Mock).mockResolvedValueOnce({data: groups} as AxiosResponse)
             userStore.getGroups()
         })
         afterEach(() => {

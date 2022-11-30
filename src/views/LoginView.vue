@@ -1,41 +1,70 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
-import { useUserStore } from '@/stores/useUserStore'
+import {useUserStore} from '@/stores/useUserStore'
 
 const userStore = useUserStore()
 const newUser = userStore.newUser
+const isCas = userStore.isCas
 
 const CASUrlLogin = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL + "/cas-login")}`
 const CASUrlRegister = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL + "/cas-register")}`
 </script>
 
 <template>
-  <h1>Connexion</h1>
-  <QCard class="card">
-    <QCardSection>
-      <div class="card-content">
-        <span class="card-title">{{ $t("login.im-cas-user") }}</span>
-        {{ $t("login.login-with-cas") }}
-      </div>
-      <div class="btn-group">
-        <QBtn :label="$t('login.login')" color="primary" :href="CASUrlLogin" />
-        <QBtn v-if="newUser && newUser.isCas" :label="$t('login.create-account')" color="secondary" to="/register" />
-        <QBtn v-else :label="$t('login.create-account')" color="secondary" :href="CASUrlRegister" />
-      </div>
-    </QCardSection>
-  </QCard>
-  <QCard class="card">
-    <QCardSection>
-      <div class="card-content">
-        <span class="card-title">{{ $t("login.im-not-cas-user") }}</span>
-        {{ $t("login.login-without-cas") }}
-      </div>
-      <FormLocalLogin />
-    </QCardSection>
-  </QCard>
+  <h1>{{ $t('login.login') }}</h1>
+  <div v-if="!newUser && !isCas">
+    <QCard class="card">
+      <QCardSection>
+        <div class="card-content">
+          <span class="card-title">{{ $t("login.im-cas-user") }}</span>
+          {{ $t("login.login-with-cas") }}
+        </div>
+        <div class="btn-group">
+          <QBtn
+              :href="CASUrlLogin"
+              :label="$t('login.login')"
+              color="primary"
+          />
+          <QBtn
+              :href="CASUrlRegister"
+              :label="$t('login.create-account')"
+              color="secondary"
+          />
+        </div>
+      </QCardSection>
+    </QCard>
+    <QCard class="card">
+      <QCardSection>
+        <div class="card-content">
+          <span class="card-title">{{ $t("login.im-not-cas-user") }}</span>
+          {{ $t("login.login-without-cas") }}
+        </div>
+        <FormLocalLogin/>
+      </QCardSection>
+    </QCard>
+  </div>
+  <div v-else>
+    <QCard class="card alert">
+      <QCardSection>
+        <div class="card-content">
+          <span class="card-title">
+            {{ $t('alerts.aborted-cas-registration.title') }}
+          </span>
+          {{ $t('alerts.aborted-cas-registration.message') }}
+          <div>
+            <QBtn
+                :label="$t('alerts.aborted-cas-registration.button')"
+                color="warning"
+                to="/register"
+            />
+          </div>
+        </div>
+      </QCardSection>
+    </QCard>
+  </div>
 </template>
 
-<style scoped lang="sass">
+<style lang="sass" scoped>
 .card
   max-width: 700px
   width: 100%
@@ -54,4 +83,7 @@ const CASUrlRegister = `https://cas-dev.unistra.fr/cas/login?service=${encodeURI
 .btn-group
   display: flex
   gap: 10px
+
+.alert .q-btn
+  margin-top: 10px
 </style>

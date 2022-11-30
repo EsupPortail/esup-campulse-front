@@ -1,9 +1,8 @@
-import { defineStore } from 'pinia'
-import type { UserStore, LocalLogin, CasLogin, GroupList } from '#/user'
+import {defineStore} from 'pinia'
+import type {CasLogin, GroupList, LocalLogin, User, UserGroup, UserStore} from '#/user'
 import _axios from '@/plugins/axios'
 import router from '@/router'
-import { setTokens, removeTokens } from '@/services/userService'
-import type { User, UserGroup } from "#/user";
+import {removeTokens, setTokens} from '@/services/userService'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -26,19 +25,18 @@ export const useUserStore = defineStore('userStore', {
                 }))
         },
         studentGroup: (state: UserStore): UserGroup | undefined => {
-            return state.groups.find(({ name }) => name === 'Étudiante ou Étudiant')
+            return state.groups.find(({name}) => name === 'Étudiante ou Étudiant')
         }
     },
     actions: {
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const response = await _axios.post(url, data)
-            const { accessToken, refreshToken, user } = response.data
+            const {accessToken, refreshToken, user} = response.data
             if (user.isValidatedByAdmin) {
                 setTokens(accessToken, refreshToken)
                 this.user = user
-                await router.push({ name: 'Dashboard' })
-            }
-            else {
+                await router.push({name: 'Dashboard'})
+            } else {
                 this.user = undefined
                 throw new Error
             }
@@ -46,37 +44,40 @@ export const useUserStore = defineStore('userStore', {
         async logOut() {
             removeTokens()
             this.unLoadUser()
-            this.unLoadNewUser()
-            await router.push({ name: 'Login' })
+            await router.push({name: 'Login'})
         },
         async getUser() {
             const user = (await _axios.get<User>('/users/auth/user/')).data
             // Check user validity
-            if (!user.isValidatedByAdmin) {
+            // If user is valid
+            if (user.isValidatedByAdmin) {
+                // Populate user data and user is auth
+                this.user = user
+            }
+            // If user is not valid
+            else {
+                // But user is from CAS
                 // Specific case for CAS user data which can persist until complete registration
                 if (user.isCas) {
+                    // Populate newUser data and user is not auth
                     this.newUser = user
-                }
-                // If user is not a CAS user, logOut
-                else {
+                } else {
+                    // Clear tokens and user data
                     await this.logOut()
                 }
             }
-            else {
-                this.user = user
-            }
         },
         unLoadUser() {
-            // removeBearer()
             this.user = undefined
         },
         unLoadNewUser() {
+            removeTokens()
             this.newUser = undefined
         },
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-            const data = (await _axios.post('/users/auth/cas/login/', { ticket, service })).data
-            const { accessToken, refreshToken, user } = data
+            const data = (await _axios.post('/users/auth/cas/login/', {ticket, service})).data
+            const {accessToken, refreshToken, user} = data
             setTokens(accessToken, refreshToken)
             this.newUser = user
         },

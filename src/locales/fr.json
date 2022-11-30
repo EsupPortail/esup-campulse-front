@@ -131,7 +131,8 @@
   "alerts": {
     "close": "Fermer",
     "aborted-cas-registration": {
-      "message": "Votre demande d'inscription avec un compte CAS n'est pas terminée. Retournez sur le formulaire dédié ou cliquez sur \"Terminer ma création de compte\".",
+      "title": "Demande de création de compte en cours",
+      "message": "Votre demande d'inscription avec un compte CAS n'est pas terminée. Cliquez sur \"Terminer ma création de compte\" pour la finaliser.",
       "button": "Terminer ma création de compte"
     }
   }
