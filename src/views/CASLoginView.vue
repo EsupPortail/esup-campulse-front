@@ -18,6 +18,11 @@ onMounted(async () => {
         ticket: route.query.ticket as string,
         service: import.meta.env.VITE_APP_FRONT_URL + '/cas-login'
       })
+      await router.push({name: 'Dashboard'})
+      notify({
+        type: 'positive',
+        message: t('notifications.positive.login-success')
+      })
     } else {
       notify({
         type: 'negative',

@@ -1,22 +1,27 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
-import type { UserLogin } from '#/user'
-import { useUserStore } from '@/stores/useUserStore'
+<script lang="ts" setup>
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import type {UserLogin} from '#/user'
+import {useUserStore} from '@/stores/useUserStore'
+import router from "@/router";
 
 const user = ref<UserLogin>({
   username: '',
   password: ''
 })
 
-const { t } = useI18n()
-const { notify } = useQuasar()
+const {t} = useI18n()
+const {notify} = useQuasar()
 const userStore = useUserStore()
 
 async function logIn() {
   try {
-    await userStore.logIn('/users/auth/login/', {username: user.value.username, password: user.value.password as string})
+    await userStore.logIn('/users/auth/login/', {
+      username: user.value.username,
+      password: user.value.password as string
+    })
+    await router.push({name: 'Dashboard'})
     notify({
       type: 'positive',
       message: t('notifications.positive.login-success')
@@ -33,33 +38,33 @@ async function logIn() {
 
 <template>
   <QForm
-      @submit="logIn"
       class="q-gutter-md"
+      @submit="logIn"
   >
     <QInput
-        filled
         v-model="user.username"
         :label="$t('forms.email')"
-        lazy-rules
         :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
+        filled
+        lazy-rules
     />
     <QInput
-        filled
-        type="password"
         v-model="user.password"
         :label="$t('forms.password')"
-        lazy-rules
         :rules="[ val => val && val.length > 0 || $t('forms.required-password')]"
+        filled
+        lazy-rules
+        type="password"
     />
     <div class="btn-group">
-      <QBtn :label="$t('forms.login')" type="submit" color="primary"/>
+      <QBtn :label="$t('forms.login')" color="primary" type="submit"/>
       <QBtn :label="$t('forms.create-account')" color="secondary" to="/register"/>
     </div>
-    <QBtn :label="$t('forms.reset-password')" color="primary" flat class="q-sm" to="/password-reset"/>
+    <QBtn :label="$t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
   </QForm>
 </template>
 
-<style scoped lang="sass">
+<style lang="sass" scoped>
 .btn-group
   display: flex
   gap: 10px

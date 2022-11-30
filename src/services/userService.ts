@@ -1,8 +1,7 @@
-import type { UserAssociations, UserRegister } from "#/user";
-import _axios from "@/plugins/axios";
-import {useUserStore} from "@/stores/useUserStore";
-import axios from "axios";
-
+import type {UserAssociations, UserRegister} from '#/user'
+import _axios from '@/plugins/axios'
+import {useUserStore} from '@/stores/useUserStore'
+import axios from 'axios'
 
 
 // Tokens
@@ -24,15 +23,10 @@ export function setBearer() {
     }
 }
 
-// Remove bearer
-/*export function removeBearer() {
-    if (_axios.defaults) { _axios.defaults.headers.common['Authorization'] = undefined }
-}*/
-
 // Refresh token
 export async function refreshToken() {
     const refresh = localStorage.getItem('refresh')
-    const access = (await _axios.post('/users/auth/token/refresh/', { refresh })).data.access
+    const access = (await _axios.post('/users/auth/token/refresh/', {refresh})).data.access
     localStorage.setItem('access', access)
 }
 
@@ -66,7 +60,7 @@ export async function userLocalRegister(newUser: UserRegister) {
 
 export async function userCASRegister(newUserInfo: string | null) {
     setBearer()
-    await _axios.patch('/users/auth/user/', { phone: newUserInfo })
+    await _axios.patch('/users/auth/user/', {phone: newUserInfo})
 }
 
 export async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
@@ -87,14 +81,14 @@ export async function userGroupsRegister(username: string, newUserGroups: number
 }
 
 export async function verifyEmail(key: string) {
-    await _axios.post('/users/auth/registration/verify-email/', { key: key })
+    await _axios.post('/users/auth/registration/verify-email/', {key: key})
 }
 
 // Password reset functions
 export async function passwordReset(email: string) {
-    await _axios.post('/users/auth/password/reset/', { email })
+    await _axios.post('/users/auth/password/reset/', {email})
 }
 
 export async function passwordResetConfirm(uid: string, token: string, newPassword1: string, newPassword2: string) {
-    await _axios.post('/users/auth/password/reset/confirm/', { uid, token, newPassword1, newPassword2 })
+    await _axios.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
 }

@@ -35,9 +35,7 @@ export const useUserStore = defineStore('userStore', {
             if (user.isValidatedByAdmin) {
                 setTokens(accessToken, refreshToken)
                 this.user = user
-                await router.push({name: 'Dashboard'})
             } else {
-                this.user = undefined
                 throw new Error
             }
         },

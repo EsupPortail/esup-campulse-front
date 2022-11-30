@@ -1,11 +1,13 @@
 import type {Mock} from 'vitest'
-import {afterEach, beforeEach, describe, expect, it} from 'vitest'
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import type {AxiosResponse} from 'axios'
 import {mockedAxios} from '~/mocks/axios.mock'
 import {useUserStore} from '@/stores/useUserStore'
 import {tokens} from '~/mocks/tokens.mock'
-import {groupList, groups, nonValidatedUser, user} from '~/mocks/user.mock'
+import {groupList, groups, user} from '~/mocks/user.mock'
+import type {User} from '#/user'
+import {setTokens} from '@/services/userService'
 
 
 setActivePinia(createPinia())
@@ -14,11 +16,9 @@ let userStore = useUserStore()
 describe('User store', () => {
     beforeEach(() => {
         userStore = useUserStore()
-        // userStore.user = user
     })
     afterEach(() => {
-        mockedAxios.post.mockRestore()
-        // vi.restoreAllMocks
+        vi.restoreAllMocks()
     })
     describe('isAuth', () => {
         it('should be true if user has data', () => {
@@ -31,24 +31,24 @@ describe('User store', () => {
         })
     })
     describe('isCas', () => {
-        it('should be true if user isCas', () => {
+        beforeEach(() => {
             userStore.user = user
-            userStore.user.isCas = true
+            userStore.user.isCas = false
+            userStore.newUser = user
+            userStore.newUser.isCas = false
+        })
+        it('should be true if user isCas', () => {
+            (userStore.user as User).isCas = true
             expect(userStore.isCas).toBeTruthy()
         })
         it('should be false is user !isCas', () => {
-            userStore.user = user
-            userStore.user.isCas = false
             expect(userStore.isCas).toBeFalsy()
         })
         it('should be true if newUser isCas', () => {
-            userStore.newUser = user
-            userStore.newUser.isCas = true
+            (userStore.newUser as User).isCas = true
             expect(userStore.isCas).toBeTruthy()
         })
         it('should be false is newUser !isCas', () => {
-            userStore.newUser = user
-            userStore.newUser.isCas = false
             expect(userStore.isCas).toBeFalsy()
         })
     })
@@ -83,7 +83,7 @@ describe('User store', () => {
     describe('User login', () => {
         describe('If user is validated by admin', () => {
             beforeEach(() => {
-                (mockedAxios.post as Mock).mockResolvedValueOnce({
+                mockedAxios.post.mockResolvedValueOnce({
                     data: {
                         user,
                         accessToken: tokens.access,
@@ -93,7 +93,7 @@ describe('User store', () => {
                 userStore.logIn('url', {username: user.username, password: user.password as string})
             })
             afterEach(() => {
-                (mockedAxios.post as Mock).mockRestore()
+                userStore.user = undefined
             })
             it('should call API once', () => {
                 expect(mockedAxios.post).toHaveBeenCalledOnce()
@@ -105,20 +105,45 @@ describe('User store', () => {
                 expect(localStorage.getItem('access')).toBe(tokens.access)
                 expect(localStorage.getItem('refresh')).toBe(tokens.refresh)
             })
+            it('should auth user', () => {
+                expect(userStore.isAuth).toBeTruthy()
+            })
         })
         /*describe('If user is not validated by admin', () => {
             beforeEach(() => {
-                (mockedAxios.post as Mock).mockResolvedValueOnce({ data: { user: nonValidatedUser, accessToken: tokens.access, refreshToken: tokens.refresh } } as AxiosResponse)
-                userStore.logIn('url', { username: nonValidatedUser.username, password: nonValidatedUser.password as string })
+                user.isValidatedByAdmin = false
+                mockedAxios.post.mockResolvedValueOnce({
+                    data: {
+                        user: user,
+                        accessToken: tokens.access,
+                        refreshToken: tokens.refresh
+                    }
+                } as AxiosResponse)
+                userStore.logIn('url', {
+                    username: user.username,
+                    password: user.password as string
+                })
+            })
+            afterEach(() => {
+                user.isValidatedByAdmin = true
+                userStore.user = undefined
             })
             it('should not populate user data', () => {
                 expect(userStore.user).toBeUndefined()
+            })
+            it('should not auth user', () => {
+                expect(userStore.isAuth).toBeFalsy()
+            })
+            it('should throw an error', () => {
+                expect(() => {
+                    userStore.logIn('url', {username: user.username, password: user.password as string})
+                }).toThrow(new Error)
             })
         })*/
     })
     describe('Load CAS user', () => {
         beforeEach(() => {
-            (mockedAxios.post as Mock).mockResolvedValueOnce({
+            mockedAxios.post.mockResolvedValueOnce({
                 data: {
                     user,
                     accessToken: tokens.access,
@@ -145,15 +170,11 @@ describe('User store', () => {
     describe('Get user', () => {
         describe('If user is validated by admin', () => {
             beforeEach(() => {
-                (mockedAxios.get as Mock).mockResolvedValueOnce({data: user} as AxiosResponse)
+                mockedAxios.get.mockResolvedValueOnce({data: user} as AxiosResponse)
                 userStore.getUser()
             })
             afterEach(() => {
-                (mockedAxios.get as Mock).mockRestore()
                 userStore.user = undefined
-            })
-            it('should populate user data if user is validated by admin', () => {
-                expect(userStore.user).toEqual(user)
             })
             it('should be called once', () => {
                 expect(mockedAxios.get).toHaveBeenCalledOnce()
@@ -161,14 +182,45 @@ describe('User store', () => {
             it('should call API on /users/auth/user/', () => {
                 expect(mockedAxios.get).toHaveBeenCalledWith('/users/auth/user/')
             })
+            // user mock validated by default
+            it('should populate user data', () => {
+                expect(userStore.user).toEqual(user)
+            })
         })
         describe('If user is not validated by admin', () => {
             beforeEach(() => {
-                (mockedAxios.get as Mock).mockResolvedValueOnce({data: nonValidatedUser} as AxiosResponse)
-                userStore.getUser()
+                user.isValidatedByAdmin = false
             })
-            it('should not populate user data if user is not validated by admin', () => {
-                expect(userStore.user).toBeUndefined()
+            afterEach(() => {
+                userStore.user = undefined
+                userStore.newUser = undefined
+            })
+            describe('If user isCas', () => {
+                beforeEach(() => {
+                    user.isCas = true
+                    mockedAxios.get.mockResolvedValueOnce({data: user} as AxiosResponse)
+                    userStore.getUser()
+                })
+                afterEach(() => {
+                    user.isCas = false
+                })
+                it('should populate newUser data', () => {
+                    expect(userStore.newUser).toEqual(user)
+                })
+                it('should not populate user data', () => {
+                    expect(userStore.user).toBeUndefined()
+                })
+            })
+            describe('If user !isCas', () => {
+                beforeEach(() => {
+                    setTokens(tokens.access, tokens.refresh)
+                    mockedAxios.get.mockResolvedValueOnce({data: user} as AxiosResponse)
+                    userStore.getUser()
+                })
+                it('should remove tokens', () => {
+                    expect(localStorage.getItem('access')).toBeNull()
+                    expect(localStorage.getItem('refresh')).toBeNull()
+                })
             })
         })
     })
@@ -179,9 +231,23 @@ describe('User store', () => {
             expect(userStore.user).toBeUndefined()
         })
     })
+    describe('Unload newUser', () => {
+        beforeEach(() => {
+            userStore.newUser = user
+            setTokens(tokens.access, tokens.refresh)
+            userStore.unLoadNewUser()
+        })
+        it('should remove tokens', () => {
+            expect(localStorage.getItem('access')).toBeNull()
+            expect(localStorage.getItem('refresh')).toBeNull()
+        })
+        it('should remove all data from newUser', () => {
+            expect(userStore.newUser).toBeUndefined()
+        })
+    })
     describe('Get groups', () => {
         beforeEach(() => {
-            (mockedAxios.get as Mock).mockResolvedValueOnce({data: groups} as AxiosResponse)
+            mockedAxios.get.mockResolvedValueOnce({data: groups} as AxiosResponse)
             userStore.getGroups()
         })
         afterEach(() => {
