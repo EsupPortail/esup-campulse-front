@@ -21,6 +21,9 @@ async function resend() {
         case 404:
           errorMessage = t('notifications.negative.unknown-email')
           break;
+        case 403:
+          errorMessage = t('notifications.negative.restricted-email')
+          break;
         default:
           errorMessage = t('notifications.negative.invalid-request')
           break;
@@ -36,6 +39,14 @@ async function resend() {
 
 <template>
   <div class="instructions">
+    <QBanner v-if="!isResend" class="bg-grey-3">
+      <template v-slot:avatar>
+        <QIcon name="mdi-information-outline" color="primary" size="md" />
+      </template>
+      <strong>{{ $t("forms.resend-email-cas") }}</strong>
+      <template v-slot:action>
+      </template>
+    </QBanner>
     <p v-if="isResend" >{{ $t("forms.resend-email-ok") }}</p>
   </div>
   <QForm
