@@ -56,6 +56,7 @@ async function logIn() {
       <QBtn :label="$t('forms.create-account')" color="secondary" to="/register"/>
     </div>
     <QBtn :label="$t('forms.reset-password')" color="primary" flat class="q-sm" to="/password-reset"/>
+    <QBtn :label="$t('forms.resend-email')" color="primary" flat class="q-sm" to="/register-resend-email"/>
   </QForm>
 </template>
 

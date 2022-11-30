@@ -1,6 +1,6 @@
 import type { UserAssociations, UserRegister } from "#/user";
 import _axios from "@/plugins/axios";
-import {useUserStore} from "@/stores/useUserStore";
+import { useUserStore } from "@/stores/useUserStore";
 import axios from "axios";
 
 
@@ -88,6 +88,10 @@ export async function userGroupsRegister(username: string, newUserGroups: number
 
 export async function verifyEmail(key: string) {
     await _axios.post('/users/auth/registration/verify-email/', { key: key })
+}
+
+export async function resendEmail(email: string) {
+    await _axios.post('/users/auth/registration/resend-email/', { email })
 }
 
 // Password reset functions
