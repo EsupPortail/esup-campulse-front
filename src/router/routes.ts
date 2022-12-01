@@ -70,6 +70,11 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/RegisterVerifyEmailView.vue')
             },
             {
+                path: 'register-resend-email',
+                name: 'RegistrationResendEmail',
+                component: () => import('@/views/RegisterResendEmailView.vue')
+            },
+            {
                 path: 'password-reset',
                 name: 'PasswordReset',
                 component: () => import('@/views/PasswordResetView.vue')
@@ -92,7 +97,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/:catchAll(.*)',
-                redirect: {name: '404'}
+                redirect: { name: '404' }
             }
         ]
     }

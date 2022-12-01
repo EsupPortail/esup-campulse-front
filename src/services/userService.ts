@@ -84,6 +84,10 @@ export async function verifyEmail(key: string) {
     await _axios.post('/users/auth/registration/verify-email/', {key: key})
 }
 
+export async function resendEmail(email: string) {
+    await _axios.post('/users/auth/registration/resend-email/', {email})
+}
+
 // Password reset functions
 export async function passwordReset(email: string) {
     await _axios.post('/users/auth/password/reset/', {email})
