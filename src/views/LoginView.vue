@@ -11,79 +11,79 @@ const CASUrlRegister = `https://cas-dev.unistra.fr/cas/login?service=${encodeURI
 </script>
 
 <template>
-  <h1>{{ $t('login.login') }}</h1>
-  <div v-if="!newUser && !isCas">
-    <QCard class="card">
-      <QCardSection>
-        <div class="card-content">
-          <span class="card-title">{{ $t("login.im-cas-user") }}</span>
-          {{ $t("login.login-with-cas") }}
-        </div>
-        <div class="btn-group">
-          <QBtn
-              :href="CASUrlLogin"
-              :label="$t('login.login')"
-              color="primary"
-          />
-          <QBtn
-              :href="CASUrlRegister"
-              :label="$t('login.create-account')"
-              color="secondary"
-          />
-        </div>
-      </QCardSection>
-    </QCard>
-    <QCard class="card">
-      <QCardSection>
-        <div class="card-content">
-          <span class="card-title">{{ $t("login.im-not-cas-user") }}</span>
-          {{ $t("login.login-without-cas") }}
-        </div>
-        <FormLocalLogin/>
-      </QCardSection>
-    </QCard>
-  </div>
-  <div v-else>
-    <QCard class="card alert">
-      <QCardSection>
-        <div class="card-content">
+    <h1>{{ $t('login.login') }}</h1>
+    <div v-if="!newUser && !isCas">
+        <QCard id="cas-login" class="card">
+            <QCardSection>
+                <div class="card-content">
+                    <span class="card-title">{{ $t("login.im-cas-user") }}</span>
+                    {{ $t("login.login-with-cas") }}
+                </div>
+                <div class="btn-group">
+                    <QBtn
+                        :href="CASUrlLogin"
+                        :label="$t('login.login')"
+                        color="primary"
+                    />
+                    <QBtn
+                        :href="CASUrlRegister"
+                        :label="$t('login.create-account')"
+                        color="secondary"
+                    />
+                </div>
+            </QCardSection>
+        </QCard>
+        <QCard id="local-login" class="card">
+            <QCardSection>
+                <div class="card-content">
+                    <span class="card-title">{{ $t("login.im-not-cas-user") }}</span>
+                    {{ $t("login.login-without-cas") }}
+                </div>
+                <FormLocalLogin/>
+            </QCardSection>
+        </QCard>
+    </div>
+    <div v-else>
+        <QCard id="aborted-cas-registration" class="card">
+            <QCardSection>
+                <div class="card-content">
           <span class="card-title">
             {{ $t('alerts.aborted-cas-registration.title') }}
           </span>
-          {{ $t('alerts.aborted-cas-registration.message') }}
-          <div>
-            <QBtn
-                :label="$t('alerts.aborted-cas-registration.button')"
-                color="warning"
-                to="/register"
-            />
-          </div>
-        </div>
-      </QCardSection>
-    </QCard>
-  </div>
+                    {{ $t('alerts.aborted-cas-registration.message') }}
+                    <div>
+                        <QBtn
+                            :label="$t('alerts.aborted-cas-registration.button')"
+                            color="warning"
+                            to="/register"
+                        />
+                    </div>
+                </div>
+            </QCardSection>
+        </QCard>
+    </div>
 </template>
 
 <style lang="sass" scoped>
 .card
-  max-width: 700px
-  width: 100%
-  margin: auto auto 30px auto
-  height: auto
+    max-width: 700px
+    width: 100%
+    margin: auto auto 30px auto
+    height: auto
 
 .card-content
-  display: flex
-  flex-direction: column
-  font-size: 18px
-  margin-bottom: 10px
+    display: flex
+    flex-direction: column
+    font-size: 18px
+    margin-bottom: 10px
 
 .card-title
-  font-size: 1.4em
+    font-size: 1.4em
 
 .btn-group
-  display: flex
-  gap: 10px
+    display: flex
+    gap: 10px
 
-.alert .q-btn
-  margin-top: 10px
+#aborted-cas-registration .q-btn
+    margin-top: 10px
 </style>

@@ -1,8 +1,8 @@
-import {describe, it, expect, beforeEach, afterEach} from 'vitest'
+import type {Mock} from 'vitest'
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 import {tokens} from '~/mocks/tokens.mock'
 import {mockedAxios} from '~/mocks/axios.mock'
-import {newUser, user, userAssociations, newUserGroups} from '~/mocks/user.mock'
-import type {Mock} from 'vitest'
+import {newUser, newUserGroups, user, userAssociations} from '~/mocks/user.mock'
 import * as userService from '@/services/userService'
 import type {AxiosResponse} from 'axios'
 import {useUserStore} from '@/stores/useUserStore'
@@ -35,15 +35,15 @@ describe('User service', () => {
         })
         describe('Refresh token', () => {
             beforeEach(() => {
-                (mockedAxios.post as Mock).mockResolvedValueOnce({ data: {access: tokens.accessRefreshed} } as AxiosResponse)
+                (mockedAxios.post as Mock).mockResolvedValueOnce({data: {access: tokens.accessRefreshed}} as AxiosResponse)
                 userService.refreshToken()
             })
-            it('should set a new access token',() => {
+            it('should set a new access token', () => {
                 expect(localStorage.getItem('access')).toEqual(tokens.accessRefreshed)
             })
 
-            it('should call API on /users/auth/token/refresh/ with refresh token as data',  () => {
-                expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/token/refresh/', { refresh: tokens.refresh })
+            it('should call API on /users/auth/token/refresh/ with refresh token as data', () => {
+                expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/token/refresh/', {refresh: tokens.refresh})
             })
         })
         /*describe('Set bearer', () => {
@@ -103,7 +103,7 @@ describe('User service', () => {
                     {
                         user: user.username,
                         association: userAssociations[(userAssociations.length) - 1].id,
-                        has_office_status: userAssociations[(userAssociations.length) - 1].hasOfficeStatus
+                        hasOfficeStatus: userAssociations[(userAssociations.length) - 1].hasOfficeStatus
                     }
                 )
             })
@@ -116,7 +116,10 @@ describe('User service', () => {
                 expect(mockedAxios.post).toHaveBeenCalledOnce()
             })
             it('should call API on /users/groups/ with username and newUserGroups as data', () => {
-                expect(mockedAxios.post).toHaveBeenCalledWith('/users/groups/', {user: user.username, groups: newUserGroups})
+                expect(mockedAxios.post).toHaveBeenCalledWith('/users/groups/', {
+                    username: user.username,
+                    groups: newUserGroups
+                })
             })
         })
     })

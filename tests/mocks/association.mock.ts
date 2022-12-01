@@ -1,5 +1,4 @@
 import type {Association} from '#/association'
-import {groups} from "./user.mock";
 
 export const association: Association = {
     id: 1,

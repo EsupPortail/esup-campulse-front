@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import HomeCard from '@/components/layout/LayoutHomeCard.vue'
 import HomeBanner from '@/components/layout/LayoutHomeBanner.vue'
-import { useHomeContent } from '@/stores/useContentStore'
+import {useHomeContent} from '@/stores/useContentStore'
 
 const home = useHomeContent()
 </script>
@@ -10,26 +10,26 @@ const home = useHomeContent()
     <h1>{{ $t("home.title") }}</h1>
 
     <HomeBanner
-      :title="home.banner.title"
-      :description="home.banner.description"
-      :is_displayed="home.banner.isDisplayed"
+        :description="home.banner.description"
+        :is-displayed="home.banner.isDisplayed"
+        :title="home.banner.title"
     />
 
     <section>
-      <HomeCard v-for="(card, index) in home.cards"
-        :title="card.title"
-        :description="card.description"
-        :imagePath="card.imagePath"
-        :imageAlt="card.imageAlt"
-        :link="card.link"
-        :key="index"
-      />
+        <HomeCard v-for="(card, index) in home.cards"
+                  :key="index"
+                  :description="card.description"
+                  :imageAlt="card.imageAlt"
+                  :imagePath="card.imagePath"
+                  :link="card.link"
+                  :title="card.title"
+        />
     </section>
 </template>
 
-<style scoped lang="sass">
+<style lang="sass" scoped>
 section
-  display: flex
-  justify-content: center
-  padding: 2em
+    display: flex
+    justify-content: center
+    padding: 2em
 </style>
