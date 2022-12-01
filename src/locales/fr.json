@@ -127,5 +127,13 @@
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation."
     }
+  },
+  "alerts": {
+    "close": "Fermer",
+    "aborted-cas-registration": {
+      "title": "Demande de création de compte en cours",
+      "message": "Votre demande d'inscription avec un compte CAS n'est pas terminée. Cliquez sur \"Terminer ma création de compte\" pour la finaliser.",
+      "button": "Terminer ma création de compte"
+    }
   }
 }

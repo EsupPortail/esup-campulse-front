@@ -1,4 +1,4 @@
-import type {User, NewUser, UserGroup, UserAssociations} from '#/user'
+import type {User, UserAssociations, UserGroup, UserRegister} from '#/user'
 
 export const user: User = {
     id: 1,
@@ -23,30 +23,7 @@ export const user: User = {
     ]
 }
 
-export const nonValidatedUser: User = {
-    id: 1,
-    password: 'motdepasse',
-    //lastLogin: null,
-    //isSuperuser: false,
-    username: 'john.lennon@bbc.com',
-    firstName: 'John',
-    lastName: 'Lennon',
-    phone: null,
-    email: 'john.lennon@bbc.com',
-    //isStaff: false,
-    //isActive: false,
-    //dateJoined: '',
-    isCas: false,
-    isValidatedByAdmin: false,
-    groups: [
-        {
-            id: 2,
-            name: 'Étudiante ou Étudiant'
-        }
-    ]
-}
-
-export const newUser: NewUser = {
+export const newUser: UserRegister = {
     username: 'john.lennon@bbc.com',
     firstName: 'John',
     lastName: 'Lennon',

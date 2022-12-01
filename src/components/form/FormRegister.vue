@@ -1,19 +1,19 @@
-<script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+<script lang="ts" setup>
+import {computed, onMounted, ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useRoute} from 'vue-router'
 import {QInput, useQuasar} from 'quasar'
 import axios from 'axios'
-import { useAssociationStore } from "@/stores/useAssociationStore";
-import type { UserRegister, UserAssociations } from '#/user'
-import { useUserStore } from '@/stores/useUserStore'
+import {useAssociationStore} from "@/stores/useAssociationStore";
+import type {UserAssociations, UserRegister} from '#/user'
+import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
-import { userLocalRegister, userCASRegister, userAssociationsRegister, userGroupsRegister } from '@/services/userService'
+import {userAssociationsRegister, userCASRegister, userGroupsRegister, userLocalRegister} from '@/services/userService'
 import LayoutGDPRConsent from '@/components/layout/LayoutGDPRConsent.vue'
 
-const { t } = useI18n()
+const {t} = useI18n()
 const route = useRoute()
-const { notify } = useQuasar()
+const {notify} = useQuasar()
 const userStore = useUserStore()
 const associationStore = useAssociationStore()
 
@@ -43,20 +43,26 @@ onMounted(loadGroups)
 
 // Load user infos from CAS
 async function loadCASUser() {
-  try {
-    if (route.query.ticket) {
-      const userStore = useUserStore()
+  // For aborted CAS user registration
+  // We use newUser data that persist with getUser()
+  if (userStore.newUser && userStore.isCas) {
+    newUser.value = userStore.newUser
+    emailVerification.value = newUser.value.email
+  }
+      // For regular CAS user registration
+  // We use a ticket from CAS
+  else if (route.query.ticket) {
+    try {
       await userStore.loadCASUser(route.query.ticket as string)
       newUser.value = userStore.newUser
       emailVerification.value = newUser.value.email
-      // isCAS.value = true
+    } catch (error) {
+      await router.push({name: 'Login'})
+      notify({
+        type: 'negative',
+        message: t('notifications.negative.cas-authentication-error')
+      })
     }
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.cas-authentication-error')
-    })
-    await router.push({ name: 'Login' })
   }
 }
 
@@ -94,16 +100,20 @@ function addAssociation() {
     hasOfficeStatus: false
   })
 }
+
 function removeAssociation(index: number) {
   newUserAssociations.value.splice(index, 1)
 }
 
 // Register newUser
 async function register() {
+  // Must choose 1 or 2 groups
   if (groupChoiceIsValid.value) {
+    // Must consent to our privacy policy
     if (hasConsent.value) {
       try {
-        if (userStore.isCAS) {
+        // For CAS users
+        if (userStore.isCas) {
           if (newUser.value.phone) {
             await userCASRegister(newUser.value.phone)
           }
@@ -111,17 +121,18 @@ async function register() {
             await userAssociationsRegister(newUser.value.username, newUserAssociations.value)
           }
           await userGroupsRegister(newUser.value.username, newUserGroups.value)
-          // TODO refactor
-          localStorage.clear()
-          await router.push({ name: 'RegistrationSuccessful' })
+          // We must clear newUser to avoid persistence of session
+          await userStore.unLoadNewUser()
+          await router.push({name: 'RegistrationSuccessful'})
         }
+        // For local users
         else {
           await userLocalRegister(newUser.value)
           if (newUserAssociations.value) {
             await userAssociationsRegister(newUser.value.email, newUserAssociations.value)
           }
           await userGroupsRegister(newUser.value.email, newUserGroups.value)
-          await router.push({ name: 'RegistrationSuccessful' })
+          await router.push({name: 'RegistrationSuccessful'})
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -131,9 +142,8 @@ async function register() {
               type: 'negative',
               message: t('notifications.negative.email-used')
             })
-            await router.push({ name: 'Login' })
-          }
-          else {
+            await router.push({name: 'Login'})
+          } else {
             notify({
               type: 'negative',
               message: t('notifications.negative.invalid-request')
@@ -141,8 +151,7 @@ async function register() {
           }
         }
       }
-    }
-    else {
+    } else {
       notify({
         type: 'negative',
         message: t('notifications.negative.need-gdpr-consent')
@@ -154,85 +163,107 @@ async function register() {
 
 <template>
   <QForm
-    @submit="register"
-    class="q-gutter-md"
+      class="q-gutter-md"
+      @submit="register"
   >
     <QInput
-      filled
-      :disable="!!userStore.isCAS"
-      v-model="newUser.firstName"
-      :label="$t('forms.first-name')"
-      lazy-rules
-      :rules="[ val => val && val.length > 0 || $t('forms.required-first-name')]"
+        v-model="newUser.firstName"
+        :disable="!!userStore.isCas"
+        :label="$t('forms.first-name')"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-first-name')]"
+        filled
+        lazy-rules
     />
     <QInput
-      filled
-      :disable="!!userStore.isCAS"
-      v-model="newUser.lastName"
-      :label="$t('forms.last-name')"
-      lazy-rules
-      :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
+        v-model="newUser.lastName"
+        :disable="!!userStore.isCas"
+        :label="$t('forms.last-name')"
+        :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
+        filled
+        lazy-rules
     />
     <QInput
-      filled
-      :disable="!!userStore.isCAS"
-      v-model="newUser.email"
-      :label="$t('forms.email')"
-      lazy-rules
-      :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
+        v-model="newUser.email"
+        :disable="!!userStore.isCas"
+        :label="$t('forms.email')"
+        :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
+        filled
+        lazy-rules
     />
     <QInput
-      filled
-      :disable="!!userStore.isCAS"
-      v-model="emailVerification"
-      :label="$t('forms.repeat-email')"
-      lazy-rules
-      :rules="[ (val, rules) => rules.email(val) && val === newUser.email || $t('forms.required-repeat-email')]"
+        v-model="emailVerification"
+        :disable="!!userStore.isCas"
+        :label="$t('forms.repeat-email')"
+        :rules="[ (val, rules) => rules.email(val) && val === newUser.email || $t('forms.required-repeat-email')]"
+        filled
+        lazy-rules
     />
     <QInput
-      filled
-      v-model="newUser.phone"
-      :label="$t('forms.phone')"
-      mask="## ## ## ## ##"
-      hint="Format : 06 00 00 00 00"
-      lazy-rules
+        v-model="newUser.phone"
+        :label="$t('forms.phone')"
+        filled
+        hint="Format : 06 00 00 00 00"
+        lazy-rules
+        mask="## ## ## ## ##"
     />
     <fieldset>
       <legend class="legend-big">{{ $t('forms.status') }}</legend>
       <QField
-        :hint="$t('forms.status-hint')"
-        :error="!groupChoiceIsValid"
-        :error-message="$t('forms.required-status')"
+          :error="!groupChoiceIsValid"
+          :error-message="$t('forms.required-status')"
+          :hint="$t('forms.status-hint')"
       >
         <QOptionGroup
-          v-model="newUserGroups"
-          :options="userStore.groupList"
-          color="primary"
-          type="checkbox"
+            v-model="newUserGroups"
+            :options="userStore.groupList"
+            color="primary"
+            type="checkbox"
         />
       </QField>
     </fieldset>
-    <QSeparator />
+    <QSeparator/>
     <fieldset>
       <legend class="legend-big">{{ $t("forms.im-from-association") }}</legend>
       <fieldset>
         <legend>{{ $t("forms.im-in-association") }}</legend>
         <div v-for="(association, index) in newUserAssociations" :key="index">
-          <QSelect filled v-model="association.id" :options="associationStore.associationList" map-options emit-value :label="$t('forms.select-association')" />
-          <QCheckbox v-model="association.hasOfficeStatus" :label="$t('forms.im-in-association-office')" />
-          <QBtn @click="removeAssociation(index)" outline color="red" icon="mdi-minus-circle-outline" :label="$t('forms.delete-association')" />
-          <QSeparator />
+          <QSelect
+              v-model="association.id"
+              :label="$t('forms.select-association')"
+              :options="associationStore.associationList"
+              emit-value
+              filled
+              map-options
+          />
+          <QCheckbox
+              v-model="association.hasOfficeStatus"
+              :label="$t('forms.im-in-association-office')"
+          />
+          <QBtn
+              :label="$t('forms.delete-association')"
+              color="red" icon="mdi-minus-circle-outline"
+              outline
+              @click="removeAssociation(index)"
+          />
+          <QSeparator/>
         </div>
-        <QBtn class="add-association" v-if="newUserAssociations.length < 5" @click="addAssociation" outline color="primary" icon="mdi-plus-circle-outline" :label="$t('forms.add-association')" />
+        <QBtn
+            v-if="newUserAssociations.length < 5"
+            :label="$t('forms.add-association')"
+            class="add-association"
+            color="primary" icon="mdi-plus-circle-outline"
+            outline
+            @click="addAssociation"
+        />
       </fieldset>
     </fieldset>
-    <QSeparator />
-    <LayoutGDPRConsent :has-consent="hasConsent" @update-consent="hasConsent = !hasConsent" />
-    <QBtn :label="$t('forms.send')" type="submit" color="primary"/>
+    <QSeparator/>
+    <LayoutGDPRConsent :has-consent="hasConsent" @update-consent="hasConsent = !hasConsent"/>
+    <QBtn :label="$t('forms.send')" color="primary" type="submit"/>
   </QForm>
 </template>
 
-<style scoped lang="sass">
+<style lang="sass" scoped>
 .legend-big
   font-size: 1.5em
 

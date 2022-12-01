@@ -26,13 +26,12 @@ export interface User {
 // User store
 export interface UserStore {
     user: User | undefined,
-    newUser: NewUser | undefined,
-    isCAS: boolean,
+    newUser: User | undefined,
     groups: UserGroup[]
 }
 
-// newUser
-export type NewUser = Pick<User, "username", "first_name", "last_name", "email", "phone">
+/*// newUser
+export type NewUser = Pick<User, "username", "first_name", "last_name", "email", "phone">*/
 
 // Login
 export type UserLogin = Pick<User, "username" | "password">
