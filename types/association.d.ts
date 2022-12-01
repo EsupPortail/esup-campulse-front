@@ -10,33 +10,56 @@
  *  id_component, id_field
  */
 export interface Association {
-    id: number;
-    name: string;
-    username: string;
-    acronym: string | null;
-    pathLogo: string | null;
-    description: string | null;
-    activities: string | null;
-    address: string | null;
-    phone: string | null;
-    email: string | null;
-    siret: number | null;
-    website: string | null;
-    studentAmount: number | null;
-    isEnabled: boolean | null;
-    createdDate: string | null;
-    approvalDate: string | null;
-    lastGoaDate: string | null;
-    cgaDate: string | null;
-    idStatus: number;
-    idInstitution: number;
-    idComponent: number;
-    idField: number;
+    id: number,
+    name: string,
+    username: string,
+    acronym: string | null,
+    pathLogo: string | null,
+    description: string | null,
+    activities: string | null,
+    address: string | null,
+    phone: string | null,
+    email: string | null,
+    siret: number | null,
+    website: string | null,
+    studentAmount: number | null,
+    isEnabled: boolean | null,
+    createdDate: string | null,
+    approvalDate: string | null,
+    lastGoaDate: string | null,
+    cgaDate: string | null,
+    idStatus: number,
+    idInstitution: number,
+    idComponent: number,
+    idField: number
 }
 
-interface AssociationStore {
+export interface AssociationList {
+    id: number,
+    institution: {
+        id: number,
+        name: string,
+        acronym: string
+    },
+    institutionComponent: {
+        id: number,
+        name: string,
+    },
+    activityField: {
+        id: number,
+        name: string,
+    },
+    name: string,
+    acronym: string,
+    isEnabled: boolean,
+    isSite: boolean
+}
+
+export interface AssociationStore {
     association: Association | undefined,
-    associations: Association[]
+    associations: AssociationList[]
 }
 
-export type AssociationList = { value: number, label: string }[]
+export type AssociationNames = { value: number, label: string }[]
+
+export type AssociationDirectory = { name: string, acronym: string, institution: string, component: string, field: string }[]
