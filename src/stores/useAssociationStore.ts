@@ -1,11 +1,17 @@
 import {defineStore} from 'pinia'
-import type {AssociationDirectory, AssociationList, AssociationNames, AssociationStore} from '#/association'
+import type {
+    Association,
+    AssociationDirectory,
+    AssociationList,
+    AssociationNames,
+    AssociationStore
+} from '#/association'
 import _axios from '@/plugins/axios'
 
 
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
-        association: undefined,
+        association: {} as Association,
         associations: []
     }),
 
@@ -20,6 +26,7 @@ export const useAssociationStore = defineStore('associationStore', {
         associationDirectory: (state: AssociationStore): AssociationDirectory => {
             return state.associations
                 .map(association => ({
+                    id: association.id,
                     name: association.name,
                     acronym: association.acronym,
                     institution: association.institution.name,
@@ -31,7 +38,14 @@ export const useAssociationStore = defineStore('associationStore', {
 
     actions: {
         async getAssociations() {
-            this.associations = (await _axios.get<AssociationList[]>('/associations/')).data
+            if (this.associations.length === 0) {
+                this.associations = (await _axios.get<AssociationList[]>('/associations/')).data
+            }
+        },
+        async getAssociationDetail(id: number) {
+            if (this.association?.id !== id) {
+                this.association = (await _axios.get<Association>(`associations/${id}`)).data
+            }
         }
     }
 })

@@ -56,10 +56,11 @@ export interface AssociationList {
 }
 
 export interface AssociationStore {
-    association: Association | undefined,
+    association: Association,
     associations: AssociationList[]
 }
 
 export type AssociationNames = { value: number, label: string }[]
 
-export type AssociationDirectory = { name: string, acronym: string, institution: string, component: string, field: string }[]
+export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, component: string, field: string }
+export type AssociationDirectory = AssociationDirectoryDetail[]
