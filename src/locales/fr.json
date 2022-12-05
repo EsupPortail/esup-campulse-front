@@ -140,5 +140,9 @@
       "message": "Votre demande d'inscription avec un compte CAS n'est pas terminée. Cliquez sur \"Terminer ma création de compte\" pour la finaliser.",
       "button": "Terminer ma création de compte"
     }
+  },
+  "association": {
+    "contact-association" : "Contacter l'association",
+    "back-directory": "Revenir à l'annuaire"
   }
 }
