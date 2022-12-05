@@ -1,10 +1,9 @@
-import { beforeEach, describe, it, expect, afterEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import { mockedAxios } from '~/mocks/axios.mock'
-import { useAssociationStore } from '@/stores/useAssociationStore'
-import type { AxiosResponse } from 'axios'
-import {associations, associationList} from '~/mocks/association.mock'
-
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
+import {createPinia, setActivePinia} from 'pinia'
+import {mockedAxios} from '~/mocks/axios.mock'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import type {AxiosResponse} from 'axios'
+import {associationList, associations} from '~/mocks/association.mock'
 
 
 setActivePinia(createPinia())
@@ -16,7 +15,7 @@ describe('Association store', () => {
     })
     describe('Get associations', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({ data: associations } as AxiosResponse)
+            mockedAxios.get.mockResolvedValueOnce({data: associations} as AxiosResponse)
             associationStore.getAssociations()
         })
         afterEach(() => {
@@ -37,10 +36,10 @@ describe('Association store', () => {
             associationStore.associations = associations
         })
         it('should contain all the associations', () => {
-            expect(associationStore.associationList.length).toEqual(associations.length)
+            expect(associationStore.associationDirectory.length).toEqual(associations.length)
         })
         it('should contain associations with labels and lists', () => {
-            expect(associationStore.associationList).toEqual(associationList)
+            expect(associationStore.associationDirectory).toEqual(associationList)
         })
     })
 })

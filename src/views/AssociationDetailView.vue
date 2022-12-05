@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted} from 'vue'
+import {onBeforeMount} from 'vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useRoute} from 'vue-router'
 import {useI18n} from 'vue-i18n'
@@ -10,9 +10,10 @@ const {t} = useI18n()
 const {notify} = useQuasar()
 
 const associationStore = useAssociationStore()
-const association = associationStore.association
 
-onMounted(getAssociation)
+
+// onMounted(getAssociation)
+onBeforeMount(getAssociation)
 
 async function getAssociation() {
     if (route.params.id) {
@@ -32,23 +33,50 @@ async function getAssociation() {
 <template>
     <div class="title">
         <div class="logo">
-            <img v-if="association.pathLogo" :src="association.pathLogo" alt=""/>
+            <img v-if="associationStore.association.pathLogo" :src="associationStore.association.pathLogo" alt=""/>
             <div v-else></div>
         </div>
         <div class="name">
-            <h1>{{ association.name }}</h1>
+            <h1>{{ associationStore.association.name }}</h1>
             <span>Charte valide jusqu'au XX/XX/XX</span>
         </div>
     </div>
     <div class="description">
-        <p>{{ association.description }}</p>
+        <p>{{ associationStore.association.description }}</p>
     </div>
-    <div class="informations">
+    <div class="cardbox-title">
         <h2>Informations</h2>
+        <div class="cardbox-item">
+            <p>{{ associationStore.association.activities }}</p>
+        </div>
+
+        <div class="cardbox-item">
+            <p>{{ associationStore.association.institution.name }}</p>
+        </div>
+
+        <div class="cardbox-item">
+            <p>{{ associationStore.association.institutionComponent.name }}</p>
+        </div>
+
+        <div class="cardbox-item">
+            <p>{{ associationStore.association.activityField.name }}</p>
+        </div>
+
+    </div>
+    <!--<p>{{ associationStore.association.acronym }}</p>-->
+
+    <div class="cardbox-title">
+        <h2>Administration</h2>
+
+        <div class="cardbox-item">
+            <p>{{ associationStore.association.institution.name }}</p>
+        </div>
+
     </div>
 
-
-    <p>{{ association.acronym }}</p>
+    <div class="cardbox-title">
+        <h2>Contact</h2>
+    </div>
 </template>
 
 <style lang="sass" scoped>

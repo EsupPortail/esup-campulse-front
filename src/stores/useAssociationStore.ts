@@ -44,8 +44,8 @@ export const useAssociationStore = defineStore('associationStore', {
         },
         async getAssociationDetail(id: number) {
             if (this.association?.id !== id) {
-                this.association = (await _axios.get<Association>(`associations/${id}`)).data
+                this.association = (await _axios.get<Association>(`/associations/${id}`)).data
             }
-        }
+        },
     }
 })
