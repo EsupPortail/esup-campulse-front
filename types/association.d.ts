@@ -9,20 +9,21 @@
  *  approval_date, last_goa, cga_date, id_status, id_institution
  *  id_component, id_field
  */
+
 export interface Association {
     id: number,
     institution: {
         id: number,
         name: string,
-        acronym: string
+        acronym: string,
     },
     institutionComponent: {
         id: number,
-        name: string
+        name: string,
     },
     activityField: {
         id: number,
-        name: string
+        name: string,
     },
     name: string,
     acronym: string | null,
@@ -48,7 +49,7 @@ export interface AssociationList {
     institution: {
         id: number,
         name: string,
-        acronym: string
+        acronym: string,
     },
     institutionComponent: {
         id: number,
