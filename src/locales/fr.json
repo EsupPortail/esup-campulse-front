@@ -110,6 +110,10 @@
     "send": "Envoyer",
     "status": "Votre statut"
   },
+  "manager": {
+    "users": "Liste des comptes",
+    "validate": "Valider"
+  },
   "notifications": {
     "negative": {
       "cas-authentication-error": "Erreur d'authentification CAS.",

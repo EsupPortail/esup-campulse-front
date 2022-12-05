@@ -78,3 +78,22 @@ export interface UserGroup {
 
 export type GroupList = { value: number, label: string }[]
 
+export interface UserList {
+    id: number,
+    username: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    isValidatedByAdmin: boolean | null,
+}
+
+export interface UsersStore {
+    user: User,
+    users: UserList[]
+}
+
+export type UserNames = { value: number, label: string }[]
+
+export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
+export type UserDirectory = UserDirectoryDetail[]
+
