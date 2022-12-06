@@ -108,7 +108,12 @@
     "passwords-are-not-equal": "Les deux mots de passe ne sont pas identiques.",
     "select-association": "Sélectionner une association",
     "send": "Envoyer",
-    "status": "Votre statut"
+    "status": "Votre statut",
+    "validated-account": "Compte validé"
+  },
+  "manager": {
+    "users": "Liste des comptes",
+    "validate": "Valider"
   },
   "notifications": {
     "negative": {
@@ -123,14 +128,16 @@
       "no-ticket": "Pas de ticket.",
       "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
       "unknown-credentials": "L'identifiant et/ou le mot de passe sont erronés, veuillez réessayer.",
-      "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail."
+      "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail.",
+      "unknown-user": "Aucun compte n'a été trouvé."
     },
     "positive": {
       "login-success": "Connexion réussie.",
       "logout-success": "Déconnexion réussie.",
       "password-changed": "Votre mot de passe a bien été modifié.",
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
-      "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation."
+      "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
+      "validate-success": "Le statut du compte a bien été modifié."
     }
   },
   "alerts": {
