@@ -47,8 +47,17 @@ export const useUsersStore = defineStore('usersStore', {
                 this.user = (await _axios.get<User>(`/users/${id}`)).data
             }
         },
-        async validateUser(url: string, data: UserValidate) {
-            await _axios.patch(url, data)
+        async validateUser(id: number, data: UserValidate) {
+            try {
+                await _axios.patch(`/users/${id}`, data)
+                this.users.forEach((user) => {
+                    if (user.id === id) {
+                        user.isValidatedByAdmin = !user.isValidatedByAdmin
+                    }
+                })
+            } catch (e) {
+
+            }
         },
     }
 })

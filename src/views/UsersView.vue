@@ -31,7 +31,7 @@ const columns: QTableProps['columns'] = [
 
 async function validateUser(user) {
     try {
-        await usersStore.validateUser(`/users/${user.id}`, {
+        await usersStore.validateUser(user.id, {
             isValidatedByAdmin: user.isValidatedByAdmin
         })
         notify({
