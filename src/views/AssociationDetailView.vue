@@ -53,74 +53,90 @@ async function getAssociation() {
         </div>
 
         <div class="cardbox">
-            <h2>Informations</h2>
+            <h2>{{ $t("association.info-title") }}</h2>
             <div class="cardbox-item">
-                <h3>Activités</h3>
+                <h3>{{ $t("association.activities-sub-title") }}</h3>
                 <p>{{ associationStore.association.activities }}</p>
             </div>
 
             <div class="cardbox-item">
-                <h3>Institution</h3>
+                <h3>{{ $t("association.services-sub-title") }}</h3>
                 <p>{{ associationStore.association.institution.name }}</p>
             </div>
 
             <div class="cardbox-item">
-                <h3>Composante</h3>
+                <h3>{{ $t("association.institut-sub-title") }}</h3>
                 <p>{{ associationStore.association.institutionComponent.name }}</p>
             </div>
 
             <div class="cardbox-item">
-                <h3>Domaines</h3>
+                <h3>{{ $t("association.domain-sub-title") }}</h3>
                 <p>{{ associationStore.association.activityField.name }}</p>
             </div>
 
         </div>
         <div class="cardbox">
-            <h2>Administration</h2>
+            <h2>{{ $t("association.admin-title") }}</h2>
 
             <div class="cardbox-item">
-                <h3>Institution</h3>
+                <h3>{{ $t("association.namepresident-sub-title") }}</h3>
                 <p>{{ associationStore.association.institution.name }}</p>
             </div>
 
             <div class="cardbox-item">
-                <h3>Téléphone</h3>
+              <h3>{{ $t("association.phone-sub-title") }}</h3>
                 <p>{{ associationStore.association.phone }}</p>
             </div>
 
-            <div class="cardbox-item">
-                <h3>Adresse mail</h3>
+          <!-- AJOUTER LA VARIABLE DU MAIL DU PRESIDENT DANS LE MODELE ASSOCIATION-->
+          <div class="cardbox-item">
+              <h3>{{ $t("association.mailpresident-sub-title") }}</h3>
                 <p>{{ associationStore.association.email }}</p>
             </div>
 
             <div class="cardbox-item">
-                <h3>Numéro Siret</h3>
+              <h3>{{ $t("association.siret-sub-title") }}</h3>
                 <p>{{ associationStore.association.siret }}</p>
             </div>
+
+          <!-- AJOUTER LES VARIABLES LASTAGO ET CHARTDATE DANS LE MODELE ASSOCIATION-->
+            <div class="cardbox-item">
+              <h3>{{ $t("association.lastago-sub-title") }}</h3>
+              <p>{{ associationStore.association.email }}</p>
+            </div>
+
+            <div class="cardbox-item">
+              <h3>{{ $t("association.chartdate-sub-title") }}</h3>
+              <p>{{ associationStore.association.email }}</p>
+            </div>
+          <!-- AJOUTER LES VARIABLES LASTAGO ET CHARTDATE DANS LE MODELE ASSOCIATION-->
+
         </div>
 
         <div class="cardbox">
-            <h2>Contact</h2>
+            <h2>{{ $t("association.contact-title") }}</h2>
 
             <div class="cardbox-item">
-                <h3>Adresse</h3>
+              <h3>{{ $t("association.address-sub-title") }}</h3>
                 <p>{{ associationStore.association.address }}</p>
             </div>
 
             <div class="cardbox-item">
-                <h3>Adresse mail</h3>
+              <h3>{{ $t("association.mailasso-sub-title") }}</h3>
                 <p>{{ associationStore.association.email }}</p>
             </div>
 
-            <div class="cardbox-item">
-                <h3>Site web</h3>
+          <!-- AJOUTER LES VARIABLES DES RESEAUX SOCIAUX DANS LE MODELE ASSOCIATION-->
+          <div class="cardbox-item">
+              <h3>{{ $t("association.socials-sub-title") }}</h3>
                 <p>{{ associationStore.association.website }}</p>
-            </div>
+          </div>
+          <!-- AJOUTER LES VARIABLES DES RESEAUX SOCIAUX DANS LE MODELE ASSOCIATION-->
 
-            <div class="cardbox-item">
-                <h3>Réseaux sociaux</h3>
+          <div class="cardbox-item">
+              <h3>{{ $t("website.chartdate-sub-title") }}</h3>
                 <p>{{ associationStore.association.website }}</p>
-            </div>
+          </div>
         </div>
     </div>
     <QBtn color="secondary" label="Retourner aux associations" to="/associations"/>
