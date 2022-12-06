@@ -1,31 +1,51 @@
 <script lang="ts" setup>
 import {useUsersStore} from '@/stores/useUsersStore'
 import {onMounted} from 'vue'
-import router from '@/router'
 import type {QTableProps} from 'quasar'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import type {UserValidate} from '#/user'
 
+const {t} = useI18n()
+const {notify} = useQuasar()
 const usersStore = useUsersStore()
 onMounted(usersStore.getUsers)
 
 
 const columns: QTableProps['columns'] = [
     {
-        name: 'firstName',
+        name: 'id',
         required: true,
-        label: 'Nom de famille',
+        label: 'ID',
         align: 'left',
-        field: row => row.name,
+        field: row => row.id,
         format: val => `${val}`,
         sortable: true
     },
+    {name: 'firstName', align: 'left', label: 'Nom de famille', field: 'firstName', sortable: true},
     {name: 'lastName', align: 'left', label: 'Prénom', field: 'lastName', sortable: true},
     {name: 'email', align: 'left', label: 'Adresse mail', field: 'email', sortable: true},
     {name: 'isValidatedByAdmin', align: 'left', label: 'Est validé', field: 'isValidatedByAdmin', sortable: true},
 ]
 
-function goTo(id: number) {
-    router.push({name: 'UserDetail', params: {id}})
+async function validateUser(user) {
+    try {
+        await usersStore.validateUser(`/users/${user.id}`, {
+            isValidatedByAdmin: user.isValidatedByAdmin
+        })
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.validate-success')
+        })
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.unknown-user')
+        })
+    }
 }
+
 </script>
 
 <template>
@@ -33,11 +53,14 @@ function goTo(id: number) {
     <QTable
         :columns="columns"
         :rows="usersStore.userDirectory"
-        row-key="firstName"
+        row-key="id"
         title="Users"
     >
         <template v-slot:body="props">
-            <QTr :props="props" @click="goTo(props.row.id)">
+            <QTr :props="props">
+                <QTd key="id" :props="props">
+                    {{ props.row.id }}
+                </QTd>
                 <QTd key="firstName" :props="props">
                     {{ props.row.firstName }}
                 </QTd>
@@ -48,7 +71,11 @@ function goTo(id: number) {
                     {{ props.row.email }}
                 </QTd>
                 <QTd key="isValidatedByAdmin" :props="props">
-                    {{ props.row.isValidatedByAdmin }}
+                    <QCheckbox
+                        v-model="props.row.isValidatedByAdmin"
+                        :label="$t('forms.validated-account')"
+                        @click="validateUser(props.row)"
+                    />
                 </QTd>
             </QTr>
         </template>

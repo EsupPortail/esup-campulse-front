@@ -4,7 +4,8 @@ import type {
     UserDirectory,
     UserList,
     UserNames,
-    UsersStore
+    UsersStore,
+    UserValidate
 } from '#/user'
 import _axios from '@/plugins/axios'
 
@@ -45,6 +46,9 @@ export const useUsersStore = defineStore('usersStore', {
             if (this.user?.id !== id) {
                 this.user = (await _axios.get<User>(`/users/${id}`)).data
             }
+        },
+        async validateUser(url: string, data: UserValidate) {
+            await _axios.patch(url, data)
         },
     }
 })

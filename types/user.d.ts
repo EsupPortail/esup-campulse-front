@@ -96,4 +96,4 @@ export type UserNames = { value: number, label: string }[]
 
 export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
 export type UserDirectory = UserDirectoryDetail[]
-
+export type UserValidate = Pick<User, "id" | "isValidatedByAdmin">
