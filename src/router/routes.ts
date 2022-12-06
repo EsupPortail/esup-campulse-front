@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type {RouteRecordRaw} from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -12,21 +12,26 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/HomeView.vue')
             },
             {
-                path: 'directory',
-                name: 'Directory',
-                component: () => import('@/views/DirectoryView.vue')
+                path: 'associations',
+                name: 'Associations',
+                component: () => import('@/views/AssociationsView.vue')
+            },
+            {
+                path: 'association/:id',
+                name: 'AssociationDetail',
+                component: () => import('@/views/AssociationDetailView.vue')
             },
             {
                 path: 'charter',
                 name: 'Charter',
                 component: () => import('@/views/CharterView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'commission',
                 name: 'Commission',
                 component: () => import('@/views/CommissionView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'login',
@@ -42,7 +47,7 @@ const routes: RouteRecordRaw[] = [
                 path: 'logout',
                 name: 'Logout',
                 component: () => import('@/views/LogoutView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'dashboard',
@@ -97,7 +102,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/:catchAll(.*)',
-                redirect: { name: '404' }
+                redirect: {name: '404'}
             }
         ]
     }

@@ -18,7 +18,7 @@ export const useHomeContent = defineStore('homeContent', {
                 description: i18n.global.t("home.cards.directory.description"),
                 imagePath: "/images/unistra.jpg",
                 imageAlt: i18n.global.t("home.cards.directory.imageAlt"),
-                link: "/directory"
+                link: "/associations"
             },
             {
                 title: i18n.global.t("home.cards.commission.title"),

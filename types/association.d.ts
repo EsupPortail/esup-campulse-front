@@ -9,34 +9,68 @@
  *  approval_date, last_goa, cga_date, id_status, id_institution
  *  id_component, id_field
  */
+
 export interface Association {
-    id: number;
-    name: string;
-    username: string;
-    acronym: string | null;
-    pathLogo: string | null;
-    description: string | null;
-    activities: string | null;
-    address: string | null;
-    phone: string | null;
-    email: string | null;
-    siret: number | null;
-    website: string | null;
-    studentAmount: number | null;
-    isEnabled: boolean | null;
-    createdDate: string | null;
-    approvalDate: string | null;
-    lastGoaDate: string | null;
-    cgaDate: string | null;
-    idStatus: number;
-    idInstitution: number;
-    idComponent: number;
-    idField: number;
+    id: number,
+    institution: {
+        id: number,
+        name: string,
+        acronym: string,
+    },
+    institutionComponent: {
+        id: number,
+        name: string,
+    },
+    activityField: {
+        id: number,
+        name: string,
+    },
+    name: string,
+    acronym: string | null,
+    pathLogo: string | null,
+    altLogo: string | null,
+    description: string | null,
+    activities: string | null,
+    address: string | null,
+    phone: string | null,
+    email: string | null,
+    siret: number | null,
+    website: string | null,
+    studentCount: number | null,
+    isEnabled: boolean | null,
+    createdDate: string | null,
+    approvalDate: string | null,
+    lastGoaDate: string | null,
+    cgaDate: string | null,
 }
 
-interface AssociationStore {
-    association: Association | undefined,
-    associations: Association[]
+export interface AssociationList {
+    id: number,
+    institution: {
+        id: number,
+        name: string,
+        acronym: string,
+    },
+    institutionComponent: {
+        id: number,
+        name: string,
+    },
+    activityField: {
+        id: number,
+        name: string,
+    },
+    name: string,
+    acronym: string,
+    isEnabled: boolean,
+    isSite: boolean
 }
 
-export type AssociationList = { value: number, label: string }[]
+export interface AssociationStore {
+    association: Association,
+    associations: AssociationList[]
+}
+
+export type AssociationNames = { value: number, label: string }[]
+
+export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, component: string, field: string }
+export type AssociationDirectory = AssociationDirectoryDetail[]

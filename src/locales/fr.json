@@ -34,7 +34,7 @@
   "header": {
     "charter": "Charte",
     "commission": "CAPE",
-    "directory": "Annuaire",
+    "associations": "Annuaire",
     "home": "Accueil",
     "login": "Connexion",
     "logout": "Déconnexion",
@@ -140,5 +140,27 @@
       "message": "Votre demande d'inscription avec un compte CAS n'est pas terminée. Cliquez sur \"Terminer ma création de compte\" pour la finaliser.",
       "button": "Terminer ma création de compte"
     }
+  },
+  "association": {
+    "info-title" : "Informations",
+    "admin-title" : "Administration",
+    "contact-title": "Contact",
+    "activities-sub-title" : "Activités",
+    "services-sub-title" : "Services proposés",
+    "institut-sub-title": "Institution",
+    "compo-sub-title" : "Composante",
+    "domain-sub-title" : "Domaine",
+    "namepresident-sub-title" : "Nom du président",
+    "phone-sub-title" : "Numéro de Téléphone",
+    "mailpresident-sub-title" : "Adresse mail du Président",
+    "siret-sub-title" : "Numéro SIRET",
+    "lastago-sub-title" : "Date de la dernière AGO",
+    "chartdate-sub-title": "Date de la signature de la charte",
+    "address-sub-title" : "Adresse postale",
+    "mailasso-sub-title" : "Adresse mail",
+    "socials-sub-title" : "Réseaux sociaux",
+    "web-sub-title" : "Site web",
+    "contact-association" : "Contacter l'association",
+    "back-directory": "Revenir à l'annuaire"
   }
 }
