@@ -94,6 +94,11 @@ const routes: RouteRecordRaw[] = [
                 name: 'ProfilePasswordEdit',
                 component: () => import('@/views/ProfilePasswordEditView.vue')
             },
+            {
+                path: 'users',
+                name: 'Users',
+                component: () => import('@/views/UsersView.vue')
+            },
             // This must be last
             {
                 path: '404-not-found',
