@@ -15,9 +15,7 @@ const association = ref<Association>()
 
 
 // onMounted(getAssociation)
-onBeforeMount(async () => [
-    await getAssociation()
-])
+onBeforeMount(getAssociation)
 
 async function getAssociation() {
     if (route.params.id) {
@@ -33,113 +31,124 @@ async function getAssociation() {
         }
     }
 }
+
+function getDate(date: string) {
+    const timeStamp = Date.parse(date)
+    const formatDate = new Date(timeStamp)
+    return formatDate.getDate() + '/' + (formatDate.getMonth() + 1) + '/' + formatDate.getFullYear()
+}
 </script>
 
 <template>
-    <div v-if="!association">Loading...</div>
+    <div v-if="!association">{{ $t("loading") }}</div>
     <div v-else>
         <div class="title">
             <div class="logo">
-                <img v-if="associationStore.association.pathLogo" :src="associationStore.association.pathLogo" alt=""/>
+                <img
+                    v-if="associationStore.association.pathLogo"
+                    :alt="associationStore.association.altLogo"
+                    :src="associationStore.association.pathLogo"
+                />
                 <div v-else></div>
             </div>
             <div class="name">
                 <h1>{{ associationStore.association.name }}</h1>
-                <span>Charte valide jusqu'au XX/XX/XX</span>
+                <p class="acronym">{{ associationStore.association.acronym }}</p>
+                <p>{{ $t("association.labels.charter-validity") }}</p>
             </div>
         </div>
         <div class="description">
             <p>{{ associationStore.association.description }}</p>
         </div>
-
-        <div class="cardbox">
-            <h2>{{ $t("association.info-title") }}</h2>
-            <div class="cardbox-item">
-                <h3>{{ $t("association.activities-sub-title") }}</h3>
+        <section>
+            <h2>{{ $t("association.titles.info") }}</h2>
+            <div class="item">
+                <h3>{{ $t("association.labels.activities") }}</h3>
                 <p>{{ associationStore.association.activities }}</p>
             </div>
 
-            <div class="cardbox-item">
-                <h3>{{ $t("association.services-sub-title") }}</h3>
+            <div class="item">
+                <h3>{{ $t("association.labels.institution") }}</h3>
                 <p>{{ associationStore.association.institution.name }}</p>
             </div>
 
-            <div class="cardbox-item">
-                <h3>{{ $t("association.institut-sub-title") }}</h3>
+            <div class="item">
+                <h3>{{ $t("association.labels.component") }}</h3>
                 <p>{{ associationStore.association.institutionComponent.name }}</p>
             </div>
 
-            <div class="cardbox-item">
-                <h3>{{ $t("association.domain-sub-title") }}</h3>
+            <div class="item">
+                <h3>{{ $t("association.labels.field") }}</h3>
                 <p>{{ associationStore.association.activityField.name }}</p>
             </div>
-
-        </div>
-        <div class="cardbox">
-            <h2>{{ $t("association.admin-title") }}</h2>
-
-            <div class="cardbox-item">
-                <h3>{{ $t("association.namepresident-sub-title") }}</h3>
-                <p>{{ associationStore.association.institution.name }}</p>
+        </section>
+        <section>
+            <h2>{{ $t("association.titles.admin") }}</h2>
+            <div class="item">
+                <h3>{{ $t("association.labels.president-name") }}</h3>
+                <p>TODO</p>
             </div>
-
-            <div class="cardbox-item">
-              <h3>{{ $t("association.phone-sub-title") }}</h3>
-                <p>{{ associationStore.association.phone }}</p>
+            <div class="item">
+                <h3>{{ $t("association.labels.approval-date") }}</h3>
+                <p>{{ getDate(associationStore.association.approvalDate) }}</p>
             </div>
-
-          <!-- AJOUTER LA VARIABLE DU MAIL DU PRESIDENT DANS LE MODELE ASSOCIATION-->
-          <div class="cardbox-item">
-              <h3>{{ $t("association.mailpresident-sub-title") }}</h3>
-                <p>{{ associationStore.association.email }}</p>
+            <div class="item">
+                <h3>{{ $t("association.labels.charter-date") }}</h3>
+                <p>TODO</p>
             </div>
-
-            <div class="cardbox-item">
-              <h3>{{ $t("association.siret-sub-title") }}</h3>
+            <div class="item">
+                <h3>{{ $t("association.labels.last-goa") }}</h3>
+                <p>{{ getDate(associationStore.association.lastGoaDate) }}</p>
+            </div>
+            <div class="item">
+                <h3>{{ $t("association.labels.siret") }}</h3>
                 <p>{{ associationStore.association.siret }}</p>
             </div>
-
-          <!-- AJOUTER LES VARIABLES LASTAGO ET CHARTDATE DANS LE MODELE ASSOCIATION-->
-            <div class="cardbox-item">
-              <h3>{{ $t("association.lastago-sub-title") }}</h3>
-              <p>{{ associationStore.association.email }}</p>
-            </div>
-
-            <div class="cardbox-item">
-              <h3>{{ $t("association.chartdate-sub-title") }}</h3>
-              <p>{{ associationStore.association.email }}</p>
-            </div>
-          <!-- AJOUTER LES VARIABLES LASTAGO ET CHARTDATE DANS LE MODELE ASSOCIATION-->
-
-        </div>
-
-        <div class="cardbox">
-            <h2>{{ $t("association.contact-title") }}</h2>
-
-            <div class="cardbox-item">
-              <h3>{{ $t("association.address-sub-title") }}</h3>
+        </section>
+        <section>
+            <h2>{{ $t("association.titles.contact") }}</h2>
+            <div class="item">
+                <h3>{{ $t("association.labels.address") }}</h3>
                 <p>{{ associationStore.association.address }}</p>
             </div>
-
-            <div class="cardbox-item">
-              <h3>{{ $t("association.mailasso-sub-title") }}</h3>
+            <div class="item">
+                <h3>{{ $t("association.labels.phone") }}</h3>
+                <p>{{ associationStore.association.phone }}</p>
+            </div>
+            <div class="item">
+                <h3>{{ $t("association.labels.mail") }}</h3>
                 <p>{{ associationStore.association.email }}</p>
             </div>
-
-          <!-- AJOUTER LES VARIABLES DES RESEAUX SOCIAUX DANS LE MODELE ASSOCIATION-->
-          <div class="cardbox-item">
-              <h3>{{ $t("association.socials-sub-title") }}</h3>
-                <p>{{ associationStore.association.website }}</p>
-          </div>
-          <!-- AJOUTER LES VARIABLES DES RESEAUX SOCIAUX DANS LE MODELE ASSOCIATION-->
-
-          <div class="cardbox-item">
-              <h3>{{ $t("website.chartdate-sub-title") }}</h3>
-                <p>{{ associationStore.association.website }}</p>
-          </div>
-        </div>
+            <div class="item">
+                <h3>{{ $t("association.labels.website") }}</h3>
+                <a
+                    :href="associationStore.association.website"
+                    :title="`${$t('association.labels.website-link')} ${associationStore.association.name}`"
+                >
+                    {{ associationStore.association.website }}
+                </a>
+            </div>
+            <div class="item">
+                <h3>{{ $t("association.labels.socials") }}</h3>
+                <p>TODO</p>
+            </div>
+        </section>
     </div>
-    <QBtn color="secondary" label="Retourner aux associations" to="/associations"/>
+    <div class="btn-group">
+        <QBtn
+            :label="$t('association.back-directory')"
+            color="secondary"
+            icon="mdi-arrow-left-circle"
+            to="/associations"
+        />
+        <QBtn
+            :href="`mailto:${associationStore.association.email}`"
+            :label="$t('association.contact')"
+            :title="`${$t('association.contact')} ${associationStore.association.name}`"
+            color="primary"
+            icon="mdi-email"
+        />
+    </div>
 </template>
 
 <style lang="sass" scoped>
@@ -154,8 +163,11 @@ async function getAssociation() {
             font-size: 3em
             line-height: 0
 
-        span
+        p
             font-size: 1.5em
+
+        .acronym
+            font-size: 1.8em
 
     .logo
         max-width: 150px
@@ -165,6 +177,7 @@ async function getAssociation() {
 
 .description
     margin-top: 30px
+    font-size: 1.3em
 
 h2
     background-color: $primary
@@ -172,22 +185,25 @@ h2
     font-size: 2em
     text-align: center
 
-.cardbox
-    .cardbox-item > *
-        margin: 0
-        width: 50%
+.item > *
+    margin: 0
+    width: 50%
 
-    .cardbox-item
-        display: flex
-        align-items: center
-        background-color: lightgrey
-        padding: 0 20px 0 20px
-        margin: 5px 0
+.item
+    display: flex
+    align-items: center
+    background-color: lightgrey
+    padding: 0 20px 0 20px
+    margin: 5px 0
 
-        h3
-            font-size: 1.2em
-            text-transform: uppercase
+h3
+    font-size: 1.2em
+    text-transform: uppercase
 
 .q-btn
     margin: 20px 0
+
+.btn-group
+    display: flex
+    gap: 10px
 </style>

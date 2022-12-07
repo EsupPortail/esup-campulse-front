@@ -3,6 +3,7 @@
     "title": "Contenu introuvable",
     "description": "404"
   },
+  "loading": "Chargement...",
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",
@@ -149,25 +150,33 @@
     }
   },
   "association": {
-    "info-title" : "Informations",
-    "admin-title" : "Administration",
-    "contact-title": "Contact",
-    "activities-sub-title" : "Activités",
-    "services-sub-title" : "Services proposés",
-    "institut-sub-title": "Institution",
-    "compo-sub-title" : "Composante",
-    "domain-sub-title" : "Domaine",
-    "namepresident-sub-title" : "Nom du président",
-    "phone-sub-title" : "Numéro de Téléphone",
-    "mailpresident-sub-title" : "Adresse mail du Président",
-    "siret-sub-title" : "Numéro SIRET",
-    "lastago-sub-title" : "Date de la dernière AGO",
-    "chartdate-sub-title": "Date de la signature de la charte",
-    "address-sub-title" : "Adresse postale",
-    "mailasso-sub-title" : "Adresse mail",
-    "socials-sub-title" : "Réseaux sociaux",
-    "web-sub-title" : "Site web",
-    "contact-association" : "Contacter l'association",
-    "back-directory": "Revenir à l'annuaire"
+    "back-directory": "Revenir à l'annuaire",
+    "contact": "Contacter l'association",
+    "titles": {
+      "info": "Informations",
+      "admin": "Administration",
+      "contact": "Contact"
+    },
+    "labels": {
+      "activities": "Activités",
+      "services": "Services proposés",
+      "institution": "Institution",
+      "component": "Composante",
+      "field": "Domaine",
+      "phone": "Numéro de téléphone",
+      "president-name": "Nom du président ou de la présidente",
+      "president-mail": "Adresse mail du Président",
+      "siret": "Numéro SIRET",
+      "last-goa": "Date de la dernière AGO",
+      "charter-validity": "Charte valide jusqu'au",
+      "charter-date": "Date de signature de la charte des associations étudiantes",
+      "approval-date": "Date d'agrément",
+      "address": "Adresse postale",
+      "mail": "Adresse mail",
+      "socials": "Réseaux sociaux",
+      "website": "Site web",
+      "website-link": "Aller au site web de l'association",
+      "contact": "Contacter l'association"
+    }
   }
 }
