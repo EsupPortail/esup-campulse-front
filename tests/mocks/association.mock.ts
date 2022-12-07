@@ -1,11 +1,24 @@
-import type {Association} from '#/association'
+import type {Association, AssociationList} from '#/association'
 
 export const association: Association = {
     id: 1,
+    institution: {
+        id: 1,
+        name: 'Université de Strasbourg',
+        acronym: 'Unistra',
+    },
+    institutionComponent: {
+        id: 1,
+        name: 'Faculté de médecine',
+    },
+    activityField: {
+        id: 1,
+        name: 'Santé',
+    },
     name: 'Association',
-    username: 'association',
     acronym: null,
     pathLogo: null,
+    altLogo: null,
     description: null,
     activities: null,
     address: null,
@@ -13,23 +26,51 @@ export const association: Association = {
     email: null,
     siret: null,
     website: null,
-    studentAmount: null,
+    studentCount: null,
     isEnabled: true,
     createdDate: null,
     approvalDate: null,
     lastGoaDate: null,
-    cgaDate: null,
-    idStatus: 2,
-    idInstitution: 1,
-    idComponent: 3,
-    idField: 1
+    cgaDate: null
 }
 
-export const associations: Association[] = [association, association, association]
+const associationList = {
+    id: 1,
+    institution: {
+        id: 1,
+        name: 'Université de Strasbourg',
+        acronym: 'Unistra',
+    },
+    institutionComponent: {
+        id: 1,
+        name: 'Faculté de médecine',
+    },
+    activityField: {
+        id: 1,
+        name: 'Santé',
+    },
+    name: 'Association',
+    acronym: 'Asso',
+    isEnabled: true,
+    isSite: true
+}
 
-export const associationList = associations.map(
+export const associations: AssociationList[] = [associationList, associationList, associationList]
+
+export const associationNames = associations.map(
     association => ({
         value: association.id,
         label: association.name
+    })
+)
+
+export const associationDirectory = associations.map(
+    association => ({
+        id: association.id,
+        name: association.name,
+        acronym: association.acronym,
+        institution: association.institution.name,
+        component: association.institutionComponent.name,
+        field: association.activityField.name
     })
 )
