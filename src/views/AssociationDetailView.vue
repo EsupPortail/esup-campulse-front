@@ -79,7 +79,7 @@ async function getAssociation() {
             <h2>{{ $t("association.admin-title") }}</h2>
 
             <div class="cardbox-item">
-                <h3>{{ $t("association.namepresident-sub-title") }}</h3>
+                <h3>{{ $t("association.president-name-sub-title") }}</h3>
                 <p>{{ associationStore.association.institution.name }}</p>
             </div>
 
@@ -90,7 +90,7 @@ async function getAssociation() {
 
           <!-- AJOUTER LA VARIABLE DU MAIL DU PRESIDENT DANS LE MODELE ASSOCIATION-->
           <div class="cardbox-item">
-              <h3>{{ $t("association.mailpresident-sub-title") }}</h3>
+              <h3>{{ $t("association.president-main-sub-title") }}</h3>
                 <p>{{ associationStore.association.email }}</p>
             </div>
 
@@ -106,7 +106,7 @@ async function getAssociation() {
             </div>
 
             <div class="cardbox-item">
-              <h3>{{ $t("association.chartdate-sub-title") }}</h3>
+              <h3>{{ $t("association.chart-date-sub-title") }}</h3>
               <p>{{ associationStore.association.email }}</p>
             </div>
           <!-- AJOUTER LES VARIABLES LASTAGO ET CHARTDATE DANS LE MODELE ASSOCIATION-->
@@ -122,7 +122,7 @@ async function getAssociation() {
             </div>
 
             <div class="cardbox-item">
-              <h3>{{ $t("association.mailasso-sub-title") }}</h3>
+              <h3>{{ $t("association.asso-mail-sub-title") }}</h3>
                 <p>{{ associationStore.association.email }}</p>
             </div>
 
@@ -134,7 +134,7 @@ async function getAssociation() {
           <!-- AJOUTER LES VARIABLES DES RESEAUX SOCIAUX DANS LE MODELE ASSOCIATION-->
 
           <div class="cardbox-item">
-              <h3>{{ $t("website.chartdate-sub-title") }}</h3>
+              <h3>{{ $t("website.chart-date-sub-title") }}</h3>
                 <p>{{ associationStore.association.website }}</p>
           </div>
         </div>

@@ -4,7 +4,7 @@ import type {
     UserDirectory,
     UserList,
     UserNames,
-    UsersStore,
+    UsersStore, UserStore,
     UserValidate
 } from '#/user'
 import _axios from '@/plugins/axios'
@@ -33,6 +33,16 @@ export const useUsersStore = defineStore('usersStore', {
                     email: user.email,
                     isValidatedByAdmin: user.isValidatedByAdmin
                 }))
+        },
+        userGroups: (state: UsersStore): number[] | [] => {
+            const userGroups: number[] = []
+            if (state.user.groups) {
+                const groups = state.user.groups
+                groups.forEach((group) => {
+                    userGroups.push(group.id)
+                });
+            }
+            return userGroups
         }
     },
 
@@ -56,7 +66,7 @@ export const useUsersStore = defineStore('usersStore', {
                     }
                 })
             } catch (e) {
-
+                // code
             }
         },
     }
