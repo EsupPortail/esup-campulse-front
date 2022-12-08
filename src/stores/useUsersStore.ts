@@ -34,15 +34,8 @@ export const useUsersStore = defineStore('usersStore', {
                     isValidatedByAdmin: user.isValidatedByAdmin
                 }))
         },
-        userGroups: (state: UsersStore): number[] | [] => {
-            const userGroups: number[] = []
-            if (state.user.groups) {
-                const groups = state.user.groups
-                groups.forEach((group) => {
-                    userGroups.push(group.id)
-                });
-            }
-            return userGroups
+        userGroups: (state: UsersStore): number[] => {
+            return state.user?.groups?.map<number>(group => group.id) || []
         }
     },
 

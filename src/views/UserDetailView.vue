@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import {useUsersStore} from '@/stores/useUsersStore'
-import {computed, onBeforeMount, onMounted} from 'vue'
-import type {QTableProps} from 'quasar'
+import {computed, onMounted, watch} from 'vue'
 import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-//import type {UserValidate} from '#/user'
 import {useRoute} from 'vue-router'
-import type {User, UserGroup} from '#/user'
+import type {User} from '#/user'
 import {useUserStore} from "@/stores/useUserStore";
 
 const {t} = useI18n()
@@ -18,16 +16,23 @@ const userStore = useUserStore()
 const userManager = useUsersStore()
 
 const user = ref<User>()
-const userGroups = ref<number[] | []>(userManager.userGroups)
+const userGroups = ref<number[]>(userManager.userGroups)
 
-const groupChoiceIsValid = computed(() => {
-  return  userGroups.value.length > 0 && userGroups.value.length <=2
+watch(() => userManager.userGroups, () => {
+  userGroups.value = userManager.userGroups
 })
 
-onBeforeMount( () => [
-    getUser(),
-    loadGroups()
-])
+const groupChoiceIsValid = computed<boolean>(() => {
+  return userGroups.value.length > 0 && userGroups.value.length <= 2
+})
+
+const {loading} = useQuasar()
+onMounted(async () => {
+  loading.show
+  await getUser()
+  await loadGroups()
+  loading.hide
+})
 
 // Load group list
 async function loadGroups() {
@@ -41,6 +46,7 @@ async function loadGroups() {
 
   }
 }
+
 // Load user
 async function getUser() {
   if (route.params.id) {
@@ -48,8 +54,7 @@ async function getUser() {
       const id = parseInt(route.params.id as string)
       await userManager.getUserDetail(id)
       user.value = userManager.user
-    }
-    catch (e) {
+    } catch (e) {
       notify({
         type: 'negative',
         message: t('notifications.negative.form-error')
@@ -58,7 +63,7 @@ async function getUser() {
   }
 }
 
-async function validateUser(user : User) {
+async function validateUser(user: User) {
   try {
     await userManager.validateUser(user.id, {
       isValidatedByAdmin: user.isValidatedByAdmin, id: 0
@@ -79,12 +84,12 @@ async function validateUser(user : User) {
 
 <template>
   <div v-if="!user">Loading...</div>
-    <div v-else>
-      <div class="title">
-        <div class="name">
-          <h1>{{ userManager.user.firstName }} {{ userManager.user.lastName }} </h1>
-        </div>
+  <div v-else>
+    <div class="title">
+      <div class="name">
+        <h1>{{ userManager.user.firstName }} {{ userManager.user.lastName }} </h1>
       </div>
+    </div>
 
     <div class="cardbox">
       <h2>{{ $t("user.title-infos") }}</h2>
@@ -111,7 +116,7 @@ async function validateUser(user : User) {
 
       <div class="cardbox-item">
         <h3>{{ $t("user.isCas") }}</h3>
-        <p>{{ userManager.user.isCas ? "Oui" : "Non"}}</p>
+        <p>{{ userManager.user.isCas ? "Oui" : "Non" }}</p>
       </div>
 
       <div class="cardbox-item">
@@ -137,7 +142,7 @@ async function validateUser(user : User) {
         </QField>
       </fieldset>
 
-      </div>
+    </div>
     <QBtn color="secondary" label="Valider" v-on:click="validateUser(userManager.user)"/>
     <QBtn color="secondary" label="Annuler" to="/users"/>
   </div>
