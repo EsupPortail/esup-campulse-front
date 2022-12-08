@@ -3,25 +3,52 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onMounted} from 'vue'
 import router from '@/router'
 import type {QTableProps} from 'quasar'
+import {useQuasar} from 'quasar'
+import {useI18n} from 'vue-i18n'
 
 const associationStore = useAssociationStore()
-onMounted(associationStore.getAssociations)
+const {loading} = useQuasar()
+const {t} = useI18n()
+
+onMounted(async function () {
+    loading.show
+    await associationStore.getAssociations()
+    loading.hide
+})
 
 
 const columns: QTableProps['columns'] = [
     {
         name: 'name',
         required: true,
-        label: 'Nom de l\'association',
+        label: t('directory.labels.association-name'),
         align: 'left',
         field: row => row.name,
         format: val => `${val}`,
         sortable: true
     },
-    {name: 'acronym', align: 'left', label: 'Sigle', field: 'acronym', sortable: true},
-    {name: 'institution', align: 'left', label: 'Etablissement', field: 'institution', sortable: true},
-    {name: 'component', align: 'left', label: 'Composante', field: 'component', sortable: true},
-    {name: 'field', align: 'left', label: 'Domaine', field: 'field', sortable: true},
+    {
+        name: 'acronym',
+        align: 'left',
+        label: t('directory.labels.association-acronym'),
+        field: 'acronym',
+        sortable: true
+    },
+    {
+        name: 'institution',
+        align: 'left',
+        label: t('directory.labels.association-institution'),
+        field: 'institution',
+        sortable: true
+    },
+    {
+        name: 'component',
+        align: 'left',
+        label: t('directory.labels.association-component'),
+        field: 'component',
+        sortable: true
+    },
+    {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
 ]
 
 function goTo(id: number) {

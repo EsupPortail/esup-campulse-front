@@ -149,6 +149,12 @@
       "button": "Terminer ma création de compte"
     }
   },
+  "directory": {
+    "labels": {
+      "association-name": "Nom de l'association",
+      "association-acronym": "Sigle"
+    }
+  },
   "association": {
     "back-directory": "Revenir à l'annuaire",
     "contact": "Contacter l'association",

@@ -1,26 +1,18 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import type {UserLogin} from '#/user'
-import {useUserStore} from '@/stores/useUserStore'
-import router from "@/router";
-
-const user = ref<UserLogin>({
-    username: '',
-    password: ''
-})
+import useSecurity from '@/composables/useSecurity'
+import {useRouter} from 'vue-router'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
-const userStore = useUserStore()
+const router = useRouter()
 
-async function logIn() {
+const {user, logIn} = useSecurity()
+
+async function onLogIn() {
     try {
-        await userStore.logIn('/users/auth/login/', {
-            username: user.value.username,
-            password: user.value.password as string
-        })
+        await logIn()
         await router.push({name: 'Dashboard'})
         notify({
             type: 'positive',
@@ -39,11 +31,11 @@ async function logIn() {
 <template>
     <QForm
         class="q-gutter-md"
-        @submit="logIn"
+        @submit.prevent="onLogIn"
     >
         <QInput
             v-model="user.username"
-            :label="$t('forms.email')"
+            :label="t('forms.email')"
             :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
             filled
             lazy-rules

@@ -11,7 +11,7 @@ import _axios from '@/plugins/axios'
 
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
-        association: {} as Association,
+        association: undefined,
         associations: []
     }),
 

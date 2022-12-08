@@ -2,6 +2,7 @@ import {beforeEach, describe, expect, it} from 'vitest'
 import {mount} from '@vue/test-utils'
 import {Quasar} from 'quasar'
 import i18n from '@/plugins/i18n'
+// @ts-ignore view is imported
 import LoginView from '@/views/LoginView.vue'
 import {useUserStore} from '@/stores/useUserStore'
 import {createPinia, setActivePinia} from 'pinia'
