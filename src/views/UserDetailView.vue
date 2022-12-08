@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import {useUsersStore} from '@/stores/useUsersStore'
-import {computed, onMounted, watch} from 'vue'
-import {ref} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
@@ -92,46 +91,46 @@ async function validateUser(user: User) {
     </div>
 
     <div class="cardbox">
-      <h2>{{ $t("user.title-infos") }}</h2>
+      <h2>{{ t("user.title-infos") }}</h2>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.first-name") }}</h3>
+        <h3>{{ t("user.first-name") }}</h3>
         <p>{{ userManager.user.firstName }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.last-name") }}</h3>
+        <h3>{{ t("user.last-name") }}</h3>
         <p>{{ userManager.user.lastName }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.email") }}</h3>
+        <h3>{{ t("user.email") }}</h3>
         <p>{{ userManager.user.email }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.phone") }}</h3>
+        <h3>{{ t("user.phone") }}</h3>
         <p>{{ userManager.user.phone }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.isCas") }}</h3>
+        <h3>{{ t("user.isCas") }}</h3>
         <p>{{ userManager.user.isCas ? "Oui" : "Non" }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.isValidatedByAdmin") }}</h3>
+        <h3>{{ t("user.isValidatedByAdmin") }}</h3>
         <p>{{ userManager.user.isValidatedByAdmin ? "Oui" : "Non" }}</p>
       </div>
     </div>
 
     <div class="cardbox">
-      <h2>{{ $t("user.title-group") }}</h2>
+      <h2>{{ t("user.title-group") }}</h2>
       <fieldset>
         <QField
             :error="!groupChoiceIsValid"
-            :error-message="$t('forms.required-status')"
-            :hint="$t('forms.status-hint')"
+            :error-message="t('forms.required-status')"
+            :hint="t('forms.status-hint')"
         >
           <QOptionGroup
               v-model="userGroups"
