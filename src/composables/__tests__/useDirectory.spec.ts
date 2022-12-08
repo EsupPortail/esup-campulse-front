@@ -1,20 +1,35 @@
-import {beforeEach, describe, expect, it} from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import useDirectory from '@/composables/useDirectory'
-import {createPinia, setActivePinia} from "pinia";
-import {mockedAxios} from "~/mocks/axios.mock";
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { config } from '@vue/test-utils'
+import { createTestingPinia } from '@pinia/testing'
+
+vi.mock('@/plugins/axios')
+
+config.global.plugins = [
+  createTestingPinia({ createSpy: vi.fn() }),
+]
 
 describe('useDirectory', () => {
-    beforeEach(() => {
-        setActivePinia(createPinia())
-    })
+  let associationStore = useAssociationStore()
 
-    describe('Get association detail', () => {
-        it('should call getAssociationDetail in store', async () => {
-            const {getAssociationDetail} = useDirectory()
-            mockedAxios.get.mockResolvedValueOnce(() => ([]))
+  beforeEach(() => {
+    associationStore = useAssociationStore()
+  })
 
-            await getAssociationDetail('1')
-            expect(mockedAxios.get).toBeCalled()
-        })
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  describe('Get association detail', () => {
+    it('should call getAssociationDetail in store', async () => {
+      const spy = vi.spyOn(associationStore, 'getAssociationDetail')
+      const { getAssociationDetail } = useDirectory()
+
+      await getAssociationDetail('1')
+
+      expect(spy).toHaveBeenCalledOnce()
+      expect(spy).toHaveBeenCalledWith(1)
     })
+  })
 })
