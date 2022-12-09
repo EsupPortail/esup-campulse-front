@@ -44,12 +44,6 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/CASLoginView.vue')
             },
             {
-                path: 'logout',
-                name: 'Logout',
-                component: () => import('@/views/LogoutView.vue'),
-                meta: {requiresAuth: true}
-            },
-            {
                 path: 'dashboard',
                 name: 'Dashboard',
                 component: () => import('@/views/DashboardView.vue')

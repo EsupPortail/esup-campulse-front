@@ -1,5 +1,3 @@
-// WIP : prototype based on current back
-
 /**
  *  Association Model
  *  Interact front-back
@@ -15,15 +13,20 @@ export interface Association {
     institution: {
         id: number,
         name: string,
-        acronym: string,
+        acronym: string
     },
     institutionComponent: {
         id: number,
-        name: string,
+        name: string
     },
     activityField: {
         id: number,
-        name: string,
+        name: string
+    },
+    socialNetworks: {
+        id: number,
+        type: string,
+        location: string
     },
     name: string,
     acronym: string | null,
@@ -49,15 +52,15 @@ export interface AssociationList {
     institution: {
         id: number,
         name: string,
-        acronym: string,
+        acronym: string
     },
     institutionComponent: {
         id: number,
-        name: string,
+        name: string
     },
     activityField: {
         id: number,
-        name: string,
+        name: string
     },
     name: string,
     acronym: string,
@@ -66,7 +69,7 @@ export interface AssociationList {
 }
 
 export interface AssociationStore {
-    association: Association,
+    association: Association | undefined,
     associations: AssociationList[]
 }
 

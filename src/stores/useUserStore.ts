@@ -1,8 +1,7 @@
-import { defineStore } from 'pinia'
-import type { CasLogin, GroupList, LocalLogin, User, UserGroup, UserStore } from '#/user'
+import {defineStore} from 'pinia'
+import type {CasLogin, GroupList, LocalLogin, User, UserGroup, UserStore} from '#/user'
 import _axios from '@/plugins/axios'
-import router from '@/router'
-import { removeTokens, setTokens } from '@/services/userService'
+import {removeTokens, setTokens} from '@/services/userService'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -25,16 +24,16 @@ export const useUserStore = defineStore('userStore', {
                 }))
         },
         studentGroup: (state: UserStore): UserGroup | undefined => {
-            return state.groups.find(({ name }) => name === 'Étudiante ou Étudiant')
+            return state.groups.find(({name}) => name === 'Étudiante ou Étudiant')
         },
         managerGroup: (state: UserStore): UserGroup | undefined => {
-            return state.user?.groups.find(({ name }) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
+            return state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
         }
     },
     actions: {
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const response = await _axios.post(url, data)
-            const { accessToken, refreshToken, user } = response.data
+            const {accessToken, refreshToken, user} = response.data
             if (user.isValidatedByAdmin) {
                 setTokens(accessToken, refreshToken)
                 this.user = user
@@ -45,7 +44,6 @@ export const useUserStore = defineStore('userStore', {
         async logOut() {
             removeTokens()
             this.unLoadUser()
-            await router.push({ name: 'Login' })
         },
         async getUser() {
             const user = (await _axios.get<User>('/users/auth/user/')).data
@@ -77,8 +75,8 @@ export const useUserStore = defineStore('userStore', {
         },
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-            const data = (await _axios.post('/users/auth/cas/login/', { ticket, service })).data
-            const { accessToken, refreshToken, user } = data
+            const data = (await _axios.post('/users/auth/cas/login/', {ticket, service})).data
+            const {accessToken, refreshToken, user} = data
             setTokens(accessToken, refreshToken)
             this.newUser = user
         },
