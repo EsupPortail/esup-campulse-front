@@ -147,6 +147,11 @@
       "button": "Terminer ma création de compte",
       "message": "Votre demande d'inscription avec un compte CAS n'est pas terminée. Cliquez sur \"Terminer ma création de compte\" pour la finaliser.",
       "title": "Demande de création de compte en cours"
+    },
+    "delete-user": {
+      "confirm-delete": "Voulez-vous vraiment supprimer cet utilisateur ?",
+      "confirm-yes": "Oui",
+      "confirm-no": "Non"
     }
   },
   "directory": {

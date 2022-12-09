@@ -1,12 +1,5 @@
-import { defineStore } from 'pinia'
-import type {
-    User,
-    UserDirectory,
-    UserList,
-    UserNames,
-    UsersStore, UserStore,
-    UserValidate
-} from '#/user'
+import {defineStore} from 'pinia'
+import type {User, UserDirectory, UserList, UserNames, UsersStore, UserValidate} from '#/user'
 import _axios from '@/plugins/axios'
 
 
@@ -45,6 +38,11 @@ export const useUsersStore = defineStore('usersStore', {
                 this.users = (await _axios.get<UserList[]>('/users/')).data
             }
         },
+        async getUsersAdmitted(isValidatedByAdmin = false) {
+            if (this.users.length === 0) {
+                this.users = (await _axios.get<UserList[]>(`/users/?is_validated_by_admin=${isValidatedByAdmin}`)).data
+            }
+        },
         async getUserDetail(id: number) {
             if (this.user?.id !== id) {
                 this.user = (await _axios.get<User>(`/users/${id}`)).data
@@ -62,6 +60,9 @@ export const useUsersStore = defineStore('usersStore', {
                 // code
             }
         },
+        /*async deleteUser(id: number, data: User) {
+            // code
+        },*/
     }
 })
 

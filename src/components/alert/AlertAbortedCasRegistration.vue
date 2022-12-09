@@ -1,9 +1,12 @@
-<script setup lang="ts">
-import { useUserStore } from '@/stores/useUserStore'
-import { ref } from 'vue'
+<script lang="ts" setup>
+import {useUserStore} from '@/stores/useUserStore'
+import {ref} from 'vue'
+import {useI18n} from "vue-i18n";
 
 const userStore = useUserStore()
 const newUser = userStore.newUser
+const {t} = useI18n()
+
 
 const isCas = ref<boolean | undefined>(newUser?.isCas)
 </script>
@@ -12,17 +15,19 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
   <QDialog v-model="isCas" persistent>
     <QCard>
       <QCardSection class="row no-wrap">
-        <QIcon name="mdi-information-outline" color="negative" size="md" />
-        <span class="q-ml-sm">{{ $t('alerts.aborted-cas-registration.message') }}</span>
+        <QIcon color="negative" name="mdi-information-outline" size="md"/>
+        <span class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</span>
       </QCardSection>
       <QCardActions align="right">
-        <QBtn flat :label="$t('alerts.close')" color="primary" v-close-popup />
-        <QBtn :label="$t('alerts.aborted-cas-registration.button')" color="primary" v-close-popup to="/register" />
+        <QBtn v-close-popup :label="t('alerts.close')" color="primary" flat>
+          {{ t('alerts.delete-user.confirm-delete') }}
+        </QBtn>
+        <QBtn v-close-popup :label="t('alerts.aborted-cas-registration.button')" color="primary" to="/register"/>
       </QCardActions>
     </QCard>
   </QDialog>
 </template>
 
-<style scoped lang="sass">
+<style lang="sass" scoped>
 
 </style>

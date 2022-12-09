@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import {useUsersStore} from '@/stores/useUsersStore'
-import {computed, onMounted, watch} from 'vue'
-import {ref} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
@@ -15,6 +14,7 @@ const route = useRoute()
 const userStore = useUserStore()
 const userManager = useUsersStore()
 
+// watch function observes and updates only if data had been changed.
 const user = ref<User>()
 const userGroups = ref<number[]>(userManager.userGroups)
 
@@ -22,10 +22,12 @@ watch(() => userManager.userGroups, () => {
   userGroups.value = userManager.userGroups
 })
 
+// Check if the user has enough roles or not
 const groupChoiceIsValid = computed<boolean>(() => {
   return userGroups.value.length > 0 && userGroups.value.length <= 2
 })
 
+// Loading Quasar
 const {loading} = useQuasar()
 onMounted(async () => {
   loading.show
@@ -63,6 +65,7 @@ async function getUser() {
   }
 }
 
+// Function that verify if the user is validated by the admin or not, and send the response to the back
 async function validateUser(user: User) {
   try {
     await userManager.validateUser(user.id, {
@@ -72,6 +75,17 @@ async function validateUser(user: User) {
       type: 'positive',
       message: t('notifications.positive.validate-success')
     })
+  } catch (e) {
+    notify({
+      type: 'negative',
+      message: t('notifications.negative.unknown-user')
+    })
+  }
+}
+
+async function deleteUser(user: User) {
+  try {
+    // code
   } catch (e) {
     notify({
       type: 'negative',
@@ -92,46 +106,46 @@ async function validateUser(user: User) {
     </div>
 
     <div class="cardbox">
-      <h2>{{ $t("user.title-infos") }}</h2>
+      <h2>{{ t("user.title-infos") }}</h2>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.first-name") }}</h3>
+        <h3>{{ t("user.first-name") }}</h3>
         <p>{{ userManager.user.firstName }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.last-name") }}</h3>
+        <h3>{{ t("user.last-name") }}</h3>
         <p>{{ userManager.user.lastName }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.email") }}</h3>
+        <h3>{{ t("user.email") }}</h3>
         <p>{{ userManager.user.email }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.phone") }}</h3>
+        <h3>{{ t("user.phone") }}</h3>
         <p>{{ userManager.user.phone }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.isCas") }}</h3>
+        <h3>{{ t("user.isCas") }}</h3>
         <p>{{ userManager.user.isCas ? "Oui" : "Non" }}</p>
       </div>
 
       <div class="cardbox-item">
-        <h3>{{ $t("user.isValidatedByAdmin") }}</h3>
+        <h3>{{ t("user.isValidatedByAdmin") }}</h3>
         <p>{{ userManager.user.isValidatedByAdmin ? "Oui" : "Non" }}</p>
       </div>
     </div>
 
     <div class="cardbox">
-      <h2>{{ $t("user.title-group") }}</h2>
+      <h2>{{ t("user.title-group") }}</h2>
       <fieldset>
         <QField
             :error="!groupChoiceIsValid"
-            :error-message="$t('forms.required-status')"
-            :hint="$t('forms.status-hint')"
+            :error-message="t('forms.required-status')"
+            :hint="t('forms.status-hint')"
         >
           <QOptionGroup
               v-model="userGroups"
@@ -143,8 +157,10 @@ async function validateUser(user: User) {
       </fieldset>
 
     </div>
-    <QBtn color="secondary" label="Valider" v-on:click="validateUser(userManager.user)"/>
-    <QBtn color="secondary" label="Annuler" to="/users"/>
+    <QBtn color="secondary" label="Retour" to="/users"/>
+    <QBtn color="primary" label="Valider" v-on:click="validateUser(userManager.user)"/>
+    <QBtn color="red" label="Supprimer" v-on:click="deleteUser(userManager.user)">
+    </QBtn>
   </div>
 </template>
 
