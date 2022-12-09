@@ -85,7 +85,12 @@ async function validateUser(user: User) {
 
 async function deleteUser(user: User) {
   try {
-    // code
+    await userManager.deleteUser(user.id)
+    //route.push()
+    notify({
+      type: 'positive',
+      message: t('notifications.positive.validate-delete')
+    })
   } catch (e) {
     notify({
       type: 'negative',
@@ -93,7 +98,6 @@ async function deleteUser(user: User) {
     })
   }
 }
-
 </script>
 
 <template>

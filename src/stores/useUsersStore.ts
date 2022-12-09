@@ -60,9 +60,13 @@ export const useUsersStore = defineStore('usersStore', {
                 // code
             }
         },
-        /*async deleteUser(id: number, data: User) {
-            // code
-        },*/
+        async deleteUser(id: number) {
+            try {
+                await _axios.delete(`/users/${id}`)
+            } catch (e) {
+                // code
+            }
+        },
     }
 })
 
