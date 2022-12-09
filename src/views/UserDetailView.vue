@@ -14,6 +14,7 @@ const route = useRoute()
 const userStore = useUserStore()
 const userManager = useUsersStore()
 
+// watch function observes and updates only if data had been changed.
 const user = ref<User>()
 const userGroups = ref<number[]>(userManager.userGroups)
 
@@ -21,10 +22,12 @@ watch(() => userManager.userGroups, () => {
   userGroups.value = userManager.userGroups
 })
 
+// Check if the user has enough roles or not
 const groupChoiceIsValid = computed<boolean>(() => {
   return userGroups.value.length > 0 && userGroups.value.length <= 2
 })
 
+// Loading Quasar
 const {loading} = useQuasar()
 onMounted(async () => {
   loading.show
@@ -62,6 +65,7 @@ async function getUser() {
   }
 }
 
+// Function that verify if the user is validated by the admin or not, and send the response to the back
 async function validateUser(user: User) {
   try {
     await userManager.validateUser(user.id, {
@@ -71,6 +75,17 @@ async function validateUser(user: User) {
       type: 'positive',
       message: t('notifications.positive.validate-success')
     })
+  } catch (e) {
+    notify({
+      type: 'negative',
+      message: t('notifications.negative.unknown-user')
+    })
+  }
+}
+
+async function deleteUser(user: User) {
+  try {
+    // code
   } catch (e) {
     notify({
       type: 'negative',
@@ -142,8 +157,10 @@ async function validateUser(user: User) {
       </fieldset>
 
     </div>
-    <QBtn color="secondary" label="Valider" v-on:click="validateUser(userManager.user)"/>
-    <QBtn color="secondary" label="Annuler" to="/users"/>
+    <QBtn color="secondary" label="Retour" to="/users"/>
+    <QBtn color="primary" label="Valider" v-on:click="validateUser(userManager.user)"/>
+    <QBtn color="red" label="Supprimer" v-on:click="deleteUser(userManager.user)">
+    </QBtn>
   </div>
 </template>
 
