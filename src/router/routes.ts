@@ -93,6 +93,11 @@ const routes: RouteRecordRaw[] = [
                 name: 'Users',
                 component: () => import('@/views/UsersView.vue')
             },
+            {
+                path: 'user/:id',
+                name: 'UserDetail',
+                component : () => import('@/views/UserDetailView.vue')
+            },
             // This must be last
             {
                 path: '404-not-found',

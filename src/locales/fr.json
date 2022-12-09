@@ -84,16 +84,17 @@
     "login": "Connexion",
     "new-password": "Nouveau mot de passe",
     "old-password": "Mot de passe actuel",
+    "password": "Mot de passe",
+    "passwords-are-not-equal": "Les deux mots de passe ne sont pas identiques.",
+    "password-reset-instructions": "Veuillez saisir l'adresse mail avec laquelle vous vous connectez d'habitude. Si cette adresse est liée à un compte, un lien réinitialisation de mot de passe vous sera envoyé.",
+    "password-reset-ok": "Votre demande a bien été prise en compte, consultez votre boîte mail.",
+    "password-reset-cas": "Si vous êtes étudiant, étudiante ou personnel de l'Université de Strasbourg et que vous vous connectez habituellement avec votre compte CAS, votre mot de passe ne pourra être réinitialisé de cette façon.",
+    "phone": "Numéro de téléphone",
     "repeat-email": "Répéter l'adresse mail",
     "repeat-new-password": "Répéter le nouveau mot de passe",
     "resend-email": "Renvoyer le mail de confirmation",
     "resend-email-cas": "Si vous êtes étudiant, étudiante ou personnel de l'Université de Strasbourg et que vous vous avez terminé votre inscription avec votre compte CAS, votre adresse email est déjà validée.",
     "status-hint": "Si vous êtes étudiant ou étudiante membre d'une association, porteur ou porteuse de projet individuel, choississez le statut \"Étudiant ou Étudiante\".",
-    "password": "Mot de passe",
-    "password-reset-instructions": "Veuillez saisir l'adresse mail avec laquelle vous vous connectez d'habitude. Si cette adresse est liée à un compte, un lien réinitialisation de mot de passe vous sera envoyé.",
-    "password-reset-ok": "Votre demande a bien été prise en compte, consultez votre boîte mail.",
-    "password-reset-cas": "Si vous êtes étudiant, étudiante ou personnel de l'Université de Strasbourg et que vous vous connectez habituellement avec votre compte CAS, votre mot de passe ne pourra être réinitialisé de cette façon.",
-    "phone": "Numéro de téléphone",
     "required-email": "Veuillez renseigner votre adresse mail.",
     "required-first-name": "Veuillez renseigner votre prénom.",
     "required-last-name": "Veuillez renseigner votre nom de famille.",
@@ -106,7 +107,6 @@
     "resend-email-confirmation": "Renseignez votre adresse email pour renvoyer un mail vous permettant de la confirmer.",
     "resend-email-ok": "Votre demande a bien été prise en compte, consultez votre boîte mail.",
     "reset-password": "Mot de passe oublié ?",
-    "passwords-are-not-equal": "Les deux mots de passe ne sont pas identiques.",
     "select-association": "Sélectionner une association",
     "send": "Envoyer",
     "status": "Votre statut",
@@ -144,9 +144,9 @@
   "alerts": {
     "close": "Fermer",
     "aborted-cas-registration": {
-      "title": "Demande de création de compte en cours",
+      "button": "Terminer ma création de compte",
       "message": "Votre demande d'inscription avec un compte CAS n'est pas terminée. Cliquez sur \"Terminer ma création de compte\" pour la finaliser.",
-      "button": "Terminer ma création de compte"
+      "title": "Demande de création de compte en cours"
     }
   },
   "directory": {
@@ -188,5 +188,16 @@
       "website-link": "Aller au site web de l'association",
       "contact": "Contacter l'association"
     }
+  },
+  "user": {
+    "belongsTo": "L'utilisateur appartient aux groupes suivants",
+    "email": "E-mail",
+    "first-name": "Prénom",
+    "isCas": "L'utilisateur provient de CAS",
+    "isValidatedByAdmin": "L'utilisateur est validé par le gestionnaire",
+    "last-name": "Nom de famille",
+    "phone": "Numéro de téléphone",
+    "title-infos": "Informations",
+    "title-group": "Appartenance"
   }
 }
