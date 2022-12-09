@@ -38,6 +38,11 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 this.users = (await _axios.get<UserList[]>('/users/')).data
             }
         },
+        async getUsersAdmitted(isValidatedByAdmin = false) {
+            if (this.users.length === 0) {
+                this.users = (await _axios.get<UserList[]>(`/users/?is_validated_by_admin=${isValidatedByAdmin}`)).data
+            }
+        },
         async getUserDetail(id: number) {
             if (this.user?.id !== id) {
                 this.user = (await _axios.get<User>(`/users/${id}`)).data
@@ -51,6 +56,13 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                         user.isValidatedByAdmin = !user.isValidatedByAdmin
                     }
                 })
+            } catch (e) {
+                // code
+            }
+        },
+        async deleteUser(id: number) {
+            try {
+                await _axios.delete(`/users/${id}`)
             } catch (e) {
                 // code
             }

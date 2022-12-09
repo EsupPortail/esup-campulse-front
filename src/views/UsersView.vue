@@ -4,15 +4,20 @@ import {onMounted} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import router from '@/router'
-//import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
-//import type {UserValidate} from '#/user'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
-const usersStore = useUserManagerStore()
-onMounted(usersStore.getUsers)
+const userManagerStore = useUserManagerStore()
+const {loading} = useQuasar()
 
+// onMounted(userManagerStore.getUsers)
+
+onMounted(async () => {
+    loading.show
+    await userManagerStore.getUsersAdmitted(true)
+    loading.hide
+})
 
 const columns: QTableProps['columns'] = [
     {
@@ -27,20 +32,25 @@ const columns: QTableProps['columns'] = [
     {name: 'firstName', align: 'left', label: 'Nom de famille', field: 'firstName', sortable: true},
     {name: 'lastName', align: 'left', label: 'Prénom', field: 'lastName', sortable: true},
     {name: 'email', align: 'left', label: 'Adresse mail', field: 'email', sortable: true},
-    {name: 'isValidatedByAdmin', align: 'left', label: 'Est validé', field: 'isValidatedByAdmin', sortable: true},
+    {
+        name: 'isValidatedByAdmin',
+        align: 'left',
+        label: 'Validé par le gestionnaire',
+        field: 'isValidatedByAdmin',
+        sortable: true
+    },
 ]
 
 function goTo(id: number) {
     router.push({name: 'UserDetail', params: {id}})
 }
-
 </script>
 
 <template>
-    <h1>{{ $t("manager.users") }}</h1>
+    <h1>{{ t("manager.users") }}</h1>
     <QTable
         :columns="columns"
-        :rows="usersStore.userDirectory"
+        :rows="userManagerStore.userDirectory"
         row-key="id"
         title="Users"
     >
@@ -61,14 +71,6 @@ function goTo(id: number) {
                 <QTd key="isValidatedByAdmin" :props="props">
                     {{ props.row.isValidatedByAdmin ? "Oui" : "Non" }}
                 </QTd>
-                <!--
-                <QTd key="isValidatedByAdmin" :props="props">
-                    <QCheckbox
-                        v-model="props.row.isValidatedByAdmin"
-                        :label="$t('forms.validated-account')"
-                    />
-                </QTd>
-              -->
             </QTr>
         </template>
     </QTable>

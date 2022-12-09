@@ -14,6 +14,7 @@ const route = useRoute()
 const userStore = useUserStore()
 const userManager = useUserManagerStore()
 
+// watch function observes and updates only if data had been changed.
 const user = ref<User>()
 const userGroups = ref<number[]>(userManager.userGroups)
 
@@ -21,10 +22,12 @@ watch(() => userManager.userGroups, () => {
     userGroups.value = userManager.userGroups
 })
 
+// Check if the user has enough roles or not
 const groupChoiceIsValid = computed<boolean>(() => {
     return userGroups.value.length > 0 && userGroups.value.length <= 2
 })
 
+// Loading Quasar
 const {loading} = useQuasar()
 onMounted(async () => {
     loading.show
@@ -62,6 +65,7 @@ async function getUser() {
     }
 }
 
+// Function that verify if the user is validated by the admin or not, and send the response to the back
 async function validateUser(user: User) {
     try {
         await userManager.validateUser(user.id, {
@@ -79,6 +83,21 @@ async function validateUser(user: User) {
     }
 }
 
+async function deleteUser(user: User) {
+  try {
+    await userManager.deleteUser(user.id)
+    //route.push()
+    notify({
+      type: 'positive',
+      message: t('notifications.positive.validate-delete')
+    })
+  } catch (e) {
+    notify({
+      type: 'negative',
+      message: t('notifications.negative.unknown-user')
+    })
+  }
+}
 </script>
 
 <template>
@@ -145,6 +164,67 @@ async function validateUser(user: User) {
         <QBtn color="secondary" label="Valider" v-on:click="validateUser(userManager.user)"/>
         <QBtn color="secondary" label="Annuler" to="/users"/>
     </div>
+<<<<<<< HEAD
+=======
+
+    <div class="cardbox">
+      <h2>{{ t("user.title-infos") }}</h2>
+
+      <div class="cardbox-item">
+        <h3>{{ t("user.first-name") }}</h3>
+        <p>{{ userManager.user.firstName }}</p>
+      </div>
+
+      <div class="cardbox-item">
+        <h3>{{ t("user.last-name") }}</h3>
+        <p>{{ userManager.user.lastName }}</p>
+      </div>
+
+      <div class="cardbox-item">
+        <h3>{{ t("user.email") }}</h3>
+        <p>{{ userManager.user.email }}</p>
+      </div>
+
+      <div class="cardbox-item">
+        <h3>{{ t("user.phone") }}</h3>
+        <p>{{ userManager.user.phone }}</p>
+      </div>
+
+      <div class="cardbox-item">
+        <h3>{{ t("user.isCas") }}</h3>
+        <p>{{ userManager.user.isCas ? "Oui" : "Non" }}</p>
+      </div>
+
+      <div class="cardbox-item">
+        <h3>{{ t("user.isValidatedByAdmin") }}</h3>
+        <p>{{ userManager.user.isValidatedByAdmin ? "Oui" : "Non" }}</p>
+      </div>
+    </div>
+
+    <div class="cardbox">
+      <h2>{{ t("user.title-group") }}</h2>
+      <fieldset>
+        <QField
+            :error="!groupChoiceIsValid"
+            :error-message="t('forms.required-status')"
+            :hint="t('forms.status-hint')"
+        >
+          <QOptionGroup
+              v-model="userGroups"
+              :options="userStore.groupList"
+              color="primary"
+              type="checkbox"
+          />
+        </QField>
+      </fieldset>
+
+    </div>
+    <QBtn color="secondary" label="Retour" to="/users"/>
+    <QBtn color="primary" label="Valider" v-on:click="validateUser(userManager.user)"/>
+    <QBtn color="red" label="Supprimer" v-on:click="deleteUser(userManager.user)">
+    </QBtn>
+  </div>
+>>>>>>> f84e524875e92b3acaffcc741b2bd6145c6caaeb
 </template>
 
 <style lang="sass" scoped>
