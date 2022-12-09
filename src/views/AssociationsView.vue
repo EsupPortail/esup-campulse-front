@@ -61,8 +61,8 @@ function goTo(id: number) {
     <QTable
         :columns="columns"
         :rows="associationStore.associationDirectory"
+        :title="t('directory.title')"
         row-key="name"
-        title="Associations"
     >
         <template v-slot:body="props">
             <QTr :props="props" @click="goTo(props.row.id)">

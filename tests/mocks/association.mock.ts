@@ -15,6 +15,11 @@ export const association: Association = {
         id: 1,
         name: 'Santé',
     },
+    socialNetworks: {
+        id: 1,
+        type: 'Mastodon',
+        location: 'https://mastodon.social'
+    },
     name: 'Association',
     acronym: null,
     pathLogo: null,

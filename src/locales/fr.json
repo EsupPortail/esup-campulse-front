@@ -150,9 +150,13 @@
     }
   },
   "directory": {
+    "title": "Associations",
     "labels": {
       "association-name": "Nom de l'association",
-      "association-acronym": "Sigle"
+      "association-acronym": "Sigle",
+      "association-institution": "Institution",
+      "association-component": "Composante",
+      "association-field": "Domaine"
     }
   },
   "association": {
