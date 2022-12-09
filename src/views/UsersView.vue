@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import {useUsersStore} from '@/stores/useUsersStore'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {onMounted} from 'vue'
 import type {QTableProps} from 'quasar'
+import {useQuasar} from 'quasar'
 import router from '@/router'
 //import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
 //import type {UserValidate} from '#/user'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
-const usersStore = useUsersStore()
+const usersStore = useUserManagerStore()
 onMounted(usersStore.getUsers)
 
 
@@ -31,7 +31,7 @@ const columns: QTableProps['columns'] = [
 ]
 
 function goTo(id: number) {
-  router.push({name: 'UserDetail', params: {id}})
+    router.push({name: 'UserDetail', params: {id}})
 }
 
 </script>
@@ -59,7 +59,7 @@ function goTo(id: number) {
                     {{ props.row.email }}
                 </QTd>
                 <QTd key="isValidatedByAdmin" :props="props">
-                  {{ props.row.isValidatedByAdmin ? "Oui" : "Non" }}
+                    {{ props.row.isValidatedByAdmin ? "Oui" : "Non" }}
                 </QTd>
                 <!--
                 <QTd key="isValidatedByAdmin" :props="props">

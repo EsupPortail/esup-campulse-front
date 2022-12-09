@@ -1,30 +1,23 @@
-import { defineStore } from 'pinia'
-import type {
-    User,
-    UserDirectory,
-    UserList,
-    UserNames,
-    UsersStore, UserStore,
-    UserValidate
-} from '#/user'
+import {defineStore} from 'pinia'
+import type {User, UserDirectory, UserList, UserManagerStore, UserNames, UserValidate} from '#/user'
 import _axios from '@/plugins/axios'
 
 
-export const useUsersStore = defineStore('usersStore', {
-    state: (): UsersStore => ({
+export const useUserManagerStore = defineStore('userManagerStore', {
+    state: (): UserManagerStore => ({
         user: {} as User,
         users: []
     }),
 
     getters: {
-        userNames: (state: UsersStore): UserNames => {
+        userNames: (state: UserManagerStore): UserNames => {
             return state.users
                 .map(user => ({
                     value: user.id,
                     label: user.firstName + ' ' + user.lastName
                 }))
         },
-        userDirectory: (state: UsersStore): UserDirectory => {
+        userDirectory: (state: UserManagerStore): UserDirectory => {
             return state.users
                 .map(user => ({
                     id: user.id,
@@ -34,7 +27,7 @@ export const useUsersStore = defineStore('usersStore', {
                     isValidatedByAdmin: user.isValidatedByAdmin
                 }))
         },
-        userGroups: (state: UsersStore): number[] => {
+        userGroups: (state: UserManagerStore): number[] => {
             return state.user?.groups?.map<number>(group => group.id) || []
         }
     },

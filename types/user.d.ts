@@ -87,7 +87,7 @@ export interface UserList {
     isValidatedByAdmin: boolean | null,
 }
 
-export interface UsersStore {
+export interface UserManagerStore {
     user: User,
     users: UserList[]
 }

@@ -23,6 +23,8 @@ export const user: User = {
     ]
 }
 
+export const users: User[] = [user, user, user]
+
 export const newUser: UserRegister = {
     username: 'john.lennon@bbc.com',
     firstName: 'John',
