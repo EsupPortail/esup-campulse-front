@@ -17,4 +17,20 @@ describe('useUtility', () => {
             expect(formatDate('')).toBeUndefined()
         })
     })
+    describe('arraysAreEqual', () => {
+        const {arraysAreEqual} = useUtility()
+        const a = [1, 2, 3]
+        const b = [3, 1, 2]
+        const c = [1, 2, 4]
+        const d = [4, 5, 6, 7]
+        it('should be false if arrays have not the same length', () => {
+            expect(arraysAreEqual(a, d)).toBeFalsy()
+        })
+        it('should be false if arrays do not contain the same values', () => {
+            expect(arraysAreEqual(a, c)).toBeFalsy()
+        })
+        it('should be true if arrays contain the same values', () => {
+            expect(arraysAreEqual(a, b)).toBeTruthy()
+        })
+    })
 })

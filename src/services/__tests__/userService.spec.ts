@@ -1,8 +1,7 @@
-import type {Mock} from 'vitest'
 import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 import {tokens} from '~/mocks/tokens.mock'
 import {mockedAxios} from '~/mocks/axios.mock'
-import {newUser, newUserGroups, user, userAssociations} from '~/mocks/user.mock'
+import {mockedNewUser, mockedNewUserGroups, mockedUser, mockedUserAssociations} from '~/mocks/user.mock'
 import * as userService from '@/services/userService'
 import type {AxiosResponse} from 'axios'
 import {useUserStore} from '@/stores/useUserStore'
@@ -14,7 +13,7 @@ let userStore = useUserStore()
 
 describe('User service', () => {
     afterEach(() => {
-        (mockedAxios.post as Mock).mockRestore()
+        mockedAxios.post.mockRestore()
     })
     describe('Tokens', () => {
         beforeEach(() => {
@@ -35,7 +34,7 @@ describe('User service', () => {
         })
         describe('Refresh token', () => {
             beforeEach(() => {
-                (mockedAxios.post as Mock).mockResolvedValueOnce({data: {access: tokens.accessRefreshed}} as AxiosResponse)
+                mockedAxios.post.mockResolvedValueOnce({data: {access: tokens.accessRefreshed}} as AxiosResponse)
                 userService.refreshToken()
             })
             it('should set a new access token', () => {
@@ -70,13 +69,13 @@ describe('User service', () => {
         })
         describe('locally', () => {
             beforeEach(() => {
-                userService.userLocalRegister(newUser)
+                userService.userLocalRegister(mockedNewUser)
             })
             it('should call API once', () => {
                 expect(mockedAxios.post).toHaveBeenCalledOnce()
             })
             it('should call API on /users/auth/registration/ with newUser as data', () => {
-                expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/auth/registration/', newUser)
+                expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/auth/registration/', mockedNewUser)
             })
         })
         describe('from CAS', () => {
@@ -93,32 +92,32 @@ describe('User service', () => {
         })
         describe('Association register', () => {
             beforeEach(() => {
-                userService.userAssociationsRegister(newUser.username, userAssociations)
+                userService.userAssociationsRegister(mockedNewUser.username, mockedUserAssociations)
             })
             it('should be called for each association', () => {
-                expect(mockedAxios.post).toHaveBeenCalledTimes(userAssociations.length)
+                expect(mockedAxios.post).toHaveBeenCalledTimes(mockedUserAssociations.length)
             })
             it('should call API on /users/associations/ with user, association id and hasOfficeStatus as data', () => {
                 expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/associations/',
                     {
-                        user: user.username,
-                        association: userAssociations[(userAssociations.length) - 1].id,
-                        hasOfficeStatus: userAssociations[(userAssociations.length) - 1].hasOfficeStatus
+                        user: mockedNewUser.username,
+                        association: mockedUserAssociations[(mockedUserAssociations.length) - 1].id,
+                        hasOfficeStatus: mockedUserAssociations[(mockedUserAssociations.length) - 1].hasOfficeStatus
                     }
                 )
             })
         })
         describe('User groups register', () => {
             beforeEach(() => {
-                userService.userGroupsRegister(user.username, newUserGroups)
+                userService.userGroupsRegister(mockedUser.username, mockedNewUserGroups)
             })
             it('should be called once', () => {
                 expect(mockedAxios.post).toHaveBeenCalledOnce()
             })
             it('should call API on /users/groups/ with username and newUserGroups as data', () => {
                 expect(mockedAxios.post).toHaveBeenCalledWith('/users/groups/', {
-                    username: user.username,
-                    groups: newUserGroups
+                    username: mockedUser.username,
+                    groups: mockedNewUserGroups
                 })
             })
         })
@@ -136,13 +135,13 @@ describe('User service', () => {
     })
     describe('Password reset', () => {
         beforeEach(() => {
-            userService.passwordReset(user.email)
+            userService.passwordReset(mockedUser.email)
         })
         it('should be called once', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
         })
         it('should call API on /users/auth/password/reset with user email as data', () => {
-            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/password/reset/', {email: user.email})
+            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/password/reset/', {email: mockedUser.email})
         })
     })
     describe('Password reset confirm', () => {

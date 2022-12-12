@@ -50,6 +50,24 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             if (this.user?.id !== id) {
                 this.user = (await _axios.get<User>(`/users/${id}`)).data
             }
+        },
+        async updateUserGroups(userGroups: number[]) {
+            await _axios.post('/users/groups/', {username: this.user?.username, groups: userGroups})
+        },
+        async validateUser() {
+            await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
+        },
+        async deleteUser() {
+            await _axios.delete(`/users/${this.user?.id}`)
+        },
+        async deleteUserGroups() {
+            for (let i = 0; i < this.userGroups.length; i++) {
+                await _axios.delete(`/users/groups/${this.user?.id}/${this.userGroups[i]}`)
+            }
+        },
+        unLoadUsers() {
+            this.user = undefined
+            this.users = []
         }
     }
 })

@@ -7,5 +7,14 @@ export default function () {
         }
     }
 
-    return {formatDate}
+    function arraysAreEqual(a: number[], b: number[]) {
+        if (a.length === b.length) {
+            return a.every(element => {
+                return b.includes(element)
+            })
+        }
+        return false
+    }
+
+    return {formatDate, arraysAreEqual}
 }

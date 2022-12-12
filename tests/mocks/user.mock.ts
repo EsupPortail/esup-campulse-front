@@ -1,6 +1,6 @@
-import type {User, UserAssociations, UserGroup, UserRegister} from '#/user'
+import type {User, UserAssociations, UserDirectory, UserGroup, UserNames, UserRegister} from '#/user'
 
-export const user: User = {
+export const mockedUser: User = {
     id: 1,
     password: 'motdepasse',
     //lastLogin: null,
@@ -23,9 +23,9 @@ export const user: User = {
     ]
 }
 
-export const users: User[] = [user, user, user]
+export const mockedUsers: User[] = [mockedUser, mockedUser, mockedUser]
 
-export const newUser: UserRegister = {
+export const mockedNewUser: UserRegister = {
     username: 'john.lennon@bbc.com',
     firstName: 'John',
     lastName: 'Lennon',
@@ -33,7 +33,7 @@ export const newUser: UserRegister = {
     email: 'john.lennon@bbc.com'
 }
 
-export const groups: UserGroup[] = [
+export const mockedGroups: UserGroup[] = [
     {
         id: 1,
         name: 'Gestionnaire'
@@ -48,16 +48,18 @@ export const groups: UserGroup[] = [
     }
 ]
 
-export const newUserGroups: number[] = [1, 3]
+export const mockedNewUserGroups: number[] = [1, 2]
 
-export const groupList = groups.map(
+export const mockedUserGroups: number[] = mockedUser.groups.map(group => group.id)
+
+export const mockedGroupList = mockedGroups.map(
     group => ({
         value: group.id,
         label: group.name
     })
 )
 
-export const userAssociations: UserAssociations = [
+export const mockedUserAssociations: UserAssociations = [
     {
         id: 1,
         hasOfficeStatus: true
@@ -75,3 +77,20 @@ export const userAssociations: UserAssociations = [
         hasOfficeStatus: false
     }
 ]
+
+export const mockedUserNames: UserNames = mockedUsers.map(
+    user => ({
+        value: user.id,
+        label: user.firstName + ' ' + user.lastName
+    })
+)
+
+export const mockedUserDirectory: UserDirectory = mockedUsers.map(
+    user => ({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        isValidatedByAdmin: user.isValidatedByAdmin
+    })
+)

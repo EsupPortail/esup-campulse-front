@@ -7,7 +7,9 @@ export default function () {
     const groups = ref<UserGroup[]>()
 
     async function getGroups() {
-        groups.value = (await _axios.get<UserGroup[]>('/groups/')).data
+        if (groups.value?.length === 0) {
+            groups.value = (await _axios.get<UserGroup[]>('/groups/')).data
+        }
     }
 
     const groupList = computed((): GroupList | undefined => {

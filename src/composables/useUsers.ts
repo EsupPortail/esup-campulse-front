@@ -1,12 +1,14 @@
-import {useRoute} from "vue-router";
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
-import _axios from '@/plugins/axios'
+import {useRoute} from 'vue-router'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import useUtility from '@/composables/useUtility'
 
 export default function () {
 
     const userManagerStore = useUserManagerStore()
     const route = useRoute()
+    const {arraysAreEqual} = useUtility()
 
+    // to test
     async function getUsers() {
         if (route.name === 'ValidateUsers') {
             await userManagerStore.getUnvalidatedUsers()
@@ -23,31 +25,15 @@ export default function () {
         }
     }
 
-    function groupsArraysAreEqual(a: number[], b: number[]) {
-        if (a.length === b.length) {
-            return a.every(element => {
-                return b.includes(element)
-            })
-        }
-        return false
-    }
-
+    // to test
     async function validateUser(userGroups: number[]) {
-        if (!groupsArraysAreEqual(userGroups, userManagerStore.userGroups)) {
-            await _axios.post('/users/groups/', {username: userManagerStore.user?.username, groups: userGroups})
-            for (let i = 0; i < userManagerStore.userGroups.length; i++) {
-                await _axios.delete(`/users/groups/${userManagerStore.user?.id}/${userManagerStore.userGroups[i]}`)
-            }
+        if (!arraysAreEqual(userGroups, userManagerStore.userGroups)) {
+            await userManagerStore.updateUserGroups(userGroups)
+            await userManagerStore.deleteUserGroups()
         }
-        await _axios.patch(`/users/${userManagerStore.user?.id}`, {isValidatedByAdmin: true})
-        userManagerStore.user = undefined
-        userManagerStore.users = []
+        await userManagerStore.validateUser()
+        userManagerStore.unLoadUsers()
     }
 
-    async function deleteUser() {
-        await _axios.delete(`/users/${userManagerStore.user?.id}`)
-        await userManagerStore.getUsers()
-    }
-
-    return {getUsers, getUser, validateUser, deleteUser}
+    return {getUsers, getUser, validateUser}
 }
