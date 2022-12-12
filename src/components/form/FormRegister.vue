@@ -5,17 +5,19 @@ import {useRoute} from 'vue-router'
 import {QInput, useQuasar} from 'quasar'
 import axios from 'axios'
 import {useAssociationStore} from "@/stores/useAssociationStore";
-import type {UserAssociations, UserRegister} from '#/user'
+import type {UserAssociations, UserGroup, UserRegister} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
 import {userAssociationsRegister, userCASRegister, userGroupsRegister, userLocalRegister} from '@/services/userService'
 import LayoutGDPRConsent from '@/components/layout/LayoutGDPRConsent.vue'
+import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
 const route = useRoute()
 const {notify} = useQuasar()
 const userStore = useUserStore()
 const associationStore = useAssociationStore()
+const {getGroups, studentGroup, groupList} = useUserGroups()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
@@ -69,9 +71,9 @@ async function loadCASUser() {
 // Load group list
 async function loadGroups() {
     try {
-        await userStore.getGroups()
-        if (userStore.studentGroup) {
-            newUserGroups.value.push(userStore.studentGroup.id)
+        await getGroups()
+        if (studentGroup) {
+            newUserGroups.value.push((studentGroup.value as UserGroup).id)
         }
     } catch (e) {
         notify({
@@ -209,13 +211,14 @@ async function register() {
         <fieldset>
             <legend class="legend-big">{{ $t('forms.status') }}</legend>
             <QField
+                v-if="groupList"
                 :error="!groupChoiceIsValid"
                 :error-message="$t('forms.required-status')"
                 :hint="$t('forms.status-hint')"
             >
                 <QOptionGroup
                     v-model="newUserGroups"
-                    :options="userStore.groupList"
+                    :options="groupList"
                     color="primary"
                     type="checkbox"
                 />

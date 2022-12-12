@@ -1,13 +1,12 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, GroupList, LocalLogin, User, UserGroup, UserStore} from '#/user'
+import type {CasLogin, LocalLogin, User, UserGroup, UserStore} from '#/user'
 import _axios from '@/plugins/axios'
 import {removeTokens, setTokens} from '@/services/userService'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
-        newUser: undefined,
-        groups: []
+        newUser: undefined
     }),
 
     getters: {
@@ -15,16 +14,6 @@ export const useUserStore = defineStore('userStore', {
         isCas: (state: UserStore): boolean | undefined => state.user?.isCas || state.newUser?.isCas,
         userNameFirstLetter: (state: UserStore): string | undefined => {
             return state.user?.firstName.charAt(0).toUpperCase()
-        },
-        groupList: (state: UserStore): GroupList => {
-            return state.groups
-                .map(group => ({
-                    value: group.id,
-                    label: group.name
-                }))
-        },
-        studentGroup: (state: UserStore): UserGroup | undefined => {
-            return state.groups.find(({name}) => name === 'Étudiante ou Étudiant')
         },
         managerGroup: (state: UserStore): UserGroup | undefined => {
             return state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
@@ -79,9 +68,6 @@ export const useUserStore = defineStore('userStore', {
             const {accessToken, refreshToken, user} = data
             setTokens(accessToken, refreshToken)
             this.newUser = user
-        },
-        async getGroups() {
-            this.groups = (await _axios.get<UserGroup[]>('/groups/')).data
         }
     }
 })

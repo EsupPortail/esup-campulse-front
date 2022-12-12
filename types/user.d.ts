@@ -23,15 +23,20 @@ export interface User {
     groups: UserGroup[],
 }
 
+// STORES
+
 // User store
 export interface UserStore {
     user: User | undefined,
-    newUser: User | undefined,
-    groups: UserGroup[]
+    newUser: User | undefined
 }
 
-/*// newUser
-export type NewUser = Pick<User, "username", "first_name", "last_name", "email", "phone">*/
+// User manager store
+export interface UserManagerStore {
+    user: User | undefined,
+    users: UserList[],
+    allUsers: boolean
+}
 
 // Login
 export type UserLogin = Pick<User, "username" | "password">
@@ -70,7 +75,7 @@ interface UserAssociation {
 
 export type UserAssociations = UserAssociation[]
 
-// User status
+// User group
 export interface UserGroup {
     id: number,
     name: string
@@ -78,6 +83,7 @@ export interface UserGroup {
 
 export type GroupList = { value: number, label: string }[]
 
+// Users
 export interface UserList {
     id: number,
     username: string,
@@ -85,11 +91,6 @@ export interface UserList {
     lastName: string,
     email: string,
     isValidatedByAdmin: boolean | null,
-}
-
-export interface UserManagerStore {
-    user: User,
-    users: UserList[]
 }
 
 export type UserNames = { value: number, label: string }[]

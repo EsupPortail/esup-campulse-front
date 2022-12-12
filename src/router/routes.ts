@@ -89,14 +89,19 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/ProfilePasswordEditView.vue')
             },
             {
-                path: 'users',
-                name: 'Users',
+                path: 'validate-users',
+                name: 'ValidateUsers',
+                component: () => import('@/views/UsersView.vue')
+            },
+            {
+                path: 'manage-users',
+                name: 'ManageUsers',
                 component: () => import('@/views/UsersView.vue')
             },
             {
                 path: 'user/:id',
                 name: 'UserDetail',
-                component : () => import('@/views/UserDetailView.vue')
+                component: () => import('@/views/UserDetailView.vue')
             },
             // This must be last
             {
