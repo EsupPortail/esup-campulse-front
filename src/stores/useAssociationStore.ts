@@ -4,10 +4,10 @@ import type {
     AssociationDirectory,
     AssociationList,
     AssociationNames,
-    AssociationStore
+    AssociationStore,
+    CreateAssociation
 } from '#/association'
 import _axios from '@/plugins/axios'
-
 
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
@@ -47,5 +47,12 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.association = (await _axios.get<Association>(`/associations/${id}`)).data
             }
         },
+        async createAssociation(name: string, data: CreateAssociation) {
+            try {
+                await _axios.post(`/associations/${name}`, data)
+            } catch (e) {
+                // code
+            }
+        }
     }
 })
