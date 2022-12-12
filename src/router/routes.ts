@@ -22,6 +22,11 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/AssociationDetailView.vue')
             },
             {
+                path: 'association/create',
+                name: 'AssociationCreate',
+                component: () => import('@/views/AssociationCreateView.vue')
+            },
+            {
                 path: 'charter',
                 name: 'Charter',
                 component: () => import('@/views/CharterView.vue'),
@@ -96,7 +101,7 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'user/:id',
                 name: 'UserDetail',
-                component : () => import('@/views/UserDetailView.vue')
+                component: () => import('@/views/UserDetailView.vue')
             },
             // This must be last
             {

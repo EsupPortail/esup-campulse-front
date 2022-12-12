@@ -30,7 +30,8 @@
     "commission": "Commission d'aide aux projets étudiants",
     "dashboard": "Tableau de bord",
     "directory": "Annuaire des associations",
-    "title": "Bienvenue sur la plateforme"
+    "title": "Bienvenue sur la plateforme",
+    "asso-create": "Création d'une association"
   },
   "header": {
     "charter": "Charte",
@@ -167,6 +168,7 @@
   "association": {
     "back-directory": "Revenir à l'annuaire",
     "contact": "Contacter l'association",
+    "create": "Créer une association",
     "titles": {
       "info": "Informations",
       "admin": "Administration",
