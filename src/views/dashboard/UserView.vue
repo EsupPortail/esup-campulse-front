@@ -6,11 +6,13 @@ import {useQuasar} from 'quasar'
 import router from '@/router'
 import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUsers'
+import {useRoute} from 'vue-router'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const {getUsers} = useUsers()
+const route = useRoute()
 
 onMounted(async () => {
     loading.show
@@ -52,12 +54,16 @@ const columns: QTableProps['columns'] = [
 ]
 
 function goTo(id: number) {
-    router.push({name: 'UserDetail', params: {id}})
+    if (route.name === 'ValidateUsers') {
+        router.push({name: 'UserValidationDetail', params: {id}})
+    } else {
+        router.push({name: 'UserManagementDetail', params: {id}})
+    }
 }
 </script>
 
 <template>
-    <h1>{{ t("user-manager.title") }}</h1>
+    <h1>{{ route.name === 'ValidateUsers' ? t("user-manager.validation") : t("user-manager.management") }}</h1>
     <QTable
         :columns="columns"
         :rows="userManagerStore.userDirectory"

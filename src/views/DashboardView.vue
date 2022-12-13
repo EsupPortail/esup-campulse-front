@@ -8,9 +8,29 @@ const {t} = useI18n()
 
 <template>
     <h1>{{ t("home.dashboard") }}</h1>
-    <QBtn :label="t('password.edit-password')" color="secondary" to="/profile-password-edit"/>
-    <QBtn v-if="userStore.managerGroup" :label="t('manager.users')" color="secondary" to="/validate-users"/>
+    <section>
+        <QBtn
+            :label="t('password.edit-password')"
+            color="secondary"
+            to="/dashboard/password-edit"
+        />
+        <QBtn
+            v-if="userStore.managerGroup"
+            :label="t('dashboard.user-validation')"
+            color="secondary"
+            to="/dashboard/validate-users"
+        />
+        <QBtn
+            v-if="userStore.managerGroup"
+            :label="t('dashboard.user-management')"
+            color="secondary"
+            to="/dashboard/manage-users"
+        />
+    </section>
 </template>
 
-<style>
+<style lang="sass" scoped>
+section
+    display: flex
+    gap: 20px
 </style>

@@ -35,7 +35,8 @@ export interface UserStore {
 export interface UserManagerStore {
     user: User | undefined,
     users: UserList[],
-    allUsers: boolean
+    allUsers: boolean,
+    userAssociations: UserAssociationDetail[]
 }
 
 // Login
@@ -74,6 +75,15 @@ interface UserAssociation {
 }
 
 export type UserAssociations = UserAssociation[]
+
+export interface UserAssociationDetail {
+    user: string,
+    roleName: string,
+    hasOfficeStatus: boolean,
+    isPresident: boolean,
+    association: number
+}
+
 
 // User group
 export interface UserGroup {

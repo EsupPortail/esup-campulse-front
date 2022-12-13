@@ -1,11 +1,13 @@
 import {useRoute} from 'vue-router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import useUserGroups from '@/composables/useUserGroups'
 import useUtility from '@/composables/useUtility'
 
 export default function () {
 
     const userManagerStore = useUserManagerStore()
     const route = useRoute()
+    const {groupsToDelete} = useUserGroups()
     const {arraysAreEqual} = useUtility()
 
     // to test
@@ -25,10 +27,11 @@ export default function () {
         }
     }
 
-    async function validateUser(userGroups: number[]) {
-        if (!arraysAreEqual(userGroups, userManagerStore.userGroups)) {
-            await userManagerStore.updateUserGroups(userGroups)
-            await userManagerStore.deleteUserGroups()
+    async function validateUser(newGroups: number[]) {
+        const oldGroups = userManagerStore.userGroups
+        if (!arraysAreEqual(newGroups, oldGroups)) {
+            await userManagerStore.updateUserGroups(newGroups)
+            await userManagerStore.deleteUserGroups(groupsToDelete(newGroups, oldGroups))
         }
         await userManagerStore.validateUser()
         userManagerStore.unLoadUsers()

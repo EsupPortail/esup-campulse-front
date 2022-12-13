@@ -45,8 +45,49 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'dashboard',
-                name: 'Dashboard',
-                component: () => import('@/views/DashboardView.vue')
+                meta: {requiresAuth: true},
+                children: [
+                    {
+                        path: '',
+                        name: 'Dashboard',
+                        component: () => import('@/views/DashboardView.vue'),
+                    },
+                    {
+                        path: 'password-edit',
+                        name: 'PasswordEdit',
+                        component: () => import('@/views/PasswordEditView.vue')
+                    },
+                    {
+                        path: 'validate-users',
+                        children: [
+                            {
+                                path: '',
+                                name: 'ValidateUsers',
+                                component: () => import('@/views/dashboard/UserView.vue')
+                            },
+                            {
+                                path: ':id',
+                                name: 'UserValidationDetail',
+                                component: () => import('@/views/dashboard/UserValidationDetailView.vue')
+                            },
+                        ]
+                    },
+                    {
+                        path: 'manage-users',
+                        children: [
+                            {
+                                path: '',
+                                name: 'ManageUsers',
+                                component: () => import('@/views/dashboard/UserView.vue')
+                            },
+                            {
+                                path: ':id',
+                                name: 'UserManagementDetail',
+                                component: () => import('@/views/dashboard/UserManagementDetailView.vue')
+                            },
+                        ]
+                    },
+                ]
             },
             {
                 path: 'register',
@@ -82,26 +123,6 @@ const routes: RouteRecordRaw[] = [
                 path: 'password-reset-confirm',
                 name: 'PasswordResetConfirm',
                 component: () => import('@/views/PasswordResetConfirmView.vue')
-            },
-            {
-                path: 'profile-password-edit',
-                name: 'ProfilePasswordEdit',
-                component: () => import('@/views/ProfilePasswordEditView.vue')
-            },
-            {
-                path: 'validate-users',
-                name: 'ValidateUsers',
-                component: () => import('@/views/UsersView.vue')
-            },
-            {
-                path: 'manage-users',
-                name: 'ManageUsers',
-                component: () => import('@/views/UsersView.vue')
-            },
-            {
-                path: 'user/:id',
-                name: 'UserDetail',
-                component: () => import('@/views/UserDetailView.vue')
             },
             // This must be last
             {
