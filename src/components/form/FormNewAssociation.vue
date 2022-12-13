@@ -13,9 +13,7 @@ const associationStore = useAssociationStore()
 
 async function onCreate(association: Association) {
   try {
-    await associationStore.createAssociation(association.name, {
-      name: association.name
-    })
+    await associationStore.createAssociation(association.name)
     notify({
       type: 'positive',
       message: t('notifications.positive.validate-asso')
@@ -30,25 +28,31 @@ async function onCreate(association: Association) {
 </script>
 
 <template>
-  <section>
-    <article>
-      <h3>{{ t("association.labels.new-asso") }}</h3>
-      <input type="text">
-    </article>
-  </section>
-  <section class="btn-group">
-    <QBtn
-        :label="t('home.back-dashboard')"
-        color="secondary"
-        icon="mdi-arrow-left-circle"
-        to="/associations"
+  <QForm
+      class="q-gutter-md"
+      @submit.prevent="onCreate"
+  >
+    <h3>{{ t("association.labels.new-asso") }}</h3>
+    <QInput
+        v-model="associationStore.association"
+        :label="t('forms.name')"
+        filled
+        lazy-rules
     />
-    <QBtn
-        :label="t('manager.validate')"
-        color="primary"
-        v-on:click="onCreate(associationStore.association)"
-    />
-  </section>
+    <section class="btn-group">
+      <QBtn
+          :label="t('home.back-dashboard')"
+          color="secondary"
+          icon="mdi-arrow-left-circle"
+          to="/associations"
+      />
+      <QBtn
+          :label="t('manager.validate')"
+          color="primary"
+          v-on:click="onCreate(associationStore.association)"
+      />
+    </section>
+  </QForm>
 </template>
 
 <style lang="sass" scoped>
