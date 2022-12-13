@@ -3,6 +3,8 @@
     "title": "Contenu introuvable",
     "description": "404"
   },
+  "yes": "Oui",
+  "no": "Non",
   "loading": "Chargement...",
   "home": {
     "banner": {
@@ -112,8 +114,10 @@
     "status": "Votre statut",
     "validated-account": "Compte validé"
   },
-  "manager": {
-    "users": "Liste des comptes",
+  "user-manager": {
+    "title": "Validation des demandes de comptes",
+    "is-validated": "Validé par le gestionnaire",
+    "users": "Utilisateurs",
     "validate": "Valider"
   },
   "notifications": {
@@ -123,6 +127,7 @@
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
       "email-used": "Cette adresse email est déjà associée à un compte. Veuillez vous connecter.",
       "form-error": "Erreur lors du chargement du formulaire, veuillez recharger la page.",
+      "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
       "invalid-request": "Requête invalide.",
       "invalid-token": "Jeton invalide.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",

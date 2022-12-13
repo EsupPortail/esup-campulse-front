@@ -24,7 +24,7 @@ async function onGetUsers() {
     } catch (e) {
         notify({
             type: 'negative',
-            message: ''
+            message: t('notifications.negative.loading-error')
         })
     }
 }
@@ -39,16 +39,16 @@ const columns: QTableProps['columns'] = [
         format: val => `${val}`,
         sortable: true
     },
-    {name: 'firstName', align: 'left', label: 'Nom de famille', field: 'firstName', sortable: true},
-    {name: 'lastName', align: 'left', label: 'Prénom', field: 'lastName', sortable: true},
-    {name: 'email', align: 'left', label: 'Adresse mail', field: 'email', sortable: true},
+    {name: 'firstName', align: 'left', label: t('forms.first-name'), field: 'firstName', sortable: true},
+    {name: 'lastName', align: 'left', label: t('forms.last-name'), field: 'lastName', sortable: true},
+    {name: 'email', align: 'left', label: t('forms.email'), field: 'email', sortable: true},
     {
         name: 'isValidatedByAdmin',
         align: 'left',
-        label: 'Validé par le gestionnaire',
+        label: t('user-manager.is-validated'),
         field: 'isValidatedByAdmin',
         sortable: true
-    },
+    }
 ]
 
 function goTo(id: number) {
@@ -57,12 +57,13 @@ function goTo(id: number) {
 </script>
 
 <template>
-    <h1>{{ t("manager.users") }}</h1>
+    <h1>{{ t("user-manager.title") }}</h1>
     <QTable
         :columns="columns"
         :rows="userManagerStore.userDirectory"
+        :rows-per-page-options="[10, 20, 50, 0]"
+        :title="t('user-manager.users')"
         row-key="id"
-        title="Users"
     >
         <template v-slot:body="props">
             <QTr :props="props" @click="goTo(props.row.id)">
@@ -79,7 +80,9 @@ function goTo(id: number) {
                     {{ props.row.email }}
                 </QTd>
                 <QTd key="isValidatedByAdmin" :props="props">
-                    {{ props.row.isValidatedByAdmin ? "Oui" : "Non" }}
+                    <QChip :color="props.row.isValidatedByAdmin ? 'teal' : 'red'" text-color="white">
+                        {{ props.row.isValidatedByAdmin ? t('yes') : t('no') }}
+                    </QChip>
                 </QTd>
             </QTr>
         </template>

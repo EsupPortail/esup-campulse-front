@@ -39,9 +39,11 @@ const groupChoiceIsValid = computed(() => {
 })
 const hasConsent = ref<boolean>(false)
 
-onMounted(loadCASUser)
-onMounted(loadAssociations)
-onMounted(loadGroups)
+onMounted(async () => {
+    await loadCASUser()
+    await loadGroups()
+    await loadAssociations()
+})
 
 // Load user infos from CAS
 async function loadCASUser() {
