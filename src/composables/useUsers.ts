@@ -25,7 +25,6 @@ export default function () {
         }
     }
 
-    // to test
     async function validateUser(userGroups: number[]) {
         if (!arraysAreEqual(userGroups, userManagerStore.userGroups)) {
             await userManagerStore.updateUserGroups(userGroups)
