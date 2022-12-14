@@ -9,7 +9,7 @@ import type {UserAssociations, UserGroup, UserRegister} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
 import {userAssociationsRegister, userCASRegister, userGroupsRegister, userLocalRegister} from '@/services/userService'
-import LayoutGDPRConsent from '@/components/layout/LayoutGDPRConsent.vue'
+import LayoutGDPRConsent from '@/components/form/LayoutGDPRConsent.vue'
 import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
@@ -286,7 +286,7 @@ fieldset + .q-separator
     margin: 15px 0 0 0
 
 .q-btn[type="submit"]
-    margin: 0 0 5px 15px
+    margin: 15px 0 5px 15px
 
 fieldset
     border: none
