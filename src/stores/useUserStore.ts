@@ -34,23 +34,17 @@ export const useUserStore = defineStore('userStore', {
             removeTokens()
             this.unLoadUser()
         },
+        // to re-test
         async getUser() {
             const user = (await _axios.get<User>('/users/auth/user/')).data
-            // Check user validity
-            // If user is valid
             if (user.isValidatedByAdmin) {
-                // Populate user data and user is auth
                 this.user = user
-            }
-            // If user is not valid
-            else {
-                // But user is from CAS
+                this.user.groups = (await _axios.get<UserGroup[]>('/users/groups/')).data
+            } else {
                 // Specific case for CAS user data which can persist until complete registration
                 if (user.isCas) {
-                    // Populate newUser data and user is not auth
                     this.newUser = user
                 } else {
-                    // Clear tokens and user data
                     await this.logOut()
                 }
             }

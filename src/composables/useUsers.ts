@@ -10,7 +10,6 @@ export default function () {
     const {groupsToDelete} = useUserGroups()
     const {arraysAreEqual} = useUtility()
 
-    // to test
     async function getUsers() {
         if (route.name === 'ValidateUsers') {
             await userManagerStore.getUnvalidatedUsers()

@@ -21,7 +21,6 @@ export default function () {
         return groups.value?.find(({name}) => name === 'Étudiante ou Étudiant')
     })
 
-    // to test
     function groupsToDelete(newGroups: number [], oldGroups: number[]) {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
     }

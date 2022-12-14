@@ -1,7 +1,14 @@
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {mockedAxios} from '~/mocks/axios.mock'
-import {mockedUser, mockedUserDirectory, mockedUserGroups, mockedUserNames, mockedUsers} from '~/mocks/user.mock'
+import {
+    mockedGroups,
+    mockedUser,
+    mockedUserDirectory,
+    mockedUserGroups,
+    mockedUserNames,
+    mockedUsers
+} from '~/mocks/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 
@@ -107,6 +114,7 @@ describe('User manager store', () => {
     describe('getUserDetail', () => {
         beforeEach(() => {
             mockedAxios.get.mockResolvedValueOnce({data: mockedUser})
+            mockedAxios.get.mockResolvedValueOnce({data: mockedGroups})
         })
         afterEach(() => {
             userManagerStore.user = undefined
@@ -118,12 +126,14 @@ describe('User manager store', () => {
             afterEach(() => {
                 userManagerStore.user = undefined
             })
-            it('should call API once on /users/id', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
+            it('should call API to get user and groups', () => {
+                expect(mockedAxios.get).toHaveBeenCalledTimes(2)
                 expect(mockedAxios.get).toHaveBeenCalledWith(`/users/${mockedUser.id}`)
+                expect(mockedAxios.get).toHaveBeenCalledWith('/users/groups/')
             })
-            it('should populate user state', () => {
+            it('should populate user state and groups', () => {
                 expect(userManagerStore.user).toEqual(mockedUser)
+                expect(userManagerStore.user?.groups).toEqual(mockedGroups)
             })
         })
         describe('If user already in store', () => {
@@ -134,8 +144,9 @@ describe('User manager store', () => {
             it('should not call API', () => {
                 expect(mockedAxios.get).toHaveBeenCalledTimes(0)
             })
-            it('should not modify users state', () => {
+            it('should not modify user state', () => {
                 expect(userManagerStore.user).toEqual(mockedUser)
+                expect(userManagerStore.user?.groups).toEqual(mockedGroups)
             })
         })
     })
@@ -177,14 +188,14 @@ describe('User manager store', () => {
     describe('deleteUserGroups', () => {
         beforeEach(() => {
             userManagerStore.user = mockedUser
-            userManagerStore.deleteUserGroups()
+            userManagerStore.deleteUserGroups([3])
         })
         it('should call API for each group', () => {
-            expect(mockedAxios.delete).toHaveBeenCalledTimes(userManagerStore.userGroups.length)
+            expect(mockedAxios.delete).toHaveBeenCalledOnce()
         })
         it('should call API on /users/groups/userId/groupId', () => {
-            expect(mockedAxios.delete).toHaveBeenLastCalledWith(
-                `/users/groups/${userManagerStore.user?.id}/${userManagerStore.userGroups[(userManagerStore.userGroups.length) - 1]}`
+            expect(mockedAxios.delete).toHaveBeenCalledWith(
+                `/users/groups/${userManagerStore.user?.id}/${3}`
             )
         })
     })

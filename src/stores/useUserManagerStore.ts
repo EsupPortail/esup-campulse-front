@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {User, UserDirectory, UserList, UserManagerStore, UserNames} from '#/user'
+import type {User, UserDirectory, UserGroup, UserList, UserManagerStore, UserNames} from '#/user'
 import _axios from '@/plugins/axios'
 
 
@@ -50,6 +50,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async getUserDetail(id: number) {
             if (this.user?.id !== id) {
                 this.user = (await _axios.get<User>(`/users/${id}`)).data
+                this.user.groups = (await _axios.get<UserGroup[]>('/users/groups/')).data
             }
         },
         async updateUserGroups(userGroups: number[]) {
@@ -64,7 +65,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async getUserAssociations() {
             this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
         },
-        // to test
         async deleteUserGroups(groupsToDelete: number[]) {
             for (let i = 0; i < groupsToDelete.length; i++) {
                 await _axios.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)

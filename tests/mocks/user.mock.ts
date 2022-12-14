@@ -1,37 +1,5 @@
 import type {User, UserAssociations, UserDirectory, UserGroup, UserNames, UserRegister} from '#/user'
 
-export const mockedUser: User = {
-    id: 1,
-    password: 'motdepasse',
-    //lastLogin: null,
-    //isSuperuser: false,
-    username: 'john.lennon@bbc.com',
-    firstName: 'John',
-    lastName: 'Lennon',
-    phone: null,
-    email: 'john.lennon@bbc.com',
-    //isStaff: false,
-    //isActive: false,
-    //dateJoined: '',
-    isCas: false,
-    isValidatedByAdmin: true,
-    groups: [
-        {
-            id: 2,
-            name: 'Étudiante ou Étudiant'
-        }
-    ]
-}
-
-export const mockedUsers: User[] = [mockedUser, mockedUser, mockedUser]
-
-export const mockedNewUser: UserRegister = {
-    username: 'john.lennon@bbc.com',
-    firstName: 'John',
-    lastName: 'Lennon',
-    phone: null,
-    email: 'john.lennon@bbc.com'
-}
 
 export const mockedGroups: UserGroup[] = [
     {
@@ -49,6 +17,34 @@ export const mockedGroups: UserGroup[] = [
 ]
 
 export const mockedNewUserGroups: number[] = [1, 2]
+
+export const mockedUser: User = {
+    id: 1,
+    password: 'motdepasse',
+    //lastLogin: null,
+    //isSuperuser: false,
+    username: 'john.lennon@bbc.com',
+    firstName: 'John',
+    lastName: 'Lennon',
+    phone: null,
+    email: 'john.lennon@bbc.com',
+    //isStaff: false,
+    //isActive: false,
+    //dateJoined: '',
+    isCas: false,
+    isValidatedByAdmin: true,
+    groups: mockedGroups
+}
+
+export const mockedUsers: User[] = [mockedUser, mockedUser, mockedUser]
+
+export const mockedNewUser: UserRegister = {
+    username: 'john.lennon@bbc.com',
+    firstName: 'John',
+    lastName: 'Lennon',
+    phone: null,
+    email: 'john.lennon@bbc.com'
+}
 
 export const mockedUserGroups: number[] = mockedUser.groups.map(group => group.id)
 
