@@ -8,7 +8,8 @@ const {t} = useI18n()
 
 <template>
     <h1>{{ t("home.dashboard") }}</h1>
-    <p class="welcome-msg">Bonjour, {{ userStore.user?.firstName + ' ' + userStore.user?.lastName }}</p>
+    <p class="welcome-msg">
+        {{ t('dashboard.welcome-message') + ', ' + userStore.userName }}</p>
     <section>
         <QBtn
             :label="t('password.edit-password')"

@@ -134,7 +134,8 @@
   "dashboard": {
     "user-validation": "Validation des comptes",
     "user-management": "Gestion des comptes",
-    "validate-changes": "Valider les changements"
+    "validate-changes": "Valider les changements",
+    "welcome-message": "Bienvenue"
   },
   "notifications": {
     "negative": {

@@ -17,6 +17,9 @@ export const useUserStore = defineStore('userStore', {
         },
         managerGroup: (state: UserStore): UserGroup | undefined => {
             return state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
+        },
+        userName: (state: UserStore): string | undefined => {
+            return state.user?.firstName + ' ' + state.user?.lastName
         }
     },
     actions: {
