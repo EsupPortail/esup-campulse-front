@@ -2,7 +2,7 @@
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {Association} from "#/association";
+import {ref} from 'vue'
 //import {useRoute} from 'vue-router'
 
 const {t} = useI18n()
@@ -10,10 +10,11 @@ const {notify} = useQuasar()
 //const route = useRoute()
 
 const associationStore = useAssociationStore()
+const newAssociation = ref<string>('')
 
-async function onCreate(association: Association) {
+async function onCreate() {
   try {
-    await associationStore.createAssociation(association.name)
+    await associationStore.createAssociation(newAssociation.value)
     notify({
       type: 'positive',
       message: t('notifications.positive.validate-asso')
@@ -34,7 +35,7 @@ async function onCreate(association: Association) {
   >
     <h3>{{ t("association.labels.new-asso") }}</h3>
     <QInput
-        v-model="associationStore.association"
+        v-model="newAssociation"
         :label="t('forms.name')"
         filled
         lazy-rules
@@ -49,7 +50,7 @@ async function onCreate(association: Association) {
       <QBtn
           :label="t('manager.validate')"
           color="primary"
-          v-on:click="onCreate(associationStore.association)"
+          @:click="onCreate"
       />
     </section>
   </QForm>
