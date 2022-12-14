@@ -1,39 +1,7 @@
-import type {User, UserAssociations, UserGroup, UserRegister} from '#/user'
+import type {User, UserAssociations, UserDirectory, UserGroup, UserNames, UserRegister} from '#/user'
 
-export const user: User = {
-    id: 1,
-    password: 'motdepasse',
-    //lastLogin: null,
-    //isSuperuser: false,
-    username: 'john.lennon@bbc.com',
-    firstName: 'John',
-    lastName: 'Lennon',
-    phone: null,
-    email: 'john.lennon@bbc.com',
-    //isStaff: false,
-    //isActive: false,
-    //dateJoined: '',
-    isCas: false,
-    isValidatedByAdmin: true,
-    groups: [
-        {
-            id: 2,
-            name: 'Étudiante ou Étudiant'
-        }
-    ]
-}
 
-export const users: User[] = [user, user, user]
-
-export const newUser: UserRegister = {
-    username: 'john.lennon@bbc.com',
-    firstName: 'John',
-    lastName: 'Lennon',
-    phone: null,
-    email: 'john.lennon@bbc.com'
-}
-
-export const groups: UserGroup[] = [
+export const mockedGroups: UserGroup[] = [
     {
         id: 1,
         name: 'Gestionnaire'
@@ -48,16 +16,46 @@ export const groups: UserGroup[] = [
     }
 ]
 
-export const newUserGroups: number[] = [1, 3]
+export const mockedNewUserGroups: number[] = [1, 2]
 
-export const groupList = groups.map(
+export const mockedUser: User = {
+    id: 1,
+    password: 'motdepasse',
+    //lastLogin: null,
+    //isSuperuser: false,
+    username: 'john.lennon@bbc.com',
+    firstName: 'John',
+    lastName: 'Lennon',
+    phone: null,
+    email: 'john.lennon@bbc.com',
+    //isStaff: false,
+    //isActive: false,
+    //dateJoined: '',
+    isCas: false,
+    isValidatedByAdmin: true,
+    groups: mockedGroups
+}
+
+export const mockedUsers: User[] = [mockedUser, mockedUser, mockedUser]
+
+export const mockedNewUser: UserRegister = {
+    username: 'john.lennon@bbc.com',
+    firstName: 'John',
+    lastName: 'Lennon',
+    phone: null,
+    email: 'john.lennon@bbc.com'
+}
+
+export const mockedUserGroups: number[] = mockedUser.groups.map(group => group.id)
+
+export const mockedGroupList = mockedGroups.map(
     group => ({
         value: group.id,
         label: group.name
     })
 )
 
-export const userAssociations: UserAssociations = [
+export const mockedUserAssociations: UserAssociations = [
     {
         id: 1,
         hasOfficeStatus: true
@@ -75,3 +73,20 @@ export const userAssociations: UserAssociations = [
         hasOfficeStatus: false
     }
 ]
+
+export const mockedUserNames: UserNames = mockedUsers.map(
+    user => ({
+        value: user.id,
+        label: user.firstName + ' ' + user.lastName
+    })
+)
+
+export const mockedUserDirectory: UserDirectory = mockedUsers.map(
+    user => ({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        isValidatedByAdmin: user.isValidatedByAdmin
+    })
+)

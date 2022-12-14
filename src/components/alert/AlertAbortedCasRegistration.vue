@@ -12,20 +12,19 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
 </script>
 
 <template>
-  <QDialog v-model="isCas" persistent>
-    <QCard>
-      <QCardSection class="row no-wrap">
-        <QIcon color="negative" name="mdi-information-outline" size="md"/>
-        <span class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</span>
-      </QCardSection>
-      <QCardActions align="right">
-        <QBtn v-close-popup :label="t('alerts.close')" color="primary" flat>
-          {{ t('alerts.delete-user.confirm-delete') }}
-        </QBtn>
-        <QBtn v-close-popup :label="t('alerts.aborted-cas-registration.button')" color="primary" to="/register"/>
-      </QCardActions>
-    </QCard>
-  </QDialog>
+    <QDialog v-model="isCas" persistent>
+        <QCard>
+            <QCardSection class="row no-wrap">
+                <QIcon color="negative" name="mdi-information-outline" size="md"/>
+                <span class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</span>
+            </QCardSection>
+            <QCardActions align="right">
+                <QBtn v-close-popup :label="t('alerts.close')" color="primary" flat/>
+                <QBtn v-close-popup :label="t('alerts.aborted-cas-registration.button')" color="primary"
+                      to="/register"/>
+            </QCardActions>
+        </QCard>
+    </QDialog>
 </template>
 
 <style lang="sass" scoped>

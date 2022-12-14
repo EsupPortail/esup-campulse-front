@@ -5,17 +5,19 @@ import {useRoute} from 'vue-router'
 import {QInput, useQuasar} from 'quasar'
 import axios from 'axios'
 import {useAssociationStore} from "@/stores/useAssociationStore";
-import type {UserAssociations, UserRegister} from '#/user'
+import type {UserAssociations, UserGroup, UserRegister} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
 import {userAssociationsRegister, userCASRegister, userGroupsRegister, userLocalRegister} from '@/services/userService'
-import LayoutGDPRConsent from '@/components/layout/LayoutGDPRConsent.vue'
+import LayoutGDPRConsent from '@/components/form/LayoutGDPRConsent.vue'
+import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
 const route = useRoute()
 const {notify} = useQuasar()
 const userStore = useUserStore()
 const associationStore = useAssociationStore()
+const {getGroups, studentGroup, groupList} = useUserGroups()
 
 // Setting newUser data
 const newUser = ref<UserRegister>({
@@ -37,9 +39,11 @@ const groupChoiceIsValid = computed(() => {
 })
 const hasConsent = ref<boolean>(false)
 
-onMounted(loadCASUser)
-onMounted(loadAssociations)
-onMounted(loadGroups)
+onMounted(async () => {
+    await loadCASUser()
+    await loadGroups()
+    await loadAssociations()
+})
 
 // Load user infos from CAS
 async function loadCASUser() {
@@ -69,9 +73,9 @@ async function loadCASUser() {
 // Load group list
 async function loadGroups() {
     try {
-        await userStore.getGroups()
-        if (userStore.studentGroup) {
-            newUserGroups.value.push(userStore.studentGroup.id)
+        await getGroups()
+        if (studentGroup) {
+            newUserGroups.value.push((studentGroup.value as UserGroup).id)
         }
     } catch (e) {
         notify({
@@ -209,13 +213,14 @@ async function register() {
         <fieldset>
             <legend class="legend-big">{{ $t('forms.status') }}</legend>
             <QField
+                v-if="groupList"
                 :error="!groupChoiceIsValid"
                 :error-message="$t('forms.required-status')"
                 :hint="$t('forms.status-hint')"
             >
                 <QOptionGroup
                     v-model="newUserGroups"
-                    :options="userStore.groupList"
+                    :options="groupList"
                     color="primary"
                     type="checkbox"
                 />
@@ -281,7 +286,7 @@ fieldset + .q-separator
     margin: 15px 0 0 0
 
 .q-btn[type="submit"]
-    margin: 0 0 5px 15px
+    margin: 15px 0 5px 15px
 
 fieldset
     border: none

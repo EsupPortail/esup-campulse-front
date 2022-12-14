@@ -3,7 +3,12 @@
     "title": "Contenu introuvable",
     "description": "404"
   },
+  "yes": "Oui",
+  "no": "Non",
   "loading": "Chargement...",
+  "back": "Retour",
+  "validate": "Valider",
+  "delete": "Supprimer",
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",
@@ -112,9 +117,25 @@
     "status": "Votre statut",
     "validated-account": "Compte validé"
   },
-  "manager": {
-    "users": "Liste des comptes",
-    "validate": "Valider"
+  "user-manager": {
+    "validation": "Validation des demandes de comptes",
+    "management": "Gestion des comptes",
+    "is-validated": "Validé par le gestionnaire",
+    "users": "Utilisateurs",
+    "validate-account": "Valider le compte",
+    "manage-account": "Gérer les informations du compte",
+    "delete-account-application": "Supprimer la demande de compte",
+    "delete-account": "Supprimer le compte",
+    "forms": {
+      "required-status": "Maximum deux statuts autorisés.",
+      "status-hint": "Veuillez valider le ou les statuts présélectionnés par l'utilisateur."
+    }
+  },
+  "dashboard": {
+    "user-validation": "Validation des comptes",
+    "user-management": "Gestion des comptes",
+    "validate-changes": "Valider les changements",
+    "welcome-message": "Bienvenue"
   },
   "notifications": {
     "negative": {
@@ -123,6 +144,7 @@
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
       "email-used": "Cette adresse email est déjà associée à un compte. Veuillez vous connecter.",
       "form-error": "Erreur lors du chargement du formulaire, veuillez recharger la page.",
+      "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
       "invalid-request": "Requête invalide.",
       "invalid-token": "Jeton invalide.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
@@ -138,7 +160,8 @@
       "password-changed": "Votre mot de passe a bien été modifié.",
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
-      "validate-success": "Le statut du compte a bien été modifié."
+      "validate-success": "Le statut du compte a bien été modifié.",
+      "validate-delete-user": "Le compte a bien été supprimé."
     }
   },
   "alerts": {
@@ -202,7 +225,7 @@
     "isValidatedByAdmin": "L'utilisateur est validé par le gestionnaire",
     "last-name": "Nom de famille",
     "phone": "Numéro de téléphone",
-    "title-infos": "Informations",
-    "title-group": "Appartenance"
+    "infos": "Informations",
+    "groups": "Statut"
   }
 }

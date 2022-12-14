@@ -1,13 +1,12 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, GroupList, LocalLogin, User, UserGroup, UserStore} from '#/user'
+import type {CasLogin, LocalLogin, User, UserGroup, UserStore} from '#/user'
 import _axios from '@/plugins/axios'
 import {removeTokens, setTokens} from '@/services/userService'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
-        newUser: undefined,
-        groups: []
+        newUser: undefined
     }),
 
     getters: {
@@ -16,18 +15,11 @@ export const useUserStore = defineStore('userStore', {
         userNameFirstLetter: (state: UserStore): string | undefined => {
             return state.user?.firstName.charAt(0).toUpperCase()
         },
-        groupList: (state: UserStore): GroupList => {
-            return state.groups
-                .map(group => ({
-                    value: group.id,
-                    label: group.name
-                }))
-        },
-        studentGroup: (state: UserStore): UserGroup | undefined => {
-            return state.groups.find(({name}) => name === 'Étudiante ou Étudiant')
-        },
         managerGroup: (state: UserStore): UserGroup | undefined => {
             return state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
+        },
+        userName: (state: UserStore): string | undefined => {
+            return state.user?.firstName + ' ' + state.user?.lastName
         }
     },
     actions: {
@@ -45,23 +37,17 @@ export const useUserStore = defineStore('userStore', {
             removeTokens()
             this.unLoadUser()
         },
+        // to re-test
         async getUser() {
             const user = (await _axios.get<User>('/users/auth/user/')).data
-            // Check user validity
-            // If user is valid
             if (user.isValidatedByAdmin) {
-                // Populate user data and user is auth
                 this.user = user
-            }
-            // If user is not valid
-            else {
-                // But user is from CAS
+                this.user.groups = (await _axios.get<UserGroup[]>('/users/groups/')).data
+            } else {
                 // Specific case for CAS user data which can persist until complete registration
                 if (user.isCas) {
-                    // Populate newUser data and user is not auth
                     this.newUser = user
                 } else {
-                    // Clear tokens and user data
                     await this.logOut()
                 }
             }
@@ -79,9 +65,6 @@ export const useUserStore = defineStore('userStore', {
             const {accessToken, refreshToken, user} = data
             setTokens(accessToken, refreshToken)
             this.newUser = user
-        },
-        async getGroups() {
-            this.groups = (await _axios.get<UserGroup[]>('/groups/')).data
         }
     }
 })
