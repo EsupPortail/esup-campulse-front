@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {useAssociationStore} from '@/stores/useAssociationStore'
 import {ref} from 'vue'
-//import {useRoute} from 'vue-router'
+import useAssociation from "@/composables/useAssociation";
+import router from "@/router";
 
 const {t} = useI18n()
 const {notify} = useQuasar()
-//const route = useRoute()
 
-const associationStore = useAssociationStore()
+const {createAssociation} = useAssociation();
 const newAssociation = ref<string>('')
 
 async function onCreate() {
   try {
-    await associationStore.createAssociation(newAssociation.value)
+    await createAssociation(newAssociation.value)
+    await router.push({name: `Dashboard`})
     notify({
       type: 'positive',
       message: t('notifications.positive.validate-asso')
