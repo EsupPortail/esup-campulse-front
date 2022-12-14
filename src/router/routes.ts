@@ -14,12 +14,12 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'associations',
                 name: 'Associations',
-                component: () => import('@/views/AssociationsView.vue')
+                component: () => import('@/views/directory/AssociationsView.vue')
             },
             {
                 path: 'association/:id',
                 name: 'AssociationDetail',
-                component: () => import('@/views/AssociationDetailView.vue')
+                component: () => import('@/views/directory/AssociationDetailView.vue')
             },
             {
                 path: 'charter',
@@ -50,7 +50,7 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: '',
                         name: 'Dashboard',
-                        component: () => import('@/views/DashboardView.vue'),
+                        component: () => import('@/views/dashboard/DashboardView.vue'),
                     },
                     {
                         path: 'password-edit',

@@ -32,6 +32,7 @@ export const association: Association = {
     siret: null,
     website: null,
     studentCount: null,
+    presidentNames: null,
     isEnabled: true,
     createdDate: null,
     approvalDate: null,

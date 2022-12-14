@@ -47,79 +47,79 @@ async function onGetAssociationDetail() {
         <div class="name">
             <h1>{{ associationStore.association?.name }}</h1>
             <p class="acronym">{{ associationStore.association?.acronym }}</p>
-            <p>{{ $t("association.labels.charter-validity") }}</p>
+            <p>{{ t("association.labels.charter-validity") }}</p>
         </div>
     </section>
     <section class="description">
         <p>{{ associationStore.association?.description }}</p>
     </section>
     <section>
-        <h2>{{ $t("association.titles.info") }}</h2>
+        <h2>{{ t("association.titles.info") }}</h2>
         <article>
-            <h3>{{ $t("association.labels.activities") }}</h3>
+            <h3>{{ t("association.labels.activities") }}</h3>
             <p>{{ associationStore.association?.activities }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.institution") }}</h3>
+            <h3>{{ t("association.labels.institution") }}</h3>
             <p>{{ associationStore.association?.institution?.name }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.component") }}</h3>
+            <h3>{{ t("association.labels.component") }}</h3>
             <p>{{ associationStore.association?.institutionComponent?.name }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.field") }}</h3>
+            <h3>{{ t("association.labels.field") }}</h3>
             <p>{{ associationStore.association?.activityField?.name }}</p>
         </article>
     </section>
     <section>
-        <h2>{{ $t("association.titles.admin") }}</h2>
+        <h2>{{ t("association.titles.admin") }}</h2>
         <article>
-            <h3>{{ $t("association.labels.president-name") }}</h3>
-            <p>TODO</p>
+            <h3>{{ t("association.labels.president-name") }}</h3>
+            <p>{{ associationStore.association?.presidentNames }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.approval-date") }}</h3>
+            <h3>{{ t("association.labels.approval-date") }}</h3>
             <p>{{ formatDate(associationStore.association?.approvalDate) }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.charter-date") }}</h3>
+            <h3>{{ t("association.labels.charter-date") }}</h3>
             <p>TODO</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.last-goa") }}</h3>
+            <h3>{{ t("association.labels.last-goa") }}</h3>
             <p>{{ formatDate(associationStore.association?.lastGoaDate) }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.siret") }}</h3>
+            <h3>{{ t("association.labels.siret") }}</h3>
             <p>{{ associationStore.association?.siret }}</p>
         </article>
     </section>
     <section>
-        <h2>{{ $t("association.titles.contact") }}</h2>
+        <h2>{{ t("association.titles.contact") }}</h2>
         <article>
-            <h3>{{ $t("association.labels.address") }}</h3>
+            <h3>{{ t("association.labels.address") }}</h3>
             <p>{{ associationStore.association?.address }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.phone") }}</h3>
+            <h3>{{ t("association.labels.phone") }}</h3>
             <p>{{ associationStore.association?.phone }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.mail") }}</h3>
+            <h3>{{ t("association.labels.mail") }}</h3>
             <p>{{ associationStore.association?.email }}</p>
         </article>
         <article>
-            <h3>{{ $t("association.labels.website") }}</h3>
+            <h3>{{ t("association.labels.website") }}</h3>
             <a
                 :href="associationStore.association?.website"
-                :title="`${$t('association.labels.website-link')} ${associationStore.association?.name}`"
+                :title="`${t('association.labels.website-link')} ${associationStore.association?.name}`"
             >
                 {{ associationStore.association?.website }}
             </a>
         </article>
         <article>
-            <h3>{{ $t("association.labels.socials") }}</h3>
+            <h3>{{ t("association.labels.socials") }}</h3>
             <ul>
                 <li
                     v-for="socialNetwork in associationStore.association?.socialNetworks"
@@ -136,15 +136,15 @@ async function onGetAssociationDetail() {
     </section>
     <section class="btn-group">
         <QBtn
-            :label="$t('association.back-directory')"
+            :label="t('association.back-directory')"
             color="secondary"
             icon="mdi-arrow-left-circle"
             to="/associations"
         />
         <QBtn
             :href="`mailto:${associationStore.association?.email}`"
-            :label="$t('association.contact')"
-            :title="`${$t('association.contact')} ${associationStore.association?.name}`"
+            :label="t('association.contact')"
+            :title="`${t('association.contact')} ${associationStore.association?.name}`"
             color="primary"
             icon="mdi-email"
         />

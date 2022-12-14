@@ -40,6 +40,7 @@ export interface Association {
     siret: number | null,
     website: string | null,
     studentCount: number | null,
+    presidentNames: string | null,
     isEnabled: boolean | null,
     createdDate: string | null,
     approvalDate: string | null,
