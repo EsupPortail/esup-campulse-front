@@ -78,3 +78,4 @@ export type AssociationNames = { value: number, label: string }[]
 
 export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, component: string, field: string }
 export type AssociationDirectory = AssociationDirectoryDetail[]
+export type CreateAssociation = Pick<Association, "name">

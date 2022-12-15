@@ -67,6 +67,7 @@ async function loadCASUser() {
                 message: t('notifications.negative.cas-authentication-error')
             })
         }
+
     }
 }
 
@@ -213,14 +214,13 @@ async function register() {
         <fieldset>
             <legend class="legend-big">{{ $t('forms.status') }}</legend>
             <QField
-                v-if="groupList"
                 :error="!groupChoiceIsValid"
                 :error-message="$t('forms.required-status')"
                 :hint="$t('forms.status-hint')"
             >
                 <QOptionGroup
                     v-model="newUserGroups"
-                    :options="groupList"
+                    :options="userStore.groupList"
                     color="primary"
                     type="checkbox"
                 />

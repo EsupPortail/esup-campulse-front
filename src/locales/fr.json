@@ -35,7 +35,8 @@
     "commission": "Commission d'aide aux projets étudiants",
     "dashboard": "Tableau de bord",
     "directory": "Annuaire des associations",
-    "title": "Bienvenue sur la plateforme"
+    "title": "Bienvenue sur la plateforme",
+    "back-dashboard": "Retourner vers votre espace"
   },
   "header": {
     "charter": "Charte",
@@ -87,6 +88,7 @@
     "im-in-association-office": "Je suis membre du bureau de l'association",
     "last-name": "Nom de famille",
     "login": "Connexion",
+    "name": "Nom association",
     "new-password": "Nouveau mot de passe",
     "old-password": "Mot de passe actuel",
     "password": "Mot de passe",
@@ -152,7 +154,8 @@
       "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
       "unknown-credentials": "L'identifiant et/ou le mot de passe sont erronés, veuillez réessayer.",
       "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail.",
-      "unknown-user": "Aucun compte n'a été trouvé."
+      "unknown-user": "Aucun compte n'a été trouvé.",
+      "error-asso": "Une erreur lors de la création de l'association est survenue, veuillez réesayer."
     },
     "positive": {
       "login-success": "Connexion réussie.",
@@ -161,7 +164,8 @@
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
       "validate-success": "Le statut du compte a bien été modifié.",
-      "validate-delete-user": "Le compte a bien été supprimé."
+      "validate-delete-user": "Le compte a bien été supprimé.",
+      "validate-asso": "L'association a été créée avec succès."
     }
   },
   "alerts": {
@@ -190,31 +194,34 @@
   "association": {
     "back-directory": "Revenir à l'annuaire",
     "contact": "Contacter l'association",
+    "create": "Créer une association",
     "titles": {
       "info": "Informations",
       "admin": "Administration",
-      "contact": "Contact"
+      "contact": "Contact",
+      "create": "Création d'une association"
     },
     "labels": {
       "activities": "Activités",
-      "services": "Services proposés",
-      "institution": "Institution",
+      "address": "Adresse postale",
+      "approval-date": "Date d'agrément",
+      "contact": "Contacter l'association",
+      "charter-validity": "Charte valide jusqu'au",
+      "charter-date": "Date de signature de la charte des associations étudiantes",
       "component": "Composante",
       "field": "Domaine",
+      "institution": "Institution",
       "phone": "Numéro de téléphone",
       "president-name": "Nom du président ou de la présidente",
       "president-mail": "Adresse mail du Président",
       "siret": "Numéro SIRET",
       "last-goa": "Date de la dernière AGO",
-      "charter-validity": "Charte valide jusqu'au",
-      "charter-date": "Date de signature de la charte des associations étudiantes",
-      "approval-date": "Date d'agrément",
-      "address": "Adresse postale",
       "mail": "Adresse mail",
+      "services": "Services proposés",
       "socials": "Réseaux sociaux",
       "website": "Site web",
       "website-link": "Aller au site web de l'association",
-      "contact": "Contacter l'association"
+      "new-asso": "Veuillez entrer le nom de l'association"
     }
   },
   "user": {

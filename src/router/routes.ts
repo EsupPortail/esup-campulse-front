@@ -22,6 +22,11 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/directory/AssociationDetailView.vue')
             },
             {
+                path: 'association/create',
+                name: 'AssociationCreate',
+                component: () => import('@/views/AssociationCreateView.vue')
+            },
+            {
                 path: 'charter',
                 name: 'Charter',
                 component: () => import('@/views/CharterView.vue'),
@@ -63,7 +68,7 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: '',
                                 name: 'ValidateUsers',
-                                component: () => import('@/views/dashboard/UserView.vue')
+                                component: () => import('@/views/dashboard/UsersView.vue')
                             },
                             {
                                 path: ':id',
@@ -78,7 +83,7 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: '',
                                 name: 'ManageUsers',
-                                component: () => import('@/views/dashboard/UserView.vue')
+                                component: () => import('@/views/dashboard/UsersView.vue')
                             },
                             {
                                 path: ':id',
