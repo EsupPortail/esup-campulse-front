@@ -48,7 +48,7 @@ async function onCreate() {
                 to="/associations"
             />
             <QBtn
-                :label="t('manager.validate')"
+                :label="t('dashboard.create-association')"
                 color="primary"
                 @:click="onCreate"
             />

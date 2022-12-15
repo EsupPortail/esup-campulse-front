@@ -93,7 +93,8 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: 'association-create',
                                 name: 'AssociationCreate',
-                                component: () => import('@/views/AssociationCreateView.vue')
+                                component: () => import('@/views/AssociationCreateView.vue'),
+                                meta: {uniManagerOnly: true}
                             }
                         ]
                     },
