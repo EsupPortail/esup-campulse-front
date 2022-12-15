@@ -136,6 +136,7 @@
   "dashboard": {
     "user-validation": "Validation des comptes",
     "user-management": "Gestion des comptes",
+    "create-association": "Créer une association",
     "validate-changes": "Valider les changements",
     "welcome-message": "Bienvenue"
   },

@@ -22,11 +22,6 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/directory/AssociationDetailView.vue')
             },
             {
-                path: 'association/create',
-                name: 'AssociationCreate',
-                component: () => import('@/views/AssociationCreateView.vue')
-            },
-            {
                 path: 'charter',
                 name: 'Charter',
                 component: () => import('@/views/CharterView.vue'),
@@ -90,6 +85,16 @@ const routes: RouteRecordRaw[] = [
                                 name: 'UserManagementDetail',
                                 component: () => import('@/views/dashboard/UserManagementDetailView.vue')
                             },
+                        ]
+                    },
+                    {
+                        path: 'association',
+                        children: [
+                            {
+                                path: 'association-create',
+                                name: 'AssociationCreate',
+                                component: () => import('@/views/AssociationCreateView.vue')
+                            }
                         ]
                     },
                 ]
