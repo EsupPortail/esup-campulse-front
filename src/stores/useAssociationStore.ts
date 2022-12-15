@@ -8,7 +8,6 @@ import type {
 } from '#/association'
 import _axios from '@/plugins/axios'
 
-
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
         association: undefined,
