@@ -143,6 +143,7 @@
   "notifications": {
     "negative": {
       "cas-authentication-error": "Erreur d'authentification CAS.",
+      "delete-association-error": "Une erreur est survenue lors de la suppression de l'association. Veuillez réessayer.",
       "different-emails": "Les deux adresses email ne sont pas identiques.",
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
       "email-used": "Cette adresse email est déjà associée à un compte. Veuillez vous connecter.",
@@ -159,6 +160,7 @@
       "error-asso": "Une erreur lors de la création de l'association est survenue, veuillez réesayer."
     },
     "positive": {
+      "delete-association": "L'association a été supprimée avec succès.",
       "login-success": "Connexion réussie.",
       "logout-success": "Déconnexion réussie.",
       "password-changed": "Votre mot de passe a bien été modifié.",
@@ -196,6 +198,7 @@
     "back-directory": "Revenir à l'annuaire",
     "contact": "Contacter l'association",
     "create": "Créer une association",
+    "delete": "Supprimer l'association",
     "titles": {
       "info": "Informations",
       "admin": "Administration",

@@ -46,5 +46,8 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.association = (await _axios.get<Association>(`/associations/${id}`)).data
             }
         },
+        async deleteAssociation() {
+            await _axios.delete(`associations/${this.association?.id}`)
+        }
     }
 })
