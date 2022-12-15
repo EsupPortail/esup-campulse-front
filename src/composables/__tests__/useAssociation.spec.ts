@@ -1,6 +1,7 @@
 import {mockedAxios} from "~/mocks/axios.mock";
+import {association} from "~/mocks/association.mock";
 import useAssociation from "@/composables/useAssociation";
-import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
+import {describe, expect, it, vi} from "vitest";
 import {config} from "@vue/test-utils";
 import {createTestingPinia} from "@pinia/testing";
 import {useAssociationStore} from "../../stores/useAssociationStore";
@@ -14,14 +15,8 @@ config.global.plugins = [
 ]
 
 describe('useAssociation', () => {
-    let associationStore = useAssociationStore()
-
-    beforeEach(() => {
-        associationStore = useAssociationStore()
-    })
-    afterEach(() => {
-        vi.restoreAllMocks()
-    })
+    const associationStore = useAssociationStore()
+    associationStore.association = association
 
     // Test to create a new association
     describe('Create an association', () => {
@@ -36,11 +31,10 @@ describe('useAssociation', () => {
     // Test to delete an association
     describe('Delete an association', () => {
         it('should call API only once on /associations/ with id as payload', async () => {
-            const spy = vi.spyOn(associationStore, 'getAssociations')
             const {deleteAssociation} = useAssociation()
             await deleteAssociation()
-            expect(spy).toHaveBeenCalledOnce()
-
+            expect(mockedAxios.delete).toHaveBeenCalledOnce()
+            expect(mockedAxios.delete).toHaveBeenCalledWith(`/associations/${association.id}`)
         })
     })
 
