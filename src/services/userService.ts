@@ -64,6 +64,7 @@ export async function userCASRegister(newUserInfo: string | null) {
 }
 
 export async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
+    console.log(newUserAssociations)
     for (let i = 0; i < newUserAssociations.length; i++) {
         await _axios.post('/users/associations/', {
             user: username,
