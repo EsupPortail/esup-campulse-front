@@ -214,13 +214,14 @@ async function register() {
         <fieldset>
             <legend class="legend-big">{{ $t('forms.status') }}</legend>
             <QField
+                v-if="groupList"
                 :error="!groupChoiceIsValid"
                 :error-message="$t('forms.required-status')"
                 :hint="$t('forms.status-hint')"
             >
                 <QOptionGroup
                     v-model="newUserGroups"
-                    :options="userStore.groupList"
+                    :options="groupList"
                     color="primary"
                     type="checkbox"
                 />
