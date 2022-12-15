@@ -8,6 +8,7 @@ import useUtility from '@/composables/useUtility'
 import {useRoute} from 'vue-router'
 import {useUserStore} from "@/stores/useUserStore";
 import router from '@/router'
+import useAssociation from "@/composables/useAssociation";
 
 
 const {t} = useI18n()
@@ -19,6 +20,7 @@ const route = useRoute()
 
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
+const {deleteAssociation} = useAssociation()
 
 onMounted(async function () {
   loading.show
@@ -39,7 +41,7 @@ async function onGetAssociationDetail() {
 
 async function onDeleteAssociation() {
   try {
-    await associationStore.deleteAssociation()
+    await deleteAssociation()
     await router.push({name: 'Associations'})
     notify({
       type: 'positive',
