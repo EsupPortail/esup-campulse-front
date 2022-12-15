@@ -18,6 +18,9 @@ export const useUserStore = defineStore('userStore', {
         managerGroup: (state: UserStore): UserGroup | undefined => {
             return state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
         },
+        isUniManager: (state: UserStore): boolean | undefined => {
+            return !!state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU'))
+        },
         userName: (state: UserStore): string | undefined => {
             return state.user?.firstName + ' ' + state.user?.lastName
         }
