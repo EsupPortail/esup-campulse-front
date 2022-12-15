@@ -8,8 +8,8 @@ const newUser = userStore.newUser
 const isCas = userStore.isCas
 const {t} = useI18n()
 
-const CASUrlLogin = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL + "/cas-login")}`
-const CASUrlRegister = `https://cas-dev.unistra.fr/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL + "/cas-register")}`
+const CASUrlLogin = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-login`
+const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-register`
 </script>
 
 <template>
