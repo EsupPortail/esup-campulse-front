@@ -142,7 +142,13 @@
     "user-management": "Gestion des comptes",
     "create-association": "Créer une association",
     "validate-changes": "Valider les changements",
-    "welcome-message": "Bienvenue"
+    "welcome-message": "Bienvenue",
+    "association-user": {
+      "role": "Rôle",
+      "has-office-status": "Est membre du bureau",
+      "is-president": "Est président ou présidente",
+      "delete-association": "Supprimer le rôle dans l'association"
+    }
   },
   "notifications": {
     "negative": {

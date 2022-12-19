@@ -94,7 +94,7 @@ async function onValidateUser() {
     <QForm
         v-if="user"
         class="q-gutter-md"
-        @submit="register"
+        @submit.prevent="register"
     >
         <fieldset>
             <legend>{{ t('user.infos') }}</legend>
@@ -142,31 +142,31 @@ async function onValidateUser() {
                         <h4>{{ association.association.name }}</h4>
                         <QInput
                             v-model="association.roleName"
+                            :label="t('dashboard.association-user.role')"
                             :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                             filled
-                            label="Rôle"
                             lazy-rules
                         />
                         <QSelect
                             v-model="association.hasOfficeStatus"
+                            :label="t('dashboard.association-user.has-office-status')"
                             :options="booleanSelectOptions"
                             emit-value
                             filled
-                            label="Est membre du bureau"
                             map-options
                         />
                         <QSelect
                             v-model="association.isPresident"
+                            :label="t('dashboard.association-user.is-president')"
                             :options="booleanSelectOptions"
                             emit-value
                             filled
-                            label="Est président"
                             map-options
                         />
                         <QBtn
+                            :label="t('dashboard.association-user.delete-association')"
                             color="red"
                             icon="mdi-delete"
-                            label="Supprimer le rôle dans l'association"
                         />
                     </article>
                 </QCardSection>
