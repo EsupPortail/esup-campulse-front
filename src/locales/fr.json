@@ -79,6 +79,7 @@
     "add-association": "Ajouter une association",
     "create-account": "Créer un compte",
     "delete-association": "Supprimer l'association",
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "email": "Adresse mail",
     "first-name": "Prénom",
     "gdpr": "Lorem Elsass ipsum in, Chulien leo picon bière adipiscing leverwurscht condimentum elit bissame Pfourtz ! schneck nüdle ac Oberschaeffolsheim porta Chulia Roberstau semper eget tchao bissame schpeck libero, Yo dû. senectus sed non aliquam so Christkindelsmärik mänele gewurztraminer sed flammekueche gravida rhoncus mamsell Morbi tellus  sit hopla Gal ! Hans sagittis jetz gehts los dignissim hoplageiss id hopla s'guelt vulputate consectetur schnaps non suspendisse vielmols, geïz Spätzle dolor turpis ac tellus purus blottkopf, libero, elementum bredele pellentesque risus, ullamcorper commodo Gal. messti de Bischheim réchime météor lacus amet geht's kougelhopf",
@@ -120,7 +121,6 @@
     "validated-account": "Compte validé"
   },
   "user-manager": {
-    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "validation": "Validation des demandes de comptes",
     "management": "Gestion des comptes",
     "is-validated": "Validé par le gestionnaire",
@@ -128,7 +128,7 @@
     "validate-account": "Valider le compte",
     "manage-account": "Gérer les informations du compte",
     "delete-account-application": "Supprimer la demande de compte",
-    "delete-account": "Supprimer le compte",
+    "delete": "Supprimer",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
       "status-hint": "Veuillez valider le ou les statuts présélectionnés par l'utilisateur."

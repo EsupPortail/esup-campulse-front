@@ -28,7 +28,7 @@ async function onDeleteUser() {
 </script>
 
 <template>
-  <QBtn :label="t('user-manager.delete-account')" color="red" icon="mdi-delete" @click="confirm = true"/>
+  <QBtn :label="t('user-manager.delete')" color="red" icon="mdi-delete" @click="confirm = true"/>
 
   <q-dialog v-model="confirm" persistent>
     <q-card>
