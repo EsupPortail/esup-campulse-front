@@ -120,6 +120,7 @@
     "validated-account": "Compte validé"
   },
   "user-manager": {
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.",
     "validation": "Validation des demandes de comptes",
     "management": "Gestion des comptes",
     "is-validated": "Validé par le gestionnaire",
