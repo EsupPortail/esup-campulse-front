@@ -2,6 +2,15 @@ import type {GroupList, UserGroup} from '#/user'
 import _axios from '@/plugins/axios'
 import {computed, ref} from 'vue'
 
+
+// Functions to choose or update groups
+const newGroups = ref<number[]>([])
+
+const groupChoiceLimit = 2
+const groupChoiceIsValid = computed(() => {
+    return newGroups.value.length > 0 && newGroups.value.length <= groupChoiceLimit
+})
+
 export default function () {
 
     const groups = ref<UserGroup[]>()
@@ -30,6 +39,8 @@ export default function () {
         getGroups,
         groupList,
         studentGroup,
-        groupsToDelete
+        groupsToDelete,
+        groupChoiceIsValid,
+        newGroups
     }
 }
