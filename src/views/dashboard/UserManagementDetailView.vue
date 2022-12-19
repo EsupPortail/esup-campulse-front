@@ -8,13 +8,13 @@ import {useRoute} from 'vue-router'
 import useUserGroups from '@/composables/useUserGroups'
 import router from '@/router'
 import type {User} from '#/user'
+import FormConfirmDelete from "@/components/form/FormConfirmDelete.vue";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {getUser, validateUser} = useUsers()
 const {getGroups, groupList} = useUserGroups()
 
-const confirm = ref<boolean>(false)
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
@@ -107,22 +107,6 @@ async function onValidateUser() {
         message: t('notifications.negative.unknown-user')
       })
     }
-  }
-}
-
-async function onDeleteUser() {
-  try {
-    await userManagerStore.deleteUser()
-    await router.push({name: 'ManageUsers'})
-    notify({
-      type: 'positive',
-      message: t('notifications.positive.validate-delete-user')
-    })
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.unknown-user')
-    })
   }
 }
 </script>
@@ -241,21 +225,7 @@ async function onDeleteUser() {
   <section class="btn-group">
     <QBtn :label="t('back')" color="secondary" icon="mdi-arrow-left-circle" to="/dashboard/manage-users"/>
     <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" @click="onValidateUser"/>
-    <QBtn :label="t('user-manager.delete-account')" color="red" icon="mdi-delete" @click="confirm = true"/>
-
-    <q-dialog v-model="confirm" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar color="primary" icon="signal_wifi_off" text-color="white"/>
-          <span class="q-ml-sm">{{ t("user-manager.confirm-delete") }}</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn v-close-popup color="primary" flat label="Annuler"/>
-          <q-btn v-close-popup color="red" flat label="Supprimer" @click="onDeleteUser"/>
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    <FormConfirmDelete></FormConfirmDelete>
   </section>
 </template>
 
