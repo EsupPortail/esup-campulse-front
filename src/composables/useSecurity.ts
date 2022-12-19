@@ -1,10 +1,10 @@
 import {ref} from 'vue'
 import type {UserLogin, UserRegister} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
-import {userAssociationsRegister, userCASRegister, userGroupsRegister, userLocalRegister} from '@/services/userService'
+import * as userService from '@/services/userService'
 import {useRoute} from 'vue-router'
-import useAssociation from "@/composables/useAssociation";
-import useUserGroups from "@/composables/useUserGroups";
+import useAssociation from '@/composables/useAssociation'
+import useUserGroups from '@/composables/useUserGroups'
 
 export default function () {
 
@@ -37,23 +37,24 @@ export default function () {
         const {newGroups} = useUserGroups()
         if (userStore.isCas) {
             if (newUser.value.phone) {
-                await userCASRegister(newUser.value.phone)
+                await userService.userCASRegister(newUser.value.phone)
             }
             if (newAssociations) {
-                await userAssociationsRegister(newUser.value.username, newAssociations.value)
+                await userService.userAssociationsRegister(newUser.value.username, newAssociations.value)
             }
-            await userGroupsRegister(newUser.value.username, newGroups.value)
+            await userService.userGroupsRegister(newUser.value.username, newGroups.value)
             // We must clear newUser to avoid persistence of session
             await userStore.unLoadNewUser()
         } else {
-            await userLocalRegister(newUser.value)
+            await userService.userLocalRegister(newUser.value)
             if (newAssociations.value) {
-                await userAssociationsRegister(newUser.value.email, newAssociations.value)
+                await userService.userAssociationsRegister(newUser.value.email, newAssociations.value)
             }
-            await userGroupsRegister(newUser.value.email, newGroups.value)
+            await userService.userGroupsRegister(newUser.value.email, newGroups.value)
         }
     }
 
+    // to test
     async function loadCASUser() {
         const route = useRoute()
         // For aborted CAS registration or regular CAS registration
