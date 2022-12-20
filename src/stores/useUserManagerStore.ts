@@ -50,7 +50,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async getUserDetail(id: number) {
             if (this.user?.id !== id) {
                 this.user = (await _axios.get<User>(`/users/${id}`)).data
-                this.user.groups = (await _axios.get<UserGroup[]>('/users/groups/')).data
+                this.user.groups = (await _axios.get<UserGroup[]>(`/users/groups/${id}`)).data
             }
         },
         async updateUserGroups(userGroups: number[]) {
@@ -61,6 +61,8 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         async deleteUser() {
             await _axios.delete(`/users/${this.user?.id}`)
+            const userToDelete = this.users.findIndex((user) => user.id === this.user?.id)
+            this.users.splice(userToDelete, 1)
         },
         async getUserAssociations() {
             this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
@@ -69,10 +71,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             for (let i = 0; i < groupsToDelete.length; i++) {
                 await _axios.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
             }
-        },
-        unLoadUsers() {
-            this.user = undefined
-            this.users = []
         }
     }
 })
