@@ -111,24 +111,30 @@ async function onDeleteUser() {
             <p>{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}</p>
         </article>
         <article>
-            <h3>{{ t("user.isValidatedByAdmin") }}</h3>
+            <h3>{{ t('user.isValidatedByAdmin') }}</h3>
             <p>{{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}</p>
         </article>
     </section>
     <section>
-        <h2>{{ t("directory.title") }}</h2>
+        <h2>{{ t('directory.title') }}</h2>
         <div v-if="userManagerStore.userAssociations.length !== 0">
             <article v-for="(association, index) in userManagerStore.userAssociations" :key="index">
                 <h3>{{ association.association.name }}</h3>
                 <ul>
-                    <li>{{ 'Rôle' }} : {{ association.roleName ? association.roleName : t('undefined') }}</li>
-                    <li>{{ 'Est membre du bureau' }} : {{ association.hasOfficeStatus ? t('yes') : t('no') }}</li>
-                    <li>{{ 'Est président' }} : {{ association.isPresident ? t('yes') : t('no') }}</li>
+                    <li>{{ t('dashboard.association-user.role') }} :
+                        {{ association.roleName ? association.roleName : t('undefined') }}
+                    </li>
+                    <li>{{ t('dashboard.association-user.has-office-status') }} :
+                        {{ association.hasOfficeStatus ? t('yes') : t('no') }}
+                    </li>
+                    <li>{{ t('dashboard.association-user.is-president') }} :
+                        {{ association.isPresident ? t('yes') : t('no') }}
+                    </li>
                 </ul>
             </article>
         </div>
         <div v-else>
-            <p>L'utilisateur n'est membre d'aucune association.</p>
+            <p>{{ t('dashboard.association-user.not-association-member') }}</p>
         </div>
     </section>
     <section>
