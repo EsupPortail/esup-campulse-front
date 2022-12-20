@@ -10,6 +10,7 @@
   "validate": "Valider",
   "delete": "Supprimer",
   "cancel": "Annuler",
+  "undefined": "Non renseigné",
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",
@@ -147,7 +148,8 @@
       "role": "Rôle",
       "has-office-status": "Est membre du bureau",
       "is-president": "Est président ou présidente",
-      "delete-association": "Supprimer le rôle dans l'association"
+      "delete-association": "Supprimer le rôle dans l'association",
+      "not-association-member": "L'utilisateur n'est membre d'aucune association."
     }
   },
   "notifications": {
