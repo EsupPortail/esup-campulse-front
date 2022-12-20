@@ -1,4 +1,5 @@
-import type {User, UserAssociations, UserDirectory, UserGroup, UserList, UserNames, UserRegister} from '#/user'
+import type {ManagedUsers, User, UserAssociations, UserDirectory, UserGroup, UserNames, UserRegister} from '#/user'
+import {mockedAssociationName} from '~/mocks/association.mock'
 
 
 export const mockedGroups: UserGroup[] = [
@@ -28,25 +29,34 @@ export const mockedUser: User = {
     email: 'john.lennon@bbc.com',
     isCas: false,
     isValidatedByAdmin: true,
-    groups: mockedGroups
+    groups: mockedGroups,
+    associations: mockedAssociationName
 }
 
-export const mockedUsers: UserList[] = [
+export const mockedUsers: ManagedUsers = [
     {
         id: 1,
         username: 'john.lennon@bbc.com',
         firstName: 'John',
         lastName: 'Lennon',
+        phone: null,
         email: 'john.lennon@bbc.com',
+        isCas: false,
         isValidatedByAdmin: true,
+        groups: mockedGroups,
+        associations: mockedAssociationName
     },
     {
-        id: 2,
+        id: 1,
         username: 'bill@murray.com',
         firstName: 'Bill',
         lastName: 'Murray',
+        phone: null,
         email: 'bill@murray.com',
+        isCas: false,
         isValidatedByAdmin: true,
+        groups: mockedGroups,
+        associations: mockedAssociationName
     }
 ]
 
@@ -99,6 +109,8 @@ export const mockedUserDirectory: UserDirectory = mockedUsers.map(
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        associations: user.associations,
+        groups: user.groups,
         isValidatedByAdmin: user.isValidatedByAdmin
     })
 )

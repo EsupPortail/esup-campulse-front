@@ -1,61 +1,51 @@
 <script lang="ts" setup>
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {computed, onMounted, ref, watch} from 'vue'
+import {onMounted} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
-import useUserGroups from '@/composables/useUserGroups'
 import router from '@/router'
+import FormUserGroups from '@/components/form/FormUserGroups.vue'
+import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {getUser, validateUser} = useUsers()
-const {getGroups, groupList} = useUserGroups()
+const {newGroups, groupChoiceIsValid} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
 
-// watch function observes and updates only if data had been changed.
-const userGroups = ref<number[]>(userManagerStore.userGroups)
-
-watch(() => userManagerStore.userGroups, () => {
-    userGroups.value = userManagerStore.userGroups
-})
-
-// Check if the user has enough roles or not
-const groupChoiceIsValid = computed<boolean>(() => {
-    return userGroups.value.length > 0 && userGroups.value.length <= 2
-})
-
 onMounted(async () => {
     loading.show
     await onGetUser()
-    await onLoadGroups()
+    newGroups.value = userManagerStore.userGroups
+    await onGetUserAssociations()
     loading.hide
 })
 
-// Load group list
-async function onLoadGroups() {
-    try {
-        await getGroups()
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
-    }
-}
-
-// Load user
+// Get user
 async function onGetUser() {
     try {
         await getUser(route.params.id as string)
     } catch (e) {
         notify({
             type: 'negative',
-            message: t('notifications.negative.form-error')
+            message: t('notifications.negative.loading-error')
+        })
+    }
+}
+
+// Get user associations
+async function onGetUserAssociations() {
+    try {
+        await userManagerStore.getUserAssociations()
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.loading-error')
         })
     }
 }
@@ -64,7 +54,7 @@ async function onGetUser() {
 async function onValidateUser() {
     if (groupChoiceIsValid.value) {
         try {
-            await validateUser(userGroups.value)
+            await validateUser()
             await router.push({name: 'ValidateUsers'})
             notify({
                 type: 'positive',
@@ -126,24 +116,27 @@ async function onDeleteUser() {
         </article>
     </section>
     <section>
+        <h2>{{ t("directory.title") }}</h2>
+        <div v-if="userManagerStore.userAssociations.length !== 0">
+            <article v-for="(association, index) in userManagerStore.userAssociations" :key="index">
+                <h3>{{ association.association.name }}</h3>
+                <ul>
+                    <li>{{ 'Rôle' }} : {{ association.roleName ? association.roleName : t('undefined') }}</li>
+                    <li>{{ 'Est membre du bureau' }} : {{ association.hasOfficeStatus ? t('yes') : t('no') }}</li>
+                    <li>{{ 'Est président' }} : {{ association.isPresident ? t('yes') : t('no') }}</li>
+                </ul>
+            </article>
+        </div>
+        <div v-else>
+            <p>L'utilisateur n'est membre d'aucune association.</p>
+        </div>
+    </section>
+    <section>
         <h2>{{ t("user.groups") }}</h2>
-        <fieldset>
-            <QField v-if="groupList"
-                    :error="!groupChoiceIsValid"
-                    :error-message="t('user-manager.forms.required-status')"
-                    :hint="t('user-manager.forms.status-hint')"
-            >
-                <QOptionGroup
-                    v-model="userGroups"
-                    :options="groupList"
-                    color="primary"
-                    type="checkbox"
-                />
-            </QField>
-        </fieldset>
+        <FormUserGroups/>
     </section>
     <section class="btn-group">
-        <QBtn :label="t('back')" color="secondary" icon="mdi-arrow-left-circle" to="/dashboard/validate-users"/>
+        <QBtn :label="t('back')" :to="{name: 'ValidateUsers'}" color="secondary" icon="mdi-arrow-left-circle"/>
         <QBtn :label="t('user-manager.validate-account')" color="primary" icon="mdi-check-circle"
               @click="onValidateUser"/>
         <QBtn :label="t('user-manager.delete-account-application')" color="red" icon="mdi-delete"
@@ -177,7 +170,12 @@ section
 .btn-group
     display: flex
     gap: 20px
+    margin-top: 10px
+    margin-bottom: 30px
 
 fieldset
     border: none
+
+ul
+    padding-left: 15px
 </style>

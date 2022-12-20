@@ -6,6 +6,7 @@ import useUsers from '@/composables/useUsers'
 import {mockedUser, mockedUserGroups} from '~/mocks/user.mock'
 import type {RouteLocationNormalizedLoaded} from 'vue-router'
 import {useRoute} from 'vue-router'
+import useUserGroups from '@/composables/useUserGroups'
 
 
 vi.mock('vue-router', () => ({useRoute: vi.fn()}))
@@ -54,33 +55,32 @@ describe('useUsers', () => {
         })
     })
     describe('validateUser', () => {
+        const {newGroups} = useUserGroups()
         const spies = {
             updateUserGroups: vi.spyOn(userManagerStore, 'updateUserGroups'),
             deleteUserGroups: vi.spyOn(userManagerStore, 'deleteUserGroups'),
             validateUser: vi.spyOn(userManagerStore, 'validateUser'),
-            unLoadUsers: vi.spyOn(userManagerStore, 'unLoadUsers')
         }
         describe('If newGroups and oldGroups are not the same', () => {
             it('should update groups and call API for post and delete', async () => {
-                const newGroups = [7, 8, 3]
+                newGroups.value = [7, 8, 3]
                 userManagerStore.user = mockedUser
                 const {validateUser} = useUsers()
-                await validateUser(newGroups)
+                await validateUser()
                 expect(spies.updateUserGroups).toHaveBeenCalledOnce()
                 expect(spies.deleteUserGroups).toHaveBeenCalledOnce()
                 expect(spies.validateUser).toHaveBeenCalledOnce()
-                expect(spies.unLoadUsers).toHaveBeenCalledOnce()
             })
         })
         describe('If newGroups and oldGroups are the same', () => {
             it('should not update groups', async () => {
                 userManagerStore.user = mockedUser
+                newGroups.value = mockedUserGroups
                 const {validateUser} = useUsers()
-                await validateUser(mockedUserGroups)
+                await validateUser()
                 expect(spies.updateUserGroups).toHaveBeenCalledTimes(0)
                 expect(spies.deleteUserGroups).toHaveBeenCalledTimes(0)
                 expect(spies.validateUser).toHaveBeenCalledOnce()
-                expect(spies.unLoadUsers).toHaveBeenCalledOnce()
             })
         })
     })

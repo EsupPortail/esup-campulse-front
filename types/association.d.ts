@@ -48,6 +48,11 @@ export interface Association {
     cgaDate: string | null,
 }
 
+export interface AssociationName {
+    id: number,
+    name: string
+}
+
 export interface AssociationList {
     id: number,
     institution: {

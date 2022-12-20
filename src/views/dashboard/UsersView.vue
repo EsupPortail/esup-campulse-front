@@ -45,6 +45,14 @@ const columns: QTableProps['columns'] = [
     {name: 'lastName', align: 'left', label: t('forms.last-name'), field: 'lastName', sortable: true},
     {name: 'email', align: 'left', label: t('forms.email'), field: 'email', sortable: true},
     {
+        name: 'associations',
+        align: 'left',
+        label: t('directory.title'),
+        field: 'associations',
+        sortable: false
+    },
+    {name: 'groups', align: 'left', label: t('user-manager.user-status'), field: 'groups', sortable: false},
+    {
         name: 'isValidatedByAdmin',
         align: 'left',
         label: t('user-manager.is-validated'),
@@ -84,6 +92,18 @@ function goTo(id: number) {
                 </QTd>
                 <QTd key="email" :props="props">
                     {{ props.row.email }}
+                </QTd>
+                <QTd key="associations" :props="props">
+                    <QChip v-for="(association, index) in props.row.associations" :key="index">{{
+                            association.name
+                        }}
+                    </QChip>
+                </QTd>
+                <QTd key="groups" :props="props">
+                    <QChip v-for="(group, index) in props.row.groups" :key="index">{{
+                            group.name
+                        }}
+                    </QChip>
                 </QTd>
                 <QTd key="isValidatedByAdmin" :props="props">
                     <QChip :color="props.row.isValidatedByAdmin ? 'teal' : 'red'" text-color="white">

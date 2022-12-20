@@ -1,26 +1,18 @@
-/**
- *  User Model
- *  Interact front-back
- *  @params: // TODO
- */
+import type {AssociationName} from "#/association";
+
 
 export interface User {
     id: number,
     password: string | null,
-    // lastLogin: string | null,
-    // isSuperuser: boolean,
     username: string,
     firstName: string,
     lastName: string,
     phone: string | null,
     email: string,
-    // isStaff: boolean,
-    // isActive: boolean,
-    // dateJoined: string,
     isCas: boolean,
-    // associations: UserAssociations | null,
     isValidatedByAdmin: boolean | null,
     groups: UserGroup[],
+    associations: AssociationName[],
 }
 
 // STORES
@@ -33,8 +25,8 @@ export interface UserStore {
 
 // User manager store
 export interface UserManagerStore {
-    user: User | undefined,
-    users: UserList[],
+    user: ManagedUser | undefined,
+    users: ManagedUsers,
     allUsers: boolean,
     userAssociations: UserAssociationDetail[]
 }
@@ -94,17 +86,12 @@ export interface UserGroup {
 export type GroupList = { value: number, label: string }[]
 
 // Users
-export interface UserList {
-    id: number,
-    username: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    isValidatedByAdmin: boolean | null,
-}
+export type ManagedUser = Omit<User, "password">
+export type ManagedUsers = ManagedUser[]
 
 export type UserNames = { value: number, label: string }[]
 
-export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
-export type UserDirectory = UserDirectoryDetail[]
-export type UserValidate = Pick<User, "id" | "isValidatedByAdmin">
+/*export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
+export type UserDirectory = UserDirectoryDetail[]*/
+
+export type UserDirectory = Pick<User, "id", "firstName", "lastName", "email", "associations", "groups", "isValidatedByAdmin">

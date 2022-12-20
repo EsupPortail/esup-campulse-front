@@ -1,4 +1,4 @@
-import type {Association, AssociationList} from '#/association'
+import type {Association, AssociationList, AssociationName} from '#/association'
 
 export const association: Association = {
     id: 1,
@@ -60,6 +60,13 @@ const associationList = {
     isEnabled: true,
     isSite: true
 }
+
+export const mockedAssociationName: AssociationName[] = [
+    {
+        id: 1,
+        name: 'Association'
+    }
+]
 
 export const associations: AssociationList[] = [associationList, associationList, associationList]
 

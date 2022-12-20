@@ -10,6 +10,7 @@ import {
     mockedUsers
 } from '~/mocks/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {mockedAssociationName} from '~/mocks/association.mock'
 
 
 setActivePinia(createPinia())
@@ -118,8 +119,9 @@ describe('User manager store', () => {
         })
         afterEach(() => {
             userManagerStore.user = undefined
+            userManagerStore.users = []
         })
-        describe('If user not already in store', () => {
+        describe('If user not already in store and users are not populated', () => {
             beforeEach(() => {
                 userManagerStore.getUserDetail(mockedUser.id)
             })
@@ -149,6 +151,19 @@ describe('User manager store', () => {
                 expect(userManagerStore.user?.groups).toEqual(mockedGroups)
             })
         })
+        describe('If user is not in store but users are populated', () => {
+            beforeEach(() => {
+                userManagerStore.users = mockedUsers
+                userManagerStore.getUserDetail(mockedUser.id)
+            })
+            it('should not call API', () => {
+                expect(mockedAxios.get).toHaveBeenCalledTimes(0)
+            })
+            it('should get user from users state', () => {
+                expect(userManagerStore.user).toBeTruthy()
+                expect(userManagerStore.user?.id).toEqual(mockedUser.id)
+            })
+        })
     })
     describe('updateUserGroups', () => {
         beforeEach(() => {
@@ -166,6 +181,7 @@ describe('User manager store', () => {
     describe('validateUser', () => {
         beforeEach(() => {
             userManagerStore.user = mockedUser
+            userManagerStore.users = mockedUsers
             userManagerStore.validateUser()
         })
         it('should call API once on /users/id with isValidated as payload', () => {
@@ -173,6 +189,10 @@ describe('User manager store', () => {
             expect(mockedAxios.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`, {
                 isValidatedByAdmin: true
             })
+        })
+        it('should delete user in validated users store', () => {
+            const validatedUser = userManagerStore.users.find((user) => user.id === userManagerStore.user?.id)
+            expect(validatedUser).toBeUndefined()
         })
     })
     describe('deleteUser', () => {
@@ -216,16 +236,24 @@ describe('User manager store', () => {
                     username: 'john.lennon@bbc.com',
                     firstName: 'John',
                     lastName: 'Lennon',
+                    phone: null,
                     email: 'john.lennon@bbc.com',
+                    isCas: false,
                     isValidatedByAdmin: true,
+                    groups: mockedGroups,
+                    associations: mockedAssociationName
                 },
                 {
-                    id: 2,
+                    id: 1,
                     username: 'bill@murray.com',
                     firstName: 'Bill',
                     lastName: 'Murray',
+                    phone: null,
                     email: 'bill@murray.com',
+                    isCas: false,
                     isValidatedByAdmin: true,
+                    groups: mockedGroups,
+                    associations: mockedAssociationName
                 }
             ]
             expect(userManagerStore.userNames).toEqual(mockedUserNames)
@@ -239,16 +267,24 @@ describe('User manager store', () => {
                     username: 'john.lennon@bbc.com',
                     firstName: 'John',
                     lastName: 'Lennon',
+                    phone: null,
                     email: 'john.lennon@bbc.com',
+                    isCas: false,
                     isValidatedByAdmin: true,
+                    groups: mockedGroups,
+                    associations: mockedAssociationName
                 },
                 {
-                    id: 2,
+                    id: 1,
                     username: 'bill@murray.com',
                     firstName: 'Bill',
                     lastName: 'Murray',
+                    phone: null,
                     email: 'bill@murray.com',
+                    isCas: false,
                     isValidatedByAdmin: true,
+                    groups: mockedGroups,
+                    associations: mockedAssociationName
                 }
             ]
             expect(userManagerStore.userDirectory).toEqual(mockedUserDirectory)

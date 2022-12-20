@@ -34,7 +34,7 @@ async function onLogOut() {
                     </div>
 
                     <div class="text-center">
-                        <p>{{ $t("header.my-account") }}</p>
+                        <p>{{ t("header.my-account") }}</p>
                     </div>
 
                 </div>
@@ -44,7 +44,10 @@ async function onLogOut() {
                 <QItem v-close-popup clickable>
                     <QItemSection>
                         <QItemLabel>
-                            <RouterLink class="label" to="/dashboard">{{ $t("header.my-profile") }}</RouterLink>
+                            <RouterLink :to="{name: 'Dashboard'}" class="label">{{
+                                    t("header.my-profile")
+                                }}
+                            </RouterLink>
                         </QItemLabel>
                     </QItemSection>
                 </QItem>
@@ -52,7 +55,7 @@ async function onLogOut() {
                 <QItem v-close-popup clickable>
                     <QItemSection>
                         <QItemLabel>
-                            <QBtn :label="$t('header.logout')" @click="onLogOut"/>
+                            <QBtn :label="t('header.logout')" @click="onLogOut"/>
                         </QItemLabel>
                     </QItemSection>
                 </QItem>
