@@ -1,4 +1,4 @@
-import type {User, UserAssociations, UserDirectory, UserGroup, UserNames, UserRegister} from '#/user'
+import type {User, UserAssociations, UserDirectory, UserGroup, UserList, UserNames, UserRegister} from '#/user'
 
 
 export const mockedGroups: UserGroup[] = [
@@ -21,22 +21,34 @@ export const mockedNewUserGroups: number[] = [1, 2]
 export const mockedUser: User = {
     id: 1,
     password: 'motdepasse',
-    //lastLogin: null,
-    //isSuperuser: false,
     username: 'john.lennon@bbc.com',
     firstName: 'John',
     lastName: 'Lennon',
     phone: null,
     email: 'john.lennon@bbc.com',
-    //isStaff: false,
-    //isActive: false,
-    //dateJoined: '',
     isCas: false,
     isValidatedByAdmin: true,
     groups: mockedGroups
 }
 
-export const mockedUsers: User[] = [mockedUser, mockedUser, mockedUser]
+export const mockedUsers: UserList[] = [
+    {
+        id: 1,
+        username: 'john.lennon@bbc.com',
+        firstName: 'John',
+        lastName: 'Lennon',
+        email: 'john.lennon@bbc.com',
+        isValidatedByAdmin: true,
+    },
+    {
+        id: 2,
+        username: 'bill@murray.com',
+        firstName: 'Bill',
+        lastName: 'Murray',
+        email: 'bill@murray.com',
+        isValidatedByAdmin: true,
+    }
+]
 
 export const mockedNewUser: UserRegister = {
     username: 'john.lennon@bbc.com',

@@ -129,7 +129,7 @@ describe('User manager store', () => {
             it('should call API to get user and groups', () => {
                 expect(mockedAxios.get).toHaveBeenCalledTimes(2)
                 expect(mockedAxios.get).toHaveBeenCalledWith(`/users/${mockedUser.id}`)
-                expect(mockedAxios.get).toHaveBeenCalledWith('/users/groups/')
+                expect(mockedAxios.get).toHaveBeenCalledWith(`/users/groups/${mockedUser.id}`)
             })
             it('should populate user state and groups', () => {
                 expect(userManagerStore.user).toEqual(mockedUser)
@@ -178,11 +178,20 @@ describe('User manager store', () => {
     describe('deleteUser', () => {
         beforeEach(() => {
             userManagerStore.user = mockedUser
+            userManagerStore.users = mockedUsers
             userManagerStore.deleteUser()
+        })
+        afterEach(() => {
+            userManagerStore.user = undefined
+            userManagerStore.users = []
         })
         it('should call API once on /users/id', () => {
             expect(mockedAxios.delete).toHaveBeenCalledOnce()
             expect(mockedAxios.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`)
+        })
+        it('should delete user in users store', () => {
+            const deletedUser = userManagerStore.users.find((user) => user.id === userManagerStore.user?.id)
+            expect(deletedUser).toBeUndefined()
         })
     })
     describe('deleteUserGroups', () => {
@@ -199,30 +208,49 @@ describe('User manager store', () => {
             )
         })
     })
-    describe('unLoadUsers', () => {
-        beforeEach(() => {
-            userManagerStore.users = mockedUsers
-            userManagerStore.user = mockedUser
-            userManagerStore.unLoadUsers()
-        })
-        it('should reset the state of users and user', () => {
-            expect(userManagerStore.users).toEqual([])
-            expect(userManagerStore.user).toBeUndefined()
-        })
-    })
     describe('userNames', () => {
-        beforeEach(() => {
-            userManagerStore.users = mockedUsers
-        })
         it('should return the names of users with values and labels', () => {
+            userManagerStore.users = [
+                {
+                    id: 1,
+                    username: 'john.lennon@bbc.com',
+                    firstName: 'John',
+                    lastName: 'Lennon',
+                    email: 'john.lennon@bbc.com',
+                    isValidatedByAdmin: true,
+                },
+                {
+                    id: 2,
+                    username: 'bill@murray.com',
+                    firstName: 'Bill',
+                    lastName: 'Murray',
+                    email: 'bill@murray.com',
+                    isValidatedByAdmin: true,
+                }
+            ]
             expect(userManagerStore.userNames).toEqual(mockedUserNames)
         })
     })
     describe('userDirectory', () => {
-        beforeEach(() => {
-            userManagerStore.users = mockedUsers
-        })
         it('should return some data of each user for the directory', () => {
+            userManagerStore.users = [
+                {
+                    id: 1,
+                    username: 'john.lennon@bbc.com',
+                    firstName: 'John',
+                    lastName: 'Lennon',
+                    email: 'john.lennon@bbc.com',
+                    isValidatedByAdmin: true,
+                },
+                {
+                    id: 2,
+                    username: 'bill@murray.com',
+                    firstName: 'Bill',
+                    lastName: 'Murray',
+                    email: 'bill@murray.com',
+                    isValidatedByAdmin: true,
+                }
+            ]
             expect(userManagerStore.userDirectory).toEqual(mockedUserDirectory)
         })
     })

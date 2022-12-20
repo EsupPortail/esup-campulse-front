@@ -47,7 +47,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 this.allUsers = false
             }
         },
-        // to re test
         async getUserDetail(id: number) {
             if (this.user?.id !== id) {
                 this.user = (await _axios.get<User>(`/users/${id}`)).data
@@ -60,10 +59,9 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async validateUser() {
             await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
         },
-        // to re test
         async deleteUser() {
-            const userToDelete = this.users.findIndex((user) => user.id === this.user?.id)
             await _axios.delete(`/users/${this.user?.id}`)
+            const userToDelete = this.users.findIndex((user) => user.id === this.user?.id)
             this.users.splice(userToDelete, 1)
         },
         async getUserAssociations() {
@@ -73,10 +71,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             for (let i = 0; i < groupsToDelete.length; i++) {
                 await _axios.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
             }
-        },
-        unLoadUsers() {
-            this.user = undefined
-            this.users = []
         }
     }
 })
