@@ -9,6 +9,7 @@
   "back": "Retour",
   "validate": "Valider",
   "delete": "Supprimer",
+  "cancel": "Annuler",
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",
@@ -128,7 +129,9 @@
     "validate-account": "Valider le compte",
     "manage-account": "Gérer les informations du compte",
     "delete-account-application": "Supprimer la demande de compte",
-    "delete": "Supprimer",
+    "delete-user": "Supprimer l'utilisateur",
+    "confirm-delete": "Êtes-vous sûre de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
+    "user-status": "Statut de l'utilisateur",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
       "status-hint": "Veuillez valider le ou les statuts présélectionnés par l'utilisateur."
@@ -139,7 +142,13 @@
     "user-management": "Gestion des comptes",
     "create-association": "Créer une association",
     "validate-changes": "Valider les changements",
-    "welcome-message": "Bienvenue"
+    "welcome-message": "Bienvenue",
+    "association-user": {
+      "role": "Rôle",
+      "has-office-status": "Est membre du bureau",
+      "is-president": "Est président ou présidente",
+      "delete-association": "Supprimer le rôle dans l'association"
+    }
   },
   "notifications": {
     "negative": {
@@ -157,7 +166,8 @@
       "unknown-credentials": "L'identifiant et/ou le mot de passe sont erronés, veuillez réessayer.",
       "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail.",
       "unknown-user": "Aucun compte n'a été trouvé.",
-      "error-asso": "Une erreur lors de la création de l'association est survenue, veuillez réesayer."
+      "error-asso": "Une erreur lors de la création de l'association est survenue, veuillez réesayer.",
+      "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur."
     },
     "positive": {
       "login-success": "Connexion réussie.",
