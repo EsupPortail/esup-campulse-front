@@ -1,12 +1,17 @@
 import type {GroupList, UserGroup} from '#/user'
 import _axios from '@/plugins/axios'
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import useUtility from '@/composables/useUtility'
 
 
 // Functions to choose or update groups
-const newGroups = ref<number[]>([])
+const userManagerStore = useUserManagerStore()
+
+const newGroups = ref<number[]>(userManagerStore.userGroups)
+watch(() => userManagerStore.userGroups, () => {
+    newGroups.value = userManagerStore.userGroups
+})
 
 const groupChoiceLimit = 2
 const groupChoiceIsValid = computed(() => {
@@ -38,7 +43,6 @@ export default function () {
 
     // to test
     async function updateUserGroups() {
-        const userManagerStore = useUserManagerStore()
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
 

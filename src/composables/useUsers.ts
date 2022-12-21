@@ -2,10 +2,23 @@ import {useRoute} from 'vue-router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import useUserGroups from '@/composables/useUserGroups'
 import type {ManagedUser, UserAssociationDetail} from '#/user'
+import {ref, watch} from 'vue'
+
+
+const userManagerStore = useUserManagerStore()
+
+const userToUpdate = ref(userManagerStore.userInfosUpdate)
+watch(() => userManagerStore.user, () => {
+    userToUpdate.value = userManagerStore.userInfosUpdate
+})
+
+const newUserAssociations = ref<UserAssociationDetail[]>(userManagerStore.userAssociations)
+watch(() => userManagerStore.userAssociations, () => {
+    newUserAssociations.value = userManagerStore.userAssociations
+})
 
 export default function () {
 
-    const userManagerStore = useUserManagerStore()
     const route = useRoute()
     const {updateUserGroups} = useUserGroups()
 
@@ -32,14 +45,14 @@ export default function () {
     }
 
     // to test
-    async function updateUserInfos(updatedUser: ManagedUser, updatedUserAssociations: UserAssociationDetail[]) {
+    async function updateUserInfos() {
         // update user
-        await userManagerStore.updateUserInfos(updatedUser)
+        await userManagerStore.updateUserInfos(userToUpdate.value as ManagedUser)
         // update user groups
         await updateUserGroups()
         // update user associations
-        await userManagerStore.updateUserAssociations(updatedUserAssociations)
+        await userManagerStore.updateUserAssociations(newUserAssociations.value as UserAssociationDetail[])
     }
 
-    return {getUsers, getUser, validateUser, updateUserInfos}
+    return {getUsers, getUser, validateUser, updateUserInfos, userToUpdate, newUserAssociations}
 }
