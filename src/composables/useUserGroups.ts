@@ -1,6 +1,8 @@
 import type {GroupList, UserGroup} from '#/user'
 import _axios from '@/plugins/axios'
 import {computed, ref} from 'vue'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import useUtility from '@/composables/useUtility'
 
 
 // Functions to choose or update groups
@@ -34,6 +36,18 @@ export default function () {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
     }
 
+    // to test
+    async function updateUserGroups() {
+        const userManagerStore = useUserManagerStore()
+        const oldGroups = userManagerStore.userGroups
+        const {arraysAreEqual} = useUtility()
+
+        if (!arraysAreEqual(newGroups.value, oldGroups)) {
+            await userManagerStore.updateUserGroups(newGroups.value)
+            await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))
+        }
+    }
+
     return {
         groups,
         getGroups,
@@ -41,6 +55,7 @@ export default function () {
         studentGroup,
         groupsToDelete,
         groupChoiceIsValid,
-        newGroups
+        newGroups,
+        updateUserGroups
     }
 }

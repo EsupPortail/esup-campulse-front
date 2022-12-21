@@ -161,6 +161,7 @@
       "email-used": "Cette adresse email est déjà associée à un compte. Veuillez vous connecter.",
       "form-error": "Erreur lors du chargement du formulaire, veuillez recharger la page.",
       "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
+      "request-error": "Une erreur est survenue. Veuillez rafraîchir la page et réessayer.",
       "invalid-request": "Requête invalide.",
       "invalid-token": "Jeton invalide.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
@@ -180,6 +181,7 @@
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
       "validate-success": "Le statut du compte a bien été modifié.",
       "validate-delete-user": "Le compte a bien été supprimé.",
+      "validate-delete-user-association": "Le rôle de l'utilisateur dans l'association a bien été supprimé.",
       "validate-asso": "L'association a été créée avec succès."
     }
   },
