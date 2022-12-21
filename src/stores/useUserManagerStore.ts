@@ -40,6 +40,14 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         userGroups: (state: UserManagerStore): number[] => {
             return state.user?.groups?.map<number>(group => group.id) || []
+        },
+        userInfosUpdate: (state: UserManagerStore) => {
+            return {
+                firstName: state.user?.firstName as string,
+                lastName: state.user?.lastName as string,
+                email: state.user?.email as string,
+                phone: state.user?.phone as string
+            }
         }
     },
 
@@ -84,6 +92,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             const userToDelete = this.users.findIndex((user) => user.id === this.user?.id)
             this.users.splice(userToDelete, 1)
         },
+        // to re test
         async getUserAssociations() {
             this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
         },
@@ -102,40 +111,35 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         // to test
         async updateUserInfos(updatedUser: ManagedUser) {
-            if (JSON.stringify(updatedUser) !== JSON.stringify(this.user)) {
-                const userToUpdate: ManagedUser = this.users.find((user) => user.id === this.user?.id) as ManagedUser
-                const infosToPatch = {
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    phone: ''
+            const userToUpdate: ManagedUser = this.users.find((user) => user.id === this.user?.id) as ManagedUser
+            // Only patch those updates for non CAS users
+            if (!this.user?.isCas) {
+                if (updatedUser.firstName !== this.user?.firstName) {
+                    (this.user as ManagedUser).firstName = updatedUser.firstName
+                    userToUpdate.lastName = updatedUser.firstName
+                    await _axios.patch(`/users/${this.user?.id}`, {firstName: updatedUser.firstName})
                 }
-                // Only patch those updates for non CAS users
-                if (!this.user?.isCas) {
-                    if (updatedUser.firstName !== this.user?.firstName) {
-                        (this.user as ManagedUser).firstName = updatedUser.firstName
-                        userToUpdate.firstName = updatedUser.firstName
-                        infosToPatch.firstName = updatedUser.firstName
-                    }
-                    if (updatedUser.lastName !== this.user?.lastName) {
-                        (this.user as ManagedUser).lastName = updatedUser.lastName
-                        userToUpdate.lastName = updatedUser.lastName
-                        infosToPatch.lastName = updatedUser.lastName
-                    }
-                    if (updatedUser.email !== this.user?.email) {
-                        (this.user as ManagedUser).email = updatedUser.email
-                        userToUpdate.email = updatedUser.email
-                        infosToPatch.email = updatedUser.email
-                        // also patch username ?
-                    }
+                if (updatedUser.lastName !== this.user?.lastName) {
+                    (this.user as ManagedUser).lastName = updatedUser.lastName
+                    userToUpdate.lastName = updatedUser.lastName
+                    await _axios.patch(`/users/${this.user?.id}`, {lastName: updatedUser.lastName})
                 }
-                if (updatedUser.phone != this.user?.phone) {
-                    (this.user as ManagedUser).phone = updatedUser.phone
-                    userToUpdate.phone = updatedUser.phone
-                    infosToPatch.phone = updatedUser.phone as string
+                if (updatedUser.email !== this.user?.email) {
+                    (this.user as ManagedUser).email = updatedUser.email
+                    userToUpdate.email = updatedUser.email;
+                    // also patch username based on email
+                    (this.user as ManagedUser).username = updatedUser.email
+                    userToUpdate.username = updatedUser.email
+                    await _axios.patch(`/users/${this.user?.id}`, {
+                        email: updatedUser.email,
+                        username: updatedUser.email
+                    })
                 }
-
-                await _axios.patch(`/users/${this.user?.id}`, infosToPatch)
+            }
+            if (updatedUser.phone != this.user?.phone) {
+                (this.user as ManagedUser).phone = updatedUser.phone
+                userToUpdate.phone = updatedUser.phone
+                await _axios.patch(`/users/${this.user?.id}`, {phone: updatedUser.phone})
             }
         }
     }

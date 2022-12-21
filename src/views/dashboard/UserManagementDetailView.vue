@@ -1,20 +1,14 @@
 <script lang="ts" setup>
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
-import useUserGroups from '@/composables/useUserGroups'
 import type {ManagedUser, UserAssociationDetail} from '#/user'
 import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import AlertConfirmUserAssociationDelete from '@/components/alert/AlertConfirmUserAssociationDelete.vue'
+import FormManagedUserUpdate from "@/components/form/FormManagedUserUpdate.vue";
 
 const {t} = useI18n()
-const {notify, loading} = useQuasar()
-const {getUser, updateUserInfos} = useUsers()
-const {groupChoiceIsValid, newGroups} = useUserGroups()
+
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -95,6 +89,7 @@ async function onValidateChanges() {
     }
 }
 */
+
 </script>
 
 <template>
@@ -209,24 +204,20 @@ async function onValidateChanges() {
               @click="onValidateChanges"/>
         <AlertConfirmUserDelete/>
     </section>
+    <FormManagedUserUpdate/>
 </template>
 
 <style lang="sass" scoped>
-section
-    article > *
-        margin: 0
-        width: 50%
+article
+    display: flex
+    align-items: center
+    background-color: lightgrey
+    padding: 0 20px 0 20px
+    margin: 5px 0
 
-    article
-        display: flex
-        align-items: center
-        background-color: lightgrey
-        padding: 0 20px 0 20px
-        margin: 5px 0
-
-        h3
-            font-size: 1.2em
-            text-transform: uppercase
+    h3
+        font-size: 1.2em
+        text-transform: uppercase
 
 legend
     background-color: $primary
