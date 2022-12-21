@@ -144,7 +144,6 @@
     "is-validated": "Validé par le gestionnaire",
     "manage-account": "Gérer les informations du compte",
     "management": "Gestion des comptes",
-    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
     "user-association-confirm-delete": "Êtes-vous sûr de vouloir supprimer le rôle de l'utilisateur dans cette association ? Attention cette action est irréversible et toutes les données seront perdues.",
     "user-status": "Statut de l'utilisateur",
     "users": "Utilisateurs",
@@ -195,9 +194,10 @@
       "enable-association-error": "L'association n'a pas été activée.",
       "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réesayer.",
       "form-error": "Erreur lors du chargement du formulaire, veuillez recharger la page.",
+      "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
+      "request-error": "Une erreur est survenue. Veuillez rafraîchir la page et réessayer.",
       "invalid-request": "Requête invalide.",
       "invalid-token": "Jeton invalide.",
-      "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
       "no-ticket": "Pas de ticket.",
       "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
@@ -221,6 +221,8 @@
       "validate-success": "Le statut du compte a bien été modifié.",
       "association-up-to-date": "L'association est déjà à jour.",
       "association-successfully-updated": "L'association a bien été mise à jour."
+      "validate-delete-user-association": "Le rôle de l'utilisateur dans l'association a bien été supprimé.",
+      "validate-asso": "L'association a été créée avec succès."
     }
   },
   "alerts": {

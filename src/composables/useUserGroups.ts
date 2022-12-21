@@ -1,7 +1,9 @@
-import { computed, ref } from 'vue'
-
-import type { GroupList, UserGroup } from '#/user'
+import type {GroupList, UserGroup} from '#/user'
 import _axios from '@/plugins/axios'
+import {computed, ref} from 'vue'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import useUtility from '@/composables/useUtility'
+
 
 // Functions to choose or update groups
 const newGroups = ref<number[]>([])
@@ -14,7 +16,7 @@ const groupChoiceIsValid = computed(() => {
 // Prevents managers from selecting an association
 const groupUnabledToJoinAssociation = [1, 2]
 const groupUnabledSelectingAssociation = computed(() => {
-    return !newGroups.value.some( group => groupUnabledToJoinAssociation.includes(group));
+    return !newGroups.value.some(group => groupUnabledToJoinAssociation.includes(group));
 })
 
 export default function () {
@@ -32,11 +34,23 @@ export default function () {
     })
 
     const studentGroup = computed((): UserGroup | undefined => {
-        return groups.value?.find(({ name }) => name === 'Étudiante ou Étudiant')
+        return groups.value?.find(({name}) => name === 'Étudiante ou Étudiant')
     })
 
     function groupsToDelete(newGroups: number[], oldGroups: number[]) {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
+    }
+
+    // to test
+    async function updateUserGroups() {
+        const userManagerStore = useUserManagerStore()
+        const oldGroups = userManagerStore.userGroups
+        const {arraysAreEqual} = useUtility()
+
+        if (!arraysAreEqual(newGroups.value, oldGroups)) {
+            await userManagerStore.updateUserGroups(newGroups.value)
+            await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))
+        }
     }
 
     return {
@@ -47,6 +61,8 @@ export default function () {
         groupsToDelete,
         groupChoiceIsValid,
         groupUnabledSelectingAssociation,
-        newGroups
+        newGroups,
+        updateUserGroups
+
     }
 }

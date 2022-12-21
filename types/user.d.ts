@@ -75,7 +75,10 @@ export interface UserAssociationDetail {
     roleName: string,
     hasOfficeStatus: boolean,
     isPresident: boolean,
-    association: number
+    association: {
+        id: number,
+        name: string
+    }
 }
 
 

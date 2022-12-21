@@ -18,12 +18,12 @@ async function onDeleteAssociation() {
         await userManagerStore.deleteUserAssociation(props.associationId as number)
         notify({
             type: 'positive',
-            message: t('notifications.positive.validate-delete-user')
+            message: t('notifications.positive.validate-delete-user-association')
         })
     } catch (e) {
         notify({
             type: 'negative',
-            message: t('notifications.negative.unknown-user')
+            message: t('notifications.negative.request-error')
         })
     }
 }

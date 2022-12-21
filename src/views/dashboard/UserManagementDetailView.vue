@@ -6,23 +6,28 @@ import {useQuasar} from 'quasar'
 import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
 import useUserGroups from '@/composables/useUserGroups'
-import type {User} from '#/user'
+import type {ManagedUser, UserAssociationDetail} from '#/user'
 import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import AlertConfirmUserAssociationDelete from '@/components/alert/AlertConfirmUserAssociationDelete.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {getUser} = useUsers()
-const {newGroups} = useUserGroups()
+const {getUser, updateUserInfos} = useUsers()
+const {groupChoiceIsValid, newGroups} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
 // Watch function observes and updates only if data had been changed
-const user = ref<User | undefined>(userManagerStore.user)
+const user = ref<ManagedUser | undefined>(userManagerStore.user)
 watch(() => userManagerStore.user, () => {
     user.value = userManagerStore.user
+})
+
+const userAssociations = ref<UserAssociationDetail[]>(userManagerStore.userAssociations)
+watch(() => userManagerStore.userAssociations, () => {
+    userAssociations.value = userManagerStore.userAssociations
 })
 
 // Boolean select options
@@ -72,10 +77,11 @@ async function onGetUserAssociations() {
 // Function that verify if the user is validated by the admin or not, and send the response to the back
 /*
 async function onValidateUser() {
+async function onValidateChanges() {
     if (groupChoiceIsValid.value) {
         try {
-            await validateUser(newGroups.value)
-            await router.push({name: 'ValidateUsers'})
+            await updateUserInfos(user.value as ManagedUser, userAssociations.value)
+            await router.push({name: 'ManageUsers'})
             notify({
                 type: 'positive',
                 message: t('notifications.positive.validate-success')
@@ -96,7 +102,6 @@ async function onValidateUser() {
     <QForm
         v-if="user"
         class="q-gutter-md"
-        @submit.prevent="register"
     >
         <fieldset>
             <legend>{{ t('user.infos') }}</legend>
@@ -139,7 +144,7 @@ async function onValidateUser() {
         </fieldset>
         <fieldset class="association-cards">
             <QCard
-                v-for="(association, index) in userManagerStore.userAssociations"
+                v-for="(association, index) in userAssociations"
                 :key="index"
                 class="association-card"
             >
@@ -200,6 +205,8 @@ async function onValidateUser() {
     <section class="btn-group">
         <QBtn :label="t('back')" :to="{name: 'ManageUsers'}" color="secondary" icon="mdi-arrow-left-circle"/>
         <!-- <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" @click="onValidateUser"/> -->
+        <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle"
+              @click="onValidateChanges"/>
         <AlertConfirmUserDelete/>
     </section>
 </template>

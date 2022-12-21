@@ -1,6 +1,13 @@
-import { defineStore } from 'pinia'
-
-import type { ManagedUser, ManagedUsers, UserDirectory, UserGroup, UserManagerStore, UserNames } from '#/user'
+import {defineStore} from 'pinia'
+import type {
+    ManagedUser,
+    ManagedUsers,
+    UserAssociationDetail,
+    UserDirectory,
+    UserGroup,
+    UserManagerStore,
+    UserNames
+} from '#/user'
 import _axios from '@/plugins/axios'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
@@ -60,7 +67,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             }
         },
         async updateUserGroups(userGroups: number[]) {
-            await _axios.post('/users/groups/', { username: this.user?.username, groups: userGroups })
+            await _axios.post('/users/groups/', {username: this.user?.username, groups: userGroups})
         },
         async deleteUserGroups(groupsToDelete: number[]) {
             for (let i = 0; i < groupsToDelete.length; i++) {
@@ -68,7 +75,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             }
         },
         async validateUser() {
-            await _axios.patch(`/users/${this.user?.id}`, { isValidatedByAdmin: true })
+            await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
             const validatedUser = this.users.findIndex((user) => user.id === this.user?.id)
             this.users.splice(validatedUser, 1)
         },
@@ -80,10 +87,56 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async getUserAssociations() {
             this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
         },
+        // to test
         async deleteUserAssociation(associationId: number) {
             await _axios.delete(`/users/associations/${this.user?.id}/${associationId}`)
-            const associationToDelete = this.userAssociations.findIndex((association) => association.association === associationId)
+            const associationToDelete = this.userAssociations.findIndex((association) => association.association.id === associationId)
             this.userAssociations.splice(associationToDelete, 1)
+        },
+        // to test
+        async updateUserAssociations(updatedUserAssociations: UserAssociationDetail[]) {
+            if (JSON.stringify(updatedUserAssociations) !== JSON.stringify(this.userAssociations)) {
+                await _axios.post('/users/associations/', updatedUserAssociations)
+                this.userAssociations = updatedUserAssociations
+            }
+        },
+        // to test
+        async updateUserInfos(updatedUser: ManagedUser) {
+            if (JSON.stringify(updatedUser) !== JSON.stringify(this.user)) {
+                const userToUpdate: ManagedUser = this.users.find((user) => user.id === this.user?.id) as ManagedUser
+                const infosToPatch = {
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phone: ''
+                }
+                // Only patch those updates for non CAS users
+                if (!this.user?.isCas) {
+                    if (updatedUser.firstName !== this.user?.firstName) {
+                        (this.user as ManagedUser).firstName = updatedUser.firstName
+                        userToUpdate.firstName = updatedUser.firstName
+                        infosToPatch.firstName = updatedUser.firstName
+                    }
+                    if (updatedUser.lastName !== this.user?.lastName) {
+                        (this.user as ManagedUser).lastName = updatedUser.lastName
+                        userToUpdate.lastName = updatedUser.lastName
+                        infosToPatch.lastName = updatedUser.lastName
+                    }
+                    if (updatedUser.email !== this.user?.email) {
+                        (this.user as ManagedUser).email = updatedUser.email
+                        userToUpdate.email = updatedUser.email
+                        infosToPatch.email = updatedUser.email
+                        // also patch username ?
+                    }
+                }
+                if (updatedUser.phone != this.user?.phone) {
+                    (this.user as ManagedUser).phone = updatedUser.phone
+                    userToUpdate.phone = updatedUser.phone
+                    infosToPatch.phone = updatedUser.phone as string
+                }
+
+                await _axios.patch(`/users/${this.user?.id}`, infosToPatch)
+            }
         }
     }
 })
