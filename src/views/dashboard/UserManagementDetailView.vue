@@ -10,6 +10,7 @@ import router from '@/router'
 import type {User} from '#/user'
 import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
+import AlertConfirmUserAssociationDelete from '@/components/alert/AlertConfirmUserAssociationDelete.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -163,11 +164,7 @@ async function onValidateUser() {
                             filled
                             map-options
                         />
-                        <QBtn
-                            :label="t('dashboard.association-user.delete-association')"
-                            color="red"
-                            icon="mdi-delete"
-                        />
+                        <AlertConfirmUserAssociationDelete :association-id="association.association.id"/>
                     </article>
                 </QCardSection>
             </QCard>
