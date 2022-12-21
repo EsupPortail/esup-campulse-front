@@ -144,6 +144,8 @@
     "is-validated": "Validé par le gestionnaire",
     "manage-account": "Gérer les informations du compte",
     "management": "Gestion des comptes",
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
+    "user-association-confirm-delete": "Êtes-vous sûr de vouloir supprimer le rôle de l'utilisateur dans cette association ? Attention cette action est irréversible et toutes les données seront perdues.",
     "user-status": "Statut de l'utilisateur",
     "users": "Utilisateurs",
     "validate-account": "Valider le compte",

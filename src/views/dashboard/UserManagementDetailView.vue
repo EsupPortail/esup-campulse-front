@@ -9,6 +9,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import type {User} from '#/user'
 import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
+import AlertConfirmUserAssociationDelete from '@/components/alert/AlertConfirmUserAssociationDelete.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -99,41 +100,41 @@ async function onValidateUser() {
     >
         <fieldset>
             <legend>{{ t('user.infos') }}</legend>
-          <!-- :disable="!!user.isCas" -->
+            <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.firstName"
+                :disable="true"
                 :label="t('forms.first-name')"
                 :rules="[ val => val && val.length > 0 || t('forms.required-first-name')]"
                 filled
                 lazy-rules
-                :disable="true"
             />
-          <!-- :disable="!!user.isCas" -->
+            <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.lastName"
+                :disable="true"
                 :label="t('forms.last-name')"
                 :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                 filled
                 lazy-rules
-                :disable="true"
             />
-          <!-- :disable="!!user.isCas" -->
+            <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.email"
+                :disable="true"
                 :label="t('forms.email')"
                 :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
                 filled
                 lazy-rules
-                :disable="true"
             />
             <QInput
                 v-model="user.phone"
+                :disable="true"
                 :label="t('forms.phone')"
                 filled
                 hint="Format : 06 00 00 00 00"
                 lazy-rules
                 mask="## ## ## ## ##"
-                :disable="true"
             />
         </fieldset>
         <fieldset class="association-cards">
@@ -147,35 +148,36 @@ async function onValidateUser() {
                         <h4>{{ association.association.name }}</h4>
                         <QInput
                             v-model="association.roleName"
+                            :disable="true"
                             :label="t('dashboard.association-user.role')"
                             :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                             filled
                             lazy-rules
-                            :disable="true"
                         />
                         <QSelect
                             v-model="association.hasOfficeStatus"
+                            :disable="true"
                             :label="t('dashboard.association-user.has-office-status')"
                             :options="booleanSelectOptions"
                             emit-value
                             filled
                             map-options
-                            :disable="true"
                         />
                         <QSelect
                             v-model="association.isPresident"
+                            :disable="true"
                             :label="t('dashboard.association-user.is-president')"
                             :options="booleanSelectOptions"
                             emit-value
                             filled
                             map-options
-                            :disable="true"
                         />
                         <!-- <QBtn
                             :label="t('dashboard.association-user.delete-association')"
                             color="red"
                             icon="mdi-delete"
                         /> -->
+                        <AlertConfirmUserAssociationDelete :association-id="association.association.id"/>
                     </article>
                 </QCardSection>
             </QCard>

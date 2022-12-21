@@ -79,6 +79,11 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         async getUserAssociations() {
             this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
+        },
+        async deleteUserAssociation(associationId: number) {
+            await _axios.delete(`/users/associations/${this.user?.id}/${associationId}`)
+            const associationToDelete = this.userAssociations.findIndex((association) => association.association === associationId)
+            this.userAssociations.splice(associationToDelete, 1)
         }
     }
 })
