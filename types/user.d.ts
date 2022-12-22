@@ -96,6 +96,8 @@ export type ManagedUsers = ManagedUser[]
 
 export type UserNames = { value: number, label: string }[]
 
+export type UserToUpdate = Pick<User, "firstName", "lastName", "email", "phone">
+
 /*export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
 export type UserDirectory = UserDirectoryDetail[]*/
 
