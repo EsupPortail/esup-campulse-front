@@ -1,4 +1,5 @@
-import type { AssociationName } from '#/association';
+import type {AssociationName} from '#/association'
+
 
 export interface User {
     id: number,
@@ -6,7 +7,7 @@ export interface User {
     username: string,
     firstName: string,
     lastName: string,
-    phone: string | null,
+    phone: string | undefined,
     email: string,
     isCas: boolean,
     isValidatedByAdmin: boolean | null,
@@ -45,7 +46,7 @@ interface CasLogin {
 }
 
 // Register
-export type UserRegister = Pick<User, 'username', 'first_name' | 'last_name' | 'email' | 'phone'>
+export type UserRegister = Pick<User, "username" | "first_name" | "last_name" | "email" | "phone">
 
 // Password reset
 export interface PasswordReset {
@@ -96,9 +97,17 @@ export type ManagedUsers = ManagedUser[]
 
 export type UserNames = { value: number, label: string }[]
 
-export type UserToUpdate = Pick<User, "firstName", "lastName", "email", "phone">
+export type UserToUpdate = Pick<ManagedUser, "firstName" | "lastName" | "email" | "phone">
+
+export interface UserAssociationStatus {
+    associationId: number,
+    associationName: string
+    roleName: string,
+    hasOfficeStatus: boolean,
+    isPresident: boolean
+}
 
 /*export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
 export type UserDirectory = UserDirectoryDetail[]*/
 
-export type UserDirectory = Pick<User, 'id', 'firstName', 'lastName', 'email', 'associations', 'groups', 'isValidatedByAdmin'>
+export type UserDirectory = Pick<User, "id" | "firstName" | "lastName" | "email" | "associations" | "groups" | "isValidatedByAdmin">

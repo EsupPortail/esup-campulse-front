@@ -57,11 +57,10 @@ const booleanSelectOptions = [
         >
             <QCardSection>
                 <article>
-                    <h4>{{ association.association.name }}</h4>
+                    <h4>{{ association.associationName }}</h4>
                     <QInput
                         v-model="association.roleName"
                         :label="t('dashboard.association-user.role')"
-                        :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                         filled
                         lazy-rules
                     />
@@ -81,7 +80,7 @@ const booleanSelectOptions = [
                         filled
                         map-options
                     />
-                    <AlertConfirmUserAssociationDelete :association-id="association.association.id"/>
+                    <AlertConfirmUserAssociationDelete :association-id="association.associationId"/>
                 </article>
             </QCardSection>
         </QCard>
@@ -99,7 +98,7 @@ h4
     padding: 0
     line-height: 0
 
-.q-select
+.q-select, .q-input
     margin-bottom: 20px
 
 legend

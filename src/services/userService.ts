@@ -56,7 +56,6 @@ export async function refreshToken() {
 export async function loadUser() {
     const access = localStorage.getItem('access')
     const userStore = useUserStore()
-
     if (access && !userStore.user) {
         try {
             setBearer()
