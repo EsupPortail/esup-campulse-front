@@ -10,7 +10,7 @@ import {useRoute} from 'vue-router'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {newUserAssociations, getUser} = useUsers()
+const {newUserAssociations} = useUsers()
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
@@ -24,10 +24,7 @@ onMounted(async () => {
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
-        if (!userManagerStore.user || userManagerStore.user?.id !== parseInt(route.params.id as string)) {
-            await getUser(route.params.id as string)
-        }
-        await userManagerStore.getUserAssociations()
+        await userManagerStore.getUserAssociations(parseInt(route.params.id as string))
     } catch (e) {
         notify({
             type: 'negative',

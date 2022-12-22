@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {onMounted} from 'vue'
+import {onBeforeMount} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import useUsers from '@/composables/useUsers'
@@ -14,17 +14,15 @@ import FormUpdateManagedUserAssociations from '@/components/form/FormUpdateManag
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {getUser, updateUserInfos, userToUpdate} = useUsers()
-const {groupChoiceIsValid, newGroups} = useUserGroups()
+const {groupChoiceIsValid} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
 
-onMounted(async () => {
+onBeforeMount(async () => {
     loading.show
     await onGetUser()
-    //userToUpdate.value = userManagerStore.user
-    //newGroups.value = userManagerStore.userGroups
     loading.hide
 })
 
