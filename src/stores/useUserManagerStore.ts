@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import type {
     ManagedUser,
     ManagedUsers,
-    UserAssociationDetail,
+    UserAssociationStatus,
     UserDirectory,
     UserGroup,
     UserManagerStore,
@@ -28,7 +28,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                     label: user.firstName + ' ' + user.lastName
                 }))
         },
-        userDirectory: (state: UserManagerStore): UserDirectory => {
+        userDirectory: (state: UserManagerStore): UserDirectory[] => {
             return state.users
                 .map(user => ({
                     id: user.id,
@@ -45,11 +45,20 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
             return {
-                firstName: state.user?.firstName,
-                lastName: state.user?.lastName,
-                email: state.user?.email,
-                phone: state.user?.phone
+                firstName: state.user?.firstName as string,
+                lastName: state.user?.lastName as string,
+                email: state.user?.email as string,
+                phone: state.user?.phone as string
             }
+        },
+        userAssociationStatus: (state: UserManagerStore): UserAssociationStatus[] => {
+            return state.userAssociations.map(association => ({
+                associationId: association.association.id,
+                associationName: association.association.name,
+                roleName: association.roleName,
+                hasOfficeStatus: association.hasOfficeStatus,
+                isPresident: association.isPresident
+            }))
         }
     },
 
@@ -111,43 +120,42 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             this.userAssociations.splice(associationToDelete, 1)
         },
         // to test
-        async updateUserAssociations(updatedUserAssociations: UserAssociationDetail[]) {
-            if (JSON.stringify(updatedUserAssociations) !== JSON.stringify(this.userAssociations)) {
-                await _axios.post('/users/associations/', updatedUserAssociations)
-                this.userAssociations = updatedUserAssociations
+        async updateUserAssociations(updatedUserAssociations: UserAssociationStatus[]) {
+            for (let i = 0; i < updatedUserAssociations.length; i++) {
+                const newAssociation = updatedUserAssociations[i]
+                const oldAssociation = this.userAssociations.find((association) => association.association.id === updatedUserAssociations[i].associationId)
+                if (newAssociation.roleName !== oldAssociation?.roleName || newAssociation.hasOfficeStatus !== oldAssociation?.hasOfficeStatus
+                    || newAssociation.isPresident !== oldAssociation?.isPresident) {
+                    const data = {
+                        user: this.user?.username,
+                        roleName: newAssociation.roleName,
+                        hasOfficeStatus: newAssociation.hasOfficeStatus,
+                        isPresident: newAssociation.isPresident,
+                        association: newAssociation.associationId
+                    }
+                    await this.deleteUserAssociation(newAssociation.associationId)
+                    await _axios.post('/users/associations/', data)
+                }
             }
         },
         // to test
-        async updateUserInfos(updatedUser: ManagedUser) {
-            const userToUpdate: ManagedUser = this.users.find((user) => user.id === this.user?.id) as ManagedUser
-            // Only patch those updates for non CAS users
-            if (!this.user?.isCas) {
-                if (updatedUser.firstName !== this.user?.firstName) {
-                    (this.user as ManagedUser).firstName = updatedUser.firstName
-                    userToUpdate.lastName = updatedUser.firstName
-                    await _axios.patch(`/users/${this.user?.id}`, {firstName: updatedUser.firstName})
-                }
-                if (updatedUser.lastName !== this.user?.lastName) {
-                    (this.user as ManagedUser).lastName = updatedUser.lastName
-                    userToUpdate.lastName = updatedUser.lastName
-                    await _axios.patch(`/users/${this.user?.id}`, {lastName: updatedUser.lastName})
-                }
-                if (updatedUser.email !== this.user?.email) {
-                    (this.user as ManagedUser).email = updatedUser.email
-                    userToUpdate.email = updatedUser.email;
-                    // also patch username based on email
-                    (this.user as ManagedUser).username = updatedUser.email
-                    userToUpdate.username = updatedUser.email
-                    await _axios.patch(`/users/${this.user?.id}`, {
+        async updateUserInfos(updatedUser: UserToUpdate) {
+            if (updatedUser.firstName !== this.user?.firstName || updatedUser.lastName !== this.user?.lastName
+                || updatedUser.email !== this.user?.email || updatedUser.phone !== this.user?.phone) {
+                let data = {}
+                // Only patch those updates for non CAS users
+                if (!this.user?.isCas) {
+                    data = {
+                        username: updatedUser.email,
+                        firstName: updatedUser.firstName,
+                        lastName: updatedUser.lastName,
                         email: updatedUser.email,
-                        username: updatedUser.email
-                    })
+                        phone: updatedUser.phone,
+                    }
+                } else {
+                    data = {phone: updatedUser.phone}
                 }
-            }
-            if (updatedUser.phone != this.user?.phone) {
-                (this.user as ManagedUser).phone = updatedUser.phone
-                userToUpdate.phone = updatedUser.phone
-                await _axios.patch(`/users/${this.user?.id}`, {phone: updatedUser.phone})
+                await _axios.patch(`/users/${this.user?.id}`, data)
             }
         }
     }

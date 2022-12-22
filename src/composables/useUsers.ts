@@ -1,7 +1,7 @@
 import {useRoute} from 'vue-router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import useUserGroups from '@/composables/useUserGroups'
-import type {ManagedUser, UserAssociationDetail, UserToUpdate} from '#/user'
+import type {ManagedUser, UserAssociationStatus, UserToUpdate} from '#/user'
 import {ref, watch} from 'vue'
 
 
@@ -12,9 +12,9 @@ watch(() => userManagerStore.user, () => {
     userToUpdate.value = userManagerStore.userInfosUpdate
 })
 
-const newUserAssociations = ref<UserAssociationDetail[]>(userManagerStore.userAssociations)
+const newUserAssociations = ref<UserAssociationStatus[]>(userManagerStore.userAssociationStatus)
 watch(() => userManagerStore.userAssociations, () => {
-    newUserAssociations.value = userManagerStore.userAssociations
+    newUserAssociations.value = userManagerStore.userAssociationStatus
 })
 
 export default function () {
@@ -51,7 +51,7 @@ export default function () {
         // update user groups
         await updateUserGroups()
         // update user associations
-        await userManagerStore.updateUserAssociations(newUserAssociations.value as UserAssociationDetail[])
+        await userManagerStore.updateUserAssociations(newUserAssociations.value as UserAssociationStatus[])
     }
 
     return {getUsers, getUser, validateUser, updateUserInfos, userToUpdate, newUserAssociations}

@@ -22,6 +22,7 @@ export default function () {
 
     const groups = ref<UserGroup[]>()
 
+    // to re test
     async function getGroups() {
         groups.value = (await _axios.get<UserGroup[]>('/groups/')).data
     }
