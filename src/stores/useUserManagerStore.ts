@@ -94,8 +94,14 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             this.users.splice(userToDelete, 1)
         },
         // to re test
-        async getUserAssociations() {
-            this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
+        async getUserAssociations(id: number) {
+            let userId: number | undefined = undefined
+            if (!this.user || (this.user?.id !== id)) {
+                userId = id
+            } else {
+                userId = this.user?.id
+            }
+            this.userAssociations = (await _axios.get(`/users/associations/${userId}`)).data
         },
         // to test
         async deleteUserAssociation(associationId: number) {
