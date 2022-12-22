@@ -49,6 +49,7 @@ const booleanSelectOptions = [
 <template>
     <fieldset class="association-cards">
         <legend>Associations</legend>
+        <p v-if="userManagerStore.userAssociations.length === 0">L'utilisateur n'est membre d'aucune association.</p>
         <QCard
             v-for="(association, index) in newUserAssociations"
             :key="index"
@@ -100,4 +101,12 @@ h4
 
 .q-select
     margin-bottom: 20px
+
+legend
+    background-color: $primary
+    color: #fff
+    font-size: 2em
+    text-align: center
+    width: 100%
+    margin-bottom: 10px
 </style>

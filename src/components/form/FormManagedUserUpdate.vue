@@ -116,7 +116,7 @@ async function onValidateChanges() {
         </fieldset>
         <FormUserGroups/>
         <section class="btn-group">
-            <QBtn :label="t('back')" :to="{name: 'ManageUsers'}" color="secondary" icon="mdi-arrow-left-circle"/>
+            <QBtn :label="t('back')" color="secondary" icon="mdi-arrow-left-circle" to="/dashboard/manage-users"/>
             <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" type="submit"/>
             <AlertConfirmUserDelete/>
         </section>

@@ -6,7 +6,8 @@ import type {
     UserDirectory,
     UserGroup,
     UserManagerStore,
-    UserNames
+    UserNames,
+    UserToUpdate
 } from '#/user'
 import _axios from '@/plugins/axios'
 
@@ -42,12 +43,12 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         userGroups: (state: UserManagerStore): number[] => {
             return state.user?.groups?.map<number>(group => group.id) || []
         },
-        userInfosUpdate: (state: UserManagerStore) => {
+        userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
             return {
-                firstName: state.user?.firstName as string,
-                lastName: state.user?.lastName as string,
-                email: state.user?.email as string,
-                phone: state.user?.phone as string
+                firstName: state.user?.firstName,
+                lastName: state.user?.lastName,
+                email: state.user?.email,
+                phone: state.user?.phone
             }
         }
     },

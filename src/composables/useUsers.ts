@@ -1,13 +1,13 @@
 import {useRoute} from 'vue-router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import useUserGroups from '@/composables/useUserGroups'
-import type {ManagedUser, UserAssociationDetail} from '#/user'
+import type {ManagedUser, UserAssociationDetail, UserToUpdate} from '#/user'
 import {ref, watch} from 'vue'
 
 
 const userManagerStore = useUserManagerStore()
 
-const userToUpdate = ref(userManagerStore.userInfosUpdate)
+const userToUpdate = ref<UserToUpdate>(userManagerStore.userInfosUpdate)
 watch(() => userManagerStore.user, () => {
     userToUpdate.value = userManagerStore.userInfosUpdate
 })
