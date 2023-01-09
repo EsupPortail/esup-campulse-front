@@ -168,7 +168,7 @@
       "unknown-credentials": "L'identifiant et/ou le mot de passe sont erronés, veuillez réessayer.",
       "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail.",
       "unknown-user": "Aucun compte n'a été trouvé.",
-      "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur."
+      "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur.",
       "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réesayer.",
       "association-already-exists": "Impossible d'ajouter cette association car elle existe déjà."
     },
