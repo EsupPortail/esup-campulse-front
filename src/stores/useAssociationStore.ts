@@ -47,11 +47,7 @@ export const useAssociationStore = defineStore('associationStore', {
             }
         },
         async createAssociation(name: string) {
-            try {
-                await _axios.post(`/associations/`, {name: name})
-            } catch (e) {
-                // code
-            }
+            await _axios.post('/associations/', {name: name})
         }
     }
 })

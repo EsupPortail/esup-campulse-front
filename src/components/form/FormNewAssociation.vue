@@ -3,83 +3,68 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {ref} from 'vue'
-//import {useRoute} from 'vue-router'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
-//const route = useRoute()
 
 const associationStore = useAssociationStore()
 const newAssociation = ref<string>('')
 
 async function onCreate() {
-  try {
-    await associationStore.createAssociation(newAssociation.value)
-    notify({
-      type: 'positive',
-      message: t('notifications.positive.validate-asso')
-    })
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.error-asso')
-    })
-  }
+    try {
+        await associationStore.createAssociation(newAssociation.value)
+        newAssociation.value = ''
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.validate-association')
+        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.data.error === 'Association name already taken.') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.association-already-exists')
+            })
+        } else {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-new-association')
+            })
+        }
+    }
 }
 </script>
 
 <template>
-  <QForm
-      class="q-gutter-md"
-      @submit.prevent="onCreate"
-  >
-    <h3>{{ t("association.labels.new-asso") }}</h3>
-    <QInput
-        v-model="newAssociation"
-        :label="t('forms.name')"
-        filled
-        lazy-rules
-    />
-    <section class="btn-group">
-      <QBtn
-          :label="t('home.back-dashboard')"
-          color="secondary"
-          icon="mdi-arrow-left-circle"
-          to="/associations"
-      />
-      <QBtn
-          :label="t('manager.validate')"
-          color="primary"
-          @:click="onCreate"
-      />
-    </section>
-  </QForm>
+    <QForm
+        class="q-gutter-md"
+        @submit.prevent="onCreate"
+    >
+        <QInput
+            v-model="newAssociation"
+            :label="t('forms.association-name')"
+            filled
+            lazy-rules
+        />
+        <section class="btn-group">
+            <QBtn
+                :label="t('home.back-dashboard')"
+                :to="{name: 'Dashboard'}"
+                color="secondary"
+                icon="mdi-arrow-left-circle"
+            />
+            <QBtn
+                :label="t('manager.validate')"
+                color="primary"
+                icon="mdi-check-circle"
+                @click="onCreate"
+            />
+        </section>
+    </QForm>
 </template>
 
 <style lang="sass" scoped>
-h2
-  background-color: $primary
-  color: #fff
-  font-size: 2em
-  text-align: center
-
-article > *
-  margin: 0
-  width: 50%
-
-article
-  display: flex
-  align-items: center
-  background-color: lightgrey
-  padding: 0 20px 0 20px
-  margin: 5px 0
-
-h3
-  font-size: 1.2em
-  text-transform: uppercase
-
 .btn-group
-  display: flex
-  gap: 10px
-
+    display: flex
+    gap: 10px
 </style>

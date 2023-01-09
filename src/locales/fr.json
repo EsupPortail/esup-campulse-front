@@ -83,7 +83,7 @@
     "im-in-association-office": "Je suis membre du bureau de l'association",
     "last-name": "Nom de famille",
     "login": "Connexion",
-    "name": "Nom association",
+    "association-name": "Nom de l'association",
     "new-password": "Nouveau mot de passe",
     "old-password": "Mot de passe actuel",
     "password": "Mot de passe",
@@ -133,7 +133,8 @@
       "unknown-credentials": "L'identifiant et/ou le mot de passe sont erronés, veuillez réessayer.",
       "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail.",
       "unknown-user": "Aucun compte n'a été trouvé.",
-      "error-asso": "Une erreur lors de la création de l'association est survenue, veuillez réesayer."
+      "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réesayer.",
+      "association-already-exists": "Impossible d'ajouter cette association car elle existe déjà."
     },
     "positive": {
       "login-success": "Connexion réussie.",
@@ -142,7 +143,7 @@
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
       "validate-success": "Le statut du compte a bien été modifié.",
-      "validate-asso": "L'association a été créée avec succès."
+      "validate-association": "L'association a été créée avec succès."
     }
   },
   "alerts": {
@@ -197,8 +198,7 @@
       "services": "Services proposés",
       "socials": "Réseaux sociaux",
       "website": "Site web",
-      "website-link": "Aller au site web de l'association",
-      "new-asso": "Veuillez entrer le nom de l'association"
+      "website-link": "Aller au site web de l'association"
     }
   },
   "user": {
