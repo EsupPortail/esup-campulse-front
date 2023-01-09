@@ -28,9 +28,9 @@ export const useAssociationStore = defineStore('associationStore', {
                     id: association.id,
                     name: association.name,
                     acronym: association.acronym,
-                    institution: association.institution.name,
-                    component: association.institutionComponent.name,
-                    field: association.activityField.name
+                    institution: association.institution?.name,
+                    component: association.institutionComponent?.name,
+                    field: association.activityField?.name
                 }))
         }
     },
