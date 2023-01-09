@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {useAssociationStore} from '@/stores/useAssociationStore'
 import {ref} from 'vue'
 import axios from 'axios'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -57,7 +57,7 @@ async function onCreate() {
                 :label="t('manager.validate')"
                 color="primary"
                 icon="mdi-check-circle"
-                @click="onCreate"
+                type="submit"
             />
         </section>
     </QForm>
