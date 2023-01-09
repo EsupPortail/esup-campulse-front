@@ -5,7 +5,7 @@ import {mockedAssociationName} from '~/mocks/association.mock'
 export const mockedGroups: UserGroup[] = [
     {
         id: 1,
-        name: 'Gestionnaire'
+        name: 'Gestionnaire SVU'
     },
     {
         id: 2,
