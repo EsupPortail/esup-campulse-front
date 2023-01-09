@@ -54,7 +54,7 @@ async function onCreate() {
                 icon="mdi-arrow-left-circle"
             />
             <QBtn
-                :label="t('manager.validate')"
+                :label="t('validate')"
                 color="primary"
                 icon="mdi-check-circle"
                 type="submit"
