@@ -27,13 +27,13 @@ const {t} = useI18n()
             {{ t('dashboard.manage-association-directory') }}
         </h2>
         <QBtn
-            :to="{name: 'AssociationCreate'}"
+            :to="{name: 'ManageAssociations'}"
             color="secondary"
             label="Modifier ou supprimer une association"
         />
         <QBtn
             :label="t('dashboard.create-association')"
-            :to="{name: 'AssociationCreate'}"
+            :to="{name: 'CreateAssociation'}"
             color="secondary"
         />
     </section>
