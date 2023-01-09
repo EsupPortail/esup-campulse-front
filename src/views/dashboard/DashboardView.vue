@@ -9,7 +9,8 @@ const {t} = useI18n()
 <template>
     <h1>{{ t("home.dashboard") }}</h1>
     <p class="welcome-msg">
-        {{ t('dashboard.welcome-message') + ', ' + userStore.userName }}</p>
+        {{ t('dashboard.welcome-message') + ', ' + userStore.userName }}
+    </p>
     <section>
         <h2>
             <QIcon name="mdi-card-account-details-outline"/>
@@ -35,6 +36,17 @@ const {t} = useI18n()
             :label="t('dashboard.create-association')"
             :to="{name: 'CreateAssociation'}"
             color="secondary"
+        />
+    </section>
+    <section v-if="userStore.user?.associations.length > 0">
+        <h2>
+            <QIcon name="mdi-pencil-box-outline"/>
+            Gérer les associations dont je suis membre
+        </h2>
+        <QBtn
+            :to="{name: 'ManageAssociations'}"
+            color="secondary"
+            label="Modifier les fiches annuaire"
         />
     </section>
     <section v-if="userStore.managerGroup">

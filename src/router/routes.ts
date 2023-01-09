@@ -89,7 +89,6 @@ const routes: RouteRecordRaw[] = [
                     },
                     {
                         path: 'manage-associations',
-                        meta: {uniManagerOnly: true},
                         children: [
                             {
                                 path: '',
