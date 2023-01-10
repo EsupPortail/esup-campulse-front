@@ -10,21 +10,10 @@
 
 export interface Association {
     id: number,
-    institution: {
-        id: number,
-        name: string,
-        acronym: string
-    },
-    institutionComponent: {
-        id: number,
-        name: string
-    },
-    activityField: {
-        id: number,
-        name: string
-    },
+    institution: AssociationInstitution,
+    institutionComponent: AssociationComponent,
+    activityField: AssociationField,
     socialNetworks: {
-        id: number,
         type: string,
         location: string
     },
@@ -46,6 +35,22 @@ export interface Association {
     approvalDate: string | null,
     lastGoaDate: string | null,
     cgaDate: string | null,
+}
+
+export interface AssociationInstitution {
+    id: number,
+    name: string,
+    acronym: string
+}
+
+export interface AssociationComponent {
+    id: number,
+    name: string
+}
+
+export interface AssociationField {
+    id: number,
+    name: string
 }
 
 export interface AssociationName {

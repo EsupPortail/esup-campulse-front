@@ -1,21 +1,45 @@
 <script lang="ts" setup>
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useDirectory from '@/composables/useDirectory'
 import {useRoute} from 'vue-router'
+import useAssociation from '@/composables/useAssociation'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {loading} = useQuasar()
 const {getAssociationDetail} = useDirectory()
+const {
+    associationInstitutionsLabels,
+    getAssociationInstitutions,
+    getCurrentInstitutionLabel,
+    associationComponentsLabels,
+    getAssociationComponents,
+    getCurrentComponentLabel,
+    associationFieldsLabels,
+    getAssociationFields,
+    getCurrentFieldLabel
+} = useAssociation()
+
 const route = useRoute()
 const associationStore = useAssociationStore()
+
+const associationInstitution = ref()
+const associationComponent = ref()
+const associationField = ref()
+
 
 onMounted(async function () {
     loading.show
     await onGetAssociationDetail()
+    await onGetAssociationInstitutions()
+    associationInstitution.value = getCurrentInstitutionLabel()
+    await onGetAssociationComponents()
+    associationComponent.value = getCurrentComponentLabel()
+    await onGetAssociationFields()
+    associationField.value = getCurrentFieldLabel()
     loading.hide
 })
 
@@ -29,13 +53,32 @@ async function onGetAssociationDetail() {
         })
     }
 }
+
+// TODO: add try and catch
+async function onGetAssociationInstitutions() {
+    await getAssociationInstitutions()
+}
+
+// TODO: add try and catch
+async function onGetAssociationComponents() {
+    await getAssociationComponents()
+}
+
+// TODO: add try and catch
+async function onGetAssociationFields() {
+    await getAssociationFields()
+}
+
+async function onValidateChanges() {
+    //
+}
 </script>
 
 <template>
     <h1>{{ associationStore.association?.name }}</h1>
     <QForm
         v-if="associationStore.association"
-        @submit.prevent="onSubmit"
+        @submit.prevent="onValidateChanges"
     >
         <!--        <div class="logo">
                 <img
@@ -46,57 +89,51 @@ async function onGetAssociationDetail() {
                 <div v-else></div>
             </div>-->
         <fieldset>
-            <legend>Informations générales</legend>
+            <legend>{{ t('association.titles.info') }}</legend>
             <QInput
                 v-model="associationStore.association.acronym"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.acronym')"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                label="Acronyme"
                 lazy-rules
             />
             <QInput
                 v-model="associationStore.association.description"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.description')"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                label="Description"
                 lazy-rules
                 type="textarea"
             />
             <QInput
                 v-model="associationStore.association.activities"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.activities')"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                label="Activités"
                 lazy-rules
                 type="textarea"
             />
-            <QInput
-                v-if="associationStore.association.institution"
-                v-model="associationStore.association.institution.name"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+            <QSelect
+                v-model="associationInstitution"
+                :label="t('association.labels.institution')"
+                :options="associationInstitutionsLabels"
                 filled
-                label="Etablissement"
-                lazy-rules
             />
-            <QInput
-                v-if="associationStore.association.institutionComponent"
-                v-model="associationStore.association.institutionComponent.name"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+            <QSelect
+                v-model="associationComponent"
+                :label="t('association.labels.component')"
+                :options="associationComponentsLabels"
                 filled
-                label="Composante"
-                lazy-rules
             />
-            <QInput
-                v-if="associationStore.association.activityField"
-                v-model="associationStore.association.activityField.name"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+            <QSelect
+                v-model="associationField"
+                :label="t('association.labels.field')"
+                :options="associationFieldsLabels"
                 filled
-                label="Domaine"
-                lazy-rules
             />
         </fieldset>
         <fieldset>
-            <legend>Informations administratives</legend>
+            <legend>{{ t('association.titles.admin') }}</legend>
             <QInput
                 v-model="associationStore.association.presidentNames"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
@@ -116,7 +153,7 @@ async function onGetAssociationDetail() {
             />
         </fieldset>
         <fieldset>
-            <legend>Informations de contact</legend>
+            <legend>{{ t('association.titles.contact') }}</legend>
             <QInput
                 v-model="associationStore.association.address"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
@@ -145,7 +182,31 @@ async function onGetAssociationDetail() {
                 label="Site web"
                 lazy-rules
             />
-            <!-- TODO: social networks -->
+        </fieldset>
+        <!-- TODO: social networks -->
+        <fieldset class="social-networks">
+            <legend>Réseaux sociaux</legend>
+            <section v-for="(socialNetwork, index) in associationStore.association.socialNetworks" :key="index">
+                <QInput
+                    v-model="socialNetwork.type"
+                    :rules="[ val => val && val.length > 0 || 'Please type something']"
+                    filled
+                    label="Site web"
+                    lazy-rules
+                />
+                <QInput
+                    v-model="socialNetwork.location"
+                    :rules="[ val => val && val.length > 0 || 'Please type something']"
+                    filled
+                    label="Site web"
+                    lazy-rules
+                />
+                <QBtn
+                    color="red"
+                    icon="mdi-delete"
+                    label="Supprimer"
+                />
+            </section>
         </fieldset>
         <section class="btn-group">
             <QBtn
@@ -184,4 +245,17 @@ legend
     display: flex
     gap: 10px
     padding-left: 15px
+
+.q-select
+    margin-bottom: 20px
+
+.social-networks
+    section
+        display: flex
+        gap: 10px
+
+    .q-input
+        width: 100%
+
+
 </style>
