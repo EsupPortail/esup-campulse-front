@@ -6,9 +6,6 @@ import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 
-const userStore = useUserStore()
-const associationStore = useAssociationStore()
-
 const newAssociations = ref<UserAssociations>([])
 
 const managedAssociations = ref<AssociationList[]>([])
@@ -26,7 +23,7 @@ const managedAssociationsDirectory = computed(() => {
 })
 
 export default function () {
-    // to test -> see useAssociationStore tests
+
     async function createAssociation(name: string) {
         await _axios.post('/associations/', {name: name})
     }
@@ -39,10 +36,12 @@ export default function () {
         })
     }
 
-    // to test
+    // to test for #14
     // Get the associations managed by the user depending on status or association role
     async function getManagedAssociations() {
+        const userStore = useUserStore()
         if (userStore.isAuth && managedAssociations.value.length === 0) {
+            const associationStore = useAssociationStore()
             if (userStore.isUniManager) {
                 await associationStore.getAssociations()
                 managedAssociations.value = associationStore.associations
