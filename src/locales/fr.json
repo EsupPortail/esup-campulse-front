@@ -146,13 +146,16 @@
     "welcome-message": "Bienvenue",
     "manage-my-account": "Gérer mon compte",
     "manage-association-directory": "Gérer l'annuaire des associations",
+    "edit-or-delete-association": "Modifier ou supprimer une association",
     "manage-users": "Gérer les utilisateurs de la plateforme",
     "association-user": {
       "role": "Rôle",
       "has-office-status": "Est membre du bureau",
       "is-president": "Est président ou présidente",
       "delete-association": "Supprimer le rôle dans l'association",
-      "not-association-member": "L'utilisateur n'est membre d'aucune association."
+      "not-association-member": "L'utilisateur n'est membre d'aucune association.",
+      "manage-my-associations": "Gérer les associations dont je suis membre",
+      "edit-my-associations": "Modifier les fiches de mes associations"
     }
   },
   "notifications": {

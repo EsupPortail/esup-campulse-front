@@ -28,9 +28,9 @@ const {t} = useI18n()
             {{ t('dashboard.manage-association-directory') }}
         </h2>
         <QBtn
+            :label="t('dashboard.edit-or-delete-association')"
             :to="{name: 'ManageAssociations'}"
             color="secondary"
-            label="Modifier ou supprimer une association"
         />
         <QBtn
             :label="t('dashboard.create-association')"
@@ -41,12 +41,12 @@ const {t} = useI18n()
     <section v-if="userStore.user?.associations.length > 0">
         <h2>
             <QIcon name="mdi-pencil-box-outline"/>
-            Gérer les associations dont je suis membre
+            {{ t('dashboard.association-user.manage-my-associations') }}
         </h2>
         <QBtn
+            :label="t('dashboard.association-user.edit-my-associations')"
             :to="{name: 'ManageAssociations'}"
             color="secondary"
-            label="Modifier les fiches annuaire"
         />
     </section>
     <section v-if="userStore.managerGroup">
