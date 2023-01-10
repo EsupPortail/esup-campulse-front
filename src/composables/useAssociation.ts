@@ -26,6 +26,7 @@ const managedAssociationsDirectory = computed(() => {
 })
 
 export default function () {
+    // to test -> see useAssociationStore tests
     async function createAssociation(name: string) {
         await _axios.post('/associations/', {name: name})
     }
@@ -38,6 +39,7 @@ export default function () {
         })
     }
 
+    // to test
     // Get the associations managed by the user depending on status or association role
     async function getManagedAssociations() {
         if (userStore.isAuth && managedAssociations.value.length === 0) {
@@ -50,6 +52,8 @@ export default function () {
                     const associationDetail = (await _axios.get<AssociationList>(`/associations/${associationId}`)).data
                     managedAssociations.value.push(associationDetail)
                 }
+                // Get roles only for associations members
+                await userStore.getUserAssociationsRoles()
             }
         }
     }

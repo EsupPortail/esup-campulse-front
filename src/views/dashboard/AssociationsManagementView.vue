@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {onMounted} from 'vue'
-import router from '@/router'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
@@ -16,11 +15,8 @@ const {t} = useI18n()
 onMounted(async function () {
     loading.show
     await getManagedAssociations()
-    // Get roles only for associations members
-    await userStore.getUserAssociationsRoles()
     loading.hide
 })
-
 
 const columns: QTableProps['columns'] = [
     {
@@ -56,14 +52,10 @@ const columns: QTableProps['columns'] = [
     {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
     {name: 'edit', align: 'left', label: 'Edition', field: 'edit', sortable: false},
 ]
-
-function editAssociation(id: number) {
-    router.push({name: 'AssociationDetail', params: {id}})
-}
 </script>
 
 <template>
-    <h1>{{ userStore.isUniManager ? "Gérer l'annuaire des associations" : "Gérér mes associations" }}</h1>
+    <h1>{{ userStore.isUniManager ? "Gérer l'annuaire des associations" : "Gérer mes associations" }}</h1>
     <QBanner v-if="!userStore.isUniManager" class="bg-grey-3">
         <template v-slot:avatar>
             <QIcon color="primary" name="mdi-information-outline" size="md"/>
@@ -100,13 +92,22 @@ function editAssociation(id: number) {
                 </QTd>
                 <QTd key="edit" :props="props" class="edition-buttons">
                     <QBtn
-                        :disable="!userStore.isUniManager && !userStore.hasOfficeStatus(props.row.id)"
-                        color="primary" label="Modifier"
-                        @click="editAssociation(props.row.id)"
+                        :to="{name: 'AssociationDetail', params: {id: props.row.id}}"
+                        color="primary"
+                        icon="mdi-eye"
+                        label="Consulter"
+                    />
+                    <QBtn
+                        v-if="userStore.isUniManager || userStore.hasOfficeStatus(props.row.id)"
+                        :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                        color="secondary"
+                        icon="mdi-pencil"
+                        label="Modifier"
                     />
                     <QBtn
                         v-if="userStore.isUniManager"
                         color="red"
+                        icon="mdi-delete"
                         label="Supprimer"
                     />
                 </QTd>

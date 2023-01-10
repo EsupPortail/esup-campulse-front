@@ -3,17 +3,18 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {ref} from 'vue'
 import axios from 'axios'
-import {useAssociationStore} from '@/stores/useAssociationStore'
+import useAssociation from '@/composables/useAssociation'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
+const {createAssociation} = useAssociation()
 
-const associationStore = useAssociationStore()
+
 const newAssociation = ref<string>('')
 
 async function onCreate() {
     try {
-        await associationStore.createAssociation(newAssociation.value)
+        await createAssociation(newAssociation.value)
         newAssociation.value = ''
         notify({
             type: 'positive',

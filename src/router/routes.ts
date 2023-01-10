@@ -96,9 +96,14 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/AssociationsManagementView.vue')
                             },
                             {
+                                path: ':id',
+                                name: 'EditAssociation',
+                                component: () => import('@/views/dashboard/AssociationEditionView.vue')
+                            },
+                            {
                                 path: 'create-new',
                                 name: 'CreateAssociation',
-                                component: () => import('@/views/AssociationCreateView.vue')
+                                component: () => import('@/views/dashboard/AssociationCreateView.vue')
                             }
                         ]
                     }
