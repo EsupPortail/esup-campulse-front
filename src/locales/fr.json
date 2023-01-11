@@ -11,6 +11,7 @@
   "delete": "Supprimer",
   "cancel": "Annuler",
   "undefined": "Non renseigné",
+  "discard-changes": "Abandonner les modifications",
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",
@@ -135,7 +136,7 @@
     "manage-account": "Gérer les informations du compte",
     "delete-account-application": "Supprimer la demande de compte",
     "delete-user": "Supprimer l'utilisateur",
-    "confirm-delete": "Êtes-vous sûre de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
     "user-status": "Statut de l'utilisateur",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
@@ -204,6 +205,9 @@
       "confirm-delete": "Voulez-vous vraiment supprimer cet utilisateur ?",
       "confirm-yes": "Oui",
       "confirm-no": "Non"
+    },
+    "leave-association-edition": {
+      "message": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues."
     }
   },
   "directory": {

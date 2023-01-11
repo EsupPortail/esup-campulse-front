@@ -4,9 +4,11 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useDirectory from '@/composables/useDirectory'
-import {useRoute} from 'vue-router'
+import {onBeforeRouteLeave, useRoute} from 'vue-router'
 import useAssociation from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
+import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociationEdition.vue'
+import router from '@/router'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -31,6 +33,9 @@ const associationInstitution = ref()
 const associationComponent = ref()
 const associationField = ref()
 
+const openAlert = ref<boolean>(false)
+const leaveEdition = ref<boolean>(false)
+
 
 onMounted(async function () {
     loading.show
@@ -43,6 +48,21 @@ onMounted(async function () {
     associationField.value = getCurrentFieldLabel()
     loading.hide
 })
+
+onBeforeRouteLeave((to, from, next) => {
+    openAlert.value = true
+    if (!leaveEdition.value) {
+        next(false)
+    } else {
+        next(true)
+    }
+})
+
+function onLeaveEdition() {
+    leaveEdition.value = true
+    router.push({name: 'ManageAssociations'})
+    associationStore.association = undefined
+}
 
 async function onGetAssociationDetail() {
     try {
@@ -203,6 +223,11 @@ async function onValidateChanges() {
                 label="Supprimer la fiche"
             />
         </section>
+        <AlertLeaveAssociationEdition
+            :open-alert="openAlert"
+            @closePopup="openAlert = !openAlert"
+            @leaveEdition="onLeaveEdition"
+        />
     </QForm>
 </template>
 

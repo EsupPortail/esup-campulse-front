@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import router from '@/router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useQuasar} from 'quasar'
-import axios from "axios";
+import axios from 'axios'
 
 const {t} = useI18n()
 const confirm = ref<boolean>(false)

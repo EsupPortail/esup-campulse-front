@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import {useI18n} from 'vue-i18n'
+
+const {t} = useI18n()
+
 const props = defineProps({
     hasConsent: Boolean
 })
@@ -7,11 +11,11 @@ const props = defineProps({
 <template>
     <fieldset>
         <legend>
-            {{ $t('forms.gdpr-title') }}
+            {{ t('forms.gdpr-title') }}
         </legend>
         <div class="gdpr-consent">
             <QCheckbox
-                :label="$t('forms.gdpr')"
+                :label="t('forms.gdpr')"
                 :model-value="props.hasConsent"
                 @click="$emit('updateConsent')"
             />
