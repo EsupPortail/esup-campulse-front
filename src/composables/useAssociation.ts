@@ -1,7 +1,13 @@
 import _axios from '@/plugins/axios'
 import {computed, ref} from 'vue'
 import type {User, UserAssociations} from '#/user'
-import type {AssociationComponent, AssociationField, AssociationInstitution, AssociationList} from '#/association'
+import type {
+    AssociationComponent,
+    AssociationField,
+    AssociationInstitution,
+    AssociationList,
+    AssociationSocialNetwork
+} from '#/association'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
@@ -97,7 +103,9 @@ export default function () {
 
     // to test
     async function getAssociationInstitutions() {
-        associationInstitutions.value = (await _axios.get<AssociationInstitution[]>('/associations/institutions')).data
+        if (associationInstitutions.value.length === 0) {
+            associationInstitutions.value = (await _axios.get<AssociationInstitution[]>('/associations/institutions')).data
+        }
     }
 
     function getCurrentInstitutionLabel() {
@@ -105,7 +113,9 @@ export default function () {
     }
 
     async function getAssociationComponents() {
-        associationComponents.value = (await _axios.get<AssociationComponent[]>('/associations/institution_components')).data
+        if (associationComponents.value.length === 0) {
+            associationComponents.value = (await _axios.get<AssociationComponent[]>('/associations/institution_components')).data
+        }
     }
 
     function getCurrentComponentLabel() {
@@ -113,11 +123,26 @@ export default function () {
     }
 
     async function getAssociationFields() {
-        associationFields.value = (await _axios.get<AssociationField[]>('/associations/activity_fields')).data
+        if (associationFields.value.length === 0) {
+            associationFields.value = (await _axios.get<AssociationField[]>('/associations/activity_fields')).data
+        }
     }
 
     function getCurrentFieldLabel() {
         return associationFieldsLabels.value.find(({value}) => value === associationStore.association?.activityField.id)
+    }
+
+    // Manage the social networks of an association
+    function addNetwork() {
+        const newNetwork: AssociationSocialNetwork = {
+            type: '',
+            location: ''
+        }
+        associationStore.association?.socialNetworks.push(newNetwork)
+    }
+
+    function removeNetwork(index: number) {
+        associationStore.association?.socialNetworks.splice(index, 1)
     }
 
 
@@ -137,6 +162,8 @@ export default function () {
         getCurrentComponentLabel,
         associationFieldsLabels,
         getAssociationFields,
-        getCurrentFieldLabel
+        getCurrentFieldLabel,
+        addNetwork,
+        removeNetwork
     }
 }

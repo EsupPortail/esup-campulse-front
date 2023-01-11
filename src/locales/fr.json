@@ -121,7 +121,10 @@
     "send": "Envoyer",
     "status": "Votre statut",
     "validated-account": "Compte validé",
-    "fill-field": "Veuillez remplir ce champ"
+    "fill-field": "Veuillez remplir ce champ",
+    "social-network-type-hint": "Par exemple : Facebook",
+    "social-network-location-hint": "Saisir une adresse valide; Par exemple : https://facebook.com",
+    "required-valid-url": "Veuillez saisir une URL valide."
   },
   "user-manager": {
     "validation": "Validation des demandes de comptes",
@@ -244,7 +247,10 @@
       "website": "Site web",
       "website-link": "Aller au site web de l'association",
       "acronym": "Acronyme",
-      "description": "Description"
+      "description": "Description",
+      "social-network-type": "Type de réseau social",
+      "social-network-location": "Lien vers le réseau social",
+      "add-social-network": "Ajouter un réseau social"
     }
   },
   "user": {

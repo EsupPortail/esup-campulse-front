@@ -51,7 +51,7 @@ async function loadAssociations() {
                     color="red"
                     icon="mdi-minus-circle-outline"
                     outline
-                    @click="removeAssociation"
+                    @click="removeAssociation(index)"
                 />
                 <QSeparator/>
             </div>

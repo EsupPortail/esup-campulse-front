@@ -6,6 +6,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useDirectory from '@/composables/useDirectory'
 import {useRoute} from 'vue-router'
 import useAssociation from '@/composables/useAssociation'
+import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -183,31 +184,7 @@ async function onValidateChanges() {
                 lazy-rules
             />
         </fieldset>
-        <!-- TODO: social networks -->
-        <fieldset class="social-networks">
-            <legend>Réseaux sociaux</legend>
-            <section v-for="(socialNetwork, index) in associationStore.association.socialNetworks" :key="index">
-                <QInput
-                    v-model="socialNetwork.type"
-                    :rules="[ val => val && val.length > 0 || 'Please type something']"
-                    filled
-                    label="Site web"
-                    lazy-rules
-                />
-                <QInput
-                    v-model="socialNetwork.location"
-                    :rules="[ val => val && val.length > 0 || 'Please type something']"
-                    filled
-                    label="Site web"
-                    lazy-rules
-                />
-                <QBtn
-                    color="red"
-                    icon="mdi-delete"
-                    label="Supprimer"
-                />
-            </section>
-        </fieldset>
+        <FormAssociationSocialNetworks/>
         <section class="btn-group">
             <QBtn
                 :to="{name: 'ManageAssociations'}"
@@ -233,6 +210,15 @@ async function onValidateChanges() {
 fieldset
     border: none
 
+.btn-group
+    display: flex
+    gap: 10px
+    padding-left: 15px
+    margin: 25px auto 20px auto
+
+.q-select
+    margin-bottom: 20px
+
 legend
     background-color: $primary
     color: #fff
@@ -240,22 +226,4 @@ legend
     text-align: center
     width: 100%
     margin-bottom: 15px
-
-.btn-group
-    display: flex
-    gap: 10px
-    padding-left: 15px
-
-.q-select
-    margin-bottom: 20px
-
-.social-networks
-    section
-        display: flex
-        gap: 10px
-
-    .q-input
-        width: 100%
-
-
 </style>

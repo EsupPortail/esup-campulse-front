@@ -13,10 +13,7 @@ export interface Association {
     institution: AssociationInstitution,
     institutionComponent: AssociationComponent,
     activityField: AssociationField,
-    socialNetworks: {
-        type: string,
-        location: string
-    },
+    socialNetworks: AssociationSocialNetwork[],
     name: string,
     acronym: string | null,
     pathLogo: string | null,
@@ -56,6 +53,11 @@ export interface AssociationField {
 export interface AssociationName {
     id: number,
     name: string
+}
+
+export interface AssociationSocialNetwork {
+    type: string,
+    location: string
 }
 
 export interface AssociationList {
