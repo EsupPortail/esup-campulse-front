@@ -1,12 +1,12 @@
-import {ref} from 'vue'
-import type {UserLogin, UserRegister} from '#/user'
-import {useUserStore} from '@/stores/useUserStore'
+import { ref } from 'vue'
+import type { UserLogin, UserRegister } from '#/user'
+import { useUserStore } from '@/stores/useUserStore'
 import * as userService from '@/services/userService'
-import {useRoute} from 'vue-router'
+import { useRoute } from 'vue-router'
 import useAssociation from '@/composables/useAssociation'
 import useUserGroups from '@/composables/useUserGroups'
 
-export default function () {
+export default function() {
 
     const user = ref<UserLogin>({
         username: '',
@@ -33,12 +33,10 @@ export default function () {
     const emailVerification = ref<string | undefined>('')
 
     async function register() {
-        const {newAssociations} = useAssociation()
-        const {newGroups} = useUserGroups()
+        const { newAssociations } = useAssociation()
+        const { newGroups } = useUserGroups()
         if (userStore.isCas) {
-            if (newUser.value.phone) {
-                await userService.userCASRegister(newUser.value.phone)
-            }
+            await userService.userCASRegister(newUser.value.phone)
             if (newAssociations) {
                 await userService.userAssociationsRegister(newUser.value.username, newAssociations.value)
             }
@@ -67,5 +65,5 @@ export default function () {
         }
     }
 
-    return {logIn, user, register, newUser, loadCASUser, emailVerification}
+    return { logIn, user, register, newUser, loadCASUser, emailVerification }
 }
