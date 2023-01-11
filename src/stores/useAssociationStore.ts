@@ -46,6 +46,27 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.association = (await _axios.get<Association>(`/associations/${id}`)).data
             }
         },
+        async updateAssociation(institution: number | null, institutionComponent: number | null, activityField: number | null) {
+            const data = {
+                institution,
+                institutionComponent,
+                activityField,
+                name: this.association?.name,
+                acronym: this.association?.acronym,
+                description: this.association?.description,
+                activities: this.association?.activities,
+                address: this.association?.address,
+                phone: this.association?.phone,
+                email: this.association?.email,
+                siret: this.association?.siret,
+                website: this.association?.website,
+                presidentNames: this.association?.presidentNames,
+                approvalDate: this.association?.approvalDate,
+                lastGoaDate: this.association?.lastGoaDate,
+                /*socialNetworks: this.association?.socialNetworks*/
+            }
+            await _axios.patch(`/associations/${this.association?.id}`, data)
+        }
         /* async deleteAssociation() {
              const assoToDelete = this.associations.findIndex((association) => association.id === this.association?.id)
              await _axios.delete('/associations/${this.association?.id}')

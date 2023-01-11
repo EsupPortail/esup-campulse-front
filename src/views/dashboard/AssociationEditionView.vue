@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
@@ -9,8 +9,11 @@ import useAssociation from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
 import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociationEdition.vue'
 import router from '@/router'
+import useUtility from '@/composables/useUtility'
+import type {AssociationSocialNetwork, EditedAssociation} from '#/association'
 
 const {t} = useI18n()
+const {formatDate, dateRegex} = useUtility()
 const {notify} = useQuasar()
 const {loading} = useQuasar()
 const {getAssociationDetail} = useDirectory()
@@ -29,25 +32,69 @@ const {
 const route = useRoute()
 const associationStore = useAssociationStore()
 
+const association = ref<EditedAssociation>({
+    institution: null,
+    institutionComponent: null,
+    activityField: null,
+    name: '',
+    acronym: '',
+    description: '',
+    activities: '',
+    address: '',
+    phone: '',
+    email: '',
+    siret: null,
+    website: '',
+    presidentNames: '',
+    approvalDate: '',
+    lastGoaDate: '',
+    socialNetworks: []
+})
+
 const associationInstitution = ref()
 const associationComponent = ref()
 const associationField = ref()
 
-const openAlert = ref<boolean>(false)
-const leaveEdition = ref<boolean>(false)
+const initLabels = () => {
+    associationInstitution.value = getCurrentInstitutionLabel()
+    associationComponent.value = getCurrentComponentLabel()
+    associationField.value = getCurrentFieldLabel()
+}
+watch(() => associationStore.association, initLabels)
 
+const initValues = () => {
+    association.value.name = associationStore.association?.name as string
+    association.value.acronym = associationStore.association?.acronym as string
+    association.value.description = associationStore.association?.description as string
+    association.value.activities = associationStore.association?.activities as string
+    association.value.address = associationStore.association?.address as string
+    association.value.phone = associationStore.association?.phone as string
+    association.value.email = associationStore.association?.email as string
+    association.value.siret = associationStore.association?.siret as number
+    association.value.website = associationStore.association?.website as string
+    association.value.presidentNames = associationStore.association?.presidentNames as string
+    association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
+    association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
+    association.value.socialNetworks = associationStore.association?.socialNetworks as AssociationSocialNetwork[]
+    association.value.institution = associationInstitution.value.value
+    association.value.institutionComponent = associationComponent.value.value
+    association.value.activityField = associationField.value.value
+}
+watch(() => associationStore.association, initValues)
 
 onMounted(async function () {
     loading.show
-    await onGetAssociationDetail()
     await onGetAssociationInstitutions()
-    associationInstitution.value = getCurrentInstitutionLabel()
     await onGetAssociationComponents()
-    associationComponent.value = getCurrentComponentLabel()
     await onGetAssociationFields()
-    associationField.value = getCurrentFieldLabel()
+    await onGetAssociationDetail()
     loading.hide
 })
+watch(() => associationStore.association, initValues)
+
+
+const openAlert = ref<boolean>(false)
+const leaveEdition = ref<boolean>(false)
 
 onBeforeRouteLeave((to, from, next) => {
     openAlert.value = true
@@ -90,15 +137,21 @@ async function onGetAssociationFields() {
     await getAssociationFields()
 }
 
+function onCheckChanges() {
+    checkChanges(association)
+}
+
 async function onValidateChanges() {
     //
+    onCheckChanges()
+    await associationStore.updateAssociation()
 }
 </script>
 
 <template>
-    <h1>{{ associationStore.association?.name }}</h1>
+    <h1>{{ association?.name }}</h1>
     <QForm
-        v-if="associationStore.association"
+        v-if="association"
         @submit.prevent="onValidateChanges"
     >
         <!--        <div class="logo">
@@ -112,14 +165,14 @@ async function onValidateChanges() {
         <fieldset>
             <legend>{{ t('association.titles.info') }}</legend>
             <QInput
-                v-model="associationStore.association.acronym"
+                v-model="association.acronym"
                 :label="t('association.labels.acronym')"
                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
             />
             <QInput
-                v-model="associationStore.association.description"
+                v-model="association.description"
                 :label="t('association.labels.description')"
                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
@@ -127,7 +180,7 @@ async function onValidateChanges() {
                 type="textarea"
             />
             <QInput
-                v-model="associationStore.association.activities"
+                v-model="association.activities"
                 :label="t('association.labels.activities')"
                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
@@ -156,17 +209,38 @@ async function onValidateChanges() {
         <fieldset>
             <legend>{{ t('association.titles.admin') }}</legend>
             <QInput
-                v-model="associationStore.association.presidentNames"
+                v-model="association.presidentNames"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
                 label="Nom du président ou de la présidente"
                 lazy-rules
             />
-            <!--            <article>
-                            <h3>{{ t("association.labels.last-goa") }}</h3>
-                        </article>-->
             <QInput
-                v-model="associationStore.association.siret"
+                v-model="association.approvalDate"
+                :rules="[ val => val && val.length > 0 && dateRegex.test(val) || 'Please type something']"
+                filled
+                label="Date d'agrément"
+                lazy-rules
+                mask="##/##/####"
+            >
+                <template v-slot:prepend>
+                    <QIcon name="mdi-calendar"/>
+                </template>
+            </QInput>
+            <QInput
+                v-model="association.lastGoaDate"
+                :rules="[ val => val && val.length > 0 && dateRegex.test(val) || 'Please type something']"
+                filled
+                label="Date de la dernière AGO"
+                lazy-rules
+                mask="##/##/####"
+            >
+                <template v-slot:prepend>
+                    <QIcon name="mdi-calendar"/>
+                </template>
+            </QInput>
+            <QInput
+                v-model="association.siret"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
                 label="Siret"
@@ -176,35 +250,35 @@ async function onValidateChanges() {
         <fieldset>
             <legend>{{ t('association.titles.contact') }}</legend>
             <QInput
-                v-model="associationStore.association.address"
+                v-model="association.address"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
                 label="Adresse postale"
                 lazy-rules
             />
             <QInput
-                v-model="associationStore.association.phone"
+                v-model="association.phone"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
                 label="Téléphone"
                 lazy-rules
             />
             <QInput
-                v-model="associationStore.association.email"
+                v-model="association.email"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
                 label="Adresse mail"
                 lazy-rules
             />
             <QInput
-                v-model="associationStore.association.website"
+                v-model="association.website"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
                 label="Site web"
                 lazy-rules
             />
         </fieldset>
-        <FormAssociationSocialNetworks/>
+        <FormAssociationSocialNetworks :social-networks="association.socialNetworks"/>
         <section class="btn-group">
             <QBtn
                 :to="{name: 'ManageAssociations'}"
@@ -216,6 +290,8 @@ async function onValidateChanges() {
                 color="primary"
                 icon="mdi-check-circle"
                 label="Valider les changements"
+                type="submit"
+                @click="onValidateChanges"
             />
             <QBtn
                 color="red"
@@ -225,7 +301,7 @@ async function onValidateChanges() {
         </section>
         <AlertLeaveAssociationEdition
             :open-alert="openAlert"
-            @closePopup="openAlert = !openAlert"
+            @closeAlert="openAlert = !openAlert"
             @leaveEdition="onLeaveEdition"
         />
     </QForm>

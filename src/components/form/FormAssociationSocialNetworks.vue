@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {useAssociationStore} from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
@@ -7,14 +6,17 @@ import useUtility from '@/composables/useUtility'
 const {addNetwork, removeNetwork} = useAssociation()
 const {urlRegex} = useUtility()
 const {t} = useI18n()
-const associationStore = useAssociationStore()
+
+const props = defineProps({
+    socialNetworks: Array
+})
 
 
 </script>
 <template>
     <fieldset>
         <legend>{{ t('association.labels.socials') }}</legend>
-        <section v-for="(socialNetwork, index) in associationStore.association?.socialNetworks" :key="index">
+        <section v-for="(socialNetwork, index) in props.socialNetworks" :key="index">
             <QInput
                 v-model="socialNetwork.type"
                 :hint="t('forms.social-network-type-hint')"

@@ -109,7 +109,11 @@ export default function () {
     }
 
     function getCurrentInstitutionLabel() {
-        return associationInstitutionsLabels.value.find(({value}) => value === associationStore.association?.institution.id)
+        if (associationStore.association?.institution) {
+            return associationInstitutionsLabels.value.find(({value}) => value === associationStore.association?.institution.id)
+        } else {
+            return undefined
+        }
     }
 
     async function getAssociationComponents() {
@@ -119,7 +123,11 @@ export default function () {
     }
 
     function getCurrentComponentLabel() {
-        return associationComponentsLabels.value.find(({value}) => value === associationStore.association?.institutionComponent.id)
+        if (associationStore.association?.institutionComponent) {
+            return associationComponentsLabels.value.find(({value}) => value === associationStore.association?.institutionComponent.id)
+        } else {
+            return undefined
+        }
     }
 
     async function getAssociationFields() {
@@ -129,7 +137,11 @@ export default function () {
     }
 
     function getCurrentFieldLabel() {
-        return associationFieldsLabels.value.find(({value}) => value === associationStore.association?.activityField.id)
+        if (associationStore.association?.activityField) {
+            return associationFieldsLabels.value.find(({value}) => value === associationStore.association?.activityField.id)
+        } else {
+            return undefined
+        }
     }
 
     // Manage the social networks of an association

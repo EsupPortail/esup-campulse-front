@@ -1,4 +1,5 @@
-const urlRegex = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/
+const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?$/
+const dateRegex = /^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/
 
 export default function () {
     function formatDate(date: string) {
@@ -18,5 +19,5 @@ export default function () {
         return false
     }
 
-    return {formatDate, arraysAreEqual, urlRegex}
+    return {formatDate, arraysAreEqual, urlRegex, dateRegex}
 }

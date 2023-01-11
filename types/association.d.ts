@@ -34,19 +34,38 @@ export interface Association {
     cgaDate: string | null,
 }
 
+export interface EditedAssociation {
+    institution: number | null,
+    institutionComponent: number | null,
+    activityField: number | null,
+    socialNetworks: AssociationSocialNetwork[],
+    name: string,
+    acronym: string | null,
+    description: string | null,
+    activities: string | null,
+    address: string | null,
+    phone: string | null,
+    email: string | null,
+    siret: number | null,
+    website: string | null,
+    presidentNames: string | null,
+    approvalDate: string | null,
+    lastGoaDate: string | null
+}
+
 export interface AssociationInstitution {
-    id: number,
+    id: number | null,
     name: string,
     acronym: string
 }
 
 export interface AssociationComponent {
-    id: number,
+    id: number | null,
     name: string
 }
 
 export interface AssociationField {
-    id: number,
+    id: number | null,
     name: string
 }
 

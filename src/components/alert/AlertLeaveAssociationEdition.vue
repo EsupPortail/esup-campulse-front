@@ -24,7 +24,7 @@ const props = defineProps({
                     :label="t('cancel')"
                     color="secondary"
                     icon="mdi-arrow-left-circle"
-                    @click="$emit('closePopup')"
+                    @click="$emit('closeAlert')"
                 />
                 <QBtn
                     v-close-popup
