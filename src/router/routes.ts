@@ -84,7 +84,12 @@ const routes: RouteRecordRaw[] = [
                                 path: ':id',
                                 name: 'UserManagementDetail',
                                 component: () => import('@/views/dashboard/UserManagementDetailView.vue')
-                            }
+                            },
+                            {
+                                path: 'add-user',
+                                name: 'AddUser',
+                                component: () => import('@/views/dashboard/UserAddView.vue')
+                            },
                         ]
                     },
                     {

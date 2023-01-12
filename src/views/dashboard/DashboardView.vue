@@ -29,6 +29,12 @@ const {t} = useI18n()
         to="/dashboard/manage-users"
     />
     <QBtn
+        v-if="userStore.managerGroup"
+        :label="t('dashboard.user-add')"
+        color="secondary"
+        to="/dashboard/manage-users/add-user"
+    />
+    <QBtn
         v-if="userStore.isUniManager"
         :label="t('dashboard.create-association')"
         color="secondary"

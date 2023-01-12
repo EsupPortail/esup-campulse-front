@@ -52,6 +52,16 @@ export default function() {
         }
     }
 
+    async function addUserAsManager() {
+        const { newAssociations } = useAssociation()
+        const { newGroups } = useUserGroups()
+        await userService.userLocalRegisterAsManager(newUser.value)
+        if (newAssociations.value) {
+            await userService.userAssociationsRegister(newUser.value.email, newAssociations.value)
+        }
+        await userService.userGroupsRegister(newUser.value.email, newGroups.value)
+    }
+
     // to test
     async function loadCASUser() {
         const route = useRoute()
@@ -65,5 +75,5 @@ export default function() {
         }
     }
 
-    return { logIn, user, register, newUser, loadCASUser, emailVerification }
+    return { logIn, user, register, newUser, loadCASUser, emailVerification, addUserAsManager }
 }

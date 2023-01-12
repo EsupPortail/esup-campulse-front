@@ -127,6 +127,7 @@
   "user-manager": {
     "validation": "Validation des demandes de comptes",
     "management": "Gestion des comptes",
+    "add-user": "Ajouter un compte",
     "is-validated": "Validé par le gestionnaire",
     "users": "Utilisateurs",
     "validate-account": "Valider le compte",
@@ -176,6 +177,7 @@
       "association-already-exists": "Impossible d'ajouter cette association car elle existe déjà."
     },
     "positive": {
+      "account-created": "Compte crée.",
       "login-success": "Connexion réussie.",
       "logout-success": "Déconnexion réussie.",
       "password-changed": "Votre mot de passe a bien été modifié.",

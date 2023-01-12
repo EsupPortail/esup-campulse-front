@@ -6,7 +6,7 @@ const {t} = useI18n()
 </script>
 
 <template>
-  <h1>{{ t("register.register") }}</h1>
+  <h1>{{ t("user-manager.add-user") }}</h1>
   <QCard class="card">
     <QCardSection>
       <FormRegister/>

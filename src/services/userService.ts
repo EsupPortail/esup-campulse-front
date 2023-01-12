@@ -58,6 +58,10 @@ export async function userLocalRegister(newUser: UserRegister) {
     await _axios.post('/users/auth/registration/', newUser)
 }
 
+export async function userLocalRegisterAsManager(newUser: UserRegister) {
+    await _axios.post('/users/', newUser)
+}
+
 export async function userCASRegister(newUserInfo: string | null) {
     setBearer()
     await _axios.patch('/users/auth/user/', { phone: newUserInfo !== "" ? newUserInfo : null })
