@@ -68,7 +68,9 @@ export async function userAssociationsRegister(username: string, newUserAssociat
         await _axios.post('/users/associations/', {
             user: username,
             association: newUserAssociations[i].id,
-            hasOfficeStatus: newUserAssociations[i].hasOfficeStatus
+            roleName: newUserAssociations[i].roleName,
+            hasOfficeStatus: newUserAssociations[i].hasOfficeStatus,
+            isPresident: newUserAssociations[i].isPresident
         })
     }
 }

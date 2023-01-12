@@ -79,6 +79,7 @@
   },
   "forms": {
     "add-association": "Ajouter une association",
+    "association-role-name": "Le nom de mon poste dans l'association",
     "create-account": "Créer un compte",
     "delete-association": "Supprimer l'association",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
@@ -86,6 +87,7 @@
     "first-name": "Prénom",
     "gdpr": "Lorem Elsass ipsum in, Chulien leo picon bière adipiscing leverwurscht condimentum elit bissame Pfourtz ! schneck nüdle ac Oberschaeffolsheim porta Chulia Roberstau semper eget tchao bissame schpeck libero, Yo dû. senectus sed non aliquam so Christkindelsmärik mänele gewurztraminer sed flammekueche gravida rhoncus mamsell Morbi tellus  sit hopla Gal ! Hans sagittis jetz gehts los dignissim hoplageiss id hopla s'guelt vulputate consectetur schnaps non suspendisse vielmols, geïz Spätzle dolor turpis ac tellus purus blottkopf, libero, elementum bredele pellentesque risus, ullamcorper commodo Gal. messti de Bischheim réchime météor lacus amet geht's kougelhopf",
     "gdpr-title": "Gestion des données personnelles",
+    "im-association-president": "Je suis présidente ou président de l'association",
     "im-from-association": "Les associations étudiantes dont je fais partie",
     "im-in-association": "J'ajoute mes associations étudiantes :",
     "im-in-association-office": "Je suis membre du bureau de l'association",
