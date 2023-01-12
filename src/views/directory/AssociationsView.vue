@@ -5,6 +5,7 @@ import router from '@/router'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
+import FormAssociationDirectory from '@/components/form/FormAssociationDirectory.vue'
 
 const associationStore = useAssociationStore()
 const {loading} = useQuasar()
@@ -67,6 +68,9 @@ function goTo(id: number) {
       :title="t('directory.title')"
       row-key="name"
   >
+    <template v-slot:top>
+      <FormAssociationDirectory/>
+    </template>
     <template v-slot:body="props">
       <QTr :props="props" @click="goTo(props.row.id)">
         <QTd key="name" :props="props">

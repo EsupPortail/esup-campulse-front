@@ -206,7 +206,7 @@
     "labels": {
       "association-name": "Nom de l'association",
       "association-acronym": "Sigle",
-      "association-institution": "Institution",
+      "association-institution": "Établissement",
       "association-component": "Composante",
       "association-field": "Domaine"
     }
@@ -230,7 +230,7 @@
       "charter-date": "Date de signature de la charte des associations étudiantes",
       "component": "Composante",
       "field": "Domaine",
-      "institution": "Institution",
+      "institution": "Établissement",
       "phone": "Numéro de téléphone",
       "president-name": "Nom du président ou de la présidente",
       "president-mail": "Adresse mail du Président",

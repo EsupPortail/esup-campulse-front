@@ -1,17 +1,26 @@
 import { defineStore } from 'pinia'
 import type {
+    ActivityFieldList,
+    ActivityFieldNames,
     Association,
     AssociationDirectory,
     AssociationList,
     AssociationNames,
-    AssociationStore
+    AssociationStore,
+    InstitutionComponentList,
+    InstitutionComponentNames,
+    InstitutionList,
+    InstitutionNames,
 } from '#/association'
 import _axios from '@/plugins/axios'
 
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
         association: undefined,
-        associations: []
+        associations: [],
+        institutions: [],
+        institutionComponents: [],
+        activityFields: []
     }),
 
     getters: {
@@ -28,11 +37,32 @@ export const useAssociationStore = defineStore('associationStore', {
                     id: association.id,
                     name: association.name,
                     acronym: association.acronym,
-                    institution: association.institution.name,
-                    component: association.institutionComponent.name,
-                    field: association.activityField.name
+                    institution: association.institution?.name,
+                    component: association.institutionComponent?.name,
+                    field: association.activityField?.name
                 }))
-        }
+        },
+        institutionNames: (state: AssociationStore): InstitutionNames => {
+            return state.institutions
+                .map(institution => ({
+                    value: institution.id,
+                    label: institution.name
+                }))
+        },
+        institutionComponentNames: (state: AssociationStore): InstitutionComponentNames => {
+            return state.institutionComponents
+                .map(institutionComponent => ({
+                    value: institutionComponent.id,
+                    label: institutionComponent.name
+                }))
+        },
+        activityFieldNames: (state: AssociationStore): ActivityFieldNames => {
+            return state.activityFields
+                .map(activityField => ({
+                    value: activityField.id,
+                    label: activityField.name
+                }))
+        },
     },
 
     actions: {
@@ -44,6 +74,17 @@ export const useAssociationStore = defineStore('associationStore', {
         async getAssociationDetail(id: number) {
             if (this.association?.id !== id) {
                 this.association = (await _axios.get<Association>(`/associations/${id}`)).data
+            }
+        },
+        async getAssociationsListFields() {
+            if (this.institutions.length === 0) {
+                this.institutions = (await _axios.get<InstitutionList[]>('/associations/institutions')).data
+            }
+            if (this.institutionComponents.length === 0) {
+                this.institutionComponents = (await _axios.get<InstitutionComponentList[]>('/associations/institution_components')).data
+            }
+            if (this.activityFields.length === 0) {
+                this.activityFields = (await _axios.get<ActivityFieldList[]>('/associations/activity_fields')).data
             }
         },
         async deleteAssociation() {

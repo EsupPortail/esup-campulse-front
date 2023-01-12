@@ -74,12 +74,34 @@ export interface AssociationList {
     isSite: boolean
 }
 
+export interface InstitutionList {
+    id: number,
+    name: string,
+    acronym: string
+}
+
+export interface InstitutionComponentList {
+    id: number,
+    name: string
+}
+
+export interface ActivityFieldList {
+    id: number,
+    name: string
+}
+
 export interface AssociationStore {
     association: Association | undefined,
-    associations: AssociationList[]
+    associations: AssociationList[],
+    institutions: InstitutionList[],
+    institutionComponents: InstitutionComponentList[],
+    activityFields: ActivityFieldList[]
 }
 
 export type AssociationNames = { value: number, label: string }[]
+export type InstitutionNames = { value: number, label: string }[]
+export type InstitutionComponentNames = { value: number, label: string }[]
+export type ActivityFieldNames = { value: number, label: string }[]
 
 export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, component: string, field: string }
 export type AssociationDirectory = AssociationDirectoryDetail[]
