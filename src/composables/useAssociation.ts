@@ -19,6 +19,10 @@ export default function() {
         })
     }
 
+    function removeAssociation(index: number) {
+        newAssociations.value.splice(index, 1)
+    }
 
-    return { createAssociation, newAssociations, addAssociation }
+
+    return { createAssociation, newAssociations, addAssociation, removeAssociation }
 }

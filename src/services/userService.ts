@@ -64,14 +64,17 @@ export async function userCASRegister(newUserInfo: string | null) {
 }
 
 export async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
+    const idsAssociations = []
     for (let i = 0; i < newUserAssociations.length; i++) {
-        await _axios.post('/users/associations/', {
-            user: username,
-            association: newUserAssociations[i].id,
-            roleName: newUserAssociations[i].roleName,
-            hasOfficeStatus: newUserAssociations[i].hasOfficeStatus,
-            isPresident: newUserAssociations[i].isPresident
-        })
+        if (idsAssociations.indexOf(newUserAssociations[i].id) === -1)
+            await _axios.post('/users/associations/', {
+                user: username,
+                association: newUserAssociations[i].id,
+                roleName: newUserAssociations[i].roleName,
+                hasOfficeStatus: newUserAssociations[i].hasOfficeStatus,
+                isPresident: newUserAssociations[i].isPresident
+            })
+        idsAssociations.push(newUserAssociations[i].id)
     }
 }
 

@@ -6,7 +6,7 @@ import {useQuasar} from "quasar";
 import {onMounted} from "vue";
 
 const associationStore = useAssociationStore()
-const {newAssociations, addAssociation} = useAssociation()
+const {newAssociations, addAssociation, removeAssociation} = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
@@ -61,7 +61,7 @@ async function loadAssociations() {
             color="red"
             icon="mdi-minus-circle-outline"
             outline
-            @click="associationStore.deleteAssociation()"
+            @click="removeAssociation(index)"
         />
         <QSeparator/>
       </div>
