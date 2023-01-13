@@ -69,6 +69,9 @@ export const useAssociationStore = defineStore('associationStore', {
         async getAssociations() {
             if (this.associations.length === 0) {
                 this.associations = (await _axios.get<AssociationList[]>('/associations/')).data
+                this.associations.forEach((association) => {
+                    association.isVisible = true
+                })
             }
         },
         async getAssociationDetail(id: number) {
