@@ -1,4 +1,4 @@
-import type {AssociationName} from "#/association";
+import type { AssociationName } from "#/association";
 
 
 export interface User {
@@ -63,7 +63,9 @@ export interface PasswordEdit {
 // User association
 interface UserAssociation {
     id: number | null,
-    hasOfficeStatus: boolean
+    roleName: string | null,
+    hasOfficeStatus: boolean,
+    isPresident: boolean
 }
 
 export type UserAssociations = UserAssociation[]

@@ -1,4 +1,4 @@
-import {defineStore} from 'pinia'
+import { defineStore } from 'pinia'
 import type {
     Association,
     AssociationDirectory,
@@ -52,7 +52,7 @@ export const useAssociationStore = defineStore('associationStore', {
             this.associations.splice(assoToDelete, 1)
         },
         async createAssociation(name: string) {
-            await _axios.post('/associations/', {name: name})
+            await _axios.post('/associations/', { name: name })
         }
     }
 })

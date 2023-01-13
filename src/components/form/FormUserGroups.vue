@@ -20,7 +20,7 @@ onMounted(async () => {
 async function loadGroups() {
     try {
         await getGroups()
-        if (route.name === 'Registration' && studentGroup) {
+        if (((route.name === 'Registration') || (route.name === 'AddUser')) && studentGroup) {
             newGroups.value.push((studentGroup.value as UserGroup).id)
         }
     } catch (e) {

@@ -6,7 +6,7 @@ import {useQuasar} from "quasar";
 import {onMounted} from "vue";
 
 const associationStore = useAssociationStore()
-const {newAssociations, addAssociation} = useAssociation()
+const {newAssociations, addAssociation, removeAssociation} = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
@@ -42,16 +42,26 @@ async function loadAssociations() {
             filled
             map-options
         />
+        <QInput
+            v-model="association.roleName"
+            :label="t('forms.association-role-name')"
+            filled
+            lazy-rules
+        />
         <QCheckbox
             v-model="association.hasOfficeStatus"
             :label="t('forms.im-in-association-office')"
+        />
+        <QCheckbox
+            v-model="association.isPresident"
+            :label="t('forms.im-association-president')"
         />
         <QBtn
             :label="t('forms.delete-association')"
             color="red"
             icon="mdi-minus-circle-outline"
             outline
-            @click="associationStore.deleteAssociation()"
+            @click="removeAssociation(index)"
         />
         <QSeparator/>
       </div>
@@ -77,6 +87,9 @@ fieldset
 .q-btn
   margin: 15px 0
   display: block
+
+.q-input
+  margin: 15px 0
 
 .add-association
   margin: 15px 0 0 0
