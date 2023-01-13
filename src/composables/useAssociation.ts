@@ -87,15 +87,11 @@ export default function () {
         const {formatDate} = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
-            const indexes = ["name", "acronym", "description", "activities", "address", "email", "siret", "website", "presidentNames"]
+            const indexes = ["name", "acronym", "description", "activities", "address", "email", "phone", "siret", "website", "presidentNames"]
             if (indexes.indexOf(key) !== -1) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})
                 }
-            }
-            // Check siret and parseInt to keep typing
-            else if (key == 'siret' && parseInt(value) !== associationStore.association?.siret) {
-                changedData = Object.assign(changedData, {[key]: parseInt(value)})
             }
             // Check institution, component and field
             else if (key == 'institution' && value !== institution) {

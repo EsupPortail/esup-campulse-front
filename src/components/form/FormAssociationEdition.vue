@@ -31,7 +31,7 @@ const association = ref<EditedAssociation>({
     address: '',
     phone: '',
     email: '',
-    siret: null,
+    siret: '',
     website: '',
     presidentNames: '',
     approvalDate: '',
@@ -61,7 +61,7 @@ const initValues = () => {
     association.value.address = associationStore.association?.address as string
     association.value.phone = associationStore.association?.phone as string
     association.value.email = associationStore.association?.email as string
-    association.value.siret = associationStore.association?.siret as number
+    association.value.siret = associationStore.association?.siret as string
     association.value.website = associationStore.association?.website as string
     association.value.presidentNames = associationStore.association?.presidentNames as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
@@ -75,9 +75,6 @@ watch(() => associationStore.association, initValues)
 onMounted(async () => {
     initLabels()
     initValues()
-    console.log(association.value.siret)
-    console.log(typeof association.value.siret)
-
 })
 
 // Open alert if user leaves without saving
@@ -106,8 +103,6 @@ onBeforeRouteLeave((to, from, next) => {
 // Validate changes
 async function onValidateChanges() {
     checkChanges(association.value, associationInstitution.value.value, associationComponent.value.value, associationField.value.value)
-    console.log(association.value.siret)
-    console.log(typeof association.value.siret)
     // await associationStore.updateAssociation()
 }
 </script>
@@ -205,9 +200,9 @@ async function onValidateChanges() {
                 v-model="association.siret"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
+                inputmode="numeric"
                 label="Siret"
                 lazy-rules
-                type="number"
             />
         </fieldset>
         <fieldset>
