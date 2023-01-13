@@ -38,7 +38,6 @@ export interface EditedAssociation {
     institution: number | null,
     institutionComponent: number | null,
     activityField: number | null,
-    socialNetworks: AssociationSocialNetwork[],
     name: string,
     acronym: string | null,
     description: string | null,
@@ -102,7 +101,10 @@ export interface AssociationList {
 
 export interface AssociationStore {
     association: Association | undefined,
-    associations: AssociationList[]
+    associations: AssociationList[],
+    institutions: AssociationInstitution[],
+    components: AssociationComponent[],
+    fields: AssociationField[]
 }
 
 export type AssociationNames = { value: number, label: string }[]

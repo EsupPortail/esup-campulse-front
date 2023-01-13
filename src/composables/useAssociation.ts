@@ -1,15 +1,10 @@
 import _axios from '@/plugins/axios'
 import {computed, ref} from 'vue'
 import type {User, UserAssociations} from '#/user'
-import type {
-    AssociationComponent,
-    AssociationField,
-    AssociationInstitution,
-    AssociationList,
-    AssociationSocialNetwork
-} from '#/association'
+import type {AssociationList, AssociationSocialNetwork, EditedAssociation} from '#/association'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useUtility from '@/composables/useUtility'
 
 const associationStore = useAssociationStore()
 
@@ -29,38 +24,11 @@ const managedAssociationsDirectory = computed(() => {
     )
 })
 
-// Needed to manage the institution of an association
-const associationInstitutions = ref<AssociationInstitution[]>([])
-const associationInstitutionsLabels = computed(() => {
-    return associationInstitutions.value.map(
-        institution => ({
-            value: institution.id,
-            label: institution.name
-        })
-    )
-})
+// Need to modify the social networks of an association
+const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
 
-// Needed to manage the component of an association
-const associationComponents = ref<AssociationComponent[]>([])
-const associationComponentsLabels = computed(() => {
-    return associationComponents.value.map(
-        component => ({
-            value: component.id,
-            label: component.name
-        })
-    )
-})
-
-// Needed to manage the component of an association
-const associationFields = ref<AssociationField[]>([])
-const associationFieldsLabels = computed(() => {
-    return associationFields.value.map(
-        field => ({
-            value: field.id,
-            label: field.name
-        })
-    )
-})
+// Changed data when modifying an association
+let changedData = {}
 
 export default function () {
 
@@ -101,60 +69,64 @@ export default function () {
         }
     }
 
-    // to test
-    async function getAssociationInstitutions() {
-        if (associationInstitutions.value.length === 0) {
-            associationInstitutions.value = (await _axios.get<AssociationInstitution[]>('/associations/institutions')).data
-        }
-    }
-
-    function getCurrentInstitutionLabel() {
-        if (associationStore.association?.institution) {
-            return associationInstitutionsLabels.value.find(({value}) => value === associationStore.association?.institution.id)
-        } else {
-            return undefined
-        }
-    }
-
-    async function getAssociationComponents() {
-        if (associationComponents.value.length === 0) {
-            associationComponents.value = (await _axios.get<AssociationComponent[]>('/associations/institution_components')).data
-        }
-    }
-
-    function getCurrentComponentLabel() {
-        if (associationStore.association?.institutionComponent) {
-            return associationComponentsLabels.value.find(({value}) => value === associationStore.association?.institutionComponent.id)
-        } else {
-            return undefined
-        }
-    }
-
-    async function getAssociationFields() {
-        if (associationFields.value.length === 0) {
-            associationFields.value = (await _axios.get<AssociationField[]>('/associations/activity_fields')).data
-        }
-    }
-
-    function getCurrentFieldLabel() {
-        if (associationStore.association?.activityField) {
-            return associationFieldsLabels.value.find(({value}) => value === associationStore.association?.activityField.id)
-        } else {
-            return undefined
-        }
-    }
-
     // Manage the social networks of an association
     function addNetwork() {
         const newNetwork: AssociationSocialNetwork = {
             type: '',
             location: ''
         }
-        associationStore.association?.socialNetworks.push(newNetwork)
+        associationSocialNetworks.value?.push(newNetwork)
     }
 
     function removeNetwork(index: number) {
-        associationStore.association?.socialNetworks.splice(index, 1)
+        associationSocialNetworks.value?.splice(index, 1)
+    }
+
+    // Check if user has modified the association
+    function checkChanges(association: EditedAssociation, institution: number, component: number, field: number) {
+        const {formatDate} = useUtility()
+        for (const [key, value] of Object.entries(association)) {
+            // Check non formatted values first
+            const indexes = ["name", "acronym", "description", "activities", "address", "phone", "email", "siret", "website", "presidentNames"]
+            if (indexes.indexOf(key) !== -1) {
+                if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
+                    changedData = Object.assign(changedData, {[key]: value})
+                }
+            }
+            // Check institution, component and field
+            else if (key == 'institution' && value !== institution) {
+                changedData = Object.assign(changedData, {[key]: value})
+            } else if (key == 'institutionComponent' && value !== component) {
+                changedData = Object.assign(changedData, {[key]: value})
+            } else if (key == 'activityField' && value !== field) {
+                changedData = Object.assign(changedData, {[key]: value})
+            }
+            // Check dates
+            else if (key == 'approvalDate' && value !== formatDate(associationStore.association?.approvalDate as string)) {
+                changedData = Object.assign(changedData, {approvalDate: `${value}T00:00:00.000Z`})
+            } else if (key == 'lastGoaDate' && value !== formatDate(associationStore.association?.lastGoaDate as string)) {
+                changedData = Object.assign(changedData, {lastGoaDate: `${value}T00:00:00.000Z`})
+            }
+        }
+        // Check social media
+        let hasChanges = false
+        for (let i = 0; i < associationSocialNetworks.value.length; i++) {
+            // Changes in type or location -> patch
+            const unchangedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks[i].type)
+            if (!unchangedType && !hasChanges) { // if a type has changed
+                hasChanges = true
+                break
+            }
+            const unchangedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks[i].location)
+            if (!unchangedLocation && !hasChanges) { // if a location has changed
+                hasChanges = true
+                break
+            }
+        }
+        if (hasChanges) {
+            changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
+        }
+        console.log(changedData)
     }
 
 
@@ -166,16 +138,10 @@ export default function () {
         getManagedAssociations,
         managedAssociations,
         managedAssociationsDirectory,
-        getAssociationInstitutions,
-        associationInstitutionsLabels,
-        getCurrentInstitutionLabel,
-        associationComponentsLabels,
-        getAssociationComponents,
-        getCurrentComponentLabel,
-        associationFieldsLabels,
-        getAssociationFields,
-        getCurrentFieldLabel,
         addNetwork,
-        removeNetwork
+        removeNetwork,
+        associationSocialNetworks,
+        checkChanges,
+        changedData
     }
 }

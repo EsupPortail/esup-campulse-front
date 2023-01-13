@@ -1,7 +1,10 @@
 import {defineStore} from 'pinia'
 import type {
     Association,
+    AssociationComponent,
     AssociationDirectory,
+    AssociationField,
+    AssociationInstitution,
     AssociationList,
     AssociationNames,
     AssociationStore
@@ -11,7 +14,10 @@ import _axios from '@/plugins/axios'
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
         association: undefined,
-        associations: []
+        associations: [],
+        institutions: [],
+        components: [],
+        fields: []
     }),
 
     getters: {
@@ -32,6 +38,27 @@ export const useAssociationStore = defineStore('associationStore', {
                     component: association.institutionComponent?.name,
                     field: association.activityField?.name
                 }))
+        },
+        institutionLabels: (state: AssociationStore) => {
+            return state.institutions.map((
+                institution => ({
+                    value: institution.id,
+                    label: institution.name
+                })))
+        },
+        componentLabels: (state: AssociationStore) => {
+            return state.components.map((
+                component => ({
+                    value: component.id,
+                    label: component.name
+                })))
+        },
+        fieldLabels: (state: AssociationStore) => {
+            return state.fields.map((
+                field => ({
+                    value: field.id,
+                    label: field.name
+                })))
         }
     },
 
@@ -46,26 +73,20 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.association = (await _axios.get<Association>(`/associations/${id}`)).data
             }
         },
-        async updateAssociation(institution: number | null, institutionComponent: number | null, activityField: number | null) {
-            const data = {
-                institution,
-                institutionComponent,
-                activityField,
-                name: this.association?.name,
-                acronym: this.association?.acronym,
-                description: this.association?.description,
-                activities: this.association?.activities,
-                address: this.association?.address,
-                phone: this.association?.phone,
-                email: this.association?.email,
-                siret: this.association?.siret,
-                website: this.association?.website,
-                presidentNames: this.association?.presidentNames,
-                approvalDate: this.association?.approvalDate,
-                lastGoaDate: this.association?.lastGoaDate,
-                /*socialNetworks: this.association?.socialNetworks*/
+        async getInstitutions() {
+            if (this.institutions.length === 0) {
+                this.institutions = (await _axios.get<AssociationInstitution[]>('/associations/institutions')).data
             }
-            await _axios.patch(`/associations/${this.association?.id}`, data)
+        },
+        async getComponents() {
+            if (this.components.length === 0) {
+                this.components = (await _axios.get<AssociationComponent[]>('/associations/institution_components')).data
+            }
+        },
+        async getFields() {
+            if (this.fields.length === 0) {
+                this.fields = (await _axios.get<AssociationField[]>('/associations/activity_fields')).data
+            }
         }
         /* async deleteAssociation() {
              const assoToDelete = this.associations.findIndex((association) => association.id === this.association?.id)

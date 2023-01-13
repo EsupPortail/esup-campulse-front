@@ -2,21 +2,29 @@
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
+import {AssociationSocialNetwork} from '#/association'
+import {onMounted, watch} from 'vue'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
-const {addNetwork, removeNetwork} = useAssociation()
+const {addNetwork, removeNetwork, associationSocialNetworks} = useAssociation()
 const {urlRegex} = useUtility()
 const {t} = useI18n()
+const associationStore = useAssociationStore()
 
-const props = defineProps({
-    socialNetworks: Array
-})
 
+const initValues = () => {
+    // Social networks are stored in useAssociation composable, so we can add and remove items
+    associationSocialNetworks.value = JSON.parse(JSON.stringify(associationStore.association?.socialNetworks as AssociationSocialNetwork[]))
+}
+watch(() => associationStore.association, initValues)
+
+onMounted(initValues)
 
 </script>
 <template>
     <fieldset>
         <legend>{{ t('association.labels.socials') }}</legend>
-        <section v-for="(socialNetwork, index) in props.socialNetworks" :key="index">
+        <section v-for="(socialNetwork, index) in associationSocialNetworks" :key="index">
             <QInput
                 v-model="socialNetwork.type"
                 :hint="t('forms.social-network-type-hint')"
