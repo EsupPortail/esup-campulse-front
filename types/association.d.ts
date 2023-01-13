@@ -71,7 +71,8 @@ export interface AssociationList {
     name: string,
     acronym: string,
     isEnabled: boolean,
-    isSite: boolean
+    isSite: boolean,
+    isVisible: boolean
 }
 
 export interface InstitutionList {
