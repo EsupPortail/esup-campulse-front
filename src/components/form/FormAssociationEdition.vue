@@ -75,6 +75,9 @@ watch(() => associationStore.association, initValues)
 onMounted(async () => {
     initLabels()
     initValues()
+    console.log(association.value.siret)
+    console.log(typeof association.value.siret)
+
 })
 
 // Open alert if user leaves without saving
@@ -103,6 +106,8 @@ onBeforeRouteLeave((to, from, next) => {
 // Validate changes
 async function onValidateChanges() {
     checkChanges(association.value, associationInstitution.value.value, associationComponent.value.value, associationField.value.value)
+    console.log(association.value.siret)
+    console.log(typeof association.value.siret)
     // await associationStore.updateAssociation()
 }
 </script>
@@ -202,6 +207,7 @@ async function onValidateChanges() {
                 filled
                 label="Siret"
                 lazy-rules
+                type="number"
             />
         </fieldset>
         <fieldset>
@@ -219,6 +225,7 @@ async function onValidateChanges() {
                 filled
                 label="Téléphone"
                 lazy-rules
+                type="tel"
             />
             <QInput
                 v-model="association.email"
@@ -226,6 +233,7 @@ async function onValidateChanges() {
                 filled
                 label="Adresse mail"
                 lazy-rules
+                type="email"
             />
             <QInput
                 v-model="association.website"
@@ -233,6 +241,7 @@ async function onValidateChanges() {
                 filled
                 label="Site web"
                 lazy-rules
+                type="url"
             />
         </fieldset>
         <FormAssociationSocialNetworks/>

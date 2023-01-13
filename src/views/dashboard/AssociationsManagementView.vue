@@ -50,7 +50,7 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
-    {name: 'edit', align: 'left', label: 'Edition', field: 'edit', sortable: false},
+    {name: 'edit', align: 'left', label: 'Actions', field: 'edit', sortable: false},
 ]
 </script>
 
@@ -91,12 +91,6 @@ const columns: QTableProps['columns'] = [
                     {{ props.row.field }}
                 </QTd>
                 <QTd key="edit" :props="props" class="edition-buttons">
-                    <QBtn
-                        :to="{name: 'AssociationDetail', params: {id: props.row.id}}"
-                        color="primary"
-                        icon="mdi-eye"
-                        label="Consulter"
-                    />
                     <QBtn
                         v-if="userStore.isUniManager || userStore.hasOfficeStatus(props.row.id)"
                         :to="{name: 'EditAssociation', params: {id: props.row.id}}"
