@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
@@ -15,6 +15,11 @@ const {formatDate} = useUtility()
 const route = useRoute()
 
 const associationStore = useAssociationStore()
+
+const association = ref(associationStore.association)
+watch(() => associationStore.association, () => {
+    association.value = associationStore.association
+})
 
 onMounted(async function () {
     loading.show
@@ -38,49 +43,49 @@ async function onGetAssociationDetail() {
     <section class="title">
         <div class="logo">
             <img
-                v-if="associationStore.association?.pathLogo"
-                :alt="associationStore.association?.altLogo"
-                :src="associationStore.association?.pathLogo"
+                v-if="association?.pathLogo"
+                :alt="association?.altLogo"
+                :src="association?.pathLogo"
             />
             <div v-else></div>
         </div>
         <div class="name">
-            <h1>{{ associationStore.association?.name }}</h1>
-            <p class="acronym">{{ associationStore.association?.acronym }}</p>
+            <h1>{{ association?.name }}</h1>
+            <p class="acronym">{{ association?.acronym }}</p>
             <p>{{ t("association.labels.charter-validity") }}</p>
         </div>
     </section>
     <section class="description">
-        <p>{{ associationStore.association?.description }}</p>
+        <p>{{ association?.description }}</p>
     </section>
     <section>
         <h2>{{ t("association.titles.info") }}</h2>
         <article>
             <h3>{{ t("association.labels.activities") }}</h3>
-            <p>{{ associationStore.association?.activities }}</p>
+            <p>{{ association?.activities }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.institution") }}</h3>
-            <p>{{ associationStore.association?.institution?.name }}</p>
+            <p>{{ association?.institution?.name }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.component") }}</h3>
-            <p>{{ associationStore.association?.institutionComponent?.name }}</p>
+            <p>{{ association?.institutionComponent?.name }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.field") }}</h3>
-            <p>{{ associationStore.association?.activityField?.name }}</p>
+            <p>{{ association?.activityField?.name }}</p>
         </article>
     </section>
     <section>
         <h2>{{ t("association.titles.admin") }}</h2>
         <article>
             <h3>{{ t("association.labels.president-name") }}</h3>
-            <p>{{ associationStore.association?.presidentNames }}</p>
+            <p>{{ association?.presidentNames }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.approval-date") }}</h3>
-            <p>{{ formatDate(associationStore.association?.approvalDate) }}</p>
+            <p>{{ formatDate(association?.approvalDate) }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.charter-date") }}</h3>
@@ -88,41 +93,41 @@ async function onGetAssociationDetail() {
         </article>
         <article>
             <h3>{{ t("association.labels.last-goa") }}</h3>
-            <p>{{ formatDate(associationStore.association?.lastGoaDate) }}</p>
+            <p>{{ formatDate(association?.lastGoaDate) }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.siret") }}</h3>
-            <p>{{ associationStore.association?.siret }}</p>
+            <p>{{ association?.siret }}</p>
         </article>
     </section>
     <section>
         <h2>{{ t("association.titles.contact") }}</h2>
         <article>
             <h3>{{ t("association.labels.address") }}</h3>
-            <p>{{ associationStore.association?.address }}</p>
+            <p>{{ association?.address }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.phone") }}</h3>
-            <p>{{ associationStore.association?.phone }}</p>
+            <p>{{ association?.phone }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.mail") }}</h3>
-            <p>{{ associationStore.association?.email }}</p>
+            <p>{{ association?.email }}</p>
         </article>
         <article>
             <h3>{{ t("association.labels.website") }}</h3>
             <a
-                :href="associationStore.association?.website"
-                :title="`${t('association.labels.website-link')} ${associationStore.association?.name}`"
+                :href="association?.website"
+                :title="`${t('association.labels.website-link')} ${association?.name}`"
             >
-                {{ associationStore.association?.website }}
+                {{ association?.website }}
             </a>
         </article>
         <article>
             <h3>{{ t("association.labels.socials") }}</h3>
             <ul>
                 <li
-                    v-for="socialNetwork in associationStore.association?.socialNetworks"
+                    v-for="socialNetwork in association?.socialNetworks"
                     :key="socialNetwork?.id"
                 >
                     <a
@@ -142,9 +147,9 @@ async function onGetAssociationDetail() {
             to="/associations"
         />
         <QBtn
-            :href="`mailto:${associationStore.association?.email}`"
+            :href="`mailto:${association?.email}`"
             :label="t('association.contact')"
-            :title="`${t('association.contact')} ${associationStore.association?.name}`"
+            :title="`${t('association.contact')} ${association?.name}`"
             color="primary"
             icon="mdi-email"
         />
