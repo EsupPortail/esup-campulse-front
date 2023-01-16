@@ -1,16 +1,18 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {createPinia, setActivePinia} from 'pinia'
-import {mockedAxios} from '~/mocks/axios.mock'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { mockedAxios } from '~/mocks/axios.mock'
 import {
     mockedGroups,
+    mockedNewUser,
     mockedUser,
     mockedUserDirectory,
     mockedUserGroups,
     mockedUserNames,
     mockedUsers
 } from '~/mocks/user.mock'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {mockedAssociationName} from '~/mocks/association.mock'
+import { useUserManagerStore } from '@/stores/useUserManagerStore'
+import { mockedAssociationName } from '~/mocks/association.mock'
+import * as userService from '@/services/userService'
 
 
 setActivePinia(createPinia())
@@ -25,7 +27,7 @@ describe('User manager store', () => {
     })
     describe('getUsers', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({data: mockedUsers})
+            mockedAxios.get.mockResolvedValueOnce({ data: mockedUsers })
         })
         afterEach(() => {
             userManagerStore.users = []
@@ -73,7 +75,7 @@ describe('User manager store', () => {
     })
     describe('getUnvalidatedUsers', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({data: mockedUsers})
+            mockedAxios.get.mockResolvedValueOnce({ data: mockedUsers })
         })
         afterEach(() => {
             userManagerStore.users = []
@@ -114,8 +116,8 @@ describe('User manager store', () => {
     })
     describe('getUserDetail', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({data: mockedUser})
-            mockedAxios.get.mockResolvedValueOnce({data: mockedGroups})
+            mockedAxios.get.mockResolvedValueOnce({ data: mockedUser })
+            mockedAxios.get.mockResolvedValueOnce({ data: mockedGroups })
         })
         afterEach(() => {
             userManagerStore.user = undefined
@@ -296,6 +298,17 @@ describe('User manager store', () => {
         })
         it('should return an array of numbers of the groups', () => {
             expect(userManagerStore.userGroups).toEqual(mockedUserGroups)
+        })
+    })
+    describe('addUser', () => {
+        beforeEach(() => {
+            userService.userLocalRegisterAsManager(mockedNewUser)
+        })
+        it('should call API once', () => {
+            expect(mockedAxios.post).toHaveBeenCalledOnce()
+        })
+        it('should call API on /users/ with newUser as data', () => {
+            expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/', mockedNewUser)
         })
     })
 })
