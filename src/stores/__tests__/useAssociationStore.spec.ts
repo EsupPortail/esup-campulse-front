@@ -113,11 +113,4 @@ describe('Association store', () => {
             expect(associationStore.associationDirectory).toEqual(associationDirectory)
         })
     })
-    describe('Create Association', () => {
-        it('should post on API once on /associations/ with association name as payload', () => {
-            associationStore.createAssociation('new association')
-            expect(mockedAxios.post).toHaveBeenCalledOnce()
-            expect(mockedAxios.post).toHaveBeenCalledWith('/associations/', {name: 'new association'})
-        })
-    })
 })

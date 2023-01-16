@@ -11,26 +11,24 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
 onMounted(async () => {
-  loading.show
-  await loadAssociations()
-  loading.hide
+    loading.show
+    await loadAssociations()
+    loading.hide
 })
 
 async function loadAssociations() {
-  try {
-    await associationStore.getAssociations()
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.form-error')
-    })
-  }
+    try {
+        await associationStore.getAssociations()
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.form-error')
+        })
+    }
 }
 </script>
 
 <template>
-  <fieldset>
-    <legend class="legend-big">{{ t("forms.im-from-association") }}</legend>
     <fieldset>
       <legend>{{ t("forms.im-in-association") }}</legend>
       <div v-for="(association, index) in newAssociations" :key="index">
@@ -74,23 +72,27 @@ async function loadAssociations() {
           @click="addAssociation"
       />
     </fieldset>
-  </fieldset>
 </template>
 
 <style lang="sass" scoped>
 fieldset
-  border: none
+    border: none
 
 .legend-big
-  font-size: 1.5em
+    font-size: 1.5em
 
 .q-btn
-  margin: 15px 0
-  display: block
+    margin: 15px 0
+    display: block
 
 .q-input
   margin: 15px 0
 
 .add-association
+<<<<<<< HEAD
   margin: 15px 0 0 0
 </style>
+=======
+    margin: 15px 0 0 0
+</style>
+>>>>>>> feature/association-page

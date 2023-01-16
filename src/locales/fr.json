@@ -11,6 +11,7 @@
   "delete": "Supprimer",
   "cancel": "Annuler",
   "undefined": "Non renseigné",
+  "discard-changes": "Abandonner les modifications",
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",
@@ -66,7 +67,7 @@
     "login-without-cas": "Connexion avec un compte externe"
   },
   "password": {
-    "edit-password": "Modification du mot de passe",
+    "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
     "reset-password": "Mot de passe oublié"
   },
@@ -122,7 +123,11 @@
     "select-association": "Sélectionner une association",
     "send": "Envoyer",
     "status": "Votre statut",
-    "validated-account": "Compte validé"
+    "validated-account": "Compte validé",
+    "fill-field": "Veuillez remplir ce champ",
+    "social-network-type-hint": "Par exemple : Facebook",
+    "social-network-location-hint": "Saisir une adresse valide; Par exemple : https://facebook.com",
+    "required-valid-url": "Veuillez saisir une URL valide."
   },
   "user-manager": {
     "validation": "Validation des demandes de comptes",
@@ -134,7 +139,7 @@
     "manage-account": "Gérer les informations du compte",
     "delete-account-application": "Supprimer la demande de compte",
     "delete-user": "Supprimer l'utilisateur",
-    "confirm-delete": "Êtes-vous sûre de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
     "user-status": "Statut de l'utilisateur",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
@@ -143,17 +148,23 @@
   },
   "dashboard": {
     "user-add": "Ajouter un compte",
-    "user-validation": "Validation des comptes",
-    "user-management": "Gestion des comptes",
+    "user-validation": "Valider des demandes de compte",
+    "user-management": "Gérer les comptes",
     "create-association": "Créer une association",
     "validate-changes": "Valider les changements",
     "welcome-message": "Bienvenue",
+    "manage-my-account": "Gérer mon compte",
+    "manage-association-directory": "Gérer l'annuaire des associations",
+    "edit-or-delete-association": "Modifier ou supprimer une association",
+    "manage-users": "Gérer les utilisateurs de la plateforme",
     "association-user": {
       "role": "Rôle",
       "has-office-status": "Est membre du bureau",
       "is-president": "Est président ou présidente",
       "delete-association": "Supprimer le rôle dans l'association",
-      "not-association-member": "L'utilisateur n'est membre d'aucune association."
+      "not-association-member": "L'utilisateur n'est membre d'aucune association.",
+      "manage-my-associations": "Gérer les associations dont je suis membre",
+      "edit-my-associations": "Modifier les fiches de mes associations"
     }
   },
   "notifications": {
@@ -199,6 +210,9 @@
       "confirm-delete": "Voulez-vous vraiment supprimer cet utilisateur ?",
       "confirm-yes": "Oui",
       "confirm-no": "Non"
+    },
+    "leave-association-edition": {
+      "message": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues."
     }
   },
   "directory": {
@@ -230,7 +244,7 @@
       "charter-date": "Date de signature de la charte des associations étudiantes",
       "component": "Composante",
       "field": "Domaine",
-      "institution": "Institution",
+      "institution": "Établissement",
       "phone": "Numéro de téléphone",
       "president-name": "Nom du président ou de la présidente",
       "president-mail": "Adresse mail du Président",
@@ -240,7 +254,12 @@
       "services": "Services proposés",
       "socials": "Réseaux sociaux",
       "website": "Site web",
-      "website-link": "Aller au site web de l'association"
+      "website-link": "Aller au site web de l'association",
+      "acronym": "Acronyme",
+      "description": "Description",
+      "social-network-type": "Type de réseau social",
+      "social-network-location": "Lien vers le réseau social",
+      "add-social-network": "Ajouter un réseau social"
     }
   },
   "user": {

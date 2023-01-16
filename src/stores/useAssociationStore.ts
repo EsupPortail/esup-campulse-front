@@ -1,7 +1,10 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import type {
     Association,
+    AssociationComponent,
     AssociationDirectory,
+    AssociationField,
+    AssociationInstitution,
     AssociationList,
     AssociationNames,
     AssociationStore
@@ -11,7 +14,10 @@ import _axios from '@/plugins/axios'
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
         association: undefined,
-        associations: []
+        associations: [],
+        institutions: [],
+        components: [],
+        fields: []
     }),
 
     getters: {
@@ -32,6 +38,27 @@ export const useAssociationStore = defineStore('associationStore', {
                     component: association.institutionComponent?.name,
                     field: association.activityField?.name
                 }))
+        },
+        institutionLabels: (state: AssociationStore) => {
+            return state.institutions.map((
+                institution => ({
+                    value: institution.id,
+                    label: institution.name
+                })))
+        },
+        componentLabels: (state: AssociationStore) => {
+            return state.components.map((
+                component => ({
+                    value: component.id,
+                    label: component.name
+                })))
+        },
+        fieldLabels: (state: AssociationStore) => {
+            return state.fields.map((
+                field => ({
+                    value: field.id,
+                    label: field.name
+                })))
         }
     },
 
@@ -46,13 +73,25 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.association = (await _axios.get<Association>(`/associations/${id}`)).data
             }
         },
-        async deleteAssociation() {
-            const assoToDelete = this.associations.findIndex((association) => association.id === this.association?.id)
-            await _axios.delete('/associations/${this.association?.id}')
-            this.associations.splice(assoToDelete, 1)
+        async getInstitutions() {
+            if (this.institutions.length === 0) {
+                this.institutions = (await _axios.get<AssociationInstitution[]>('/associations/institutions')).data
+            }
         },
-        async createAssociation(name: string) {
-            await _axios.post('/associations/', { name: name })
+        async getComponents() {
+            if (this.components.length === 0) {
+                this.components = (await _axios.get<AssociationComponent[]>('/associations/institution_components')).data
+            }
+        },
+        async getFields() {
+            if (this.fields.length === 0) {
+                this.fields = (await _axios.get<AssociationField[]>('/associations/activity_fields')).data
+            }
         }
+        /* async deleteAssociation() {
+             const assoToDelete = this.associations.findIndex((association) => association.id === this.association?.id)
+             await _axios.delete('/associations/${this.association?.id}')
+             this.associations.splice(assoToDelete, 1)
+         }*/
     }
 })

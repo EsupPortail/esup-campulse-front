@@ -127,8 +127,8 @@ async function onGetAssociationDetail() {
             <h3>{{ t("association.labels.socials") }}</h3>
             <ul>
                 <li
-                    v-for="socialNetwork in association?.socialNetworks"
-                    :key="socialNetwork?.id"
+                    v-for="(socialNetwork, index) in association?.socialNetworks"
+                    :key="index"
                 >
                     <a
                         :href="socialNetwork?.location"

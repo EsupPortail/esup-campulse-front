@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type {RouteRecordRaw} from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -25,13 +25,13 @@ const routes: RouteRecordRaw[] = [
                 path: 'charter',
                 name: 'Charter',
                 component: () => import('@/views/CharterView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'commission',
                 name: 'Commission',
                 component: () => import('@/views/CommissionView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'login',
@@ -45,7 +45,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'dashboard',
-                meta: { requiresAuth: true },
+                meta: {requiresAuth: true},
                 children: [
                     {
                         path: '',
@@ -93,16 +93,25 @@ const routes: RouteRecordRaw[] = [
                         ]
                     },
                     {
-                        path: 'association',
+                        path: 'manage-associations',
                         children: [
                             {
-                                path: 'association-create',
-                                name: 'AssociationCreate',
-                                component: () => import('@/views/AssociationCreateView.vue'),
-                                meta: { uniManagerOnly: true }
+                                path: '',
+                                name: 'ManageAssociations',
+                                component: () => import('@/views/dashboard/AssociationsManagementView.vue')
+                            },
+                            {
+                                path: ':id',
+                                name: 'EditAssociation',
+                                component: () => import('@/views/dashboard/AssociationEditionView.vue')
+                            },
+                            {
+                                path: 'create-new',
+                                name: 'CreateAssociation',
+                                component: () => import('@/views/dashboard/AssociationCreateView.vue')
                             }
                         ]
-                    },
+                    }
                 ]
             },
             {
@@ -148,7 +157,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/:catchAll(.*)',
-                redirect: { name: '404' }
+                redirect: {name: '404'}
             }
         ]
     }

@@ -20,7 +20,8 @@ export interface User {
 // User store
 export interface UserStore {
     user: User | undefined,
-    newUser: User | undefined
+    newUser: User | undefined,
+    userAssociationsRoles: UserAssociationDetail[]
 }
 
 // User manager store
