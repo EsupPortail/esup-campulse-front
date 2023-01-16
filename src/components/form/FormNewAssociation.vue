@@ -55,7 +55,7 @@ async function onCreate() {
                 icon="mdi-arrow-left-circle"
             />
             <QBtn
-                :label="t('validate')"
+                :label="t('user-manager.create-association')"
                 color="primary"
                 icon="mdi-check-circle"
                 type="submit"
