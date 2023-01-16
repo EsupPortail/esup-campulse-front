@@ -1,43 +1,18 @@
-<script setup lang="ts">
-import { onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
-import { useQuasar } from 'quasar'
-import router from '@/router'
-import * as userService from '@/services/userService'
+<script lang="ts" setup>
+import {useI18n} from "vue-i18n";
 
-const { t } = useI18n()
-const { notify } = useQuasar()
-const route = useRoute()
-
-onMounted(async () => {
-  if (route.query.key) {
-    try {
-      await userService.verifyEmail(route.query.key as string)
-      notify({
-        type: 'positive',
-        message: t('notifications.positive.registration-ok')
-      })
-    } catch (e) {
-      notify({
-        type: 'negative',
-        message: t('notifications.negative.invalid-token')
-      })
-    }
-  } else {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.invalid-request')
-    })
-  }
-  await router.push({ name: 'Home' })
-})
+const {t} = useI18n()
 </script>
 
 <template>
-  <div></div>
+  <h1>{{ t("register.register-verify-email") }}</h1>
+  <div>
+    <p>{{ t("register.email-verified") }}</p>
+    <RouterLink to="/">{{ t("register.back-to-home") }}</RouterLink>
+  </div>
 </template>
 
-<style scoped lang="sass">
-
+<style lang="sass" scoped>
+div
+  text-align: center
 </style>
