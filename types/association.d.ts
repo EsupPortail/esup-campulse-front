@@ -91,6 +91,14 @@ export interface ActivityFieldList {
     name: string
 }
 
+export interface AssociationSearch {
+    name: string,
+    acronym: string,
+    institution: number | null,
+    institutionComponent: number | null,
+    activityField: number | null,
+}
+
 export interface AssociationStore {
     association: Association | undefined,
     associations: AssociationList[],

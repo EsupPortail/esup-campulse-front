@@ -2,7 +2,8 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useI18n} from "vue-i18n";
 import {useQuasar} from "quasar";
-import {onMounted} from "vue";
+import {onMounted, reactive} from "vue";
+import type {AssociationSearch} from "#/types/association";
 
 const associationStore = useAssociationStore()
 const {t} = useI18n()
@@ -12,6 +13,14 @@ onMounted(async () => {
   loading.show
   await loadAssociationsFields()
   loading.hide
+})
+
+const settings = reactive<AssociationSearch>({
+    name: "",
+    acronym: "",
+    institution: null,
+    institutionComponent: null,
+    activityField: null
 })
 
 async function loadAssociationsFields() {
@@ -24,50 +33,46 @@ async function loadAssociationsFields() {
     })
   }
 }
-
-function filterAssociations() {
-    associationStore.associations.forEach((association, index) => {
-
-    })
-}
 </script>
 
 <template>
   <QInput
+    :model-value="settings.name"
     :label="t('directory.labels.association-name')"
-    @change="filterAssociations()"
+    @update:model-value="$emit('filterAssociations', settings)"
     filled
     lazy-rules
   />
   <QInput
+    :model-value="settings.acronym"
     :label="t('directory.labels.association-acronym')"
-    @change="filterAssociations()"
+    @update:model-value="$emit('filterAssociations', settings)"
     filled
     lazy-rules
   />
   <QSelect
-    :v-model="associationStore.institutions"
+    :model-value="settings.institution"
     :label="t('directory.labels.association-institution')"
     :options="associationStore.institutionNames"
-    @change="filterAssociations()"
+    @update:model-value="$emit('filterAssociations', settings)"
     emit-value
     filled
     map-options
   />
   <QSelect
-    :v-model="associationStore.institutionComponents"
+    :model-value="settings.institutionComponent"
     :label="t('directory.labels.association-component')"
     :options="associationStore.institutionComponentNames"
-    @change="filterAssociations()"
+    @update:model-value="$emit('filterAssociations', settings)"
     emit-value
     filled
     map-options
   />
   <QSelect
-    :v-model="associationStore.activityFields"
+    :model-value="settings.activityField"
     :label="t('directory.labels.association-field')"
     :options="associationStore.activityFieldNames"
-    @change="filterAssociations()"
+    @update:model-value="$emit('filterAssociations', settings)"
     emit-value
     filled
     map-options

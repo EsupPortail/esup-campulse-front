@@ -82,6 +82,7 @@ export const useAssociationStore = defineStore('associationStore', {
         async getAssociationsListFields() {
             if (this.institutions.length === 0) {
                 this.institutions = (await _axios.get<InstitutionList[]>('/associations/institutions')).data
+                this.institutions.push({ id: 0, name: "Non rattaché à une composante", acronym: "" })
             }
             if (this.institutionComponents.length === 0) {
                 this.institutionComponents = (await _axios.get<InstitutionComponentList[]>('/associations/institution_components')).data

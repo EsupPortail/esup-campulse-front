@@ -17,7 +17,6 @@ onMounted(async function () {
     loading.hide
 })
 
-
 const columns: QTableProps['columns'] = [
     {
         name: 'name',
@@ -55,6 +54,15 @@ const columns: QTableProps['columns'] = [
 function goTo(id: number) {
     router.push({name: 'AssociationDetail', params: {id}})
 }
+
+function filterAssociations(value) {
+    console.log(value)
+    /*
+    associationStore.associations.forEach((association, index) => {
+
+    })
+    */
+}
 </script>
 
 <template>
@@ -69,7 +77,7 @@ function goTo(id: number) {
         row-key="name"
     >
         <template v-slot:top>
-            <FormAssociationDirectory/>
+            <FormAssociationDirectory @filter-associations="filterAssociations"/>
         </template>
         <template v-slot:body="props">
             <QTr :props="props" @click="goTo(props.row.id)">
