@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {onMounted} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import router from '@/router'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import FormAssociationDirectory from '@/components/form/FormAssociationDirectory.vue'
+import type {AssociationSearch} from '#/association'
 
 const associationStore = useAssociationStore()
 const {loading} = useQuasar()
@@ -15,6 +16,19 @@ onMounted(async function () {
     loading.show
     await associationStore.getAssociations()
     loading.hide
+})
+
+const associations = ref(associationStore.associationDirectory)
+watch(() => associationStore.associationDirectory, () => {
+    associations.value = associationStore.associationDirectory
+})
+
+const searchFields = ref<AssociationSearch>({
+    name: "",
+    acronym: "",
+    institution: null,
+    institutionComponent: null,
+    activityField: null
 })
 
 const columns: QTableProps['columns'] = [
@@ -55,13 +69,18 @@ function goTo(id: number) {
     router.push({name: 'AssociationDetail', params: {id}})
 }
 
-function filterAssociations(value) {
-    console.log(value)
-    /*
-    associationStore.associations.forEach((association, index) => {
+/*function filterAssociations(key: keyof AssociationSearch, value: string | number | undefined) {
+    console.log(key, value)
+    searchFields.value[key] = value
+}*/
+function filterAssociations<Key extends keyof AssociationSearch>(key: Key, value: AssociationSearch[Key]) {
+    searchFields.value[key] = value
+}
 
-    })
-    */
+function filterMethod() {
+    if (searchFields.value) {
+        return associations.value.filter(row => row.institution = terms)
+    }
 }
 </script>
 
@@ -70,6 +89,8 @@ function filterAssociations(value) {
 
     <QTable
         :columns="columns"
+        :filter="searchFields"
+        :filter-method="filterMethod"
         :loading="!associationStore.associationDirectory"
         :rows="associationStore.associationDirectory"
         :rows-per-page-options="[10, 20, 50, 0]"
@@ -77,7 +98,9 @@ function filterAssociations(value) {
         row-key="name"
     >
         <template v-slot:top>
-            <FormAssociationDirectory @filter-associations="filterAssociations"/>
+            <FormAssociationDirectory
+                @filter-associations="filterAssociations"
+            />
         </template>
         <template v-slot:body="props">
             <QTr :props="props" @click="goTo(props.row.id)">
