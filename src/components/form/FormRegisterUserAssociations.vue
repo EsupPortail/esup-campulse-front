@@ -86,13 +86,8 @@ fieldset
     display: block
 
 .q-input
-  margin: 15px 0
+    margin: 15px 0
 
 .add-association
-<<<<<<< HEAD
-  margin: 15px 0 0 0
-</style>
-=======
     margin: 15px 0 0 0
 </style>
->>>>>>> feature/association-page
