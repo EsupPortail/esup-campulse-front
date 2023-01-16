@@ -35,9 +35,9 @@ export interface Association {
 }
 
 export interface EditedAssociation {
-    institution: number | null,
-    institutionComponent: number | null,
-    activityField: number | null,
+    institution: number | null | undefined,
+    institutionComponent: number | null | undefined,
+    activityField: number | null | undefined,
     name: string,
     acronym: string | null,
     description: string | null,

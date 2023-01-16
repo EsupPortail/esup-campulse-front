@@ -38,21 +38,6 @@ const association = ref<EditedAssociation>({
     lastGoaDate: ''
 })
 
-const associationInstitution = ref()
-const associationComponent = ref()
-const associationField = ref()
-
-const initLabels = () => {
-    associationInstitution.value = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution.id)
-    associationComponent.value = associationStore.componentLabels.find(({value}) => value === associationStore.association?.institutionComponent.id)
-    associationField.value = associationStore.fieldLabels.find(({value}) => value === associationStore.association?.activityField.id)
-}
-watch(() => associationStore.institutions, initLabels)
-watch(() => associationStore.components, initLabels)
-watch(() => associationStore.fields, initLabels)
-watch(() => associationStore.association, initLabels)
-
-
 const initValues = () => {
     association.value.name = associationStore.association?.name as string
     association.value.acronym = associationStore.association?.acronym as string
@@ -66,14 +51,14 @@ const initValues = () => {
     association.value.presidentNames = associationStore.association?.presidentNames as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
-    association.value.institution = associationInstitution.value.value
-    association.value.institutionComponent = associationComponent.value.value
-    association.value.activityField = associationField.value.value
+    association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
+    association.value.institutionComponent = associationStore.componentLabels.find(({value}) => value === associationStore.association?.institutionComponent?.id)?.value
+    association.value.activityField = associationStore.fieldLabels.find(({value}) => value === associationStore.association?.activityField?.id)?.value
 }
 watch(() => associationStore.association, initValues)
 
 onMounted(async () => {
-    initLabels()
+    //initLabels()
     initValues()
 })
 
@@ -87,7 +72,7 @@ function onLeaveEdition() {
 }
 
 onBeforeRouteLeave((to, from, next) => {
-    checkChanges(association.value, associationInstitution.value.value, associationComponent.value.value, associationField.value.value)
+    checkChanges(association.value)
     if (Object.keys(changedData).length > 0) {
         openAlert.value = true
         if (!leaveEdition.value) {
@@ -102,7 +87,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 // Validate changes
 async function onValidateChanges() {
-    checkChanges(association.value, associationInstitution.value.value, associationComponent.value.value, associationField.value.value)
+    checkChanges(association.value)
     // await associationStore.updateAssociation()
 }
 </script>
@@ -145,22 +130,28 @@ async function onValidateChanges() {
                 type="textarea"
             />
             <QSelect
-                v-model="associationInstitution"
+                v-model="association.institution"
                 :label="t('association.labels.institution')"
                 :options="associationStore.institutionLabels"
+                emit-value
                 filled
+                map-options
             />
             <QSelect
-                v-model="associationComponent"
+                v-model="association.institutionComponent"
                 :label="t('association.labels.component')"
                 :options="associationStore.componentLabels"
+                emit-value
                 filled
+                map-options
             />
             <QSelect
-                v-model="associationField"
+                v-model="association.activityField"
                 :label="t('association.labels.field')"
                 :options="associationStore.fieldLabels"
+                emit-value
                 filled
+                map-options
             />
         </fieldset>
         <fieldset>

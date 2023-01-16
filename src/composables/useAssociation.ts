@@ -83,7 +83,7 @@ export default function () {
     }
 
     // Check if user has modified the association
-    function checkChanges(association: EditedAssociation, institution: number, component: number, field: number) {
+    function checkChanges(association: EditedAssociation) {
         const {formatDate} = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
@@ -94,11 +94,11 @@ export default function () {
                 }
             }
             // Check institution, component and field
-            else if (key == 'institution' && value !== institution) {
+            else if (key == 'institution' && value !== association.institution) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'institutionComponent' && value !== component) {
+            } else if (key == 'institutionComponent' && value !== association.institutionComponent) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'activityField' && value !== field) {
+            } else if (key == 'activityField' && value !== association.activityField) {
                 changedData = Object.assign(changedData, {[key]: value})
             }
             // Check dates
