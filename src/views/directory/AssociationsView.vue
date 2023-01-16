@@ -60,6 +60,7 @@ function goTo(id: number) {
 <template>
     <h1>{{ t("home.directory") }}</h1>
 
+<<<<<<< HEAD
     <QTable
         :columns="columns"
         :loading="!associationStore.associationDirectory"
@@ -91,9 +92,46 @@ function goTo(id: number) {
             </QTr>
         </template>
     </QTable>
+=======
+  <QTable
+      :columns="columns"
+      :loading="!associationStore.associationDirectory"
+      :rows="associationStore.associationDirectory"
+      :rows-per-page-options="[10, 20, 50, 0]"
+      :title="t('directory.title')"
+      row-key="name"
+  >
+    <template v-slot:top>
+      <FormAssociationDirectory/>
+    </template>
+    <template v-slot:body="props">
+      <QTr :props="props" @click="goTo(props.row.id)">
+        <QTd key="name" :props="props">
+          {{ props.row.name }}
+        </QTd>
+        <QTd key="acronym" :props="props">
+          {{ props.row.acronym }}
+        </QTd>
+        <QTd key="institution" :props="props">
+          {{ props.row.institution }}
+        </QTd>
+        <QTd key="component" :props="props">
+          {{ props.row.component }}
+        </QTd>
+        <QTd key="field" :props="props">
+          {{ props.row.field }}
+        </QTd>
+      </QTr>
+    </template>
+  </QTable>
+>>>>>>> 188192b09827b0234bb1c3bbbe5d8bd4f0a50fa4
 </template>
 
 <style lang="sass" scoped>
 .q-tr:hover
+<<<<<<< HEAD
     cursor: pointer
+=======
+  cursor: pointer
+>>>>>>> 188192b09827b0234bb1c3bbbe5d8bd4f0a50fa4
 </style>
