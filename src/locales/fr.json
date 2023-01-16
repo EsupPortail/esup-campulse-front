@@ -136,6 +136,7 @@
     "delete-user": "Supprimer l'utilisateur",
     "confirm-delete": "Êtes-vous sûre de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
     "user-status": "Statut de l'utilisateur",
+    "create-association": "Créer une association",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
       "status-hint": "Veuillez valider le ou les statuts présélectionnés par l'utilisateur."
