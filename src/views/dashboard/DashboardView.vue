@@ -64,6 +64,11 @@ const {t} = useI18n()
             :to="{name: 'ManageUsers'}"
             color="secondary"
         />
+        <QBtn
+            :to="{name: 'AddUser'}"
+            color="secondary"
+            label="Créer un nouvel utilisateur"
+        />
     </section>
 </template>
 
