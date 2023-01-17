@@ -98,29 +98,32 @@ async function onValidateUser() {
     >
         <fieldset>
             <legend>{{ t('user.infos') }}</legend>
+          <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.firstName"
-                :disable="!!user.isCas"
                 :label="t('forms.first-name')"
                 :rules="[ val => val && val.length > 0 || t('forms.required-first-name')]"
                 filled
                 lazy-rules
+                :disable="true"
             />
+          <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.lastName"
-                :disable="!!user.isCas"
                 :label="t('forms.last-name')"
                 :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                 filled
                 lazy-rules
+                :disable="true"
             />
+          <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.email"
-                :disable="!!user.isCas"
                 :label="t('forms.email')"
                 :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
                 filled
                 lazy-rules
+                :disable="true"
             />
             <QInput
                 v-model="user.phone"
@@ -129,6 +132,7 @@ async function onValidateUser() {
                 hint="Format : 06 00 00 00 00"
                 lazy-rules
                 mask="## ## ## ## ##"
+                :disable="true"
             />
         </fieldset>
         <fieldset class="association-cards">
@@ -146,6 +150,7 @@ async function onValidateUser() {
                             :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                             filled
                             lazy-rules
+                            :disable="true"
                         />
                         <QSelect
                             v-model="association.hasOfficeStatus"
@@ -154,6 +159,7 @@ async function onValidateUser() {
                             emit-value
                             filled
                             map-options
+                            :disable="true"
                         />
                         <QSelect
                             v-model="association.isPresident"
@@ -162,12 +168,13 @@ async function onValidateUser() {
                             emit-value
                             filled
                             map-options
+                            :disable="true"
                         />
-                        <QBtn
+                        <!-- <QBtn
                             :label="t('dashboard.association-user.delete-association')"
                             color="red"
                             icon="mdi-delete"
-                        />
+                        /> -->
                     </article>
                 </QCardSection>
             </QCard>
@@ -185,11 +192,11 @@ async function onValidateUser() {
                 </article>
             </section>
         </fieldset>
-        <FormUserGroups/>
+        <FormUserGroups :disabled="true"/>
     </QForm>
     <section class="btn-group">
         <QBtn :label="t('back')" :to="{name: 'ManageUsers'}" color="secondary" icon="mdi-arrow-left-circle"/>
-        <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" @click="onValidateUser"/>
+        <!-- <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" @click="onValidateUser"/> -->
         <AlertConfirmUserDelete/>
     </section>
 </template>
