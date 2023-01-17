@@ -65,9 +65,9 @@ const {t} = useI18n()
             color="secondary"
         />
         <QBtn
+            :label="t('dashboard.create-user')"
             :to="{name: 'AddUser'}"
             color="secondary"
-            label="Créer un nouvel utilisateur"
         />
     </section>
 </template>

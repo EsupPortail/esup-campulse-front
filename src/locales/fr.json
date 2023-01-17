@@ -160,6 +160,7 @@
     "manage-association-directory": "Gérer l'annuaire des associations",
     "edit-or-delete-association": "Modifier ou supprimer une association",
     "manage-users": "Gérer les utilisateurs de la plateforme",
+    "create-user": "Créer un nouvel utilisateur",
     "association-user": {
       "role": "Rôle",
       "has-office-status": "Est membre du bureau",
