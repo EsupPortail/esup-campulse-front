@@ -1,6 +1,6 @@
-import type {UserAssociations, UserRegister} from '#/user'
+import type { UserAssociations, UserRegister } from '#/user'
 import _axios from '@/plugins/axios'
-import {useUserStore} from '@/stores/useUserStore'
+import { useUserStore } from '@/stores/useUserStore'
 import axios from 'axios'
 
 
@@ -26,7 +26,7 @@ export function setBearer() {
 // Refresh token
 export async function refreshToken() {
     const refresh = localStorage.getItem('refresh')
-    const access = (await _axios.post('/users/auth/token/refresh/', {refresh})).data.access
+    const access = (await _axios.post('/users/auth/token/refresh/', { refresh })).data.access
     localStorage.setItem('access', access)
 }
 
@@ -58,18 +58,27 @@ export async function userLocalRegister(newUser: UserRegister) {
     await _axios.post('/users/auth/registration/', newUser)
 }
 
+export async function userLocalRegisterAsManager(newUser: UserRegister) {
+    await _axios.post('/users/', newUser)
+}
+
 export async function userCASRegister(newUserInfo: string | null) {
     setBearer()
-    await _axios.patch('/users/auth/user/', {phone: newUserInfo})
+    await _axios.patch('/users/auth/user/', { phone: newUserInfo !== "" ? newUserInfo : null })
 }
 
 export async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
+    const idsAssociations = []
     for (let i = 0; i < newUserAssociations.length; i++) {
-        await _axios.post('/users/associations/', {
-            user: username,
-            association: newUserAssociations[i].id,
-            hasOfficeStatus: newUserAssociations[i].hasOfficeStatus
-        })
+        if (idsAssociations.indexOf(newUserAssociations[i].id) === -1)
+            await _axios.post('/users/associations/', {
+                user: username,
+                association: newUserAssociations[i].id,
+                roleName: newUserAssociations[i].roleName,
+                hasOfficeStatus: newUserAssociations[i].hasOfficeStatus,
+                isPresident: newUserAssociations[i].isPresident
+            })
+        idsAssociations.push(newUserAssociations[i].id)
     }
 }
 
@@ -81,18 +90,18 @@ export async function userGroupsRegister(username: string, newUserGroups: number
 }
 
 export async function verifyEmail(key: string) {
-    await _axios.post('/users/auth/registration/verify-email/', {key: key})
+    await _axios.post('/users/auth/registration/verify-email/', { key: key })
 }
 
 export async function resendEmail(email: string) {
-    await _axios.post('/users/auth/registration/resend-email/', {email})
+    await _axios.post('/users/auth/registration/resend-email/', { email })
 }
 
 // Password reset functions
 export async function passwordReset(email: string) {
-    await _axios.post('/users/auth/password/reset/', {email})
+    await _axios.post('/users/auth/password/reset/', { email })
 }
 
 export async function passwordResetConfirm(uid: string, token: string, newPassword1: string, newPassword2: string) {
-    await _axios.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
+    await _axios.post('/users/auth/password/reset/confirm/', { uid, token, newPassword1, newPassword2 })
 }

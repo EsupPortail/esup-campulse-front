@@ -2,28 +2,36 @@
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {ref} from 'vue'
-import useAssociation from "@/composables/useAssociation";
-import router from "@/router";
+import axios from 'axios'
+import useAssociation from '@/composables/useAssociation'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
+const {createAssociation} = useAssociation()
 
-const {createAssociation} = useAssociation();
+
 const newAssociation = ref<string>('')
 
 async function onCreate() {
     try {
         await createAssociation(newAssociation.value)
-        await router.push({name: 'Dashboard'})
+        newAssociation.value = ''
         notify({
             type: 'positive',
-            message: t('notifications.positive.validate-asso')
+            message: t('notifications.positive.validate-association')
         })
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.error-asso')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.data.error === 'Association name already taken.') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.association-already-exists')
+            })
+        } else {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-new-association')
+            })
+        }
     }
 }
 </script>
@@ -33,53 +41,31 @@ async function onCreate() {
         class="q-gutter-md"
         @submit.prevent="onCreate"
     >
-        <h3>{{ t("association.labels.new-asso") }}</h3>
         <QInput
             v-model="newAssociation"
-            :label="t('forms.name')"
+            :label="t('forms.association-name')"
             filled
             lazy-rules
         />
         <section class="btn-group">
             <QBtn
                 :label="t('home.back-dashboard')"
+                :to="{name: 'Dashboard'}"
                 color="secondary"
                 icon="mdi-arrow-left-circle"
-                to="/associations"
             />
             <QBtn
-                :label="t('dashboard.create-association')"
+                :label="t('user-manager.create-association')"
                 color="primary"
-                @:click="onCreate"
+                icon="mdi-check-circle"
+                type="submit"
             />
         </section>
     </QForm>
 </template>
 
 <style lang="sass" scoped>
-h2
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-
-article > *
-    margin: 0
-    width: 50%
-
-article
-    display: flex
-    align-items: center
-    background-color: lightgrey
-    padding: 0 20px 0 20px
-    margin: 5px 0
-
-h3
-    font-size: 1.2em
-    text-transform: uppercase
-
 .btn-group
     display: flex
     gap: 10px
-
 </style>

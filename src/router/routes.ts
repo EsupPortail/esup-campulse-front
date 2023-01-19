@@ -85,19 +85,33 @@ const routes: RouteRecordRaw[] = [
                                 name: 'UserManagementDetail',
                                 component: () => import('@/views/dashboard/UserManagementDetailView.vue')
                             },
+                            {
+                                path: 'add-user',
+                                name: 'AddUser',
+                                component: () => import('@/views/dashboard/UserAddView.vue')
+                            },
                         ]
                     },
                     {
-                        path: 'association',
+                        path: 'manage-associations',
                         children: [
                             {
-                                path: 'association-create',
-                                name: 'AssociationCreate',
-                                component: () => import('@/views/AssociationCreateView.vue'),
-                                meta: {uniManagerOnly: true}
+                                path: '',
+                                name: 'ManageAssociations',
+                                component: () => import('@/views/dashboard/AssociationsManagementView.vue')
+                            },
+                            {
+                                path: ':id',
+                                name: 'EditAssociation',
+                                component: () => import('@/views/dashboard/AssociationEditionView.vue')
+                            },
+                            {
+                                path: 'create-new',
+                                name: 'CreateAssociation',
+                                component: () => import('@/views/dashboard/AssociationCreateView.vue')
                             }
                         ]
-                    },
+                    }
                 ]
             },
             {

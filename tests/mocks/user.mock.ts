@@ -1,10 +1,11 @@
-import type {User, UserAssociations, UserDirectory, UserGroup, UserNames, UserRegister} from '#/user'
+import type { ManagedUsers, User, UserAssociations, UserDirectory, UserGroup, UserNames, UserRegister } from '#/user'
+import { mockedAssociationName } from '~/mocks/association.mock'
 
 
 export const mockedGroups: UserGroup[] = [
     {
         id: 1,
-        name: 'Gestionnaire'
+        name: 'Gestionnaire SVU'
     },
     {
         id: 2,
@@ -21,22 +22,43 @@ export const mockedNewUserGroups: number[] = [1, 2]
 export const mockedUser: User = {
     id: 1,
     password: 'motdepasse',
-    //lastLogin: null,
-    //isSuperuser: false,
     username: 'john.lennon@bbc.com',
     firstName: 'John',
     lastName: 'Lennon',
     phone: null,
     email: 'john.lennon@bbc.com',
-    //isStaff: false,
-    //isActive: false,
-    //dateJoined: '',
     isCas: false,
     isValidatedByAdmin: true,
-    groups: mockedGroups
+    groups: mockedGroups,
+    associations: mockedAssociationName
 }
 
-export const mockedUsers: User[] = [mockedUser, mockedUser, mockedUser]
+export const mockedUsers: ManagedUsers = [
+    {
+        id: 1,
+        username: 'john.lennon@bbc.com',
+        firstName: 'John',
+        lastName: 'Lennon',
+        phone: null,
+        email: 'john.lennon@bbc.com',
+        isCas: false,
+        isValidatedByAdmin: true,
+        groups: mockedGroups,
+        associations: mockedAssociationName
+    },
+    {
+        id: 1,
+        username: 'bill@murray.com',
+        firstName: 'Bill',
+        lastName: 'Murray',
+        phone: null,
+        email: 'bill@murray.com',
+        isCas: false,
+        isValidatedByAdmin: true,
+        groups: mockedGroups,
+        associations: mockedAssociationName
+    }
+]
 
 export const mockedNewUser: UserRegister = {
     username: 'john.lennon@bbc.com',
@@ -58,19 +80,30 @@ export const mockedGroupList = mockedGroups.map(
 export const mockedUserAssociations: UserAssociations = [
     {
         id: 1,
-        hasOfficeStatus: true
+        roleName: "Président",
+        hasOfficeStatus: true,
+        isPresident: true
     },
     {
         id: 2,
-        hasOfficeStatus: false
+        roleName: "Secrétaire",
+        hasOfficeStatus: false,
+        isPresident: false
+
     },
     {
         id: 3,
-        hasOfficeStatus: false
+        roleName: "Trésorier",
+        hasOfficeStatus: false,
+        isPresident: false
+
     },
     {
         id: 4,
-        hasOfficeStatus: false
+        roleName: "Membre",
+        hasOfficeStatus: false,
+        isPresident: false
+
     }
 ]
 
@@ -87,6 +120,8 @@ export const mockedUserDirectory: UserDirectory = mockedUsers.map(
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        associations: user.associations,
+        groups: user.groups,
         isValidatedByAdmin: user.isValidatedByAdmin
     })
 )

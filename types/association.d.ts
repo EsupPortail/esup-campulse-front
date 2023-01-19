@@ -10,24 +10,10 @@
 
 export interface Association {
     id: number,
-    institution: {
-        id: number,
-        name: string,
-        acronym: string
-    },
-    institutionComponent: {
-        id: number,
-        name: string
-    },
-    activityField: {
-        id: number,
-        name: string
-    },
-    socialNetworks: {
-        id: number,
-        type: string,
-        location: string
-    },
+    institution: AssociationInstitution,
+    institutionComponent: AssociationComponent,
+    activityField: AssociationField,
+    socialNetworks: AssociationSocialNetwork[],
     name: string,
     acronym: string | null,
     pathLogo: string | null,
@@ -37,7 +23,7 @@ export interface Association {
     address: string | null,
     phone: string | null,
     email: string | null,
-    siret: number | null,
+    siret: string | null,
     website: string | null,
     studentCount: number | null,
     presidentNames: string | null,
@@ -46,6 +32,50 @@ export interface Association {
     approvalDate: string | null,
     lastGoaDate: string | null,
     cgaDate: string | null,
+}
+
+export interface EditedAssociation {
+    institution: number | null | undefined,
+    institutionComponent: number | null | undefined,
+    activityField: number | null | undefined,
+    name: string,
+    acronym: string | null,
+    description: string | null,
+    activities: string | null,
+    address: string | null,
+    phone: string | null,
+    email: string | null,
+    siret: string | null,
+    website: string | null,
+    presidentNames: string | null,
+    approvalDate: string | null,
+    lastGoaDate: string | null
+}
+
+export interface AssociationInstitution {
+    id: number | null,
+    name: string,
+    acronym: string
+}
+
+export interface AssociationComponent {
+    id: number | null,
+    name: string
+}
+
+export interface AssociationField {
+    id: number | null,
+    name: string
+}
+
+export interface AssociationName {
+    id: number,
+    name: string
+}
+
+export interface AssociationSocialNetwork {
+    type: string,
+    location: string
 }
 
 export interface AssociationList {
@@ -71,7 +101,10 @@ export interface AssociationList {
 
 export interface AssociationStore {
     association: Association | undefined,
-    associations: AssociationList[]
+    associations: AssociationList[],
+    institutions: AssociationInstitution[],
+    components: AssociationComponent[],
+    fields: AssociationField[]
 }
 
 export type AssociationNames = { value: number, label: string }[]

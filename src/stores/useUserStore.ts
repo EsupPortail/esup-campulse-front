@@ -6,7 +6,8 @@ import {removeTokens, setTokens} from '@/services/userService'
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
-        newUser: undefined
+        newUser: undefined,
+        userAssociationsRoles: []
     }),
 
     getters: {
@@ -54,6 +55,16 @@ export const useUserStore = defineStore('userStore', {
                     await this.logOut()
                 }
             }
+        },
+        // to test
+        async getUserAssociationsRoles() {
+            if (this.user && this.user.associations.length > 0) {
+                this.userAssociationsRoles = (await _axios.get('/users/associations/')).data
+            }
+        },
+        hasOfficeStatus(associationId: number): boolean | undefined {
+            const association = this.userAssociationsRoles.find(({association}) => (association === associationId))
+            return association?.hasOfficeStatus
         },
         unLoadUser() {
             this.user = undefined

@@ -26,14 +26,14 @@ export default function () {
         }
     }
 
-    async function validateUser(newGroups: number[]) {
+    async function validateUser() {
         const oldGroups = userManagerStore.userGroups
-        if (!arraysAreEqual(newGroups, oldGroups)) {
-            await userManagerStore.updateUserGroups(newGroups)
-            await userManagerStore.deleteUserGroups(groupsToDelete(newGroups, oldGroups))
+        const {newGroups} = useUserGroups()
+        if (!arraysAreEqual(newGroups.value, oldGroups)) {
+            await userManagerStore.updateUserGroups(newGroups.value)
+            await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))
         }
         await userManagerStore.validateUser()
-        userManagerStore.unLoadUsers()
     }
 
     return {getUsers, getUser, validateUser}

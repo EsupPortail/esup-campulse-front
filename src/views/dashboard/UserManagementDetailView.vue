@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {computed, onMounted, ref, watch} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import useUsers from '@/composables/useUsers'
@@ -8,11 +8,13 @@ import {useRoute} from 'vue-router'
 import useUserGroups from '@/composables/useUserGroups'
 import router from '@/router'
 import type {User} from '#/user'
+import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
+import FormUserGroups from '@/components/form/FormUserGroups.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {getUser, validateUser} = useUsers()
-const {getGroups, groupList} = useUserGroups()
+const {groupChoiceIsValid, newGroups} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -21,17 +23,6 @@ const route = useRoute()
 const user = ref<User | undefined>(userManagerStore.user)
 watch(() => userManagerStore.user, () => {
     user.value = userManagerStore.user
-})
-
-// Watch function observes and updates only if data had been changed
-const userGroups = ref<number[]>(userManagerStore.userGroups)
-watch(() => userManagerStore.userGroups, () => {
-    userGroups.value = userManagerStore.userGroups
-})
-
-// Check if the user has enough roles or not
-const groupChoiceIsValid = computed<boolean>(() => {
-    return userGroups.value.length > 0 && userGroups.value.length <= 2
 })
 
 // Boolean select options
@@ -49,22 +40,10 @@ const booleanSelectOptions = [
 onMounted(async () => {
     loading.show
     await onGetUser()
-    await onLoadGroups()
+    newGroups.value = userManagerStore.userGroups
     await onGetUserAssociations()
     loading.hide
 })
-
-// Load group list
-async function onLoadGroups() {
-    try {
-        await getGroups()
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
-    }
-}
 
 // Load user
 async function onGetUser() {
@@ -94,7 +73,7 @@ async function onGetUserAssociations() {
 async function onValidateUser() {
     if (groupChoiceIsValid.value) {
         try {
-            await validateUser(userGroups.value)
+            await validateUser(newGroups.value)
             await router.push({name: 'ValidateUsers'})
             notify({
                 type: 'positive',
@@ -108,22 +87,6 @@ async function onValidateUser() {
         }
     }
 }
-
-async function onDeleteUser() {
-    try {
-        await userManagerStore.deleteUser()
-        await router.push({name: 'ValidateUsers'})
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.validate-delete-user')
-        })
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.unknown-user')
-        })
-    }
-}
 </script>
 
 <template>
@@ -131,41 +94,45 @@ async function onDeleteUser() {
     <QForm
         v-if="user"
         class="q-gutter-md"
-        @submit="register"
+        @submit.prevent="register"
     >
         <fieldset>
             <legend>{{ t('user.infos') }}</legend>
+          <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.firstName"
-                :disable="!!user.isCas"
-                :label="$t('forms.first-name')"
-                :rules="[ val => val && val.length > 0 || $t('forms.required-first-name')]"
+                :label="t('forms.first-name')"
+                :rules="[ val => val && val.length > 0 || t('forms.required-first-name')]"
                 filled
                 lazy-rules
+                :disable="true"
             />
+          <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.lastName"
-                :disable="!!user.isCas"
-                :label="$t('forms.last-name')"
-                :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
+                :label="t('forms.last-name')"
+                :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                 filled
                 lazy-rules
+                :disable="true"
             />
+          <!-- :disable="!!user.isCas" -->
             <QInput
                 v-model="user.email"
-                :disable="!!user.isCas"
-                :label="$t('forms.email')"
-                :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
+                :label="t('forms.email')"
+                :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
                 filled
                 lazy-rules
+                :disable="true"
             />
             <QInput
                 v-model="user.phone"
-                :label="$t('forms.phone')"
+                :label="t('forms.phone')"
                 filled
                 hint="Format : 06 00 00 00 00"
                 lazy-rules
                 mask="## ## ## ## ##"
+                :disable="true"
             />
         </fieldset>
         <fieldset class="association-cards">
@@ -179,32 +146,35 @@ async function onDeleteUser() {
                         <h4>{{ association.association.name }}</h4>
                         <QInput
                             v-model="association.roleName"
-                            :label="Rôle"
-                            :rules="[ val => val && val.length > 0 || $t('forms.required-last-name')]"
+                            :label="t('dashboard.association-user.role')"
+                            :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                             filled
                             lazy-rules
+                            :disable="true"
                         />
                         <QSelect
                             v-model="association.hasOfficeStatus"
+                            :label="t('dashboard.association-user.has-office-status')"
                             :options="booleanSelectOptions"
                             emit-value
                             filled
-                            label="Est membre du bureau"
                             map-options
+                            :disable="true"
                         />
                         <QSelect
                             v-model="association.isPresident"
+                            :label="t('dashboard.association-user.is-president')"
                             :options="booleanSelectOptions"
                             emit-value
                             filled
-                            label="Est président"
                             map-options
+                            :disable="true"
                         />
-                        <QBtn
+                        <!-- <QBtn
+                            :label="t('dashboard.association-user.delete-association')"
                             color="red"
                             icon="mdi-delete"
-                            label="Supprimer le rôle dans l'association"
-                        />
+                        /> -->
                     </article>
                 </QCardSection>
             </QCard>
@@ -222,25 +192,12 @@ async function onDeleteUser() {
                 </article>
             </section>
         </fieldset>
-        <fieldset>
-            <QField v-if="groupList"
-                    :error="!groupChoiceIsValid"
-                    :error-message="t('user-manager.forms.required-status')"
-                    :hint="t('user-manager.forms.status-hint')"
-            >
-                <QOptionGroup
-                    v-model="userGroups"
-                    :options="groupList"
-                    color="primary"
-                    type="checkbox"
-                />
-            </QField>
-        </fieldset>
+        <FormUserGroups :disabled="true"/>
     </QForm>
     <section class="btn-group">
-        <QBtn :label="t('back')" color="secondary" icon="mdi-arrow-left-circle" to="/dashboard/manage-users"/>
-        <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" @click="onValidateUser"/>
-        <QBtn :label="t('user-manager.delete-account')" color="red" icon="mdi-delete" @click="onDeleteUser"/>
+        <QBtn :label="t('back')" :to="{name: 'ManageUsers'}" color="secondary" icon="mdi-arrow-left-circle"/>
+        <!-- <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" @click="onValidateUser"/> -->
+        <AlertConfirmUserDelete/>
     </section>
 </template>
 

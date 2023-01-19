@@ -1,21 +1,22 @@
 <script lang="ts" setup>
-import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onMounted} from 'vue'
-import router from '@/router'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
+import {useUserStore} from '@/stores/useUserStore'
+import useAssociation from '@/composables/useAssociation'
 
-const associationStore = useAssociationStore()
+
+const userStore = useUserStore()
+const {managedAssociationsDirectory, getManagedAssociations} = useAssociation()
 const {loading} = useQuasar()
 const {t} = useI18n()
 
 onMounted(async function () {
     loading.show
-    await associationStore.getAssociations()
+    await getManagedAssociations()
     loading.hide
 })
-
 
 const columns: QTableProps['columns'] = [
     {
@@ -49,26 +50,31 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
+    {name: 'edit', align: 'left', label: 'Actions', field: 'edit', sortable: false},
 ]
-
-function goTo(id: number) {
-    router.push({name: 'AssociationDetail', params: {id}})
-}
 </script>
 
 <template>
-    <h1>{{ t("home.directory") }}</h1>
-
+    <h1>{{ userStore.isUniManager ? "Gérer l'annuaire des associations" : "Gérer mes associations" }}</h1>
+    <QBanner v-if="!userStore.isUniManager" class="bg-grey-3">
+        <template v-slot:avatar>
+            <QIcon color="primary" name="mdi-information-outline" size="md"/>
+        </template>
+        <strong>Vous devez être membre du bureau d'une association pour modifier sa fiche
+            annuaire.</strong>
+        <template v-slot:action>
+        </template>
+    </QBanner>
     <QTable
         :columns="columns"
-        :loading="!associationStore.associationDirectory"
-        :rows="associationStore.associationDirectory"
+        :loading="!managedAssociationsDirectory"
+        :rows="managedAssociationsDirectory"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="t('directory.title')"
         row-key="name"
     >
         <template v-slot:body="props">
-            <QTr :props="props" @click="goTo(props.row.id)">
+            <QTr :props="props">
                 <QTd key="name" :props="props">
                     {{ props.row.name }}
                 </QTd>
@@ -84,6 +90,21 @@ function goTo(id: number) {
                 <QTd key="field" :props="props">
                     {{ props.row.field }}
                 </QTd>
+                <QTd key="edit" :props="props" class="edition-buttons">
+                    <QBtn
+                        v-if="userStore.isUniManager || userStore.hasOfficeStatus(props.row.id)"
+                        :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                        color="secondary"
+                        icon="mdi-pencil"
+                        label="Modifier"
+                    />
+                    <QBtn
+                        v-if="userStore.isUniManager"
+                        color="red"
+                        icon="mdi-delete"
+                        label="Supprimer"
+                    />
+                </QTd>
             </QTr>
         </template>
     </QTable>
@@ -92,4 +113,11 @@ function goTo(id: number) {
 <style lang="sass" scoped>
 .q-tr:hover
     cursor: pointer
+
+.edition-buttons
+    display: flex
+    gap: 10px
+
+.q-banner
+    margin-bottom: 20px
 </style>

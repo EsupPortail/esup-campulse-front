@@ -1,11 +1,11 @@
-import {afterEach, beforeEach, describe, expect, it} from 'vitest'
-import {tokens} from '~/mocks/tokens.mock'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {mockedNewUser, mockedNewUserGroups, mockedUser, mockedUserAssociations} from '~/mocks/user.mock'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { tokens } from '~/mocks/tokens.mock'
+import { mockedAxios } from '~/mocks/axios.mock'
+import { mockedNewUser, mockedNewUserGroups, mockedUser, mockedUserAssociations } from '~/mocks/user.mock'
 import * as userService from '@/services/userService'
-import type {AxiosResponse} from 'axios'
-import {useUserStore} from '@/stores/useUserStore'
-import {createPinia, setActivePinia} from 'pinia'
+import type { AxiosResponse } from 'axios'
+import { useUserStore } from '@/stores/useUserStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 
 setActivePinia(createPinia())
@@ -34,7 +34,7 @@ describe('User service', () => {
         })
         describe('Refresh token', () => {
             beforeEach(() => {
-                mockedAxios.post.mockResolvedValueOnce({data: {access: tokens.accessRefreshed}} as AxiosResponse)
+                mockedAxios.post.mockResolvedValueOnce({ data: { access: tokens.accessRefreshed } } as AxiosResponse)
                 userService.refreshToken()
             })
             it('should set a new access token', () => {
@@ -42,7 +42,7 @@ describe('User service', () => {
             })
 
             it('should call API on /users/auth/token/refresh/ with refresh token as data', () => {
-                expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/token/refresh/', {refresh: tokens.refresh})
+                expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/token/refresh/', { refresh: tokens.refresh })
             })
         })
         /*describe('Set bearer', () => {
@@ -87,7 +87,7 @@ describe('User service', () => {
                 expect(mockedAxios.patch).toHaveBeenCalledOnce()
             })
             it('should call API on /users/auth/user/ with new info to patch', () => {
-                expect(mockedAxios.patch).toHaveBeenCalledWith('/users/auth/user/', {phone: 'new info to patch'})
+                expect(mockedAxios.patch).toHaveBeenCalledWith('/users/auth/user/', { phone: 'new info to patch' })
             })
         })
         describe('Association register', () => {
@@ -97,12 +97,14 @@ describe('User service', () => {
             it('should be called for each association', () => {
                 expect(mockedAxios.post).toHaveBeenCalledTimes(mockedUserAssociations.length)
             })
-            it('should call API on /users/associations/ with user, association id and hasOfficeStatus as data', () => {
+            it('should call API on /users/associations/ with user, association id and other data', () => {
                 expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/associations/',
                     {
                         user: mockedNewUser.username,
                         association: mockedUserAssociations[(mockedUserAssociations.length) - 1].id,
-                        hasOfficeStatus: mockedUserAssociations[(mockedUserAssociations.length) - 1].hasOfficeStatus
+                        roleName: mockedUserAssociations[(mockedUserAssociations.length) - 1].roleName,
+                        hasOfficeStatus: mockedUserAssociations[(mockedUserAssociations.length) - 1].hasOfficeStatus,
+                        isPresident: mockedUserAssociations[(mockedUserAssociations.length) - 1].isPresident
                     }
                 )
             })
@@ -130,7 +132,7 @@ describe('User service', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
         })
         it('should call API on /users/auth/registration/verify-email/ with key as data', () => {
-            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/registration/verify-email/', {key: 'key'})
+            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/registration/verify-email/', { key: 'key' })
         })
     })
     describe('Password reset', () => {
@@ -141,7 +143,7 @@ describe('User service', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
         })
         it('should call API on /users/auth/password/reset with user email as data', () => {
-            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/password/reset/', {email: mockedUser.email})
+            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/password/reset/', { email: mockedUser.email })
         })
     })
     describe('Password reset confirm', () => {

@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {User, UserDirectory, UserGroup, UserList, UserManagerStore, UserNames} from '#/user'
+import type {ManagedUser, ManagedUsers, UserDirectory, UserGroup, UserManagerStore, UserNames} from '#/user'
 import _axios from '@/plugins/axios'
 
 
@@ -26,6 +26,8 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                     firstName: user.firstName,
                     lastName: user.lastName,
                     email: user.email,
+                    associations: user.associations,
+                    groups: user.groups,
                     isValidatedByAdmin: user.isValidatedByAdmin
                 }))
         },
@@ -37,42 +39,46 @@ export const useUserManagerStore = defineStore('userManagerStore', {
     actions: {
         async getUsers() {
             if (this.users.length === 0 || this.allUsers === false) {
-                this.users = (await _axios.get<UserList[]>('/users/')).data
+                this.users = (await _axios.get<ManagedUsers>('/users/')).data
                 this.allUsers = true
             }
         },
         async getUnvalidatedUsers() {
             if (this.users.length === 0 || this.allUsers === true) {
-                this.users = (await _axios.get<UserList[]>('/users/?is_validated_by_admin=false')).data
+                this.users = (await _axios.get<ManagedUsers>('/users/?is_validated_by_admin=false')).data
                 this.allUsers = false
             }
         },
         async getUserDetail(id: number) {
             if (this.user?.id !== id) {
-                this.user = (await _axios.get<User>(`/users/${id}`)).data
-                this.user.groups = (await _axios.get<UserGroup[]>('/users/groups/')).data
+                if (this.users.length !== 0) {
+                    this.user = this.users.find((user) => user.id === id)
+                } else {
+                    this.user = (await _axios.get<ManagedUser>(`/users/${id}`)).data
+                    this.user.groups = (await _axios.get<UserGroup[]>(`/users/groups/${id}`)).data
+                }
             }
         },
         async updateUserGroups(userGroups: number[]) {
             await _axios.post('/users/groups/', {username: this.user?.username, groups: userGroups})
-        },
-        async validateUser() {
-            await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
-        },
-        async deleteUser() {
-            await _axios.delete(`/users/${this.user?.id}`)
-        },
-        async getUserAssociations() {
-            this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
         },
         async deleteUserGroups(groupsToDelete: number[]) {
             for (let i = 0; i < groupsToDelete.length; i++) {
                 await _axios.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
             }
         },
-        unLoadUsers() {
-            this.user = undefined
-            this.users = []
+        async validateUser() {
+            await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
+            const validatedUser = this.users.findIndex((user) => user.id === this.user?.id)
+            this.users.splice(validatedUser, 1)
+        },
+        async deleteUser() {
+            await _axios.delete(`/users/${this.user?.id}`)
+            const userToDelete = this.users.findIndex((user) => user.id === this.user?.id)
+            this.users.splice(userToDelete, 1)
+        },
+        async getUserAssociations() {
+            this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
         }
     }
 })

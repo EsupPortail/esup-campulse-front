@@ -1,7 +1,7 @@
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
-import {mockedUser} from '~/mocks/user.mock'
+import {mockedGroups, mockedUser} from '~/mocks/user.mock'
 import type {User} from '#/user'
 import {tokens} from '~/mocks/tokens.mock'
 import {mockedAxios} from '~/mocks/axios.mock'
@@ -50,7 +50,7 @@ describe('User store', () => {
             expect(userStore.isCas).toBeFalsy()
         })
     })
-    describe('User avatar', () => {
+    describe('userNameFirstLetter', () => {
         it('should display capitalized first letter of firstname', () => {
             userStore.user = mockedUser
             expect(userStore.userNameFirstLetter).toBe('J')
@@ -63,6 +63,42 @@ describe('User store', () => {
         it('should not be displayed if user !isAuth', () => {
             userStore.user = undefined
             expect(userStore.userNameFirstLetter).toBeUndefined()
+        })
+    })
+    describe('managerGroup', () => {
+        afterEach(() => {
+            userStore.user = mockedUser
+            userStore.user.groups = mockedGroups
+        })
+        it('should be true if user is manager', () => {
+            userStore.user = mockedUser
+            expect(userStore.managerGroup).toBeTruthy()
+        })
+        it('should be false if user is not manager', () => {
+            userStore.user = mockedUser
+            userStore.user.groups = [
+                {
+                    id: 2,
+                    name: 'Étudiante ou Étudiant'
+                }
+            ]
+            expect(userStore.managerGroup).toBeFalsy()
+        })
+    })
+    describe('isUniManager', () => {
+        it('should be true if user is uniManager', () => {
+            userStore.user = mockedUser
+            expect(userStore.isUniManager).toBeTruthy()
+        })
+        it('should be false if user is not uniManager', () => {
+            userStore.user = mockedUser
+            userStore.user.groups = [
+                {
+                    id: 2,
+                    name: 'Étudiante ou Étudiant'
+                }
+            ]
+            expect(userStore.isUniManager).toBeFalsy()
         })
     })
     describe('User logout', () => {
