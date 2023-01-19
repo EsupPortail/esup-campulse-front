@@ -11,6 +11,15 @@ const groupChoiceIsValid = computed(() => {
     return newGroups.value.length > 0 && newGroups.value.length <= groupChoiceLimit
 })
 
+// Only working if every selected groups are in the forbidden list
+const groupUnabledToJoinAssociation = [1, 2]
+const groupUnabledJoiningAssociation = computed(() => {
+    return newGroups.value.find(group => {
+        console.log(groupUnabledToJoinAssociation.indexOf(group))
+        return groupUnabledToJoinAssociation.indexOf(group) == -1
+    })
+})
+
 export default function () {
 
     const groups = ref<UserGroup[]>()
@@ -41,6 +50,7 @@ export default function () {
         studentGroup,
         groupsToDelete,
         groupChoiceIsValid,
+        groupUnabledJoiningAssociation,
         newGroups
     }
 }
