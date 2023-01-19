@@ -193,10 +193,7 @@
       "association-already-exists": "Impossible d'ajouter cette association car elle existe déjà."
     },
     "positive": {
-<<<<<<< HEAD
-=======
       "account-created": "Compte crée.",
->>>>>>> 9f1d1bc
       "delete-association": "L'association a été supprimée avec succès.",
       "login-success": "Connexion réussie.",
       "logout-success": "Déconnexion réussie.",
