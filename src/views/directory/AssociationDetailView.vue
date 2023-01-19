@@ -95,7 +95,7 @@ async function onGetAssociationDetail() {
             <h3>{{ t("association.labels.last-goa") }}</h3>
             <p>{{ formatDate(association?.lastGoaDate) }}</p>
         </article>
-        <article>
+        <article v-if="association?.siret !== ''">
             <h3>{{ t("association.labels.siret") }}</h3>
             <p>{{ association?.siret }}</p>
         </article>

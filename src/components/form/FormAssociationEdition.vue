@@ -206,9 +206,9 @@ async function onDeleteAssociation() {
                     <QIcon name="mdi-calendar"/>
                 </template>
             </QInput>
+          <!-- Warning : Removed not-empty rules on siret input -->
             <QInput
                 v-model="association.siret"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
                 inputmode="numeric"
                 label="Siret"
