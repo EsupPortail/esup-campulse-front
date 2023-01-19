@@ -6,9 +6,6 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useDirectory from '@/composables/useDirectory'
 import useUtility from '@/composables/useUtility'
 import {useRoute} from 'vue-router'
-import {useUserStore} from "@/stores/useUserStore";
-import router from '@/router'
-
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -18,7 +15,6 @@ const {formatDate} = useUtility()
 const route = useRoute()
 
 const associationStore = useAssociationStore()
-const userStore = useUserStore()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
@@ -38,22 +34,6 @@ async function onGetAssociationDetail() {
     notify({
       type: 'negative',
       message: t('notifications.negative.form-error')
-    })
-  }
-}
-
-async function onDeleteAssociation() {
-  try {
-    await associationStore.deleteAssociation()
-    await router.push({name: 'Associations'})
-    notify({
-      type: 'positive',
-      message: t('notifications.positive.delete-association')
-    })
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.delete-association-error')
     })
   }
 }
