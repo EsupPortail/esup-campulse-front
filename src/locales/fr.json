@@ -11,7 +11,7 @@
   "delete": "Supprimer",
   "cancel": "Annuler",
   "undefined": "Non renseigné",
-  "discard-changes": "Abandonner les modifications",
+  "discard-changes": "AbManageandonner les modifications",
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",
@@ -236,6 +236,7 @@
     "contact": "Contacter l'association",
     "create": "Créer une association",
     "delete": "Supprimer l'association",
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer cette association ? Attention cette action est irréversible et toutes les données seront perdues.",
     "titles": {
       "info": "Informations",
       "admin": "Administration",
