@@ -1,9 +1,9 @@
 import _axios from '@/plugins/axios'
-import {computed, ref} from 'vue'
-import type {User, UserAssociations} from '#/user'
-import type {AssociationList, AssociationSocialNetwork, EditedAssociation} from '#/association'
-import {useUserStore} from '@/stores/useUserStore'
-import {useAssociationStore} from '@/stores/useAssociationStore'
+import { computed, ref } from 'vue'
+import type { User, UserAssociations } from '#/user'
+import type { AssociationList, AssociationSocialNetwork, EditedAssociation } from '#/association'
+import { useUserStore } from '@/stores/useUserStore'
+import { useAssociationStore } from '@/stores/useAssociationStore'
 import useUtility from '@/composables/useUtility'
 
 const associationStore = useAssociationStore()
@@ -30,10 +30,10 @@ const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
 // Changed data when modifying an association
 let changedData = {}
 
-export default function () {
+export default function() {
 
     async function createAssociation(name: string) {
-        await _axios.post('/associations/', {name: name})
+        await _axios.post('/associations/', { name: name })
     }
 
     // Add or remove new multiple associations
@@ -86,47 +86,47 @@ export default function () {
 
     // Check if user has modified the association
     function checkChanges(association: EditedAssociation) {
-        const {formatDate} = useUtility()
+        const { formatDate } = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
             const indexes = ["name", "acronym", "description", "activities", "address", "email", "phone", "siret", "website", "presidentNames"]
             if (indexes.indexOf(key) !== -1) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
-                    changedData = Object.assign(changedData, {[key]: value})
+                    changedData = Object.assign(changedData, { [key]: value })
                 }
             }
             // Check institution, component and field
             else if (key == 'institution' && value !== association.institution) {
-                changedData = Object.assign(changedData, {[key]: value})
+                changedData = Object.assign(changedData, { [key]: value })
             } else if (key == 'institutionComponent' && value !== association.institutionComponent) {
-                changedData = Object.assign(changedData, {[key]: value})
+                changedData = Object.assign(changedData, { [key]: value })
             } else if (key == 'activityField' && value !== association.activityField) {
-                changedData = Object.assign(changedData, {[key]: value})
+                changedData = Object.assign(changedData, { [key]: value })
             }
             // Check dates
             else if (key == 'approvalDate' && value !== formatDate(associationStore.association?.approvalDate as string)) {
-                changedData = Object.assign(changedData, {approvalDate: `${value}T00:00:00.000Z`})
+                changedData = Object.assign(changedData, { approvalDate: `${value}T00:00:00.000Z` })
             } else if (key == 'lastGoaDate' && value !== formatDate(associationStore.association?.lastGoaDate as string)) {
-                changedData = Object.assign(changedData, {lastGoaDate: `${value}T00:00:00.000Z`})
+                changedData = Object.assign(changedData, { lastGoaDate: `${value}T00:00:00.000Z` })
             }
         }
         // Check social media
         let hasChanges = false
         for (let i = 0; i < associationSocialNetworks.value.length; i++) {
             // Changes in type or location -> patch
-            const unchangedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks[i].type)
+            const unchangedType = associationSocialNetworks.value.find(({ type }) => type === associationStore.association?.socialNetworks[i].type)
             if (!unchangedType && !hasChanges) { // if a type has changed
                 hasChanges = true
                 break
             }
-            const unchangedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks[i].location)
+            const unchangedLocation = associationSocialNetworks.value.find(({ location }) => location === associationStore.association?.socialNetworks[i].location)
             if (!unchangedLocation && !hasChanges) { // if a location has changed
                 hasChanges = true
                 break
             }
         }
         if (hasChanges) {
-            changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
+            changedData = Object.assign(changedData, { socialNetworks: associationSocialNetworks.value })
         }
         console.log(changedData)
     }

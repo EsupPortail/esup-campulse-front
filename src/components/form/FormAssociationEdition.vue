@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onBeforeRouteLeave} from 'vue-router'
 import useAssociation from '@/composables/useAssociation'
@@ -12,6 +13,7 @@ import type {EditedAssociation} from '#/association'
 
 
 const {t} = useI18n()
+const {notify} = useQuasar()
 const {formatDate} = useUtility()
 const {
     checkChanges,
@@ -90,6 +92,23 @@ async function onValidateChanges() {
     checkChanges(association.value)
     // await associationStore.updateAssociation()
 }
+
+async function onDeleteAssociation() {
+  try {
+    await associationStore.deleteAssociation()
+    await router.push({name: 'Associations'})
+    notify({
+      type: 'positive',
+      message: t('notifications.positive.delete-association')
+    })
+  } catch (e) {
+    notify({
+      type: 'negative',
+      message: t('notifications.negative.delete-association-error')
+    })
+  }
+}
+
 </script>
 
 <template>
@@ -248,6 +267,7 @@ async function onValidateChanges() {
                 color="red"
                 icon="mdi-delete"
                 label="Supprimer la fiche"
+                @click="onDeleteAssociation"
             />
         </section>
         <AlertLeaveAssociationEdition

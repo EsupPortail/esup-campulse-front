@@ -1,10 +1,10 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {createPinia, setActivePinia} from 'pinia'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {AxiosResponse} from 'axios'
-import {association, associationDirectory, associationNames, associations} from '~/mocks/association.mock'
-import type {Association} from '#/association'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { mockedAxios } from '~/mocks/axios.mock'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import type { AxiosResponse } from 'axios'
+import { association, associationDirectory, associationNames, associations } from '~/mocks/association.mock'
+import type { Association } from '#/association'
 
 
 setActivePinia(createPinia())
@@ -20,7 +20,7 @@ describe('Association store', () => {
     })
     describe('Get associations', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({data: associations} as AxiosResponse)
+            mockedAxios.get.mockResolvedValueOnce({ data: associations } as AxiosResponse)
         })
         describe('If associations are not populated', () => {
             beforeEach(() => {
@@ -52,7 +52,7 @@ describe('Association store', () => {
     describe('Get association detail', () => {
         describe('If association is not the same', () => {
             beforeEach(() => {
-                mockedAxios.get.mockResolvedValueOnce({data: association} as AxiosResponse)
+                mockedAxios.get.mockResolvedValueOnce({ data: association } as AxiosResponse)
                 associationStore.getAssociationDetail(association.id)
             })
             afterEach(() => {
@@ -71,7 +71,7 @@ describe('Association store', () => {
         describe('If association is the same', () => {
             beforeEach(() => {
                 associationStore.association = association
-                mockedAxios.get.mockResolvedValueOnce({data: association} as AxiosResponse)
+                mockedAxios.get.mockResolvedValueOnce({ data: association } as AxiosResponse)
                 associationStore.getAssociationDetail(association.id)
             })
             afterEach(() => {
@@ -111,6 +111,22 @@ describe('Association store', () => {
         })
         it('should contain associations with id, name, acronym, institution; component and field', () => {
             expect(associationStore.associationDirectory).toEqual(associationDirectory)
+        })
+    })
+    describe('Delete associations', () => {
+        beforeEach(() => {
+            associationStore.associations = [...associations]
+            associationStore.association = association
+            associationStore.deleteAssociation()
+        })
+        it('should change associations data', () => {
+            expect(associationStore.associations.length).toEqual(associations.length - 1)
+        })
+        it('should be called once', () => {
+            expect(mockedAxios.delete).toHaveBeenCalledOnce()
+        })
+        it('should call API on /associations/', () => {
+            expect(mockedAxios.delete).toHaveBeenCalledWith(`/associations/${association.id}`)
         })
     })
 })

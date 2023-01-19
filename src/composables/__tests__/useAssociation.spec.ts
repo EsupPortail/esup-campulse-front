@@ -1,16 +1,16 @@
-import {mockedAxios} from '~/mocks/axios.mock'
+import { mockedAxios } from '~/mocks/axios.mock'
 import useAssociation from '@/composables/useAssociation'
-import {describe, expect, it, vi} from 'vitest'
-import {config} from '@vue/test-utils'
-import {createTestingPinia} from '@pinia/testing'
+import { describe, expect, it, vi } from 'vitest'
+import { config } from '@vue/test-utils'
+import { createTestingPinia } from '@pinia/testing'
 
 
 config.global.plugins = [
-    createTestingPinia({createSpy: vi.fn()}),
+    createTestingPinia({ createSpy: vi.fn() }),
 ]
 
 describe('useAssociation', () => {
-    const {createAssociation} = useAssociation()
+    const { createAssociation } = useAssociation()
     /*let userStore = useUserStore()
     let associationStore = useAssociationStore()
     beforeEach(() => {
@@ -20,9 +20,10 @@ describe('useAssociation', () => {
 
     describe('createAssociation', () => {
         it('should call API only once on /associations/ with name as payload', async () => {
+            const { createAssociation } = useAssociation()
             await createAssociation("Association test")
             expect(mockedAxios.post).toHaveBeenCalledOnce()
-            expect(mockedAxios.post).toHaveBeenCalledWith('/associations/', {name: 'Association test'})
+            expect(mockedAxios.post).toHaveBeenCalledWith('/associations/', { name: 'Association test' })
         })
     })
 })

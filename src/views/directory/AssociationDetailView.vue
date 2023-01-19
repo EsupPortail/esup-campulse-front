@@ -22,20 +22,20 @@ watch(() => associationStore.association, () => {
 })
 
 onMounted(async function () {
-    loading.show
-    await onGetAssociationDetail()
-    loading.hide
+  loading.show
+  await onGetAssociationDetail()
+  loading.hide
 })
 
 async function onGetAssociationDetail() {
-    try {
-        await getAssociationDetail(route.params.id as string)
-    } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
-    }
+  try {
+    await getAssociationDetail(route.params.id as string)
+  } catch (error) {
+    notify({
+      type: 'negative',
+      message: t('notifications.negative.form-error')
+    })
+  }
 }
 </script>
 
@@ -158,59 +158,59 @@ async function onGetAssociationDetail() {
 
 <style lang="sass" scoped>
 .title
-    display: flex
-    gap: 20px
-    margin-top: 50px
-    align-items: flex-start
+  display: flex
+  gap: 20px
+  margin-top: 50px
+  align-items: flex-start
 
 h1
-    font-size: 3em
-    line-height: 0
+  font-size: 3em
+  line-height: 0
 
 .acronym
-    font-size: 1.8em
+  font-size: 1.8em
 
 .logo
-    max-width: 150px
-    width: 100%
-    height: 150px
-    background-color: grey
+  max-width: 150px
+  width: 100%
+  height: 150px
+  background-color: grey
 
 .description
-    margin-top: 30px
-    font-size: 1.3em
+  margin-top: 30px
+  font-size: 1.3em
 
 h2
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
+  background-color: $primary
+  color: #fff
+  font-size: 2em
+  text-align: center
 
 article > *
-    margin: 0
-    width: 50%
+  margin: 0
+  width: 50%
 
 article
-    display: flex
-    align-items: center
-    background-color: lightgrey
-    padding: 0 20px 0 20px
-    margin: 5px 0
+  display: flex
+  align-items: center
+  background-color: lightgrey
+  padding: 0 20px 0 20px
+  margin: 5px 0
 
 h3
-    font-size: 1.2em
-    text-transform: uppercase
+  font-size: 1.2em
+  text-transform: uppercase
 
 .q-btn
-    margin: 20px 0
+  margin: 20px 0
 
 .btn-group
-    display: flex
-    gap: 10px
+  display: flex
+  gap: 10px
 
 li
-    list-style: none
+  list-style: none
 
 ul
-    padding-left: 0
+  padding-left: 0
 </style>
