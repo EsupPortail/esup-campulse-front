@@ -3,7 +3,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted, ref} from 'vue'
-import type {AssociationSearch} from '#/association'
+import type {AssociationDirectory, AssociationSearch} from '#/association'
 
 const associationStore = useAssociationStore()
 const {t} = useI18n()
@@ -35,51 +35,76 @@ async function loadAssociationsFields() {
         })
     }
 }
+
+function onNameSearch() {
+    if (settings.value.name) {
+        const matches: AssociationDirectory[] = associationStore.associationDirectory.find(({name}) => name.toLowerCase() === settings.value.name.toLowerCase())
+    }
+}
 </script>
 
 <template>
-    <QInput
-        v-model="settings.name"
-        :label="t('directory.labels.association-name')"
-        filled
-        lazy-rules
-        @update:model-value="$emit('filterAssociations', 'name', settings.name)"
-    />
-    <QInput
-        v-model="settings.acronym"
-        :label="t('directory.labels.association-acronym')"
-        filled
-        lazy-rules
-        @update:model-value="$emit('filterAssociations', 'acronym', settings.acronym)"
-    />
-    <QSelect
-        v-model="settings.institution"
-        :label="t('directory.labels.association-institution')"
-        :options="associationStore.institutionNames"
-        emit-value
-        filled
-        map-options
-        @update:model-value="$emit('filterAssociations', 'institution', settings.institution)"
-    />
-    <QSelect
-        v-model="settings.institutionComponent"
-        :label="t('directory.labels.association-component')"
-        :options="associationStore.institutionComponentNames"
-        emit-value
-        filled
-        map-options
-        @update:model-value="$emit('filterAssociations', 'institutionComponent', settings.institutionComponent)"
-    />
-    <QSelect
-        v-model="settings.activityField"
-        :label="t('directory.labels.association-field')"
-        :options="associationStore.activityFieldNames"
-        emit-value
-        filled
-        map-options
-        @update:model-value="$emit('filterAssociations', 'activityField', settings.activityField)"
-    />
+    <QForm
+        class="search-text-field"
+        @submit.prevent="onAdvancedSearch"
+    >
+        <fieldset>
+            <QInput
+                v-model="settings.name"
+                :label="t('directory.labels.association-name')"
+                filled
+                lazy-rules
+            />
+            <QBtn
+                :label="t('directory.search')"
+                color="primary"
+                icon="mdi-magnify"
+                @click="onNameSearch"
+            />
+        </fieldset>
+        <QExpansionItem
+            :label="t('directory.advanced-search')"
+            expand-separator
+            icon="mdi-menu-right"
+        >
+            <fieldset>
+                <QInput
+                    v-model="settings.acronym"
+                    :label="t('directory.labels.association-acronym')"
+                    filled
+                    lazy-rules
+                />
+                <QSelect
+                    v-model="settings.institution"
+                    :label="t('directory.labels.association-institution')"
+                    :options="associationStore.institutionNames"
+                    emit-value
+                    filled
+                    map-options
+                />
+                <QSelect
+                    v-model="settings.institutionComponent"
+                    :label="t('directory.labels.association-component')"
+                    :options="associationStore.institutionComponentNames"
+                    emit-value
+                    filled
+                    map-options
+                />
+                <QSelect
+                    v-model="settings.activityField"
+                    :label="t('directory.labels.association-field')"
+                    :options="associationStore.activityFieldNames"
+                    emit-value
+                    filled
+                    map-options
+                />
+            </fieldset>
+            <QBtn
+                :label="t('directory.search')"
+                color="primary"
+                icon="mdi-magnify"
+                type="submit"
+            />
+        </QExpansionItem>
+    </QForm>
 </template>
-
-<style lang="sass" scoped>
-</style>

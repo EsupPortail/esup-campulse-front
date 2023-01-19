@@ -203,6 +203,11 @@
   },
   "directory": {
     "title": "Associations",
+    "image-alt": "",
+    "subtitle": "Toutes les associations du site Alsace sont ici !",
+    "introduction": "Lorem ipsum",
+    "search": "Chercher dans l'annuaire",
+    "advanced-search": "Recherche avancée",
     "labels": {
       "association-name": "Nom de l'association",
       "association-acronym": "Sigle",
