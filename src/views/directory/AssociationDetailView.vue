@@ -84,10 +84,6 @@ async function onGetAssociationDetail() {
             <p>{{ association?.presidentNames }}</p>
         </article>
         <article>
-            <h3>{{ t("association.labels.approval-date") }}</h3>
-            <p>{{ formatDate(association?.approvalDate) }}</p>
-        </article>
-        <article>
             <h3>{{ t("association.labels.charter-date") }}</h3>
             <p>TODO</p>
         </article>

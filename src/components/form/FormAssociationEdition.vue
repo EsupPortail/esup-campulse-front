@@ -182,18 +182,7 @@ async function onDeleteAssociation() {
                 label="Nom du président ou de la présidente"
                 lazy-rules
             />
-            <QInput
-                v-model="association.approvalDate"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
-                filled
-                label="Date d'agrément"
-                lazy-rules
-                type="date"
-            >
-                <template v-slot:prepend>
-                    <QIcon name="mdi-calendar"/>
-                </template>
-            </QInput>
+          <!-- Warning : Removed approval date input -->
             <QInput
                 v-model="association.lastGoaDate"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
