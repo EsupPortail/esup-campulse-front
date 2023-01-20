@@ -5,18 +5,25 @@ import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useDirectory from '@/composables/useDirectory'
 import {useRoute} from 'vue-router'
+import useAssociation from '@/composables/useAssociation'
 import FormAssociationEdition from '@/components/form/FormAssociationEdition.vue'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {loading} = useQuasar()
 const {getAssociationDetail} = useDirectory()
+const {getManagedAssociations} = useAssociation()
 
 const route = useRoute()
 const associationStore = useAssociationStore()
 
 const isLoaded = ref(false)
 
+onMounted(async function () {
+    loading.show
+    await getManagedAssociations()
+    loading.hide
+})
 
 // Get all infos on mounted
 async function onGetAssociationDetail() {

@@ -92,6 +92,14 @@ export const useAssociationStore = defineStore('associationStore', {
             const assoToDelete = this.associations.findIndex((association) => association.id === this.association?.id)
             await _axios.delete(`/associations/${this.association?.id}`)
             this.associations.splice(assoToDelete, 1)
+        },
+        async patchEnabledAssociation(isEnabled: boolean) {
+            const assoToEnable = this.associations.findIndex((association) => association.id === this.association?.id)
+            const updatedAssociation = (await _axios.patch(`/associations/${this.association?.id}`, { isEnabled })).data
+            this.associations[assoToEnable].isEnabled = updatedAssociation.isEnabled
+            if (this.association) {
+                this.association.isEnabled = updatedAssociation.isEnabled
+            }
         }
     }
 })

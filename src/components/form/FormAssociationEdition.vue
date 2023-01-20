@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onBeforeRouteLeave} from 'vue-router'
 import useAssociation from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
+import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
+import AlertConfirmAssociationEnabled from '@/components/alert/AlertConfirmAssociationEnabled.vue'
 import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociationEdition.vue'
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
@@ -13,7 +14,6 @@ import type {EditedAssociation} from '#/association'
 
 
 const {t} = useI18n()
-const {notify} = useQuasar()
 const {formatDate} = useUtility()
 const {
     checkChanges,
@@ -94,23 +94,6 @@ async function onValidateChanges() {
     checkChanges(association.value)
     // await associationStore.updateAssociation()
 }
-
-async function onDeleteAssociation() {
-  try {
-    await associationStore.deleteAssociation()
-    await router.push({name: 'Associations'})
-    notify({
-      type: 'positive',
-      message: t('notifications.positive.delete-association')
-    })
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.delete-association-error')
-    })
-  }
-}
-
 </script>
 
 <template>
@@ -262,12 +245,8 @@ async function onDeleteAssociation() {
                 label="Valider les changements"
                 type="submit"
             />
-            <QBtn
-                color="red"
-                icon="mdi-delete"
-                label="Supprimer la fiche"
-                @click="onDeleteAssociation"
-            />
+            <AlertConfirmAssociationEnabled/>
+            <AlertConfirmAssociationDeletion v-if="!associationStore.association.isEnabled"/>
         </section>
         <AlertLeaveAssociationEdition
             :open-alert="openAlert"

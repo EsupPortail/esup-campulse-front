@@ -50,7 +50,7 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
-    {name: 'edit', align: 'left', label: 'Actions', field: 'edit', sortable: false},
+    {name: 'actions', align: 'left', label: 'Actions', field: 'isEnabled', sortable: false},
 ]
 </script>
 
@@ -90,24 +90,41 @@ const columns: QTableProps['columns'] = [
                 <QTd key="field" :props="props">
                     {{ props.row.field }}
                 </QTd>
-                <QTd key="edit" :props="props" class="edition-buttons">
+                <QTd key="actions" :props="props" class="edition-buttons">
                     <QBtn
-                        v-if="userStore.isUniManager || userStore.hasOfficeStatus(props.row.id)"
                         :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                        color="secondary"
+                        color="primary"
                         icon="mdi-pencil"
-                        label="Modifier"
+                        :label="t('association.edit')"
                     />
-                    <QBtn
-                        v-if="userStore.isUniManager"
+                    <!--
+                    <QCheckbox
+                        v-if="!props.row.isEnabled"
+                        color="green"
+                        :label="t('association.enable')"
+                    />
+                    <QCheckbox
+                        v-if="props.row.isEnabled"
+                        color="orange"
+                        :label="t('association.disable')"
+                    />
+                    <QCheckbox
+                        v-if="!props.row.isEnabled"
                         color="red"
-                        icon="mdi-delete"
-                        label="Supprimer"
+                        :label="t('association.delete')"
                     />
+                    -->
                 </QTd>
             </QTr>
         </template>
     </QTable>
+    <!--
+    <QBtn
+        color="secondary"
+        icon="mdi-pencil"
+        :label="t('association.validate-all-changes')"
+    />
+    -->
 </template>
 
 <style lang="sass" scoped>
