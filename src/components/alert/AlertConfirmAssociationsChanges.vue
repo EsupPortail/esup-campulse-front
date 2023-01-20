@@ -10,6 +10,7 @@ const changes = ref<boolean>(false)
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
+
 async function onChangesAssociations() {
   try {
     // await associationStore.patchEnabledAssociation(isEnabled)

@@ -20,7 +20,10 @@ const managedAssociationsDirectory = computed(() => {
             institution: association.institution?.name,
             component: association.institutionComponent?.name,
             field: association.activityField?.name,
-            isEnabled: association.isEnabled
+            isEnabled: association.isEnabled,
+            shouldEnable: false,
+            shouldDisable: false,
+            shouldDelete: false
         })
     )
 })
