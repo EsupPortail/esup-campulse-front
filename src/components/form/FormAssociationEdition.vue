@@ -164,13 +164,13 @@ async function onValidateChanges() {
                 v-model="association.presidentNames"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
-                label="Nom du président ou de la présidente"
+                label="t('association.labels.president-name')"
                 lazy-rules
             />
             <QInput
                 v-model="association.phonePres"
                 filled
-                label="Numéro de téléphone du président ou de la présidente"
+                label="t('association.labels.president-phone')"
                 lazy-rules
                 class="without-rules"
             />
@@ -179,7 +179,7 @@ async function onValidateChanges() {
                 v-model="association.lastGoaDate"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
-                label="Date de la dernière AGO"
+                label="t('association.labels.last-goa')"
                 lazy-rules
                 type="date"
             >
@@ -192,7 +192,7 @@ async function onValidateChanges() {
                 v-model="association.siret"
                 filled
                 inputmode="numeric"
-                label="Siret"
+                label="t('association.labels.siret')"
                 lazy-rules
                 class="without-rules"
             />
@@ -203,14 +203,14 @@ async function onValidateChanges() {
                 v-model="association.address"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
-                label="Adresse postale"
+                label="t('association.labels.address')"
                 lazy-rules
             />
             <QInput
                 v-model="association.phone"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
-                label="Téléphone"
+                label="t('association.labels.phone')"
                 lazy-rules
                 type="tel"
             />
@@ -218,7 +218,7 @@ async function onValidateChanges() {
                 v-model="association.email"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
-                label="Adresse mail"
+                label="t('association.labels.mail')"
                 lazy-rules
                 type="email"
             />
@@ -226,7 +226,7 @@ async function onValidateChanges() {
                 v-model="association.website"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
-                label="Site web"
+                label="t('association.labels.website')"
                 lazy-rules
                 type="url"
             />
@@ -237,12 +237,12 @@ async function onValidateChanges() {
                 :to="{name: 'ManageAssociations'}"
                 color="secondary"
                 icon="mdi-arrow-left-circle"
-                label="Revenir aux associations"
+                label="t('association.go-back')"
             />
             <QBtn
                 color="primary"
                 icon="mdi-check-circle"
-                label="Valider les changements"
+                label="t('association.validate-all-changes')"
                 type="submit"
             />
             <AlertConfirmAssociationEnabled/>
