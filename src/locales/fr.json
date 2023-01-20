@@ -209,6 +209,9 @@
     "search": "Chercher dans l'annuaire",
     "advanced-search": "Recherche avancée",
     "search-placeholder": "Université de Strasbourg, Sciences...",
+    "found-associations-plural": "éléments trouvés",
+    "found-associations-singular": "élément trouvé",
+    "no-match": "Aucune association trouvée.",
     "labels": {
       "association-name": "Nom de l'association",
       "association-acronym": "Sigle",

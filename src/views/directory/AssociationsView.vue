@@ -16,12 +16,56 @@ onMounted(async function () {
     loading.show
     await associationStore.getAssociations()
     await loadAssociationsFields()
+    for (let i = 0; i < 100; i++) {
+        associations.value.push(
+            {
+                id: i,
+                institution: {
+                    id: 2,
+                    name: 'Université de Strasbourg',
+                    acronym: 'Unistra'
+                },
+                institutionComponent: {
+                    id: 1,
+                    name: 'Faculté de medecine'
+                },
+                activityField: {
+                    id: 1,
+                    name: 'Culture'
+                },
+                name: 'Test',
+                acronym: 'Test',
+                isEnabled: true,
+                isSite: true,
+                isVisible: true
+
+            })
+    }
     loading.hide
 })
 
 const associations = ref<AssociationList[]>([...associationStore.associations])
 watch(() => associationStore.associations, () => {
     associations.value = associationStore.associations
+})
+
+// Used for pagination
+const associationsPerPage = 15
+const currentPage = ref(1)
+const currentIndex = ref(0)
+watch(() => currentPage.value, () => {
+    currentIndex.value = associationsPerPage * (currentPage.value - 1)
+})
+const pages = ref()
+watch(() => associations.value.length, () => {
+    pages.value = Math.ceil(associations.value.length / associationsPerPage)
+})
+const associationsOnPage = ref([...associations.value.slice(currentIndex.value, associationsPerPage)])
+watch(() => associations.value, () => {
+    associationsOnPage.value = associations.value.slice(currentIndex.value, associationsPerPage)
+})
+watch(() => currentIndex.value, () => {
+    associationsOnPage.value = associations.value.slice(currentIndex.value, associationsPerPage)
 })
 
 const settings = ref<AssociationSearch>({
@@ -44,6 +88,10 @@ async function loadAssociationsFields() {
     }
 }
 
+function onSearch() {
+    //
+}
+
 function onAdvancedSearch() {
     associations.value = advancedSearch(settings.value) as AssociationList[]
 }
@@ -58,6 +106,8 @@ function onAdvancedSearch() {
             <h2>{{ t('directory.subtitle') }}</h2>
             <p>{{ t('directory.introduction') }}</p>
         </div>
+    </section>
+    <section>
         <QForm
             class="search-text-field"
             @submit.prevent="onAdvancedSearch"
@@ -133,34 +183,53 @@ function onAdvancedSearch() {
             </QExpansionItem>
         </QForm>
     </section>
+    <section>
+        <section class="directory-sorting">
+            <section>
+                <p v-if="associations.length > 0">
+                    <span>{{ associations.length }}</span>
+                    {{
+                        associations.length > 1 ? t('directory.found-associations-plural') : t('directory.found-associations-singular')
+                    }} :
+                </p>
+                <p v-else>{{ t('directory.no-match') }}</p>
+                <p>Trier par <span>Nom <QIcon name="mdi-arrow-down"/></span></p>
+                <p><span>{{ associationsPerPage }}</span> éléments par page</p>
+            </section>
+        </section>
 
-    <QCard v-for="association in associations" :key="association.id" class="my-card">
-        <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
-            <QCardSection>
-                <!-- Placeholder for logo -->
-                <div></div>
-                <div>
-                    <h3>{{ association.name }}</h3>
-                    <ul>
-                        <li v-if="association.acronym">
-                            {{ t('directory.labels.association-acronym') + ' : ' }}
-                            <span>{{ association.acronym }}</span>
-                        </li>
-                        <li v-if="association.activityField">
-                            {{ t('directory.labels.association-field') + ' : ' }}
-                            <span>{{ association.activityField.name }}</span>
-                        </li>
-                        <li v-if="association.institution">
-                            {{ t('directory.labels.association-institution') + ' : ' }}
-                            <span>{{ association.institution.name }}</span>
-                        </li>
-                        <li v-if="association.institutionComponent">
-                            {{ t('directory.labels.association-component') + ' : ' }}
-                            <span>{{ association.institutionComponent.name }}</span>
-                        </li>
-                    </ul>
-                </div>
-            </QCardSection>
-        </RouterLink>
-    </QCard>
+        <QCard v-for="association in associationsOnPage" :key="association.id" class="my-card">
+            <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
+                <QCardSection>
+                    <!-- Placeholder for logo -->
+                    <div></div>
+                    <div>
+                        <h3>{{ association.name }}</h3>
+                        <ul>
+                            <li v-if="association.acronym">
+                                {{ t('directory.labels.association-acronym') + ' : ' }}
+                                <span>{{ association.acronym }}</span>
+                            </li>
+                            <li v-if="association.activityField">
+                                {{ t('directory.labels.association-field') + ' : ' }}
+                                <span>{{ association.activityField.name }}</span>
+                            </li>
+                            <li v-if="association.institution">
+                                {{ t('directory.labels.association-institution') + ' : ' }}
+                                <span>{{ association.institution.name }}</span>
+                            </li>
+                            <li v-if="association.institutionComponent">
+                                {{ t('directory.labels.association-component') + ' : ' }}
+                                <span>{{ association.institutionComponent.name }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </QCardSection>
+            </RouterLink>
+        </QCard>
+        <QPagination
+            v-model="currentPage"
+            :max="pages"
+        />
+    </section>
 </template>
