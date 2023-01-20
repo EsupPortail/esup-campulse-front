@@ -254,6 +254,7 @@
       "institution": "Établissement",
       "phone": "Numéro de téléphone",
       "president-name": "Nom du président ou de la présidente",
+      "president-phone": "Numéro de téléphone du président ou de la présidente",
       "president-mail": "Adresse mail du Président",
       "siret": "Numéro SIRET",
       "last-goa": "Date de la dernière AGO",
