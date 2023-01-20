@@ -16,7 +16,7 @@ const {notify, loading} = useQuasar()
 const userStore = useUserStore()
 const {register, newUser, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
 const {groupChoiceIsValid} = useUserGroups()
-const {groupUnabledJoiningAssociation} = useUserGroups()
+const {groupUnabledSelectingAssociation} = useUserGroups()
 
 
 const hasConsent = ref<boolean>(false)
@@ -130,7 +130,7 @@ async function onRegister() {
         <FormUserGroups/>
         <QSeparator/>
       <!-- If manager role checked we do not display this form -->
-        <FormRegisterUserAssociations v-if="groupUnabledJoiningAssociation"/>
+        <FormRegisterUserAssociations v-if="groupUnabledSelectingAssociation"/>
         <QSeparator/>
         <LayoutGDPRConsent v-if="!userStore.managerGroup" :has-consent="hasConsent" @update-consent="hasConsent = !hasConsent"/>
         <QBtn :label="t('forms.send')" color="primary" type="submit"/>
