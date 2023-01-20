@@ -128,7 +128,6 @@ export default function() {
         if (hasChanges) {
             changedData = Object.assign(changedData, { socialNetworks: associationSocialNetworks.value })
         }
-        console.log(changedData)
     }
 
 

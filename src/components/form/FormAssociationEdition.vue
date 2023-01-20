@@ -6,6 +6,7 @@ import {onBeforeRouteLeave} from 'vue-router'
 import useAssociation from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
 import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
+import AlertConfirmAssociationEnabled from '@/components/alert/AlertConfirmAssociationEnabled.vue'
 import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociationEdition.vue'
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
@@ -245,7 +246,8 @@ async function onValidateChanges() {
                 label="Valider les changements"
                 type="submit"
             />
-            <AlertConfirmAssociationDeletion/>
+            <AlertConfirmAssociationEnabled/>
+            <AlertConfirmAssociationDeletion v-if="!associationStore.association.isEnabled"/>
         </section>
         <AlertLeaveAssociationEdition
             :open-alert="openAlert"

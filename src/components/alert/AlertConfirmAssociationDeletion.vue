@@ -6,7 +6,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 
 const {t} = useI18n()
-const confirm = ref<boolean>(false)
+const confirmation = ref<boolean>(false)
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
@@ -32,10 +32,10 @@ async function onDeleteAssociation() {
         :label="t('association.delete')"
         color="red"
         icon="mdi-delete"
-        @click="confirm = true"
+        @click="confirmation = true"
     />
 
-    <QDialog v-model="confirm" persistent>
+    <QDialog v-model="confirmation" persistent>
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{ t("association.confirm-delete") }}</span>

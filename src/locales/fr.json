@@ -1,17 +1,16 @@
 {
   "404": {
-    "title": "Contenu introuvable",
-    "description": "404"
+    "description": "404",
+    "title": "Contenu introuvable"
   },
-  "yes": "Oui",
-  "no": "Non",
-  "loading": "Chargement...",
   "back": "Retour",
-  "validate": "Valider",
-  "delete": "Supprimer",
   "cancel": "Annuler",
-  "undefined": "Non renseigné",
+  "delete": "Supprimer",
   "discard-changes": "AbManageandonner les modifications",
+  "loading": "Chargement...",
+  "no": "Non",
+  "validate": "Valider",
+  "yes": "Oui",
   "home": {
     "banner": {
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022",
@@ -19,32 +18,32 @@
     },
     "cards": {
       "charter": {
-        "title": "Charte des associations du site Alsace",
         "description": "Lorem ipsum description",
-        "imageAlt": "Logo charte"
+        "imageAlt": "Logo charte",
+        "title": "Charte des associations du site Alsace"
       },
       "directory": {
-        "title": "Annuaire des associations",
         "description": "Lorem ipsum description",
-        "imageAlt": "Logo annuaire"
+        "imageAlt": "Logo annuaire",
+        "title": "Annuaire des associations"
       },
       "commission": {
-        "title": "Commission d'aide aux projets étudiants",
         "description": "Lorem ipsum description",
-        "imageAlt": "Logo commissions"
+        "imageAlt": "Logo commissions",
+        "title": "Commission d'aide aux projets étudiants"
       }
     },
+    "back-dashboard": "Retourner vers votre espace",
     "charter": "Charte des associations",
     "commission": "Commission d'aide aux projets étudiants",
     "dashboard": "Tableau de bord",
     "directory": "Annuaire des associations",
-    "title": "Bienvenue sur la plateforme",
-    "back-dashboard": "Retourner vers votre espace"
+    "title": "Bienvenue sur la plateforme"
   },
   "header": {
+    "associations": "Annuaire",
     "charter": "Charte",
     "commission": "CAPE",
-    "associations": "Annuaire",
     "home": "Accueil",
     "login": "Connexion",
     "logout": "Déconnexion",
@@ -55,7 +54,7 @@
   "footer": {
     "about": "À propos",
     "contact": "Contact",
-    "copyright": "2017-2022 - Assopolis - Tous droits réservés",
+    "copyright": "2017-2023 - Assopolis - Tous droits réservés",
     "legal-notice": "Mentions légales"
   },
   "login": {
@@ -73,20 +72,22 @@
   },
   "register": {
     "back-to-home": "Retour à l'accueil",
+    "email-verified": "Votre adresse e-mail a bien été vérifiée. Un gestionnaire va à présent étudier votre demande d'inscription. Vous recevrez vos codes d'accès à l'application par mail dès que votre demande sera validée.",
     "register": "Demande d'inscription",
     "register-resend": "Reconfirmer l'adresse email",
     "register-success": "Demande d'inscription réussie",
-    "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail.",
     "register-verify-email": "Adresse e-mail vérifiée",
-    "email-verified": "Votre adresse e-mail a bien été vérifiée. Un gestionnaire va à présent étudier votre demande d'inscription. Vous recevrez vos codes d'accès à l'application par mail dès que votre demande sera validée."
+    "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
   },
   "forms": {
     "add-association": "Ajouter une association",
+    "association-name": "Nom de l'association",
     "association-role-name": "Le nom du poste dans l'association",
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "create-account": "Créer un compte",
     "delete-association": "Supprimer l'association",
-    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "email": "Adresse mail",
+    "fill-field": "Veuillez remplir ce champ",
     "first-name": "Prénom",
     "gdpr": "Lorem Elsass ipsum in, Chulien leo picon bière adipiscing leverwurscht condimentum elit bissame Pfourtz ! schneck nüdle ac Oberschaeffolsheim porta Chulia Roberstau semper eget tchao bissame schpeck libero, Yo dû. senectus sed non aliquam so Christkindelsmärik mänele gewurztraminer sed flammekueche gravida rhoncus mamsell Morbi tellus  sit hopla Gal ! Hans sagittis jetz gehts los dignissim hoplageiss id hopla s'guelt vulputate consectetur schnaps non suspendisse vielmols, geïz Spätzle dolor turpis ac tellus purus blottkopf, libero, elementum bredele pellentesque risus, ullamcorper commodo Gal. messti de Bischheim réchime météor lacus amet geht's kougelhopf",
     "gdpr-title": "Gestion des données personnelles",
@@ -96,113 +97,115 @@
     "im-in-association-office": "Membre du bureau de l'association",
     "last-name": "Nom de famille",
     "login": "Connexion",
-    "association-name": "Nom de l'association",
     "new-password": "Nouveau mot de passe",
     "old-password": "Mot de passe actuel",
     "password": "Mot de passe",
-    "passwords-are-not-equal": "Les deux mots de passe ne sont pas identiques.",
+    "password-reset-cas": "Si vous êtes étudiant, étudiante ou personnel de l'Université de Strasbourg et que vous vous connectez habituellement avec votre compte CAS, votre mot de passe ne pourra être réinitialisé de cette façon.",
     "password-reset-instructions": "Veuillez saisir l'adresse mail avec laquelle vous vous connectez d'habitude. Si cette adresse est liée à un compte, un lien réinitialisation de mot de passe vous sera envoyé.",
     "password-reset-ok": "Votre demande a bien été prise en compte, consultez votre boîte mail.",
-    "password-reset-cas": "Si vous êtes étudiant, étudiante ou personnel de l'Université de Strasbourg et que vous vous connectez habituellement avec votre compte CAS, votre mot de passe ne pourra être réinitialisé de cette façon.",
+    "passwords-are-not-equal": "Les deux mots de passe ne sont pas identiques.",
     "phone": "Numéro de téléphone",
     "repeat-email": "Répéter l'adresse mail",
     "repeat-new-password": "Répéter le nouveau mot de passe",
-    "resend-email": "Renvoyer le mail de confirmation",
-    "resend-email-cas": "Si vous êtes étudiant, étudiante ou personnel de l'Université de Strasbourg et que vous vous avez terminé votre inscription avec votre compte CAS, votre adresse email est déjà validée.",
-    "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
     "required-email": "Veuillez renseigner votre adresse mail.",
     "required-first-name": "Veuillez renseigner votre prénom.",
     "required-last-name": "Veuillez renseigner votre nom de famille.",
-    "required-password": "Veuillez saisir votre mot ancien de passe.",
-    "required-old-password": "Veuillez saisir votre mot de passe.",
     "required-new-password": "Veuillez saisir votre nouveau mot de passe.",
+    "required-old-password": "Veuillez saisir votre mot de passe.",
+    "required-password": "Veuillez saisir votre mot ancien de passe.",
     "required-repeat-email": "Les deux adresses mail ne sont pas identiques.",
     "required-repeat-new-password": "Veuillez répéter votre nouveau mot de passe.",
     "required-status": "Veuillez choisir un statut. Maximum deux statuts autorisés.",
+    "required-valid-url": "Veuillez saisir une URL valide.",
+    "resend-email": "Renvoyer le mail de confirmation",
+    "resend-email-cas": "Si vous êtes étudiant, étudiante ou personnel de l'Université de Strasbourg et que vous vous avez terminé votre inscription avec votre compte CAS, votre adresse email est déjà validée.",
     "resend-email-confirmation": "Renseignez votre adresse email pour renvoyer un mail vous permettant de la confirmer.",
     "resend-email-ok": "Votre demande a bien été prise en compte, consultez votre boîte mail.",
     "reset-password": "Mot de passe oublié ?",
     "select-association": "Sélectionner une association",
     "send": "Envoyer",
-    "status": "Votre statut",
-    "validated-account": "Compte validé",
-    "fill-field": "Veuillez remplir ce champ",
+    "social-network-location-hint": "Saisir une adresse valide ; Par exemple : https://facebook.com/",
     "social-network-type-hint": "Par exemple : Facebook",
-    "social-network-location-hint": "Saisir une adresse valide; Par exemple : https://facebook.com",
-    "required-valid-url": "Veuillez saisir une URL valide."
+    "status": "Votre statut",
+    "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
+    "validated-account": "Compte validé"
   },
   "user-manager": {
-    "validation": "Validation des demandes de comptes",
-    "management": "Gestion des comptes",
     "add-user": "Ajouter un compte",
-    "is-validated": "Validé par le gestionnaire",
-    "users": "Utilisateurs",
-    "validate-account": "Valider le compte",
-    "manage-account": "Gérer les informations du compte",
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
+    "create-association": "Créer une association",
     "delete-account-application": "Supprimer la demande de compte",
     "delete-user": "Supprimer l'utilisateur",
-    "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
+    "is-validated": "Validé par le gestionnaire",
+    "manage-account": "Gérer les informations du compte",
+    "management": "Gestion des comptes",
     "user-status": "Statut de l'utilisateur",
-    "create-association": "Créer une association",
+    "users": "Utilisateurs",
+    "validate-account": "Valider le compte",
+    "validation": "Validation des demandes de comptes",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
       "status-hint": "Veuillez valider le ou les statuts présélectionnés par l'utilisateur."
     }
   },
   "dashboard": {
-    "user-add": "Ajouter un compte",
-    "user-validation": "Valider des demandes de compte",
-    "user-management": "Gérer les comptes",
     "create-association": "Créer une association",
+    "create-user": "Créer un nouvel utilisateur",
+    "edit-or-delete-association": "Modifier ou supprimer une association",
+    "manage-association-directory": "Gérer l'annuaire des associations",
+    "manage-my-account": "Gérer mon compte",
+    "manage-users": "Gérer les utilisateurs de la plateforme",
+    "user-add": "Ajouter un compte",
+    "user-management": "Gérer les comptes",
+    "user-validation": "Valider des demandes de compte",
     "validate-changes": "Valider les changements",
     "welcome-message": "Bienvenue",
-    "manage-my-account": "Gérer mon compte",
-    "manage-association-directory": "Gérer l'annuaire des associations",
-    "edit-or-delete-association": "Modifier ou supprimer une association",
-    "manage-users": "Gérer les utilisateurs de la plateforme",
-    "create-user": "Créer un nouvel utilisateur",
     "association-user": {
-      "role": "Rôle",
+      "delete-association": "Supprimer le rôle dans l'association",
+      "edit-my-associations": "Modifier les fiches de mes associations",
       "has-office-status": "Est membre du bureau",
       "is-president": "Est président ou présidente",
-      "delete-association": "Supprimer le rôle dans l'association",
-      "not-association-member": "L'utilisateur n'est membre d'aucune association.",
       "manage-my-associations": "Gérer les associations dont je suis membre",
-      "edit-my-associations": "Modifier les fiches de mes associations"
+      "not-association-member": "L'utilisateur n'est membre d'aucune association.",
+      "role": "Rôle"
     }
   },
   "notifications": {
     "negative": {
+      "association-already-exists": "Impossible d'ajouter cette association car elle existe déjà.",
+      "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur.",
       "cas-authentication-error": "Erreur d'authentification CAS.",
       "delete-association-error": "Une erreur est survenue lors de la suppression de l'association. Veuillez réessayer.",
       "different-emails": "Les deux adresses email ne sont pas identiques.",
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
+      "disable-association-error": "L'association n'a pas été inactivée.",
       "email-used": "Cette adresse email est déjà associée à un compte. Veuillez vous connecter.",
+      "enable-association-error": "L'association n'a pas été activée.",
+      "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réesayer.",
       "form-error": "Erreur lors du chargement du formulaire, veuillez recharger la page.",
-      "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
       "invalid-request": "Requête invalide.",
       "invalid-token": "Jeton invalide.",
+      "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
       "no-ticket": "Pas de ticket.",
       "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
       "unknown-credentials": "L'identifiant et/ou le mot de passe sont erronés, veuillez réessayer.",
       "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail.",
-      "unknown-user": "Aucun compte n'a été trouvé.",
-      "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur.",
-      "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réesayer.",
-      "association-already-exists": "Impossible d'ajouter cette association car elle existe déjà."
+      "unknown-user": "Aucun compte n'a été trouvé."
     },
     "positive": {
       "account-created": "Compte crée.",
       "delete-association": "L'association a été supprimée avec succès.",
+      "disable-association": "L'association a été inactivée avec succès.",
+      "enable-association": "L'association a été activée avec succès.",
       "login-success": "Connexion réussie.",
       "logout-success": "Déconnexion réussie.",
       "password-changed": "Votre mot de passe a bien été modifié.",
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
-      "validate-success": "Le statut du compte a bien été modifié.",
+      "validate-association": "L'association a été créée avec succès.",
       "validate-delete-user": "Le compte a bien été supprimé.",
-      "validate-association": "L'association a été créée avec succès."
+      "validate-success": "Le statut du compte a bien été modifié."
     }
   },
   "alerts": {
@@ -214,8 +217,8 @@
     },
     "delete-user": {
       "confirm-delete": "Voulez-vous vraiment supprimer cet utilisateur ?",
-      "confirm-yes": "Oui",
-      "confirm-no": "Non"
+      "confirm-no": "Non",
+      "confirm-yes": "Oui"
     },
     "leave-association-edition": {
       "message": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues."
@@ -224,61 +227,65 @@
   "directory": {
     "title": "Associations",
     "labels": {
-      "association-name": "Nom de l'association",
       "association-acronym": "Sigle",
-      "association-institution": "Institution",
       "association-component": "Composante",
-      "association-field": "Domaine"
+      "association-field": "Domaine",
+      "association-institution": "Institution",
+      "association-name": "Nom de l'association"
     }
   },
   "association": {
     "back-directory": "Revenir à l'annuaire",
+    "confirm-delete": "Êtes-vous sûr de vouloir supprimer cette association ? Attention cette action est irréversible et toutes les données seront perdues.",
+    "confirm-disable": "Êtes-vous sûr de vouloir désactiver cette association ?",
+    "confirm-enable": "Êtes-vous sûr de vouloir activer cette association ?",
     "contact": "Contacter l'association",
     "create": "Créer une association",
     "delete": "Supprimer l'association",
-    "confirm-delete": "Êtes-vous sûr de vouloir supprimer cette association ? Attention cette action est irréversible et toutes les données seront perdues.",
+    "disable": "Désactiver l'association",
+    "enable": "Activer l'association",
     "titles": {
-      "info": "Informations",
       "admin": "Administration",
       "contact": "Contact",
-      "create": "Création d'une association"
+      "create": "Création d'une association",
+      "info": "Informations"
     },
     "labels": {
+      "acronym": "Acronyme",
       "activities": "Activités",
+      "add-social-network": "Ajouter un réseau social",
       "address": "Adresse postale",
       "approval-date": "Date d'agrément",
-      "contact": "Contacter l'association",
       "charter-validity": "Charte valide jusqu'au",
       "charter-date": "Date de signature de la charte des associations étudiantes",
       "component": "Composante",
+      "contact": "Contacter l'association",
+      "description": "Description",
       "field": "Domaine",
       "institution": "Établissement",
-      "phone": "Numéro de téléphone",
-      "president-name": "Nom du président ou de la présidente",
-      "president-mail": "Adresse mail du Président",
-      "siret": "Numéro SIRET",
       "last-goa": "Date de la dernière AGO",
       "mail": "Adresse mail",
+      "phone": "Numéro de téléphone",
+      "president-mail": "Adresse mail du Président",
+      "president-name": "Nom du président ou de la présidente",
       "services": "Services proposés",
+      "siret": "Numéro SIRET",
+      "social-network-location": "Lien vers le réseau social",
+      "social-network-type": "Type de réseau social",
       "socials": "Réseaux sociaux",
       "website": "Site web",
-      "website-link": "Aller au site web de l'association",
-      "acronym": "Acronyme",
-      "description": "Description",
-      "social-network-type": "Type de réseau social",
-      "social-network-location": "Lien vers le réseau social",
-      "add-social-network": "Ajouter un réseau social"
+      "website-link": "Aller au site web de l'association"
     }
   },
   "user": {
     "belongsTo": "L'utilisateur appartient aux groupes suivants",
     "email": "E-mail",
     "first-name": "Prénom",
+    "groups": "Statut",
+    "infos": "Informations",
     "isCas": "L'utilisateur provient de CAS",
     "isValidatedByAdmin": "L'utilisateur est validé par le gestionnaire",
     "last-name": "Nom de famille",
-    "phone": "Numéro de téléphone",
-    "infos": "Informations",
-    "groups": "Statut"
+    "phone": "Numéro de téléphone"
   }
 }
