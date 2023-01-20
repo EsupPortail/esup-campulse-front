@@ -1,7 +1,8 @@
-import type {Mocked} from 'vitest'
-import {vi} from 'vitest'
+import type { Axios } from 'axios'
+import type { Mocked } from 'vitest'
+import { vi } from 'vitest'
+
 import _axios from '@/plugins/axios'
-import type {Axios} from "axios";
 
 vi.mock('@/plugins/axios', () => {
     return {

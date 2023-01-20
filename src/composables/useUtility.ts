@@ -1,6 +1,6 @@
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?$/
 
-export default function () {
+export default function() {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -18,5 +18,5 @@ export default function () {
         return false
     }
 
-    return {formatDate, arraysAreEqual, urlRegex}
+    return { formatDate, arraysAreEqual, urlRegex }
 }

@@ -1,7 +1,7 @@
-import {defineStore} from 'pinia'
-import type {ManagedUser, ManagedUsers, UserDirectory, UserGroup, UserManagerStore, UserNames} from '#/user'
-import _axios from '@/plugins/axios'
+import { defineStore } from 'pinia'
 
+import type { ManagedUser, ManagedUsers, UserDirectory, UserGroup, UserManagerStore, UserNames } from '#/user'
+import _axios from '@/plugins/axios'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
@@ -60,7 +60,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             }
         },
         async updateUserGroups(userGroups: number[]) {
-            await _axios.post('/users/groups/', {username: this.user?.username, groups: userGroups})
+            await _axios.post('/users/groups/', { username: this.user?.username, groups: userGroups })
         },
         async deleteUserGroups(groupsToDelete: number[]) {
             for (let i = 0; i < groupsToDelete.length; i++) {
@@ -68,7 +68,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             }
         },
         async validateUser() {
-            await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
+            await _axios.patch(`/users/${this.user?.id}`, { isValidatedByAdmin: true })
             const validatedUser = this.users.findIndex((user) => user.id === this.user?.id)
             this.users.splice(validatedUser, 1)
         },

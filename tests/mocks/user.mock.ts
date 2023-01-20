@@ -1,7 +1,6 @@
 import type { ManagedUsers, User, UserAssociations, UserDirectory, UserGroup, UserNames, UserRegister } from '#/user'
 import { mockedAssociationName } from '~/mocks/association.mock'
 
-
 export const mockedGroups: UserGroup[] = [
     {
         id: 1,
@@ -80,27 +79,27 @@ export const mockedGroupList = mockedGroups.map(
 export const mockedUserAssociations: UserAssociations = [
     {
         id: 1,
-        roleName: "Président",
+        roleName: 'Président',
         hasOfficeStatus: true,
         isPresident: true
     },
     {
         id: 2,
-        roleName: "Secrétaire",
+        roleName: 'Secrétaire',
         hasOfficeStatus: false,
         isPresident: false
 
     },
     {
         id: 3,
-        roleName: "Trésorier",
+        roleName: 'Trésorier',
         hasOfficeStatus: false,
         isPresident: false
 
     },
     {
         id: 4,
-        roleName: "Membre",
+        roleName: 'Membre',
         hasOfficeStatus: false,
         isPresident: false
 

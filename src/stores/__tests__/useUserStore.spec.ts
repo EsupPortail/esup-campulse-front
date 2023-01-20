@@ -1,12 +1,12 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {createPinia, setActivePinia} from 'pinia'
-import {useUserStore} from '@/stores/useUserStore'
-import {mockedGroups, mockedUser} from '~/mocks/user.mock'
-import type {User} from '#/user'
-import {tokens} from '~/mocks/tokens.mock'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {setTokens} from '@/services/userService'
+import { createPinia, setActivePinia } from 'pinia'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { User } from '#/user'
+import { mockedAxios } from '~/mocks/axios.mock'
+import { tokens } from '~/mocks/tokens.mock'
+import { mockedGroups, mockedUser } from '~/mocks/user.mock'
+import { setTokens } from '@/services/userService'
+import { useUserStore } from '@/stores/useUserStore'
 
 setActivePinia(createPinia())
 let userStore = useUserStore()

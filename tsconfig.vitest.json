@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.app.json",
-  "include" : [
+  "include": [
     "src/**/__tests__/**/*.spec.ts",
     "src/**/*.ts",
     "tests/**/*.spec.ts",
@@ -11,6 +11,9 @@
   "compilerOptions": {
     "composite": true,
     "lib": [],
-    "types": ["node", "jsdom"]
+    "types": [
+      "node",
+      "jsdom"
+    ]
   }
 }

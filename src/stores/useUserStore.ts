@@ -1,7 +1,8 @@
-import {defineStore} from 'pinia'
-import type {CasLogin, LocalLogin, User, UserGroup, UserStore} from '#/user'
+import { defineStore } from 'pinia'
+
+import type { CasLogin, LocalLogin, User, UserGroup, UserStore } from '#/user'
 import _axios from '@/plugins/axios'
-import {removeTokens, setTokens} from '@/services/userService'
+import { removeTokens, setTokens } from '@/services/userService'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -17,10 +18,10 @@ export const useUserStore = defineStore('userStore', {
             return state.user?.firstName.charAt(0).toUpperCase()
         },
         managerGroup: (state: UserStore): UserGroup | undefined => {
-            return state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
+            return state.user?.groups.find(({ name }) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
         },
         isUniManager: (state: UserStore): boolean | undefined => {
-            return !!state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU'))
+            return !!state.user?.groups.find(({ name }) => (name === 'Gestionnaire SVU'))
         },
         userName: (state: UserStore): string | undefined => {
             return state.user?.firstName + ' ' + state.user?.lastName
@@ -29,7 +30,7 @@ export const useUserStore = defineStore('userStore', {
     actions: {
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const response = await _axios.post(url, data)
-            const {accessToken, refreshToken, user} = response.data
+            const { accessToken, refreshToken, user } = response.data
             if (user.isValidatedByAdmin) {
                 setTokens(accessToken, refreshToken)
                 this.user = user
@@ -63,7 +64,7 @@ export const useUserStore = defineStore('userStore', {
             }
         },
         hasOfficeStatus(associationId: number): boolean | undefined {
-            const association = this.userAssociationsRoles.find(({association}) => (association === associationId))
+            const association = this.userAssociationsRoles.find(({ association }) => (association === associationId))
             return association?.hasOfficeStatus
         },
         unLoadUser() {
@@ -75,8 +76,8 @@ export const useUserStore = defineStore('userStore', {
         },
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-            const data = (await _axios.post('/users/auth/cas/login/', {ticket, service})).data
-            const {accessToken, refreshToken, user} = data
+            const data = (await _axios.post('/users/auth/cas/login/', { ticket, service })).data
+            const { accessToken, refreshToken, user } = data
             setTokens(accessToken, refreshToken)
             this.newUser = user
         }

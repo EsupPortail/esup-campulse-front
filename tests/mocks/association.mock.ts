@@ -1,4 +1,4 @@
-import type {Association, AssociationList, AssociationName} from '#/association'
+import type { Association, AssociationList, AssociationName } from '#/association'
 
 export const association: Association = {
     id: 1,

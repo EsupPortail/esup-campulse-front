@@ -1,19 +1,19 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {config} from '@vue/test-utils'
-import {createTestingPinia} from '@pinia/testing'
-import {useUserStore} from '@/stores/useUserStore'
-import useSecurity from '@/composables/useSecurity'
-import {mockedUser, mockedUserAssociations, mockedUserGroups} from '~/mocks/user.mock'
-import {mockedAxios} from '~/mocks/axios.mock'
+import { createTestingPinia } from '@pinia/testing'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { config } from '@vue/test-utils'
+
+import { mockedAxios } from '~/mocks/axios.mock'
+import { mockedUser, mockedUserAssociations, mockedUserGroups } from '~/mocks/user.mock'
 import useAssociation from '@/composables/useAssociation'
+import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import * as userService from '@/services/userService'
-
+import { useUserStore } from '@/stores/useUserStore'
 
 vi.mock('@/plugins/axios')
 
 config.global.plugins = [
-    createTestingPinia({createSpy: vi.fn()}),
+    createTestingPinia({ createSpy: vi.fn() }),
 ]
 
 describe('useSecurity', () => {
@@ -28,7 +28,7 @@ describe('useSecurity', () => {
     })
     describe('logIn', () => {
         it('should call logIn function in userStore with API route and user infos as payload', async () => {
-            const {logIn, user} = useSecurity()
+            const { logIn, user } = useSecurity()
             const spy = vi.spyOn(userStore, 'logIn')
             user.value.username = 'john'
             user.value.password = 'password'
@@ -38,9 +38,9 @@ describe('useSecurity', () => {
         })
     })
     describe('register', () => {
-        const {register, newUser} = useSecurity()
-        const {newAssociations} = useAssociation()
-        const {newGroups} = useUserGroups()
+        const { register, newUser } = useSecurity()
+        const { newAssociations } = useAssociation()
+        const { newGroups } = useUserGroups()
         const spies = {
             userCASRegister: vi.spyOn(userService, 'userCASRegister'),
             userGroupsRegister: vi.spyOn(userService, 'userGroupsRegister'),

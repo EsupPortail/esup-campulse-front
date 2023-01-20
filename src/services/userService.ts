@@ -1,8 +1,8 @@
+import axios from 'axios'
+
 import type { UserAssociations, UserRegister } from '#/user'
 import _axios from '@/plugins/axios'
 import { useUserStore } from '@/stores/useUserStore'
-import axios from 'axios'
-
 
 // Tokens
 export function setTokens(access: string, refresh: string) {

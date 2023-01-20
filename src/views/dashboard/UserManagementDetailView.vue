@@ -6,15 +6,14 @@ import {useQuasar} from 'quasar'
 import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
 import useUserGroups from '@/composables/useUserGroups'
-import router from '@/router'
 import type {User} from '#/user'
 import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {getUser, validateUser} = useUsers()
-const {groupChoiceIsValid, newGroups} = useUserGroups()
+const {getUser} = useUsers()
+const {newGroups} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -70,6 +69,7 @@ async function onGetUserAssociations() {
 }
 
 // Function that verify if the user is validated by the admin or not, and send the response to the back
+/*
 async function onValidateUser() {
     if (groupChoiceIsValid.value) {
         try {
@@ -87,6 +87,7 @@ async function onValidateUser() {
         }
     }
 }
+*/
 </script>
 
 <template>

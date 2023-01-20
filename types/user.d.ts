@@ -1,5 +1,4 @@
-import type { AssociationName } from "#/association";
-
+import type { AssociationName } from '#/association';
 
 export interface User {
     id: number,
@@ -33,7 +32,7 @@ export interface UserManagerStore {
 }
 
 // Login
-export type UserLogin = Pick<User, "username" | "password">
+export type UserLogin = Pick<User, 'username' | 'password'>
 
 interface LocalLogin {
     username: string,
@@ -46,7 +45,7 @@ interface CasLogin {
 }
 
 // Register
-export type UserRegister = Pick<User, "username", "first_name" | "last_name" | "email" | "phone">
+export type UserRegister = Pick<User, 'username', 'first_name' | 'last_name' | 'email' | 'phone'>
 
 // Password reset
 export interface PasswordReset {
@@ -89,7 +88,7 @@ export interface UserGroup {
 export type GroupList = { value: number, label: string }[]
 
 // Users
-export type ManagedUser = Omit<User, "password">
+export type ManagedUser = Omit<User, 'password'>
 export type ManagedUsers = ManagedUser[]
 
 export type UserNames = { value: number, label: string }[]
@@ -97,4 +96,4 @@ export type UserNames = { value: number, label: string }[]
 /*export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
 export type UserDirectory = UserDirectoryDetail[]*/
 
-export type UserDirectory = Pick<User, "id", "firstName", "lastName", "email", "associations", "groups", "isValidatedByAdmin">
+export type UserDirectory = Pick<User, 'id', 'firstName', 'lastName', 'email', 'associations', 'groups', 'isValidatedByAdmin'>

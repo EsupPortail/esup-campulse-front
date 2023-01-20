@@ -1,12 +1,12 @@
+import type { AxiosResponse } from 'axios'
+import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { tokens } from '~/mocks/tokens.mock'
+
 import { mockedAxios } from '~/mocks/axios.mock'
 import { mockedNewUser, mockedNewUserGroups, mockedUser, mockedUserAssociations } from '~/mocks/user.mock'
+import { tokens } from '~/mocks/tokens.mock'
 import * as userService from '@/services/userService'
-import type { AxiosResponse } from 'axios'
 import { useUserStore } from '@/stores/useUserStore'
-import { createPinia, setActivePinia } from 'pinia'
-
 
 setActivePinia(createPinia())
 let userStore = useUserStore()

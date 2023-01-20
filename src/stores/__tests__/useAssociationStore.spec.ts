@@ -1,11 +1,11 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { AxiosResponse } from 'axios'
 import { createPinia, setActivePinia } from 'pinia'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import type { Association } from '#/association'
+import { association, associationDirectory, associationNames, associations } from '~/mocks/association.mock'
 import { mockedAxios } from '~/mocks/axios.mock'
 import { useAssociationStore } from '@/stores/useAssociationStore'
-import type { AxiosResponse } from 'axios'
-import { association, associationDirectory, associationNames, associations } from '~/mocks/association.mock'
-import type { Association } from '#/association'
-
 
 setActivePinia(createPinia())
 let associationStore = useAssociationStore()

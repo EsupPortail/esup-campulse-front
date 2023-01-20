@@ -1,10 +1,11 @@
 import { ref } from 'vue'
-import type { UserLogin, UserRegister } from '#/user'
-import { useUserStore } from '@/stores/useUserStore'
-import * as userService from '@/services/userService'
 import { useRoute } from 'vue-router'
+
+import type { UserLogin, UserRegister } from '#/user'
 import useAssociation from '@/composables/useAssociation'
 import useUserGroups from '@/composables/useUserGroups'
+import * as userService from '@/services/userService'
+import { useUserStore } from '@/stores/useUserStore'
 
 export default function() {
 

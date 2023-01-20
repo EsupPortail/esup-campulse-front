@@ -6,7 +6,6 @@ import {useI18n} from 'vue-i18n'
 import {useUserStore} from '@/stores/useUserStore'
 import useAssociation from '@/composables/useAssociation'
 
-
 const userStore = useUserStore()
 const {managedAssociationsDirectory, getManagedAssociations} = useAssociation()
 const {loading} = useQuasar()
@@ -97,34 +96,10 @@ const columns: QTableProps['columns'] = [
                         icon="mdi-pencil"
                         :label="t('association.edit')"
                     />
-                    <!--
-                    <QCheckbox
-                        v-if="!props.row.isEnabled"
-                        color="green"
-                        :label="t('association.enable')"
-                    />
-                    <QCheckbox
-                        v-if="props.row.isEnabled"
-                        color="orange"
-                        :label="t('association.disable')"
-                    />
-                    <QCheckbox
-                        v-if="!props.row.isEnabled"
-                        color="red"
-                        :label="t('association.delete')"
-                    />
-                    -->
                 </QTd>
             </QTr>
         </template>
     </QTable>
-    <!--
-    <QBtn
-        color="secondary"
-        icon="mdi-pencil"
-        :label="t('association.validate-all-changes')"
-    />
-    -->
 </template>
 
 <style lang="sass" scoped>

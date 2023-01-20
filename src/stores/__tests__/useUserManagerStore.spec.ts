@@ -1,5 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { mockedAssociationName } from '~/mocks/association.mock'
 import { mockedAxios } from '~/mocks/axios.mock'
 import {
     mockedGroups,
@@ -10,10 +12,8 @@ import {
     mockedUserNames,
     mockedUsers
 } from '~/mocks/user.mock'
-import { useUserManagerStore } from '@/stores/useUserManagerStore'
-import { mockedAssociationName } from '~/mocks/association.mock'
 import * as userService from '@/services/userService'
-
+import { useUserManagerStore } from '@/stores/useUserManagerStore'
 
 setActivePinia(createPinia())
 let userManagerStore = useUserManagerStore()

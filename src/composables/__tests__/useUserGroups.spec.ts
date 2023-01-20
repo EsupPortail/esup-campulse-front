@@ -1,9 +1,10 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {mockedGroupList, mockedGroups} from '~/mocks/user.mock'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { mockedAxios } from '~/mocks/axios.mock'
+import { mockedGroupList, mockedGroups } from '~/mocks/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
 
-const {getGroups, groups, groupList, studentGroup, groupsToDelete} = useUserGroups()
+const { getGroups, groups, groupList, studentGroup, groupsToDelete } = useUserGroups()
 
 describe('useUserGroups', () => {
     afterEach(() => {
@@ -11,7 +12,7 @@ describe('useUserGroups', () => {
     })
     describe('Get groups', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({data: mockedGroups})
+            mockedAxios.get.mockResolvedValueOnce({ data: mockedGroups })
             getGroups()
         })
         it('should get user groups', () => {
@@ -45,5 +46,4 @@ describe('useUserGroups', () => {
             expect(result).toEqual([2, 3])
         })
     })
-
 })

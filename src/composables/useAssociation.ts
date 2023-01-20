@@ -1,10 +1,11 @@
-import _axios from '@/plugins/axios'
 import { computed, ref } from 'vue'
-import type { User, UserAssociations } from '#/user'
+
 import type { AssociationList, AssociationSocialNetwork, EditedAssociation } from '#/association'
+import type { User, UserAssociations } from '#/user'
+import useUtility from '@/composables/useUtility'
+import _axios from '@/plugins/axios'
 import { useUserStore } from '@/stores/useUserStore'
 import { useAssociationStore } from '@/stores/useAssociationStore'
-import useUtility from '@/composables/useUtility'
 
 const associationStore = useAssociationStore()
 
@@ -90,7 +91,7 @@ export default function() {
         const { formatDate } = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
-            const indexes = ["name", "acronym", "description", "activities", "address", "email", "phone", "siret", "website", "presidentNames"]
+            const indexes = ['name', 'acronym', 'description', 'activities', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames']
             if (indexes.indexOf(key) !== -1) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, { [key]: value })

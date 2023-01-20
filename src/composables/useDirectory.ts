@@ -1,6 +1,6 @@
 import { useAssociationStore } from '@/stores/useAssociationStore'
 
-export default function () {
+export default function() {
   const associationStore = useAssociationStore()
 
   async function getAssociationDetail(routeParams: string) {
