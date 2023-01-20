@@ -97,7 +97,6 @@ const columns: QTableProps['columns'] = [
                         icon="mdi-pencil"
                         :label="t('association.edit')"
                     />
-                    <!--
                     <QCheckbox
                         v-if="!props.row.isEnabled"
                         color="green"
@@ -113,18 +112,15 @@ const columns: QTableProps['columns'] = [
                         color="red"
                         :label="t('association.delete')"
                     />
-                    -->
                 </QTd>
             </QTr>
         </template>
     </QTable>
-    <!--
     <QBtn
         color="secondary"
         icon="mdi-pencil"
         :label="t('association.validate-all-changes')"
     />
-    -->
 </template>
 
 <style lang="sass" scoped>
