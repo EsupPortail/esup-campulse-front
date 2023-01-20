@@ -13,7 +13,7 @@ const props = defineProps({
         <legend>
             {{ t('forms.gdpr-title') }}
         </legend>
-        <div class="gdpr-consent">
+        <div class="consent">
             <QCheckbox
                 :label="t('forms.gdpr')"
                 :model-value="props.hasConsent"
