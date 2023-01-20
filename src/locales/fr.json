@@ -256,8 +256,8 @@
       "info": "Informations"
     },
     "labels": {
+      "activities": "Activités et services proposés",
       "acronym": "Acronyme",
-      "activities": "Activités",
       "add-social-network": "Ajouter un réseau social",
       "address": "Adresse postale",
       "approval-date": "Date d'agrément",
@@ -268,11 +268,12 @@
       "description": "Description",
       "field": "Domaine",
       "institution": "Établissement",
+      "phone": "Numéro de téléphone",
       "last-goa": "Date de la dernière AGO",
       "mail": "Adresse mail",
-      "phone": "Numéro de téléphone",
       "president-mail": "Adresse mail du Président",
       "president-name": "Nom du président ou de la présidente",
+      "president-phone": "Numéro de téléphone du président ou de la présidente",
       "services": "Services proposés",
       "siret": "Numéro SIRET",
       "social-network-location": "Lien vers le réseau social",

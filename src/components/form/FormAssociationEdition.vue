@@ -36,6 +36,7 @@ const association = ref<EditedAssociation>({
     siret: '',
     website: '',
     presidentNames: '',
+    phonePres: '',
     approvalDate: '',
     lastGoaDate: ''
 })
@@ -51,6 +52,7 @@ const initValues = () => {
     association.value.siret = associationStore.association?.siret as string
     association.value.website = associationStore.association?.website as string
     association.value.presidentNames = associationStore.association?.presidentNames as string
+    association.value.phonePres = associationStore.association?.phonePres as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
@@ -166,17 +168,13 @@ async function onValidateChanges() {
                 lazy-rules
             />
             <QInput
-                v-model="association.approvalDate"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                v-model="association.phonePres"
                 filled
-                label="Date d'agrément"
+                label="Numéro de téléphone du président ou de la présidente"
                 lazy-rules
-                type="date"
-            >
-                <template v-slot:prepend>
-                    <QIcon name="mdi-calendar"/>
-                </template>
-            </QInput>
+                class="without-rules"
+            />
+          <!-- Warning : Removed approval date input -->
             <QInput
                 v-model="association.lastGoaDate"
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
@@ -189,13 +187,14 @@ async function onValidateChanges() {
                     <QIcon name="mdi-calendar"/>
                 </template>
             </QInput>
+          <!-- Warning : Removed not-empty rules on siret input -->
             <QInput
                 v-model="association.siret"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
                 filled
                 inputmode="numeric"
                 label="Siret"
                 lazy-rules
+                class="without-rules"
             />
         </fieldset>
         <fieldset>
@@ -269,6 +268,9 @@ fieldset
 
 .q-select
     margin-bottom: 20px
+
+.without-rules
+  margin-bottom: 1rem
 
 legend
     background-color: $primary

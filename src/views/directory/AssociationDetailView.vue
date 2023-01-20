@@ -84,10 +84,10 @@ async function onGetAssociationDetail() {
             <p>{{ association?.presidentNames }}</p>
         </article>
         <article>
-            <h3>{{ t("association.labels.approval-date") }}</h3>
-            <p>{{ formatDate(association?.approvalDate) }}</p>
+            <h3>{{ t("association.labels.president-phone") }}</h3>
+            <p>{{ association?.phonePres }}</p>
         </article>
-        <article>
+      <article>
             <h3>{{ t("association.labels.charter-date") }}</h3>
             <p>TODO</p>
         </article>
@@ -95,7 +95,7 @@ async function onGetAssociationDetail() {
             <h3>{{ t("association.labels.last-goa") }}</h3>
             <p>{{ formatDate(association?.lastGoaDate) }}</p>
         </article>
-        <article>
+        <article v-if="association?.siret !== ''">
             <h3>{{ t("association.labels.siret") }}</h3>
             <p>{{ association?.siret }}</p>
         </article>

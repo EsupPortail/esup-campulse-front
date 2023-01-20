@@ -27,6 +27,7 @@ export interface Association {
     website: string | null,
     studentCount: number | null,
     presidentNames: string | null,
+    phonePres: string | null,
     isEnabled: boolean | null,
     createdDate: string | null,
     approvalDate: string | null,
@@ -48,6 +49,7 @@ export interface EditedAssociation {
     siret: string | null,
     website: string | null,
     presidentNames: string | null,
+    phonePres: string | null,
     approvalDate: string | null,
     lastGoaDate: string | null
 }
