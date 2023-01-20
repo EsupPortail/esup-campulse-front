@@ -43,7 +43,8 @@ app.use(Quasar, {
     config: {
         notify: {},
         brand: {
-            primary: "#025827"
+            primary: "#025827",
+            secondary: "#1976D2"
         }
     },
     lang: quasarLang,

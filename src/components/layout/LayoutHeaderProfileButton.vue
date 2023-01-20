@@ -22,7 +22,7 @@ async function onLogOut() {
 
 <template>
     <div class="q-pa-md">
-        <QBtnDropdown align="between" color="cyan" no-caps padding="0">
+        <QBtnDropdown align="between" color="secondary" no-caps padding="0">
             <template v-slot:label>
                 <div class="row items-center no-wrap">
 

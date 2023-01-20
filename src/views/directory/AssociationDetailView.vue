@@ -147,7 +147,7 @@ async function onGetAssociationDetail() {
             to="/associations"
         />
         <QBtn
-            v-if="association.email"
+            v-if="association?.email"
             :href="`mailto:${association?.email}`"
             :label="t('association.contact')"
             :title="`${t('association.contact')} ${association?.name}`"
