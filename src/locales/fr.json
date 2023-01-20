@@ -49,12 +49,12 @@
     "logout": "Déconnexion",
     "my-account": "Mon compte",
     "my-profile": "Mon espace",
-    "title": "Assopolis"
+    "title": "Opaline"
   },
   "footer": {
     "about": "À propos",
     "contact": "Contact",
-    "copyright": "2017-2023 - Assopolis - Tous droits réservés",
+    "copyright": "2017-2023 - Opaline - Tous droits réservés",
     "legal-notice": "Mentions légales"
   },
   "login": {
@@ -248,6 +248,7 @@
     "edit": "Modifier",
     "enable": "Réactiver",
     "enable-association": "Réactiver l'association",
+    "validate-all-changes": "Valider tous les changements",
     "titles": {
       "admin": "Administration",
       "contact": "Contact",

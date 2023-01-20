@@ -92,28 +92,39 @@ const columns: QTableProps['columns'] = [
                 </QTd>
                 <QTd key="actions" :props="props" class="edition-buttons">
                     <QBtn
-                        v-if="userStore.isUniManager || userStore.hasOfficeStatus(props.row.id)"
                         :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                        color="secondary"
+                        color="primary"
                         icon="mdi-pencil"
                         :label="t('association.edit')"
                     />
-                    <QBtn
-                        v-if="userStore.isUniManager && props.row.isEnabled"
+                    <!--
+                    <QCheckbox
+                        v-if="!props.row.isEnabled"
+                        color="green"
+                        :label="t('association.enable')"
+                    />
+                    <QCheckbox
+                        v-if="props.row.isEnabled"
                         color="orange"
-                        icon="mdi-eye-remove"
                         :label="t('association.disable')"
                     />
-                    <QBtn
-                        v-if="userStore.isUniManager && !props.row.isEnabled"
+                    <QCheckbox
+                        v-if="!props.row.isEnabled"
                         color="red"
-                        icon="mdi-delete"
                         :label="t('association.delete')"
                     />
+                    -->
                 </QTd>
             </QTr>
         </template>
     </QTable>
+    <!--
+    <QBtn
+        color="secondary"
+        icon="mdi-pencil"
+        :label="t('association.validate-all-changes')"
+    />
+    -->
 </template>
 
 <style lang="sass" scoped>
