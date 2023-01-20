@@ -19,7 +19,8 @@ const managedAssociationsDirectory = computed(() => {
             acronym: association.acronym,
             institution: association.institution?.name,
             component: association.institutionComponent?.name,
-            field: association.activityField?.name
+            field: association.activityField?.name,
+            isEnabled: association.isEnabled
         })
     )
 })

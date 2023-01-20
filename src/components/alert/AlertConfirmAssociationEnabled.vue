@@ -6,8 +6,8 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 
 const {t} = useI18n()
-const activate = ref<boolean>(false)
-const inactivate = ref<boolean>(false)
+const enable = ref<boolean>(false)
+const disable = ref<boolean>(false)
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
@@ -32,20 +32,20 @@ async function onEnableAssociation(isEnabled: boolean) {
 <template>
     <QBtn
         v-if="!associationStore.association.isEnabled"
-        :label="t('association.enable')"
+        :label="t('association.enable-association')"
         color="green"
         icon="mdi-eye-check"
-        @click="activate = true"
+        @click="enable = true"
     />
     <QBtn
         v-if="associationStore.association.isEnabled"
-        :label="t('association.disable')"
-        color="red"
+        :label="t('association.disable-association')"
+        color="orange"
         icon="mdi-eye-remove"
-        @click="inactivate = true"
+        @click="disable = true"
     />
 
-    <QDialog v-model="activate" persistent>
+    <QDialog v-model="enable" persistent>
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{ t("association.confirm-enable") }}</span>
@@ -60,7 +60,7 @@ async function onEnableAssociation(isEnabled: boolean) {
                 />
                 <QBtn
                     v-close-popup
-                    :label="t('association.enable')"
+                    :label="t('association.enable-association')"
                     color="green"
                     icon="mdi-eye-check"
                     @click="onEnableAssociation(true)"
@@ -68,7 +68,7 @@ async function onEnableAssociation(isEnabled: boolean) {
             </QCardActions>
         </QCard>
     </QDialog>
-    <QDialog v-model="inactivate" persistent>
+    <QDialog v-model="disable" persistent>
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{ t("association.confirm-disable") }}</span>
@@ -83,8 +83,8 @@ async function onEnableAssociation(isEnabled: boolean) {
                 />
                 <QBtn
                     v-close-popup
-                    :label="t('association.disable')"
-                    color="red"
+                    :label="t('association.disable-association')"
+                    color="orange"
                     icon="mdi-eye-remove"
                     @click="onEnableAssociation(false)"
                 />

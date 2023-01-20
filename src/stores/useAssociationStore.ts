@@ -97,6 +97,9 @@ export const useAssociationStore = defineStore('associationStore', {
             const assoToEnable = this.associations.findIndex((association) => association.id === this.association?.id)
             const updatedAssociation = (await _axios.patch(`/associations/${this.association?.id}`, { isEnabled })).data
             this.associations[assoToEnable].isEnabled = updatedAssociation.isEnabled
+            if (this.association) {
+                this.association.isEnabled = updatedAssociation.isEnabled
+            }
         }
     }
 })

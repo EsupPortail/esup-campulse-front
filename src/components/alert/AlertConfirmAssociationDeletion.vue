@@ -29,7 +29,7 @@ async function onDeleteAssociation() {
 
 <template>
     <QBtn
-        :label="t('association.delete')"
+        :label="t('association.delete-association')"
         color="red"
         icon="mdi-delete"
         @click="confirmation = true"
@@ -50,7 +50,7 @@ async function onDeleteAssociation() {
                 />
                 <QBtn
                     v-close-popup
-                    :label="t('association.delete')"
+                    :label="t('association.delete-association')"
                     color="red"
                     icon="mdi-delete"
                     @click="onDeleteAssociation"
