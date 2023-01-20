@@ -5,6 +5,7 @@ import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import {useUserStore} from '@/stores/useUserStore'
 import useAssociation from '@/composables/useAssociation'
+import AlertConfirmAssociationsChanges from '@/components/alert/AlertConfirmAssociationsChanges.vue'
 
 
 const userStore = useUserStore()
@@ -98,16 +99,19 @@ const columns: QTableProps['columns'] = [
                         :label="t('association.edit')"
                     />
                     <QCheckbox
+                        v-model="managedAssociationsDirectory"
                         v-if="!props.row.isEnabled"
                         color="green"
                         :label="t('association.enable')"
                     />
                     <QCheckbox
+                        v-model="managedAssociationsDirectory"
                         v-if="props.row.isEnabled"
                         color="orange"
                         :label="t('association.disable')"
                     />
                     <QCheckbox
+                        v-model="managedAssociationsDirectory"
                         v-if="!props.row.isEnabled"
                         color="red"
                         :label="t('association.delete')"
@@ -116,11 +120,7 @@ const columns: QTableProps['columns'] = [
             </QTr>
         </template>
     </QTable>
-    <QBtn
-        color="secondary"
-        icon="mdi-pencil"
-        :label="t('association.validate-all-changes')"
-    />
+    <AlertConfirmAssociationsChanges/>
 </template>
 
 <style lang="sass" scoped>
