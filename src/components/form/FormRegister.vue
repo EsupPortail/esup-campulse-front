@@ -17,6 +17,7 @@ const userStore = useUserStore()
 const {register, newUser, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
 const {groupChoiceIsValid} = useUserGroups()
 const {groupUnabledSelectingAssociation} = useUserGroups()
+//const unistraMail =
 
 
 const hasConsent = ref<boolean>(false)
@@ -107,10 +108,12 @@ async function onRegister() {
             v-model="newUser.email"
             :disable="!!userStore.isCas"
             :label="t('forms.email')"
-            :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
+            :rules="[ (val, rules) => rules.email(val) || t('forms.required-email'),
+            val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
             filled
             lazy-rules
-        />
+        >
+        </QInput>
         <QInput
             v-model="emailVerification"
             :disable="!!userStore.isCas"
