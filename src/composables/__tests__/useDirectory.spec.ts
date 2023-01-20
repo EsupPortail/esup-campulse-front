@@ -3,6 +3,7 @@ import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {config} from '@vue/test-utils'
 import {createTestingPinia} from '@pinia/testing'
+import {associations, associationSearchSettings, associationWrongSearchSettings} from '~/mocks/association.mock'
 
 vi.mock('@/plugins/axios')
 
@@ -30,6 +31,21 @@ describe('useDirectory', () => {
 
             expect(spy).toHaveBeenCalledOnce()
             expect(spy).toHaveBeenCalledWith(1)
+        })
+    })
+
+    describe('advancedSearch', () => {
+        it('should return the associations with matching search parameters', () => {
+            associationStore.associations = associations
+            const {advancedSearch} = useDirectory()
+            const matches = advancedSearch(associationSearchSettings)
+            expect(matches).toEqual([associations[1]])
+        })
+        it('should not return the associations with no matching search parameters', () => {
+            associationStore.associations = associations
+            const {advancedSearch} = useDirectory()
+            const matches = advancedSearch(associationWrongSearchSettings)
+            expect(matches).not.toEqual([associations[1]])
         })
     })
 })

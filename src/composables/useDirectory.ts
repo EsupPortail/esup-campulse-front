@@ -1,17 +1,10 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {ref, watch} from 'vue'
 import type {AssociationList, AssociationSearch} from '#/association'
-
-const associationStore = useAssociationStore()
-
-// Used as temp for a search on associations
-const shownAssociations = ref<AssociationList[] | []>([...associationStore.associations])
-watch(() => associationStore.associations, () => {
-    shownAssociations.value = associationStore.associations
-})
 
 
 export default function () {
+
+    const associationStore = useAssociationStore()
 
     async function getAssociationDetail(routeParams: string) {
         if (routeParams) {
@@ -67,13 +60,12 @@ export default function () {
                     matches = associationStore.associations.filter(association => association.activityField?.id === settings.activityField)
                 }
             }
-            shownAssociations.value = matches
+            return matches
         }
     }
 
     return {
         getAssociationDetail,
-        shownAssociations,
         advancedSearch
     }
 }

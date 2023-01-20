@@ -1,4 +1,4 @@
-import type {Association, AssociationList, AssociationName} from '#/association'
+import type {Association, AssociationList, AssociationName, AssociationSearch} from '#/association'
 
 export const association: Association = {
     id: 1,
@@ -40,26 +40,50 @@ export const association: Association = {
     cgaDate: null
 }
 
-const associationList = {
-    id: 1,
-    institution: {
+const associationList = [
+    {
         id: 1,
-        name: 'Université de Strasbourg',
-        acronym: 'Unistra',
+        institution: {
+            id: 1,
+            name: 'Université de Strasbourg',
+            acronym: 'Unistra',
+        },
+        institutionComponent: {
+            id: 1,
+            name: 'Faculté de médecine',
+        },
+        activityField: {
+            id: 1,
+            name: 'Santé',
+        },
+        name: 'Association',
+        acronym: 'Asso',
+        isEnabled: true,
+        isSite: true,
+        isVisible: true
     },
-    institutionComponent: {
-        id: 1,
-        name: 'Faculté de médecine',
-    },
-    activityField: {
-        id: 1,
-        name: 'Santé',
-    },
-    name: 'Association',
-    acronym: 'Asso',
-    isEnabled: true,
-    isSite: true
-}
+    {
+        id: 2,
+        institution: {
+            id: 2,
+            name: 'Université de Haute-Alsace',
+            acronym: 'UHA',
+        },
+        institutionComponent: {
+            id: 2,
+            name: 'Faculté de Chimie',
+        },
+        activityField: {
+            id: 2,
+            name: 'Sciences',
+        },
+        name: 'Amicale des étudiants en Chimie',
+        acronym: 'AEC',
+        isEnabled: true,
+        isSite: true,
+        isVisible: true
+    }
+]
 
 export const mockedAssociationName: AssociationName[] = [
     {
@@ -68,7 +92,7 @@ export const mockedAssociationName: AssociationName[] = [
     }
 ]
 
-export const associations: AssociationList[] = [associationList, associationList, associationList]
+export const associations: AssociationList[] = associationList
 
 export const associationNames = associations.map(
     association => ({
@@ -87,3 +111,21 @@ export const associationDirectory = associations.map(
         field: association.activityField.name
     })
 )
+
+export const associationSearchSettings: AssociationSearch = {
+    search: '',
+    name: 'Chimie',
+    acronym: '',
+    institution: 2,
+    institutionComponent: 2,
+    activityField: 2
+}
+
+export const associationWrongSearchSettings: AssociationSearch = {
+    search: '',
+    name: 'Wrong query',
+    acronym: '',
+    institution: 0,
+    institutionComponent: 2,
+    activityField: 3
+}
