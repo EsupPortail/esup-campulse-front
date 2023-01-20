@@ -3,11 +3,13 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted, ref} from 'vue'
-import type {AssociationDirectory, AssociationSearch} from '#/association'
+import useDirectory from '@/composables/useDirectory'
+import type {AssociationSearch} from '#/association'
 
 const associationStore = useAssociationStore()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
+const {advancedSearch} = useDirectory()
 
 onMounted(async () => {
     loading.show
@@ -18,8 +20,9 @@ onMounted(async () => {
 defineEmits(['filterAssociations'])
 
 const settings = ref<AssociationSearch>({
-    name: "",
-    acronym: "",
+    search: '',
+    name: '',
+    acronym: '',
     institution: null,
     institutionComponent: null,
     activityField: null
@@ -35,31 +38,30 @@ async function loadAssociationsFields() {
         })
     }
 }
-
-function onNameSearch() {
-    if (settings.value.name) {
-        const matches: AssociationDirectory[] = associationStore.associationDirectory.find(({name}) => name.toLowerCase() === settings.value.name.toLowerCase())
-    }
-}
 </script>
 
 <template>
     <QForm
         class="search-text-field"
-        @submit.prevent="onAdvancedSearch"
+        @submit.prevent="advancedSearch(settings)"
     >
         <fieldset>
             <QInput
-                v-model="settings.name"
-                :label="t('directory.labels.association-name')"
+                v-model="settings.search"
+                :label="t('directory.search')"
+                :placeholder="t('directory.search-placeholder')"
                 filled
                 lazy-rules
-            />
+            >
+                <template v-slot:prepend>
+                    <QIcon name="mdi-magnify"/>
+                </template>
+            </QInput>
             <QBtn
                 :label="t('directory.search')"
                 color="primary"
-                icon="mdi-magnify"
-                @click="onNameSearch"
+                icon="mdi-chevron-right"
+                @click="onSearch"
             />
         </fieldset>
         <QExpansionItem
@@ -68,6 +70,12 @@ function onNameSearch() {
             icon="mdi-menu-right"
         >
             <fieldset>
+                <QInput
+                    v-model="settings.name"
+                    :label="t('directory.labels.association-name')"
+                    filled
+                    lazy-rules
+                />
                 <QInput
                     v-model="settings.acronym"
                     :label="t('directory.labels.association-acronym')"
@@ -100,9 +108,9 @@ function onNameSearch() {
                 />
             </fieldset>
             <QBtn
-                :label="t('directory.search')"
+                :label="t('directory.advanced-search')"
                 color="primary"
-                icon="mdi-magnify"
+                icon="mdi-chevron-right"
                 type="submit"
             />
         </QExpansionItem>

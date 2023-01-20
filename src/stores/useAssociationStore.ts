@@ -1,9 +1,8 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import type {
     ActivityFieldList,
     ActivityFieldNames,
     Association,
-    AssociationDirectory,
     AssociationList,
     AssociationNames,
     AssociationStore,
@@ -31,7 +30,7 @@ export const useAssociationStore = defineStore('associationStore', {
                     label: association.name
                 }))
         },
-        associationDirectory: (state: AssociationStore): AssociationDirectory => {
+        /*associationDirectory: (state: AssociationStore): AssociationDirectory => {
             return state.associations
                 .map(association => ({
                     id: association.id,
@@ -41,7 +40,7 @@ export const useAssociationStore = defineStore('associationStore', {
                     component: association.institutionComponent?.name,
                     field: association.activityField?.name
                 }))
-        },
+        },*/
         institutionNames: (state: AssociationStore): InstitutionNames => {
             return state.institutions
                 .map(institution => ({
@@ -82,7 +81,7 @@ export const useAssociationStore = defineStore('associationStore', {
         async getAssociationsListFields() {
             if (this.institutions.length === 0) {
                 this.institutions = (await _axios.get<InstitutionList[]>('/associations/institutions')).data
-                this.institutions.push({ id: 0, name: "Non rattaché à une composante", acronym: "" })
+                this.institutions.push({id: 0, name: "Non rattaché à une composante", acronym: ""})
             }
             if (this.institutionComponents.length === 0) {
                 this.institutionComponents = (await _axios.get<InstitutionComponentList[]>('/associations/institution_components')).data
@@ -97,7 +96,7 @@ export const useAssociationStore = defineStore('associationStore', {
             this.associations.splice(assoToDelete, 1)
         },
         async createAssociation(name: string) {
-            await _axios.post('/associations/', { name: name })
+            await _axios.post('/associations/', {name: name})
         }
     }
 })

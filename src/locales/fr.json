@@ -208,6 +208,7 @@
     "introduction": "Lorem ipsum",
     "search": "Chercher dans l'annuaire",
     "advanced-search": "Recherche avancée",
+    "search-placeholder": "Université de Strasbourg, Sciences...",
     "labels": {
       "association-name": "Nom de l'association",
       "association-acronym": "Sigle",

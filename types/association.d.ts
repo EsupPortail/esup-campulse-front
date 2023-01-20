@@ -92,6 +92,7 @@ export interface ActivityFieldList {
 }
 
 export interface AssociationSearch {
+    search: string,
     name: string,
     acronym: string,
     institution: number | null,
