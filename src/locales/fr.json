@@ -230,10 +230,12 @@
     "title": "Associations",
     "labels": {
       "association-acronym": "Sigle",
+      "association-actions": "Actions",
       "association-component": "Composante",
       "association-field": "Domaine",
       "association-institution": "Institution",
-      "association-name": "Nom de l'association"
+      "association-name": "Nom de l'association",
+      "association-status": "Statut"
     }
   },
   "association": {
@@ -248,9 +250,11 @@
     "delete-association": "Supprimer l'association",
     "disable": "Inactiver",
     "disable-association": "Inactiver l'association",
+    "disabled": "🔴 Désactivée",
     "edit": "Modifier",
     "enable": "Réactiver",
     "enable-association": "Réactiver l'association",
+    "enabled": "🟢 Activée",
     "validate-all-changes": "Valider tous les changements",
     "titles": {
       "admin": "Administration",
