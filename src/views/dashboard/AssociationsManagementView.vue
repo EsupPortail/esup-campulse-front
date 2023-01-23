@@ -1,15 +1,20 @@
 <script lang="ts" setup>
-import {onMounted} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import {useUserStore} from '@/stores/useUserStore'
 import useAssociation from '@/composables/useAssociation'
+import AlertConfirmAssociationsChanges from '@/components/alert/AlertConfirmAssociationsChanges.vue'
 
 const userStore = useUserStore()
 const {managedAssociationsDirectory, getManagedAssociations} = useAssociation()
 const {loading} = useQuasar()
 const {t} = useI18n()
+const associations = ref([...managedAssociationsDirectory.value])
+watch(() => managedAssociationsDirectory.value, () => {
+    associations.value = managedAssociationsDirectory
+})
 
 onMounted(async function () {
     loading.show
@@ -17,6 +22,7 @@ onMounted(async function () {
     loading.hide
 })
 
+const selected: QTableProps['selected'] = ref([])
 const columns: QTableProps['columns'] = [
     {
         name: 'name',
@@ -49,7 +55,8 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
-    {name: 'actions', align: 'left', label: 'Actions', field: 'isEnabled', sortable: false},
+    {name: 'status', align: 'left', label: t('directory.labels.association-status'), field: 'isEnabled', sortable: false},
+    {name: 'actions', align: 'left', label: t('directory.labels.association-actions'), sortable: false},
 ]
 </script>
 
@@ -64,16 +71,33 @@ const columns: QTableProps['columns'] = [
         <template v-slot:action>
         </template>
     </QBanner>
+    <QBtn
+        :label="t('home.back-dashboard')"
+        :to="{name: 'Dashboard'}"
+        color="secondary"
+        icon="mdi-arrow-left-circle"
+    />
+    <QBtn
+        :label="t('dashboard.create-association')"
+        :to="{name: 'CreateAssociation'}"
+        color="secondary"
+        icon="mdi-plus-box"
+    />
     <QTable
         :columns="columns"
-        :loading="!managedAssociationsDirectory"
-        :rows="managedAssociationsDirectory"
+        :loading="!associations"
+        :rows="associations.value"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="t('directory.title')"
         row-key="name"
+        selection="multiple"
+        v-model:selected="selected"
     >
         <template v-slot:body="props">
             <QTr :props="props">
+                <QTd>
+                    <QCheckbox v-model="props.selected"/>
+                </QTd>
                 <QTd key="name" :props="props">
                     {{ props.row.name }}
                 </QTd>
@@ -89,7 +113,10 @@ const columns: QTableProps['columns'] = [
                 <QTd key="field" :props="props">
                     {{ props.row.field }}
                 </QTd>
-                <QTd key="actions" :props="props" class="edition-buttons">
+                <QTd key="status" :props="props">
+                    {{ props.row.isEnabled ? t('association.enabled') : t('association.disabled') }}
+                </QTd>
+                <QTd key="actions" :props="props">
                     <QBtn
                         :to="{name: 'EditAssociation', params: {id: props.row.id}}"
                         color="primary"
@@ -100,6 +127,7 @@ const columns: QTableProps['columns'] = [
             </QTr>
         </template>
     </QTable>
+    <AlertConfirmAssociationsChanges :selectedAssociations="selected"/>
 </template>
 
 <style lang="sass" scoped>

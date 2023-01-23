@@ -5,9 +5,11 @@ import {useI18n} from 'vue-i18n'
 import useDirectory from '@/composables/useDirectory'
 import type {AssociationList, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
+import _axios from "@/plugins/axios";
 
 
 const {advancedSearch} = useDirectory()
+const {simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
@@ -84,8 +86,8 @@ async function loadAssociationsFields() {
     }
 }
 
-function onSearch() {
-    //
+async function onSearch() {
+  associations.value = await simpleAssociationSearch(settings.value.search)
 }
 
 function onAdvancedSearch() {
