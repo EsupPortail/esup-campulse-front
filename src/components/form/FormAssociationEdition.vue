@@ -12,12 +12,12 @@ import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociati
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {EditedAssociation} from '#/association'
-import axios from "axios";
+import axios from 'axios'
 
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {formatDate} = useUtility()
+const {formatDate, urlRegex} = useUtility()
 const {
     checkChanges,
     updateAssociation
@@ -205,7 +205,6 @@ async function onValidateChanges() {
                 filled
                 lazy-rules
             />
-            <!-- Warning : Removed approval date input -->
             <QInput
                 v-model="association.lastGoaDate"
                 :label="t('association.labels.last-goa')"
@@ -218,7 +217,6 @@ async function onValidateChanges() {
                     <QIcon name="mdi-calendar"/>
                 </template>
             </QInput>
-            <!-- Warning : Removed not-empty rules on siret input -->
             <QInput
                 v-model="association.siret"
                 :label="t('association.labels.siret')"
@@ -248,7 +246,7 @@ async function onValidateChanges() {
             <QInput
                 v-model="association.email"
                 :label="t('association.labels.mail')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[ (val, rules) => rules.email(val) || t('forms.fill-field')]"
                 filled
                 lazy-rules
                 type="email"
@@ -256,7 +254,7 @@ async function onValidateChanges() {
             <QInput
                 v-model="association.website"
                 :label="t('association.labels.website')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[ val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
                 filled
                 lazy-rules
                 type="url"

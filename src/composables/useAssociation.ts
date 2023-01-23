@@ -112,6 +112,11 @@ export default function () {
             }
         }
         // Check social media
+        checkSocialNetworks()
+        return changedData
+    }
+
+    function checkSocialNetworks() {
         let hasChanges = false
         // If there already are social networks, and the same amount between old and new
         if (associationStore.association?.socialNetworks.length && associationStore.association?.socialNetworks.length === associationSocialNetworks.value.length) {
@@ -138,7 +143,6 @@ export default function () {
         else {
             changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
         }
-        return changedData
     }
 
     async function updateAssociation() {
