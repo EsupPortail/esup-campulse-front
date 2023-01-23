@@ -131,7 +131,8 @@
     "social-network-type-hint": "Par exemple : Facebook",
     "status": "Votre statut",
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
-    "validated-account": "Compte validé"
+    "validated-account": "Compte validé",
+    "phone-char-limit": "Maximum 32 caractères autorisés."
   },
   "user-manager": {
     "add-user": "Ajouter un compte",
@@ -179,6 +180,7 @@
       "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur.",
       "cas-authentication-error": "Erreur d'authentification CAS.",
       "delete-association-error": "Une erreur est survenue lors de la suppression de l'association. Veuillez réessayer.",
+      "edit-association-error": "Une erreur est survenue lors de l'édition de l'association. Veuillez réessayer.",
       "different-emails": "Les deux adresses email ne sont pas identiques.",
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
       "disable-association-error": "L'association n'a pas été inactivée.",
@@ -208,7 +210,9 @@
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
       "validate-association": "L'association a été créée avec succès.",
       "validate-delete-user": "Le compte a bien été supprimé.",
-      "validate-success": "Le statut du compte a bien été modifié."
+      "validate-success": "Le statut du compte a bien été modifié.",
+      "association-up-to-date": "L'association est déjà à jour.",
+      "association-successfully-updated": "L'association a bien été mise à jour."
     }
   },
   "alerts": {
@@ -271,6 +275,7 @@
       "info": "Informations"
     },
     "labels": {
+      "name": "Nom de l'association",
       "activities": "Activités et services proposés",
       "acronym": "Acronyme",
       "add-social-network": "Ajouter un réseau social",
