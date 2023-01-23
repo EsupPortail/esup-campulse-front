@@ -11,7 +11,13 @@ const groupChoiceIsValid = computed(() => {
     return newGroups.value.length > 0 && newGroups.value.length <= groupChoiceLimit
 })
 
-export default function() {
+// Prevents managers from selecting an association
+const groupUnabledToJoinAssociation = [1, 2]
+const groupUnabledSelectingAssociation = computed(() => {
+    return !newGroups.value.some( group => groupUnabledToJoinAssociation.includes(group));
+})
+
+export default function () {
     const groups = ref<UserGroup[]>()
 
     async function getGroups() {
@@ -40,6 +46,7 @@ export default function() {
         studentGroup,
         groupsToDelete,
         groupChoiceIsValid,
+        groupUnabledSelectingAssociation,
         newGroups
     }
 }
