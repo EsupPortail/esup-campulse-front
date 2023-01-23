@@ -5,6 +5,7 @@ import {useI18n} from 'vue-i18n'
 import useDirectory from '@/composables/useDirectory'
 import type {AssociationList, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
+import _axios from "@/plugins/axios";
 
 
 const {advancedSearch} = useDirectory()
@@ -84,8 +85,8 @@ async function loadAssociationsFields() {
     }
 }
 
-function onSearch() {
-    //
+async function onSearch(value: string) {
+  associations.value = (await _axios.get<AssociationList[]>(`/associations/?is_public=true&search=${value}`)).data
 }
 
 function onAdvancedSearch() {
@@ -125,7 +126,7 @@ function onAdvancedSearch() {
                     :label="t('directory.search')"
                     color="primary"
                     icon="mdi-chevron-right"
-                    @click="onSearch"
+                    @click="onSearch(settings.search)"
                 />
             </fieldset>
             <QExpansionItem
