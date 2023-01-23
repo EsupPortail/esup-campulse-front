@@ -17,7 +17,7 @@ const {t} = useI18n()
 const {formatDate} = useUtility()
 const {
     checkChanges,
-    changedData
+    updateAssociation
 } = useAssociation()
 
 const associationStore = useAssociationStore()
@@ -62,7 +62,6 @@ const initValues = () => {
 watch(() => associationStore.association, initValues)
 
 onMounted(async () => {
-    //initLabels()
     initValues()
 })
 
@@ -75,9 +74,9 @@ function onLeaveEdition() {
     router.push({name: 'ManageAssociations'})
 }
 
+// Refactor in composable
 onBeforeRouteLeave((to, from, next) => {
-    checkChanges(association.value)
-    if (Object.keys(changedData).length > 0) {
+    if (Object.keys(checkChanges(association.value)).length > 0) {
         openAlert.value = true
         if (!leaveEdition.value) {
             next(false)
@@ -90,9 +89,12 @@ onBeforeRouteLeave((to, from, next) => {
 })
 
 // Validate changes
+// Refactor in composable
 async function onValidateChanges() {
-    checkChanges(association.value)
-    // await associationStore.updateAssociation()
+    const changes = checkChanges(association.value)
+    if (Object.keys(changes).length > 0) {
+        await updateAssociation()
+    }
 }
 </script>
 
