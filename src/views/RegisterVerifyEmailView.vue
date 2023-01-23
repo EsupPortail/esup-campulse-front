@@ -1,13 +1,35 @@
 <script lang="ts" setup>
-import {useI18n} from "vue-i18n";
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import * as userService from '@/services/userService'
 
+const route = useRoute()
 const {t} = useI18n()
+let messageTitle = ref<string>()
+let messageDescription = ref<string>()
+
+onMounted(async () => {
+  if (route.query.key) {
+    try {
+      await userService.verifyEmail(route.query.key as string)
+      messageTitle.value = t('register.register-verify-email')
+      messageDescription.value = t('register.email-verified')
+    } catch (e) {
+      messageTitle.value = t('register.register-not-verify-email')
+      messageDescription.value = t('register.email-not-verified')
+    }
+  } else {
+    messageTitle.value = t('register.register-not-verify-email')
+    messageDescription.value = t('register.email-not-verified')
+  }
+})
 </script>
 
 <template>
-  <h1>{{ t("register.register-verify-email") }}</h1>
+  <h1>{{ messageTitle }}</h1>
   <div>
-    <p>{{ t("register.email-verified") }}</p>
+    <p>{{ messageDescription }}</p>
     <RouterLink to="/">{{ t("register.back-to-home") }}</RouterLink>
   </div>
 </template>

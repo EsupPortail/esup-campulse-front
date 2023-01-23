@@ -72,8 +72,10 @@
   },
   "register": {
     "back-to-home": "Retour à l'accueil",
+    "email-not-verified": "Votre adresse e-mail n'a pas pu être vérifiée.",
     "email-verified": "Votre adresse e-mail a bien été vérifiée. Un gestionnaire va à présent étudier votre demande d'inscription. Vous recevrez vos codes d'accès à l'application par mail dès que votre demande sera validée.",
     "register": "Demande d'inscription",
+    "register-not-verify-email": "Adresse e-mail non vérifiée",
     "register-resend": "Reconfirmer l'adresse email",
     "register-success": "Demande d'inscription réussie",
     "register-verify-email": "Adresse e-mail vérifiée",
