@@ -9,6 +9,7 @@ import _axios from "@/plugins/axios";
 
 
 const {advancedSearch} = useDirectory()
+const {simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
@@ -85,8 +86,8 @@ async function loadAssociationsFields() {
     }
 }
 
-async function onSearch(value: string) {
-  associations.value = (await _axios.get<AssociationList[]>(`/associations/?is_public=true&search=${value}`)).data
+async function onSearch() {
+  associations.value = await simpleAssociationSearch(settings.value.search)
 }
 
 function onAdvancedSearch() {
@@ -126,7 +127,7 @@ function onAdvancedSearch() {
                     :label="t('directory.search')"
                     color="primary"
                     icon="mdi-chevron-right"
-                    @click="onSearch(settings.search)"
+                    @click="onSearch"
                 />
             </fieldset>
             <QExpansionItem
