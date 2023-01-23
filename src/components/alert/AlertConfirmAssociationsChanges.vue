@@ -22,8 +22,15 @@ defineProps({
 
 async function onConfirmChanges(selectedAssociations) {
   try {
+    let mailto = "mailto:?bcc="
     switch (actionsOptions.value.value) {
         case 'email':
+            selectedAssociations.forEach(async (selectedAssociation) => {
+                if (selectedAssociation.email) {
+                    mailto += `${selectedAssociation.email},`
+                }
+            })
+            window.location.href = mailto
             break;
         case 'enable':
             selectedAssociations.forEach(async (selectedAssociation) => {

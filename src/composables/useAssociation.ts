@@ -21,6 +21,7 @@ const managedAssociationsDirectory = computed(() => {
             component: association.institutionComponent?.name,
             field: association.activityField?.name,
             isEnabled: association.isEnabled,
+            email: association.email,
         })
     )
 })

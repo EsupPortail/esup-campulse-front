@@ -36,7 +36,7 @@ export const useAssociationStore = defineStore('associationStore', {
                     acronym: association.acronym,
                     institution: association.institution?.name,
                     component: association.institutionComponent?.name,
-                    field: association.activityField?.name
+                    field: association.activityField?.name,
                 }))
         },
         institutionLabels: (state: AssociationStore) => {

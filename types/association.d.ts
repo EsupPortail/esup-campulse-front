@@ -96,7 +96,8 @@ export interface AssociationList {
     name: string,
     acronym: string,
     isEnabled: boolean,
-    isSite: boolean
+    isSite: boolean,
+    email: string
 }
 
 export interface AssociationStore {
