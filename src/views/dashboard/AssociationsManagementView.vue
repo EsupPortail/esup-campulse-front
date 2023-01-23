@@ -72,6 +72,18 @@ const columns: QTableProps['columns'] = [
         <template v-slot:action>
         </template>
     </QBanner>
+    <QBtn
+        :label="t('home.back-dashboard')"
+        :to="{name: 'Dashboard'}"
+        color="secondary"
+        icon="mdi-arrow-left-circle"
+    />
+    <QBtn
+        :label="t('dashboard.create-association')"
+        :to="{name: 'CreateAssociation'}"
+        color="secondary"
+        icon="mdi-plus-box"
+    />
     <QTable
         :columns="columns"
         :loading="!associations"

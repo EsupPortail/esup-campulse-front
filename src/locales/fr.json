@@ -175,7 +175,7 @@
       "association-already-exists": "Impossible d'ajouter cette association car elle existe déjà.",
       "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur.",
       "cas-authentication-error": "Erreur d'authentification CAS.",
-      "change-associations-error": "Les changements n'ont pas été effectués.",
+      "change-associations-error": "Les changements n'ont pas été effectués pour les associations suivantes : ",
       "delete-association-error": "Une erreur est survenue lors de la suppression de l'association. Veuillez réessayer.",
       "different-emails": "Les deux adresses email ne sont pas identiques.",
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
@@ -196,7 +196,7 @@
     },
     "positive": {
       "account-created": "Compte crée.",
-      "change-associations": "Les changements ont été effectués.",
+      "change-associations": "Les changements ont été effectués pour les associations suivantes : ",
       "delete-association": "L'association a été supprimée avec succès.",
       "disable-association": "L'association a été inactivée avec succès.",
       "enable-association": "L'association a été activée avec succès.",

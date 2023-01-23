@@ -21,6 +21,8 @@ defineProps({
 })
 
 async function onConfirmChanges(selectedAssociations) {
+  const associationsSuccess = []
+  const associationsError = []
   try {
     let mailto = "mailto:?bcc="
     switch (actionsOptions.value.value) {
@@ -34,29 +36,41 @@ async function onConfirmChanges(selectedAssociations) {
             break;
         case 'enable':
             selectedAssociations.forEach(async (selectedAssociation) => {
-                await associationStore.patchEnabledAssociation(true, selectedAssociation.id)
+                await associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
+                    associationsSuccess.push(selectedAssociation.name)
+                }).catch(() => {
+                    associationsError.push(selectedAssociation.name)
+                })
             })
             break;
         case 'disable':
             selectedAssociations.forEach(async (selectedAssociation) => {
-                await associationStore.patchEnabledAssociation(false, selectedAssociation.id)
+                await associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
+                    associationsSuccess.push(selectedAssociation.name)
+                }).catch(() => {
+                    associationsError.push(selectedAssociation.name)
+                })
             })
             break;
         case 'delete':
             selectedAssociations.forEach(async (selectedAssociation) => {
-                await associationStore.deleteAssociation(selectedAssociation.id)
+                await associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                    associationsSuccess.push(selectedAssociation.name)
+                }).catch(() => {
+                    associationsError.push(selectedAssociation.name)
+                })
             })
             break;
     }
     await router.push({name: 'ManageAssociations'})
     notify({
       type: 'positive',
-      message: t('notifications.positive.change-associations')
+      message: `${t('notifications.positive.change-associations')}${associationsSuccess.join(', ')}`
     })
   } catch (e) {
     notify({
       type: 'negative',
-      message: t('notifications.negative.change-associations-error')
+      message: `${t('notifications.negative.change-associations-error')}${associationsError.join(', ')}`
     })
   }
 }
