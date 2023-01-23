@@ -16,34 +16,10 @@ onMounted(async function () {
     loading.show
     await associationStore.getAssociations()
     await loadAssociationsFields()
-    for (let i = 0; i < 100; i++) {
-        associations.value.push(
-            {
-                id: i,
-                institution: {
-                    id: 2,
-                    name: 'Université de Strasbourg',
-                    acronym: 'Unistra'
-                },
-                institutionComponent: {
-                    id: 1,
-                    name: 'Faculté de medecine'
-                },
-                activityField: {
-                    id: 1,
-                    name: 'Culture'
-                },
-                name: 'Test',
-                acronym: 'Test',
-                isEnabled: true,
-                isSite: true,
-                isVisible: true
-
-            })
-    }
     loading.hide
 })
 
+// Initialize a clone of associations from the store to do some searching and pagination
 const associations = ref<AssociationList[]>([...associationStore.associations])
 watch(() => associationStore.associations, () => {
     associations.value = associationStore.associations
@@ -52,22 +28,38 @@ watch(() => associationStore.associations, () => {
 // Used for pagination
 const associationsPerPage = 15
 const currentPage = ref(1)
-const currentIndex = ref(0)
+const startIndex = ref(0)
 watch(() => currentPage.value, () => {
-    currentIndex.value = associationsPerPage * (currentPage.value - 1)
+    startIndex.value = associationsPerPage * (currentPage.value - 1)
 })
 const pages = ref()
 watch(() => associations.value.length, () => {
     pages.value = Math.ceil(associations.value.length / associationsPerPage)
 })
-const associationsOnPage = ref([...associations.value.slice(currentIndex.value, associationsPerPage)])
-watch(() => associations.value, () => {
-    associationsOnPage.value = associations.value.slice(currentIndex.value, associationsPerPage)
+const endIndex = ref(associations.value.length % 15 != 0 && currentPage.value === pages.value ?
+    associations.value.length : currentPage.value * associationsPerPage)
+watch(() => currentPage.value, () => {
+    endIndex.value = associations.value.length % 15 != 0 && currentPage.value === pages.value ?
+        associations.value.length : currentPage.value * associationsPerPage
 })
-watch(() => currentIndex.value, () => {
-    associationsOnPage.value = associations.value.slice(currentIndex.value, associationsPerPage)
+const associationsOnPage = ref([...associations.value.slice(startIndex.value, endIndex.value)])
+watch(() => associations.value, () => {
+    associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
+})
+watch(() => startIndex.value, () => {
+    associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
+})
+watch(() => endIndex.value, () => {
+    associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
 })
 
+// Scroll back to search fields on top of associations
+function scrollToTop() {
+    const searchFields = document.getElementById('search-form') as HTMLElement
+    searchFields.scrollIntoView()
+}
+
+// Used for searching
 const settings = ref<AssociationSearch>({
     search: '',
     name: '',
@@ -77,6 +69,8 @@ const settings = ref<AssociationSearch>({
     activityField: null
 })
 
+
+// Functions
 async function loadAssociationsFields() {
     try {
         await associationStore.getAssociationsListFields()
@@ -109,6 +103,7 @@ function onAdvancedSearch() {
     </section>
     <section>
         <QForm
+            id="search-form"
             class="search-text-field"
             @submit.prevent="onAdvancedSearch"
         >
@@ -193,8 +188,12 @@ function onAdvancedSearch() {
                     }} :
                 </p>
                 <p v-else>{{ t('directory.no-match') }}</p>
-                <p>Trier par <span>Nom <QIcon name="mdi-arrow-down"/></span></p>
-                <p><span>{{ associationsPerPage }}</span> éléments par page</p>
+                <p>
+                    <span>{{ associationsOnPage.length }}</span>
+                    {{
+                        associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') : t('directory.associations-on-page-singular')
+                    }} :
+                </p>
             </section>
         </section>
 
@@ -228,8 +227,10 @@ function onAdvancedSearch() {
             </RouterLink>
         </QCard>
         <QPagination
+            v-if="pages && pages > 1"
             v-model="currentPage"
             :max="pages"
+            @click="scrollToTop"
         />
     </section>
 </template>
