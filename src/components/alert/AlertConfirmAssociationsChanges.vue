@@ -21,9 +21,9 @@ defineProps({
 })
 
 async function onConfirmChanges(selectedAssociations) {
-  const associationsSuccess = []
-  const associationsError = []
-  try {
+    const associationsSuccess = []
+    const associationsError = []
+    const promisesToExecute = []
     let mailto = "mailto:?bcc="
     switch (actionsOptions.value.value) {
         case 'email':
@@ -33,46 +33,46 @@ async function onConfirmChanges(selectedAssociations) {
                 }
             })
             window.location.href = mailto
-            break;
+            break
         case 'enable':
             selectedAssociations.forEach(async (selectedAssociation) => {
-                await associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
+                promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
                     associationsSuccess.push(selectedAssociation.name)
-                }).catch(() => {
-                    associationsError.push(selectedAssociation.name)
-                })
+                }))
             })
-            break;
+            break
         case 'disable':
             selectedAssociations.forEach(async (selectedAssociation) => {
-                await associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
+                promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
                     associationsSuccess.push(selectedAssociation.name)
-                }).catch(() => {
-                    associationsError.push(selectedAssociation.name)
-                })
+                }))
             })
-            break;
+            break
         case 'delete':
             selectedAssociations.forEach(async (selectedAssociation) => {
-                await associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
                     associationsSuccess.push(selectedAssociation.name)
                 }).catch(() => {
                     associationsError.push(selectedAssociation.name)
-                })
+                }))
             })
-            break;
+            break
     }
-    await router.push({name: 'ManageAssociations'})
-    notify({
-      type: 'positive',
-      message: `${t('notifications.positive.change-associations')}${associationsSuccess.join(', ')}`
+    
+    Promise.all(promisesToExecute).then(() => {
+        if (associationsSuccess.length > 0) {
+            notify({
+                type: 'positive',
+                message: `${t('notifications.positive.change-associations')}${associationsSuccess.join(', ')}`
+            })
+        }
+        if (associationsError.length > 0) {
+            notify({
+                type: 'negative',
+                message: `${t('notifications.negative.change-associations-error')}${associationsError.join(', ')}`
+            })
+        }
     })
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: `${t('notifications.negative.change-associations-error')}${associationsError.join(', ')}`
-    })
-  }
 }
 </script>
 
