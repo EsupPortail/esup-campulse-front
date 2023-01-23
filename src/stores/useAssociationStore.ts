@@ -1,9 +1,7 @@
-import { defineStore } from 'pinia'
-
+import {defineStore} from 'pinia'
 import type {
     Association,
     AssociationComponent,
-    AssociationDirectory,
     AssociationField,
     AssociationInstitution,
     AssociationList,
@@ -27,17 +25,6 @@ export const useAssociationStore = defineStore('associationStore', {
                 .map(association => ({
                     value: association.id,
                     label: association.name
-                }))
-        },
-        associationDirectory: (state: AssociationStore): AssociationDirectory => {
-            return state.associations
-                .map(association => ({
-                    id: association.id,
-                    name: association.name,
-                    acronym: association.acronym,
-                    institution: association.institution?.name,
-                    component: association.institutionComponent?.name,
-                    field: association.activityField?.name
                 }))
         },
         institutionLabels: (state: AssociationStore) => {
@@ -67,6 +54,9 @@ export const useAssociationStore = defineStore('associationStore', {
         async getAssociations() {
             if (this.associations.length === 0) {
                 this.associations = (await _axios.get<AssociationList[]>('/associations/')).data
+                this.associations.forEach((association) => {
+                    association.isVisible = true
+                })
             }
         },
         async getAssociationDetail(id: number) {
@@ -94,9 +84,10 @@ export const useAssociationStore = defineStore('associationStore', {
             await _axios.delete(`/associations/${this.association?.id}`)
             this.associations.splice(assoToDelete, 1)
         },
+
         async patchEnabledAssociation(isEnabled: boolean) {
             const assoToEnable = this.associations.findIndex((association) => association.id === this.association?.id)
-            const updatedAssociation = (await _axios.patch(`/associations/${this.association?.id}`, { isEnabled })).data
+            const updatedAssociation = (await _axios.patch(`/associations/${this.association?.id}`, {isEnabled})).data
             this.associations[assoToEnable].isEnabled = updatedAssociation.isEnabled
             if (this.association) {
                 this.association.isEnabled = updatedAssociation.isEnabled

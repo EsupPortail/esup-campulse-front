@@ -1,13 +1,3 @@
-/**
- *  Association Model
- *  Interact front-back
- *  @params: id, name, username, acronym, path_logo,
- *  description, activities, address, phone, email,
- *  siret, website, student_amount, is_enabled, created_date,
- *  approval_date, last_goa, cga_date, id_status, id_institution
- *  id_component, id_field
- */
-
 export interface Association {
     id: number,
     institution: AssociationInstitution,
@@ -98,7 +88,17 @@ export interface AssociationList {
     name: string,
     acronym: string,
     isEnabled: boolean,
-    isSite: boolean
+    isSite: boolean,
+    isVisible: boolean
+}
+
+export interface AssociationSearch {
+    search: string,
+    name: string,
+    acronym: string,
+    institution: number | null,
+    institutionComponent: number | null,
+    activityField: number | null,
 }
 
 export interface AssociationStore {
