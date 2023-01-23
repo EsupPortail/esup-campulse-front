@@ -116,7 +116,7 @@ const columns: QTableProps['columns'] = [
             </QTr>
         </template>
     </QTable>
-    <!--<AlertConfirmAssociationsChanges associationsActions="associationsActions"/>-->
+    <AlertConfirmAssociationsChanges :selectedAssociations="selected"/>
 </template>
 
 <style lang="sass" scoped>

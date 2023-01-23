@@ -88,14 +88,20 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.fields = (await _axios.get<AssociationField[]>('/associations/activity_fields')).data
             }
         },
-        async deleteAssociation() {
-            const assoToDelete = this.associations.findIndex((association) => association.id === this.association?.id)
-            await _axios.delete(`/associations/${this.association?.id}`)
+        async deleteAssociation(associationId: number | undefined = undefined) {
+            if (associationId === null) {
+                associationId = this.association?.id
+            }
+            const assoToDelete = this.associations.findIndex((association) => association.id === associationId)
+            await _axios.delete(`/associations/${associationId}`)
             this.associations.splice(assoToDelete, 1)
         },
-        async patchEnabledAssociation(isEnabled: boolean) {
-            const assoToEnable = this.associations.findIndex((association) => association.id === this.association?.id)
-            const updatedAssociation = (await _axios.patch(`/associations/${this.association?.id}`, { isEnabled })).data
+        async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined = undefined) {
+            if (associationId === null) {
+                associationId = this.association?.id
+            }
+            const assoToEnable = this.associations.findIndex((association) => association.id === associationId)
+            const updatedAssociation = (await _axios.patch(`/associations/${associationId}`, { isEnabled })).data
             this.associations[assoToEnable].isEnabled = updatedAssociation.isEnabled
             if (this.association) {
                 this.association.isEnabled = updatedAssociation.isEnabled
