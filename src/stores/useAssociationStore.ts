@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type {
     Association,
     AssociationComponent,
+    AssociationDirectory,
     AssociationField,
     AssociationInstitution,
     AssociationList,

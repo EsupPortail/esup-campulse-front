@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
-import router from '@/router'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 
@@ -52,6 +51,7 @@ async function onConfirmChanges(selectedAssociations) {
             selectedAssociations.forEach(async (selectedAssociation) => {
                 promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
                     associationsSuccess.push(selectedAssociation.name)
+                    selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation.id), 1)
                 }).catch(() => {
                     associationsError.push(selectedAssociation.name)
                 }))
