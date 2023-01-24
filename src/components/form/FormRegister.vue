@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import {QInput, useQuasar} from 'quasar'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
-import LayoutGDPRConsent from '@/components/form/LayoutGDPRConsent.vue'
+import LayoutGDPRConsent from '@/components/form/FormGDPRConsent.vue'
 import useSecurity from '@/composables/useSecurity'
 import axios from 'axios'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
@@ -86,7 +86,7 @@ async function onRegister() {
 <template>
     <QForm
         class="q-gutter-md"
-        @submit="onRegister"
+        @submit.prevent="onRegister"
     >
         <QInput
             v-model="newUser.firstName"
@@ -132,10 +132,11 @@ async function onRegister() {
         />
         <FormUserGroups/>
         <QSeparator/>
-      <!-- If manager role checked we do not display this form -->
+        <!-- If manager role checked we do not display this form -->
         <FormRegisterUserAssociations v-if="groupUnabledSelectingAssociation"/>
         <QSeparator/>
-        <LayoutGDPRConsent v-if="!userStore.managerGroup" :has-consent="hasConsent" @update-consent="hasConsent = !hasConsent"/>
+        <LayoutGDPRConsent v-if="!userStore.managerGroup" :has-consent="hasConsent"
+                           @update-consent="hasConsent = !hasConsent"/>
         <QBtn :label="t('forms.send')" color="primary" type="submit"/>
     </QForm>
 </template>

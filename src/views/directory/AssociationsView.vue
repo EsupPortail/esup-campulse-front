@@ -5,7 +5,6 @@ import {useI18n} from 'vue-i18n'
 import useDirectory from '@/composables/useDirectory'
 import type {AssociationList, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
-import _axios from "@/plugins/axios";
 
 
 const {advancedSearch} = useDirectory()
@@ -87,7 +86,7 @@ async function loadAssociationsFields() {
 }
 
 async function onSearch() {
-  associations.value = await simpleAssociationSearch(settings.value.search)
+    associations.value = await simpleAssociationSearch(settings.value.search)
 }
 
 function onAdvancedSearch() {
@@ -109,7 +108,7 @@ function onAdvancedSearch() {
         <QForm
             id="search-form"
             class="search-text-field"
-            @submit.prevent="onAdvancedSearch"
+            @submit.prevent="onSearch"
         >
             <fieldset>
                 <QInput
@@ -130,6 +129,11 @@ function onAdvancedSearch() {
                     @click="onSearch"
                 />
             </fieldset>
+        </QForm>
+        <QForm
+            class="search-text-field"
+            @submit.prevent="onAdvancedSearch"
+        >
             <QExpansionItem
                 :label="t('directory.advanced-search')"
                 expand-separator
