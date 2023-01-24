@@ -101,11 +101,11 @@ export default function () {
                 }
             }
             // Check institution, component and field
-            else if (key == 'institution' && value !== associationStore.association?.institution.id) {
+            else if (key == 'institution' && value !== associationStore.association?.institution?.id) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'institutionComponent' && value !== associationStore.association?.institutionComponent.id) {
+            } else if (key == 'institutionComponent' && value !== associationStore.association?.institutionComponent?.id) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'activityField' && value !== associationStore.association?.activityField.id) {
+            } else if (key == 'activityField' && value !== associationStore.association?.activityField?.id) {
                 changedData = Object.assign(changedData, {[key]: value})
             }
             // Check date
