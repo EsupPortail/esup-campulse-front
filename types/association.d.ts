@@ -88,6 +88,7 @@ export interface AssociationList {
     name: string,
     acronym: string,
     isEnabled: boolean,
+    isPublic: boolean,
     isSite: boolean,
     isVisible: boolean,
     email: string

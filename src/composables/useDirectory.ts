@@ -1,9 +1,9 @@
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {AssociationList, AssociationSearch} from '#/association'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import type { AssociationList, AssociationSearch } from '#/association'
 import _axios from "@/plugins/axios";
 
 
-export default function () {
+export default function() {
 
     const associationStore = useAssociationStore()
 
@@ -18,10 +18,20 @@ export default function () {
         if (associationStore.associations.length > 0 &&
             (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
             let matches: AssociationList[] = []
+            matches = associationStore.associations.filter(association => {
+                return association.isPublic === true
+            })
             if (settings.name) {
-                matches = associationStore.associations.filter(association => {
-                    return association.name.toLowerCase().includes(settings.name.toLowerCase())
-                })
+                if (matches.length) {
+                    const newMatches = matches.filter(association => {
+                        return association.name.toLowerCase().includes(settings.name.toLowerCase())
+                    })
+                    matches = [...newMatches]
+                } else {
+                    matches = associationStore.associations.filter(association => {
+                        return association.name.toLowerCase().includes(settings.name.toLowerCase())
+                    })
+                }
             }
             if (settings.acronym) {
                 // checking if a search has already been made
