@@ -7,7 +7,6 @@ import _axios from '@/plugins/axios'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
-const associationStore = useAssociationStore()
 
 const newAssociations = ref<UserAssociations>([])
 
@@ -33,6 +32,9 @@ const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
 let changedData = {}
 
 export default function () {
+
+    const associationStore = useAssociationStore()
+
 
     async function createAssociation(name: string) {
         await _axios.post('/associations/', {name: name})
@@ -164,6 +166,8 @@ export default function () {
         removeNetwork,
         associationSocialNetworks,
         checkChanges,
-        updateAssociation
+        updateAssociation,
+        checkSocialNetworks,
+        changedData
     }
 }
