@@ -1,4 +1,11 @@
-import type {Association, AssociationList, AssociationName, AssociationSearch} from '#/association'
+import type {
+    Association,
+    AssociationList,
+    AssociationName,
+    AssociationSearch,
+    AssociationSocialNetwork,
+    EditedAssociation
+} from '#/association'
 
 
 export const association: Association = {
@@ -35,12 +42,50 @@ export const association: Association = {
     website: null,
     studentCount: null,
     presidentNames: null,
-    phonePres: '',
+    phonePres: null,
     isEnabled: true,
     createdDate: null,
     approvalDate: null,
     lastGoaDate: null,
     cgaDate: null
+}
+
+export const editedAssociation: EditedAssociation = {
+    institution: 1,
+    institutionComponent: 1,
+    activityField: 2,
+    name: 'Association des étudiants en médecine',
+    acronym: 'Asso',
+    description: 'Association des étudiants en médecine',
+    activities: 'Tutorat, sorties, randonnées et concerts',
+    address: '1 rue de l\'hôpital',
+    phone: '0102030405',
+    email: 'asso-medecine@unistra.fr',
+    siret: '0123456789',
+    website: 'https://asso-medecine.fr',
+    presidentNames: 'Jeanne Dupont',
+    phonePres: null,
+    lastGoaDate: '2023-01-24',
+    approvalDate: null
+}
+
+export const nonEditedAssociation: EditedAssociation = {
+    institution: 1,
+    institutionComponent: 1,
+    activityField: 1,
+    name: 'Association',
+    acronym: null,
+    description: null,
+    activities: null,
+    address: null,
+    phone: null,
+    email: null,
+    siret: null,
+    website: null,
+    presidentNames: null,
+    phonePres: null,
+    approvalDate: null,
+    lastGoaDate: null
 }
 
 const associationList = [
@@ -132,3 +177,18 @@ export const associationWrongSearchSettings: AssociationSearch = {
     institutionComponent: 2,
     activityField: 3
 }
+
+export const mockedAssociationSocialNetworks: AssociationSocialNetwork[] = [
+    {
+        type: 'Mastodon',
+        location: 'https://mastodon.social'
+    },
+    {
+        type: 'Twitter',
+        location: 'https://twitter.com'
+    },
+    {
+        type: 'Facebook',
+        location: 'https://facebook.com'
+    }
+]

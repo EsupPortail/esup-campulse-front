@@ -3,6 +3,7 @@ import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onBeforeRouteLeave} from 'vue-router'
+import {useQuasar} from 'quasar'
 import useAssociation from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
 import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
@@ -11,13 +12,15 @@ import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociati
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {EditedAssociation} from '#/association'
+import axios from 'axios'
 
 
 const {t} = useI18n()
-const {formatDate} = useUtility()
+const {notify, loading} = useQuasar()
+const {formatDate, urlRegex} = useUtility()
 const {
     checkChanges,
-    changedData
+    updateAssociation
 } = useAssociation()
 
 const associationStore = useAssociationStore()
@@ -62,8 +65,9 @@ const initValues = () => {
 watch(() => associationStore.association, initValues)
 
 onMounted(async () => {
-    //initLabels()
+    loading.show
     initValues()
+    loading.hide
 })
 
 // Open alert if user leaves without saving
@@ -75,9 +79,9 @@ function onLeaveEdition() {
     router.push({name: 'ManageAssociations'})
 }
 
+// Check is there are any changes before leaving the page
 onBeforeRouteLeave((to, from, next) => {
-    checkChanges(association.value)
-    if (Object.keys(changedData).length > 0) {
+    if (Object.keys(checkChanges(association.value)).length > 0) {
         openAlert.value = true
         if (!leaveEdition.value) {
             next(false)
@@ -90,9 +94,29 @@ onBeforeRouteLeave((to, from, next) => {
 })
 
 // Validate changes
+// Refactor in composable
 async function onValidateChanges() {
-    checkChanges(association.value)
-    // await associationStore.updateAssociation()
+    if (Object.keys(checkChanges(association.value)).length > 0) {
+        try {
+            await updateAssociation()
+            notify({
+                message: t('notifications.positive.association-successfully-updated'),
+                type: 'positive'
+            })
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                notify({
+                    message: t('notifications.negative.edit-association-error'),
+                    type: 'negative'
+                })
+            }
+        }
+    } else {
+        notify({
+            message: t('notifications.positive.association-up-to-date'),
+            type: 'positive'
+        })
+    }
 }
 </script>
 
@@ -110,6 +134,13 @@ async function onValidateChanges() {
             </div>-->
         <fieldset>
             <legend>{{ t('association.titles.info') }}</legend>
+            <QInput
+                v-model="association.name"
+                :label="t('association.labels.name')"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                filled
+                lazy-rules
+            />
             <QInput
                 v-model="association.acronym"
                 :label="t('association.labels.acronym')"
@@ -162,24 +193,23 @@ async function onValidateChanges() {
             <legend>{{ t('association.titles.admin') }}</legend>
             <QInput
                 v-model="association.presidentNames"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.president-name')"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                label="t('association.labels.president-name')"
                 lazy-rules
             />
             <QInput
                 v-model="association.phonePres"
+                :label="t('association.labels.president-phone')"
+                :rules="[ val => val.length < 32 || t('forms.phone-char-limit')]"
                 filled
-                label="t('association.labels.president-phone')"
                 lazy-rules
-                class="without-rules"
             />
-          <!-- Warning : Removed approval date input -->
             <QInput
                 v-model="association.lastGoaDate"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.last-goa')"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                label="t('association.labels.last-goa')"
                 lazy-rules
                 type="date"
             >
@@ -187,46 +217,45 @@ async function onValidateChanges() {
                     <QIcon name="mdi-calendar"/>
                 </template>
             </QInput>
-          <!-- Warning : Removed not-empty rules on siret input -->
             <QInput
                 v-model="association.siret"
+                :label="t('association.labels.siret')"
+                class="without-rules"
                 filled
                 inputmode="numeric"
-                label="t('association.labels.siret')"
                 lazy-rules
-                class="without-rules"
             />
         </fieldset>
         <fieldset>
             <legend>{{ t('association.titles.contact') }}</legend>
             <QInput
                 v-model="association.address"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.address')"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                label="t('association.labels.address')"
                 lazy-rules
             />
             <QInput
                 v-model="association.phone"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.phone')"
+                :rules="[ val => val.length < 32 || t('forms.phone-char-limit')]"
                 filled
-                label="t('association.labels.phone')"
                 lazy-rules
                 type="tel"
             />
             <QInput
                 v-model="association.email"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.mail')"
+                :rules="[ (val, rules) => rules.email(val) || t('forms.fill-field')]"
                 filled
-                label="t('association.labels.mail')"
                 lazy-rules
                 type="email"
             />
             <QInput
                 v-model="association.website"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                :label="t('association.labels.website')"
+                :rules="[ val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
                 filled
-                label="t('association.labels.website')"
                 lazy-rules
                 type="url"
             />
@@ -234,19 +263,19 @@ async function onValidateChanges() {
         <FormAssociationSocialNetworks/>
         <section class="btn-group">
             <QBtn
+                :label="t('association.go-back')"
                 :to="{name: 'ManageAssociations'}"
                 color="secondary"
                 icon="mdi-arrow-left-circle"
-                label="t('association.go-back')"
             />
             <QBtn
+                :label="t('association.validate-all-changes')"
                 color="primary"
                 icon="mdi-check-circle"
-                label="t('association.validate-all-changes')"
                 type="submit"
             />
             <AlertConfirmAssociationEnabled/>
-            <AlertConfirmAssociationDeletion v-if="!associationStore.association.isEnabled"/>
+            <AlertConfirmAssociationDeletion v-if="!associationStore.association?.isEnabled"/>
         </section>
         <AlertLeaveAssociationEdition
             :open-alert="openAlert"
@@ -270,7 +299,7 @@ fieldset
     margin-bottom: 20px
 
 .without-rules
-  margin-bottom: 1rem
+    margin-bottom: 1rem
 
 legend
     background-color: $primary
