@@ -60,7 +60,7 @@ export default function() {
         if (userStore.isAuth && managedAssociations.value.length === 0) {
             const associationStore = useAssociationStore()
             if (userStore.isUniManager) {
-                await associationStore.getAssociations()
+                await associationStore.getAssociations(false)
                 managedAssociations.value = associationStore.associations
             } else {
                 for (let i = 0; i < (userStore.user as User).associations.length; i++) {

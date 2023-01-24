@@ -15,7 +15,7 @@ const {t} = useI18n()
 
 onMounted(async function () {
     loading.show
-    await associationStore.getAssociations()
+    await associationStore.getAssociations(true)
     await loadAssociationsFields()
     loading.hide
 })

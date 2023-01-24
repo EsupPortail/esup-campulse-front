@@ -63,9 +63,9 @@ export const useAssociationStore = defineStore('associationStore', {
     },
 
     actions: {
-        async getAssociations() {
+        async getAssociations(forDirectory: boolean) {
             if (this.associations.length === 0) {
-                this.associations = (await _axios.get<AssociationList[]>('/associations/')).data
+                this.associations = (await _axios.get<AssociationList[]>(`/associations/${forDirectory ? '?is_public=true' : ''}`)).data
                 this.associations.forEach((association) => {
                     association.isVisible = true
                 })

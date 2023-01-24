@@ -24,7 +24,7 @@ describe('Association store', () => {
         })
         describe('If associations are not populated', () => {
             beforeEach(() => {
-                associationStore.getAssociations()
+                associationStore.getAssociations(false)
             })
             it('should populate associations in the store', () => {
                 expect(associationStore.associations).toEqual(associations)
@@ -39,7 +39,7 @@ describe('Association store', () => {
         describe('If associations are populated', () => {
             beforeEach(() => {
                 associationStore.associations = associations
-                associationStore.getAssociations()
+                associationStore.getAssociations(false)
             })
             it('should not be called if associations are populated', () => {
                 expect(mockedAxios.get).toHaveBeenCalledTimes(0)
