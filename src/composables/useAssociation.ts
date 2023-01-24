@@ -57,7 +57,7 @@ export default function() {
     // Get the associations managed by the user depending on status or association role
     async function getManagedAssociations() {
         const userStore = useUserStore()
-        if (userStore.isAuth && managedAssociations.value.length === 0) {
+        if (userStore.isAuth) {
             const associationStore = useAssociationStore()
             if (userStore.isUniManager) {
                 await associationStore.getAssociations(false)
