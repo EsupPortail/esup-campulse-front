@@ -18,7 +18,8 @@ const {t} = useI18n()
 const {formatDate} = useUtility()
 const {
     checkChanges,
-    changedData
+    changedData,
+    updateAssociationLogo
 } = useAssociation()
 
 const associationStore = useAssociationStore()
@@ -70,7 +71,7 @@ onMounted(async () => {
 // Open alert if user leaves without saving
 const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
-const newLogo = ref<QFile>()
+const newLogo = ref()
 
 function onLeaveEdition() {
     leaveEdition.value = true
@@ -96,31 +97,43 @@ async function onValidateChanges() {
     checkChanges(association.value)
     // await associationStore.updateAssociation()
 }
+async function onChangeLogo() {
+  const patchLogoData = new FormData()
+  patchLogoData.append('pathLogo', newLogo.value)
+  await updateAssociationLogo(patchLogoData)
+}
 </script>
 
 <template>
-    <QForm
-        @submit.prevent="onValidateChanges"
-    >
-        <div class="logo">
-            <img
-                v-if="associationStore.association?.pathLogo"
-                :alt="associationStore.association?.altLogo"
-                :src="associationStore.association?.pathLogo"
-            />
-            <div v-else>
-              <p>CECI EST L'EMPLACEMENT DU LOGO</p>
-            </div>
-        </div>
-      <QFile
-          filled
-          accept=".jpg, image/*"
-          label="Choisir un nouveau Logo"
-          v-model="newLogo"
-      />
 
-        <fieldset>
-            <legend>{{ t('association.titles.info') }}</legend>
+  <div class="logo">
+    <img
+        v-if="associationStore.association?.pathLogo"
+        :alt="associationStore.association?.altLogo"
+        :src="associationStore.association?.pathLogo"
+    />
+    <div v-else>
+      <p>CECI EST L'EMPLACEMENT DU LOGO</p>
+    </div>
+  </div>
+  <QFile
+      filled
+      accept=".jpg, image/*"
+      label="Choisir un nouveau Logo"
+      v-model="newLogo"
+  />
+    <QBtn
+        color="primary"
+        icon="mdi-check-circle"
+        label="UPLOAD IMAGE"
+        @click="onChangeLogo"
+    />
+
+  <QForm
+      @submit.prevent="onValidateChanges"
+  >
+    <fieldset>
+      <legend>{{ t('association.titles.info') }}</legend>
             <QInput
                 v-model="association.acronym"
                 :label="t('association.labels.acronym')"
