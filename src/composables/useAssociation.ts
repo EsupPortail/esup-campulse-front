@@ -110,7 +110,9 @@ export default function () {
             }
             // Check date
             else if (key == 'lastGoaDate' && value !== formatDate(associationStore.association?.lastGoaDate as string)) {
-                changedData = Object.assign(changedData, {lastGoaDate: `${value}T00:00:00.000Z`})
+                if (value !== null) {
+                    changedData = Object.assign(changedData, {lastGoaDate: `${value}T00:00:00.000Z`})
+                }
             }
         }
         // Check social media
@@ -120,30 +122,44 @@ export default function () {
 
     function checkSocialNetworks() {
         let hasChanges = false
-        // If there already are social networks, and the same amount between old and new
-        if (associationStore.association?.socialNetworks.length && associationStore.association?.socialNetworks.length === associationSocialNetworks.value.length) {
-            for (let i = 0; i < associationStore.association?.socialNetworks.length; i++) {
-                // Look for the same types
-                const editedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks[i].type)
-                // If type has changed
-                if (editedType === undefined && !hasChanges) {
-                    hasChanges = true
-                    break
+        // If there already are social networks
+        if (associationStore.association?.socialNetworks.length !== 0) {
+            // If there are as many networks in old and new arrays
+            // Then we need to compare more deeply
+            if (associationStore.association?.socialNetworks.length === associationSocialNetworks.value.length) {
+                for (let i = 0; i < associationStore.association?.socialNetworks.length; i++) {
+                    // Look for the same types
+                    const editedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks[i].type)
+                    // If type has changed
+                    if (editedType === undefined && !hasChanges) {
+                        hasChanges = true
+                        break
+                    }
+                    // If location has changed
+                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks[i].location)
+                    if (editedLocation === undefined && !hasChanges) {
+                        hasChanges = true
+                        break
+                    }
                 }
-                // If location has changed
-                const editedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks[i].location)
-                if (editedLocation === undefined && !hasChanges) {
-                    hasChanges = true
-                    break
+                // If we detect changes, we can patch the new array
+                if (hasChanges) {
+                    changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
                 }
             }
-            if (hasChanges) {
+            // If there are not the same amount of networks
+            else {
+                // We can safely patch every new network
                 changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
             }
         }
-        // If there are only new social networks or new ones
+        // If there are not already social networks
         else {
-            changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
+            // But if there are new networks
+            if (associationSocialNetworks.value.length !== 0) {
+                // We can safely patch every new network
+                changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
+            }
         }
     }
 

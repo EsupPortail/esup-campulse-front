@@ -69,6 +69,25 @@ export const editedAssociation: EditedAssociation = {
     approvalDate: null
 }
 
+export const nonEditedAssociation: EditedAssociation = {
+    institution: 1,
+    institutionComponent: 1,
+    activityField: 1,
+    name: 'Association',
+    acronym: null,
+    description: null,
+    activities: null,
+    address: null,
+    phone: null,
+    email: null,
+    siret: null,
+    website: null,
+    presidentNames: null,
+    phonePres: null,
+    approvalDate: null,
+    lastGoaDate: null
+}
+
 const associationList = [
     {
         id: 1,
