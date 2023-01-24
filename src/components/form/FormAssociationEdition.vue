@@ -11,6 +11,7 @@ import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociati
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {EditedAssociation} from '#/association'
+import type {QFile} from "quasar";
 
 
 const {t} = useI18n()
@@ -69,6 +70,7 @@ onMounted(async () => {
 // Open alert if user leaves without saving
 const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
+const newLogo = ref<QFile>()
 
 function onLeaveEdition() {
     leaveEdition.value = true
@@ -100,14 +102,23 @@ async function onValidateChanges() {
     <QForm
         @submit.prevent="onValidateChanges"
     >
-        <!--        <div class="logo">
-                <img
-                    v-if="associationStore.association?.pathLogo"
-                    :alt="associationStore.association?.altLogo"
-                    :src="associationStore.association?.pathLogo"
-                />
-                <div v-else></div>
-            </div>-->
+        <div class="logo">
+            <img
+                v-if="associationStore.association?.pathLogo"
+                :alt="associationStore.association?.altLogo"
+                :src="associationStore.association?.pathLogo"
+            />
+            <div v-else>
+              <p>CECI EST L'EMPLACEMENT DU LOGO</p>
+            </div>
+        </div>
+      <QFile
+          filled
+          accept=".jpg, image/*"
+          label="Choisir un nouveau Logo"
+          v-model="newLogo"
+      />
+
         <fieldset>
             <legend>{{ t('association.titles.info') }}</legend>
             <QInput
