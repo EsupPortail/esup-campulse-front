@@ -138,7 +138,7 @@ async function onChangeLogo() {
     />
     <QFile
        filled
-       accept=".jpg, image/*"
+       accept=".jpg, .jpeg, .png"
        :label="t('association.logo.pickup')"
        v-model="newLogo"
     />
