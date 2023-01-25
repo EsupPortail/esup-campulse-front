@@ -135,6 +135,8 @@ async function onChangeLogo() {
         :alt="associationStore.association?.altLogo"
         :src="pathLogo"
         :ratio="1"
+        width="250px"
+        height="250px"
     />
     <QFile
        filled
