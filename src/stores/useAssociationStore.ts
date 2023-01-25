@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import type {
     Association,
     AssociationComponent,
@@ -10,6 +10,9 @@ import type {
     AssociationStore
 } from '#/association'
 import _axios from '@/plugins/axios'
+import {useUserStore} from '@/stores/useUserStore'
+import type {User} from '#/user'
+
 
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
@@ -59,20 +62,50 @@ export const useAssociationStore = defineStore('associationStore', {
                     value: field.id,
                     label: field.name
                 })))
+        },
+        managedAssociations: (state: AssociationStore) => {
+            return state.associations.map(
+                association => ({
+                    id: association.id,
+                    name: association.name,
+                    acronym: association.acronym,
+                    institution: association.institution?.name,
+                    component: association.institutionComponent?.name,
+                    field: association.activityField?.name,
+                    isEnabled: association.isEnabled,
+                    email: association.email,
+                })
+            )
         }
     },
 
     actions: {
-        async getAssociations(forDirectory: boolean) {
-            this.associations = (await _axios.get<AssociationList[]>(`/associations/${forDirectory ? '?is_public=true' : ''}`)).data
-            this.associations.forEach((association) => {
-                association.isVisible = true
-            })
-        },
-        async getAssociationDetail(id: number) {
-            if (this.association?.id !== id) {
-                this.association = (await _axios.get<Association>(`/associations/${id}`)).data
+        // Test
+        async getAssociations(forDirectory: boolean, forRegistration: boolean) {
+            if (forDirectory) {
+                this.associations = (await _axios.get<AssociationList[]>('/associations/?is_public=true')).data
+            } else if (forRegistration) {
+                this.associations = (await _axios.get<AssociationList[]>('/associations/?is_enabled=true')).data
+            } else {
+                this.associations = (await _axios.get<AssociationList[]>('/associations/')).data
             }
+        },
+        //Test
+        async getManagedAssociations() {
+            const userStore = useUserStore()
+            if (userStore.isUniManager) {
+                await this.getAssociations(false, false)
+            } else {
+                this.associations = []
+                for (let i = 0; i < (userStore.user as User).associations.length; i++) {
+                    const associationId = userStore.user?.associations[i].id
+                    this.associations.push((await _axios.get<AssociationList>(`/associations/${associationId}`)).data)
+                }
+            }
+        },
+        // Test
+        async getAssociationDetail(id: number) {
+            this.association = (await _axios.get<Association>(`/associations/${id}`)).data
         },
         async getInstitutions() {
             if (this.institutions.length === 0) {
@@ -102,7 +135,7 @@ export const useAssociationStore = defineStore('associationStore', {
                 associationId = this.association?.id
             }
             const assoToEnable = this.associations.findIndex((association) => association.id === associationId)
-            const updatedAssociation = (await _axios.patch(`/associations/${associationId}`, { isEnabled })).data
+            const updatedAssociation = (await _axios.patch(`/associations/${associationId}`, {isEnabled})).data
             this.associations[assoToEnable].isEnabled = updatedAssociation.isEnabled
             if (this.association) {
                 this.association.isEnabled = updatedAssociation.isEnabled
