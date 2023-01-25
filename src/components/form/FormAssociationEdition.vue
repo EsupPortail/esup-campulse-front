@@ -127,17 +127,16 @@ async function onChangeLogo() {
 <template>
 
   <QForm
-      class="logo"
       @submit.prevent="onChangeLogo"
   >
-    <QImg
-        v-if="pathLogo"
-        :alt="associationStore.association?.altLogo"
-        :src="pathLogo"
-        :ratio="1"
-        width="250px"
-        height="250px"
-    />
+    <fieldset>
+    <div class="logo">
+      <QImg
+          :alt="associationStore.association?.altLogo"
+          :src="pathLogo"
+          :ratio="1"
+      />
+    </div>
     <QFile
        filled
        accept=".jpg, .jpeg, .png"
@@ -157,6 +156,7 @@ async function onChangeLogo() {
         :label="t('association.logo.update')"
         type="submit"
     />
+    </fieldset>
   </QForm>
 
   <QForm
@@ -313,6 +313,12 @@ async function onChangeLogo() {
 <style lang="sass" scoped>
 fieldset
     border: none
+
+.logo
+  max-width: 150px
+  width: 100%
+  height: 150px
+  border: solid grey
 
 .btn-group
     display: flex
