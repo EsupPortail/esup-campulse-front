@@ -14,6 +14,10 @@ export default function() {
         }
     }
 
+    function filterizeSearch(stringToFilterize: string) {
+        return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    }
+
     function advancedSearch(settings: AssociationSearch) {
         if (associationStore.associations.length > 0 &&
             (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
@@ -24,12 +28,12 @@ export default function() {
             if (settings.name) {
                 if (matches.length) {
                     const newMatches = matches.filter(association => {
-                        return association.name.toLowerCase().includes(settings.name.toLowerCase())
+                        return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
                     })
                     matches = [...newMatches]
                 } else {
                     matches = associationStore.associations.filter(association => {
-                        return association.name.toLowerCase().includes(settings.name.toLowerCase())
+                        return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
                     })
                 }
             }
@@ -38,12 +42,12 @@ export default function() {
                 // If so, we filter on current matches, if not, we filter in store
                 if (matches.length) {
                     const newMatches = matches.filter(association => {
-                        return association.acronym.toLowerCase().includes(settings.acronym.toLowerCase())
+                        return filterizeSearch(association.acronym).includes(filterizeSearch(settings.acronym))
                     })
                     matches = [...newMatches]
                 } else {
                     matches = associationStore.associations.filter(association => {
-                        return association.acronym.toLowerCase().includes(settings.acronym.toLowerCase())
+                        return filterizeSearch(association.acronym).includes(filterizeSearch(settings.acronym))
                     })
                 }
             }
