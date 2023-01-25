@@ -64,7 +64,7 @@ export const useUserStore = defineStore('userStore', {
         },
         hasOfficeStatus(associationId: number | undefined): boolean | undefined {
             if (this.userAssociationsRoles.length > 0) {
-                const association = this.userAssociationsRoles.find(({association}) => (association === associationId))
+                const association = this.userAssociationsRoles.find(({association}) => (association.id === associationId))
                 return association?.hasOfficeStatus
             } else {
                 return false
