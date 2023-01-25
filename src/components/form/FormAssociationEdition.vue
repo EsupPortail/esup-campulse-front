@@ -21,7 +21,6 @@ const {formatDate} = useUtility()
 const {
     checkChanges,
     changedData,
-    updateAssociationLogo
 } = useAssociation()
 
 const associationStore = useAssociationStore()
@@ -74,6 +73,8 @@ onMounted(async () => {
 const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
 const newLogo = ref()
+const pathLogo = ref<string | null | undefined>(associationStore.association?.pathLogo)
+watch(() => associationStore.association?.pathLogo, () => {pathLogo.value = associationStore.association?.pathLogo})
 
 function onLeaveEdition() {
     leaveEdition.value = true
@@ -103,7 +104,7 @@ async function onChangeLogo() {
   const patchLogoData = new FormData()
   patchLogoData.append('pathLogo', newLogo.value)
   try {
-    await updateAssociationLogo(patchLogoData)
+    await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
     notify({
       message: t('notifications.positive.association-logo-updated'),
       type: 'positive'
@@ -123,9 +124,9 @@ async function onChangeLogo() {
 
   <div class="logo">
     <QImg
-        v-if="associationStore.association?.pathLogo"
+        v-if="pathLogo"
         :alt="associationStore.association?.altLogo"
-        :src="associationStore.association?.pathLogo"
+        :src="pathLogo"
         :ratio="1"
     />
   <QFile

@@ -133,11 +133,6 @@ export default function() {
         }
     }
 
-    async function updateAssociationLogo(logo: FormData) {
-        await _axios.patch(`/associations/${associationStore.association?.id}`, logo)
-    }
-
-
 
     return {
         createAssociation,
@@ -152,6 +147,5 @@ export default function() {
         associationSocialNetworks,
         checkChanges,
         changedData,
-        updateAssociationLogo
     }
 }
