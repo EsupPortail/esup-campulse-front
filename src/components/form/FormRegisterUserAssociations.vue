@@ -18,7 +18,7 @@ onMounted(async () => {
 
 async function loadAssociations() {
     try {
-        await associationStore.getAssociations(false)
+        await associationStore.getAssociations(false, true)
     } catch (e) {
         notify({
             type: 'negative',
@@ -30,47 +30,47 @@ async function loadAssociations() {
 
 <template>
     <fieldset>
-      <legend>{{ t("forms.im-in-association") }}</legend>
-      <div v-for="(association, index) in newAssociations" :key="index">
-        <QSelect
-            v-model="association.id"
-            :label="t('forms.select-association')"
-            :options="associationStore.associationNames"
-            emit-value
-            filled
-            map-options
-        />
-        <QInput
-            v-model="association.roleName"
-            :label="t('forms.association-role-name')"
-            filled
-            lazy-rules
-        />
-        <QCheckbox
-            v-model="association.hasOfficeStatus"
-            :label="t('forms.im-in-association-office')"
-        />
-        <QCheckbox
-            v-model="association.isPresident"
-            :label="t('forms.im-association-president')"
-        />
+        <legend class="legend-big">{{ t("forms.add-my-associations") }}</legend>
+        <div v-for="(association, index) in newAssociations" :key="index">
+            <QSelect
+                v-model="association.id"
+                :label="t('forms.select-association')"
+                :options="associationStore.associationNames"
+                emit-value
+                filled
+                map-options
+            />
+            <QInput
+                v-model="association.roleName"
+                :label="t('forms.association-role-name')"
+                filled
+                lazy-rules
+            />
+            <QCheckbox
+                v-model="association.hasOfficeStatus"
+                :label="t('forms.im-in-association-office')"
+            />
+            <QCheckbox
+                v-model="association.isPresident"
+                :label="t('forms.im-association-president')"
+            />
+            <QBtn
+                :label="t('forms.delete-association')"
+                color="red"
+                icon="mdi-minus-circle-outline"
+                outline
+                @click="removeAssociation(index)"
+            />
+            <QSeparator/>
+        </div>
         <QBtn
-            :label="t('forms.delete-association')"
-            color="red"
-            icon="mdi-minus-circle-outline"
+            v-if="newAssociations.length < 5"
+            :label="t('forms.add-association')"
+            class="add-association"
+            color="primary" icon="mdi-plus-circle-outline"
             outline
-            @click="removeAssociation(index)"
+            @click="addAssociation"
         />
-        <QSeparator/>
-      </div>
-      <QBtn
-          v-if="newAssociations.length < 5"
-          :label="t('forms.add-association')"
-          class="add-association"
-          color="primary" icon="mdi-plus-circle-outline"
-          outline
-          @click="addAssociation"
-      />
     </fieldset>
 </template>
 

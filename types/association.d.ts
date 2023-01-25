@@ -90,7 +90,6 @@ export interface AssociationList {
     isEnabled: boolean,
     isPublic: boolean,
     isSite: boolean,
-    isVisible: boolean,
     email: string
 }
 

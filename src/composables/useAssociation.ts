@@ -1,30 +1,13 @@
-import {computed, ref} from 'vue'
+import {ref} from 'vue'
 
-import type {AssociationList, AssociationSocialNetwork, EditedAssociation} from '#/association'
-import type {User, UserAssociations} from '#/user'
+import type {AssociationSocialNetwork, EditedAssociation} from '#/association'
+import type {UserAssociations} from '#/user'
 import useUtility from '@/composables/useUtility'
 import _axios from '@/plugins/axios'
-import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 
 const newAssociations = ref<UserAssociations>([])
-
-const managedAssociations = ref<AssociationList[]>([])
-const managedAssociationsDirectory = computed(() => {
-    return managedAssociations.value.map(
-        association => ({
-            id: association.id,
-            name: association.name,
-            acronym: association.acronym,
-            institution: association.institution?.name,
-            component: association.institutionComponent?.name,
-            field: association.activityField?.name,
-            isEnabled: association.isEnabled,
-            email: association.email,
-        })
-    )
-})
 
 // Need to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
@@ -53,27 +36,6 @@ export default function () {
 
     function removeAssociation(index: number) {
         newAssociations.value.splice(index, 1)
-    }
-
-    // to test for #14
-    // Get the associations managed by the user depending on status or association role
-    async function getManagedAssociations() {
-        const userStore = useUserStore()
-        if (userStore.isAuth) {
-            const associationStore = useAssociationStore()
-            if (userStore.isUniManager) {
-                await associationStore.getAssociations(false)
-                managedAssociations.value = associationStore.associations
-            } else {
-                for (let i = 0; i < (userStore.user as User).associations.length; i++) {
-                    const associationId = userStore.user?.associations[i].id
-                    const associationDetail = (await _axios.get<AssociationList>(`/associations/${associationId}`)).data
-                    managedAssociations.value.push(associationDetail)
-                }
-                // Get roles only for associations members
-                await userStore.getUserAssociationsRoles()
-            }
-        }
     }
 
     // Manage the social networks of an association
@@ -164,10 +126,9 @@ export default function () {
         }
     }
 
+    // test
     async function updateAssociation() {
-        if (associationStore.association && changedData) {
-            await _axios.patch(`/associations/${associationStore.association?.id}`, changedData)
-        }
+        await _axios.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
 
@@ -176,9 +137,6 @@ export default function () {
         newAssociations,
         addAssociation,
         removeAssociation,
-        getManagedAssociations,
-        managedAssociations,
-        managedAssociationsDirectory,
         addNetwork,
         removeNetwork,
         associationSocialNetworks,

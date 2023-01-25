@@ -94,7 +94,6 @@ onBeforeRouteLeave((to, from, next) => {
 })
 
 // Validate changes
-// Refactor in composable
 async function onValidateChanges() {
     if (Object.keys(checkChanges(association.value)).length > 0) {
         try {

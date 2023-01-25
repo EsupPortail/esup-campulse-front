@@ -21,7 +21,6 @@ describe('useAssociation', () => {
     beforeEach(() => {
         associationStore = useAssociationStore()
     })
-
     describe('createAssociation', () => {
         it('should call API only once on /associations/ with name as payload', async () => {
             const {createAssociation} = useAssociation()
@@ -30,7 +29,6 @@ describe('useAssociation', () => {
             expect(mockedAxios.post).toHaveBeenCalledWith('/associations/', {name: 'Association test'})
         })
     })
-
     describe('checkSocialNetworks', () => {
         beforeEach(() => {
             associationStore.association = association
@@ -64,7 +62,6 @@ describe('useAssociation', () => {
             })
         })
     })
-
     describe('checkChanges', () => {
         beforeEach(() => {
             associationStore.association = JSON.parse(JSON.stringify(association))
@@ -105,6 +102,15 @@ describe('useAssociation', () => {
         it('should return an empty object if no changed infos', () => {
             const {checkChanges} = useAssociation()
             expect(checkChanges(nonEditedAssociation)).toEqual({})
+        })
+    })
+    describe('updateAssociation', () => {
+        it('should call API once on /associations/id to patch changedData', () => {
+            associationStore.association = association
+            const {updateAssociation} = useAssociation()
+            updateAssociation()
+            expect(mockedAxios.patch).toHaveBeenCalledOnce()
+            expect(mockedAxios.patch).toHaveBeenCalledWith(`/associations/${associationStore.association.id}`, {})
         })
     })
 })

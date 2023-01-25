@@ -97,6 +97,7 @@
     "im-from-association": "Lier une association au compte",
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
     "im-in-association-office": "Membre du bureau de l'association",
+    "add-my-associations": "J'ajoute les associations dont je fais partie",
     "last-name": "Nom de famille",
     "login": "Connexion",
     "new-password": "Nouveau mot de passe",
@@ -129,7 +130,7 @@
     "send": "Envoyer",
     "social-network-location-hint": "Saisir une adresse valide ; Par exemple : https://facebook.com/",
     "social-network-type-hint": "Par exemple : Facebook",
-    "status": "Votre statut",
+    "status": "Mon statut",
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
     "validated-account": "Compte validé",
     "phone-char-limit": "Maximum 32 caractères autorisés."
@@ -164,14 +165,17 @@
     "user-validation": "Valider des demandes de compte",
     "validate-changes": "Valider les changements",
     "welcome-message": "Bienvenue",
+    "association-management": "Gérer l'annuaire des associations",
     "association-user": {
       "delete-association": "Supprimer le rôle dans l'association",
       "edit-my-associations": "Modifier les fiches de mes associations",
       "has-office-status": "Est membre du bureau",
       "is-president": "Est président ou présidente",
-      "manage-my-associations": "Gérer les associations dont je suis membre",
+      "manage-my-associations": "Gérer mes associations",
       "not-association-member": "L'utilisateur n'est membre d'aucune association.",
-      "role": "Rôle"
+      "role": "Rôle",
+      "has-office-status-needed": "Vous devez être membre du bureau d'une association pour modifier sa fiche.",
+      "not-from-office": "Non membre du bureau"
     }
   },
   "notifications": {
