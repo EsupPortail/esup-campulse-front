@@ -126,10 +126,9 @@ export default function () {
         }
     }
 
+    // test
     async function updateAssociation() {
-        if (associationStore.association && changedData) {
-            await _axios.patch(`/associations/${associationStore.association?.id}`, changedData)
-        }
+        await _axios.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
 

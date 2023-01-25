@@ -119,15 +119,14 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.fields = (await _axios.get<AssociationField[]>('/associations/activity_fields')).data
             }
         },
-        // Refactor and test
+        // Test
         async deleteAssociation(associationId: number | undefined = undefined) {
             if (associationId === null) {
                 associationId = this.association?.id
             }
-            const assoToDelete = this.associations.findIndex((association) => association.id === associationId)
             await _axios.delete(`/associations/${associationId}`)
-            this.associations.splice(assoToDelete, 1)
         },
+        // Test
         async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined = undefined) {
             if (associationId === null) {
                 associationId = this.association?.id
