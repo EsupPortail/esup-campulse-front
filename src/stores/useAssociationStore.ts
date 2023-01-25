@@ -80,7 +80,6 @@ export const useAssociationStore = defineStore('associationStore', {
     },
 
     actions: {
-        // Test
         async getAssociations(forDirectory: boolean, forRegistration: boolean) {
             if (forDirectory) {
                 this.associations = (await _axios.get<AssociationList[]>('/associations/?is_public=true')).data
@@ -90,7 +89,6 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.associations = (await _axios.get<AssociationList[]>('/associations/')).data
             }
         },
-        //Test
         async getManagedAssociations() {
             const userStore = useUserStore()
             if (userStore.isUniManager) {
@@ -103,7 +101,6 @@ export const useAssociationStore = defineStore('associationStore', {
                 }
             }
         },
-        // Test
         async getAssociationDetail(id: number) {
             this.association = (await _axios.get<Association>(`/associations/${id}`)).data
         },
@@ -122,6 +119,7 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.fields = (await _axios.get<AssociationField[]>('/associations/activity_fields')).data
             }
         },
+        // Refactor and test
         async deleteAssociation(associationId: number | undefined = undefined) {
             if (associationId === null) {
                 associationId = this.association?.id

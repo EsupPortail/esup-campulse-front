@@ -1,12 +1,12 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import {createPinia, setActivePinia} from 'pinia'
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 
-import type { User } from '#/user'
-import { mockedAxios } from '~/mocks/axios.mock'
-import { tokens } from '~/mocks/tokens.mock'
-import { mockedGroups, mockedUser } from '~/mocks/user.mock'
-import { setTokens } from '@/services/userService'
-import { useUserStore } from '@/stores/useUserStore'
+import type {User} from '#/user'
+import {mockedAxios} from '~/mocks/axios.mock'
+import {tokens} from '~/mocks/tokens.mock'
+import {mockedGroups, mockedUser} from '~/mocks/user.mock'
+import {setTokens} from '@/services/userService'
+import {useUserStore} from '@/stores/useUserStore'
 
 setActivePinia(createPinia())
 let userStore = useUserStore()
@@ -162,6 +162,76 @@ describe('User store', () => {
         })
         it('should remove all data from newUser', () => {
             expect(userStore.newUser).toBeUndefined()
+        })
+    })
+    describe('getUserAssociationsRoles', () => {
+        afterEach(() => {
+            userStore.user = undefined
+            userStore.userAssociationsRoles = []
+        })
+        describe('If user has associations', () => {
+            it('should call API once on /users/associations/ and populate userAssociationsRoles in store', async () => {
+                userStore.user = mockedUser
+                const data = [
+                    {
+                        user: 'john',
+                        roleName: 'Trésorier',
+                        hasOfficeStatus: true,
+                        isPresident: false,
+                        association: 1
+                    }
+                ]
+                mockedAxios.get.mockResolvedValueOnce({data})
+                await userStore.getUserAssociationsRoles()
+                expect(mockedAxios.get).toHaveBeenCalledOnce()
+                expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/')
+                expect(userStore.userAssociationsRoles).toEqual(data)
+            })
+        })
+        describe('If user has no association', () => {
+            it('should not call API and do nothing to the store', async () => {
+                await userStore.getUserAssociationsRoles()
+                expect(mockedAxios.get).toHaveBeenCalledTimes(0)
+                expect(userStore.userAssociationsRoles).toEqual([])
+            })
+        })
+    })
+    describe('hasOfficeStatus', () => {
+        describe('If user has associations', () => {
+            afterEach(() => {
+                userStore.userAssociationsRoles = []
+            })
+            it('should find the right association by id and check is hasOfficeStatus is true', () => {
+                const roles = [
+                    {
+                        user: 'john',
+                        roleName: 'Trésorier',
+                        hasOfficeStatus: true,
+                        isPresident: false,
+                        association: 1
+                    }
+                ]
+                userStore.userAssociationsRoles = roles
+                expect(userStore.hasOfficeStatus(roles[0].association)).toBeTruthy()
+            })
+            it('should return false if hasOfficeStatus is false', () => {
+                const roles = [
+                    {
+                        user: 'jane',
+                        roleName: 'Membre',
+                        hasOfficeStatus: false,
+                        isPresident: false,
+                        association: 1
+                    }
+                ]
+                userStore.userAssociationsRoles = roles
+                expect(userStore.hasOfficeStatus(roles[0].association)).toBeFalsy()
+            })
+        })
+        describe('If user has no associations', () => {
+            it('should return false', () => {
+                expect(userStore.hasOfficeStatus(undefined)).toBeFalsy()
+            })
         })
     })
 })

@@ -88,7 +88,7 @@ export const nonEditedAssociation: EditedAssociation = {
     lastGoaDate: null
 }
 
-const associationList = [
+export const associations: AssociationList[] = [
     {
         id: 1,
         institution: {
@@ -108,7 +108,8 @@ const associationList = [
         acronym: 'Asso',
         isEnabled: true,
         isSite: true,
-        isVisible: true
+        isPublic: true,
+        email: ''
     },
     {
         id: 2,
@@ -129,7 +130,8 @@ const associationList = [
         acronym: 'AEC',
         isEnabled: true,
         isSite: true,
-        isVisible: true
+        isPublic: false,
+        email: ''
     }
 ]
 
@@ -140,23 +142,10 @@ export const mockedAssociationName: AssociationName[] = [
     }
 ]
 
-export const associations: AssociationList[] = associationList
-
 export const associationNames = associations.map(
     association => ({
         value: association.id,
         label: association.name
-    })
-)
-
-export const associationDirectory = associations.map(
-    association => ({
-        id: association.id,
-        name: association.name,
-        acronym: association.acronym,
-        institution: association.institution.name,
-        component: association.institutionComponent.name,
-        field: association.activityField.name
     })
 )
 

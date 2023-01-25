@@ -57,14 +57,12 @@ export const useUserStore = defineStore('userStore', {
                 }
             }
         },
-        // to test
         async getUserAssociationsRoles() {
             if (this.user && this.user.associations.length > 0) {
                 this.userAssociationsRoles = (await _axios.get('/users/associations/')).data
             }
         },
-        // to test
-        hasOfficeStatus(associationId: number): boolean | undefined {
+        hasOfficeStatus(associationId: number | undefined): boolean | undefined {
             if (this.userAssociationsRoles.length > 0) {
                 const association = this.userAssociationsRoles.find(({association}) => (association === associationId))
                 return association?.hasOfficeStatus
