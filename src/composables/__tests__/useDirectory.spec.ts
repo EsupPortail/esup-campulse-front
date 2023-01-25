@@ -4,6 +4,7 @@ import {config} from '@vue/test-utils'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {associations, associationSearchSettings, associationWrongSearchSettings} from '~/mocks/association.mock'
+import {mockedAxios} from "../../../tests/mocks/axios.mock";
 
 
 vi.mock('@/plugins/axios')
@@ -22,7 +23,6 @@ describe('useDirectory', () => {
     afterEach(() => {
         vi.restoreAllMocks()
     })
-
     describe('Get association detail', () => {
         it('should call getAssociationDetail in store with id type number', async () => {
             const spy = vi.spyOn(associationStore, 'getAssociationDetail')
@@ -34,7 +34,6 @@ describe('useDirectory', () => {
             expect(spy).toHaveBeenCalledWith(1)
         })
     })
-
     describe('advancedSearch', () => {
         it('should return the associations with matching search parameters', () => {
             associationStore.associations = associations
@@ -47,6 +46,14 @@ describe('useDirectory', () => {
             const {advancedSearch} = useDirectory()
             const matches = advancedSearch(associationWrongSearchSettings)
             expect(matches).not.toEqual([associations[1]])
+        })
+    })
+    describe('simpleAssociationSearch', () => {
+        it('should call API once on /associations/?is_public=true&search=query', () => {
+            const {simpleAssociationSearch} = useDirectory()
+            simpleAssociationSearch('query')
+            expect(mockedAxios.get).toHaveBeenCalledOnce()
+            expect(mockedAxios.get).toHaveBeenCalledWith('/associations/?is_public=true&search=query')
         })
     })
 })

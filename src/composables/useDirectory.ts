@@ -1,9 +1,9 @@
-import { useAssociationStore } from '@/stores/useAssociationStore'
-import type { AssociationList, AssociationSearch } from '#/association'
-import _axios from "@/plugins/axios";
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import type {AssociationList, AssociationSearch} from '#/association'
+import _axios from '@/plugins/axios'
 
 
-export default function() {
+export default function () {
 
     const associationStore = useAssociationStore()
 
