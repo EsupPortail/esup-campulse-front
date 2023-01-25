@@ -11,10 +11,12 @@ import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociati
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {EditedAssociation} from '#/association'
-import type {QFile} from "quasar";
+import {useQuasar, type QFile} from "quasar";
+import axios from "axios";
 
 
 const {t} = useI18n()
+const {notify} = useQuasar()
 const {formatDate} = useUtility()
 const {
     checkChanges,
@@ -100,34 +102,45 @@ async function onValidateChanges() {
 async function onChangeLogo() {
   const patchLogoData = new FormData()
   patchLogoData.append('pathLogo', newLogo.value)
-  await updateAssociationLogo(patchLogoData)
+  try {
+    await updateAssociationLogo(patchLogoData)
+    notify({
+      message: t('notifications.positive.association-logo-updated'),
+      type: 'positive'
+    })
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      notify({
+        message: t('notifications.negative.association-logo-edit-error'),
+        type: 'negative'
+      })
+    }
+  }
 }
 </script>
 
 <template>
 
   <div class="logo">
-    <img
+    <QImg
         v-if="associationStore.association?.pathLogo"
         :alt="associationStore.association?.altLogo"
         :src="associationStore.association?.pathLogo"
+        :ratio="1"
     />
-    <div v-else>
-      <p>CECI EST L'EMPLACEMENT DU LOGO</p>
-    </div>
-  </div>
   <QFile
       filled
       accept=".jpg, image/*"
-      label="Choisir un nouveau Logo"
+      :label="t('association.logo.pickup')"
       v-model="newLogo"
   />
     <QBtn
         color="primary"
         icon="mdi-check-circle"
-        label="UPLOAD IMAGE"
+        :label="t('association.logo.update')"
         @click="onChangeLogo"
     />
+  </div>
 
   <QForm
       @submit.prevent="onValidateChanges"
