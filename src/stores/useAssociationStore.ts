@@ -74,9 +74,9 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.association = (await _axios.get<Association>(`/associations/${id}`)).data
             }
         },
-        async updateAssociationLogo(logo: FormData, id: number) {
+        async updateAssociationLogo(logoData: FormData, id: number) {
             if (this.association) {
-                const response = (await _axios.patch(`/associations/${id}`, logo)).data
+                const response = (await _axios.patch(`/associations/${id}`, logoData)).data
                 this.association.pathLogo = response.pathLogo
             }
         },

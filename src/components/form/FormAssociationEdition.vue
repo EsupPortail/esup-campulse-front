@@ -72,6 +72,7 @@ onMounted(async () => {
 // Open alert if user leaves without saving
 const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
+const altLogo = ref<string>('')
 const newLogo = ref()
 const pathLogo = ref<string | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {pathLogo.value = associationStore.association?.pathLogo})
@@ -100,9 +101,12 @@ async function onValidateChanges() {
     checkChanges(association.value)
     // await associationStore.updateAssociation()
 }
+
+// Update association logo details
 async function onChangeLogo() {
   const patchLogoData = new FormData()
   patchLogoData.append('pathLogo', newLogo.value)
+  patchLogoData.append('altLogo', altLogo.value)
   try {
     await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
     notify({
@@ -122,26 +126,36 @@ async function onChangeLogo() {
 
 <template>
 
-  <div class="logo">
+  <QForm
+      class="logo"
+      @submit.prevent="onChangeLogo"
+  >
     <QImg
         v-if="pathLogo"
         :alt="associationStore.association?.altLogo"
         :src="pathLogo"
         :ratio="1"
     />
-  <QFile
-      filled
-      accept=".jpg, image/*"
-      :label="t('association.logo.pickup')"
-      v-model="newLogo"
-  />
+    <QFile
+       filled
+       accept=".jpg, image/*"
+       :label="t('association.logo.pickup')"
+       v-model="newLogo"
+    />
+    <QInput
+       v-model="altLogo"
+       :label="t('association.logo.alt')"
+       :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+       filled
+       lazy-rules
+    />
     <QBtn
         color="primary"
         icon="mdi-check-circle"
         :label="t('association.logo.update')"
-        @click="onChangeLogo"
+        type="submit"
     />
-  </div>
+  </QForm>
 
   <QForm
       @submit.prevent="onValidateChanges"
