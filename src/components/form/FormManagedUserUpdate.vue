@@ -146,9 +146,8 @@ onBeforeRouteLeave((to, from, next) => {
                 v-model="user.phone"
                 :label="t('forms.phone')"
                 filled
-                hint="Format : 06 00 00 00 00"
                 lazy-rules
-                mask="## ## ## ## ##"
+                type="tel"
             />
         </fieldset>
         <FormUpdateManagedUserAssociations/>
