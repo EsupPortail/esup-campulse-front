@@ -328,6 +328,7 @@
     "logo": {
       "pickup": "Choisir un nouveau logo",
       "update": "Mettre à jour le logo de l'association",
+      "remove": "Supprimer le logo de l'association",
       "alt": "Ajouter un texte alternatif décrivant le logo de l'association"
     }
   },
