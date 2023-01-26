@@ -133,7 +133,7 @@ async function onChangeLogo() {
     <div class="logo">
       <QImg
           :alt="associationStore.association?.altLogo"
-          :src="pathLogo"
+          :src="pathLogo ? pathLogo : '/images/no_logo.png'"
           :ratio="1"
       />
     </div>
@@ -315,10 +315,8 @@ fieldset
     border: none
 
 .logo
-  max-width: 150px
-  width: 100%
+  width: 150px
   height: 150px
-  border: solid grey
 
 .btn-group
     display: flex

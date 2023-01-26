@@ -91,7 +91,9 @@ export interface AssociationList {
     isPublic: boolean,
     isSite: boolean,
     isVisible: boolean,
-    email: string
+    email: string,
+    altLogo: string,
+    pathLogo: string
 }
 
 export interface AssociationSearch {

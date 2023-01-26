@@ -42,12 +42,10 @@ async function onGetAssociationDetail() {
 <template>
     <section class="title">
         <div class="logo">
-            <img
-                v-if="association?.pathLogo"
+            <QImg
                 :alt="association?.altLogo"
-                :src="association?.pathLogo"
+                :src="association.pathLogo ? association.pathLogo : '/images/no_logo.png'"
             />
-            <div v-else></div>
         </div>
         <div class="name">
             <h1>{{ association?.name }}</h1>
@@ -172,10 +170,8 @@ h1
   font-size: 1.8em
 
 .logo
-  max-width: 150px
-  width: 100%
+  width: 150px
   height: 150px
-  background-color: grey
 
 .description
   margin-top: 30px
