@@ -186,6 +186,7 @@
       "change-associations-error": "Les changements n'ont pas été effectués pour les associations suivantes : ",
       "delete-association-error": "Une erreur est survenue lors de la suppression de l'association. Veuillez réessayer.",
       "edit-association-error": "Une erreur est survenue lors de l'édition de l'association. Veuillez réessayer.",
+      "association-logo-edit-error": "Une erreur est survenue lors de la modification du logo. Veuillez réessayer.",
       "different-emails": "Les deux adresses email ne sont pas identiques.",
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
       "disable-association-error": "L'association n'a pas été inactivée.",
@@ -209,6 +210,7 @@
       "delete-association": "L'association a été supprimée avec succès.",
       "disable-association": "L'association a été inactivée avec succès.",
       "enable-association": "L'association a été activée avec succès.",
+      "association-logo-updated": "Le logo de l'association a été modifié avec succès.",
       "login-success": "Connexion réussie.",
       "logout-success": "Déconnexion réussie.",
       "password-changed": "Votre mot de passe a bien été modifié.",
@@ -322,6 +324,11 @@
       "socials": "Réseaux sociaux",
       "website": "Site web",
       "website-link": "Aller au site web de l'association"
+    },
+    "logo": {
+      "pickup": "Choisir un nouveau logo",
+      "update": "Mettre à jour le logo de l'association",
+      "alt": "Ajouter un texte alternatif décrivant le logo de l'association"
     }
   },
   "user": {

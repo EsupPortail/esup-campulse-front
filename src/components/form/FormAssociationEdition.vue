@@ -3,7 +3,7 @@ import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onBeforeRouteLeave} from 'vue-router'
-import {useQuasar} from 'quasar'
+import {useQuasar, type QFile} from "quasar";
 import useAssociation from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
 import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
@@ -20,7 +20,8 @@ const {notify, loading} = useQuasar()
 const {formatDate, urlRegex} = useUtility()
 const {
     checkChanges,
-    updateAssociation
+    updateAssociation,
+    changedData
 } = useAssociation()
 
 const associationStore = useAssociationStore()
@@ -73,6 +74,10 @@ onMounted(async () => {
 // Open alert if user leaves without saving
 const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
+const altLogo = ref<string>('')
+const newLogo = ref()
+const pathLogo = ref<string | null | undefined>(associationStore.association?.pathLogo)
+watch(() => associationStore.association?.pathLogo, () => {pathLogo.value = associationStore.association?.pathLogo})
 
 function onLeaveEdition() {
     leaveEdition.value = true
@@ -117,22 +122,69 @@ async function onValidateChanges() {
         })
     }
 }
+
+// Update association logo details
+async function onChangeLogo() {
+  const patchLogoData = new FormData()
+  patchLogoData.append('pathLogo', newLogo.value)
+  patchLogoData.append('altLogo', altLogo.value)
+  try {
+    await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+    notify({
+      message: t('notifications.positive.association-logo-updated'),
+      type: 'positive'
+    })
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      notify({
+        message: t('notifications.negative.association-logo-edit-error'),
+        type: 'negative'
+      })
+    }
+  }
+}
 </script>
 
 <template>
-    <QForm
-        @submit.prevent="onValidateChanges"
-    >
-        <!--        <div class="logo">
-                <img
-                    v-if="associationStore.association?.pathLogo"
-                    :alt="associationStore.association?.altLogo"
-                    :src="associationStore.association?.pathLogo"
-                />
-                <div v-else></div>
-            </div>-->
-        <fieldset>
-            <legend>{{ t('association.titles.info') }}</legend>
+
+  <QForm
+      @submit.prevent="onChangeLogo"
+  >
+    <fieldset>
+    <div class="logo">
+      <QImg
+          :alt="associationStore.association?.altLogo"
+          :src="pathLogo ? pathLogo : '/images/no_logo.png'"
+          :ratio="1"
+      />
+    </div>
+    <QFile
+       filled
+       accept=".jpg, .jpeg, .png"
+       :label="t('association.logo.pickup')"
+       v-model="newLogo"
+    />
+    <QInput
+       v-model="altLogo"
+       :label="t('association.logo.alt')"
+       :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+       filled
+       lazy-rules
+    />
+    <QBtn
+        color="primary"
+        icon="mdi-check-circle"
+        :label="t('association.logo.update')"
+        type="submit"
+    />
+    </fieldset>
+  </QForm>
+
+  <QForm
+      @submit.prevent="onValidateChanges"
+  >
+    <fieldset>
+      <legend>{{ t('association.titles.info') }}</legend>
             <QInput
                 v-model="association.name"
                 :label="t('association.labels.name')"
@@ -287,6 +339,10 @@ async function onValidateChanges() {
 <style lang="sass" scoped>
 fieldset
     border: none
+
+.logo
+  width: 150px
+  height: 150px
 
 .btn-group
     display: flex
