@@ -81,22 +81,18 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 await _axios.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
             }
         },
-        // to re test
         async validateUser() {
             await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
         },
         async deleteUser() {
             await _axios.delete(`/users/${this.user?.id}`)
         },
-        // to re test
         async getUserAssociations(id: number) {
             this.userAssociations = (await _axios.get<UserAssociationDetail[]>(`/users/associations/${id}`)).data
         },
-        // to test for #8
         async deleteUserAssociation(associationId: number) {
             await _axios.delete(`/users/associations/${this.user?.id}/${associationId}`)
         },
-        // to test for #8
         async patchUserAssociations(associationId: number, infosToPatch: UserAssociationPatch) {
             await _axios.patch(`/users/associations/${this.user?.id}/${associationId}`, infosToPatch)
         },
