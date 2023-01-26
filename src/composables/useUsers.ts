@@ -1,30 +1,39 @@
 import {useRoute} from 'vue-router'
-import useUserGroups from '@/composables/useUserGroups'
-import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {ManagedUser, UserAssociationStatus, UserToUpdate} from '#/user'
+import type {UserAssociationDetail, UserAssociationManagement, UserAssociationStatus} from '#/user'
 import {ref, watch} from 'vue'
+import useUtility from '@/composables/useUtility'
+import useUserGroups from '@/composables/useUserGroups'
 
 
 const userManagerStore = useUserManagerStore()
-
-const userToUpdate = ref<UserToUpdate>(userManagerStore.userInfosUpdate)
-watch(() => userManagerStore.user, () => {
-    userToUpdate.value = userManagerStore.userInfosUpdate
-})
 
 const newUserAssociations = ref<UserAssociationStatus[]>(userManagerStore.userAssociationStatus)
 watch(() => userManagerStore.userAssociations, () => {
     newUserAssociations.value = userManagerStore.userAssociationStatus
 })
 
+// Used in FormUpdateManagedUserAssociations
+const userAssociations = ref<UserAssociationManagement[]>([])
+watch(() => userManagerStore.userAssociations, () => {
+    userManagerStore.userAssociations.forEach(function (association) {
+        userAssociations.value.push({
+            associationId: association.association.id,
+            associationName: association.association.name,
+            roleName: association.roleName,
+            hasOfficeStatus: association.hasOfficeStatus,
+            isPresident: association.isPresident,
+            deleteAssociation: false
+        })
+    })
+})
 
 export default function () {
 
     const route = useRoute()
+
     const {groupsToDelete} = useUserGroups()
     const {arraysAreEqual} = useUtility()
-    const {updateUserGroups} = useUserGroups()
 
     async function getUsers() {
         if (route.name === 'ValidateUsers') {
@@ -35,16 +44,8 @@ export default function () {
         }
     }
 
-    async function getUser(routeParams: string) {
-        if (routeParams) {
-            const id = parseInt(routeParams as string)
-            await userManagerStore.getUserDetail(id)
-        }
-    }
-
     // to re test
     async function validateUser() {
-
         const oldGroups = userManagerStore.userGroups
         const {newGroups} = useUserGroups()
         if (!arraysAreEqual(newGroups.value, oldGroups)) {
@@ -54,16 +55,46 @@ export default function () {
         await userManagerStore.validateUser()
     }
 
-    // to test
-    async function updateUserInfos() {
-        // update user
-        await userManagerStore.updateUserInfos(userToUpdate.value as ManagedUser)
-        // update user groups
-        await updateUserGroups()
-        // update user associations
-        await userManagerStore.updateUserAssociations(newUserAssociations.value as UserAssociationStatus[])
+    // Used in FormManagedUserUpdate - test for #8
+    function updateUserAssociations() {
+        userAssociations.value.forEach(async function (association) {
+            // If we need to delete the association
+            if (association.deleteAssociation) {
+                await userManagerStore.deleteUserAssociation(association.associationId)
+            }
+            // If we need to update the association
+            else {
+                // We search for the corresponding association in store
+                const storeAssociation: UserAssociationDetail | undefined = userManagerStore.userAssociations.find(obj =>
+                    obj.association.id === association.associationId)
+                // We set a boolean to track changes
+                let hasChanges = false
+                // We compare the 2 objects
+                for (const [key, value] of Object.entries(association)) {
+                    if (key == 'roleName' || key == 'hasOfficeStatus' || key == 'isPresident') {
+                        if (value !== storeAssociation?.[key as keyof UserAssociationDetail]) {
+                            hasChanges = true
+                        }
+                    }
+                }
+                if (hasChanges) {
+                    const infosToPatch = {
+                        roleName: association.roleName,
+                        hasOfficeStatus: association.hasOfficeStatus,
+                        isPresident: association.isPresident,
+                    }
+                    await userManagerStore.patchUserAssociations(association.associationId, infosToPatch)
+                }
+            }
+        })
     }
 
-    return {getUsers, getUser, validateUser, updateUserInfos, userToUpdate, newUserAssociations}
+    return {
+        getUsers,
+        newUserAssociations,
+        updateUserAssociations,
+        userAssociations,
+        validateUser
+    }
 }
 

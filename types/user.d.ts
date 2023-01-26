@@ -28,7 +28,6 @@ export interface UserStore {
 export interface UserManagerStore {
     user: ManagedUser | undefined,
     users: ManagedUsers,
-    allUsers: boolean,
     userAssociations: UserAssociationDetail[]
 }
 
@@ -97,15 +96,31 @@ export type ManagedUsers = ManagedUser[]
 
 export type UserNames = { value: number, label: string }[]
 
-export type UserToUpdate = Pick<ManagedUser, "firstName" | "lastName" | "email" | "phone">
+export interface UserToUpdate {
+    firstName: string | undefined,
+    lastName: string | undefined,
+    email: string | undefined,
+    phone: string | undefined
+}
 
 export interface UserAssociationStatus {
     associationId: number,
-    associationName: string
+    associationName: string,
     roleName: string,
     hasOfficeStatus: boolean,
     isPresident: boolean
 }
+
+export interface UserAssociationManagement {
+    associationId: number,
+    associationName: string,
+    roleName: string,
+    hasOfficeStatus: boolean,
+    isPresident: boolean,
+    deleteAssociation: boolean
+}
+
+export type UserAssociationPatch = Pick<UserAssociationStatus, "roleName" | "hasOfficeStatus" | "isPresident">
 
 /*export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
 export type UserDirectory = UserDirectoryDetail[]*/

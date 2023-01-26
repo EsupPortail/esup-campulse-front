@@ -237,9 +237,8 @@
       "confirm-no": "Non",
       "confirm-yes": "Oui"
     },
-    "leave-association-edition": {
-      "message": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues."
-    }
+    "leave-association-edition": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues.",
+    "leave-user-edition": "Êtes-vous sûr de vouloir quitter l'édition des informations de cet utilisateur ? Si vous avez effectué des modifications, celles-ci seront perdues."
   },
   "directory": {
     "title": "Associations",

@@ -43,15 +43,15 @@ export default function () {
         return groups.value?.find(({name}) => name === 'Étudiante ou Étudiant')
     })
 
+    // to test for #8
     function groupsToDelete(newGroups: number[], oldGroups: number[]) {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
     }
 
-    // to test
+    // to test for #8
     async function updateUserGroups() {
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
-
         if (!arraysAreEqual(newGroups.value, oldGroups)) {
             await userManagerStore.updateUserGroups(newGroups.value)
             await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))

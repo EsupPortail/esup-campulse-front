@@ -2,6 +2,8 @@ import {defineStore} from 'pinia'
 import type {
     ManagedUser,
     ManagedUsers,
+    UserAssociationDetail,
+    UserAssociationPatch,
     UserAssociationStatus,
     UserDirectory,
     UserGroup,
@@ -15,7 +17,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
         user: undefined,
         users: [],
-        allUsers: false,
         userAssociations: []
     }),
 
@@ -63,26 +64,14 @@ export const useUserManagerStore = defineStore('userManagerStore', {
 
     actions: {
         async getUsers() {
-            if (this.users.length === 0 || this.allUsers === false) {
-                this.users = (await _axios.get<ManagedUsers>('/users/')).data
-                this.allUsers = true
-            }
+            this.users = (await _axios.get<ManagedUsers>('/users/')).data
         },
         async getUnvalidatedUsers() {
-            if (this.users.length === 0 || this.allUsers === true) {
-                this.users = (await _axios.get<ManagedUsers>('/users/?is_validated_by_admin=false')).data
-                this.allUsers = false
-            }
+            this.users = (await _axios.get<ManagedUsers>('/users/?is_validated_by_admin=false')).data
         },
         async getUserDetail(id: number) {
-            if (this.user?.id !== id) {
-                if (this.users.length !== 0) {
-                    this.user = this.users.find((user) => user.id === id)
-                } else {
-                    this.user = (await _axios.get<ManagedUser>(`/users/${id}`)).data
-                    this.user.groups = (await _axios.get<UserGroup[]>(`/users/groups/${id}`)).data
-                }
-            }
+            this.user = (await _axios.get<ManagedUser>(`/users/${id}`)).data
+            this.user.groups = (await _axios.get<UserGroup[]>(`/users/groups/${id}`)).data
         },
         async updateUserGroups(userGroups: number[]) {
             await _axios.post('/users/groups/', {username: this.user?.username, groups: userGroups})
@@ -92,70 +81,34 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 await _axios.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
             }
         },
+        // to re test
         async validateUser() {
             await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
-            const validatedUser = this.users.findIndex((user) => user.id === this.user?.id)
-            this.users.splice(validatedUser, 1)
         },
         async deleteUser() {
             await _axios.delete(`/users/${this.user?.id}`)
-            const userToDelete = this.users.findIndex((user) => user.id === this.user?.id)
-            this.users.splice(userToDelete, 1)
         },
         // to re test
         async getUserAssociations(id: number) {
-            let userId: number | undefined = undefined
-            if (!this.user || (this.user?.id !== id)) {
-                userId = id
-            } else {
-                userId = this.user?.id
-            }
-            this.userAssociations = (await _axios.get(`/users/associations/${userId}`)).data
+            this.userAssociations = (await _axios.get<UserAssociationDetail[]>(`/users/associations/${id}`)).data
         },
-        // to test
+        // to test for #8
         async deleteUserAssociation(associationId: number) {
             await _axios.delete(`/users/associations/${this.user?.id}/${associationId}`)
-            const associationToDelete = this.userAssociations.findIndex((association) => association.association.id === associationId)
-            this.userAssociations.splice(associationToDelete, 1)
         },
-        // to test
-        async updateUserAssociations(updatedUserAssociations: UserAssociationStatus[]) {
-            for (let i = 0; i < updatedUserAssociations.length; i++) {
-                const newAssociation = updatedUserAssociations[i]
-                const oldAssociation = this.userAssociations.find((association) => association.association.id === updatedUserAssociations[i].associationId)
-                if (newAssociation.roleName !== oldAssociation?.roleName || newAssociation.hasOfficeStatus !== oldAssociation?.hasOfficeStatus
-                    || newAssociation.isPresident !== oldAssociation?.isPresident) {
-                    const data = {
-                        user: this.user?.username,
-                        roleName: newAssociation.roleName,
-                        hasOfficeStatus: newAssociation.hasOfficeStatus,
-                        isPresident: newAssociation.isPresident,
-                        association: newAssociation.associationId
-                    }
-                    await this.deleteUserAssociation(newAssociation.associationId)
-                    await _axios.post('/users/associations/', data)
+        // to test for #8
+        async patchUserAssociations(associationId: number, infosToPatch: UserAssociationPatch) {
+            await _axios.patch(`/users/associations/${this.user?.id}/${associationId}`, infosToPatch)
+        },
+        // OK - to test for #8
+        async updateUserInfos(user: UserToUpdate) {
+            let infosToPatch = {}
+            for (const [key, value] of Object.entries(user)) {
+                if (value !== this.user?.[key as keyof typeof this.user]) {
+                    infosToPatch = Object.assign(infosToPatch, {[key]: value})
                 }
             }
-        },
-        // to test
-        async updateUserInfos(updatedUser: UserToUpdate) {
-            if (updatedUser.firstName !== this.user?.firstName || updatedUser.lastName !== this.user?.lastName
-                || updatedUser.email !== this.user?.email || updatedUser.phone !== this.user?.phone) {
-                let data = {}
-                // Only patch those updates for non CAS users
-                if (!this.user?.isCas) {
-                    data = {
-                        username: updatedUser.email,
-                        firstName: updatedUser.firstName,
-                        lastName: updatedUser.lastName,
-                        email: updatedUser.email,
-                        phone: updatedUser.phone,
-                    }
-                } else {
-                    data = {phone: updatedUser.phone}
-                }
-                await _axios.patch(`/users/${this.user?.id}`, data)
-            }
+            await _axios.patch(`/users/${this.user?.id}`, infosToPatch)
         }
     }
 })

@@ -1,18 +1,17 @@
 <script lang="ts" setup>
-import AlertConfirmUserAssociationDelete from '@/components/alert/AlertConfirmUserAssociationDelete.vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
+import useUsers from '@/composables/useUsers'
 
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {newUserAssociations} = useUsers()
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
+const {userAssociations} = useUsers()
 
 
 onMounted(async () => {
@@ -24,6 +23,7 @@ onMounted(async () => {
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
+        userAssociations.value = []
         await userManagerStore.getUserAssociations(parseInt(route.params.id as string))
     } catch (e) {
         notify({
@@ -49,10 +49,10 @@ const booleanSelectOptions = [
 <template>
     <fieldset class="association-cards">
         <legend>Associations</legend>
-        <p v-if="userManagerStore.userAssociations.length === 0">L'utilisateur n'est membre d'aucune association.</p>
+        <p v-if="userAssociations.length === 0">L'utilisateur n'est membre d'aucune association.</p>
         <QCard
-            v-for="(association, index) in newUserAssociations"
-            :key="index"
+            v-for="association in userAssociations"
+            :key="association.associationId"
             class="association-card"
         >
             <QCardSection>
@@ -60,12 +60,14 @@ const booleanSelectOptions = [
                     <h4>{{ association.associationName }}</h4>
                     <QInput
                         v-model="association.roleName"
+                        :disable="!!association.deleteAssociation"
                         :label="t('dashboard.association-user.role')"
                         filled
                         lazy-rules
                     />
                     <QSelect
                         v-model="association.hasOfficeStatus"
+                        :disable="!!association.deleteAssociation"
                         :label="t('dashboard.association-user.has-office-status')"
                         :options="booleanSelectOptions"
                         emit-value
@@ -74,13 +76,32 @@ const booleanSelectOptions = [
                     />
                     <QSelect
                         v-model="association.isPresident"
+                        :disable="!!association.deleteAssociation"
                         :label="t('dashboard.association-user.is-president')"
                         :options="booleanSelectOptions"
                         emit-value
                         filled
                         map-options
                     />
-                    <AlertConfirmUserAssociationDelete :association-id="association.associationId"/>
+                    <QBtn
+                        v-if="!association.deleteAssociation"
+                        :label="t('dashboard.association-user.delete-association')"
+                        color="red"
+                        icon="mdi-delete"
+                        @click="association.deleteAssociation = true"
+                    />
+                    <div v-else>
+                        <span class="delete-message">
+                            Le rôle dans l'association sera supprimé après validation des changements.
+                        </span>
+                        <QBtn
+                            color="secondary"
+                            icon="mdi-cancel"
+                            label="Annuler la suppression"
+                            outline
+                            @click="association.deleteAssociation = false"
+                        />
+                    </div>
                 </article>
             </QCardSection>
         </QCard>
@@ -108,4 +129,7 @@ legend
     text-align: center
     width: 100%
     margin-bottom: 10px
+
+.delete-message
+    color: red
 </style>

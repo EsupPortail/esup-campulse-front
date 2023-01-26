@@ -1,17 +1,23 @@
 <script lang="ts" setup>
+import FormManagedUserUpdate from '@/components/form/FormManagedUserUpdate.vue'
 import {useI18n} from 'vue-i18n'
-import {useRoute} from 'vue-router'
-import type {ManagedUser, UserAssociationDetail} from '#/user'
-import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
-import FormUserGroups from '@/components/form/FormUserGroups.vue'
-import AlertConfirmUserAssociationDelete from '@/components/alert/AlertConfirmUserAssociationDelete.vue'
-import FormManagedUserUpdate from "@/components/form/FormManagedUserUpdate.vue";
+
 
 const {t} = useI18n()
 
+/*import {onMounted, ref, watch} from 'vue'
+import {useRoute} from 'vue-router'
+import type {ManagedUser, UserAssociationDetail} from '#/user'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useQuasar} from 'quasar'
+import useUserGroups from '@/composables/useUserGroups'
+import useUsers from '@/composables/useUsers'
 
+const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
+const {newGroups} = useUserGroups()
+const {getUser} = useUsers()
 
 // Watch function observes and updates only if data had been changed
 const user = ref<ManagedUser | undefined>(userManagerStore.user)
@@ -39,8 +45,8 @@ const booleanSelectOptions = [
 onMounted(async () => {
     loading.show
     await onGetUser()
-    newGroups.value = userManagerStore.userGroups
-    await onGetUserAssociations()
+    //newGroups.value = userManagerStore.userGroups
+    //await onGetUserAssociations()
     loading.hide
 })
 
@@ -59,14 +65,14 @@ async function onGetUser() {
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
-        await userManagerStore.getUserAssociations()
+        await userManagerStore.getUserAssociations(parseInt(route.params.id as string))
     } catch (e) {
         notify({
             type: 'negative',
             message: t('notifications.negative.form-error')
         })
     }
-}
+}*/
 
 // Function that verify if the user is validated by the admin or not, and send the response to the back
 /*
@@ -94,157 +100,5 @@ async function onValidateChanges() {
 
 <template>
     <h1>{{ t('user-manager.manage-account') }}</h1>
-    <QForm
-        v-if="user"
-        class="q-gutter-md"
-    >
-        <fieldset>
-            <legend>{{ t('user.infos') }}</legend>
-            <!-- :disable="!!user.isCas" -->
-            <QInput
-                v-model="user.firstName"
-                :disable="true"
-                :label="t('forms.first-name')"
-                :rules="[ val => val && val.length > 0 || t('forms.required-first-name')]"
-                filled
-                lazy-rules
-            />
-            <!-- :disable="!!user.isCas" -->
-            <QInput
-                v-model="user.lastName"
-                :disable="true"
-                :label="t('forms.last-name')"
-                :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
-                filled
-                lazy-rules
-            />
-            <!-- :disable="!!user.isCas" -->
-            <QInput
-                v-model="user.email"
-                :disable="true"
-                :label="t('forms.email')"
-                :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="user.phone"
-                :disable="true"
-                :label="t('forms.phone')"
-                filled
-                hint="Format : 06 00 00 00 00"
-                lazy-rules
-                mask="## ## ## ## ##"
-            />
-        </fieldset>
-        <fieldset class="association-cards">
-            <QCard
-                v-for="(association, index) in userAssociations"
-                :key="index"
-                class="association-card"
-            >
-                <QCardSection>
-                    <article>
-                        <h4>{{ association.association.name }}</h4>
-                        <QInput
-                            v-model="association.roleName"
-                            :disable="true"
-                            :label="t('dashboard.association-user.role')"
-                            :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
-                            filled
-                            lazy-rules
-                        />
-                        <QSelect
-                            v-model="association.hasOfficeStatus"
-                            :disable="true"
-                            :label="t('dashboard.association-user.has-office-status')"
-                            :options="booleanSelectOptions"
-                            emit-value
-                            filled
-                            map-options
-                        />
-                        <QSelect
-                            v-model="association.isPresident"
-                            :disable="true"
-                            :label="t('dashboard.association-user.is-president')"
-                            :options="booleanSelectOptions"
-                            emit-value
-                            filled
-                            map-options
-                        />
-                        <!-- <QBtn
-                            :label="t('dashboard.association-user.delete-association')"
-                            color="red"
-                            icon="mdi-delete"
-                        /> -->
-                        <AlertConfirmUserAssociationDelete :association-id="association.association.id"/>
-                    </article>
-                </QCardSection>
-            </QCard>
-        </fieldset>
-        <fieldset>
-            <legend>{{ t('user.groups') }}</legend>
-            <section>
-                <article>
-                    <h3>{{ t('user.isCas') }}</h3>
-                    <p>{{ user.isCas ? t('yes') : t('no') }}</p>
-                </article>
-                <article>
-                    <h3>{{ t("user.isValidatedByAdmin") }}</h3>
-                    <p>{{ user.isValidatedByAdmin ? t('yes') : t('no') }}</p>
-                </article>
-            </section>
-        </fieldset>
-        <FormUserGroups :disabled="true"/>
-    </QForm>
-    <section class="btn-group">
-        <QBtn :label="t('back')" :to="{name: 'ManageUsers'}" color="secondary" icon="mdi-arrow-left-circle"/>
-        <!-- <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" @click="onValidateUser"/> -->
-        <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle"
-              @click="onValidateChanges"/>
-        <AlertConfirmUserDelete/>
-    </section>
     <FormManagedUserUpdate/>
 </template>
-
-<style lang="sass" scoped>
-article
-    display: flex
-    align-items: center
-    background-color: lightgrey
-    padding: 0 20px 0 20px
-    margin: 5px 0
-
-    h3
-        font-size: 1.2em
-        text-transform: uppercase
-
-legend
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-    width: 100%
-    margin-bottom: 10px
-
-.btn-group
-    display: flex
-    gap: 20px
-    margin: 30px 0 30px 0
-
-fieldset
-    border: none
-
-h4
-    font-size: 1.5em
-    padding: 0
-    line-height: 0
-
-.q-select
-    margin-bottom: 20px
-
-.association-cards
-    display: flex
-    flex-direction: column
-    gap: 20px
-</style>

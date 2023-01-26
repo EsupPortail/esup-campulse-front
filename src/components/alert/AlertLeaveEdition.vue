@@ -4,7 +4,8 @@ import {useI18n} from 'vue-i18n'
 const {t} = useI18n()
 
 const props = defineProps({
-    openAlert: Boolean
+    openAlert: Boolean,
+    text: String
 })
 </script>
 
@@ -15,7 +16,7 @@ const props = defineProps({
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t("alerts.leave-association-edition.message") }}</span>
+                <span class="q-ml-sm">{{ props.text }}</span>
             </QCardSection>
 
             <QCardActions align="right">
@@ -37,7 +38,3 @@ const props = defineProps({
         </QCard>
     </QDialog>
 </template>
-
-<style lang="sass">
-
-</style>
