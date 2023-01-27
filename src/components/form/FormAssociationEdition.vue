@@ -124,12 +124,17 @@ async function onValidateChanges() {
 }
 
 // Update association logo details
-async function onChangeLogo() {
-  const patchLogoData = new FormData()
-  patchLogoData.append('pathLogo', newLogo.value)
-  patchLogoData.append('altLogo', altLogo.value)
+async function onChangeLogo(action: string) {
   try {
-    await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+    if(action === 'update'){
+      const patchLogoData = new FormData()
+      patchLogoData.append('pathLogo', newLogo.value)
+      patchLogoData.append('altLogo', altLogo.value)
+      await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+    } else if (action === 'delete') {
+      const deleteLogoData = {'altLogo': '', 'pathLogo': null}
+      await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+    }
     notify({
       message: t('notifications.positive.association-logo-updated'),
       type: 'positive'
@@ -148,35 +153,41 @@ async function onChangeLogo() {
 <template>
 
   <QForm
-      @submit.prevent="onChangeLogo"
+      @submit.prevent="onChangeLogo('update')"
   >
     <fieldset>
-    <div class="logo">
-      <QImg
+      <div class="logo">
+        <QImg
           :alt="associationStore.association?.altLogo"
           :src="pathLogo ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
           :ratio="1"
       />
-    </div>
-    <QFile
-       filled
-       accept=".jpg, .jpeg, .png"
-       :label="t('association.logo.pickup')"
-       v-model="newLogo"
-    />
-    <QInput
-       v-model="altLogo"
-       :label="t('association.logo.alt')"
-       :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-       filled
-       lazy-rules
-    />
-    <QBtn
-        color="primary"
-        icon="mdi-check-circle"
-        :label="t('association.logo.update')"
-        type="submit"
-    />
+      </div>
+      <QFile
+         filled
+         accept=".jpg, .jpeg, .png"
+         :label="t('association.logo.pickup')"
+         v-model="newLogo"
+      />
+      <QInput
+         v-model="altLogo"
+         :label="t('association.logo.alt')"
+         :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+         filled
+         lazy-rules
+      />
+      <QBtn
+          color="primary"
+          icon="mdi-check-circle"
+          :label="t('association.logo.update')"
+          type="submit"
+      />
+      <QBtn
+          :label="t('association.logo.remove')"
+          color="red"
+          icon="mdi-delete"
+          @click="onChangeLogo('delete')"
+      />
     </fieldset>
   </QForm>
 
