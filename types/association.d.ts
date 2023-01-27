@@ -6,7 +6,7 @@ export interface Association {
     socialNetworks: AssociationSocialNetwork[],
     name: string,
     acronym: string | null,
-    pathLogo: string | null,
+    pathLogo: object | null,
     altLogo: string | null,
     description: string | null,
     activities: string | null,
@@ -93,7 +93,7 @@ export interface AssociationList {
     email: string,
     isVisible: boolean,
     altLogo: string,
-    pathLogo: string
+    pathLogo: object
 }
 
 export interface AssociationSearch {

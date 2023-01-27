@@ -44,7 +44,7 @@ async function onGetAssociationDetail() {
         <div class="logo">
             <QImg
                 :alt="association?.altLogo"
-                :src="association?.pathLogo ? association?.pathLogo : '/images/no_logo.png'"
+                :src="association?.pathLogo ? association?.pathLogo.detail : '/images/no_logo.png'"
             />
         </div>
         <div class="name">

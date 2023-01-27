@@ -76,7 +76,7 @@ const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
 const altLogo = ref<string>('')
 const newLogo = ref()
-const pathLogo = ref<string | null | undefined>(associationStore.association?.pathLogo)
+const pathLogo = ref<object | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {pathLogo.value = associationStore.association?.pathLogo})
 
 function onLeaveEdition() {
@@ -154,7 +154,7 @@ async function onChangeLogo() {
     <div class="logo">
       <QImg
           :alt="associationStore.association?.altLogo"
-          :src="pathLogo ? pathLogo : '/images/no_logo.png'"
+          :src="pathLogo ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
           :ratio="1"
       />
     </div>
