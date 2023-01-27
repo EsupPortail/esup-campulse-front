@@ -122,7 +122,4 @@ export interface UserAssociationManagement {
 
 export type UserAssociationPatch = Pick<UserAssociationStatus, "roleName" | "hasOfficeStatus" | "isPresident">
 
-/*export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
-export type UserDirectory = UserDirectoryDetail[]*/
-
 export type UserDirectory = Pick<User, "id" | "firstName" | "lastName" | "email" | "associations" | "groups" | "isValidatedByAdmin">

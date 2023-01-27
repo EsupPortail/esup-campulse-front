@@ -2,7 +2,6 @@ import {useRoute} from 'vue-router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {UserAssociationDetail, UserAssociationManagement, UserAssociationStatus} from '#/user'
 import {ref, watch} from 'vue'
-import useUtility from '@/composables/useUtility'
 import useUserGroups from '@/composables/useUserGroups'
 
 
@@ -31,9 +30,8 @@ watch(() => userManagerStore.userAssociations, () => {
 export default function () {
 
     const route = useRoute()
+    const {updateUserGroups} = useUserGroups()
 
-    const {groupsToDelete} = useUserGroups()
-    const {arraysAreEqual} = useUtility()
 
     async function getUsers() {
         if (route.name === 'ValidateUsers') {
@@ -46,12 +44,7 @@ export default function () {
 
     // to re test
     async function validateUser() {
-        const oldGroups = userManagerStore.userGroups
-        const {newGroups} = useUserGroups()
-        if (!arraysAreEqual(newGroups.value, oldGroups)) {
-            await userManagerStore.updateUserGroups(newGroups.value)
-            await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))
-        }
+        await updateUserGroups()
         await userManagerStore.validateUser()
     }
 
@@ -97,4 +90,3 @@ export default function () {
         validateUser
     }
 }
-

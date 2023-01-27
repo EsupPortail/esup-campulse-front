@@ -48,6 +48,7 @@ export default function () {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
     }
 
+
     // to test for #8
     async function updateUserGroups() {
         const oldGroups = userManagerStore.userGroups
@@ -68,6 +69,5 @@ export default function () {
         groupUnabledSelectingAssociation,
         newGroups,
         updateUserGroups
-
     }
 }
