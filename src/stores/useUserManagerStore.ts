@@ -104,7 +104,9 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                     infosToPatch = Object.assign(infosToPatch, {[key]: value})
                 }
             }
-            await _axios.patch(`/users/${this.user?.id}`, infosToPatch)
+            if (Object.keys(infosToPatch).length > 0) {
+                await _axios.patch(`/users/${this.user?.id}`, infosToPatch)
+            }
         }
     }
 })

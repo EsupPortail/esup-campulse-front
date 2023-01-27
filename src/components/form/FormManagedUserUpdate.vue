@@ -113,7 +113,6 @@ onBeforeRouteLeave((to, from, next) => {
 
 <template>
     <QForm
-        v-if="userToUpdate"
         class="q-gutter-md"
         @submit.prevent="onValidateChanges"
     >
