@@ -212,13 +212,13 @@ function onAdvancedSearch() {
                     <div></div>
                     <div>
                         <h3>{{ association.name }}</h3>
-                      <div class="logo">
-                        <QImg
-                            :alt="association.altLogo"
-                            :src="association.pathLogo ? association.pathLogo.list : '/images/no_logo.png'"
-                            :ratio="1"
-                        />
-                      </div>
+                        <div class="list-logo">
+                            <QImg
+                                :alt="association.altLogo"
+                                :ratio="1"
+                                :src="Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png'"
+                            />
+                        </div>
                         <ul>
                             <li v-if="association.acronym">
                                 {{ t('directory.labels.association-acronym') + ' : ' }}
@@ -250,9 +250,3 @@ function onAdvancedSearch() {
     </section>
 </template>
 
-
-<style lang="sass" scoped>
-.logo
-  width: 100px
-  height: 100px
-</style>

@@ -17,7 +17,3 @@ defineProps({
         </QCardSection>
     </QBanner>
 </template>
-
-<style lang="sass" scoped>
-
-</style>

@@ -1,49 +1,29 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 defineProps({
-  title: String,
-  description: String,
-  imagePath: String,
-  imageAlt: String,
-  link: String
+    title: String,
+    description: String,
+    imagePath: String,
+    imageAlt: String,
+    link: String
 })
 </script>
 
 <template>
-  <section>
-    <div class="q-pa-md row items-start q-gutter-md">
-      <RouterLink :to="link">
-        <QCard class="card">
-          <img :src="imagePath" :alt="imageAlt">
+    <section>
+        <div class="q-pa-md row items-start q-gutter-md">
+            <RouterLink :to="link">
+                <QCard class="card">
+                    <img :alt="imageAlt" :src="imagePath">
 
-          <QCardSection>
-            <div class="text-h6">{{ title }}</div>
-          </QCardSection>
+                    <QCardSection>
+                        <div class="text-h6">{{ title }}</div>
+                    </QCardSection>
 
-          <QCardSection class="q-pt-none">
-            {{ description }}
-          </QCardSection>
-        </QCard>
-      </RouterLink>
-    </div>
-  </section>
+                    <QCardSection class="q-pt-none">
+                        {{ description }}
+                    </QCardSection>
+                </QCard>
+            </RouterLink>
+        </div>
+    </section>
 </template>
-
-<style scoped lang="sass">
-.card
-  width: 100%
-  min-height: 25em
-  max-width: 250px
-
-a
-  text-decoration: none
-  color: black
-
-@media screen and (max-width: 450px)
-
-  section
-    display: block
-
-  .card
-    width: 100%
-    min-height: 23em
-</style>

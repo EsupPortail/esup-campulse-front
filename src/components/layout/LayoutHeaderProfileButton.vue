@@ -63,37 +63,3 @@ async function onLogOut() {
         </QBtnDropdown>
     </div>
 </template>
-
-
-<style lang="sass" scoped>
-p
-    font-size: 1.3em
-    margin: 0
-
-.avatar
-    padding: 0.3em
-    margin-right: 0.3em
-
-.user-avatar
-    width: 32px
-    height: 32px
-    border-radius: 50%
-    border: 2px solid #fff
-    position: relative
-    margin-left: 5px
-
-.user-avatar span
-    position: absolute
-    text-align: center
-    font-size: 30px
-    line-height: 0
-    top: 15px
-    left: 6px
-
-.label
-    color: black
-    text-decoration: none
-
-.label:hover
-    background-color: rgba(255, 255, 255, 0.3)
-</style>

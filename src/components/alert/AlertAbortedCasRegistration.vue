@@ -26,7 +26,3 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
         </QCard>
     </QDialog>
 </template>
-
-<style lang="sass" scoped>
-
-</style>
