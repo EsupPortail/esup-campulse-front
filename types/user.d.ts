@@ -45,7 +45,7 @@ interface CasLogin {
 }
 
 // Register
-export type UserRegister = Pick<User, "username" | "first_name" | "last_name" | "email" | "phone">
+export type UserRegister = Pick<User, "username" | "firstName" | "lastName" | "email" | "phone">
 
 // Password reset
 export interface PasswordReset {

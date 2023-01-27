@@ -96,7 +96,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async patchUserAssociations(associationId: number, infosToPatch: UserAssociationPatch) {
             await _axios.patch(`/users/associations/${this.user?.id}/${associationId}`, infosToPatch)
         },
-        // OK - to test for #8
         async updateUserInfos(user: UserToUpdate) {
             let infosToPatch = {}
             for (const [key, value] of Object.entries(user)) {

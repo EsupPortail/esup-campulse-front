@@ -135,86 +135,32 @@ describe('User manager store', () => {
             expect(mockedAxios.patch).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user.id}/1`, dataToPatch)
         })
     })
-    /*
-    describe('userNames', () => {
-        it('should return the names of users with values and labels', () => {
-            userManagerStore.users = [
-                {
-                    id: 1,
-                    username: 'john.lennon@bbc.com',
-                    firstName: 'John',
-                    lastName: 'Lennon',
-                    phone: null,
-                    email: 'john.lennon@bbc.com',
-                    isCas: false,
-                    isValidatedByAdmin: true,
-                    groups: mockedGroups,
-                    associations: mockedAssociationName
-                },
-                {
-                    id: 1,
-                    username: 'bill@murray.com',
-                    firstName: 'Bill',
-                    lastName: 'Murray',
-                    phone: null,
-                    email: 'bill@murray.com',
-                    isCas: false,
-                    isValidatedByAdmin: true,
-                    groups: mockedGroups,
-                    associations: mockedAssociationName
-                }
-            ]
-            expect(userManagerStore.userNames).toEqual(mockedUserNames)
-        })
-    })
-    describe('userDirectory', () => {
-        it('should return some data of each user for the directory', () => {
-            userManagerStore.users = [
-                {
-                    id: 1,
-                    username: 'john.lennon@bbc.com',
-                    firstName: 'John',
-                    lastName: 'Lennon',
-                    phone: null,
-                    email: 'john.lennon@bbc.com',
-                    isCas: false,
-                    isValidatedByAdmin: true,
-                    groups: mockedGroups,
-                    associations: mockedAssociationName
-                },
-                {
-                    id: 1,
-                    username: 'bill@murray.com',
-                    firstName: 'Bill',
-                    lastName: 'Murray',
-                    phone: null,
-                    email: 'bill@murray.com',
-                    isCas: false,
-                    isValidatedByAdmin: true,
-                    groups: mockedGroups,
-                    associations: mockedAssociationName
-                }
-            ]
-            expect(userManagerStore.userDirectory).toEqual(mockedUserDirectory)
-        })
-    })
-    describe('userGroups', () => {
-        beforeEach(() => {
+    describe('updateUserInfos', () => {
+        it('should only patch changed infos on /users/userId', async () => {
             userManagerStore.user = mockedUser
+            const userToUpdate = {
+                firstName: 'Jane',
+                lastName: mockedUser.lastName,
+                email: 'jane@lennon.uk',
+                phone: mockedUser.phone
+            }
+            await userManagerStore.updateUserInfos(userToUpdate)
+            expect(mockedAxios.patch).toHaveBeenCalledOnce()
+            expect(mockedAxios.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`, {
+                firstName: 'Jane',
+                email: 'jane@lennon.uk'
+            })
         })
-        it('should return an array of numbers of the groups', () => {
-            expect(userManagerStore.userGroups).toEqual(mockedUserGroups)
+        it('should not patch anything if there are no changes', async () => {
+            userManagerStore.user = mockedUser
+            const userToUpdate = {
+                firstName: mockedUser.firstName,
+                lastName: mockedUser.lastName,
+                email: mockedUser.email,
+                phone: mockedUser.phone
+            }
+            await userManagerStore.updateUserInfos(userToUpdate)
+            expect(mockedAxios.patch).toHaveBeenCalledTimes(0)
         })
     })
-    describe('addUser', () => {
-        beforeEach(() => {
-            userService.userLocalRegisterAsManager(mockedNewUser)
-        })
-        it('should call API once', () => {
-            expect(mockedAxios.post).toHaveBeenCalledOnce()
-        })
-        it('should call API on /users/ with newUser as data', () => {
-            expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/', mockedNewUser)
-        })
-    })*/
 })
