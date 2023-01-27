@@ -215,7 +215,7 @@ function onAdvancedSearch() {
                       <div class="logo">
                         <QImg
                             :alt="association.altLogo"
-                            :src="association.pathLogo ? association.pathLogo.list : '/images/no_logo.png'"
+                            :src="Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png'"
                             :ratio="1"
                         />
                       </div>

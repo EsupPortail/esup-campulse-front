@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
@@ -27,6 +27,10 @@ onMounted(async function () {
   loading.hide
 })
 
+const hasLogo = computed(() => {
+  return association.value ? (association.value.pathLogo !== null && Object.keys(association.value.pathLogo).length > 0 ? true : false) : false
+})
+
 async function onGetAssociationDetail() {
   try {
     await getAssociationDetail(route.params.id as string)
@@ -44,7 +48,7 @@ async function onGetAssociationDetail() {
         <div class="logo">
             <QImg
                 :alt="association?.altLogo"
-                :src="association?.pathLogo ? association?.pathLogo.detail : '/images/no_logo.png'"
+                :src="hasLogo ? association?.pathLogo.detail : '/images/no_logo.png'"
             />
         </div>
         <div class="name">
