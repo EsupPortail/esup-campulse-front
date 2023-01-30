@@ -62,8 +62,8 @@ const booleanSelectOptions = [
 
 <template>
     <fieldset class="association-cards">
-        <legend>Associations</legend>
-        <p v-if="userAssociations.length === 0">L'utilisateur n'est membre d'aucune association.</p>
+        <legend>{{ t('user.associations') }}</legend>
+        <p v-if="userAssociations.length === 0">{{ t('user.has-no-association') }}</p>
         <QCard
             v-for="association in userAssociations"
             :key="association.associationId"
@@ -106,12 +106,12 @@ const booleanSelectOptions = [
                     />
                     <div v-else>
                         <span class="delete-message">
-                            Le rôle dans l'association sera supprimé après validation des changements.
+                            {{ t('user.delete-association-role') }}
                         </span>
                         <QBtn
+                            :label="t('cancel-delete')"
                             color="secondary"
                             icon="mdi-cancel"
-                            label="Annuler la suppression"
                             outline
                             @click="association.deleteAssociation = false"
                         />

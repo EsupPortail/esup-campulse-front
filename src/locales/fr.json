@@ -5,6 +5,7 @@
   },
   "back": "Retour",
   "cancel": "Annuler",
+  "cancel-delete": "Annuler la suppression",
   "delete": "Supprimer",
   "discard-changes": "Abandonner les modifications",
   "loading": "Chargement...",
@@ -206,7 +207,7 @@
       "unknown-user": "Aucun compte n'a été trouvé."
     },
     "positive": {
-      "account-created": "Compte crée.",
+      "account-created": "Compte créé.",
       "change-associations": "Les changements ont été effectués pour les associations suivantes : ",
       "delete-association": "L'association a été supprimée avec succès.",
       "disable-association": "L'association a été inactivée avec succès.",
@@ -336,6 +337,9 @@
     "isCas": "L'utilisateur provient de CAS",
     "isValidatedByAdmin": "L'utilisateur est validé par le gestionnaire",
     "last-name": "Nom de famille",
-    "phone": "Numéro de téléphone"
+    "phone": "Numéro de téléphone",
+    "associations": "Associations",
+    "has-no-association": "L'utilisateur n'est membre d'aucune association.",
+    "delete-association-role": "Le rôle dans l'association sera supprimé après validation des changements."
   }
 }
