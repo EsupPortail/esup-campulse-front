@@ -4,7 +4,7 @@ import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegis
 </script>
 
 <template>
-  <QPageContainer>
+  <QPageContainer id="layout-content">
     <main>
       <Suspense>
         <RouterView/>

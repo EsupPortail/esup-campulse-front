@@ -1,0 +1,370 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+
+$pageWidth: 1250px;
+
+$headerBackground: url('./img/header-background2.jpg');
+$annuaireIcon: url('./img/annuaire-icon.png');
+$charteIcon: url('./img/charte-icon.png');
+$capeIcon: url('./img/cape-icon.png');
+$chevronRightImage: url('./img/chevron-right.png');
+$chevronRightCharteImage: url('./img/chevron-right-charte.png');
+
+$baseFont: "Titillium Web", sans-serif;
+$titleFont: 'Open Sans', sans-serif;
+
+$color1: #449AFF;
+$color2: #FFD542;
+$color2Text: #4D3A1E;
+$color3: #FF8B4A;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: $baseFont;
+}
+
+#layout-page {
+    width: 100%;
+    max-width: unset;
+}
+
+#layout-header {
+    position: relative;
+    width: 100%;
+    background-image: $headerBackground;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+    height: 400px;
+    padding-top: 10px;
+
+    &::before {
+        content: ' ';
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: linear-gradient(180deg, rgba(9, 22, 40, 0.55) 0%, rgba(0, 0, 0, 0.3) 100%);
+    }
+
+    .q-toolbar {
+        width: 100%;
+        max-width: $pageWidth;
+        margin: auto;
+        padding: 0;
+        margin-bottom: 240px;
+
+        .q-toolbar__title {
+            a {
+                font-family: $titleFont;
+                color: white;
+                text-transform: uppercase;
+                font-weight: 800;
+                font-size: 40px;
+                text-decoration: none;
+            }
+        }
+    }
+
+    .q-layout__shadow {
+        display: none;
+    }
+
+    nav {
+        a {
+            font-size: 17px;
+            font-weight: 400;
+            text-decoration: none;
+            padding: 0 17px;
+            color: white;
+            text-transform: uppercase;
+        }
+    }
+
+    .profile-button {
+        padding: 16px 17px;
+
+        button {
+            background: transparent !important;
+
+            &::before {
+                box-shadow: none;
+            }
+
+            .q-focus-helper, .q-ripple {
+                display: none;
+            }
+
+            .q-btn__content {
+                color: white;
+                font-size: 17px;
+                font-weight: 400;
+                text-transform: uppercase;
+
+                p {
+                    margin: 0;
+                }
+
+                .q-btn-dropdown__arrow {
+                    margin-left: 0;
+                }
+            }
+
+            .avatar {
+                margin-right: 10px;
+
+                .q-avatar {
+                    width: 0.6em;
+                    height: 0.6em;
+                    top: -2px;
+                    border: 1px solid white;
+                    background: transparent url('./img/profile-icon.png') no-repeat !important;
+                    background-size: cover !important;
+                }
+            }
+        }
+    }
+
+    &.variant-home {
+        height: 440px;
+
+        .q-toolbar {
+            margin-bottom: 110px;
+        }
+
+        #header-home-title {
+            display: block;
+        }
+
+        #header-title {
+            display: none;
+        }
+    }
+
+    &.variant-space-2 #header-title-icon {
+        background-color: $color2;
+        background-image: $charteIcon;
+        background-size: auto 24px;
+    }
+
+    &.variant-space-3 #header-title-icon {
+        background-color: $color3;
+        background-image: $capeIcon;
+        background-size: auto 29px;
+    }
+
+    &.variant-minimal {
+        height: 86px;
+
+        .q-toolbar {
+            margin-bottom: 0;
+        }
+
+        #header-title {
+            display: none;
+        }
+    }
+}
+
+#header-home-title {
+    width: 100%;
+    max-width: $pageWidth;
+    margin: auto;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    display: none;
+
+    h2 {
+        font-family: $titleFont;
+        color: white;
+        font-weight: 400;
+        font-size: 50px;
+        margin-bottom: 8px;
+
+        strong {
+            font-weight: 800;
+        }
+    }
+
+    h3 {
+        display: inline-block;
+        color: white;
+        font-weight: 500;
+        font-size: 26px;
+        border: 1px solid white;
+        padding: 18px 42px;
+        background-color: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(2px);
+    }
+}
+
+#header-title {
+    width: 100%;
+    max-width: $pageWidth;
+    margin: auto;
+    position: relative;
+    z-index: 1;
+
+    h1 {
+        width: 100%;
+        font-family: $titleFont;
+        color: white;
+        font-weight: 400;
+        font-size: 55px;
+        padding-left: 70px;
+        line-height: 62px;
+
+        strong {
+            font-family: $titleFont;
+            font-size: 70px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        #header-title-icon {
+            display: inline-block;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background-color: $color1;
+            position: absolute;
+            top: 6px;
+            left: 0;
+            background-image: $annuaireIcon;
+            background-repeat: no-repeat;
+            background-size: auto 27px;
+            background-position: center center;
+        }
+    }
+
+
+}
+
+.q-menu {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+#profile-menu {
+    border: 1px solid white;
+    background: rgba(0, 0, 0, 0.2);
+
+    .q-focus-helper, .q-ripple {
+        display: none;
+    }
+
+    .q-item {
+        position: relative;
+        text-align: center;
+
+        &::after {
+            content: ' ';
+            width: 90%;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.5);
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+        }
+
+        &:last-child::after {
+            display: none;
+        }
+
+        a {
+            font-size: 17px;
+            font-weight: 400;
+            text-decoration: none;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .q-btn {
+            padding: 0;
+        }
+
+        button {
+            font-size: 17px;
+            font-weight: 400;
+            color: white;
+            text-transform: uppercase;
+
+            &::before {
+                display: none;
+            }
+        }
+    }
+}
+
+#layout-breadcrumbs {
+    background-color: $color1;
+    padding: 15px 0;
+
+    & > * {
+        width: 100%;
+        max-width: $pageWidth;
+        margin: 0 auto;
+    }
+
+    .q-breadcrumbs__el {
+        font-size: 18px;
+        font-weight: 400px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .q-breadcrumbs--last > .q-breadcrumbs__el {
+        font-weight: 600;
+    }
+
+    .q-breadcrumbs__separator {
+        width: 44px;
+        height: 14px;
+        background-image: $chevronRightImage;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: auto 100%;
+    }
+
+    &.variant-home {
+        display: none;
+    }
+
+    &.variant-space-2 {
+        background-color: $color2;
+
+        .q-breadcrumbs__el {
+            color: $color2Text;
+        }
+
+        .q-breadcrumbs__separator {
+            background-image: $chevronRightCharteImage;
+        }
+    }
+
+    &.variant-space-3 {
+        background-color: $color3;
+    }
+
+    &.variant-minimal {
+        height: 10px;
+        padding: 0;
+
+        & > * {
+            display: none;
+        }
+    }
+}
+
+#layout-content {
+    padding: 50px 0 50px 0 !important;
+    width: 100%;
+    // max-width: $pageWidth;
+    margin: auto;
+}

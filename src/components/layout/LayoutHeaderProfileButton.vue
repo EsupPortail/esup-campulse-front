@@ -40,7 +40,7 @@ async function onLogOut() {
                 </div>
             </template>
 
-            <QList>
+            <QList id="profile-menu">
                 <QItem v-close-popup clickable>
                     <QItemSection>
                         <QItemLabel>
