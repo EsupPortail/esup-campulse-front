@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {onMounted} from 'vue'
+import {onMounted, watch} from 'vue'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useRoute} from 'vue-router'
 import useUsers from '@/composables/useUsers'
@@ -19,6 +19,20 @@ onMounted(async () => {
     await onGetUserAssociations()
     loading.hide
 })
+
+const initValues = () => {
+    userManagerStore.userAssociations.forEach(function (association) {
+        userAssociations.value.push({
+            associationId: association.association.id,
+            associationName: association.association.name,
+            roleName: association.roleName,
+            hasOfficeStatus: association.hasOfficeStatus,
+            isPresident: association.isPresident,
+            deleteAssociation: false
+        })
+    })
+}
+watch(() => userManagerStore.userAssociations, initValues)
 
 // Load userAssociations
 async function onGetUserAssociations() {

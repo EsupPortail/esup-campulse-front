@@ -16,7 +16,7 @@ import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {updateUserAssociations} = useUsers()
-const {groupChoiceIsValid, updateUserGroups} = useUserGroups()
+const {groupChoiceIsValid, updateUserGroups, newGroups} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -41,6 +41,7 @@ watch(() => userManagerStore.user, initValues)
 onMounted(async () => {
     loading.show
     await onGetUser()
+    newGroups.value = userManagerStore.userGroups
     initValues()
     loading.hide
 })

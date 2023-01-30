@@ -113,3 +113,30 @@ export const mockedUserAssociationDetail = {
         name: 'PLANA'
     }
 }
+
+export const mockedUserAssociationsManagement = [
+    {
+        associationId: 1,
+        associationName: 'PLANA',
+        roleName: 'Présidente',
+        hasOfficeStatus: true,
+        isPresident: true,
+        deleteAssociation: false
+    },
+    {
+        associationId: 2,
+        associationName: 'Octant',
+        roleName: 'Trésorière',
+        hasOfficeStatus: true,
+        isPresident: false,
+        deleteAssociation: false
+    },
+    {
+        associationId: 3,
+        associationName: 'Apogée',
+        roleName: 'Membre',
+        hasOfficeStatus: false,
+        isPresident: false,
+        deleteAssociation: true
+    }
+]

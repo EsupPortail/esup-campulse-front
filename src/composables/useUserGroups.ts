@@ -1,18 +1,14 @@
 import type {GroupList, UserGroup} from '#/user'
 import _axios from '@/plugins/axios'
-import {computed, ref, watch} from 'vue'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {computed, ref} from 'vue'
 import useUtility from '@/composables/useUtility'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 
-// Functions to choose or update groups
-const userManagerStore = useUserManagerStore()
+// Used to choose or update groups
+const newGroups = ref<number[]>([])
 
-const newGroups = ref<number[]>(userManagerStore.userGroups)
-watch(() => userManagerStore.userGroups, () => {
-    newGroups.value = userManagerStore.userGroups
-})
-
+// Used to limit the number of groups a user can choose
 const groupChoiceLimit = 2
 const groupChoiceIsValid = computed(() => {
     return newGroups.value.length > 0 && newGroups.value.length <= groupChoiceLimit
@@ -25,6 +21,7 @@ const groupUnabledSelectingAssociation = computed(() => {
 })
 
 export default function () {
+    // Used to store groups
     const groups = ref<UserGroup[]>()
 
     // to re test
@@ -43,14 +40,12 @@ export default function () {
         return groups.value?.find(({name}) => name === 'Étudiante ou Étudiant')
     })
 
-    // to test for #8
     function groupsToDelete(newGroups: number[], oldGroups: number[]) {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
     }
 
-
-    // to test for #8
     async function updateUserGroups() {
+        const userManagerStore = useUserManagerStore()
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
         if (!arraysAreEqual(newGroups.value, oldGroups)) {

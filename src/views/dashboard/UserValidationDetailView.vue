@@ -11,7 +11,7 @@ import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {getUser, validateUser} = useUsers()
+const {validateUser} = useUsers()
 const {newGroups, groupChoiceIsValid} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
@@ -29,7 +29,7 @@ onMounted(async () => {
 // Get user
 async function onGetUser() {
     try {
-        await getUser(route.params.id as string)
+        await userManagerStore.getUserDetail(parseInt(route.params.id as string))
     } catch (e) {
         notify({
             type: 'negative',

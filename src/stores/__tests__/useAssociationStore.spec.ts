@@ -75,8 +75,6 @@ describe('Association store', () => {
                 userStore.user.groups.splice(0, 1)
                 const spy = vi.spyOn(associationStore, 'getAssociations')
                 await associationStore.getManagedAssociations()
-                console.log(associations)
-                console.log(associationStore.associations)
                 expect(spy).toHaveBeenCalledTimes(0)
                 expect(associationStore.associations).toEqual([associations])
             })

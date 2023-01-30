@@ -1,35 +1,18 @@
 import {useRoute} from 'vue-router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {UserAssociationDetail, UserAssociationManagement, UserAssociationStatus} from '#/user'
-import {ref, watch} from 'vue'
+import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
 
 
-const userManagerStore = useUserManagerStore()
+const newUserAssociations = ref<UserAssociationStatus[]>([])
 
-const newUserAssociations = ref<UserAssociationStatus[]>(userManagerStore.userAssociationStatus)
-watch(() => userManagerStore.userAssociations, () => {
-    newUserAssociations.value = userManagerStore.userAssociationStatus
-})
-
-// Used in FormUpdateManagedUserAssociations
 const userAssociations = ref<UserAssociationManagement[]>([])
-watch(() => userManagerStore.userAssociations, () => {
-    userManagerStore.userAssociations.forEach(function (association) {
-        userAssociations.value.push({
-            associationId: association.association.id,
-            associationName: association.association.name,
-            roleName: association.roleName,
-            hasOfficeStatus: association.hasOfficeStatus,
-            isPresident: association.isPresident,
-            deleteAssociation: false
-        })
-    })
-})
 
 export default function () {
 
     const route = useRoute()
+    const userManagerStore = useUserManagerStore()
     const {updateUserGroups} = useUserGroups()
 
 
@@ -42,13 +25,11 @@ export default function () {
         }
     }
 
-    // to re test
     async function validateUser() {
         await updateUserGroups()
         await userManagerStore.validateUser()
     }
 
-    // Used in FormManagedUserUpdate - test for #8
     function updateUserAssociations() {
         userAssociations.value.forEach(async function (association) {
             // If we need to delete the association
@@ -84,9 +65,9 @@ export default function () {
 
     return {
         getUsers,
-        newUserAssociations,
         updateUserAssociations,
         userAssociations,
-        validateUser
+        validateUser,
+        newUserAssociations
     }
 }
