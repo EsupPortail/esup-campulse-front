@@ -52,6 +52,19 @@ async function onLogOut() {
                     </QItemSection>
                 </QItem>
 
+                <div v-for="(item) in userStore.user.associations" :key="item.id">
+                  <QItem v-close-popup clickable>
+                    <QItemSection>
+                      <QItemLabel>
+                        <RouterLink :to="{name: 'Dashboard'}" class="label">{{
+                            item.name
+                          }}
+                        </RouterLink>
+                      </QItemLabel>
+                    </QItemSection>
+                  </QItem>
+                </div>
+
                 <QItem v-close-popup clickable>
                     <QItemSection>
                         <QItemLabel>
