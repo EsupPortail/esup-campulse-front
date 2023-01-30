@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useAssociation from "@/composables/useAssociation";
-import {useI18n} from "vue-i18n";
-import {useQuasar} from "quasar";
-import {onMounted} from "vue";
+import useAssociation from '@/composables/useAssociation'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import {onMounted} from 'vue'
 
 const associationStore = useAssociationStore()
 const {newAssociations, addAssociation, removeAssociation} = useAssociation()

@@ -8,7 +8,7 @@ import useAssociation from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
 import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
 import AlertConfirmAssociationEnabled from '@/components/alert/AlertConfirmAssociationEnabled.vue'
-import AlertLeaveAssociationEdition from '@/components/alert/AlertLeaveAssociationEdition.vue'
+import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {EditedAssociation} from '#/association'
@@ -338,8 +338,9 @@ async function onChangeLogo(action: string) {
             <AlertConfirmAssociationEnabled/>
             <AlertConfirmAssociationDeletion v-if="!associationStore.association?.isEnabled"/>
         </section>
-        <AlertLeaveAssociationEdition
+        <AlertLeaveEdition
             :open-alert="openAlert"
+            :text="t('alerts.leave-association-edition')"
             @closeAlert="openAlert = !openAlert"
             @leaveEdition="onLeaveEdition"
         />

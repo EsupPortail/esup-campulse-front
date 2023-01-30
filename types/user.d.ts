@@ -1,4 +1,5 @@
-import type { AssociationName } from '#/association';
+import type {AssociationName} from '#/association'
+
 
 export interface User {
     id: number,
@@ -6,7 +7,7 @@ export interface User {
     username: string,
     firstName: string,
     lastName: string,
-    phone: string | null,
+    phone: string | undefined,
     email: string,
     isCas: boolean,
     isValidatedByAdmin: boolean | null,
@@ -27,7 +28,6 @@ export interface UserStore {
 export interface UserManagerStore {
     user: ManagedUser | undefined,
     users: ManagedUsers,
-    allUsers: boolean,
     userAssociations: UserAssociationDetail[]
 }
 
@@ -45,7 +45,7 @@ interface CasLogin {
 }
 
 // Register
-export type UserRegister = Pick<User, 'username', 'first_name' | 'last_name' | 'email' | 'phone'>
+export type UserRegister = Pick<User, "username" | "firstName" | "lastName" | "email" | "phone">
 
 // Password reset
 export interface PasswordReset {
@@ -75,7 +75,10 @@ export interface UserAssociationDetail {
     roleName: string,
     hasOfficeStatus: boolean,
     isPresident: boolean,
-    association: number
+    association: {
+        id: number,
+        name: string
+    }
 }
 
 
@@ -93,7 +96,30 @@ export type ManagedUsers = ManagedUser[]
 
 export type UserNames = { value: number, label: string }[]
 
-/*export type UserDirectoryDetail = { id: number, firstName: string, lastName: string, email: string, isValidatedByAdmin: boolean | null }
-export type UserDirectory = UserDirectoryDetail[]*/
+export interface UserToUpdate {
+    firstName: string | undefined,
+    lastName: string | undefined,
+    email: string | undefined,
+    phone: string | undefined
+}
 
-export type UserDirectory = Pick<User, 'id', 'firstName', 'lastName', 'email', 'associations', 'groups', 'isValidatedByAdmin'>
+export interface UserAssociationStatus {
+    associationId: number,
+    associationName: string,
+    roleName: string,
+    hasOfficeStatus: boolean,
+    isPresident: boolean
+}
+
+export interface UserAssociationManagement {
+    associationId: number,
+    associationName: string,
+    roleName: string,
+    hasOfficeStatus: boolean,
+    isPresident: boolean,
+    deleteAssociation: boolean
+}
+
+export type UserAssociationPatch = Pick<UserAssociationStatus, "roleName" | "hasOfficeStatus" | "isPresident">
+
+export type UserDirectory = Pick<User, "id" | "firstName" | "lastName" | "email" | "associations" | "groups" | "isValidatedByAdmin">

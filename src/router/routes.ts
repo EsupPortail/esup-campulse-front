@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type {RouteRecordRaw} from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -25,13 +25,13 @@ const routes: RouteRecordRaw[] = [
                 path: 'charter',
                 name: 'Charter',
                 component: () => import('@/views/CharterView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'commission',
                 name: 'Commission',
                 component: () => import('@/views/CommissionView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'login',
@@ -45,7 +45,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'dashboard',
-                meta: { requiresAuth: true },
+                meta: {requiresAuth: true},
                 children: [
                     {
                         path: '',
@@ -63,7 +63,7 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: '',
                                 name: 'ValidateUsers',
-                                component: () => import('@/views/dashboard/UsersView.vue')
+                                component: () => import('@/views/dashboard/UserManagementView.vue')
                             },
                             {
                                 path: ':id',
@@ -78,7 +78,7 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: '',
                                 name: 'ManageUsers',
-                                component: () => import('@/views/dashboard/UsersView.vue')
+                                component: () => import('@/views/dashboard/UserManagementView.vue')
                             },
                             {
                                 path: ':id',
@@ -157,7 +157,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/:catchAll(.*)',
-                redirect: { name: '404' }
+                redirect: {name: '404'}
             }
         ]
     }

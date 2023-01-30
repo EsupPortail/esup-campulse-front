@@ -135,8 +135,11 @@ async function onRegister() {
         <!-- If manager role checked we do not display this form -->
         <FormRegisterUserAssociations v-if="groupUnabledSelectingAssociation"/>
         <QSeparator/>
-        <LayoutGDPRConsent v-if="!userStore.managerGroup" :has-consent="hasConsent"
-                           @update-consent="hasConsent = !hasConsent"/>
+        <LayoutGDPRConsent
+            v-if="!userStore.managerGroup"
+            :has-consent="hasConsent"
+            @update-consent="hasConsent = !hasConsent"
+        />
         <QBtn :label="t('forms.send')" color="primary" type="submit"/>
     </QForm>
 </template>

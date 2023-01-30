@@ -94,16 +94,18 @@ function goTo(id: number) {
                     {{ props.row.email }}
                 </QTd>
                 <QTd key="associations" :props="props">
-                    <QChip v-for="(association, index) in props.row.associations" :key="index">{{
-                            association.name
-                        }}
-                    </QChip>
+                    <ul>
+                        <li v-for="(association, index) in props.row.associations" :key="index">
+                            <QChip>{{ association.name }}</QChip>
+                        </li>
+                    </ul>
                 </QTd>
                 <QTd key="groups" :props="props">
-                    <QChip v-for="(group, index) in props.row.groups" :key="index">{{
-                            group.name
-                        }}
-                    </QChip>
+                    <ul>
+                        <li v-for="(group, index) in props.row.groups" :key="index">
+                            <QChip>{{ group.name }}</QChip>
+                        </li>
+                    </ul>
                 </QTd>
                 <QTd key="isValidatedByAdmin" :props="props">
                     <QChip :color="props.row.isValidatedByAdmin ? 'teal' : 'red'" text-color="white">
@@ -118,5 +120,11 @@ function goTo(id: number) {
 <style lang="sass" scoped>
 .q-tr:hover
     cursor: pointer
+
+ul
+    margin-left: -40px
+
+    li
+        list-style: none
 </style>
 

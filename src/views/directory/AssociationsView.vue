@@ -7,8 +7,7 @@ import type {AssociationList, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
 
 
-const {advancedSearch} = useDirectory()
-const {simpleAssociationSearch} = useDirectory()
+const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
@@ -17,6 +16,31 @@ onMounted(async function () {
     loading.show
     await associationStore.getAssociations(true, false)
     await loadAssociationsFields()
+    for (let i = 0; i < 150; i++) {
+        associationStore.associations.push({
+                id: i + 6,
+                institution: {
+                    id: 2,
+                    name: 'Université de Strasbourg',
+                    acronym: 'Unistra'
+                },
+                institutionComponent: {
+                    id: 1,
+                    name: 'Faculté de Médecine'
+                },
+                activityField: {
+                    id: 1,
+                    name: 'Sciences'
+                },
+                name: 'Asso test',
+                acronym: 'Asso',
+                isEnabled: true,
+                isPublic: true,
+                isSite: true,
+                email: ''
+            }
+        )
+    }
     loading.hide
 })
 
@@ -37,10 +61,10 @@ const pages = ref()
 watch(() => associations.value.length, () => {
     pages.value = Math.ceil(associations.value.length / associationsPerPage)
 })
-const endIndex = ref(associations.value.length % 15 != 0 && currentPage.value === pages.value ?
+const endIndex = ref(associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
     associations.value.length : currentPage.value * associationsPerPage)
 watch(() => currentPage.value, () => {
-    endIndex.value = associations.value.length % 15 != 0 && currentPage.value === pages.value ?
+    endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
         associations.value.length : currentPage.value * associationsPerPage
 })
 const associationsOnPage = ref([...associations.value.slice(startIndex.value, endIndex.value)])

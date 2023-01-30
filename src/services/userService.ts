@@ -31,10 +31,32 @@ export async function refreshToken() {
 }
 
 // Load User
-export async function loadUser() {
+/*export async function loadUser() {
     const access = localStorage.getItem('access')
     const userStore = useUserStore()
     if (access) {
+        try {
+            setBearer()
+            await userStore.getUser()
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                try {
+                    await refreshToken()
+                    setBearer()
+                    await userStore.getUser()
+                } catch (error) {
+                    await userStore.logOut()
+                    // TODO : throw error in component
+                }
+            }
+        }
+    }
+}*/
+
+export async function loadUser() {
+    const access = localStorage.getItem('access')
+    const userStore = useUserStore()
+    if (access && !userStore.user) {
         try {
             setBearer()
             await userStore.getUser()
