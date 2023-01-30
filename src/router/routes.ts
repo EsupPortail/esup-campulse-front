@@ -9,17 +9,28 @@ const routes: RouteRecordRaw[] = [
             {
                 path: '',
                 name: 'Home',
-                component: () => import('@/views/HomeView.vue')
+                component: () => import('@/views/HomeView.vue'),
+                meta: {
+                    breadcrumb: 'Accueil',
+                }
             },
             {
                 path: 'associations',
                 name: 'Associations',
-                component: () => import('@/views/directory/AssociationsView.vue')
+                component: () => import('@/views/directory/AssociationsView.vue'),
+                meta: {
+                    breadcrumb: 'Annuaire des associations',
+                }
             },
             {
                 path: 'association/:id',
                 name: 'AssociationDetail',
-                component: () => import('@/views/directory/AssociationDetailView.vue')
+                component: () => import('@/views/directory/AssociationDetailView.vue'),
+                meta: {
+                    meta: {
+                        breadcrumb: 'Association',
+                    }
+                }
             },
             {
                 path: 'charter',
@@ -51,6 +62,9 @@ const routes: RouteRecordRaw[] = [
                         path: '',
                         name: 'Dashboard',
                         component: () => import('@/views/dashboard/DashboardView.vue'),
+                        meta: {
+                            breadcrumb: 'Tableau de bord'
+                        }
                     },
                     {
                         path: 'password-edit',
@@ -78,7 +92,10 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: '',
                                 name: 'ManageUsers',
-                                component: () => import('@/views/dashboard/UserManagementView.vue')
+                                component: () => import('@/views/dashboard/UserManagementView.vue'),
+                                meta: {
+                                    breadcrumb: 'Gérer les utilisateurs'
+                                }
                             },
                             {
                                 path: ':id',
