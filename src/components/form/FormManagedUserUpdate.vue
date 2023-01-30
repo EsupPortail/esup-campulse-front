@@ -175,7 +175,7 @@ onBeforeRouteLeave((to, from, next) => {
                 @leaveEdition="onLeaveEdition"
             />
             <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" type="submit"/>
-            <AlertConfirmUserDelete/>
+            <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
         </section>
     </QForm>
 </template>
