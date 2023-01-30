@@ -9,7 +9,7 @@ const {t} = useI18n()
 </script>
 
 <template>
-    <QHeader elevated height-hint="98" id="layout-header" class="variant-space-1">
+    <QHeader elevated height-hint="98" id="layout-header" class="variant-minimal">
         <QToolbar>
             <QToolbarTitle>
                 <RouterLink class="home-link" to="/">{{ t("header.title") }}</RouterLink>

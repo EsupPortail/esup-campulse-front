@@ -6,9 +6,11 @@ const {t} = useI18n()
 </script>
 
 <template>
-    <q-breadcrumbs id="layout-breadcrumbs" class="variant-home" gutter="none" separator="">
+  <div id="layout-breadcrumbs" class="variant-minimal">
+    <q-breadcrumbs gutter="none" separator="">
       <q-breadcrumbs-el label="Accueil" to="/" />
       <q-breadcrumbs-el label="Annuaire des associations" to="/" />
       <q-breadcrumbs-el label="Consulter" />
     </q-breadcrumbs>
+  </div>
 </template>

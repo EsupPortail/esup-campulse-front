@@ -21,6 +21,7 @@ $footerBackgroundColor: #2C2C2C;
 $footerTextColor: #e7e7e7;
 $textColor1: #272727;
 $textColor2: #85909C;
+$textColor3: #ffffff;
 
 $color1: #449AFF;
 $color1Background: #EEF6FF;
@@ -48,10 +49,45 @@ $stateColor3: #E85B63;
     font-family: $baseFont;
 }
 
+html {
+    height:100%;
+    width:100%;
+}
+
+body {
+    height:100%;
+    width:100%;
+}
+
+#layout-content {
+    padding: 50px 0 50px 0 !important;
+    width: 100%;
+    margin: auto;
+}
+
 #layout-page {
     width: 100%;
     max-width: unset;
+    display:table;
+    table-layout:fixed;
+    margin:0 auto;
 }
+
+#layout-header, #layout-breadcrumbs, #layout-content, #layout-footer {
+    display:table-row;
+}
+
+#layout-content {
+    height:100%;
+
+    main {
+        padding: 40px 0;
+    }
+}
+
+/* #################################################################################################
+   HEADER
+################################################################################################# */
 
 #layout-header {
     position: relative;
@@ -61,7 +97,6 @@ $stateColor3: #E85B63;
     background-size: cover;
     background-position: center top;
     height: 400px;
-    padding-top: 10px;
 
     &::before {
         content: ' ';
@@ -78,13 +113,13 @@ $stateColor3: #E85B63;
         width: 100%;
         max-width: $pageWidth;
         margin: auto;
-        padding: 0;
+        padding: 10px 0;
         margin-bottom: 240px;
 
         .q-toolbar__title {
             a {
                 font-family: $titleFont;
-                color: white;
+                color: $textColor3;
                 text-transform: uppercase;
                 font-weight: 800;
                 font-size: 40px;
@@ -103,7 +138,7 @@ $stateColor3: #E85B63;
             font-weight: 400;
             text-decoration: none;
             padding: 0 17px;
-            color: white;
+            color: $textColor3;
             text-transform: uppercase;
         }
     }
@@ -123,7 +158,7 @@ $stateColor3: #E85B63;
             }
 
             .q-btn__content {
-                color: white;
+                color: $textColor3;
                 font-size: 17px;
                 font-weight: 400;
                 text-transform: uppercase;
@@ -144,7 +179,7 @@ $stateColor3: #E85B63;
                     width: 0.6em;
                     height: 0.6em;
                     top: -2px;
-                    border: 1px solid white;
+                    border: 1px solid $textColor3;
                     background: transparent url('./img/profile-icon.png') no-repeat !important;
                     background-size: cover !important;
                 }
@@ -204,7 +239,7 @@ $stateColor3: #E85B63;
 
     h2 {
         font-family: $titleFont;
-        color: white;
+        color: $textColor3;
         font-weight: 400;
         font-size: 50px;
         margin-bottom: 8px;
@@ -216,7 +251,7 @@ $stateColor3: #E85B63;
 
     h3 {
         display: inline-block;
-        color: white;
+        color: $textColor3;
         font-weight: 500;
         font-size: 26px;
         border: 1px solid white;
@@ -236,7 +271,7 @@ $stateColor3: #E85B63;
     h1 {
         width: 100%;
         font-family: $titleFont;
-        color: white;
+        color: $textColor3;
         font-weight: 400;
         font-size: 55px;
         padding-left: 70px;
@@ -304,7 +339,7 @@ $stateColor3: #E85B63;
             font-size: 17px;
             font-weight: 400;
             text-decoration: none;
-            color: white;
+            color: $textColor3;
             text-transform: uppercase;
         }
 
@@ -315,7 +350,7 @@ $stateColor3: #E85B63;
         button {
             font-size: 17px;
             font-weight: 400;
-            color: white;
+            color: $textColor3;
             text-transform: uppercase;
 
             &::before {
@@ -325,41 +360,47 @@ $stateColor3: #E85B63;
     }
 }
 
-#layout-breadcrumbs {
-    background-color: $color1;
-    padding: 15px 0;
+/* #################################################################################################
+   BREADCRUMBS
+################################################################################################# */
 
-    & > * {
-        width: 100%;
-        max-width: $pageWidth;
-        margin: 0 auto;
-    }
+#layout-breadcrumbs  {
+    .q-breadcrumbs {
+        background-color: $color1;
+        padding: 15px 0;
 
-    .q-breadcrumbs__el {
-        font-size: 18px;
-        font-weight: 400px;
-        color: white;
-        text-decoration: none;
-    }
+        & > * {
+            width: 100%;
+            max-width: $pageWidth;
+            margin: 0 auto;
+        }
 
-    .q-breadcrumbs--last > .q-breadcrumbs__el {
-        font-weight: 600;
-    }
+        .q-breadcrumbs__el {
+            font-size: 18px;
+            font-weight: 400px;
+            color: $textColor3;
+            text-decoration: none;
+        }
 
-    .q-breadcrumbs__separator {
-        width: 44px;
-        height: 14px;
-        background-image: $chevronRightImage;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: auto 100%;
+        .q-breadcrumbs--last > .q-breadcrumbs__el {
+            font-weight: 600;
+        }
+
+        .q-breadcrumbs__separator {
+            width: 44px;
+            height: 14px;
+            background-image: $chevronRightImage;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: auto 100%;
+        }
     }
 
     &.variant-home {
         display: none;
     }
 
-    &.variant-space-2 {
+    &.variant-space-2 .q-breadcrumbs {
         background-color: $color2;
 
         .q-breadcrumbs__el {
@@ -371,11 +412,11 @@ $stateColor3: #E85B63;
         }
     }
 
-    &.variant-space-3 {
+    &.variant-space-3 .q-breadcrumbs {
         background-color: $color3;
     }
 
-    &.variant-minimal {
+    &.variant-minimal .q-breadcrumbs {
         height: 10px;
         padding: 0;
 
@@ -385,12 +426,9 @@ $stateColor3: #E85B63;
     }
 }
 
-#layout-content {
-    padding: 50px 0 50px 0 !important;
-    width: 100%;
-    // max-width: $pageWidth;
-    margin: auto;
-}
+/* #################################################################################################
+   FOOTER
+################################################################################################# */
 
 #layout-footer {
     position: relative;
@@ -441,7 +479,7 @@ $stateColor3: #E85B63;
             margin: 0 18px;
             font-size: 15px;
             font-weight: 600;
-            color: white;
+            color: $textColor3;
             text-decoration: none;
             text-transform: uppercase;
 
@@ -482,5 +520,185 @@ $stateColor3: #E85B63;
         font-size: 17px;
         font-weight: 300;
         color: $footerTextColor;
+    }
+}
+
+/* #################################################################################################
+   PAGE: CONNEXION
+################################################################################################# */
+
+#login-page {
+    padding: 20px 0 60px;
+
+    .login-intro-text {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto 40px;
+        font-size: 22px;
+        font-weight: 400;
+        color: $textColor1;
+        padding-left: 75px;
+        position: relative;
+    
+        .icon {
+            display: block;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: $color1;
+            background-image: url('./img/login-icon.png');
+            background-repeat: no-repeat;
+            background-size: 40px 40px;
+            background-position: center center;
+            position: absolute;
+            top: calc(50% - 30px);
+            left: 0;
+        }
+    }
+    
+    .q-card {
+        background-color: transparent;
+        box-shadow: none;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 10px;
+    
+        & > * {
+            flex-grow: 1;
+        }
+    }
+
+    .login-links {
+        text-align: center;
+        margin-top: 40px;
+
+        a {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: 400;
+            color: $color1;
+        }
+    }
+
+    .card-content {
+        font-size: 18px;
+        font-weight: 400;
+        color: $textColor2;
+        margin-bottom: 25px;
+
+        .card-title {
+            display: block;
+            font-size: 22px;
+            font-weight: 400;
+            color: $color1;
+        }
+    }
+
+    form {
+        margin-top: 20px;
+    }
+}
+
+/* #################################################################################################
+   FORMS
+################################################################################################# */
+
+.form_container {
+    position: relative;
+    background-color: $backgroundColor2;
+    padding: 25px 0;
+    
+    &::before, &::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 12px;
+        position: absolute;
+        left: 0;
+    }
+
+    &::before {
+        top: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    &::after {
+        bottom: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) 100%);
+    }
+}
+
+.q-field {
+    .q-field__control {
+        background-color: $backgroundColor1;
+        border-radius: 0;
+        border: 1px solid $color1Borders;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        
+        input {
+            color: $color1Text;
+        }
+    }
+}
+
+.q-field--filled.q-field--highlighted .q-field__control::before {
+    background: $color1Background;
+}
+
+.q-field--filled .q-field__control::before {
+    background: $color1Background;
+    border-bottom: none;
+}
+
+.q-field--filled .q-field__control::after {
+    background: $color1;
+}
+
+.q-field--error .q-field__control::after {
+    background: currentColor;
+}
+
+.q-field--highlighted .q-field__label {
+    color: $color1Text;
+}
+
+.q-btn {
+    background-color: $color1;
+    border-radius: 0;
+    padding: 15px 30px;
+    color: $textColor3;
+    font-size: 18px;
+    font-weight: 300;
+    transition: background-color 0.03s linear;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+
+    .q-btn__content > * {
+        color: $textColor3;
+    }
+
+    &::before, .q-focus-helper {
+        display: none;
+    }
+
+    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+        background-color: mix(#224d80, $color1, 20%) !important;
+    }
+
+    &:active, &.bg-primary:active, &.bg-secondary:active {
+        background-color: #224d80 !important;
+    }
+
+    &.bg-primary {
+        background: $color1 !important;
+    }
+
+    &.bg-secondary {
+        background: $color1 !important;
     }
 }

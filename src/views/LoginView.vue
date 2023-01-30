@@ -13,55 +13,61 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
 </script>
 
 <template>
-    <h1>{{ t('login.login') }}</h1>
-    <div v-if="!newUser && !isCas">
-        <QCard id="cas-login" class="card">
-            <QCardSection>
-                <div class="card-content">
-                    <span class="card-title">{{ t("login.im-cas-user") }}</span>
-                    {{ t("login.login-with-cas") }}
-                </div>
-                <div class="btn-group">
-                    <QBtn
-                        :href="CASUrlLogin"
-                        :label="t('login.login')"
-                        color="primary"
-                    />
-                    <QBtn
-                        :href="CASUrlRegister"
-                        :label="t('login.create-account')"
-                        color="secondary"
-                    />
-                </div>
-            </QCardSection>
-        </QCard>
-        <QCard id="local-login" class="card">
-            <QCardSection>
-                <div class="card-content">
-                    <span class="card-title">{{ t("login.im-not-cas-user") }}</span>
-                    {{ t("login.login-without-cas") }}
-                </div>
-                <FormLocalLogin/>
-            </QCardSection>
-        </QCard>
-    </div>
-    <div v-else>
-        <QCard id="aborted-cas-registration" class="card">
-            <QCardSection>
-                <div class="card-content">
-          <span class="card-title">
-            {{ t('alerts.aborted-cas-registration.title') }}
-          </span>
-                    {{ t('alerts.aborted-cas-registration.message') }}
-                    <div>
+    <div id="login-page">
+        <!-- <h1>{{ t('login.login') }}</h1> -->
+        <p class="login-intro-text">
+            <span class="icon"></span>
+            Connectez-vous pour accéder à votre espace et effectuer vos démarches !
+        </p>
+        <div class="form_container" v-if="!newUser && !isCas">
+            <QCard id="cas-login" class="card">
+                <QCardSection>
+                    <div class="card-content">
+                        <span class="card-title">{{ t("login.im-cas-user") }}</span>
+                        {{ t("login.login-with-cas") }}
+                    </div>
+                    <div class="btn-group">
                         <QBtn
-                            :label="t('alerts.aborted-cas-registration.button')"
-                            :to="{name: 'Registration'}"
-                            color="warning"
+                            :href="CASUrlLogin"
+                            :label="t('login.login')"
+                            color="primary"
+                        />
+                        <QBtn
+                            :href="CASUrlRegister"
+                            :label="t('login.create-account')"
+                            color="secondary"
                         />
                     </div>
-                </div>
-            </QCardSection>
-        </QCard>
+                </QCardSection>
+            </QCard>
+            <QCard id="local-login" class="card">
+                <QCardSection>
+                    <div class="card-content">
+                        <span class="card-title">{{ t("login.im-not-cas-user") }}</span>
+                        {{ t("login.login-without-cas") }}
+                    </div>
+                    <FormLocalLogin/>
+                </QCardSection>
+            </QCard>
+        </div>
+        <div class="form_container" v-else>
+            <QCard id="aborted-cas-registration" class="card">
+                <QCardSection>
+                    <div class="card-content">
+            <span class="card-title">
+                {{ t('alerts.aborted-cas-registration.title') }}
+            </span>
+                        {{ t('alerts.aborted-cas-registration.message') }}
+                        <div>
+                            <QBtn
+                                :label="t('alerts.aborted-cas-registration.button')"
+                                :to="{name: 'Registration'}"
+                                color="warning"
+                            />
+                        </div>
+                    </div>
+                </QCardSection>
+            </QCard>
+        </div>
     </div>
 </template>
