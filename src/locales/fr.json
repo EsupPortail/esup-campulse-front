@@ -1,4 +1,19 @@
 {
+  "breadcrumbs": {
+    "directory": "Annuaire des associations",
+    "association-detail": "Fiche association",
+    "login": "Connexion",
+    "dashboard": "Tableau de bord",
+    "password-edit": "Modifier mon mot de passe",
+    "validate-users": "Valider les comptes",
+    "user-account": "Compte utilisateur",
+    "manage-users": "Gérer les comptes",
+    "add-user": "Ajouter un compte",
+    "manage-associations": "Gérer les associations",
+    "edit-association": "Editer l'association",
+    "create-association": "Créer une association",
+    "register": "Créer un compte"
+  },
   "404": {
     "description": "404",
     "title": "Contenu introuvable"

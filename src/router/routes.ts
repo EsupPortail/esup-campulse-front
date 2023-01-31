@@ -1,4 +1,6 @@
 import type {RouteRecordRaw} from 'vue-router'
+import i18n from '@/plugins/i18n'
+
 
 const routes: RouteRecordRaw[] = [
     {
@@ -10,16 +12,13 @@ const routes: RouteRecordRaw[] = [
                 path: '',
                 name: 'Home',
                 component: () => import('@/views/HomeView.vue'),
-                meta: {
-                    breadcrumb: 'Accueil',
-                }
             },
             {
                 path: 'associations',
                 name: 'Associations',
                 component: () => import('@/views/directory/AssociationsView.vue'),
                 meta: {
-                    breadcrumb: 'Annuaire des associations',
+                    breadcrumb: i18n.global.t('breadcrumbs.directory'),
                 }
             },
             {
@@ -27,9 +26,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'AssociationDetail',
                 component: () => import('@/views/directory/AssociationDetailView.vue'),
                 meta: {
-                    meta: {
-                        breadcrumb: 'Association',
-                    }
+                    breadcrumb: i18n.global.t('breadcrumbs.association-detail'),
                 }
             },
             {
@@ -47,7 +44,10 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'login',
                 name: 'Login',
-                component: () => import('@/views/LoginView.vue')
+                component: () => import('@/views/LoginView.vue'),
+                meta: {
+                    breadcrumb: i18n.global.t('breadcrumbs.login'),
+                }
             },
             {
                 path: 'cas-login',
@@ -56,23 +56,29 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'dashboard',
-                meta: {requiresAuth: true},
+                meta: {
+                    requiresAuth: true,
+                    breadcrumb: i18n.global.t('breadcrumbs.dashboard')
+                },
                 children: [
                     {
                         path: '',
                         name: 'Dashboard',
-                        component: () => import('@/views/dashboard/DashboardView.vue'),
-                        meta: {
-                            breadcrumb: 'Tableau de bord'
-                        }
+                        component: () => import('@/views/dashboard/DashboardView.vue')
                     },
                     {
                         path: 'password-edit',
                         name: 'PasswordEdit',
-                        component: () => import('@/views/PasswordEditView.vue')
+                        component: () => import('@/views/PasswordEditView.vue'),
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.password-edit')
+                        }
                     },
                     {
                         path: 'validate-users',
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.validate-users')
+                        },
                         children: [
                             {
                                 path: '',
@@ -82,35 +88,47 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: ':id',
                                 name: 'UserValidationDetail',
-                                component: () => import('@/views/dashboard/UserValidationDetailView.vue')
+                                component: () => import('@/views/dashboard/UserValidationDetailView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.user-account')
+                                }
                             },
                         ]
                     },
                     {
                         path: 'manage-users',
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-users')
+                        },
                         children: [
                             {
                                 path: '',
                                 name: 'ManageUsers',
-                                component: () => import('@/views/dashboard/UserManagementView.vue'),
-                                meta: {
-                                    breadcrumb: 'Gérer les utilisateurs'
-                                }
+                                component: () => import('@/views/dashboard/UserManagementView.vue')
                             },
                             {
                                 path: ':id',
                                 name: 'UserManagementDetail',
-                                component: () => import('@/views/dashboard/UserManagementDetailView.vue')
+                                component: () => import('@/views/dashboard/UserManagementDetailView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.user-account')
+                                }
                             },
                             {
                                 path: 'add-user',
                                 name: 'AddUser',
-                                component: () => import('@/views/dashboard/UserAddView.vue')
+                                component: () => import('@/views/dashboard/UserAddView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.add-user')
+                                }
                             },
                         ]
                     },
                     {
                         path: 'manage-associations',
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-associations')
+                        },
                         children: [
                             {
                                 path: '',
@@ -120,11 +138,17 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: ':id',
                                 name: 'EditAssociation',
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.edit-association')
+                                },
                                 component: () => import('@/views/dashboard/AssociationEditionView.vue')
                             },
                             {
                                 path: 'create-new',
                                 name: 'CreateAssociation',
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.create-association')
+                                },
                                 component: () => import('@/views/dashboard/AssociationCreateView.vue')
                             }
                         ]
@@ -134,6 +158,9 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'register',
                 name: 'Registration',
+                meta: {
+                    breadcrumb: i18n.global.t('breadcrumbs.register')
+                },
                 component: () => import('@/views/RegisterLocalView.vue')
             },
             {

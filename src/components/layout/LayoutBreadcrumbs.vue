@@ -4,23 +4,18 @@ import {onMounted, ref, watch} from 'vue'
 
 const route = useRoute()
 
-const pathArray = ref<string[]>([])
-
 const breadcrumbs = ref<{ label: string, to: string }[]>([])
 
 function initBreadcrumbs() {
-    pathArray.value = []
-    pathArray.value = route.path.split("/")
-    pathArray.value.shift()
-    breadcrumbs.value = pathArray.value.reduce((breadcrumbArray, path, index) => {
-        breadcrumbArray.push({
-            label: route.matched[index].meta.breadcrumb || path,
-            to: breadcrumbArray[index - 1]
-                ? "/" + breadcrumbArray[index - 1].path + "/" + path
-                : "/" + path
-        })
-        return breadcrumbArray
-    }, [])
+    breadcrumbs.value = []
+    for (let i = 0; i < route.matched.length; i++) {
+        if (route.matched[i].meta.breadcrumb) {
+            breadcrumbs.value.push({
+                label: route.matched[i].meta.breadcrumb as string,
+                to: route.matched[i].path
+            })
+        }
+    }
 }
 
 watch(() => route.path, initBreadcrumbs)
