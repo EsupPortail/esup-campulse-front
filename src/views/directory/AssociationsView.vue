@@ -16,31 +16,6 @@ onMounted(async function () {
     loading.show
     await associationStore.getAssociations(true, false)
     await loadAssociationsFields()
-    for (let i = 0; i < 150; i++) {
-        associationStore.associations.push({
-                id: i + 6,
-                institution: {
-                    id: 2,
-                    name: 'Université de Strasbourg',
-                    acronym: 'Unistra'
-                },
-                institutionComponent: {
-                    id: 1,
-                    name: 'Faculté de Médecine'
-                },
-                activityField: {
-                    id: 1,
-                    name: 'Sciences'
-                },
-                name: 'Asso test',
-                acronym: 'Asso',
-                isEnabled: true,
-                isPublic: true,
-                isSite: true,
-                email: ''
-            }
-        )
-    }
     loading.hide
 })
 
@@ -236,13 +211,13 @@ function onAdvancedSearch() {
                     <div></div>
                     <div>
                         <h3>{{ association.name }}</h3>
-                      <div class="logo">
-                        <QImg
-                            :alt="association.altLogo"
-                            :src="Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png'"
-                            :ratio="1"
-                        />
-                      </div>
+                        <div class="logo">
+                            <QImg
+                                :alt="association.altLogo"
+                                :ratio="1"
+                                :src="Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png'"
+                            />
+                        </div>
                         <ul>
                             <li v-if="association.acronym">
                                 {{ t('directory.labels.association-acronym') + ' : ' }}
@@ -277,6 +252,6 @@ function onAdvancedSearch() {
 
 <style lang="sass" scoped>
 .logo
-  width: 100px
-  height: 100px
+    width: 100px
+    height: 100px
 </style>

@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 
 import type {CasLogin, LocalLogin, User, UserGroup, UserStore} from '#/user'
 import {removeTokens, setTokens} from '@/services/userService'
-import {useAxios} from '@/plugins/axios'
+import {useAxios} from '@/composables/useAxios'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -30,7 +30,7 @@ export const useUserStore = defineStore('userStore', {
     actions: {
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const {axiosAuthenticated} = useAxios()
-            const response = await axiosAuthenticated.value.post(url, data)
+            const response = await axiosAuthenticated.post(url, data)
             const {accessToken, refreshToken, user} = response.data
             if (user.isValidatedByAdmin) {
                 setTokens(accessToken, refreshToken)
@@ -46,10 +46,10 @@ export const useUserStore = defineStore('userStore', {
         // to re-test
         async getUser() {
             const {axiosAuthenticated} = useAxios()
-            const user = (await axiosAuthenticated.value.get<User>('/users/auth/user/')).data
+            const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
             if (user.isValidatedByAdmin) {
                 this.user = user
-                this.user.groups = (await axiosAuthenticated.value.get<UserGroup[]>('/users/groups/')).data
+                this.user.groups = (await axiosAuthenticated.get<UserGroup[]>('/users/groups/')).data
             } else {
                 // Specific case for CAS user data which can persist until complete registration
                 if (user.isCas) {
@@ -62,7 +62,7 @@ export const useUserStore = defineStore('userStore', {
         async getUserAssociationsRoles() {
             if (this.user && this.user.associations.length > 0) {
                 const {axiosAuthenticated} = useAxios()
-                this.userAssociationsRoles = (await axiosAuthenticated.value.get('/users/associations/')).data
+                this.userAssociationsRoles = (await axiosAuthenticated.get('/users/associations/')).data
             }
         },
         hasOfficeStatus(associationId: number | undefined): boolean | undefined {
@@ -83,7 +83,7 @@ export const useUserStore = defineStore('userStore', {
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
             const {axiosAuthenticated} = useAxios()
-            const data = (await axiosAuthenticated.value.post('/users/auth/cas/login/', {ticket, service})).data
+            const data = (await axiosAuthenticated.post('/users/auth/cas/login/', {ticket, service})).data
             const {accessToken, refreshToken, user} = data
             setTokens(accessToken, refreshToken)
             this.newUser = user

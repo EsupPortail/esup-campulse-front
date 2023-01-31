@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import type {UserAssociations, UserRegister} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
-import {useAxios} from "@/plugins/axios";
+import {useAxios} from '@/composables/useAxios'
 
 // Tokens
 export function setTokens(access: string, refresh: string) {
@@ -19,8 +19,8 @@ export function removeTokens() {
 export function setBearer() {
     const access = localStorage.getItem('access')
     const {axiosAuthenticated} = useAxios()
-    if (axiosAuthenticated.value.defaults?.headers) {
-        axiosAuthenticated.value.defaults.headers.common['Authorization'] = 'Bearer ' + access
+    if (axiosAuthenticated.defaults?.headers) {
+        axiosAuthenticated.defaults.headers.common['Authorization'] = 'Bearer ' + access
     }
 }
 
@@ -28,7 +28,7 @@ export function setBearer() {
 export async function refreshToken() {
     const refresh = localStorage.getItem('refresh')
     const {axiosAuthenticated} = useAxios()
-    const access = (await axiosAuthenticated.value.post('/users/auth/token/refresh/', {refresh})).data.access
+    const access = (await axiosAuthenticated.post('/users/auth/token/refresh/', {refresh})).data.access
     localStorage.setItem('access', access)
 }
 
@@ -57,18 +57,18 @@ export async function loadUser() {
 // Register functions
 export async function userLocalRegister(newUser: UserRegister) {
     const {axiosPublic} = useAxios()
-    await axiosPublic.value.post('/users/auth/registration/', newUser)
+    await axiosPublic.post('/users/auth/registration/', newUser)
 }
 
 export async function userLocalRegisterAsManager(newUser: UserRegister) {
     const {axiosAuthenticated} = useAxios()
-    await axiosAuthenticated.value.post('/users/', newUser)
+    await axiosAuthenticated.post('/users/', newUser)
 }
 
 export async function userCASRegister(newUserInfo: string | null) {
     setBearer()
     const {axiosAuthenticated} = useAxios()
-    await axiosAuthenticated.value.patch('/users/auth/user/', {phone: newUserInfo !== "" ? newUserInfo : null})
+    await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo !== "" ? newUserInfo : null})
 }
 
 export async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
@@ -76,7 +76,7 @@ export async function userAssociationsRegister(username: string, newUserAssociat
     const {axiosPublic} = useAxios()
     for (let i = 0; i < newUserAssociations.length; i++) {
         if (idsAssociations.indexOf(newUserAssociations[i].id) === -1)
-            await axiosPublic.value.post('/users/associations/', {
+            await axiosPublic.post('/users/associations/', {
                 user: username,
                 association: newUserAssociations[i].id,
                 roleName: newUserAssociations[i].roleName,
@@ -89,7 +89,7 @@ export async function userAssociationsRegister(username: string, newUserAssociat
 
 export async function userGroupsRegister(username: string, newUserGroups: number[] | undefined) {
     const {axiosPublic} = useAxios()
-    await axiosPublic.value.post('/users/groups/', {
+    await axiosPublic.post('/users/groups/', {
         username: username,
         groups: newUserGroups,
     })
@@ -97,21 +97,21 @@ export async function userGroupsRegister(username: string, newUserGroups: number
 
 export async function verifyEmail(key: string) {
     const {axiosPublic} = useAxios()
-    await axiosPublic.value.post('/users/auth/registration/verify-email/', {key: key})
+    await axiosPublic.post('/users/auth/registration/verify-email/', {key: key})
 }
 
 export async function resendEmail(email: string) {
     const {axiosPublic} = useAxios()
-    await axiosPublic.value.post('/users/auth/registration/resend-email/', {email})
+    await axiosPublic.post('/users/auth/registration/resend-email/', {email})
 }
 
 // Password reset functions
 export async function passwordReset(email: string) {
     const {axiosPublic} = useAxios()
-    await axiosPublic.value.post('/users/auth/password/reset/', {email})
+    await axiosPublic.post('/users/auth/password/reset/', {email})
 }
 
 export async function passwordResetConfirm(uid: string, token: string, newPassword1: string, newPassword2: string) {
     const {axiosPublic} = useAxios()
-    await axiosPublic.value.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
+    await axiosPublic.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
 }
