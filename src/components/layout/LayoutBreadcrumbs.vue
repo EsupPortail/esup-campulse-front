@@ -1,26 +1,18 @@
 <script lang="ts" setup>
 import {useRoute} from 'vue-router'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, watch} from 'vue'
+import useUtility from '@/composables/useUtility'
 
 const route = useRoute()
+const {breadcrumbs, initBreadcrumbs} = useUtility()
 
-const breadcrumbs = ref<{ label: string, to: string }[]>([])
+watch(() => route.path, () => {
+    initBreadcrumbs(route.matched)
+})
 
-function initBreadcrumbs() {
-    breadcrumbs.value = []
-    for (let i = 0; i < route.matched.length; i++) {
-        if (route.matched[i].meta.breadcrumb) {
-            breadcrumbs.value.push({
-                label: route.matched[i].meta.breadcrumb as string,
-                to: route.matched[i].path
-            })
-        }
-    }
-}
-
-watch(() => route.path, initBreadcrumbs)
-
-onMounted(initBreadcrumbs)
+onMounted(() => {
+    initBreadcrumbs(route.matched)
+})
 
 </script>
 
