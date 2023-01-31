@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
 
 $pageWidth: 1250px;
 
@@ -148,6 +149,7 @@ body {
 
         button {
             background: transparent !important;
+            box-shadow: none;
 
             &::before {
                 box-shadow: none;
@@ -191,7 +193,7 @@ body {
         height: 440px;
 
         .q-toolbar {
-            margin-bottom: 110px;
+            margin-bottom: 90px;
         }
 
         #header-home-title {
@@ -299,8 +301,6 @@ body {
             background-position: center center;
         }
     }
-
-
 }
 
 .q-menu {
@@ -320,6 +320,15 @@ body {
     .q-item {
         position: relative;
         text-align: center;
+        padding: 5px;
+        display: block;
+        min-height: unset;
+        line-height: normal;
+
+        .q-item__section {
+            display: block;
+            line-height: normal;
+        }
 
         &::after {
             content: ' ';
@@ -341,10 +350,9 @@ body {
             text-decoration: none;
             color: $textColor3;
             text-transform: uppercase;
-        }
-
-        .q-btn {
-            padding: 0;
+            display: inline-block;
+            padding: 10px 20px;
+            width: 100%;
         }
 
         button {
@@ -352,9 +360,27 @@ body {
             font-weight: 400;
             color: $textColor3;
             text-transform: uppercase;
+            background-color: transparent;
+            display: inline-block;
+            padding: 6px 20px;
+            min-height: unset;
+            width: 100%;
+            line-height: normal;
 
             &::before {
                 display: none;
+            }
+        }
+
+        a, button {
+            transition: background 0.03s linear;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1) !important;
+            }
+
+            &:active {
+                background: rgba(255, 255, 255, 0.2) !important;
             }
         }
     }
@@ -442,7 +468,7 @@ body {
     #footer-logos {
         background-color: $color1Background;
         border-bottom: 10px solid $color1;
-        padding: 35px 0;
+        padding: 30px 0;
         
         .wrapper {
             width: 100%;
@@ -451,7 +477,7 @@ body {
             
             img {
                 width: auto;
-                max-height: 60px;
+                max-height: 50px;
                 margin: 20px 20px;
     
                 &:first-child {
@@ -520,6 +546,221 @@ body {
         font-size: 17px;
         font-weight: 300;
         color: $footerTextColor;
+    }
+}
+
+/* #################################################################################################
+   PAGE: HOME
+################################################################################################# */
+
+#home-info-panel {
+    width: 100%;
+    background: none !important;
+    margin: 20px 0 80px;
+    padding: 0;
+
+    .q-banner__content {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        color: $textColor1;
+        font-size: 19px;
+        font-weight: 400;
+        position: relative;
+        padding-left: 80px;
+
+        .q-card__section {
+            padding: 0;
+            line-height: normal;
+            text-align: justify;
+        }
+    }
+
+    #home-banner-icon {
+        display: inline-block;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        border: 3px solid $color1;
+        background-color: transparent;
+        position: absolute;
+        top: calc(50% - 54px);
+        left: 0;
+
+        i {
+            font-size: 28px;
+            color: $color1;
+            display: inline-block;
+            width: 27px;
+            height: 27px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        &::before, &::after {
+            content: '';
+            display: block;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            position: absolute;
+            left: 14px;
+        }
+
+        &::before {
+            background-color: $color2;
+            bottom: -30px;
+        }
+
+        &::after {
+            background-color: $color3;
+            bottom: -57px;
+        }
+
+        &.variant-minimal {
+            top: calc(50% - 27px);
+
+            &::before, &::after {
+                display: none;
+            }
+        }
+    }
+}
+
+.home-section {
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 5px;
+    padding: 70px 0;
+
+    & > div {
+        width: 100%;
+        max-width: $pageWidth;
+        margin: 0 auto;
+        padding: 0;
+
+        a {
+            margin: 0;
+        }
+    }
+
+    &.home-section-annuaire {
+        background-image: url('./img/background-annuaire.jpg');
+        background-position: center center;
+    }
+
+    &.home-section-charte {
+        background-image: url('./img/background-charte.jpg');
+        background-position: center center;
+
+        .section-card {
+            flex-direction: row-reverse;
+        }
+    }
+
+    &.home-section-cape {
+        background-image: url('./img/background-cape.jpg');
+        background-position: center center;
+    }
+
+    .section-card {
+        background-color: $backgroundColor1;
+        box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.2);
+        padding: 40px 60px 50px;
+        display: flex;
+        gap: 90px;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+
+        .section-background {
+            background-color: $color1Background;
+            width: 420px;
+            height: 800px;
+            position: absolute;
+            top: calc(50% - 400px);
+            left: 0;
+            z-index: 0;
+
+            span {
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 400px 0 400px 100px;
+                border-color: transparent transparent transparent $color1Background;
+                position: absolute;
+                right: -99px;
+                top: 0;
+            }
+        }
+
+        .section-title {
+            flex: 0 0 420px;
+            position: relative;
+            z-index: 2;
+
+            h1 {
+                font-family: $titleFont;
+                font-size: 60px;
+                font-weight: 600;
+                color: $color1Text;
+                text-transform: uppercase;
+                line-height: 62px;
+            }
+
+            h2 {
+                font-family: $titleFont;
+                font-size: 50px;
+                font-weight: 400;
+                color: $color1Text;
+                line-height: 55px;
+            }
+        }
+
+        .section-content {
+            p {
+                font-size: 20px;
+                font-weight: 400;
+                color: $color1Text;
+            }
+
+            .section-buttons {
+                text-align: center;
+                margin-top: 40px;
+
+                a {
+                    display: inline-block;
+                    padding: 16px 70px;
+                    font-size: 18px;
+                    font-weight: 400;
+                    color: $color1Text;
+                    border-radius: 0;
+                    border: 1px solid $color1Text;
+                    background-color: transparent;
+                    text-decoration: none;
+                    text-transform: uppercase;
+                    transition: background-color 0.03s linear, color 0.03s linear;
+
+                    i {
+                        font-size: 22px;
+                        position: relative;
+                        top: 1px;
+                        margin-left: 10px;
+                    }
+
+                    &:hover {
+                        background-color: $color1Text;
+                        color: $textColor3;
+                    }
+
+                    &:active {
+                        background-color: transparentize($color1Text, 0.1);
+                        color: $textColor3;
+                    }
+                }
+            }
+        }
     }
 }
 

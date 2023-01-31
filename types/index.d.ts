@@ -8,7 +8,9 @@ export interface HomeCard {
     description: string,
     imagePath: string,
     imageAlt: string,
-    link: string
+    link: string,
+    cssClass: string,
+    buttonLabel: string
 }
 
 export type HomeCards = HomeCard[]

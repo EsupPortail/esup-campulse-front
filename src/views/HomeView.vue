@@ -9,12 +9,13 @@ const {t} = useI18n()
 </script>
 
 <template>
-    <h1>{{ t("home.title") }}</h1>
+    <!-- <h1>{{ t("home.title") }}</h1> -->
 
     <HomeBanner
         :description="home.banner.description"
         :is-displayed="home.banner.isDisplayed"
         :title="home.banner.title"
+        id="home-info-panel"
     />
 
     <section>
@@ -24,7 +25,9 @@ const {t} = useI18n()
                   :imageAlt="card.imageAlt"
                   :imagePath="card.imagePath"
                   :link="card.link"
-                  :title="card.title"
+                  :title="card.title" 
+                  :cssClass="card.cssClass"
+                  :buttonLabel="card.buttonLabel"
         />
     </section>
 </template>
