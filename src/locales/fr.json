@@ -291,6 +291,7 @@
     "go-back": "Revenir à la liste des associations",
     "validate-all-changes": "Valider tous les changements",
     "enabled": "🟢 Activée",
+    "more-details": "Fiche détail de l'association",
     "titles": {
       "admin": "Administration",
       "contact": "Contact",

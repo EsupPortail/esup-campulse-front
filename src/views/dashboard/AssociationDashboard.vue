@@ -42,6 +42,11 @@ async function onGetAssociationDetail() {
     <div class="name">
       <h1>{{ association?.name }}</h1>
     </div>
+
+  <div>
+      <QBtn :label="t('association.more-details')" :to="{name: 'AssociationDetail', params: {id: association?.id}}" />
+  </div>
+
 </template>
 
 <style lang="sass" scoped>
