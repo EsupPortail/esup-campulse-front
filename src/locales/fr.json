@@ -13,7 +13,8 @@
     "manage-associations": "Gérer les associations",
     "edit-association": "Editer l'association",
     "create-association": "Créer une association",
-    "register": "Créer un compte"
+    "register": "Créer un compte",
+    "association-dashboard": "Gérér mon association"
   },
   "404": {
     "description": "404",
