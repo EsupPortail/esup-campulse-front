@@ -1,11 +1,6 @@
-import {ref} from 'vue'
 import type {RouteLocationMatched} from 'vue-router'
 
-
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?$/
-
-const breadcrumbs = ref<{ label: string, to: string }[]>([])
-
 
 export default function () {
     function formatDate(date: string) {
@@ -28,16 +23,17 @@ export default function () {
     }
 
     function initBreadcrumbs(routeMatched: RouteLocationMatched[]) {
-        breadcrumbs.value = []
+        const breadcrumbs: { label: string, to: string }[] = []
         for (let i = 0; i < routeMatched.length; i++) {
             if (routeMatched[i].meta.breadcrumb) {
-                breadcrumbs.value.push({
+                breadcrumbs.push({
                     label: routeMatched[i].meta.breadcrumb as string,
                     to: routeMatched[i].path
                 })
             }
         }
+        return breadcrumbs
     }
 
-    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, breadcrumbs}
+    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs}
 }

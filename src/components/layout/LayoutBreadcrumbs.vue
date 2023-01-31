@@ -1,24 +1,28 @@
 <script lang="ts" setup>
 import {useRoute} from 'vue-router'
-import {onMounted, watch} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
+import {useI18n} from 'vue-i18n'
 
+const {t} = useI18n()
 const route = useRoute()
-const {breadcrumbs, initBreadcrumbs} = useUtility()
+const {initBreadcrumbs} = useUtility()
+
+const breadcrumbs = ref<{ label: string, to: string }[]>([])
 
 watch(() => route.path, () => {
-    initBreadcrumbs(route.matched)
+    breadcrumbs.value = initBreadcrumbs(route.matched)
 })
 
 onMounted(() => {
-    initBreadcrumbs(route.matched)
+    breadcrumbs.value = initBreadcrumbs(route.matched)
 })
 
 </script>
 
 <template>
     <QBreadcrumbs>
-        <QBreadcrumbsEl :to="{name: 'Home'}" icon="mdi-home" label="Accueil"/>
+        <QBreadcrumbsEl :label="t('breadcrumbs.home')" :to="{name: 'Home'}" icon="mdi-home"/>
         <QBreadcrumbsEl
             v-for="(element, index) in breadcrumbs"
             :key="index"
