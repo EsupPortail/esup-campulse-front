@@ -1,3 +1,5 @@
+import type {RouteLocationMatched} from 'vue-router'
+
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?$/
 
 export default function () {
@@ -20,5 +22,18 @@ export default function () {
         return false
     }
 
-    return {formatDate, arraysAreEqual, urlRegex}
+    function initBreadcrumbs(routeMatched: RouteLocationMatched[]) {
+        const breadcrumbs: { label: string, to: string }[] = []
+        for (let i = 0; i < routeMatched.length; i++) {
+            if (routeMatched[i].meta.breadcrumb) {
+                breadcrumbs.push({
+                    label: routeMatched[i].meta.breadcrumb as string,
+                    to: routeMatched[i].path
+                })
+            }
+        }
+        return breadcrumbs
+    }
+
+    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs}
 }

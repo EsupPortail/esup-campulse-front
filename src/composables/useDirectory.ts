@@ -22,9 +22,9 @@ export default function () {
         if (associationStore.associations.length > 0 &&
             (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
             let matches: AssociationList[] = []
-            matches = associationStore.associations.filter(association => {
+            /*matches = associationStore.associations.filter(association => {
                 return association.isPublic === true
-            })
+            })*/
             if (settings.name) {
                 if (matches.length) {
                     const newMatches = matches.filter(association => {

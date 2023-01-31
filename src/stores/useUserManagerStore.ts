@@ -1,13 +1,22 @@
-import { defineStore } from 'pinia'
-
-import type { ManagedUser, ManagedUsers, UserDirectory, UserGroup, UserManagerStore, UserNames } from '#/user'
+import {defineStore} from 'pinia'
+import type {
+    ManagedUser,
+    ManagedUsers,
+    UserAssociationDetail,
+    UserAssociationPatch,
+    UserAssociationStatus,
+    UserDirectory,
+    UserGroup,
+    UserManagerStore,
+    UserNames,
+    UserToUpdate
+} from '#/user'
 import _axios from '@/plugins/axios'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
         user: undefined,
         users: [],
-        allUsers: false,
         userAssociations: []
     }),
 
@@ -19,7 +28,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                     label: user.firstName + ' ' + user.lastName
                 }))
         },
-        userDirectory: (state: UserManagerStore): UserDirectory => {
+        userDirectory: (state: UserManagerStore): UserDirectory[] => {
             return state.users
                 .map(user => ({
                     id: user.id,
@@ -33,34 +42,39 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         userGroups: (state: UserManagerStore): number[] => {
             return state.user?.groups?.map<number>(group => group.id) || []
+        },
+        userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
+            return {
+                firstName: state.user?.firstName as string,
+                lastName: state.user?.lastName as string,
+                email: state.user?.email as string,
+                phone: state.user?.phone as string
+            }
+        },
+        userAssociationStatus: (state: UserManagerStore): UserAssociationStatus[] => {
+            return state.userAssociations.map(association => ({
+                associationId: association.association.id,
+                associationName: association.association.name,
+                roleName: association.roleName,
+                hasOfficeStatus: association.hasOfficeStatus,
+                isPresident: association.isPresident
+            }))
         }
     },
 
     actions: {
         async getUsers() {
-            if (this.users.length === 0 || this.allUsers === false) {
-                this.users = (await _axios.get<ManagedUsers>('/users/')).data
-                this.allUsers = true
-            }
+            this.users = (await _axios.get<ManagedUsers>('/users/')).data
         },
         async getUnvalidatedUsers() {
-            if (this.users.length === 0 || this.allUsers === true) {
-                this.users = (await _axios.get<ManagedUsers>('/users/?is_validated_by_admin=false')).data
-                this.allUsers = false
-            }
+            this.users = (await _axios.get<ManagedUsers>('/users/?is_validated_by_admin=false')).data
         },
         async getUserDetail(id: number) {
-            if (this.user?.id !== id) {
-                if (this.users.length !== 0) {
-                    this.user = this.users.find((user) => user.id === id)
-                } else {
-                    this.user = (await _axios.get<ManagedUser>(`/users/${id}`)).data
-                    this.user.groups = (await _axios.get<UserGroup[]>(`/users/groups/${id}`)).data
-                }
-            }
+            this.user = (await _axios.get<ManagedUser>(`/users/${id}`)).data
+            this.user.groups = (await _axios.get<UserGroup[]>(`/users/groups/${id}`)).data
         },
         async updateUserGroups(userGroups: number[]) {
-            await _axios.post('/users/groups/', { username: this.user?.username, groups: userGroups })
+            await _axios.post('/users/groups/', {username: this.user?.username, groups: userGroups})
         },
         async deleteUserGroups(groupsToDelete: number[]) {
             for (let i = 0; i < groupsToDelete.length; i++) {
@@ -68,17 +82,30 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             }
         },
         async validateUser() {
-            await _axios.patch(`/users/${this.user?.id}`, { isValidatedByAdmin: true })
-            const validatedUser = this.users.findIndex((user) => user.id === this.user?.id)
-            this.users.splice(validatedUser, 1)
+            await _axios.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
         },
         async deleteUser() {
             await _axios.delete(`/users/${this.user?.id}`)
-            const userToDelete = this.users.findIndex((user) => user.id === this.user?.id)
-            this.users.splice(userToDelete, 1)
         },
-        async getUserAssociations() {
-            this.userAssociations = (await _axios.get(`/users/associations/${this.user?.id}`)).data
+        async getUserAssociations(id: number) {
+            this.userAssociations = (await _axios.get<UserAssociationDetail[]>(`/users/associations/${id}`)).data
+        },
+        async deleteUserAssociation(associationId: number) {
+            await _axios.delete(`/users/associations/${this.user?.id}/${associationId}`)
+        },
+        async patchUserAssociations(associationId: number, infosToPatch: UserAssociationPatch) {
+            await _axios.patch(`/users/associations/${this.user?.id}/${associationId}`, infosToPatch)
+        },
+        async updateUserInfos(user: UserToUpdate) {
+            let infosToPatch = {}
+            for (const [key, value] of Object.entries(user)) {
+                if (value !== this.user?.[key as keyof typeof this.user]) {
+                    infosToPatch = Object.assign(infosToPatch, {[key]: value})
+                }
+            }
+            if (Object.keys(infosToPatch).length > 0) {
+                await _axios.patch(`/users/${this.user?.id}`, infosToPatch)
+            }
         }
     }
 })

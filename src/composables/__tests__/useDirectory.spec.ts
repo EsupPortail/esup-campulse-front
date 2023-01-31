@@ -4,7 +4,7 @@ import {config} from '@vue/test-utils'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {associations, associationSearchSettings, associationWrongSearchSettings} from '~/mocks/association.mock'
-import {mockedAxios} from "../../../tests/mocks/axios.mock";
+import {mockedAxios} from '~/mocks/axios.mock'
 
 
 vi.mock('@/plugins/axios')

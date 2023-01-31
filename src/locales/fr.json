@@ -1,10 +1,27 @@
 {
+  "breadcrumbs": {
+    "home": "Accueil",
+    "directory": "Annuaire des associations",
+    "association-detail": "Fiche association",
+    "login": "Connexion",
+    "dashboard": "Tableau de bord",
+    "password-edit": "Modifier mon mot de passe",
+    "validate-users": "Valider les comptes",
+    "user-account": "Compte utilisateur",
+    "manage-users": "Gérer les comptes",
+    "add-user": "Ajouter un compte",
+    "manage-associations": "Gérer les associations",
+    "edit-association": "Editer l'association",
+    "create-association": "Créer une association",
+    "register": "Créer un compte"
+  },
   "404": {
     "description": "404",
     "title": "Contenu introuvable"
   },
   "back": "Retour",
   "cancel": "Annuler",
+  "cancel-delete": "Annuler la suppression",
   "delete": "Supprimer",
   "discard-changes": "Abandonner les modifications",
   "loading": "Chargement...",
@@ -144,6 +161,7 @@
     "is-validated": "Validé par le gestionnaire",
     "manage-account": "Gérer les informations du compte",
     "management": "Gestion des comptes",
+    "user-association-confirm-delete": "Êtes-vous sûr de vouloir supprimer le rôle de l'utilisateur dans cette association ? Attention cette action est irréversible et toutes les données seront perdues.",
     "user-status": "Statut de l'utilisateur",
     "users": "Utilisateurs",
     "validate-account": "Valider le compte",
@@ -194,9 +212,10 @@
       "enable-association-error": "L'association n'a pas été activée.",
       "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réesayer.",
       "form-error": "Erreur lors du chargement du formulaire, veuillez recharger la page.",
+      "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
+      "request-error": "Une erreur est survenue. Veuillez rafraîchir la page et réessayer.",
       "invalid-request": "Requête invalide.",
       "invalid-token": "Jeton invalide.",
-      "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
       "no-ticket": "Pas de ticket.",
       "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
@@ -205,7 +224,7 @@
       "unknown-user": "Aucun compte n'a été trouvé."
     },
     "positive": {
-      "account-created": "Compte crée.",
+      "account-created": "Compte créé.",
       "change-associations": "Les changements ont été effectués pour les associations suivantes : ",
       "delete-association": "L'association a été supprimée avec succès.",
       "disable-association": "L'association a été inactivée avec succès.",
@@ -220,7 +239,9 @@
       "validate-delete-user": "Le compte a bien été supprimé.",
       "validate-success": "Le statut du compte a bien été modifié.",
       "association-up-to-date": "L'association est déjà à jour.",
-      "association-successfully-updated": "L'association a bien été mise à jour."
+      "association-successfully-updated": "L'association a bien été mise à jour.",
+      "validate-delete-user-association": "Le rôle de l'utilisateur dans l'association a bien été supprimé.",
+      "validate-asso": "L'association a été créée avec succès."
     }
   },
   "alerts": {
@@ -235,9 +256,8 @@
       "confirm-no": "Non",
       "confirm-yes": "Oui"
     },
-    "leave-association-edition": {
-      "message": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues."
-    }
+    "leave-association-edition": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues.",
+    "leave-user-edition": "Êtes-vous sûr de vouloir quitter l'édition des informations de cet utilisateur ? Si vous avez effectué des modifications, celles-ci seront perdues."
   },
   "directory": {
     "title": "Associations",
@@ -342,6 +362,9 @@
     "isCas": "L'utilisateur provient de CAS",
     "isValidatedByAdmin": "L'utilisateur est validé par le gestionnaire",
     "last-name": "Nom de famille",
-    "phone": "Numéro de téléphone"
+    "phone": "Numéro de téléphone",
+    "associations": "Associations",
+    "has-no-association": "L'utilisateur n'est membre d'aucune association.",
+    "delete-association-role": "Le rôle dans l'association sera supprimé après validation des changements."
   }
 }

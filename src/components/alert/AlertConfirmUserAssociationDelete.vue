@@ -3,44 +3,35 @@ import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useQuasar} from 'quasar'
-import axios from 'axios'
-import router from '@/router'
+
+const props = defineProps({
+    associationId: Number
+})
 
 const {t} = useI18n()
 const confirm = ref<boolean>(false)
 const userManagerStore = useUserManagerStore()
 const {notify} = useQuasar()
 
-const emit = defineEmits(['hasValidated'])
-
-async function onDeleteUser() {
+async function onDeleteAssociation() {
     try {
-        await userManagerStore.deleteUser()
-        emit('hasValidated')
-        await router.push({name: 'ManageUsers'})
+        await userManagerStore.deleteUserAssociation(props.associationId as number)
         notify({
             type: 'positive',
-            message: t('notifications.positive.validate-delete-user')
+            message: t('notifications.positive.validate-delete-user-association')
         })
     } catch (e) {
-        if (axios.isAxiosError(e) || e === 403) {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.cannot-delete-superuser')
-            })
-        } else {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.unknown-user')
-            })
-        }
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.request-error')
+        })
     }
 }
 </script>
 
 <template>
     <QBtn
-        :label="t('user-manager.delete-user')"
+        :label="t('dashboard.association-user.delete-association')"
         color="red"
         icon="mdi-delete"
         @click="confirm = true"
@@ -49,7 +40,7 @@ async function onDeleteUser() {
     <QDialog v-model="confirm" persistent>
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t("user-manager.confirm-delete") }}</span>
+                <span class="q-ml-sm">{{ t("user-manager.user-association-confirm-delete") }}</span>
             </QCardSection>
 
             <QCardActions align="right">
@@ -61,10 +52,10 @@ async function onDeleteUser() {
                 />
                 <QBtn
                     v-close-popup
-                    :label="t('user-manager.delete-user')"
+                    :label="t('dashboard.association-user.delete-association')"
                     color="red"
                     icon="mdi-delete"
-                    @click="onDeleteUser"
+                    @click="onDeleteAssociation"
                 />
             </QCardActions>
         </QCard>
