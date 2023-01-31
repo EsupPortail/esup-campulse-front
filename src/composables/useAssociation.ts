@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import type {AssociationSocialNetwork, EditedAssociation} from '#/association'
 import type {UserAssociations} from '#/user'
 import useUtility from '@/composables/useUtility'
-import _axios from '@/plugins/axios'
+import {useAxios} from '@/plugins/axios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 
@@ -21,7 +21,8 @@ export default function () {
 
 
     async function createAssociation(name: string) {
-        await _axios.post('/associations/', {name: name})
+        const {axiosAuthenticated} = useAxios()
+        await axiosAuthenticated.value.post('/associations/', {name: name})
     }
 
     // Add or remove new multiple associations
@@ -128,7 +129,8 @@ export default function () {
 
     // test
     async function updateAssociation() {
-        await _axios.patch(`/associations/${associationStore.association?.id}`, changedData)
+        const {axiosAuthenticated} = useAxios()
+        await axiosAuthenticated.value.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
 
