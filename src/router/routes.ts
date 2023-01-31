@@ -58,7 +58,7 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/PasswordEditView.vue')
                     },
                     {
-                        path: 'association-dashboard',
+                        path: 'association-dashboard/:id',
                         name: 'AssociationDashboard',
                         component: () => import('@/views/dashboard/AssociationDashboard.vue')
                     },
