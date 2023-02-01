@@ -16,31 +16,6 @@ onMounted(async function () {
     loading.show
     await associationStore.getAssociations(true, false)
     await loadAssociationsFields()
-    for (let i = 0; i < 150; i++) {
-        associationStore.associations.push({
-                id: i + 6,
-                institution: {
-                    id: 2,
-                    name: 'Université de Strasbourg',
-                    acronym: 'Unistra'
-                },
-                institutionComponent: {
-                    id: 1,
-                    name: 'Faculté de Médecine'
-                },
-                activityField: {
-                    id: 1,
-                    name: 'Sciences'
-                },
-                name: 'Asso test',
-                acronym: 'Asso',
-                isEnabled: true,
-                isPublic: true,
-                isSite: true,
-                email: ''
-            }
-        )
-    }
     loading.hide
 })
 
@@ -94,7 +69,6 @@ const settings = ref<AssociationSearch>({
     activityField: null
 })
 
-
 // Functions
 async function loadAssociationsFields() {
     try {
@@ -115,6 +89,22 @@ async function onSearch() {
 
 function onAdvancedSearch() {
     associations.value = advancedSearch(settings.value) as AssociationList[]
+}
+
+async function clearSearch(apiSearch: boolean) {
+    settings.value = {
+        search: '',
+        name: '',
+        acronym: '',
+        institution: null,
+        institutionComponent: null,
+        activityField: null
+    }
+    if (apiSearch) {
+        await associationStore.getAssociations(true, false)
+    } else {
+        associations.value = associationStore.associations
+    }
 }
 </script>
 
@@ -151,6 +141,12 @@ function onAdvancedSearch() {
                     color="primary"
                     icon="mdi-chevron-right"
                     @click="onSearch"
+                />
+                <QBtn
+                    :label="t('directory.cancel-search')"
+                    color="secondary"
+                    icon="mdi-close"
+                    @click="clearSearch(true)"
                 />
             </fieldset>
         </QForm>
@@ -207,6 +203,12 @@ function onAdvancedSearch() {
                     icon="mdi-chevron-right"
                     type="submit"
                 />
+                <QBtn
+                    :label="t('directory.cancel-search')"
+                    color="secondary"
+                    icon="mdi-close"
+                    @click="clearSearch(false)"
+                />
             </QExpansionItem>
         </QForm>
     </section>
@@ -236,13 +238,13 @@ function onAdvancedSearch() {
                     <div></div>
                     <div>
                         <h3>{{ association.name }}</h3>
-                      <div class="logo">
-                        <QImg
-                            :alt="association.altLogo"
-                            :src="Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png'"
-                            :ratio="1"
-                        />
-                      </div>
+                        <div class="logo">
+                            <QImg
+                                :alt="association.altLogo"
+                                :ratio="1"
+                                :src="Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png'"
+                            />
+                        </div>
                         <ul>
                             <li v-if="association.acronym">
                                 {{ t('directory.labels.association-acronym') + ' : ' }}
@@ -277,6 +279,6 @@ function onAdvancedSearch() {
 
 <style lang="sass" scoped>
 .logo
-  width: 100px
-  height: 100px
+    width: 100px
+    height: 100px
 </style>
