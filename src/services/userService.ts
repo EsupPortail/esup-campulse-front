@@ -1,39 +1,27 @@
-import axios from 'axios'
-
 import type {UserAssociations, UserRegister} from '#/user'
-import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
 
 // Tokens
 export function setTokens(access: string, refresh: string) {
-    localStorage.setItem('access', access)
-    localStorage.setItem('refresh', refresh)
+    localStorage.setItem('JWT__access__token', access)
+    localStorage.setItem('JWT__refresh__token', refresh)
 }
 
 export function removeTokens() {
-    localStorage.removeItem('access')
-    localStorage.removeItem('refresh')
-}
-
-// Set bearer
-export function setBearer() {
-    const access = localStorage.getItem('access')
-    const {axiosAuthenticated} = useAxios()
-    /*if (axiosAuthenticated.defaults?.headers) {
-        axiosAuthenticated.defaults.headers.common['Authorization'] = 'Bearer ' + access
-    }*/
+    localStorage.removeItem('JWT__access__token')
+    localStorage.removeItem('JWT__refresh__token')
 }
 
 // Refresh token
-export async function refreshToken() {
-    const refresh = localStorage.getItem('refresh')
+/*export async function refreshToken() {
+    const refresh = localStorage.getItem('JWT__refresh__token')
     const {axiosAuthenticated} = useAxios()
     const access = (await axiosAuthenticated.post('/users/auth/token/refresh/', {refresh})).data.access
     localStorage.setItem('access', access)
-}
+}*/
 
-export async function loadUser() {
-    const access = localStorage.getItem('access')
+/*export async function loadUser() {
+    const access = localStorage.getItem('JWT__access__token')
     const userStore = useUserStore()
     if (access && !userStore.user) {
         try {
@@ -52,7 +40,7 @@ export async function loadUser() {
             }
         }
     }
-}
+}*/
 
 // Register functions
 export async function userLocalRegister(newUser: UserRegister) {
@@ -66,7 +54,6 @@ export async function userLocalRegisterAsManager(newUser: UserRegister) {
 }
 
 export async function userCASRegister(newUserInfo: string | null) {
-    setBearer()
     const {axiosAuthenticated} = useAxios()
     await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo !== "" ? newUserInfo : null})
 }

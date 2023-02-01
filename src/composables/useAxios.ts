@@ -17,23 +17,11 @@ const state = reactive<UseAxiosState>({
         const _axios = axios.create(config)
         const {axiosRequestInterceptor} = useCasAuthentication()
 
-        console.log(
-            axiosRequestInterceptor({
-                    axios: _axios,
-                    router,
-                    jwtServerUrl: import.meta.env.VITE_APP_BASE_SERVER,
-                    options: {
-                        loginRoute: {name: 'Login'},
-                        loginRouteIsInternal: true
-                    }
-                },
-            )
-        )
         _axios.interceptors.request.use(
             axiosRequestInterceptor({
                     axios: _axios,
                     router,
-                    jwtServerUrl: import.meta.env.VITE_APP_BASE_SERVER,
+                    jwtServerUrl: import.meta.env.VITE_APP_BASE_URL + '/users/auth',
                     options: {
                         loginRoute: {name: 'Login'},
                         loginRouteIsInternal: true

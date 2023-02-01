@@ -106,8 +106,8 @@ describe('User store', () => {
             localStorage.setItem('access', tokens.access)
             localStorage.setItem('refresh', tokens.refresh)
             userStore.logOut()
-            expect(localStorage.getItem('access')).toBeNull()
-            expect(localStorage.getItem('refresh')).toBeNull()
+            expect(localStorage.getItem('JWT__access__token')).toBeNull()
+            expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
         })
         it('should clear user data', () => {
             userStore.logOut()
@@ -129,8 +129,8 @@ describe('User store', () => {
             expect(userStore.newUser).toEqual(mockedUser)
         })
         /*it('should set user\'s access and refresh tokens', () => {
-            expect(localStorage.getItem('access')).toEqual(tokens.access)
-            expect(localStorage.getItem('refresh')).toEqual(tokens.refresh)
+            expect(localStorage.getItem('JWT__access__token')).toEqual(tokens.access)
+            expect(localStorage.getItem('JWT__refresh__token')).toEqual(tokens.refresh)
         })*/
         /*it('should be called once', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
@@ -157,8 +157,8 @@ describe('User store', () => {
             userStore.unLoadNewUser()
         })
         it('should remove tokens', () => {
-            expect(localStorage.getItem('access')).toBeNull()
-            expect(localStorage.getItem('refresh')).toBeNull()
+            expect(localStorage.getItem('JWT__access__token')).toBeNull()
+            expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
         })
         it('should remove all data from newUser', () => {
             expect(userStore.newUser).toBeUndefined()
