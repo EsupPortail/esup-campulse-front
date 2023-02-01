@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {RouterLink} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from "vue-i18n";
 import {useQuasar} from "quasar";
@@ -41,34 +40,35 @@ async function onLogOut() {
             </template>
 
             <QList>
-                <QItem v-close-popup clickable>
+                <QItem
+                    v-close-popup
+                    clickable
+                    @click="router.push({name: 'Dashboard'})"
+                >
                     <QItemSection>
-                        <QItemLabel>
-                            <RouterLink :to="{name: 'Dashboard'}" class="label">{{
-                                    t("header.my-profile")
-                                }}
-                            </RouterLink>
-                        </QItemLabel>
+                        <QItemLabel>{{ t("header.my-profile") }}</QItemLabel>
                     </QItemSection>
                 </QItem>
 
-                <div v-for="(item) in userStore.user?.associations" :key="item.id">
-                    <QItem v-close-popup clickable>
-                        <QItemSection>
-                            <QItemLabel>
-                                <RouterLink :to="{name: 'AssociationDashboard', params: {id: item.id}}" class="label">{{
-                                        item.name
-                                    }}
-                                </RouterLink>
-                            </QItemLabel>
-                        </QItemSection>
-                    </QItem>
-                </div>
-                <QItem v-close-popup clickable>
+                <QItem
+                    v-for="(item) in userStore.user?.associations"
+                    :key="item.id"
+                    v-close-popup
+                    clickable
+                    @click="router.push({name: 'AssociationDashboard', params: {id: item.id}})"
+                >
                     <QItemSection>
-                        <QItemLabel>
-                            <QBtn :label="t('header.logout')" @click="onLogOut"/>
-                        </QItemLabel>
+                        <QItemLabel>{{ item.name }}</QItemLabel>
+                    </QItemSection>
+                </QItem>
+
+                <QItem
+                    v-close-popup
+                    clickable
+                    @click="onLogOut"
+                >
+                    <QItemSection>
+                        <QItemLabel>{{ t('header.logout') }}</QItemLabel>
                     </QItemSection>
                 </QItem>
             </QList>
