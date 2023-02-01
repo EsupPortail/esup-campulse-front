@@ -145,7 +145,10 @@ body {
     }
 
     .profile-button {
+        display: inline-block;
         padding: 16px 17px;
+        position: relative;
+        top: -2px;
 
         button {
             background: transparent !important;
@@ -177,13 +180,17 @@ body {
             .avatar {
                 margin-right: 10px;
 
-                .q-avatar {
-                    width: 0.6em;
-                    height: 0.6em;
-                    top: -2px;
-                    border: 1px solid $textColor3;
-                    background: transparent url('./img/profile-icon.png') no-repeat !important;
-                    background-size: cover !important;
+                // .q-avatar {
+                //     width: 0.6em;
+                //     height: 0.6em;
+                //     top: -2px;
+                //     border: 1px solid $textColor3;
+                //     background: transparent url('./img/profile-icon.png') no-repeat !important;
+                //     background-size: cover !important;
+                // }
+
+                i {
+                    font-size: 18px;
                 }
             }
         }

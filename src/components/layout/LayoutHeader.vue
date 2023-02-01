@@ -15,7 +15,7 @@ const {t} = useI18n()
                 <RouterLink class="home-link" to="/">{{ t("header.title") }}</RouterLink>
             </QToolbarTitle>
             <LayoutHeaderNav/>
-            <LayoutHeaderProfileButton class="profile-button" />
+            <!-- <LayoutHeaderProfileButton class="profile-button" /> -->
         </QToolbar>
 
         <div id="header-home-title">

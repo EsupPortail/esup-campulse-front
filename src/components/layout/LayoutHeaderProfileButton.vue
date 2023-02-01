@@ -27,10 +27,11 @@ async function onLogOut() {
                 <div class="row items-center no-wrap">
 
                     <div class="avatar">
-                        <QAvatar color="primary" size="2em" text-color="white">{{
+                        <i class="bi bi-person-circle"></i>
+                        <!-- <QAvatar color="primary" size="2em" text-color="white">{{
                                 userStore.userNameFirstLetter
                             }}
-                        </QAvatar>
+                        </QAvatar> -->
                     </div>
 
                     <div class="text-center">
