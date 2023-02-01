@@ -1,12 +1,12 @@
-import type { AxiosResponse } from 'axios'
-import { createPinia, setActivePinia } from 'pinia'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import type {AxiosResponse} from 'axios'
+import {createPinia, setActivePinia} from 'pinia'
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 
-import { mockedAxios } from '~/mocks/axios.mock'
-import { mockedNewUser, mockedNewUserGroups, mockedUser, mockedUserAssociations } from '~/mocks/user.mock'
-import { tokens } from '~/mocks/tokens.mock'
+import {mockedAxios} from '~/mocks/axios.mock'
+import {mockedNewUser, mockedNewUserGroups, mockedUser, mockedUserAssociations} from '~/mocks/user.mock'
+import {tokens} from '~/mocks/tokens.mock'
 import * as userService from '@/services/userService'
-import { useUserStore } from '@/stores/useUserStore'
+import {useUserStore} from '@/stores/useUserStore'
 
 setActivePinia(createPinia())
 let userStore = useUserStore()
@@ -21,28 +21,28 @@ describe('User service', () => {
         })
         describe('Set token', () => {
             it('should set access and refresh', () => {
-                expect(localStorage.getItem('access')).toBe(tokens.access)
-                expect(localStorage.getItem('refresh')).toBe(tokens.refresh)
+                expect(localStorage.getItem('JWT__access__token')).toBe(tokens.access)
+                expect(localStorage.getItem('JWT__refresh__token')).toBe(tokens.refresh)
             })
         })
         describe('Remove tokens', () => {
             it('should unset access and refresh tokens', () => {
                 userService.removeTokens()
-                expect(localStorage.getItem('access')).toBeNull()
-                expect(localStorage.getItem('refresh')).toBeNull()
+                expect(localStorage.getItem('JWT__access__token')).toBeNull()
+                expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
             })
         })
         describe('Refresh token', () => {
             beforeEach(() => {
-                mockedAxios.post.mockResolvedValueOnce({ data: { access: tokens.accessRefreshed } } as AxiosResponse)
+                mockedAxios.post.mockResolvedValueOnce({data: {access: tokens.accessRefreshed}} as AxiosResponse)
                 userService.refreshToken()
             })
             it('should set a new access token', () => {
-                expect(localStorage.getItem('access')).toEqual(tokens.accessRefreshed)
+                expect(localStorage.getItem('JWT__access__token')).toEqual(tokens.accessRefreshed)
             })
 
             it('should call API on /users/auth/token/refresh/ with refresh token as data', () => {
-                expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/token/refresh/', { refresh: tokens.refresh })
+                expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/token/refresh/', {refresh: tokens.refresh})
             })
         })
         /*describe('Set bearer', () => {
@@ -87,7 +87,7 @@ describe('User service', () => {
                 expect(mockedAxios.patch).toHaveBeenCalledOnce()
             })
             it('should call API on /users/auth/user/ with new info to patch', () => {
-                expect(mockedAxios.patch).toHaveBeenCalledWith('/users/auth/user/', { phone: 'new info to patch' })
+                expect(mockedAxios.patch).toHaveBeenCalledWith('/users/auth/user/', {phone: 'new info to patch'})
             })
         })
         describe('Association register', () => {
@@ -132,7 +132,7 @@ describe('User service', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
         })
         it('should call API on /users/auth/registration/verify-email/ with key as data', () => {
-            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/registration/verify-email/', { key: 'key' })
+            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/registration/verify-email/', {key: 'key'})
         })
     })
     describe('Password reset', () => {
@@ -143,7 +143,7 @@ describe('User service', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
         })
         it('should call API on /users/auth/password/reset with user email as data', () => {
-            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/password/reset/', { email: mockedUser.email })
+            expect(mockedAxios.post).toHaveBeenCalledWith('/users/auth/password/reset/', {email: mockedUser.email})
         })
     })
     describe('Password reset confirm', () => {

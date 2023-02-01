@@ -1,8 +1,8 @@
 import type {GroupList, UserGroup} from '#/user'
-import _axios from '@/plugins/axios'
 import {computed, ref} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useAxios} from '@/composables/useAxios'
 
 
 // Used to choose or update groups
@@ -30,7 +30,8 @@ export default function () {
      * It gets the groups from the server and puts them in the groups variable.
      */
     async function getGroups() {
-        groups.value = (await _axios.get<UserGroup[]>('/groups/')).data
+        const {axiosPublic} = useAxios()
+        groups.value = (await axiosPublic.get<UserGroup[]>('/groups/')).data
     }
 
     /*

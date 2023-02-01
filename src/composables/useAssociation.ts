@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import type {AssociationSocialNetwork, EditedAssociation} from '#/association'
 import type {UserAssociations} from '#/user'
 import useUtility from '@/composables/useUtility'
-import _axios from '@/plugins/axios'
+import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 
@@ -25,7 +25,8 @@ export default function () {
      * @param {string} name - The name of the association
      */
     async function createAssociation(name: string) {
-        await _axios.post('/associations/', {name: name})
+        const {axiosAuthenticated} = useAxios()
+        await axiosAuthenticated.post('/associations/', {name: name})
     }
 
 
@@ -160,7 +161,8 @@ export default function () {
 
     // test
     async function updateAssociation() {
-        await _axios.patch(`/associations/${associationStore.association?.id}`, changedData)
+        const {axiosAuthenticated} = useAxios()
+        await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
 
