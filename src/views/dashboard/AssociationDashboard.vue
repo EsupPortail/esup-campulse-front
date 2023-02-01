@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from "@/stores/useAssociationStore";
 import {onMounted, ref, watch} from "vue";
@@ -16,36 +15,39 @@ const associationStore = useAssociationStore()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
-  association.value = associationStore.association
+    association.value = associationStore.association
+})
+watch(() => route.path, () => {
+    onGetAssociationDetail()
 })
 
 onMounted(async function () {
-  loading.show
-  await onGetAssociationDetail()
-  loading.hide
+    loading.show
+    await onGetAssociationDetail()
+    loading.hide
 })
 
 async function onGetAssociationDetail() {
-  try {
-    await getAssociationDetail(route.params.id as string)
-  } catch (error) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.form-error')
-    })
-  }
+    try {
+        await getAssociationDetail(route.params.id as string)
+    } catch (error) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.form-error')
+        })
+    }
 }
 
 </script>
 
 <template>
     <div class="name">
-      <h1>{{ association?.name }}</h1>
+        <h1>{{ association?.name }}</h1>
     </div>
 
-  <div>
-      <QBtn :label="t('association.more-details')" :to="{name: 'AssociationDetail', params: {id: association?.id}}" />
-  </div>
+    <div>
+        <QBtn :label="t('association.more-details')" :to="{name: 'AssociationDetail', params: {id: association?.id}}"/>
+    </div>
 
 </template>
 
