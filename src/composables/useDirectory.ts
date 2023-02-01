@@ -18,13 +18,15 @@ export default function () {
         return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     }
 
+    /**
+     * It filters the associations in the store based on the search settings on the front end
+     * @param {AssociationSearch} settings - AssociationSearch
+     * @returns An array of associations that match the search criteria
+     */
     function advancedSearch(settings: AssociationSearch) {
         if (associationStore.associations.length > 0 &&
             (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
             let matches: AssociationList[] = []
-            /*matches = associationStore.associations.filter(association => {
-                return association.isPublic === true
-            })*/
             if (settings.name) {
                 if (matches.length) {
                     const newMatches = matches.filter(association => {
@@ -79,6 +81,11 @@ export default function () {
         }
     }
 
+    /**
+     * It searches for associations that are public and match the search value on the API.
+     * @param {string} value - The value to search for
+     * @returns An array of AssociationList objects.
+     */
     async function simpleAssociationSearch(value: string): Promise<AssociationList[]> {
         return (await _axios.get<AssociationList[]>(`/associations/?is_public=true&search=${value}`)).data
     }

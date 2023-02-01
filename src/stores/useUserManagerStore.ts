@@ -96,6 +96,11 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async patchUserAssociations(associationId: number, infosToPatch: UserAssociationPatch) {
             await _axios.patch(`/users/associations/${this.user?.id}/${associationId}`, infosToPatch)
         },
+        /**
+         * It takes an object with the same keys as the user object, and updates the user object with the values of the
+         * object passed as argument
+         * @param {UserToUpdate} user - UserToUpdate
+         */
         async updateUserInfos(user: UserToUpdate) {
             let infosToPatch = {}
             for (const [key, value] of Object.entries(user)) {

@@ -4,9 +4,10 @@ import type {UserAssociationDetail, UserAssociationManagement, UserAssociationSt
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
 
-
+// Used to store a new user's associations
 const newUserAssociations = ref<UserAssociationStatus[]>([])
 
+// Used to store a user's associations, while it is modified by a manager
 const userAssociations = ref<UserAssociationManagement[]>([])
 
 export default function () {
@@ -16,6 +17,10 @@ export default function () {
     const {updateUserGroups} = useUserGroups()
 
 
+    /**
+     * If the route is ValidateUsers, get the unvalidated users, otherwise get all the users
+     * It is used on the same view to get various data sets based on the route
+     */
     async function getUsers() {
         if (route.name === 'ValidateUsers') {
             await userManagerStore.getUnvalidatedUsers()
@@ -25,11 +30,19 @@ export default function () {
         }
     }
 
+    /**
+     * The function `validateUser` calls the function `updateUserGroups` and then calls the function `validateUser` on
+     * the `userManagerStore`
+     * When validating a user, we can update its groups and need to patch it to set isValidatedByAdmin to true.
+     */
     async function validateUser() {
         await updateUserGroups()
         await userManagerStore.validateUser()
     }
 
+    /**
+     * It updates the user associations when it is modified by a manager
+     */
     function updateUserAssociations() {
         userAssociations.value.forEach(async function (association) {
             // If we need to delete the association

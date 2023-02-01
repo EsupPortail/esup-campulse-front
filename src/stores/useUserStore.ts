@@ -28,6 +28,11 @@ export const useUserStore = defineStore('userStore', {
         }
     },
     actions: {
+        /**
+         * It takes a url and a data object, and then it makes a post request to the url with the data object
+         * @param {string} url - The url to send the request to.
+         * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
+         */
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const response = await _axios.post(url, data)
             const {accessToken, refreshToken, user} = response.data
@@ -43,6 +48,10 @@ export const useUserStore = defineStore('userStore', {
             this.unLoadUser()
         },
         // to re-test
+        /**
+         * It gets the user data from the server, and if the user is validated by the admin, it sets the user data to the
+         * user variable, and if the user is not validated by the admin, it sets the user data to the newUser variable
+         */
         async getUser() {
             const user = (await _axios.get<User>('/users/auth/user/')).data
             if (user.isValidatedByAdmin) {
@@ -77,6 +86,11 @@ export const useUserStore = defineStore('userStore', {
             removeTokens()
             this.newUser = undefined
         },
+        /**
+         * It sends a POST request to the backend with the CAS ticket and the service URL, and then it sets the tokens and
+         * the user
+         * @param {string} ticket - the ticket returned by CAS
+         */
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
             const data = (await _axios.post('/users/auth/cas/login/', {ticket, service})).data

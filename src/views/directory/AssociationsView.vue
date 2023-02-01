@@ -91,6 +91,8 @@ function onAdvancedSearch() {
     associations.value = advancedSearch(settings.value) as AssociationList[]
 }
 
+// A function that clears the search,
+// for API search it re-gets associations, for front search it looks back in store
 async function clearSearch(apiSearch: boolean) {
     settings.value = {
         search: '',

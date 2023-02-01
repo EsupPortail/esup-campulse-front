@@ -1,13 +1,13 @@
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import {ref} from 'vue'
+import {useRoute} from 'vue-router'
 
-import type { UserLogin, UserRegister } from '#/user'
+import type {UserLogin, UserRegister} from '#/user'
 import useAssociation from '@/composables/useAssociation'
 import useUserGroups from '@/composables/useUserGroups'
 import * as userService from '@/services/userService'
-import { useUserStore } from '@/stores/useUserStore'
+import {useUserStore} from '@/stores/useUserStore'
 
-export default function() {
+export default function () {
 
     const user = ref<UserLogin>({
         username: '',
@@ -33,9 +33,10 @@ export default function() {
 
     const emailVerification = ref<string | undefined>('')
 
+    // to re test
     async function register() {
-        const { newAssociations } = useAssociation()
-        const { newGroups } = useUserGroups()
+        const {newAssociations} = useAssociation()
+        const {newGroups} = useUserGroups()
         if (userStore.isCas) {
             await userService.userCASRegister(newUser.value.phone)
             if (newAssociations) {
@@ -53,9 +54,12 @@ export default function() {
         }
     }
 
+    /**
+     * It registers a new user as a manager, then registers the user's associations and groups
+     */
     async function addUserAsManager() {
-        const { newAssociations } = useAssociation()
-        const { newGroups } = useUserGroups()
+        const {newAssociations} = useAssociation()
+        const {newGroups} = useUserGroups()
         await userService.userLocalRegisterAsManager(newUser.value)
         if (newAssociations.value) {
             await userService.userAssociationsRegister(newUser.value.email, newAssociations.value)
@@ -76,5 +80,5 @@ export default function() {
         }
     }
 
-    return { logIn, user, register, newUser, loadCASUser, emailVerification, addUserAsManager }
+    return {logIn, user, register, newUser, loadCASUser, emailVerification, addUserAsManager}
 }

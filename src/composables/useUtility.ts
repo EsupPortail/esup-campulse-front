@@ -13,6 +13,10 @@ export default function () {
         }
     }
 
+    /**
+     * It simply checks if 2 arrays are equal.
+     * Useful to compare if the user's groups have changed for example.
+     */
     function arraysAreEqual(a: number[], b: number[]) {
         if (a.length === b.length) {
             return a.every(element => {
@@ -22,6 +26,11 @@ export default function () {
         return false
     }
 
+    /**
+     * It takes an array of RouteLocationMatched objects and returns an array of objects with a label and to property
+     * @param {RouteLocationMatched[]} routeMatched - RouteLocationMatched[]
+     * @returns An array of objects with a label and to property.
+     */
     function initBreadcrumbs(routeMatched: RouteLocationMatched[]) {
         const breadcrumbs: { label: string, to: string }[] = []
         for (let i = 0; i < routeMatched.length; i++) {

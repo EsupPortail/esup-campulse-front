@@ -80,15 +80,24 @@ export const useAssociationStore = defineStore('associationStore', {
     },
 
     actions: {
+        /**
+         * It gets a list of associations from the server, and stores them in the `associations` variable
+         * @param {boolean} forDirectory - boolean - If true, only associations that are public will be returned.
+         * @param {boolean} forRegistration - If true, only associations that are enabled for registration will be
+         * returned.
+         */
         async getAssociations(forDirectory: boolean, forRegistration: boolean) {
-            if (forDirectory) {
-                this.associations = (await _axios.get<AssociationList[]>('/associations/?is_public=true')).data
-            } else if (forRegistration) {
-                this.associations = (await _axios.get<AssociationList[]>('/associations/?is_enabled=true')).data
-            } else {
-                this.associations = (await _axios.get<AssociationList[]>('/associations/')).data
-            }
+            let url = '/associations/'
+
+            if (forDirectory) url += '?is_public=true'
+            if (forRegistration) url += '?is_enabled=true'
+
+            this.associations = (await _axios.get<AssociationList[]>(url)).data
         },
+        /**
+         * It the user is a manager, it simply gets all associations
+         * If the user is a student member of associations, it gets all the associations linked to that user
+         */
         async getManagedAssociations() {
             const userStore = useUserStore()
             if (userStore.isUniManager) {
