@@ -21,7 +21,7 @@ export interface User {
 export interface UserStore {
     user: User | undefined,
     newUser: User | undefined,
-    userAssociationsRoles: UserAssociationDetail[]
+    userAssociations: UserAssociationDetail[]
 }
 
 // User manager store
@@ -75,10 +75,7 @@ export interface UserAssociationDetail {
     roleName: string,
     hasOfficeStatus: boolean,
     isPresident: boolean,
-    association: {
-        id: number,
-        name: string
-    }
+    association: number
 }
 
 

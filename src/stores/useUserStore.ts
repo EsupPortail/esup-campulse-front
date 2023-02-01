@@ -8,7 +8,7 @@ export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
         newUser: undefined,
-        userAssociationsRoles: []
+        userAssociations: []
     }),
 
     getters: {
@@ -68,12 +68,12 @@ export const useUserStore = defineStore('userStore', {
         },
         async getUserAssociationsRoles() {
             if (this.user && this.user.associations.length > 0) {
-                this.userAssociationsRoles = (await _axios.get('/users/associations/')).data
+                this.userAssociations = (await _axios.get('/users/associations/')).data
             }
         },
         hasOfficeStatus(associationId: number | undefined): boolean | undefined {
-            if (this.userAssociationsRoles.length > 0) {
-                const association = this.userAssociationsRoles.find(({association}) => (association === associationId))
+            if (this.userAssociations.length > 0) {
+                const association = this.userAssociations.find(obj => obj.association === associationId)
                 return association?.hasOfficeStatus
             } else {
                 return false
