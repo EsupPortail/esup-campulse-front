@@ -1,4 +1,4 @@
-import type {AxiosInstance} from 'axios'
+/*import type {AxiosInstance} from 'axios'
 import axios from 'axios'
 import {reactive, toRefs} from 'vue'
 
@@ -20,7 +20,7 @@ export const useAxios = () => {
     return {
         ...toRefs(state),
     }
-}
+}*/
 
 
 /*_axios.interceptors.request.use(

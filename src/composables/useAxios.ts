@@ -1,33 +1,55 @@
-import {inject, reactive} from 'vue'
 import type {AxiosInstance} from 'axios'
 import axios from 'axios'
-import type {axiosRequestInterceptor} from "@vue-unistra/cas-authentication";
+import {reactive} from 'vue'
+import {useCasAuthentication} from '@vue-unistra/cas-authentication'
+import router from '@/router'
 
-export interface SecurityStoreState {
-    axiosAuthenticated: () => AxiosInstance;
-    axiosPublic: AxiosInstance;
+interface UseAxiosState {
+    axios: () => AxiosInstance;
+    axiosAuth: () => AxiosInstance;
 }
 
-const config = {
-    baseURL: import.meta.env.VITE_APP_BASE_URL as string,
-}
+const config = {baseURL: import.meta.env.VITE_APP_BASE_URL}
 
-const state = reactive<SecurityStoreState>({
-    axiosAuthenticated: () => {
-        const axiosCreated = axios.create(config)
-        const interceptor = inject('axiosRequestInterceptor') as typeof axiosRequestInterceptor
-        axiosCreated.interceptors.request.use(interceptor)
-        console.log(interceptor)
+const state = reactive<UseAxiosState>({
+    axios: () => axios.create(config),
+    axiosAuth: () => {
+        const _axios = axios.create(config)
+        const {axiosRequestInterceptor} = useCasAuthentication()
 
-        return axiosCreated
+        console.log(
+            axiosRequestInterceptor({
+                    axios: _axios,
+                    router,
+                    jwtServerUrl: import.meta.env.VITE_APP_BASE_SERVER,
+                    options: {
+                        loginRoute: {name: 'Login'},
+                        loginRouteIsInternal: true
+                    }
+                },
+            )
+        )
+        _axios.interceptors.request.use(
+            axiosRequestInterceptor({
+                    axios: _axios,
+                    router,
+                    jwtServerUrl: import.meta.env.VITE_APP_BASE_SERVER,
+                    options: {
+                        loginRoute: {name: 'Login'},
+                        loginRouteIsInternal: true
+                    }
+                },
+            ),
+            error => Promise.reject(error),
+        )
+
+        return _axios
     },
-    axiosPublic: axios.create(config),
 })
 
 export const useAxios = () => {
     return {
-        axiosAuthenticated: state.axiosAuthenticated(),
-        axiosPublic: state.axiosPublic,
+        axiosPublic: state.axios(),
+        axiosAuthenticated: state.axiosAuth(),
     }
 }
-

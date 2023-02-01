@@ -19,9 +19,9 @@ export function removeTokens() {
 export function setBearer() {
     const access = localStorage.getItem('access')
     const {axiosAuthenticated} = useAxios()
-    if (axiosAuthenticated.defaults?.headers) {
+    /*if (axiosAuthenticated.defaults?.headers) {
         axiosAuthenticated.defaults.headers.common['Authorization'] = 'Bearer ' + access
-    }
+    }*/
 }
 
 // Refresh token
@@ -37,16 +37,16 @@ export async function loadUser() {
     const userStore = useUserStore()
     if (access && !userStore.user) {
         try {
-            setBearer()
+            // setBearer()
             await userStore.getUser()
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 try {
                     await refreshToken()
-                    setBearer()
+                    //setBearer()
                     await userStore.getUser()
                 } catch (error) {
-                    await userStore.logOut()
+                    // await userStore.logOut()
                     // TODO : throw error in component
                 }
             }

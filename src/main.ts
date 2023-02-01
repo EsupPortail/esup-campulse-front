@@ -10,8 +10,6 @@ import {BrowserTracing} from '@sentry/tracing'
 import App from '@/App.vue'
 import router from '@/router'
 import i18n from '@/plugins/i18n'
-import {CasAuthentication} from "@vue-unistra/cas-authentication";
-import axios from "axios";
 
 
 /**
@@ -48,20 +46,6 @@ app.use(Quasar, {
     },
     lang: quasarLang,
     iconSet: quasarIconSet
-})
-console.log(CasAuthentication)
-app.use(CasAuthentication, {
-    router,
-    axios: axios.create({
-        baseURL: import.meta.env.VITE_APP_BASE_URL as string,
-    }),
-    options: {
-        hasFreeAPI: true,
-        jwtServerUrl: import.meta.env.VITE_APP_BASE_URL,
-        loginRoute: {name: 'Login'},
-        loginRouteIsInternal: true,
-        serverCAS: import.meta.env.VITE_APP_CAS_URL,
-    }
 })
 
 app.mount('#app')

@@ -40,6 +40,7 @@ export const useUserStore = defineStore('userStore', {
             }
         },
         async logOut() {
+            console.log('ici')
             removeTokens()
             this.unLoadUser()
         },
@@ -47,6 +48,7 @@ export const useUserStore = defineStore('userStore', {
         async getUser() {
             const {axiosAuthenticated} = useAxios()
             const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
+            console.log(user)
             if (user.isValidatedByAdmin) {
                 this.user = user
                 this.user.groups = (await axiosAuthenticated.get<UserGroup[]>('/users/groups/')).data
@@ -55,7 +57,7 @@ export const useUserStore = defineStore('userStore', {
                 if (user.isCas) {
                     this.newUser = user
                 } else {
-                    await this.logOut()
+                    //await this.logOut()
                 }
             }
         },
