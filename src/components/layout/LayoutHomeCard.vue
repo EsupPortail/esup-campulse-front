@@ -5,9 +5,12 @@ defineProps({
     imagePath: String,
     imageAlt: String,
     link: String,
-    backgroundImagePath: String,
     cssClass: String,
-    buttonLabel: String
+    buttonLabel: String,
+    infoContent: String,
+    titleLine1: String,
+    titleLine2: String,
+    iconClass: String
 })
 </script>
 
@@ -31,7 +34,21 @@ defineProps({
         <div class="section-card">
             <div class="section-background"><span></span></div>
             <div class="section-title">
-                <div v-html="title"></div>
+                <div>
+                    <h1>
+                        {{ titleLine1 }}
+                        <div class="section-icon">
+                            <span><i :class="[ iconClass ]"></i></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </h1>
+                    <h2>{{ titleLine2 }}</h2>
+                </div>
+                <div class="section-info">
+                    <p v-html="infoContent"></p>
+                </div>
             </div>
             <div class="section-content">
                 <p>{{ description }}</p>

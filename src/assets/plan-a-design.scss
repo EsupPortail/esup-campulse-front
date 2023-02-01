@@ -628,6 +628,10 @@ body {
     }
 }
 
+#home-sections {
+    margin-bottom: 80px;
+}
+
 .home-section {
     background-repeat: no-repeat;
     background-size: cover;
@@ -669,14 +673,14 @@ body {
         box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.2);
         padding: 40px 60px 50px;
         display: flex;
-        gap: 90px;
+        gap: 100px;
         align-items: center;
         position: relative;
         overflow: hidden;
 
         .section-background {
             background-color: $color1Background;
-            width: 420px;
+            width: 430px;
             height: 800px;
             position: absolute;
             top: calc(50% - 400px);
@@ -701,6 +705,8 @@ body {
             z-index: 2;
 
             h1 {
+                display: flex;
+                gap: 15px;
                 font-family: $titleFont;
                 font-size: 60px;
                 font-weight: 600;
@@ -715,6 +721,54 @@ body {
                 font-weight: 400;
                 color: $color1Text;
                 line-height: 55px;
+            }
+
+            .section-icon {
+                display: inline-flex;
+                gap: 10px;
+                align-items: center;
+
+                span {
+                    display: inline-block;
+                    width: 17px;
+                    height: 17px;
+                    background-color: $color1;
+                    border-radius: 50%;
+
+                    &:first-child {
+                        width: 54px;
+                        height: 54px;
+                        color: $color1Text;
+                        font-size: 27px;
+                        text-align: center;
+
+                        i {
+                            position: relative;
+                            top: -4px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .section-info {
+            font-size: 22px;
+            font-weight: 400;
+            line-height: 28px;
+            color: $color1Text;
+            border-left: 4px solid $color1;
+            padding-left: 18px;
+            margin-top: 20px;
+            // max-width: 420px;
+            display: inline-block;
+
+            p {
+                margin: 0;
+
+                strong {
+                    font-size: 22px;
+                    font-weight: 700;
+                }
             }
         }
 
@@ -757,6 +811,153 @@ body {
                     &:active {
                         background-color: transparentize($color1Text, 0.1);
                         color: $textColor3;
+                    }
+                }
+            }
+        }
+    }
+
+    &.home-section-annuaire {
+        .section-icon {
+            span:nth-child(3), span:nth-child(4) {
+                display: none;
+            }
+        }
+    }
+
+    &.home-section-charte {
+        .section-card {
+            .section-background {
+                background-color: $color2Background;
+                right: 0;
+                left: unset;
+    
+                span {
+                    border-width: 400px 100px 400px 0;
+                    border-color: transparent $color2Background transparent transparent;
+                    left: -99px;
+                }
+            }
+
+            .section-title {
+                text-align: right;
+                
+                h1 {
+                    flex-direction: row-reverse;
+                    color: $color2Text;
+                }
+
+                h2 {
+                    color: $color2Text;
+                }
+    
+                .section-icon {
+                    flex-direction: row-reverse;
+
+                    span {
+                        background-color: $color2;
+                        color: $color2Text;
+
+                        i {
+                            top: -3px;
+                        }
+                    }
+
+                    span:nth-child(4) {
+                        display: none;
+                    }
+                }
+            }
+    
+            .section-info {
+                border-left: none;
+                border-right: 4px solid $color2;
+                padding-left: 0;
+                padding-right: 18px;
+                color: $color2Text;
+            }
+
+            .section-content { 
+                p {
+                    color: $color2Text;
+                }
+
+                .section-buttons {
+                    a {
+                        color: $color2Text;
+                        border-color: $color2Text;
+
+                        &:hover {
+                            background-color: $color2Text;
+                            color: $textColor3;
+                        }
+    
+                        &:active {
+                            background-color: transparentize($color2Text, 0.1);
+                            color: $textColor3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.home-section-cape {
+        .section-card {
+            .section-background {
+                background-color: $color3Background;
+    
+                span {
+                    border-color: transparent transparent transparent $color3Background;
+                }
+            }
+
+            .section-title {                
+                h1 {
+                    color: $color3Text;
+                }
+
+                h2 {
+                    color: $color3Text;
+                }
+    
+                .section-icon {
+                    span {
+                        background-color: $color3;
+                        color: $color3Text;
+
+                        i {
+                            top: -2px;
+                            left: -2px;
+                        }
+                    }
+                }
+            }
+    
+            .section-info {
+                border-color: $color3;
+                color: $color3Text;
+            }
+
+            .section-content { 
+                p {
+                    color: $color3Text;
+                }
+
+                .section-buttons {
+                    a {
+                        color: $color3Text;
+                        border-color: $color3Text;
+
+                        &:hover {
+                            background-color: $color3Text;
+                            color: $textColor3;
+                        }
+    
+                        &:active {
+                            background-color: transparentize($color3Text, 0.1);
+                            color: $textColor3;
+                        }
                     }
                 }
             }

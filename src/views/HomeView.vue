@@ -18,7 +18,7 @@ const {t} = useI18n()
         id="home-info-panel"
     />
 
-    <section>
+    <section id="home-sections">
         <HomeCard v-for="(card, index) in home.cards"
                   :key="index"
                   :description="card.description"
@@ -28,6 +28,10 @@ const {t} = useI18n()
                   :title="card.title" 
                   :cssClass="card.cssClass"
                   :buttonLabel="card.buttonLabel"
+                  :infoContent="card.infoContent"
+                  :titleLine1="card.titleLine1"
+                  :titleLine2="card.titleLine2"
+                  :iconClass="card.iconClass"
         />
     </section>
 </template>

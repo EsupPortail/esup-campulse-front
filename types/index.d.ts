@@ -10,7 +10,11 @@ export interface HomeCard {
     imageAlt: string,
     link: string,
     cssClass: string,
-    buttonLabel: string
+    buttonLabel: string,
+    infoContent: string,
+    titleLine1: string,
+    titleLine2: string,
+    iconClass: string
 }
 
 export type HomeCards = HomeCard[]
