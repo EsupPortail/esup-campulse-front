@@ -13,8 +13,8 @@ const {loading} = useQuasar()
 const {t} = useI18n()
 
 
-const associations = ref(associationStore.managedAssociations)
-watch(() => associationStore.managedAssociations, () => {
+const associations = ref()
+watch(() => associationStore.associations, () => {
     associations.value = associationStore.managedAssociations
 })
 

@@ -12,33 +12,33 @@ const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
 async function onEnableAssociation(isEnabled: boolean) {
-  const messageKeyword = isEnabled ? 'enable' : 'disable'
-  try {
-    await associationStore.patchEnabledAssociation(isEnabled)
-    await router.push({name: 'ManageAssociations'})
-    notify({
-      type: 'positive',
-      message: t(`notifications.positive.${messageKeyword}-association`)
-    })
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t(`notifications.negative.${messageKeyword}-association-error`)
-    })
-  }
+    const messageKeyword = isEnabled ? 'enable' : 'disable'
+    try {
+        await associationStore.patchEnabledAssociation(isEnabled, associationStore.association?.id)
+        await router.push({name: 'ManageAssociations'})
+        notify({
+            type: 'positive',
+            message: t(`notifications.positive.${messageKeyword}-association`)
+        })
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t(`notifications.negative.${messageKeyword}-association-error`)
+        })
+    }
 }
 </script>
 
 <template>
     <QBtn
-        v-if="!associationStore.association.isEnabled"
+        v-if="!associationStore.association?.isEnabled"
         :label="t('association.enable-association')"
         color="green"
         icon="mdi-eye-check"
         @click="enable = true"
     />
     <QBtn
-        v-if="associationStore.association.isEnabled"
+        v-if="associationStore.association?.isEnabled"
         :label="t('association.disable-association')"
         color="orange"
         icon="mdi-eye-remove"

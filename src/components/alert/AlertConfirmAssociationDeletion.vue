@@ -11,19 +11,19 @@ const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
 async function onDeleteAssociation() {
-  try {
-    await associationStore.deleteAssociation()
-    await router.push({name: 'ManageAssociations'})
-    notify({
-      type: 'positive',
-      message: t('notifications.positive.delete-association')
-    })
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.delete-association-error')
-    })
-  }
+    try {
+        await associationStore.deleteAssociation(associationStore.association?.id)
+        await router.push({name: 'ManageAssociations'})
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.delete-association')
+        })
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.delete-association-error')
+        })
+    }
 }
 </script>
 

@@ -64,12 +64,14 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
 
     Promise.all(promisesToExecute).then(() => {
         if (associationsSuccess.length > 0) {
+            associationStore.getManagedAssociations()
             notify({
                 type: 'positive',
                 message: `${t('notifications.positive.change-associations')}${associationsSuccess.join(', ')}`
             })
         }
         if (associationsError.length > 0) {
+            associationStore.getManagedAssociations()
             notify({
                 type: 'negative',
                 message: `${t('notifications.negative.change-associations-error')}${associationsError.join(', ')}`

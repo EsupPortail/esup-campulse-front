@@ -142,25 +142,16 @@ export const useAssociationStore = defineStore('associationStore', {
             }
         },
         // Test
-        async deleteAssociation(associationId: number | undefined = undefined) {
-            if (associationId === null) {
-                associationId = this.association?.id
+        async deleteAssociation(associationId: number | undefined) {
+            if (associationId) {
+                const {axiosAuthenticated} = useAxios()
+                await axiosAuthenticated.delete(`/associations/${associationId}`)
             }
-            const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.delete(`/associations/${associationId}`)
         },
         // Test
-        async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined = undefined) {
-            if (associationId === null) {
-                associationId = this.association?.id
-            }
-            const assoToEnable = this.associations.findIndex((association) => association.id === associationId)
+        async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const updatedAssociation = (await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})).data
-            this.associations[assoToEnable].isEnabled = updatedAssociation.isEnabled
-            if (this.association) {
-                this.association.isEnabled = updatedAssociation.isEnabled
-            }
+            await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
         }
     }
 })
