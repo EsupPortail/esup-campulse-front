@@ -10,8 +10,8 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
-
-    if (!userStore.user) {
+    const accessToken = localStorage.getItem('JWT__access__token')
+    if (!userStore.user && accessToken) {
         await userStore.getUser()
     }
 
