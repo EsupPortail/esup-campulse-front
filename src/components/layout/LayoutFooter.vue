@@ -19,9 +19,9 @@ const {t} = useI18n()
         </div>
         <QToolbar>
             <div class="footer-text">
-                <RouterLink class="li-footer" to="/"><span class="icon icon-mentions"></span>{{ t("footer.about") }}</RouterLink>
-                <RouterLink class="li-footer" to="/"><span class="icon icon-contact-crous"></span>{{ t("footer.legal-notice") }}</RouterLink>
-                <RouterLink class="li-footer" to="/"><span class="icon icon-contact-admin"></span>{{ t("footer.contact") }}</RouterLink>
+                <RouterLink class="li-footer" to="/"><i class="bi bi-card-text"></i>{{ t("footer.about") }}</RouterLink>
+                <RouterLink class="li-footer" to="/"><i class="bi bi-envelope"></i>{{ t("footer.legal-notice") }}</RouterLink>
+                <RouterLink class="li-footer" to="/"><i class="bi bi-envelope"></i>{{ t("footer.contact") }}</RouterLink>
                 <!-- <QToolbarTitle>{{ t("footer.copyright") }}</QToolbarTitle> -->
             </div>
         </QToolbar>

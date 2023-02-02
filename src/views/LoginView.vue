@@ -16,10 +16,12 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
     <div id="login-page">
         <!-- <h1>{{ t('login.login') }}</h1> -->
         <p class="login-intro-text">
-            <span class="icon"></span>
+            <span class="icon">
+                <i class="bi bi-person-circle"></i>
+            </span>
             Connectez-vous pour accéder à votre espace et effectuer vos démarches !
         </p>
-        <div class="form_container" v-if="!newUser && !isCas">
+        <div class="form-container" v-if="!newUser && !isCas">
             <QCard id="cas-login" class="card">
                 <QCardSection>
                     <div class="card-content">
@@ -50,7 +52,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                 </QCardSection>
             </QCard>
         </div>
-        <div class="form_container" v-else>
+        <div class="form-container" v-else>
             <QCard id="aborted-cas-registration" class="card">
                 <QCardSection>
                     <div class="card-content">

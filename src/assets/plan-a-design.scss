@@ -5,13 +5,8 @@
 $pageWidth: 1250px;
 
 $headerBackground: url('./img/header-background2.jpg');
-$annuaireIcon: url('./img/annuaire-icon.png');
-$charteIcon: url('./img/charte-icon.png');
-$capeIcon: url('./img/cape-icon.png');
 $chevronRightImage: url('./img/chevron-right.png');
 $chevronRightCharteImage: url('./img/chevron-right-charte.png');
-$iconEnveloppe: url('./img/icon-enveloppe.png');
-$iconCard: url('./img/icon-card.png');
 
 $baseFont: "Titillium Web", sans-serif;
 $titleFont: 'Open Sans', sans-serif;
@@ -82,7 +77,7 @@ body {
     height:100%;
 
     main {
-        padding: 40px 0;
+        padding: 40px 0 120px;
     }
 }
 
@@ -115,7 +110,7 @@ body {
         max-width: $pageWidth;
         margin: auto;
         padding: 10px 0;
-        margin-bottom: 240px;
+        margin-bottom: 225px;
 
         .q-toolbar__title {
             a {
@@ -180,15 +175,6 @@ body {
             .avatar {
                 margin-right: 10px;
 
-                // .q-avatar {
-                //     width: 0.6em;
-                //     height: 0.6em;
-                //     top: -2px;
-                //     border: 1px solid $textColor3;
-                //     background: transparent url('./img/profile-icon.png') no-repeat !important;
-                //     background-size: cover !important;
-                // }
-
                 i {
                     font-size: 18px;
                 }
@@ -212,16 +198,30 @@ body {
         }
     }
 
+    &.variant-space-1 #header-title-icon {
+        i.space-1-icon {
+            display: inline;
+        }
+    }
+
     &.variant-space-2 #header-title-icon {
         background-color: $color2;
-        background-image: $charteIcon;
-        background-size: auto 24px;
+
+        i.space-2-icon {
+            display: inline;
+            color: $color2Text;
+        }
     }
 
     &.variant-space-3 #header-title-icon {
         background-color: $color3;
-        background-image: $capeIcon;
-        background-size: auto 29px;
+        
+        i.space-3-icon {
+            display: inline;
+            color: $color3Text;
+            position: relative;
+            left: -1px;
+        }
     }
 
     &.variant-minimal {
@@ -302,10 +302,15 @@ body {
             position: absolute;
             top: 6px;
             left: 0;
-            background-image: $annuaireIcon;
-            background-repeat: no-repeat;
-            background-size: auto 27px;
-            background-position: center center;
+            text-align: center;
+            line-height: 41px;
+            
+            i {
+                font-size: 28px;
+                color: $color1Text;
+                display: none;
+                vertical-align: middle;
+            }
         }
     }
 }
@@ -516,23 +521,12 @@ body {
             text-decoration: none;
             text-transform: uppercase;
 
-            .icon {
-                position: relative;
-                display: inline-block;
-                width: 18px;
-                height: 18px;
-                margin-right: 10px;
-                background-image: $iconEnveloppe;
-                background-repeat: no-repeat;
-                background-size: 100% auto;
-                background-position: center center;
-                vertical-align: middle;
-                top: -2px;
+            i {
+                font-size: 18px;
                 opacity: 0.8;
-
-                &.icon-mentions {
-                    background-image: $iconCard;
-                }
+                margin-right: 10px;
+                position: relative;
+                bottom: -1px;
             }
 
             &:first-child {
@@ -553,6 +547,353 @@ body {
         font-size: 17px;
         font-weight: 300;
         color: $footerTextColor;
+    }
+
+    &.variant-space-2 {
+        #footer-logos {
+            background-color: $color2Background;
+            border-color: $color2;
+        }
+    }
+
+    &.variant-space-3 {
+        #footer-logos {
+            background-color: $color3Background;
+            border-color: $color3;
+        }
+    }
+}
+
+/* #################################################################################################
+   FORMS
+################################################################################################# */
+
+.form-container {
+    position: relative;
+    background-color: $backgroundColor2;
+    padding: 25px 0;
+
+    .form {
+        width: 100%;
+        max-width: $pageWidth;
+        margin: 0 auto;
+    }
+    
+    &::before, &::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 12px;
+        position: absolute;
+        left: 0;
+    }
+
+    &::before {
+        top: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    &::after {
+        bottom: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) 100%);
+    }
+}
+
+.q-field {
+    .q-field__control {
+        background-color: $backgroundColor1;
+        border-radius: 0;
+        border: 1px solid $color1Borders;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        
+        input {
+            color: $color1Text;
+        }
+    }
+}
+
+.q-field--filled.q-field--highlighted .q-field__control::before {
+    background: $color1Background;
+}
+
+.q-field--filled .q-field__control::before {
+    background: $color1Background;
+    border-bottom: none;
+}
+
+.q-field--filled .q-field__control::after {
+    background: $color1;
+}
+
+.q-field--error .q-field__control::after {
+    background: currentColor;
+}
+
+.q-field--highlighted .q-field__label {
+    color: $color1Text;
+}
+
+.q-btn {
+    background-color: $color1;
+    border-radius: 0;
+    padding: 15px 30px;
+    color: $textColor3;
+    font-size: 18px;
+    font-weight: 300;
+    transition: background-color 0.03s linear;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+
+    .q-btn__content > * {
+        color: $textColor3;
+    }
+
+    &::before, .q-focus-helper {
+        display: none;
+    }
+
+    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+        background-color: mix(#224d80, $color1, 20%) !important;
+    }
+
+    &:active, &.bg-primary:active, &.bg-secondary:active {
+        background-color: #224d80 !important;
+    }
+
+    &.bg-primary {
+        background: $color1 !important;
+    }
+
+    &.bg-secondary {
+        background: $color1 !important;
+    }
+}
+
+.document-input-group {
+    .document-input {
+        margin-bottom: 20px;
+
+        .document-input-header {
+            background-color: $backgroundColor1;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            height: 60px;
+            border-left: 4px solid $color1;
+            position: relative;
+            white-space: nowrap;
+            padding: 0 85px 0 25px;
+            line-height: 60px;
+
+            & > h4 {
+                display: inline-block;
+                max-width: 100%;
+                font-size: 18px;
+                font-weight: 400;
+                color: $textColor1;
+                text-transform: uppercase;
+                line-height: 60px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            & > p {
+                display: inline-block;
+                vertical-align: top;
+                margin: 0 0 0 5px;
+                font-size: 18px;
+
+                a {
+                    display: inline-block;
+                    height: 30px;
+                    opacity: 0.6;
+                    padding: 2px 5px;
+                    cursor: pointer;
+                    vertical-align: middle;
+                    line-height: normal;
+                    transition: transform 0.03s linear;
+                    position: relative;
+                    top: -1px;
+
+                    &:hover {
+                        opacity: 0.8;
+                        transform: scale(1.15);
+                    }
+
+                    &:active {
+                        opacity: 1;
+                    }
+                }
+            }
+
+            & > button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 30px;
+                color: $textColor1;
+                width: 60px;
+                height: 60px;
+                background-color: transparent;
+                border: none;
+                border-radius: 0;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $color1;
+                }
+
+                &:active {
+                    background-color: mix(white, $color1, 10%);
+                }
+
+                &:disabled {
+                    opacity: 0.4 !important;
+
+                    &:hover {
+                        background-color: transparent;
+                    }
+    
+                    &:active {
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+
+        .document-input-list {
+            padding: 15px 8px 15px 15px;
+
+            .document-item {
+                height: 45px;
+                position: relative;
+                padding: 5px 65px 0 15px;
+
+                &:hover {
+                    background-color:rgba(255, 255, 255, 0.65);
+                    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+
+                    button {
+                        display: inline-block;
+
+                        &:disabled {
+                            display: none;
+                        }
+                    }
+                }
+
+                p {
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    & > i {
+                        font-size: 18px;
+                        color: $textColor1;
+                        margin-right: 5px;
+                    }
+                    
+                    a {
+                        font-size: 19px;
+                        font-weight: 400;
+                        color: $textColor1;
+                        text-decoration: none;
+                        cursor: pointer;
+
+                        i {
+                            font-size: 18px;
+                            color: $textColor1;
+                            margin-left: 5px;
+                            display: none;
+                        }
+
+                        &:hover {
+                            text-decoration: underline;
+
+                            i {
+                                display: inline;
+                            }
+                        }
+
+                        &:active {
+                            opacity: 0.8;
+                        }
+                    }
+                }
+
+                button {
+                    height: 45px;
+                    width: 45px;
+                    background-color: transparent;
+                    border: none;
+                    border-radius: 0;
+                    cursor: pointer;
+                    display: none;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+
+                    &:hover {
+                        background-color: $color1;
+                    }
+    
+                    &:active {
+                        background-color: mix(white, $color1, 10%);
+                    }
+                }
+            }
+        }
+
+        &.variant-space-2 {
+            .document-input-header {
+                border-color: $color2;
+
+                & > button {
+                    &:hover {
+                        background-color: $color2;
+                    }
+    
+                    &:active {
+                        background-color: mix(white, $color2, 10%);
+                    }
+                }
+            }
+
+            .document-input-list .document-item button {
+                &:hover {
+                    background-color: $color2;
+                }
+
+                &:active {
+                    background-color: mix(white, $color2, 10%);
+                }
+            }
+        }
+
+        &.variant-space-3 {
+            .document-input-header {
+                border-color: $color3;
+
+                & > button {
+                    &:hover {
+                        background-color: $color3;
+                    }
+    
+                    &:active {
+                        background-color: mix(white, $color3, 10%);
+                    }
+                }
+            }
+
+            .document-input-list .document-item button {
+                &:hover {
+                    background-color: $color3;
+                }
+
+                &:active {
+                    background-color: mix(white, $color3, 10%);
+                }
+            }
+        }
     }
 }
 
@@ -633,10 +974,6 @@ body {
             }
         }
     }
-}
-
-#home-sections {
-    margin-bottom: 80px;
 }
 
 .home-section {
@@ -766,7 +1103,6 @@ body {
             border-left: 4px solid $color1;
             padding-left: 18px;
             margin-top: 20px;
-            // max-width: 420px;
             display: inline-block;
 
             p {
@@ -995,13 +1331,15 @@ body {
             height: 60px;
             border-radius: 50%;
             background-color: $color1;
-            background-image: url('./img/login-icon.png');
-            background-repeat: no-repeat;
-            background-size: 40px 40px;
-            background-position: center center;
             position: absolute;
             top: calc(50% - 30px);
             left: 0;
+            text-align: center;
+
+            i {
+                color: $textColor3;
+                font-size: 40px;
+            }
         }
     }
     
@@ -1055,99 +1393,42 @@ body {
 }
 
 /* #################################################################################################
-   FORMS
+   PAGE: DASHBOARD
 ################################################################################################# */
 
-.form_container {
-    position: relative;
-    background-color: $backgroundColor2;
-    padding: 25px 0;
-    
-    &::before, &::after {
-        content: '';
-        display: block;
+.dashboard-section {
+    h2 {
         width: 100%;
-        height: 12px;
-        position: absolute;
-        left: 0;
-    }
+        max-width: $pageWidth;
+        margin: 0 auto;
+        background-color: transparent;
+        font-size: 32px;
+        text-transform: uppercase;
+        color: $color1Text;
 
-    &::before {
-        top: 0;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
-    }
-
-    &::after {
-        bottom: 0;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) 100%);
-    }
-}
-
-.q-field {
-    .q-field__control {
-        background-color: $backgroundColor1;
-        border-radius: 0;
-        border: 1px solid $color1Borders;
-        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-        
-        input {
+        i {
             color: $color1Text;
+            font-size: 28px;
+            margin-right: 14px;
+            position: relative;
+            top: -3px;
         }
     }
-}
 
-.q-field--filled.q-field--highlighted .q-field__control::before {
-    background: $color1Background;
-}
+    .button-group {
+        width: 460px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
 
-.q-field--filled .q-field__control::before {
-    background: $color1Background;
-    border-bottom: none;
-}
-
-.q-field--filled .q-field__control::after {
-    background: $color1;
-}
-
-.q-field--error .q-field__control::after {
-    background: currentColor;
-}
-
-.q-field--highlighted .q-field__label {
-    color: $color1Text;
-}
-
-.q-btn {
-    background-color: $color1;
-    border-radius: 0;
-    padding: 15px 30px;
-    color: $textColor3;
-    font-size: 18px;
-    font-weight: 300;
-    transition: background-color 0.03s linear;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-
-    .q-btn__content > * {
-        color: $textColor3;
+        a {
+            display: block;
+            width: 100%;
+        }
     }
 
-    &::before, .q-focus-helper {
-        display: none;
-    }
-
-    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-        background-color: mix(#224d80, $color1, 20%) !important;
-    }
-
-    &:active, &.bg-primary:active, &.bg-secondary:active {
-        background-color: #224d80 !important;
-    }
-
-    &.bg-primary {
-        background: $color1 !important;
-    }
-
-    &.bg-secondary {
-        background: $color1 !important;
+    .form {
+        padding: 15px 0;
     }
 }
