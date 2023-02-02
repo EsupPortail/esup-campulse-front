@@ -1,7 +1,13 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {mockedGroups, mockedUser, mockedUserAssociationDetail, mockedUserGroups, mockedUsers} from '~/mocks/user.mock'
+import {mockedAxios} from '~/fixtures/axios.mock'
+import {
+    mockedGroups,
+    mockedUser,
+    mockedUserAssociationDetail,
+    mockedUserGroups,
+    mockedUsers
+} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 setActivePinia(createPinia())

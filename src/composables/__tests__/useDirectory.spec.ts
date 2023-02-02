@@ -3,11 +3,17 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {associations, associationSearchSettings, associationWrongSearchSettings} from '~/mocks/association.mock'
-import {mockedAxios} from '~/mocks/axios.mock'
+import {associations, associationSearchSettings, associationWrongSearchSettings} from '~/fixtures/association.mock'
+import {axiosFixtures} from '~/fixtures/axios.mock'
+import {useAxios} from '@/composables/useAxios'
 
 
-vi.mock('@/plugins/axios')
+vi.mock('@/composables/useAxios', () => ({
+    useAxios: () => ({
+        axiosPublic: axiosFixtures,
+        axiosAuthenticated: axiosFixtures
+    })
+}))
 
 config.global.plugins = [
     createTestingPinia({createSpy: vi.fn()}),
@@ -51,9 +57,12 @@ describe('useDirectory', () => {
     describe('simpleAssociationSearch', () => {
         it('should call API once on /associations/?is_public=true&search=query', () => {
             const {simpleAssociationSearch} = useDirectory()
+            const {axiosPublic} = useAxios()
+            const mockedAxios = vi.mocked(axiosPublic, true)
+            mockedAxios.get.mockResolvedValueOnce({})
             simpleAssociationSearch('query')
-            expect(mockedAxios.get).toHaveBeenCalledOnce()
-            expect(mockedAxios.get).toHaveBeenCalledWith('/associations/?is_public=true&search=query')
+            expect(axiosPublic.get).toHaveBeenCalledOnce()
+            expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_public=true&search=query')
         })
     })
 })

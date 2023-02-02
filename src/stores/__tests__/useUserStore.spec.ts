@@ -2,9 +2,9 @@ import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 
 import type {User} from '#/user'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {tokens} from '~/mocks/tokens.mock'
-import {mockedGroups, mockedUser} from '~/mocks/user.mock'
+import {mockedAxios} from '~/fixtures/axios.mock'
+import {tokens} from '~/fixtures/tokens.mock'
+import {mockedGroups, mockedUser} from '~/fixtures/user.mock'
 import {setTokens} from '@/services/userService'
 import {useUserStore} from '@/stores/useUserStore'
 

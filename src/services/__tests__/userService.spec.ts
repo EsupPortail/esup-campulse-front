@@ -2,9 +2,9 @@ import type {AxiosResponse} from 'axios'
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 
-import {mockedAxios} from '~/mocks/axios.mock'
-import {mockedNewUser, mockedNewUserGroups, mockedUser, mockedUserAssociations} from '~/mocks/user.mock'
-import {tokens} from '~/mocks/tokens.mock'
+import {mockedAxios} from '~/fixtures/axios.mock'
+import {mockedNewUser, mockedNewUserGroups, mockedUser, mockedUserAssociations} from '~/fixtures/user.mock'
+import {tokens} from '~/fixtures/tokens.mock'
 import * as userService from '@/services/userService'
 import {useUserStore} from '@/stores/useUserStore'
 

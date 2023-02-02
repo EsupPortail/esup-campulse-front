@@ -1,5 +1,5 @@
 import type {ManagedUsers, User, UserAssociations, UserGroup, UserRegister} from '#/user'
-import {mockedAssociationName} from '~/mocks/association.mock'
+import {mockedAssociationName} from '~/fixtures/association.mock'
 
 export const mockedGroups: UserGroup[] = [
     {

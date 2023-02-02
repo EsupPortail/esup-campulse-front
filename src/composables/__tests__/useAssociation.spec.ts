@@ -1,16 +1,24 @@
 import {createTestingPinia} from '@pinia/testing'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
-import {mockedAxios} from '~/mocks/axios.mock'
 import {
     association,
     editedAssociation,
     mockedAssociationSocialNetworks,
     nonEditedAssociation
-} from '~/mocks/association.mock'
+} from '~/fixtures/association.mock'
 import useAssociation from '@/composables/useAssociation'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {Association} from '#/association'
+import {useAxios} from '@/composables/useAxios'
+import {axiosFixtures} from '~/fixtures/axios.mock'
+
+vi.mock('@/composables/useAxios', () => ({
+    useAxios: () => ({
+        axiosPublic: axiosFixtures,
+        axiosAuthenticated: axiosFixtures
+    })
+}))
 
 config.global.plugins = [
     createTestingPinia({createSpy: vi.fn()}),
@@ -25,8 +33,9 @@ describe('useAssociation', () => {
         it('should call API only once on /associations/ with name as payload', async () => {
             const {createAssociation} = useAssociation()
             await createAssociation('Association test')
-            expect(mockedAxios.post).toHaveBeenCalledOnce()
-            expect(mockedAxios.post).toHaveBeenCalledWith('/associations/', {name: 'Association test'})
+            const {axiosAuthenticated} = useAxios()
+            expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/associations/', {name: 'Association test'})
         })
     })
     describe('checkSocialNetworks', () => {
@@ -108,9 +117,10 @@ describe('useAssociation', () => {
         it('should call API once on /associations/id to patch changedData', () => {
             associationStore.association = association
             const {updateAssociation} = useAssociation()
+            const {axiosAuthenticated} = useAxios()
             updateAssociation()
-            expect(mockedAxios.patch).toHaveBeenCalledOnce()
-            expect(mockedAxios.patch).toHaveBeenCalledWith(`/associations/${associationStore.association.id}`, {})
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/associations/${associationStore.association.id}`, {})
         })
     })
 })

@@ -3,7 +3,7 @@ import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onBeforeRouteLeave} from 'vue-router'
-import {useQuasar, type QFile} from "quasar";
+import {type QFile, useQuasar} from 'quasar'
 import useAssociation from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/form/FormAssociationSocialNetworks.vue'
 import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
@@ -70,13 +70,17 @@ onMounted(async () => {
     loading.hide
 })
 
-// Open alert if user leaves without saving
-const openAlert = ref<boolean>(false)
-const leaveEdition = ref<boolean>(false)
+// Logo management
 const altLogo = ref<string>('')
 const newLogo = ref()
 const pathLogo = ref<object | null | undefined>(associationStore.association?.pathLogo)
-watch(() => associationStore.association?.pathLogo, () => {pathLogo.value = associationStore.association?.pathLogo})
+watch(() => associationStore.association?.pathLogo, () => {
+    pathLogo.value = associationStore.association?.pathLogo
+})
+
+// Open alert if user leaves without saving
+const openAlert = ref<boolean>(false)
+const leaveEdition = ref<boolean>(false)
 
 function onLeaveEdition() {
     leaveEdition.value = true
@@ -124,77 +128,77 @@ async function onValidateChanges() {
 
 // Update association logo details
 async function onChangeLogo(action: string) {
-  try {
-    if(action === 'update'){
-      const patchLogoData = new FormData()
-      patchLogoData.append('pathLogo', newLogo.value)
-      patchLogoData.append('altLogo', altLogo.value)
-      await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
-    } else if (action === 'delete') {
-      const deleteLogoData = {'altLogo': '', 'pathLogo': null}
-      await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+    try {
+        if (action === 'update') {
+            const patchLogoData = new FormData()
+            patchLogoData.append('pathLogo', newLogo.value)
+            patchLogoData.append('altLogo', altLogo.value)
+            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+        } else if (action === 'delete') {
+            const deleteLogoData = {'altLogo': '', 'pathLogo': null}
+            await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+        }
+        notify({
+            message: t('notifications.positive.association-logo-updated'),
+            type: 'positive'
+        })
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            notify({
+                message: t('notifications.negative.association-logo-edit-error'),
+                type: 'negative'
+            })
+        }
     }
-    notify({
-      message: t('notifications.positive.association-logo-updated'),
-      type: 'positive'
-    })
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      notify({
-        message: t('notifications.negative.association-logo-edit-error'),
-        type: 'negative'
-      })
-    }
-  }
 }
 </script>
 
 <template>
 
-  <QForm
-      @submit.prevent="onChangeLogo('update')"
-  >
-    <fieldset>
-      <div class="logo">
-        <QImg
-          :alt="associationStore.association?.altLogo"
-          :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
-          :ratio="1"
-      />
-      </div>
-      <QFile
-         filled
-         accept=".jpg, .jpeg, .png"
-         :label="t('association.logo.pickup')"
-         v-model="newLogo"
-      />
-      <QInput
-         v-model="altLogo"
-         :label="t('association.logo.alt')"
-         :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-         filled
-         lazy-rules
-      />
-      <QBtn
-          color="primary"
-          icon="mdi-check-circle"
-          :label="t('association.logo.update')"
-          type="submit"
-      />
-      <QBtn
-          :label="t('association.logo.remove')"
-          color="red"
-          icon="mdi-delete"
-          @click="onChangeLogo('delete')"
-      />
-    </fieldset>
-  </QForm>
+    <QForm
+        @submit.prevent="onChangeLogo('update')"
+    >
+        <fieldset>
+            <div class="logo">
+                <QImg
+                    :alt="associationStore.association?.altLogo"
+                    :ratio="1"
+                    :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
+                />
+            </div>
+            <QFile
+                v-model="newLogo"
+                :label="t('association.logo.pickup')"
+                accept=".jpg, .jpeg, .png"
+                filled
+            />
+            <QInput
+                v-model="altLogo"
+                :label="t('association.logo.alt')"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                filled
+                lazy-rules
+            />
+            <QBtn
+                :label="t('association.logo.update')"
+                color="primary"
+                icon="mdi-check-circle"
+                type="submit"
+            />
+            <QBtn
+                :label="t('association.logo.remove')"
+                color="red"
+                icon="mdi-delete"
+                @click="onChangeLogo('delete')"
+            />
+        </fieldset>
+    </QForm>
 
-  <QForm
-      @submit.prevent="onValidateChanges"
-  >
-    <fieldset>
-      <legend>{{ t('association.titles.info') }}</legend>
+    <QForm
+        @submit.prevent="onValidateChanges"
+    >
+        <fieldset>
+            <legend>{{ t('association.titles.info') }}</legend>
             <QInput
                 v-model="association.name"
                 :label="t('association.labels.name')"
@@ -352,8 +356,8 @@ fieldset
     border: none
 
 .logo
-  width: 150px
-  height: 150px
+    width: 150px
+    height: 150px
 
 .btn-group
     display: flex

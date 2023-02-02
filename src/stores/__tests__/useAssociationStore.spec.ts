@@ -2,11 +2,20 @@ import type {AxiosResponse} from 'axios'
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import type {Association} from '#/association'
-import {association, associationNames, associations} from '~/mocks/association.mock'
-import {mockedAxios} from '~/mocks/axios.mock'
+import {association, associationNames, associations} from '~/fixtures/association.mock'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserStore} from '@/stores/useUserStore'
-import {mockedUser} from '~/mocks/user.mock'
+import {mockedUser} from '~/fixtures/user.mock'
+import {axiosFixtures} from '~/fixtures/axios.mock'
+import {useAxios} from '@/composables/useAxios'
+
+
+vi.mock('@/composables/useAxios', () => ({
+    useAxios: () => ({
+        axiosPublic: axiosFixtures,
+        axiosAuthenticated: axiosFixtures
+    })
+}))
 
 setActivePinia(createPinia())
 let associationStore = useAssociationStore()
@@ -22,6 +31,8 @@ describe('Association store', () => {
     })
     describe('getAssociations', () => {
         beforeEach(() => {
+            const {axiosPublic} = useAxios()
+            const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({data: associations} as AxiosResponse)
         })
         describe('If forDirectory is true', () => {
@@ -29,8 +40,9 @@ describe('Association store', () => {
                 associationStore.getAssociations(true, false)
             })
             it('should call API once on /associations/?is_public=true', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/associations/?is_public=true')
+                const {axiosPublic} = useAxios()
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_public=true')
             })
         })
         describe('If forRegistration is true', () => {
@@ -38,8 +50,9 @@ describe('Association store', () => {
                 associationStore.getAssociations(false, true)
             })
             it('should call API once on /associations/?is_enabled=true', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/associations/?is_enabled=true')
+                const {axiosPublic} = useAxios()
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_enabled=true')
             })
         })
         describe('If forDirectory and forRegistration are false', () => {
@@ -47,8 +60,9 @@ describe('Association store', () => {
                 associationStore.getAssociations(false, false)
             })
             it('should call API once on /associations/ and get all associations', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/associations/')
+                const {axiosPublic} = useAxios()
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/associations/')
             })
         })
     })

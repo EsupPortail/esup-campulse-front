@@ -9,7 +9,7 @@ import {
     mockedUserAssociationDetail,
     mockedUserAssociationsManagement,
     mockedUserGroups
-} from '~/mocks/user.mock'
+} from '~/fixtures/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
 import useUsers from '@/composables/useUsers'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'

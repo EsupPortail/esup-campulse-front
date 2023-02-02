@@ -1,14 +1,21 @@
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {mockedGroupList, mockedGroups, mockedUser} from '~/mocks/user.mock'
+import {mockedGroupList, mockedGroups, mockedUser} from '~/fixtures/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
 import {config} from '@vue/test-utils'
 import {createTestingPinia} from '@pinia/testing'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {axiosFixtures} from '~/fixtures/axios.mock'
+import {useAxios} from '@/composables/useAxios'
+
+
+vi.mock('@/composables/useAxios', () => ({
+    useAxios: () => ({
+        axiosPublic: axiosFixtures,
+        axiosAuthenticated: axiosFixtures
+    })
+}))
 
 const {getGroups, groups, groupList, studentGroup, groupsToDelete, newGroups, updateUserGroups} = useUserGroups()
-
-vi.mock('@/plugins/axios')
 
 config.global.plugins = [
     createTestingPinia({createSpy: vi.fn()}),
@@ -24,17 +31,16 @@ describe('useUserGroups', () => {
     })
     describe('getGroups', () => {
         beforeEach(() => {
+            const {axiosPublic} = useAxios()
+            const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({data: mockedGroups})
             getGroups()
         })
-        it('should get user groups', () => {
+        it('should call API once on /groups/ and get user groups', () => {
+            const {axiosPublic} = useAxios()
+            expect(axiosPublic.get).toHaveBeenCalledOnce()
+            expect(axiosPublic.get).toHaveBeenCalledWith('/groups/')
             expect(groups.value).toEqual(mockedGroups)
-        })
-        it('should be called once', () => {
-            expect(mockedAxios.get).toHaveBeenCalledOnce()
-        })
-        it('should call API on /groups/', () => {
-            expect(mockedAxios.get).toHaveBeenCalledWith('/groups/')
         })
     })
     describe('groupList', () => {

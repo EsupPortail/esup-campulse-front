@@ -55,7 +55,6 @@ describe('useUtility', () => {
                 ]
             } as RouteLocationNormalizedLoaded)
             const route = useRoute()
-            console.log(route.matched)
             const {initBreadcrumbs} = useUtility()
             initBreadcrumbs(route.matched)
             expect(initBreadcrumbs(route.matched)).toEqual([

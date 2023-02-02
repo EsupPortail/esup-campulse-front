@@ -1,15 +1,13 @@
 import {createTestingPinia} from '@pinia/testing'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {mockedUser, mockedUserAssociations, mockedUserGroups} from '~/mocks/user.mock'
+import {mockedUser, mockedUserAssociations, mockedUserGroups} from '~/fixtures/user.mock'
 import useAssociation from '@/composables/useAssociation'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import * as userService from '@/services/userService'
 import {useUserStore} from '@/stores/useUserStore'
 
-vi.mock('@/plugins/axios')
 
 config.global.plugins = [
     createTestingPinia({createSpy: vi.fn()}),
