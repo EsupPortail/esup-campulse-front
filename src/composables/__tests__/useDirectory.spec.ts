@@ -3,15 +3,15 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {associations, associationSearchSettings, associationWrongSearchSettings} from '~/fixtures/association.mock'
-import {axiosFixtures} from '~/fixtures/axios.mock'
+import {_associations, _associationSearchSettings, _associationWrongSearchSettings} from '~/fixtures/association.mock'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
-        axiosPublic: axiosFixtures,
-        axiosAuthenticated: axiosFixtures
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
     })
 }))
 
@@ -42,16 +42,16 @@ describe('useDirectory', () => {
     })
     describe('advancedSearch', () => {
         it('should return the associations with matching search parameters', () => {
-            associationStore.associations = associations
+            associationStore.associations = _associations
             const {advancedSearch} = useDirectory()
-            const matches = advancedSearch(associationSearchSettings)
-            expect(matches).toEqual([associations[1]])
+            const matches = advancedSearch(_associationSearchSettings)
+            expect(matches).toEqual([_associations[1]])
         })
         it('should not return the associations with no matching search parameters', () => {
-            associationStore.associations = associations
+            associationStore.associations = _associations
             const {advancedSearch} = useDirectory()
-            const matches = advancedSearch(associationWrongSearchSettings)
-            expect(matches).not.toEqual([associations[1]])
+            const matches = advancedSearch(_associationWrongSearchSettings)
+            expect(matches).not.toEqual([_associations[1]])
         })
     })
     describe('simpleAssociationSearch', () => {

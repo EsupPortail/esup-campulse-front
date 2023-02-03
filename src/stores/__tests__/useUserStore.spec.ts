@@ -1,18 +1,18 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import type {User} from '#/user'
-import {tokens} from '~/fixtures/tokens.mock'
-import {mockedGroups, mockedUser} from '~/fixtures/user.mock'
+import {_tokens} from '~/fixtures/tokens.mock'
+import {_user, _userGroups} from '~/fixtures/user.mock'
 import {setTokens} from '@/services/userService'
 import {useUserStore} from '@/stores/useUserStore'
-import {axiosFixtures} from '~/fixtures/axios.mock'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
-        axiosPublic: axiosFixtures,
-        axiosAuthenticated: axiosFixtures
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
     })
 }))
 
@@ -28,7 +28,7 @@ describe('User store', () => {
     })
     describe('isAuth', () => {
         it('should be true if user has data', () => {
-            userStore.user = mockedUser
+            userStore.user = _user
             expect(userStore.isAuth).toBeTruthy()
         })
         it('should be false if user has no data', () => {
@@ -38,9 +38,9 @@ describe('User store', () => {
     })
     describe('isCas', () => {
         beforeEach(() => {
-            userStore.user = mockedUser
+            userStore.user = _user
             userStore.user.isCas = false
-            userStore.newUser = mockedUser
+            userStore.newUser = _user
             userStore.newUser.isCas = false
         })
         it('should be true if user isCas', () => {
@@ -60,11 +60,11 @@ describe('User store', () => {
     })
     describe('userNameFirstLetter', () => {
         it('should display capitalized first letter of firstname', () => {
-            userStore.user = mockedUser
+            userStore.user = _user
             expect(userStore.userNameFirstLetter).toBe('J')
         })
         it('should not display first letter of firstname in lower case', () => {
-            userStore.user = mockedUser
+            userStore.user = _user
             userStore.user.firstName = 'john'
             expect(userStore.userNameFirstLetter).not.toBe('j')
         })
@@ -75,15 +75,15 @@ describe('User store', () => {
     })
     describe('managerGroup', () => {
         afterEach(() => {
-            userStore.user = mockedUser
-            userStore.user.groups = mockedGroups
+            userStore.user = _user
+            userStore.user.groups = _userGroups
         })
         it('should be true if user is manager', () => {
-            userStore.user = mockedUser
+            userStore.user = _user
             expect(userStore.managerGroup).toBeTruthy()
         })
         it('should be false if user is not manager', () => {
-            userStore.user = mockedUser
+            userStore.user = _user
             userStore.user.groups = [
                 {
                     id: 2,
@@ -95,11 +95,11 @@ describe('User store', () => {
     })
     describe('isUniManager', () => {
         it('should be true if user is uniManager', () => {
-            userStore.user = mockedUser
+            userStore.user = _user
             expect(userStore.isUniManager).toBeTruthy()
         })
         it('should be false if user is not uniManager', () => {
-            userStore.user = mockedUser
+            userStore.user = _user
             userStore.user.groups = [
                 {
                     id: 2,
@@ -111,8 +111,8 @@ describe('User store', () => {
     })
     describe('User logout', () => {
         it('should clear local storage', () => {
-            localStorage.setItem('JWT__access__token', tokens.access)
-            localStorage.setItem('JWT__refresh__token', tokens.refresh)
+            localStorage.setItem('JWT__access__token', _tokens.access)
+            localStorage.setItem('JWT__refresh__token', _tokens.refresh)
             userStore.logOut()
             expect(localStorage.getItem('JWT__access__token')).toBeNull()
             expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
@@ -128,15 +128,15 @@ describe('User store', () => {
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.post.mockResolvedValueOnce({
                 data: {
-                    user: mockedUser,
-                    accessToken: tokens.access,
-                    refreshToken: tokens.refresh
+                    user: _user,
+                    accessToken: _tokens.access,
+                    refreshToken: _tokens.refresh
                 }
             })
             userStore.loadCASUser('ticket')
         })
         it('should populate newUser data', () => {
-            expect(userStore.newUser).toEqual(mockedUser)
+            expect(userStore.newUser).toEqual(_user)
         })
         /*it('should set user\'s access and refresh tokens', () => {
             expect(localStorage.getItem('JWT__access__token')).toEqual(tokens.access)
@@ -155,15 +155,15 @@ describe('User store', () => {
     })
     describe('Unload user', () => {
         it('should clear all data from user', () => {
-            userStore.user = mockedUser
+            userStore.user = _user
             userStore.unLoadUser()
             expect(userStore.user).toBeUndefined()
         })
     })
     describe('Unload newUser', () => {
         beforeEach(() => {
-            userStore.newUser = mockedUser
-            setTokens(tokens.access, tokens.refresh)
+            userStore.newUser = _user
+            setTokens(_tokens.access, _tokens.refresh)
             userStore.unLoadNewUser()
         })
         it('should remove tokens', () => {
@@ -181,7 +181,7 @@ describe('User store', () => {
         })
         describe('If user has associations', () => {
             it('should call API once on /users/associations/ and populate userAssociations in store', async () => {
-                userStore.user = mockedUser
+                userStore.user = _user
                 const data = [
                     {
                         user: 'john',

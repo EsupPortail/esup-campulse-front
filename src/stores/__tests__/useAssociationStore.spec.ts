@@ -2,18 +2,18 @@ import type {AxiosResponse} from 'axios'
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import type {Association} from '#/association'
-import {association, associationNames, associations} from '~/fixtures/association.mock'
+import {_association, _associationNames, _associations} from '~/fixtures/association.mock'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserStore} from '@/stores/useUserStore'
-import {mockedUser} from '~/fixtures/user.mock'
-import {axiosFixtures} from '~/fixtures/axios.mock'
+import {_user} from '~/fixtures/user.mock'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
-        axiosPublic: axiosFixtures,
-        axiosAuthenticated: axiosFixtures
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
     })
 }))
 
@@ -33,7 +33,7 @@ describe('Association store', () => {
         beforeEach(() => {
             const {axiosPublic} = useAxios()
             const mockedAxios = vi.mocked(axiosPublic, true)
-            mockedAxios.get.mockResolvedValueOnce({data: associations} as AxiosResponse)
+            mockedAxios.get.mockResolvedValueOnce({data: _associations} as AxiosResponse)
         })
         describe('If forDirectory is true', () => {
             beforeEach(() => {
@@ -71,14 +71,14 @@ describe('Association store', () => {
             userStore = useUserStore()
             const {axiosPublic} = useAxios()
             const mockedAxios = vi.mocked(axiosPublic, true)
-            mockedAxios.get.mockResolvedValueOnce({data: associations} as AxiosResponse)
+            mockedAxios.get.mockResolvedValueOnce({data: _associations} as AxiosResponse)
         })
         afterEach(() => {
             userStore.user = undefined
         })
         describe('If isUniManager', () => {
             it('should execute getAssociations to get all associations', async () => {
-                userStore.user = mockedUser
+                userStore.user = _user
                 const spy = vi.spyOn(associationStore, 'getAssociations')
                 await associationStore.getManagedAssociations()
                 expect(spy).toHaveBeenCalledOnce()
@@ -87,12 +87,12 @@ describe('Association store', () => {
         })
         describe('If student', () => {
             it('should only get this student\'s associations', async () => {
-                userStore.user = mockedUser
+                userStore.user = _user
                 userStore.user.groups.splice(0, 1)
                 const spy = vi.spyOn(associationStore, 'getAssociations')
                 await associationStore.getManagedAssociations()
                 expect(spy).toHaveBeenCalledTimes(0)
-                expect(associationStore.associations).toEqual([associations])
+                expect(associationStore.associations).toEqual([_associations])
             })
         })
     })
@@ -100,14 +100,14 @@ describe('Association store', () => {
         beforeEach(() => {
             const {axiosPublic} = useAxios()
             const mockedAxios = vi.mocked(axiosPublic, true)
-            mockedAxios.get.mockResolvedValueOnce({data: association} as AxiosResponse)
-            associationStore.getAssociationDetail(association.id)
+            mockedAxios.get.mockResolvedValueOnce({data: _association} as AxiosResponse)
+            associationStore.getAssociationDetail(_association.id)
         })
         afterEach(() => {
             associationStore.association = {} as Association
         })
         it('should populate association in the store', () => {
-            expect(associationStore.association).toEqual(association)
+            expect(associationStore.association).toEqual(_association)
         })
         it('should be called once', () => {
             const {axiosPublic} = useAxios()
@@ -115,21 +115,21 @@ describe('Association store', () => {
         })
         it('should call API on /associations/id', () => {
             const {axiosPublic} = useAxios()
-            expect(axiosPublic.get).toHaveBeenCalledWith(`/associations/${association.id}`)
+            expect(axiosPublic.get).toHaveBeenCalledWith(`/associations/${_association.id}`)
         })
     })
     describe('Association names', () => {
         beforeEach(() => {
-            associationStore.associations = associations
+            associationStore.associations = _associations
         })
         afterEach(() => {
             associationStore.associations = []
         })
         it('should contain all the associations', () => {
-            expect(associationStore.associationNames.length).toEqual(associations.length)
+            expect(associationStore.associationNames.length).toEqual(_associations.length)
         })
         it('should contain associations with labels and lists', () => {
-            expect(associationStore.associationNames).toEqual(associationNames)
+            expect(associationStore.associationNames).toEqual(_associationNames)
         })
     })
     /*describe('Delete associations', () => {

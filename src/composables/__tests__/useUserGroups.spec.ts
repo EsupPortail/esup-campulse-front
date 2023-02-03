@@ -1,17 +1,17 @@
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {mockedGroupList, mockedGroups, mockedUser} from '~/fixtures/user.mock'
+import {_groupLabels, _user, _userGroups} from '~/fixtures/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
 import {config} from '@vue/test-utils'
 import {createTestingPinia} from '@pinia/testing'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {axiosFixtures} from '~/fixtures/axios.mock'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
-        axiosPublic: axiosFixtures,
-        axiosAuthenticated: axiosFixtures
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
     })
 }))
 
@@ -33,26 +33,26 @@ describe('useUserGroups', () => {
         beforeEach(() => {
             const {axiosPublic} = useAxios()
             const mockedAxios = vi.mocked(axiosPublic, true)
-            mockedAxios.get.mockResolvedValueOnce({data: mockedGroups})
+            mockedAxios.get.mockResolvedValueOnce({data: _userGroups})
             getGroups()
         })
         it('should call API once on /groups/ and get user groups', () => {
             const {axiosPublic} = useAxios()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/groups/')
-            expect(groups.value).toEqual(mockedGroups)
+            expect(groups.value).toEqual(_userGroups)
         })
     })
     describe('groupList', () => {
         it('should create an array of value and label for each group', () => {
-            groups.value = mockedGroups
-            expect(groupList.value).toEqual(mockedGroupList)
+            groups.value = _userGroups
+            expect(groupList.value).toEqual(_groupLabels)
         })
     })
     describe('studentGroup', () => {
         it('should return the student group object', () => {
-            groups.value = mockedGroups
-            expect(studentGroup.value).toEqual(mockedGroups[1])
+            groups.value = _userGroups
+            expect(studentGroup.value).toEqual(_userGroups[1])
         })
     })
     describe('groupsToDelete', () => {
@@ -70,14 +70,14 @@ describe('useUserGroups', () => {
             deleteUserGroups: vi.spyOn(userManagerStore, 'deleteUserGroups')
         }
         it('should update groups if there are changes', async () => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             newGroups.value = [4, 5]
             await updateUserGroups()
             expect(spies.updateUserGroups).toHaveBeenCalledOnce()
             expect(spies.deleteUserGroups).toHaveBeenCalledOnce()
         })
         it('should not update groups if there are no changes', async () => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             newGroups.value = [1, 2, 3]
             await updateUserGroups()
             expect(spies.updateUserGroups).toHaveBeenCalledTimes(0)

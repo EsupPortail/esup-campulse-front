@@ -1,7 +1,7 @@
 import {createTestingPinia} from '@pinia/testing'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
-import {mockedUser, mockedUserAssociations, mockedUserGroups} from '~/fixtures/user.mock'
+import {_user, _userAssociations, _userGroups} from '~/fixtures/user.mock'
 import useAssociation from '@/composables/useAssociation'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
@@ -46,7 +46,7 @@ describe('useSecurity', () => {
             unLoadNewUser: vi.spyOn(userStore, 'unLoadNewUser')
         }
         beforeEach(() => {
-            newUser.value = mockedUser
+            newUser.value = _user
             mockedAxios.post.mockResolvedValue({})
             mockedAxios.patch.mockResolvedValue({})
         })
@@ -57,8 +57,8 @@ describe('useSecurity', () => {
             })
             it('should execute CASUser, groups and associations registration, then unLoad newUser', async () => {
                 newUser.value.phone = '00 00 00 00 00'
-                newAssociations.value = mockedUserAssociations
-                newGroups.value = mockedUserGroups
+                newAssociations.value = _userAssociations
+                newGroups.value = _userGroups
                 await register()
                 expect(spies.userCASRegister).toHaveBeenCalledOnce()
                 expect(spies.userAssociationRegister).toHaveBeenCalledOnce()
@@ -72,8 +72,8 @@ describe('useSecurity', () => {
                 userStore.newUser = newUser.value
             })
             it('should execute LocalUser, association and groups register', async () => {
-                newAssociations.value = mockedUserAssociations
-                newGroups.value = mockedUserGroups
+                newAssociations.value = _userAssociations
+                newGroups.value = _userGroups
                 await register()
                 expect(spies.userLocalRegister).toHaveBeenCalledOnce()
                 expect(spies.userAssociationRegister).toHaveBeenCalledOnce()

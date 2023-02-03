@@ -2,22 +2,22 @@ import {createTestingPinia} from '@pinia/testing'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 import {
-    association,
-    editedAssociation,
-    mockedAssociationSocialNetworks,
-    nonEditedAssociation
+    _association,
+    _associationSocialNetworks,
+    _editedAssociation,
+    _nonEditedAssociation
 } from '~/fixtures/association.mock'
 import useAssociation from '@/composables/useAssociation'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {Association} from '#/association'
-import {axiosFixtures} from '~/fixtures/axios.mock'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
-        axiosPublic: axiosFixtures,
-        axiosAuthenticated: axiosFixtures
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
     })
 }))
 
@@ -41,8 +41,8 @@ describe('useAssociation', () => {
     })
     describe('checkSocialNetworks', () => {
         beforeEach(() => {
-            associationStore.association = association
-            associationStore.association.socialNetworks = JSON.parse(JSON.stringify(mockedAssociationSocialNetworks))
+            associationStore.association = _association
+            associationStore.association.socialNetworks = JSON.parse(JSON.stringify(_associationSocialNetworks))
         })
         afterEach(() => {
             (associationStore.association as Association).socialNetworks = []
@@ -50,13 +50,13 @@ describe('useAssociation', () => {
         describe('If old and new arrays have the same length', () => {
             it('if both arrays are the same, it should not push anything to changedData', () => {
                 const {associationSocialNetworks, checkSocialNetworks, changedData} = useAssociation()
-                associationSocialNetworks.value = mockedAssociationSocialNetworks
+                associationSocialNetworks.value = _associationSocialNetworks
                 checkSocialNetworks()
                 expect(changedData).toEqual({})
             })
             it('if arrays are not the same, f.e. type has changed', () => {
                 const {associationSocialNetworks, checkSocialNetworks, changedData} = useAssociation()
-                associationSocialNetworks.value = mockedAssociationSocialNetworks
+                associationSocialNetworks.value = _associationSocialNetworks
                 associationSocialNetworks.value[0].type = 'Instagram'
                 associationSocialNetworks.value[0].location = 'https://instagram.com'
                 checkSocialNetworks()
@@ -66,7 +66,7 @@ describe('useAssociation', () => {
         describe('If old and new arrays have not the same length', () => {
             it('it should push all new networks to changedData', () => {
                 const {associationSocialNetworks, checkSocialNetworks, changedData} = useAssociation()
-                associationSocialNetworks.value = mockedAssociationSocialNetworks.slice(1)
+                associationSocialNetworks.value = _associationSocialNetworks.slice(1)
                 checkSocialNetworks()
                 expect(changedData).toEqual({socialNetworks: associationSocialNetworks.value})
             })
@@ -74,7 +74,7 @@ describe('useAssociation', () => {
     })
     describe('checkChanges', () => {
         beforeEach(() => {
-            associationStore.association = JSON.parse(JSON.stringify(association))
+            associationStore.association = JSON.parse(JSON.stringify(_association))
         })
         afterEach(() => {
             const {associationSocialNetworks} = useAssociation()
@@ -88,7 +88,7 @@ describe('useAssociation', () => {
                     location: 'https://mastodon.social'
                 }
             ]
-            expect(checkChanges(editedAssociation)).toEqual({
+            expect(checkChanges(_editedAssociation)).toEqual({
                 activityField: 2,
                 name: 'Association des étudiants en médecine',
                 acronym: 'Asso',
@@ -111,12 +111,12 @@ describe('useAssociation', () => {
         })
         it('should return an empty object if no changed infos', () => {
             const {checkChanges} = useAssociation()
-            expect(checkChanges(nonEditedAssociation)).toEqual({})
+            expect(checkChanges(_nonEditedAssociation)).toEqual({})
         })
     })
     describe('updateAssociation', () => {
         it('should call API once on /associations/id to patch changedData', () => {
-            associationStore.association = association
+            associationStore.association = _association
             const {updateAssociation} = useAssociation()
             const {axiosAuthenticated} = useAxios()
             updateAssociation()

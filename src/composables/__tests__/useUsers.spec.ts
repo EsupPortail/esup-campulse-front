@@ -4,12 +4,7 @@ import {createTestingPinia} from '@pinia/testing'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 
-import {
-    mockedUser,
-    mockedUserAssociationDetail,
-    mockedUserAssociationsManagement,
-    mockedUserGroups
-} from '~/fixtures/user.mock'
+import {_user, _userAssociationDetail, _userAssociationsManagement, _userGroupList} from '~/fixtures/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
 import useUsers from '@/composables/useUsers'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
@@ -59,7 +54,7 @@ describe('useUsers', () => {
         describe('If newGroups and oldGroups are not the same', () => {
             it('should update groups and call API for post and delete', async () => {
                 newGroups.value = [7, 8, 3]
-                userManagerStore.user = mockedUser
+                userManagerStore.user = _user
                 const {validateUser} = useUsers()
                 await validateUser()
                 expect(spies.updateUserGroups).toHaveBeenCalledOnce()
@@ -69,8 +64,8 @@ describe('useUsers', () => {
         })
         describe('If newGroups and oldGroups are the same', () => {
             it('should not update groups', async () => {
-                userManagerStore.user = mockedUser
-                newGroups.value = mockedUserGroups
+                userManagerStore.user = _user
+                newGroups.value = _userGroupList
                 const {validateUser} = useUsers()
                 await validateUser()
                 expect(spies.updateUserGroups).toHaveBeenCalledTimes(0)
@@ -86,8 +81,8 @@ describe('useUsers', () => {
                 deleteUserAssociation: vi.spyOn(userManagerStore, 'deleteUserAssociation'),
                 patchUserAssociations: vi.spyOn(userManagerStore, 'patchUserAssociations')
             }
-            userAssociations.value = mockedUserAssociationsManagement
-            userManagerStore.userAssociations = [mockedUserAssociationDetail]
+            userAssociations.value = _userAssociationsManagement
+            userManagerStore.userAssociations = [_userAssociationDetail]
             const dataToPatch = {
                 roleName: 'Trésorière',
                 hasOfficeStatus: true,
@@ -95,9 +90,9 @@ describe('useUsers', () => {
             }
             updateUserAssociations()
             expect(spies.deleteUserAssociation).toHaveBeenCalledOnce()
-            expect(spies.deleteUserAssociation).toHaveBeenCalledWith(mockedUserAssociationsManagement[2].associationId)
+            expect(spies.deleteUserAssociation).toHaveBeenCalledWith(_userAssociationsManagement[2].associationId)
             expect(spies.patchUserAssociations).toHaveBeenCalledOnce()
-            expect(spies.patchUserAssociations).toHaveBeenCalledWith(mockedUserAssociationsManagement[1].associationId, dataToPatch)
+            expect(spies.patchUserAssociations).toHaveBeenCalledWith(_userAssociationsManagement[1].associationId, dataToPatch)
         })
     })
 })

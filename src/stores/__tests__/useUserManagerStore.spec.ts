@@ -1,21 +1,15 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {
-    mockedGroups,
-    mockedUser,
-    mockedUserAssociationDetail,
-    mockedUserGroups,
-    mockedUsers
-} from '~/fixtures/user.mock'
+import {_user, _userAssociationDetail, _userGroupList, _userGroups, _users} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {axiosFixtures} from '~/fixtures/axios.mock'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
-        axiosPublic: axiosFixtures,
-        axiosAuthenticated: axiosFixtures
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
     })
 }))
 
@@ -34,7 +28,7 @@ describe('User manager store', () => {
         beforeEach(() => {
             const {axiosAuthenticated} = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
-            mockedAxios.get.mockResolvedValueOnce({data: mockedUsers})
+            mockedAxios.get.mockResolvedValueOnce({data: _users})
             userManagerStore.getUsers()
         })
         it('should call API once on /users/', () => {
@@ -43,14 +37,14 @@ describe('User manager store', () => {
             expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/')
         })
         it('should populate users state', () => {
-            expect(userManagerStore.users).toEqual(mockedUsers)
+            expect(userManagerStore.users).toEqual(_users)
         })
     })
     describe('getUnvalidatedUsers', () => {
         beforeEach(() => {
             const {axiosAuthenticated} = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
-            mockedAxios.get.mockResolvedValueOnce({data: mockedUsers})
+            mockedAxios.get.mockResolvedValueOnce({data: _users})
             userManagerStore.getUnvalidatedUsers()
         })
         it('should call API once on /users/?is_validated_by_admin=false', () => {
@@ -59,45 +53,45 @@ describe('User manager store', () => {
             expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/?is_validated_by_admin=false')
         })
         it('should populate users state', () => {
-            expect(userManagerStore.users).toEqual(mockedUsers)
+            expect(userManagerStore.users).toEqual(_users)
         })
     })
     describe('getUserDetail', () => {
         beforeEach(() => {
             const {axiosAuthenticated} = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
-            mockedAxios.get.mockResolvedValueOnce({data: mockedUser})
-            mockedAxios.get.mockResolvedValueOnce({data: mockedGroups})
-            userManagerStore.getUserDetail(mockedUser.id)
+            mockedAxios.get.mockResolvedValueOnce({data: _user})
+            mockedAxios.get.mockResolvedValueOnce({data: _userGroups})
+            userManagerStore.getUserDetail(_user.id)
         })
         it('should call API to get user and groups', () => {
             const {axiosAuthenticated} = useAxios()
             expect(axiosAuthenticated.get).toHaveBeenCalledTimes(2)
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/${mockedUser.id}`)
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/groups/${mockedUser.id}`)
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/${_user.id}`)
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/groups/${_user.id}`)
         })
         it('should populate user state and groups', () => {
-            expect(userManagerStore.user).toEqual(mockedUser)
-            expect(userManagerStore.user?.groups).toEqual(mockedGroups)
+            expect(userManagerStore.user).toEqual(_user)
+            expect(userManagerStore.user?.groups).toEqual(_userGroups)
         })
     })
     describe('updateUserGroups', () => {
         beforeEach(() => {
-            userManagerStore.user = mockedUser
-            userManagerStore.updateUserGroups(mockedUserGroups)
+            userManagerStore.user = _user
+            userManagerStore.updateUserGroups(_userGroupList)
         })
         it('should call API once on /users/groups/ with groups as payload', () => {
             const {axiosAuthenticated} = useAxios()
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/groups/', {
                 username: userManagerStore.user?.username,
-                groups: mockedUserGroups
+                groups: _userGroupList
             })
         })
     })
     describe('deleteUserGroups', () => {
         beforeEach(() => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             userManagerStore.deleteUserGroups([3, 2])
         })
         it('should call API for each group', () => {
@@ -113,7 +107,7 @@ describe('User manager store', () => {
     })
     describe('validateUser', () => {
         beforeEach(() => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             userManagerStore.validateUser()
         })
         it('should call API once on /users/id with isValidated as payload', () => {
@@ -126,7 +120,7 @@ describe('User manager store', () => {
     })
     describe('deleteUser', () => {
         beforeEach(() => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             userManagerStore.deleteUser()
         })
         it('should call API once on /users/id', () => {
@@ -139,16 +133,16 @@ describe('User manager store', () => {
         it('should call API once on /users/associations/id and populate userAssociations', async () => {
             const {axiosAuthenticated} = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
-            mockedAxios.get.mockResolvedValueOnce({data: mockedUserAssociationDetail})
+            mockedAxios.get.mockResolvedValueOnce({data: _userAssociationDetail})
             await userManagerStore.getUserAssociations(1)
             expect(mockedAxios.get).toHaveBeenCalledOnce()
             expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/1')
-            expect(userManagerStore.userAssociations).toEqual(mockedUserAssociationDetail)
+            expect(userManagerStore.userAssociations).toEqual(_userAssociationDetail)
         })
     })
     describe('deleteUserAssociation', () => {
         it('should call API once on /users/associations/userId/associationId', async () => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             const {axiosAuthenticated} = useAxios()
             await userManagerStore.deleteUserAssociation(1)
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
@@ -157,7 +151,7 @@ describe('User manager store', () => {
     })
     describe('patchUserAssociations', () => {
         it('should call API once on /users/associations/userId/associationId with data to patch as payload', async () => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             const dataToPatch = {
                 roleName: 'Trésorier',
                 hasOfficeStatus: true,
@@ -171,12 +165,12 @@ describe('User manager store', () => {
     })
     describe('updateUserInfos', () => {
         it('should only patch changed infos on /users/userId', async () => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             const userToUpdate = {
                 firstName: 'Jane',
-                lastName: mockedUser.lastName,
+                lastName: _user.lastName,
                 email: 'jane@lennon.uk',
-                phone: mockedUser.phone
+                phone: _user.phone
             }
             await userManagerStore.updateUserInfos(userToUpdate)
             const {axiosAuthenticated} = useAxios()
@@ -187,12 +181,12 @@ describe('User manager store', () => {
             })
         })
         it('should not patch anything if there are no changes', async () => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
             const userToUpdate = {
-                firstName: mockedUser.firstName,
-                lastName: mockedUser.lastName,
-                email: mockedUser.email,
-                phone: mockedUser.phone
+                firstName: _user.firstName,
+                lastName: _user.lastName,
+                email: _user.email,
+                phone: _user.phone
             }
             await userManagerStore.updateUserInfos(userToUpdate)
             const {axiosAuthenticated} = useAxios()

@@ -8,7 +8,7 @@ import type {
 } from '#/association'
 
 
-export const association: Association = {
+export const _association: Association = {
     id: 1,
     institution: {
         id: 1,
@@ -50,7 +50,7 @@ export const association: Association = {
     cgaDate: null
 }
 
-export const editedAssociation: EditedAssociation = {
+export const _editedAssociation: EditedAssociation = {
     institution: 1,
     institutionComponent: 1,
     activityField: 2,
@@ -69,7 +69,7 @@ export const editedAssociation: EditedAssociation = {
     approvalDate: null
 }
 
-export const nonEditedAssociation: EditedAssociation = {
+export const _nonEditedAssociation: EditedAssociation = {
     institution: 1,
     institutionComponent: 1,
     activityField: 1,
@@ -88,7 +88,7 @@ export const nonEditedAssociation: EditedAssociation = {
     lastGoaDate: null
 }
 
-export const associations: AssociationList[] = [
+export const _associations: AssociationList[] = [
     {
         id: 1,
         institution: {
@@ -141,21 +141,21 @@ export const associations: AssociationList[] = [
     }
 ]
 
-export const mockedAssociationName: AssociationName[] = [
+export const _associationName: AssociationName[] = [
     {
         id: 1,
         name: 'Association'
     }
 ]
 
-export const associationNames = associations.map(
+export const _associationNames = _associations.map(
     association => ({
         value: association.id,
         label: association.name
     })
 )
 
-export const associationSearchSettings: AssociationSearch = {
+export const _associationSearchSettings: AssociationSearch = {
     search: '',
     name: 'Chimie',
     acronym: '',
@@ -164,7 +164,7 @@ export const associationSearchSettings: AssociationSearch = {
     activityField: 2
 }
 
-export const associationWrongSearchSettings: AssociationSearch = {
+export const _associationWrongSearchSettings: AssociationSearch = {
     search: '',
     name: 'Wrong query',
     acronym: '',
@@ -173,7 +173,7 @@ export const associationWrongSearchSettings: AssociationSearch = {
     activityField: 3
 }
 
-export const mockedAssociationSocialNetworks: AssociationSocialNetwork[] = [
+export const _associationSocialNetworks: AssociationSocialNetwork[] = [
     {
         type: 'Mastodon',
         location: 'https://mastodon.social'

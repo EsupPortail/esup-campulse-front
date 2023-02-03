@@ -1,6 +1,6 @@
 import {vi} from 'vitest'
 
-export const axiosFixtures = {
+export const _axiosFixtures = {
     get: vi.fn(),
     post: vi.fn(),
     patch: vi.fn(),
