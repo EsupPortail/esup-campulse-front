@@ -69,6 +69,8 @@ describe('Association store', () => {
     describe('getManagedAssociations', () => {
         beforeEach(() => {
             userStore = useUserStore()
+            const {axiosPublic} = useAxios()
+            const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({data: associations} as AxiosResponse)
         })
         afterEach(() => {
@@ -96,6 +98,8 @@ describe('Association store', () => {
     })
     describe('Get association detail', () => {
         beforeEach(() => {
+            const {axiosPublic} = useAxios()
+            const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({data: association} as AxiosResponse)
             associationStore.getAssociationDetail(association.id)
         })
@@ -106,10 +110,12 @@ describe('Association store', () => {
             expect(associationStore.association).toEqual(association)
         })
         it('should be called once', () => {
-            expect(mockedAxios.get).toHaveBeenCalledOnce()
+            const {axiosPublic} = useAxios()
+            expect(axiosPublic.get).toHaveBeenCalledOnce()
         })
         it('should call API on /associations/id', () => {
-            expect(mockedAxios.get).toHaveBeenCalledWith(`/associations/${association.id}`)
+            const {axiosPublic} = useAxios()
+            expect(axiosPublic.get).toHaveBeenCalledWith(`/associations/${association.id}`)
         })
     })
     describe('Association names', () => {

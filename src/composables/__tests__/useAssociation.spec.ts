@@ -10,8 +10,9 @@ import {
 import useAssociation from '@/composables/useAssociation'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {Association} from '#/association'
-import {useAxios} from '@/composables/useAxios'
 import {axiosFixtures} from '~/fixtures/axios.mock'
+import {useAxios} from '@/composables/useAxios'
+
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({

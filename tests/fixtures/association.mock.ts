@@ -109,6 +109,9 @@ export const associations: AssociationList[] = [
         isEnabled: true,
         isSite: true,
         isPublic: true,
+        isVisible: true,
+        pathLogo: {},
+        altLogo: '',
         email: ''
     },
     {
@@ -131,6 +134,9 @@ export const associations: AssociationList[] = [
         isEnabled: true,
         isSite: true,
         isPublic: false,
+        isVisible: true,
+        pathLogo: {},
+        altLogo: '',
         email: ''
     }
 ]

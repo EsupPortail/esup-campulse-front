@@ -21,7 +21,7 @@ watch(() => associationStore.associations, () => {
 onMounted(async function () {
     loading.show
     await associationStore.getManagedAssociations()
-    await userStore.getUserAssociationsRoles()
+    await userStore.getUserAssociations()
     loading.hide
 })
 

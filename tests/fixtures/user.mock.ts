@@ -108,10 +108,7 @@ export const mockedUserAssociationDetail = {
     roleName: 'Présidente',
     hasOfficeStatus: true,
     isPresident: true,
-    association: {
-        id: 1,
-        name: 'PLANA'
-    }
+    association: 1
 }
 
 export const mockedUserAssociationsManagement = [

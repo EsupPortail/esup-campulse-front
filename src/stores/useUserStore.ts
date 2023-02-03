@@ -68,7 +68,7 @@ export const useUserStore = defineStore('userStore', {
                 }
             }
         },
-        async getUserAssociationsRoles() {
+        async getUserAssociations() {
             if (this.user && this.user.associations.length > 0) {
                 const {axiosAuthenticated} = useAxios()
                 this.userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
