@@ -1,7 +1,6 @@
 import {defineStore} from 'pinia'
-
 import type {CasLogin, LocalLogin, User, UserGroup, UserStore} from '#/user'
-import {removeTokens, setTokens} from '@/services/userService'
+import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 
 export const useUserStore = defineStore('userStore', {
@@ -38,6 +37,7 @@ export const useUserStore = defineStore('userStore', {
             const response = await axiosAuthenticated.post(url, data)
             const {accessToken, refreshToken, user} = response.data
             if (user.isValidatedByAdmin) {
+                const {setTokens} = useSecurity()
                 setTokens(accessToken, refreshToken)
                 this.user = user
             } else {
@@ -45,6 +45,7 @@ export const useUserStore = defineStore('userStore', {
             }
         },
         async logOut() {
+            const {removeTokens} = useSecurity()
             removeTokens()
             this.unLoadUser()
         },
@@ -86,6 +87,7 @@ export const useUserStore = defineStore('userStore', {
             this.user = undefined
         },
         unLoadNewUser() {
+            const {removeTokens} = useSecurity()
             removeTokens()
             this.newUser = undefined
         },
@@ -99,6 +101,7 @@ export const useUserStore = defineStore('userStore', {
             const {axiosAuthenticated} = useAxios()
             const data = (await axiosAuthenticated.post('/users/auth/cas/login/', {ticket, service})).data
             const {accessToken, refreshToken, user} = data
+            const {setTokens} = useSecurity()
             setTokens(accessToken, refreshToken)
             this.newUser = user
         }

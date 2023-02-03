@@ -60,6 +60,7 @@ export const _users: ManagedUsers = [
 ]
 
 export const _newUser: UserRegister = {
+    isCas: false,
     username: 'john.lennon@bbc.com',
     firstName: 'John',
     lastName: 'Lennon',

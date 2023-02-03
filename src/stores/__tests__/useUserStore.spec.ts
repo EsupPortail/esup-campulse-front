@@ -2,8 +2,7 @@ import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import type {User} from '#/user'
 import {_tokens} from '~/fixtures/tokens.mock'
-import {_user, _userGroups} from '~/fixtures/user.mock'
-import {setTokens} from '@/services/userService'
+import {_newUser, _user, _userGroups} from '~/fixtures/user.mock'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
@@ -40,7 +39,7 @@ describe('User store', () => {
         beforeEach(() => {
             userStore.user = _user
             userStore.user.isCas = false
-            userStore.newUser = _user
+            userStore.newUser = _newUser
             userStore.newUser.isCas = false
         })
         it('should be true if user isCas', () => {
@@ -162,7 +161,7 @@ describe('User store', () => {
     })
     describe('Unload newUser', () => {
         beforeEach(() => {
-            userStore.newUser = _user
+            userStore.newUser = _newUser
             setTokens(_tokens.access, _tokens.refresh)
             userStore.unLoadNewUser()
         })

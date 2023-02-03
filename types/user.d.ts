@@ -7,7 +7,7 @@ export interface User {
     username: string,
     firstName: string,
     lastName: string,
-    phone: string | undefined,
+    phone: string | undefined | null,
     email: string,
     isCas: boolean,
     isValidatedByAdmin: boolean | null,
@@ -20,7 +20,7 @@ export interface User {
 // User store
 export interface UserStore {
     user: User | undefined,
-    newUser: User | undefined,
+    newUser: UserRegister,
     userAssociations: UserAssociationDetail[]
 }
 
@@ -45,7 +45,14 @@ interface CasLogin {
 }
 
 // Register
-export type UserRegister = Pick<User, "username" | "firstName" | "lastName" | "email" | "phone">
+export interface UserRegister {
+    isCas: boolean,
+    username: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string
+}
 
 // Password reset
 export interface PasswordReset {
