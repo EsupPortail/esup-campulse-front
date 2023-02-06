@@ -13,6 +13,7 @@ import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {EditedAssociation} from '#/association'
 import axios from 'axios'
+import {useUserStore} from '@/stores/useUserStore'
 
 
 const {t} = useI18n()
@@ -22,6 +23,7 @@ const {
     checkChanges,
     updateAssociation,
 } = useAssociation()
+const userStore = useUserStore()
 
 const associationStore = useAssociationStore()
 
@@ -175,7 +177,7 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="altLogo"
                 :label="t('association.logo.alt')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="userStore.isUniManager ? '' : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
             />
@@ -209,14 +211,14 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.acronym"
                 :label="t('association.labels.acronym')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="userStore.isUniManager ? '' : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
             />
             <QInput
                 v-model="association.description"
                 :label="t('association.labels.description')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="userStore.isUniManager ? '' : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
                 type="textarea"
@@ -224,7 +226,7 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.activities"
                 :label="t('association.labels.activities')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="userStore.isUniManager ? '' : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
                 type="textarea"
@@ -259,21 +261,21 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.presidentNames"
                 :label="t('association.labels.president-name')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="userStore.isUniManager ? '' : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
             />
             <QInput
                 v-model="association.phonePres"
                 :label="t('association.labels.president-phone')"
-                :rules="[ val => val.length < 32 || t('forms.phone-char-limit')]"
+                :rules="userStore.isUniManager ? '' : [ val => val.length < 32 || t('forms.phone-char-limit')]"
                 filled
                 lazy-rules
             />
             <QInput
                 v-model="association.lastGoaDate"
                 :label="t('association.labels.last-goa')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="userStore.isUniManager ? '' : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
                 type="date"
@@ -285,7 +287,6 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.siret"
                 :label="t('association.labels.siret')"
-                class="without-rules"
                 filled
                 inputmode="numeric"
                 lazy-rules
@@ -296,14 +297,14 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.address"
                 :label="t('association.labels.address')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="userStore.isUniManager ? '' : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
             />
             <QInput
                 v-model="association.phone"
                 :label="t('association.labels.phone')"
-                :rules="[ val => val.length < 32 || t('forms.phone-char-limit')]"
+                :rules="userStore.isUniManager ? '' : [ val => val.length < 32 || t('forms.phone-char-limit')]"
                 filled
                 lazy-rules
                 type="tel"
@@ -311,7 +312,7 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.email"
                 :label="t('association.labels.mail')"
-                :rules="[ (val, rules) => rules.email(val) || t('forms.fill-field')]"
+                :rules="userStore.isUniManager ? '' : [ (val, rules) => rules.email(val) || t('forms.fill-field')]"
                 filled
                 lazy-rules
                 type="email"
@@ -319,7 +320,7 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.website"
                 :label="t('association.labels.website')"
-                :rules="[ val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
+                :rules="userStore.isUniManager ? '' : [ val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
                 filled
                 lazy-rules
                 type="url"
@@ -367,9 +368,6 @@ fieldset
 
 .q-select
     margin-bottom: 20px
-
-.without-rules
-    margin-bottom: 1rem
 
 legend
     background-color: $primary

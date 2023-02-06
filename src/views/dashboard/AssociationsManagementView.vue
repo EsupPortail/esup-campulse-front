@@ -12,7 +12,6 @@ const associationStore = useAssociationStore()
 const {loading} = useQuasar()
 const {t} = useI18n()
 
-
 const associations = ref()
 watch(() => associationStore.associations, () => {
     associations.value = associationStore.managedAssociations

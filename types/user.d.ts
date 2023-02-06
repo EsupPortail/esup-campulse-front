@@ -109,7 +109,6 @@ export interface UserToUpdate {
 
 export interface UserAssociationStatus {
     associationId: number,
-    associationName: string,
     roleName: string,
     hasOfficeStatus: boolean,
     isPresident: boolean

@@ -99,17 +99,20 @@ export const useAssociationStore = defineStore('associationStore', {
          * It the user is a manager, it simply gets all associations
          * If the user is a student member of associations, it gets all the associations linked to that user
          */
+        // To test
         async getManagedAssociations() {
             const userStore = useUserStore()
-            if (userStore.isUniManager) {
-                await this.getAssociations(false, false)
-            } else {
-                this.associations = []
-                const {axiosPublic} = useAxios()
+            await this.getAssociations(false, false)
+            if (!userStore.isUniManager) {
+                const studentAssociations: AssociationList[] = []
                 for (let i = 0; i < (userStore.user as User).associations.length; i++) {
                     const associationId = userStore.user?.associations[i].id
-                    this.associations.push((await axiosPublic.get<AssociationList>(`/associations/${associationId}`)).data)
+                    const studentAssociation = this.associations.find(association => association.id === associationId)
+                    if (studentAssociation) {
+                        studentAssociations.push(studentAssociation)
+                    }
                 }
+                this.associations = studentAssociations
             }
         },
         async getAssociationDetail(id: number) {
