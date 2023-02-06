@@ -60,14 +60,14 @@ const columns: QTableProps['columns'] = [
     {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
     {
         name: 'status',
-        align: 'left',
+        align: 'right',
         label: t('directory.labels.association-status'),
         field: 'isEnabled',
         sortable: false
     },
     {
         name: 'actions',
-        align: 'left',
+        align: 'center',
         label: t('directory.labels.association-actions'),
         field: 'isEnabled',
         sortable: false
@@ -76,9 +76,9 @@ const columns: QTableProps['columns'] = [
 </script>
 
 <template>
-    <h1>{{
+    <!-- <h1>{{
             userStore.isUniManager ? t('dashboard.association-management') : t('dashboard.association-user.manage-my-associations')
-        }}</h1>
+        }}</h1> -->
     <QBanner v-if="!userStore.isUniManager" class="bg-grey-3">
         <template v-slot:avatar>
             <QIcon color="primary" name="mdi-information-outline" size="md"/>
@@ -87,69 +87,95 @@ const columns: QTableProps['columns'] = [
         <template v-slot:action>
         </template>
     </QBanner>
-    <QBtn
+
+    <!-- <QBtn
         :label="t('home.back-dashboard')"
         :to="{name: 'Dashboard'}"
         color="secondary"
         icon="mdi-arrow-left-circle"
-    />
-    <QBtn
-        v-if="userStore.isUniManager"
-        :label="t('dashboard.create-association')"
-        :to="{name: 'CreateAssociation'}"
-        color="secondary"
-        icon="mdi-plus-box"
-    />
-    <QTable
-        v-model:selected="selected"
-        :columns="columns"
-        :loading="!associations"
-        :rows="associations"
-        :rows-per-page-options="[10, 20, 50, 0]"
-        :selection="userStore.isUniManager ? 'multiple' : ''"
-        :title="t('directory.title')"
-        row-key="name"
-    >
-        <template v-slot:body="props">
-            <QTr :props="props">
-                <QTd v-if="userStore.isUniManager">
-                    <QCheckbox v-model="props.selected"/>
-                </QTd>
-                <QTd key="name" :props="props">
-                    {{ props.row.name }}
-                </QTd>
-                <QTd key="acronym" :props="props">
-                    {{ props.row.acronym }}
-                </QTd>
-                <QTd key="institution" :props="props">
-                    {{ props.row.institution }}
-                </QTd>
-                <QTd key="component" :props="props">
-                    {{ props.row.component }}
-                </QTd>
-                <QTd key="field" :props="props">
-                    {{ props.row.field }}
-                </QTd>
-                <QTd key="status" :props="props">
-                    {{ props.row.isEnabled ? t('association.enabled') : t('association.disabled') }}
-                </QTd>
-                <QTd key="actions" :props="props">
-                    <QBtn
-                        v-if="userStore.isUniManager || userStore.hasOfficeStatus(props.row.id)"
-                        :label="t('association.edit')"
-                        :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                        color="primary"
-                        icon="mdi-pencil"
-                    />
-                    <span v-else>{{ t('dashboard.association-user.not-from-office') }}</span>
-                </QTd>
-            </QTr>
-        </template>
-    </QTable>
-    <AlertConfirmAssociationsChanges
-        v-if="userStore.isUniManager"
-        :selectedAssociations="selected"
-    />
+    /> -->
+    
+
+    <div class="form-title">
+        <h2>
+            <QIcon name="mdi-pencil-box-outline"/>
+            Liste des associations
+        </h2>
+        <QBtn
+            v-if="userStore.isUniManager"
+            :label="t('dashboard.create-association')"
+            :to="{name: 'CreateAssociation'}"
+            color="secondary"
+            icon="mdi-plus-box"
+            class="small-button"
+        />
+    </div>
+
+    <div class="form-container">
+        <div class="form">
+
+            <QTable
+                v-model:selected="selected"
+                :columns="columns"
+                :loading="!associations"
+                :rows="associations"
+                :rows-per-page-options="[10, 20, 50, 0]"
+                :selection="userStore.isUniManager ? 'multiple' : ''"
+                :title="t('directory.title')"
+                row-key="name"
+            >
+                <template v-slot:body="props">
+                    <QTr :props="props">
+                        <QTd v-if="userStore.isUniManager">
+                            <QCheckbox v-model="props.selected"/>
+                        </QTd>
+                        <QTd key="name" :props="props">
+                            {{ props.row.name }}
+                        </QTd>
+                        <QTd key="acronym" :props="props">
+                            {{ props.row.acronym }}
+                        </QTd>
+                        <QTd key="institution" :props="props">
+                            {{ props.row.institution }}
+                        </QTd>
+                        <QTd key="component" :props="props">
+                            {{ props.row.component }}
+                        </QTd>
+                        <QTd key="field" :props="props">
+                            {{ props.row.field }}
+                        </QTd>
+                        <QTd key="status" :props="props" class="state-cell">
+                            <!-- {{ props.row.isEnabled ? t('association.enabled') : t('association.disabled') }} -->
+                            <span class="form-state" v-if="!props.row.isEnabled">
+                                Désactivée
+                                <span class="form-state-icon form-state-red"><i class="bi bi-x-lg"></i></span>
+                            </span>
+
+                            <span class="form-state" v-if="props.row.isEnabled">
+                                Activée
+                                <span class="form-state-icon form-state-green"><i class="bi bi-x-lg"></i></span>
+                            </span>
+                        </QTd>
+                        <QTd class="actions-cell" key="actions" :props="props">
+                            <QBtn
+                                v-if="userStore.isUniManager || userStore.hasOfficeStatus(props.row.id)"
+                                :label="t('association.edit')"
+                                :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                                color="primary"
+                                icon="mdi-pencil"
+                            />
+                            <span v-else>{{ t('dashboard.association-user.not-from-office') }}</span>
+                        </QTd>
+                    </QTr>
+                </template>
+            </QTable>
+
+            <AlertConfirmAssociationsChanges
+                v-if="userStore.isUniManager"
+                :selectedAssociations="selected"
+            />
+        </div>
+    </div>
 </template>
 
 <style lang="sass" scoped>

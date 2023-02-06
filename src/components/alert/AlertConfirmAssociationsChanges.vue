@@ -80,25 +80,28 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
 </script>
 
 <template>
-    <QSelect
-        v-model="switches"
-        :label="t('association.all-selected')"
-        :options="actionsOptions"
-        emit-value
-        filled
-        map-options
-        option-label="label"
-        option-value="id"
-    />
-    <QBtn
-        :label="t('association.confirm-all-changes')"
-        color="primary"
-        icon="mdi-pencil"
-        @click="(switches !== undefined && selectedAssociations.length > 0) ? changes = true : changes = false"
-    />
+    <div class="table-actions-select">
+        <QSelect
+            v-model="switches"
+            :label="t('association.all-selected')"
+            :options="actionsOptions"
+            emit-value
+            filled
+            map-options
+            option-label="label"
+            option-value="id"
+        />
+        <QBtn
+            :label="t('association.confirm-all-changes')"
+            color="primary"
+            icon="mdi-pencil"
+            @click="(switches !== undefined && selectedAssociations.length > 0) ? changes = true : changes = false"
+        />
+    </div>
+    
     <QDialog v-model="changes" persistent>
         <QCard>
-            <QCardSection class="row items-center">
+            <QCardSection class="row items-center dialog-message">
                 <span class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</span>
                 <ul>
                     <li v-for="association in selectedAssociations" :key="association.id">
@@ -107,7 +110,7 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
                 </ul>
             </QCardSection>
 
-            <QCardActions align="right">
+            <QCardActions align="center" class="dialog-card-actions">
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"
