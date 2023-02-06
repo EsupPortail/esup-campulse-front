@@ -1113,7 +1113,7 @@ body {
     .q-card {
         border-radius: 0;
     }
-    
+
     .dialog-message {
         font-size: 16px;
         font-weight: 400;
@@ -1668,5 +1668,200 @@ body {
             display: block;
             width: 100%;
         }
+    }
+}
+
+/* #################################################################################################
+   PAGE: ASSOCIATIONS
+################################################################################################# */
+
+.introduction {
+    display: flex;
+    gap: 50px;
+    width: 100%;
+    max-width: $pageWidth;
+    margin: 30px auto 80px;
+
+    img {
+        width: 300px;
+        height: auto;
+    }
+
+    h2 {
+        font-size: 30px;
+        line-height: 40px;
+        font-weight: 400;
+        color: $color1Text;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 18px;
+        font-weight: 400;
+        color: $color1Text;
+    }
+}
+
+.directory-search {
+    width: 100%;
+    max-width: $pageWidth;
+    margin: 0 auto;
+}
+
+.directory-sorting {
+    margin-bottom: 10px;
+
+    section {
+        display: flex;
+        justify-content: space-between;
+        
+        p  {
+            font-size: 20px;
+            font-weight: 400;
+            color: $textColor2;
+
+            & > span {
+                color: $color1;
+                font-weight: 800;
+            }
+        }
+    }
+}
+
+.directory-list {
+    .q-card {
+        background: $backgroundColor1;
+        border: none;
+        border-radius: 0;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+        overflow: hidden;
+
+        a {
+            text-decoration: none;
+        }
+
+        .q-card__section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 75px;
+            box-shadow: 5px 0 0 0 $color1 inset;
+            transition: box-shadow 0.1s linear;
+            padding: 20px 30px 25px;
+
+            .list-logo {
+                flex: 0 0 90px;
+    
+                .q-img {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+        }
+
+        .card-background {
+            width: 120px;
+            height: 400px;
+            position: absolute;
+            top: calc(50% - 200px);
+            left: -30px;
+            background-color: $color1Background;
+            z-index: 0;
+            transition: left 0.1s linear;
+
+            &:after {
+                content: '';
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 200px 0 200px 70px;
+                border-color: transparent transparent transparent $color1Background;
+                position: absolute;
+                top: 0;
+                right: -69px;
+            }
+        }
+
+        .card-chevron {
+            font-size: 34px;
+            color: $color1;
+            position: absolute;
+            top: calc(50% - 25px);
+            right: 30px;
+            opacity: 0;
+            transition: opacity 0.1s linear, right 0.1s linear;
+        }
+
+        h3 {
+            font-size: 28px;
+            font-weight: 600;
+            color: $color1Text;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+
+            li {
+                display: flex;
+                align-items: top;
+                flex: 0 0 50%;
+                margin-bottom: 4px;
+
+                & > span.value {
+                    text-transform: none;
+                    font-size: 18px;
+                    font-weight: 400;
+                    color: $color1Text;
+                    padding-right: 20px;
+                }
+
+                & > span.label {
+                    display: inline-block;
+                    flex: 0 0 140px;
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: $textColor2;
+                    text-transform: uppercase;
+                    padding-top: 1px;
+                    padding-right: 5px;
+                    white-space: nowrap;
+
+                    i {
+                        margin-right: 5px;
+                    }
+                }
+
+                &:nth-child(2n + 1) {
+                    & > span.label {
+                        flex: 0 0 110px;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            .q-card__section {
+                box-shadow: 8px 0 0 0 $color1 inset;
+            }
+
+            .card-background {
+                left: -15px;
+            }
+
+            .card-chevron {
+                opacity: 1;
+                right: 15px;
+            }
+        }
+
+
     }
 }
