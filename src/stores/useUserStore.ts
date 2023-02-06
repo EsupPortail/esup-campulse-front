@@ -63,7 +63,14 @@ export const useUserStore = defineStore('userStore', {
             } else {
                 // Specific case for CAS user data which can persist until complete registration
                 if (user.isCas) {
-                    this.newUser = user
+                    this.newUser = {
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        isCas: true,
+                        username: user.username,
+                        email: user.email,
+                        phone: user.phone as string
+                    }
                 } else {
                     await this.logOut()
                 }

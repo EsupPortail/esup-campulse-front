@@ -20,7 +20,7 @@ export interface User {
 // User store
 export interface UserStore {
     user: User | undefined,
-    newUser: UserRegister,
+    newUser: UserRegister | undefined,
     userAssociations: UserAssociationDetail[]
 }
 

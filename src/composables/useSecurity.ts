@@ -139,7 +139,7 @@ export default function () {
             if (route.query.ticket) {
                 await userStore.loadCASUser(route.query.ticket as string)
             }
-            newUser.value.firstName = userStore.newUser?.firstName
+            newUser.value.firstName = userStore.newUser?.firstName as string
             emailVerification.value = newUser.value.email
         }
     }
@@ -156,7 +156,7 @@ export default function () {
         await axiosPublic.post('/users/auth/registration/verify-email/', {key: key})
     }
 
-    //
+    // Tested
     async function resendEmail(email: string) {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/resend-email/', {email})

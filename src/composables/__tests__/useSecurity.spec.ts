@@ -202,5 +202,14 @@ describe('useSecurity', () => {
             )
         })
     })
+    describe('resendEmail', () => {
+        it('should post once on /users/auth/registration/resend-email/ with email as payload', async () => {
+            const {axiosPublic} = useAxios()
+            const {resendEmail} = useSecurity()
+            await resendEmail('test@email.com')
+            expect(axiosPublic.post).toHaveBeenCalledOnce()
+            expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/registration/resend-email/', {email: 'test@email.com'})
+        })
+    })
 })
 
