@@ -144,6 +144,7 @@ async function onChangeLogo(action: string) {
             message: t('notifications.positive.association-logo-updated'),
             type: 'positive'
         })
+      newLogo.value = ""
     } catch (error) {
         if (axios.isAxiosError(error)) {
             notify({
