@@ -1678,14 +1678,25 @@ body {
 .introduction {
     display: flex;
     gap: 50px;
+    align-items: center;
     width: 100%;
     max-width: $pageWidth;
     margin: 30px auto 80px;
 
-    img {
-        width: 300px;
-        height: auto;
+    .intro-image {
+        flex: 0 0 300px;
+        
+        img {
+            // display: block;
+            width: 300px;
+            height: auto;
+        }
     }
+    
+
+    // & > div {
+    //     flex-grow: 1;
+    // }
 
     h2 {
         font-size: 30px;
@@ -1707,6 +1718,83 @@ body {
     width: 100%;
     max-width: $pageWidth;
     margin: 0 auto;
+
+    #search-form {
+        fieldset {
+            border: none;
+            padding: 0;
+            display: flex;
+
+            label {
+                flex-grow: 1;
+                
+                .q-field__control {
+                    border: 1px solid $color1;
+                }
+            }
+
+            .q-btn {
+                padding: 0px 20px;
+            }
+        }
+    }
+
+    #advanced-search-form {
+        padding: 15px 0 30px;
+
+        fieldset {
+            border: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+
+            .q-field {
+                flex: 0 0 calc(50% - 12px);
+
+                &.full-size {
+                    flex: 0 0 100%;
+                }
+            }
+        }
+
+        .q-btn {
+            margin: 20px 0 0;
+        }
+
+        .q-expansion-item__content {
+            padding: 15px 0 0;
+        }
+
+        .q-item {
+            padding-left: 5px;
+
+            .q-item__section--side {
+                padding-right: 0;
+                margin-right: 5px;
+                min-width: auto;
+    
+                i {
+                    font-size: 28px;
+                    color: $color1;
+                }
+            }
+    
+            .q-item__section--main {
+                font-size: 17px;
+                font-weight: 400;
+                color: $textColor2;
+            }
+
+            .q-focus-helper {
+                background: $color1;
+
+                &::before {
+                    background: $color1;
+                }
+            }
+        }
+    }
 }
 
 .directory-sorting {

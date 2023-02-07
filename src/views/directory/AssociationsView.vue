@@ -98,7 +98,9 @@ function onAdvancedSearch() {
     <!-- <h1>{{ t("home.directory") }}</h1> -->
 
     <section class="introduction">
-        <img :alt="t('directory.image-alt')" src="/images/unistra.jpg">
+        <div class="intro-image">
+            <img :alt="t('directory.image-alt')" src="/images/unistra.jpg" />
+        </div>
         <div>
             <h2>{{ t('directory.subtitle') }}</h2>
             <!-- <p>{{ t('directory.introduction') }}</p> -->
@@ -131,12 +133,13 @@ function onAdvancedSearch() {
                 <QBtn
                     :label="t('directory.search')"
                     color="primary"
-                    icon="mdi-chevron-right"
+                    icon-right="mdi-chevron-right"
                     @click="onSearch"
                 />
             </fieldset>
         </QForm>
         <QForm
+            id="advanced-search-form"
             class="search-text-field"
             @submit.prevent="onAdvancedSearch"
         >
@@ -151,6 +154,7 @@ function onAdvancedSearch() {
                         :label="t('directory.labels.association-name')"
                         filled
                         lazy-rules
+                        class="full-size"
                     />
                     <QInput
                         v-model="settings.acronym"
@@ -186,7 +190,7 @@ function onAdvancedSearch() {
                 <QBtn
                     :label="t('directory.advanced-search')"
                     color="primary"
-                    icon="mdi-chevron-right"
+                    icon-right="mdi-chevron-right"
                     type="submit"
                 />
             </QExpansionItem>
