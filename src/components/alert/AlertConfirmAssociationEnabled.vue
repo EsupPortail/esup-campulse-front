@@ -1,21 +1,29 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
-import router from '@/router'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 
 const {t} = useI18n()
-const enable = ref<boolean>(false)
-const disable = ref<boolean>(false)
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
-async function onEnableAssociation(isEnabled: boolean) {
-    const messageKeyword = isEnabled ? 'enable' : 'disable'
+const isEnabled = ref<boolean>(false)
+watch(() => associationStore.association, () => {
+    isEnabled.value = associationStore.association?.isEnabled as boolean
+})
+
+const openAlert = ref<boolean>(false)
+
+onMounted(() => {
+    isEnabled.value = associationStore.association?.isEnabled as boolean
+})
+
+
+async function onEnableAssociation() {
+    const messageKeyword = isEnabled.value ? 'disable' : 'enable'
     try {
-        await associationStore.patchEnabledAssociation(isEnabled, associationStore.association?.id)
-        await router.push({name: 'ManageAssociations'})
+        await associationStore.patchEnabledAssociation(!isEnabled.value as boolean, associationStore.association?.id)
         notify({
             type: 'positive',
             message: t(`notifications.positive.${messageKeyword}-association`)
@@ -31,24 +39,18 @@ async function onEnableAssociation(isEnabled: boolean) {
 
 <template>
     <QBtn
-        v-if="!associationStore.association?.isEnabled"
-        :label="t('association.enable-association')"
-        color="green"
-        icon="mdi-eye-check"
-        @click="enable = true"
-    />
-    <QBtn
-        v-if="associationStore.association?.isEnabled"
-        :label="t('association.disable-association')"
-        color="orange"
-        icon="mdi-eye-remove"
-        @click="disable = true"
+        :color="isEnabled ? 'orange' : 'green'"
+        :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
+        :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+        @click="openAlert = true"
     />
 
-    <QDialog v-model="enable" persistent>
+    <QDialog v-model="openAlert" persistent>
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t("association.confirm-enable") }}</span>
+                <span class="q-ml-sm">{{
+                        isEnabled ? t("association.confirm-disable") : t("association.confirm-enable")
+                    }}</span>
             </QCardSection>
 
             <QCardActions align="right">
@@ -60,33 +62,10 @@ async function onEnableAssociation(isEnabled: boolean) {
                 />
                 <QBtn
                     v-close-popup
-                    :label="t('association.enable-association')"
-                    color="green"
-                    icon="mdi-eye-check"
-                    @click="onEnableAssociation(true)"
-                />
-            </QCardActions>
-        </QCard>
-    </QDialog>
-    <QDialog v-model="disable" persistent>
-        <QCard>
-            <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t("association.confirm-disable") }}</span>
-            </QCardSection>
-
-            <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="mdi-arrow-left-circle"
-                />
-                <QBtn
-                    v-close-popup
-                    :label="t('association.disable-association')"
-                    color="orange"
-                    icon="mdi-eye-remove"
-                    @click="onEnableAssociation(false)"
+                    :color="isEnabled ? 'orange' : 'green'"
+                    :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
+                    :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+                    @click="onEnableAssociation"
                 />
             </QCardActions>
         </QCard>

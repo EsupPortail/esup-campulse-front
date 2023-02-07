@@ -30,24 +30,26 @@ export const _association: Association = {
         }
     ],
     name: 'Association',
-    acronym: null,
+    acronym: '',
     pathLogo: null,
-    altLogo: null,
-    description: null,
-    activities: null,
-    address: null,
-    phone: null,
-    email: null,
-    siret: null,
-    website: null,
-    studentCount: null,
-    presidentNames: null,
-    phonePres: null,
+    altLogo: '',
+    description: '',
+    activities: '',
+    address: '',
+    phone: '',
+    email: '',
+    siret: '',
+    website: '',
+    studentCount: 0,
+    presidentNames: '',
+    phonePres: '',
     isEnabled: true,
-    createdDate: null,
-    approvalDate: null,
-    lastGoaDate: null,
-    cgaDate: null
+    createdDate: '',
+    approvalDate: '',
+    lastGoaDate: '',
+    cgaDate: '',
+    isSite: true,
+    isPublic: true
 }
 
 export const _editedAssociation: EditedAssociation = {
@@ -109,7 +111,6 @@ export const _associations: AssociationList[] = [
         isEnabled: true,
         isSite: true,
         isPublic: true,
-        isVisible: true,
         pathLogo: {},
         altLogo: '',
         email: ''
@@ -134,7 +135,6 @@ export const _associations: AssociationList[] = [
         isEnabled: true,
         isSite: true,
         isPublic: false,
-        isVisible: true,
         pathLogo: {},
         altLogo: '',
         email: ''

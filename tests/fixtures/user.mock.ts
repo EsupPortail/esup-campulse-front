@@ -18,46 +18,45 @@ export const _userGroups: UserGroup[] = [
 
 export const _newUserGroups: number[] = [1, 2]
 
-export const _user: User = {
+export const _manager: User = {
     id: 1,
     password: 'motdepasse',
-    username: 'john.lennon@bbc.com',
-    firstName: 'John',
-    lastName: 'Lennon',
+    username: 'manager@unistra.fr',
+    firstName: 'Manager',
+    lastName: 'Unistra',
     phone: '',
-    email: 'john.lennon@bbc.com',
+    email: 'manager@unistra.fr',
     isCas: false,
     isValidatedByAdmin: true,
-    groups: _userGroups,
+    groups: [
+        {
+            id: 1,
+            name: 'Gestionnaire SVU'
+        }
+    ],
     associations: _associationName
 }
 
-export const _users: ManagedUsers = [
-    {
-        id: 1,
-        username: 'john.lennon@bbc.com',
-        firstName: 'John',
-        lastName: 'Lennon',
-        phone: '',
-        email: 'john.lennon@bbc.com',
-        isCas: false,
-        isValidatedByAdmin: true,
-        groups: _userGroups,
-        associations: _associationName
-    },
-    {
-        id: 1,
-        username: 'bill@murray.com',
-        firstName: 'Bill',
-        lastName: 'Murray',
-        phone: '',
-        email: 'bill@murray.com',
-        isCas: false,
-        isValidatedByAdmin: true,
-        groups: _userGroups,
-        associations: _associationName
-    }
-]
+export const _student: User = {
+    id: 5,
+    password: 'motdepasse',
+    username: 'student@unistra.fr',
+    firstName: 'Student',
+    lastName: 'Unistra',
+    phone: '',
+    email: 'student@unistra.fr',
+    isCas: false,
+    isValidatedByAdmin: true,
+    groups: [
+        {
+            id: 2,
+            name: 'Étudiante ou Étudiant'
+        }
+    ],
+    associations: _associationName
+}
+
+export const _users: ManagedUsers = [_student, _manager]
 
 export const _newUser: UserRegister = {
     isCas: false,
@@ -68,7 +67,7 @@ export const _newUser: UserRegister = {
     email: 'john.lennon@bbc.com'
 }
 
-export const _userGroupList: number[] = _user.groups.map(group => group.id)
+export const _userGroupList: number[] = _userGroups.map(group => group.id)
 
 export const _groupLabels = _userGroups.map(
     group => ({
