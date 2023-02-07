@@ -74,7 +74,7 @@ onMounted(async () => {
 
 // Logo management
 const altLogo = ref<string>('')
-const newLogo = ref()
+const newLogo = ref<string | Blob>("")
 const pathLogo = ref<object | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {
     pathLogo.value = associationStore.association?.pathLogo
@@ -133,7 +133,9 @@ async function onChangeLogo(action: string) {
     try {
         if (action === 'update') {
             const patchLogoData = new FormData()
-            patchLogoData.append('pathLogo', newLogo.value)
+            if (typeof newLogo.value === 'object') {
+              patchLogoData.append('pathLogo', newLogo.value)
+            }
             patchLogoData.append('altLogo', altLogo.value)
             await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
         } else if (action === 'delete') {
