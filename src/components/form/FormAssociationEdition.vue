@@ -139,8 +139,9 @@ async function onChangeLogo(action: string) {
             patchLogoData.append('altLogo', altLogo.value)
             await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
         } else if (action === 'delete') {
-            const deleteLogoData = {'altLogo': '', 'pathLogo': null}
+            const deleteLogoData = {'altLogo': null, 'pathLogo': null}
             await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+            altLogo.value = ""
         }
         notify({
             message: t('notifications.positive.association-logo-updated'),
