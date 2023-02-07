@@ -1,19 +1,28 @@
+// Fonts
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+
+// Bootstrap icons
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
 
+// Variables
 $pageWidth: 1250px;
-$responsiveWidth1: 900px;
-$responsiveWidth2: 700px;
+$responsiveWidth: 900px;
 $responsiveMargin: 25px;
 
+// Images
 $headerBackground: url('./img/header-background2.jpg');
 $chevronRightImage: url('./img/chevron-right.png');
 $chevronRightCharteImage: url('./img/chevron-right-charte.png');
+$homeDirectoryImage: url('./img/background-annuaire-2.jpg');
+$homeCharterImage: url('./img/background-charte-2.jpg');
+$homeCapeImage: url('./img/background-cape.jpg');
 
+// Fonts
 $baseFont: "Titillium Web", sans-serif;
 $titleFont: 'Open Sans', sans-serif;
 
+// Colors
 $backgroundColor1: #ffffff;
 $backgroundColor2: #F5F5F5;
 $footerBackgroundColor: #2C2C2C;
@@ -64,16 +73,18 @@ body {
     margin: auto;
 }
 
+// Displaying the layout as a table (and the different layout parts as table-rows) is a common trick to make sure the footer stays 
+// at the bottom of the viewport even when the page's height is inferior to the viewport's height (without giving the footer an absolute or fixed position).
 #layout-page {
     width: 100%;
     max-width: unset;
-    display:table;
-    table-layout:fixed;
-    margin:0 auto;
+    display: table;
+    table-layout: fixed;
+    margin: 0 auto;
 }
 
 #layout-header, #layout-breadcrumbs, #layout-content, #layout-footer {
-    display:table-row;
+    display: table-row;
 }
 
 #layout-content {
@@ -144,7 +155,7 @@ body {
             color: $textColor3;
             text-transform: uppercase;
 
-            @media only screen and (max-width: $responsiveWidth1) {
+            @media only screen and (max-width: $responsiveWidth) {
                 padding-right: 10px;
                 padding-left: 10px;
             }
@@ -193,11 +204,14 @@ body {
             }
         }
 
-        @media only screen and (max-width: $responsiveWidth1) {
+        @media only screen and (max-width: $responsiveWidth) {
             padding-right: 0;
             padding-left: 10px;
         }
     }
+
+    // The header has several variants (notably one for the home page and one for the login page).
+    // Switch class on the header to switch variant.
 
     &.variant-home {
         height: 440px;
@@ -254,6 +268,7 @@ body {
     }
 }
 
+// Site title in the header - appears only on the home page
 #header-home-title {
     width: 100%;
     max-width: $pageWidth;
@@ -287,6 +302,7 @@ body {
     }
 }
 
+// Page title in the header - appears in all pages not using the home or minimal variant of the header.
 #header-title {
     width: 100%;
     max-width: $pageWidth;
@@ -344,6 +360,7 @@ body {
     }
 }
 
+// Dropdown menu in the "my account" button
 .profile-menu {
     background: transparent;
     box-shadow: none;
@@ -468,6 +485,9 @@ body {
         }
     }
 
+    // The breadcrumbs have several variants (notably one for the home page and one for the login page).
+    // Use a different class to switch variant.
+
     &.variant-home {
         display: none;
     }
@@ -546,6 +566,7 @@ body {
         margin: 20px 0 10px;
     }
 
+    // Footer links
     .footer-text {
         width: 100%;
         max-width: $pageWidth;
@@ -583,6 +604,7 @@ body {
         }
     }
 
+    // Footer text
     & > p {
         width: 100%;
         max-width: 880px;
@@ -597,6 +619,9 @@ body {
             padding-right: $responsiveMargin;
         }
     }
+
+    // The footer has several variants that change its color depending on the current space.
+    // Use a different class to switch variant.
 
     &.variant-space-2 {
         #footer-logos {
@@ -617,6 +642,8 @@ body {
    FORMS
 ################################################################################################# */
 
+// A generic form wrapper.
+// Most forms on the site must be contained in both a "form" and "form-container" element.
 .form-container {
     position: relative;
     background-color: $backgroundColor2;
@@ -654,6 +681,7 @@ body {
     }
 }
 
+// Quasar default fields (inputs, buttons, etc)
 .q-field {
     .q-field__control {
         background-color: $backgroundColor1;
@@ -738,6 +766,7 @@ body {
     }
 }
 
+// A document form element allowing to upload, remove and review a list of documents.
 .document-input-group {
     .document-input {
         margin-bottom: 20px;
@@ -967,6 +996,7 @@ body {
     }
 }
 
+// A title that can be located on top of a form wrapper.
 .form-title {
     display: flex;
     flex-direction: row;
@@ -992,6 +1022,7 @@ body {
     }
 }
 
+// Generic Quasar tables, as found mainly in the admin section of the site
 .q-table__container {
     border-radius: 0;
     background-color: transparent;
@@ -1102,6 +1133,8 @@ body {
     }
 }
 
+// State badges that can be used in forms.
+// Icons aren't defined here, only colors.
 .form-state {
     display: inline-block;
     white-space: nowrap;
@@ -1139,6 +1172,7 @@ body {
     }
 }
 
+// Select elements used to choose an action to perform on selected table rows.
 .table-actions-select {
     display: flex;
     flex-direction: row;
@@ -1163,6 +1197,7 @@ body {
     }
 }
 
+// Quasar dialog window
 .q-dialog {
     .q-card {
         border-radius: 0;
@@ -1197,6 +1232,7 @@ body {
    PAGE: HOME
 ################################################################################################# */
 
+// Intro element on the home page
 #home-info-panel {
     width: 100%;
     background: none !important;
@@ -1272,6 +1308,7 @@ body {
     }
 }
 
+// Sections for each space on the site
 .home-section {
     background-repeat: no-repeat;
     background-size: cover;
@@ -1290,12 +1327,12 @@ body {
     }
 
     &.home-section-annuaire {
-        background-image: url('./img/background-annuaire.jpg');
+        background-image: $homeDirectoryImage;
         background-position: center center;
     }
 
     &.home-section-charte {
-        background-image: url('./img/background-charte.jpg');
+        background-image: $homeCharterImage;
         background-position: center center;
 
         .section-card {
@@ -1304,7 +1341,7 @@ body {
     }
 
     &.home-section-cape {
-        background-image: url('./img/background-cape.jpg');
+        background-image: $homeCapeImage;
         background-position: center center;
     }
 
@@ -1605,7 +1642,7 @@ body {
 }
 
 /* #################################################################################################
-   PAGE: CONNEXION
+   PAGE: LOGIN
 ################################################################################################# */
 
 #login-page {
@@ -1729,6 +1766,7 @@ body {
    PAGE: ASSOCIATIONS
 ################################################################################################# */
 
+// Intro element on the directory page; could be reused on other pages.
 .introduction {
     display: flex;
     gap: 50px;
@@ -1776,7 +1814,7 @@ body {
         }
     }
 
-    @media only screen and (max-width: $responsiveWidth1) {
+    @media only screen and (max-width: $responsiveWidth) {
         display: block;
 
         .intro-image {
@@ -1795,6 +1833,7 @@ body {
     }
 }
 
+// Search and advanced search forms
 .directory-search {
     width: 100%;
     max-width: $pageWidth;
@@ -1882,7 +1921,7 @@ body {
         padding-right: $responsiveMargin;
     }
 
-    @media only screen and (max-width: $responsiveWidth1) {
+    @media only screen and (max-width: $responsiveWidth) {
         #search-form {
             fieldset {
                 display: block;
@@ -1910,6 +1949,7 @@ body {
     }
 }
 
+// Elements displayed on top of the list
 .directory-sorting {
     margin-bottom: 10px;
 
@@ -1930,6 +1970,7 @@ body {
     }
 }
 
+// List of results
 .directory-list {
     .q-card {
         background: $backgroundColor1;
@@ -2064,7 +2105,7 @@ body {
         }
     }
 
-    @media only screen and (max-width: $responsiveWidth1) {
+    @media only screen and (max-width: $responsiveWidth) {
         .q-card {
             .card-background {
                 display: none;
