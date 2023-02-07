@@ -83,7 +83,6 @@ watch(() => associationStore.association?.pathLogo, () => {
 // Open alert if user leaves without saving
 const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
-const hasValidated = ref<boolean>(false)
 
 function onLeaveEdition() {
     leaveEdition.value = true
@@ -92,17 +91,15 @@ function onLeaveEdition() {
 
 // Check is there are any changes before leaving the page
 onBeforeRouteLeave((to, from, next) => {
-    if (!hasValidated.value) {
-        if (Object.keys(checkChanges(association.value)).length > 0) {
-            openAlert.value = true
-            if (!leaveEdition.value) {
-                next(false)
-            } else {
-                next(true)
-            }
+    if (Object.keys(checkChanges(association.value)).length > 0) {
+        openAlert.value = true
+        if (!leaveEdition.value) {
+            next(false)
         } else {
             next(true)
         }
+    } else {
+        next(true)
     }
 })
 
