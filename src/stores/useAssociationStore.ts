@@ -154,7 +154,7 @@ export const useAssociationStore = defineStore('associationStore', {
         // Test
         async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
+            this.association = await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
         }
     }
 })

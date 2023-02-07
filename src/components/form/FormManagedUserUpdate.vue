@@ -33,7 +33,7 @@ const initValues = () => {
     user.value.firstName = userManagerStore.user?.firstName
     user.value.lastName = userManagerStore.user?.lastName
     user.value.email = userManagerStore.user?.email
-    user.value.phone = userManagerStore.user?.phone
+    user.value.phone = userManagerStore.user?.phone as string
 }
 watch(() => userManagerStore.user, initValues)
 
