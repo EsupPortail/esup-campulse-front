@@ -99,7 +99,6 @@ export const useAssociationStore = defineStore('associationStore', {
          * It the user is a manager, it simply gets all associations
          * If the user is a student member of associations, it gets all the associations linked to that user
          */
-        // To test
         async getManagedAssociations() {
             const userStore = useUserStore()
             await this.getAssociations(false, false)
@@ -144,14 +143,12 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.fields = (await axiosPublic.get<AssociationField[]>('/associations/activity_fields')).data
             }
         },
-        // Test
         async deleteAssociation(associationId: number | undefined) {
             if (associationId) {
                 const {axiosAuthenticated} = useAxios()
                 await axiosAuthenticated.delete(`/associations/${associationId}`)
             }
         },
-        // Test
         async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
             const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
