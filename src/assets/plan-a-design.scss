@@ -154,10 +154,59 @@ body {
             padding: 0 17px;
             color: $textColor3;
             text-transform: uppercase;
+            display: inline-block;
+            position: relative;
+
+            &:focus-visible {
+                outline: none;
+            }
+
+            &::after {
+                content: '';
+                display: block;
+                width: calc(100% - 34px);
+                height: calc(100% + 8px);
+                border-bottom: 2px solid $backgroundColor1;
+                position: absolute;
+                left: 17px;
+                top: 0;
+                transform: scaleX(0);
+                transition: transform 0.1s linear;
+            }
+
+            &:hover {
+                &::after {
+                    transform: scaleX(1);
+                }
+            }
+
+            &:active {
+                &::after {
+                    transform: scaleX(1.2);
+                }
+            }
+
+            // Links are underlined in the color of the space they point to
+            &.space-1::after {
+                border-color: $color1;
+            }
+
+            &.space-2::after {
+                border-color: $color2;
+            }
+
+            &.space-3::after {
+                border-color: $color3;
+            }
 
             @media only screen and (max-width: $responsiveWidth) {
                 padding-right: 10px;
                 padding-left: 10px;
+
+                &::after {
+                    width: calc(100% - 20px);
+                    left: 10px;
+                }
             }
         }
     }
