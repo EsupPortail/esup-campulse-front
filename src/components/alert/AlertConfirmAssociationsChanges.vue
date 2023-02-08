@@ -32,9 +32,12 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             selectedAssociations.forEach((selectedAssociation) => {
                 if (selectedAssociation.email) {
                     mailto += `${selectedAssociation.email},`
+                    associationsSuccess.push(selectedAssociation.name)
+                } else {
+                    associationsError.push(selectedAssociation.name)
                 }
             })
-            window.location.href = mailto
+            window.open(mailto, '_blank')
             break
         case 'enable':
             selectedAssociations.forEach((selectedAssociation) => {
@@ -63,18 +66,29 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
     }
 
     Promise.all(promisesToExecute).then(() => {
+        let message = ''
         if (associationsSuccess.length > 0) {
             associationStore.getManagedAssociations()
+            if (switches.value === 'email') {
+                message = t('notifications.positive.email-associations')
+            } else {
+                message = t('notifications.positive.change-associations')
+            }
             notify({
                 type: 'positive',
-                message: `${t('notifications.positive.change-associations')}${associationsSuccess.join(', ')}`
+                message: `${message}${associationsSuccess.join(', ')}`
             })
         }
         if (associationsError.length > 0) {
             associationStore.getManagedAssociations()
+            if (switches.value === 'email') {
+                message = t('notifications.negative.email-associations-error')
+            } else {
+                message = t('notifications.negative.change-associations-error')
+            }
             notify({
                 type: 'negative',
-                message: `${t('notifications.negative.change-associations-error')}${associationsError.join(', ')}`
+                message: `${message}${associationsError.join(', ')}`
             })
         }
     })
