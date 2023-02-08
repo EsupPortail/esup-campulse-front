@@ -7,6 +7,7 @@ import type {Association} from '#/association'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
+const word = ref<string>("")
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 const actionsOptions = [
@@ -54,14 +55,22 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             })
             break
         case 'delete':
-            selectedAssociations.forEach((selectedAssociation) => {
+            if(word.value === t('association.before-deletion-word')) {
+              selectedAssociations.forEach((selectedAssociation) => {
                 promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
-                    associationsSuccess.push(selectedAssociation.name)
-                    selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation), 1)
+                  associationsSuccess.push(selectedAssociation.name)
+                  selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation), 1)
                 }).catch(() => {
-                    associationsError.push(selectedAssociation.name)
+                  associationsError.push(selectedAssociation.name)
                 }))
-            })
+              })
+              word.value = ""
+            } else {
+              notify({
+                type: 'negative',
+                message: t('association.before-deletion-word-error')
+              })
+            }
             break
     }
 
@@ -122,6 +131,13 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
                     </li>
                 </ul>
             </QCardSection>
+          <QCardSection v-if="switches === 'delete'">
+            <span class="q-ml-sm"></span>
+            <QInput
+                v-model=word
+                @paste.prevent
+                :label="t('association.before-deletion-word-instruction')" />
+          </QCardSection>
 
             <QCardActions align="right">
                 <QBtn
