@@ -125,11 +125,16 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</span>
-                <ul>
-                    <li v-for="association in selectedAssociations" :key="association.id">
-                        {{ association.name }}
-                    </li>
-                </ul>
+                <template v-if="switches === 'email'">
+                    <ul v-for="association in selectedAssociations" :key="association.id">
+                        <li v-if="association.email !== ''">{{ association.name }}</li>
+                    </ul>
+                </template>
+                <template v-else>
+                    <ul v-for="association in selectedAssociations" :key="association.id">
+                        <li>{{ association.name }}</li>
+                    </ul>
+                </template>
             </QCardSection>
           <QCardSection v-if="switches === 'delete'">
             <QInput
