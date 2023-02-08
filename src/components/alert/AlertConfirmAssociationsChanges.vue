@@ -7,7 +7,7 @@ import type {Association} from '#/association'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
-const word = ref<string>("")
+const deletionWord = ref<string>("")
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 const actionsOptions = [
@@ -55,7 +55,7 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             })
             break
         case 'delete':
-            if(word.value === t('association.before-deletion-word')) {
+            if(deletionWord.value === t('association.before-deletion-word')) {
               selectedAssociations.forEach((selectedAssociation) => {
                 promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
                   associationsSuccess.push(selectedAssociation.name)
@@ -64,7 +64,7 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
                   associationsError.push(selectedAssociation.name)
                 }))
               })
-              word.value = ""
+              deletionWord.value = ""
             } else {
               notify({
                 type: 'negative',
@@ -132,9 +132,8 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
                 </ul>
             </QCardSection>
           <QCardSection v-if="switches === 'delete'">
-            <span class="q-ml-sm"></span>
             <QInput
-                v-model=word
+                v-model=deletionWord
                 @paste.prevent
                 :label="t('association.before-deletion-word-instruction')" />
           </QCardSection>
