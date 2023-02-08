@@ -62,7 +62,7 @@ const columns: QTableProps['columns'] = [
         align: 'left',
         label: t('directory.labels.association-status'),
         field: 'isEnabled',
-        sortable: false
+        sortable: true
     },
     {
         name: 'actions',
