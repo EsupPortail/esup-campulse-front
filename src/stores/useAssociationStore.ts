@@ -91,7 +91,7 @@ export const useAssociationStore = defineStore('associationStore', {
             let url = '/associations/'
 
             if (forDirectory) url += '?is_public=true'
-            if (forRegistration) url += '?is_enabled=true'
+            if (forRegistration) url += 'names'
 
             this.associations = (await axiosPublic.get<AssociationList[]>(url)).data
         },
