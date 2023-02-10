@@ -47,6 +47,17 @@ export default function () {
         })
     }
 
+
+    /**
+     * It returns true if the user has the permission passed in as a parameter
+     * @param {string} permission - The permission you want to check for.
+     * @returns A boolean value.
+     */
+    // Tested
+    function hasPerm(permission: string): boolean {
+        return userStore.userPermissions.includes(permission)
+    }
+
     const newUser = ref<UserRegister>({
         isCas: false,
         username: '',
@@ -191,6 +202,7 @@ export default function () {
         passwordReset,
         passwordResetConfirm,
         userGroupsRegister,
-        userLocalRegisterAsManager
+        userLocalRegisterAsManager,
+        hasPerm
     }
 }

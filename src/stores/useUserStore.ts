@@ -7,6 +7,7 @@ export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
         newUser: undefined,
+        userPermissions: [],
         userAssociations: []
     }),
 
@@ -59,7 +60,7 @@ export const useUserStore = defineStore('userStore', {
             const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
             if (user.isValidatedByAdmin) {
                 this.user = user
-                this.user.groups = (await axiosAuthenticated.get<UserGroup[]>('/users/groups/')).data
+                // TODO getUserGroup
             } else {
                 // Specific case for CAS user data which can persist until complete registration
                 if (user.isCas) {
@@ -75,6 +76,12 @@ export const useUserStore = defineStore('userStore', {
                     await this.logOut()
                 }
             }
+        },
+        // TODO
+        async getUserPermissions() {
+            /*const {axiosAuthenticated} = useAxios()
+            const data = (await axiosAuthenticated.get<UserGroup>('/users/groups/')).data
+            const {permissions} = data*/
         },
         async getUserAssociations() {
             if (this.user && this.user.associations.length > 0) {

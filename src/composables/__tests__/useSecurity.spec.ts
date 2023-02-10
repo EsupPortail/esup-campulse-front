@@ -4,9 +4,10 @@ import {config} from '@vue/test-utils'
 import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {_tokens} from "../../../tests/fixtures/tokens.mock";
-import {useAxios} from "../useAxios";
-import {_newUser, _newUserGroups, _user} from "../../../tests/fixtures/user.mock";
+import {_tokens} from '~/fixtures/tokens.mock'
+import {useAxios} from '@/composables/useAxios'
+import {_newUser, _newUserGroups, _student} from '~/fixtures/user.mock'
+import {_permissions} from '~/fixtures/permissions.mock'
 
 config.global.plugins = [
     createTestingPinia({createSpy: vi.fn()}),
@@ -151,10 +152,10 @@ describe('useSecurity', () => {
         it('should call API once on /users/groups/ with username and newUserGroups as data', async () => {
             const {axiosPublic} = useAxios()
             const {userGroupsRegister} = useSecurity()
-            await userGroupsRegister(_user.username, _newUserGroups)
+            await userGroupsRegister(_student.username, _newUserGroups)
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenCalledWith('/users/groups/', {
-                username: _user.username,
+                username: _student.username,
                 groups: _newUserGroups
             })
         })
@@ -181,9 +182,9 @@ describe('useSecurity', () => {
         it('should post once on /users/auth/password/reset with user email as data', () => {
             const {axiosPublic} = useAxios()
             const {passwordReset} = useSecurity()
-            passwordReset(_user.email)
+            passwordReset(_student.email)
             expect(axiosPublic.post).toHaveBeenCalledOnce()
-            expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/password/reset/', {email: _user.email})
+            expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/password/reset/', {email: _student.email})
         })
     })
     describe('passwordResetConfirm', () => {
@@ -209,6 +210,14 @@ describe('useSecurity', () => {
             await resendEmail('test@email.com')
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/registration/resend-email/', {email: 'test@email.com'})
+        })
+    })
+    describe('hasPerm', () => {
+        it('should return true if userPermission is in userStore', () => {
+            userStore.userPermissions = _permissions
+            const {hasPerm} = useSecurity()
+            expect(hasPerm('add_association')).toBeTruthy()
+            expect(hasPerm('can_burn_application')).toBeFalsy()
         })
     })
 })

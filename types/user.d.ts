@@ -21,6 +21,7 @@ export interface User {
 export interface UserStore {
     user: User | undefined,
     newUser: UserRegister | undefined,
+    userPermissions: string[]
     userAssociations: UserAssociationDetail[]
 }
 
@@ -89,7 +90,11 @@ export interface UserAssociationDetail {
 // User group
 export interface UserGroup {
     id: number,
-    name: string
+    name: string,
+    user: number,
+    group: number,
+    institution: number,
+    permissions: string[]
 }
 
 export type GroupList = { value: number, label: string }[]
