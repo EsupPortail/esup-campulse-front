@@ -1,6 +1,6 @@
 import {ref} from 'vue'
 import {useRoute} from 'vue-router'
-import type {UserAssociations, UserLogin, UserRegister} from '#/user'
+import type {UserLogin, UserRegister} from '#/user'
 import useAssociation from '@/composables/useAssociation'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
@@ -53,9 +53,9 @@ export default function () {
      * @param {string} permission - The permission you want to check for.
      * @returns A boolean value.
      */
-    // Tested
-    function hasPerm(permission: string): boolean {
-        return userStore.userPermissions.includes(permission)
+    // TODO retest
+    function hasPerm(permission: string): boolean | undefined {
+        return userStore.user?.permissions.includes(permission)
     }
 
     const newUser = ref<UserRegister>({

@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, LocalLogin, User, UserGroup, UserStore} from '#/user'
+import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 
@@ -7,7 +7,6 @@ export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
         newUser: undefined,
-        userPermissions: [],
         userAssociations: []
     }),
 
@@ -17,14 +16,13 @@ export const useUserStore = defineStore('userStore', {
         userNameFirstLetter: (state: UserStore): string | undefined => {
             return state.user?.firstName.charAt(0).toUpperCase()
         },
-        managerGroup: (state: UserStore): UserGroup | undefined => {
-            return state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
-        },
-        isUniManager: (state: UserStore): boolean | undefined => {
-            return !!state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU'))
-        },
         userName: (state: UserStore): string | undefined => {
             return state.user?.firstName + ' ' + state.user?.lastName
+        },
+        hasAssociations: (state: UserStore): boolean | undefined => {
+            if (state.user?.associations) {
+                return state.user?.associations.length > 0
+            }
         }
     },
     actions: {
@@ -60,7 +58,6 @@ export const useUserStore = defineStore('userStore', {
             const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
             if (user.isValidatedByAdmin) {
                 this.user = user
-                // TODO getUserGroup
             } else {
                 // Specific case for CAS user data which can persist until complete registration
                 if (user.isCas) {
@@ -77,12 +74,6 @@ export const useUserStore = defineStore('userStore', {
                 }
             }
         },
-        // TODO
-        async getUserPermissions() {
-            /*const {axiosAuthenticated} = useAxios()
-            const data = (await axiosAuthenticated.get<UserGroup>('/users/groups/')).data
-            const {permissions} = data*/
-        },
         async getUserAssociations() {
             if (this.user && this.user.associations.length > 0) {
                 const {axiosAuthenticated} = useAxios()
@@ -97,8 +88,10 @@ export const useUserStore = defineStore('userStore', {
                 return false
             }
         },
+        // Retest
         unLoadUser() {
             this.user = undefined
+            this.userAssociations = []
         },
         unLoadNewUser() {
             const {removeTokens} = useSecurity()

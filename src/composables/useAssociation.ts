@@ -1,6 +1,5 @@
 import {ref} from 'vue'
-
-import type {AssociationSocialNetwork, EditedAssociation} from '#/association'
+import type {AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
 import type {UserAssociations} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
@@ -22,11 +21,11 @@ export default function () {
 
     /**
      * It creates an association with the name provided as a parameter
-     * @param {string} name - The name of the association
+     * @param newAssociation
      */
-    async function createAssociation(name: string) {
+    async function createAssociation(newAssociation: NewAssociation) {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.post('/associations/', {name: name})
+        await axiosAuthenticated.post('/associations/', newAssociation)
     }
 
 

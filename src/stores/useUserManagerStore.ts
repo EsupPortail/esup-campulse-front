@@ -1,16 +1,5 @@
 import {defineStore} from 'pinia'
-import type {
-    ManagedUser,
-    ManagedUsers,
-    UserAssociationDetail,
-    UserAssociationPatch,
-    UserAssociationStatus,
-    UserDirectory,
-    UserGroup,
-    UserManagerStore,
-    UserNames,
-    UserToUpdate
-} from '#/user'
+import type {User, UserAssociationPatch, UserAssociationStatus, UserManagerStore, UserNames, UserToUpdate} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
@@ -26,18 +15,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 .map(user => ({
                     value: user.id,
                     label: user.firstName + ' ' + user.lastName
-                }))
-        },
-        userDirectory: (state: UserManagerStore): UserDirectory[] => {
-            return state.users
-                .map(user => ({
-                    id: user.id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    associations: user.associations,
-                    groups: user.groups,
-                    isValidatedByAdmin: user.isValidatedByAdmin
                 }))
         },
         userGroups: (state: UserManagerStore): number[] => {
@@ -64,16 +41,15 @@ export const useUserManagerStore = defineStore('userManagerStore', {
     actions: {
         async getUsers() {
             const {axiosAuthenticated} = useAxios()
-            this.users = (await axiosAuthenticated.get<ManagedUsers>('/users/')).data
+            this.users = (await axiosAuthenticated.get<User[]>('/users/')).data
         },
         async getUnvalidatedUsers() {
             const {axiosAuthenticated} = useAxios()
-            this.users = (await axiosAuthenticated.get<ManagedUsers>('/users/?is_validated_by_admin=false')).data
+            this.users = (await axiosAuthenticated.get<User[]>('/users/?is_validated_by_admin=false')).data
         },
         async getUserDetail(id: number) {
             const {axiosAuthenticated} = useAxios()
-            this.user = (await axiosAuthenticated.get<ManagedUser>(`/users/${id}`)).data
-            this.user.groups = (await axiosAuthenticated.get<UserGroup[]>(`/users/groups/${id}`)).data
+            this.user = (await axiosAuthenticated.get<User>(`/users/${id}`)).data
         },
         async updateUserGroups(userGroups: number[]) {
             const {axiosAuthenticated} = useAxios()

@@ -57,7 +57,7 @@ const initValues = () => {
     association.value.siret = associationStore.association?.siret as string
     association.value.website = associationStore.association?.website as string
     association.value.presidentNames = associationStore.association?.presidentNames as string
-    association.value.phonePres = associationStore.association?.phonePres as string
+    association.value.phonePres = associationStore.association?.presidentPhone as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
@@ -74,7 +74,7 @@ onMounted(async () => {
 
 // Logo management
 const altLogo = ref<string>('')
-const newLogo = ref<string | Blob>("")
+const newLogo = ref<string | Blob>('')
 const pathLogo = ref<object | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {
     pathLogo.value = associationStore.association?.pathLogo
@@ -134,7 +134,7 @@ async function onChangeLogo(action: string) {
         if (action === 'update') {
             const patchLogoData = new FormData()
             if (typeof newLogo.value === 'object') {
-              patchLogoData.append('pathLogo', newLogo.value)
+                patchLogoData.append('pathLogo', newLogo.value)
             }
             patchLogoData.append('altLogo', altLogo.value)
             await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
@@ -147,7 +147,7 @@ async function onChangeLogo(action: string) {
             message: t('notifications.positive.association-logo-updated'),
             type: 'positive'
         })
-      newLogo.value = ""
+        newLogo.value = ''
     } catch (error) {
         if (axios.isAxiosError(error)) {
             notify({

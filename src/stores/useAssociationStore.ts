@@ -5,13 +5,12 @@ import type {
     AssociationDirectory,
     AssociationField,
     AssociationInstitution,
-    AssociationList,
     AssociationNames,
     AssociationStore
 } from '#/association'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
-import type {User} from '#/user'
+import useSecurity from "@/composables/useSecurity";
 
 
 export const useAssociationStore = defineStore('associationStore', {
@@ -62,38 +61,31 @@ export const useAssociationStore = defineStore('associationStore', {
                     value: field.id,
                     label: field.name
                 })))
-        },
-        managedAssociations: (state: AssociationStore) => {
-            return state.associations.map(
-                association => ({
-                    id: association.id,
-                    name: association.name,
-                    acronym: association.acronym,
-                    institution: association.institution?.name,
-                    component: association.institutionComponent?.name,
-                    field: association.activityField?.name,
-                    isEnabled: association.isEnabled,
-                    email: association.email,
-                })
-            )
         }
     },
 
     actions: {
         /**
          * It gets a list of associations from the server, and stores them in the `associations` variable
-         * @param {boolean} forDirectory - boolean - If true, only associations that are public will be returned.
-         * @param {boolean} forRegistration - If true, only associations that are enabled for registration will be
          * returned.
+         * @param isPublic
+         * @param isEnabled
          */
-        async getAssociations(forDirectory: boolean, forRegistration: boolean) {
-            const {axiosPublic} = useAxios()
+        async getAssociations(isPublic: boolean) {
+            const {axiosPublic, axiosAuthenticated} = useAxios()
             let url = '/associations/'
+            let instance = axiosPublic
 
-            if (forDirectory) url += '?is_public=true'
-            if (forRegistration) url += '?is_enabled=true'
+            if (isPublic) url += '?is_public=true'
 
-            this.associations = (await axiosPublic.get<AssociationList[]>(url)).data
+            if (!isPublic) instance = axiosAuthenticated
+
+            this.associations = (await instance.get<Association[]>(url)).data
+        },
+        async getInstitutionAssociations(institutionId: number) {
+            const {axiosAuthenticated} = useAxios()
+            const url = `/associations/?institution=${institutionId}`
+            this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
         },
         /**
          * It the user is a manager, it simply gets all associations
@@ -101,22 +93,28 @@ export const useAssociationStore = defineStore('associationStore', {
          */
         async getManagedAssociations() {
             const userStore = useUserStore()
-            await this.getAssociations(false, false)
-            if (!userStore.isUniManager) {
-                const studentAssociations: AssociationList[] = []
-                for (let i = 0; i < (userStore.user as User).associations.length; i++) {
-                    const associationId = userStore.user?.associations[i].id
-                    const studentAssociation = this.associations.find(association => association.id === associationId)
-                    if (studentAssociation) {
-                        studentAssociations.push(studentAssociation)
-                    }
+            const {hasPerm} = useSecurity()
+            if (userStore.hasAssociations && hasPerm('change_association')) {
+                this.associations = []
+                for (let i = 0; i < (userStore.user?.associations.length as number); i++) {
+                    const associationId = userStore.user?.associations[i].id as number
+                    const association = await this.getAssociationDetail(associationId, false)
+                    this.associations.push(association)
                 }
-                this.associations = studentAssociations
+            } else if (hasPerm('change_association_any_institution')) {
+                await this.getAssociations(false)
+            } else if (hasPerm('change_association')) {
+                const institutionId = userStore.user?.groups[0].institutionId
+                if (institutionId) {
+                    await this.getInstitutionAssociations(institutionId)
+                }
             }
         },
-        async getAssociationDetail(id: number) {
-            const {axiosPublic} = useAxios()
-            this.association = (await axiosPublic.get<Association>(`/associations/${id}`)).data
+        async getAssociationDetail(id: number, publicRequest: boolean) {
+            const {axiosPublic, axiosAuthenticated} = useAxios()
+            let instance = axiosAuthenticated
+            if (publicRequest) instance = axiosPublic
+            return (await instance.get<Association>(`/associations/${id}`)).data
         },
         async updateAssociationLogo(logoData: FormData | object, id: number) {
             if (this.association) {
@@ -128,13 +126,13 @@ export const useAssociationStore = defineStore('associationStore', {
         async getInstitutions() {
             if (this.institutions.length === 0) {
                 const {axiosPublic} = useAxios()
-                this.institutions = (await axiosPublic.get<AssociationInstitution[]>('/associations/institutions')).data
+                this.institutions = (await axiosPublic.get<AssociationInstitution[]>('/institutions/institutions')).data
             }
         },
         async getComponents() {
             if (this.components.length === 0) {
                 const {axiosPublic} = useAxios()
-                this.components = (await axiosPublic.get<AssociationComponent[]>('/associations/institution_components')).data
+                this.components = (await axiosPublic.get<AssociationComponent[]>('/institutions/institution_components')).data
             }
         },
         async getFields() {

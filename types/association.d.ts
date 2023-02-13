@@ -3,28 +3,28 @@ export interface Association {
     institution: AssociationInstitution,
     institutionComponent: AssociationComponent,
     activityField: AssociationField,
-    socialNetworks: AssociationSocialNetwork[],
+    pathLogo: object | null,
     name: string,
     acronym: string,
-    pathLogo: object | null,
     altLogo: string,
-    description: string,
-    activities: string,
-    address: string,
-    phone: string,
-    email: string,
-    siret: string,
-    website: string,
-    studentCount: number,
-    presidentNames: string,
-    phonePres: string,
+    description?: string,
+    activities?: string,
+    address?: string,
+    phone?: string,
+    email?: string,
+    siret?: string,
+    website?: string,
+    studentCount?: number,
+    presidentNames?: string,
+    presidentPhone?: string,
     isSite: boolean,
     isEnabled: boolean,
     isPublic: boolean,
-    createdDate: string,
-    approvalDate: string,
-    lastGoaDate: string,
-    cgaDate: string,
+    creationDate?: string,
+    approvalDate?: string,
+    lastGoaDate?: string,
+    cgaDate?: string,
+    socialNetworks?: AssociationSocialNetwork[],
 }
 
 export interface EditedAssociation {
@@ -46,19 +46,25 @@ export interface EditedAssociation {
     lastGoaDate: string | null
 }
 
+export interface NewAssociation {
+    name: string,
+    institution: number | undefined,
+    isSite: boolean
+}
+
 export interface AssociationInstitution {
-    id: number | null,
+    id: number,
     name: string,
     acronym: string
 }
 
 export interface AssociationComponent {
-    id: number | null,
+    id: number,
     name: string
 }
 
 export interface AssociationField {
-    id: number | null,
+    id: number,
     name: string
 }
 
@@ -72,31 +78,6 @@ export interface AssociationSocialNetwork {
     location: string
 }
 
-export interface AssociationList {
-    id: number,
-    institution: {
-        id: number,
-        name: string,
-        acronym: string
-    },
-    institutionComponent: {
-        id: number,
-        name: string
-    },
-    activityField: {
-        id: number,
-        name: string
-    },
-    name: string,
-    acronym: string,
-    isEnabled: boolean,
-    isPublic: boolean,
-    isSite: boolean,
-    email: string,
-    altLogo: string,
-    pathLogo: object
-}
-
 export interface AssociationSearch {
     search: string,
     name: string,
@@ -108,7 +89,7 @@ export interface AssociationSearch {
 
 export interface AssociationStore {
     association: Association | undefined,
-    associations: AssociationList[],
+    associations: Association[],
     institutions: AssociationInstitution[],
     components: AssociationComponent[],
     fields: AssociationField[]

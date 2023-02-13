@@ -1,8 +1,10 @@
-import type {GroupList, UserGroup} from '#/user'
 import {computed, ref} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useAxios} from '@/composables/useAxios'
+import type {SelectLabel} from "#/index";
+import type {Group} from "#/groups";
+import i18n from "@/plugins/i18n";
 
 
 // Used to choose or update groups
@@ -14,43 +16,70 @@ const groupChoiceIsValid = computed(() => {
     return newGroups.value.length > 0 && newGroups.value.length <= groupChoiceLimit
 })
 
-// Refactor
-// Prevents managers from selecting an association
-const groupUnabledToJoinAssociation = [1, 2]
-const groupUnabledSelectingAssociation = computed(() => {
-    return !newGroups.value.some(group => groupUnabledToJoinAssociation.includes(group))
-})
-
 export default function () {
     // Used to store groups
-    const groups = ref<UserGroup[]>()
+    const groups = ref<Group[]>()
 
-    // to re test
+    const groupNames = [
+        {
+            codeName: 'MANAGER_GENERAL',
+            literalName: i18n.global.t('user-groups.manager-general')
+        },
+        {
+            codeName: 'MANAGER_INSTITUTION',
+            literalName: i18n.global.t('user-groups.manager-institution')
+        },
+        {
+            codeName: 'MANAGER_MISC',
+            literalName: i18n.global.t('user-groups.manager-misc')
+        },
+        {
+            codeName: 'COMMISSION_GENERAL',
+            literalName: i18n.global.t('user-groups.commission-general')
+        },
+        {
+            codeName: 'COMMISSION_MISC',
+            literalName: i18n.global.t('user-groups.commission-misc')
+        },
+        {
+            codeName: 'STUDENT_INSTITUTION',
+            literalName: i18n.global.t('user-groups.student-institution')
+        },
+        {
+            codeName: 'STUDENT_MISC',
+            literalName: i18n.global.t('user-groups.student-misc')
+        },
+    ]
+
     /**
      * It gets the groups from the server and puts them in the groups variable.
      */
     async function getGroups() {
         const {axiosPublic} = useAxios()
-        groups.value = (await axiosPublic.get<UserGroup[]>('/groups/')).data
+        groups.value = (await axiosPublic.get<Group[]>('/groups/')).data
+    }
+
+    function getGroupLiteral(groupId: number): string | undefined {
+        if (groups.value?.length) {
+            const group = (groups.value?.find(obj => obj.id === groupId))
+            if (group) {
+                const groupName = groupNames.find(obj => obj.codeName === group.name)
+                if (groupName) {
+                    return groupName.literalName
+                }
+            }
+        }
     }
 
     /*
     * Creating an array of objects with the value and label properties.
     * Used in the QCheckboxes for group selection
     */
-    const groupList = computed((): GroupList | undefined => {
+    const groupLabels = computed((): SelectLabel[] | undefined => {
         return groups.value?.map(group => ({
             value: group.id,
             label: group.name
         }))
-    })
-
-    /*
-    * Getting the student group to pre-check the corresponding box
-    * Used in the QCheckboxes for group selection
-    */
-    const studentGroup = computed((): UserGroup | undefined => {
-        return groups.value?.find(({name}) => name === 'Étudiante ou Étudiant')
     })
 
     /**
@@ -80,12 +109,11 @@ export default function () {
     return {
         groups,
         getGroups,
-        groupList,
-        studentGroup,
+        groupLabels,
         groupsToDelete,
         groupChoiceIsValid,
-        groupUnabledSelectingAssociation,
         newGroups,
-        updateUserGroups
+        updateUserGroups,
+        getGroupLiteral
     }
 }

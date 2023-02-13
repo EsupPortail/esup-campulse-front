@@ -1,28 +1,49 @@
 <script lang="ts" setup>
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {onMounted} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import router from '@/router'
 import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
+import useUserGroups from "@/composables/useUserGroups";
+import type {User} from "#/user";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const {getUsers} = useUsers()
 const route = useRoute()
+const {getGroups, getGroupLiteral} = useUserGroups()
+
+const users = ref<User[]>([])
+
+watch(() => userManagerStore.users, () => {
+    users.value = userManagerStore.users
+})
 
 onMounted(async () => {
     loading.show
     await onGetUsers()
+    await onGetUserGroups()
     loading.hide
 })
 
 async function onGetUsers() {
     try {
-        await getUsers()
+        await getUsers(route.name as string)
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.loading-error')
+        })
+    }
+}
+
+async function onGetUserGroups() {
+    try {
+        await getGroups()
     } catch (e) {
         notify({
             type: 'negative',
@@ -74,7 +95,7 @@ function goTo(id: number) {
     <h1>{{ route.name === 'ValidateUsers' ? t("user-manager.validation") : t("user-manager.management") }}</h1>
     <QTable
         :columns="columns"
-        :rows="userManagerStore.userDirectory"
+        :rows="users"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="t('user-manager.users')"
         row-key="id"
@@ -103,7 +124,7 @@ function goTo(id: number) {
                 <QTd key="groups" :props="props">
                     <ul>
                         <li v-for="(group, index) in props.row.groups" :key="index">
-                            <QChip>{{ group.name }}</QChip>
+                            <QChip>{{ getGroupLiteral(group.groupId) }}</QChip>
                         </li>
                     </ul>
                 </QTd>

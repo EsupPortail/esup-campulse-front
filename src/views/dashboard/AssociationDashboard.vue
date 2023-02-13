@@ -41,13 +41,21 @@ async function onGetAssociationDetail() {
 </script>
 
 <template>
-    <div class="name">
-        <h1>{{ association?.name }}</h1>
-    </div>
+    <h1>{{ association?.name }}</h1>
 
-    <div>
-        <QBtn :label="t('association.more-details')" :to="{name: 'AssociationDetail', params: {id: association?.id}}"/>
-    </div>
+    <section>
+        <h2>
+            <QIcon name="mdi-pencil-box-outline"/>
+            {{ t('dashboard.association-user.manage-my-associations') }}
+        </h2>
+        <QBtn
+            :label="t('dashboard.association-user.edit-my-associations')"
+            :to="{name: 'ManageAssociations'}"
+            color="secondary"
+        />
+    </section>
+
+    <QBtn :label="t('association.more-details')" :to="{name: 'AssociationDetail', params: {id: association?.id}}"/>
 
 </template>
 

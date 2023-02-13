@@ -1,18 +1,16 @@
-import type {AssociationName} from '#/association'
-
-
 export interface User {
     id: number,
-    password: string | null,
     username: string,
     firstName: string,
     lastName: string,
-    phone: string | undefined | null,
+    phone: string,
     email: string,
     isCas: boolean,
-    isValidatedByAdmin: boolean | null,
+    hasValidatedEmail: boolean
+    isValidatedByAdmin: boolean,
+    associations: UserAssociation[],
     groups: UserGroup[],
-    associations: AssociationName[],
+    permissions: string[]
 }
 
 // STORES
@@ -21,15 +19,14 @@ export interface User {
 export interface UserStore {
     user: User | undefined,
     newUser: UserRegister | undefined,
-    userPermissions: string[]
-    userAssociations: UserAssociationDetail[]
+    userAssociations: AssociationUser[]
 }
 
 // User manager store
 export interface UserManagerStore {
-    user: ManagedUser | undefined,
-    users: ManagedUsers,
-    userAssociations: UserAssociationDetail[]
+    user: User | undefined,
+    users: User[],
+    userAssociations: AssociationUser[]
 }
 
 // Login
@@ -69,41 +66,29 @@ export interface PasswordEdit {
 }
 
 // User association
-interface UserAssociation {
-    id: number | null,
-    roleName: string | null,
-    hasOfficeStatus: boolean,
+interface AssociationUser {
+    id: number,
+    roleName: string,
+    canBePresident: boolean,
     isPresident: boolean
 }
 
-export type UserAssociations = UserAssociation[]
-
-export interface UserAssociationDetail {
-    user: string,
-    roleName: string,
-    hasOfficeStatus: boolean,
-    isPresident: boolean,
-    association: number
+export interface UserAssociation {
+    id: number,
+    name: string,
+    isSite: boolean,
+    institution: number
 }
-
 
 // User group
 export interface UserGroup {
     id: number,
-    name: string,
-    user: number,
-    group: number,
-    institution: number,
-    permissions: string[]
+    userId: number,
+    groupId: number,
+    institutionId: number
 }
 
-export type GroupList = { value: number, label: string }[]
-
 // Users
-export type ManagedUser = Omit<User, 'password'>
-export type ManagedUsers = ManagedUser[]
-
-export type UserNames = { value: number, label: string }[]
 
 export interface UserToUpdate {
     firstName: string | undefined,
@@ -129,5 +114,3 @@ export interface UserAssociationManagement {
 }
 
 export type UserAssociationPatch = Pick<UserAssociationStatus, "roleName" | "hasOfficeStatus" | "isPresident">
-
-export type UserDirectory = Pick<User, "id" | "firstName" | "lastName" | "email" | "associations" | "groups" | "isValidatedByAdmin">

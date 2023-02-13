@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from 'vue-i18n'
+import useSecurity from '@/composables/useSecurity'
 
 const userStore = useUserStore()
 const {t} = useI18n()
+const {hasPerm} = useSecurity()
 </script>
 
 <template>
@@ -22,49 +24,50 @@ const {t} = useI18n()
             color="secondary"
         />
     </section>
-    <section v-if="userStore.isUniManager">
+    <section
+        v-if="
+        !userStore.hasAssociations &&
+        (hasPerm('change_association') ||
+        hasPerm('add_association'))"
+    >
         <h2>
             <QIcon name="mdi-format-list-bulleted-square"/>
             {{ t('dashboard.manage-association-directory') }}
         </h2>
         <QBtn
+            v-if="hasPerm('change_association')"
             :label="t('dashboard.edit-or-delete-association')"
             :to="{name: 'ManageAssociations'}"
             color="secondary"
         />
         <QBtn
+            v-if="hasPerm('add_association')"
             :label="t('dashboard.create-association')"
             :to="{name: 'CreateAssociation'}"
             color="secondary"
         />
     </section>
-    <section v-if="userStore.user?.associations.length > 0">
-        <h2>
-            <QIcon name="mdi-pencil-box-outline"/>
-            {{ t('dashboard.association-user.manage-my-associations') }}
-        </h2>
-        <QBtn
-            :label="t('dashboard.association-user.edit-my-associations')"
-            :to="{name: 'ManageAssociations'}"
-            color="secondary"
-        />
-    </section>
-    <section v-if="userStore.managerGroup">
+    <section
+        v-if="hasPerm('change_user') || hasPerm('add_user')"
+    >
         <h2>
             <QIcon name="mdi-account-group"/>
             {{ t('dashboard.manage-users') }}
         </h2>
         <QBtn
+            v-if="hasPerm('change_user')"
             :label="t('dashboard.user-validation')"
             :to="{name: 'ValidateUsers'}"
             color="secondary"
         />
         <QBtn
+            v-if="hasPerm('change_user')"
             :label="t('dashboard.user-management')"
             :to="{name: 'ManageUsers'}"
             color="secondary"
         />
         <QBtn
+            v-if="hasPerm('add_user')"
             :label="t('dashboard.create-user')"
             :to="{name: 'AddUser'}"
             color="secondary"

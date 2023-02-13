@@ -1,4 +1,3 @@
-import {useRoute} from 'vue-router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {UserAssociationDetail, UserAssociationManagement, UserAssociationStatus} from '#/user'
 import {ref} from 'vue'
@@ -12,7 +11,6 @@ const userAssociations = ref<UserAssociationManagement[]>([])
 
 export default function () {
 
-    const route = useRoute()
     const userManagerStore = useUserManagerStore()
     const {updateUserGroups} = useUserGroups()
 
@@ -21,11 +19,11 @@ export default function () {
      * If the route is ValidateUsers, get the unvalidated users, otherwise get all the users
      * It is used on the same view to get various data sets based on the route
      */
-    async function getUsers() {
-        if (route.name === 'ValidateUsers') {
+    async function getUsers(routeName: string) {
+        if (routeName === 'ValidateUsers') {
             await userManagerStore.getUnvalidatedUsers()
         }
-        if (route.name === 'ManageUsers') {
+        if (routeName === 'ManageUsers') {
             await userManagerStore.getUsers()
         }
     }
