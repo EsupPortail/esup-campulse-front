@@ -51,7 +51,7 @@ async function onGetAssociationDetail() {
     </div>
     <div class="name">
       <h1>{{ association?.name }}</h1>
-      <p class="acronym">{{ association?.acronym }}</p>
+      <p v-if="association?.acronym" class="acronym">{{ association?.acronym }}</p>
       <p>{{ t("association.labels.charter-validity") }}</p>
     </div>
   </section>
