@@ -1,5 +1,6 @@
 export interface Group {
     id: number,
     name: string,
-    permissions: string[]
+    permissions: string[],
+    isPublic: boolean
 }

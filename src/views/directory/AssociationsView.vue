@@ -3,7 +3,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import useDirectory from '@/composables/useDirectory'
-import type {AssociationList, AssociationSearch} from '#/association'
+import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
 
 
@@ -14,13 +14,13 @@ const {t} = useI18n()
 
 onMounted(async function () {
     loading.show
-    await associationStore.getAssociations(true, false)
+    await associationStore.getAssociations(true)
     await loadAssociationsFields()
     loading.hide
 })
 
 // Initialize a clone of associations from the store to do some searching and pagination
-const associations = ref<AssociationList[]>([...associationStore.associations])
+const associations = ref<Association[]>([...associationStore.associations])
 watch(() => associationStore.associations, () => {
     associations.value = associationStore.associations
 })
@@ -88,7 +88,7 @@ async function onSearch() {
 }
 
 function onAdvancedSearch() {
-    associations.value = advancedSearch(settings.value) as AssociationList[]
+    associations.value = advancedSearch(settings.value) as Association[]
 }
 
 // A function that clears the search,
@@ -103,7 +103,7 @@ async function clearSearch(apiSearch: boolean) {
         activityField: null
     }
     if (apiSearch) {
-        await associationStore.getAssociations(true, false)
+        await associationStore.getAssociations(true)
     } else {
         associations.value = associationStore.associations
     }

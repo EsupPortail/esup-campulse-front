@@ -1,18 +1,11 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {AssociationList, AssociationSearch} from '#/association'
+import type {Association, AssociationSearch} from '#/association'
 import {useAxios} from '@/composables/useAxios'
 
 
 export default function () {
 
     const associationStore = useAssociationStore()
-
-    async function getAssociationDetail(routeParams: string) {
-        if (routeParams) {
-            const id = parseInt(routeParams)
-            await associationStore.getAssociationDetail(id)
-        }
-    }
 
     function filterizeSearch(stringToFilterize: string) {
         return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -26,7 +19,7 @@ export default function () {
     function advancedSearch(settings: AssociationSearch) {
         if (associationStore.associations.length > 0 &&
             (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
-            let matches: AssociationList[] = []
+            let matches: Association[] = []
             if (settings.name) {
                 if (matches.length) {
                     const newMatches = matches.filter(association => {
@@ -86,13 +79,12 @@ export default function () {
      * @param {string} value - The value to search for
      * @returns An array of AssociationList objects.
      */
-    async function simpleAssociationSearch(value: string): Promise<AssociationList[]> {
+    async function simpleAssociationSearch(value: string): Promise<Association[]> {
         const {axiosPublic} = useAxios()
-        return (await axiosPublic.get<AssociationList[]>(`/associations/?is_public=true&search=${value}`)).data
+        return (await axiosPublic.get<Association[]>(`/associations/?is_public=true&search=${value}`)).data
     }
 
     return {
-        getAssociationDetail,
         advancedSearch,
         simpleAssociationSearch
     }

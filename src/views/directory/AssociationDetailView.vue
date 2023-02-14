@@ -1,45 +1,40 @@
 <script lang="ts" setup>
-import {computed, onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useDirectory from '@/composables/useDirectory'
 import useUtility from '@/composables/useUtility'
 import {useRoute} from 'vue-router'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {loading} = useQuasar()
-const {getAssociationDetail} = useDirectory()
 const {formatDate} = useUtility()
 const route = useRoute()
 
 const associationStore = useAssociationStore()
 
 const association = ref(associationStore.association)
-watch(() => associationStore.association, () => {
-    association.value = associationStore.association
-})
 
 onMounted(async function () {
-  loading.show
-  await onGetAssociationDetail()
-  loading.hide
+    loading.show
+    await onGetAssociationDetail()
+    loading.hide
 })
 
 const hasLogo = computed(() => {
-  return association.value ? (association.value.pathLogo !== null && Object.keys(association.value.pathLogo).length > 0 ? true : false) : false
+    return association.value ? (association.value.pathLogo !== null && Object.keys(association.value.pathLogo).length > 0 ? true : false) : false
 })
 
 async function onGetAssociationDetail() {
-  try {
-    await getAssociationDetail(route.params.id as string)
-  } catch (error) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.form-error')
-    })
-  }
+    try {
+        association.value = await associationStore.getAssociationDetail(parseInt(route.params.id as string), true)
+    } catch (error) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.form-error')
+        })
+    }
 }
 </script>
 
@@ -87,9 +82,9 @@ async function onGetAssociationDetail() {
         </article>
         <article>
             <h3>{{ t("association.labels.president-phone") }}</h3>
-            <p>{{ association?.phonePres }}</p>
+            <p>{{ association?.presidentPhone }}</p>
         </article>
-      <article>
+        <article>
             <h3>{{ t("association.labels.charter-date") }}</h3>
             <p>TODO</p>
         </article>
@@ -161,57 +156,57 @@ async function onGetAssociationDetail() {
 
 <style lang="sass" scoped>
 .title
-  display: flex
-  gap: 20px
-  margin-top: 50px
-  align-items: flex-start
+    display: flex
+    gap: 20px
+    margin-top: 50px
+    align-items: flex-start
 
 h1
-  font-size: 3em
-  line-height: 0
+    font-size: 3em
+    line-height: 0
 
 .acronym
-  font-size: 1.8em
+    font-size: 1.8em
 
 .logo
-  width: 150px
-  height: 150px
+    width: 150px
+    height: 150px
 
 .description
-  margin-top: 30px
-  font-size: 1.3em
+    margin-top: 30px
+    font-size: 1.3em
 
 h2
-  background-color: $primary
-  color: #fff
-  font-size: 2em
-  text-align: center
+    background-color: $primary
+    color: #fff
+    font-size: 2em
+    text-align: center
 
 article > *
-  margin: 0
-  width: 50%
+    margin: 0
+    width: 50%
 
 article
-  display: flex
-  align-items: center
-  background-color: lightgrey
-  padding: 0 20px 0 20px
-  margin: 5px 0
+    display: flex
+    align-items: center
+    background-color: lightgrey
+    padding: 0 20px 0 20px
+    margin: 5px 0
 
 h3
-  font-size: 1.2em
-  text-transform: uppercase
+    font-size: 1.2em
+    text-transform: uppercase
 
 .q-btn
-  margin: 20px 0
+    margin: 20px 0
 
 .btn-group
-  display: flex
-  gap: 10px
+    display: flex
+    gap: 10px
 
 li
-  list-style: none
+    list-style: none
 
 ul
-  padding-left: 0
+    padding-left: 0
 </style>

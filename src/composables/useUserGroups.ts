@@ -71,16 +71,39 @@ export default function () {
         }
     }
 
-    /*
-    * Creating an array of objects with the value and label properties.
-    * Used in the QCheckboxes for group selection
-    */
-    const groupLabels = computed((): SelectLabel[] | undefined => {
-        return groups.value?.map(group => ({
-            value: group.id,
-            label: group.name
-        }))
-    })
+    const groupLabels = ref<SelectLabel[]>([])
+
+    /**
+     * > It takes a boolean parameter, and if that parameter is true, it will only add public groups to the groupLabels
+     * array
+     * @param {boolean} onlyPublicGroups - boolean - This is a boolean value that determines whether to only show public
+     * groups or all groups.
+     */
+    function initGroupLabels(onlyPublicGroups: boolean) {
+        const labels: SelectLabel[] = []
+        groups.value?.map(function (group) {
+            if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
+                const label = getGroupLiteral(group.id)
+                if (label) {
+                    labels.push({
+                        value: group.id,
+                        label
+                    })
+                }
+            }
+        })
+        // Sort by alphabetical order
+        labels.sort(function (a, b) {
+            const labelA = a.label.toLowerCase(), labelB = b.label.toLowerCase()
+            if (labelA < labelB)
+                return -1
+            if (labelA > labelB)
+                return 1
+            return 0
+        })
+        // Assign values to ref groupLabels
+        groupLabels.value = labels
+    }
 
     /**
      * Return the old groups that are not in the new groups.
@@ -114,6 +137,7 @@ export default function () {
         groupChoiceIsValid,
         newGroups,
         updateUserGroups,
-        getGroupLiteral
+        getGroupLiteral,
+        initGroupLabels,
     }
 }

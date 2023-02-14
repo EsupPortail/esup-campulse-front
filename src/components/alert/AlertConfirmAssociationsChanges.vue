@@ -1,26 +1,41 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 import type {Association} from '#/association'
+import useSecurity from "@/composables/useSecurity";
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
-const actionsOptions = [
-    {id: 'email', label: t('association.all-selected-mail')},
-    {id: 'enable', label: t('association.all-selected-enable')},
-    {id: 'disable', label: t('association.all-selected-disable')},
-    {id: 'delete', label: t('association.all-selected-delete')}
-]
+const {hasPerm} = useSecurity()
+
+const actionsOptions = ref([
+    {id: 'email', label: t('association.all-selected-mail')}
+])
 
 const switches = ref<string>()
 
 defineProps({
     selectedAssociations: Array,
 })
+
+const initActionOptions = () => {
+    if (hasPerm('delete_association')) {
+        actionsOptions.value.push({
+            id: 'delete',
+            label: t('association.all-selected-delete')
+        })
+    }
+    if (hasPerm('change_association_all_fields')) {
+        actionsOptions.value.push({id: 'enable', label: t('association.all-selected-enable')})
+        actionsOptions.value.push({id: 'disable', label: t('association.all-selected-disable')})
+    }
+}
+
+onMounted(initActionOptions)
 
 async function onConfirmChanges(selectedAssociations: Association[]) {
     const associationsSuccess: string[] = []

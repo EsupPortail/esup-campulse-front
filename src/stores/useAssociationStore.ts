@@ -69,7 +69,6 @@ export const useAssociationStore = defineStore('associationStore', {
          * It gets a list of associations from the server, and stores them in the `associations` variable
          * returned.
          * @param isPublic
-         * @param isEnabled
          */
         async getAssociations(isPublic: boolean) {
             const {axiosPublic, axiosAuthenticated} = useAxios()
