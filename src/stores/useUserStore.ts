@@ -88,8 +88,8 @@ export const useUserStore = defineStore('userStore', {
         },
         hasOfficeStatus(associationId: number | undefined): boolean | undefined {
             if (this.userAssociations.length > 0) {
-                const association = this.userAssociations.find(obj => obj.association === associationId)
-                return association?.hasOfficeStatus
+                const association = this.userAssociations.find(obj => obj.id === associationId)
+                return association?.canBePresident
             } else {
                 return false
             }
