@@ -5,6 +5,8 @@ import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from "#/index";
 import type {Group} from "#/groups";
 import i18n from "@/plugins/i18n";
+import type {UserGroup} from "#/user";
+import {useUserStore} from "@/stores/useUserStore";
 
 // Used to choose or update groups
 const newGroups = ref<number[]>([])
@@ -19,10 +21,10 @@ const groupChoiceIsValid = computed(() => {
 const groupCanJoinAssociation = ref<boolean>(true)
 
 // Helper to know if a user in userStore if a staff member
-const isStaff = ref<boolean>(false)
+const isStaff = ref<boolean | undefined>(undefined)
 
 export default function () {
-    const userStore = useUserManagerStore()
+    const userStore = useUserStore()
 
     // Used to store groups
     const groups = ref<Group[]>()
@@ -69,13 +71,11 @@ export default function () {
     }
 
     function getGroupLiteral(groupId: number): string | undefined {
-        if (groups.value?.length) {
-            const group = (groups.value?.find(obj => obj.id === groupId))
-            if (group) {
-                const groupName = groupNames.find(obj => obj.codeName === group.name)
-                if (groupName) {
-                    return groupName.literalName
-                }
+        const group = (groups.value?.find(obj => obj.id === groupId))
+        if (group) {
+            const groupName = groupNames.find(obj => obj.codeName === group.name)
+            if (groupName) {
+                return groupName.literalName
             }
         }
     }
@@ -148,28 +148,32 @@ export default function () {
             groupCanJoinAssociation.value = perm
         }
     }
+
     watch(() => newGroups.value, initGroupPermToJoinAssociation)
 
 
     /**
      * If the user is a member of a non-public group, then they are staff
      */
-    const initStaffStatus = async () => {
+    async function initStaffStatus() {
         let perm = false
         const userGroups = userStore.user?.groups
         await getGroups()
-        if (userGroups) {
-            for (let i = 0; i < userGroups.length; i++) {
-                const g = groups.value?.find(obj => obj.id === userGroups[i].group)
-                if (g && !g.isPublic) {
-                    perm = true
-                    break
-                }
+
+        for (let i = 0; i < (userGroups?.length as number); i++) {
+            const g = groups.value?.find(obj => obj.id === (userGroups?.[i] as UserGroup).groupId)
+            if (g && !g.isPublic) {
+                perm = true
+                break
             }
         }
         isStaff.value = perm
     }
-    watch(() => userStore.user, initStaffStatus)
+
+    watch(() => userStore.user, async () => {
+        await initStaffStatus()
+    })
+
 
     /**
      * Return the old groups that are not in the new groups.
@@ -207,6 +211,7 @@ export default function () {
         initGroupLabels,
         preSelectGroup,
         groupCanJoinAssociation,
-        isStaff
+        isStaff,
+        initStaffStatus
     }
 }

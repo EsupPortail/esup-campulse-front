@@ -191,7 +191,7 @@
     "association-management": "Gérer l'annuaire des associations",
     "association-user": {
       "delete-association": "Supprimer le rôle dans l'association",
-      "edit-my-associations": "Modifier les fiches de mes associations",
+      "edit-my-association": "Modifier la fiche de l'association",
       "has-office-status": "Est membre du bureau",
       "is-president": "Est président ou présidente",
       "manage-my-associations": "Gérer mes associations",

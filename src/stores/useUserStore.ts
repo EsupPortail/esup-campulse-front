@@ -19,11 +19,6 @@ export const useUserStore = defineStore('userStore', {
         userName: (state: UserStore): string | undefined => {
             return state.user?.firstName + ' ' + state.user?.lastName
         }
-        /*hasAssociations: (state: UserStore): boolean | undefined => {
-            if (state.user?.associations) {
-                return state.user?.associations.length > 0
-            }
-        }*/
     },
     actions: {
         /**

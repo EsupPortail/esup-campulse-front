@@ -1,5 +1,5 @@
 import {reactive, ref, watch} from 'vue'
-import type {AssociationUser, UserGroup, UserLogin, UserRegister} from '#/user'
+import type {AssociationUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
 import useAssociation from '@/composables/useAssociation'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
@@ -11,8 +11,8 @@ export default function () {
 
     const userStore = useUserStore()
 
-    // Used for login
-    const user = ref<UserLogin>({
+    // Used for local login
+    const user = ref<LocalLogin>({
         username: '',
         password: ''
     })
@@ -104,7 +104,7 @@ export default function () {
 
 
     async function userGroupsRegister() {
-        const groupsToRegister: UserGroup[] = []
+        const groupsToRegister: UserGroupRegister[] = []
         const {axiosPublic} = useAxios()
         const {newGroups} = useUserGroups()
         if (newGroups.value.length) {

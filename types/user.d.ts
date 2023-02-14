@@ -30,8 +30,6 @@ export interface UserManagerStore {
 }
 
 // Login
-export type UserLogin = Pick<User, 'username' | 'password'>
-
 interface LocalLogin {
     username: string,
     password: string
@@ -82,6 +80,13 @@ export interface UserAssociation {
 
 // User group
 export interface UserGroup {
+    id?: number,
+    userId: number,
+    institutionId: number,
+    groupId: number
+}
+
+export interface UserGroupRegister {
     username: string,
     group: number,
     institution: number | null,
@@ -96,13 +101,6 @@ export interface UserToUpdate {
     phone: string | undefined
 }
 
-export interface UserAssociationStatus {
-    associationId: number,
-    roleName: string,
-    hasOfficeStatus: boolean,
-    isPresident: boolean
-}
-
 export interface UserAssociationManagement {
     associationId: number,
     associationName: string,
@@ -112,4 +110,4 @@ export interface UserAssociationManagement {
     deleteAssociation: boolean
 }
 
-export type UserAssociationPatch = Pick<UserAssociationStatus, "roleName" | "hasOfficeStatus" | "isPresident">
+export type UserAssociationPatch = Pick<AssociationUser, 'roleName' | 'canBePresident' | 'isPresident'>

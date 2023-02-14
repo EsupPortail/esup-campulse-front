@@ -2,10 +2,12 @@
 import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from 'vue-i18n'
 import useSecurity from '@/composables/useSecurity'
+import useUserGroups from "@/composables/useUserGroups";
 
 const userStore = useUserStore()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
+const {isStaff} = useUserGroups()
 </script>
 
 <template>
@@ -25,8 +27,7 @@ const {hasPerm} = useSecurity()
         />
     </section>
     <section
-        v-if="
-        !userStore.hasAssociations &&
+        v-if="isStaff &&
         (hasPerm('change_association') ||
         hasPerm('add_association'))"
     >
@@ -48,7 +49,9 @@ const {hasPerm} = useSecurity()
         />
     </section>
     <section
-        v-if="hasPerm('change_user') || hasPerm('add_user')"
+        v-if="isStaff &&
+         (hasPerm('change_user') ||
+         hasPerm('add_user'))"
     >
         <h2>
             <QIcon name="mdi-account-group"/>

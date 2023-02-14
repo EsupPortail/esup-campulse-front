@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
-
 import routes from '@/router/routes'
 import {useUserStore} from '@/stores/useUserStore'
+import useUserGroups from "@/composables/useUserGroups";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,11 +10,16 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
+    const {initStaffStatus, isStaff} = useUserGroups()
+
     const accessToken = localStorage.getItem('JWT__access__token')
+
     if (!userStore.user && accessToken) {
         await userStore.getUser()
     }
 
+    if (userStore.isAuth && isStaff.value === undefined) await initStaffStatus()
+    
     if (to.meta.requiresAuth && !userStore.isAuth) {
         return {name: 'Login'}
     }
@@ -25,7 +30,7 @@ router.beforeEach(async (to) => {
         return {name: '404'}
     }
 
-    if (to.meta.uniManagerOnly && !userStore.isUniManager) {
+    if (to.meta.staffOnly && !isStaff.value) {
         return {name: '404'}
     }
 
