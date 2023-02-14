@@ -20,56 +20,56 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {formatDate, urlRegex} = useUtility()
 const {
-    checkChanges,
-    updateAssociation,
+  checkChanges,
+  updateAssociation,
 } = useAssociation()
 const userStore = useUserStore()
 
 const associationStore = useAssociationStore()
 
 const association = ref<EditedAssociation>({
-    institution: null,
-    institutionComponent: null,
-    activityField: null,
-    name: '',
-    acronym: '',
-    description: '',
-    activities: '',
-    address: '',
-    phone: '',
-    email: '',
-    siret: '',
-    website: '',
-    presidentNames: '',
-    phonePres: '',
-    approvalDate: '',
-    lastGoaDate: ''
+  institution: null,
+  institutionComponent: null,
+  activityField: null,
+  name: '',
+  acronym: '',
+  socialObject: '',
+  currentProject: '',
+  address: '',
+  phone: '',
+  email: '',
+  siret: '',
+  website: '',
+  presidentNames: '',
+  phonePres: '',
+  approvalDate: '',
+  lastGoaDate: ''
 })
 
 const initValues = () => {
-    association.value.name = associationStore.association?.name as string
-    association.value.acronym = associationStore.association?.acronym as string
-    association.value.description = associationStore.association?.description as string
-    association.value.activities = associationStore.association?.activities as string
-    association.value.address = associationStore.association?.address as string
-    association.value.phone = associationStore.association?.phone as string
-    association.value.email = associationStore.association?.email as string
-    association.value.siret = associationStore.association?.siret as string
-    association.value.website = associationStore.association?.website as string
-    association.value.presidentNames = associationStore.association?.presidentNames as string
-    association.value.phonePres = associationStore.association?.presidentPhone as string
-    association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
-    association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
-    association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
-    association.value.institutionComponent = associationStore.componentLabels.find(({value}) => value === associationStore.association?.institutionComponent?.id)?.value
-    association.value.activityField = associationStore.fieldLabels.find(({value}) => value === associationStore.association?.activityField?.id)?.value
+  association.value.name = associationStore.association?.name as string
+  association.value.acronym = associationStore.association?.acronym as string
+  association.value.socialObject = associationStore.association?.socialObject as string
+  association.value.currentProject = associationStore.association?.currentProject as string
+  association.value.address = associationStore.association?.address as string
+  association.value.phone = associationStore.association?.phone as string
+  association.value.email = associationStore.association?.email as string
+  association.value.siret = associationStore.association?.siret as string
+  association.value.website = associationStore.association?.website as string
+  association.value.presidentNames = associationStore.association?.presidentNames as string
+  association.value.phonePres = associationStore.association?.presidentPhone as string
+  association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
+  association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
+  association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
+  association.value.institutionComponent = associationStore.componentLabels.find(({value}) => value === associationStore.association?.institutionComponent?.id)?.value
+  association.value.activityField = associationStore.fieldLabels.find(({value}) => value === associationStore.association?.activityField?.id)?.value
 }
 watch(() => associationStore.association, initValues)
 
 onMounted(async () => {
-    loading.show
-    initValues()
-    loading.hide
+  loading.show
+  initValues()
+  loading.hide
 })
 
 // Logo management
@@ -77,7 +77,7 @@ const altLogo = ref<string>('')
 const newLogo = ref<string | Blob>('')
 const pathLogo = ref<object | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {
-    pathLogo.value = associationStore.association?.pathLogo
+  pathLogo.value = associationStore.association?.pathLogo
 })
 
 // Open alert if user leaves without saving
@@ -85,300 +85,301 @@ const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
 
 function onLeaveEdition() {
-    leaveEdition.value = true
-    router.push({name: 'ManageAssociations'})
+  leaveEdition.value = true
+  router.push({name: 'ManageAssociations'})
 }
 
 // Check is there are any changes before leaving the page
 onBeforeRouteLeave((to, from, next) => {
-    if (Object.keys(checkChanges(association.value)).length > 0) {
-        openAlert.value = true
-        if (!leaveEdition.value) {
-            next(false)
-        } else {
-            next(true)
-        }
+  if (Object.keys(checkChanges(association.value)).length > 0) {
+    openAlert.value = true
+    if (!leaveEdition.value) {
+      next(false)
     } else {
-        next(true)
+      next(true)
     }
+  } else {
+    next(true)
+  }
 })
 
 // Validate changes
 async function onValidateChanges() {
-    if (Object.keys(checkChanges(association.value)).length > 0) {
-        try {
-            await updateAssociation()
-            notify({
-                message: t('notifications.positive.association-successfully-updated'),
-                type: 'positive'
-            })
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                notify({
-                    message: t('notifications.negative.edit-association-error'),
-                    type: 'negative'
-                })
-            }
-        }
-    } else {
+  if (Object.keys(checkChanges(association.value)).length > 0) {
+    try {
+      await updateAssociation()
+      notify({
+        message: t('notifications.positive.association-successfully-updated'),
+        type: 'positive'
+      })
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
         notify({
-            message: t('notifications.positive.association-up-to-date'),
-            type: 'positive'
+          message: t('notifications.negative.edit-association-error'),
+          type: 'negative'
         })
+      }
     }
+  } else {
+    notify({
+      message: t('notifications.positive.association-up-to-date'),
+      type: 'positive'
+    })
+  }
 }
 
 // Update association logo details
 async function onChangeLogo(action: string) {
-    try {
-        if (action === 'update') {
-            const patchLogoData = new FormData()
-            if (typeof newLogo.value === 'object') {
-                patchLogoData.append('pathLogo', newLogo.value)
-            }
-            patchLogoData.append('altLogo', altLogo.value)
-            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
-        } else if (action === 'delete') {
-            const deleteLogoData = {'altLogo': null, 'pathLogo': null}
-            await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
-            altLogo.value = ""
-        }
-        notify({
-            message: t('notifications.positive.association-logo-updated'),
-            type: 'positive'
-        })
-        newLogo.value = ''
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            notify({
-                message: t('notifications.negative.association-logo-edit-error'),
-                type: 'negative'
-            })
-        }
+  try {
+    if (action === 'update') {
+      const patchLogoData = new FormData()
+      if (typeof newLogo.value === 'object') {
+        patchLogoData.append('pathLogo', newLogo.value)
+      }
+      patchLogoData.append('altLogo', altLogo.value)
+      await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+    } else if (action === 'delete') {
+      const deleteLogoData = {'altLogo': null, 'pathLogo': null}
+      await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+      altLogo.value = ""
     }
+    notify({
+      message: t('notifications.positive.association-logo-updated'),
+      type: 'positive'
+    })
+    newLogo.value = ''
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      notify({
+        message: t('notifications.negative.association-logo-edit-error'),
+        type: 'negative'
+      })
+    }
+  }
 }
 </script>
 
 <template>
 
-    <QForm
-        @submit.prevent="onChangeLogo('update')"
-    >
-        <fieldset>
-            <div class="logo">
-                <!-- Temporary disabling to view page and change logo -->
-                <!--                <QImg
-                                    :alt="associationStore.association?.altLogo"
-                                    :ratio="1"
-                                    :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
-                                />-->
-            </div>
-            <QFile
-                v-model="newLogo"
-                :label="t('association.logo.pickup')"
-                accept=".jpg, .jpeg, .png"
-                filled
-            />
-            <QInput
-                v-model="altLogo"
-                :label="t('association.logo.alt')"
-                :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-            />
-            <QBtn
-                :label="t('association.logo.update')"
-                color="primary"
-                icon="mdi-check-circle"
-                type="submit"
-            />
-            <QBtn
-                :label="t('association.logo.remove')"
-                color="red"
-                icon="mdi-delete"
-                @click="onChangeLogo('delete')"
-            />
-        </fieldset>
-    </QForm>
+  <QForm
+      @submit.prevent="onChangeLogo('update')"
+  >
+    <fieldset>
+      <div class="logo">
+        <!-- Temporary disabling to view page and change logo -->
+        <!--                <QImg
+                            :alt="associationStore.association?.altLogo"
+                            :ratio="1"
+                            :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
+                        />-->
+      </div>
+      <QFile
+          v-model="newLogo"
+          :label="t('association.logo.pickup')"
+          accept=".jpg, .jpeg, .png"
+          filled
+      />
+      <QInput
+          v-model="altLogo"
+          :label="t('association.logo.alt')"
+          :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
+          filled
+          lazy-rules
+      />
+      <QBtn
+          :label="t('association.logo.update')"
+          color="primary"
+          icon="mdi-check-circle"
+          type="submit"
+      />
+      <QBtn
+          :label="t('association.logo.remove')"
+          color="red"
+          icon="mdi-delete"
+          @click="onChangeLogo('delete')"
+      />
+    </fieldset>
+  </QForm>
 
-    <QForm
-        @submit.prevent="onValidateChanges"
-    >
-        <fieldset>
-            <legend>{{ t('association.titles.info') }}</legend>
-            <QInput
-                v-model="association.name"
-                :label="t('association.labels.name')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="association.acronym"
-                :label="t('association.labels.acronym')"
-                :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="association.description"
-                :label="t('association.labels.description')"
-                :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-                type="textarea"
-            />
-            <QInput
-                v-model="association.activities"
-                :label="t('association.labels.activities')"
-                :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-                type="textarea"
-            />
-            <QSelect
-                v-model="association.institution"
-                :label="t('association.labels.institution')"
-                :options="associationStore.institutionLabels"
-                emit-value
-                filled
-                map-options
-            />
-            <QSelect
-                v-model="association.institutionComponent"
-                :label="t('association.labels.component')"
-                :options="associationStore.componentLabels"
-                emit-value
-                filled
-                map-options
-            />
-            <QSelect
-                v-model="association.activityField"
-                :label="t('association.labels.field')"
-                :options="associationStore.fieldLabels"
-                emit-value
-                filled
-                map-options
-            />
-        </fieldset>
-        <fieldset>
-            <legend>{{ t('association.titles.admin') }}</legend>
-            <QInput
-                v-model="association.presidentNames"
-                :label="t('association.labels.president-name')"
-                :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="association.phonePres"
-                :label="t('association.labels.president-phone')"
-                :rules="userStore.isUniManager ? [] : [ val => val.length < 32 || t('forms.phone-char-limit')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="association.lastGoaDate"
-                :label="t('association.labels.last-goa')"
-                :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-                type="date"
-            >
-                <template v-slot:prepend>
-                    <QIcon name="mdi-calendar"/>
-                </template>
-            </QInput>
-            <QInput
-                v-model="association.siret"
-                :label="t('association.labels.siret')"
-                filled
-                inputmode="numeric"
-                lazy-rules
-            />
-        </fieldset>
-        <fieldset>
-            <legend>{{ t('association.titles.contact') }}</legend>
-            <QInput
-                v-model="association.address"
-                :label="t('association.labels.address')"
-                :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="association.phone"
-                :label="t('association.labels.phone')"
-                :rules="userStore.isUniManager ? [] : [ val => val.length < 32 || t('forms.phone-char-limit')]"
-                filled
-                lazy-rules
-                type="tel"
-            />
-            <QInput
-                v-model="association.email"
-                :label="t('association.labels.mail')"
-                :rules="userStore.isUniManager ? [] : [ (val, rules) => rules.email(val) || t('forms.fill-field')]"
-                filled
-                lazy-rules
-                type="email"
-            />
-            <QInput
-                v-model="association.website"
-                :label="t('association.labels.website')"
-                :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
-                filled
-                lazy-rules
-                type="url"
-            />
-        </fieldset>
-        <FormAssociationSocialNetworks/>
-        <section class="btn-group">
-            <QBtn
-                :label="t('association.go-back')"
-                :to="{name: 'ManageAssociations'}"
-                color="secondary"
-                icon="mdi-arrow-left-circle"
-            />
-            <QBtn
-                :label="t('association.validate-all-changes')"
-                color="primary"
-                icon="mdi-check-circle"
-                type="submit"
-            />
-            <AlertConfirmAssociationEnabled/>
-            <AlertConfirmAssociationDeletion v-if="!associationStore.association?.isEnabled"/>
-        </section>
-        <AlertLeaveEdition
-            :open-alert="openAlert"
-            :text="t('alerts.leave-association-edition')"
-            @closeAlert="openAlert = !openAlert"
-            @leaveEdition="onLeaveEdition"
-        />
-    </QForm>
+  <QForm
+      @submit.prevent="onValidateChanges"
+  >
+    <fieldset>
+      <legend>{{ t('association.titles.info') }}</legend>
+      <QInput
+          v-model="association.name"
+          :label="t('association.labels.name')"
+          :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+          filled
+          lazy-rules
+      />
+      <QInput
+          v-model="association.acronym"
+          :label="t('association.labels.acronym')"
+          :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
+          filled
+          lazy-rules
+      />
+      <QInput
+          v-model="association.socialObject"
+          :hint="t('forms.social-object-hint')"
+          :label="t('association.labels.social-object')"
+          :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
+          filled
+          lazy-rules
+          type="textarea"
+      />
+      <QInput
+          v-model="association.currentProject"
+          :label="t('association.labels.current-project')"
+          :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
+          filled
+          lazy-rules
+          type="textarea"
+      />
+      <QSelect
+          v-model="association.institution"
+          :label="t('association.labels.institution')"
+          :options="associationStore.institutionLabels"
+          emit-value
+          filled
+          map-options
+      />
+      <QSelect
+          v-model="association.institutionComponent"
+          :label="t('association.labels.component')"
+          :options="associationStore.componentLabels"
+          emit-value
+          filled
+          map-options
+      />
+      <QSelect
+          v-model="association.activityField"
+          :label="t('association.labels.field')"
+          :options="associationStore.fieldLabels"
+          emit-value
+          filled
+          map-options
+      />
+    </fieldset>
+    <fieldset>
+      <legend>{{ t('association.titles.admin') }}</legend>
+      <QInput
+          v-model="association.presidentNames"
+          :label="t('association.labels.president-name')"
+          :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
+          filled
+          lazy-rules
+      />
+      <QInput
+          v-model="association.phonePres"
+          :label="t('association.labels.president-phone')"
+          :rules="userStore.isUniManager ? [] : [ val => val.length < 32 || t('forms.phone-char-limit')]"
+          filled
+          lazy-rules
+      />
+      <QInput
+          v-model="association.lastGoaDate"
+          :label="t('association.labels.last-goa')"
+          :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
+          filled
+          lazy-rules
+          type="date"
+      >
+        <template v-slot:prepend>
+          <QIcon name="mdi-calendar"/>
+        </template>
+      </QInput>
+      <QInput
+          v-model="association.siret"
+          :label="t('association.labels.siret')"
+          filled
+          inputmode="numeric"
+          lazy-rules
+      />
+    </fieldset>
+    <fieldset>
+      <legend>{{ t('association.titles.contact') }}</legend>
+      <QInput
+          v-model="association.address"
+          :label="t('association.labels.address')"
+          :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
+          filled
+          lazy-rules
+      />
+      <QInput
+          v-model="association.phone"
+          :label="t('association.labels.phone')"
+          :rules="userStore.isUniManager ? [] : [ val => val.length < 32 || t('forms.phone-char-limit')]"
+          filled
+          lazy-rules
+          type="tel"
+      />
+      <QInput
+          v-model="association.email"
+          :label="t('association.labels.mail')"
+          :rules="userStore.isUniManager ? [] : [ (val, rules) => rules.email(val) || t('forms.fill-field')]"
+          filled
+          lazy-rules
+          type="email"
+      />
+      <QInput
+          v-model="association.website"
+          :label="t('association.labels.website')"
+          :rules="userStore.isUniManager ? [] : [ val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
+          filled
+          lazy-rules
+          type="url"
+      />
+    </fieldset>
+    <FormAssociationSocialNetworks/>
+    <section class="btn-group">
+      <QBtn
+          :label="t('association.go-back')"
+          :to="{name: 'ManageAssociations'}"
+          color="secondary"
+          icon="mdi-arrow-left-circle"
+      />
+      <QBtn
+          :label="t('association.validate-all-changes')"
+          color="primary"
+          icon="mdi-check-circle"
+          type="submit"
+      />
+      <AlertConfirmAssociationEnabled/>
+      <AlertConfirmAssociationDeletion v-if="!associationStore.association?.isEnabled"/>
+    </section>
+    <AlertLeaveEdition
+        :open-alert="openAlert"
+        :text="t('alerts.leave-association-edition')"
+        @closeAlert="openAlert = !openAlert"
+        @leaveEdition="onLeaveEdition"
+    />
+  </QForm>
 </template>
 
 <style lang="sass" scoped>
 fieldset
-    border: none
+  border: none
 
 .logo
-    width: 150px
-    height: 150px
+  width: 150px
+  height: 150px
 
 .btn-group
-    display: flex
-    gap: 10px
-    padding-left: 15px
-    margin: 25px auto 20px auto
+  display: flex
+  gap: 10px
+  padding-left: 15px
+  margin: 25px auto 20px auto
 
 .q-select
-    margin-bottom: 20px
+  margin-bottom: 20px
 
 legend
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-    width: 100%
-    margin-bottom: 15px
+  background-color: $primary
+  color: #fff
+  font-size: 2em
+  text-align: center
+  width: 100%
+  margin-bottom: 15px
 </style>

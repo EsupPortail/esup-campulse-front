@@ -30,9 +30,9 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         userAssociationStatus: (state: UserManagerStore): UserAssociationStatus[] => {
             return state.userAssociations.map(association => ({
-                associationId: association.association,
+                associationId: association.id,
                 roleName: association.roleName,
-                hasOfficeStatus: association.hasOfficeStatus,
+                hasOfficeStatus: association.canBePresident,
                 isPresident: association.isPresident
             }))
         }
