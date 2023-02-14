@@ -41,7 +41,6 @@ watch(() => userManagerStore.user, initValues)
 onMounted(async () => {
     loading.show
     await onGetUser()
-    newGroups.value = userManagerStore.userGroups
     initValues()
     loading.hide
 })
