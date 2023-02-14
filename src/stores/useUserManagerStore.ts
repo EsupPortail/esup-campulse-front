@@ -1,5 +1,13 @@
 import {defineStore} from 'pinia'
-import type {User, UserAssociationPatch, UserAssociationStatus, UserManagerStore, UserNames, UserToUpdate} from '#/user'
+import type {
+    AssociationUser,
+    User,
+    UserAssociationPatch,
+    UserAssociationStatus,
+    UserManagerStore,
+    UserNames,
+    UserToUpdate
+} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
@@ -71,7 +79,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         async getUserAssociations(id: number) {
             const {axiosAuthenticated} = useAxios()
-            this.userAssociations = (await axiosAuthenticated.get<UserAssociationDetail[]>(`/users/associations/${id}`)).data
+            this.userAssociations = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/${id}`)).data
         },
         async deleteUserAssociation(associationId: number) {
             const {axiosAuthenticated} = useAxios()
