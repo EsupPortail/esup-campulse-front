@@ -55,8 +55,10 @@ export default function () {
      * It gets the groups from the server and puts them in the groups variable.
      */
     async function getGroups() {
-        const {axiosPublic} = useAxios()
-        groups.value = (await axiosPublic.get<Group[]>('/groups/')).data
+        if (!groups.value?.length) {
+            const {axiosPublic} = useAxios()
+            groups.value = (await axiosPublic.get<Group[]>('/groups/')).data
+        }
     }
 
     function getGroupLiteral(groupId: number): string | undefined {
@@ -105,7 +107,21 @@ export default function () {
         // Assign values to ref groupLabels
         groupLabels.value = labels
     }
-    
+
+    /**
+     * If the groups array has a length, find the group with the name that matches the groupCodeName parameter and push the
+     * group's id to the newGroups array
+     * @param {string} groupCodeName - The name of the group you want to pre-select.
+     */
+    function preSelectGroup(groupCodeName: string) {
+        if (groups.value?.length) {
+            const groupToPreSelect = groups.value?.find(group => group.name === groupCodeName)
+            if (groupToPreSelect) {
+                newGroups.value.push(groupToPreSelect.id)
+            }
+        }
+    }
+
     /**
      * Return the old groups that are not in the new groups.
      * @param {number[]} newGroups - The new groups that the user is a member of.
@@ -140,5 +156,6 @@ export default function () {
         updateUserGroups,
         getGroupLiteral,
         initGroupLabels,
+        preSelectGroup
     }
 }
