@@ -166,11 +166,12 @@ async function onChangeLogo(action: string) {
     >
         <fieldset>
             <div class="logo">
-                <QImg
-                    :alt="associationStore.association?.altLogo"
-                    :ratio="1"
-                    :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
-                />
+                <!-- Temporary disabling to view page and change logo -->
+                <!--                <QImg
+                                    :alt="associationStore.association?.altLogo"
+                                    :ratio="1"
+                                    :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
+                                />-->
             </div>
             <QFile
                 v-model="newLogo"

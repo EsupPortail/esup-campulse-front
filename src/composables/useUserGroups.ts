@@ -73,11 +73,12 @@ export default function () {
 
     const groupLabels = ref<SelectLabel[]>([])
 
+
     /**
-     * > It takes a boolean parameter, and if that parameter is true, it will only add public groups to the groupLabels
-     * array
-     * @param {boolean} onlyPublicGroups - boolean - This is a boolean value that determines whether to only show public
-     * groups or all groups.
+     * It takes a boolean parameter, and if it's true, it will only return public groups, otherwise it will return all
+     * groups
+     * @param {boolean} onlyPublicGroups - boolean - If true, only public groups will be included in the list.
+     * @returns the value of the variable groupLabels.
      */
     function initGroupLabels(onlyPublicGroups: boolean) {
         const labels: SelectLabel[] = []
@@ -104,7 +105,7 @@ export default function () {
         // Assign values to ref groupLabels
         groupLabels.value = labels
     }
-
+    
     /**
      * Return the old groups that are not in the new groups.
      * @param {number[]} newGroups - The new groups that the user is a member of.

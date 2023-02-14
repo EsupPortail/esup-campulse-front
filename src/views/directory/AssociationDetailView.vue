@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, onMounted, ref} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
@@ -15,6 +15,9 @@ const route = useRoute()
 const associationStore = useAssociationStore()
 
 const association = ref(associationStore.association)
+watch(() => associationStore.association, () => {
+    association.value = associationStore.association
+})
 
 onMounted(async function () {
     loading.show
@@ -28,7 +31,7 @@ const hasLogo = computed(() => {
 
 async function onGetAssociationDetail() {
     try {
-        association.value = await associationStore.getAssociationDetail(parseInt(route.params.id as string), true)
+        await associationStore.getAssociationDetail(parseInt(route.params.id as string), true)
     } catch (error) {
         notify({
             type: 'negative',

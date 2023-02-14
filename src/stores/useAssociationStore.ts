@@ -94,10 +94,11 @@ export const useAssociationStore = defineStore('associationStore', {
             const userStore = useUserStore()
             const {hasPerm} = useSecurity()
             if (userStore.hasAssociations && hasPerm('change_association')) {
+                const {axiosAuthenticated} = useAxios()
                 this.associations = []
                 for (let i = 0; i < (userStore.user?.associations.length as number); i++) {
                     const associationId = userStore.user?.associations[i].id as number
-                    const association = await this.getAssociationDetail(associationId, false)
+                    const association = (await axiosAuthenticated.get<Association>(`/associations/${associationId}`)).data
                     this.associations.push(association)
                 }
             } else if (hasPerm('change_association_any_institution')) {
@@ -113,7 +114,7 @@ export const useAssociationStore = defineStore('associationStore', {
             const {axiosPublic, axiosAuthenticated} = useAxios()
             let instance = axiosAuthenticated
             if (publicRequest) instance = axiosPublic
-            return (await instance.get<Association>(`/associations/${id}`)).data
+            this.association = (await instance.get<Association>(`/associations/${id}`)).data
         },
         async updateAssociationLogo(logoData: FormData | object, id: number) {
             if (this.association) {
