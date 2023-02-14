@@ -1,4 +1,4 @@
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useAxios} from '@/composables/useAxios'
@@ -16,6 +16,9 @@ const groupChoiceIsValid = computed(() => {
     return newGroups.value.length > 0 && newGroups.value.length <= groupChoiceLimit
 })
 
+// Used to dynamically show or hide FormRegisterUserAssociations
+const groupCanJoinAssociation = ref<boolean>(true)
+
 export default function () {
     // Used to store groups
     const groups = ref<Group[]>()
@@ -23,7 +26,7 @@ export default function () {
     const groupNames = [
         {
             codeName: 'MANAGER_GENERAL',
-            literalName: i18n.global.t('user-groups.manager-general')
+            literalName: i18n.global.t('user-groups.manager-general'),
         },
         {
             codeName: 'MANAGER_INSTITUTION',
@@ -122,6 +125,27 @@ export default function () {
         }
     }
 
+    const canJoinAssociationGroups = ['STUDENT_INSTITUTION']
+
+    /**
+     * If the user has selected a group that is not in the list of groups that can join the association, then the user
+     * cannot join the association
+     */
+    const initGroupPermToJoinAssociation = () => {
+        if (newGroups.value.length && groups.value?.length) {
+            let perm = true
+            for (let i = 0; i < newGroups.value.length; i++) {
+                const g = groups.value?.find(obj => obj.id === newGroups.value[i])
+                if (g && !canJoinAssociationGroups.includes(g.name)) {
+                    perm = false
+                    break
+                }
+            }
+            groupCanJoinAssociation.value = perm
+        }
+    }
+    watch(() => newGroups.value, initGroupPermToJoinAssociation)
+
     /**
      * Return the old groups that are not in the new groups.
      * @param {number[]} newGroups - The new groups that the user is a member of.
@@ -156,6 +180,7 @@ export default function () {
         updateUserGroups,
         getGroupLiteral,
         initGroupLabels,
-        preSelectGroup
+        preSelectGroup,
+        groupCanJoinAssociation
     }
 }

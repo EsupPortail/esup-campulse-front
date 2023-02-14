@@ -85,7 +85,8 @@ export interface UserGroup {
     id: number,
     userId: number,
     groupId: number,
-    institutionId: number
+    institutionId: number,
+    isPublic: boolean
 }
 
 // Users

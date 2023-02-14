@@ -15,9 +15,7 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
 const {register, newUser, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
-const {groupChoiceIsValid} = useUserGroups()
-const {groupUnabledSelectingAssociation} = useUserGroups()
-//const unistraMail =
+const {groupChoiceIsValid, groupCanJoinAssociation} = useUserGroups()
 
 
 const hasConsent = ref<boolean>(false)
@@ -133,7 +131,7 @@ async function onRegister() {
         <FormUserGroups/>
         <QSeparator/>
         <!-- If manager role checked we do not display this form -->
-        <FormRegisterUserAssociations v-if="groupUnabledSelectingAssociation"/>
+        <FormRegisterUserAssociations v-if="groupCanJoinAssociation"/>
         <QSeparator/>
         <LayoutGDPRConsent
             v-if="!userStore.managerGroup"

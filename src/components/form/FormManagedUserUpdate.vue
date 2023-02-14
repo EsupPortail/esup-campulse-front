@@ -16,7 +16,7 @@ import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {updateUserAssociations} = useUsers()
-const {groupChoiceIsValid, updateUserGroups, newGroups} = useUserGroups()
+const {groupChoiceIsValid, updateUserGroups} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
