@@ -51,39 +51,39 @@ async function onGetAssociationDetail() {
     </div>
     <div class="name">
       <h1>{{ association?.name }}</h1>
-      <p class="acronym">{{ association?.acronym }}</p>
+      <p v-if="association?.acronym" class="acronym">{{ association?.acronym }}</p>
       <p>{{ t("association.labels.charter-validity") }}</p>
     </div>
   </section>
-  <section class="socialObjectSection">
+  <section v-if="association?.socialObject" class="socialObjectSection">
     <p>{{ association?.socialObject }}</p>
   </section>
   <section>
     <h2>{{ t("association.titles.info") }}</h2>
-    <article>
+    <article v-if="association?.currentProject">
       <h3>{{ t("association.labels.current-project") }}</h3>
       <p>{{ association?.currentProject }}</p>
     </article>
-    <article>
+    <article v-if="association?.institution">
       <h3>{{ t("association.labels.institution") }}</h3>
       <p>{{ association?.institution?.name }}</p>
     </article>
-    <article>
+    <article v-if="association?.institutionComponent">
       <h3>{{ t("association.labels.component") }}</h3>
       <p>{{ association?.institutionComponent?.name }}</p>
     </article>
-    <article>
+    <article v-if="association?.activityField">
       <h3>{{ t("association.labels.field") }}</h3>
       <p>{{ association?.activityField?.name }}</p>
     </article>
   </section>
   <section>
     <h2>{{ t("association.titles.admin") }}</h2>
-    <article>
+    <article v-if="association?.presidentNames">
       <h3>{{ t("association.labels.president-name") }}</h3>
       <p>{{ association?.presidentNames }}</p>
     </article>
-    <article>
+    <article v-if="association?.presidentPhone">
       <h3>{{ t("association.labels.president-phone") }}</h3>
       <p>{{ association?.presidentPhone }}</p>
     </article>
@@ -91,30 +91,30 @@ async function onGetAssociationDetail() {
       <h3>{{ t("association.labels.charter-date") }}</h3>
       <p>TODO</p>
     </article>
-    <article>
+    <article v-if="association?.lastGoaDate">
       <h3>{{ t("association.labels.last-goa") }}</h3>
       <p>{{ formatDate(association?.lastGoaDate) }}</p>
     </article>
-    <article v-if="association?.siret !== ''">
+    <article v-if="association?.siret">
       <h3>{{ t("association.labels.siret") }}</h3>
       <p>{{ association?.siret }}</p>
     </article>
   </section>
   <section>
     <h2>{{ t("association.titles.contact") }}</h2>
-    <article>
+    <article v-if="association?.address">
       <h3>{{ t("association.labels.address") }}</h3>
       <p>{{ association?.address }}</p>
     </article>
-    <article>
+    <article v-if="association?.phone">
       <h3>{{ t("association.labels.phone") }}</h3>
       <p>{{ association?.phone }}</p>
     </article>
-    <article>
+    <article v-if="association?.email">
       <h3>{{ t("association.labels.mail") }}</h3>
       <p>{{ association?.email }}</p>
     </article>
-    <article>
+    <article v-if="association?.website">
       <h3>{{ t("association.labels.website") }}</h3>
       <a
           :href="association?.website"
@@ -123,7 +123,7 @@ async function onGetAssociationDetail() {
         {{ association?.website }}
       </a>
     </article>
-    <article>
+    <article v-if="association?.socialNetworks">
       <h3>{{ t("association.labels.socials") }}</h3>
       <ul>
         <li
