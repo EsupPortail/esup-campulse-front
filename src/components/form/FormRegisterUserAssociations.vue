@@ -18,7 +18,7 @@ onMounted(async () => {
 
 async function loadAssociations() {
     try {
-        await associationStore.getAssociations(true)
+        await associationStore.getAssociationNames()
     } catch (e) {
         notify({
             type: 'negative',
@@ -35,7 +35,7 @@ async function loadAssociations() {
             <QSelect
                 v-model="association.id"
                 :label="t('forms.select-association')"
-                :options="associationStore.associationNames"
+                :options="associationStore.associationLabels"
                 emit-value
                 filled
                 map-options

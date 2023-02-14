@@ -6,7 +6,6 @@ import type {SelectLabel} from "#/index";
 import type {Group} from "#/groups";
 import i18n from "@/plugins/i18n";
 
-
 // Used to choose or update groups
 const newGroups = ref<number[]>([])
 
@@ -19,7 +18,12 @@ const groupChoiceIsValid = computed(() => {
 // Used to dynamically show or hide FormRegisterUserAssociations
 const groupCanJoinAssociation = ref<boolean>(true)
 
+// Helper to know if a user in userStore if a staff member
+const isStaff = ref<boolean>(false)
+
 export default function () {
+    const userStore = useUserManagerStore()
+
     // Used to store groups
     const groups = ref<Group[]>()
 
@@ -146,6 +150,27 @@ export default function () {
     }
     watch(() => newGroups.value, initGroupPermToJoinAssociation)
 
+
+    /**
+     * If the user is a member of a non-public group, then they are staff
+     */
+    const initStaffStatus = async () => {
+        let perm = false
+        const userGroups = userStore.user?.groups
+        await getGroups()
+        if (userGroups) {
+            for (let i = 0; i < userGroups.length; i++) {
+                const g = groups.value?.find(obj => obj.id === userGroups[i].group)
+                if (g && !g.isPublic) {
+                    perm = true
+                    break
+                }
+            }
+        }
+        isStaff.value = perm
+    }
+    watch(() => userStore.user, initStaffStatus)
+
     /**
      * Return the old groups that are not in the new groups.
      * @param {number[]} newGroups - The new groups that the user is a member of.
@@ -181,6 +206,7 @@ export default function () {
         getGroupLiteral,
         initGroupLabels,
         preSelectGroup,
-        groupCanJoinAssociation
+        groupCanJoinAssociation,
+        isStaff
     }
 }

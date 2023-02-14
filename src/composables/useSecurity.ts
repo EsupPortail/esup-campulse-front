@@ -1,20 +1,21 @@
-import {ref} from 'vue'
-import {useRoute} from 'vue-router'
-import type {UserLogin, UserRegister} from '#/user'
+import {reactive, ref, watch} from 'vue'
+import type {AssociationUser, UserGroup, UserLogin, UserRegister} from '#/user'
 import useAssociation from '@/composables/useAssociation'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
+import {useRoute} from "vue-router";
 
 
 export default function () {
 
+    const userStore = useUserStore()
+
+    // Used for login
     const user = ref<UserLogin>({
         username: '',
         password: ''
     })
-
-    const userStore = useUserStore()
 
     /**
      * It takes two strings as arguments, and sets them as the values of two localStorage keys
@@ -58,19 +59,22 @@ export default function () {
         return userStore.user?.permissions.includes(permission)
     }
 
-    const newUser = ref<UserRegister>({
+    const newUser = reactive<UserRegister>({
         isCas: false,
-        username: '',
         firstName: '',
         lastName: '',
         email: '',
+        username: '',
         phone: ''
+    })
+    watch(() => newUser.email, () => {
+        if (!newUser.isCas) newUser.username = newUser.email
     })
 
     const emailVerification = ref<string | undefined>('')
 
-    // Tested
-    async function userLocalRegister(newUser: UserRegister) {
+
+    async function userLocalRegister() {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/', newUser)
     }
@@ -78,11 +82,11 @@ export default function () {
     // Tested
     async function userCASRegister(newUserInfo: string | null) {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo !== "" ? newUserInfo : null})
+        await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo !== '' ? newUserInfo : null})
     }
 
     // ???
-    async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
+    async function userAssociationsRegister(username: string, newUserAssociations: AssociationUser[]) {
         const idsAssociations = []
         const {axiosPublic} = useAxios()
         for (let i = 0; i < newUserAssociations.length; i++) {
@@ -91,40 +95,49 @@ export default function () {
                     user: username,
                     association: newUserAssociations[i].id,
                     roleName: newUserAssociations[i].roleName,
-                    hasOfficeStatus: newUserAssociations[i].hasOfficeStatus,
+                    hasOfficeStatus: newUserAssociations[i].canBePresident,
                     isPresident: newUserAssociations[i].isPresident
                 })
             idsAssociations.push(newUserAssociations[i].id)
         }
     }
 
-    // Tested
-    async function userGroupsRegister(username: string, newUserGroups: number[] | undefined) {
+
+    async function userGroupsRegister() {
+        const groupsToRegister: UserGroup[] = []
         const {axiosPublic} = useAxios()
-        await axiosPublic.post('/users/groups/', {
-            username: username,
-            groups: newUserGroups,
-        })
+        const {newGroups} = useUserGroups()
+        if (newGroups.value.length) {
+            newGroups.value.forEach(function (group) {
+                groupsToRegister.push({
+                    username: newUser.username,
+                    group,
+                    institution: null
+                })
+            })
+            for (let i = 0; i < groupsToRegister.length; i++) {
+                await axiosPublic.post('/users/groups/', groupsToRegister[i])
+            }
+        }
     }
 
     //
     async function register() {
         const {newAssociations} = useAssociation()
-        const {newGroups} = useUserGroups()
         if (userStore.isCas) {
-            await userCASRegister(newUser.value.phone)
+            await userCASRegister(newUser.phone)
             if (newAssociations) {
-                await userAssociationsRegister(newUser.value.username, newAssociations.value)
+                await userAssociationsRegister(newUser.username, newAssociations.value)
             }
-            await userGroupsRegister(newUser.value.username, newGroups.value)
+            await userGroupsRegister()
             // We must clear newUser to avoid persistence of session
             await userStore.unLoadNewUser()
         } else {
-            await userLocalRegister(newUser.value)
+            await userLocalRegister()
             if (newAssociations.value) {
-                await userAssociationsRegister(newUser.value.email, newAssociations.value)
+                await userAssociationsRegister(newUser.email, newAssociations.value)
             }
-            await userGroupsRegister(newUser.value.email, newGroups.value)
+            await userGroupsRegister()
         }
     }
 
@@ -132,15 +145,15 @@ export default function () {
      * It registers a new user as a manager, then registers the user's associations and groups
      */
     //
-    async function addUserAsManager() {
+    /*async function addUserAsManager() {
         const {newAssociations} = useAssociation()
         const {newGroups} = useUserGroups()
         await userLocalRegisterAsManager(newUser.value)
         if (newAssociations.value) {
             await userAssociationsRegister(newUser.value.email, newAssociations.value)
         }
-        await userGroupsRegister(newUser.value.email, newGroups.value)
-    }
+        await userGroupsRegister()
+    }*/
 
     //
     async function loadCASUser() {
@@ -150,8 +163,8 @@ export default function () {
             if (route.query.ticket) {
                 await userStore.loadCASUser(route.query.ticket as string)
             }
-            newUser.value.firstName = userStore.newUser?.firstName as string
-            emailVerification.value = newUser.value.email
+            newUser.firstName = userStore.newUser?.firstName as string
+            emailVerification.value = newUser.email
         }
     }
 
@@ -192,7 +205,7 @@ export default function () {
         newUser,
         loadCASUser,
         emailVerification,
-        addUserAsManager,
+        /*addUserAsManager,*/
         userCASRegister,
         setTokens,
         removeTokens,

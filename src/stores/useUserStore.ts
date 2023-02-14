@@ -18,13 +18,7 @@ export const useUserStore = defineStore('userStore', {
         },
         userName: (state: UserStore): string | undefined => {
             return state.user?.firstName + ' ' + state.user?.lastName
-        },
-        isStaff: (state: UserStore): boolean => {
-            state.user?.groups.map(function (group) {
-                if (group.isPublic) return true
-            })
-            return false
-        },
+        }
         /*hasAssociations: (state: UserStore): boolean | undefined => {
             if (state.user?.associations) {
                 return state.user?.associations.length > 0

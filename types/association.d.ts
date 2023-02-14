@@ -90,12 +90,16 @@ export interface AssociationSearch {
 export interface AssociationStore {
     association: Association | undefined,
     associations: Association[],
+    associationNames: AssociationName[]
     institutions: AssociationInstitution[],
     components: AssociationComponent[],
     fields: AssociationField[]
 }
 
-export type AssociationNames = { value: number, label: string }[]
+export interface AssociationName {
+    id: number,
+    name: string
+}
 
 export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, component: string, field: string }
 export type AssociationDirectory = AssociationDirectoryDetail[]

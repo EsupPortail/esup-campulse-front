@@ -82,11 +82,9 @@ export interface UserAssociation {
 
 // User group
 export interface UserGroup {
-    id: number,
-    userId: number,
-    groupId: number,
-    institutionId: number,
-    isPublic: boolean
+    username: string,
+    group: number,
+    institution: number | null,
 }
 
 // Users

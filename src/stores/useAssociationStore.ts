@@ -5,26 +5,29 @@ import type {
     AssociationDirectory,
     AssociationField,
     AssociationInstitution,
-    AssociationNames,
+    AssociationName,
     AssociationStore
 } from '#/association'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from "@/composables/useSecurity";
+import type {SelectLabel} from "#/index";
+import useUserGroups from "@/composables/useUserGroups";
 
 
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
         association: undefined,
         associations: [],
+        associationNames: [],
         institutions: [],
         components: [],
         fields: []
     }),
 
     getters: {
-        associationNames: (state: AssociationStore): AssociationNames => {
-            return state.associations
+        associationLabels: (state: AssociationStore): SelectLabel[] => {
+            return state.associationNames
                 .map(association => ({
                     value: association.id,
                     label: association.name
@@ -86,6 +89,10 @@ export const useAssociationStore = defineStore('associationStore', {
             const url = `/associations/?institution=${institutionId}`
             this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
         },
+        async getAssociationNames() {
+            const {axiosPublic} = useAxios()
+            this.associationNames = (await axiosPublic.get<AssociationName[]>('/associations/names')).data
+        },
         /**
          * It the user is a manager, it simply gets all associations
          * If the user is a student member of associations, it gets all the associations linked to that user
@@ -93,7 +100,8 @@ export const useAssociationStore = defineStore('associationStore', {
         async getManagedAssociations() {
             const userStore = useUserStore()
             const {hasPerm} = useSecurity()
-            if (userStore.hasAssociations && hasPerm('change_association')) {
+            const {isStaff} = useUserGroups()
+            if (!isStaff && hasPerm('change_association')) {
                 const {axiosAuthenticated} = useAxios()
                 this.associations = []
                 for (let i = 0; i < (userStore.user?.associations.length as number); i++) {
@@ -104,7 +112,7 @@ export const useAssociationStore = defineStore('associationStore', {
             } else if (hasPerm('change_association_any_institution')) {
                 await this.getAssociations(false)
             } else if (hasPerm('change_association')) {
-                const institutionId = userStore.user?.groups[0].institutionId
+                const institutionId = userStore.user?.groups[0].institution
                 if (institutionId) {
                     await this.getInstitutionAssociations(institutionId)
                 }
