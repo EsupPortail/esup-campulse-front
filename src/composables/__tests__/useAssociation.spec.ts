@@ -33,7 +33,7 @@ describe('useAssociation', () => {
     describe('createAssociation', () => {
         it('should call API only once on /associations/ with name as payload', async () => {
             const {createAssociation} = useAssociation()
-            await createAssociation('Association test')
+            await createAssociation()
             const {axiosAuthenticated} = useAxios()
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/associations/', {name: 'Association test'})

@@ -1,15 +1,22 @@
-import type {RouteLocationNormalizedLoaded} from 'vue-router'
-import {useRoute} from 'vue-router'
 import {createTestingPinia} from '@pinia/testing'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 
-import {_user, _userAssociationDetail, _userAssociationsManagement, _userGroupList} from '~/fixtures/user.mock'
+import {_userAssociationDetail, _userAssociationsManagement, _userGroupList} from '~/fixtures/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
 import useUsers from '@/composables/useUsers'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {_axiosFixtures} from "../../../tests/fixtures/axios.mock";
+import {createPinia, setActivePinia} from "pinia";
 
-vi.mock('vue-router', () => ({useRoute: vi.fn()}))
+vi.mock('@/composables/useAxios', () => ({
+    useAxios: () => ({
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
+    })
+}))
+
+setActivePinia(createPinia())
 
 config.global.plugins = [
     createTestingPinia({
@@ -32,15 +39,13 @@ describe('useUsers', () => {
             getUnvalidatedUsers: vi.spyOn(userManagerStore, 'getUnvalidatedUsers')
         }
         it('should call getUsers if route is /manage-users', () => {
-            vi.mocked(useRoute).mockReturnValue({name: 'ManageUsers'} as RouteLocationNormalizedLoaded)
             const {getUsers} = useUsers()
-            getUsers()
+            getUsers("ManageUsers")
             expect(spies.getUsers).toHaveBeenCalledOnce()
         })
         it('should call getUnvalidatedUsers if route is /validate-users', () => {
-            vi.mocked(useRoute).mockReturnValue({name: 'ValidateUsers'} as RouteLocationNormalizedLoaded)
             const {getUsers} = useUsers()
-            getUsers()
+            getUsers("ValidateUsers")
             expect(spies.getUnvalidatedUsers).toHaveBeenCalledOnce()
         })
     })

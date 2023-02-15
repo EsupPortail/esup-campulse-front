@@ -1,14 +1,15 @@
-import type {ManagedUsers, User, UserAssociations, UserGroup, UserRegister} from '#/user'
-import {_associationName} from '~/fixtures/association.mock'
+import type {AssociationUser, User, UserGroup, UserRegister} from "#/user";
+import {_associationName} from "./association.mock";
+import {_permissionsManager, _permissionsStudent} from "./permissions.mock";
 
 export const _userGroups: UserGroup[] = [
     {
         id: 1,
-        name: 'Gestionnaire SVU'
+        name: 'GENERAL_MANAGER'
     },
     {
         id: 2,
-        name: 'Étudiante ou Étudiant'
+        name: 'STUDENT_INSTITUTION'
     },
     {
         id: 3,
@@ -20,43 +21,33 @@ export const _newUserGroups: number[] = [1, 2]
 
 export const _manager: User = {
     id: 1,
-    password: 'motdepasse',
     username: 'manager@unistra.fr',
     firstName: 'Manager',
     lastName: 'Unistra',
     phone: '',
     email: 'manager@unistra.fr',
     isCas: false,
+    hasValidatedEmail: true,
     isValidatedByAdmin: true,
-    groups: [
-        {
-            id: 1,
-            name: 'Gestionnaire SVU'
-        }
-    ],
-    associations: _associationName
+    associations: _associationName,
+    groups: [],
+    permissions: _permissionsManager
 }
 
 export const _student: User = {
     id: 5,
-    password: 'motdepasse',
     username: 'student@unistra.fr',
-    firstName: 'Student',
+    firstName: 'student',
     lastName: 'Unistra',
     phone: '',
     email: 'student@unistra.fr',
     isCas: false,
+    hasValidatedEmail: true,
     isValidatedByAdmin: true,
-    groups: [
-        {
-            id: 2,
-            name: 'Étudiante ou Étudiant'
-        }
-    ],
-    associations: _associationName
+    associations: _associationName,
+    groups: [],
+    permissions: _permissionsStudent
 }
-
-export const _users: ManagedUsers = [_student, _manager]
 
 export const _newUser: UserRegister = {
     isCas: false,
@@ -76,31 +67,25 @@ export const _groupLabels = _userGroups.map(
     })
 )
 
-export const _userAssociations: UserAssociations = [
+export const _userAssociations: AssociationUser[] = [
     {
         id: 1,
         roleName: 'Président',
-        hasOfficeStatus: true,
+        canBePresident: true,
         isPresident: true
     },
     {
         id: 2,
         roleName: 'Secrétaire',
-        hasOfficeStatus: false,
+        canBePresident: true,
         isPresident: false
     },
     {
         id: 3,
         roleName: 'Trésorier',
-        hasOfficeStatus: false,
+        canBePresident: true,
         isPresident: false
     },
-    {
-        id: 4,
-        roleName: 'Membre',
-        hasOfficeStatus: false,
-        isPresident: false
-    }
 ]
 
 export const _userAssociationDetail = {

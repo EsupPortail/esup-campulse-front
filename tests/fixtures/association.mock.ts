@@ -1,11 +1,5 @@
-import type {
-    Association,
-    AssociationList,
-    AssociationName,
-    AssociationSearch,
-    AssociationSocialNetwork,
-    EditedAssociation
-} from '#/association'
+import type {Association, AssociationSearch, AssociationSocialNetwork, EditedAssociation} from '#/association'
+import type {UserAssociation} from "../../types/user";
 
 
 export const _association: Association = {
@@ -42,9 +36,8 @@ export const _association: Association = {
     website: '',
     studentCount: 0,
     presidentNames: '',
-    //phonePres: '',
     isEnabled: true,
-    //createdDate: '',
+    creationDate: '',
     approvalDate: '',
     lastGoaDate: '',
     cgaDate: '',
@@ -141,10 +134,12 @@ export const _associations: AssociationList[] = [
     }
 ]
 
-export const _associationName: AssociationName[] = [
+export const _associationName: UserAssociation[] = [
     {
         id: 1,
-        name: 'Association'
+        name: 'Association',
+        isSite: true,
+        institution: 1
     }
 ]
 

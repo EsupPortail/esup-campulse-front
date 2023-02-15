@@ -15,24 +15,12 @@ export interface User {
 
 // STORES
 
-// User store
-export interface UserStore {
-    user: User | undefined,
-    newUser: UserRegister | undefined,
-    userAssociations: AssociationUser[]
-}
-
-// User manager store
-export interface UserManagerStore {
-    user: User | undefined,
-    users: User[],
-    userAssociations: AssociationUser[]
-}
-
-// Login
-interface LocalLogin {
-    username: string,
-    password: string
+// User's role in the association
+interface AssociationUser {
+    id: number,
+    roleName: string,
+    canBePresident: boolean,
+    isPresident: boolean
 }
 
 interface CasLogin {
@@ -40,14 +28,10 @@ interface CasLogin {
     service: string
 }
 
-// Register
-export interface UserRegister {
-    isCas: boolean,
+// Login
+interface LocalLogin {
     username: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone: string
+    password: string
 }
 
 // Password reset
@@ -63,20 +47,24 @@ export interface PasswordEdit {
     newPassword2: string
 }
 
-// User association
-interface AssociationUser {
-    id: number,
-    roleName: string,
-    canBePresident: boolean,
-    isPresident: boolean
-}
-
+// Association that the user belongs to
 export interface UserAssociation {
     id: number,
     name: string,
     isSite: boolean,
     institution: number
 }
+
+export interface UserAssociationManagement {
+    associationId: number,
+    associationName: string,
+    roleName: string,
+    hasOfficeStatus: boolean,
+    isPresident: boolean,
+    deleteAssociation: boolean
+}
+
+export type UserAssociationPatch = Pick<AssociationUser, 'roleName' | 'canBePresident' | 'isPresident'>
 
 // User group
 export interface UserGroup {
@@ -92,7 +80,29 @@ export interface UserGroupRegister {
     institution: number | null,
 }
 
-// Users
+// User manager store
+export interface UserManagerStore {
+    user: User | undefined,
+    users: User[],
+    userAssociations: AssociationUser[]
+}
+
+// Register
+export interface UserRegister {
+    isCas: boolean,
+    username: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string
+}
+
+// User store
+export interface UserStore {
+    user: User | undefined,
+    newUser: UserRegister | undefined,
+    userAssociations: AssociationUser[]
+}
 
 export interface UserToUpdate {
     firstName: string | undefined,
@@ -101,13 +111,5 @@ export interface UserToUpdate {
     phone: string | undefined
 }
 
-export interface UserAssociationManagement {
-    associationId: number,
-    associationName: string,
-    roleName: string,
-    hasOfficeStatus: boolean,
-    isPresident: boolean,
-    deleteAssociation: boolean
-}
 
-export type UserAssociationPatch = Pick<AssociationUser, 'roleName' | 'canBePresident' | 'isPresident'>
+
