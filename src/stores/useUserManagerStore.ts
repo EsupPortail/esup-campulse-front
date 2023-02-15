@@ -24,8 +24,8 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                     label: user.firstName + ' ' + user.lastName
                 }))
         },
-        userGroups: (state: UserManagerStore): number[] => {
-            return state.user?.groups?.map<number>(group => group.id) || []
+        userGroups: (state: UserManagerStore): (number | undefined)[] => {
+            return state.user?.groups?.map<number | undefined>(group => group.id) || []
         },
         userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
             return {

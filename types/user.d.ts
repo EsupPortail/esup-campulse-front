@@ -113,3 +113,5 @@ export interface UserToUpdate {
     email: string | undefined,
     phone: string | undefined
 }
+
+export type UserNames = { value: number, label: string }[]
