@@ -27,33 +27,6 @@ export interface Association {
     activityField: AssociationActivityField,
 }
 
-export interface EditedAssociation {
-    name: string,
-    acronym: string | null,
-    socialObject: string | null,
-    currentProjects: string | null,
-    address: string | null,
-    phone: string | null,
-    email: string | null,
-    siret: string | null,
-    website: string | null,
-    studentCount: number | null,
-    presidentNames: string | null,
-    presidentPhone: string | null,
-    isPublic: boolean,
-    approvalDate: string | null,
-    lastGoaDate: string | null,
-    institution: number | null | undefined,
-    institutionComponent: number | null | undefined,
-    activityField: number | null | undefined,
-}
-
-export interface NewAssociation {
-    name: string,
-    isSite: boolean,
-    institution: number | undefined,
-}
-
 export interface Institution {
     id: number,
     name: string,
@@ -101,6 +74,39 @@ export interface AssociationStore {
     activityFields: AssociationActivityField[]
 }
 
-export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, institutionComponent: string, activityField: string }
+export interface AssociationName {
+    id: number,
+    name: string
+}
+
 export type AssociationDirectory = AssociationDirectoryDetail[]
+export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, institutionComponent: string, activityField: string }
+
 export type CreateAssociation = Pick<Association, "name">
+
+export interface EditedAssociation {
+    name: string,
+    acronym: string | null,
+    socialObject: string | null,
+    currentProjects: string | null,
+    address: string | null,
+    phone: string | null,
+    email: string | null,
+    siret: string | null,
+    website: string | null,
+    studentCount: number | null,
+    presidentNames: string | null,
+    presidentPhone: string | null,
+    isPublic: boolean,
+    approvalDate: string | null,
+    lastGoaDate: string | null,
+    institution: number | null | undefined,
+    institutionComponent: number | null | undefined,
+    activityField: number | null | undefined,
+}
+
+export interface NewAssociation {
+    name: string,
+    isSite: boolean,
+    institution: number | undefined,
+}

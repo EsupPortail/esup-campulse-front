@@ -1,5 +1,6 @@
-import type { ManagedUsers, User, UserAssociations, UserGroup, UserRegister } from '#/user'
-import { _associationName } from '~/fixtures/association.mock'
+import type { AssociationUser, User, UserGroup, UserRegister } from "#/user";
+import { _associationName } from "./association.mock";
+import { _permissionsManager, _permissionsStudent } from "./permissions.mock";
 
 export const _userGroups: UserGroup[] = [
     // Gestionnaire
@@ -24,44 +25,33 @@ export const _newUserGroups: number[] = [1, 2]
 
 export const _manager: User = {
     id: 1,
-    password: 'motdepasse',
     username: 'manager@unistra.fr',
     firstName: 'Manager',
     lastName: 'Unistra',
     phone: '',
     email: 'manager@unistra.fr',
-    isValidatedByAdmin: true,
     isCas: false,
-    groups: [
-        {
-            userId: 1,
-            groupId: 2,
-            institutionId: 2,
-        }
-    ],
-    associations: _associationName
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: _associationName,
+    groups: [],
+    permissions: _permissionsManager
 }
 
 export const _student: User = {
     id: 5,
-    password: 'motdepasse',
     username: 'student@unistra.fr',
-    firstName: 'Student',
+    firstName: 'student',
     lastName: 'Unistra',
     phone: '',
     email: 'student@unistra.fr',
-    isValidatedByAdmin: true,
     isCas: false,
-    groups: [
-        {
-            userId: 2,
-            groupId: 6,
-        },
-    ],
-    associations: _associationName
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: _associationName,
+    groups: [],
+    permissions: _permissionsStudent
 }
-
-export const _users: ManagedUsers = [_student, _manager]
 
 export const _newUser: UserRegister = {
     isCas: false,
@@ -81,7 +71,7 @@ export const _groupLabels = _userGroups.map(
     })
 )
 
-export const _userAssociations: UserAssociations = [
+export const _userAssociations: AssociationUser[] = [
     {
         id: 1,
         isPresident: true,
