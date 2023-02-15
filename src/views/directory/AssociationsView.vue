@@ -184,8 +184,8 @@ async function clearSearch(apiSearch: boolean) {
                     />
                     <QSelect
                         v-model="settings.institutionComponent"
-                        :label="t('directory.labels.association-component')"
-                        :options="associationStore.componentLabels"
+                        :label="t('directory.labels.association-institution-component')"
+                        :options="associationStore.institutionComponentLabels"
                         emit-value
                         filled
                         map-options
@@ -252,17 +252,17 @@ async function clearSearch(apiSearch: boolean) {
                                 {{ t('directory.labels.association-acronym') + ' : ' }}
                                 <span>{{ association.acronym }}</span>
                             </li>
-                            <li v-if="association.activityField">
-                                {{ t('directory.labels.association-activity-field') + ' : ' }}
-                                <span>{{ association.activityField.name }}</span>
-                            </li>
                             <li v-if="association.institution">
                                 {{ t('directory.labels.association-institution') + ' : ' }}
                                 <span>{{ association.institution.name }}</span>
                             </li>
                             <li v-if="association.institutionComponent">
-                                {{ t('directory.labels.association-component') + ' : ' }}
+                                {{ t('directory.labels.association-institution-component') + ' : ' }}
                                 <span>{{ association.institutionComponent.name }}</span>
+                            </li>
+                            <li v-if="association.activityField">
+                                {{ t('directory.labels.association-activity-field') + ' : ' }}
+                                <span>{{ association.activityField.name }}</span>
                             </li>
                         </ul>
                     </div>

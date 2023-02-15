@@ -69,11 +69,11 @@ async function onGetAssociationDetail() {
       <p>{{ association?.institution?.name }}</p>
     </article>
     <article v-if="association?.institutionComponent">
-      <h3>{{ t("association.labels.component") }}</h3>
+      <h3>{{ t("association.labels.institution-component") }}</h3>
       <p>{{ association?.institutionComponent?.name }}</p>
     </article>
     <article v-if="association?.activityField">
-      <h3>{{ t("association.labels.activityField") }}</h3>
+      <h3>{{ t("association.labels.activity-field") }}</h3>
       <p>{{ association?.activityField?.name }}</p>
     </article>
   </section>
