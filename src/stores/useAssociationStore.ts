@@ -28,6 +28,7 @@ export const useAssociationStore = defineStore('associationStore', {
     getters: {
         associationLabels: (state: AssociationStore): SelectLabel[] => {
             return state.associationNames
+                // .filter(association => !association.hasPresident)
                 .map(association => ({
                     value: association.id,
                     label: association.name

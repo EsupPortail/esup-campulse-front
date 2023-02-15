@@ -40,12 +40,6 @@ async function loadAssociations() {
                 filled
                 map-options
             />
-            <QInput
-                v-model="association.roleName"
-                :label="t('forms.association-role-name')"
-                filled
-                lazy-rules
-            />
             <QCheckbox
                 v-model="association.isPresident"
                 :label="t('forms.im-association-president')"

@@ -52,7 +52,7 @@ function onInitGroupLabels() {
 
 const initUserGroups = () => {
     if (route.name === 'UserManagementDetail') {
-        userManagerStore.user?.groups.map(function (group) {
+        userManagerStore.user?.groups.map((group) => {
             newGroups.value.push(group.groupId)
         })
     }
@@ -62,10 +62,7 @@ watch(() => userManagerStore.user, initUserGroups)
 
 <template>
     <fieldset>
-        <legend class="legend-big">{{
-                route.name === 'Registration' ? t('forms.status') : t('user-manager.user-status')
-            }}
-        </legend>
+        <legend class="legend-big">{{route.name === 'Registration' ? t('forms.status') : t('user-manager.user-status')}}</legend>
         <QField
             v-if="groups"
             :error="!groupChoiceIsValid"
