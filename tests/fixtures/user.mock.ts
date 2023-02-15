@@ -2,8 +2,16 @@ import type { AssociationUser, User, UserGroup, UserRegister } from "#/user";
 import { _associationName } from "./association.mock";
 import { _groups } from "./group.mock";
 
-function getGroupsPermissions(groupId: number): string[] {
-    return _groups.find(_group => _group.id === groupId)?.permissions || []
+function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
+    const permissions: string[] = []
+    userGroups.forEach((userGroup) => {
+        _groups.find(_group => _group.id === userGroup.groupId)?.permissions.forEach((permission) => {
+            if (permissions.indexOf(permission) === -1) {
+                permissions.push(permission)
+            }
+        })
+    });
+    return permissions
 }
 
 export const _userGroups: UserGroup[] = [
@@ -49,7 +57,7 @@ export const _manager: User = {
     isValidatedByAdmin: true,
     associations: _associationName,
     groups: [_userGroups[0], _userGroups[1], _userGroups[2]],
-    permissions: getGroupsPermissions(_userGroups[0].groupId).concat(getGroupsPermissions(_userGroups[1].groupId), getGroupsPermissions(_userGroups[2].groupId))
+    permissions: getUserGroupsPermissions([_userGroups[0], _userGroups[1], _userGroups[2]])
 }
 
 export const _student: User = {
@@ -64,7 +72,7 @@ export const _student: User = {
     isValidatedByAdmin: true,
     associations: _associationName,
     groups: [_userGroups[3]],
-    permissions: getGroupsPermissions(_userGroups[3].groupId)
+    permissions: getUserGroupsPermissions([_userGroups[3]])
 }
 
 export const _newUser: UserRegister = {
