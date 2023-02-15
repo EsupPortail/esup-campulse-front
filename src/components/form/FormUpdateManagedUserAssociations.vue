@@ -25,9 +25,10 @@ const initValues = () => {
         userAssociations.value.push({
             associationId: association.association.id,
             associationName: association.association.name,
-            roleName: association.roleName,
-            hasOfficeStatus: association.hasOfficeStatus,
             isPresident: association.isPresident,
+            canBePresident: association.canBePresident,
+            isSecretary: association.isSecretary,
+            isTreasurer: association.isTreasurer,
             deleteAssociation: false
         })
     })
@@ -72,26 +73,37 @@ const booleanSelectOptions = [
             <QCardSection>
                 <article>
                     <h4>{{ association.associationName }}</h4>
-                    <QInput
-                        v-model="association.roleName"
-                        :disable="!!association.deleteAssociation"
-                        :label="t('dashboard.association-user.role')"
-                        filled
-                        lazy-rules
-                    />
                     <QSelect
-                        v-model="association.hasOfficeStatus"
+                        v-model="association.isPresident"
                         :disable="!!association.deleteAssociation"
-                        :label="t('dashboard.association-user.has-office-status')"
+                        :label="t('dashboard.association-user.is-president')"
                         :options="booleanSelectOptions"
                         emit-value
                         filled
                         map-options
                     />
                     <QSelect
-                        v-model="association.isPresident"
+                        v-model="association.canBePresident"
                         :disable="!!association.deleteAssociation"
-                        :label="t('dashboard.association-user.is-president')"
+                        :label="t('dashboard.association-user.can-be-president')"
+                        :options="booleanSelectOptions"
+                        emit-value
+                        filled
+                        map-options
+                    />
+                    <QSelect
+                        v-model="association.isSecretary"
+                        :disable="!!association.deleteAssociation"
+                        :label="t('dashboard.association-user.is-secretary')"
+                        :options="booleanSelectOptions"
+                        emit-value
+                        filled
+                        map-options
+                    />
+                    <QSelect
+                        v-model="association.isTreasurer"
+                        :disable="!!association.deleteAssociation"
+                        :label="t('dashboard.association-user.is-treasurer')"
                         :options="booleanSelectOptions"
                         emit-value
                         filled

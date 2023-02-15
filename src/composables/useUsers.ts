@@ -1,18 +1,18 @@
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {AssociationUser, UserAssociationManagement, UserAssociationStatus} from '#/user'
-import {ref} from 'vue'
+import { useUserManagerStore } from '@/stores/useUserManagerStore'
+import type { AssociationUser, UserAssociationManagement } from '#/user'
+import { ref } from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
 
 // Used to store a new user's associations
-const newUserAssociations = ref<UserAssociationStatus[]>([])
+const newUserAssociations = ref<AssociationUser[]>([])
 
 // Used to store a user's associations, while it is modified by a manager
 const userAssociations = ref<UserAssociationManagement[]>([])
 
-export default function () {
+export default function() {
 
     const userManagerStore = useUserManagerStore()
-    const {updateUserGroups} = useUserGroups()
+    const { updateUserGroups } = useUserGroups()
 
 
     /**
@@ -42,7 +42,7 @@ export default function () {
      * It updates the user associations when it is modified by a manager
      */
     function updateUserAssociations() {
-        userAssociations.value.forEach(async function (association) {
+        userAssociations.value.forEach(async function(association) {
             // If we need to delete the association
             if (association.deleteAssociation) {
                 await userManagerStore.deleteUserAssociation(association.associationId)
@@ -56,7 +56,8 @@ export default function () {
                 let hasChanges = false
                 // We compare the 2 objects
                 for (const [key, value] of Object.entries(association)) {
-                    if (key == 'roleName' || key == 'hasOfficeStatus' || key == 'isPresident') {
+                    const availableKeys = ['isPresident', 'canBePresident', 'isSecretary', 'isTreasurer']
+                    if (availableKeys.indexOf(key) !== -1) {
                         if (value !== storeAssociation?.[key as keyof AssociationUser]) {
                             hasChanges = true
                         }
@@ -64,9 +65,10 @@ export default function () {
                 }
                 if (hasChanges) {
                     const infosToPatch = {
-                        roleName: association.roleName,
-                        hasOfficeStatus: association.hasOfficeStatus,
                         isPresident: association.isPresident,
+                        canBePresident: association.canBePresident,
+                        isSecretary: association.isSecretary,
+                        isTreasurer: association.isTreasurer,
                     }
                     await userManagerStore.patchUserAssociations(association.associationId, infosToPatch)
                 }

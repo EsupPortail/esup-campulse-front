@@ -1,11 +1,11 @@
-import {createPinia, setActivePinia} from 'pinia'
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import type {User} from '#/user'
-import {_tokens} from '~/fixtures/tokens.mock'
-import {_newUser, _user, _userGroups} from '~/fixtures/user.mock'
-import {useUserStore} from '@/stores/useUserStore'
-import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {useAxios} from '@/composables/useAxios'
+import { createPinia, setActivePinia } from 'pinia'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { User } from '#/user'
+import { _tokens } from '~/fixtures/tokens.mock'
+import { _newUser, _user, _userGroups } from '~/fixtures/user.mock'
+import { useUserStore } from '@/stores/useUserStore'
+import { _axiosFixtures } from '~/fixtures/axios.mock'
+import { useAxios } from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -123,7 +123,7 @@ describe('User store', () => {
     })
     describe('Load CAS user', () => {
         beforeEach(() => {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.post.mockResolvedValueOnce({
                 data: {
@@ -184,15 +184,15 @@ describe('User store', () => {
                 const data = [
                     {
                         user: 'john',
-                        roleName: 'Trésorier',
-                        hasOfficeStatus: true,
                         isPresident: false,
+                        canBePresident: true,
+                        isTreasurer: false,
                         association: 1
                     }
                 ]
-                const {axiosAuthenticated} = useAxios()
+                const { axiosAuthenticated } = useAxios()
                 const mockedAxios = vi.mocked(axiosAuthenticated, true)
-                mockedAxios.get.mockResolvedValueOnce({data})
+                mockedAxios.get.mockResolvedValueOnce({ data })
                 await userStore.getUserAssociations()
                 expect(mockedAxios.get).toHaveBeenCalledOnce()
                 expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/')
@@ -202,47 +202,47 @@ describe('User store', () => {
         describe('If user has no association', () => {
             it('should not call API and do nothing to the store', async () => {
                 await userStore.getUserAssociations()
-                const {axiosAuthenticated} = useAxios()
+                const { axiosAuthenticated } = useAxios()
                 expect(axiosAuthenticated.get).toHaveBeenCalledTimes(0)
                 expect(userStore.userAssociations).toEqual([])
             })
         })
     })
-    describe('hasOfficeStatus', () => {
+    describe('canBePresident', () => {
         describe('If user has associations', () => {
             afterEach(() => {
                 userStore.userAssociations = []
             })
-            it('should find the right association by id and check is hasOfficeStatus is true', () => {
+            it('should find the right association by id and check is canBePresident is true', () => {
                 const roles = [
                     {
                         user: 'john',
-                        roleName: 'Trésorier',
-                        hasOfficeStatus: true,
                         isPresident: false,
+                        canBePresident: true,
+                        isTreasurer: false,
                         association: 1
                     }
                 ]
                 userStore.userAssociations = roles
-                expect(userStore.hasOfficeStatus(roles[0].association)).toBeTruthy()
+                expect(userStore.canBePresident(roles[0].association)).toBeTruthy()
             })
-            it('should return false if hasOfficeStatus is false', () => {
+            it('should return false if canBePresident is false', () => {
                 const roles = [
                     {
                         user: 'jane',
-                        roleName: 'Membre',
-                        hasOfficeStatus: false,
                         isPresident: false,
+                        canBePresident: false,
+                        isTreasurer: false,
                         association: 1
                     }
                 ]
                 userStore.userAssociations = roles
-                expect(userStore.hasOfficeStatus(roles[0].association)).toBeFalsy()
+                expect(userStore.canBePresident(roles[0].association)).toBeFalsy()
             })
         })
         describe('If user has no associations', () => {
             it('should return false', () => {
-                expect(userStore.hasOfficeStatus(undefined)).toBeFalsy()
+                expect(userStore.canBePresident(undefined)).toBeFalsy()
             })
         })
     })

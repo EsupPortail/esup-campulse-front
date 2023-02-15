@@ -102,7 +102,7 @@
   "forms": {
     "add-association": "Ajouter une association",
     "association-name": "Nom de l'association",
-    "association-institution": "Etablissement de rattachement",
+    "association-institution": "Établissement de rattachement",
     "association-is-site": "Association chartée",
     "association-role-name": "Le nom du poste dans l'association",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
@@ -115,9 +115,10 @@
     "gdpr": "Lorem Elsass ipsum in, Chulien leo picon bière adipiscing leverwurscht condimentum elit bissame Pfourtz ! schneck nüdle ac Oberschaeffolsheim porta Chulia Roberstau semper eget tchao bissame schpeck libero, Yo dû. senectus sed non aliquam so Christkindelsmärik mänele gewurztraminer sed flammekueche gravida rhoncus mamsell Morbi tellus  sit hopla Gal ! Hans sagittis jetz gehts los dignissim hoplageiss id hopla s'guelt vulputate consectetur schnaps non suspendisse vielmols, geïz Spätzle dolor turpis ac tellus purus blottkopf, libero, elementum bredele pellentesque risus, ullamcorper commodo Gal. messti de Bischheim réchime météor lacus amet geht's kougelhopf",
     "gdpr-title": "Gestion des données personnelles",
     "im-association-president": "Présidente ou président de l'association",
+    "im-association-secretary": "Secrétaire de l'association",
+    "im-association-tresurer": "Trésorière ou trésorier de l'association",
     "im-from-association": "Lier une association au compte",
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
-    "im-in-association-office": "Membre du bureau de l'association",
     "add-my-associations": "J'ajoute les associations dont je fais partie",
     "last-name": "Nom de famille",
     "login": "Connexion",
@@ -190,15 +191,14 @@
     "welcome-message": "Bienvenue",
     "association-management": "Gérer l'annuaire des associations",
     "association-user": {
+      "can-be-president": "Est président délégué ou présidente déléguée",
       "delete-association": "Supprimer le rôle dans l'association",
       "edit-my-association": "Modifier la fiche de l'association",
-      "has-office-status": "Est membre du bureau",
       "is-president": "Est président ou présidente",
+      "is-secretary": "Est secrétaire",
+      "is-treasurer": "Est trésorier ou trésorière",
       "manage-my-associations": "Gérer mes associations",
-      "not-association-member": "L'utilisateur n'est membre d'aucune association.",
-      "role": "Rôle",
-      "has-office-status-needed": "Vous devez être membre du bureau d'une association pour modifier sa fiche.",
-      "not-from-office": "Non membre du bureau"
+      "not-association-member": "L'utilisateur n'est membre d'aucune association."
     }
   },
   "notifications": {
@@ -281,9 +281,9 @@
     "labels": {
       "association-acronym": "Sigle",
       "association-actions": "Actions",
-      "association-component": "Composante",
-      "association-field": "Domaine",
-      "association-institution": "Etablissement",
+      "association-institution-component": "Composante d'établissement",
+      "association-activity-field": "Domaine d'activité",
+      "association-institution": "Établissement",
       "association-name": "Nom de l'association",
       "association-status": "Statut"
     }
@@ -326,17 +326,17 @@
     },
     "labels": {
       "name": "Nom de l'association",
-      "current-project": "Projet de l'année en cours",
+      "current-projects": "Projets de l'année en cours",
       "acronym": "Acronyme",
       "add-social-network": "Ajouter un réseau social",
       "address": "Adresse postale",
       "approval-date": "Date d'agrément",
       "charter-validity": "Charte valide jusqu'au",
       "charter-date": "Date de signature de la charte des associations étudiantes",
-      "component": "Composante",
+      "institution-component": "Composante d'établissement",
       "contact": "Contacter l'association",
       "social-object": "Objet de l'association",
-      "field": "Domaine",
+      "activity-field": "Domaine d'activité",
       "institution": "Établissement",
       "phone": "Numéro de téléphone",
       "president-name": "Nom du président ou de la présidente",
@@ -379,7 +379,7 @@
     "manager-misc": "Gestionnaire Crous",
     "commission-general": "Membre de commission FSDE/IdEx",
     "commission-misc": "Membre de commission CultureS/ActionS",
-    "student-institution": "Etudiant membre d'association",
-    "student-misc": "Etudiant porteur de projet individuel"
+    "student-institution": "Étudiant membre d'association",
+    "student-misc": "Étudiant porteur de projet individuel"
   }
 }

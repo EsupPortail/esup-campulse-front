@@ -1,18 +1,22 @@
-import type {ManagedUsers, User, UserAssociations, UserGroup, UserRegister} from '#/user'
-import {_associationName} from '~/fixtures/association.mock'
+import type { ManagedUsers, User, UserAssociations, UserGroup, UserRegister } from '#/user'
+import { _associationName } from '~/fixtures/association.mock'
 
 export const _userGroups: UserGroup[] = [
+    // Gestionnaire
     {
-        id: 1,
-        name: 'Gestionnaire SVU'
+        userId: 1,
+        groupId: 2,
+        institutionId: 2,
     },
+    // Étudiant
     {
-        id: 2,
-        name: 'Étudiante ou Étudiant'
+        userId: 2,
+        groupId: 6,
     },
+    // Commission
     {
-        id: 3,
-        name: 'Membre de commission'
+        userId: 3,
+        groupId: 4,
     }
 ]
 
@@ -26,12 +30,13 @@ export const _manager: User = {
     lastName: 'Unistra',
     phone: '',
     email: 'manager@unistra.fr',
-    isCas: false,
     isValidatedByAdmin: true,
+    isCas: false,
     groups: [
         {
-            id: 1,
-            name: 'Gestionnaire SVU'
+            userId: 1,
+            groupId: 2,
+            institutionId: 2,
         }
     ],
     associations: _associationName
@@ -45,13 +50,13 @@ export const _student: User = {
     lastName: 'Unistra',
     phone: '',
     email: 'student@unistra.fr',
-    isCas: false,
     isValidatedByAdmin: true,
+    isCas: false,
     groups: [
         {
-            id: 2,
-            name: 'Étudiante ou Étudiant'
-        }
+            userId: 2,
+            groupId: 6,
+        },
     ],
     associations: _associationName
 }
@@ -67,7 +72,7 @@ export const _newUser: UserRegister = {
     email: 'john.lennon@bbc.com'
 }
 
-export const _userGroupList: number[] = _userGroups.map(group => group.id)
+export const _userGroupList: (number | undefined)[] = _userGroups.map(group => group.id)
 
 export const _groupLabels = _userGroups.map(
     group => ({
@@ -79,35 +84,45 @@ export const _groupLabels = _userGroups.map(
 export const _userAssociations: UserAssociations = [
     {
         id: 1,
-        roleName: 'Président',
-        hasOfficeStatus: true,
-        isPresident: true
+        isPresident: true,
+        canBePresident: true,
+        isValidatedByAdmin: true,
+        isSecretary: false,
+        isTreasurer: false,
     },
     {
         id: 2,
-        roleName: 'Secrétaire',
-        hasOfficeStatus: false,
-        isPresident: false
+        isPresident: false,
+        canBePresident: false,
+        isValidatedByAdmin: true,
+        isSecretary: true,
+        isTreasurer: false,
     },
     {
         id: 3,
-        roleName: 'Trésorier',
-        hasOfficeStatus: false,
-        isPresident: false
+        isPresident: false,
+        canBePresident: false,
+        isValidatedByAdmin: true,
+        isSecretary: false,
+        isTreasurer: true,
     },
     {
         id: 4,
-        roleName: 'Membre',
-        hasOfficeStatus: false,
-        isPresident: false
+        isPresident: false,
+        canBePresident: false,
+        isValidatedByAdmin: false,
+        isSecretary: false,
+        isTreasurer: false,
     }
 ]
 
 export const _userAssociationDetail = {
     user: 'Jane',
-    roleName: 'Présidente',
-    hasOfficeStatus: true,
     isPresident: true,
+    canBePresident: true,
+    isValidatedByAdmin: true,
+    isSecretary: false,
+    isTreasurer: false,
     association: 1
 }
 
@@ -115,25 +130,28 @@ export const _userAssociationsManagement = [
     {
         associationId: 1,
         associationName: 'PLANA',
-        roleName: 'Présidente',
-        hasOfficeStatus: true,
         isPresident: true,
+        canBePresident: true,
+        isSecretary: false,
+        isTreasurer: false,
         deleteAssociation: false
     },
     {
         associationId: 2,
         associationName: 'Octant',
-        roleName: 'Trésorière',
-        hasOfficeStatus: true,
         isPresident: false,
+        canBePresident: true,
+        isSecretary: false,
+        isTreasurer: true,
         deleteAssociation: false
     },
     {
         associationId: 3,
         associationName: 'Apogée',
-        roleName: 'Membre',
-        hasOfficeStatus: false,
         isPresident: false,
+        canBePresident: true,
+        isSecretary: true,
+        isTreasurer: false,
         deleteAssociation: true
     }
 ]

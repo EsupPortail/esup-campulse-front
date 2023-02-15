@@ -56,13 +56,13 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {
-        name: 'component',
+        name: 'institutionComponent',
         align: 'left',
-        label: t('directory.labels.association-component'),
-        field: 'component',
+        label: t('directory.labels.association-institution-component'),
+        field: 'institutionComponent',
         sortable: true
     },
-    {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
+    {name: 'activityField', align: 'left', label: t('directory.labels.association-activity-field'), field: 'activityField', sortable: true},
     {
         name: 'status',
         align: 'left',
@@ -121,11 +121,11 @@ const columns: QTableProps['columns'] = [
                 <QTd key="institution" :props="props">
                     {{ props.row.institution?.name }}
                 </QTd>
-                <QTd key="component" :props="props">
-                    {{ props.row.component?.name }}
+                <QTd key="institutionComponent" :props="props">
+                    {{ props.row.institutionComponent?.name }}
                 </QTd>
-                <QTd key="field" :props="props">
-                    {{ props.row.field?.name }}
+                <QTd key="activityField" :props="props">
+                    {{ props.row.activityField?.name }}
                 </QTd>
                 <QTd key="status" :props="props">
                     {{ props.row.isEnabled ? t('association.enabled') : t('association.disabled') }}

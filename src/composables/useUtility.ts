@@ -1,8 +1,8 @@
-import type {RouteLocationMatched} from 'vue-router'
+import type { RouteLocationMatched } from 'vue-router'
 
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?$/
 
-export default function () {
+export default function() {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -44,5 +44,5 @@ export default function () {
         return breadcrumbs
     }
 
-    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs}
+    return { formatDate, arraysAreEqual, urlRegex, initBreadcrumbs }
 }

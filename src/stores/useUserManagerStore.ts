@@ -1,14 +1,13 @@
-import {defineStore} from 'pinia'
+import { defineStore } from 'pinia'
 import type {
     AssociationUser,
     User,
     UserAssociationPatch,
-    UserAssociationStatus,
     UserManagerStore,
     UserNames,
     UserToUpdate
 } from '#/user'
-import {useAxios} from '@/composables/useAxios'
+import { useAxios } from '@/composables/useAxios'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
@@ -36,57 +35,59 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 phone: state.user?.phone as string
             }
         },
-        userAssociationStatus: (state: UserManagerStore): UserAssociationStatus[] => {
+        userAssociationStatus: (state: UserManagerStore): AssociationUser[] => {
             return state.userAssociations.map(association => ({
-                associationId: association.id,
-                roleName: association.roleName,
-                hasOfficeStatus: association.canBePresident,
-                isPresident: association.isPresident
+                id: association.id,
+                isPresident: association.isPresident,
+                canBePresident: association.canBePresident,
+                isValidatedByAdmin: association.isValidatedByAdmin,
+                isSecretary: association.isSecretary,
+                isTreasurer: association.isTreasurer,
             }))
         }
     },
 
     actions: {
         async getUsers() {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             this.users = (await axiosAuthenticated.get<User[]>('/users/')).data
         },
         async getUnvalidatedUsers() {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             this.users = (await axiosAuthenticated.get<User[]>('/users/?is_validated_by_admin=false')).data
         },
         async getUserDetail(id: number) {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             this.user = (await axiosAuthenticated.get<User>(`/users/${id}`)).data
         },
         async updateUserGroups(userGroups: number[]) {
-            const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.post('/users/groups/', {username: this.user?.username, groups: userGroups})
+            const { axiosAuthenticated } = useAxios()
+            await axiosAuthenticated.post('/users/groups/', { username: this.user?.username, groups: userGroups })
         },
         async deleteUserGroups(groupsToDelete: number[]) {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             for (let i = 0; i < groupsToDelete.length; i++) {
                 await axiosAuthenticated.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
             }
         },
         async validateUser() {
-            const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
+            const { axiosAuthenticated } = useAxios()
+            await axiosAuthenticated.patch(`/users/${this.user?.id}`, { isValidatedByAdmin: true })
         },
         async deleteUser() {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             await axiosAuthenticated.delete(`/users/${this.user?.id}`)
         },
         async getUserAssociations(id: number) {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             this.userAssociations = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/${id}`)).data
         },
         async deleteUserAssociation(associationId: number) {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             await axiosAuthenticated.delete(`/users/associations/${this.user?.id}/${associationId}`)
         },
         async patchUserAssociations(associationId: number, infosToPatch: UserAssociationPatch) {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             await axiosAuthenticated.patch(`/users/associations/${this.user?.id}/${associationId}`, infosToPatch)
         },
         /**
@@ -98,11 +99,11 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             let infosToPatch = {}
             for (const [key, value] of Object.entries(user)) {
                 if (value !== this.user?.[key as keyof typeof this.user]) {
-                    infosToPatch = Object.assign(infosToPatch, {[key]: value})
+                    infosToPatch = Object.assign(infosToPatch, { [key]: value })
                 }
             }
             if (Object.keys(infosToPatch).length > 0) {
-                const {axiosAuthenticated} = useAxios()
+                const { axiosAuthenticated } = useAxios()
                 await axiosAuthenticated.patch(`/users/${this.user?.id}`, infosToPatch)
             }
         }

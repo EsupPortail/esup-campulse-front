@@ -1,15 +1,15 @@
 export interface User {
     id: number,
     username: string,
+    email: string,
     firstName: string,
     lastName: string,
     phone: string,
-    email: string,
-    isCas: boolean,
-    hasValidatedEmail: boolean
     isValidatedByAdmin: boolean,
     associations: UserAssociation[],
     groups: UserGroup[],
+    isCas: boolean,
+    hasValidatedEmail: boolean
     permissions: string[]
 }
 
@@ -64,11 +64,13 @@ export interface PasswordEdit {
 }
 
 // User association
-interface AssociationUser {
-    id: number,
-    roleName: string,
+export interface AssociationUser {
+    id: number | null,
+    isPresident: boolean,
     canBePresident: boolean,
-    isPresident: boolean
+    isValidatedByAdmin: boolean,
+    isSecretary: boolean,
+    isTreasurer: boolean,
 }
 
 export interface UserAssociation {
@@ -82,7 +84,7 @@ export interface UserAssociation {
 export interface UserGroup {
     id?: number,
     userId: number,
-    institutionId: number,
+    institutionId?: number,
     groupId: number
 }
 
@@ -104,10 +106,11 @@ export interface UserToUpdate {
 export interface UserAssociationManagement {
     associationId: number,
     associationName: string,
-    roleName: string,
-    hasOfficeStatus: boolean,
     isPresident: boolean,
+    canBePresident: boolean,
+    isSecretary: boolean,
+    isTreasurer: boolean,
     deleteAssociation: boolean
 }
 
-export type UserAssociationPatch = Pick<AssociationUser, 'roleName' | 'canBePresident' | 'isPresident'>
+export type UserAssociationPatch = Pick<AssociationUser, 'isPresident' | 'canBePresident' | 'isSecretary' | 'isTreasurer'>

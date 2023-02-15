@@ -27,7 +27,7 @@ async function onGetAssociationDetail() {
     }
 }
 
-async function onGetAssociationInstitutions() {
+async function onGetInstitutions() {
     try {
         await associationStore.getInstitutions()
     } catch (error) {
@@ -38,9 +38,9 @@ async function onGetAssociationInstitutions() {
     }
 }
 
-async function onGetAssociationComponents() {
+async function onGetInstitutionComponents() {
     try {
-        await associationStore.getComponents()
+        await associationStore.getInstitutionComponents()
     } catch (error) {
         notify({
             type: 'negative',
@@ -49,9 +49,9 @@ async function onGetAssociationComponents() {
     }
 }
 
-async function onGetAssociationFields() {
+async function onGetAssociationActivityFields() {
     try {
-        await associationStore.getFields()
+        await associationStore.getActivityFields()
     } catch (error) {
         notify({
             type: 'negative',
@@ -63,9 +63,9 @@ async function onGetAssociationFields() {
 onMounted(async function () {
     loading.show
     await onGetAssociationDetail()
-    await onGetAssociationInstitutions()
-    await onGetAssociationComponents()
-    await onGetAssociationFields()
+    await onGetInstitutions()
+    await onGetInstitutionComponents()
+    await onGetAssociationActivityFields()
     isLoaded.value = true
     loading.hide
 })

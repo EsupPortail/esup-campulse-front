@@ -1,6 +1,6 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import routes from '@/router/routes'
-import {useUserStore} from '@/stores/useUserStore'
+import { useUserStore } from '@/stores/useUserStore'
 import useUserGroups from "@/composables/useUserGroups";
 
 const router = createRouter({
@@ -10,7 +10,7 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
-    const {initStaffStatus, isStaff} = useUserGroups()
+    const { initStaffStatus, isStaff } = useUserGroups()
 
     const accessToken = localStorage.getItem('JWT__access__token')
 
@@ -19,26 +19,26 @@ router.beforeEach(async (to) => {
     }
 
     if (userStore.isAuth && isStaff.value === undefined) await initStaffStatus()
-    
+
     if (to.meta.requiresAuth && !userStore.isAuth) {
-        return {name: 'Login'}
+        return { name: 'Login' }
     }
     if (to.name == 'PasswordResetConfirm' && !to.query.uid && !to.query.token) {
-        return {name: '404'}
+        return { name: '404' }
     }
     if (to.name == 'RegistrationVerifyEmail' && !to.query.key) {
-        return {name: '404'}
+        return { name: '404' }
     }
 
     if (to.meta.staffOnly && !isStaff.value) {
-        return {name: '404'}
+        return { name: '404' }
     }
 
     if (userStore.isAuth) {
         if (to.name == 'Registration' || to.name == 'Login') {
-            return {name: 'Dashboard'}
+            return { name: 'Dashboard' }
         } else if (to.name == 'PasswordReset') {
-            return {name: 'ProfilePasswordEdit'}
+            return { name: 'ProfilePasswordEdit' }
         }
     }
 })

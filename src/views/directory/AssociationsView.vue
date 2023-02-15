@@ -15,7 +15,7 @@ const {t} = useI18n()
 onMounted(async function () {
     loading.show
     await associationStore.getAssociations(true)
-    await loadAssociationsFields()
+    await loadAssociationsActivityFields()
     loading.hide
 })
 
@@ -70,11 +70,11 @@ const settings = ref<AssociationSearch>({
 })
 
 // Functions
-async function loadAssociationsFields() {
+async function loadAssociationsActivityFields() {
     try {
         await associationStore.getInstitutions()
-        await associationStore.getComponents()
-        await associationStore.getFields()
+        await associationStore.getInstitutionComponents()
+        await associationStore.getActivityFields()
     } catch (e) {
         notify({
             type: 'negative',
@@ -192,8 +192,8 @@ async function clearSearch(apiSearch: boolean) {
                     />
                     <QSelect
                         v-model="settings.activityField"
-                        :label="t('directory.labels.association-field')"
-                        :options="associationStore.fieldLabels"
+                        :label="t('directory.labels.association-activity-field')"
+                        :options="associationStore.activityFieldLabels"
                         emit-value
                         filled
                         map-options
@@ -253,7 +253,7 @@ async function clearSearch(apiSearch: boolean) {
                                 <span>{{ association.acronym }}</span>
                             </li>
                             <li v-if="association.activityField">
-                                {{ t('directory.labels.association-field') + ' : ' }}
+                                {{ t('directory.labels.association-activity-field') + ' : ' }}
                                 <span>{{ association.activityField.name }}</span>
                             </li>
                             <li v-if="association.institution">

@@ -1,6 +1,6 @@
-import {defineStore} from 'pinia'
+import { defineStore } from 'pinia'
 
-import type {HomeStore} from '#/index'
+import type { HomeStore } from '#/index'
 import i18n from '@/plugins/i18n'
 
 const tPrefixHome = "home.cards."

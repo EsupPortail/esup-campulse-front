@@ -10,31 +10,12 @@ import type {
 
 export const _association: Association = {
     id: 1,
-    institution: {
-        id: 1,
-        name: 'Université de Strasbourg',
-        acronym: 'Unistra',
-    },
-    institutionComponent: {
-        id: 1,
-        name: 'Faculté de médecine',
-    },
-    activityField: {
-        id: 1,
-        name: 'Santé',
-    },
-    socialNetworks: [
-        {
-            type: 'Mastodon',
-            location: 'https://mastodon.social'
-        }
-    ],
     name: 'Association',
     acronym: '',
     pathLogo: null,
     altLogo: '',
     socialObject: '',
-    currentProject: '',
+    currentProjects: '',
     address: '',
     phone: '',
     email: '',
@@ -42,57 +23,95 @@ export const _association: Association = {
     website: '',
     studentCount: 0,
     presidentNames: '',
-    //phonePres: '',
+    presidentPhone: '',
     isEnabled: true,
-    //createdDate: '',
+    isPublic: true,
+    isSite: true,
+    //creationDate: '',
     approvalDate: '',
     lastGoaDate: '',
     cgaDate: '',
-    isSite: true,
-    isPublic: true
+    socialNetworks: [
+        {
+            type: 'Mastodon',
+            location: 'https://mastodon.social'
+        }
+    ],
+    institution: {
+        id: 1,
+        name: 'Université de Strasbourg',
+        acronym: 'Unistra',
+        email: 'test@pas-unistra.fr'
+    },
+    institutionComponent: {
+        id: 1,
+        name: 'Faculté de médecine',
+        institution: {
+            id: 1,
+            name: 'Université de Strasbourg',
+            acronym: 'Unistra',
+            email: 'test@pas-unistra.fr'
+        }
+    },
+    activityField: {
+        id: 1,
+        name: 'Santé',
+    },
 }
 
 export const _editedAssociation: EditedAssociation = {
-    institution: 1,
-    institutionComponent: 1,
-    activityField: 2,
     name: 'Association des étudiants en médecine',
     acronym: 'Asso',
     socialObject: 'Association des étudiants en médecine',
-    currentProject: 'Tutorat, sorties, randonnées et concerts',
+    currentProjects: 'Tutorat, sorties, randonnées et concerts',
     address: '1 rue de l\'hôpital',
     phone: '0102030405',
     email: 'asso-medecine@unistra.fr',
     siret: '0123456789',
     website: 'https://asso-medecine.fr',
+    studentCount: 42,
     presidentNames: 'Jeanne Dupont',
-    phonePres: null,
+    presidentPhone: null,
+    isPublic: true,
+    approvalDate: null,
     lastGoaDate: '2023-01-24',
-    approvalDate: null
+    institution: 1,
+    institutionComponent: 1,
+    activityField: 2,
 }
 
 export const _nonEditedAssociation: EditedAssociation = {
-    institution: 1,
-    institutionComponent: 1,
-    activityField: 1,
     name: 'Association',
     acronym: null,
     socialObject: null,
-    currentProject: null,
+    currentProjects: null,
     address: null,
     phone: null,
     email: null,
     siret: null,
     website: null,
+    studentCount: null,
     presidentNames: null,
-    phonePres: null,
+    presidentPhone: null,
+    isPublic: false,
     approvalDate: null,
-    lastGoaDate: null
+    lastGoaDate: null,
+    institution: 1,
+    institutionComponent: 1,
+    activityField: 1,
 }
 
 export const _associations: AssociationList[] = [
     {
         id: 1,
+        name: 'Association',
+        acronym: 'Asso',
+        pathLogo: {},
+        altLogo: '',
+        email: '',
+        isEnabled: true,
+        isPublic: true,
+        isSite: true,
         institution: {
             id: 1,
             name: 'Université de Strasbourg',
@@ -106,17 +125,17 @@ export const _associations: AssociationList[] = [
             id: 1,
             name: 'Santé',
         },
-        name: 'Association',
-        acronym: 'Asso',
-        isEnabled: true,
-        isSite: true,
-        isPublic: true,
-        pathLogo: {},
-        altLogo: '',
-        email: ''
     },
     {
         id: 2,
+        name: 'Amicale des étudiants en Chimie',
+        acronym: 'AEC',
+        pathLogo: {},
+        altLogo: '',
+        email: '',
+        isEnabled: true,
+        isPublic: false,
+        isSite: true,
         institution: {
             id: 2,
             name: 'Université de Haute-Alsace',
@@ -130,21 +149,14 @@ export const _associations: AssociationList[] = [
             id: 2,
             name: 'Sciences',
         },
-        name: 'Amicale des étudiants en Chimie',
-        acronym: 'AEC',
-        isEnabled: true,
-        isSite: true,
-        isPublic: false,
-        pathLogo: {},
-        altLogo: '',
-        email: ''
     }
 ]
 
 export const _associationName: AssociationName[] = [
     {
         id: 1,
-        name: 'Association'
+        name: 'Association',
+        hasPresident: true
     }
 ]
 

@@ -47,12 +47,16 @@ async function loadAssociations() {
                 lazy-rules
             />
             <QCheckbox
-                v-model="association.hasOfficeStatus"
-                :label="t('forms.im-in-association-office')"
-            />
-            <QCheckbox
                 v-model="association.isPresident"
                 :label="t('forms.im-association-president')"
+            />
+            <QCheckbox
+                v-model="association.isSecretary"
+                :label="t('forms.im-association-secretary')"
+            />
+            <QCheckbox
+                v-model="association.isTreasurer"
+                :label="t('forms.im-association-treasurer')"
             />
             <QBtn
                 :label="t('forms.delete-association')"

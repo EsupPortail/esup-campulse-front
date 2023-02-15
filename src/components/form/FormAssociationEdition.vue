@@ -13,7 +13,7 @@ import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {EditedAssociation} from '#/association'
 import axios from 'axios'
-import {useUserStore} from '@/stores/useUserStore'
+// import {useUserStore} from '@/stores/useUserStore'
 import useUserGroups from "@/composables/useUserGroups";
 
 
@@ -25,7 +25,7 @@ const {
     updateAssociation,
 } = useAssociation()
 const {isStaff} = useUserGroups()
-const userStore = useUserStore()
+// const userStore = useUserStore()
 
 const associationStore = useAssociationStore()
 
@@ -36,14 +36,14 @@ const association = ref<EditedAssociation>({
     name: '',
     acronym: '',
     socialObject: '',
-    currentProject: '',
+    currentProjects: '',
     address: '',
     phone: '',
     email: '',
     siret: '',
     website: '',
     presidentNames: '',
-    phonePres: '',
+    presidentPhone: '',
     approvalDate: '',
     lastGoaDate: ''
 })
@@ -52,19 +52,19 @@ const initValues = () => {
     association.value.name = associationStore.association?.name as string
     association.value.acronym = associationStore.association?.acronym as string
     association.value.socialObject = associationStore.association?.socialObject as string
-    association.value.currentProject = associationStore.association?.currentProject as string
+    association.value.currentProjects = associationStore.association?.currentProjects as string
     association.value.address = associationStore.association?.address as string
     association.value.phone = associationStore.association?.phone as string
     association.value.email = associationStore.association?.email as string
     association.value.siret = associationStore.association?.siret as string
     association.value.website = associationStore.association?.website as string
     association.value.presidentNames = associationStore.association?.presidentNames as string
-    association.value.phonePres = associationStore.association?.presidentPhone as string
+    association.value.presidentPhone = associationStore.association?.presidentPhone as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
     association.value.institutionComponent = associationStore.componentLabels.find(({value}) => value === associationStore.association?.institutionComponent?.id)?.value
-    association.value.activityField = associationStore.fieldLabels.find(({value}) => value === associationStore.association?.activityField?.id)?.value
+    association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField?.id)?.value
 }
 watch(() => associationStore.association, initValues)
 
@@ -232,8 +232,8 @@ async function onChangeLogo(action: string) {
                 type="textarea"
             />
             <QInput
-                v-model="association.currentProject"
-                :label="t('association.labels.current-project')"
+                v-model="association.currentProjects"
+                :label="t('association.labels.current-projects')"
                 :rules="isStaff ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
@@ -257,8 +257,8 @@ async function onChangeLogo(action: string) {
             />
             <QSelect
                 v-model="association.activityField"
-                :label="t('association.labels.field')"
-                :options="associationStore.fieldLabels"
+                :label="t('association.labels.activityField')"
+                :options="associationStore.activityFieldLabels"
                 emit-value
                 filled
                 map-options
@@ -274,7 +274,7 @@ async function onChangeLogo(action: string) {
                 lazy-rules
             />
             <QInput
-                v-model="association.phonePres"
+                v-model="association.presidentPhone"
                 :label="t('association.labels.president-phone')"
                 :rules="isStaff ? [] : [ val => val.length < 32 || t('forms.phone-char-limit')]"
                 filled

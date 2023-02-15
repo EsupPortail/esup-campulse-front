@@ -1,9 +1,9 @@
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {Association, AssociationSearch} from '#/association'
-import {useAxios} from '@/composables/useAxios'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import type { Association, AssociationSearch } from '#/association'
+import { useAxios } from '@/composables/useAxios'
 
 
-export default function () {
+export default function() {
 
     const associationStore = useAssociationStore()
 
@@ -80,7 +80,7 @@ export default function () {
      * @returns An array of AssociationList objects.
      */
     async function simpleAssociationSearch(value: string): Promise<Association[]> {
-        const {axiosPublic} = useAxios()
+        const { axiosPublic } = useAxios()
         return (await axiosPublic.get<Association[]>(`/associations/?is_public=true&search=${value}`)).data
     }
 

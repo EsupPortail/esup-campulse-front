@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.app.json",
   "include": [
+    "src/locales/*.json",
     "src/**/__tests__/**/*.spec.ts",
     "src/**/*.ts",
     "tests/**/*.spec.ts",
