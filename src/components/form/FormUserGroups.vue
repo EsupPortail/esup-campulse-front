@@ -67,7 +67,6 @@ watch(() => userManagerStore.user, initUserGroups)
             v-if="groups"
             :error="!groupChoiceIsValid"
             :error-message="t('forms.required-status')"
-            :hint="t('forms.status-hint')"
         >
             <QOptionGroup
                 v-model="newGroups"

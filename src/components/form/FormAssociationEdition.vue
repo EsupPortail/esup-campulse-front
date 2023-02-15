@@ -63,7 +63,7 @@ const initValues = () => {
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
-    association.value.institutionComponent = associationStore.componentLabels.find(({value}) => value === associationStore.association?.institutionComponent?.id)?.value
+    association.value.institutionComponent = associationStore.institutionComponentLabels.find(({value}) => value === associationStore.association?.institutionComponent?.id)?.value
     association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField?.id)?.value
 }
 watch(() => associationStore.association, initValues)
@@ -168,12 +168,11 @@ async function onChangeLogo(action: string) {
     >
         <fieldset>
             <div class="logo">
-                <!-- Temporary disabling to view page and change logo -->
-                <!--                <QImg
-                                    :alt="associationStore.association?.altLogo"
-                                    :ratio="1"
-                                    :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
-                                />-->
+                <QImg
+                    :alt="associationStore.association?.altLogo"
+                    :ratio="1"
+                    :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
+                />
             </div>
             <QFile
                 v-model="newLogo"
@@ -249,15 +248,15 @@ async function onChangeLogo(action: string) {
             />
             <QSelect
                 v-model="association.institutionComponent"
-                :label="t('association.labels.component')"
-                :options="associationStore.componentLabels"
+                :label="t('association.labels.institution-component')"
+                :options="associationStore.institutionComponentLabels"
                 emit-value
                 filled
                 map-options
             />
             <QSelect
                 v-model="association.activityField"
-                :label="t('association.labels.activityField')"
+                :label="t('association.labels.activity-field')"
                 :options="associationStore.activityFieldLabels"
                 emit-value
                 filled
