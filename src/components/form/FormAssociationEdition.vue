@@ -194,9 +194,7 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="altLogo"
                 :label="t('association.logo.alt')"
-                :rules="isStaff ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                lazy-rules
             />
             <QBtn
                 :label="t('association.logo.update')"
@@ -224,29 +222,24 @@ async function onChangeLogo(action: string) {
                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
                 lazy-rules
+                :disable=!isStaff
             />
             <QInput
                 v-model="association.acronym"
                 :label="t('association.labels.acronym')"
-                :rules="isStaff ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                lazy-rules
             />
             <QInput
                 v-model="association.socialObject"
                 :hint="t('forms.social-object-hint')"
                 :label="t('association.labels.social-object')"
-                :rules="isStaff ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                lazy-rules
                 type="textarea"
             />
             <QInput
                 v-model="association.currentProjects"
                 :label="t('association.labels.current-projects')"
-                :rules="isStaff ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                lazy-rules
                 type="textarea"
             />
             <QSelect
@@ -279,23 +272,17 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.presidentNames"
                 :label="t('association.labels.president-name')"
-                :rules="isStaff ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                lazy-rules
             />
             <QInput
                 v-model="association.presidentPhone"
                 :label="t('association.labels.president-phone')"
-                :rules="isStaff ? [] : [ val => val.length < 32 || t('forms.phone-char-limit')]"
                 filled
-                lazy-rules
             />
             <QInput
                 v-model="association.lastGoaDate"
                 :label="t('association.labels.last-goa')"
-                :rules="isStaff ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                lazy-rules
                 type="date"
             >
                 <template v-slot:prepend>
@@ -307,7 +294,6 @@ async function onChangeLogo(action: string) {
                 :label="t('association.labels.siret')"
                 filled
                 inputmode="numeric"
-                lazy-rules
             />
         </fieldset>
         <fieldset>
@@ -315,32 +301,24 @@ async function onChangeLogo(action: string) {
             <QInput
                 v-model="association.address"
                 :label="t('association.labels.address')"
-                :rules="isStaff ? [] : [ val => val && val.length > 0 || t('forms.fill-field')]"
                 filled
-                lazy-rules
             />
             <QInput
                 v-model="association.phone"
                 :label="t('association.labels.phone')"
-                :rules="isStaff ? [] : [ val => val.length < 32 || t('forms.phone-char-limit')]"
                 filled
-                lazy-rules
                 type="tel"
             />
             <QInput
                 v-model="association.email"
                 :label="t('association.labels.mail')"
-                :rules="isStaff ? [] : [ (val, rules) => rules.email(val) || t('forms.fill-field')]"
                 filled
-                lazy-rules
                 type="email"
             />
             <QInput
                 v-model="association.website"
                 :label="t('association.labels.website')"
-                :rules="isStaff ? [] : [ val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
                 filled
-                lazy-rules
                 type="url"
             />
         </fieldset>
