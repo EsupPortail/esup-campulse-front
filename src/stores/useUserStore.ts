@@ -1,23 +1,117 @@
-import { defineStore } from 'pinia'
-import type { UserAPIList } from '#/index'
-import _axios from '@/plugins/axios'
-import { ref } from 'vue'
+import {defineStore} from 'pinia'
+import type {CasLogin, LocalLogin, User, UserGroup, UserStore} from '#/user'
+import useSecurity from '@/composables/useSecurity'
+import {useAxios} from '@/composables/useAxios'
 
-interface UserStateStore {
-  users: UserAPIList[]
-}
+export const useUserStore = defineStore('userStore', {
+    state: (): UserStore => ({
+        user: undefined,
+        newUser: undefined,
+        userAssociations: []
+    }),
 
-const useUserStore = defineStore('User', {
-  state: (): UserStateStore => ({
-    users: []
-  }),
-
-  getters: {},
-
-  actions: {
-    async fetchUsers() {
-      const { data } = await _axios.get<UserAPIList[]>('/users')
-      this.users = data
+    getters: {
+        isAuth: (state: UserStore): boolean => !!state.user,
+        isCas: (state: UserStore): boolean | undefined => state.user?.isCas || state.newUser?.isCas,
+        userNameFirstLetter: (state: UserStore): string | undefined => {
+            return state.user?.firstName.charAt(0).toUpperCase()
+        },
+        managerGroup: (state: UserStore): UserGroup | undefined => {
+            return state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU') || (name === 'Gestionnaire Crous'))
+        },
+        isUniManager: (state: UserStore): boolean | undefined => {
+            return !!state.user?.groups.find(({name}) => (name === 'Gestionnaire SVU'))
+        },
+        userName: (state: UserStore): string | undefined => {
+            return state.user?.firstName + ' ' + state.user?.lastName
+        }
+    },
+    actions: {
+        /**
+         * It takes a url and a data object, and then it makes a post request to the url with the data object
+         * @param {string} url - The url to send the request to.
+         * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
+         */
+        async logIn(url: string, data: LocalLogin | CasLogin) {
+            const {axiosAuthenticated} = useAxios()
+            const response = await axiosAuthenticated.post(url, data)
+            const {accessToken, refreshToken, user} = response.data
+            if (user.isValidatedByAdmin) {
+                const {setTokens} = useSecurity()
+                setTokens(accessToken, refreshToken)
+                this.user = user
+            } else {
+                throw new Error
+            }
+        },
+        async logOut() {
+            const {removeTokens} = useSecurity()
+            removeTokens()
+            this.unLoadUser()
+        },
+        // to re-test
+        /**
+         * It gets the user data from the server, and if the user is validated by the admin, it sets the user data to the
+         * user variable, and if the user is not validated by the admin, it sets the user data to the newUser variable
+         */
+        async getUser() {
+            const {axiosAuthenticated} = useAxios()
+            const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
+            if (user.isValidatedByAdmin) {
+                this.user = user
+                this.user.groups = (await axiosAuthenticated.get<UserGroup[]>('/users/groups/')).data
+            } else {
+                // Specific case for CAS user data which can persist until complete registration
+                if (user.isCas) {
+                    this.newUser = {
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        isCas: true,
+                        username: user.username,
+                        email: user.email,
+                        phone: user.phone as string
+                    }
+                } else {
+                    await this.logOut()
+                }
+            }
+        },
+        async getUserAssociations() {
+            if (this.user && this.user.associations.length > 0) {
+                const {axiosAuthenticated} = useAxios()
+                this.userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
+            }
+        },
+        hasOfficeStatus(associationId: number | undefined): boolean | undefined {
+            if (this.userAssociations.length > 0) {
+                const association = this.userAssociations.find(obj => obj.association === associationId)
+                return association?.hasOfficeStatus
+            } else {
+                return false
+            }
+        },
+        unLoadUser() {
+            this.user = undefined
+        },
+        unLoadNewUser() {
+            const {removeTokens} = useSecurity()
+            removeTokens()
+            this.newUser = undefined
+        },
+        /**
+         * It sends a POST request to the backend with the CAS ticket and the service URL, and then it sets the tokens and
+         * the user
+         * @param {string} ticket - the ticket returned by CAS
+         */
+        async loadCASUser(ticket: string) {
+            const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
+            const {axiosAuthenticated} = useAxios()
+            const data = (await axiosAuthenticated.post('/users/auth/cas/login/', {ticket, service})).data
+            const {accessToken, refreshToken, user} = data
+            const {setTokens} = useSecurity()
+            setTokens(accessToken, refreshToken)
+            this.newUser = user
+        }
     }
-  }
 })
+

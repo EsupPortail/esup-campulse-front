@@ -1,39 +1,35 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import {useHomeBanner, useHomeCards} from '@/stores/contentStore'
-import HomeCard from '@/components/LayoutHomeCard.vue'
-import HomeBanner from "@/components/LayoutHomeBanner.vue";
-import type { HomeTitle } from '#/index'
+<script lang="ts" setup>
+import HomeCard from '@/components/layout/LayoutHomeCard.vue'
+import HomeBanner from '@/components/layout/LayoutHomeBanner.vue'
+import {useHomeContent} from '@/stores/useContentStore'
+import {useI18n} from "vue-i18n";
 
-
-const homeTitle = ref<HomeTitle>('Bienvenue sur la plateforme')
-const cards = useHomeCards()
-const homeBanner = useHomeBanner()
+const home = useHomeContent()
+const {t} = useI18n()
 </script>
 
 <template>
-  <main>
-    <h1>{{ homeTitle }}</h1>
+  <h1>{{ t("home.title") }}</h1>
 
-    <HomeBanner v-if="homeBanner.banner.isDisplayed"
-      :title="homeBanner.banner.title"
-      :description="homeBanner.banner.description"
+  <HomeBanner
+      :description="home.banner.description"
+      :is-displayed="home.banner.isDisplayed"
+      :title="home.banner.title"
+  />
+
+  <section>
+    <HomeCard v-for="(card, index) in home.cards"
+              :key="index"
+              :description="card.description"
+              :imageAlt="card.imageAlt"
+              :imagePath="card.imagePath"
+              :link="card.link"
+              :title="card.title"
     />
-
-    <section>
-      <HomeCard v-for="(card, index) in cards.cards"
-        :title="card.title"
-        :description="card.description"
-        :imagePath="card.imagePath"
-        :imageAlt="card.imageAlt"
-        :link="card.link"
-        :key="index"
-      />
-    </section>
-  </main>
+  </section>
 </template>
 
-<style scoped lang="sass">
+<style lang="sass" scoped>
 section
   display: flex
   justify-content: center

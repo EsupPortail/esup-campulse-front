@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build:test": "vue-tsc --noEmit && vite build --mode test",
-    "build:preprod": "vue-tsc --noEmit && vite build --mode pprd",
-    "build:prod": "vue-tsc --noEmit && vite build --mode prod",
+    "build:test": "vue-tsc --noEmit && vite build --mode deploy_test",
+    "build:preprod": "vue-tsc --noEmit && vite build --mode deploy_pprd",
+    "build:prod": "vue-tsc --noEmit && vite build --mode deploy_prod",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.15.5",
+    "@sentry/tracing": "^7.20.1",
+    "@sentry/vue": "^7.20.1",
+    "@vue-unistra/cas-authentication": "^2.1.0",
     "axios": "^1.1.3",
     "pinia": "^2.0.13",
     "quasar": "^2.10.0",
@@ -21,6 +24,7 @@
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
+    "@pinia/testing": "^0.0.14",
     "@quasar/vite-plugin": "^1.2.3",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/jsdom": "^16.2.14",
@@ -35,7 +39,7 @@
     "sass": "^1.32.12",
     "typescript": "~4.6.3",
     "vite": "^2.9.5",
-    "vitest": "^0.9.3",
+    "vitest": "^0.25.6",
     "vue-tsc": "^0.34.7"
   }
 }

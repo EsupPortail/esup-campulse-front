@@ -1,31 +1,72 @@
-<script setup lang="ts">
-import FormLocalLogin from '@/components/FormLocalLogin.vue'
+<script lang="ts" setup>
+import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
+import {useUserStore} from '@/stores/useUserStore'
+import {useI18n} from "vue-i18n";
+
+const userStore = useUserStore()
+const newUser = userStore.newUser
+const isCas = userStore.isCas
+const {t} = useI18n()
+
+const CASUrlLogin = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-login`
+const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-register`
 </script>
 
 <template>
-  <h1>Connexion</h1>
-  <div class="no-account">Je n'ai pas de compte <span><q-btn color="secondary" label="Créer un compte" /></span></div>
-  <q-card class="card">
-    <q-card-section>
-      <div class="card-content">
-        <span class="card-title">Je suis membre de l'Université de Strasbourg</span>
-        Connexion avec un compte CAS
-      </div>
-      <q-btn label="Connexion" type="button" color="primary"/>
-    </q-card-section>
-  </q-card>
-  <q-card class="card">
-    <q-card-section>
-      <div class="card-content">
-        <span class="card-title">Je suis extérieur à l'Université de Strasbourg</span>
-        Connexion avec un compte externe
-      </div>
-      <FormLocalLogin />
-    </q-card-section>
-  </q-card>
+  <h1>{{ t('login.login') }}</h1>
+  <div v-if="!newUser && !isCas">
+    <QCard id="cas-login" class="card">
+      <QCardSection>
+        <div class="card-content">
+          <span class="card-title">{{ t("login.im-cas-user") }}</span>
+          {{ t("login.login-with-cas") }}
+        </div>
+        <div class="btn-group">
+          <QBtn
+              :href="CASUrlLogin"
+              :label="t('login.login')"
+              color="primary"
+          />
+          <QBtn
+              :href="CASUrlRegister"
+              :label="t('login.create-account')"
+              color="secondary"
+          />
+        </div>
+      </QCardSection>
+    </QCard>
+    <QCard id="local-login" class="card">
+      <QCardSection>
+        <div class="card-content">
+          <span class="card-title">{{ t("login.im-not-cas-user") }}</span>
+          {{ t("login.login-without-cas") }}
+        </div>
+        <FormLocalLogin/>
+      </QCardSection>
+    </QCard>
+  </div>
+  <div v-else>
+    <QCard id="aborted-cas-registration" class="card">
+      <QCardSection>
+        <div class="card-content">
+          <span class="card-title">
+            {{ t('alerts.aborted-cas-registration.title') }}
+          </span>
+          {{ t('alerts.aborted-cas-registration.message') }}
+          <div>
+            <QBtn
+                :label="t('alerts.aborted-cas-registration.button')"
+                color="warning"
+                to="/register"
+            />
+          </div>
+        </div>
+      </QCardSection>
+    </QCard>
+  </div>
 </template>
 
-<style scoped lang="sass">
+<style lang="sass" scoped>
 .card
   max-width: 700px
   width: 100%
@@ -41,13 +82,10 @@ import FormLocalLogin from '@/components/FormLocalLogin.vue'
 .card-title
   font-size: 1.4em
 
-.no-account
-  text-align: center
-  font-size: 1.5em
-  margin-bottom: 30px
+.btn-group
   display: flex
-  flex-direction: column
+  gap: 10px
 
-.no-account span
+#aborted-cas-registration .q-btn
   margin-top: 10px
 </style>

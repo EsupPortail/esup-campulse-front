@@ -1,0 +1,64 @@
+<script lang="ts" setup>
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import useSecurity from '@/composables/useSecurity'
+import {useRouter} from 'vue-router'
+
+const {t} = useI18n()
+const {notify} = useQuasar()
+const router = useRouter()
+
+const {user, logIn} = useSecurity()
+
+async function onLogIn() {
+    try {
+        await logIn()
+        await router.push({name: 'Dashboard'})
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.login-success')
+        })
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.unknown-credentials')
+        })
+    }
+}
+
+</script>
+
+<template>
+    <QForm
+        class="q-gutter-md"
+        @submit.prevent="onLogIn"
+    >
+        <QInput
+            v-model="user.username"
+            :label="t('forms.email')"
+            :rules="[ (val, rules) => rules.email(val) || $t('forms.required-email')]"
+            filled
+            lazy-rules
+        />
+        <QInput
+            v-model="user.password"
+            :label="$t('forms.password')"
+            :rules="[ val => val && val.length > 0 || $t('forms.required-password')]"
+            filled
+            lazy-rules
+            type="password"
+        />
+        <div class="btn-group">
+            <QBtn :label="$t('forms.login')" color="primary" type="submit"/>
+            <QBtn :label="$t('forms.create-account')" color="secondary" to="/register"/>
+        </div>
+        <QBtn :label="$t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
+        <QBtn :label="$t('forms.resend-email')" class="q-sm" color="primary" flat to="/register-resend-email"/>
+    </QForm>
+</template>
+
+<style lang="sass" scoped>
+.btn-group
+    display: flex
+    gap: 10px
+</style>
