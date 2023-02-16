@@ -38,10 +38,10 @@ async function onGetGroups() {
 function onInitGroupLabels() {
     try {
         let privacy = false
-        if (route.name === 'Registration') privacy = true
+        if ((route.name === 'Registration') || (route.name === 'AddUser')) privacy = true
         initGroupLabels(privacy)
 
-        if (route.name === 'Registration') preSelectGroup('STUDENT_INSTITUTION')
+        if ((route.name === 'Registration') || (route.name === 'AddUser')) preSelectGroup('STUDENT_INSTITUTION')
     } catch (e) {
         notify({
             type: 'negative',

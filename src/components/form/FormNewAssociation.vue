@@ -86,6 +86,7 @@ const clearValues = () => {
         lazy-rules
     />
     <QSelect
+        v-if="hasPerm('add_association_any_institution')"
         v-model="newAssociation.institution"
         :label="t('forms.association-institution')"
         :options="institutions"
