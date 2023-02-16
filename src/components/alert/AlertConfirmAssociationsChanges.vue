@@ -8,6 +8,7 @@ import useSecurity from "@/composables/useSecurity";
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
+const deletionWord = ref<string>("")
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 const {hasPerm} = useSecurity()
@@ -47,9 +48,12 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             selectedAssociations.forEach((selectedAssociation) => {
                 if (selectedAssociation.email) {
                     mailto += `${selectedAssociation.email},`
+                    associationsSuccess.push(selectedAssociation.name)
+                } else {
+                    associationsError.push(selectedAssociation.name)
                 }
             })
-            window.location.href = mailto
+            window.open(mailto, '_blank')
             break
         case 'enable':
             selectedAssociations.forEach((selectedAssociation) => {
@@ -66,30 +70,49 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             })
             break
         case 'delete':
-            selectedAssociations.forEach((selectedAssociation) => {
+            if(deletionWord.value === t('association.before-deletion-word')) {
+              selectedAssociations.forEach((selectedAssociation) => {
                 promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
-                    associationsSuccess.push(selectedAssociation.name)
-                    selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation), 1)
+                  associationsSuccess.push(selectedAssociation.name)
+                  selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation), 1)
                 }).catch(() => {
-                    associationsError.push(selectedAssociation.name)
+                  associationsError.push(selectedAssociation.name)
                 }))
-            })
+              })
+              deletionWord.value = ""
+            } else {
+              notify({
+                type: 'negative',
+                message: t('association.before-deletion-word-error')
+              })
+            }
             break
     }
 
     Promise.all(promisesToExecute).then(() => {
+        let message = ''
         if (associationsSuccess.length > 0) {
             associationStore.getManagedAssociations()
+            if (switches.value === 'email') {
+                message = t('notifications.positive.email-associations')
+            } else {
+                message = t('notifications.positive.change-associations')
+            }
             notify({
                 type: 'positive',
-                message: `${t('notifications.positive.change-associations')}${associationsSuccess.join(', ')}`
+                message: `${message}${associationsSuccess.join(', ')}`
             })
         }
         if (associationsError.length > 0) {
             associationStore.getManagedAssociations()
+            if (switches.value === 'email') {
+                message = t('notifications.negative.email-associations-error')
+            } else {
+                message = t('notifications.negative.change-associations-error')
+            }
             notify({
                 type: 'negative',
-                message: `${t('notifications.negative.change-associations-error')}${associationsError.join(', ')}`
+                message: `${message}${associationsError.join(', ')}`
             })
         }
     })
@@ -117,12 +140,23 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</span>
-                <ul>
-                    <li v-for="association in selectedAssociations" :key="association.id">
-                        {{ association.name }}
-                    </li>
-                </ul>
+                <template v-if="switches === 'email'">
+                    <ul v-for="association in selectedAssociations" :key="association.id">
+                        <li v-if="association.email !== ''">{{ association.name }}</li>
+                    </ul>
+                </template>
+                <template v-else>
+                    <ul v-for="association in selectedAssociations" :key="association.id">
+                        <li>{{ association.name }}</li>
+                    </ul>
+                </template>
             </QCardSection>
+          <QCardSection v-if="switches === 'delete'">
+            <QInput
+                v-model=deletionWord
+                @paste.prevent
+                :label="t('association.before-deletion-word-instruction')" />
+          </QCardSection>
 
             <QCardActions align="right">
                 <QBtn
