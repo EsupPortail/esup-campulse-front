@@ -23,6 +23,7 @@ const {formatDate, urlRegex} = useUtility()
 const {
     checkChanges,
     updateAssociation,
+    altLogoText,
 } = useAssociation()
 const {isStaff} = useUserGroups()
 // const userStore = useUserStore()
@@ -179,7 +180,7 @@ async function onChangeLogo(action: string) {
         <fieldset>
             <div class="logo">
                 <QImg
-                    :alt="associationStore.association?.altLogo"
+                    :alt="altLogoText"
                     :ratio="1"
                     :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : pathLogo) : '/images/no_logo.png'"
                 />

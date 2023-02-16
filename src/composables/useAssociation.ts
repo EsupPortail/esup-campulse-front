@@ -1,5 +1,6 @@
-import { ref } from 'vue'
-import type { AssociationSocialNetwork, EditedAssociation, NewAssociation } from '#/association'
+import {computed, ref} from 'vue'
+import i18n from "@/plugins/i18n";
+import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
 import type { AssociationUser } from '#/user'
 import useUtility from '@/composables/useUtility'
 import { useAxios } from '@/composables/useAxios'
@@ -17,6 +18,14 @@ let changedData = {}
 export default function() {
 
     const associationStore = useAssociationStore()
+
+    const altLogoText = computed(() => {
+        return associationStore.association?.altLogo !== "" ? associationStore.association?.altLogo : i18n.global.t('association.logo.default-alt') + associationStore.association?.name
+    })
+
+    function altLogoTextDirectory(association: Association) {
+        return association?.altLogo !== "" ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
+    }
 
 
     /**
@@ -178,6 +187,8 @@ export default function() {
         checkChanges,
         updateAssociation,
         checkSocialNetworks,
-        changedData
+        changedData,
+        altLogoText,
+        altLogoTextDirectory
     }
 }
