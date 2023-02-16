@@ -3,12 +3,14 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import useDirectory from '@/composables/useDirectory'
+import useAssociation from '@/composables/useAssociation'
 import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
 
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
+const {altLogoTextDirectory} = useAssociation()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 
@@ -242,7 +244,7 @@ async function clearSearch(apiSearch: boolean) {
                         <h3>{{ association.name }}</h3>
                         <div class="logo">
                             <QImg
-                                :alt="association.altLogo"
+                                :alt="altLogoTextDirectory(association)"
                                 :ratio="1"
                                 :src="Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png'"
                             />

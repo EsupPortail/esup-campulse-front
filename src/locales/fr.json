@@ -360,7 +360,8 @@
       "pickup": "Choisir un nouveau logo",
       "update": "Remplacer le logo de l'association par l'image sélectionnée",
       "remove": "Supprimer le logo de l'association",
-      "alt": "Ajouter un texte alternatif décrivant le logo de l'association"
+      "alt": "Ajouter un texte alternatif décrivant le logo de l'association",
+      "default-alt": "Logo de l'association : "
     }
   },
   "user": {

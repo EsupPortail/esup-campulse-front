@@ -5,6 +5,7 @@ import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUtility from '@/composables/useUtility'
 import {useRoute} from 'vue-router'
+import useAssociation from "@/composables/useAssociation";
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -13,6 +14,7 @@ const {formatDate} = useUtility()
 const route = useRoute()
 
 const associationStore = useAssociationStore()
+const {altLogoText} = useAssociation()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
@@ -26,7 +28,7 @@ onMounted(async function () {
 })
 
 const hasLogo = computed(() => {
-  return association.value ? (association.value.pathLogo !== null && Object.keys(association.value.pathLogo).length > 0 ? true : false) : false
+  return association.value ? (association.value.pathLogo !== null && Object.keys(association.value.pathLogo).length > 0) : false
 })
 
 async function onGetAssociationDetail() {
@@ -45,7 +47,7 @@ async function onGetAssociationDetail() {
   <section class="title">
     <div class="logo">
       <QImg
-          :alt="association?.altLogo"
+          :alt="altLogoText"
           :src="hasLogo ? association?.pathLogo.detail : '/images/no_logo.png'"
       />
     </div>
