@@ -31,7 +31,8 @@ export const useAssociationStore = defineStore('associationStore', {
                 // .filter(association => !association.hasPresident)
                 .map(association => ({
                     value: association.id,
-                    label: association.name
+                    label: association.name,
+                    disable: false
                 }))
         },
         associationDirectory: (state: AssociationStore): AssociationDirectory => {

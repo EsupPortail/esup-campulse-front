@@ -97,7 +97,8 @@ export default function() {
                 if (label) {
                     labels.push({
                         value: group.id,
-                        label
+                        label,
+                        disable: !group.isPublic
                     })
                 }
             }
