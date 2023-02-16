@@ -8,14 +8,14 @@ import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
 import useUserGroups from "@/composables/useUserGroups";
-import type {User} from "#/user";
+import type {User, UserGroup} from "#/user";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const {getUsers} = useUsers()
 const route = useRoute()
-const {getGroups, getGroupLiteral} = useUserGroups()
+const {getGroups, getGroupLiteral, groups} = useUserGroups()
 
 const users = ref<User[]>([])
 
@@ -82,11 +82,21 @@ const columns: QTableProps['columns'] = [
     }
 ]
 
-function goTo(id: number) {
-    if (route.name === 'ValidateUsers') {
-        router.push({name: 'UserValidationDetail', params: {id}})
-    } else {
-        router.push({name: 'UserManagementDetail', params: {id}})
+function goTo(row: User) {
+    let enableUserDetail = true
+    for (let i = 0; i < (row.groups?.length as number); i++) {
+        const g = groups.value?.find(obj => obj.id === (row.groups?.[i] as UserGroup).groupId)
+        if (g && !g.isPublic) {
+            enableUserDetail = false
+            break
+        }
+    }
+    if (enableUserDetail) {
+        if (route.name === 'ValidateUsers') {
+            router.push({name: 'UserValidationDetail', params: {id: row.id}})
+        } else {
+            router.push({name: 'UserManagementDetail', params: {id: row.id}})
+        }
     }
 }
 </script>
@@ -101,7 +111,7 @@ function goTo(id: number) {
         row-key="id"
     >
         <template v-slot:body="props">
-            <QTr :props="props" @click="goTo(props.row.id)">
+            <QTr :props="props" @click="goTo(props.row)">
                 <QTd key="id" :props="props">
                     {{ props.row.id }}
                 </QTd>
