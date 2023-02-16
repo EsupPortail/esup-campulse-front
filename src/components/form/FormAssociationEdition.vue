@@ -83,7 +83,7 @@ const altLogoComputed = computed<string>( () => {
   return associationStore.association?.altLogo === undefined ? '' : associationStore.association?.altLogo
 })
 const altLogo = ref<string>(altLogoComputed.value)
-const newLogo = ref<string | Blob>('')
+const newLogo = ref<undefined | Blob>(undefined)
 const pathLogo = ref<object | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {
     pathLogo.value = associationStore.association?.pathLogo
@@ -159,7 +159,7 @@ async function onChangeLogo(action: string) {
             message: t('notifications.positive.association-logo-updated'),
             type: 'positive'
         })
-        newLogo.value = ''
+        newLogo.value = undefined
     } catch (error) {
         if (axios.isAxiosError(error)) {
             notify({
