@@ -124,7 +124,7 @@ function goTo(id: number) {
                 <QTd key="groups" :props="props">
                     <ul>
                         <li v-for="(group, index) in props.row.groups" :key="index">
-                            <QChip>{{ getGroupLiteral(group.groupId) }}</QChip>
+                            <QChip v-if="props.row.groups.map(g => g.groupId).indexOf(group.groupId) === index">{{ getGroupLiteral(group.groupId) }}</QChip>
                         </li>
                     </ul>
                 </QTd>
