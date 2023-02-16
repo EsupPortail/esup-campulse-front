@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onBeforeRouteLeave} from 'vue-router'
@@ -45,7 +45,9 @@ const association = ref<EditedAssociation>({
     presidentNames: '',
     presidentPhone: '',
     approvalDate: '',
-    lastGoaDate: ''
+    lastGoaDate: '',
+    studentCount: null,
+    isPublic: false
 })
 
 const initValues = () => {
@@ -65,6 +67,8 @@ const initValues = () => {
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
     association.value.institutionComponent = associationStore.institutionComponentLabels.find(({value}) => value === associationStore.association?.institutionComponent?.id)?.value
     association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField?.id)?.value
+    association.value.studentCount = associationStore.association?.studentCount as number
+    association.value.isPublic = associationStore.association?.isPublic as boolean
 }
 watch(() => associationStore.association, initValues)
 
@@ -75,7 +79,10 @@ onMounted(async () => {
 })
 
 // Logo management
-const altLogo = ref<string>('')
+const altLogoComputed = computed<string>( () => {
+  return associationStore.association?.altLogo === undefined ? '' : associationStore.association?.altLogo
+})
+const altLogo = ref<string>(altLogoComputed.value)
 const newLogo = ref<string | Blob>('')
 const pathLogo = ref<object | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {
@@ -136,10 +143,13 @@ async function onChangeLogo(action: string) {
         if (action === 'update') {
             const patchLogoData = new FormData()
             if (typeof newLogo.value === 'object') {
-                patchLogoData.append('pathLogo', newLogo.value)
+              patchLogoData.append('pathLogo', newLogo.value)
+              if (altLogo.value === associationStore.association?.altLogo) {
+                altLogo.value = ""
+              }
             }
-            patchLogoData.append('altLogo', altLogo.value)
-            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+          patchLogoData.append('altLogo', altLogo.value)
+          await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
         } else if (action === 'delete') {
             const deleteLogoData = {'altLogo': null, 'pathLogo': null}
             await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
