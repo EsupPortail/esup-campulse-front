@@ -26,6 +26,15 @@ async function loadAssociations() {
         })
     }
 }
+
+function checkHasPresident(associationId: number) {
+  for (let association of associationStore.associationNames) {
+    if (association.id === associationId) {
+      return association.hasPresident
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -43,6 +52,7 @@ async function loadAssociations() {
             <QCheckbox
                 v-model="association.isPresident"
                 :label="t('forms.im-association-president')"
+                :disable="checkHasPresident(association.id)"
             />
             <QCheckbox
                 v-model="association.isSecretary"

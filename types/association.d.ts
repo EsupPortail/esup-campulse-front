@@ -74,11 +74,6 @@ export interface AssociationStore {
     activityFields: AssociationActivityField[]
 }
 
-export interface AssociationName {
-    id: number,
-    name: string
-}
-
 export type AssociationDirectory = AssociationDirectoryDetail[]
 export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, institutionComponent: string, activityField: string }
 
