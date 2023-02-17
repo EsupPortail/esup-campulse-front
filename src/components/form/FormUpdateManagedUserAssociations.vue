@@ -2,7 +2,6 @@
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 import { onMounted, watch } from 'vue'
-import { useAssociationStore } from '@/stores/useAssociationStore'
 import { useUserManagerStore } from '@/stores/useUserManagerStore'
 import { useRoute } from 'vue-router'
 import useUsers from '@/composables/useUsers'
@@ -12,7 +11,6 @@ const { t } = useI18n()
 const { notify, loading } = useQuasar()
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
-const { associations } = useAssociationStore()
 const { userAssociations } = useUsers()
 
 
@@ -25,8 +23,8 @@ onMounted(async () => {
 const initValues = () => {
     userManagerStore.userAssociations.forEach(function (association) {
         userAssociations.value.push({
-            associationId: association.id,
-            associationName: associations.find((asso) => association.id === asso.id)?.name,
+            associationId: association.id ? association.id : null,
+            associationName: association.name,
             isPresident: association.isPresident,
             canBePresident: association.canBePresident,
             isSecretary: association.isSecretary,
@@ -67,7 +65,8 @@ const booleanSelectOptions = [
     <fieldset class="association-cards">
         <legend>{{ t('user.associations') }}</legend>
         <p v-if="userAssociations.length === 0">{{ t('user.has-no-association') }}</p>
-        <QCard v-for="association in userAssociations" :key="association.associationId" class="association-card">
+        <QCard v-for="association in userAssociations" :key="association.associationId ? association.associationId : 0"
+            class="association-card">
             <QCardSection>
                 <article>
                     <h4>{{ association.associationName }}</h4>

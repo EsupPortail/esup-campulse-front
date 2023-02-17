@@ -18,6 +18,7 @@ export interface User {
 // User's role in the association
 export interface AssociationUser {
     id: number | null,
+    name: string,
     isPresident: boolean,
     canBePresident: boolean,
     isValidatedByAdmin: boolean,
@@ -58,7 +59,7 @@ export interface UserAssociation {
 }
 
 export interface UserAssociationManagement {
-    associationId: number,
+    associationId: number | null,
     associationName: string,
     isPresident: boolean,
     canBePresident: boolean,

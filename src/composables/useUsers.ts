@@ -44,7 +44,7 @@ export default function() {
     function updateUserAssociations() {
         userAssociations.value.forEach(async function(association) {
             // If we need to delete the association
-            if (association.deleteAssociation) {
+            if (association.associationId && association.deleteAssociation) {
                 await userManagerStore.deleteUserAssociation(association.associationId)
             }
             // If we need to update the association
@@ -63,7 +63,7 @@ export default function() {
                         }
                     }
                 }
-                if (hasChanges) {
+                if (hasChanges && association.associationId) {
                     const infosToPatch = {
                         isPresident: association.isPresident,
                         canBePresident: association.canBePresident,

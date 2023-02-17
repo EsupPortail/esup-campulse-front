@@ -49,6 +49,7 @@ export default function() {
     function addAssociation() {
         newAssociations.value.push({
             id: null,
+            name: "",
             isPresident: false,
             canBePresident: false,
             isValidatedByAdmin: false,

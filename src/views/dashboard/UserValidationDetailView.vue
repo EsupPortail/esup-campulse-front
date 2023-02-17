@@ -119,7 +119,7 @@ async function onDeleteUser() {
         <h2>{{ t('directory.title') }}</h2>
         <div v-if="userManagerStore.userAssociations.length !== 0">
             <article v-for="(association, index) in userManagerStore.userAssociations" :key="index">
-                <h3>{{ association.association.name }}</h3>
+                <h3>{{ association.name }}</h3>
                 <ul>
                     <li>{{ t('dashboard.association-user.is-president') }} :
                         {{ association.isPresident ? t('yes') : t('no') }}

@@ -96,6 +96,7 @@ export const _groupLabels = _userGroups.map(
 export const _userAssociations: AssociationUser[] = [
     {
         id: 1,
+        name: "PLANA",
         isPresident: true,
         canBePresident: true,
         isValidatedByAdmin: true,
@@ -104,6 +105,7 @@ export const _userAssociations: AssociationUser[] = [
     },
     {
         id: 2,
+        name: "Octant",
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: true,
@@ -112,6 +114,7 @@ export const _userAssociations: AssociationUser[] = [
     },
     {
         id: 3,
+        name: "Apogée",
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: true,
@@ -120,6 +123,7 @@ export const _userAssociations: AssociationUser[] = [
     },
     {
         id: 4,
+        name: "PLANB",
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: false,

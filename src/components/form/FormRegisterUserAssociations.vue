@@ -44,7 +44,7 @@ function checkHasPresident(associationId: number) {
             <QSelect v-model="association.id" :label="t('forms.select-association')"
                 :options="associationStore.associationLabels" emit-value filled map-options />
             <QCheckbox v-model="association.isPresident" :label="t('forms.im-association-president')"
-                :disable="checkHasPresident(association.id)" />
+                :disable="association.id ? checkHasPresident(association.id) : true" />
             <QCheckbox v-model="association.isSecretary" :label="t('forms.im-association-secretary')" />
             <QCheckbox v-model="association.isTreasurer" :label="t('forms.im-association-treasurer')" />
             <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline

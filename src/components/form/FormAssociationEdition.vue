@@ -175,7 +175,7 @@ async function onChangeLogo(action: string) {
         <fieldset>
             <div class="logo">
                 <QImg :alt="altLogoText" :ratio="1"
-                    :src="(pathLogo !== null && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '/images/no_logo.png') : '/images/no_logo.png'" />
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '/images/no_logo.png') : '/images/no_logo.png'" />
             </div>
             <QFile v-model="newLogo" :label="t('association.logo.pickup')" accept=".jpg, .jpeg, .png" filled />
             <QInput v-model="altLogo" :label="t('association.logo.alt')" filled />
