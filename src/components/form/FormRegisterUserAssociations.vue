@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { useAssociationStore } from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import {onMounted, ref} from 'vue'
-import type {AssociationUser} from "#/user"
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
+import { onMounted, ref } from 'vue'
+import type { AssociationUser } from "#/user"
 
 const associationStore = useAssociationStore()
 const { newAssociations, addAssociation, removeAssociation } = useAssociation()
@@ -40,35 +40,35 @@ function checkHasPresident(associationId: number) {
 const selectedRoleOption = ref<string>("")
 
 function updateRegisterRoleInAssociation(association: AssociationUser) {
-  association.isPresident = false
-  association.isSecretary = false
-  association.isTreasurer = false
-  switch (selectedRoleOption.value) {
-    case 'isPresident':
-      association.isPresident = true
-      break
-    case 'isSecretary':
-      association.isSecretary = true
-      break
-    case 'isTreasurer':
-      association.isTreasurer = true
-      break
-  }
+    association.isPresident = false
+    association.isSecretary = false
+    association.isTreasurer = false
+    switch (selectedRoleOption.value) {
+        case 'isPresident':
+            association.isPresident = true
+            break
+        case 'isSecretary':
+            association.isSecretary = true
+            break
+        case 'isTreasurer':
+            association.isTreasurer = true
+            break
+    }
 }
 
 const optionsAssociationRole = [
-  {
-    label: t('forms.im-association-president'),
-    value: "isPresident",
-  },
-  {
-    label: t('forms.im-association-secretary'),
-    value: "isSecretary"
-  },
-  {
-    label: t('forms.im-association-treasurer'),
-    value: "isTreasurer"
-  }
+    {
+        label: t('forms.im-association-president'),
+        value: "isPresident",
+    },
+    {
+        label: t('forms.im-association-secretary'),
+        value: "isSecretary"
+    },
+    {
+        label: t('forms.im-association-treasurer'),
+        value: "isTreasurer"
+    }
 ]
 
 </script>
@@ -77,38 +77,17 @@ const optionsAssociationRole = [
     <fieldset>
         <legend class="legend-big">{{ t("forms.add-my-associations") }}</legend>
         <div v-for="(association, index) in newAssociations" :key="index">
-            <QSelect
-                v-model="association.id"
-                :label="t('forms.select-association')"
-                :options="associationStore.associationLabels"
-                emit-value
-                filled
-                map-options
-                @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id)"
-            />
-            <QOptionGroup
-                v-model="selectedRoleOption"
-                :options="optionsAssociationRole"
-                inline
-                @update:model-value="updateRegisterRoleInAssociation(association)"
-                @update:options=""
-            />
-            <QBtn
-                :label="t('forms.delete-association')"
-                color="red"
-                icon="mdi-minus-circle-outline"
-                outline
-                @click="removeAssociation(index)"
-            />
-            <QSeparator/>
+            <QSelect v-model="association.id" :label="t('forms.select-association')"
+                :options="associationStore.associationLabels" emit-value filled map-options
+                @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id)" />
+            <QOptionGroup v-model="selectedRoleOption" :options="optionsAssociationRole" inline
+                @update:model-value="updateRegisterRoleInAssociation(association)" @update:options="" />
+            <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline
+                @click="removeAssociation(index)" />
+            <QSeparator />
         </div>
-        <QBtn
-            v-if="newAssociations.length < 5"
-            :label="t('forms.add-association')"
-            class="add-association"
-            color="primary"
-            icon="mdi-plus-circle-outline"
-            outline @click="addAssociation" />
+        <QBtn v-if="newAssociations.length < 5" :label="t('forms.add-association')" class="add-association" color="primary"
+            icon="mdi-plus-circle-outline" outline @click="addAssociation" />
     </fieldset>
 </template>
 

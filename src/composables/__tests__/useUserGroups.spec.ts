@@ -1,11 +1,11 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {_groupLabels, _student, _userGroups} from '~/fixtures/user.mock'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { _groupLabels, _student, _userGroups } from '~/fixtures/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
-import {config} from '@vue/test-utils'
-import {createTestingPinia} from '@pinia/testing'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {useAxios} from '@/composables/useAxios'
+import { config } from '@vue/test-utils'
+import { createTestingPinia } from '@pinia/testing'
+import { useUserManagerStore } from '@/stores/useUserManagerStore'
+import { _axiosFixtures } from '~/fixtures/axios.mock'
+import { useAxios } from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -15,10 +15,10 @@ vi.mock('@/composables/useAxios', () => ({
     })
 }))
 
-const {getGroups, groups, groupList, studentGroup, groupsToDelete, newGroups, updateUserGroups} = useUserGroups()
+const { getGroups, groups, groupList, studentGroup, groupsToDelete, newGroups, updateUserGroups } = useUserGroups()
 
 config.global.plugins = [
-    createTestingPinia({createSpy: vi.fn()}),
+    createTestingPinia({ createSpy: vi.fn() }),
 ]
 
 describe('useUserGroups', () => {
@@ -31,13 +31,13 @@ describe('useUserGroups', () => {
     })
     describe('getGroups', () => {
         beforeEach(() => {
-            const {axiosPublic} = useAxios()
+            const { axiosPublic } = useAxios()
             const mockedAxios = vi.mocked(axiosPublic, true)
-            mockedAxios.get.mockResolvedValueOnce({data: _userGroups})
+            mockedAxios.get.mockResolvedValueOnce({ data: _userGroups })
             getGroups()
         })
         it('should call API once on /groups/ and get user groups', () => {
-            const {axiosPublic} = useAxios()
+            const { axiosPublic } = useAxios()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/groups/')
             expect(groups.value).toEqual(_userGroups)

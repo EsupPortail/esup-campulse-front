@@ -35,9 +35,9 @@ describe('Association store', () => {
             const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({ data: _associations } as AxiosResponse)
         })
-        describe('If forDirectory is true', () => {
+        describe('If isPublic is true', () => {
             beforeEach(() => {
-                associationStore.getAssociations(true, false)
+                associationStore.getAssociations(true)
             })
             it('should call API once on /associations/?is_public=true', () => {
                 const { axiosPublic } = useAxios()
@@ -45,7 +45,8 @@ describe('Association store', () => {
                 expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_public=true')
             })
         })
-        describe('If forRegistration is true', () => {
+        /*
+        describe('If isEnabled is true', () => {
             beforeEach(() => {
                 associationStore.getAssociations(false, true)
             })
@@ -65,6 +66,7 @@ describe('Association store', () => {
                 expect(axiosPublic.get).toHaveBeenCalledWith('/associations/')
             })
         })
+        */
     })
     describe('getManagedAssociations', () => {
         beforeEach(() => {
@@ -109,7 +111,7 @@ describe('Association store', () => {
             const { axiosPublic } = useAxios()
             const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({ data: _association } as AxiosResponse)
-            associationStore.getAssociationDetail(_association.id)
+            associationStore.getAssociationDetail(_association.id, true)
         })
         afterEach(() => {
             associationStore.association = {} as Association

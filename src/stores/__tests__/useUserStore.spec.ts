@@ -1,11 +1,11 @@
-import {createPinia, setActivePinia} from 'pinia'
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {_manager, _newUser, _student} from '~/fixtures/user.mock'
-import {useUserStore} from '@/stores/useUserStore'
-import {_axiosFixtures} from '~/fixtures/axios.mock'
-import type {User} from "#/user";
-import {_tokens} from "~/fixtures/tokens.mock";
-import {useAxios} from "@/composables/useAxios";
+import { createPinia, setActivePinia } from 'pinia'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { _manager, _newUser, _student } from '~/fixtures/user.mock'
+import { useUserStore } from '@/stores/useUserStore'
+import { _axiosFixtures } from '~/fixtures/axios.mock'
+import type { User } from "#/user";
+import { _tokens } from "~/fixtures/tokens.mock";
+import { useAxios } from "@/composables/useAxios";
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -91,7 +91,7 @@ describe('User store', () => {
     // PASSED
     describe('Load CAS user', () => {
         beforeEach(() => {
-            const {axiosAuthenticated} = useAxios()
+            const { axiosAuthenticated } = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.post.mockResolvedValueOnce({
                 data: {
@@ -162,9 +162,9 @@ describe('User store', () => {
                         association: 1
                     }
                 ]
-                const {axiosAuthenticated} = useAxios()
+                const { axiosAuthenticated } = useAxios()
                 const mockedAxios = vi.mocked(axiosAuthenticated, true)
-                mockedAxios.get.mockResolvedValueOnce({data})
+                mockedAxios.get.mockResolvedValueOnce({ data })
                 await userStore.getUserAssociations()
                 expect(mockedAxios.get).toHaveBeenCalledOnce()
                 expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/')
@@ -175,7 +175,7 @@ describe('User store', () => {
         describe('If user has no association', () => {
             it('should not call API and do nothing to the store', async () => {
                 await userStore.getUserAssociations()
-                const {axiosAuthenticated} = useAxios()
+                const { axiosAuthenticated } = useAxios()
                 expect(axiosAuthenticated.get).toHaveBeenCalledTimes(0)
                 expect(userStore.userAssociations).toEqual([])
             })
@@ -191,6 +191,7 @@ describe('User store', () => {
                 const roles = [
                     {
                         id: 1,
+                        name: "",
                         isPresident: false,
                         canBePresident: true,
                         isValidatedByAdmin: true,
@@ -205,6 +206,7 @@ describe('User store', () => {
                 const roles = [
                     {
                         id: 1,
+                        name: "",
                         isPresident: false,
                         canBePresident: false,
                         isValidatedByAdmin: true,
