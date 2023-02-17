@@ -1,6 +1,6 @@
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 import i18n from "@/plugins/i18n";
-import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
+import type { Association, AssociationSocialNetwork, EditedAssociation, NewAssociation } from '#/association'
 import type { AssociationUser } from '#/user'
 import useUtility from '@/composables/useUtility'
 import { useAxios } from '@/composables/useAxios'

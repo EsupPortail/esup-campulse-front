@@ -88,8 +88,8 @@ export const _userGroupList: (number | undefined)[] = _userGroups.map(group => g
 
 export const _groupLabels = _userGroups.map(
     group => ({
-        value: group.id,
-        label: group.name
+        value: group.groupId,
+        label: _groups.find(_group => _group.id === group.groupId)?.name
     })
 )
 

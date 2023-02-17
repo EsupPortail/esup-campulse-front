@@ -95,7 +95,7 @@ export const _nonEditedAssociation: EditedAssociation = {
     activityField: 1,
 }
 
-export const _associations: AssociationList[] = [
+export const _associations: Association[] = [
     {
         id: 1,
         name: 'Association',
@@ -110,10 +110,17 @@ export const _associations: AssociationList[] = [
             id: 1,
             name: 'Université de Strasbourg',
             acronym: 'Unistra',
+            email: 'test@pas-unistra.fr'
         },
         institutionComponent: {
             id: 1,
             name: 'Faculté de médecine',
+            institution: {
+                id: 1,
+                name: 'Université de Strasbourg',
+                acronym: 'Unistra',
+                email: 'test@pas-unistra.fr'
+            }
         },
         activityField: {
             id: 1,
@@ -134,10 +141,17 @@ export const _associations: AssociationList[] = [
             id: 2,
             name: 'Université de Haute-Alsace',
             acronym: 'UHA',
+            email: 'test@pas-uha.fr'
         },
         institutionComponent: {
             id: 2,
             name: 'Faculté de Chimie',
+            institution: {
+                id: 2,
+                name: 'Université de Haute-Alsace',
+                acronym: 'UHA',
+                email: 'test@pas-uha.fr'
+            }
         },
         activityField: {
             id: 2,
