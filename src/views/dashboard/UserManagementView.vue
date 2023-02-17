@@ -82,21 +82,23 @@ const columns: QTableProps['columns'] = [
     }
 ]
 
-function goTo(row: User) {
-    let enableUserDetail = true
+function shouldGoTo(row: User) {
+    let enableUserDetail = false
     for (let i = 0; i < (row.groups?.length as number); i++) {
         const g = groups.value?.find(obj => obj.id === (row.groups?.[i] as UserGroup).groupId)
-        if (g && !g.isPublic) {
-            enableUserDetail = false
+        if (g && g.isPublic) {
+            enableUserDetail = true
             break
         }
     }
-    if (enableUserDetail) {
-        if (route.name === 'ValidateUsers') {
-            router.push({name: 'UserValidationDetail', params: {id: row.id}})
-        } else {
-            router.push({name: 'UserManagementDetail', params: {id: row.id}})
-        }
+    return enableUserDetail
+}
+
+function goTo(row: User) {
+    if (route.name === 'ValidateUsers') {
+        router.push({name: 'UserValidationDetail', params: {id: row.id}})
+    } else {
+        router.push({name: 'UserManagementDetail', params: {id: row.id}})
     }
 }
 </script>
@@ -111,7 +113,7 @@ function goTo(row: User) {
         row-key="id"
     >
         <template v-slot:body="props">
-            <QTr :props="props" @click="goTo(props.row)">
+            <QTr :props="props" :no-hover="!shouldGoTo(props.row)" @click="shouldGoTo(props.row) && goTo(props.row)" :class="{ 'cursor-pointer' : shouldGoTo(props.row)}">
                 <QTd key="id" :props="props">
                     {{ props.row.id }}
                 </QTd>
@@ -149,13 +151,10 @@ function goTo(row: User) {
 </template>
 
 <style lang="sass" scoped>
-.q-tr:hover
-    cursor: pointer
-
 ul
     margin-left: -40px
 
-    li
-        list-style: none
+li
+    list-style: none
 </style>
 
