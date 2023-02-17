@@ -7,7 +7,7 @@ import {useRoute} from 'vue-router'
 import {useUserManagerStore} from "@/stores/useUserManagerStore";
 
 const {t} = useI18n()
-const {groupChoiceIsValid, newGroups, getGroups, groupLabels, groups, initGroupLabels, preSelectGroup} = useUserGroups()
+const {groupChoiceIsValid, newGroups, getGroups, groupLabels, groups, initGroupLabels, preSelectGroup, initGroupPermToJoinAssociation} = useUserGroups()
 const {notify, loading} = useQuasar()
 const route = useRoute()
 const userManagerStore = useUserManagerStore()
@@ -73,6 +73,7 @@ watch(() => userManagerStore.user, initUserGroups)
                 :options="groupLabels"
                 color="primary"
                 type="checkbox"
+                @update:model-value="initGroupPermToJoinAssociation"
             />
         </QField>
     </fieldset>

@@ -137,20 +137,20 @@ export default function() {
      * cannot join the association
      */
     const initGroupPermToJoinAssociation = () => {
+        let perm = false
         if (newGroups.value.length && groups.value?.length) {
-            let perm = true
             for (let i = 0; i < newGroups.value.length; i++) {
                 const g = groups.value?.find(obj => obj.id === newGroups.value[i])
-                if (g && !canJoinAssociationGroups.includes(g.name)) {
-                    perm = false
+                if (g && canJoinAssociationGroups.includes(g.name)) {
+                    perm = true
                     break
                 }
             }
-            groupCanJoinAssociation.value = perm
         }
+        groupCanJoinAssociation.value = perm
     }
 
-    watch(() => newGroups.value, initGroupPermToJoinAssociation)
+    //watch(() => newGroups.value, initGroupPermToJoinAssociation)
 
 
     /**
@@ -213,6 +213,7 @@ export default function() {
         preSelectGroup,
         groupCanJoinAssociation,
         isStaff,
-        initStaffStatus
+        initStaffStatus,
+        initGroupPermToJoinAssociation
     }
 }
