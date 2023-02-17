@@ -26,6 +26,15 @@ async function loadAssociations() {
         })
     }
 }
+
+function checkHasPresident(associationId: number) {
+    for (let association of associationStore.associationNames) {
+        if (association.id === associationId) {
+            return association.hasPresident
+        }
+    }
+}
+
 </script>
 
 <template>
@@ -34,7 +43,8 @@ async function loadAssociations() {
         <div v-for="(association, index) in newAssociations" :key="index">
             <QSelect v-model="association.id" :label="t('forms.select-association')"
                 :options="associationStore.associationLabels" emit-value filled map-options />
-            <QCheckbox v-model="association.isPresident" :label="t('forms.im-association-president')" />
+            <QCheckbox v-model="association.isPresident" :label="t('forms.im-association-president')"
+                :disable="checkHasPresident(association.id)" />
             <QCheckbox v-model="association.isSecretary" :label="t('forms.im-association-secretary')" />
             <QCheckbox v-model="association.isTreasurer" :label="t('forms.im-association-treasurer')" />
             <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline

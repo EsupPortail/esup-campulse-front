@@ -32,6 +32,7 @@ export const useAssociationStore = defineStore('associationStore', {
                 .map(association => ({
                     value: association.id,
                     label: association.name,
+                    hasPresident: association.hasPresident,
                     disable: false
                 }))
         },

@@ -7,7 +7,7 @@ import { useRoute } from 'vue-router'
 import { useUserManagerStore } from "@/stores/useUserManagerStore";
 
 const { t } = useI18n()
-const { groupChoiceIsValid, newGroups, getGroups, groupLabels, groups, initGroupLabels, preSelectGroup } = useUserGroups()
+const { groupChoiceIsValid, newGroups, getGroups, groupLabels, groups, initGroupLabels, preSelectGroup, initGroupPermToJoinAssociation } = useUserGroups()
 const { notify, loading } = useQuasar()
 const route = useRoute()
 const userManagerStore = useUserManagerStore()
@@ -65,7 +65,8 @@ watch(() => userManagerStore.user, initUserGroups)
         <legend class="legend-big">{{ route.name === 'Registration' ? t('forms.status') : t('user-manager.user-status') }}
         </legend>
         <QField v-if="groups" :error="!groupChoiceIsValid" :error-message="t('forms.required-status')">
-            <QOptionGroup v-model="newGroups" :options="groupLabels" color="primary" type="checkbox" />
+            <QOptionGroup v-model="newGroups" :options="groupLabels" color="primary" type="checkbox"
+                @update:model-value="initGroupPermToJoinAssociation" />
         </QField>
     </fieldset>
 </template>
