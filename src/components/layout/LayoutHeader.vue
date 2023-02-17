@@ -7,7 +7,9 @@ import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 <template>
   <QHeader elevated height-hint="98">
     <QToolbar>
-      <QToolbarTitle><RouterLink to="/" class="home-link">{{ $t("header.title") }}</RouterLink></QToolbarTitle>
+      <QToolbarTitle>
+        <RouterLink to="/" class="home-link">{{ $t("header.title") }}</RouterLink>
+      </QToolbarTitle>
       <LayoutHeaderNav />
     </QToolbar>
   </QHeader>

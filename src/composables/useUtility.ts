@@ -1,6 +1,6 @@
 import type { RouteLocationMatched } from 'vue-router'
 
-const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?$/
+const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
 
 export default function() {
     function formatDate(date: string) {

@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {onMounted, ref, watch} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import {onBeforeRouteLeave, useRoute} from 'vue-router'
+import { useUserManagerStore } from '@/stores/useUserManagerStore'
+import { onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import FormUpdateManagedUserAssociations from '@/components/form/FormUpdateManagedUserAssociations.vue'
-import type {UserToUpdate} from '#/user'
+import type { UserToUpdate } from '#/user'
 import useUsers from '@/composables/useUsers'
 import useUserGroups from '@/composables/useUserGroups'
 import router from '@/router'
 import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 
-const {t} = useI18n()
-const {notify, loading} = useQuasar()
-const {updateUserAssociations} = useUsers()
-const {groupChoiceIsValid, updateUserGroups} = useUserGroups()
+const { t } = useI18n()
+const { notify, loading } = useQuasar()
+const { updateUserAssociations } = useUsers()
+const { groupChoiceIsValid, updateUserGroups } = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -66,7 +66,7 @@ async function onValidateChanges() {
             updateUserAssociations()
             await updateUserGroups()
             hasValidated.value = true
-            await router.push({name: 'ManageUsers'})
+            await router.push({ name: 'ManageUsers' })
             notify({
                 type: 'positive',
                 message: t('notifications.positive.validate-success')
@@ -93,7 +93,7 @@ const hasValidated = ref<boolean>(false)
 
 function onLeaveEdition() {
     leaveEdition.value = true
-    router.push({name: 'ManageUsers'})
+    router.push({ name: 'ManageUsers' })
 }
 
 // Check is there are any changes before leaving the page
@@ -112,45 +112,18 @@ onBeforeRouteLeave((to, from, next) => {
 </script>
 
 <template>
-    <QForm
-        class="q-gutter-md"
-        @submit.prevent="onValidateChanges"
-    >
+    <QForm class="q-gutter-md" @submit.prevent="onValidateChanges">
         <fieldset>
             <legend>{{ t('user.infos') }}</legend>
-            <QInput
-                v-model="user.firstName"
-                :disable="!!userManagerStore.user?.isCas"
-                :label="t('forms.first-name')"
-                :rules="[ val => val && val.length > 0 || t('forms.required-first-name')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="user.lastName"
-                :disable="!!userManagerStore.user?.isCas"
-                :label="t('forms.last-name')"
-                :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="user.email"
-                :disable="!!userManagerStore.user?.isCas"
-                :label="t('forms.email')"
-                :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="user.phone"
-                :label="t('forms.phone')"
-                filled
-                lazy-rules
-                type="tel"
-            />
+            <QInput v-model="user.firstName" :disable="!!userManagerStore.user?.isCas" :label="t('forms.first-name')"
+                :rules="[val => val && val.length > 0 || t('forms.required-first-name')]" filled lazy-rules />
+            <QInput v-model="user.lastName" :disable="!!userManagerStore.user?.isCas" :label="t('forms.last-name')"
+                :rules="[val => val && val.length > 0 || t('forms.required-last-name')]" filled lazy-rules />
+            <QInput v-model="user.email" :disable="!!userManagerStore.user?.isCas" :label="t('forms.email')"
+                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]" filled lazy-rules />
+            <QInput v-model="user.phone" :label="t('forms.phone')" filled lazy-rules type="tel" />
         </fieldset>
-        <FormUpdateManagedUserAssociations/>
+        <FormUpdateManagedUserAssociations />
         <fieldset>
             <legend>{{ t('user.groups') }}</legend>
             <section>
@@ -164,17 +137,13 @@ onBeforeRouteLeave((to, from, next) => {
                 </article>
             </section>
         </fieldset>
-        <FormUserGroups/>
+        <FormUserGroups />
         <section class="btn-group">
-            <QBtn :label="t('back')" color="secondary" icon="mdi-arrow-left-circle" @click="openAlert = true"/>
-            <AlertLeaveEdition
-                :open-alert="openAlert"
-                :text="t('alerts.leave-user-edition')"
-                @closeAlert="openAlert = !openAlert"
-                @leaveEdition="onLeaveEdition"
-            />
-            <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" type="submit"/>
-            <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
+            <QBtn :label="t('back')" color="secondary" icon="mdi-arrow-left-circle" @click="openAlert = true" />
+            <AlertLeaveEdition :open-alert="openAlert" :text="t('alerts.leave-user-edition')"
+                @closeAlert="openAlert = !openAlert" @leaveEdition="onLeaveEdition" />
+            <QBtn :label="t('dashboard.validate-changes')" color="primary" icon="mdi-check-circle" type="submit" />
+            <AlertConfirmUserDelete @has-validated="hasValidated = true" />
         </section>
     </QForm>
 </template>

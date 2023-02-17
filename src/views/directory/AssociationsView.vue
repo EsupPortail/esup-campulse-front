@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import {onMounted, ref, watch} from 'vue'
-import {useI18n} from 'vue-i18n'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import useDirectory from '@/composables/useDirectory'
 import useAssociation from '@/composables/useAssociation'
-import type {Association, AssociationSearch} from '#/association'
-import {useQuasar} from 'quasar'
+import type { Association, AssociationSearch } from '#/association'
+import { useQuasar } from 'quasar'
 
 
-const {advancedSearch, simpleAssociationSearch} = useDirectory()
+const { advancedSearch, simpleAssociationSearch } = useDirectory()
 const associationStore = useAssociationStore()
-const {altLogoTextDirectory} = useAssociation()
-const {loading, notify} = useQuasar()
-const {t} = useI18n()
+const { altLogoTextDirectory } = useAssociation()
+const { loading, notify } = useQuasar()
+const { t } = useI18n()
 
 onMounted(async function () {
     loading.show
@@ -123,96 +123,35 @@ async function clearSearch(apiSearch: boolean) {
         </div>
     </section>
     <section>
-        <QForm
-            id="search-form"
-            class="search-text-field"
-            @submit.prevent="onSearch"
-        >
+        <QForm id="search-form" class="search-text-field" @submit.prevent="onSearch">
             <fieldset>
-                <QInput
-                    v-model="settings.search"
-                    :label="t('directory.search')"
-                    :placeholder="t('directory.search-placeholder')"
-                    filled
-                    lazy-rules
-                >
+                <QInput v-model="settings.search" :label="t('directory.search')"
+                    :placeholder="t('directory.search-placeholder')" filled lazy-rules>
                     <template v-slot:prepend>
-                        <QIcon name="mdi-magnify"/>
+                        <QIcon name="mdi-magnify" />
                     </template>
                 </QInput>
-                <QBtn
-                    :label="t('directory.search')"
-                    color="primary"
-                    icon="mdi-chevron-right"
-                    @click="onSearch"
-                />
-                <QBtn
-                    :label="t('directory.cancel-search')"
-                    color="secondary"
-                    icon="mdi-close"
-                    @click="clearSearch(true)"
-                />
+                <QBtn :label="t('directory.search')" color="primary" icon="mdi-chevron-right" @click="onSearch" />
+                <QBtn :label="t('directory.cancel-search')" color="secondary" icon="mdi-close" @click="clearSearch(true)" />
             </fieldset>
         </QForm>
-        <QForm
-            class="search-text-field"
-            @submit.prevent="onAdvancedSearch"
-        >
-            <QExpansionItem
-                :label="t('directory.advanced-search')"
-                expand-separator
-                icon="mdi-menu-right"
-            >
+        <QForm class="search-text-field" @submit.prevent="onAdvancedSearch">
+            <QExpansionItem :label="t('directory.advanced-search')" expand-separator icon="mdi-menu-right">
                 <fieldset>
-                    <QInput
-                        v-model="settings.name"
-                        :label="t('directory.labels.association-name')"
-                        filled
-                        lazy-rules
-                    />
-                    <QInput
-                        v-model="settings.acronym"
-                        :label="t('directory.labels.association-acronym')"
-                        filled
-                        lazy-rules
-                    />
-                    <QSelect
-                        v-model="settings.institution"
-                        :label="t('directory.labels.association-institution')"
-                        :options="associationStore.institutionLabels"
-                        emit-value
-                        filled
-                        map-options
-                    />
-                    <QSelect
-                        v-model="settings.institutionComponent"
+                    <QInput v-model="settings.name" :label="t('directory.labels.association-name')" filled lazy-rules />
+                    <QInput v-model="settings.acronym" :label="t('directory.labels.association-acronym')" filled
+                        lazy-rules />
+                    <QSelect v-model="settings.institution" :label="t('directory.labels.association-institution')"
+                        :options="associationStore.institutionLabels" emit-value filled map-options />
+                    <QSelect v-model="settings.institutionComponent"
                         :label="t('directory.labels.association-institution-component')"
-                        :options="associationStore.institutionComponentLabels"
-                        emit-value
-                        filled
-                        map-options
-                    />
-                    <QSelect
-                        v-model="settings.activityField"
-                        :label="t('directory.labels.association-activity-field')"
-                        :options="associationStore.activityFieldLabels"
-                        emit-value
-                        filled
-                        map-options
-                    />
+                        :options="associationStore.institutionComponentLabels" emit-value filled map-options />
+                    <QSelect v-model="settings.activityField" :label="t('directory.labels.association-activity-field')"
+                        :options="associationStore.activityFieldLabels" emit-value filled map-options />
                 </fieldset>
-                <QBtn
-                    :label="t('directory.advanced-search')"
-                    color="primary"
-                    icon="mdi-chevron-right"
-                    type="submit"
-                />
-                <QBtn
-                    :label="t('directory.cancel-search')"
-                    color="secondary"
-                    icon="mdi-close"
-                    @click="clearSearch(false)"
-                />
+                <QBtn :label="t('directory.advanced-search')" color="primary" icon="mdi-chevron-right" type="submit" />
+                <QBtn :label="t('directory.cancel-search')" color="secondary" icon="mdi-close"
+                    @click="clearSearch(false)" />
             </QExpansionItem>
         </QForm>
     </section>
@@ -222,32 +161,31 @@ async function clearSearch(apiSearch: boolean) {
                 <p v-if="associations.length > 0">
                     <span>{{ associations.length }}</span>
                     {{
-                        associations.length > 1 ? t('directory.found-associations-plural') : t('directory.found-associations-singular')
+                        associations.length > 1 ? t('directory.found-associations-plural') :
+                        t('directory.found-associations-singular')
                     }} :
                 </p>
                 <p v-else>{{ t('directory.no-match') }}</p>
                 <p>
                     <span>{{ associationsOnPage.length }}</span>
                     {{
-                        associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') : t('directory.associations-on-page-singular')
+                        associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') :
+                        t('directory.associations-on-page-singular')
                     }} :
                 </p>
             </section>
         </section>
 
         <QCard v-for="association in associationsOnPage" :key="association.id" class="my-card">
-            <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
+            <RouterLink :to="{ name: 'AssociationDetail', params: { id: association.id } }">
                 <QCardSection>
                     <!-- Placeholder for logo -->
                     <div></div>
                     <div>
                         <h3>{{ association.name }}</h3>
                         <div class="logo">
-                            <QImg
-                                :alt="altLogoTextDirectory(association)"
-                                :ratio="1"
-                                :src="Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png'"
-                            />
+                            <QImg :alt="altLogoTextDirectory(association)" :ratio="1"
+                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png') : '/images/no_logo.png'" />
                         </div>
                         <ul>
                             <li v-if="association.acronym">
@@ -271,12 +209,7 @@ async function clearSearch(apiSearch: boolean) {
                 </QCardSection>
             </RouterLink>
         </QCard>
-        <QPagination
-            v-if="pages && pages > 1"
-            v-model="currentPage"
-            :max="pages"
-            @click="scrollToTop"
-        />
+        <QPagination v-if="pages && pages > 1" v-model="currentPage" :max="pages" @click="scrollToTop" />
     </section>
 </template>
 

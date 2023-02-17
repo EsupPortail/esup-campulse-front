@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import {useUserStore} from '@/stores/useUserStore'
-import {useI18n} from "vue-i18n";
-import {useQuasar} from "quasar";
+import { useUserStore } from '@/stores/useUserStore'
+import { useI18n } from "vue-i18n";
+import { useQuasar } from "quasar";
 import router from "@/router";
 
 const userStore = useUserStore()
-const {t} = useI18n()
-const {notify} = useQuasar()
+const { t } = useI18n()
+const { notify } = useQuasar()
 
 
 async function onLogOut() {
     await userStore.logOut()
-    await router.push({name: 'Login'})
+    await router.push({ name: 'Login' })
     notify({
         type: 'positive',
         message: t('notifications.positive.logout-success')
@@ -27,8 +27,8 @@ async function onLogOut() {
 
                     <div class="avatar">
                         <QAvatar color="primary" size="2em" text-color="white">{{
-                                userStore.userNameFirstLetter
-                            }}
+                            userStore.userNameFirstLetter
+                        }}
                         </QAvatar>
                     </div>
 
@@ -40,33 +40,20 @@ async function onLogOut() {
             </template>
 
             <QList>
-                <QItem
-                    v-close-popup
-                    clickable
-                    @click="router.push({name: 'Dashboard'})"
-                >
+                <QItem v-close-popup clickable @click="router.push({ name: 'Dashboard' })">
                     <QItemSection>
                         <QItemLabel>{{ t("header.my-profile") }}</QItemLabel>
                     </QItemSection>
                 </QItem>
 
-                <QItem
-                    v-for="(item) in userStore.user?.associations"
-                    :key="item.id"
-                    v-close-popup
-                    clickable
-                    @click="router.push({name: 'AssociationDashboard', params: {id: item.id}})"
-                >
+                <QItem v-for="(item) in userStore.user?.associations" :key="item.id" v-close-popup clickable
+                    @click="router.push({ name: 'AssociationDashboard', params: { id: item.id } })">
                     <QItemSection>
                         <QItemLabel>{{ item.name }}</QItemLabel>
                     </QItemSection>
                 </QItem>
 
-                <QItem
-                    v-close-popup
-                    clickable
-                    @click="onLogOut"
-                >
+                <QItem v-close-popup clickable @click="onLogOut">
                     <QItemSection>
                         <QItemLabel>{{ t('header.logout') }}</QItemLabel>
                     </QItemSection>

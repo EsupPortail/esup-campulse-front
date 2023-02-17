@@ -2,7 +2,7 @@ export interface Association {
     id: number,
     name: string,
     acronym: string,
-    pathLogo: object | null,
+    pathLogo: AssociationLogo | null,
     altLogo: string,
     socialObject?: string,
     currentProjects?: string,
@@ -25,6 +25,12 @@ export interface Association {
     institution: Institution,
     institutionComponent: InstitutionComponent,
     activityField: AssociationActivityField,
+}
+
+export interface AssociationLogo {
+    base: string | undefined
+    detail: string | undefined
+    list: string | undefined
 }
 
 export interface Institution {
@@ -72,11 +78,6 @@ export interface AssociationStore {
     institutions: Institution[],
     institutionComponents: InstitutionComponent[],
     activityFields: AssociationActivityField[]
-}
-
-export interface AssociationName {
-    id: number,
-    name: string
 }
 
 export type AssociationDirectory = AssociationDirectoryDetail[]

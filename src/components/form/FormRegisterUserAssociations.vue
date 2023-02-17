@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import {useAssociationStore} from '@/stores/useAssociationStore'
+import { useAssociationStore } from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import {onMounted} from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
+import { onMounted } from 'vue'
 
 const associationStore = useAssociationStore()
-const {newAssociations, addAssociation, removeAssociation} = useAssociation()
-const {t} = useI18n()
-const {notify, loading} = useQuasar()
+const { newAssociations, addAssociation, removeAssociation } = useAssociation()
+const { t } = useI18n()
+const { notify, loading } = useQuasar()
 
 onMounted(async () => {
     loading.show
@@ -32,43 +32,17 @@ async function loadAssociations() {
     <fieldset>
         <legend class="legend-big">{{ t("forms.add-my-associations") }}</legend>
         <div v-for="(association, index) in newAssociations" :key="index">
-            <QSelect
-                v-model="association.id"
-                :label="t('forms.select-association')"
-                :options="associationStore.associationLabels"
-                emit-value
-                filled
-                map-options
-            />
-            <QCheckbox
-                v-model="association.isPresident"
-                :label="t('forms.im-association-president')"
-            />
-            <QCheckbox
-                v-model="association.isSecretary"
-                :label="t('forms.im-association-secretary')"
-            />
-            <QCheckbox
-                v-model="association.isTreasurer"
-                :label="t('forms.im-association-treasurer')"
-            />
-            <QBtn
-                :label="t('forms.delete-association')"
-                color="red"
-                icon="mdi-minus-circle-outline"
-                outline
-                @click="removeAssociation(index)"
-            />
-            <QSeparator/>
+            <QSelect v-model="association.id" :label="t('forms.select-association')"
+                :options="associationStore.associationLabels" emit-value filled map-options />
+            <QCheckbox v-model="association.isPresident" :label="t('forms.im-association-president')" />
+            <QCheckbox v-model="association.isSecretary" :label="t('forms.im-association-secretary')" />
+            <QCheckbox v-model="association.isTreasurer" :label="t('forms.im-association-treasurer')" />
+            <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline
+                @click="removeAssociation(index)" />
+            <QSeparator />
         </div>
-        <QBtn
-            v-if="newAssociations.length < 5"
-            :label="t('forms.add-association')"
-            class="add-association"
-            color="primary" icon="mdi-plus-circle-outline"
-            outline
-            @click="addAssociation"
-        />
+        <QBtn v-if="newAssociations.length < 5" :label="t('forms.add-association')" class="add-association" color="primary"
+            icon="mdi-plus-circle-outline" outline @click="addAssociation" />
     </fieldset>
 </template>
 

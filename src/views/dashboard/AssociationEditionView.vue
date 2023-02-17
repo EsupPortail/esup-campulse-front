@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import {useRoute} from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { useRoute } from 'vue-router'
 import FormAssociationEdition from '@/components/form/FormAssociationEdition.vue'
 
-const {t} = useI18n()
-const {notify} = useQuasar()
-const {loading} = useQuasar()
+const { t } = useI18n()
+const { notify } = useQuasar()
+const { loading } = useQuasar()
 
 const route = useRoute()
 const associationStore = useAssociationStore()
@@ -73,6 +73,5 @@ onMounted(async function () {
 
 <template>
     <h1>{{ associationStore.association?.name }}</h1>
-    <FormAssociationEdition
-        v-if="isLoaded"/>
+    <FormAssociationEdition v-if="isLoaded" />
 </template>

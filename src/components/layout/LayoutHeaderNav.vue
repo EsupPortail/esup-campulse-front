@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import LayoutHeaderProfileButton from '@/components/layout/LayoutHeaderProfileButton.vue'
-import {useUserStore} from '@/stores/useUserStore'
-import {useI18n} from 'vue-i18n'
+import { useUserStore } from '@/stores/useUserStore'
+import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
-const {t} = useI18n()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const {t} = useI18n()
         <RouterLink to="/commission">{{ t("header.commission") }}</RouterLink>
         <RouterLink v-if="!userStore.isAuth" to="/login">{{ t("header.login") }}
         </RouterLink>
-        <LayoutHeaderProfileButton v-if="userStore.isAuth"/>
+        <LayoutHeaderProfileButton v-if="userStore.isAuth" />
     </nav>
 </template>
 

@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import {useQuasar} from 'quasar'
-import type {Association} from '#/association'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { useQuasar } from 'quasar'
+import type { Association } from '#/association'
 import useSecurity from "@/composables/useSecurity";
 
-const {t} = useI18n()
+const { t } = useI18n()
 const changes = ref<boolean>(false)
 const deletionWord = ref<string>("")
 const associationStore = useAssociationStore()
-const {notify} = useQuasar()
-const {hasPerm} = useSecurity()
+const { notify } = useQuasar()
+const { hasPerm } = useSecurity()
 
 const actionsOptions = ref([
-    {id: 'email', label: t('association.all-selected-mail')}
+    { id: 'email', label: t('association.all-selected-mail') }
 ])
 
 const switches = ref<string>()
@@ -31,8 +31,8 @@ const initActionOptions = () => {
         })
     }
     if (hasPerm('change_association_all_fields')) {
-        actionsOptions.value.push({id: 'enable', label: t('association.all-selected-enable')})
-        actionsOptions.value.push({id: 'disable', label: t('association.all-selected-disable')})
+        actionsOptions.value.push({ id: 'enable', label: t('association.all-selected-enable') })
+        actionsOptions.value.push({ id: 'disable', label: t('association.all-selected-disable') })
     }
 }
 
@@ -70,21 +70,21 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             })
             break
         case 'delete':
-            if(deletionWord.value === t('association.before-deletion-word')) {
-              selectedAssociations.forEach((selectedAssociation) => {
-                promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
-                  associationsSuccess.push(selectedAssociation.name)
-                  selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation), 1)
-                }).catch(() => {
-                  associationsError.push(selectedAssociation.name)
-                }))
-              })
-              deletionWord.value = ""
+            if (deletionWord.value === t('association.before-deletion-word')) {
+                selectedAssociations.forEach((selectedAssociation) => {
+                    promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                        associationsSuccess.push(selectedAssociation.name)
+                        selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation), 1)
+                    }).catch(() => {
+                        associationsError.push(selectedAssociation.name)
+                    }))
+                })
+                deletionWord.value = ""
             } else {
-              notify({
-                type: 'negative',
-                message: t('association.before-deletion-word-error')
-              })
+                notify({
+                    type: 'negative',
+                    message: t('association.before-deletion-word-error')
+                })
             }
             break
     }
@@ -120,22 +120,10 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
 </script>
 
 <template>
-    <QSelect
-        v-model="switches"
-        :label="t('association.all-selected')"
-        :options="actionsOptions"
-        emit-value
-        filled
-        map-options
-        option-label="label"
-        option-value="id"
-    />
-    <QBtn
-        :label="t('association.confirm-all-changes')"
-        color="primary"
-        icon="mdi-pencil"
-        @click="(switches !== undefined && selectedAssociations.length > 0) ? changes = true : changes = false"
-    />
+    <QSelect v-model="switches" :label="t('association.all-selected')" :options="actionsOptions" emit-value filled
+        map-options option-label="label" option-value="id" />
+    <QBtn :label="t('association.confirm-all-changes')" color="primary" icon="mdi-pencil"
+        @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false" />
     <QDialog v-model="changes" persistent>
         <QCard>
             <QCardSection class="row items-center">
@@ -151,52 +139,20 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
                     </ul>
                 </template>
             </QCardSection>
-          <QCardSection v-if="switches === 'delete'">
-            <QInput
-                v-model=deletionWord
-                @paste.prevent
-                :label="t('association.before-deletion-word-instruction')" />
-          </QCardSection>
+            <QCardSection v-if="switches === 'delete'">
+                <QInput v-model=deletionWord @paste.prevent :label="t('association.before-deletion-word-instruction')" />
+            </QCardSection>
 
             <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="mdi-arrow-left-circle"
-                />
-                <QBtn
-                    v-if="switches === 'email'"
-                    v-close-popup
-                    :label="t('association.email')"
-                    color="secondary"
-                    icon="mdi-email"
-                    @click="onConfirmChanges(selectedAssociations)"
-                />
-                <QBtn
-                    v-if="switches === 'enable'"
-                    v-close-popup
-                    :label="t('association.enable')"
-                    color="green"
-                    icon="mdi-eye-check"
-                    @click="onConfirmChanges(selectedAssociations)"
-                />
-                <QBtn
-                    v-if="switches === 'disable'"
-                    v-close-popup
-                    :label="t('association.disable')"
-                    color="orange"
-                    icon="mdi-eye-remove"
-                    @click="onConfirmChanges(selectedAssociations)"
-                />
-                <QBtn
-                    v-if="switches === 'delete'"
-                    v-close-popup
-                    :label="t('association.delete')"
-                    color="red"
-                    icon="mdi-delete"
-                    @click="onConfirmChanges(selectedAssociations)"
-                />
+                <QBtn v-close-popup :label="t('cancel')" color="secondary" icon="mdi-arrow-left-circle" />
+                <QBtn v-if="switches === 'email'" v-close-popup :label="t('association.email')" color="secondary"
+                    icon="mdi-email" @click="onConfirmChanges(selectedAssociations)" />
+                <QBtn v-if="switches === 'enable'" v-close-popup :label="t('association.enable')" color="green"
+                    icon="mdi-eye-check" @click="onConfirmChanges(selectedAssociations)" />
+                <QBtn v-if="switches === 'disable'" v-close-popup :label="t('association.disable')" color="orange"
+                    icon="mdi-eye-remove" @click="onConfirmChanges(selectedAssociations)" />
+                <QBtn v-if="switches === 'delete'" v-close-popup :label="t('association.delete')" color="red"
+                    icon="mdi-delete" @click="onConfirmChanges(selectedAssociations)" />
             </QCardActions>
         </QCard>
     </QDialog>

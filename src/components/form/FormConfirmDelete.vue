@@ -1,19 +1,19 @@
 <script lang="ts" setup>
-import {ref} from "vue";
-import {useI18n} from "vue-i18n";
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import router from "@/router";
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
-import {useQuasar} from "quasar";
+import { useUserManagerStore } from "@/stores/useUserManagerStore";
+import { useQuasar } from "quasar";
 
-const {t} = useI18n()
+const { t } = useI18n()
 const confirm = ref<boolean>(false)
 const userManagerStore = useUserManagerStore()
-const {notify} = useQuasar()
+const { notify } = useQuasar()
 
 async function onDeleteUser() {
   try {
     await userManagerStore.deleteUser()
-    await router.push({name: 'ManageUsers'})
+    await router.push({ name: 'ManageUsers' })
     notify({
       type: 'positive',
       message: t('notifications.positive.validate-delete-user')
@@ -28,7 +28,7 @@ async function onDeleteUser() {
 </script>
 
 <template>
-  <QBtn :label="t('user-manager.delete')" color="red" icon="mdi-delete" @click="confirm = true"/>
+  <QBtn :label="t('user-manager.delete')" color="red" icon="mdi-delete" @click="confirm = true" />
 
   <QDialog v-model="confirm" persistent>
     <QCard>
@@ -37,8 +37,8 @@ async function onDeleteUser() {
       </QCardSection>
 
       <QCardActions align="right">
-        <QBtn v-close-popup color="primary" flat label="t('cancel')"/>
-        <QBtn v-close-popup color="red" flat label="t('delete')" @click="onDeleteUser"/>
+        <QBtn v-close-popup color="primary" flat label="t('cancel')" />
+        <QBtn v-close-popup color="red" flat label="t('delete')" @click="onDeleteUser" />
       </QCardActions>
     </QCard>
   </QDialog>

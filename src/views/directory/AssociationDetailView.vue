@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-import {computed, onMounted, ref, watch} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import {useAssociationStore} from '@/stores/useAssociationStore'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
+import { useAssociationStore } from '@/stores/useAssociationStore'
 import useUtility from '@/composables/useUtility'
-import {useRoute} from 'vue-router'
+import { useRoute } from 'vue-router'
 import useAssociation from "@/composables/useAssociation";
 
-const {t} = useI18n()
-const {notify} = useQuasar()
-const {loading} = useQuasar()
-const {formatDate} = useUtility()
+const { t } = useI18n()
+const { notify } = useQuasar()
+const { loading } = useQuasar()
+const { formatDate } = useUtility()
 const route = useRoute()
 
 const associationStore = useAssociationStore()
-const {altLogoText} = useAssociation()
+const { altLogoText } = useAssociation()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
@@ -46,10 +46,7 @@ async function onGetAssociationDetail() {
 <template>
   <section class="title">
     <div class="logo">
-      <QImg
-          :alt="altLogoText"
-          :src="hasLogo ? association?.pathLogo.detail : '/images/no_logo.png'"
-      />
+      <QImg :alt="altLogoText" :src="hasLogo ? association?.pathLogo?.detail : '/images/no_logo.png'" />
     </div>
     <div class="name">
       <h1>{{ association?.name }}</h1>
@@ -118,23 +115,15 @@ async function onGetAssociationDetail() {
     </article>
     <article v-if="association?.website">
       <h3>{{ t("association.labels.website") }}</h3>
-      <a
-          :href="association?.website"
-          :title="`${t('association.labels.website-link')} ${association?.name}`"
-      >
+      <a :href="association?.website" :title="`${t('association.labels.website-link')} ${association?.name}`">
         {{ association?.website }}
       </a>
     </article>
     <article v-if="association?.socialNetworks">
       <h3>{{ t("association.labels.socials") }}</h3>
       <ul>
-        <li
-            v-for="(socialNetwork, index) in association?.socialNetworks"
-            :key="index"
-        >
-          <a
-              :href="socialNetwork?.location"
-          >
+        <li v-for="(socialNetwork, index) in association?.socialNetworks" :key="index">
+          <a :href="socialNetwork?.location">
             {{ socialNetwork?.type }}
           </a>
         </li>
@@ -142,20 +131,9 @@ async function onGetAssociationDetail() {
     </article>
   </section>
   <section class="btn-group">
-    <QBtn
-        :label="t('association.back-directory')"
-        color="secondary"
-        icon="mdi-arrow-left-circle"
-        to="/associations"
-    />
-    <QBtn
-        v-if="association?.email"
-        :href="`mailto:${association?.email}`"
-        :label="t('association.contact')"
-        :title="`${t('association.contact')} ${association?.name}`"
-        color="primary"
-        icon="mdi-email"
-    />
+    <QBtn :label="t('association.back-directory')" color="secondary" icon="mdi-arrow-left-circle" to="/associations" />
+    <QBtn v-if="association?.email" :href="`mailto:${association?.email}`" :label="t('association.contact')"
+      :title="`${t('association.contact')} ${association?.name}`" color="primary" icon="mdi-email" />
   </section>
 </template>
 

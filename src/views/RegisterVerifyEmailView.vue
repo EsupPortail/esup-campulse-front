@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useRoute} from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import useSecurity from '@/composables/useSecurity'
 
-const {verifyEmail} = useSecurity()
+const { verifyEmail } = useSecurity()
 const route = useRoute()
-const {t} = useI18n()
+const { t } = useI18n()
 let messageTitle = ref<string>()
 let messageDescription = ref<string>()
 

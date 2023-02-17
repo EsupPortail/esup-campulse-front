@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import {useI18n} from 'vue-i18n'
-import {useAssociationStore} from "@/stores/useAssociationStore";
-import {onMounted, ref, watch} from "vue";
-import {useQuasar} from "quasar";
-import {useRoute} from "vue-router";
+import { useI18n } from 'vue-i18n'
+import { useAssociationStore } from "@/stores/useAssociationStore";
+import { onMounted, ref, watch } from "vue";
+import { useQuasar } from "quasar";
+import { useRoute } from "vue-router";
 
-const {t} = useI18n()
-const {loading, notify} = useQuasar()
+const { t } = useI18n()
+const { loading, notify } = useQuasar()
 const route = useRoute()
 
 const associationStore = useAssociationStore()
@@ -41,16 +41,8 @@ async function onGetAssociationDetail() {
 <template>
     <h1>{{ association?.name }}</h1>
 
-    <QBtn
-        :label="t('dashboard.association-user.edit-my-association')"
-        :to="{name: 'EditAssociation'}"
-        color="secondary"
-    />
+    <QBtn :label="t('dashboard.association-user.edit-my-association')" :to="{ name: 'EditAssociation' }" color="secondary" />
 
-    <QBtn
-        :label="t('association.more-details')"
-        :to="{name: 'AssociationDetail', params: {id: association?.id}}"
-    />
-
+    <QBtn :label="t('association.more-details')" :to="{ name: 'AssociationDetail', params: { id: association?.id } }" />
 </template>
 

@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import useUserGroups from '@/composables/useUserGroups'
-import {useI18n} from 'vue-i18n'
-import {onMounted, onUnmounted, watch} from 'vue'
-import {useQuasar} from 'quasar'
-import {useRoute} from 'vue-router'
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
+import { useI18n } from 'vue-i18n'
+import { onMounted, onUnmounted, watch } from 'vue'
+import { useQuasar } from 'quasar'
+import { useRoute } from 'vue-router'
+import { useUserManagerStore } from "@/stores/useUserManagerStore";
 
-const {t} = useI18n()
-const {groupChoiceIsValid, newGroups, getGroups, groupLabels, groups, initGroupLabels, preSelectGroup} = useUserGroups()
-const {notify, loading} = useQuasar()
+const { t } = useI18n()
+const { groupChoiceIsValid, newGroups, getGroups, groupLabels, groups, initGroupLabels, preSelectGroup } = useUserGroups()
+const { notify, loading } = useQuasar()
 const route = useRoute()
 const userManagerStore = useUserManagerStore()
 
@@ -62,18 +62,10 @@ watch(() => userManagerStore.user, initUserGroups)
 
 <template>
     <fieldset>
-        <legend class="legend-big">{{route.name === 'Registration' ? t('forms.status') : t('user-manager.user-status')}}</legend>
-        <QField
-            v-if="groups"
-            :error="!groupChoiceIsValid"
-            :error-message="t('forms.required-status')"
-        >
-            <QOptionGroup
-                v-model="newGroups"
-                :options="groupLabels"
-                color="primary"
-                type="checkbox"
-            />
+        <legend class="legend-big">{{ route.name === 'Registration' ? t('forms.status') : t('user-manager.user-status') }}
+        </legend>
+        <QField v-if="groups" :error="!groupChoiceIsValid" :error-message="t('forms.required-status')">
+            <QOptionGroup v-model="newGroups" :options="groupLabels" color="primary" type="checkbox" />
         </QField>
     </fieldset>
 </template>

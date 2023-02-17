@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import {onMounted, reactive, ref, watch} from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
+import { onMounted, reactive, ref, watch } from 'vue'
 import axios from 'axios'
 import useAssociation from '@/composables/useAssociation'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import {useUserStore} from '@/stores/useUserStore'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { useUserStore } from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
-import type {NewAssociation} from '#/association'
+import type { NewAssociation } from '#/association'
 
-const {t} = useI18n()
-const {notify} = useQuasar()
-const {createAssociation} = useAssociation()
+const { t } = useI18n()
+const { notify } = useQuasar()
+const { createAssociation } = useAssociation()
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
-const {hasPerm} = useSecurity()
+const { hasPerm } = useSecurity()
 
 
 const newAssociation = reactive<NewAssociation>({
@@ -73,47 +73,17 @@ const clearValues = () => {
 </script>
 
 <template>
-  <QForm
-      class="q-gutter-md"
-      @submit.prevent="onCreate"
-      @reset-validation="clearValues"
-  >
-    <QInput
-        v-model="newAssociation.name"
-        :label="t('forms.association-name')"
-        :rules="[ val => val.length > 0 || t('forms.fill-field') ]"
-        filled
-        lazy-rules
-    />
-    <QSelect
-        v-if="hasPerm('add_association_any_institution')"
-        v-model="newAssociation.institution"
-        :label="t('forms.association-institution')"
-        :options="institutions"
-        :readonly="!hasPerm('add_association_any_institution')"
-        :rules="[ val => val !== undefined || t('forms.select-option') ]"
-        emit-value
-        filled
-        lazy-rules
-        map-options
-    />
-    <QCheckbox
-        v-model="newAssociation.isSite"
-        :label="t('forms.association-is-site')"
-    />
+  <QForm class="q-gutter-md" @submit.prevent="onCreate" @reset-validation="clearValues">
+    <QInput v-model="newAssociation.name" :label="t('forms.association-name')"
+      :rules="[val => val.length > 0 || t('forms.fill-field')]" filled lazy-rules />
+    <QSelect v-if="hasPerm('add_association_any_institution')" v-model="newAssociation.institution"
+      :label="t('forms.association-institution')" :options="institutions"
+      :readonly="!hasPerm('add_association_any_institution')"
+      :rules="[val => val !== undefined || t('forms.select-option')]" emit-value filled lazy-rules map-options />
+    <QCheckbox v-model="newAssociation.isSite" :label="t('forms.association-is-site')" />
     <section class="btn-group">
-      <QBtn
-          :label="t('home.back-dashboard')"
-          :to="{name: 'Dashboard'}"
-          color="secondary"
-          icon="mdi-arrow-left-circle"
-      />
-      <QBtn
-          :label="t('user-manager.create-association')"
-          color="primary"
-          icon="mdi-check-circle"
-          type="submit"
-      />
+      <QBtn :label="t('home.back-dashboard')" :to="{ name: 'Dashboard' }" color="secondary" icon="mdi-arrow-left-circle" />
+      <QBtn :label="t('user-manager.create-association')" color="primary" icon="mdi-check-circle" type="submit" />
     </section>
   </QForm>
 </template>

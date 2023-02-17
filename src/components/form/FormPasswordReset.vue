@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
 import axios from 'axios'
 import useSecurity from '@/composables/useSecurity'
 
-const {t} = useI18n()
-const {notify} = useQuasar()
-const {passwordReset} = useSecurity()
+const { t } = useI18n()
+const { notify } = useQuasar()
+const { passwordReset } = useSecurity()
 const email = ref<string>()
 const isReset = ref<boolean>(false)
 
@@ -42,7 +42,7 @@ async function reset() {
     <div class="instructions">
         <QBanner v-if="!isReset" class="bg-grey-3">
             <template v-slot:avatar>
-                <QIcon color="primary" name="mdi-information-outline" size="md"/>
+                <QIcon color="primary" name="mdi-information-outline" size="md" />
             </template>
             <strong>{{ t("forms.password-reset-cas") }}</strong>
             <template v-slot:action>
@@ -50,21 +50,12 @@ async function reset() {
         </QBanner>
         <p v-if="isReset">{{ t("forms.password-reset-ok") }}</p>
     </div>
-    <QForm
-        v-if="!isReset"
-        class="q-gutter-md"
-        @submit="reset"
-    >
+    <QForm v-if="!isReset" class="q-gutter-md" @submit="reset">
         <fieldset>
             <legend class="instructions">{{ t("forms.password-reset-instructions") }}</legend>
-            <QInput
-                v-model="email"
-                :label="t('forms.email')"
-                :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
-                filled
-                lazy-rules
-            />
-            <QBtn :label="t('forms.send')" color="primary" type="submit"/>
+            <QInput v-model="email" :label="t('forms.email')"
+                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]" filled lazy-rules />
+            <QBtn :label="t('forms.send')" color="primary" type="submit" />
         </fieldset>
     </QForm>
 </template>
