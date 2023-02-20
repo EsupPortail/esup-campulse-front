@@ -26,6 +26,22 @@ export interface AssociationUser {
     isTreasurer: boolean,
 }
 
+export interface AssociationUserDetail {
+    id: number | null,
+    user: string,
+    association: {
+        id: number,
+        name: string,
+        isSite: boolean,
+        institution: number
+    }
+    isPresident: boolean,
+    canBePresident: boolean,
+    isValidatedByAdmin: boolean,
+    isSecretary: boolean,
+    isTreasurer: boolean,
+}
+
 interface CasLogin {
     ticket: string,
     service: string
@@ -88,7 +104,7 @@ export interface UserGroupRegister {
 export interface UserManagerStore {
     user: User | undefined,
     users: User[],
-    userAssociations: AssociationUser[]
+    userAssociations: AssociationUserDetail[]
 }
 
 // Register

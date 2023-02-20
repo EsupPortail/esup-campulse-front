@@ -1,22 +1,21 @@
 <script lang="ts" setup>
-import { useUserManagerStore } from '@/stores/useUserManagerStore'
-import { onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {onMounted} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
 import useUsers from '@/composables/useUsers'
-import { useRoute } from 'vue-router'
+import {useRoute} from 'vue-router'
 import router from '@/router'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import useUserGroups from '@/composables/useUserGroups'
 
-const { t } = useI18n()
-const { notify, loading } = useQuasar()
-const { validateUser } = useUsers()
-const { newGroups, groupChoiceIsValid } = useUserGroups()
+const {t} = useI18n()
+const {notify, loading} = useQuasar()
+const {validateUser} = useUsers()
+const {newGroups, groupChoiceIsValid} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
-
 
 onMounted(async () => {
     loading.show
@@ -55,7 +54,7 @@ async function onValidateUser() {
     if (groupChoiceIsValid.value) {
         try {
             await validateUser()
-            await router.push({ name: 'ValidateUsers' })
+            await router.push({name: 'ValidateUsers'})
             notify({
                 type: 'positive',
                 message: t('notifications.positive.validate-success')
@@ -72,7 +71,7 @@ async function onValidateUser() {
 async function onDeleteUser() {
     try {
         await userManagerStore.deleteUser()
-        await router.push({ name: 'ValidateUsers' })
+        await router.push({name: 'ValidateUsers'})
         notify({
             type: 'positive',
             message: t('notifications.positive.validate-delete-user')
@@ -117,9 +116,9 @@ async function onDeleteUser() {
     </section>
     <section>
         <h2>{{ t('directory.title') }}</h2>
-        <div v-if="userManagerStore.userAssociations.length !== 0">
+        <div v-if="userManagerStore.userAssociations.length">
             <article v-for="(association, index) in userManagerStore.userAssociations" :key="index">
-                <h3>{{ association.name }}</h3>
+                <h3>{{ association.association.name }}</h3>
                 <ul>
                     <li>{{ t('dashboard.association-user.is-president') }} :
                         {{ association.isPresident ? t('yes') : t('no') }}
@@ -142,12 +141,14 @@ async function onDeleteUser() {
     </section>
     <section>
         <h2>{{ t("user.groups") }}</h2>
-        <FormUserGroups />
+        <FormUserGroups/>
     </section>
     <section class="btn-group">
-        <QBtn :label="t('back')" :to="{ name: 'ValidateUsers' }" color="secondary" icon="mdi-arrow-left-circle" />
-        <QBtn :label="t('user-manager.validate-account')" color="primary" icon="mdi-check-circle" @click="onValidateUser" />
-        <QBtn :label="t('user-manager.delete-account-application')" color="red" icon="mdi-delete" @click="onDeleteUser" />
+        <QBtn :label="t('back')" :to="{ name: 'ValidateUsers' }" color="secondary" icon="mdi-arrow-left-circle"/>
+        <QBtn :label="t('user-manager.validate-account')" color="primary" icon="mdi-check-circle"
+              @click="onValidateUser"/>
+        <QBtn :label="t('user-manager.delete-account-application')" color="red" icon="mdi-delete"
+              @click="onDeleteUser"/>
     </section>
 </template>
 

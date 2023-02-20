@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type {RouteRecordRaw} from 'vue-router'
 import i18n from '@/plugins/i18n'
 
 
@@ -33,13 +33,13 @@ const routes: RouteRecordRaw[] = [
                 path: 'charter',
                 name: 'Charter',
                 component: () => import('@/views/CharterView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'commission',
                 name: 'Commission',
                 component: () => import('@/views/CommissionView.vue'),
-                meta: { requiresAuth: true }
+                meta: {requiresAuth: true}
             },
             {
                 path: 'login',
@@ -77,7 +77,7 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'association-dashboard/:id',
                         name: 'AssociationDashboard',
-                        component: () => import('@/views/dashboard/AssociationDashboard.vue'),
+                        component: () => import('@/views/dashboard/AssociationDashboardView.vue'),
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.association-dashboard')
                         }
@@ -144,7 +144,7 @@ const routes: RouteRecordRaw[] = [
                                 path: '',
                                 name: 'ManageAssociations',
                                 component: () => import('@/views/dashboard/AssociationsManagementView.vue'),
-                                meta: { staffOnly: true }
+                                meta: {staffOnly: true}
                             },
                             {
                                 path: ':id',
@@ -213,7 +213,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/:catchAll(.*)',
-                redirect: { name: '404' }
+                redirect: {name: '404'}
             }
         ]
     }

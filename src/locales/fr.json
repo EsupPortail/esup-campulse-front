@@ -184,9 +184,9 @@
     "manage-association-directory": "Gérer l'annuaire des associations",
     "manage-my-account": "Gérer mon compte",
     "manage-users": "Gérer les utilisateurs de la plateforme",
-    "user-add": "Ajouter un compte",
-    "user-management": "Gérer les comptes",
-    "user-validation": "Valider des demandes de compte",
+    "user-add": "Ajouter un compte utilisateur",
+    "user-management": "Gérer les informations des utilisateurs",
+    "user-validation": "Valider les demandes de compte",
     "validate-changes": "Valider les changements",
     "welcome-message": "Bienvenue",
     "association-user": {

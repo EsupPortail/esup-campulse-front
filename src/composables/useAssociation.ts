@@ -136,14 +136,14 @@ export default function () {
             if (associationStore.association?.socialNetworks?.length === associationSocialNetworks.value.length) {
                 for (let i = 0; i < associationStore.association?.socialNetworks.length; i++) {
                     // Look for the same types
-                    const editedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks[i].type)
+                    const editedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks?.[i].type)
                     // If type has changed
                     if (editedType === undefined && !hasChanges) {
                         hasChanges = true
                         break
                     }
                     // If location has changed
-                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks[i].location)
+                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks?.[i].location)
                     if (editedLocation === undefined && !hasChanges) {
                         hasChanges = true
                         break

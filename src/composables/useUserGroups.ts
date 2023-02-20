@@ -1,12 +1,16 @@
-import { computed, ref, watch } from 'vue'
+import {computed, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
-import { useUserManagerStore } from '@/stores/useUserManagerStore'
-import { useAxios } from '@/composables/useAxios'
-import type { SelectLabel } from "#/index";
-import type { Group } from "#/groups";
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useAxios} from '@/composables/useAxios'
+import type {SelectLabel} from "#/index";
+import type {Group} from "#/groups";
 import i18n from "@/plugins/i18n";
-import type { UserGroup } from "#/user";
-import { useUserStore } from "@/stores/useUserStore";
+import type {UserGroup} from "#/user";
+import {useUserStore} from "@/stores/useUserStore";
+
+
+// Used to store groups
+const groups = ref<Group[]>([])
 
 // Used to choose or update groups
 const newGroups = ref<number[]>([])
@@ -23,11 +27,8 @@ const groupCanJoinAssociation = ref<boolean>(true)
 // Helper to know if a user in userStore if a staff member
 const isStaff = ref<boolean | undefined>(undefined)
 
-export default function() {
+export default function () {
     const userStore = useUserStore()
-
-    // Used to store groups
-    const groups = ref<Group[]>()
 
     const groupNames = [
         {
@@ -65,7 +66,7 @@ export default function() {
      */
     async function getGroups() {
         if (!groups.value?.length) {
-            const { axiosPublic } = useAxios()
+            const {axiosPublic} = useAxios()
             groups.value = (await axiosPublic.get<Group[]>('/groups/')).data
         }
     }
@@ -91,7 +92,7 @@ export default function() {
      */
     function initGroupLabels(onlyPublicGroups: boolean) {
         const labels: SelectLabel[] = []
-        groups.value?.map(function(group) {
+        groups.value?.map(function (group) {
             if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
                 const label = getGroupLiteral(group.id)
                 if (label) {
@@ -104,7 +105,7 @@ export default function() {
             }
         })
         // Sort by alphabetical order
-        labels.sort(function(a, b) {
+        labels.sort(function (a, b) {
             const labelA = a.label.toLowerCase(), labelB = b.label.toLowerCase()
             if (labelA < labelB)
                 return -1
@@ -193,7 +194,7 @@ export default function() {
     async function updateUserGroups() {
         const userManagerStore = useUserManagerStore()
         const oldGroups = userManagerStore.userGroups
-        const { arraysAreEqual } = useUtility()
+        const {arraysAreEqual} = useUtility()
         if (!arraysAreEqual(newGroups.value, oldGroups)) {
             await userManagerStore.updateUserGroups(newGroups.value)
             await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))
