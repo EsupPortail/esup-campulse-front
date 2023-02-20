@@ -14,7 +14,7 @@ import useUserGroups from '@/composables/useUserGroups'
 const { t } = useI18n()
 const { notify, loading } = useQuasar()
 const userStore = useUserStore()
-const { register, newUser, loadCASUser, emailVerification, addUserAsManager } = useSecurity()
+const { register, newUser, loadCASUser, emailVerification } = useSecurity()
 const { groupChoiceIsValid, groupCanJoinAssociation } = useUserGroups()
 
 
@@ -41,8 +41,9 @@ async function onLoadCASUser() {
 // Register newUser
 async function onRegister() {
     if (groupChoiceIsValid.value) {
-        if (userStore.managerGroup || hasConsent.value) {
+        if (hasConsent.value) {
             try {
+                /*
                 if (userStore.managerGroup) {
                     await addUserAsManager()
                     notify({
@@ -50,10 +51,10 @@ async function onRegister() {
                         message: t('notifications.positive.account-created')
                     })
                     await router.push({ name: 'Dashboard' })
-                } else {
-                    await register()
-                    await router.push({ name: 'RegistrationSuccessful' })
                 }
+                */
+                await register()
+                await router.push({ name: 'RegistrationSuccessful' })
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     const data = error.response?.data
@@ -101,8 +102,7 @@ async function onRegister() {
         <!-- If manager role checked we do not display this form -->
         <FormRegisterUserAssociations v-if="groupCanJoinAssociation" />
         <QSeparator />
-        <LayoutGDPRConsent v-if="!userStore.managerGroup" :has-consent="hasConsent"
-            @update-consent="hasConsent = !hasConsent" />
+        <LayoutGDPRConsent :has-consent="hasConsent" @update-consent="hasConsent = !hasConsent" />
         <QBtn :label="t('forms.send')" color="primary" type="submit" />
     </QForm>
 </template>
