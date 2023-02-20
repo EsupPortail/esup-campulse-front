@@ -3,7 +3,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted} from 'vue'
 import type {AssociationUser} from "#/user"
 
 const associationStore = useAssociationStore()
@@ -28,7 +28,7 @@ async function loadAssociations() {
     }
 }
 
-function checkHasPresident(associationId: number, role: string) {
+function checkHasPresident(associationId: number) {
     for (let association of associationStore.associationNames) {
         if (association.id === associationId) {
             return association.hasPresident
@@ -74,7 +74,7 @@ const optionsAssociationRole = [
         <div v-for="(association, index) in newAssociations" :key="index">
             <QSelect v-model="association.id" :label="t('forms.select-association')"
                      :options="associationStore.associationLabels" emit-value filled map-options
-                     @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id, association.role)"/>
+                     @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id)"/>
             <QOptionGroup v-model="association.role" :options="optionsAssociationRole" inline
                           @update:model-value="updateRegisterRoleInAssociation()"/>
             <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline

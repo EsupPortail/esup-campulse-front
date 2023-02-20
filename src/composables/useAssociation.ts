@@ -47,17 +47,6 @@ export default function() {
      *
      * It's the same for the 'Remove Association' function below.
      */
-//    function addAssociation() {
-//        newAssociations.value.push({
-//            id: null,
-//            name: "",
-//            isPresident: false,
-//            canBePresident: false,
-//            isValidatedByAdmin: false,
-//            isSecretary: false,
-//            isTreasurer: false
-//        })
-//    }
     function addAssociation() {
         newAssociations.value.push({
             id: null,
