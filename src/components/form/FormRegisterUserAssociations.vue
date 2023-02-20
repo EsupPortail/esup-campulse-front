@@ -3,11 +3,10 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {onMounted, ref, watch} from 'vue'
-import type {AssociationUser} from "#/user"
+import {onMounted} from 'vue'
 
 const associationStore = useAssociationStore()
-const {newAssociations, addAssociation, removeAssociation} = useAssociation()
+const {newAssociations, addAssociation, removeAssociation, checkHasPresident, updateRegisterRoleInAssociation } = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
@@ -25,53 +24,6 @@ async function loadAssociations() {
             type: 'negative',
             message: t('notifications.negative.form-error')
         })
-    }
-}
-
-function checkHasPresident(associationId: number) {
-    console.log(optionsAssociationRole)
-    for (let association of associationStore.associationNames) {
-        if (association.id === associationId) {
-            selectedRoleOption.value = ""
-            return association.hasPresident
-        }
-    }
-}
-
-// const selectedRoleOption = ref<string>("")
-
-interface Association {
-    id: number | null,
-    role: string
-}
-
-const associations = ref<Association[]>([])
-
-const initAssociations = () => {
-    console.log('ici')
-    associations.value = newAssociations.value.map(function (association) {
-        return {
-            id: association.id,
-            role: ''
-        }
-    })
-}
-watch(() => newAssociations.value.length, initAssociations)
-
-function updateRegisterRoleInAssociation(association: AssociationUser) {
-    association.isPresident = false
-    association.isSecretary = false
-    association.isTreasurer = false
-    switch (selectedRoleOption.value) {
-        case 'isPresident':
-            association.isPresident = true
-            break
-        case 'isSecretary':
-            association.isSecretary = true
-            break
-        case 'isTreasurer':
-            association.isTreasurer = true
-            break
     }
 }
 
@@ -95,12 +47,12 @@ const optionsAssociationRole = [
 <template>
     <fieldset>
         <legend class="legend-big">{{ t("forms.add-my-associations") }}</legend>
-        <div v-for="(association, index) in associations" :key="index">
+        <div v-for="(association, index) in newAssociations" :key="index">
             <QSelect v-model="association.id" :label="t('forms.select-association')"
                      :options="associationStore.associationLabels" emit-value filled map-options
                      @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id)"/>
             <QOptionGroup v-model="association.role" :options="optionsAssociationRole" inline
-                          @update:model-value="updateRegisterRoleInAssociation(association)"/>
+                          @update:model-value="updateRegisterRoleInAssociation()"/>
             <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline
                   @click="removeAssociation(index)"/>
             <QSeparator/>

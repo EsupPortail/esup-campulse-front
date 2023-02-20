@@ -87,12 +87,14 @@ export default function () {
     }
 
     // ???
-    async function userAssociationsRegister(username: string, newUserAssociations: AssociationUser[]) {
+    async function userAssociationsRegister(publicRequest: boolean, username: string, newUserAssociations: AssociationUser[]) {
         const idsAssociations = []
-        const {axiosPublic} = useAxios()
+        const {axiosPublic, axiosAuthenticated} = useAxios()
+        let instance = axiosAuthenticated as AxiosInstance
+        if (publicRequest) instance = axiosPublic
         for (let i = 0; i < newUserAssociations.length; i++) {
             if (idsAssociations.indexOf(newUserAssociations[i].id) === -1)
-                await axiosPublic.post('/users/associations/', {
+                await instance.post('/users/associations/', {
                     user: username,
                     association: newUserAssociations[i].id,
                     isPresident: newUserAssociations[i].isPresident,
@@ -126,19 +128,19 @@ export default function () {
 
     //
     async function register() {
-        const {newAssociations} = useAssociation()
+        const {newAssociationsUser} = useAssociation()
         if (userStore.isCas) {
             await userCASRegister(newUser.phone)
-            if (newAssociations) {
-                await userAssociationsRegister(newUser.username, newAssociations.value)
+            if (newAssociationsUser) {
+                await userAssociationsRegister(true, newUser.username, newAssociationsUser.value)
             }
             await userGroupsRegister(true)
             // We must clear newUser to avoid persistence of session
             userStore.unLoadNewUser()
         } else {
             await userLocalRegister()
-            if (newAssociations.value) {
-                await userAssociationsRegister(newUser.email, newAssociations.value)
+            if (newAssociationsUser.value) {
+                await userAssociationsRegister(true, newUser.email, newAssociationsUser.value)
             }
             await userGroupsRegister(true)
         }
@@ -149,10 +151,10 @@ export default function () {
      */
     // To test
     async function addUserAsManager() {
-        const {newAssociations} = useAssociation()
+        const {newAssociationsUser} = useAssociation()
         await userLocalRegisterAsManager(newUser)
-        if (newAssociations.value) {
-            await userAssociationsRegister(newUser.email, newAssociations.value)
+        if (newAssociationsUser.value) {
+            await userAssociationsRegister(false, newUser.email, newAssociationsUser.value)
         }
         await userGroupsRegister(false)
     }

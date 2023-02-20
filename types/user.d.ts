@@ -26,6 +26,7 @@ export interface AssociationUser {
     isTreasurer: boolean,
 }
 
+
 export interface AssociationUserDetail {
     id: number | null,
     user: string,
@@ -40,6 +41,11 @@ export interface AssociationUserDetail {
     isValidatedByAdmin: boolean,
     isSecretary: boolean,
     isTreasurer: boolean,
+}
+
+export interface AssociationRole {
+    id: number | null,
+    role: string,
 }
 
 interface CasLogin {

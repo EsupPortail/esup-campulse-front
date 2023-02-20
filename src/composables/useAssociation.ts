@@ -1,13 +1,14 @@
 import {computed, ref} from 'vue'
 import i18n from "@/plugins/i18n";
 import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
-import type {AssociationUser} from '#/user'
+import type {AssociationRole, AssociationUser} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 
-const newAssociations = ref<AssociationUser[]>([])
+const newAssociations = ref<AssociationRole[]>([])
+const newAssociationsUser = ref<AssociationUser[]>([])
 
 // Need to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
@@ -49,17 +50,35 @@ export default function () {
     function addAssociation() {
         newAssociations.value.push({
             id: null,
-            name: "",
-            isPresident: false,
-            canBePresident: false,
-            isValidatedByAdmin: false,
-            isSecretary: false,
-            isTreasurer: false
+            role: ''
         })
     }
 
     function removeAssociation(index: number) {
         newAssociations.value.splice(index, 1)
+    }
+
+    function checkHasPresident(associationId: number) {
+        for (const association of associationStore.associationNames) {
+            if (association.id === associationId) {
+                return association.hasPresident
+            }
+        }
+    }
+
+    function updateRegisterRoleInAssociation(): AssociationUser[] {
+        newAssociations.value.forEach(association => {
+            newAssociationsUser.value.push({
+                id: association.id,
+                name: "",
+                isPresident: association.role === 'isPresident',
+                canBePresident: false,
+                isValidatedByAdmin: false,
+                isSecretary: association.role === 'isSecretary',
+                isTreasurer: association.role === 'isTreasurer'
+            })
+        })
+        return newAssociationsUser.value
     }
 
 
@@ -134,21 +153,21 @@ export default function () {
             // If there are as many networks in old and new arrays
             // Then we need to compare more deeply
             if (associationStore.association?.socialNetworks?.length === associationSocialNetworks.value.length) {
-                for (let i = 0; i < associationStore.association?.socialNetworks.length; i++) {
+                associationStore.association?.socialNetworks.some((socialNetwork) => {
                     // Look for the same types
-                    const editedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks?.[i].type)
+                    const editedType = associationSocialNetworks.value.find(({type}) => type === socialNetwork.type)
                     // If type has changed
                     if (editedType === undefined && !hasChanges) {
                         hasChanges = true
-                        break
+                        return hasChanges
                     }
                     // If location has changed
-                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks?.[i].location)
+                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === socialNetwork.location)
                     if (editedLocation === undefined && !hasChanges) {
                         hasChanges = true
-                        break
+                        return hasChanges
                     }
-                }
+                })
                 // If we detect changes, we can patch the new array
                 if (hasChanges) {
                     changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
@@ -180,6 +199,7 @@ export default function () {
     return {
         createAssociation,
         newAssociations,
+        newAssociationsUser,
         addAssociation,
         removeAssociation,
         addNetwork,
@@ -190,6 +210,8 @@ export default function () {
         checkSocialNetworks,
         changedData,
         altLogoText,
-        altLogoTextDirectory
+        altLogoTextDirectory,
+        checkHasPresident,
+        updateRegisterRoleInAssociation
     }
 }
