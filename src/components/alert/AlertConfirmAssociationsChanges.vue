@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAssociationStore } from '@/stores/useAssociationStore'
 import { useQuasar } from 'quasar'
+import type { PropType } from 'vue'
 import type { Association } from '#/association'
 import useSecurity from "@/composables/useSecurity";
 
@@ -13,14 +14,16 @@ const associationStore = useAssociationStore()
 const { notify } = useQuasar()
 const { hasPerm } = useSecurity()
 
+const emit = defineEmits(['updateSelectedAssociations'])
+
 const actionsOptions = ref([
     { id: 'email', label: t('association.all-selected-mail') }
 ])
 
 const switches = ref<string>()
 
-defineProps({
-    selectedAssociations: Array,
+const props = defineProps({
+    selectedAssociations: Array as PropType<Association[]>,
 })
 
 const initActionOptions = () => {
@@ -38,14 +41,14 @@ const initActionOptions = () => {
 
 onMounted(initActionOptions)
 
-async function onConfirmChanges(selectedAssociations: Association[]) {
+async function onConfirmChanges() {
     const associationsSuccess: string[] = []
     const associationsError: string[] = []
     const promisesToExecute: Promise<void>[] = []
     let mailto = "mailto:?bcc="
     switch (switches.value) {
         case 'email':
-            selectedAssociations.forEach((selectedAssociation) => {
+            props.selectedAssociations?.forEach((selectedAssociation) => {
                 if (selectedAssociation.email) {
                     mailto += `${selectedAssociation.email},`
                     associationsSuccess.push(selectedAssociation.name)
@@ -56,14 +59,14 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             window.open(mailto, '_blank')
             break
         case 'enable':
-            selectedAssociations.forEach((selectedAssociation) => {
+            props.selectedAssociations?.forEach((selectedAssociation) => {
                 promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
                     associationsSuccess.push(selectedAssociation.name)
                 }))
             })
             break
         case 'disable':
-            selectedAssociations.forEach((selectedAssociation) => {
+            props.selectedAssociations?.forEach((selectedAssociation) => {
                 promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
                     associationsSuccess.push(selectedAssociation.name)
                 }))
@@ -71,10 +74,14 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             break
         case 'delete':
             if (deletionWord.value === t('association.before-deletion-word')) {
-                selectedAssociations.forEach((selectedAssociation) => {
+                props.selectedAssociations?.forEach((selectedAssociation) => {
                     promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
                         associationsSuccess.push(selectedAssociation.name)
-                        selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation), 1)
+                        if (props.selectedAssociations) {
+                            let newSelectedAssociations = props.selectedAssociations
+                            newSelectedAssociations = newSelectedAssociations?.splice(props.selectedAssociations?.indexOf(selectedAssociation), 1)
+                            emit('updateSelectedAssociations', newSelectedAssociations)
+                        }
                     }).catch(() => {
                         associationsError.push(selectedAssociation.name)
                     }))
@@ -146,13 +153,13 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             <QCardActions align="right">
                 <QBtn v-close-popup :label="t('cancel')" color="secondary" icon="mdi-arrow-left-circle" />
                 <QBtn v-if="switches === 'email'" v-close-popup :label="t('association.email')" color="secondary"
-                    icon="mdi-email" @click="onConfirmChanges(selectedAssociations)" />
+                    icon="mdi-email" @click="onConfirmChanges()" />
                 <QBtn v-if="switches === 'enable'" v-close-popup :label="t('association.enable')" color="green"
-                    icon="mdi-eye-check" @click="onConfirmChanges(selectedAssociations)" />
+                    icon="mdi-eye-check" @click="onConfirmChanges()" />
                 <QBtn v-if="switches === 'disable'" v-close-popup :label="t('association.disable')" color="orange"
-                    icon="mdi-eye-remove" @click="onConfirmChanges(selectedAssociations)" />
+                    icon="mdi-eye-remove" @click="onConfirmChanges()" />
                 <QBtn v-if="switches === 'delete'" v-close-popup :label="t('association.delete')" color="red"
-                    icon="mdi-delete" @click="onConfirmChanges(selectedAssociations)" />
+                    icon="mdi-delete" @click="onConfirmChanges()" />
             </QCardActions>
         </QCard>
     </QDialog>

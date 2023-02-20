@@ -121,7 +121,8 @@ const columns: QTableProps['columns'] = [
             </QTr>
         </template>
     </QTable>
-    <AlertConfirmAssociationsChanges v-if="userStore.userAssociations.length === 0" :selectedAssociations="selected" />
+    <AlertConfirmAssociationsChanges v-if="userStore.userAssociations.length === 0" :selectedAssociations="selected"
+        @update-selected-associations="selected = []" />
 </template>
 
 <style lang="sass" scoped>
