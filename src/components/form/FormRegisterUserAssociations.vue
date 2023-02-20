@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { useAssociationStore } from '@/stores/useAssociationStore'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
-import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
-import { onMounted, ref } from 'vue'
-import type { AssociationUser } from "#/user"
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import {onMounted, ref, watch} from 'vue'
+import type {AssociationUser} from "#/user"
 
 const associationStore = useAssociationStore()
-const { newAssociations, addAssociation, removeAssociation } = useAssociation()
-const { t } = useI18n()
-const { notify, loading } = useQuasar()
+const {newAssociations, addAssociation, removeAssociation} = useAssociation()
+const {t} = useI18n()
+const {notify, loading} = useQuasar()
 
 onMounted(async () => {
     loading.show
@@ -37,7 +37,26 @@ function checkHasPresident(associationId: number) {
         }
     }
 }
-const selectedRoleOption = ref<string>("")
+
+// const selectedRoleOption = ref<string>("")
+
+interface Association {
+    id: number | null,
+    role: string
+}
+
+const associations = ref<Association[]>([])
+
+const initAssociations = () => {
+    console.log('ici')
+    associations.value = newAssociations.value.map(function (association) {
+        return {
+            id: association.id,
+            role: ''
+        }
+    })
+}
+watch(() => newAssociations.value.length, initAssociations)
 
 function updateRegisterRoleInAssociation(association: AssociationUser) {
     association.isPresident = false
@@ -76,18 +95,19 @@ const optionsAssociationRole = [
 <template>
     <fieldset>
         <legend class="legend-big">{{ t("forms.add-my-associations") }}</legend>
-        <div v-for="(association, index) in newAssociations" :key="index">
+        <div v-for="(association, index) in associations" :key="index">
             <QSelect v-model="association.id" :label="t('forms.select-association')"
-                :options="associationStore.associationLabels" emit-value filled map-options
-                @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id)" />
-            <QOptionGroup v-model="selectedRoleOption" :options="optionsAssociationRole" inline
-                @update:model-value="updateRegisterRoleInAssociation(association)" @update:options="" />
+                     :options="associationStore.associationLabels" emit-value filled map-options
+                     @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id)"/>
+            <QOptionGroup v-model="association.role" :options="optionsAssociationRole" inline
+                          @update:model-value="updateRegisterRoleInAssociation(association)"/>
             <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline
-                @click="removeAssociation(index)" />
-            <QSeparator />
+                  @click="removeAssociation(index)"/>
+            <QSeparator/>
         </div>
-        <QBtn v-if="newAssociations.length < 5" :label="t('forms.add-association')" class="add-association" color="primary"
-            icon="mdi-plus-circle-outline" outline @click="addAssociation" />
+        <QBtn v-if="newAssociations.length < 5" :label="t('forms.add-association')" class="add-association"
+              color="primary"
+              icon="mdi-plus-circle-outline" outline @click="addAssociation"/>
     </fieldset>
 </template>
 
