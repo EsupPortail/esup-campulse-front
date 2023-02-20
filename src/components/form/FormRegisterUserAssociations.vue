@@ -7,7 +7,7 @@ import {onMounted, ref, watch} from 'vue'
 import type {AssociationUser} from "#/user"
 
 const associationStore = useAssociationStore()
-const {newAssociations, addAssociation, removeAssociation} = useAssociation()
+const {newAssociations, newAssociationsUser, addAssociation, removeAssociation} = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
@@ -28,51 +28,27 @@ async function loadAssociations() {
     }
 }
 
-function checkHasPresident(associationId: number) {
-    console.log(optionsAssociationRole)
+function checkHasPresident(associationId: number, role: string) {
     for (let association of associationStore.associationNames) {
         if (association.id === associationId) {
-            selectedRoleOption.value = ""
             return association.hasPresident
         }
     }
 }
 
-// const selectedRoleOption = ref<string>("")
-
-interface Association {
-    id: number | null,
-    role: string
-}
-
-const associations = ref<Association[]>([])
-
-const initAssociations = () => {
-    console.log('ici')
-    associations.value = newAssociations.value.map(function (association) {
-        return {
-            id: association.id,
-            role: ''
-        }
+function updateRegisterRoleInAssociation(): AssociationUser[] {
+  newAssociations.value.forEach(association => {
+    newAssociationsUser.value.push({
+      id: association.id,
+      name: "",
+      isPresident: association.role === 'isPresident',
+      canBePresident: false,
+      isValidatedByAdmin: false,
+      isSecretary: association.role === 'isSecretary',
+      isTreasurer: association.role === 'isTreasurer'
     })
-}
-watch(() => newAssociations.value.length, initAssociations)
-
-function updateRegisterRoleInAssociation(association: AssociationUser) {
-    association.isPresident = false
-    association.isSecretary = false
-    association.isTreasurer = false
-    switch (selectedRoleOption.value) {
-        case 'isPresident':
-            association.isPresident = true
-            break
-        case 'isSecretary':
-            association.isSecretary = true
-            break
-        case 'isTreasurer':
-            association.isTreasurer = true
-            break
-    }
+  })
+  return newAssociationsUser.value
 }
 
 const optionsAssociationRole = [
@@ -95,12 +71,12 @@ const optionsAssociationRole = [
 <template>
     <fieldset>
         <legend class="legend-big">{{ t("forms.add-my-associations") }}</legend>
-        <div v-for="(association, index) in associations" :key="index">
+        <div v-for="(association, index) in newAssociations" :key="index">
             <QSelect v-model="association.id" :label="t('forms.select-association')"
                      :options="associationStore.associationLabels" emit-value filled map-options
-                     @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id)"/>
+                     @update:model-value="optionsAssociationRole[0].disable = checkHasPresident(association.id, association.role)"/>
             <QOptionGroup v-model="association.role" :options="optionsAssociationRole" inline
-                          @update:model-value="updateRegisterRoleInAssociation(association)"/>
+                          @update:model-value="updateRegisterRoleInAssociation()"/>
             <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline
                   @click="removeAssociation(index)"/>
             <QSeparator/>

@@ -1,13 +1,14 @@
 import { computed, ref } from 'vue'
 import i18n from "@/plugins/i18n";
-import type { Association, AssociationSocialNetwork, EditedAssociation, NewAssociation } from '#/association'
-import type { AssociationUser } from '#/user'
+import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
+import type {AssociationRole, AssociationUser} from '#/user'
 import useUtility from '@/composables/useUtility'
 import { useAxios } from '@/composables/useAxios'
 import { useAssociationStore } from '@/stores/useAssociationStore'
 
 
-const newAssociations = ref<AssociationUser[]>([])
+const newAssociations = ref<AssociationRole[]>([])
+const newAssociationsUser = ref<AssociationUser[]>([])
 
 // Need to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
@@ -46,15 +47,21 @@ export default function() {
      *
      * It's the same for the 'Remove Association' function below.
      */
+//    function addAssociation() {
+//        newAssociations.value.push({
+//            id: null,
+//            name: "",
+//            isPresident: false,
+//            canBePresident: false,
+//            isValidatedByAdmin: false,
+//            isSecretary: false,
+//            isTreasurer: false
+//        })
+//    }
     function addAssociation() {
         newAssociations.value.push({
             id: null,
-            name: "",
-            isPresident: false,
-            canBePresident: false,
-            isValidatedByAdmin: false,
-            isSecretary: false,
-            isTreasurer: false
+            role: ''
         })
     }
 
@@ -180,6 +187,7 @@ export default function() {
     return {
         createAssociation,
         newAssociations,
+        newAssociationsUser,
         addAssociation,
         removeAssociation,
         addNetwork,

@@ -26,6 +26,11 @@ export interface AssociationUser {
     isTreasurer: boolean,
 }
 
+export interface AssociationRole {
+    id: number | null,
+    role: string,
+}
+
 interface CasLogin {
     ticket: string,
     service: string
