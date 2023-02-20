@@ -7,7 +7,7 @@ import {onMounted} from 'vue'
 import type {AssociationUser} from "#/user"
 
 const associationStore = useAssociationStore()
-const {newAssociations, newAssociationsUser, addAssociation, removeAssociation} = useAssociation()
+const {newAssociations, newAssociationsUser, addAssociation, removeAssociation, checkHasPresident} = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
@@ -25,14 +25,6 @@ async function loadAssociations() {
             type: 'negative',
             message: t('notifications.negative.form-error')
         })
-    }
-}
-
-function checkHasPresident(associationId: number) {
-    for (let association of associationStore.associationNames) {
-        if (association.id === associationId) {
-            return association.hasPresident
-        }
     }
 }
 

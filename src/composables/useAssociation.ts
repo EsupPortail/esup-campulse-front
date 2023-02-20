@@ -58,6 +58,14 @@ export default function() {
         newAssociations.value.splice(index, 1)
     }
 
+    function checkHasPresident(associationId: number) {
+        for (let association of associationStore.associationNames) {
+            if (association.id === associationId) {
+                return association.hasPresident
+            }
+        }
+    }
+
 
     /**
      * It adds a new network to the associationSocialNetworks array.
@@ -187,6 +195,7 @@ export default function() {
         checkSocialNetworks,
         changedData,
         altLogoText,
-        altLogoTextDirectory
+        altLogoTextDirectory,
+        checkHasPresident
     }
 }
