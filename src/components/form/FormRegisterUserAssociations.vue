@@ -4,10 +4,9 @@ import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
-import type {AssociationUser} from "#/user"
 
 const associationStore = useAssociationStore()
-const {newAssociations, newAssociationsUser, addAssociation, removeAssociation, checkHasPresident} = useAssociation()
+const {newAssociations, addAssociation, removeAssociation, checkHasPresident, updateRegisterRoleInAssociation } = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
@@ -26,21 +25,6 @@ async function loadAssociations() {
             message: t('notifications.negative.form-error')
         })
     }
-}
-
-function updateRegisterRoleInAssociation(): AssociationUser[] {
-  newAssociations.value.forEach(association => {
-    newAssociationsUser.value.push({
-      id: association.id,
-      name: "",
-      isPresident: association.role === 'isPresident',
-      canBePresident: false,
-      isValidatedByAdmin: false,
-      isSecretary: association.role === 'isSecretary',
-      isTreasurer: association.role === 'isTreasurer'
-    })
-  })
-  return newAssociationsUser.value
 }
 
 const optionsAssociationRole = [

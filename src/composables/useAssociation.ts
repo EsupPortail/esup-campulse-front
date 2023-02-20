@@ -66,6 +66,21 @@ export default function() {
         }
     }
 
+    function updateRegisterRoleInAssociation(): AssociationUser[] {
+        newAssociations.value.forEach(association => {
+            newAssociationsUser.value.push({
+                id: association.id,
+                name: "",
+                isPresident: association.role === 'isPresident',
+                canBePresident: false,
+                isValidatedByAdmin: false,
+                isSecretary: association.role === 'isSecretary',
+                isTreasurer: association.role === 'isTreasurer'
+            })
+        })
+        return newAssociationsUser.value
+    }
+
 
     /**
      * It adds a new network to the associationSocialNetworks array.
@@ -196,6 +211,7 @@ export default function() {
         changedData,
         altLogoText,
         altLogoTextDirectory,
-        checkHasPresident
+        checkHasPresident,
+        updateRegisterRoleInAssociation
     }
 }
