@@ -151,6 +151,7 @@ export default function () {
         }
         groupCanJoinAssociation.value = perm
     }
+    watch(() => newGroups.value.length, initGroupPermToJoinAssociation)
 
     /**
      * If the user is a member of a non-public group, then they are staff
