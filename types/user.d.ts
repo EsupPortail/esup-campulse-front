@@ -47,8 +47,11 @@ export interface AssociationUserDetail {
 
 export interface AssociationRole {
     id: number | null,
+    name?: string,
     role: string,
     options?: AssociationOptions[]
+    canBePresident?: boolean,
+    deleteAssociation?: boolean
 }
 
 interface CasLogin {
@@ -83,15 +86,13 @@ export interface UserAssociation {
     institution: number
 }
 
-export interface UserAssociationManagement {
+/*export interface UserAssociationManagement {
     associationId: number | null,
     associationName: string,
-    isPresident: boolean,
     canBePresident: boolean,
-    isSecretary: boolean,
-    isTreasurer: boolean,
+    role: string,
     deleteAssociation: boolean
-}
+}*/
 
 export type UserAssociationPatch = Pick<AssociationUser, 'isPresident' | 'canBePresident' | 'isSecretary' | 'isTreasurer'>
 

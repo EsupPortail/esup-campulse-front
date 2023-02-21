@@ -28,6 +28,22 @@ export default function () {
         return association?.altLogo !== "" ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
     }
 
+    /* Used to create the options for the select in the form to create an association. */
+    const associationRoleOptions = [
+        {
+            label: i18n.global.t('forms.im-association-president'),
+            value: "isPresident",
+        },
+        {
+            label: i18n.global.t('forms.im-association-secretary'),
+            value: "isSecretary"
+        },
+        {
+            label: i18n.global.t('forms.im-association-treasurer'),
+            value: "isTreasurer"
+        }
+    ]
+
 
     /**
      * It creates an association with the name provided as a parameter
@@ -51,18 +67,7 @@ export default function () {
         newAssociations.value.push({
             id: null,
             role: '',
-            options: [{
-                label: i18n.global.t('forms.im-association-president'),
-                value: "isPresident",
-            },
-                {
-                    label: i18n.global.t('forms.im-association-secretary'),
-                    value: "isSecretary"
-                },
-                {
-                    label: i18n.global.t('forms.im-association-treasurer'),
-                    value: "isTreasurer"
-                }]
+            options: associationRoleOptions
         })
     }
 
@@ -241,6 +246,7 @@ export default function () {
         altLogoText,
         checkHasPresident,
         updateRegisterRoleInAssociation,
-        changeAssociationLogo
+        changeAssociationLogo,
+        associationRoleOptions
     }
 }

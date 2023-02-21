@@ -120,6 +120,7 @@
     "im-association-treasurer": "Trésorière ou trésorier de l'association",
     "im-from-association": "Lier une association au compte",
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
+    "i-can-be-president": "Président délégué ou présidente déléguée",
     "last-name": "Nom de famille",
     "login": "Connexion",
     "new-password": "Nouveau mot de passe",
@@ -173,6 +174,7 @@
     "users": "Utilisateurs",
     "validate-account": "Valider le compte",
     "validation": "Validation des demandes de comptes",
+    "register-in-new-associations": "Ajouter l'utilisateur dans de nouvelles associations",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
       "status-hint": "Veuillez valider le ou les statuts présélectionnés par l'utilisateur."

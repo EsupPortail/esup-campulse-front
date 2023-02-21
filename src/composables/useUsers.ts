@@ -1,5 +1,5 @@
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {AssociationUser, AssociationUserDetail, UserAssociationManagement, UserGroup} from '#/user'
+import type {AssociationRole, AssociationUser, AssociationUserDetail, UserGroup} from '#/user'
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from "@/composables/useSecurity";
@@ -8,7 +8,7 @@ import useSecurity from "@/composables/useSecurity";
 const newUserAssociations = ref<AssociationUser[]>([])
 
 // Used to store a user's associations, while it is modified by a manager
-const userAssociations = ref<UserAssociationManagement[]>([])
+const userAssociations = ref<AssociationRole[]>([])
 
 export default function () {
 
@@ -51,14 +51,14 @@ export default function () {
     function updateUserAssociations() {
         userAssociations.value.forEach(async function (association) {
             // If we need to delete the association
-            if (association.associationId && association.deleteAssociation) {
-                await userManagerStore.deleteUserAssociation(association.associationId)
+            if (association.id && association.deleteAssociation) {
+                await userManagerStore.deleteUserAssociation(association.id)
             }
             // If we need to update the association
             else {
                 // We search for the corresponding association in store
                 const storeAssociation: AssociationUserDetail | undefined = userManagerStore.userAssociations.find(obj =>
-                    obj.id === association.associationId)
+                    obj.id === association.id)
                 // We set a boolean to track changes
                 let hasChanges = false
                 // We compare the 2 objects
@@ -70,14 +70,14 @@ export default function () {
                         }
                     }
                 }
-                if (hasChanges && association.associationId) {
+                if (hasChanges && association.id) {
                     const infosToPatch = {
-                        isPresident: association.isPresident,
-                        canBePresident: association.canBePresident,
-                        isSecretary: association.isSecretary,
-                        isTreasurer: association.isTreasurer,
+                        isPresident: association.role === 'isPresident',
+                        canBePresident: association.canBePresident ? association.canBePresident : false,
+                        isSecretary: association.role === 'isSecretary',
+                        isTreasurer: association.role === 'isTreasurer',
                     }
-                    await userManagerStore.patchUserAssociations(association.associationId, infosToPatch)
+                    await userManagerStore.patchUserAssociations(association.id, infosToPatch)
                 }
             }
         })
