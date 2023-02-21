@@ -23,15 +23,9 @@ export default function () {
      */
     // To test
     async function getUsers(routeName: string) {
-        if (routeName === 'ValidateUsers') {
-            let byInstitution = false
-            if (hasPerm('change_associationusers') && !hasPerm('change_associationusers_any_institution')) {
-                byInstitution = true
-            }
-            await userManagerStore.getUnvalidatedUsers(byInstitution)
-        }
-        if (routeName === 'ManageUsers' && hasPerm('change_associationusers_any_institution')) {
-            await userManagerStore.getUsers()
+        if (hasPerm('change_associationusers')) {
+            if (routeName === 'ValidateUsers') await userManagerStore.getUnvalidatedUsers()
+            if (routeName === 'ManageUsers') await userManagerStore.getUsers()
         }
     }
 

@@ -51,17 +51,25 @@ export const useUserManagerStore = defineStore('userManagerStore', {
     },
 
     actions: {
+        // To test
         async getUsers() {
             const {axiosAuthenticated} = useAxios()
-            this.users = (await axiosAuthenticated.get<User[]>('/users/')).data
+            const userStore = useUserStore()
+            let url = '/users/'
+            if (userStore.userInstitutions?.length !== 0) {
+                url += `?institutions=${userStore.userInstitutions?.join(',')}`
+            }
+            this.users = (await axiosAuthenticated.get<User[]>(url)).data
         },
         // To test
-        async getUnvalidatedUsers(byInstitution: boolean) {
+        async getUnvalidatedUsers() {
             const {axiosAuthenticated} = useAxios()
             const userStore = useUserStore()
-            this.users = (await axiosAuthenticated.get<User[]>(
-                    `/users/?is_validated_by_admin=false${byInstitution ? '&institution_id=' + userStore.user?.groups[0].institutionId : ''}`)
-            ).data
+            let url = '/users/?is_validated_by_admin=false'
+            if (userStore.userInstitutions?.length !== 0) {
+                url += `&institutions=${userStore.userInstitutions?.join(',')}`
+            }
+            this.users = (await axiosAuthenticated.get<User[]>(url)).data
         },
         async getUserDetail(id: number) {
             const {axiosAuthenticated} = useAxios()
