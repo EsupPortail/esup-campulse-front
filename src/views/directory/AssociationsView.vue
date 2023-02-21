@@ -10,7 +10,7 @@ import { useQuasar } from 'quasar'
 
 const { advancedSearch, simpleAssociationSearch } = useDirectory()
 const associationStore = useAssociationStore()
-const { altLogoTextDirectory } = useAssociation()
+const { altLogoText } = useAssociation()
 const { loading, notify } = useQuasar()
 const { t } = useI18n()
 
@@ -184,7 +184,7 @@ async function clearSearch(apiSearch: boolean) {
                     <div>
                         <h3>{{ association.name }}</h3>
                         <div class="logo">
-                            <QImg :alt="altLogoTextDirectory(association)" :ratio="1"
+                            <QImg :alt="altLogoText(association)" :ratio="1"
                                 :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png') : '/images/no_logo.png'" />
                         </div>
                         <ul>

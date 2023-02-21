@@ -57,6 +57,12 @@ export interface AssociationName {
     hasPresident: boolean,
 }
 
+export interface AssociationOptions {
+    label: string,
+    value: string,
+    disable?: boolean
+}
+
 export interface AssociationSocialNetwork {
     type: string,
     location: string
@@ -104,6 +110,7 @@ export interface EditedAssociation {
     institution: number | null | undefined,
     institutionComponent: number | null | undefined,
     activityField: number | null | undefined,
+    altLogo: string
 }
 
 export interface NewAssociation {

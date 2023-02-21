@@ -131,7 +131,10 @@ export const useAssociationStore = defineStore('associationStore', {
             if (this.association) {
                 const {axiosAuthenticated} = useAxios()
                 const response = (await axiosAuthenticated.patch(`/associations/${id}`, logoData)).data
-                this.association.pathLogo = response.pathLogo
+                if (this.association.pathLogo) {
+                    this.association.pathLogo.detail = response.pathLogo
+                }
+                this.association.altLogo = response.altLogo
             }
         },
         async getInstitutions() {

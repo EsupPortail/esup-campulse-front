@@ -1,4 +1,4 @@
-import {computed, ref} from 'vue'
+import {ref} from 'vue'
 import i18n from "@/plugins/i18n";
 import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
 import type {AssociationRole, AssociationUser} from '#/user'
@@ -20,11 +20,11 @@ export default function () {
 
     const associationStore = useAssociationStore()
 
-    const altLogoText = computed(() => {
-        return associationStore.association?.altLogo !== "" ? associationStore.association?.altLogo : i18n.global.t('association.logo.default-alt') + associationStore.association?.name
-    })
-
-    function altLogoTextDirectory(association: Association) {
+    /** Setup altLogo default value if association does not have one
+     *
+     * @param association
+     */
+    function altLogoText(association: Association | EditedAssociation) {
         return association?.altLogo !== "" ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
     }
 
@@ -50,7 +50,19 @@ export default function () {
     function addAssociation() {
         newAssociations.value.push({
             id: null,
-            role: ''
+            role: '',
+            options: [{
+                label: i18n.global.t('forms.im-association-president'),
+                value: "isPresident",
+            },
+                {
+                    label: i18n.global.t('forms.im-association-secretary'),
+                    value: "isSecretary"
+                },
+                {
+                    label: i18n.global.t('forms.im-association-treasurer'),
+                    value: "isTreasurer"
+                }]
         })
     }
 
@@ -67,6 +79,7 @@ export default function () {
     }
 
     function updateRegisterRoleInAssociation(): AssociationUser[] {
+        newAssociationsUser.value = []
         newAssociations.value.forEach(association => {
             newAssociationsUser.value.push({
                 id: association.id,
@@ -195,6 +208,22 @@ export default function () {
         await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
+    async function changeAssociationLogo(newLogo: undefined | Blob, altLogo: string, deleteLogoData: null | object) {
+        if (deleteLogoData === null) {
+            const patchLogoData = new FormData()
+            if (typeof newLogo === 'object') {
+                patchLogoData.append('pathLogo', newLogo)
+                if (altLogo === associationStore.association?.altLogo) {
+                    altLogo = ""
+                }
+            }
+            patchLogoData.append('altLogo', altLogo)
+            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+        } else {
+            await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+        }
+    }
+
 
     return {
         createAssociation,
@@ -210,8 +239,8 @@ export default function () {
         checkSocialNetworks,
         changedData,
         altLogoText,
-        altLogoTextDirectory,
         checkHasPresident,
-        updateRegisterRoleInAssociation
+        updateRegisterRoleInAssociation,
+        changeAssociationLogo
     }
 }

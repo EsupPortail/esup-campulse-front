@@ -1,3 +1,5 @@
+import type {AssociationOptions} from "#/association";
+
 export interface User {
     id: number,
     username: string,
@@ -46,6 +48,7 @@ export interface AssociationUserDetail {
 export interface AssociationRole {
     id: number | null,
     role: string,
+    options?: AssociationOptions[]
 }
 
 interface CasLogin {

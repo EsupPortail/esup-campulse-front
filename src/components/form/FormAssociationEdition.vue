@@ -24,6 +24,7 @@ const {
     checkChanges,
     updateAssociation,
     altLogoText,
+    changeAssociationLogo
 } = useAssociation()
 const {isStaff} = useUserGroups()
 
@@ -47,7 +48,8 @@ const association = ref<EditedAssociation>({
     approvalDate: '',
     lastGoaDate: '',
     studentCount: null,
-    isPublic: false
+    isPublic: false,
+    altLogo: ''
 })
 
 const initValues = () => {
@@ -141,25 +143,18 @@ async function onValidateChanges() {
 async function onChangeLogo(action: string) {
     try {
         if (action === 'update') {
-            const patchLogoData = new FormData()
-            if (typeof newLogo.value === 'object') {
-                patchLogoData.append('pathLogo', newLogo.value)
-                if (altLogo.value === associationStore.association?.altLogo) {
-                    altLogo.value = ""
-                }
-            }
-            patchLogoData.append('altLogo', altLogo.value)
-            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+            await changeAssociationLogo(newLogo.value, altLogo.value, null)
+            altLogo.value = altLogoComputed.value
         } else if (action === 'delete') {
             const deleteLogoData = {'altLogo': null, 'pathLogo': null}
-            await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+            await changeAssociationLogo(undefined, "", deleteLogoData)
             altLogo.value = ""
+            newLogo.value = undefined
         }
         notify({
             message: t('notifications.positive.association-logo-updated'),
             type: 'positive'
         })
-        newLogo.value = undefined
     } catch (error) {
         if (axios.isAxiosError(error)) {
             notify({
@@ -175,7 +170,7 @@ async function onChangeLogo(action: string) {
     <QForm @submit.prevent="onChangeLogo('update')">
         <fieldset>
             <div class="logo">
-                <QImg :alt="altLogoText" :ratio="1"
+                <QImg :alt="altLogoText(association)" :ratio="1"
                       :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '/images/no_logo.png') : '/images/no_logo.png'"/>
             </div>
             <QFile v-model="newLogo" :label="t('association.logo.pickup')" accept=".jpg, .jpeg, .png" filled/>

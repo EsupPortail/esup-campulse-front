@@ -24,7 +24,7 @@ const initValues = () => {
     userManagerStore.userAssociations.forEach(function (association) {
         userAssociations.value.push({
             associationId: association.id ? association.id : null,
-            associationName: association.name,
+            associationName: association.association.name,
             isPresident: association.isPresident,
             canBePresident: association.canBePresident,
             isSecretary: association.isSecretary,
