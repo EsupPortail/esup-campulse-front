@@ -67,9 +67,11 @@ export default function () {
                     if (availableKeys.indexOf(key) !== -1) {
                         if (value !== storeAssociation?.[key as keyof AssociationUserDetail]) {
                             hasChanges = true
+                            break
                         }
                     }
                 }
+
                 if (hasChanges && association.id) {
                     const infosToPatch = {
                         isPresident: association.role === 'isPresident',

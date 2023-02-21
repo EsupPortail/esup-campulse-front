@@ -32,7 +32,7 @@ const initValues = () => {
         if (association.isSecretary) role = 'isSecretary'
         if (association.isTreasurer) role = 'isTreasurer'
         userAssociations.value.push({
-            id: association.id,
+            id: association.association.id,
             name: association.association.name,
             role,
             options: associationRoleOptions,
