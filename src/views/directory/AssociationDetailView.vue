@@ -46,7 +46,7 @@ async function onGetAssociationDetail() {
 <template>
   <section class="title">
     <div class="logo">
-      <QImg :alt="altLogoText" :src="hasLogo ? association?.pathLogo?.detail : '/images/no_logo.png'" />
+      <QImg :alt="altLogoText(association)" :src="hasLogo ? association?.pathLogo?.detail : '/images/no_logo.png'" />
     </div>
     <div class="name">
       <h1>{{ association?.name }}</h1>

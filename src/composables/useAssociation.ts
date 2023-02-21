@@ -25,11 +25,11 @@ export default function () {
 
     const associationStore = useAssociationStore()
 
-    const altLogoText = computed(() => {
-        return associationStore.association?.altLogo !== "" ? associationStore.association?.altLogo : i18n.global.t('association.logo.default-alt') + associationStore.association?.name
-    })
-
-    function altLogoTextDirectory(association: Association) {
+    /** Setup altLogo default value if association does not have one
+     *
+     * @param association
+     */
+    function altLogoText(association: Association) {
         return association?.altLogo !== "" ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
     }
 
@@ -244,7 +244,6 @@ export default function () {
         checkSocialNetworks,
         changedData,
         altLogoText,
-        altLogoTextDirectory,
         checkHasPresident,
         updateRegisterRoleInAssociation,
         changeAssociationLogo
