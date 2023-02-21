@@ -55,6 +55,7 @@ export interface AssociationName {
     id: number,
     name: string,
     hasPresident: boolean,
+    institution: number,
 }
 
 export interface AssociationOptions {

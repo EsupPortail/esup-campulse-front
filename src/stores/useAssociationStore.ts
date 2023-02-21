@@ -28,11 +28,11 @@ export const useAssociationStore = defineStore('associationStore', {
     getters: {
         associationLabels: (state: AssociationStore): SelectLabel[] => {
             return state.associationNames
-                // .filter(association => !association.hasPresident)
                 .map(association => ({
                     value: association.id,
                     label: association.name,
                     hasPresident: association.hasPresident,
+                    institution: association.institution,
                     disable: false
                 }))
         },
@@ -92,9 +92,13 @@ export const useAssociationStore = defineStore('associationStore', {
             const url = `/associations/?institution=${institutionId}`
             this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
         },
-        async getAssociationNames() {
+        async getAssociationNames(institutionIds: number[]) {
             const {axiosPublic} = useAxios()
-            this.associationNames = (await axiosPublic.get<AssociationName[]>('/associations/names')).data
+            let url = '/associations/names'
+            if (institutionIds.length !== 0) {
+                url += `?institutions=${institutionIds.join(',')}`
+            }
+            this.associationNames = (await axiosPublic.get<AssociationName[]>(url)).data
         },
         /**
          * It the user is a manager, it simply gets all associations

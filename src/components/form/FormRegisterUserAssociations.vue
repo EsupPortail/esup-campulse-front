@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useUserStore} from '@/stores/useUserStore'
 import useAssociation from '@/composables/useAssociation'
+import useUserGroups from '@/composables/useUserGroups'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
@@ -19,6 +21,8 @@ const {
 } = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
+const userStore = useUserStore()
+const {isStaff} = useUserGroups()
 
 onMounted(async () => {
     loading.show
@@ -28,7 +32,15 @@ onMounted(async () => {
 
 async function loadAssociations() {
     try {
-        await associationStore.getAssociationNames()
+        const allowedInstitutions = []
+        if (isStaff.value) {
+            userStore.user.groups.forEach((group) => {
+                if (allowedInstitutions.indexOf(group.institutionId) === -1) {
+                    allowedInstitutions.push(group.institutionId)
+                }
+            })
+        }
+        await associationStore.getAssociationNames(allowedInstitutions)
     } catch (e) {
         notify({
             type: 'negative',
