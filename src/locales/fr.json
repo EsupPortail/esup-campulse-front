@@ -294,6 +294,7 @@
       "association-activity-field": "Domaine d'activité",
       "association-institution": "Établissement",
       "association-name": "Nom de l'association",
+      "association-public": "Annuaire",
       "association-status": "Statut"
     }
   },
@@ -331,6 +332,8 @@
     "enabled": "🟢 Activée",
     "go-back": "Revenir à la liste des associations",
     "more-details": "Fiche détail de l'association",
+    "not-public": "🔴 Non Publique",
+    "public": "🟢 Publique",
     "validate-all-changes": "Valider tous les changements",
     "titles": {
       "admin": "Administration",
