@@ -131,6 +131,7 @@ export default function () {
         }
     }
 
+    /* It's a list of groups that can join associations */
     const canJoinAssociationGroups = ['STUDENT_INSTITUTION']
 
     /**
@@ -150,9 +151,6 @@ export default function () {
         }
         groupCanJoinAssociation.value = perm
     }
-
-    //watch(() => newGroups.value, initGroupPermToJoinAssociation)
-
 
     /**
      * If the user is a member of a non-public group, then they are staff
@@ -215,6 +213,7 @@ export default function () {
         groupCanJoinAssociation,
         isStaff,
         initStaffStatus,
-        initGroupPermToJoinAssociation
+        initGroupPermToJoinAssociation,
+        groupNames
     }
 }
