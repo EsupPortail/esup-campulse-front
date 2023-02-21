@@ -57,6 +57,16 @@ export interface AssociationName {
     hasPresident: boolean,
 }
 
+export interface AssociationOptions {
+    id: number | null,
+    role: string,
+    options: {
+        label: string,
+        value: string,
+        disable?: boolean
+    }[]
+}
+
 export interface AssociationSocialNetwork {
     type: string,
     location: string

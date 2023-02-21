@@ -1,6 +1,12 @@
 import {computed, ref} from 'vue'
 import i18n from "@/plugins/i18n";
-import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
+import type {
+    Association,
+    AssociationOptions,
+    AssociationSocialNetwork,
+    EditedAssociation,
+    NewAssociation
+} from '#/association'
 import type {AssociationRole, AssociationUser} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
@@ -66,8 +72,9 @@ export default function () {
         }
     }
 
-    function updateRegisterRoleInAssociation(): AssociationUser[] {
-        newAssociations.value.forEach(association => {
+    function updateRegisterRoleInAssociation(newAssociations: AssociationOptions[]): AssociationUser[] {
+        newAssociationsUser.value = []
+        newAssociations.forEach(association => {
             newAssociationsUser.value.push({
                 id: association.id,
                 name: "",
@@ -78,6 +85,7 @@ export default function () {
                 isTreasurer: association.role === 'isTreasurer'
             })
         })
+        console.log(newAssociationsUser.value)
         return newAssociationsUser.value
     }
 
