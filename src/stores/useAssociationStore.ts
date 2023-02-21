@@ -131,7 +131,8 @@ export const useAssociationStore = defineStore('associationStore', {
             if (this.association) {
                 const { axiosAuthenticated } = useAxios()
                 const response = (await axiosAuthenticated.patch(`/associations/${id}`, logoData)).data
-                this.association.pathLogo = response.pathLogo
+                this.association.pathLogo.detail = response.pathLogo // Can we remove null from its type ?
+                this.association.altLogo = response.altLogo
             }
         },
         async getInstitutions() {

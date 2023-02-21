@@ -195,6 +195,22 @@ export default function () {
         await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
+    async function changeAssociationLogo(newLogo: undefined | Blob, altLogo: string, deleteLogoData: null | object) {
+        if (deleteLogoData === null) {
+            const patchLogoData = new FormData()
+            if (typeof newLogo === 'object') {
+                patchLogoData.append('pathLogo', newLogo)
+                if (altLogo === associationStore.association?.altLogo) {
+                    altLogo = ""
+                }
+            }
+            patchLogoData.append('altLogo', altLogo)
+            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+        } else {
+            await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+        }
+    }
+
 
     return {
         createAssociation,
@@ -212,6 +228,7 @@ export default function () {
         altLogoText,
         altLogoTextDirectory,
         checkHasPresident,
-        updateRegisterRoleInAssociation
+        updateRegisterRoleInAssociation,
+        changeAssociationLogo
     }
 }

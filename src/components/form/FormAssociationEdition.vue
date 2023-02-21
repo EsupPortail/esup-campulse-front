@@ -23,6 +23,7 @@ const {
     checkChanges,
     updateAssociation,
     altLogoText,
+    changeAssociationLogo
 } = useAssociation()
 const { isStaff } = useUserGroups()
 
@@ -140,25 +141,18 @@ async function onValidateChanges() {
 async function onChangeLogo(action: string) {
     try {
         if (action === 'update') {
-            const patchLogoData = new FormData()
-            if (typeof newLogo.value === 'object') {
-                patchLogoData.append('pathLogo', newLogo.value)
-                if (altLogo.value === associationStore.association?.altLogo) {
-                    altLogo.value = ""
-                }
-            }
-            patchLogoData.append('altLogo', altLogo.value)
-            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+          await changeAssociationLogo(newLogo.value, altLogo.value, null)
+          altLogo.value = altLogoComputed.value
         } else if (action === 'delete') {
-            const deleteLogoData = { 'altLogo': null, 'pathLogo': null }
-            await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+          const deleteLogoData = { 'altLogo': null, 'pathLogo': null }
+          await changeAssociationLogo(undefined, "", deleteLogoData)
             altLogo.value = ""
+            newLogo.value = undefined
         }
         notify({
             message: t('notifications.positive.association-logo-updated'),
             type: 'positive'
         })
-        newLogo.value = undefined
     } catch (error) {
         if (axios.isAxiosError(error)) {
             notify({
