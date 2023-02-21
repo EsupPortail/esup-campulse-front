@@ -77,6 +77,13 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {
+        name: 'public',
+        align: 'left',
+        label: t('directory.labels.association-public'),
+        field: 'isPublic',
+        sortable: true
+    },
+    {
         name: 'actions',
         align: 'left',
         label: t('directory.labels.association-actions'),
@@ -118,6 +125,9 @@ const columns: QTableProps['columns'] = [
                 </QTd>
                 <QTd key="status" :props="props">
                     {{ props.row.isEnabled ? t('association.enabled') : t('association.disabled') }}
+                </QTd>
+                <QTd key="public" :props="props">
+                    {{ props.row.isPublic ? t('association.public') : t('association.not-public') }}
                 </QTd>
                 <QTd key="actions" :props="props">
                     <QBtn :label="t('association.edit')" :to="{ name: 'EditAssociation', params: { id: props.row.id } }"

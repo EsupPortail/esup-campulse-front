@@ -41,6 +41,7 @@ watch(() => userStore.user, initValues)
 
 onMounted(async () => {
     await associationStore.getInstitutions()
+    initValues()
 })
 
 async function onCreate() {
