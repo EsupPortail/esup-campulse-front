@@ -1,21 +1,20 @@
 <script lang="ts" setup>
-import { useUserManagerStore } from '@/stores/useUserManagerStore'
-import { onMounted, ref, watch } from 'vue'
-import type { QTableProps } from 'quasar'
-import { useQuasar } from 'quasar'
-import router from '@/router'
-import { useI18n } from 'vue-i18n'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {onMounted, ref, watch} from 'vue'
+import type {QTableProps} from 'quasar'
+import {useQuasar} from 'quasar'
+import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUsers'
-import { useRoute } from 'vue-router'
+import {useRoute} from 'vue-router'
 import useUserGroups from "@/composables/useUserGroups";
-import type { User, UserGroup } from "#/user";
+import type {User} from "#/user";
 
-const { t } = useI18n()
-const { notify, loading } = useQuasar()
+const {t} = useI18n()
+const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
-const { getUsers } = useUsers()
+const {getUsers, canEditUser} = useUsers()
 const route = useRoute()
-const { getGroups, getGroupLiteral, groups } = useUserGroups()
+const {getGroups, getGroupLiteral} = useUserGroups()
 
 const users = ref<User[]>([])
 
@@ -62,9 +61,9 @@ const columns: QTableProps['columns'] = [
         format: val => `${val}`,
         sortable: true
     },
-    { name: 'firstName', align: 'left', label: t('forms.first-name'), field: 'firstName', sortable: true },
-    { name: 'lastName', align: 'left', label: t('forms.last-name'), field: 'lastName', sortable: true },
-    { name: 'email', align: 'left', label: t('forms.email'), field: 'email', sortable: true },
+    {name: 'firstName', align: 'left', label: t('forms.first-name'), field: 'firstName', sortable: true},
+    {name: 'lastName', align: 'left', label: t('forms.last-name'), field: 'lastName', sortable: true},
+    {name: 'email', align: 'left', label: t('forms.email'), field: 'email', sortable: true},
     {
         name: 'associations',
         align: 'left',
@@ -72,44 +71,31 @@ const columns: QTableProps['columns'] = [
         field: 'associations',
         sortable: false
     },
-    { name: 'groups', align: 'left', label: t('user-manager.user-status'), field: 'groups', sortable: false },
+    {name: 'groups', align: 'left', label: t('user-manager.user-status'), field: 'groups', sortable: false},
     {
         name: 'isValidatedByAdmin',
         align: 'left',
         label: t('user-manager.is-validated'),
         field: 'isValidatedByAdmin',
         sortable: true
+    },
+    {
+        name: 'edition',
+        align: 'left',
+        label: t('user-manager.user-edition'),
+        field: 'edition',
+        sortable: true
     }
 ]
 
-function shouldGoTo(row: User) {
-    let enableUserDetail = false
-    for (let i = 0; i < (row.groups?.length as number); i++) {
-        const g = groups.value?.find(obj => obj.id === (row.groups?.[i] as UserGroup).groupId)
-        if (g && g.isPublic) {
-            enableUserDetail = true
-            break
-        }
-    }
-    return enableUserDetail
-}
-
-function goTo(row: User) {
-    if (route.name === 'ValidateUsers') {
-        router.push({ name: 'UserValidationDetail', params: { id: row.id } })
-    } else {
-        router.push({ name: 'UserManagementDetail', params: { id: row.id } })
-    }
-}
 </script>
 
 <template>
     <h1>{{ route.name === 'ValidateUsers' ? t("user-manager.validation") : t("user-manager.management") }}</h1>
     <QTable :columns="columns" :rows="users" :rows-per-page-options="[10, 20, 50, 0]" :title="t('user-manager.users')"
-        row-key="id">
+            row-key="id">
         <template v-slot:body="props">
-            <QTr :props="props" :no-hover="!shouldGoTo(props.row)" @click="shouldGoTo(props.row) && goTo(props.row)"
-                :class="{ 'cursor-pointer': shouldGoTo(props.row) }">
+            <QTr :props="props">
                 <QTd key="id" :props="props">
                     {{ props.row.id }}
                 </QTd>
@@ -133,8 +119,11 @@ function goTo(row: User) {
                     <ul>
                         <li v-for="(group, index) in props.row.groups" :key="index">
                             <QChip
-                                v-if="props.row.groups.map((g: UserGroup) => g.groupId).indexOf(group.groupId) === index">{{
-                                    getGroupLiteral(group.groupId) }}</QChip>
+                                v-if="props.row.groups.map((g) => g.groupId).indexOf(group.groupId) === index">
+                                {{
+                                    getGroupLiteral(group.groupId)
+                                }}
+                            </QChip>
                         </li>
                     </ul>
                 </QTd>
@@ -142,6 +131,22 @@ function goTo(row: User) {
                     <QChip :color="props.row.isValidatedByAdmin ? 'teal' : 'red'" text-color="white">
                         {{ props.row.isValidatedByAdmin ? t('yes') : t('no') }}
                     </QChip>
+                </QTd>
+                <QTd>
+                    <QBtn
+                        v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"
+                        :label="t('modify')"
+                        :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
+                        color="primary"
+                        icon="mdi-pencil"
+                    />
+                    <QBtn
+                        v-if="route.name === 'ValidateUsers'"
+                        :label="t('validate')"
+                        :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
+                        color="secondary"
+                        icon="mdi-check-circle"
+                    />
                 </QTd>
             </QTr>
         </template>

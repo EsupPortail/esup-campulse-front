@@ -1,11 +1,6 @@
-import {computed, ref} from 'vue'
+import {ref} from 'vue'
 import i18n from "@/plugins/i18n";
-import type {
-    Association,
-    AssociationSocialNetwork,
-    EditedAssociation,
-    NewAssociation
-} from '#/association'
+import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
 import type {AssociationRole, AssociationUser} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
@@ -29,7 +24,7 @@ export default function () {
      *
      * @param association
      */
-    function altLogoText(association: Association) {
+    function altLogoText(association: Association | EditedAssociation) {
         return association?.altLogo !== "" ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
     }
 

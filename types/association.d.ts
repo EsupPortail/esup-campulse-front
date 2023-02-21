@@ -110,6 +110,7 @@ export interface EditedAssociation {
     institution: number | null | undefined,
     institutionComponent: number | null | undefined,
     activityField: number | null | undefined,
+    altLogo: string
 }
 
 export interface NewAssociation {

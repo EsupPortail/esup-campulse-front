@@ -1,5 +1,5 @@
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {AssociationUser, AssociationUserDetail, UserAssociationManagement} from '#/user'
+import type {AssociationUser, AssociationUserDetail, UserAssociationManagement, UserGroup} from '#/user'
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from "@/composables/useSecurity";
@@ -83,11 +83,29 @@ export default function () {
         })
     }
 
+    // To test
+    function canEditUser(userGroups: UserGroup[]): boolean {
+        const {groups} = useUserGroups()
+        let perm = false
+        if (userGroups.length && groups.value.length) {
+            perm = true
+            for (let i = 0; i < userGroups.length; i++) {
+                const g = groups.value.find(obj => obj.id === userGroups[i].groupId)
+                if (g && !g.isPublic) {
+                    perm = false
+                    break
+                }
+            }
+        }
+        return perm
+    }
+
     return {
         getUsers,
         updateUserAssociations,
         userAssociations,
         validateUser,
-        newUserAssociations
+        newUserAssociations,
+        canEditUser
     }
 }
