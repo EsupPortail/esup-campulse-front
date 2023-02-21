@@ -141,11 +141,11 @@ async function onValidateChanges() {
 async function onChangeLogo(action: string) {
     try {
         if (action === 'update') {
-          await changeAssociationLogo(newLogo.value, altLogo.value, null)
-          altLogo.value = altLogoComputed.value
+            await changeAssociationLogo(newLogo.value, altLogo.value, null)
+            altLogo.value = altLogoComputed.value
         } else if (action === 'delete') {
-          const deleteLogoData = { 'altLogo': null, 'pathLogo': null }
-          await changeAssociationLogo(undefined, "", deleteLogoData)
+            const deleteLogoData = { 'altLogo': null, 'pathLogo': null }
+            await changeAssociationLogo(undefined, "", deleteLogoData)
             altLogo.value = ""
             newLogo.value = undefined
         }
