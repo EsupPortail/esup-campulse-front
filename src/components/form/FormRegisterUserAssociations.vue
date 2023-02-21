@@ -3,8 +3,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {onMounted, ref, watch} from 'vue'
-import type {AssociationOptions} from "#/association";
+import {onMounted} from 'vue'
 
 const associationStore = useAssociationStore()
 const {newAssociations, addAssociation, removeAssociation, checkHasPresident, updateRegisterRoleInAssociation } = useAssociation()
@@ -28,42 +27,17 @@ async function loadAssociations() {
     }
 }
 
-
-const initValues = () => {
-  associations.value = newAssociations.value.map(function (association) {
-    return {
-      id: association.id,
-      role: association.role,
-      options: [{
-        label: t('forms.im-association-president'),
-        value: "isPresident",
-      },
-        {
-          label: t('forms.im-association-secretary'),
-              value: "isSecretary"
-        },
-        {
-          label: t('forms.im-association-treasurer'),
-              value: "isTreasurer"
-        }]
-        }
-      })
-}
-watch(() => newAssociations.value.length, initValues)
-
-const associations = ref<AssociationOptions[]>([])
-
 </script>
 
 <template>
     <fieldset>
         <legend class="legend-big">{{ t("forms.add-my-associations") }}</legend>
-        <div v-for="(association, index) in associations" :key="index">
+        <div v-for="(association, index) in newAssociations" :key="index">
             <QSelect v-model="association.id" :label="t('forms.select-association')"
                      :options="associationStore.associationLabels" emit-value filled map-options
                      @update:model-value="association.options[0].disable = checkHasPresident(association.id)"/>
             <QOptionGroup v-model="association.role" :options="association.options" inline
-                          @update:model-value="updateRegisterRoleInAssociation(associations)"/>
+                          @update:model-value="updateRegisterRoleInAssociation()"/>
             <QBtn :label="t('forms.delete-association')" color="red" icon="mdi-minus-circle-outline" outline
                   @click="removeAssociation(index)"/>
             <QSeparator/>

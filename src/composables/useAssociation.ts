@@ -2,7 +2,6 @@ import {computed, ref} from 'vue'
 import i18n from "@/plugins/i18n";
 import type {
     Association,
-    AssociationOptions,
     AssociationSocialNetwork,
     EditedAssociation,
     NewAssociation
@@ -56,7 +55,19 @@ export default function () {
     function addAssociation() {
         newAssociations.value.push({
             id: null,
-            role: ''
+            role: '',
+            options: [{
+                label: i18n.global.t('forms.im-association-president'),
+                value: "isPresident",
+            },
+                {
+                    label: i18n.global.t('forms.im-association-secretary'),
+                    value: "isSecretary"
+                },
+                {
+                    label: i18n.global.t('forms.im-association-treasurer'),
+                    value: "isTreasurer"
+                }]
         })
     }
 
@@ -72,9 +83,9 @@ export default function () {
         }
     }
 
-    function updateRegisterRoleInAssociation(newAssociations: AssociationOptions[]): AssociationUser[] {
+    function updateRegisterRoleInAssociation(): AssociationUser[] {
         newAssociationsUser.value = []
-        newAssociations.forEach(association => {
+        newAssociations.value.forEach(association => {
             newAssociationsUser.value.push({
                 id: association.id,
                 name: "",
@@ -85,7 +96,6 @@ export default function () {
                 isTreasurer: association.role === 'isTreasurer'
             })
         })
-        console.log(newAssociationsUser.value)
         return newAssociationsUser.value
     }
 

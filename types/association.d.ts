@@ -58,13 +58,9 @@ export interface AssociationName {
 }
 
 export interface AssociationOptions {
-    id: number | null,
-    role: string,
-    options: {
-        label: string,
-        value: string,
-        disable?: boolean
-    }[]
+    label: string,
+    value: string,
+    disable?: boolean
 }
 
 export interface AssociationSocialNetwork {
