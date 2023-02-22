@@ -19,7 +19,7 @@ export interface User {
 
 // User's role in the association
 export interface AssociationUser {
-    id: number | null,
+    association: number | null,
     name: string,
     isPresident: boolean,
     canBePresident: boolean,

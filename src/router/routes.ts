@@ -89,7 +89,7 @@ const routes: RouteRecordRaw[] = [
                                 path: 'edit-my-association',
                                 name: 'EditMyAssociation',
                                 meta: {
-                                    breadcrumb: 'Editer mon association'
+                                    breadcrumb: i18n.global.t('breadcrumbs.edit-my-association')
                                 },
                                 component: () => import('@/views/dashboard/AssociationEditionView.vue')
                             }
