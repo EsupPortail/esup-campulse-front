@@ -23,7 +23,6 @@ const {notify, loading} = useQuasar()
 const {formatDate} = useUtility()
 const {
     checkChanges,
-    updateAssociation,
     altLogoText,
     changeAssociationLogo
 } = useAssociation()

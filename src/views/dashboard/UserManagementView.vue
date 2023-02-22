@@ -7,7 +7,7 @@ import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
 import useUserGroups from "@/composables/useUserGroups";
-import type {User, UserGroup} from "#/user";
+import type {User} from "#/user";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
