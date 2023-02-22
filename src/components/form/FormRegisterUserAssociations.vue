@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {useUserStore} from '@/stores/useUserStore'
 import useAssociation from '@/composables/useAssociation'
-import useUserGroups from '@/composables/useUserGroups'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
@@ -21,8 +19,6 @@ const {
 } = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const userStore = useUserStore()
-const {isStaff} = useUserGroups()
 
 onMounted(async () => {
     loading.show
@@ -32,22 +28,15 @@ onMounted(async () => {
 
 async function loadAssociations() {
     try {
-        const allowedInstitutions: (number | undefined)[] = []
-        if (isStaff.value) {
-            userStore.user?.groups.forEach((group) => {
-                if (allowedInstitutions.indexOf(group.institutionId) === -1) {
-                    allowedInstitutions.push(group.institutionId)
-                }
-            })
-        }
-        await associationStore.getAssociationNames(allowedInstitutions)
+        await associationStore.getAssociationNames()
     } catch (e) {
         notify({
             type: 'negative',
-            message: t('notifications.negative.form-error')
+            message: t('notifications.negative.loading-error')
         })
     }
 }
+
 
 </script>
 
@@ -65,17 +54,20 @@ async function loadAssociations() {
                 emit-value
                 filled
                 map-options
-                @update:model-value="association.options ? association.options[0].disable = checkHasPresident(association.id) : false"/>
+                @update:model-value="checkHasPresident(association)"
+            />
             <QOptionGroup
                 v-model="association.role"
                 :options="association.options"
                 inline
-                @update:model-value="updateRegisterRoleInAssociation()"/>
+                @update:model-value="updateRegisterRoleInAssociation"
+            />
             <QBtn
                 :label="t('forms.delete-association')"
                 color="red" icon="mdi-minus-circle-outline"
                 outline
-                @click="removeAssociation(index)"/>
+                @click="removeAssociation(index)"
+            />
             <QSeparator/>
         </div>
         <QBtn v-if="newAssociations.length < (5 - userAssociations.length)" :label="t('forms.add-association')"

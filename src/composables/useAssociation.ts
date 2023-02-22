@@ -75,10 +75,16 @@ export default function () {
         newAssociations.value.splice(index, 1)
     }
 
-    function checkHasPresident(associationId: number | null) {
-        for (const association of associationStore.associationNames) {
-            if (association.id === associationId) {
-                return association.hasPresident
+    // To test
+    function checkHasPresident(association: AssociationRole) {
+        if (association.options) {
+            const a = associationStore.associationNames.find(obj => obj.id === association.id)
+            if (a) {
+                association.options[0].disable = a.hasPresident
+                if (association.role === 'isPresident') {
+                    const model = newAssociations.value.find(obj => obj.id === association.id)
+                    if (model) model.role = ''
+                }
             }
         }
     }
@@ -87,8 +93,8 @@ export default function () {
         newAssociationsUser.value = []
         newAssociations.value.forEach(association => {
             newAssociationsUser.value.push({
-                id: association.id,
-                name: "",
+                association: association.id,
+                name: '',
                 isPresident: association.role === 'isPresident',
                 canBePresident: false,
                 isValidatedByAdmin: false,

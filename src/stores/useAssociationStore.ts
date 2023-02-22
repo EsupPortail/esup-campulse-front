@@ -94,11 +94,14 @@ export const useAssociationStore = defineStore('associationStore', {
             const url = `/associations/?institution${userStore.userInstitutions?.join(',')}`
             this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
         },
-        async getAssociationNames(institutionIds: (number | undefined)[]) {
+        // To test
+        async getAssociationNames() {
             const {axiosPublic} = useAxios()
+            const userStore = useUserStore()
+            const {isStaff} = useUserGroups()
             let url = '/associations/names'
-            if (institutionIds.length !== 0) {
-                url += `?institutions=${institutionIds.join(',')}`
+            if (isStaff.value && userStore.userInstitutions?.length !== 0) {
+                url += `?institutions=${userStore.userInstitutions?.join(',')}`
             }
             this.associationNames = (await axiosPublic.get<AssociationName[]>(url)).data
         },
