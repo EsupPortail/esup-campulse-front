@@ -19,6 +19,7 @@ export const useUserStore = defineStore('userStore', {
         userName: (state: UserStore): string | undefined => {
             return state.user?.firstName + ' ' + state.user?.lastName
         },
+        // To test
         userInstitutions: (state: UserStore): (number | undefined)[] | undefined => {
             return state.user?.groups.map(group => (
                 group.institutionId
