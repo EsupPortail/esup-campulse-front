@@ -100,11 +100,7 @@ async function onConfirmChanges() {
         let message = ''
         if (associationsSuccess.length > 0) {
             associationStore.getManagedAssociations()
-            if (switches.value === 'email') {
-                message = t('notifications.positive.email-associations')
-            } else {
-                message = t('notifications.positive.change-associations')
-            }
+            message = t(`notifications.positive.${switches.value}-associations`)
             notify({
                 type: 'positive',
                 message: `${message}${associationsSuccess.join(', ')}`
@@ -112,11 +108,7 @@ async function onConfirmChanges() {
         }
         if (associationsError.length > 0) {
             associationStore.getManagedAssociations()
-            if (switches.value === 'email') {
-                message = t('notifications.negative.email-associations-error')
-            } else {
-                message = t('notifications.negative.change-associations-error')
-            }
+            message = t(`notifications.negative.${switches.value}-associations-error`)
             notify({
                 type: 'negative',
                 message: `${message}${associationsError.join(', ')}`
