@@ -220,6 +220,7 @@ export default function () {
         passwordResetConfirm,
         userGroupsRegister,
         userLocalRegisterAsManager,
-        hasPerm
+        hasPerm,
+        userAssociationsRegister
     }
 }
