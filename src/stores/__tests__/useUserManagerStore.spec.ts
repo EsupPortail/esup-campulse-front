@@ -146,7 +146,7 @@ describe('User manager store', () => {
             const { axiosAuthenticated } = useAxios()
             await userManagerStore.deleteUserAssociation(1)
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user.id}/1`)
+            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user?.id}/1`)
         })
     })
     describe('patchUserAssociations', () => {
@@ -155,12 +155,13 @@ describe('User manager store', () => {
             const dataToPatch = {
                 isPresident: false,
                 canBePresident: true,
+                isSecretary: false,
                 isTreasurer: true,
             }
             await userManagerStore.patchUserAssociations(1, dataToPatch)
             const { axiosAuthenticated } = useAxios()
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user.id}/1`, dataToPatch)
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user?.id}/1`, dataToPatch)
         })
     })
     describe('updateUserInfos', () => {

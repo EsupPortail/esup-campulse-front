@@ -115,13 +115,37 @@ onBeforeRouteLeave((to, from, next) => {
     <QForm class="q-gutter-md" @submit.prevent="onValidateChanges">
         <fieldset>
             <legend>{{ t('user.infos') }}</legend>
-            <QInput v-model="user.firstName" :disable="!!userManagerStore.user?.isCas" :label="t('forms.first-name')"
-                    :rules="[val => val && val.length > 0 || t('forms.required-first-name')]" filled lazy-rules/>
-            <QInput v-model="user.lastName" :disable="!!userManagerStore.user?.isCas" :label="t('forms.last-name')"
-                    :rules="[val => val && val.length > 0 || t('forms.required-last-name')]" filled lazy-rules/>
-            <QInput v-model="user.email" :disable="!!userManagerStore.user?.isCas" :label="t('forms.email')"
-                    :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]" filled lazy-rules/>
-            <QInput v-model="user.phone" :label="t('forms.phone')" filled lazy-rules type="tel"/>
+            <QInput
+                v-model="user.firstName"
+                :disable="!!userManagerStore.user?.isCas"
+                :label="t('forms.first-name')"
+                :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+                filled
+                lazy-rules
+            />
+            <QInput
+                v-model="user.lastName"
+                :disable="!!userManagerStore.user?.isCas"
+                :label="t('forms.last-name')"
+                :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+                filled
+                lazy-rules
+            />
+            <QInput
+                v-model="user.email"
+                :disable="!!userManagerStore.user?.isCas"
+                :label="t('forms.email')"
+                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                filled
+                lazy-rules
+            />
+            <QInput
+                v-model="user.phone"
+                :label="t('forms.phone')"
+                filled
+                lazy-rules
+                type="tel"
+            />
         </fieldset>
         <FormUpdateManagedUserAssociations/>
         <fieldset>

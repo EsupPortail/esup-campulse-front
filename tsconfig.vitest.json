@@ -14,7 +14,8 @@
     "lib": [],
     "types": [
       "node",
-      "jsdom"
+      "jsdom",
+      "vite/client"
     ]
   }
 }

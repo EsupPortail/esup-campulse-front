@@ -94,7 +94,7 @@ export const useAssociationStore = defineStore('associationStore', {
             const url = `/associations/?institution${userStore.userInstitutions?.join(',')}`
             this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
         },
-        async getAssociationNames(institutionIds: number[]) {
+        async getAssociationNames(institutionIds: (number | undefined)[]) {
             const {axiosPublic} = useAxios()
             let url = '/associations/names'
             if (institutionIds.length !== 0) {

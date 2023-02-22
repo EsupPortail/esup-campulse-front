@@ -32,9 +32,9 @@ onMounted(async () => {
 
 async function loadAssociations() {
     try {
-        const allowedInstitutions = []
+        const allowedInstitutions: (number | undefined)[] = []
         if (isStaff.value) {
-            userStore.user.groups.forEach((group) => {
+            userStore.user?.groups.forEach((group) => {
                 if (allowedInstitutions.indexOf(group.institutionId) === -1) {
                     allowedInstitutions.push(group.institutionId)
                 }
@@ -65,7 +65,7 @@ async function loadAssociations() {
                 emit-value
                 filled
                 map-options
-                @update:model-value="association.options[0].disable = checkHasPresident(association.id)"/>
+                @update:model-value="association.options ? association.options[0].disable = checkHasPresident(association.id) : false"/>
             <QOptionGroup
                 v-model="association.role"
                 :options="association.options"

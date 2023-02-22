@@ -75,7 +75,7 @@ export default function () {
         newAssociations.value.splice(index, 1)
     }
 
-    function checkHasPresident(associationId: number) {
+    function checkHasPresident(associationId: number | null) {
         for (const association of associationStore.associationNames) {
             if (association.id === associationId) {
                 return association.hasPresident
