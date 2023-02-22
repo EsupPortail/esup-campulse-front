@@ -1,34 +1,39 @@
 import {defineStore} from 'pinia'
 import type {
     Association,
-    AssociationComponent,
+    AssociationActivityField,
     AssociationDirectory,
-    AssociationField,
-    AssociationInstitution,
-    AssociationList,
-    AssociationNames,
-    AssociationStore
+    AssociationName,
+    AssociationStore,
+    Institution,
+    InstitutionComponent,
 } from '#/association'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
-import type {User} from '#/user'
+import useSecurity from "@/composables/useSecurity";
+import type {SelectLabel} from "#/index";
+import useUserGroups from "@/composables/useUserGroups";
 
 
 export const useAssociationStore = defineStore('associationStore', {
     state: (): AssociationStore => ({
         association: undefined,
         associations: [],
+        associationNames: [],
         institutions: [],
-        components: [],
-        fields: []
+        institutionComponents: [],
+        activityFields: []
     }),
 
     getters: {
-        associationNames: (state: AssociationStore): AssociationNames => {
-            return state.associations
+        associationLabels: (state: AssociationStore): SelectLabel[] => {
+            return state.associationNames
                 .map(association => ({
                     value: association.id,
-                    label: association.name
+                    label: association.name,
+                    hasPresident: association.hasPresident,
+                    institution: association.institution,
+                    disable: false
                 }))
         },
         associationDirectory: (state: AssociationStore): AssociationDirectory => {
@@ -38,8 +43,8 @@ export const useAssociationStore = defineStore('associationStore', {
                     name: association.name,
                     acronym: association.acronym,
                     institution: association.institution?.name,
-                    component: association.institutionComponent?.name,
-                    field: association.activityField?.name,
+                    institutionComponent: association.institutionComponent?.name,
+                    activityField: association.activityField?.name,
                 }))
         },
         institutionLabels: (state: AssociationStore) => {
@@ -49,51 +54,56 @@ export const useAssociationStore = defineStore('associationStore', {
                     label: institution.name
                 })))
         },
-        componentLabels: (state: AssociationStore) => {
-            return state.components.map((
-                component => ({
-                    value: component.id,
-                    label: component.name
+        institutionComponentLabels: (state: AssociationStore) => {
+            return state.institutionComponents.map((
+                institutionComponent => ({
+                    value: institutionComponent.id,
+                    label: institutionComponent.name
                 })))
         },
-        fieldLabels: (state: AssociationStore) => {
-            return state.fields.map((
-                field => ({
-                    value: field.id,
-                    label: field.name
+        activityFieldLabels: (state: AssociationStore) => {
+            return state.activityFields.map((
+                activityField => ({
+                    value: activityField.id,
+                    label: activityField.name
                 })))
-        },
-        managedAssociations: (state: AssociationStore) => {
-            return state.associations.map(
-                association => ({
-                    id: association.id,
-                    name: association.name,
-                    acronym: association.acronym,
-                    institution: association.institution?.name,
-                    component: association.institutionComponent?.name,
-                    field: association.activityField?.name,
-                    isEnabled: association.isEnabled,
-                    email: association.email,
-                })
-            )
         }
     },
 
     actions: {
         /**
          * It gets a list of associations from the server, and stores them in the `associations` variable
-         * @param {boolean} forDirectory - boolean - If true, only associations that are public will be returned.
-         * @param {boolean} forRegistration - If true, only associations that are enabled for registration will be
          * returned.
+         * @param isPublic
          */
-        async getAssociations(forDirectory: boolean, forRegistration: boolean) {
-            const {axiosPublic} = useAxios()
+        async getAssociations(isPublic: boolean) {
+            const {axiosPublic, axiosAuthenticated} = useAxios()
             let url = '/associations/'
+            let instance = axiosPublic
 
-            if (forDirectory) url += '?is_public=true'
-            if (forRegistration) url += 'names'
+            if (isPublic) url += '?is_public=true'
 
-            this.associations = (await axiosPublic.get<AssociationList[]>(url)).data
+            if (!isPublic) instance = axiosAuthenticated
+
+            this.associations = (await instance.get<Association[]>(url)).data
+        },
+        // To test
+        async getInstitutionAssociations() {
+            const {axiosAuthenticated} = useAxios()
+            const userStore = useUserStore()
+            const url = `/associations/?institution${userStore.userInstitutions?.join(',')}`
+            this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
+        },
+        // To test
+        async getAssociationNames() {
+            const {axiosPublic} = useAxios()
+            const userStore = useUserStore()
+            const {isStaff} = useUserGroups()
+            let url = '/associations/names'
+            if (isStaff.value && userStore.userInstitutions?.length !== 0) {
+                url += `?institutions=${userStore.userInstitutions?.join(',')}`
+            }
+            this.associationNames = (await axiosPublic.get<AssociationName[]>(url)).data
         },
         /**
          * It the user is a manager, it simply gets all associations
@@ -101,46 +111,54 @@ export const useAssociationStore = defineStore('associationStore', {
          */
         async getManagedAssociations() {
             const userStore = useUserStore()
-            await this.getAssociations(false, false)
-            if (!userStore.isUniManager) {
-                const studentAssociations: AssociationList[] = []
-                for (let i = 0; i < (userStore.user as User).associations.length; i++) {
-                    const associationId = userStore.user?.associations[i].id
-                    const studentAssociation = this.associations.find(association => association.id === associationId)
-                    if (studentAssociation) {
-                        studentAssociations.push(studentAssociation)
-                    }
+            const {hasPerm} = useSecurity()
+            const {isStaff} = useUserGroups()
+            if (!isStaff && hasPerm('change_association')) {
+                const {axiosAuthenticated} = useAxios()
+                this.associations = []
+                for (let i = 0; i < (userStore.user?.associations.length as number); i++) {
+                    const associationId = userStore.user?.associations[i].id as number
+                    const association = (await axiosAuthenticated.get<Association>(`/associations/${associationId}`)).data
+                    this.associations.push(association)
                 }
-                this.associations = studentAssociations
+            } else if (hasPerm('change_association_any_institution')) {
+                await this.getAssociations(false)
+            } else if (hasPerm('change_association')) {
+                await this.getInstitutionAssociations()
             }
         },
-        async getAssociationDetail(id: number) {
-            const {axiosPublic} = useAxios()
-            this.association = (await axiosPublic.get<Association>(`/associations/${id}`)).data
+        async getAssociationDetail(id: number, publicRequest: boolean) {
+            const {axiosPublic, axiosAuthenticated} = useAxios()
+            let instance = axiosAuthenticated
+            if (publicRequest) instance = axiosPublic
+            this.association = (await instance.get<Association>(`/associations/${id}`)).data
         },
         async updateAssociationLogo(logoData: FormData | object, id: number) {
             if (this.association) {
                 const {axiosAuthenticated} = useAxios()
                 const response = (await axiosAuthenticated.patch(`/associations/${id}`, logoData)).data
-                this.association.pathLogo = response.pathLogo
+                if (this.association.pathLogo) {
+                    this.association.pathLogo.detail = response.pathLogo
+                }
+                this.association.altLogo = response.altLogo
             }
         },
         async getInstitutions() {
             if (this.institutions.length === 0) {
                 const {axiosPublic} = useAxios()
-                this.institutions = (await axiosPublic.get<AssociationInstitution[]>('/associations/institutions')).data
+                this.institutions = (await axiosPublic.get<Institution[]>('/institutions/institutions')).data
             }
         },
-        async getComponents() {
-            if (this.components.length === 0) {
+        async getInstitutionComponents() {
+            if (this.institutionComponents.length === 0) {
                 const {axiosPublic} = useAxios()
-                this.components = (await axiosPublic.get<AssociationComponent[]>('/associations/institution_components')).data
+                this.institutionComponents = (await axiosPublic.get<InstitutionComponent[]>('/institutions/institution_components')).data
             }
         },
-        async getFields() {
-            if (this.fields.length === 0) {
+        async getActivityFields() {
+            if (this.activityFields.length === 0) {
                 const {axiosPublic} = useAxios()
-                this.fields = (await axiosPublic.get<AssociationField[]>('/associations/activity_fields')).data
+                this.activityFields = (await axiosPublic.get<AssociationActivityField[]>('/associations/activity_fields')).data
             }
         },
         async deleteAssociation(associationId: number | undefined) {
@@ -152,6 +170,13 @@ export const useAssociationStore = defineStore('associationStore', {
         async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
             const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
+            const {data} = patchedData
+            this.association = data
+        },
+        // To test
+        async patchPublicAssociation(isPublic: boolean, associationId: number | undefined) {
+            const {axiosAuthenticated} = useAxios()
+            const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isPublic})
             const {data} = patchedData
             this.association = data
         }

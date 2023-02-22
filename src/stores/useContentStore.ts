@@ -3,28 +3,29 @@ import { defineStore } from 'pinia'
 import type { HomeStore } from '#/index'
 import i18n from '@/plugins/i18n'
 
+const tPrefixHome = "home.cards."
 export const useHomeContent = defineStore('homeContent', {
     state: (): HomeStore => ({
         cards: [
             {
-                title: i18n.global.t('home.cards.charter.title'),
-                description: i18n.global.t('home.cards.charter.description'),
+                title: i18n.global.t(tPrefixHome + 'charter.title'),
+                description: i18n.global.t(tPrefixHome + 'charter.description'),
                 imagePath: '/images/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.charter.imageAlt'),
+                imageAlt: i18n.global.t(tPrefixHome + 'charter.image-alt'),
                 link: '/charter'
             },
             {
-                title: i18n.global.t('home.cards.directory.title'),
-                description: i18n.global.t('home.cards.directory.description'),
+                title: i18n.global.t(tPrefixHome + 'directory.title'),
+                description: i18n.global.t(tPrefixHome + 'directory.description'),
                 imagePath: '/images/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.directory.imageAlt'),
+                imageAlt: i18n.global.t(tPrefixHome + 'directory.image-alt'),
                 link: '/associations'
             },
             {
-                title: i18n.global.t('home.cards.commission.title'),
-                description: i18n.global.t('home.cards.commission.description'),
+                title: i18n.global.t(tPrefixHome + 'commission.title'),
+                description: i18n.global.t(tPrefixHome + 'commission.description'),
                 imagePath: '/images/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.commission.imageAlt'),
+                imageAlt: i18n.global.t(tPrefixHome + 'commission.image-alt'),
                 link: '/commission'
             }
         ],

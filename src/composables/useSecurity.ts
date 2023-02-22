@@ -1,20 +1,22 @@
-import {ref} from 'vue'
-import {useRoute} from 'vue-router'
-import type {UserAssociations, UserLogin, UserRegister} from '#/user'
+import {reactive, ref, watch} from 'vue'
+import type {AssociationUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
 import useAssociation from '@/composables/useAssociation'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
+import {useRoute} from "vue-router";
+import type {AxiosInstance} from "axios";
 
 
 export default function () {
 
-    const user = ref<UserLogin>({
+    const userStore = useUserStore()
+
+    // Used for local login
+    const user = ref<LocalLogin>({
         username: '',
         password: ''
     })
-
-    const userStore = useUserStore()
 
     /**
      * It takes two strings as arguments, and sets them as the values of two localStorage keys
@@ -47,19 +49,33 @@ export default function () {
         })
     }
 
-    const newUser = ref<UserRegister>({
+
+    /**
+     * It returns true if the user has the permission passed in as a parameter
+     * @param {string} permission - The permission you want to check for.
+     * @returns A boolean value.
+     */
+    // TODO retest
+    function hasPerm(permission: string): boolean | undefined {
+        return userStore.user?.permissions.includes(permission)
+    }
+
+    const newUser = reactive<UserRegister>({
         isCas: false,
-        username: '',
         firstName: '',
         lastName: '',
         email: '',
+        username: '',
         phone: ''
+    })
+    watch(() => newUser.email, () => {
+        if (!newUser.isCas) newUser.username = newUser.email
     })
 
     const emailVerification = ref<string | undefined>('')
 
-    // Tested
-    async function userLocalRegister(newUser: UserRegister) {
+
+    async function userLocalRegister() {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/', newUser)
     }
@@ -67,68 +83,80 @@ export default function () {
     // Tested
     async function userCASRegister(newUserInfo: string | null) {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo !== "" ? newUserInfo : null})
+        await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo !== '' ? newUserInfo : null})
     }
 
     // ???
-    async function userAssociationsRegister(username: string, newUserAssociations: UserAssociations) {
+    async function userAssociationsRegister(publicRequest: boolean, username: string, newUserAssociations: AssociationUser[]) {
         const idsAssociations = []
-        const {axiosPublic} = useAxios()
+        const {axiosPublic, axiosAuthenticated} = useAxios()
+        let instance = axiosAuthenticated as AxiosInstance
+        if (publicRequest) instance = axiosPublic
         for (let i = 0; i < newUserAssociations.length; i++) {
-            if (idsAssociations.indexOf(newUserAssociations[i].id) === -1)
-                await axiosPublic.post('/users/associations/', {
+            if (idsAssociations.indexOf(newUserAssociations[i].association) === -1)
+                await instance.post('/users/associations/', {
                     user: username,
-                    association: newUserAssociations[i].id,
-                    roleName: newUserAssociations[i].roleName,
-                    hasOfficeStatus: newUserAssociations[i].hasOfficeStatus,
-                    isPresident: newUserAssociations[i].isPresident
+                    association: newUserAssociations[i].association,
+                    isPresident: newUserAssociations[i].isPresident,
+                    isSecretary: newUserAssociations[i].isSecretary,
+                    isTreasurer: newUserAssociations[i].isTreasurer
                 })
-            idsAssociations.push(newUserAssociations[i].id)
+            idsAssociations.push(newUserAssociations[i].association)
         }
     }
 
-    // Tested
-    async function userGroupsRegister(username: string, newUserGroups: number[] | undefined) {
-        const {axiosPublic} = useAxios()
-        await axiosPublic.post('/users/groups/', {
-            username: username,
-            groups: newUserGroups,
-        })
+
+    async function userGroupsRegister(publicRequest: boolean) {
+        const groupsToRegister: UserGroupRegister[] = []
+        const {newGroups} = useUserGroups()
+        const {axiosPublic, axiosAuthenticated} = useAxios()
+        let instance = axiosAuthenticated as AxiosInstance
+        if (publicRequest) instance = axiosPublic
+        if (newGroups.value.length) {
+            newGroups.value.forEach(function (group) {
+                groupsToRegister.push({
+                    username: newUser.username,
+                    group,
+                    institution: null
+                })
+            })
+            for (let i = 0; i < groupsToRegister.length; i++) {
+                await instance.post('/users/groups/', groupsToRegister[i])
+            }
+        }
     }
 
     //
     async function register() {
-        const {newAssociations} = useAssociation()
-        const {newGroups} = useUserGroups()
+        const {newAssociationsUser} = useAssociation()
         if (userStore.isCas) {
-            await userCASRegister(newUser.value.phone)
-            if (newAssociations) {
-                await userAssociationsRegister(newUser.value.username, newAssociations.value)
+            await userCASRegister(newUser.phone)
+            if (newAssociationsUser) {
+                await userAssociationsRegister(true, newUser.username, newAssociationsUser.value)
             }
-            await userGroupsRegister(newUser.value.username, newGroups.value)
+            await userGroupsRegister(true)
             // We must clear newUser to avoid persistence of session
-            await userStore.unLoadNewUser()
+            userStore.unLoadNewUser()
         } else {
-            await userLocalRegister(newUser.value)
-            if (newAssociations.value) {
-                await userAssociationsRegister(newUser.value.email, newAssociations.value)
+            await userLocalRegister()
+            if (newAssociationsUser.value) {
+                await userAssociationsRegister(true, newUser.email, newAssociationsUser.value)
             }
-            await userGroupsRegister(newUser.value.email, newGroups.value)
+            await userGroupsRegister(true)
         }
     }
 
     /**
      * It registers a new user as a manager, then registers the user's associations and groups
      */
-    //
+    // To test
     async function addUserAsManager() {
-        const {newAssociations} = useAssociation()
-        const {newGroups} = useUserGroups()
-        await userLocalRegisterAsManager(newUser.value)
-        if (newAssociations.value) {
-            await userAssociationsRegister(newUser.value.email, newAssociations.value)
+        const {newAssociationsUser} = useAssociation()
+        await userLocalRegisterAsManager(newUser)
+        if (newAssociationsUser.value) {
+            await userAssociationsRegister(false, newUser.email, newAssociationsUser.value)
         }
-        await userGroupsRegister(newUser.value.email, newGroups.value)
+        await userGroupsRegister(false)
     }
 
     //
@@ -139,8 +167,8 @@ export default function () {
             if (route.query.ticket) {
                 await userStore.loadCASUser(route.query.ticket as string)
             }
-            newUser.value.firstName = userStore.newUser?.firstName as string
-            emailVerification.value = newUser.value.email
+            newUser.firstName = userStore.newUser?.firstName as string
+            emailVerification.value = newUser.email
         }
     }
 
@@ -191,6 +219,8 @@ export default function () {
         passwordReset,
         passwordResetConfirm,
         userGroupsRegister,
-        userLocalRegisterAsManager
+        userLocalRegisterAsManager,
+        hasPerm,
+        userAssociationsRegister
     }
 }

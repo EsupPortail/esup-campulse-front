@@ -1,9 +1,16 @@
-import type {GroupList, UserGroup} from '#/user'
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useAxios} from '@/composables/useAxios'
+import type {SelectLabel} from "#/index";
+import type {Group} from "#/groups";
+import i18n from "@/plugins/i18n";
+import type {UserGroup} from "#/user";
+import {useUserStore} from "@/stores/useUserStore";
 
+
+// Used to store groups
+const groups = ref<Group[]>([])
 
 // Used to choose or update groups
 const newGroups = ref<number[]>([])
@@ -14,44 +21,160 @@ const groupChoiceIsValid = computed(() => {
     return newGroups.value.length > 0 && newGroups.value.length <= groupChoiceLimit
 })
 
-// Refactor
-// Prevents managers from selecting an association
-const groupUnabledToJoinAssociation = [1, 2]
-const groupUnabledSelectingAssociation = computed(() => {
-    return !newGroups.value.some(group => groupUnabledToJoinAssociation.includes(group))
-})
+// Used to dynamically show or hide FormRegisterUserAssociations
+const groupCanJoinAssociation = ref<boolean>(true)
+
+// Helper to know if a user in userStore if a staff member
+const isStaff = ref<boolean | undefined>(undefined)
 
 export default function () {
-    // Used to store groups
-    const groups = ref<UserGroup[]>()
+    const userStore = useUserStore()
 
-    // to re test
+    const groupNames = [
+        {
+            codeName: 'MANAGER_GENERAL',
+            literalName: i18n.global.t('user-groups.manager-general'),
+        },
+        {
+            codeName: 'MANAGER_INSTITUTION',
+            literalName: i18n.global.t('user-groups.manager-institution')
+        },
+        {
+            codeName: 'MANAGER_MISC',
+            literalName: i18n.global.t('user-groups.manager-misc')
+        },
+        {
+            codeName: 'COMMISSION_GENERAL',
+            literalName: i18n.global.t('user-groups.commission-general')
+        },
+        {
+            codeName: 'COMMISSION_MISC',
+            literalName: i18n.global.t('user-groups.commission-misc')
+        },
+        {
+            codeName: 'STUDENT_INSTITUTION',
+            literalName: i18n.global.t('user-groups.student-institution')
+        },
+        {
+            codeName: 'STUDENT_MISC',
+            literalName: i18n.global.t('user-groups.student-misc')
+        },
+    ]
+
     /**
      * It gets the groups from the server and puts them in the groups variable.
      */
     async function getGroups() {
-        const {axiosPublic} = useAxios()
-        groups.value = (await axiosPublic.get<UserGroup[]>('/groups/')).data
+        if (!groups.value?.length) {
+            const {axiosPublic} = useAxios()
+            groups.value = (await axiosPublic.get<Group[]>('/groups/')).data
+        }
     }
 
-    /*
-    * Creating an array of objects with the value and label properties.
-    * Used in the QCheckboxes for group selection
-    */
-    const groupList = computed((): GroupList | undefined => {
-        return groups.value?.map(group => ({
-            value: group.id,
-            label: group.name
-        }))
+    function getGroupLiteral(groupId: number): string | undefined {
+        const group = (groups.value?.find(obj => obj.id === groupId))
+        if (group) {
+            const groupName = groupNames.find(obj => obj.codeName === group.name)
+            if (groupName) {
+                return groupName.literalName
+            }
+        }
+    }
+
+    const groupLabels = ref<SelectLabel[]>([])
+
+
+    /**
+     * It takes a boolean parameter, and if it's true, it will only return public groups, otherwise it will return all
+     * groups
+     * @param {boolean} onlyPublicGroups - boolean - If true, only public groups will be included in the list.
+     * @returns the value of the variable groupLabels.
+     */
+    function initGroupLabels(onlyPublicGroups: boolean) {
+        const labels: SelectLabel[] = []
+        groups.value?.map(function (group) {
+            if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
+                const label = getGroupLiteral(group.id)
+                if (label) {
+                    labels.push({
+                        value: group.id,
+                        label,
+                        disable: !group.isPublic
+                    })
+                }
+            }
+        })
+        // Sort by alphabetical order
+        labels.sort(function (a, b) {
+            const labelA = a.label.toLowerCase().normalize('NFD'), labelB = b.label.toLowerCase().normalize('NFD')
+            if (labelA < labelB)
+                return -1
+            if (labelA > labelB)
+                return 1
+            return 0
+        })
+        // Assign values to ref groupLabels
+        groupLabels.value = labels
+    }
+
+    /**
+     * If the groups array has a length, find the group with the name that matches the groupCodeName parameter and push the
+     * group's id to the newGroups array
+     * @param {string} groupCodeName - The name of the group you want to pre-select.
+     */
+    function preSelectGroup(groupCodeName: string) {
+        if (groups.value?.length) {
+            const groupToPreSelect = groups.value?.find(group => group.name === groupCodeName)
+            if (groupToPreSelect) {
+                newGroups.value.push(groupToPreSelect.id)
+            }
+        }
+    }
+
+    /* It's a list of groups that can join associations */
+    const canJoinAssociationGroups = ['STUDENT_INSTITUTION']
+
+    /**
+     * If the user has selected a group that is not in the list of groups that can join the association, then the user
+     * cannot join the association
+     */
+    const initGroupPermToJoinAssociation = () => {
+        let perm = false
+        if (newGroups.value.length && groups.value?.length) {
+            for (let i = 0; i < newGroups.value.length; i++) {
+                const g = groups.value?.find(obj => obj.id === newGroups.value[i])
+                if (g && canJoinAssociationGroups.includes(g.name)) {
+                    perm = true
+                    break
+                }
+            }
+        }
+        groupCanJoinAssociation.value = perm
+    }
+    watch(() => newGroups.value.length, initGroupPermToJoinAssociation)
+
+    /**
+     * If the user is a member of a non-public group, then they are staff
+     */
+    async function initStaffStatus() {
+        let perm = false
+        const userGroups = userStore.user?.groups
+        await getGroups()
+
+        for (let i = 0; i < (userGroups?.length as number); i++) {
+            const g = groups.value?.find(obj => obj.id === (userGroups?.[i] as UserGroup).groupId)
+            if (g && !g.isPublic) {
+                perm = true
+                break
+            }
+        }
+        isStaff.value = perm
+    }
+
+    watch(() => userStore.user, async () => {
+        await initStaffStatus()
     })
 
-    /*
-    * Getting the student group to pre-check the corresponding box
-    * Used in the QCheckboxes for group selection
-    */
-    const studentGroup = computed((): UserGroup | undefined => {
-        return groups.value?.find(({name}) => name === 'Étudiante ou Étudiant')
-    })
 
     /**
      * Return the old groups that are not in the new groups.
@@ -64,6 +187,10 @@ export default function () {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
     }
 
+    function groupsToAdd(newGroups: number[], oldGroups: number[]) {
+        return newGroups.filter(x => oldGroups.indexOf(x) === -1)
+    }
+
     /**
      * It updates the user's groups in the database if the new groups are different from the old groups
      */
@@ -72,7 +199,7 @@ export default function () {
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
         if (!arraysAreEqual(newGroups.value, oldGroups)) {
-            await userManagerStore.updateUserGroups(newGroups.value)
+            await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups))
             await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))
         }
     }
@@ -80,12 +207,18 @@ export default function () {
     return {
         groups,
         getGroups,
-        groupList,
-        studentGroup,
+        groupLabels,
         groupsToDelete,
         groupChoiceIsValid,
-        groupUnabledSelectingAssociation,
         newGroups,
-        updateUserGroups
+        updateUserGroups,
+        getGroupLiteral,
+        initGroupLabels,
+        preSelectGroup,
+        groupCanJoinAssociation,
+        isStaff,
+        initStaffStatus,
+        initGroupPermToJoinAssociation,
+        groupNames
     }
 }

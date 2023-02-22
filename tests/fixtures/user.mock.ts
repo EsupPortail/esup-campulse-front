@@ -1,18 +1,45 @@
-import type {ManagedUsers, User, UserAssociations, UserGroup, UserRegister} from '#/user'
-import {_associationName} from '~/fixtures/association.mock'
+import type { AssociationUser, User, UserGroup, UserRegister } from "#/user";
+import { _associationName } from "./association.mock";
+import { _groups } from "./group.mock";
+
+function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
+    const permissions: string[] = []
+    userGroups.forEach((userGroup) => {
+        _groups.find(_group => _group.id === userGroup.groupId)?.permissions.forEach((permission) => {
+            if (permissions.indexOf(permission) === -1) {
+                permissions.push(permission)
+            }
+        })
+    });
+    return permissions
+}
 
 export const _userGroups: UserGroup[] = [
+    // Gestionnaire
     {
-        id: 1,
-        name: 'Gestionnaire SVU'
+        userId: 1,
+        groupId: 1,
+        institutionId: 1,
     },
     {
-        id: 2,
-        name: 'Étudiante ou Étudiant'
+        userId: 1,
+        groupId: 1,
+        institutionId: 2,
     },
     {
-        id: 3,
-        name: 'Membre de commission'
+        userId: 1,
+        groupId: 1,
+        institutionId: 3,
+    },
+    // Étudiant
+    {
+        userId: 2,
+        groupId: 6,
+    },
+    // Commission
+    {
+        userId: 3,
+        groupId: 4,
     }
 ]
 
@@ -20,43 +47,33 @@ export const _newUserGroups: number[] = [1, 2]
 
 export const _manager: User = {
     id: 1,
-    password: 'motdepasse',
     username: 'manager@unistra.fr',
     firstName: 'Manager',
     lastName: 'Unistra',
     phone: '',
     email: 'manager@unistra.fr',
     isCas: false,
+    hasValidatedEmail: true,
     isValidatedByAdmin: true,
-    groups: [
-        {
-            id: 1,
-            name: 'Gestionnaire SVU'
-        }
-    ],
-    associations: _associationName
+    associations: _associationName,
+    groups: [_userGroups[0], _userGroups[1], _userGroups[2]],
+    permissions: getUserGroupsPermissions([_userGroups[0], _userGroups[1], _userGroups[2]])
 }
 
 export const _student: User = {
     id: 5,
-    password: 'motdepasse',
     username: 'student@unistra.fr',
-    firstName: 'Student',
+    firstName: 'student',
     lastName: 'Unistra',
     phone: '',
     email: 'student@unistra.fr',
     isCas: false,
+    hasValidatedEmail: true,
     isValidatedByAdmin: true,
-    groups: [
-        {
-            id: 2,
-            name: 'Étudiante ou Étudiant'
-        }
-    ],
-    associations: _associationName
+    associations: _associationName,
+    groups: [_userGroups[3]],
+    permissions: getUserGroupsPermissions([_userGroups[3]])
 }
-
-export const _users: ManagedUsers = [_student, _manager]
 
 export const _newUser: UserRegister = {
     isCas: false,
@@ -67,47 +84,61 @@ export const _newUser: UserRegister = {
     email: 'john.lennon@bbc.com'
 }
 
-export const _userGroupList: number[] = _userGroups.map(group => group.id)
+export const _userGroupList: (number | undefined)[] = _userGroups.map(group => group.id)
 
 export const _groupLabels = _userGroups.map(
     group => ({
-        value: group.id,
-        label: group.name
+        value: group.groupId,
+        label: _groups.find(_group => _group.id === group.groupId)?.name
     })
 )
 
-export const _userAssociations: UserAssociations = [
+export const _userAssociations: AssociationUser[] = [
     {
-        id: 1,
-        roleName: 'Président',
-        hasOfficeStatus: true,
-        isPresident: true
+        name: "PLANA",
+        isPresident: true,
+        canBePresident: true,
+        isValidatedByAdmin: true,
+        isSecretary: false,
+        isTreasurer: false,
+        association: 1
     },
     {
-        id: 2,
-        roleName: 'Secrétaire',
-        hasOfficeStatus: false,
-        isPresident: false
+        name: "Octant",
+        isPresident: false,
+        canBePresident: false,
+        isValidatedByAdmin: true,
+        isSecretary: true,
+        isTreasurer: false,
+        association: 2
     },
     {
-        id: 3,
-        roleName: 'Trésorier',
-        hasOfficeStatus: false,
-        isPresident: false
+        name: "Apogée",
+        isPresident: false,
+        canBePresident: false,
+        isValidatedByAdmin: true,
+        isSecretary: false,
+        isTreasurer: true,
+        association: 3
     },
     {
-        id: 4,
-        roleName: 'Membre',
-        hasOfficeStatus: false,
-        isPresident: false
+        name: "PLANB",
+        isPresident: false,
+        canBePresident: false,
+        isValidatedByAdmin: false,
+        isSecretary: false,
+        isTreasurer: false,
+        association: 4
     }
 ]
 
 export const _userAssociationDetail = {
     user: 'Jane',
-    roleName: 'Présidente',
-    hasOfficeStatus: true,
     isPresident: true,
+    canBePresident: true,
+    isValidatedByAdmin: true,
+    isSecretary: false,
+    isTreasurer: false,
     association: 1
 }
 
@@ -115,25 +146,28 @@ export const _userAssociationsManagement = [
     {
         associationId: 1,
         associationName: 'PLANA',
-        roleName: 'Présidente',
-        hasOfficeStatus: true,
         isPresident: true,
+        canBePresident: true,
+        isSecretary: false,
+        isTreasurer: false,
         deleteAssociation: false
     },
     {
         associationId: 2,
         associationName: 'Octant',
-        roleName: 'Trésorière',
-        hasOfficeStatus: true,
         isPresident: false,
+        canBePresident: true,
+        isSecretary: false,
+        isTreasurer: true,
         deleteAssociation: false
     },
     {
         associationId: 3,
         associationName: 'Apogée',
-        roleName: 'Membre',
-        hasOfficeStatus: false,
         isPresident: false,
+        canBePresident: true,
+        isSecretary: true,
+        isTreasurer: false,
         deleteAssociation: true
     }
 ]

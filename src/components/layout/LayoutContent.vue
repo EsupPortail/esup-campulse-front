@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import {RouterView} from 'vue-router'
+import { RouterView } from 'vue-router'
 import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegistration.vue'
-import LayoutBreadcrumbs from "@/components/layout/LayoutBreadcrumbs.vue";</script>
+import LayoutBreadcrumbs from "@/components/layout/LayoutBreadcrumbs.vue";
+</script>
 
 <template>
     <QPageContainer>
         <main>
-            <LayoutBreadcrumbs/>
+            <LayoutBreadcrumbs />
             <Suspense>
-                <RouterView/>
+                <RouterView />
             </Suspense>
-            <AlertAbortedCasRegistration/>
+            <AlertAbortedCasRegistration />
         </main>
     </QPageContainer>
 </template>

@@ -1,13 +1,14 @@
 import {ref} from 'vue'
-
-import type {AssociationSocialNetwork, EditedAssociation} from '#/association'
-import type {UserAssociations} from '#/user'
+import i18n from "@/plugins/i18n";
+import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
+import type {AssociationRole, AssociationUser} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 
-const newAssociations = ref<UserAssociations>([])
+const newAssociations = ref<AssociationRole[]>([])
+const newAssociationsUser = ref<AssociationUser[]>([])
 
 // Need to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
@@ -19,14 +20,38 @@ export default function () {
 
     const associationStore = useAssociationStore()
 
+    /** Setup altLogo default value if association does not have one
+     *
+     * @param association
+     */
+    function altLogoText(association: Association | EditedAssociation) {
+        return association?.altLogo !== "" ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
+    }
+
+    /* Used to create the options for the select in the form to create an association. */
+    const associationRoleOptions = [
+        {
+            label: i18n.global.t('forms.im-association-president'),
+            value: "isPresident",
+        },
+        {
+            label: i18n.global.t('forms.im-association-secretary'),
+            value: "isSecretary"
+        },
+        {
+            label: i18n.global.t('forms.im-association-treasurer'),
+            value: "isTreasurer"
+        }
+    ]
+
 
     /**
      * It creates an association with the name provided as a parameter
-     * @param {string} name - The name of the association
+     * @param newAssociation
      */
-    async function createAssociation(name: string) {
+    async function createAssociation(newAssociation: NewAssociation) {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.post('/associations/', {name: name})
+        await axiosAuthenticated.post('/associations/', newAssociation)
     }
 
 
@@ -41,14 +66,43 @@ export default function () {
     function addAssociation() {
         newAssociations.value.push({
             id: null,
-            roleName: null,
-            hasOfficeStatus: false,
-            isPresident: false
+            role: '',
+            options: associationRoleOptions
         })
     }
 
     function removeAssociation(index: number) {
         newAssociations.value.splice(index, 1)
+    }
+
+    // To test
+    function checkHasPresident(association: AssociationRole) {
+        if (association.options) {
+            const a = associationStore.associationNames.find(obj => obj.id === association.id)
+            if (a) {
+                association.options[0].disable = a.hasPresident
+                if (association.role === 'isPresident') {
+                    const model = newAssociations.value.find(obj => obj.id === association.id)
+                    if (model) model.role = ''
+                }
+            }
+        }
+    }
+
+    function updateRegisterRoleInAssociation(): AssociationUser[] {
+        newAssociationsUser.value = []
+        newAssociations.value.forEach(association => {
+            newAssociationsUser.value.push({
+                association: association.id,
+                name: '',
+                isPresident: association.role === 'isPresident',
+                canBePresident: false,
+                isValidatedByAdmin: false,
+                isSecretary: association.role === 'isSecretary',
+                isTreasurer: association.role === 'isTreasurer'
+            })
+        })
+        return newAssociationsUser.value
     }
 
 
@@ -80,7 +134,7 @@ export default function () {
         const {formatDate} = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
-            const indexes = ['name', 'acronym', 'description', 'activities', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'phonePres']
+            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone']
             if (indexes.indexOf(key) !== -1) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})
@@ -119,25 +173,25 @@ export default function () {
     function checkSocialNetworks() {
         let hasChanges = false
         // If there already are social networks
-        if (associationStore.association?.socialNetworks.length !== 0) {
+        if (associationStore.association?.socialNetworks?.length !== 0) {
             // If there are as many networks in old and new arrays
             // Then we need to compare more deeply
-            if (associationStore.association?.socialNetworks.length === associationSocialNetworks.value.length) {
-                for (let i = 0; i < associationStore.association?.socialNetworks.length; i++) {
+            if (associationStore.association?.socialNetworks?.length === associationSocialNetworks.value.length) {
+                associationStore.association?.socialNetworks.some((socialNetwork) => {
                     // Look for the same types
-                    const editedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks[i].type)
+                    const editedType = associationSocialNetworks.value.find(({type}) => type === socialNetwork.type)
                     // If type has changed
                     if (editedType === undefined && !hasChanges) {
                         hasChanges = true
-                        break
+                        return hasChanges
                     }
                     // If location has changed
-                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks[i].location)
+                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === socialNetwork.location)
                     if (editedLocation === undefined && !hasChanges) {
                         hasChanges = true
-                        break
+                        return hasChanges
                     }
-                }
+                })
                 // If we detect changes, we can patch the new array
                 if (hasChanges) {
                     changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
@@ -165,10 +219,27 @@ export default function () {
         await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
+    async function changeAssociationLogo(newLogo: undefined | Blob, altLogo: string, deleteLogoData: null | object) {
+        if (deleteLogoData === null) {
+            const patchLogoData = new FormData()
+            if (typeof newLogo === 'object') {
+                patchLogoData.append('pathLogo', newLogo)
+                if (altLogo === associationStore.association?.altLogo) {
+                    altLogo = ""
+                }
+            }
+            patchLogoData.append('altLogo', altLogo)
+            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+        } else {
+            await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+        }
+    }
+
 
     return {
         createAssociation,
         newAssociations,
+        newAssociationsUser,
         addAssociation,
         removeAssociation,
         addNetwork,
@@ -177,6 +248,11 @@ export default function () {
         checkChanges,
         updateAssociation,
         checkSocialNetworks,
-        changedData
+        changedData,
+        altLogoText,
+        checkHasPresident,
+        updateRegisterRoleInAssociation,
+        changeAssociationLogo,
+        associationRoleOptions
     }
 }

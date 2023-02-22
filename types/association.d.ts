@@ -1,100 +1,72 @@
 export interface Association {
     id: number,
-    institution: AssociationInstitution,
-    institutionComponent: AssociationComponent,
-    activityField: AssociationField,
-    socialNetworks: AssociationSocialNetwork[],
     name: string,
     acronym: string,
-    pathLogo: object | null,
+    pathLogo: AssociationLogo | null,
     altLogo: string,
-    description: string,
-    activities: string,
-    address: string,
-    phone: string,
-    email: string,
-    siret: string,
-    website: string,
-    studentCount: number,
-    presidentNames: string,
-    phonePres: string,
-    isSite: boolean,
+    socialObject?: string,
+    currentProjects?: string,
+    address?: string,
+    phone?: string,
+    email?: string,
+    siret?: string,
+    website?: string,
+    studentCount?: number,
+    presidentNames?: string,
+    presidentPhone?: string,
     isEnabled: boolean,
     isPublic: boolean,
-    createdDate: string,
-    approvalDate: string,
-    lastGoaDate: string,
-    cgaDate: string,
+    isSite: boolean,
+    creationDate?: string,
+    approvalDate?: string,
+    lastGoaDate?: string,
+    cgaDate?: string,
+    socialNetworks?: AssociationSocialNetwork[],
+    institution: Institution,
+    institutionComponent: InstitutionComponent,
+    activityField: AssociationActivityField,
 }
 
-export interface EditedAssociation {
-    institution: number | null | undefined,
-    institutionComponent: number | null | undefined,
-    activityField: number | null | undefined,
+export interface AssociationLogo {
+    base: string | undefined
+    detail: string | undefined
+    list: string | undefined
+}
+
+export interface Institution {
+    id: number,
     name: string,
-    acronym: string | null,
-    description: string | null,
-    activities: string | null,
-    address: string | null,
-    phone: string | null,
-    email: string | null,
-    siret: string | null,
-    website: string | null,
-    presidentNames: string | null,
-    phonePres: string | null,
-    approvalDate: string | null,
-    lastGoaDate: string | null
+    acronym: string,
+    email: string,
 }
 
-export interface AssociationInstitution {
-    id: number | null,
+export interface InstitutionComponent {
+    id: number,
     name: string,
-    acronym: string
+    institution: Institution,
 }
 
-export interface AssociationComponent {
-    id: number | null,
-    name: string
-}
-
-export interface AssociationField {
-    id: number | null,
+export interface AssociationActivityField {
+    id: number,
     name: string
 }
 
 export interface AssociationName {
     id: number,
-    name: string
+    name: string,
+    hasPresident: boolean,
+    institution: number,
+}
+
+export interface AssociationOptions {
+    label: string,
+    value: string,
+    disable?: boolean
 }
 
 export interface AssociationSocialNetwork {
     type: string,
     location: string
-}
-
-export interface AssociationList {
-    id: number,
-    institution: {
-        id: number,
-        name: string,
-        acronym: string
-    },
-    institutionComponent: {
-        id: number,
-        name: string
-    },
-    activityField: {
-        id: number,
-        name: string
-    },
-    name: string,
-    acronym: string,
-    isEnabled: boolean,
-    isPublic: boolean,
-    isSite: boolean,
-    email: string,
-    altLogo: string,
-    pathLogo: object
 }
 
 export interface AssociationSearch {
@@ -108,14 +80,42 @@ export interface AssociationSearch {
 
 export interface AssociationStore {
     association: Association | undefined,
-    associations: AssociationList[],
-    institutions: AssociationInstitution[],
-    components: AssociationComponent[],
-    fields: AssociationField[]
+    associations: Association[],
+    associationNames: AssociationName[]
+    institutions: Institution[],
+    institutionComponents: InstitutionComponent[],
+    activityFields: AssociationActivityField[]
 }
 
-export type AssociationNames = { value: number, label: string }[]
-
-export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, component: string, field: string }
 export type AssociationDirectory = AssociationDirectoryDetail[]
+export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, institutionComponent: string, activityField: string }
+
 export type CreateAssociation = Pick<Association, "name">
+
+export interface EditedAssociation {
+    name: string,
+    acronym: string | null,
+    socialObject: string | null,
+    currentProjects: string | null,
+    address: string | null,
+    phone: string | null,
+    email: string | null,
+    siret: string | null,
+    website: string | null,
+    studentCount: number | null,
+    presidentNames: string | null,
+    presidentPhone: string | null,
+    isPublic: boolean,
+    approvalDate: string | null,
+    lastGoaDate: string | null,
+    institution: number | null | undefined,
+    institutionComponent: number | null | undefined,
+    activityField: number | null | undefined,
+    altLogo: string
+}
+
+export interface NewAssociation {
+    name: string,
+    isSite: boolean,
+    institution: number | undefined,
+}

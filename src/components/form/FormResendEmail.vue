@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
 import useSecurity from '@/composables/useSecurity'
 import axios from 'axios'
 
-const {t} = useI18n()
-const {notify} = useQuasar()
-const {resendEmail} = useSecurity()
+const { t } = useI18n()
+const { notify } = useQuasar()
+const { resendEmail } = useSecurity()
 const email = ref<string>()
 const isResend = ref<boolean>(false)
 
@@ -42,7 +42,7 @@ async function resend() {
     <div class="instructions">
         <QBanner v-if="!isResend" class="bg-grey-3">
             <template v-slot:avatar>
-                <QIcon color="primary" name="mdi-information-outline" size="md"/>
+                <QIcon color="primary" name="mdi-information-outline" size="md" />
             </template>
             <strong>{{ t("forms.resend-email-cas") }}</strong>
             <template v-slot:action>
@@ -50,21 +50,12 @@ async function resend() {
         </QBanner>
         <p v-if="isResend">{{ t("forms.resend-email-ok") }}</p>
     </div>
-    <QForm
-        v-if="!isResend"
-        class="q-gutter-md"
-        @submit="resend"
-    >
+    <QForm v-if="!isResend" class="q-gutter-md" @submit="resend">
         <fieldset>
             <legend class="instructions">{{ t("forms.resend-email-confirmation") }}</legend>
-            <QInput
-                v-model="email"
-                :label="t('forms.email')"
-                :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
-                filled
-                lazy-rules
-            />
-            <QBtn :label="t('forms.send')" color="primary" type="submit"/>
+            <QInput v-model="email" :label="t('forms.email')"
+                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]" filled lazy-rules />
+            <QBtn :label="t('forms.send')" color="primary" type="submit" />
         </fieldset>
     </QForm>
 </template>

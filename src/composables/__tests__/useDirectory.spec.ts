@@ -1,11 +1,11 @@
-import {createTestingPinia} from '@pinia/testing'
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {config} from '@vue/test-utils'
+import { createTestingPinia } from '@pinia/testing'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { config } from '@vue/test-utils'
 import useDirectory from '@/composables/useDirectory'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import {_associations, _associationSearchSettings, _associationWrongSearchSettings} from '~/fixtures/association.mock'
-import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {useAxios} from '@/composables/useAxios'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { _associations, _associationSearchSettings, _associationWrongSearchSettings } from '~/fixtures/association.mock'
+import { _axiosFixtures } from '~/fixtures/axios.mock'
+import { useAxios } from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -16,7 +16,7 @@ vi.mock('@/composables/useAxios', () => ({
 }))
 
 config.global.plugins = [
-    createTestingPinia({createSpy: vi.fn()}),
+    createTestingPinia({ createSpy: vi.fn() }),
 ]
 
 describe('useDirectory', () => {
@@ -32,7 +32,7 @@ describe('useDirectory', () => {
     describe('Get association detail', () => {
         it('should call getAssociationDetail in store with id type number', async () => {
             const spy = vi.spyOn(associationStore, 'getAssociationDetail')
-            const {getAssociationDetail} = useDirectory()
+            const { getAssociationDetail } = useDirectory()
 
             await getAssociationDetail('1')
 
@@ -43,21 +43,21 @@ describe('useDirectory', () => {
     describe('advancedSearch', () => {
         it('should return the associations with matching search parameters', () => {
             associationStore.associations = _associations
-            const {advancedSearch} = useDirectory()
+            const { advancedSearch } = useDirectory()
             const matches = advancedSearch(_associationSearchSettings)
             expect(matches).toEqual([_associations[1]])
         })
         it('should not return the associations with no matching search parameters', () => {
             associationStore.associations = _associations
-            const {advancedSearch} = useDirectory()
+            const { advancedSearch } = useDirectory()
             const matches = advancedSearch(_associationWrongSearchSettings)
             expect(matches).not.toEqual([_associations[1]])
         })
     })
     describe('simpleAssociationSearch', () => {
         it('should call API once on /associations/?is_public=true&search=query', () => {
-            const {simpleAssociationSearch} = useDirectory()
-            const {axiosPublic} = useAxios()
+            const { simpleAssociationSearch } = useDirectory()
+            const { axiosPublic } = useAxios()
             const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({})
             simpleAssociationSearch('query')

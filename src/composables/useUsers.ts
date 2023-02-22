@@ -1,32 +1,31 @@
-import {useRoute} from 'vue-router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {UserAssociationDetail, UserAssociationManagement, UserAssociationStatus} from '#/user'
+import type {AssociationRole, AssociationUser, AssociationUserDetail, UserGroup} from '#/user'
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
+import useSecurity from "@/composables/useSecurity";
 
 // Used to store a new user's associations
-const newUserAssociations = ref<UserAssociationStatus[]>([])
+const newUserAssociations = ref<AssociationUser[]>([])
 
 // Used to store a user's associations, while it is modified by a manager
-const userAssociations = ref<UserAssociationManagement[]>([])
+const userAssociations = ref<AssociationRole[]>([])
 
 export default function () {
 
-    const route = useRoute()
     const userManagerStore = useUserManagerStore()
     const {updateUserGroups} = useUserGroups()
+    const {hasPerm} = useSecurity()
 
 
     /**
      * If the route is ValidateUsers, get the unvalidated users, otherwise get all the users
      * It is used on the same view to get various data sets based on the route
      */
-    async function getUsers() {
-        if (route.name === 'ValidateUsers') {
-            await userManagerStore.getUnvalidatedUsers()
-        }
-        if (route.name === 'ManageUsers') {
-            await userManagerStore.getUsers()
+    // To test
+    async function getUsers(routeName: string) {
+        if (hasPerm('change_associationusers')) {
+            if (routeName === 'ValidateUsers') await userManagerStore.getUnvalidatedUsers()
+            if (routeName === 'ManageUsers') await userManagerStore.getUsers()
         }
     }
 
@@ -46,34 +45,55 @@ export default function () {
     function updateUserAssociations() {
         userAssociations.value.forEach(async function (association) {
             // If we need to delete the association
-            if (association.deleteAssociation) {
-                await userManagerStore.deleteUserAssociation(association.associationId)
+            if (association.id && association.deleteAssociation) {
+                await userManagerStore.deleteUserAssociation(association.id)
             }
             // If we need to update the association
             else {
                 // We search for the corresponding association in store
-                const storeAssociation: UserAssociationDetail | undefined = userManagerStore.userAssociations.find(obj =>
-                    obj.association.id === association.associationId)
+                const storeAssociation: AssociationUserDetail | undefined = userManagerStore.userAssociations.find(obj =>
+                    obj.id === association.id)
                 // We set a boolean to track changes
                 let hasChanges = false
                 // We compare the 2 objects
                 for (const [key, value] of Object.entries(association)) {
-                    if (key == 'roleName' || key == 'hasOfficeStatus' || key == 'isPresident') {
-                        if (value !== storeAssociation?.[key as keyof UserAssociationDetail]) {
+                    const availableKeys = ['isPresident', 'canBePresident', 'isSecretary', 'isTreasurer']
+                    if (availableKeys.indexOf(key) !== -1) {
+                        if (value !== storeAssociation?.[key as keyof AssociationUserDetail]) {
                             hasChanges = true
+                            break
                         }
                     }
                 }
-                if (hasChanges) {
+
+                if (hasChanges && association.id) {
                     const infosToPatch = {
-                        roleName: association.roleName,
-                        hasOfficeStatus: association.hasOfficeStatus,
-                        isPresident: association.isPresident,
+                        isPresident: association.role === 'isPresident',
+                        canBePresident: association.canBePresident ? association.canBePresident : false,
+                        isSecretary: association.role === 'isSecretary',
+                        isTreasurer: association.role === 'isTreasurer',
                     }
-                    await userManagerStore.patchUserAssociations(association.associationId, infosToPatch)
+                    await userManagerStore.patchUserAssociations(association.id, infosToPatch)
                 }
             }
         })
+    }
+
+    // To test
+    function canEditUser(userGroups: UserGroup[]): boolean {
+        const {groups} = useUserGroups()
+        let perm = false
+        if (userGroups.length && groups.value.length) {
+            perm = true
+            for (let i = 0; i < userGroups.length; i++) {
+                const g = groups.value.find(obj => obj.id === userGroups[i].groupId)
+                if (g && !g.isPublic) {
+                    perm = false
+                    break
+                }
+            }
+        }
+        return perm
     }
 
     return {
@@ -81,6 +101,7 @@ export default function () {
         updateUserAssociations,
         userAssociations,
         validateUser,
-        newUserAssociations
+        newUserAssociations,
+        canEditUser
     }
 }

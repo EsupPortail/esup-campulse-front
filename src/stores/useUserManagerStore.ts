@@ -1,17 +1,15 @@
 import {defineStore} from 'pinia'
 import type {
-    ManagedUser,
-    ManagedUsers,
-    UserAssociationDetail,
+    AssociationUser,
+    AssociationUserDetail,
+    User,
     UserAssociationPatch,
-    UserAssociationStatus,
-    UserDirectory,
-    UserGroup,
     UserManagerStore,
     UserNames,
     UserToUpdate
 } from '#/user'
 import {useAxios} from '@/composables/useAxios'
+import {useUserStore} from "@/stores/useUserStore";
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
@@ -28,56 +26,61 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                     label: user.firstName + ' ' + user.lastName
                 }))
         },
-        userDirectory: (state: UserManagerStore): UserDirectory[] => {
-            return state.users
-                .map(user => ({
-                    id: user.id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    associations: user.associations,
-                    groups: user.groups,
-                    isValidatedByAdmin: user.isValidatedByAdmin
-                }))
-        },
         userGroups: (state: UserManagerStore): number[] => {
-            return state.user?.groups?.map<number>(group => group.id) || []
+            return state.user?.groups?.map<number>(group => group.groupId) || []
         },
         userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
             return {
                 firstName: state.user?.firstName as string,
                 lastName: state.user?.lastName as string,
+                username: state.user?.username as string,
                 email: state.user?.email as string,
                 phone: state.user?.phone as string
             }
         },
-        userAssociationStatus: (state: UserManagerStore): UserAssociationStatus[] => {
+        userAssociationStatus: (state: UserManagerStore): AssociationUser[] => {
             return state.userAssociations.map(association => ({
-                associationId: association.association,
-                roleName: association.roleName,
-                hasOfficeStatus: association.hasOfficeStatus,
-                isPresident: association.isPresident
+                association: association.association.id,
+                name: association.association.name,
+                isPresident: association.isPresident,
+                canBePresident: association.canBePresident,
+                isValidatedByAdmin: association.isValidatedByAdmin,
+                isSecretary: association.isSecretary,
+                isTreasurer: association.isTreasurer,
             }))
         }
     },
 
     actions: {
+        // To test
         async getUsers() {
             const {axiosAuthenticated} = useAxios()
-            this.users = (await axiosAuthenticated.get<ManagedUsers>('/users/')).data
+            const userStore = useUserStore()
+            let url = '/users/'
+            if (userStore.userInstitutions?.length !== 0) {
+                url += `?institutions=${userStore.userInstitutions?.join(',')}`
+            }
+            this.users = (await axiosAuthenticated.get<User[]>(url)).data
         },
+        // To test
         async getUnvalidatedUsers() {
             const {axiosAuthenticated} = useAxios()
-            this.users = (await axiosAuthenticated.get<ManagedUsers>('/users/?is_validated_by_admin=false')).data
+            const userStore = useUserStore()
+            let url = '/users/?is_validated_by_admin=false'
+            if (userStore.userInstitutions?.length !== 0) {
+                url += `&institutions=${userStore.userInstitutions?.join(',')}`
+            }
+            this.users = (await axiosAuthenticated.get<User[]>(url)).data
         },
         async getUserDetail(id: number) {
             const {axiosAuthenticated} = useAxios()
-            this.user = (await axiosAuthenticated.get<ManagedUser>(`/users/${id}`)).data
-            this.user.groups = (await axiosAuthenticated.get<UserGroup[]>(`/users/groups/${id}`)).data
+            this.user = (await axiosAuthenticated.get<User>(`/users/${id}`)).data
         },
-        async updateUserGroups(userGroups: number[]) {
+        async updateUserGroups(groupsToAdd: number[]) {
             const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.post('/users/groups/', {username: this.user?.username, groups: userGroups})
+            for (const group of groupsToAdd) {
+                await axiosAuthenticated.post('/users/groups/', {username: this.user?.username, group: group})
+            }
         },
         async deleteUserGroups(groupsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
@@ -95,7 +98,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         async getUserAssociations(id: number) {
             const {axiosAuthenticated} = useAxios()
-            this.userAssociations = (await axiosAuthenticated.get<UserAssociationDetail[]>(`/users/associations/${id}`)).data
+            this.userAssociations = (await axiosAuthenticated.get<AssociationUserDetail[]>(`/users/associations/${id}`)).data
         },
         async deleteUserAssociation(associationId: number) {
             const {axiosAuthenticated} = useAxios()

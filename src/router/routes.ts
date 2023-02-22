@@ -76,15 +76,30 @@ const routes: RouteRecordRaw[] = [
                     },
                     {
                         path: 'association-dashboard/:id',
-                        name: 'AssociationDashboard',
-                        component: () => import('@/views/dashboard/AssociationDashboard.vue'),
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.association-dashboard')
-                        }
+                            breadcrumb: i18n.global.t('breadcrumbs.association-dashboard'),
+                            associationMembersOnly: true
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'AssociationDashboard',
+                                component: () => import('@/views/dashboard/AssociationDashboardView.vue')
+                            },
+                            {
+                                path: 'edit-my-association',
+                                name: 'EditMyAssociation',
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.edit-my-association')
+                                },
+                                component: () => import('@/views/dashboard/AssociationEditionView.vue')
+                            }
+                        ]
                     },
                     {
                         path: 'validate-users',
                         meta: {
+                            staffOnly: true,
                             breadcrumb: i18n.global.t('breadcrumbs.validate-users')
                         },
                         children: [
@@ -106,6 +121,7 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'manage-users',
                         meta: {
+                            staffOnly: true,
                             breadcrumb: i18n.global.t('breadcrumbs.manage-users')
                         },
                         children: [
@@ -141,7 +157,8 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: '',
                                 name: 'ManageAssociations',
-                                component: () => import('@/views/dashboard/AssociationsManagementView.vue')
+                                component: () => import('@/views/dashboard/AssociationsManagementView.vue'),
+                                meta: {staffOnly: true}
                             },
                             {
                                 path: ':id',
@@ -155,6 +172,7 @@ const routes: RouteRecordRaw[] = [
                                 path: 'create-new',
                                 name: 'CreateAssociation',
                                 meta: {
+                                    staffOnly: true,
                                     breadcrumb: i18n.global.t('breadcrumbs.create-association')
                                 },
                                 component: () => import('@/views/dashboard/AssociationCreateView.vue')

@@ -1,36 +1,54 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import {useQuasar} from 'quasar'
-import type {Association} from '#/association'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { useQuasar } from 'quasar'
+import type { PropType } from 'vue'
+import type { Association } from '#/association'
+import useSecurity from "@/composables/useSecurity";
 
-const {t} = useI18n()
+const { t } = useI18n()
 const changes = ref<boolean>(false)
 const deletionWord = ref<string>("")
 const associationStore = useAssociationStore()
-const {notify} = useQuasar()
-const actionsOptions = [
-    {id: 'email', label: t('association.all-selected-mail')},
-    {id: 'enable', label: t('association.all-selected-enable')},
-    {id: 'disable', label: t('association.all-selected-disable')},
-    {id: 'delete', label: t('association.all-selected-delete')}
-]
+const { notify } = useQuasar()
+const { hasPerm } = useSecurity()
+
+const emit = defineEmits(['updateSelectedAssociations'])
+
+const actionsOptions = ref([
+    { id: 'email', label: t('association.all-selected-mail') }
+])
 
 const switches = ref<string>()
 
-defineProps({
-    selectedAssociations: Array,
+const props = defineProps({
+    selectedAssociations: Array as PropType<Association[]>,
 })
 
-async function onConfirmChanges(selectedAssociations: Association[]) {
+const initActionOptions = () => {
+    if (hasPerm('delete_association')) {
+        actionsOptions.value.push({
+            id: 'delete',
+            label: t('association.all-selected-delete')
+        })
+    }
+    if (hasPerm('change_association_all_fields')) {
+        actionsOptions.value.push({ id: 'enable', label: t('association.all-selected-enable') })
+        actionsOptions.value.push({ id: 'disable', label: t('association.all-selected-disable') })
+    }
+}
+
+onMounted(initActionOptions)
+
+async function onConfirmChanges() {
     const associationsSuccess: string[] = []
     const associationsError: string[] = []
     const promisesToExecute: Promise<void>[] = []
     let mailto = "mailto:?bcc="
     switch (switches.value) {
         case 'email':
-            selectedAssociations.forEach((selectedAssociation) => {
+            props.selectedAssociations?.forEach((selectedAssociation) => {
                 if (selectedAssociation.email) {
                     mailto += `${selectedAssociation.email},`
                     associationsSuccess.push(selectedAssociation.name)
@@ -41,35 +59,39 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
             window.open(mailto, '_blank')
             break
         case 'enable':
-            selectedAssociations.forEach((selectedAssociation) => {
+            props.selectedAssociations?.forEach((selectedAssociation) => {
                 promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
                     associationsSuccess.push(selectedAssociation.name)
                 }))
             })
             break
         case 'disable':
-            selectedAssociations.forEach((selectedAssociation) => {
+            props.selectedAssociations?.forEach((selectedAssociation) => {
                 promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
                     associationsSuccess.push(selectedAssociation.name)
                 }))
             })
             break
         case 'delete':
-            if(deletionWord.value === t('association.before-deletion-word')) {
-              selectedAssociations.forEach((selectedAssociation) => {
-                promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
-                  associationsSuccess.push(selectedAssociation.name)
-                  selectedAssociations.splice(selectedAssociations.indexOf(selectedAssociation), 1)
-                }).catch(() => {
-                  associationsError.push(selectedAssociation.name)
-                }))
-              })
-              deletionWord.value = ""
+            if (deletionWord.value === t('association.before-deletion-word')) {
+                props.selectedAssociations?.forEach((selectedAssociation) => {
+                    promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                        associationsSuccess.push(selectedAssociation.name)
+                        if (props.selectedAssociations) {
+                            let newSelectedAssociations = props.selectedAssociations
+                            newSelectedAssociations = newSelectedAssociations?.splice(props.selectedAssociations?.indexOf(selectedAssociation), 1)
+                            emit('updateSelectedAssociations', newSelectedAssociations)
+                        }
+                    }).catch(() => {
+                        associationsError.push(selectedAssociation.name)
+                    }))
+                })
+                deletionWord.value = ""
             } else {
-              notify({
-                type: 'negative',
-                message: t('association.before-deletion-word-error')
-              })
+                notify({
+                    type: 'negative',
+                    message: t('association.before-deletion-word-error')
+                })
             }
             break
     }
@@ -78,11 +100,7 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
         let message = ''
         if (associationsSuccess.length > 0) {
             associationStore.getManagedAssociations()
-            if (switches.value === 'email') {
-                message = t('notifications.positive.email-associations')
-            } else {
-                message = t('notifications.positive.change-associations')
-            }
+            message = t(`notifications.positive.${switches.value}-associations`)
             notify({
                 type: 'positive',
                 message: `${message}${associationsSuccess.join(', ')}`
@@ -90,11 +108,7 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
         }
         if (associationsError.length > 0) {
             associationStore.getManagedAssociations()
-            if (switches.value === 'email') {
-                message = t('notifications.negative.email-associations-error')
-            } else {
-                message = t('notifications.negative.change-associations-error')
-            }
+            message = t(`notifications.negative.${switches.value}-associations-error`)
             notify({
                 type: 'negative',
                 message: `${message}${associationsError.join(', ')}`
@@ -105,22 +119,10 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
 </script>
 
 <template>
-    <QSelect
-        v-model="switches"
-        :label="t('association.all-selected')"
-        :options="actionsOptions"
-        emit-value
-        filled
-        map-options
-        option-label="label"
-        option-value="id"
-    />
-    <QBtn
-        :label="t('association.confirm-all-changes')"
-        color="primary"
-        icon="mdi-pencil"
-        @click="(switches !== undefined && selectedAssociations.length > 0) ? changes = true : changes = false"
-    />
+    <QSelect v-model="switches" :label="t('association.all-selected')" :options="actionsOptions" emit-value filled
+        map-options option-label="label" option-value="id" />
+    <QBtn :label="t('association.confirm-all-changes')" color="primary" icon="mdi-pencil"
+        @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false" />
     <QDialog v-model="changes" persistent>
         <QCard>
             <QCardSection class="row items-center">
@@ -136,52 +138,20 @@ async function onConfirmChanges(selectedAssociations: Association[]) {
                     </ul>
                 </template>
             </QCardSection>
-          <QCardSection v-if="switches === 'delete'">
-            <QInput
-                v-model=deletionWord
-                @paste.prevent
-                :label="t('association.before-deletion-word-instruction')" />
-          </QCardSection>
+            <QCardSection v-if="switches === 'delete'">
+                <QInput v-model=deletionWord @paste.prevent :label="t('association.before-deletion-word-instruction')" />
+            </QCardSection>
 
             <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="mdi-arrow-left-circle"
-                />
-                <QBtn
-                    v-if="switches === 'email'"
-                    v-close-popup
-                    :label="t('association.email')"
-                    color="secondary"
-                    icon="mdi-email"
-                    @click="onConfirmChanges(selectedAssociations)"
-                />
-                <QBtn
-                    v-if="switches === 'enable'"
-                    v-close-popup
-                    :label="t('association.enable')"
-                    color="green"
-                    icon="mdi-eye-check"
-                    @click="onConfirmChanges(selectedAssociations)"
-                />
-                <QBtn
-                    v-if="switches === 'disable'"
-                    v-close-popup
-                    :label="t('association.disable')"
-                    color="orange"
-                    icon="mdi-eye-remove"
-                    @click="onConfirmChanges(selectedAssociations)"
-                />
-                <QBtn
-                    v-if="switches === 'delete'"
-                    v-close-popup
-                    :label="t('association.delete')"
-                    color="red"
-                    icon="mdi-delete"
-                    @click="onConfirmChanges(selectedAssociations)"
-                />
+                <QBtn v-close-popup :label="t('cancel')" color="secondary" icon="mdi-arrow-left-circle" />
+                <QBtn v-if="switches === 'email'" v-close-popup :label="t('association.email')" color="secondary"
+                    icon="mdi-email" @click="onConfirmChanges()" />
+                <QBtn v-if="switches === 'enable'" v-close-popup :label="t('association.enable')" color="green"
+                    icon="mdi-eye-check" @click="onConfirmChanges()" />
+                <QBtn v-if="switches === 'disable'" v-close-popup :label="t('association.disable')" color="orange"
+                    icon="mdi-eye-remove" @click="onConfirmChanges()" />
+                <QBtn v-if="switches === 'delete'" v-close-popup :label="t('association.delete')" color="red"
+                    icon="mdi-delete" @click="onConfirmChanges()" />
             </QCardActions>
         </QCard>
     </QDialog>

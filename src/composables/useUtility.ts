@@ -1,6 +1,6 @@
-import type {RouteLocationMatched} from 'vue-router'
+import type {RouteLocationMatched, RouteParams} from 'vue-router'
 
-const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?$/
+const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
 
 export default function () {
     function formatDate(date: string) {
@@ -29,15 +29,24 @@ export default function () {
     /**
      * It takes an array of RouteLocationMatched objects and returns an array of objects with a label and to property
      * @param {RouteLocationMatched[]} routeMatched - RouteLocationMatched[]
+     * @param routeParams
      * @returns An array of objects with a label and to property.
      */
-    function initBreadcrumbs(routeMatched: RouteLocationMatched[]) {
+    // To re test
+    function initBreadcrumbs(routeMatched: RouteLocationMatched[], routeParams: RouteParams) {
         const breadcrumbs: { label: string, to: string }[] = []
         for (let i = 0; i < routeMatched.length; i++) {
             if (routeMatched[i].meta.breadcrumb) {
+                let path = ''
+                if (routeMatched[i].path.includes(':id')) {
+                    const id = routeParams.id as string
+                    path = routeMatched[i].path.replace(':id', id)
+                } else {
+                    path = routeMatched[i].path
+                }
                 breadcrumbs.push({
                     label: routeMatched[i].meta.breadcrumb as string,
-                    to: routeMatched[i].path
+                    to: path
                 })
             }
         }
