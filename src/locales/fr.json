@@ -337,6 +337,7 @@
     "not-public": "🔴 Non Publique",
     "public": "🟢 Publique",
     "validate-all-changes": "Valider tous les changements",
+    "alert-confirm-changes": "Vous êtes sur le point de modifier les informations de cette association. Voulez-vous continuer ? Les données modifiées seront écrasées après la modification.",
     "titles": {
       "admin": "Administration",
       "contact": "Contact",

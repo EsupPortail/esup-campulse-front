@@ -9,6 +9,7 @@ import FormAssociationSocialNetworks from '@/components/form/FormAssociationSoci
 import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
 import AlertConfirmAssociationEnabled from '@/components/alert/AlertConfirmAssociationEnabled.vue'
 import AlertConfirmAssociationPublication from '@/components/alert/AlertConfirmAssociationPublication.vue'
+import AlertConfirmAssociationUpdate from "@/components/alert/AlertConfirmAssociationUpdate.vue";
 import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
@@ -113,31 +114,6 @@ onBeforeRouteLeave((to, from, next) => {
         next(true)
     }
 })
-
-// Validate changes
-async function onValidateChanges() {
-    if (Object.keys(checkChanges(association.value)).length > 0) {
-        try {
-            await updateAssociation()
-            notify({
-                message: t('notifications.positive.association-successfully-updated'),
-                type: 'positive'
-            })
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                notify({
-                    message: t('notifications.negative.edit-association-error'),
-                    type: 'negative'
-                })
-            }
-        }
-    } else {
-        notify({
-            message: t('notifications.positive.association-up-to-date'),
-            type: 'positive'
-        })
-    }
-}
 
 // Update association logo details
 async function onChangeLogo(action: string) {
@@ -251,12 +227,8 @@ async function onChangeLogo(action: string) {
                 color="secondary"
                 icon="mdi-arrow-left-circle"
             />
-            <!-- Add confirmation pop up -->
-            <QBtn
-                :label="t('association.validate-all-changes')"
-                color="primary"
-                icon="mdi-check-circle"
-                type="submit"
+            <AlertConfirmAssociationUpdate
+                v-if="Object.keys(checkChanges(association)).length > 0"
             />
             <AlertConfirmAssociationEnabled
                 v-if="isStaff"
