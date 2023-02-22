@@ -77,7 +77,8 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'association-dashboard/:id',
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.association-dashboard')
+                            breadcrumb: i18n.global.t('breadcrumbs.association-dashboard'),
+                            associationMembersOnly: true
                         },
                         children: [
                             {

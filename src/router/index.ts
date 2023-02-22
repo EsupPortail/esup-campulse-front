@@ -36,6 +36,10 @@ router.beforeEach(async (to) => {
         return {name: '404'}
     }
 
+    if (to.meta.associationMembersOnly && !userStore.isAssociationMember) {
+        return {name: '404'}
+    }
+
     if (userStore.isAuth) {
         if (to.name == 'Registration' || to.name == 'Login') {
             return {name: 'Dashboard'}

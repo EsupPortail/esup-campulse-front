@@ -24,6 +24,9 @@ export const useUserStore = defineStore('userStore', {
             return state.user?.groups.map(group => (
                 group.institutionId
             ))
+        },
+        isAssociationMember: (state: UserStore): boolean => {
+            return !!state.user?.associations?.length
         }
     },
     actions: {
