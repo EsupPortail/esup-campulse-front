@@ -76,7 +76,7 @@ async function onGetAssociationDetail() {
       <p>{{ association?.activityField?.name }}</p>
     </article>
   </section>
-  <section>
+  <section v-if="association?.presidentNames || association?.presidentPhone || association?.charterDate || association?.lastGoaDate || association?.siret">
     <h2>{{ t("association.titles.admin") }}</h2>
     <article v-if="association?.presidentNames">
       <h3>{{ t("association.labels.president-name") }}</h3>
@@ -86,7 +86,7 @@ async function onGetAssociationDetail() {
       <h3>{{ t("association.labels.president-phone") }}</h3>
       <p>{{ association?.presidentPhone }}</p>
     </article>
-    <article>
+    <article v-if="association?.charterDate">
       <h3>{{ t("association.labels.charter-date") }}</h3>
       <p>TODO</p>
     </article>
@@ -99,7 +99,7 @@ async function onGetAssociationDetail() {
       <p>{{ association?.siret }}</p>
     </article>
   </section>
-  <section>
+  <section v-if="association?.address || association?.phone || association?.email || association?.website || association?.socialNetworks.length > 0">
     <h2>{{ t("association.titles.contact") }}</h2>
     <article v-if="association?.address">
       <h3>{{ t("association.labels.address") }}</h3>
@@ -119,7 +119,7 @@ async function onGetAssociationDetail() {
         {{ association?.website }}
       </a>
     </article>
-    <article v-if="association?.socialNetworks">
+    <article v-if="association?.socialNetworks.length > 0">
       <h3>{{ t("association.labels.socials") }}</h3>
       <ul>
         <li v-for="(socialNetwork, index) in association?.socialNetworks" :key="index">

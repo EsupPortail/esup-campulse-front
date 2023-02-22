@@ -106,7 +106,7 @@ export default function () {
         })
         // Sort by alphabetical order
         labels.sort(function (a, b) {
-            const labelA = a.label.toLowerCase(), labelB = b.label.toLowerCase()
+            const labelA = a.label.toLowerCase().normalize('NFD'), labelB = b.label.toLowerCase().normalize('NFD')
             if (labelA < labelB)
                 return -1
             if (labelA > labelB)
