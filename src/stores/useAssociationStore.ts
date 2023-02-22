@@ -87,9 +87,11 @@ export const useAssociationStore = defineStore('associationStore', {
 
             this.associations = (await instance.get<Association[]>(url)).data
         },
-        async getInstitutionAssociations(institutionId: number) {
+        // To test
+        async getInstitutionAssociations() {
             const {axiosAuthenticated} = useAxios()
-            const url = `/associations/?institution=${institutionId}`
+            const userStore = useUserStore()
+            const url = `/associations/?institution${userStore.userInstitutions?.join(',')}`
             this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
         },
         async getAssociationNames(institutionIds: (number | undefined)[]) {
@@ -119,10 +121,7 @@ export const useAssociationStore = defineStore('associationStore', {
             } else if (hasPerm('change_association_any_institution')) {
                 await this.getAssociations(false)
             } else if (hasPerm('change_association')) {
-                const institutionId = userStore.user?.groups[0].institutionId
-                if (institutionId) {
-                    await this.getInstitutionAssociations(institutionId)
-                }
+                await this.getInstitutionAssociations()
             }
         },
         async getAssociationDetail(id: number, publicRequest: boolean) {
