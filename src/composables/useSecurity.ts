@@ -93,15 +93,15 @@ export default function () {
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
         for (let i = 0; i < newUserAssociations.length; i++) {
-            if (idsAssociations.indexOf(newUserAssociations[i].id) === -1)
+            if (idsAssociations.indexOf(newUserAssociations[i].association) === -1)
                 await instance.post('/users/associations/', {
                     user: username,
-                    association: newUserAssociations[i].id,
+                    association: newUserAssociations[i].association,
                     isPresident: newUserAssociations[i].isPresident,
                     isSecretary: newUserAssociations[i].isSecretary,
                     isTreasurer: newUserAssociations[i].isTreasurer
                 })
-            idsAssociations.push(newUserAssociations[i].id)
+            idsAssociations.push(newUserAssociations[i].association)
         }
     }
 
