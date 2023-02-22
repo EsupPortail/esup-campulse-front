@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {useQuasar, QForm} from 'quasar'
+import {QForm, useQuasar} from 'quasar'
 import {onMounted, reactive, ref, watch} from 'vue'
 import axios from 'axios'
 import useAssociation from '@/composables/useAssociation'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserStore} from '@/stores/useUserStore'
-import useSecurity from '@/composables/useSecurity'
 import type {NewAssociation} from '#/association'
 
 const {t} = useI18n()
@@ -14,7 +13,6 @@ const {notify} = useQuasar()
 const {createAssociation} = useAssociation()
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
-const {hasPerm} = useSecurity()
 
 
 const newAssociation = reactive<NewAssociation>({
@@ -23,22 +21,25 @@ const newAssociation = reactive<NewAssociation>({
     isSite: false
 })
 
-const institutions = ref<{ value: number, label: string }[]>([])
+const institutions = ref<({ value: number, label: string } | undefined)[]>([])
 const newAssociationForm = ref(QForm)
 
 const initValues = () => {
-    institutions.value = associationStore.institutions.map(function (institution) {
-        return {
-            value: institution.id,
-            label: institution.name
-        }
-    })
-    if (!hasPerm('add_association_any_institution')) {
-        newAssociation.institution = userStore.user?.groups[0].institutionId
+    if (userStore.userInstitutions && userStore.userInstitutions?.length !== 0) {
+        associationStore.institutions.forEach(function (institution) {
+            if (userStore.userInstitutions?.includes(institution.id)) {
+                institutions.value.push(
+                    {
+                        value: institution.id,
+                        label: institution.name
+                    }
+                )
+            }
+        })
     }
 }
 watch(() => associationStore.institutions, initValues)
-watch(() => userStore.user, initValues)
+watch(() => userStore.userInstitutions, initValues)
 
 onMounted(async () => {
     await associationStore.getInstitutions()
@@ -80,10 +81,10 @@ const clearValues = () => {
 
 <template>
     <QForm
-        class="q-gutter-md"
-        @submit.prevent="onCreate"
-        @reset="clearValues"
         ref="newAssociationForm"
+        class="q-gutter-md"
+        @reset="clearValues"
+        @submit.prevent="onCreate"
     >
         <QInput
             v-model="newAssociation.name"
@@ -96,7 +97,6 @@ const clearValues = () => {
             v-model="newAssociation.institution"
             :label="t('forms.association-institution')"
             :options="institutions"
-            :readonly="!hasPerm('add_association_any_institution')"
             :rules="[val => val !== undefined || t('forms.select-option')]"
             emit-value
             filled
