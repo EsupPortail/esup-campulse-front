@@ -152,11 +152,11 @@ onBeforeRouteLeave((to, from, next) => {
             <legend>{{ t('user.groups') }}</legend>
             <section>
                 <article>
-                    <h3>{{ t('user.isCas') }}</h3>
+                    <h3>{{ t('user.is-cas') }}</h3>
                     <p>{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}</p>
                 </article>
                 <article>
-                    <h3>{{ t("user.isValidatedByAdmin") }}</h3>
+                    <h3>{{ t("user.is-validated-by-admin") }}</h3>
                     <p>{{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}</p>
                 </article>
             </section>
