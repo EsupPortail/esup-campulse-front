@@ -81,14 +81,14 @@ export const useUserStore = defineStore('userStore', {
                 this.userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
             }
         },
-        canBePresident(associationId: number | undefined): boolean | undefined {
+        /*canBePresident(associationId: number | undefined): boolean | undefined {
             if (this.userAssociations.length > 0) {
-                const association = this.userAssociations.find(obj => obj.id === associationId)
+                const association = this.userAssociations.find(obj => obj.name === associationId)
                 return association?.canBePresident
             } else {
                 return false
             }
-        },
+        },*/
         // Retest
         unLoadUser() {
             this.user = undefined
@@ -112,6 +112,16 @@ export const useUserStore = defineStore('userStore', {
             const {setTokens} = useSecurity()
             setTokens(accessToken, refreshToken)
             this.newUser = user
+        },
+        // To test
+        hasPresidentStatus(associationId: number): boolean {
+            let perm = false
+            if (this.userAssociations.length && associationId) {
+                const association = this.userAssociations.find(obj => obj.association === associationId)
+                if (association?.isPresident || association?.canBePresident) perm = true
+
+            }
+            return perm
         }
     }
 })
