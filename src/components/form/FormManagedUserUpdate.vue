@@ -8,7 +8,6 @@ import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vu
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import FormUpdateManagedUserAssociations from '@/components/form/FormUpdateManagedUserAssociations.vue'
 import type {UserToUpdate} from '#/user'
-import useUsers from '@/composables/useUsers'
 import useUserGroups from '@/composables/useUserGroups'
 import router from '@/router'
 import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
@@ -16,8 +15,7 @@ import AlertConfirmUserUpdate from "@/components/alert/AlertConfirmUserUpdate.vu
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {updateUserAssociations} = useUsers()
-const {groupChoiceIsValid, updateUserGroups} = useUserGroups()
+const {groupChoiceIsValid} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()

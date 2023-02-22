@@ -155,7 +155,7 @@ async function onChangeLogo(action: string) {
         </fieldset>
     </QForm>
 
-    <QForm @submit.prevent="onValidateChanges">
+    <QForm>
         <fieldset>
             <legend>{{ t('association.titles.info') }}</legend>
             <QInput

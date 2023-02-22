@@ -95,40 +95,40 @@ export const _groupLabels = _userGroups.map(
 
 export const _userAssociations: AssociationUser[] = [
     {
-        id: 1,
         name: "PLANA",
         isPresident: true,
         canBePresident: true,
         isValidatedByAdmin: true,
         isSecretary: false,
         isTreasurer: false,
+        association: 1
     },
     {
-        id: 2,
         name: "Octant",
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: true,
         isSecretary: true,
         isTreasurer: false,
+        association: 2
     },
     {
-        id: 3,
         name: "Apogée",
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: true,
         isSecretary: false,
         isTreasurer: true,
+        association: 3
     },
     {
-        id: 4,
         name: "PLANB",
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: false,
         isSecretary: false,
         isTreasurer: false,
+        association: 4
     }
 ]
 
