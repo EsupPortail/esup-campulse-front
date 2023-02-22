@@ -400,6 +400,7 @@
     "users": "Utilisateurs",
     "validate-account": "Valider le compte",
     "validation": "Validation des demandes de comptes",
+    "alert-confirm-update": "Vous êtes sur le point de modifier les informations de cet utilisateur. Voulez-vous continuer ?",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
       "status-hint": "Veuillez valider le ou les statuts présélectionnés par l'utilisateur."

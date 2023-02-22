@@ -137,6 +137,7 @@ export interface UserStore {
 export interface UserToUpdate {
     firstName: string | undefined,
     lastName: string | undefined,
+    username: string | undefined,
     email: string | undefined,
     phone: string | undefined
 }

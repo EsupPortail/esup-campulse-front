@@ -192,6 +192,10 @@ export default function () {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
     }
 
+    function groupsToAdd(newGroups: number[], oldGroups: number[]) {
+        return newGroups.filter(x => oldGroups.indexOf(x) === -1)
+    }
+
     /**
      * It updates the user's groups in the database if the new groups are different from the old groups
      */
@@ -200,7 +204,7 @@ export default function () {
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
         if (!arraysAreEqual(newGroups.value, oldGroups)) {
-            await userManagerStore.updateUserGroups(newGroups.value)
+            await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups))
             await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))
         }
     }

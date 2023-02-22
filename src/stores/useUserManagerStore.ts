@@ -33,13 +33,14 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             return {
                 firstName: state.user?.firstName as string,
                 lastName: state.user?.lastName as string,
+                username: state.user?.username as string,
                 email: state.user?.email as string,
                 phone: state.user?.phone as string
             }
         },
         userAssociationStatus: (state: UserManagerStore): AssociationUser[] => {
             return state.userAssociations.map(association => ({
-                id: association.association.id,
+                association: association.association.id,
                 name: association.association.name,
                 isPresident: association.isPresident,
                 canBePresident: association.canBePresident,
@@ -75,9 +76,11 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             const {axiosAuthenticated} = useAxios()
             this.user = (await axiosAuthenticated.get<User>(`/users/${id}`)).data
         },
-        async updateUserGroups(userGroups: number[]) {
+        async updateUserGroups(groupsToAdd: number[]) {
             const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.post('/users/groups/', {username: this.user?.username, groups: userGroups})
+            for (const group of groupsToAdd) {
+                await axiosAuthenticated.post('/users/groups/', {username: this.user?.username, group: group})
+            }
         },
         async deleteUserGroups(groupsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
