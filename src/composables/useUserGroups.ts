@@ -27,6 +27,9 @@ const groupCanJoinAssociation = ref<boolean>(true)
 // Helper to know if a user in userStore if a staff member
 const isStaff = ref<boolean | undefined>(undefined)
 
+// Avoid executing getGroups function twice before the end of the current request.
+let areGroupsPending = false
+
 export default function () {
     const userStore = useUserStore()
 
@@ -65,9 +68,11 @@ export default function () {
      * It gets the groups from the server and puts them in the groups variable.
      */
     async function getGroups() {
-        if (!groups.value?.length) {
+        if (!areGroupsPending && !groups.value?.length) {
             const {axiosPublic} = useAxios()
+            areGroupsPending = true
             groups.value = (await axiosPublic.get<Group[]>('/groups/')).data
+            areGroupsPending = false
         }
     }
 
