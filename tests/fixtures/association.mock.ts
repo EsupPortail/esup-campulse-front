@@ -56,6 +56,7 @@ export const _association: Association = {
 export const _editedAssociation: EditedAssociation = {
     name: 'Association des étudiants en médecine',
     acronym: 'Asso',
+    altLogo: '',
     socialObject: 'Association des étudiants en médecine',
     currentProjects: 'Tutorat, sorties, randonnées et concerts',
     address: '1 rue de l\'hôpital',
@@ -77,6 +78,7 @@ export const _editedAssociation: EditedAssociation = {
 export const _nonEditedAssociation: EditedAssociation = {
     name: 'Association',
     acronym: null,
+    altLogo: '',
     socialObject: null,
     currentProjects: null,
     address: null,

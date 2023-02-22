@@ -76,7 +76,7 @@ async function onGetAssociationDetail() {
       <p>{{ association?.activityField?.name }}</p>
     </article>
   </section>
-  <section v-if="association?.presidentNames || association?.presidentPhone || association?.charterDate || association?.lastGoaDate || association?.siret">
+  <section v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret">
     <h2>{{ t("association.titles.admin") }}</h2>
     <article v-if="association?.presidentNames">
       <h3>{{ t("association.labels.president-name") }}</h3>
@@ -86,7 +86,7 @@ async function onGetAssociationDetail() {
       <h3>{{ t("association.labels.president-phone") }}</h3>
       <p>{{ association?.presidentPhone }}</p>
     </article>
-    <article v-if="association?.charterDate">
+    <article>
       <h3>{{ t("association.labels.charter-date") }}</h3>
       <p>TODO</p>
     </article>

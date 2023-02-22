@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
+import {useQuasar, QForm} from 'quasar'
 import {onMounted, reactive, ref, watch} from 'vue'
 import axios from 'axios'
 import useAssociation from '@/composables/useAssociation'
@@ -24,7 +24,7 @@ const newAssociation = reactive<NewAssociation>({
 })
 
 const institutions = ref<{ value: number, label: string }[]>([])
-const newAssociationForm = ref(null)
+const newAssociationForm = ref(QForm)
 
 const initValues = () => {
     institutions.value = associationStore.institutions.map(function (institution) {
@@ -52,7 +52,9 @@ async function onCreate() {
             type: 'positive',
             message: t('notifications.positive.validate-association')
         })
-        newAssociationForm.value.reset()
+        if (newAssociationForm.value) {
+            newAssociationForm.value.reset()
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.data.error === 'Association name already taken.') {
             notify({
