@@ -15,19 +15,24 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'associations',
-                name: 'Associations',
-                component: () => import('@/views/directory/AssociationsView.vue'),
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.directory'),
-                }
-            },
-            {
-                path: 'association/:id',
-                name: 'AssociationDetail',
-                component: () => import('@/views/directory/AssociationDetailView.vue'),
-                meta: {
-                    breadcrumb: i18n.global.t('breadcrumbs.association-detail'),
-                }
+                },
+                children: [
+                    {
+                        path: '',
+                        name: 'Associations',
+                        component: () => import('@/views/directory/AssociationsView.vue'),
+                    },
+                    {
+                        path: ':id',
+                        name: 'AssociationDetail',
+                        component: () => import('@/views/directory/AssociationDetailView.vue'),
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.association-detail'),
+                        }
+                    }
+                ]
             },
             {
                 path: 'charter',

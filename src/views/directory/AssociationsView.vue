@@ -34,7 +34,7 @@ const startIndex = ref(0)
 watch(() => currentPage.value, () => {
     startIndex.value = associationsPerPage * (currentPage.value - 1)
 })
-const pages = ref()
+const pages = ref(Math.ceil(associations.value.length / associationsPerPage))
 watch(() => associations.value.length, () => {
     pages.value = Math.ceil(associations.value.length / associationsPerPage)
 })
@@ -295,7 +295,7 @@ async function clearSearch(apiSearch: boolean) {
                     </RouterLink>
                 </QCard>
                 <QPagination
-                    v-if="pages && pages > 1"
+                    v-if="associationsOnPage && pages && pages > 1"
                     v-model="currentPage"
                     :max="pages"
                     @click="scrollToTop"

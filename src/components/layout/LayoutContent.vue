@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import {RouterView} from 'vue-router'
-import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegistration.vue'
-import LayoutBreadcrumbs from "@/components/layout/LayoutBreadcrumbs.vue";</script>
+import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegistration.vue'</script>
 
 <template>
     <QPageContainer id="layout-content">
         <main>
-            <LayoutBreadcrumbs/>
+            <!--<LayoutBreadcrumbs/>-->
             <Suspense>
                 <RouterView/>
             </Suspense>
