@@ -3,25 +3,26 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import useDirectory from '@/composables/useDirectory'
-import type {AssociationList, AssociationSearch} from '#/association'
+import useAssociation from '@/composables/useAssociation'
+import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
 
 
-const {advancedSearch} = useDirectory()
-const {simpleAssociationSearch} = useDirectory()
+const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
+const {altLogoText} = useAssociation()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 
 onMounted(async function () {
     loading.show
-    await associationStore.getAssociations(true, false)
-    await loadAssociationsFields()
+    await associationStore.getAssociations(true)
+    await loadAssociationsActivityFields()
     loading.hide
 })
 
 // Initialize a clone of associations from the store to do some searching and pagination
-const associations = ref<AssociationList[]>([...associationStore.associations])
+const associations = ref<Association[]>([...associationStore.associations])
 watch(() => associationStore.associations, () => {
     associations.value = associationStore.associations
 })
@@ -37,10 +38,10 @@ const pages = ref()
 watch(() => associations.value.length, () => {
     pages.value = Math.ceil(associations.value.length / associationsPerPage)
 })
-const endIndex = ref(associations.value.length % 15 != 0 && currentPage.value === pages.value ?
+const endIndex = ref(associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
     associations.value.length : currentPage.value * associationsPerPage)
 watch(() => currentPage.value, () => {
-    endIndex.value = associations.value.length % 15 != 0 && currentPage.value === pages.value ?
+    endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
         associations.value.length : currentPage.value * associationsPerPage
 })
 const associationsOnPage = ref([...associations.value.slice(startIndex.value, endIndex.value)])
@@ -70,13 +71,12 @@ const settings = ref<AssociationSearch>({
     activityField: null
 })
 
-
 // Functions
-async function loadAssociationsFields() {
+async function loadAssociationsActivityFields() {
     try {
         await associationStore.getInstitutions()
-        await associationStore.getComponents()
-        await associationStore.getFields()
+        await associationStore.getInstitutionComponents()
+        await associationStore.getActivityFields()
     } catch (e) {
         notify({
             type: 'negative',
@@ -90,7 +90,25 @@ async function onSearch() {
 }
 
 function onAdvancedSearch() {
-    associations.value = advancedSearch(settings.value) as AssociationList[]
+    associations.value = advancedSearch(settings.value) as Association[]
+}
+
+// A function that clears the search,
+// for API search it re-gets associations, for front search it looks back in store
+async function clearSearch(apiSearch: boolean) {
+    settings.value = {
+        search: '',
+        name: '',
+        acronym: '',
+        institution: null,
+        institutionComponent: null,
+        activityField: null
+    }
+    if (apiSearch) {
+        await associationStore.getAssociations(true)
+    } else {
+        associations.value = associationStore.associations
+    }
 }
 </script>
 
@@ -99,15 +117,18 @@ function onAdvancedSearch() {
 
     <section class="introduction">
         <div class="intro-image">
-            <img :alt="t('directory.image-alt')" src="/images/unistra.jpg" />
+            <img :alt="t('directory.image-alt')" src="/images/unistra.jpg"/>
         </div>
         <div>
             <h2>{{ t('directory.subtitle') }}</h2>
             <!-- <p>{{ t('directory.introduction') }}</p> -->
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
-                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure
+                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                occaecat cupidatat non
                 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
         </div>
@@ -119,13 +140,8 @@ function onAdvancedSearch() {
             @submit.prevent="onSearch"
         >
             <fieldset>
-                <QInput
-                    v-model="settings.search"
-                    :label="t('directory.search')"
-                    :placeholder="t('directory.search-placeholder')"
-                    filled
-                    lazy-rules
-                >
+                <QInput v-model="settings.search" :label="t('directory.search')"
+                        :placeholder="t('directory.search-placeholder')" filled lazy-rules>
                     <template v-slot:prepend>
                         <QIcon name="mdi-magnify"/>
                     </template>
@@ -135,6 +151,12 @@ function onAdvancedSearch() {
                     color="primary"
                     icon-right="mdi-chevron-right"
                     @click="onSearch"
+                />
+                <QBtn
+                    :label="t('directory.cancel-search')"
+                    color="secondary"
+                    icon="mdi-close"
+                    @click="clearSearch(true)"
                 />
             </fieldset>
         </QForm>
@@ -152,9 +174,9 @@ function onAdvancedSearch() {
                     <QInput
                         v-model="settings.name"
                         :label="t('directory.labels.association-name')"
+                        class="full-size"
                         filled
                         lazy-rules
-                        class="full-size"
                     />
                     <QInput
                         v-model="settings.acronym"
@@ -173,7 +195,7 @@ function onAdvancedSearch() {
                     <QSelect
                         v-model="settings.institutionComponent"
                         :label="t('directory.labels.association-component')"
-                        :options="associationStore.componentLabels"
+                        :options="associationStore.institutionComponentLabels"
                         emit-value
                         filled
                         map-options
@@ -181,7 +203,7 @@ function onAdvancedSearch() {
                     <QSelect
                         v-model="settings.activityField"
                         :label="t('directory.labels.association-field')"
-                        :options="associationStore.fieldLabels"
+                        :options="associationStore.activityFieldLabels"
                         emit-value
                         filled
                         map-options
@@ -192,6 +214,12 @@ function onAdvancedSearch() {
                     color="primary"
                     icon-right="mdi-chevron-right"
                     type="submit"
+                />
+                <QBtn
+                    :label="t('directory.cancel-search')"
+                    color="secondary"
+                    icon="mdi-close"
+                    @click="clearSearch(false)"
                 />
             </QExpansionItem>
         </QForm>
@@ -223,12 +251,11 @@ function onAdvancedSearch() {
                     <i class="card-chevron bi bi-chevron-compact-right"></i>
                     <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
                         <QCardSection>
-                            <!-- Placeholder for logo -->
                             <div class="list-logo">
                                 <QImg
-                                    :alt="association.altLogo"
+                                    :alt="altLogoText(association)"
                                     :ratio="1"
-                                    src="/images/no_logo.png"
+                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png') : '/images/no_logo.png'"
                                 />
                             </div>
                             <div>
@@ -251,14 +278,14 @@ function onAdvancedSearch() {
                                     <li v-if="association.activityField">
                                         <span class="label">
                                             <i class="bi bi-globe"></i>
-                                            {{ t('directory.labels.association-field') + ' : ' }}
+                                            {{ t('directory.labels.association-activity-field') + ' : ' }}
                                         </span>
                                         <span class="value">{{ association.activityField.name }}</span>
                                     </li>
                                     <li v-if="association.institutionComponent">
                                         <span class="label">
                                             <i class="bi bi-mortarboard"></i>
-                                            {{ t('directory.labels.association-component') + ' : ' }}
+                                            {{ t('directory.labels.association-institution-component') + ' : ' }}
                                         </span>
                                         <span class="value">{{ association.institutionComponent.name }}</span>
                                     </li>
@@ -273,9 +300,7 @@ function onAdvancedSearch() {
                     :max="pages"
                     @click="scrollToTop"
                 />
-
             </div>
         </div>
     </section>
 </template>
-

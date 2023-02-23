@@ -56,9 +56,13 @@ async function onLogIn() {
         <QBtn :label="t('forms.resend-email')" class="q-sm" color="primary" flat to="/register-resend-email"/> -->
 
         <div class="login-links">
-            <RouterLink class="login-link" to="/password-reset"><span class="icon icon-mentions"></span>{{ t('forms.reset-password') }}</RouterLink>
-            <br />
-            <RouterLink class="login-link" to="/register-resend-email"><span class="icon icon-mentions"></span>{{ t('forms.resend-email') }}</RouterLink>
+            <RouterLink class="login-link" to="/password-reset"><span
+                class="icon icon-mentions"></span>{{ t('forms.reset-password') }}
+            </RouterLink>
+            <br/>
+            <RouterLink class="login-link" to="/register-resend-email"><span
+                class="icon icon-mentions"></span>{{ t('forms.resend-email') }}
+            </RouterLink>
         </div>
     </QForm>
 </template>

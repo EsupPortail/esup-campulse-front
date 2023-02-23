@@ -1,20 +1,23 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
-import {useI18n} from 'vue-i18n'
-import router from '@/router'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {useQuasar} from 'quasar'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useUserManagerStore } from '@/stores/useUserManagerStore'
+import { useQuasar } from 'quasar'
 import axios from 'axios'
+import router from '@/router'
 
-const {t} = useI18n()
+const { t } = useI18n()
 const confirm = ref<boolean>(false)
 const userManagerStore = useUserManagerStore()
-const {notify} = useQuasar()
+const { notify } = useQuasar()
+
+const emit = defineEmits(['hasValidated'])
 
 async function onDeleteUser() {
     try {
         await userManagerStore.deleteUser()
-        await router.push({name: 'ManageUsers'})
+        emit('hasValidated')
+        await router.push({ name: 'ManageUsers' })
         notify({
             type: 'positive',
             message: t('notifications.positive.validate-delete-user')
@@ -36,12 +39,7 @@ async function onDeleteUser() {
 </script>
 
 <template>
-    <QBtn
-        :label="t('user-manager.delete-user')"
-        color="red"
-        icon="mdi-delete"
-        @click="confirm = true"
-    />
+    <QBtn :label="t('user-manager.delete-user')" color="red" icon="mdi-delete" @click="confirm = true" />
 
     <QDialog v-model="confirm" persistent>
         <QCard>
@@ -50,19 +48,9 @@ async function onDeleteUser() {
             </QCardSection>
 
             <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="mdi-arrow-left-circle"
-                />
-                <QBtn
-                    v-close-popup
-                    :label="t('user-manager.delete-user')"
-                    color="red"
-                    icon="mdi-delete"
-                    @click="onDeleteUser"
-                />
+                <QBtn v-close-popup :label="t('cancel')" color="secondary" icon="mdi-arrow-left-circle" />
+                <QBtn v-close-popup :label="t('user-manager.delete-user')" color="red" icon="mdi-delete"
+                    @click="onDeleteUser" />
             </QCardActions>
         </QCard>
     </QDialog>

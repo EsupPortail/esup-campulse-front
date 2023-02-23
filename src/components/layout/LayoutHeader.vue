@@ -2,17 +2,16 @@
 import {RouterLink} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 import {useI18n} from 'vue-i18n'
-import LayoutHeaderProfileButton from './LayoutHeaderProfileButton.vue';
 
 const {t} = useI18n()
 
 </script>
 
 <template>
-    <QHeader elevated height-hint="98" id="layout-header" class="variant-space-1">
+    <QHeader id="layout-header" class="variant-space-1" elevated height-hint="98">
         <QToolbar>
             <QToolbarTitle>
-                <RouterLink class="home-link" to="/">{{ t("header.title") }}</RouterLink>
+                <RouterLink :to="{name: 'Home'}" class="home-link">{{ t("header.title") }}</RouterLink>
             </QToolbarTitle>
             <LayoutHeaderNav/>
         </QToolbar>
@@ -32,6 +31,6 @@ const {t} = useI18n()
                 <strong>Annuaire</strong> des associations
             </h1>
         </div>
-        
+
     </QHeader>
 </template>

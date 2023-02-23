@@ -1,12 +1,18 @@
-import {createPinia, setActivePinia} from 'pinia'
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { _manager, _newUser, _student } from '~/fixtures/user.mock'
+import { useUserStore } from '@/stores/useUserStore'
+import { _axiosFixtures } from '~/fixtures/axios.mock'
+import type { User } from "#/user";
+import { _tokens } from "~/fixtures/tokens.mock";
+import { useAxios } from "@/composables/useAxios";
 
-import type {User} from '#/user'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {tokens} from '~/mocks/tokens.mock'
-import {mockedGroups, mockedUser} from '~/mocks/user.mock'
-import {setTokens} from '@/services/userService'
-import {useUserStore} from '@/stores/useUserStore'
+vi.mock('@/composables/useAxios', () => ({
+    useAxios: () => ({
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
+    })
+}))
 
 setActivePinia(createPinia())
 let userStore = useUserStore()
@@ -18,9 +24,10 @@ describe('User store', () => {
     afterEach(() => {
         vi.restoreAllMocks()
     })
+    // PASSED
     describe('isAuth', () => {
         it('should be true if user has data', () => {
-            userStore.user = mockedUser
+            userStore.user = _student
             expect(userStore.isAuth).toBeTruthy()
         })
         it('should be false if user has no data', () => {
@@ -28,11 +35,12 @@ describe('User store', () => {
             expect(userStore.isAuth).toBeFalsy()
         })
     })
+    // PASSED
     describe('isCas', () => {
         beforeEach(() => {
-            userStore.user = mockedUser
+            userStore.user = _student
             userStore.user.isCas = false
-            userStore.newUser = mockedUser
+            userStore.newUser = _newUser
             userStore.newUser.isCas = false
         })
         it('should be true if user isCas', () => {
@@ -43,95 +51,64 @@ describe('User store', () => {
             expect(userStore.isCas).toBeFalsy()
         })
         it('should be true if newUser isCas', () => {
-            (userStore.newUser as User).isCas = true
+            (userStore.newUser as User).isCas = true;
             expect(userStore.isCas).toBeTruthy()
         })
         it('should be false is newUser !isCas', () => {
             expect(userStore.isCas).toBeFalsy()
         })
     })
+    // PASSED
     describe('userNameFirstLetter', () => {
         it('should display capitalized first letter of firstname', () => {
-            userStore.user = mockedUser
-            expect(userStore.userNameFirstLetter).toBe('J')
+            userStore.user = _manager
+            expect(userStore.userNameFirstLetter).toBe('M')
         })
         it('should not display first letter of firstname in lower case', () => {
-            userStore.user = mockedUser
-            userStore.user.firstName = 'john'
-            expect(userStore.userNameFirstLetter).not.toBe('j')
+            userStore.user = _student
+            userStore.user.firstName = 'student'
+            expect(userStore.userNameFirstLetter).not.toBe('s')
         })
         it('should not be displayed if user !isAuth', () => {
             userStore.user = undefined
             expect(userStore.userNameFirstLetter).toBeUndefined()
         })
     })
-    describe('managerGroup', () => {
-        afterEach(() => {
-            userStore.user = mockedUser
-            userStore.user.groups = mockedGroups
-        })
-        it('should be true if user is manager', () => {
-            userStore.user = mockedUser
-            expect(userStore.managerGroup).toBeTruthy()
-        })
-        it('should be false if user is not manager', () => {
-            userStore.user = mockedUser
-            userStore.user.groups = [
-                {
-                    id: 2,
-                    name: 'Étudiante ou Étudiant'
-                }
-            ]
-            expect(userStore.managerGroup).toBeFalsy()
-        })
-    })
-    describe('isUniManager', () => {
-        it('should be true if user is uniManager', () => {
-            userStore.user = mockedUser
-            expect(userStore.isUniManager).toBeTruthy()
-        })
-        it('should be false if user is not uniManager', () => {
-            userStore.user = mockedUser
-            userStore.user.groups = [
-                {
-                    id: 2,
-                    name: 'Étudiante ou Étudiant'
-                }
-            ]
-            expect(userStore.isUniManager).toBeFalsy()
-        })
-    })
+    // PASSED
     describe('User logout', () => {
         it('should clear local storage', () => {
-            localStorage.setItem('access', tokens.access)
-            localStorage.setItem('refresh', tokens.refresh)
+            localStorage.setItem('JWT__access__token', _tokens.access)
+            localStorage.setItem('JWT__refresh__token', _tokens.refresh)
             userStore.logOut()
-            expect(localStorage.getItem('access')).toBeNull()
-            expect(localStorage.getItem('refresh')).toBeNull()
+            expect(localStorage.getItem('JWT__access__token')).toBeNull()
+            expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
         })
         it('should clear user data', () => {
             userStore.logOut()
             expect(userStore.user).toBeUndefined()
         })
     })
+    // PASSED
     describe('Load CAS user', () => {
         beforeEach(() => {
+            const { axiosAuthenticated } = useAxios()
+            const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.post.mockResolvedValueOnce({
                 data: {
-                    user: mockedUser,
-                    accessToken: tokens.access,
-                    refreshToken: tokens.refresh
+                    user: _student,
+                    accessToken: _tokens.access,
+                    refreshToken: _tokens.refresh
                 }
             })
             userStore.loadCASUser('ticket')
         })
         it('should populate newUser data', () => {
-            expect(userStore.newUser).toEqual(mockedUser)
+            expect(userStore.newUser).toEqual(_student)
         })
-        /*it('should set user\'s access and refresh tokens', () => {
-            expect(localStorage.getItem('access')).toEqual(tokens.access)
-            expect(localStorage.getItem('refresh')).toEqual(tokens.refresh)
-        })*/
+        it('should set user\'s access and refresh tokens', () => {
+            expect(localStorage.getItem('JWT__access__token')).toEqual(_tokens.access)
+            expect(localStorage.getItem('JWT__refresh__token')).toEqual(_tokens.refresh)
+        })
         /*it('should be called once', () => {
             expect(mockedAxios.post).toHaveBeenCalledOnce()
         })*/
@@ -143,94 +120,107 @@ describe('User store', () => {
             })
         })*/
     })
+    // PASSED
     describe('Unload user', () => {
         it('should clear all data from user', () => {
-            userStore.user = mockedUser
+            userStore.user = _student
             userStore.unLoadUser()
             expect(userStore.user).toBeUndefined()
         })
     })
+    // PASSED
     describe('Unload newUser', () => {
         beforeEach(() => {
-            userStore.newUser = mockedUser
-            setTokens(tokens.access, tokens.refresh)
+            userStore.newUser = _newUser
+            localStorage.setItem('JWT__access__token', _tokens.access)
+            localStorage.setItem('JWT__refresh__token', _tokens.refresh)
             userStore.unLoadNewUser()
         })
         it('should remove tokens', () => {
-            expect(localStorage.getItem('access')).toBeNull()
-            expect(localStorage.getItem('refresh')).toBeNull()
+            expect(localStorage.getItem('JWT__access__token')).toBeNull()
+            expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
         })
         it('should remove all data from newUser', () => {
             expect(userStore.newUser).toBeUndefined()
         })
     })
-    describe('getUserAssociationsRoles', () => {
+    // PASSED
+    describe('getUserAssociations', () => {
         afterEach(() => {
             userStore.user = undefined
-            userStore.userAssociationsRoles = []
+            userStore.userAssociations = []
         })
         describe('If user has associations', () => {
-            it('should call API once on /users/associations/ and populate userAssociationsRoles in store', async () => {
-                userStore.user = mockedUser
+            it('should call API once on /users/associations/ and populate userAssociations in store', async () => {
+                userStore.user = _student
                 const data = [
                     {
                         user: 'john',
-                        roleName: 'Trésorier',
-                        hasOfficeStatus: true,
                         isPresident: false,
+                        canBePresident: true,
+                        isTreasurer: false,
                         association: 1
                     }
                 ]
-                mockedAxios.get.mockResolvedValueOnce({data})
-                await userStore.getUserAssociationsRoles()
+                const { axiosAuthenticated } = useAxios()
+                const mockedAxios = vi.mocked(axiosAuthenticated, true)
+                mockedAxios.get.mockResolvedValueOnce({ data })
+                await userStore.getUserAssociations()
                 expect(mockedAxios.get).toHaveBeenCalledOnce()
                 expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/')
-                expect(userStore.userAssociationsRoles).toEqual(data)
+                expect(userStore.userAssociations).toEqual(data)
             })
         })
+        // PASSED
         describe('If user has no association', () => {
             it('should not call API and do nothing to the store', async () => {
-                await userStore.getUserAssociationsRoles()
-                expect(mockedAxios.get).toHaveBeenCalledTimes(0)
-                expect(userStore.userAssociationsRoles).toEqual([])
+                await userStore.getUserAssociations()
+                const { axiosAuthenticated } = useAxios()
+                expect(axiosAuthenticated.get).toHaveBeenCalledTimes(0)
+                expect(userStore.userAssociations).toEqual([])
             })
         })
     })
-    describe('hasOfficeStatus', () => {
+    // PASSED
+    describe('canBePresisdent', () => {
         describe('If user has associations', () => {
             afterEach(() => {
-                userStore.userAssociationsRoles = []
+                userStore.userAssociations = []
             })
-            it('should find the right association by id and check is hasOfficeStatus is true', () => {
+            it('should find the right association by id and check is canBePresident is true', () => {
                 const roles = [
                     {
-                        user: 'john',
-                        roleName: 'Trésorier',
-                        hasOfficeStatus: true,
+                        id: 1,
+                        name: "",
                         isPresident: false,
-                        association: 1
+                        canBePresident: true,
+                        isValidatedByAdmin: true,
+                        isSecretary: true,
+                        isTreasurer: false,
                     }
                 ]
-                userStore.userAssociationsRoles = roles
-                expect(userStore.hasOfficeStatus(roles[0].association)).toBeTruthy()
+                userStore.userAssociations = roles
+                expect(userStore.canBePresident(roles[0].id)).toBeTruthy()
             })
-            it('should return false if hasOfficeStatus is false', () => {
+            it('should return false if canBePresident is false', () => {
                 const roles = [
                     {
-                        user: 'jane',
-                        roleName: 'Membre',
-                        hasOfficeStatus: false,
+                        id: 1,
+                        name: "",
                         isPresident: false,
-                        association: 1
+                        canBePresident: false,
+                        isValidatedByAdmin: true,
+                        isSecretary: false,
+                        isTreasurer: false,
                     }
                 ]
-                userStore.userAssociationsRoles = roles
-                expect(userStore.hasOfficeStatus(roles[0].association)).toBeFalsy()
+                userStore.userAssociations = roles
+                expect(userStore.canBePresident(roles[0].id)).toBeFalsy()
             })
         })
         describe('If user has no associations', () => {
             it('should return false', () => {
-                expect(userStore.hasOfficeStatus(undefined)).toBeFalsy()
+                expect(userStore.canBePresident(undefined)).toBeFalsy()
             })
         })
     })

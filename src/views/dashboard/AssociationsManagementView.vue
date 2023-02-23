@@ -6,22 +6,27 @@ import {useI18n} from 'vue-i18n'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import AlertConfirmAssociationsChanges from '@/components/alert/AlertConfirmAssociationsChanges.vue'
+import useSecurity from '@/composables/useSecurity'
+import type {Association} from "#/association";
 
 const userStore = useUserStore()
 const associationStore = useAssociationStore()
 const {loading} = useQuasar()
 const {t} = useI18n()
+const {hasPerm} = useSecurity()
 
+const associations = ref<Association[]>()
 
-const associations = ref(associationStore.managedAssociations)
-watch(() => associationStore.managedAssociations, () => {
-    associations.value = associationStore.managedAssociations
-})
+const initValues = () => {
+    associations.value = associationStore.associations
+}
+watch(() => associationStore.associations, initValues)
 
 onMounted(async function () {
     loading.show
     await associationStore.getManagedAssociations()
-    await userStore.getUserAssociationsRoles()
+    await userStore.getUserAssociations()
+    initValues()
     loading.hide
 })
 
@@ -51,25 +56,38 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {
-        name: 'component',
+        name: 'institutionComponent',
         align: 'left',
-        label: t('directory.labels.association-component'),
-        field: 'component',
+        label: t('directory.labels.association-institution-component'),
+        field: 'institutionComponent',
         sortable: true
     },
-    {name: 'field', align: 'left', label: t('directory.labels.association-field'), field: 'field', sortable: true},
+    {
+        name: 'activityField',
+        align: 'left',
+        label: t('directory.labels.association-activity-field'),
+        field: 'activityField',
+        sortable: true
+    },
     {
         name: 'status',
         align: 'right',
         label: t('directory.labels.association-status'),
         field: 'isEnabled',
-        sortable: false
+        sortable: true
+    },
+    {
+        name: 'public',
+        align: 'left',
+        label: t('directory.labels.association-public'),
+        field: 'isPublic',
+        sortable: true
     },
     {
         name: 'actions',
         align: 'center',
         label: t('directory.labels.association-actions'),
-        field: 'isEnabled',
+        field: 'actions',
         sortable: false
     },
 ]
@@ -79,14 +97,14 @@ const columns: QTableProps['columns'] = [
     <!-- <h1>{{
             userStore.isUniManager ? t('dashboard.association-management') : t('dashboard.association-user.manage-my-associations')
         }}</h1> -->
-    <QBanner v-if="!userStore.isUniManager" class="bg-grey-3">
-        <template v-slot:avatar>
-            <QIcon color="primary" name="mdi-information-outline" size="md"/>
-        </template>
-        <strong>{{ t('dashboard.association-user.has-office-status-needed') }}</strong>
-        <template v-slot:action>
-        </template>
-    </QBanner>
+    <!--    <QBanner v-if="!userStore.isUniManager" class="bg-grey-3">
+            <template v-slot:avatar>
+                <QIcon color="primary" name="mdi-information-outline" size="md"/>
+            </template>
+            <strong>{{ t('dashboard.association-user.has-office-status-needed') }}</strong>
+            <template v-slot:action>
+            </template>
+        </QBanner>-->
 
     <!-- <QBtn
         :label="t('home.back-dashboard')"
@@ -94,7 +112,7 @@ const columns: QTableProps['columns'] = [
         color="secondary"
         icon="mdi-arrow-left-circle"
     /> -->
-    
+
 
     <div class="form-title">
         <h2>
@@ -102,12 +120,12 @@ const columns: QTableProps['columns'] = [
             Liste des associations
         </h2>
         <QBtn
-            v-if="userStore.isUniManager"
+            v-if="hasPerm('add_association')"
             :label="t('dashboard.create-association')"
             :to="{name: 'CreateAssociation'}"
+            class="small-button"
             color="secondary"
             icon="mdi-plus-box"
-            class="small-button"
         />
     </div>
 
@@ -120,13 +138,13 @@ const columns: QTableProps['columns'] = [
                 :loading="!associations"
                 :rows="associations"
                 :rows-per-page-options="[10, 20, 50, 0]"
-                :selection="userStore.isUniManager ? 'multiple' : ''"
                 :title="t('directory.title')"
                 row-key="name"
+                selection="multiple"
             >
                 <template v-slot:body="props">
                     <QTr :props="props">
-                        <QTd v-if="userStore.isUniManager">
+                        <QTd>
                             <QCheckbox v-model="props.selected"/>
                         </QTd>
                         <QTd key="name" :props="props">
@@ -138,51 +156,59 @@ const columns: QTableProps['columns'] = [
                         <QTd key="institution" :props="props">
                             {{ props.row.institution }}
                         </QTd>
-                        <QTd key="component" :props="props">
-                            {{ props.row.component }}
+                        <QTd key="institutionComponent" :props="props">
+                            {{ props.row.institutionComponent }}
                         </QTd>
-                        <QTd key="field" :props="props">
-                            {{ props.row.field }}
+                        <QTd key="activityField" :props="props">
+                            {{ props.row.activityField }}
                         </QTd>
                         <QTd key="status" :props="props" class="state-cell">
-                            <!-- {{ props.row.isEnabled ? t('association.enabled') : t('association.disabled') }} -->
-                            <span class="form-state" v-if="!props.row.isEnabled">
-                                Désactivée
+                            <span v-if="!props.row.isEnabled" class="form-state">
+                                {{ t('association.disabled') }}
                                 <span class="form-state-icon form-state-red"><i class="bi bi-x-lg"></i></span>
                             </span>
 
-                            <span class="form-state" v-if="props.row.isEnabled">
-                                Activée
+                            <span v-else class="form-state">
+                                {{ t('association.enabled') }}
                                 <span class="form-state-icon form-state-green"><i class="bi bi-x-lg"></i></span>
                             </span>
                         </QTd>
-                        <QTd class="actions-cell" key="actions" :props="props">
+                        <QTd key="public" :props="props" class="state-cell">
+                            <span v-if="!props.row.isPublic" class="form-state">
+                                {{ t('association.not-public') }}
+                                <span class="form-state-icon form-state-red"><i class="bi bi-x-lg"></i></span>
+                            </span>
+
+                            <span v-else class="form-state">
+                                {{ t('association.public') }}
+                                <span class="form-state-icon form-state-green"><i class="bi bi-x-lg"></i></span>
+                            </span>
+                        </QTd>
+                        <QTd key="actions" :props="props" class="actions-cell">
                             <QBtn
-                                v-if="userStore.isUniManager || userStore.hasOfficeStatus(props.row.id)"
                                 :label="t('association.edit')"
                                 :to="{name: 'EditAssociation', params: {id: props.row.id}}"
                                 color="primary"
                                 icon="mdi-pencil"
                             />
-                            <span v-else>{{ t('dashboard.association-user.not-from-office') }}</span>
                         </QTd>
                     </QTr>
                 </template>
             </QTable>
 
             <AlertConfirmAssociationsChanges
-                v-if="userStore.isUniManager"
                 :selectedAssociations="selected"
+                @update-selected-associations="selected = []"
             />
         </div>
     </div>
 </template>
 
-<style lang="sass" scoped>
+<!--<style lang="sass" scoped>
 .edition-buttons
     display: flex
     gap: 10px
 
 .q-banner
     margin-bottom: 20px
-</style>
+</style>-->

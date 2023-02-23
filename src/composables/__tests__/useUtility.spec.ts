@@ -1,6 +1,9 @@
-import { describe, expect, it } from 'vitest'
-
+import { describe, expect, it, vi } from 'vitest'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import { useRoute } from 'vue-router'
 import useUtility from '@/composables/useUtility'
+
+vi.mock('vue-router', () => ({ useRoute: vi.fn() }))
 
 describe('useUtility', () => {
     describe('formatDate', () => {
@@ -31,6 +34,39 @@ describe('useUtility', () => {
         })
         it('should be true if arrays contain the same values', () => {
             expect(arraysAreEqual(a, b)).toBeTruthy()
+        })
+    })
+    describe('initBreadcrumbs', () => {
+        it('should return an array of breadcrumb with label and to based on the route', () => {
+            vi.mocked(useRoute).mockReturnValue({
+                name: 'ValidateUsers', matched: [
+                    {
+                        path: '/',
+                        meta: {}
+                    },
+                    {
+                        path: '/dashboard',
+                        meta: { breadcrumb: 'Tableau de bord' }
+                    },
+                    {
+                        path: '/dashboard/validate-users',
+                        meta: { breadcrumb: 'Valider des comptes' }
+                    }
+                ]
+            } as RouteLocationNormalizedLoaded)
+            const route = useRoute()
+            const { initBreadcrumbs } = useUtility()
+            initBreadcrumbs(route.matched)
+            expect(initBreadcrumbs(route.matched)).toEqual([
+                {
+                    label: 'Tableau de bord',
+                    to: '/dashboard'
+                },
+                {
+                    label: 'Valider des comptes',
+                    to: '/dashboard/validate-users'
+                }
+            ])
         })
     })
 })

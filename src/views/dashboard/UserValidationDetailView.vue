@@ -11,12 +11,11 @@ import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {getUser, validateUser} = useUsers()
+const {validateUser} = useUsers()
 const {newGroups, groupChoiceIsValid} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
-
 
 onMounted(async () => {
     loading.show
@@ -29,7 +28,7 @@ onMounted(async () => {
 // Get user
 async function onGetUser() {
     try {
-        await getUser(route.params.id as string)
+        await userManagerStore.getUserDetail(parseInt(route.params.id as string))
     } catch (e) {
         notify({
             type: 'negative',
@@ -41,7 +40,7 @@ async function onGetUser() {
 // Get user associations
 async function onGetUserAssociations() {
     try {
-        await userManagerStore.getUserAssociations()
+        await userManagerStore.getUserAssociations(userManagerStore.user?.id as number)
     } catch (e) {
         notify({
             type: 'negative',
@@ -107,28 +106,31 @@ async function onDeleteUser() {
             <p>{{ userManagerStore.user?.phone }}</p>
         </article>
         <article>
-            <h3>{{ t('user.isCas') }}</h3>
+            <h3>{{ t('user.is-cas') }}</h3>
             <p>{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}</p>
         </article>
         <article>
-            <h3>{{ t('user.isValidatedByAdmin') }}</h3>
+            <h3>{{ t('user.is-validated-by-admin') }}</h3>
             <p>{{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}</p>
         </article>
     </section>
     <section>
         <h2>{{ t('directory.title') }}</h2>
-        <div v-if="userManagerStore.userAssociations.length !== 0">
+        <div v-if="userManagerStore.userAssociations.length">
             <article v-for="(association, index) in userManagerStore.userAssociations" :key="index">
                 <h3>{{ association.association.name }}</h3>
                 <ul>
-                    <li>{{ t('dashboard.association-user.role') }} :
-                        {{ association.roleName ? association.roleName : t('undefined') }}
-                    </li>
-                    <li>{{ t('dashboard.association-user.has-office-status') }} :
-                        {{ association.hasOfficeStatus ? t('yes') : t('no') }}
-                    </li>
                     <li>{{ t('dashboard.association-user.is-president') }} :
                         {{ association.isPresident ? t('yes') : t('no') }}
+                    </li>
+                    <li>{{ t('dashboard.association-user.can-be-president') }} :
+                        {{ association.canBePresident ? t('yes') : t('no') }}
+                    </li>
+                    <li>{{ t('dashboard.association-user.is-secretary') }} :
+                        {{ association.isSecretary ? t('yes') : t('no') }}
+                    </li>
+                    <li>{{ t('dashboard.association-user.is-treasurer') }} :
+                        {{ association.isTreasurer ? t('yes') : t('no') }}
                     </li>
                 </ul>
             </article>
@@ -142,7 +144,7 @@ async function onDeleteUser() {
         <FormUserGroups/>
     </section>
     <section class="btn-group">
-        <QBtn :label="t('back')" :to="{name: 'ValidateUsers'}" color="secondary" icon="mdi-arrow-left-circle"/>
+        <QBtn :label="t('back')" :to="{ name: 'ValidateUsers' }" color="secondary" icon="mdi-arrow-left-circle"/>
         <QBtn :label="t('user-manager.validate-account')" color="primary" icon="mdi-check-circle"
               @click="onValidateUser"/>
         <QBtn :label="t('user-manager.delete-account-application')" color="red" icon="mdi-delete"

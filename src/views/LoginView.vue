@@ -21,7 +21,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
             </span>
             Connectez-vous pour accéder à votre espace et effectuer vos démarches !
         </p>
-        <div class="form-container" v-if="!newUser && !isCas">
+        <div v-if="!newUser && !isCas" class="form-container">
             <QCard id="cas-login" class="card">
                 <QCardSection>
                     <div class="card-content">
@@ -52,7 +52,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                 </QCardSection>
             </QCard>
         </div>
-        <div class="form-container" v-else>
+        <div v-else class="form-container">
             <QCard id="aborted-cas-registration" class="card">
                 <QCardSection>
                     <div class="card-content">
@@ -72,4 +72,35 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
             </QCard>
         </div>
     </div>
+    <!--        <div class="btn-group">
+              <QBtn :href="CASUrlLogin" :label="t('login.login')" color="primary" />
+              <QBtn :href="CASUrlRegister" :label="t('login.create-account')" color="secondary" />
+            </div>
+          </QCardSection>
+        </QCard>
+        <QCard id="local-login" class="card">
+          <QCardSection>
+            <div class="card-content">
+              <span class="card-title">{{ t("login.im-not-cas-user") }}</span>
+              {{ t("login.login-without-cas") }}
+            </div>
+            <FormLocalLogin />
+          </QCardSection>
+        </QCard>
+      </div>
+      <div v-else>
+        <QCard id="aborted-cas-registration" class="card">
+          <QCardSection>
+            <div class="card-content">
+              <span class="card-title">
+                {{ t('alerts.aborted-cas-registration.title') }}
+              </span>
+              {{ t('alerts.aborted-cas-registration.message') }}
+              <div>
+                <QBtn :label="t('alerts.aborted-cas-registration.button')" color="warning" to="/register" />
+              </div>
+            </div>
+          </QCardSection>
+        </QCard>
+      </div>-->
 </template>

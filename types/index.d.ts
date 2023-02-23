@@ -29,3 +29,9 @@ interface HomeStore {
     cards: HomeCards,
     banner: HomeBanner
 }
+
+interface SelectLabel {
+    value: number,
+    label: string,
+    disable: boolean
+}

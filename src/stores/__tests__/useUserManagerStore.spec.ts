@@ -1,19 +1,18 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
-import { mockedAssociationName } from '~/mocks/association.mock'
-import { mockedAxios } from '~/mocks/axios.mock'
-import {
-    mockedGroups,
-    mockedNewUser,
-    mockedUser,
-    mockedUserDirectory,
-    mockedUserGroups,
-    mockedUserNames,
-    mockedUsers
-} from '~/mocks/user.mock'
-import * as userService from '@/services/userService'
+import { _user, _userAssociationDetail, _userGroupList, _userGroups, _users } from '~/fixtures/user.mock'
 import { useUserManagerStore } from '@/stores/useUserManagerStore'
+import { _axiosFixtures } from '~/fixtures/axios.mock'
+import { useAxios } from '@/composables/useAxios'
+
+
+vi.mock('@/composables/useAxios', () => ({
+    useAxios: () => ({
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
+    })
+}))
+
 
 setActivePinia(createPinia())
 let userManagerStore = useUserManagerStore()
@@ -27,288 +26,172 @@ describe('User manager store', () => {
     })
     describe('getUsers', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({ data: mockedUsers })
+            const { axiosAuthenticated } = useAxios()
+            const mockedAxios = vi.mocked(axiosAuthenticated, true)
+            mockedAxios.get.mockResolvedValueOnce({ data: _users })
+            userManagerStore.getUsers()
         })
-        afterEach(() => {
-            userManagerStore.users = []
+        it('should call API once on /users/', () => {
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/')
         })
-        describe('If users are not populated yet', () => {
-            beforeEach(() => {
-                userManagerStore.getUsers()
-            })
-            afterEach(() => {
-                userManagerStore.users = []
-            })
-            it('should call API once on /users/', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/users/')
-            })
-            it('should populate users state', () => {
-                expect(userManagerStore.users).toEqual(mockedUsers)
-            })
-            it('should set allUsers to true', () => {
-                expect(userManagerStore.allUsers).toBeTruthy()
-            })
-            describe('If allUsers is false', () => {
-                it('should call API', () => {
-                    expect(mockedAxios.get).toHaveBeenCalledOnce()
-                })
-            })
-        })
-        describe('If all users are already populated', () => {
-            beforeEach(() => {
-                userManagerStore.users = mockedUsers
-                userManagerStore.allUsers = true
-            })
-            afterEach(() => {
-                userManagerStore.users = []
-                userManagerStore.allUsers = false
-            })
-            it('should not call API', async () => {
-                await userManagerStore.getUsers()
-                expect(mockedAxios.get).toHaveBeenCalledTimes(0)
-            })
-            it('should keep users in state', () => {
-                expect(userManagerStore.users).toEqual(mockedUsers)
-            })
+        it('should populate users state', () => {
+            expect(userManagerStore.users).toEqual(_users)
         })
     })
     describe('getUnvalidatedUsers', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({ data: mockedUsers })
+            const { axiosAuthenticated } = useAxios()
+            const mockedAxios = vi.mocked(axiosAuthenticated, true)
+            mockedAxios.get.mockResolvedValueOnce({ data: _users })
+            userManagerStore.getUnvalidatedUsers()
         })
-        afterEach(() => {
-            userManagerStore.users = []
+        it('should call API once on /users/?is_validated_by_admin=false', () => {
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/?is_validated_by_admin=false')
         })
-        describe('If unvalidated users are not populated yet', () => {
-            beforeEach(() => {
-                userManagerStore.getUnvalidatedUsers()
-            })
-            afterEach(() => {
-                userManagerStore.users = []
-            })
-            it('should call API once on /users/?is_validated_by_admin=false', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/users/?is_validated_by_admin=false')
-            })
-            it('should populate users state', () => {
-                expect(userManagerStore.users).toEqual(mockedUsers)
-            })
-            it('should set allUsers to false', () => {
-                expect(userManagerStore.allUsers).toBeFalsy()
-            })
-        })
-        describe('If unvalidated users are already populated', () => {
-            beforeEach(() => {
-                userManagerStore.users = mockedUsers
-                userManagerStore.getUnvalidatedUsers()
-            })
-            afterEach(() => {
-                userManagerStore.users = []
-            })
-            it('should not call API', () => {
-                expect(mockedAxios.get).toHaveBeenCalledTimes(0)
-            })
-            it('should keep users data', () => {
-                expect(userManagerStore.users).toEqual(mockedUsers)
-            })
+        it('should populate users state', () => {
+            expect(userManagerStore.users).toEqual(_users)
         })
     })
     describe('getUserDetail', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({ data: mockedUser })
-            mockedAxios.get.mockResolvedValueOnce({ data: mockedGroups })
+            const { axiosAuthenticated } = useAxios()
+            const mockedAxios = vi.mocked(axiosAuthenticated, true)
+            mockedAxios.get.mockResolvedValueOnce({ data: _user })
+            mockedAxios.get.mockResolvedValueOnce({ data: _userGroups })
+            userManagerStore.getUserDetail(_user.id)
         })
-        afterEach(() => {
-            userManagerStore.user = undefined
-            userManagerStore.users = []
+        it('should call API to get user and groups', () => {
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.get).toHaveBeenCalledTimes(2)
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/${_user.id}`)
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/groups/${_user.id}`)
         })
-        describe('If user not already in store and users are not populated', () => {
-            beforeEach(() => {
-                userManagerStore.getUserDetail(mockedUser.id)
-            })
-            afterEach(() => {
-                userManagerStore.user = undefined
-            })
-            it('should call API to get user and groups', () => {
-                expect(mockedAxios.get).toHaveBeenCalledTimes(2)
-                expect(mockedAxios.get).toHaveBeenCalledWith(`/users/${mockedUser.id}`)
-                expect(mockedAxios.get).toHaveBeenCalledWith(`/users/groups/${mockedUser.id}`)
-            })
-            it('should populate user state and groups', () => {
-                expect(userManagerStore.user).toEqual(mockedUser)
-                expect(userManagerStore.user?.groups).toEqual(mockedGroups)
-            })
-        })
-        describe('If user already in store', () => {
-            beforeEach(() => {
-                userManagerStore.user = mockedUser
-                userManagerStore.getUserDetail(mockedUser.id)
-            })
-            it('should not call API', () => {
-                expect(mockedAxios.get).toHaveBeenCalledTimes(0)
-            })
-            it('should not modify user state', () => {
-                expect(userManagerStore.user).toEqual(mockedUser)
-                expect(userManagerStore.user?.groups).toEqual(mockedGroups)
-            })
-        })
-        describe('If user is not in store but users are populated', () => {
-            beforeEach(() => {
-                userManagerStore.users = mockedUsers
-                userManagerStore.getUserDetail(mockedUser.id)
-            })
-            it('should not call API', () => {
-                expect(mockedAxios.get).toHaveBeenCalledTimes(0)
-            })
-            it('should get user from users state', () => {
-                expect(userManagerStore.user).toBeTruthy()
-                expect(userManagerStore.user?.id).toEqual(mockedUser.id)
-            })
+        it('should populate user state and groups', () => {
+            expect(userManagerStore.user).toEqual(_user)
+            expect(userManagerStore.user?.groups).toEqual(_userGroups)
         })
     })
     describe('updateUserGroups', () => {
         beforeEach(() => {
-            userManagerStore.user = mockedUser
-            userManagerStore.updateUserGroups(mockedUserGroups)
+            userManagerStore.user = _user
+            userManagerStore.updateUserGroups(_userGroupList)
         })
         it('should call API once on /users/groups/ with groups as payload', () => {
-            expect(mockedAxios.post).toHaveBeenCalledOnce()
-            expect(mockedAxios.post).toHaveBeenCalledWith('/users/groups/', {
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/groups/', {
                 username: userManagerStore.user?.username,
-                groups: mockedUserGroups
+                groups: _userGroupList
             })
-        })
-    })
-    describe('validateUser', () => {
-        beforeEach(() => {
-            userManagerStore.user = mockedUser
-            userManagerStore.users = mockedUsers
-            userManagerStore.validateUser()
-        })
-        it('should call API once on /users/id with isValidated as payload', () => {
-            expect(mockedAxios.patch).toHaveBeenCalledOnce()
-            expect(mockedAxios.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`, {
-                isValidatedByAdmin: true
-            })
-        })
-        it('should delete user in validated users store', () => {
-            const validatedUser = userManagerStore.users.find((user) => user.id === userManagerStore.user?.id)
-            expect(validatedUser).toBeUndefined()
-        })
-    })
-    describe('deleteUser', () => {
-        beforeEach(() => {
-            userManagerStore.user = mockedUser
-            userManagerStore.users = mockedUsers
-            userManagerStore.deleteUser()
-        })
-        afterEach(() => {
-            userManagerStore.user = undefined
-            userManagerStore.users = []
-        })
-        it('should call API once on /users/id', () => {
-            expect(mockedAxios.delete).toHaveBeenCalledOnce()
-            expect(mockedAxios.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`)
-        })
-        it('should delete user in users store', () => {
-            const deletedUser = userManagerStore.users.find((user) => user.id === userManagerStore.user?.id)
-            expect(deletedUser).toBeUndefined()
         })
     })
     describe('deleteUserGroups', () => {
         beforeEach(() => {
-            userManagerStore.user = mockedUser
-            userManagerStore.deleteUserGroups([3])
+            userManagerStore.user = _user
+            userManagerStore.deleteUserGroups([3, 2])
         })
         it('should call API for each group', () => {
-            expect(mockedAxios.delete).toHaveBeenCalledOnce()
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(2)
         })
         it('should call API on /users/groups/userId/groupId', () => {
-            expect(mockedAxios.delete).toHaveBeenCalledWith(
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(
                 `/users/groups/${userManagerStore.user?.id}/${3}`
             )
         })
     })
-    describe('userNames', () => {
-        it('should return the names of users with values and labels', () => {
-            userManagerStore.users = [
-                {
-                    id: 1,
-                    username: 'john.lennon@bbc.com',
-                    firstName: 'John',
-                    lastName: 'Lennon',
-                    phone: null,
-                    email: 'john.lennon@bbc.com',
-                    isCas: false,
-                    isValidatedByAdmin: true,
-                    groups: mockedGroups,
-                    associations: mockedAssociationName
-                },
-                {
-                    id: 1,
-                    username: 'bill@murray.com',
-                    firstName: 'Bill',
-                    lastName: 'Murray',
-                    phone: null,
-                    email: 'bill@murray.com',
-                    isCas: false,
-                    isValidatedByAdmin: true,
-                    groups: mockedGroups,
-                    associations: mockedAssociationName
-                }
-            ]
-            expect(userManagerStore.userNames).toEqual(mockedUserNames)
-        })
-    })
-    describe('userDirectory', () => {
-        it('should return some data of each user for the directory', () => {
-            userManagerStore.users = [
-                {
-                    id: 1,
-                    username: 'john.lennon@bbc.com',
-                    firstName: 'John',
-                    lastName: 'Lennon',
-                    phone: null,
-                    email: 'john.lennon@bbc.com',
-                    isCas: false,
-                    isValidatedByAdmin: true,
-                    groups: mockedGroups,
-                    associations: mockedAssociationName
-                },
-                {
-                    id: 1,
-                    username: 'bill@murray.com',
-                    firstName: 'Bill',
-                    lastName: 'Murray',
-                    phone: null,
-                    email: 'bill@murray.com',
-                    isCas: false,
-                    isValidatedByAdmin: true,
-                    groups: mockedGroups,
-                    associations: mockedAssociationName
-                }
-            ]
-            expect(userManagerStore.userDirectory).toEqual(mockedUserDirectory)
-        })
-    })
-    describe('userGroups', () => {
+    describe('validateUser', () => {
         beforeEach(() => {
-            userManagerStore.user = mockedUser
+            userManagerStore.user = _user
+            userManagerStore.validateUser()
         })
-        it('should return an array of numbers of the groups', () => {
-            expect(userManagerStore.userGroups).toEqual(mockedUserGroups)
+        it('should call API once on /users/id with isValidated as payload', () => {
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`, {
+                isValidatedByAdmin: true
+            })
         })
     })
-    describe('addUser', () => {
+    describe('deleteUser', () => {
         beforeEach(() => {
-            userService.userLocalRegisterAsManager(mockedNewUser)
+            userManagerStore.user = _user
+            userManagerStore.deleteUser()
         })
-        it('should call API once', () => {
-            expect(mockedAxios.post).toHaveBeenCalledOnce()
+        it('should call API once on /users/id', () => {
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`)
         })
-        it('should call API on /users/ with newUser as data', () => {
-            expect(mockedAxios.post).toHaveBeenLastCalledWith('/users/', mockedNewUser)
+    })
+    describe('getUserAssociations', () => {
+        it('should call API once on /users/associations/id and populate userAssociations', async () => {
+            const { axiosAuthenticated } = useAxios()
+            const mockedAxios = vi.mocked(axiosAuthenticated, true)
+            mockedAxios.get.mockResolvedValueOnce({ data: _userAssociationDetail })
+            await userManagerStore.getUserAssociations(1)
+            expect(mockedAxios.get).toHaveBeenCalledOnce()
+            expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/1')
+            expect(userManagerStore.userAssociations).toEqual(_userAssociationDetail)
+        })
+    })
+    describe('deleteUserAssociation', () => {
+        it('should call API once on /users/associations/userId/associationId', async () => {
+            userManagerStore.user = _user
+            const { axiosAuthenticated } = useAxios()
+            await userManagerStore.deleteUserAssociation(1)
+            expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user?.id}/1`)
+        })
+    })
+    describe('patchUserAssociations', () => {
+        it('should call API once on /users/associations/userId/associationId with data to patch as payload', async () => {
+            userManagerStore.user = _user
+            const dataToPatch = {
+                isPresident: false,
+                canBePresident: true,
+                isSecretary: false,
+                isTreasurer: true,
+            }
+            await userManagerStore.patchUserAssociations(1, dataToPatch)
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user?.id}/1`, dataToPatch)
+        })
+    })
+    describe('updateUserInfos', () => {
+        it('should only patch changed infos on /users/userId', async () => {
+            userManagerStore.user = _user
+            const userToUpdate = {
+                firstName: 'Jane',
+                lastName: _user.lastName,
+                email: 'jane@lennon.uk',
+                phone: _user.phone
+            }
+            await userManagerStore.updateUserInfos(userToUpdate)
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`, {
+                firstName: 'Jane',
+                email: 'jane@lennon.uk'
+            })
+        })
+        it('should not patch anything if there are no changes', async () => {
+            userManagerStore.user = _user
+            const userToUpdate = {
+                firstName: _user.firstName,
+                lastName: _user.lastName,
+                email: _user.email,
+                phone: _user.phone
+            }
+            await userManagerStore.updateUserInfos(userToUpdate)
+            const { axiosAuthenticated } = useAxios()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledTimes(0)
         })
     })
 })

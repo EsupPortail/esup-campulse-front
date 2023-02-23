@@ -4,7 +4,10 @@ defineProps({
     description: String,
     imagePath: String,
     imageAlt: String,
-    link: String,
+    link: {
+        type: String,
+        required: true
+    },
     cssClass: String,
     buttonLabel: String,
     infoContent: String,

@@ -1,16 +1,14 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue'
-import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import useDirectory from '@/composables/useDirectory'
-import {useRoute} from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { useRoute } from 'vue-router'
 import FormAssociationEdition from '@/components/form/FormAssociationEdition.vue'
 
-const {t} = useI18n()
-const {notify} = useQuasar()
-const {loading} = useQuasar()
-const {getAssociationDetail} = useDirectory()
+const { t } = useI18n()
+const { notify } = useQuasar()
+const { loading } = useQuasar()
 
 const route = useRoute()
 const associationStore = useAssociationStore()
@@ -20,7 +18,7 @@ const isLoaded = ref(false)
 // Get all infos on mounted
 async function onGetAssociationDetail() {
     try {
-        await getAssociationDetail(route.params.id as string)
+        await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
     } catch (error) {
         notify({
             type: 'negative',
@@ -29,7 +27,7 @@ async function onGetAssociationDetail() {
     }
 }
 
-async function onGetAssociationInstitutions() {
+async function onGetInstitutions() {
     try {
         await associationStore.getInstitutions()
     } catch (error) {
@@ -40,9 +38,9 @@ async function onGetAssociationInstitutions() {
     }
 }
 
-async function onGetAssociationComponents() {
+async function onGetInstitutionComponents() {
     try {
-        await associationStore.getComponents()
+        await associationStore.getInstitutionComponents()
     } catch (error) {
         notify({
             type: 'negative',
@@ -51,9 +49,9 @@ async function onGetAssociationComponents() {
     }
 }
 
-async function onGetAssociationFields() {
+async function onGetAssociationActivityFields() {
     try {
-        await associationStore.getFields()
+        await associationStore.getActivityFields()
     } catch (error) {
         notify({
             type: 'negative',
@@ -65,9 +63,9 @@ async function onGetAssociationFields() {
 onMounted(async function () {
     loading.show
     await onGetAssociationDetail()
-    await onGetAssociationInstitutions()
-    await onGetAssociationComponents()
-    await onGetAssociationFields()
+    await onGetInstitutions()
+    await onGetInstitutionComponents()
+    await onGetAssociationActivityFields()
     isLoaded.value = true
     loading.hide
 })
@@ -75,6 +73,5 @@ onMounted(async function () {
 
 <template>
     <h1>{{ associationStore.association?.name }}</h1>
-    <FormAssociationEdition
-        v-if="isLoaded"/>
+    <FormAssociationEdition v-if="isLoaded" />
 </template>

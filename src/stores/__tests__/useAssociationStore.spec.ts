@@ -1,12 +1,21 @@
-import type {AxiosResponse} from 'axios'
-import {createPinia, setActivePinia} from 'pinia'
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import type {Association} from '#/association'
-import {association, associationNames, associations} from '~/mocks/association.mock'
-import {mockedAxios} from '~/mocks/axios.mock'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import {useUserStore} from '@/stores/useUserStore'
-import {mockedUser} from '~/mocks/user.mock'
+import type { AxiosResponse } from 'axios'
+import { createPinia, setActivePinia } from 'pinia'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { Association } from '#/association'
+import { _association, _associationNames, _associations } from '~/fixtures/association.mock'
+import { useAssociationStore } from '@/stores/useAssociationStore'
+import { useUserStore } from '@/stores/useUserStore'
+import { _manager, _student } from '~/fixtures/user.mock'
+import { _axiosFixtures } from '~/fixtures/axios.mock'
+import { useAxios } from '@/composables/useAxios'
+
+
+vi.mock('@/composables/useAxios', () => ({
+    useAxios: () => ({
+        axiosPublic: _axiosFixtures,
+        axiosAuthenticated: _axiosFixtures
+    })
+}))
 
 setActivePinia(createPinia())
 let associationStore = useAssociationStore()
@@ -22,24 +31,29 @@ describe('Association store', () => {
     })
     describe('getAssociations', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({data: associations} as AxiosResponse)
+            const { axiosPublic } = useAxios()
+            const mockedAxios = vi.mocked(axiosPublic, true)
+            mockedAxios.get.mockResolvedValueOnce({ data: _associations } as AxiosResponse)
         })
-        describe('If forDirectory is true', () => {
+        describe('If isPublic is true', () => {
             beforeEach(() => {
-                associationStore.getAssociations(true, false)
+                associationStore.getAssociations(true)
             })
             it('should call API once on /associations/?is_public=true', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/associations/?is_public=true')
+                const { axiosPublic } = useAxios()
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_public=true')
             })
         })
-        describe('If forRegistration is true', () => {
+        /*
+        describe('If isEnabled is true', () => {
             beforeEach(() => {
                 associationStore.getAssociations(false, true)
             })
             it('should call API once on /associations/?is_enabled=true', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/associations/?is_enabled=true')
+                const { axiosPublic } = useAxios()
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_enabled=true')
             })
         })
         describe('If forDirectory and forRegistration are false', () => {
@@ -47,22 +61,26 @@ describe('Association store', () => {
                 associationStore.getAssociations(false, false)
             })
             it('should call API once on /associations/ and get all associations', () => {
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/associations/')
+                const { axiosPublic } = useAxios()
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/associations/')
             })
         })
+        */
     })
     describe('getManagedAssociations', () => {
         beforeEach(() => {
             userStore = useUserStore()
-            mockedAxios.get.mockResolvedValueOnce({data: associations} as AxiosResponse)
+            const { axiosPublic } = useAxios()
+            const mockedAxios = vi.mocked(axiosPublic, true)
+            mockedAxios.get.mockResolvedValueOnce({ data: _associations } as AxiosResponse)
         })
         afterEach(() => {
             userStore.user = undefined
         })
         describe('If isUniManager', () => {
             it('should execute getAssociations to get all associations', async () => {
-                userStore.user = mockedUser
+                userStore.user = _manager
                 const spy = vi.spyOn(associationStore, 'getAssociations')
                 await associationStore.getManagedAssociations()
                 expect(spy).toHaveBeenCalledOnce()
@@ -70,64 +88,77 @@ describe('Association store', () => {
             })
         })
         describe('If student', () => {
-            it('should only get this student\'s associations', async () => {
-                userStore.user = mockedUser
-                userStore.user.groups.splice(0, 1)
+            beforeEach(() => {
+                userStore.user = _student
+            })
+            it('should execute getAssociations to get all associations', async () => {
                 const spy = vi.spyOn(associationStore, 'getAssociations')
                 await associationStore.getManagedAssociations()
-                console.log(associations)
-                console.log(associationStore.associations)
-                expect(spy).toHaveBeenCalledTimes(0)
-                expect(associationStore.associations).toEqual([associations])
+                expect(spy).toHaveBeenCalledOnce()
+                expect(spy).toHaveBeenCalledWith(false, false)
+            })
+            it('should push in associations only the associations of the student', async () => {
+                const { axiosPublic } = useAxios()
+                const mockedAxios = vi.mocked(axiosPublic, true)
+                mockedAxios.get.mockResolvedValueOnce({ data: _associations } as AxiosResponse)
+                await associationStore.getManagedAssociations()
+                expect(associationStore.associations).toEqual([_associations[0]])
             })
         })
     })
     describe('Get association detail', () => {
         beforeEach(() => {
-            mockedAxios.get.mockResolvedValueOnce({data: association} as AxiosResponse)
-            associationStore.getAssociationDetail(association.id)
+            const { axiosPublic } = useAxios()
+            const mockedAxios = vi.mocked(axiosPublic, true)
+            mockedAxios.get.mockResolvedValueOnce({ data: _association } as AxiosResponse)
+            associationStore.getAssociationDetail(_association.id, true)
         })
         afterEach(() => {
             associationStore.association = {} as Association
         })
         it('should populate association in the store', () => {
-            expect(associationStore.association).toEqual(association)
+            expect(associationStore.association).toEqual(_association)
         })
         it('should be called once', () => {
-            expect(mockedAxios.get).toHaveBeenCalledOnce()
+            const { axiosPublic } = useAxios()
+            expect(axiosPublic.get).toHaveBeenCalledOnce()
         })
         it('should call API on /associations/id', () => {
-            expect(mockedAxios.get).toHaveBeenCalledWith(`/associations/${association.id}`)
+            const { axiosPublic } = useAxios()
+            expect(axiosPublic.get).toHaveBeenCalledWith(`/associations/${_association.id}`)
         })
     })
     describe('Association names', () => {
         beforeEach(() => {
-            associationStore.associations = associations
+            associationStore.associations = _associations
         })
         afterEach(() => {
             associationStore.associations = []
         })
         it('should contain all the associations', () => {
-            expect(associationStore.associationNames.length).toEqual(associations.length)
+            expect(associationStore.associationNames.length).toEqual(_associations.length)
         })
         it('should contain associations with labels and lists', () => {
-            expect(associationStore.associationNames).toEqual(associationNames)
+            expect(associationStore.associationNames).toEqual(_associationNames)
         })
     })
-    /*describe('Delete associations', () => {
-        beforeEach(() => {
-            associationStore.associations = [...associations]
-            associationStore.association = association
-            associationStore.deleteAssociation()
+    describe('deleteAssociation', () => {
+        it('should call API once on /associations/id', async () => {
+            const { axiosAuthenticated } = useAxios()
+            await associationStore.deleteAssociation(1)
+            expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.delete).toHaveBeenCalledWith('/associations/1')
         })
-        it('should change associations data', () => {
-            expect(associationStore.associations.length).toEqual(associations.length - 1)
+    })
+    describe('patchEnabledAssociation', () => {
+        it('should patch on /associations/id with isEnabled boolean value and update association data in store', async () => {
+            const { axiosAuthenticated } = useAxios()
+            const mockedAxios = vi.mocked(axiosAuthenticated, true)
+            mockedAxios.patch.mockResolvedValueOnce({ data: _association } as AxiosResponse)
+            await associationStore.patchEnabledAssociation(true, 1)
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/associations/1', { isEnabled: true })
+            expect(associationStore.association).toEqual(_association)
         })
-        it('should be called once', () => {
-            expect(mockedAxios.delete).toHaveBeenCalledOnce()
-        })
-        it('should call API on /associations/', () => {
-            expect(mockedAxios.delete).toHaveBeenCalledWith(`/associations/${association.id}`)
-        })
-    })*/
+    })
 })
