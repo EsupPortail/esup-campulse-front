@@ -154,13 +154,13 @@ const columns: QTableProps['columns'] = [
                             {{ props.row.acronym }}
                         </QTd>
                         <QTd key="institution" :props="props">
-                            {{ props.row.institution }}
+                            {{ props.row.institution?.name }}
                         </QTd>
                         <QTd key="institutionComponent" :props="props">
-                            {{ props.row.institutionComponent }}
+                            {{ props.row.institutionComponent?.name }}
                         </QTd>
                         <QTd key="activityField" :props="props">
-                            {{ props.row.activityField }}
+                            {{ props.row.activityField?.name }}
                         </QTd>
                         <QTd key="status" :props="props" class="state-cell">
                             <span v-if="!props.row.isEnabled" class="form-state">
