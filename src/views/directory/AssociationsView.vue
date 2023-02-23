@@ -194,7 +194,7 @@ async function clearSearch(apiSearch: boolean) {
                     />
                     <QSelect
                         v-model="settings.institutionComponent"
-                        :label="t('directory.labels.association-component')"
+                        :label="t('directory.labels.association-institution-component')"
                         :options="associationStore.institutionComponentLabels"
                         emit-value
                         filled
@@ -202,7 +202,7 @@ async function clearSearch(apiSearch: boolean) {
                     />
                     <QSelect
                         v-model="settings.activityField"
-                        :label="t('directory.labels.association-field')"
+                        :label="t('directory.labels.association-activity-field')"
                         :options="associationStore.activityFieldLabels"
                         emit-value
                         filled
