@@ -1,9 +1,16 @@
 <script lang="ts" setup>
-import {RouterLink} from 'vue-router'
+import {RouterLink, useRoute} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 import {useI18n} from 'vue-i18n'
+import {ref, watch} from 'vue'
 
 const {t} = useI18n()
+const route = useRoute()
+
+const title = ref<string>(route.meta.title as string)
+watch(() => route.name, () => {
+    title.value = route.meta.title as string
+})
 
 </script>
 
@@ -16,19 +23,22 @@ const {t} = useI18n()
             <LayoutHeaderNav/>
         </QToolbar>
 
-        <div id="header-home-title">
+        <div
+            v-if="route.name === 'Home'"
+            id="header-home-title"
+        >
             <h2>Bienvenue sur <strong>OPALINE</strong></h2>
             <h3>Le site de la vie étudiante de l'UNISTRA</h3>
         </div>
 
         <div id="header-title">
-            <h1>
+            <h1 v-if="title">
                 <span id="header-title-icon">
                     <i class="bi bi-geo-alt space-1-icon"></i>
                     <i class="bi bi-book space-2-icon"></i>
                     <i class="bi bi-send space-3-icon"></i>
                 </span>
-                <strong>Annuaire</strong> des associations
+                {{ title }}
             </h1>
         </div>
 

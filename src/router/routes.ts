@@ -23,6 +23,9 @@ const routes: RouteRecordRaw[] = [
                         path: '',
                         name: 'Associations',
                         component: () => import('@/views/directory/AssociationsView.vue'),
+                        meta: {
+                            title: 'Annuaire des associations'
+                        }
                     },
                     {
                         path: ':id',
