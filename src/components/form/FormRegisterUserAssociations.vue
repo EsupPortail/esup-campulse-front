@@ -28,7 +28,7 @@ onMounted(async () => {
 
 async function loadAssociations() {
     try {
-        await associationStore.getAssociationNames()
+        await associationStore.getAssociationNames(false)
     } catch (e) {
         notify({
             type: 'negative',

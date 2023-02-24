@@ -14,7 +14,7 @@ export const useHomeContent = defineStore('homeContent', {
                 link: '/associations',
                 cssClass: 'home-section-annuaire',
                 buttonLabel: 'Consulter l\'annuaire',
-                infoContent: '<strong>120</strong> associations enregistrées dans l\'annuaire',
+                infoContent: 'associations enregistrées dans l\'annuaire',
                 titleLine1: 'Annuaire',
                 titleLine2: 'des associations',
                 iconClass: 'bi bi-geo-alt'
