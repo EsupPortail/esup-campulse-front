@@ -24,6 +24,8 @@ const props = defineProps({
     user: Object as PropType<UserToUpdate>,
 })
 
+const emit = defineEmits(['hasValidated'])
+
 async function onValidateChanges() {
     try {
         await userManagerStore.updateUserInfos(props.user as UserToUpdate)
@@ -33,7 +35,7 @@ async function onValidateChanges() {
             await userAssociationsRegister(false, props.user?.username as string, newAssociationsRoles)
         }
         await updateUserGroups()
-        //hasValidated.value = true
+        emit('hasValidated')
         await router.push({name: 'ManageUsers'})
         notify({
             type: 'positive',

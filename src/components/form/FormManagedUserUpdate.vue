@@ -150,6 +150,7 @@ onBeforeRouteLeave((to, from, next) => {
             <AlertConfirmUserUpdate
                 v-if="groupChoiceIsValid"
                 :user="user"
+                @has-validated="hasValidated = true"
             />
             <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
         </section>

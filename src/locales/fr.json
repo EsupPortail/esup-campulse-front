@@ -301,6 +301,7 @@
       "disable-association-error": "L'association n'a pas été désactivée.",
       "disable-associations-error": "Les associations suivantes ne peuvent pas être désactivées : ",
       "edit-association-error": "Une erreur est survenue lors de l'édition de l'association. Veuillez réessayer.",
+      "edit-user-error": "Une erreur est survenue lors de la modification des informations du compte.",
       "email-associations-error": "Ces associations n'ont pas d'adresse email : ",
       "email-used": "Cette adresse email est déjà associée à un compte. Veuillez vous connecter.",
       "enable-association-error": "L'association n'a pas été activée.",
