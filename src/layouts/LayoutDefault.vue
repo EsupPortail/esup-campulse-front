@@ -11,7 +11,7 @@ const route = useRoute()
 <template>
     <QLayout id="layout-page" view="hHh lpR fFf">
         <LayoutHeader/>
-        <LayoutBreadcrumbs v-if="route.name !== 'Login' && route.name !== 'Home'"/>
+        <LayoutBreadcrumbs v-if="route.name !== 'Home'"/>
         <LayoutContent/>
         <LayoutFooter/>
     </QLayout>

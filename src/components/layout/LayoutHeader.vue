@@ -23,23 +23,25 @@ watch(() => route.name, () => {
             <LayoutHeaderNav/>
         </QToolbar>
 
-        <div
-            v-if="route.name === 'Home'"
-            id="header-home-title"
-        >
-            <h2>Bienvenue sur <strong>OPALINE</strong></h2>
-            <h3>Le site de la vie étudiante de l'UNISTRA</h3>
-        </div>
+        <div v-if="route.name !== 'Login'">
+            <div
+                v-if="route.name === 'Home'"
+                id="header-home-title"
+            >
+                <h2>Bienvenue sur <strong>OPALINE</strong></h2>
+                <h3>Le site de la vie étudiante de l'UNISTRA</h3>
+            </div>
 
-        <div id="header-title">
-            <h1 v-if="title">
+            <div id="header-title">
+                <h1 v-if="title">
                 <span id="header-title-icon">
                     <i class="bi bi-geo-alt space-1-icon"></i>
                     <i class="bi bi-book space-2-icon"></i>
                     <i class="bi bi-send space-3-icon"></i>
                 </span>
-                {{ title }}
-            </h1>
+                    {{ title }}
+                </h1>
+            </div>
         </div>
 
     </QHeader>

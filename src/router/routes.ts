@@ -49,14 +49,14 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/CommissionView.vue'),
                 meta: {requiresAuth: true}
             },
-            {
+            /*{
                 path: 'login',
                 name: 'Login',
                 component: () => import('@/views/LoginView.vue'),
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.login'),
                 }
-            },
+            },*/
             {
                 path: 'cas-login',
                 name: 'CASLogin',
@@ -238,7 +238,18 @@ const routes: RouteRecordRaw[] = [
                 redirect: {name: '404'}
             }
         ]
-    }
+    },
+    {
+        path: '/login',
+        component: () => import('@/layouts/LayoutMinimalHeader.vue'),
+        children: [
+            {
+                path: '',
+                name: 'Login',
+                component: () => import('@/views/LoginView.vue'),
+            }
+        ]
+    },
 ]
 
 export default routes

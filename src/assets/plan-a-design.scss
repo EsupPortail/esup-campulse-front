@@ -99,7 +99,7 @@ body {
    HEADER
 ################################################################################################# */
 
-#layout-header {
+#layout-header, #layout-minimal-header {
   position: relative;
   width: 100%;
   background-image: $headerBackground;
@@ -107,6 +107,11 @@ body {
   background-size: cover;
   background-position: center top;
   height: 400px;
+
+  &#layout-minimal-header {
+    height: 88px;
+    border-bottom: 8px solid $color1;
+  }
 
   &::before {
     content: ' ';
