@@ -60,3 +60,8 @@ async function onLogOut() {
         </QBtnDropdown>
     </div>
 </template>
+
+<style lang="sass" scoped>
+.q-list
+    color: white
+</style>
