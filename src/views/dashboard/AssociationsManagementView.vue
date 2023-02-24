@@ -170,7 +170,7 @@ const columns: QTableProps['columns'] = [
 
                             <span v-else class="form-state">
                                 {{ t('association.enabled') }}
-                                <span class="form-state-icon form-state-green"><i class="bi bi-x-lg"></i></span>
+                                <span class="form-state-icon form-state-green"><i class="bi bi-check-lg"></i></span>
                             </span>
                         </QTd>
                         <QTd key="public" :props="props" class="state-cell">
@@ -181,7 +181,7 @@ const columns: QTableProps['columns'] = [
 
                             <span v-else class="form-state">
                                 {{ t('association.public') }}
-                                <span class="form-state-icon form-state-green"><i class="bi bi-x-lg"></i></span>
+                                <span class="form-state-icon form-state-green"><i class="bi bi-check-lg"></i></span>
                             </span>
                         </QTd>
                         <QTd key="actions" :props="props" class="actions-cell">
