@@ -2222,3 +2222,9 @@ body {
     }
   }
 }
+
+// TODO Hotfix for outline buttons.
+button.q-btn--outline {
+  background: $color1 !important;
+}
+
