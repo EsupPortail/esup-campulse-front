@@ -13,14 +13,10 @@ export const useUserStore = defineStore('userStore', {
     getters: {
         isAuth: (state: UserStore): boolean => !!state.user,
         isCas: (state: UserStore): boolean | undefined => state.user?.isCas || state.newUser?.isCas,
-        // Test to delete
-        /*userNameFirstLetter: (state: UserStore): string | undefined => {
-            return state.user?.firstName.charAt(0).toUpperCase()
-        },*/
+        // To test ? Should we keep it ?
         userName: (state: UserStore): string | undefined => {
             return state.user?.firstName + ' ' + state.user?.lastName
         },
-        // To test
         userInstitutions: (state: UserStore): (number | undefined)[] | undefined => {
             return state.user?.groups.map(group => (
                 group.institutionId
@@ -36,6 +32,7 @@ export const useUserStore = defineStore('userStore', {
          * @param {string} url - The url to send the request to.
          * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
          */
+        // Should we pass it to axiosPublic instance ?
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const {axiosAuthenticated} = useAxios()
             const response = await axiosAuthenticated.post(url, data)
@@ -53,7 +50,6 @@ export const useUserStore = defineStore('userStore', {
             removeTokens()
             this.unLoadUser()
         },
-        // to re-test
         /**
          * It gets the user data from the server, and if the user is validated by the admin, it sets the user data to the
          * user variable, and if the user is not validated by the admin, it sets the user data to the newUser variable
@@ -85,15 +81,6 @@ export const useUserStore = defineStore('userStore', {
                 this.userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
             }
         },
-        /*canBePresident(associationId: number | undefined): boolean | undefined {
-            if (this.userAssociations.length > 0) {
-                const association = this.userAssociations.find(obj => obj.name === associationId)
-                return association?.canBePresident
-            } else {
-                return false
-            }
-        },*/
-        // Retest
         unLoadUser() {
             this.user = undefined
             this.userAssociations = []
@@ -117,7 +104,12 @@ export const useUserStore = defineStore('userStore', {
             setTokens(accessToken, refreshToken)
             this.newUser = user
         },
-        // To test
+
+        /**
+         * It checks if the user is president of the association.
+         * @param {number} associationId - number - The id of the association you want to check
+         * @returns A boolean value.
+         */
         hasPresidentStatus(associationId: number): boolean {
             let perm = false
             if (this.userAssociations.length && associationId) {

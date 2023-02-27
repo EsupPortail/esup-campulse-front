@@ -1,6 +1,6 @@
-import type { AssociationUser, User, UserGroup, UserRegister } from "#/user";
-import { _associationName } from "./association.mock";
-import { _groups } from "./group.mock";
+import type {AssociationUser, User, UserGroup, UserRegister} from "#/user";
+import {_userAssociation} from "~/fixtures/association.mock";
+import {_groups} from "~/fixtures/group.mock";
 
 function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
     const permissions: string[] = []
@@ -10,12 +10,12 @@ function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
                 permissions.push(permission)
             }
         })
-    });
+    })
     return permissions
 }
 
 export const _userGroups: UserGroup[] = [
-    // Gestionnaire
+    // Manager
     {
         userId: 1,
         groupId: 1,
@@ -31,7 +31,7 @@ export const _userGroups: UserGroup[] = [
         groupId: 1,
         institutionId: 3,
     },
-    // Étudiant
+    // Student
     {
         userId: 2,
         groupId: 6,
@@ -55,7 +55,7 @@ export const _manager: User = {
     isCas: false,
     hasValidatedEmail: true,
     isValidatedByAdmin: true,
-    associations: _associationName,
+    associations: [],
     groups: [_userGroups[0], _userGroups[1], _userGroups[2]],
     permissions: getUserGroupsPermissions([_userGroups[0], _userGroups[1], _userGroups[2]])
 }
@@ -70,7 +70,7 @@ export const _student: User = {
     isCas: false,
     hasValidatedEmail: true,
     isValidatedByAdmin: true,
-    associations: _associationName,
+    associations: _userAssociation,
     groups: [_userGroups[3]],
     permissions: getUserGroupsPermissions([_userGroups[3]])
 }
@@ -106,7 +106,7 @@ export const _userAssociations: AssociationUser[] = [
     {
         name: "Octant",
         isPresident: false,
-        canBePresident: false,
+        canBePresident: true,
         isValidatedByAdmin: true,
         isSecretary: true,
         isTreasurer: false,

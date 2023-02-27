@@ -1,16 +1,26 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { _manager, _newUser, _student } from '~/fixtures/user.mock'
-import { useUserStore } from '@/stores/useUserStore'
-import { _axiosFixtures } from '~/fixtures/axios.mock'
-import type { User } from "#/user";
-import { _tokens } from "~/fixtures/tokens.mock";
-import { useAxios } from "@/composables/useAxios";
+import {createPinia, setActivePinia} from 'pinia'
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
+import {_manager, _newUser, _student, _userAssociations} from '~/fixtures/user.mock'
+import {_tokens, tokenMock} from "~/fixtures/tokens.mock";
+import {useUserStore} from '@/stores/useUserStore'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
+import type {User} from "#/user";
+import {useAxios} from "@/composables/useAxios";
+import useSecurity from "@/composables/useSecurity";
+import type {AxiosResponse} from "axios";
+
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
         axiosPublic: _axiosFixtures,
         axiosAuthenticated: _axiosFixtures
+    })
+}))
+
+vi.mock('@/composables/useSecurity', () => ({
+    default: () => ({
+        setTokens: tokenMock,
+        removeTokens: tokenMock
     })
 }))
 
@@ -23,8 +33,10 @@ describe('User store', () => {
     })
     afterEach(() => {
         vi.restoreAllMocks()
+        userStore.user = undefined
+        userStore.newUser = undefined
     })
-    // PASSED
+
     describe('isAuth', () => {
         it('should be true if user has data', () => {
             userStore.user = _student
@@ -35,7 +47,7 @@ describe('User store', () => {
             expect(userStore.isAuth).toBeFalsy()
         })
     })
-    // PASSED
+
     describe('isCas', () => {
         beforeEach(() => {
             userStore.user = _student
@@ -58,40 +70,69 @@ describe('User store', () => {
             expect(userStore.isCas).toBeFalsy()
         })
     })
-    // PASSED
-    describe('userNameFirstLetter', () => {
-        it('should display capitalized first letter of firstname', () => {
+
+    describe('userInstitutions', () => {
+        it('should return an array of institution IDs based on userGroups', () => {
             userStore.user = _manager
-            expect(userStore.userNameFirstLetter).toBe('M')
-        })
-        it('should not display first letter of firstname in lower case', () => {
-            userStore.user = _student
-            userStore.user.firstName = 'student'
-            expect(userStore.userNameFirstLetter).not.toBe('s')
-        })
-        it('should not be displayed if user !isAuth', () => {
-            userStore.user = undefined
-            expect(userStore.userNameFirstLetter).toBeUndefined()
+            expect(userStore.userInstitutions).toEqual([1, 2, 3])
         })
     })
-    // PASSED
-    describe('User logout', () => {
-        it('should clear local storage', () => {
-            localStorage.setItem('JWT__access__token', _tokens.access)
-            localStorage.setItem('JWT__refresh__token', _tokens.refresh)
-            userStore.logOut()
-            expect(localStorage.getItem('JWT__access__token')).toBeNull()
-            expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
+
+    describe('isAssociationMember', () => {
+        it('should return true if user is an association member', () => {
+            userStore.user = _student
+            expect(userStore.isAssociationMember).toBeTruthy()
         })
-        it('should clear user data', () => {
-            userStore.logOut()
+        it('should return false if user is not an association member', () => {
+            userStore.user = _manager
+            expect(userStore.isAssociationMember).toBeFalsy()
+        })
+    })
+
+    describe('logIn', () => {
+        afterEach(() => {
+            _student.isValidatedByAdmin = true
+        })
+        const {axiosAuthenticated} = useAxios()
+        const mockedAxios = vi.mocked(axiosAuthenticated, true)
+        const data = {
+            user: _student,
+            accessToken: _tokens.access,
+            refreshToken: _tokens.refresh
+        }
+        it('should set tokens and populate user data in store', async () => {
+            mockedAxios.post.mockResolvedValueOnce({data})
+            const {setTokens} = useSecurity()
+            await userStore.logIn('url', {username: 'john', password: 'password'})
+            expect(setTokens).toHaveBeenCalledOnce()
+            expect(setTokens).toHaveBeenCalledWith(_tokens.access, _tokens.refresh)
+            expect(userStore.user).toEqual(_student)
+        })
+        it('should throw an error if user is not validated by admin', async () => {
+            data.user.isValidatedByAdmin = false
+            mockedAxios.post.mockResolvedValueOnce({data})
+            const {setTokens} = useSecurity()
+            await expect(userStore.logIn('url', {username: 'john', password: 'password'})).rejects.toThrow(Error)
+            expect(setTokens).toHaveBeenCalledTimes(0)
             expect(userStore.user).toBeUndefined()
         })
     })
-    // PASSED
+
+    describe('logOut', () => {
+        it('should remove tokens and call unLoadUser', () => {
+            const {removeTokens} = useSecurity()
+            const unLoadUser = vi.spyOn(userStore, 'unLoadUser')
+            localStorage.setItem('JWT__access__token', _tokens.access)
+            localStorage.setItem('JWT__refresh__token', _tokens.refresh)
+            userStore.logOut()
+            expect(removeTokens).toHaveBeenCalledOnce()
+            expect(unLoadUser).toHaveBeenCalledOnce()
+        })
+    })
+
     describe('Load CAS user', () => {
         beforeEach(() => {
-            const { axiosAuthenticated } = useAxios()
+            const {axiosAuthenticated} = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.post.mockResolvedValueOnce({
                 data: {
@@ -120,31 +161,74 @@ describe('User store', () => {
             })
         })*/
     })
-    // PASSED
-    describe('Unload user', () => {
-        it('should clear all data from user', () => {
-            userStore.user = _student
-            userStore.unLoadUser()
+
+    describe('getUser', () => {
+        afterEach(() => {
+            userStore.user = undefined
+            userStore.newUser = undefined
+            _student.isValidatedByAdmin = true
+            _student.isCas = false
+        })
+
+        const {axiosAuthenticated} = useAxios()
+        const mockedAxios = vi.mocked(axiosAuthenticated, true)
+
+        it('should getUser if user is validated by admin', async () => {
+            mockedAxios.get.mockResolvedValueOnce({data: _student} as AxiosResponse)
+            await userStore.getUser()
+            expect(userStore.user).toEqual(_student)
+            expect(userStore.newUser).toBeUndefined()
+        })
+
+        it('should populate newUser if user is not validated by admin and CAS', async () => {
+            _student.isValidatedByAdmin = false
+            _student.isCas = true
+            mockedAxios.get.mockResolvedValueOnce({data: _student} as AxiosResponse)
+            await userStore.getUser()
             expect(userStore.user).toBeUndefined()
+            expect(userStore.newUser).toEqual({
+                firstName: _student.firstName,
+                lastName: _student.lastName,
+                isCas: true,
+                username: _student.username,
+                email: _student.email,
+                phone: _student.phone as string
+            })
+        })
+
+        it('should logOut if user if not validated by admin and not CAS', async () => {
+            _student.isValidatedByAdmin = false
+            mockedAxios.get.mockResolvedValueOnce({data: _student} as AxiosResponse)
+            const logOut = vi.spyOn(userStore, 'logOut')
+            await userStore.getUser()
+            expect(logOut).toHaveBeenCalledOnce()
+            expect(userStore.user).toBeUndefined()
+            expect(userStore.newUser).toBeUndefined()
         })
     })
-    // PASSED
-    describe('Unload newUser', () => {
-        beforeEach(() => {
+
+    describe('unLoadUser', () => {
+        it('should clear all data from user', () => {
+            userStore.user = _student
+            userStore.userAssociations = _userAssociations
+            userStore.unLoadUser()
+            expect(userStore.user).toBeUndefined()
+            expect(userStore.userAssociations).toEqual([])
+        })
+    })
+
+    describe('unLoadNewUser', () => {
+        it('should remove tokens and remove all data from newUser', () => {
             userStore.newUser = _newUser
             localStorage.setItem('JWT__access__token', _tokens.access)
             localStorage.setItem('JWT__refresh__token', _tokens.refresh)
             userStore.unLoadNewUser()
-        })
-        it('should remove tokens', () => {
-            expect(localStorage.getItem('JWT__access__token')).toBeNull()
-            expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
-        })
-        it('should remove all data from newUser', () => {
+            const {removeTokens} = useSecurity()
+            expect(removeTokens).toHaveBeenCalledOnce()
             expect(userStore.newUser).toBeUndefined()
         })
     })
-    // PASSED
+
     describe('getUserAssociations', () => {
         afterEach(() => {
             userStore.user = undefined
@@ -162,66 +246,39 @@ describe('User store', () => {
                         association: 1
                     }
                 ]
-                const { axiosAuthenticated } = useAxios()
+                const {axiosAuthenticated} = useAxios()
                 const mockedAxios = vi.mocked(axiosAuthenticated, true)
-                mockedAxios.get.mockResolvedValueOnce({ data })
+                mockedAxios.get.mockResolvedValueOnce({data})
                 await userStore.getUserAssociations()
                 expect(mockedAxios.get).toHaveBeenCalledOnce()
                 expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/')
                 expect(userStore.userAssociations).toEqual(data)
             })
         })
-        // PASSED
+
         describe('If user has no association', () => {
             it('should not call API and do nothing to the store', async () => {
                 await userStore.getUserAssociations()
-                const { axiosAuthenticated } = useAxios()
+                const {axiosAuthenticated} = useAxios()
                 expect(axiosAuthenticated.get).toHaveBeenCalledTimes(0)
                 expect(userStore.userAssociations).toEqual([])
             })
         })
     })
-    // PASSED
-    describe('canBePresisdent', () => {
-        describe('If user has associations', () => {
-            afterEach(() => {
-                userStore.userAssociations = []
-            })
-            it('should find the right association by id and check is canBePresident is true', () => {
-                const roles = [
-                    {
-                        id: 1,
-                        name: "",
-                        isPresident: false,
-                        canBePresident: true,
-                        isValidatedByAdmin: true,
-                        isSecretary: true,
-                        isTreasurer: false,
-                    }
-                ]
-                userStore.userAssociations = roles
-                expect(userStore.canBePresident(roles[0].id)).toBeTruthy()
-            })
-            it('should return false if canBePresident is false', () => {
-                const roles = [
-                    {
-                        id: 1,
-                        name: "",
-                        isPresident: false,
-                        canBePresident: false,
-                        isValidatedByAdmin: true,
-                        isSecretary: false,
-                        isTreasurer: false,
-                    }
-                ]
-                userStore.userAssociations = roles
-                expect(userStore.canBePresident(roles[0].id)).toBeFalsy()
-            })
+
+    describe('hasPresidentStatus', () => {
+        beforeEach(() => {
+            userStore.userAssociations = _userAssociations
         })
-        describe('If user has no associations', () => {
-            it('should return false', () => {
-                expect(userStore.canBePresident(undefined)).toBeFalsy()
-            })
+        afterEach(() => {
+            userStore.userAssociations = []
+        })
+        it('should return true if isPresident or canBePresident is true', () => {
+            expect(userStore.hasPresidentStatus(1)).toBeTruthy()
+            expect(userStore.hasPresidentStatus(2)).toBeTruthy()
+        })
+        it('should return false if is President or canBePresident is false', () => {
+            expect(userStore.hasPresidentStatus(3)).toBeFalsy()
         })
     })
 })

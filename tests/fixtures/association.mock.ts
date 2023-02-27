@@ -1,5 +1,5 @@
-import type { Association, AssociationSearch, AssociationSocialNetwork, EditedAssociation } from '#/association'
-import type { UserAssociation } from "#/user";
+import type {Association, AssociationSearch, AssociationSocialNetwork, EditedAssociation} from '#/association'
+import type {UserAssociation} from "#/user";
 
 
 export const _association: Association = {
@@ -162,7 +162,7 @@ export const _associations: Association[] = [
     }
 ]
 
-export const _associationName: UserAssociation[] = [
+export const _userAssociation: UserAssociation[] = [
     {
         id: 1,
         name: 'Association',
@@ -171,7 +171,7 @@ export const _associationName: UserAssociation[] = [
     }
 ]
 
-export const _associationNames = _associations.map(
+export const _associationLabels = _associations.map(
     association => ({
         value: association.id,
         label: association.name
