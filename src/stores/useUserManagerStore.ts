@@ -1,13 +1,5 @@
 import {defineStore} from 'pinia'
-import type {
-    AssociationUser,
-    AssociationUserDetail,
-    User,
-    UserAssociationPatch,
-    UserManagerStore,
-    UserNames,
-    UserToUpdate
-} from '#/user'
+import type {AssociationUserDetail, User, UserAssociationPatch, UserManagerStore, UserNames, UserToUpdate} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from "@/stores/useUserStore";
 
@@ -29,7 +21,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         userGroups: (state: UserManagerStore): number[] => {
             return state.user?.groups?.map<number>(group => group.groupId) || []
         },
-        userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
+        /*userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
             return {
                 firstName: state.user?.firstName as string,
                 lastName: state.user?.lastName as string,
@@ -37,8 +29,8 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 email: state.user?.email as string,
                 phone: state.user?.phone as string
             }
-        },
-        userAssociationStatus: (state: UserManagerStore): AssociationUser[] => {
+        },*/
+        /*userAssociationStatus: (state: UserManagerStore): AssociationUser[] => {
             return state.userAssociations.map(association => ({
                 association: association.association.id,
                 name: association.association.name,
@@ -48,11 +40,13 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 isSecretary: association.isSecretary,
                 isTreasurer: association.isTreasurer,
             }))
-        }
+        }*/
     },
 
     actions: {
-        // To test
+        /**
+         * It gets the users from the API, and if the user has institutions, it gets the users from those institutions
+         */
         async getUsers() {
             const {axiosAuthenticated} = useAxios()
             const userStore = useUserStore()
@@ -62,26 +56,41 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             }
             this.users = (await axiosAuthenticated.get<User[]>(url)).data
         },
-        // To test
+        /**
+         * It gets all the users that are not validated by the admin, and if the user is an admin, it filters the users by
+         * the institutions the admin is associated with
+         */
         async getUnvalidatedUsers() {
             const {axiosAuthenticated} = useAxios()
             const userStore = useUserStore()
             let url = '/users/?is_validated_by_admin=false'
-            if (userStore.userInstitutions?.length !== 0) {
+            if (userStore.userInstitutions && userStore.userInstitutions?.length !== 0) {
                 url += `&institutions=${userStore.userInstitutions?.join(',')}`
+                this.users = (await axiosAuthenticated.get<User[]>(url)).data
             }
-            this.users = (await axiosAuthenticated.get<User[]>(url)).data
         },
+        /**
+         * It gets the user detail from the API.
+         * @param {number} id - number - The id of the user to get
+         */
         async getUserDetail(id: number) {
             const {axiosAuthenticated} = useAxios()
             this.user = (await axiosAuthenticated.get<User>(`/users/${id}`)).data
         },
+        /**
+         * It takes an array of group IDs, and adds the user to each group
+         * @param {number[]} groupsToAdd - number[] - An array of group IDs to add to the user.
+         */
         async updateUserGroups(groupsToAdd: number[]) {
             const {axiosAuthenticated} = useAxios()
             for (const group of groupsToAdd) {
                 await axiosAuthenticated.post('/users/groups/', {username: this.user?.username, group: group})
             }
         },
+        /**
+         * It deletes all the groups in the array `groupsToDelete` from the user with the id `this.user?.id`
+         * @param {number[]} groupsToDelete - number[] - An array of group IDs to delete
+         */
         async deleteUserGroups(groupsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
             for (let i = 0; i < groupsToDelete.length; i++) {

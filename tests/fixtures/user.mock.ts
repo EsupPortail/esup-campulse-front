@@ -23,12 +23,12 @@ export const _userGroups: UserGroup[] = [
     },
     {
         userId: 1,
-        groupId: 1,
+        groupId: 2,
         institutionId: 2,
     },
     {
         userId: 1,
-        groupId: 1,
+        groupId: 3,
         institutionId: 3,
     },
     // Student
@@ -83,6 +83,15 @@ export const _newUser: UserRegister = {
     phone: '',
     email: 'john.lennon@bbc.com'
 }
+
+export const _users = [_student, _manager]
+
+export const _usersNames = _users.map(
+    user => ({
+        value: user.id,
+        label: user.firstName + ' ' + user.lastName
+    })
+)
 
 export const _userGroupList: (number | undefined)[] = _userGroups.map(group => group.id)
 
