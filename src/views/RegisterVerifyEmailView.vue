@@ -7,8 +7,8 @@ import useSecurity from '@/composables/useSecurity'
 const { verifyEmail } = useSecurity()
 const route = useRoute()
 const { t } = useI18n()
-let messageTitle = ref<string>()
-let messageDescription = ref<string>()
+const messageTitle = ref<string>()
+const messageDescription = ref<string>()
 
 onMounted(async () => {
     if (route.query.key) {
