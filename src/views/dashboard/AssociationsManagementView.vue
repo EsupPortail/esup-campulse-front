@@ -56,13 +56,6 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {
-        name: 'institutionComponent',
-        align: 'left',
-        label: t('directory.labels.association-institution-component'),
-        field: 'institutionComponent',
-        sortable: true
-    },
-    {
         name: 'activityField',
         align: 'left',
         label: t('directory.labels.association-activity-field'),
@@ -155,9 +148,6 @@ const columns: QTableProps['columns'] = [
                         </QTd>
                         <QTd key="institution" :props="props">
                             {{ props.row.institution?.name }}
-                        </QTd>
-                        <QTd key="institutionComponent" :props="props">
-                            {{ props.row.institutionComponent?.name }}
                         </QTd>
                         <QTd key="activityField" :props="props">
                             {{ props.row.activityField?.name }}
