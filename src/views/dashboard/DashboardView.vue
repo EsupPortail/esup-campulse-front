@@ -69,7 +69,7 @@ const {isStaff} = useUserGroups()
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        :label="t('dashboard.association-user.edit-my-associations')"
+                        :label="t('dashboard.association-user.edit-my-association')"
                         :to="{name: 'ManageAssociations'}"
                         color="secondary"
                     />
