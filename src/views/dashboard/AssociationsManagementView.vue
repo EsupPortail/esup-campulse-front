@@ -53,14 +53,16 @@ const columns: QTableProps['columns'] = [
         align: 'left',
         label: t('directory.labels.association-institution'),
         field: 'institution',
-        sortable: true
+        sortable: true,
+        sort: (a, b) => a.name.localeCompare(b.name)
     },
     {
         name: 'activityField',
         align: 'left',
         label: t('directory.labels.association-activity-field'),
         field: 'activityField',
-        sortable: true
+        sortable: true,
+        sort: (a, b) => a.name.localeCompare(b.name)
     },
     {
         name: 'status',
