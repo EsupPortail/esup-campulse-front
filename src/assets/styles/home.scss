@@ -2,409 +2,409 @@
 
 // Intro element on the home page
 #home-info-panel {
+  width: 100%;
+  background: none !important;
+  margin: 20px 0 80px;
+  padding: 0;
+
+  .q-banner__content {
     width: 100%;
-    background: none !important;
-    margin: 20px 0 80px;
-    padding: 0;
-  
-    .q-banner__content {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      color: $textColor1;
-      font-size: 19px;
-      font-weight: 400;
-      position: relative;
-      padding-left: 80px;
-  
-      .q-card__section {
-        padding: 0;
-        line-height: normal;
-        text-align: justify;
+    max-width: 1000px;
+    margin: 0 auto;
+    color: $textColor1;
+    font-size: 19px;
+    font-weight: 400;
+    position: relative;
+    padding-left: 80px;
+
+    .q-card__section {
+      padding: 0;
+      line-height: normal;
+      text-align: justify;
+    }
+  }
+
+  #home-banner-icon {
+    display: inline-block;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 3px solid $color1;
+    background-color: transparent;
+    position: absolute;
+    top: calc(50% - 54px);
+    left: 0;
+
+    i {
+      font-size: 28px;
+      color: $color1;
+      display: inline-block;
+      width: 27px;
+      height: 27px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
+    &::before, &::after {
+      content: '';
+      display: block;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      position: absolute;
+      left: 14px;
+    }
+
+    &::before {
+      background-color: $color2;
+      bottom: -30px;
+    }
+
+    &::after {
+      background-color: $color3;
+      bottom: -57px;
+    }
+
+    &.variant-minimal {
+      top: calc(50% - 27px);
+
+      &::before, &::after {
+        display: none;
       }
     }
-  
-    #home-banner-icon {
-      display: inline-block;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      border: 3px solid $color1;
-      background-color: transparent;
+  }
+}
+
+// Sections for each space on the site
+.home-section {
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-bottom: .3125rem;
+  padding: 70px 0;
+
+  & > div {
+    width: 100%;
+    max-width: $pageWidth;
+    margin: 0 auto;
+    padding: 0;
+
+    a {
+      margin: 0;
+    }
+  }
+
+  &.home-section-annuaire {
+    background-image: $homeDirectoryImage;
+    background-position: center center;
+  }
+
+  &.home-section-charte {
+    background-image: $homeCharterImage;
+    background-position: center center;
+
+    .section-card {
+      flex-direction: row-reverse;
+    }
+  }
+
+  &.home-section-cape {
+    background-image: $homeCapeImage;
+    background-position: center center;
+  }
+
+  .section-card {
+    background-color: $backgroundColor1;
+    box-shadow: 0rem 0rem 1.25rem .125rem rgba(0, 0, 0, 0.2);
+    padding: 2.5rem 3.75rem 3.125rem;
+    display: flex;
+    gap: 6.25rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    .section-background {
+      background-color: $color1Background;
+      width: 26.875rem;
+      height: 50rem;
       position: absolute;
-      top: calc(50% - 54px);
+      top: calc(50% - 25rem);
       left: 0;
-  
-      i {
-        font-size: 28px;
-        color: $color1;
-        display: inline-block;
-        width: 27px;
-        height: 27px;
+      z-index: 0;
+
+      span {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 25rem 0 25rem 6.25rem;
+        border-color: transparent transparent transparent $color1Background;
         position: absolute;
-        top: 10px;
-        left: 10px;
+        right: -6.1875rem;
+        top: 0;
       }
-  
-      &::before, &::after {
-        content: '';
-        display: block;
-        width: 17px;
-        height: 17px;
-        border-radius: 50%;
-        position: absolute;
-        left: 14px;
+    }
+
+    .section-title {
+      flex: 0 0 26.25rem;
+      position: relative;
+      z-index: 2;
+
+      h1 {
+        display: flex;
+        gap: .9375rem;
+        font-family: $titleFont;
+        font-size: 3.75rem;
+        font-weight: 600;
+        color: $color1Text;
+        text-transform: uppercase;
+        line-height: 3.875rem;
       }
-  
-      &::before {
-        background-color: $color2;
-        bottom: -30px;
+
+      h2 {
+        font-family: $titleFont;
+        font-size: 3.125rem;
+        font-weight: 400;
+        color: $color1Text;
+        line-height: 3.4375rem;
       }
-  
-      &::after {
-        background-color: $color3;
-        bottom: -57px;
+
+      .section-icon {
+        display: inline-flex;
+        gap: .625rem;
+        align-items: center;
+
+        span {
+          display: inline-block;
+          width: 1.0625rem;
+          height: 1.0625rem;
+          background-color: $color1;
+          border-radius: 50%;
+
+          &:first-child {
+            width: 3.375rem;
+            height: 3.375rem;
+            color: $color1Text;
+            font-size: 1.6875rem;
+            text-align: center;
+
+            i {
+              position: relative;
+              top: -0.25rem;
+            }
+          }
+        }
       }
-  
-      &.variant-minimal {
-        top: calc(50% - 27px);
-  
-        &::before, &::after {
-          display: none;
+    }
+
+    .section-info {
+      font-size: 1.375rem;
+      font-weight: 400;
+      line-height: 1.75rem;
+      color: $color1Text;
+      border-left: .25rem solid $color1;
+      padding-left: 1.125rem;
+      margin-top: 1.25rem;
+      display: inline-block;
+
+      p {
+        margin: 0;
+
+        strong {
+          font-size: 1.375rem;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .section-content {
+      p {
+        font-size: 1.25rem;
+        font-weight: 400;
+        color: $color1Text;
+      }
+
+      .section-buttons {
+        text-align: center;
+        margin-top: 2.5rem;
+
+        a {
+          display: inline-block;
+          padding: 1rem 4.375rem;
+          font-size: 1.125rem;
+          font-weight: 400;
+          color: $color1Text;
+          border-radius: 0;
+          border: .0625rem solid $color1Text;
+          background-color: transparent;
+          text-decoration: none;
+          text-transform: uppercase;
+          transition: background-color 0.03s linear, color 0.03s linear;
+
+          i {
+            font-size: 1.375rem;
+            position: relative;
+            top: .0625rem;
+            margin-left: .625rem;
+          }
+
+          &:hover {
+            background-color: $color1Text;
+            color: $textColor3;
+          }
+
+          &:active {
+            background-color: transparentize($color1Text, 0.1);
+            color: $textColor3;
+          }
         }
       }
     }
   }
-  
-  // Sections for each space on the site
-  .home-section {
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-bottom: .3125rem;
-    padding: 70px 0;
-  
-    & > div {
-      width: 100%;
-      max-width: $pageWidth;
-      margin: 0 auto;
-      padding: 0;
-  
-      a {
-        margin: 0;
+
+  &.home-section-annuaire {
+    .section-icon {
+      span:nth-child(3), span:nth-child(4) {
+        display: none;
       }
     }
-  
-    &.home-section-annuaire {
-      background-image: $homeDirectoryImage;
-      background-position: center center;
-    }
-  
-    &.home-section-charte {
-      background-image: $homeCharterImage;
-      background-position: center center;
-  
-      .section-card {
-        flex-direction: row-reverse;
-      }
-    }
-  
-    &.home-section-cape {
-      background-image: $homeCapeImage;
-      background-position: center center;
-    }
-  
+  }
+
+  &.home-section-charte {
     .section-card {
-      background-color: $backgroundColor1;
-      box-shadow: 0rem 0rem 1.25rem .125rem rgba(0, 0, 0, 0.2);
-      padding: 2.5rem 3.75rem 3.125rem;
-      display: flex;
-      gap: 6.25rem;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-  
       .section-background {
-        background-color: $color1Background;
-        width: 26.875rem;
-        height: 50rem;
-        position: absolute;
-        top: calc(50% - 25rem);
-        left: 0;
-        z-index: 0;
-  
+        background-color: $color2Background;
+        right: 0;
+        left: unset;
+
         span {
-          width: 0;
-          height: 0;
-          border-style: solid;
-          border-width: 25rem 0 25rem 6.25rem;
-          border-color: transparent transparent transparent $color1Background;
-          position: absolute;
-          right: -6.1875rem;
-          top: 0;
+          border-width: 25rem 6.25rem 25rem 0;
+          border-color: transparent $color2Background transparent transparent;
+          left: -6.1875rem;
         }
       }
-  
+
       .section-title {
-        flex: 0 0 26.25rem;
-        position: relative;
-        z-index: 2;
-  
+        text-align: right;
+
         h1 {
-          display: flex;
-          gap: .9375rem;
-          font-family: $titleFont;
-          font-size: 3.75rem;
-          font-weight: 600;
-          color: $color1Text;
-          text-transform: uppercase;
-          line-height: 3.875rem;
-        }
-  
-        h2 {
-          font-family: $titleFont;
-          font-size: 3.125rem;
-          font-weight: 400;
-          color: $color1Text;
-          line-height: 3.4375rem;
-        }
-  
-        .section-icon {
-          display: inline-flex;
-          gap: .625rem;
-          align-items: center;
-  
-          span {
-            display: inline-block;
-            width: 1.0625rem;
-            height: 1.0625rem;
-            background-color: $color1;
-            border-radius: 50%;
-  
-            &:first-child {
-              width: 3.375rem;
-              height: 3.375rem;
-              color: $color1Text;
-              font-size: 1.6875rem;
-              text-align: center;
-  
-              i {
-                position: relative;
-                top: -0.25rem;
-              }
-            }
-          }
-        }
-      }
-  
-      .section-info {
-        font-size: 1.375rem;
-        font-weight: 400;
-        line-height: 1.75rem;
-        color: $color1Text;
-        border-left: .25rem solid $color1;
-        padding-left: 1.125rem;
-        margin-top: 1.25rem;
-        display: inline-block;
-  
-        p {
-          margin: 0;
-  
-          strong {
-            font-size: 1.375rem;
-            font-weight: 700;
-          }
-        }
-      }
-  
-      .section-content {
-        p {
-          font-size: 1.25rem;
-          font-weight: 400;
-          color: $color1Text;
-        }
-  
-        .section-buttons {
-          text-align: center;
-          margin-top: 2.5rem;
-  
-          a {
-            display: inline-block;
-            padding: 1rem 4.375rem;
-            font-size: 1.125rem;
-            font-weight: 400;
-            color: $color1Text;
-            border-radius: 0;
-            border: .0625rem solid $color1Text;
-            background-color: transparent;
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: background-color 0.03s linear, color 0.03s linear;
-  
-            i {
-              font-size: 1.375rem;
-              position: relative;
-              top: .0625rem;
-              margin-left: .625rem;
-            }
-  
-            &:hover {
-              background-color: $color1Text;
-              color: $textColor3;
-            }
-  
-            &:active {
-              background-color: transparentize($color1Text, 0.1);
-              color: $textColor3;
-            }
-          }
-        }
-      }
-    }
-  
-    &.home-section-annuaire {
-      .section-icon {
-        span:nth-child(3), span:nth-child(4) {
-          display: none;
-        }
-      }
-    }
-  
-    &.home-section-charte {
-      .section-card {
-        .section-background {
-          background-color: $color2Background;
-          right: 0;
-          left: unset;
-  
-          span {
-            border-width: 25rem 6.25rem 25rem 0;
-            border-color: transparent $color2Background transparent transparent;
-            left: -6.1875rem;
-          }
-        }
-  
-        .section-title {
-          text-align: right;
-  
-          h1 {
-            flex-direction: row-reverse;
-            color: $color2Text;
-          }
-  
-          h2 {
-            color: $color2Text;
-          }
-  
-          .section-icon {
-            flex-direction: row-reverse;
-  
-            span {
-              background-color: $color2;
-              color: $color2Text;
-  
-              i {
-                top: -0.1875rem;
-              }
-            }
-  
-            span:nth-child(4) {
-              display: none;
-            }
-          }
-        }
-  
-        .section-info {
-          border-left: none;
-          border-right: .25rem solid $color2;
-          padding-left: 0;
-          padding-right: 1.125rem;
+          flex-direction: row-reverse;
           color: $color2Text;
         }
-  
-        .section-content {
-          p {
+
+        h2 {
+          color: $color2Text;
+        }
+
+        .section-icon {
+          flex-direction: row-reverse;
+
+          span {
+            background-color: $color2;
             color: $color2Text;
-          }
-  
-          .section-buttons {
-            a {
-              color: $color2Text;
-              border-color: $color2Text;
-  
-              &:hover {
-                background-color: $color2Text;
-                color: $textColor3;
-              }
-  
-              &:active {
-                background-color: transparentize($color2Text, 0.1);
-                color: $textColor3;
-              }
+
+            i {
+              top: -0.1875rem;
             }
+          }
+
+          span:nth-child(4) {
+            display: none;
           }
         }
       }
-    }
-  
-    &.home-section-cape {
-      .section-card {
-        .section-background {
-          background-color: $color3Background;
-  
-          span {
-            border-color: transparent transparent transparent $color3Background;
-          }
+
+      .section-info {
+        border-left: none;
+        border-right: .25rem solid $color2;
+        padding-left: 0;
+        padding-right: 1.125rem;
+        color: $color2Text;
+      }
+
+      .section-content {
+        p {
+          color: $color2Text;
         }
-  
-        .section-title {
-          h1 {
-            color: $color3Text;
-          }
-  
-          h2 {
-            color: $color3Text;
-          }
-  
-          .section-icon {
-            span {
-              background-color: $color3;
-              color: $color3Text;
-  
-              i {
-                top: -0.125rem;
-                left: -0.125rem;
-              }
+
+        .section-buttons {
+          a {
+            color: $color2Text;
+            border-color: $color2Text;
+
+            &:hover {
+              background-color: $color2Text;
+              color: $textColor3;
             }
-          }
-        }
-  
-        .section-info {
-          border-color: $color3;
-          color: $color3Text;
-        }
-  
-        .section-content {
-          p {
-            color: $color3Text;
-          }
-  
-          .section-buttons {
-            a {
-              color: $color3Text;
-              border-color: $color3Text;
-  
-              &:hover {
-                background-color: $color3Text;
-                color: $textColor3;
-              }
-  
-              &:active {
-                background-color: transparentize($color3Text, 0.1);
-                color: $textColor3;
-              }
+
+            &:active {
+              background-color: transparentize($color2Text, 0.1);
+              color: $textColor3;
             }
           }
         }
       }
     }
   }
+
+  &.home-section-cape {
+    .section-card {
+      .section-background {
+        background-color: $color3Background;
+
+        span {
+          border-color: transparent transparent transparent $color3Background;
+        }
+      }
+
+      .section-title {
+        h1 {
+          color: $color3Text;
+        }
+
+        h2 {
+          color: $color3Text;
+        }
+
+        .section-icon {
+          span {
+            background-color: $color3;
+            color: $color3Text;
+
+            i {
+              top: -0.125rem;
+              left: -0.125rem;
+            }
+          }
+        }
+      }
+
+      .section-info {
+        border-color: $color3;
+        color: $color3Text;
+      }
+
+      .section-content {
+        p {
+          color: $color3Text;
+        }
+
+        .section-buttons {
+          a {
+            color: $color3Text;
+            border-color: $color3Text;
+
+            &:hover {
+              background-color: $color3Text;
+              color: $textColor3;
+            }
+
+            &:active {
+              background-color: transparentize($color3Text, 0.1);
+              color: $textColor3;
+            }
+          }
+        }
+      }
+    }
+  }
+}

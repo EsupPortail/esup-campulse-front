@@ -151,6 +151,7 @@ async function clearSearch(apiSearch: boolean) {
                     color="primary"
                     icon-right="mdi-chevron-right"
                     @click="onSearch"
+                    class="search-button"
                 />
                 <QBtn
                     :label="t('directory.cancel-search')"
@@ -214,6 +215,7 @@ async function clearSearch(apiSearch: boolean) {
                     color="primary"
                     icon-right="mdi-chevron-right"
                     type="submit"
+                    class="search-button"
                 />
                 <QBtn
                     :label="t('directory.cancel-search')"

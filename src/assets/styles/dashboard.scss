@@ -1,34 +1,34 @@
 @import '@/assets/variables';
 
 .dashboard-section {
-    h2 {
-      width: 100%;
-      max-width: $pageWidth;
-      margin: 0 auto;
-      background-color: transparent;
-      font-size: 2rem;
-      text-transform: uppercase;
+  h2 {
+    width: 100%;
+    max-width: $pageWidth;
+    margin: 0 auto;
+    background-color: transparent;
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: $color1Text;
+
+    i {
       color: $color1Text;
-  
-      i {
-        color: $color1Text;
-        font-size: 1.75rem;
-        margin-right: 0.875rem;
-        position: relative;
-        top: -0.188rem;
-      }
-    }
-  
-    .button-group {
-      width: 28.75rem;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-  
-      a {
-        display: block;
-        width: 100%;
-      }
+      font-size: 1.75rem;
+      margin-right: 0.875rem;
+      position: relative;
+      top: -0.188rem;
     }
   }
+
+  .button-group {
+    width: 28.75rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    a {
+      display: block;
+      width: 100%;
+    }
+  }
+}

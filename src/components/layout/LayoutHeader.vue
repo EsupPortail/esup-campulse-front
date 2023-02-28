@@ -15,7 +15,7 @@ watch(() => route.name, () => {
 </script>
 
 <template>
-    <QHeader id="layout-header" class="variant-space-1" elevated height-hint="98">
+    <QHeader id="layout-header" :class="{'variant-space-1': title, 'variant-home': route.name === 'Home', 'variant-login': route.name === 'Login'}" elevated height-hint="98">
         <QToolbar>
             <QToolbarTitle>
                 <RouterLink :to="{name: 'Home'}" class="home-link">{{ t("header.title") }}</RouterLink>

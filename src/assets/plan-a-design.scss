@@ -51,3 +51,69 @@ button.q-btn--outline {
   background: $color1 !important;
 }
 
+// Intro element (Image, title, text) that can be used at the top of pages
+.introduction {
+  display: flex;
+  gap: 3.125rem;
+  align-items: center;
+  width: 100%;
+  max-width: $pageWidth;
+  margin: 1.875rem auto 5rem;
+
+  .intro-image {
+    flex: 0 0 300px;
+
+    img {
+      width: 18.75rem;
+      height: auto;
+    }
+  }
+
+  h2 {
+    font-size: 1.875rem;
+    line-height: 2.5rem;
+    font-weight: 400;
+    color: $color1Text;
+    text-transform: uppercase;
+    margin-bottom: 0.625rem;
+  }
+
+  p {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: $color1Text;
+    text-align: justify;
+  }
+
+  @media only screen and (max-width: $pageWidth) {
+    padding-left: $responsiveMargin;
+    padding-right: $responsiveMargin;
+    gap: 1.875rem;
+
+    .intro-image {
+      flex: 0 0 15.625rem;
+
+      img {
+        width: 15.625rem;
+      }
+    }
+  }
+
+  @media only screen and (max-width: $responsiveWidth) {
+    display: block;
+
+    .intro-image {
+      width: 100%;
+      flex: unset;
+      margin-bottom: 0.938rem;
+      height: 9.375rem;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        position: relative;
+        top: -30%;
+      }
+    }
+  }
+}

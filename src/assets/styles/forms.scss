@@ -3,585 +3,613 @@
 // A generic form wrapper.
 // Most forms on the site must be contained in both a "form" and "form-container" element.
 .form-container {
-    position: relative;
-    background-color: $backgroundColor2;
-    padding: 1.5625rem 0;
-  
-    .form {
-      width: 100%;
-      max-width: $pageWidth;
-      margin: 0 auto;
-      padding: .9375rem 0;
-  
-      @media only screen and (max-width: $pageWidth) {
-        padding-left: $responsiveMargin;
-        padding-right: $responsiveMargin;
-      }
-    }
-  
-    &::before, &::after {
-      content: '';
-      display: block;
-      width: 100%;
-      height: .75rem;
-      position: absolute;
-      left: 0;
-    }
-  
-    &::before {
-      top: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
-    }
-  
-    &::after {
-      bottom: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) 100%);
+  position: relative;
+  background-color: $backgroundColor2;
+  padding: 1.5625rem 0;
+
+  .form {
+    width: 100%;
+    max-width: $pageWidth;
+    margin: 0 auto;
+    padding: .9375rem 0;
+
+    @media only screen and (max-width: $pageWidth) {
+      padding-left: $responsiveMargin;
+      padding-right: $responsiveMargin;
     }
   }
-  
-  // Quasar default fields (inputs, buttons, etc)
-  .q-field {
-    .q-field__control {
-      background-color: $backgroundColor1;
-      border-radius: 0;
-      border: .0625rem solid $color1Borders;
-      box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
-  
-      input {
-        color: $color1Text;
-      }
-    }
+
+  &::before, &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: .75rem;
+    position: absolute;
+    left: 0;
   }
-  
-  .q-field--filled.q-field--highlighted .q-field__control::before {
-    background: $color1Background;
+
+  &::before {
+    top: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
   }
-  
-  .q-field--filled .q-field__control::before {
-    background: $color1Background;
-    border-bottom: none;
+
+  &::after {
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) 100%);
   }
-  
-  .q-field--filled .q-field__control::after {
-    background: $color1;
-  }
-  
-  .q-field--error .q-field__control::after {
-    background: currentColor;
-  }
-  
-  .q-field--highlighted .q-field__label {
-    color: $color1Text;
-  }
-  
-  .q-btn {
-    background-color: $color1;
+}
+
+// Quasar default fields (inputs, buttons, etc)
+.q-field {
+  .q-field__control {
+    background-color: $backgroundColor1;
     border-radius: 0;
-    padding: .9375rem 1.875rem;
-    color: $textColor3;
-    font-size: 1.125rem;
-    font-weight: 300;
-    transition: background-color 0.03s linear;
+    border: .0625rem solid $color1Borders;
     box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
-  
-    .q-btn__content > * {
-      color: $textColor3;
+
+    input {
+      color: $color1Text;
     }
-  
-    &::before, .q-focus-helper {
-      display: none;
+  }
+}
+
+.q-field--filled.q-field--highlighted .q-field__control::before {
+  background: $color1Background;
+}
+
+.q-field--filled .q-field__control::before {
+  background: $color1Background;
+  border-bottom: none;
+}
+
+.q-field--filled .q-field__control::after {
+  background: $color1;
+}
+
+.q-field--error .q-field__control::after {
+  background: currentColor;
+}
+
+.q-field--highlighted .q-field__label {
+  color: $color1Text;
+}
+
+.q-btn {
+  background-color: $color1;
+  border-radius: 0;
+  padding: .9375rem 1.875rem;
+  color: $textColor3;
+  font-size: 1.125rem;
+  font-weight: 300;
+  transition: background-color 0.03s linear;
+  box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+
+  .q-btn__content > * {
+    color: $textColor3;
+  }
+
+  &::before, .q-focus-helper {
+    display: none;
+  }
+
+  &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+    background-color: mix(#224d80, $color1, 20%) !important;
+  }
+
+  &:active, &.bg-primary:active, &.bg-secondary:active {
+    background-color: #224d80 !important;
+  }
+
+  &.bg-primary {
+    background: $color1 !important;
+  }
+
+  &.bg-secondary {
+    background: $color1 !important;
+  }
+
+  &.small-button {
+    padding: .375rem 1.875rem;
+    font-size: 1rem;
+
+    i {
+      font-size: 1.125rem;
     }
-  
-    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: mix(#224d80, $color1, 20%) !important;
-    }
-  
-    &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: #224d80 !important;
-    }
-  
-    &.bg-primary {
-      background: $color1 !important;
-    }
-  
-    &.bg-secondary {
-      background: $color1 !important;
-    }
-  
-    &.small-button {
-      padding: .375rem 1.875rem;
-      font-size: 1rem;
-  
-      i {
+  }
+}
+
+.q-select {
+  .q-field__native {
+    padding: .375rem 0 .375rem .5rem;
+  }
+}
+
+// A document form element allowing to upload, remove and review a list of documents.
+.document-input-group {
+  .document-input {
+    margin-bottom: 1.25rem;
+
+    .document-input-header {
+      background-color: $backgroundColor1;
+      box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+      height: 3.75rem;
+      border-left: .25rem solid $color1;
+      position: relative;
+      white-space: nowrap;
+      padding: 0 5.3125rem 0 1.5625rem;
+      line-height: 3.75rem;
+
+      & > h4 {
+        display: inline-block;
+        max-width: 100%;
         font-size: 1.125rem;
+        font-weight: 400;
+        color: $textColor1;
+        text-transform: uppercase;
+        line-height: 3.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      & > p {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 0 0 .3125rem;
+        font-size: 1.125rem;
+
+        a {
+          display: inline-block;
+          height: 1.875rem;
+          opacity: 0.6;
+          padding: .125rem .3125rem;
+          cursor: pointer;
+          vertical-align: middle;
+          line-height: normal;
+          transition: transform 0.03s linear;
+          position: relative;
+          top: -0.0625rem;
+
+          &:hover {
+            opacity: 0.8;
+            transform: scale(1.15);
+          }
+
+          &:active {
+            opacity: 1;
+          }
+        }
+      }
+
+      & > button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.875rem;
+        color: $textColor1;
+        width: 3.75rem;
+        height: 3.75rem;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $color1;
+        }
+
+        &:active {
+          background-color: mix(white, $color1, 10%);
+        }
+
+        &:disabled {
+          opacity: 0.4 !important;
+
+          &:hover {
+            background-color: transparent;
+          }
+
+          &:active {
+            background-color: transparent;
+          }
+        }
       }
     }
-  }
-  
-  .q-select {
-    .q-field__native {
-      padding: .375rem 0 .375rem .5rem;
-    }
-  }
-  
-  // A document form element allowing to upload, remove and review a list of documents.
-  .document-input-group {
-    .document-input {
-      margin-bottom: 1.25rem;
-  
-      .document-input-header {
-        background-color: $backgroundColor1;
-        box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
-        height: 3.75rem;
-        border-left: .25rem solid $color1;
+
+    .document-input-list {
+      padding: .9375rem .5rem .9375rem .9375rem;
+
+      .document-item {
+        height: 2.8125rem;
         position: relative;
-        white-space: nowrap;
-        padding: 0 5.3125rem 0 1.5625rem;
-        line-height: 3.75rem;
-  
-        & > h4 {
-          display: inline-block;
-          max-width: 100%;
-          font-size: 1.125rem;
-          font-weight: 400;
-          color: $textColor1;
-          text-transform: uppercase;
-          line-height: 3.75rem;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-  
-        & > p {
-          display: inline-block;
-          vertical-align: top;
-          margin: 0 0 0 .3125rem;
-          font-size: 1.125rem;
-  
-          a {
+        padding: .3125rem 4.0625rem 0 .9375rem;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.65);
+          box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+
+          button {
             display: inline-block;
-            height: 1.875rem;
-            opacity: 0.6;
-            padding: .125rem .3125rem;
-            cursor: pointer;
-            vertical-align: middle;
-            line-height: normal;
-            transition: transform 0.03s linear;
-            position: relative;
-            top: -0.0625rem;
-  
-            &:hover {
-              opacity: 0.8;
-              transform: scale(1.15);
-            }
-  
-            &:active {
-              opacity: 1;
+
+            &:disabled {
+              display: none;
             }
           }
         }
-  
-        & > button {
-          position: absolute;
-          top: 0;
-          right: 0;
-          font-size: 1.875rem;
-          color: $textColor1;
-          width: 3.75rem;
-          height: 3.75rem;
+
+        p {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          & > i {
+            font-size: 1.125rem;
+            color: $textColor1;
+            margin-right: .3125rem;
+          }
+
+          a {
+            font-size: 1.1875rem;
+            font-weight: 400;
+            color: $textColor1;
+            text-decoration: none;
+            cursor: pointer;
+
+            i {
+              font-size: 1.125rem;
+              color: $textColor1;
+              margin-left: .3125rem;
+              display: none;
+            }
+
+            &:hover {
+              text-decoration: underline;
+
+              i {
+                display: inline;
+              }
+            }
+
+            &:active {
+              opacity: 0.8;
+            }
+          }
+        }
+
+        button {
+          height: 2.8125rem;
+          width: 2.8125rem;
           background-color: transparent;
           border: none;
           border-radius: 0;
           cursor: pointer;
-  
+          display: none;
+          position: absolute;
+          top: 0;
+          right: 0;
+
           &:hover {
             background-color: $color1;
           }
-  
+
           &:active {
             background-color: mix(white, $color1, 10%);
           }
-  
-          &:disabled {
-            opacity: 0.4 !important;
-  
-            &:hover {
-              background-color: transparent;
-            }
-  
-            &:active {
-              background-color: transparent;
-            }
-          }
         }
       }
-  
-      .document-input-list {
-        padding: .9375rem .5rem .9375rem .9375rem;
-  
-        .document-item {
-          height: 2.8125rem;
-          position: relative;
-          padding: .3125rem 4.0625rem 0 .9375rem;
-  
-          &:hover {
-            background-color: rgba(255, 255, 255, 0.65);
-            box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
-  
-            button {
-              display: inline-block;
-  
-              &:disabled {
-                display: none;
-              }
-            }
-          }
-  
-          p {
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-  
-            & > i {
-              font-size: 1.125rem;
-              color: $textColor1;
-              margin-right: .3125rem;
-            }
-  
-            a {
-              font-size: 1.1875rem;
-              font-weight: 400;
-              color: $textColor1;
-              text-decoration: none;
-              cursor: pointer;
-  
-              i {
-                font-size: 1.125rem;
-                color: $textColor1;
-                margin-left: .3125rem;
-                display: none;
-              }
-  
-              &:hover {
-                text-decoration: underline;
-  
-                i {
-                  display: inline;
-                }
-              }
-  
-              &:active {
-                opacity: 0.8;
-              }
-            }
-          }
-  
-          button {
-            height: 2.8125rem;
-            width: 2.8125rem;
-            background-color: transparent;
-            border: none;
-            border-radius: 0;
-            cursor: pointer;
-            display: none;
-            position: absolute;
-            top: 0;
-            right: 0;
-  
-            &:hover {
-              background-color: $color1;
-            }
-  
-            &:active {
-              background-color: mix(white, $color1, 10%);
-            }
-          }
-        }
-      }
-  
-      &.variant-space-2 {
-        .document-input-header {
-          border-color: $color2;
-  
-          & > button {
-            &:hover {
-              background-color: $color2;
-            }
-  
-            &:active {
-              background-color: mix(white, $color2, 10%);
-            }
-          }
-        }
-  
-        .document-input-list .document-item button {
+    }
+
+    &.variant-space-2 {
+      .document-input-header {
+        border-color: $color2;
+
+        & > button {
           &:hover {
             background-color: $color2;
           }
-  
+
           &:active {
             background-color: mix(white, $color2, 10%);
           }
         }
       }
-  
-      &.variant-space-3 {
-        .document-input-header {
-          border-color: $color3;
-  
-          & > button {
-            &:hover {
-              background-color: $color3;
-            }
-  
-            &:active {
-              background-color: mix(white, $color3, 10%);
-            }
-          }
+
+      .document-input-list .document-item button {
+        &:hover {
+          background-color: $color2;
         }
-  
-        .document-input-list .document-item button {
+
+        &:active {
+          background-color: mix(white, $color2, 10%);
+        }
+      }
+    }
+
+    &.variant-space-3 {
+      .document-input-header {
+        border-color: $color3;
+
+        & > button {
           &:hover {
             background-color: $color3;
           }
-  
+
           &:active {
             background-color: mix(white, $color3, 10%);
           }
         }
       }
-    }
-  }
-  
-  // A title that can be located on top of a form wrapper.
-  .form-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: $pageWidth;
-    margin: 0 auto;
-    background-color: transparent;
-  
-    h2 {
-      font-size: 2rem;
-      text-transform: uppercase;
-      color: $color1Text;
-  
-      i {
-        color: $color1Text;
-        font-size: 1.75rem;
-        margin-right: .875rem;
-        position: relative;
-        top: -0.1875rem;
+
+      .document-input-list .document-item button {
+        &:hover {
+          background-color: $color3;
+        }
+
+        &:active {
+          background-color: mix(white, $color3, 10%);
+        }
       }
     }
   }
-  
-  // Generic Quasar tables, as found mainly in the admin section of the site
-  .q-table__container {
-    border-radius: 0;
-    background-color: transparent;
-    box-shadow: none;
-  
-    .q-table__top {
-      display: none;
-    }
-  
-    &.q-table--horizontal-separator thead th, &.q-table--horizontal-separator tbody td {
-      border: none;
-    }
-  
-    .q-table__middle {
-      overflow: auto;
-      width: 100%;
-    }
-  
-    .q-table__bottom {
-      border-top: none;
-      font-size: 1.0625rem;
+}
+
+// A title that can be located on top of a form wrapper.
+.form-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: $pageWidth;
+  margin: 0 auto;
+  background-color: transparent;
+
+  h2 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: $color1Text;
+
+    i {
       color: $color1Text;
+      font-size: 1.75rem;
+      margin-right: .875rem;
+      position: relative;
+      top: -0.1875rem;
     }
-  
-    .q-table {
-      border-collapse: separate;
-      border-spacing: 0 .625rem;
-      width: 100%;
-  
-      thead tr {
-        background-color: $color1;
-        box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
-  
-        th {
-          font-size: 1.125rem;
-          font-weight: 400;
+  }
+}
+
+// Generic Quasar tables, as found mainly in the admin section of the site
+.q-table__container {
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+
+  .q-table__top {
+    display: none;
+  }
+
+  &.q-table--horizontal-separator thead th, &.q-table--horizontal-separator tbody td {
+    border: none;
+  }
+
+  .q-table__middle {
+    overflow: auto;
+    width: 100%;
+  }
+
+  .q-table__bottom {
+    border-top: none;
+    font-size: 1.0625rem;
+    color: $color1Text;
+  }
+
+  .q-table {
+    border-collapse: separate;
+    border-spacing: 0 .625rem;
+    width: 100%;
+
+    thead tr {
+      background-color: $color1;
+      box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+
+      th {
+        font-size: 1.125rem;
+        font-weight: 400;
+        color: $textColor3;
+        text-transform: uppercase;
+        padding: .3125rem .625rem;
+
+        &:first-child {
+          padding-left: .875rem;
+        }
+
+        .q-checkbox__inner {
           color: $textColor3;
-          text-transform: uppercase;
-          padding: .3125rem .625rem;
-  
-          &:first-child {
-            padding-left: .875rem;
-          }
-  
-          .q-checkbox__inner {
-            color: $textColor3;
-  
-            &.text-grey-8 {
-              color: $textColor3 !important;
-  
-              .q-checkbox__svg {
-                color: $color1;
-              }
+
+          &.text-grey-8 {
+            color: $textColor3 !important;
+
+            .q-checkbox__svg {
+              color: $color1;
             }
           }
         }
       }
-  
-      tbody {
-        tr {
-          background-color: $backgroundColor1;
-          box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
-          height: .0625rem;
-  
-          td {
-            height: unset;
-            font-size: 1.125rem;
-            font-weight: 400;
-            color: $color1Text;
-            white-space: normal;
-            padding: .4375rem .625rem;
-  
-            &:first-child {
-              border-left: .25rem solid $color1;
-            }
-  
-            &.actions-cell {
-              padding: 0;
-              padding-left: .625rem;
+    }
+
+    tbody {
+      tr {
+        background-color: $backgroundColor1;
+        box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+        height: .0625rem;
+
+        td {
+          height: unset;
+          font-size: 1.125rem;
+          font-weight: 400;
+          color: $color1Text;
+          white-space: normal;
+          padding: .4375rem .625rem;
+
+          &:first-child {
+            border-left: .25rem solid $color1;
+          }
+
+          &.actions-cell {
+            padding: 0;
+            padding-left: .625rem;
+            height: 100%;
+
+            .q-btn {
+              padding: .625rem 1.25rem;
+              font-size: 1rem;
+              width: 100%;
               height: 100%;
-  
-              .q-btn {
-                padding: .625rem 1.25rem;
-                font-size: 1rem;
-                width: 100%;
-                height: 100%;
-  
-                .q-btn__content {
-                  flex-wrap: nowrap;
-  
-                  i {
-                    font-size: 1.25rem;
-                  }
+
+              .q-btn__content {
+                flex-wrap: nowrap;
+
+                i {
+                  font-size: 1.25rem;
                 }
               }
             }
-  
-            &::before {
-              background: transparentize($color1, 0.95);
-            }
-  
-            &::after {
-              background: transparentize($color1, 0.9);
-            }
+          }
+
+          &::before {
+            background: transparentize($color1, 0.95);
+          }
+
+          &::after {
+            background: transparentize($color1, 0.9);
           }
         }
       }
     }
   }
-  
-  // State badges that can be used in forms.
-  // Icons aren't defined here, only colors.
-  .form-state {
+}
+
+// State badges that can be used in forms.
+// Icons aren't defined here, only colors.
+.form-state {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  .form-state-icon {
     display: inline-block;
-    white-space: nowrap;
-    vertical-align: middle;
-  
-    .form-state-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+    line-height: 1.5rem;
+    text-align: center;
+    margin-left: .4375rem;
+
+    i {
       display: inline-block;
-      width: 1.5rem;
-      height: 1.5rem;
-      border-radius: 50%;
-      box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
-      line-height: 1.5rem;
-      text-align: center;
-      margin-left: .4375rem;
-  
-      i {
-        display: inline-block;
-        color: $textColor3;
-        font-size: .75rem;
-        position: relative;
-        top: -0.125rem;
-      }
-    }
-  
-    .form-state-green {
-      background-color: $stateColor1;
-    }
-  
-    .form-state-orange {
-      background-color: $stateColor2;
-    }
-  
-    .form-state-red {
-      background-color: $stateColor3;
+      color: $textColor3;
+      font-size: .75rem;
+      position: relative;
+      top: -0.125rem;
     }
   }
-  
-  // Select elements used to choose an action to perform on selected table rows.
-  .table-actions-select {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 1.875rem 0 .9375rem;
-  
-    label {
-      width: 100%;
+
+  .form-state-green {
+    background-color: $stateColor1;
+  }
+
+  .form-state-orange {
+    background-color: $stateColor2;
+  }
+
+  .form-state-red {
+    background-color: $stateColor3;
+  }
+}
+
+// Select elements used to choose an action to perform on selected table rows.
+.table-actions-select {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1.875rem 0 .9375rem;
+
+  label {
+    width: 100%;
+  }
+
+  .q-btn {
+    padding: .875rem 1.875rem;
+
+    .q-btn__content {
+      flex-wrap: nowrap;
+
+      & > * {
+        color: $textColor3;
+        white-space: nowrap;
+      }
     }
-  
+  }
+}
+
+// Quasar dialog window
+.q-dialog {
+  .q-card {
+    border-radius: 0;
+  }
+
+  .dialog-message {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $textColor1;
+    padding: 1.5625rem;
+
+    ul {
+      padding-left: 1.5625rem;
+      list-style-type: square;
+    }
+  }
+
+  .dialog-card-actions {
+    padding: 0 1.5625rem 1.5625rem;
+    display: flex;
+    gap: .9375rem;
+
     .q-btn {
-      padding: .875rem 1.875rem;
-  
-      .q-btn__content {
-        flex-wrap: nowrap;
-  
-        & > * {
-          color: $textColor3;
-          white-space: nowrap;
+      padding: .625rem 1.25rem;
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+}
+
+// Quasar pagination
+.q-pagination {
+  margin: 3rem 0 0.5rem;
+
+  .q-pagination__content {
+    width: 100%;
+
+    .q-pagination__middle {
+      margin: 0 auto;
+      gap: 0.2rem;
+
+      button {
+        padding: 0.5rem 1.2rem !important;
+        font-size: 1.3rem;
+
+        &.q-btn--standard {
+          background: $backgroundColor1 !important;
+
+          .q-btn__content * {
+            color: $color1;
+            font-weight: 600;
+          }
         }
       }
     }
   }
-  
-  // Quasar dialog window
-  .q-dialog {
-    .q-card {
-      border-radius: 0;
-    }
-  
-    .dialog-message {
-      font-size: 1rem;
-      font-weight: 400;
-      color: $textColor1;
-      padding: 1.5625rem;
-  
-      ul {
-        padding-left: 1.5625rem;
-        list-style-type: square;
-      }
-    }
-  
-    .dialog-card-actions {
-      padding: 0 1.5625rem 1.5625rem;
-      display: flex;
-      gap: .9375rem;
-  
-      .q-btn {
-        padding: .625rem 1.25rem;
-        font-size: 1rem;
-        margin: 0;
-      }
-    }
-  }
+}

@@ -216,5 +216,6 @@ const {isStaff} = useUserGroups()
 </template>
 
 <style lang="sass">
+@import '@/assets/styles/forms.scss'
 @import '@/assets/styles/dashboard.scss'
 </style>
