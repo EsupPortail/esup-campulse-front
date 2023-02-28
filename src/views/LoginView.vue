@@ -104,3 +104,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
         </QCard>
       </div>-->
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/login.scss'
+</style>

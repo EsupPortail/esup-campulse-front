@@ -33,3 +33,7 @@ const {t} = useI18n()
         <p>{{ t("footer.copyright") }}</p>
     </QFooter>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/footer.scss'
+</style>

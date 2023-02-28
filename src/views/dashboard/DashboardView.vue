@@ -214,3 +214,7 @@ const {isStaff} = useUserGroups()
         </div>
     </section>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/dashboard.scss'
+</style>

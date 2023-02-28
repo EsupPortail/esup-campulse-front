@@ -258,7 +258,7 @@ async function clearSearch(apiSearch: boolean) {
                                     :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png') : '/images/no_logo.png'"
                                 />
                             </div>
-                            <div>
+                            <div class="list-details">
                                 <h3>{{ association.name }}</h3>
                                 <ul>
                                     <li v-if="association.acronym">
@@ -304,3 +304,8 @@ async function clearSearch(apiSearch: boolean) {
         </div>
     </section>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/forms.scss'
+@import '@/assets/styles/associations.scss'
+</style>

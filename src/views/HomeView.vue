@@ -87,3 +87,6 @@ async function onGetAssociationNames() {
     </section>
 </template>
 
+<style lang="sass">
+@import '@/assets/styles/home.scss'
+</style>

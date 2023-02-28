@@ -46,3 +46,7 @@ watch(() => route.name, () => {
 
     </QHeader>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/header.scss'
+</style>
