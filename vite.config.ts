@@ -25,5 +25,13 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-  }
+  },
+  /*
+  // Enable coverage for untested files.
+  test: {
+    coverage: {
+      all: true
+    }
+  },
+  */
 })
