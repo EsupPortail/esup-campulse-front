@@ -9,7 +9,3 @@ const { t } = useI18n()
   <h1>{{ t("password.edit-password") }}</h1>
   <FormProfilePasswordEdit />
 </template>
-
-<style lang="sass" scoped>
-
-</style>

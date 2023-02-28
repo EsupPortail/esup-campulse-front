@@ -86,7 +86,6 @@ async function onDeleteUser() {
 </script>
 
 <template>
-    <h1>{{ t('user-manager.validate-account') }}</h1>
     <section>
         <h2>{{ t('user.infos') }}</h2>
         <article>

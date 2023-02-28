@@ -9,7 +9,3 @@ const { t } = useI18n()
   <h1>{{ t("register.register-resend") }}</h1>
   <FormResendEmail />
 </template>
-
-<style lang="sass" scoped>
-
-</style>
