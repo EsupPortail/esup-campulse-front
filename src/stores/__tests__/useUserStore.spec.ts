@@ -1,6 +1,6 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {_manager, _newUser, _student, _userAssociations} from '~/fixtures/user.mock'
+import {_institutionManager, _institutionStudent, _newUser, _userAssociations} from '~/fixtures/user.mock'
 import {_tokens, tokenMock} from "~/fixtures/tokens.mock";
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
@@ -39,7 +39,7 @@ describe('User store', () => {
 
     describe('isAuth', () => {
         it('should be true if user has data', () => {
-            userStore.user = _student
+            userStore.user = _institutionStudent
             expect(userStore.isAuth).toBeTruthy()
         })
         it('should be false if user has no data', () => {
@@ -50,7 +50,7 @@ describe('User store', () => {
 
     describe('isCas', () => {
         beforeEach(() => {
-            userStore.user = _student
+            userStore.user = _institutionStudent
             userStore.user.isCas = false
             userStore.newUser = _newUser
             userStore.newUser.isCas = false
@@ -73,30 +73,30 @@ describe('User store', () => {
 
     describe('userInstitutions', () => {
         it('should return an array of institution IDs based on userGroups', () => {
-            userStore.user = _manager
-            expect(userStore.userInstitutions).toEqual([1, 2, 3])
+            userStore.user = _institutionManager
+            expect(userStore.userInstitutions).toEqual([2, 3])
         })
     })
 
     describe('isAssociationMember', () => {
         it('should return true if user is an association member', () => {
-            userStore.user = _student
+            userStore.user = _institutionStudent
             expect(userStore.isAssociationMember).toBeTruthy()
         })
         it('should return false if user is not an association member', () => {
-            userStore.user = _manager
+            userStore.user = _institutionManager
             expect(userStore.isAssociationMember).toBeFalsy()
         })
     })
 
     describe('logIn', () => {
         afterEach(() => {
-            _student.isValidatedByAdmin = true
+            _institutionStudent.isValidatedByAdmin = true
         })
         const {axiosAuthenticated} = useAxios()
         const mockedAxios = vi.mocked(axiosAuthenticated, true)
         const data = {
-            user: _student,
+            user: _institutionStudent,
             accessToken: _tokens.access,
             refreshToken: _tokens.refresh
         }
@@ -106,7 +106,7 @@ describe('User store', () => {
             await userStore.logIn('url', {username: 'john', password: 'password'})
             expect(setTokens).toHaveBeenCalledOnce()
             expect(setTokens).toHaveBeenCalledWith(_tokens.access, _tokens.refresh)
-            expect(userStore.user).toEqual(_student)
+            expect(userStore.user).toEqual(_institutionStudent)
         })
         it('should throw an error if user is not validated by admin', async () => {
             data.user.isValidatedByAdmin = false
@@ -136,7 +136,7 @@ describe('User store', () => {
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.post.mockResolvedValueOnce({
                 data: {
-                    user: _student,
+                    user: _institutionStudent,
                     accessToken: _tokens.access,
                     refreshToken: _tokens.refresh
                 }
@@ -144,7 +144,7 @@ describe('User store', () => {
             userStore.loadCASUser('ticket')
         })
         it('should populate newUser data', () => {
-            expect(userStore.newUser).toEqual(_student)
+            expect(userStore.newUser).toEqual(_institutionStudent)
         })
         it('should set user\'s access and refresh tokens', () => {
             expect(localStorage.getItem('JWT__access__token')).toEqual(_tokens.access)
@@ -166,39 +166,39 @@ describe('User store', () => {
         afterEach(() => {
             userStore.user = undefined
             userStore.newUser = undefined
-            _student.isValidatedByAdmin = true
-            _student.isCas = false
+            _institutionStudent.isValidatedByAdmin = true
+            _institutionStudent.isCas = false
         })
 
         const {axiosAuthenticated} = useAxios()
         const mockedAxios = vi.mocked(axiosAuthenticated, true)
 
         it('should getUser if user is validated by admin', async () => {
-            mockedAxios.get.mockResolvedValueOnce({data: _student} as AxiosResponse)
+            mockedAxios.get.mockResolvedValueOnce({data: _institutionStudent} as AxiosResponse)
             await userStore.getUser()
-            expect(userStore.user).toEqual(_student)
+            expect(userStore.user).toEqual(_institutionStudent)
             expect(userStore.newUser).toBeUndefined()
         })
 
         it('should populate newUser if user is not validated by admin and CAS', async () => {
-            _student.isValidatedByAdmin = false
-            _student.isCas = true
-            mockedAxios.get.mockResolvedValueOnce({data: _student} as AxiosResponse)
+            _institutionStudent.isValidatedByAdmin = false
+            _institutionStudent.isCas = true
+            mockedAxios.get.mockResolvedValueOnce({data: _institutionStudent} as AxiosResponse)
             await userStore.getUser()
             expect(userStore.user).toBeUndefined()
             expect(userStore.newUser).toEqual({
-                firstName: _student.firstName,
-                lastName: _student.lastName,
+                firstName: _institutionStudent.firstName,
+                lastName: _institutionStudent.lastName,
                 isCas: true,
-                username: _student.username,
-                email: _student.email,
-                phone: _student.phone as string
+                username: _institutionStudent.username,
+                email: _institutionStudent.email,
+                phone: _institutionStudent.phone as string
             })
         })
 
         it('should logOut if user if not validated by admin and not CAS', async () => {
-            _student.isValidatedByAdmin = false
-            mockedAxios.get.mockResolvedValueOnce({data: _student} as AxiosResponse)
+            _institutionStudent.isValidatedByAdmin = false
+            mockedAxios.get.mockResolvedValueOnce({data: _institutionStudent} as AxiosResponse)
             const logOut = vi.spyOn(userStore, 'logOut')
             await userStore.getUser()
             expect(logOut).toHaveBeenCalledOnce()
@@ -209,7 +209,7 @@ describe('User store', () => {
 
     describe('unLoadUser', () => {
         it('should clear all data from user', () => {
-            userStore.user = _student
+            userStore.user = _institutionStudent
             userStore.userAssociations = _userAssociations
             userStore.unLoadUser()
             expect(userStore.user).toBeUndefined()
@@ -236,7 +236,7 @@ describe('User store', () => {
         })
         describe('If user has associations', () => {
             it('should call API once on /users/associations/ and populate userAssociations in store', async () => {
-                userStore.user = _student
+                userStore.user = _institutionStudent
                 const data = [
                     {
                         user: 'john',

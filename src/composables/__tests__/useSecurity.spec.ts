@@ -1,16 +1,16 @@
-import { createTestingPinia } from '@pinia/testing'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { config } from '@vue/test-utils'
+import {createTestingPinia} from '@pinia/testing'
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
+import {config} from '@vue/test-utils'
 import useSecurity from '@/composables/useSecurity'
-import { useUserStore } from '@/stores/useUserStore'
-import { _axiosFixtures } from '~/fixtures/axios.mock'
-import { _tokens } from '~/fixtures/tokens.mock'
-import { useAxios } from '@/composables/useAxios'
-import { _newUser, _newUserGroups, _student } from '~/fixtures/user.mock'
-import { _permissions } from '~/fixtures/permissions.mock'
+import {useUserStore} from '@/stores/useUserStore'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
+import {_tokens} from '~/fixtures/tokens.mock'
+import {useAxios} from '@/composables/useAxios'
+import {_institutionStudent, _newUser, _newUserGroups} from '~/fixtures/user.mock'
+import {_permissions} from '~/fixtures/permissions.mock'
 
 config.global.plugins = [
-    createTestingPinia({ createSpy: vi.fn() }),
+    createTestingPinia({createSpy: vi.fn()}),
 ]
 
 vi.mock('@/composables/useAxios', () => ({
@@ -33,7 +33,7 @@ describe('useSecurity', () => {
     // OK
     describe('logIn', () => {
         it('should call logIn function in userStore with API route and user infos as payload', async () => {
-            const { logIn, user } = useSecurity()
+            const {logIn, user} = useSecurity()
             user.value = {
                 username: 'john',
                 password: 'password'
@@ -98,7 +98,7 @@ describe('useSecurity', () => {
 })*/
     describe('setTokens', () => {
         it('should set access and refresh tokens', () => {
-            const { setTokens } = useSecurity()
+            const {setTokens} = useSecurity()
             setTokens(_tokens.access, _tokens.refresh)
             expect(localStorage.getItem('JWT__access__token')).toBe(_tokens.access)
             expect(localStorage.getItem('JWT__refresh__token')).toBe(_tokens.refresh)
@@ -106,7 +106,7 @@ describe('useSecurity', () => {
     })
     describe('removeTokens', () => {
         it('should unset access and refresh tokens', () => {
-            const { removeTokens } = useSecurity()
+            const {removeTokens} = useSecurity()
             removeTokens()
             expect(localStorage.getItem('JWT__access__token')).toBeNull()
             expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
@@ -114,8 +114,8 @@ describe('useSecurity', () => {
     })
     describe('userLocalRegister', () => {
         it('should call API once on /users/auth/registration/ with newUser as data', async () => {
-            const { userLocalRegister } = useSecurity()
-            const { axiosPublic } = useAxios()
+            const {userLocalRegister} = useSecurity()
+            const {axiosPublic} = useAxios()
             await userLocalRegister(_newUser)
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/auth/registration/', _newUser)
@@ -123,12 +123,12 @@ describe('useSecurity', () => {
     })
     describe('userCASRegister', () => {
         it('should call API once on /users/auth/user/ with new info to patch', async () => {
-            const { axiosPublic } = useAxios()
-            const { setTokens, userCASRegister } = useSecurity()
+            const {axiosPublic} = useAxios()
+            const {setTokens, userCASRegister} = useSecurity()
             setTokens(_tokens.access, _tokens.refresh)
             await userCASRegister('new info to patch')
             expect(axiosPublic.patch).toHaveBeenCalledOnce()
-            expect(axiosPublic.patch).toHaveBeenCalledWith('/users/auth/user/', { phone: 'new info to patch' })
+            expect(axiosPublic.patch).toHaveBeenCalledWith('/users/auth/user/', {phone: 'new info to patch'})
         })
     })
     /*describe('userAssociationRegister', () => {
@@ -150,20 +150,20 @@ describe('useSecurity', () => {
     })*/
     describe('userGroupsRegister', () => {
         it('should call API once on /users/groups/ with username and newUserGroups as data', async () => {
-            const { axiosPublic } = useAxios()
-            const { userGroupsRegister } = useSecurity()
-            await userGroupsRegister(_student.username, _newUserGroups)
+            const {axiosPublic} = useAxios()
+            const {userGroupsRegister} = useSecurity()
+            await userGroupsRegister(_institutionStudent.username, _newUserGroups)
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenCalledWith('/users/groups/', {
-                username: _student.username,
+                username: _institutionStudent.username,
                 groups: _newUserGroups
             })
         })
     })
     describe('userLocalRegisterAsManager', () => {
         it('should post once on /users/ with newUser as data', async () => {
-            const { axiosAuthenticated } = useAxios()
-            const { userLocalRegisterAsManager } = useSecurity()
+            const {axiosAuthenticated} = useAxios()
+            const {userLocalRegisterAsManager} = useSecurity()
             await userLocalRegisterAsManager(_newUser)
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/', _newUser)
@@ -171,26 +171,26 @@ describe('useSecurity', () => {
     })
     describe('verifyEmail', () => {
         it('should post once on /users/auth/registration/verify-email/ with key as data', async () => {
-            const { axiosAuthenticated } = useAxios()
-            const { verifyEmail } = useSecurity()
+            const {axiosAuthenticated} = useAxios()
+            const {verifyEmail} = useSecurity()
             await verifyEmail('key')
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/auth/registration/verify-email/', { key: 'key' })
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/auth/registration/verify-email/', {key: 'key'})
         })
     })
     describe('passwordReset', () => {
         it('should post once on /users/auth/password/reset with user email as data', () => {
-            const { axiosPublic } = useAxios()
-            const { passwordReset } = useSecurity()
-            passwordReset(_student.email)
+            const {axiosPublic} = useAxios()
+            const {passwordReset} = useSecurity()
+            passwordReset(_institutionStudent.email)
             expect(axiosPublic.post).toHaveBeenCalledOnce()
-            expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/password/reset/', { email: _student.email })
+            expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/password/reset/', {email: _institutionStudent.email})
         })
     })
     describe('passwordResetConfirm', () => {
         it('should post once on /users/auth/password/reset/confirm/ with uid, token, and new password as data', async () => {
-            const { axiosPublic } = useAxios()
-            const { passwordResetConfirm } = useSecurity()
+            const {axiosPublic} = useAxios()
+            const {passwordResetConfirm} = useSecurity()
             await passwordResetConfirm('uid', 'token', 'newPassword', 'newPassword')
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/password/reset/confirm/',
@@ -205,17 +205,17 @@ describe('useSecurity', () => {
     })
     describe('resendEmail', () => {
         it('should post once on /users/auth/registration/resend-email/ with email as payload', async () => {
-            const { axiosPublic } = useAxios()
-            const { resendEmail } = useSecurity()
+            const {axiosPublic} = useAxios()
+            const {resendEmail} = useSecurity()
             await resendEmail('test@email.com')
             expect(axiosPublic.post).toHaveBeenCalledOnce()
-            expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/registration/resend-email/', { email: 'test@email.com' })
+            expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/registration/resend-email/', {email: 'test@email.com'})
         })
     })
     describe('hasPerm', () => {
         it('should return true if userPermission is in userStore', () => {
             userStore.userPermissions = _permissions
-            const { hasPerm } = useSecurity()
+            const {hasPerm} = useSecurity()
             expect(hasPerm('add_association')).toBeTruthy()
             expect(hasPerm('can_burn_application')).toBeFalsy()
         })

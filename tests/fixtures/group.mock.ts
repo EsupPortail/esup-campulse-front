@@ -1,4 +1,4 @@
-import type { Group } from "#/groups";
+import type {Group} from "#/groups";
 
 export const _groups: Group[] = [
     {
@@ -23,6 +23,7 @@ export const _groups: Group[] = [
             "delete_user_misc",
             "view_user",
             "view_user_misc",
+            "view_user_anyone",
             "change_associationusers",
             "change_associationusers_any_institution",
             "delete_associationusers",
@@ -38,25 +39,80 @@ export const _groups: Group[] = [
         id: 2,
         name: "MANAGER_INSTITUTION",
         isPublic: false,
-        permissions: []
+        permissions: [
+            "add_association",
+            "change_association",
+            "change_association_all_fields",
+            "delete_association",
+            "view_association_not_enabled",
+            "view_association_not_public",
+            "add_user",
+            "change_user",
+            "delete_user",
+            "view_user",
+            "view_user_anyone",
+            "change_associationusers",
+            "delete_associationusers",
+            "view_associationusers",
+            "view_associationusers_anyone",
+            "delete_groupinstitutionusers",
+            "view_groupinstitutionusers",
+            "view_groupinstitutionusers_anyone"
+        ]
     },
     {
         id: 3,
         name: "MANAGER_MISC",
         isPublic: false,
-        permissions: []
+        permissions: [
+            "add_association",
+            "change_association",
+            "change_association_all_fields",
+            "delete_association",
+            "view_association_not_enabled",
+            "view_association_not_public",
+            "add_user",
+            "add_user_misc",
+            "change_user",
+            "change_user_misc",
+            "delete_user",
+            "delete_user_misc",
+            "view_user",
+            "view_user_misc",
+            "change_associationusers",
+            "delete_associationusers",
+            "view_associationusers",
+            "view_associationusers_anyone",
+            "delete_groupinstitutionusers",
+            "view_groupinstitutionusers",
+            "view_groupinstitutionusers_anyone"
+        ]
     },
     {
         id: 4,
         name: "COMMISSION_GENERAL",
         isPublic: true,
-        permissions: []
+        permissions: [
+            "view_association_not_public",
+            "view_user",
+            "view_user_misc",
+            "view_user_anyone",
+            "view_associationusers",
+            "view_groupinstitutionusers"
+        ]
     },
     {
         id: 5,
         name: "COMMISSION_MISC",
         isPublic: true,
-        permissions: []
+        permissions: [
+            "view_association_not_public",
+            "view_user",
+            "view_user_misc",
+            "view_user_anyone",
+            "view_associationusers",
+            "view_groupinstitutionusers"
+        ]
     },
     {
         id: 6,
@@ -74,6 +130,8 @@ export const _groups: Group[] = [
         id: 7,
         name: "STUDENT_MISC",
         isPublic: true,
-        permissions: []
+        permissions: [
+            "view_groupinstitutionusers"
+        ]
     },
 ]

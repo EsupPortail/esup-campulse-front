@@ -2,7 +2,6 @@ import {defineStore} from 'pinia'
 import type {
     Association,
     AssociationActivityField,
-    AssociationDirectory,
     AssociationName,
     AssociationStore,
     Institution,
@@ -11,7 +10,6 @@ import type {
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from "@/composables/useSecurity";
-import type {SelectLabel} from "#/index";
 import useUserGroups from "@/composables/useUserGroups";
 
 
@@ -26,7 +24,7 @@ export const useAssociationStore = defineStore('associationStore', {
     }),
 
     getters: {
-        associationLabels: (state: AssociationStore): SelectLabel[] => {
+        associationLabels: (state: AssociationStore) => {
             return state.associationNames
                 .map(association => ({
                     value: association.id,
@@ -36,7 +34,7 @@ export const useAssociationStore = defineStore('associationStore', {
                     disable: false
                 }))
         },
-        associationDirectory: (state: AssociationStore): AssociationDirectory => {
+        /*associationDirectory: (state: AssociationStore): AssociationDirectory => {
             return state.associations
                 .map(association => ({
                     id: association.id,
@@ -46,7 +44,7 @@ export const useAssociationStore = defineStore('associationStore', {
                     institutionComponent: association.institutionComponent?.name,
                     activityField: association.activityField?.name,
                 }))
-        },
+        },*/
         institutionLabels: (state: AssociationStore) => {
             return state.institutions.map((
                 institution => ({
@@ -87,14 +85,21 @@ export const useAssociationStore = defineStore('associationStore', {
 
             this.associations = (await instance.get<Association[]>(url)).data
         },
-        // To test
+        /**
+         * This function gets the associations that the user (manager) is a member of
+         */
         async getInstitutionAssociations() {
             const {axiosAuthenticated} = useAxios()
             const userStore = useUserStore()
-            const url = `/associations/?institution${userStore.userInstitutions?.join(',')}`
+            const url = `/associations/?institutions=${userStore.userInstitutions?.join(',')}`
             this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
         },
-        // To test
+        /**
+         * It gets the names of all associations, or all public associations, or all associations that the user is a member
+         * of
+         * @param {boolean} isPublic - boolean - If true, only public associations will be fetched. If false, only
+         * associations that the user is a member of will be fetched.
+         */
         async getAssociationNames(isPublic: boolean) {
             const {axiosPublic} = useAxios()
             const userStore = useUserStore()
@@ -114,7 +119,7 @@ export const useAssociationStore = defineStore('associationStore', {
             const userStore = useUserStore()
             const {hasPerm} = useSecurity()
             const {isStaff} = useUserGroups()
-            if (!isStaff && hasPerm('change_association')) {
+            if (!isStaff.value && hasPerm('change_association')) {
                 const {axiosAuthenticated} = useAxios()
                 this.associations = []
                 for (let i = 0; i < (userStore.user?.associations.length as number); i++) {
@@ -128,12 +133,19 @@ export const useAssociationStore = defineStore('associationStore', {
                 await this.getInstitutionAssociations()
             }
         },
+        /**
+         * It gets the association detail from the API.
+         * @param {number} id - The id of the association you want to get
+         * @param {boolean} publicRequest - boolean - If true, the request will be made using the public axios instance. If
+         * false, the request will be made using the authenticated axios instance.
+         */
         async getAssociationDetail(id: number, publicRequest: boolean) {
             const {axiosPublic, axiosAuthenticated} = useAxios()
             let instance = axiosAuthenticated
             if (publicRequest) instance = axiosPublic
             this.association = (await instance.get<Association>(`/associations/${id}`)).data
         },
+        // To test
         async updateAssociationLogo(logoData: FormData | object, id: number) {
             if (this.association) {
                 const {axiosAuthenticated} = useAxios()
@@ -147,6 +159,8 @@ export const useAssociationStore = defineStore('associationStore', {
         async getInstitutions() {
             if (this.institutions.length === 0) {
                 const {axiosPublic} = useAxios()
+                /* It's a GET request to the API, which returns a list of institutions. */
+                /* It's a GET request to the API, which returns a list of institutions. */
                 this.institutions = (await axiosPublic.get<Institution[]>('/institutions/institutions')).data
             }
         },
@@ -162,19 +176,36 @@ export const useAssociationStore = defineStore('associationStore', {
                 this.activityFields = (await axiosPublic.get<AssociationActivityField[]>('/associations/activity_fields')).data
             }
         },
+        /**
+         * It deletes an association from the database
+         * @param {number | undefined} associationId - The id of the association to delete.
+         */
         async deleteAssociation(associationId: number | undefined) {
             if (associationId) {
                 const {axiosAuthenticated} = useAxios()
                 await axiosAuthenticated.delete(`/associations/${associationId}`)
             }
         },
+        /**
+         * It takes in a boolean and an associationId, and then it patches the association with the given associationId
+         * with the given boolean
+         * @param {boolean} isEnabled - boolean - This is the value that will be sent to the backend to update the
+         * association's isEnabled property.
+         * @param {number | undefined} associationId - The id of the association you want to update.
+         */
         async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
             const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
             const {data} = patchedData
             this.association = data
         },
-        // To test
+        /**
+         * It takes a boolean and an association id, and then it patches the association with the boolean and the
+         * association id
+         * @param {boolean} isPublic - boolean - this is the value that will be sent to the backend to update the
+         * association's isPublic property.
+         * @param {number | undefined} associationId - The id of the association you want to patch.
+         */
         async patchPublicAssociation(isPublic: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
             const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isPublic})

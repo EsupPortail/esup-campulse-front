@@ -45,28 +45,43 @@ export const _userGroups: UserGroup[] = [
 
 export const _newUserGroups: number[] = [1, 2]
 
-export const _manager: User = {
+export const _institutionManager: User = {
     id: 1,
-    username: 'manager@unistra.fr',
+    username: 'institution-manager@unistra.fr',
     firstName: 'Manager',
-    lastName: 'Unistra',
+    lastName: 'Institution',
     phone: '',
-    email: 'manager@unistra.fr',
+    email: 'institution-manager@unistra.fr',
     isCas: false,
     hasValidatedEmail: true,
     isValidatedByAdmin: true,
     associations: [],
-    groups: [_userGroups[0], _userGroups[1], _userGroups[2]],
-    permissions: getUserGroupsPermissions([_userGroups[0], _userGroups[1], _userGroups[2]])
+    groups: [_userGroups[1], _userGroups[2]],
+    permissions: getUserGroupsPermissions([_userGroups[1], _userGroups[2]])
 }
 
-export const _student: User = {
-    id: 5,
-    username: 'student@unistra.fr',
-    firstName: 'student',
-    lastName: 'Unistra',
+export const _generalManager: User = {
+    id: 2,
+    username: 'general-manager@unistra.fr',
+    firstName: 'Manager',
+    lastName: 'General',
     phone: '',
-    email: 'student@unistra.fr',
+    email: 'general-manager@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[0]],
+    permissions: getUserGroupsPermissions([_userGroups[0]])
+}
+
+export const _institutionStudent: User = {
+    id: 5,
+    username: 'institution-student@unistra.fr',
+    firstName: 'Student',
+    lastName: 'Institution',
+    phone: '',
+    email: 'institution-student@unistra.fr',
     isCas: false,
     hasValidatedEmail: true,
     isValidatedByAdmin: true,
@@ -84,7 +99,7 @@ export const _newUser: UserRegister = {
     email: 'john.lennon@bbc.com'
 }
 
-export const _users = [_student, _manager]
+export const _users = [_institutionStudent, _institutionManager]
 
 export const _usersNames = _users.map(
     user => ({

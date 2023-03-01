@@ -171,12 +171,31 @@ export const _userAssociation: UserAssociation[] = [
     }
 ]
 
-export const _associationLabels = _associations.map(
+export const _associationNames = [
+    {
+        id: 1,
+        name: 'PLANA',
+        hasPresident: true,
+        institution: 1
+    },
+    {
+        id: 2,
+        name: 'OCTANT',
+        hasPresident: false,
+        institution: 1
+    },
+]
+
+export const _associationLabels = _associationNames.map(
     association => ({
         value: association.id,
-        label: association.name
+        label: association.name,
+        hasPresident: association.hasPresident,
+        institution: association.institution,
+        disable: false
     })
 )
+
 
 export const _associationSearchSettings: AssociationSearch = {
     search: '',
@@ -210,3 +229,72 @@ export const _associationSocialNetworks: AssociationSocialNetwork[] = [
         location: 'https://facebook.com'
     }
 ]
+
+export const _institutions = [
+    {
+        id: 1,
+        name: 'Université de Strasbourg',
+        acronym: 'Unistra',
+        email: 'contact@unistra.fr',
+    },
+    {
+        id: 2,
+        name: 'Université de Haute Alsace',
+        acronym: 'UHA',
+        email: 'contact@uha.fr',
+    }
+]
+
+export const _institutionLabels = _institutions.map(institution => ({
+    value: institution.id,
+    label: institution.name
+}))
+
+export const _institutionComponents = [
+    {
+        id: 1,
+        name: 'Faculté de Médecine',
+        institution: {
+            id: 1,
+            name: 'Université de Strasbourg',
+            acronym: 'Unistra',
+            email: 'contact@unistra.fr'
+        }
+    },
+    {
+        id: 2,
+        name: 'Faculté des Langues',
+        institution: {
+            id: 1,
+            name: 'Université de Strasbourg',
+            acronym: 'Unistra',
+            email: 'contact@unistra.fr'
+        }
+    }
+]
+
+export const _institutionComponentLabels = _institutionComponents.map(component => ({
+    value: component.id,
+    label: component.name
+}))
+
+export const _activityFields = [
+    {
+        id: 1,
+        name: 'Sciences'
+    },
+    {
+        id: 2,
+        name: 'Culture'
+    },
+    {
+        id: 3,
+        name: 'Musique'
+    },
+]
+
+export const _activityFieldLabels = _activityFields.map(field => ({
+    value: field.id,
+    label: field.name
+}))
+
