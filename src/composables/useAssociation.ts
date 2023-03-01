@@ -41,6 +41,10 @@ export default function () {
         {
             label: i18n.global.t('forms.im-association-treasurer'),
             value: "isTreasurer"
+        },
+        {
+            label: i18n.global.t('forms.im-association-member'),
+            value: "isMember"
         }
     ]
 
