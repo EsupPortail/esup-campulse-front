@@ -137,7 +137,7 @@ export default function () {
         const {formatDate} = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
-            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone']
+            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone', 'studentCount']
             if (indexes.indexOf(key) !== -1) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})

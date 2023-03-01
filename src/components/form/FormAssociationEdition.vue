@@ -206,6 +206,7 @@ async function onChangeLogo(action: string) {
                 </template>
             </QInput>
             <QInput v-model="association.siret" :label="t('association.labels.siret')" filled inputmode="numeric"/>
+            <QInput v-model="association.studentCount" :label="t('association.labels.student-count')" filled inputmode="numeric"/>
         </fieldset>
         <fieldset>
             <legend>{{ t('association.titles.contact') }}</legend>
