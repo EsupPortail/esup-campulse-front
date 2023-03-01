@@ -21,7 +21,6 @@ export default function () {
      * If the route is ValidateUsers, get the unvalidated users, otherwise get all the users
      * It is used on the same view to get various data sets based on the route
      */
-    // To test
     async function getUsers(routeName: string) {
         if (hasPerm('change_associationusers')) {
             if (routeName === 'ValidateUsers') await userManagerStore.getUnvalidatedUsers()
@@ -56,7 +55,11 @@ export default function () {
                 // We set a boolean to track changes
                 let hasChanges = false
                 // We compare the 2 objects
-                for (const [key, value] of Object.entries(association)) {
+                if (storeAssociation?.canBePresident !== association.canBePresident) hasChanges = true
+                if (storeAssociation?.isPresident && association.role !== 'isPresident') hasChanges = true
+                if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
+                if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
+                /*for (const [key, value] of Object.entries(association)) {
                     const availableKeys = ['isPresident', 'canBePresident', 'isSecretary', 'isTreasurer']
                     if (availableKeys.indexOf(key) !== -1) {
                         if (value !== storeAssociation?.[key as keyof AssociationUserDetail]) {
@@ -64,8 +67,7 @@ export default function () {
                             break
                         }
                     }
-                }
-
+                }*/
                 if (hasChanges && association.id) {
                     const infosToPatch = {
                         isPresident: association.role === 'isPresident',
@@ -79,7 +81,13 @@ export default function () {
         })
     }
 
-    // To test
+
+    /**
+     * If the user is in a group that is not public, then managers can't edit the user
+     * @param {UserGroup[]} userGroups - UserGroup[] - this is the array of UserGroup objects that are associated with the
+     * user.
+     * @returns A boolean value.
+     */
     function canEditUser(userGroups: UserGroup[]): boolean {
         const {groups} = useUserGroups()
         let perm = false

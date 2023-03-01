@@ -1,5 +1,5 @@
-import type {AssociationUser, User, UserGroup, UserRegister} from "#/user";
-import {_userAssociation} from "~/fixtures/association.mock";
+import type {AssociationRole, AssociationUser, User, UserGroup, UserRegister} from "#/user";
+import {_associationRoleOptions, _userAssociation} from "~/fixtures/association.mock";
 import {_groups} from "~/fixtures/group.mock";
 
 function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
@@ -157,13 +157,19 @@ export const _userAssociations: AssociationUser[] = [
 ]
 
 export const _userAssociationDetail = {
+    id: 1,
     user: 'Jane',
     isPresident: true,
     canBePresident: true,
     isValidatedByAdmin: true,
     isSecretary: false,
     isTreasurer: false,
-    association: 1
+    association: {
+        id: 1,
+        name: 'PLANA',
+        isSite: true,
+        institution: 1
+    }
 }
 
 export const _userAssociationsManagement = [
@@ -195,3 +201,13 @@ export const _userAssociationsManagement = [
         deleteAssociation: true
     }
 ]
+
+export const _associationRole: AssociationRole = {
+    id: 1,
+    name: '',
+    role: 'isPresident',
+    options: _associationRoleOptions,
+    canBePresident: true,
+    deleteAssociation: false
+}
+

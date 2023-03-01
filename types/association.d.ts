@@ -94,24 +94,24 @@ export type CreateAssociation = Pick<Association, "name">
 
 export interface EditedAssociation {
     name: string,
-    acronym: string | null,
-    socialObject: string | null,
-    currentProjects: string | null,
-    address: string | null,
-    phone: string | null,
-    email: string | null,
-    siret: string | null,
-    website: string | null,
-    studentCount: number | null,
-    presidentNames: string | null,
-    presidentPhone: string | null,
-    isPublic: boolean,
-    approvalDate: string | null,
-    lastGoaDate: string | null,
-    institution: number | null | undefined,
-    institutionComponent: number | null | undefined,
-    activityField: number | null | undefined,
-    altLogo: string
+    acronym?: string | null,
+    socialObject?: string | null,
+    currentProjects?: string | null,
+    address?: string | null,
+    phone?: string | null,
+    email?: string | null,
+    siret?: string | null,
+    website?: string | null,
+    studentCount?: number | null,
+    presidentNames?: string | null,
+    presidentPhone?: string | null,
+    isPublic?: boolean,
+    approvalDate?: string | null,
+    lastGoaDate?: string | null,
+    institution?: number | null | undefined,
+    institutionComponent?: number | null | undefined,
+    activityField?: number | null | undefined,
+    altLogo?: string
 }
 
 export interface NewAssociation {

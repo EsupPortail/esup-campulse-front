@@ -6,10 +6,11 @@ import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
+
 const newAssociations = ref<AssociationRole[]>([])
 const newAssociationsUser = ref<AssociationUser[]>([])
 
-// Need to modify the social networks of an association
+// Needed to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
 
 // Changed data when modifying an association
@@ -24,29 +25,28 @@ export default function () {
      * @param association
      */
     function altLogoText(association: Association | EditedAssociation) {
-        return association?.altLogo !== "" ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
+        return association?.altLogo !== '' ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
     }
 
     /* Used to create the options for the select in the form to create an association. */
     const associationRoleOptions = [
         {
             label: i18n.global.t('forms.im-association-president'),
-            value: "isPresident",
+            value: 'isPresident',
         },
         {
             label: i18n.global.t('forms.im-association-secretary'),
-            value: "isSecretary"
+            value: 'isSecretary'
         },
         {
             label: i18n.global.t('forms.im-association-treasurer'),
-            value: "isTreasurer"
+            value: 'isTreasurer'
         },
         {
             label: i18n.global.t('forms.im-association-member'),
-            value: "isMember"
+            value: 'isMember'
         }
     ]
-
 
     /**
      * It creates an association with the name provided as a parameter
@@ -56,7 +56,6 @@ export default function () {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.post('/associations/', newAssociation)
     }
-
 
     /**
      * When the user clicks the 'Add Association' button in registration for example,
@@ -78,7 +77,11 @@ export default function () {
         newAssociations.value.splice(index, 1)
     }
 
-    // To test
+    /**
+     * If the association has a president, then disable the president role and remove the president role from the
+     * association
+     * @param {AssociationRole} association - AssociationRole - this is the association that is being checked
+     */
     function checkHasPresident(association: AssociationRole) {
         if (association.options) {
             const a = associationStore.associationNames.find(obj => obj.id === association.id)
@@ -92,6 +95,10 @@ export default function () {
         }
     }
 
+    /**
+     * It takes an array of associations and returns an array of association users
+     * @returns An array of AssociationUser
+     */
     function updateRegisterRoleInAssociation(): AssociationUser[] {
         newAssociationsUser.value = []
         newAssociations.value.forEach(association => {
@@ -107,7 +114,6 @@ export default function () {
         })
         return newAssociationsUser.value
     }
-
 
     /**
      * It adds a new network to the associationSocialNetworks array.
@@ -216,7 +222,10 @@ export default function () {
         }
     }
 
-    // test
+
+    /**
+     * It updates the association in the database with the data that has been changed in the form
+     */
     async function updateAssociation() {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
@@ -228,7 +237,7 @@ export default function () {
             if (typeof newLogo === 'object') {
                 patchLogoData.append('pathLogo', newLogo)
                 if (altLogo === associationStore.association?.altLogo) {
-                    altLogo = ""
+                    altLogo = ''
                 }
             }
             patchLogoData.append('altLogo', altLogo)

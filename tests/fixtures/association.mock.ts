@@ -64,33 +64,33 @@ export const _editedAssociation: EditedAssociation = {
     email: 'asso-medecine@unistra.fr',
     siret: '0123456789',
     website: 'https://asso-medecine.fr',
-    studentCount: 42,
+    studentCount: 0,
     presidentNames: 'Jeanne Dupont',
-    presidentPhone: null,
+    presidentPhone: '',
     isPublic: true,
     approvalDate: null,
     lastGoaDate: '2023-01-24',
-    institution: 1,
-    institutionComponent: 1,
+    institution: 2,
+    institutionComponent: 2,
     activityField: 2,
 }
 
 export const _nonEditedAssociation: EditedAssociation = {
     name: 'Association',
-    acronym: null,
+    acronym: '',
     altLogo: '',
-    socialObject: null,
-    currentProjects: null,
-    address: null,
-    phone: null,
-    email: null,
-    siret: null,
-    website: null,
-    studentCount: null,
-    presidentNames: null,
-    presidentPhone: null,
+    socialObject: '',
+    currentProjects: '',
+    address: '',
+    phone: '',
+    email: '',
+    siret: '',
+    website: '',
+    studentCount: 0,
+    presidentNames: '',
+    presidentPhone: '',
     isPublic: false,
-    approvalDate: null,
+    approvalDate: '',
     lastGoaDate: null,
     institution: 1,
     institutionComponent: 1,
@@ -297,4 +297,23 @@ export const _activityFieldLabels = _activityFields.map(field => ({
     value: field.id,
     label: field.name
 }))
+
+export const _associationRoleOptions = [
+    {
+        label: 'Président',
+        value: 'isPresident',
+    },
+    {
+        label: 'Secrétaire',
+        value: 'isSecretary'
+    },
+    {
+        label: 'Trésorier',
+        value: 'isTreasurer'
+    },
+    {
+        label: 'Membre',
+        value: 'isMember'
+    }
+]
 
