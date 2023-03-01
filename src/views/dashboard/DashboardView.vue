@@ -60,6 +60,7 @@ const {isStaff} = useUserGroups()
         </div>
     </section>
     <!-- Section to implement in association dashboard -->
+    <!--
     <section v-if="userStore.user?.associations && userStore.user?.associations?.length > 0" class="dashboard-section">
         <h2>
             <QIcon name="mdi-pencil-box-outline"/>
@@ -77,6 +78,7 @@ const {isStaff} = useUserGroups()
             </div>
         </div>
     </section>
+    -->
     <!-- End -->
     <section
         v-if="isStaff && (hasPerm('change_user') ||
