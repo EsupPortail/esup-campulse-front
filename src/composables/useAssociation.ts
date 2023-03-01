@@ -6,7 +6,6 @@ import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
-
 const newAssociations = ref<AssociationRole[]>([])
 const newAssociationsUser = ref<AssociationUser[]>([])
 
@@ -70,7 +69,7 @@ export default function () {
     function addAssociation() {
         newAssociations.value.push({
             id: null,
-            role: '',
+            role: 'isMember',
             options: associationRoleOptions
         })
     }
