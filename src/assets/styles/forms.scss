@@ -39,7 +39,7 @@
   }
 }
 
-// Quasar default fields (inputs, buttons, etc)
+// Quasar input fields
 .q-field {
   .q-field__control {
     background-color: $backgroundColor1;
@@ -51,38 +51,136 @@
       color: $color1Text;
     }
   }
+
+  &.q-field--focused .q-field__control {
+    border-color: $color1;
+  }
+  
+  &.q-field--filled.q-field--highlighted .q-field__control::before {
+    background: $color1Background;
+  }
+  
+  &.q-field--filled .q-field__control::before {
+    background: $color1Background;
+    border-bottom: none;
+  }
+  
+  &.q-field--filled .q-field__control::after {
+    background: $color1;
+  }
+  
+  &.q-field--error .q-field__control::after {
+    background: currentColor;
+  }
+  
+  &.q-field--highlighted .q-field__label {
+    color: $color1Text;
+  }
 }
 
-.q-field--filled.q-field--highlighted .q-field__control::before {
-  background: $color1Background;
+.q-select {
+  .q-field__native {
+    padding: .375rem 0 .375rem .5rem;
+  }
+
+  .q-field__marginal {
+    color: $textColor2;
+  }
+
+  &.q-field--focused .q-field__marginal {
+    color: $color1;
+  }
 }
 
-.q-field--filled .q-field__control::before {
-  background: $color1Background;
-  border-bottom: none;
+.variant-space-2 {
+  .q-field {
+    .q-field__control {
+      border-color: $color2Borders;
+  
+      input {
+        color: $color2Text;
+      }
+    }
+
+    &.q-field--focused .q-field__control {
+      border-color: $color2;
+    }
+    
+    &.q-field--filled.q-field--highlighted .q-field__control::before {
+      background: $color2Background;
+    }
+    
+    &.q-field--filled .q-field__control::before {
+      background: $color2Background;
+    }
+
+    &.q-field--filled .q-field__control::after {
+      background: $color2;
+    }
+
+    &.q-field--highlighted .q-field__label {
+      color: $color2Text;
+    }
+  }
+
+  .q-select.q-field--focused .q-field__marginal {
+    color: $color2Active;
+  }
 }
 
-.q-field--filled .q-field__control::after {
-  background: $color1;
+.variant-space-3 {
+  .q-field {
+    .q-field__control {
+      border-color: $color3Borders;
+  
+      input {
+        color: $color3Text;
+      }
+    }
+
+    &.q-field--focused .q-field__control {
+      border-color: $color3;
+    }
+    
+    &.q-field--filled.q-field--highlighted .q-field__control::before {
+      background: $color3Background;
+    }
+    
+    &.q-field--filled .q-field__control::before {
+      background: $color3Background;
+    }
+
+    &.q-field--filled .q-field__control::after {
+      background: $color3;
+    }
+
+    &.q-field--highlighted .q-field__label {
+      color: $color3Text;
+    }
+  }
+
+  .q-select.q-field--focused .q-field__marginal {
+    color: $color3;
+  }
 }
 
-.q-field--error .q-field__control::after {
-  background: currentColor;
-}
-
-.q-field--highlighted .q-field__label {
-  color: $color1Text;
-}
-
+// Quasar buttons
 .q-btn {
   background-color: $color1;
   border-radius: 0;
   padding: .9375rem 1.875rem;
-  color: $textColor3;
   font-size: 1.125rem;
   font-weight: 300;
   transition: background-color 0.03s linear;
   box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+
+  &:focus-visible {
+    outline: 2px solid $outlineColor2 !important;
+  }
+
+  .q-icon {
+    font-size: 1.5rem;
+  }
 
   .q-btn__content > * {
     color: $textColor3;
@@ -93,11 +191,11 @@
   }
 
   &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-    background-color: mix(#224d80, $color1, 20%) !important;
+    background-color: $color1Hover !important;
   }
 
   &:active, &.bg-primary:active, &.bg-secondary:active {
-    background-color: #224d80 !important;
+    background-color: $color1Active !important;
   }
 
   &.bg-primary {
@@ -108,6 +206,10 @@
     background: $color1 !important;
   }
 
+  .q-btn__content > * {
+    color: $textColor3;
+  }
+
   &.small-button {
     padding: .375rem 1.875rem;
     font-size: 1rem;
@@ -116,12 +218,117 @@
       font-size: 1.125rem;
     }
   }
+
+  &.btn-alt {
+    box-shadow: none;
+    background-color: $backgroundColor1 !important;
+    border: 1px solid $color1Text;
+
+    .q-btn__content > * {
+      color: $color1Text;
+    }
+
+    &:hover {
+      background-color: $color1Text !important;
+
+      .q-btn__content > * {
+        color: white !important;
+      }
+    }
+
+    &:active {
+      background-color: mix(white, $color1Text, 15%) !important;
+
+      .q-btn__content > * {
+        color: white !important;
+      }
+    }
+  }
 }
 
-.q-select {
-  .q-field__native {
-    padding: .375rem 0 .375rem .5rem;
+.variant-space-2 {
+  .q-btn {
+    background-color: $color2;
+  
+    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+      background-color: $color2Hover !important;
+    }
+  
+    &:active, &.bg-primary:active, &.bg-secondary:active {
+      background-color: $color2Active !important;
+    }
+  
+    &.bg-primary {
+      background: $color2 !important;
+    }
+  
+    &.bg-secondary {
+      background: $color2 !important;
+    }
+
+    .q-btn__content > * {
+      color: $color2Text;
+    }
+
+    &.btn-alt {
+      border: 1px solid $color2Text;
+  
+      .q-btn__content > * {
+        color: $color2Text;
+      }
+  
+      &:hover {
+        background-color: $color2Text !important;
+      }
+  
+      &:active {
+        background-color: mix(white, $color2Text, 15%) !important;
+      }
+    }
   }
+}
+
+.variant-space-3 {
+  .q-btn {
+    background-color: $color3;
+  
+    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+      background-color: $color3Hover !important;
+    }
+  
+    &:active, &.bg-primary:active, &.bg-secondary:active {
+      background-color: $color3Active !important;
+    }
+  
+    &.bg-primary {
+      background: $color3 !important;
+    }
+  
+    &.bg-secondary {
+      background: $color3 !important;
+    }
+
+    &.btn-alt {
+      border: 1px solid $color3Text;
+  
+      .q-btn__content > * {
+        color: $color3Text;
+      }
+  
+      &:hover {
+        background-color: $color3Text !important;
+      }
+  
+      &:active {
+        background-color: mix(white, $color3Text, 15%) !important;
+      }
+    }
+  }
+}
+
+.buttons-group {
+  display: flex;
+  gap: 0.5rem;
 }
 
 // A document form element allowing to upload, remove and review a list of documents.
@@ -158,9 +365,8 @@
         margin: 0 0 0 .3125rem;
         font-size: 1.125rem;
 
-        a {
+        button {
           display: inline-block;
-          height: 1.875rem;
           opacity: 0.6;
           padding: .125rem .3125rem;
           cursor: pointer;
@@ -169,6 +375,8 @@
           transition: transform 0.03s linear;
           position: relative;
           top: -0.0625rem;
+          background: transparent;
+          border: none;
 
           &:hover {
             opacity: 0.8;
@@ -243,6 +451,10 @@
           overflow: hidden;
           text-overflow: ellipsis;
 
+          &:focus-within {
+            outline: 2px solid $outlineColor2;
+          }
+
           & > i {
             font-size: 1.125rem;
             color: $textColor1;
@@ -274,6 +486,10 @@
             &:active {
               opacity: 0.8;
             }
+
+            &:focus {
+              outline: none;
+            }
           }
         }
 
@@ -299,49 +515,47 @@
         }
       }
     }
+  }
 
-    &.variant-space-2 {
-      .document-input-header {
-        border-color: $color2;
+  button:focus {
+    outline: 2px solid $outlineColor2;
+  }
+}
 
-        & > button {
-          &:hover {
-            background-color: $color2;
-          }
-
-          &:active {
-            background-color: mix(white, $color2, 10%);
-          }
-        }
-      }
-
-      .document-input-list .document-item button {
+.variant-space-2 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $color2;
+  
+      & > button {
         &:hover {
           background-color: $color2;
         }
-
+  
         &:active {
           background-color: mix(white, $color2, 10%);
         }
       }
     }
-
-    &.variant-space-3 {
-      .document-input-header {
-        border-color: $color3;
-
-        & > button {
-          &:hover {
-            background-color: $color3;
-          }
-
-          &:active {
-            background-color: mix(white, $color3, 10%);
-          }
-        }
+  
+    .document-input-list .document-item button {
+      &:hover {
+        background-color: $color2;
       }
+  
+      &:active {
+        background-color: mix(white, $color2, 10%);
+      }
+    }
+  }
+}
 
-      .document-input-list .document-item button {
+.variant-space-3 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $color3;
+
+      & > button {
         &:hover {
           background-color: $color3;
         }
@@ -349,6 +563,16 @@
         &:active {
           background-color: mix(white, $color3, 10%);
         }
+      }
+    }
+
+    .document-input-list .document-item button {
+      &:hover {
+        background-color: $color3;
+      }
+
+      &:active {
+        background-color: mix(white, $color3, 10%);
       }
     }
   }
@@ -372,10 +596,10 @@
 
     i {
       color: $color1Text;
-      font-size: 1.75rem;
+      font-size: 1.5rem;
       margin-right: .875rem;
       position: relative;
-      top: -0.1875rem;
+      top: -0.1rem;
     }
   }
 }
@@ -610,6 +834,32 @@
           }
         }
       }
+    }
+  }
+}
+
+// Info panels (error, warning...)
+.info-panel {
+  padding: 1.25rem 1.875rem;
+
+  p {
+    color: $textColor2;
+    font-size: 1.125rem;
+  }
+
+  &.info-panel-error {
+    border: 1px solid $errorPanelColor;
+
+    p {
+      color: $errorPanelColor;
+    }
+  }
+  
+  &.info-panel-warning {
+    border: 1px solid $warningPanelColor;
+
+    p {
+      color: $warningPanelColor;
     }
   }
 }

@@ -27,17 +27,29 @@ $color1: #449AFF;
 $color1Background: #EEF6FF;
 $color1Text: #152639;
 $color1Borders: #AEB8C4;
+$color1Hover: #3d8be6;
+$color1Active: #224d80;
 
 $color2: #FFD542;
 $color2Background: #FFF8ED;
 $color2Text: #4D3A1E;
-$color3Borders: #C4B8AE;
+$color2Borders: #C4B8AE;
+$color2Hover: #f2c53f;
+$color2Active: #d6a636;
 
 $color3: #FF8B4A;
 $color3Background: #FFF3EF;
 $color3Text: #4D271B;
 $color3Borders: #C4B3AE;
+$color3Hover: #ee8146;
+$color3Active: #a65932;
 
 $stateColor1: #5CC887;
 $stateColor2: #FBA04C;
 $stateColor3: #E85B63;
+
+$errorPanelColor: #DB483F;
+$warningPanelColor: #E7902A;
+
+$outlineColor1: rgba(255, 255, 255, 0.8);
+$outlineColor2: rgba(44, 44, 44, 0.8);

@@ -60,6 +60,10 @@ button.q-btn--outline {
   max-width: $pageWidth;
   margin: 1.875rem auto 5rem;
 
+  &.image-right {
+    flex-direction: row-reverse;
+  }
+
   .intro-image {
     flex: 0 0 300px;
 

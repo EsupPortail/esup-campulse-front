@@ -250,6 +250,11 @@ const routes: RouteRecordRaw[] = [
             }
         ]
     },
+    {
+        path: '/design-system',
+        name: 'DesignSystem',
+        component: () => import('@/views/DesignSystem.vue'),
+    },
 ]
 
 export default routes

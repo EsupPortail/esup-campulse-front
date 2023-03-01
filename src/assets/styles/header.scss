@@ -41,7 +41,7 @@
         text-decoration: none;
 
         &:focus-visible {
-          outline: 1px solid white;
+          outline: 1px solid $outlineColor1;
         }
       }
     }
@@ -57,6 +57,9 @@
   }
 
   nav {
+    display: flex;
+    align-items: center;
+
     a {
       font-size: 1.063rem;
       font-weight: 400;
@@ -68,7 +71,7 @@
       position: relative;
 
       &:focus-visible {
-        outline: 1px solid white;
+        outline: 1px solid $outlineColor1;
       }
 
       &::after {
@@ -123,9 +126,8 @@
 
   .profile-button {
     display: inline-block;
-    padding: 1rem 1.063rem;
+    padding: 0 1.063rem;
     position: relative;
-    top: -0.125rem;
 
     button {
       background: transparent !important;
@@ -136,7 +138,7 @@
       }
 
       &:focus-visible {
-        outline: 1px solid white !important;
+        outline: 1px solid $outlineColor1 !important;
       }
 
       .q-focus-helper, .q-ripple {
@@ -144,7 +146,6 @@
       }
 
       .q-btn__content {
-        color: $textColor3;
         font-size: 1.063rem;
         font-weight: 400;
         text-transform: uppercase;
@@ -155,6 +156,10 @@
 
         .q-btn-dropdown__arrow {
           margin-left: 0;
+        }
+
+        & > * {
+          color: $textColor3;
         }
       }
 
