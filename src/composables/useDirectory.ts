@@ -1,12 +1,17 @@
-import { useAssociationStore } from '@/stores/useAssociationStore'
-import type { Association, AssociationSearch } from '#/association'
-import { useAxios } from '@/composables/useAxios'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import type {Association, AssociationSearch} from '#/association'
+import {useAxios} from '@/composables/useAxios'
 
 
-export default function() {
+export default function () {
 
     const associationStore = useAssociationStore()
 
+    /**
+     * It takes a string, removes all spaces, converts it to lowercase, removes all accents, and returns the result
+     * @param {string} stringToFilterize - The string you want to filterize.
+     * @returns A string with no spaces, lowercase, and without accents.
+     */
     function filterizeSearch(stringToFilterize: string) {
         return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     }
@@ -21,16 +26,9 @@ export default function() {
             (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
             let matches: Association[] = []
             if (settings.name) {
-                if (matches.length) {
-                    const newMatches = matches.filter(association => {
-                        return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
-                    })
-                    matches = [...newMatches]
-                } else {
-                    matches = associationStore.associations.filter(association => {
-                        return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
-                    })
-                }
+                matches = associationStore.associations.filter(association => {
+                    return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
+                })
             }
             if (settings.acronym) {
                 // checking if a search has already been made
@@ -80,12 +78,13 @@ export default function() {
      * @returns An array of AssociationList objects.
      */
     async function simpleAssociationSearch(value: string): Promise<Association[]> {
-        const { axiosPublic } = useAxios()
+        const {axiosPublic} = useAxios()
         return (await axiosPublic.get<Association[]>(`/associations/?is_public=true&search=${value}`)).data
     }
 
     return {
         advancedSearch,
-        simpleAssociationSearch
+        simpleAssociationSearch,
+        filterizeSearch
     }
 }

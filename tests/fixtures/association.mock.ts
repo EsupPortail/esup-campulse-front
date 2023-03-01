@@ -200,7 +200,7 @@ export const _associationLabels = _associationNames.map(
 export const _associationSearchSettings: AssociationSearch = {
     search: '',
     name: 'Chimie',
-    acronym: '',
+    acronym: 'AEC',
     institution: 2,
     institutionComponent: 2,
     activityField: 2
