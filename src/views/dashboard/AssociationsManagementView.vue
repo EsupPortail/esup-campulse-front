@@ -53,21 +53,16 @@ const columns: QTableProps['columns'] = [
         align: 'left',
         label: t('directory.labels.association-institution'),
         field: 'institution',
-        sortable: true
-    },
-    {
-        name: 'institutionComponent',
-        align: 'left',
-        label: t('directory.labels.association-institution-component'),
-        field: 'institutionComponent',
-        sortable: true
+        sortable: true,
+        sort: (a, b) => a.name.localeCompare(b.name)
     },
     {
         name: 'activityField',
         align: 'left',
         label: t('directory.labels.association-activity-field'),
         field: 'activityField',
-        sortable: true
+        sortable: true,
+        sort: (a, b) => a.name.localeCompare(b.name)
     },
     {
         name: 'status',
@@ -155,9 +150,6 @@ const columns: QTableProps['columns'] = [
                         </QTd>
                         <QTd key="institution" :props="props">
                             {{ props.row.institution?.name }}
-                        </QTd>
-                        <QTd key="institutionComponent" :props="props">
-                            {{ props.row.institutionComponent?.name }}
                         </QTd>
                         <QTd key="activityField" :props="props">
                             {{ props.row.activityField?.name }}

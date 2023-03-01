@@ -53,7 +53,3 @@ async function resetConfirm() {
         <QBtn :label="t('forms.send')" color="primary" type="submit" />
     </QForm>
 </template>
-
-<style lang="sass" scoped>
-
-</style>

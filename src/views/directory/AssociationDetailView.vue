@@ -99,7 +99,7 @@ async function onGetAssociationDetail() {
       <p>{{ association?.siret }}</p>
     </article>
   </section>
-  <section v-if="association?.address || association?.phone || association?.email || association?.website || association?.socialNetworks.length > 0">
+  <section v-if="association?.address || association?.phone || association?.email || association?.website || (association?.socialNetworks && association?.socialNetworks?.length > 0)">
     <h2>{{ t("association.titles.contact") }}</h2>
     <article v-if="association?.address">
       <h3>{{ t("association.labels.address") }}</h3>
@@ -119,7 +119,7 @@ async function onGetAssociationDetail() {
         {{ association?.website }}
       </a>
     </article>
-    <article v-if="association?.socialNetworks.length > 0">
+    <article v-if="association?.socialNetworks && association?.socialNetworks?.length > 0">
       <h3>{{ t("association.labels.socials") }}</h3>
       <ul>
         <li v-for="(socialNetwork, index) in association?.socialNetworks" :key="index">

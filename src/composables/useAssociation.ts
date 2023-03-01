@@ -6,7 +6,6 @@ import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
-
 const newAssociations = ref<AssociationRole[]>([])
 const newAssociationsUser = ref<AssociationUser[]>([])
 
@@ -41,6 +40,10 @@ export default function () {
         {
             label: i18n.global.t('forms.im-association-treasurer'),
             value: "isTreasurer"
+        },
+        {
+            label: i18n.global.t('forms.im-association-member'),
+            value: "isMember"
         }
     ]
 
@@ -66,7 +69,7 @@ export default function () {
     function addAssociation() {
         newAssociations.value.push({
             id: null,
-            role: '',
+            role: 'isMember',
             options: associationRoleOptions
         })
     }
@@ -134,7 +137,7 @@ export default function () {
         const {formatDate} = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
-            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone']
+            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone', 'studentCount']
             if (indexes.indexOf(key) !== -1) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})

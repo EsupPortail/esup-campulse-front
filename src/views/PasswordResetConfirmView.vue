@@ -9,7 +9,3 @@ const { t } = useI18n()
   <h1>{{ t("password.new-password") }}</h1>
   <FormPasswordResetConfirm />
 </template>
-
-<style lang="sass" scoped>
-
-</style>
