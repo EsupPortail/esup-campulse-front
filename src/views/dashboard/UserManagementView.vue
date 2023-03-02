@@ -118,8 +118,8 @@ const columns: QTableProps['columns'] = [
                 <QTd key="groups" :props="props">
                     <ul>
                         <li v-for="(group, index) in props.row.groups" :key="index">
-                            <QChip v-if="getGroupLiteral(group.groupId)">
-                                <!--                                v-if="props.row.groups.map((g) => g.groupId).indexOf(group.groupId) === index">-->
+                            <QChip
+                                v-if="props.row.groups.map((g) => g.groupId).indexOf(group.groupId) === index">
                                 {{
                                     getGroupLiteral(group.groupId)
                                 }}

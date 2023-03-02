@@ -5,7 +5,7 @@ import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUtility from '@/composables/useUtility'
 import {useRoute} from 'vue-router'
-import useAssociation from "@/composables/useAssociation";
+import useAssociation from '@/composables/useAssociation'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
