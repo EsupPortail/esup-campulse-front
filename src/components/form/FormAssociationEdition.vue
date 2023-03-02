@@ -9,13 +9,13 @@ import FormAssociationSocialNetworks from '@/components/form/FormAssociationSoci
 import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
 import AlertConfirmAssociationEnabled from '@/components/alert/AlertConfirmAssociationEnabled.vue'
 import AlertConfirmAssociationPublication from '@/components/alert/AlertConfirmAssociationPublication.vue'
-import AlertConfirmAssociationUpdate from "@/components/alert/AlertConfirmAssociationUpdate.vue";
+import AlertConfirmAssociationUpdate from '@/components/alert/AlertConfirmAssociationUpdate.vue'
 import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {AssociationLogo, EditedAssociation} from '#/association'
 import axios from 'axios'
-import useUserGroups from "@/composables/useUserGroups";
+import useUserGroups from '@/composables/useUserGroups'
 
 
 const {t} = useI18n()
@@ -206,7 +206,8 @@ async function onChangeLogo(action: string) {
                 </template>
             </QInput>
             <QInput v-model="association.siret" :label="t('association.labels.siret')" filled inputmode="numeric"/>
-            <QInput v-model="association.studentCount" :label="t('association.labels.student-count')" filled inputmode="numeric"/>
+            <QInput v-model="association.studentCount" :label="t('association.labels.student-count')" filled
+                    inputmode="numeric"/>
         </fieldset>
         <fieldset>
             <legend>{{ t('association.titles.contact') }}</legend>
