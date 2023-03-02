@@ -1,6 +1,7 @@
 $pageWidth: 80rem;
 $responsiveWidth: 56rem;
 $responsiveMargin: 1.56rem;
+$fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
 // Images
 $headerBackground: url('./img/resized/header-background2.jpg');
@@ -49,7 +50,9 @@ $stateColor2: #FBA04C;
 $stateColor3: #E85B63;
 
 $errorPanelColor: #DB483F;
+$errorTextColor: #7A2520;
 $warningPanelColor: #E7902A;
+$warningTextColor: #7A4120;
 
 $outlineColor1: rgba(255, 255, 255, 0.8);
 $outlineColor2: rgba(44, 44, 44, 0.8);

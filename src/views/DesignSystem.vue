@@ -30,7 +30,9 @@ const selectOptions = ref([
 { id: 1, label: 'Option 1' },
 { id: 2, label: 'Option 2' },
 { id: 3, label: 'Option 3' }
-])
+]);
+const currentPage = ref(1);
+const pages = ref(5)
 
 </script>
 
@@ -103,12 +105,13 @@ const selectOptions = ref([
             <main>
 
                 <!-- PAGE INTRO (image on the left) -->
+                <!-- The h2 can be replaced by another title tag as long as the "intro-title" class isn't removed. -->
                 <section class="introduction image-left">
                     <div class="intro-image">
-                        <img alt="Intro image" src="/images/unistra.jpg" />
+                        <img src="/images/unistra.jpg" alt="Intro image" />
                     </div>
                     <div>
-                        <h2>Ceci est un bloc d'introduction de page !</h2>
+                        <h2 class="intro-title">Ceci est un bloc d'introduction de page !</h2>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                             labore et
@@ -126,10 +129,10 @@ const selectOptions = ref([
                 <!-- PAGE INTRO (image on the right) -->
                 <section class="introduction image-right">
                     <div class="intro-image">
-                        <img alt="Intro image" src="/images/unistra.jpg" />
+                        <img src="/images/unistra.jpg" alt="Intro image" />
                     </div>
                     <div>
-                        <h2>Ceci est un bloc d'introduction de page !</h2>
+                        <h2 class="intro-title">Ceci est un bloc d'introduction de page !</h2>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                             labore et
@@ -143,6 +146,72 @@ const selectOptions = ref([
                         </p>
                     </div>
                 </section>
+
+                <!-- PAGE SECTION -->
+                <section class="page-section">
+
+                    <!-- TITLES -->
+                    <!-- Styles are applied to the class, not the tags. Replace by the title tag that makes sense syntactically. -->
+                    <h2 class="title-1">Titre de niveau 1</h2>
+                    <h3 class="title-2">Titre de niveau 2</h3>
+                    <h4 class="title-3">Titre de niveau 3</h4>
+
+                    <!-- PARAGRAPH -->
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                        sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+
+                    <!-- PARAGRAPH WITH A FLOATING IMAGE (LEFT) -->
+                    <p>
+                        <img class="float-left" src="/images/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                        sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                        sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+
+                    <!-- PARAGRAPH WITH A FLOATING IMAGE (RIGHT) -->
+                    <p>
+                        <img class="float-right" src="/images/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                        sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                        sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </p>
+
+                    <!-- UNORDERED LIST -->
+                    <p>
+                        <ul role="list">
+                            <li>Ceci est le premier élément de la liste ;</li>
+                            <li>Ceci est le second ;</li>
+                            <li>Et finalement, ceci est le troisième et dernier élément.</li>
+                        </ul>
+                    </p>
+
+                     <!-- ORDERED LIST -->
+                     <p>
+                        <ol role="list">
+                            <li>Ceci est le premier élément de la liste ;</li>
+                            <li>Ceci est le second ;</li>
+                            <li>Et finalement, ceci est le troisième et dernier élément.</li>
+                        </ol>
+                    </p>
+
+                </section>
+
+                <!----> <div class="separator"></div> <!---->
 
                 <!-- DASHBOARD SECTION -->
                 <section class="dashboard-section">
@@ -203,6 +272,21 @@ const selectOptions = ref([
                             <QBtn class="btn-alt" label="Bouton alternatif" />
                             <QBtn class="btn-alt" label="Bouton icône gauche" icon="bi-chevron-compact-right" />
                             <QBtn class="btn-alt" label="Bouton icône droite" icon-right="bi-chevron-compact-right" />
+                        </div>
+
+                        <!-- PAGINATION QUASAR -->
+                        <QPagination
+                            v-model="currentPage"
+                            :max="pages"
+                        />
+
+                        <!-- PAGINATION CUSTOM -->
+                        <div class="pagination">
+                            <div class="wrapper">
+                                <QBtn label="" icon="bi-chevron-compact-left" />
+                                <QBtn class="counter-button">Page <strong>1</strong> / 25</QBtn>
+                                <QBtn label="" icon-right="bi-chevron-compact-right" />
+                            </div>
                         </div>
 
                     </div>
@@ -315,24 +399,57 @@ const selectOptions = ref([
                             </div>
                         </div>
 
+                        <!----> <div class="separator-small"></div> <!---->
+
                         <!-- INFO PANELS -->
                         <div class="info-panel">
                             <i class="bi bi-exclamation-lg" aria-hidden="true"></i>
-                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p>Ceci est un message d'info. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                         </div>
 
                         <div class="info-panel info-panel-error">
                             <i class="bi bi-exclamation-lg" aria-hidden="true"></i>
-                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p>Ceci est un message d'erreur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                         </div>
 
                         <div class="info-panel info-panel-warning">
                             <i class="bi bi-exclamation-lg" aria-hidden="true"></i>
-                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p>Ceci est un message d'avertissement. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                         </div>
 
+                        <!----> <div class="separator-small"></div> <!---->
+
+                        <!-- SECTION TITLE -->
+                        <!-- Works with any title tag, use the one that makes sense syntactically. -->
+                        <h3 class="section-title">
+                            <i class="bi bi-card-text" aria-hidden="true"></i>
+                            Titre de la section
+                        </h3>
+
+                        <!----> <div class="separator-small"></div> <!---->
+
+                        <!-- IMAGE UPLOAD FIELD -->
+                        <!-- The styled wrapper is not part of the component; the component's size will adapt to its container's. -->
+                        <!-- The input is hidden and needs to have a unique id for the label (the actual visual) to target it. -->
+                        <div style="width: 150px;">
+                            <div class="image-input">
+                                <img src="public/images/logo_Ariane.png" alt="current image" />
+                                <input id="file-input-g15er4" type="file" />
+                                <label for="file-input-g15er4">
+                                    <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                </label>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
+
+                <!-- PAGE NAVIGATION -->
+                <section class="form-page-navigation">
+                    <QBtn label="Annuler" icon="bi-x-lg" />
+                    <p>Contrôles permettant de naviguer entre des pages, par exemple entre plusieurs étapes de formulaire. Ce texte explicatif est optionnel.</p>
+                    <QBtn label="Étape suivante" icon-right="bi-chevron-compact-right" />
+                </section>
 
             </main>
         </QPageContainer>

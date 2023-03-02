@@ -182,10 +182,6 @@
     font-size: 1.5rem;
   }
 
-  .q-btn__content > * {
-    color: $textColor3;
-  }
-
   &::before, .q-focus-helper {
     display: none;
   }
@@ -206,9 +202,14 @@
     background: $color1 !important;
   }
 
-  .q-btn__content > * {
-    color: $textColor3;
-  }
+  .q-btn__content {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+
+    & > * {
+      color: $textColor3;
+    }
+  } 
 
   &.small-button {
     padding: .375rem 1.875rem;
@@ -364,6 +365,7 @@
         vertical-align: top;
         margin: 0 0 0 .3125rem;
         font-size: 1.125rem;
+        line-height: inherit;
 
         button {
           display: inline-block;
@@ -374,7 +376,7 @@
           line-height: normal;
           transition: transform 0.03s linear;
           position: relative;
-          top: -0.0625rem;
+          top: -0.14rem;
           background: transparent;
           border: none;
 
@@ -822,11 +824,12 @@
       gap: 0.2rem;
 
       button {
-        padding: 0.5rem 1.2rem !important;
+        padding: 0.7rem 1.4rem !important;
         font-size: 1.3rem;
 
         &.q-btn--standard {
           background: $backgroundColor1 !important;
+          pointer-events: none;
 
           .q-btn__content * {
             color: $color1;
@@ -838,28 +841,305 @@
   }
 }
 
+.variant-space-2 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $color2Active;
+  }
+}
+
+.variant-space-3 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $color3;
+  }
+}
+
+// Custom pagination
+.pagination {
+  display: flex;
+  margin: 2rem 0;
+  justify-content: center;
+
+  .wrapper {
+    display: inline-flex;
+    gap: 0.2rem;
+    background-color: $backgroundColor1;
+    box-shadow: $fieldsBoxShadow;
+
+    .q-btn {
+      box-shadow: none;
+      padding: 1rem 1.4rem;
+      background-color: $backgroundColor1;
+      
+      .q-btn__content i {
+        color: $color1;
+      }
+    
+      &:hover, &:active {
+        .q-btn__content i {
+          color: $textColor3 !important;
+        }
+      }
+  
+      &.counter-button {
+        padding: 1rem 2.4rem;
+        color: $textColor2;
+        font-size: 1.4rem;
+  
+        strong {
+          color: $color1;
+          font-weight: 800;
+          padding: 0 0.3rem;
+        }
+
+        &:hover, &:active {
+          color: $textColor3 !important;
+
+          strong {
+            color: $textColor3 !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-space-2 {
+  .pagination .wrapper .q-btn {
+    &:hover, &:active {
+      .q-btn__content i {
+        color: $color2Text !important;
+      }
+    }
+
+    .q-btn__content i {
+      color: $color2Active;
+    }
+
+    &.counter-button strong {
+      color: $color2Active;
+    }
+
+    &.counter-button {
+      &:hover, &:active {
+        color: $color2Text !important;
+
+        strong {
+          color: $color2Text !important;
+        }
+      }
+    }
+  }
+}
+
+.variant-space-3 {
+  .pagination .wrapper .q-btn {
+    .q-btn__content i {
+      color: $color3;
+    }
+
+    &.counter-button strong {
+      color: $color3;
+    }
+  }
+}
+
 // Info panels (error, warning...)
 .info-panel {
   padding: 1.25rem 1.875rem;
+  border: 1px solid $textColor2;
+  background-color: transparentize($textColor2, 0.9);
+  position: relative;
+  margin: 1.2rem 0;
 
   p {
-    color: $textColor2;
+    color: $textColor1;
     font-size: 1.125rem;
+    margin: 0;
   }
 
   &.info-panel-error {
-    border: 1px solid $errorPanelColor;
+    border-color: $errorPanelColor;
+    background-color: transparentize($errorPanelColor, 0.9);
 
     p {
-      color: $errorPanelColor;
+      color: $errorTextColor;
+    }
+
+    i {
+      background-color: $errorPanelColor;
     }
   }
   
   &.info-panel-warning {
-    border: 1px solid $warningPanelColor;
+    border-color: $warningPanelColor;
+    background-color: transparentize($warningPanelColor, 0.9);
 
     p {
-      color: $warningPanelColor;
+      color: $warningTextColor;
     }
+
+    i {
+      background-color: $warningPanelColor;
+    }
+  }
+
+  i {
+    display: block;
+    position: absolute;
+    top: -0.3125rem;
+    left: -0.3125rem;
+    background-color: $textColor2;
+    color: $textColor3;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 0.7rem;
+    outline: 2px solid $backgroundColor1;
+    text-align: center;
+    font-size: 1.15rem;
+    line-height: 1.4rem;
+  }
+}
+
+.form-container .info-panel i {
+  outline-color: $backgroundColor2;
+}
+
+// Form section title
+.section-title {
+  color: $textColor1;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+
+  i {
+    display: inline-block;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 1.125rem;
+    background-color: $color1;
+    color: $color1Text;
+    box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 1.15rem;
+    line-height: 2.2rem;
+    vertical-align: middle;
+    margin-right: 8px;
+    position: relative;
+    top: -3px;
+  }
+}
+
+.variant-space-2 .section-title i {
+  background-color: $color2;
+  color: $color2Text;
+}
+
+.variant-space-3 .section-title i {
+  background-color: $color3;
+  color: $color3Text;
+}
+
+// Image input
+.image-input {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: $backgroundColor1;
+  box-shadow: 0 0 0 1px $color1Borders inset, .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+  padding: 0.95rem;
+  position: relative;
+  align-items: center;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  input[type=file] {
+    position: absolute;
+    left: -9999px;
+
+    &:focus + label {
+      opacity: 1;
+    }
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.05s linear, background-color 0.05s linear;
+
+    i {
+      display: inline-block;
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 1.375rem;
+      background-color: $color1;
+      vertical-align: middle;
+      box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+      color: $color1Text;
+      font-size: 1.4rem;
+      line-height: 2.7rem;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:active
+    {
+      background-color: rgba(0, 0, 0, 0.3);
+    } 
+  }
+}
+
+.variant-space-2 .image-input {
+  box-shadow: 0 0 0 1px $color2Borders inset;
+  
+  label i {
+    background-color: $color2;
+    color: $color2Text;
+  }
+}
+
+.variant-space-3 .image-input {
+  box-shadow: 0 0 0 1px $color3Borders inset;
+
+  label i {
+    background-color: $color3;
+    color: $color3Text;
+  }
+}
+
+// Form page navigation
+.form-page-navigation {
+  width: 100%;
+  max-width: $pageWidth;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5rem;
+  margin: 3.2rem auto;
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
+
+  button {
+    flex: 0 0 17rem;
   }
 }
