@@ -135,3 +135,64 @@ export const _groups: Group[] = [
         ]
     },
 ]
+
+export const _publicGroupLabels = [
+    {
+        value: 6,
+        label: 'Étudiant membre d\'association',
+        disable: false
+    },
+    {
+        value: 7,
+        label: 'Étudiant porteur de projet individuel',
+        disable: false
+    },
+    {
+        value: 5,
+        label: 'Membre de commission Culture/ActionS',
+        disable: false
+    },
+    {
+        value: 4,
+        label: 'Membre de commission FSDIE/IdEx',
+        disable: false
+    }
+]
+
+export const _privateGroupLabels = [
+    {
+        value: 6,
+        label: 'Étudiant membre d\'association',
+        disable: false
+    },
+    {
+        value: 7,
+        label: 'Étudiant porteur de projet individuel',
+        disable: false
+    },
+    {
+        value: 3,
+        label: 'Gestionnaire Crous',
+        disable: true
+    },
+    {
+        value: 2,
+        label: 'Gestionnaire établissement',
+        disable: true
+    },
+    {
+        value: 1,
+        label: 'Gestionnaire général',
+        disable: true
+    },
+    {
+        value: 5,
+        label: 'Membre de commission Culture/ActionS',
+        disable: false
+    },
+    {
+        value: 4,
+        label: 'Membre de commission FSDIE/IdEx',
+        disable: false
+    }
+]

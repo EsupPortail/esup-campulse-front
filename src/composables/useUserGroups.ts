@@ -2,11 +2,11 @@ import {computed, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useAxios} from '@/composables/useAxios'
-import type {SelectLabel} from "#/index";
-import type {Group} from "#/groups";
-import i18n from "@/plugins/i18n";
-import type {UserGroup} from "#/user";
-import {useUserStore} from "@/stores/useUserStore";
+import type {SelectLabel} from '#/index'
+import type {Group} from '#/groups'
+import i18n from '@/plugins/i18n'
+import type {UserGroup} from '#/user'
+import {useUserStore} from '@/stores/useUserStore'
 
 
 // Used to store groups
@@ -71,6 +71,12 @@ export default function () {
         }
     }
 
+    /**
+     * It takes a groupId, finds the group object in the groups array, and returns the literalName of the groupName object
+     * that has the same codeName as the group object
+     * @param {number} groupId - The id of the group you want to get the literal name of.
+     * @returns The literal name of the group.
+     */
     function getGroupLiteral(groupId: number): string | undefined {
         const group = (groups.value?.find(obj => obj.id === groupId))
         if (group) {
@@ -83,12 +89,11 @@ export default function () {
 
     const groupLabels = ref<SelectLabel[]>([])
 
-
     /**
-     * It takes a boolean parameter, and if it's true, it will only return public groups, otherwise it will return all
+     * It takes a boolean parameter, and if it's true, it will only return the public groups, otherwise it will return all
      * groups
-     * @param {boolean} onlyPublicGroups - boolean - If true, only public groups will be included in the list.
-     * @returns the value of the variable groupLabels.
+     * @param {boolean} onlyPublicGroups - boolean - If true, only public groups will be added to the list.
+     * @returns the groupLabels value
      */
     function initGroupLabels(onlyPublicGroups: boolean) {
         const labels: SelectLabel[] = []
@@ -209,6 +214,7 @@ export default function () {
         getGroups,
         groupLabels,
         groupsToDelete,
+        groupsToAdd,
         groupChoiceIsValid,
         newGroups,
         updateUserGroups,
