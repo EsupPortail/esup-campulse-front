@@ -6,8 +6,8 @@ import {createTestingPinia} from '@pinia/testing'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
-import {_groups, _privateGroupLabels, _publicGroupLabels} from "../../../tests/fixtures/group.mock";
-import {useUserStore} from "../../stores/useUserStore";
+import {_groups, _privateGroupLabels, _publicGroupLabels} from '~/fixtures/group.mock'
+import {useUserStore} from '@/stores/useUserStore'
 
 
 vi.mock('@/composables/useAxios', () => ({
