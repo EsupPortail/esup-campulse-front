@@ -83,13 +83,14 @@ export default function () {
      * @param {AssociationRole} association - AssociationRole - this is the association that is being checked
      */
     function checkHasPresident(association: AssociationRole) {
+        updateRegisterRoleInAssociation()
         if (association.options) {
             const a = associationStore.associationNames.find(obj => obj.id === association.id)
             if (a) {
                 association.options[0].disable = a.hasPresident
                 if (association.role === 'isPresident') {
                     const model = newAssociations.value.find(obj => obj.id === association.id)
-                    if (model) model.role = ''
+                    if (model) model.role = 'isMember'
                 }
             }
         }
