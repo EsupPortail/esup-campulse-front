@@ -6,9 +6,8 @@ This template should help get you started developing with Vue 3 in Vite.
 
 ### develop
 
-![develop pipeline state](https://git.unistra.fr/di/plan_a/front/badges/develop/pipeline.svg)
-![develop coverage](https://git.unistra.fr/di/plan_a/front/badges/develop/coverage.svg)
-
+[![pipeline status](https://git.unistra.fr/di/plan_a/front/badges/develop/pipeline.svg)](https://git.unistra.fr/di/plan_a/front/-/commits/develop/)
+[![coverage report](https://git.unistra.fr/di/plan_a/front/badges/develop/coverage.svg)](https://git.unistra.fr/di/plan_a/front/-/commits/develop/)
 
 ## Recommended IDE Setup
 
