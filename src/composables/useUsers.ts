@@ -51,23 +51,16 @@ export default function () {
             else {
                 // We search for the corresponding association in store
                 const storeAssociation: AssociationUserDetail | undefined = userManagerStore.userAssociations.find(obj =>
-                    obj.id === association.id)
+                    obj.association.id === association.id)
                 // We set a boolean to track changes
                 let hasChanges = false
                 // We compare the 2 objects
+                console.log(storeAssociation)
                 if (storeAssociation?.canBePresident !== association.canBePresident) hasChanges = true
                 if (storeAssociation?.isPresident && association.role !== 'isPresident') hasChanges = true
                 if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
                 if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
-                /*for (const [key, value] of Object.entries(association)) {
-                    const availableKeys = ['isPresident', 'canBePresident', 'isSecretary', 'isTreasurer']
-                    if (availableKeys.indexOf(key) !== -1) {
-                        if (value !== storeAssociation?.[key as keyof AssociationUserDetail]) {
-                            hasChanges = true
-                            break
-                        }
-                    }
-                }*/
+
                 if (hasChanges && association.id) {
                     const infosToPatch = {
                         isPresident: association.role === 'isPresident',
