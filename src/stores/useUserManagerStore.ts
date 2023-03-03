@@ -80,7 +80,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
          */
         async getUserDetail(id: number) {
             const {axiosAuthenticated} = useAxios()
-            console.log('ici')
             this.user = (await axiosAuthenticated.get<User>(`/users/${id}`)).data
         },
         /**

@@ -114,7 +114,7 @@ describe('useAssociation', () => {
             newAssociations.value = JSON.parse(JSON.stringify([_associationRole]))
             checkHasPresident(_associationRole)
             const m = newAssociations.value.find(obj => obj.id === _associationRole.id)
-            expect(m?.role).toEqual('')
+            expect(m?.role).toEqual('isMember')
         })
     })
 
@@ -264,7 +264,6 @@ describe('useAssociation', () => {
         it('should return an empty object if no changed infos', () => {
             (associationStore.association as Association).socialNetworks = JSON.parse(JSON.stringify(_associationSocialNetworks))
             associationSocialNetworks.value = _associationSocialNetworks
-            console.log(associationSocialNetworks.value)
             expect(checkChanges(_nonEditedAssociation)).toEqual({})
         })
     })

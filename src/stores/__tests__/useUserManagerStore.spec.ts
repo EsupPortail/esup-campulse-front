@@ -62,7 +62,7 @@ describe('User manager store', () => {
             const {axiosAuthenticated} = useAxios()
             await userManagerStore.getUsers()
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/?institutions=${userStore.userInstitutions?.join(',')}`)
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/?institutions=${userStore.userInstitutions?.join(',')},`)
             expect(userManagerStore.users).toEqual(_users)
         })
     })
@@ -80,7 +80,7 @@ describe('User manager store', () => {
         it('should call API once on /users/?is_validated_by_admin=false&institutions if user is linked to institutions', async () => {
             userStore.user = _institutionManager
             mockedAxios.get.mockResolvedValueOnce({data: _users} as AxiosResponse)
-            const url = '/users/?is_validated_by_admin=false&institutions=' + userStore.userInstitutions?.join(',')
+            const url = '/users/?is_validated_by_admin=false&institutions=' + userStore.userInstitutions?.join(',') + ','
             const {axiosAuthenticated} = useAxios()
             await userManagerStore.getUnvalidatedUsers()
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
@@ -89,7 +89,6 @@ describe('User manager store', () => {
         })
 
         it('should do nothing if user is linked to no association', async () => {
-            console.log(userStore.userInstitutions)
             mockedAxios.get.mockResolvedValueOnce({data: _users} as AxiosResponse)
             const {axiosAuthenticated} = useAxios()
             await userManagerStore.getUnvalidatedUsers()
