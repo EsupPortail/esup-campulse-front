@@ -6,28 +6,21 @@ import {useQuasar} from 'quasar'
 import {onBeforeRouteLeave, useRoute} from 'vue-router'
 import AlertConfirmUserDelete from '@/components/alert/AlertConfirmUserDelete.vue'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
-import FormUpdateManagedUserAssociations from '@/components/form/FormUpdateManagedUserAssociations.vue'
-import type {UserToUpdate} from '#/user'
 import useUserGroups from '@/composables/useUserGroups'
 import router from '@/router'
 import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
-import AlertConfirmUserUpdate from "@/components/alert/AlertConfirmUserUpdate.vue";
+import AlertConfirmUserUpdate from '@/components/alert/AlertConfirmUserUpdate.vue'
+import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
+import useUsers from '@/composables/useUsers'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {groupChoiceIsValid} = useUserGroups()
+const {user} = useUsers()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
-
-const user = ref<UserToUpdate>({
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    phone: ''
-})
 
 const initValues = () => {
     user.value.firstName = userManagerStore.user?.firstName
@@ -85,40 +78,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 <template>
     <QForm class="q-gutter-md">
-        <fieldset>
-            <legend>{{ t('user.infos') }}</legend>
-            <QInput
-                v-model="user.firstName"
-                :disable="!!userManagerStore.user?.isCas"
-                :label="t('forms.first-name')"
-                :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="user.lastName"
-                :disable="!!userManagerStore.user?.isCas"
-                :label="t('forms.last-name')"
-                :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="user.email"
-                :disable="!!userManagerStore.user?.isCas"
-                :label="t('forms.email')"
-                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="user.phone"
-                :label="t('forms.phone')"
-                filled
-                lazy-rules
-                type="tel"
-            />
-        </fieldset>
+        <FormUserInfosEdition :edited-by-staff="true" :user="userManagerStore.user"/>
         <FormUpdateManagedUserAssociations/>
         <fieldset>
             <legend>{{ t('user.groups') }}</legend>

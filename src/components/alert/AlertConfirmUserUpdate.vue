@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {type PropType, ref} from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
 import axios from "axios";
 import router from "@/router";
 import {useUserManagerStore} from "@/stores/useUserManagerStore";
@@ -9,30 +9,27 @@ import useUsers from "@/composables/useUsers";
 import useUserGroups from "@/composables/useUserGroups";
 import useAssociation from "@/composables/useAssociation";
 import useSecurity from "@/composables/useSecurity";
-import type {UserToUpdate} from "#/user";
 
 const confirmation = ref<boolean>(false)
-const { t } = useI18n()
-const { notify } = useQuasar()
+
+const {t} = useI18n()
+const {notify} = useQuasar()
 const userManagerStore = useUserManagerStore()
-const {updateUserAssociations} = useUsers()
+const {updateUserAssociations, user} = useUsers()
 const {updateUserGroups} = useUserGroups()
 const {newAssociations, updateRegisterRoleInAssociation} = useAssociation()
 const {userAssociationsRegister} = useSecurity()
 
-const props = defineProps({
-    user: Object as PropType<UserToUpdate>,
-})
 
 const emit = defineEmits(['hasValidated'])
 
 async function onValidateChanges() {
     try {
-        await userManagerStore.updateUserInfos(props.user as UserToUpdate)
+        await userManagerStore.updateUserInfos(user.value)
         updateUserAssociations()
         if (newAssociations.value.length > 0) {
             const newAssociationsRoles = updateRegisterRoleInAssociation()
-            await userAssociationsRegister(false, props.user?.username as string, newAssociationsRoles)
+            await userAssociationsRegister(false, user.value.username as string, newAssociationsRoles)
         }
         await updateUserGroups()
         emit('hasValidated')

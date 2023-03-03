@@ -24,8 +24,8 @@ const {isStaff} = useUserGroups()
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        :label="t('password.edit-password')"
-                        :to="{name: 'PasswordEdit'}"
+                        :label="t('dashboard.account-infos')"
+                        :to="{name: 'ManageAccount'}"
                         color="secondary"
                     />
                 </div>

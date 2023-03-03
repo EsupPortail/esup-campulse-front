@@ -1,8 +1,17 @@
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {AssociationRole, AssociationUser, AssociationUserDetail, UserGroup} from '#/user'
+import type {AssociationRole, AssociationUser, AssociationUserDetail, UserGroup, UserToUpdate} from '#/user'
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
-import useSecurity from "@/composables/useSecurity";
+import useSecurity from '@/composables/useSecurity'
+
+// Used to update user infos
+const user = ref<UserToUpdate>({
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    phone: ''
+})
 
 // Used to store a new user's associations
 const newUserAssociations = ref<AssociationUser[]>([])
@@ -103,6 +112,7 @@ export default function () {
         userAssociations,
         validateUser,
         newUserAssociations,
-        canEditUser
+        canEditUser,
+        user
     }
 }

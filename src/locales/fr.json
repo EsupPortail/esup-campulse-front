@@ -103,6 +103,7 @@
   },
   "back": "Retour",
   "breadcrumbs": {
+    "account-infos": "Modifier les informations de mon compte",
     "add-user": "Ajouter un compte",
     "association-dashboard": "Gérér mon association",
     "association-detail": "Fiche association",
@@ -115,7 +116,6 @@
     "login": "Connexion",
     "manage-associations": "Gérer les associations",
     "manage-users": "Gérer les comptes",
-    "password-edit": "Modifier mon mot de passe",
     "register": "Créer un compte",
     "user-account": "Compte utilisateur",
     "validate-users": "Valider les comptes"
@@ -123,6 +123,7 @@
   "cancel": "Annuler",
   "cancel-delete": "Annuler la suppression",
   "dashboard": {
+    "account-infos": "Modifier mes informations personnelles",
     "association-management": "Gérer l'annuaire des associations",
     "create-association": "Créer une association",
     "create-user": "Créer un nouvel utilisateur",

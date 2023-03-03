@@ -83,12 +83,12 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
-                        path: 'password-edit',
-                        name: 'PasswordEdit',
-                        component: () => import('@/views/PasswordEditView.vue'),
+                        path: 'manage-account',
+                        name: 'ManageAccount',
+                        component: () => import('@/views/dashboard/AccountInfosView.vue'),
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.password-edit'),
-                            title: i18n.global.t('breadcrumbs.password-edit')
+                            breadcrumb: i18n.global.t('breadcrumbs.account-infos'),
+                            title: i18n.global.t('breadcrumbs.account-infos')
                         }
                     },
                     {
