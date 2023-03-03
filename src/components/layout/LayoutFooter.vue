@@ -9,12 +9,24 @@ const {t} = useI18n()
     <QFooter id="layout-footer" class="variant-space-1" elevated>
         <div id="footer-logos">
             <div class="wrapper">
-                <img src="@/assets/img/logos/uha.png" />
-                <img src="@/assets/img/logos/hear-white.png" />
-                <img src="@/assets/img/logos/insa.png" />
-                <img src="@/assets/img/logos/ensas.png" />
-                <img src="@/assets/img/logos/engees.png" />
-                <img src="@/assets/img/logos/unistra.png" />
+                <RouterLink to="/">
+                    <img src="@/assets/img/logos/uha.png" />
+                </RouterLink>
+                <RouterLink to="/">
+                    <img src="@/assets/img/logos/hear-white.png" />
+                </RouterLink>
+                <RouterLink to="/">
+                    <img src="@/assets/img/logos/insa.png" />
+                </RouterLink>
+                <RouterLink to="/">
+                    <img src="@/assets/img/logos/ensas.png" />
+                </RouterLink>
+                <RouterLink to="/">
+                    <img src="@/assets/img/logos/engees.png" />
+                </RouterLink>
+                <RouterLink to="/">
+                    <img src="@/assets/img/logos/unistra.png" />
+                </RouterLink>
             </div>
         </div>
         <QToolbar>

@@ -60,73 +60,103 @@ button.q-btn--outline {
 
 // Intro element (Image, title, text) that can be used at the top of pages
 .introduction {
-  display: flex;
-  gap: 3.125rem;
-  align-items: center;
-  width: 100%;
-  max-width: $pageWidth;
-  margin: 1.875rem auto 5rem;
+  margin: 2rem 0 4rem;
+  padding: 0;
+  
+  .content {
+    display: flex;
+    gap: 3.125rem;
+    align-items: center;
+    width: 100%;
+    max-width: $pageWidth;
+    margin: 0 auto 0;
 
-  &.image-right {
-    flex-direction: row-reverse;
-  }
+    .intro-image {
+      flex: 0 0 300px;
+      font-size: 0;
+  
+      img {
+        width: 18.75rem;
+        height: auto;
+      }
+    }
+  
+    .intro-title {
+      font-size: 1.875rem;
+      line-height: 2.5rem;
+      font-weight: 400;
+      color: $color1Text;
+      text-transform: uppercase;
+      margin-bottom: 0.625rem;
+    }
+  
+    p {
+      font-size: 1.125rem;
+      font-weight: 400;
+      color: $color1Text;
+      text-align: justify;
 
-  .intro-image {
-    flex: 0 0 300px;
-
-    img {
-      width: 18.75rem;
-      height: auto;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
-  .intro-title {
-    font-size: 1.875rem;
-    line-height: 2.5rem;
-    font-weight: 400;
-    color: $color1Text;
-    text-transform: uppercase;
-    margin-bottom: 0.625rem;
+  &.image-right {
+    padding: 2.5rem 0;
+
+      .content {
+        flex-direction: row-reverse;
+    }
   }
 
-  p {
-    font-size: 1.125rem;
-    font-weight: 400;
-    color: $color1Text;
-    text-align: justify;
+  &.color-background {
+    background-color: $color1Background;
   }
 
   @media only screen and (max-width: $pageWidth) {
-    padding-left: $responsiveMargin;
-    padding-right: $responsiveMargin;
-    gap: 1.875rem;
+    .content {
+      padding-left: $responsiveMargin;
+      padding-right: $responsiveMargin;
+      gap: 1.875rem;
 
-    .intro-image {
-      flex: 0 0 15.625rem;
-
-      img {
-        width: 15.625rem;
+      .intro-image {
+        flex: 0 0 15.625rem;
+  
+        img {
+          width: 15.625rem;
+        }
       }
     }
   }
 
   @media only screen and (max-width: $responsiveWidth) {
-    display: block;
+    .content {
+      display: block;
 
-    .intro-image {
-      width: 100%;
-      flex: unset;
-      margin-bottom: 0.938rem;
-      height: 9.375rem;
-      overflow: hidden;
-
-      img {
+      .intro-image {
         width: 100%;
-        position: relative;
-        top: -30%;
+        flex: unset;
+        margin-bottom: 0.938rem;
+        height: 9.375rem;
+        overflow: hidden;
+  
+        img {
+          width: 100%;
+          position: relative;
+          top: -30%;
+        }
       }
     }
   }
+}
+
+.variant-space-2 .introduction.color-background {
+  background-color: $color2Background;
+}
+
+.variant-space-3 .introduction.color-background {
+  background-color: $color3Background;
 }
 
 // Titles

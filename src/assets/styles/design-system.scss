@@ -1,5 +1,8 @@
 @import '@/assets/variables';
 
+// THIS STYLESHEET IS ONLY USED FOR THE STYLE LIBRARY PAGE.
+// IT SHOULD NEVER BE IMPORTED ON OTHER PAGES.
+
 #layout-page {
     padding-top: 3.5rem;
 }
@@ -48,7 +51,7 @@
                 color: #252536;
             }
 
-            &:focus {
+            &:focus-visible {
                 outline: 2px solid $outlineColor1;
             }
         }

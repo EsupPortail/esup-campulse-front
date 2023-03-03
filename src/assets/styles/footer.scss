@@ -19,10 +19,14 @@
       text-align: center;
       margin: 0 auto;
 
-      img {
-        width: auto;
-        max-height: 3.125rem;
+      a {
+        display: inline-block;
         margin: 1.25rem;
+
+        img {
+          width: auto;
+          max-height: 3.125rem;
+        }
 
         &:first-child {
           margin-left: 0;
@@ -58,9 +62,10 @@
       color: $textColor3;
       text-decoration: none;
       text-transform: uppercase;
+      display: inline-block;
 
       i {
-        font-size: 1.125rem;
+        font-size: 1.22em;
         opacity: 0.8;
         margin-right: 0.625rem;
         position: relative;
@@ -75,8 +80,12 @@
         margin-right: 0;
       }
 
-      &:focus {
+      &:focus-visible {
         outline: 2px solid $outlineColor1;
+      }
+
+      &:hover {
+        border-bottom: 1px solid transparentize($textColor3, 0.4);
       }
     }
 

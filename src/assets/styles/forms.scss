@@ -45,7 +45,7 @@
     background-color: $backgroundColor1;
     border-radius: 0;
     border: .0625rem solid $color1Borders;
-    box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+    box-shadow: $fieldsBoxShadow;
 
     input {
       color: $color1Text;
@@ -164,6 +164,43 @@
   }
 }
 
+// Custom input fields
+input.custom-input, select.custom-input, textarea.custom-input {
+  width: 100%;
+  background-color: $backgroundColor1;
+  border-radius: 0;
+  border: .0625rem solid $color1Borders;
+  box-shadow: $fieldsBoxShadow;
+  padding: .625rem 1.25rem .75rem;
+  color: $color1Text;
+  font-size: 1.125rem;
+  font-weight: 400;
+  transition: border-color 0.07s linear;
+  margin-bottom: 1.2rem;
+
+  &:focus {
+    border-color: $color1;
+    outline: none;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+textarea.custom-input {
+  resize: vertical;
+}
+
+label.custom-label {
+  display: inline-block;
+  color: $textColor2;
+  font-size: .9375rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
 // Quasar buttons
 .q-btn {
   background-color: $color1;
@@ -172,7 +209,7 @@
   font-size: 1.125rem;
   font-weight: 300;
   transition: background-color 0.03s linear;
-  box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+  box-shadow: $fieldsBoxShadow;
 
   &:focus-visible {
     outline: 2px solid $outlineColor2 !important;
@@ -339,7 +376,7 @@
 
     .document-input-header {
       background-color: $backgroundColor1;
-      box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+      box-shadow: $fieldsBoxShadow;
       height: 3.75rem;
       border-left: .25rem solid $color1;
       position: relative;
@@ -436,7 +473,7 @@
 
         &:hover {
           background-color: rgba(255, 255, 255, 0.65);
-          box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+          box-shadow: $fieldsBoxShadow;
 
           button {
             display: inline-block;
@@ -519,7 +556,7 @@
     }
   }
 
-  button:focus {
+  button:focus-visible {
     outline: 2px solid $outlineColor2;
   }
 }
@@ -629,16 +666,26 @@
     border-top: none;
     font-size: 1.0625rem;
     color: $color1Text;
+    padding: 1rem 0;
+
+    .q-btn.q-btn-item {
+      margin-right: 0.25rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 
   .q-table {
     border-collapse: separate;
     border-spacing: 0 .625rem;
     width: 100%;
+    height: 1px;
 
     thead tr {
       background-color: $color1;
-      box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+      box-shadow: $fieldsBoxShadow;
 
       th {
         font-size: 1.125rem;
@@ -668,8 +715,8 @@
     tbody {
       tr {
         background-color: $backgroundColor1;
-        box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
-        height: .0625rem;
+        box-shadow: $fieldsBoxShadow;
+        height: 1px;
 
         td {
           height: unset;
@@ -683,16 +730,36 @@
             border-left: .25rem solid $color1;
           }
 
-          &.actions-cell {
+          &.actions-cell, &.actions-cell-compact {
             padding: 0;
-            padding-left: .625rem;
             height: 100%;
+            width: 0;
+
+            .button-container {
+              display: flex;
+              height: 100%;
+              gap: 0;
+              flex-direction: row;
+              justify-content: center;
+            }
 
             .q-btn {
-              padding: .625rem 1.25rem;
+              display: flex;
               font-size: 1rem;
               width: 100%;
               height: 100%;
+            }
+          }
+
+          &.actions-cell {
+            padding-left: 1rem;
+
+            .button-container {
+              gap: .125rem;
+            }
+
+            .q-btn {
+              padding: .625rem 1.2rem;
 
               .q-btn__content {
                 flex-wrap: nowrap;
@@ -700,6 +767,38 @@
                 i {
                   font-size: 1.25rem;
                 }
+              }
+            }
+          }
+
+          &.actions-cell-compact {
+            padding-left: 0.6rem;
+
+            .q-btn {
+              padding: .625rem .65rem;
+              background: transparent !important;
+              box-shadow: none;
+              transition: box-shadow 0.08s linear, background-color 0.08 linear;
+                              
+              .q-btn__content * {
+                color: $textColor2;
+                font-weight: 400;
+              }
+
+              .q-btn__content i {
+                font-size: 1.1rem;
+              }
+
+              &:hover {
+                box-shadow: 0 -0.25rem 0 0 $color1 inset;
+
+                .q-btn__content * {
+                  color: $textColor1;
+                }
+              }
+
+              &:active {
+                background: transparentize($color1, 0.9) !important;
               }
             }
           }
@@ -723,13 +822,16 @@
   display: inline-block;
   white-space: nowrap;
   vertical-align: middle;
+  color: $textColor1;
+  font-size: 1.125rem;
+  font-weight: 400;
 
   .form-state-icon {
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+    box-shadow: $fieldsBoxShadow;
     line-height: 1.5rem;
     text-align: center;
     margin-left: .4375rem;
@@ -737,9 +839,8 @@
     i {
       display: inline-block;
       color: $textColor3;
-      font-size: .75rem;
+      font-size: 1.2rem;
       position: relative;
-      top: -0.125rem;
     }
   }
 
@@ -1009,6 +1110,7 @@
   color: $textColor1;
   font-size: 1.6rem;
   text-transform: uppercase;
+  margin-bottom: 1.4rem;
 
   i {
     display: inline-block;
@@ -1017,7 +1119,7 @@
     border-radius: 1.125rem;
     background-color: $color1;
     color: $color1Text;
-    box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+    box-shadow: $fieldsBoxShadow;
     text-align: center;
     font-size: 1.15rem;
     line-height: 2.2rem;
@@ -1044,7 +1146,7 @@
   width: 100%;
   aspect-ratio: 1;
   background-color: $backgroundColor1;
-  box-shadow: 0 0 0 1px $color1Borders inset, .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 1px $color1Borders inset, $fieldsBoxShadow;
   padding: 0.95rem;
   position: relative;
   align-items: center;
@@ -1089,7 +1191,7 @@
       border-radius: 1.375rem;
       background-color: $color1;
       vertical-align: middle;
-      box-shadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+      box-shadow: $fieldsBoxShadow;
       color: $color1Text;
       font-size: 1.4rem;
       line-height: 2.7rem;
@@ -1141,5 +1243,75 @@
 
   button {
     flex: 0 0 17rem;
+  }
+}
+
+// Multi-column form
+.form-col-container {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  margin: 2rem 0;
+
+  .form-col {
+    flex: 1 1 0;
+    padding: 0 3.2rem;
+    border-left: 1px solid $formSeparatorColor;
+
+    &:first-child {
+      padding-left: 0;
+      border: none;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}
+
+// Display rows
+.display-row, .comment-row {
+  background-color: $backgroundColor1;
+  box-shadow: $fieldsBoxShadow;
+  border-left: 4px solid $color1;
+  padding: 0.8rem 1.5625rem;
+  color: $textColor1;
+  font-size: 1.25rem;
+  font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1.5625rem;
+  width: 100%;
+
+  p {
+    margin: 0;
+
+    &.row-title {
+      text-transform: uppercase;
+      flex: 1 0 30%;
+    }
+  }
+}
+
+.comment-row {
+  flex-direction: column;
+  gap: .625rem;
+  padding-bottom: 1.2rem;
+
+  .comment-head {
+    color: $textColor2;
+    font-size: 1.125rem;
+    font-weight: 400;
+
+    .value {
+      color: $textColor1;
+      font-weight: 600;
+    }
+
+    i {
+      margin-right: .5rem;
+    }
   }
 }
