@@ -8,14 +8,20 @@ import useUsers from '@/composables/useUsers'
 import useAssociation from "@/composables/useAssociation";
 import FormRegisterUserAssociation from '@/components/form/FormRegisterUserAssociations.vue'
 import useUserGroups from "@/composables/useUserGroups";
+import {AssociationUser, AssociationUserDetail} from "#/user";
+import {useUserStore} from "@/stores/useUserStore";
 
+const props = defineProps<{
+    editedByStaff: boolean
+}>()
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
+const userStore = useUserStore()
 const route = useRoute()
 const {userAssociations} = useUsers()
-const {associationRoleOptions} = useAssociation()
+const {associationRoleOptions, getUserAssociations} = useAssociation()
 const {groupCanJoinAssociation} = useUserGroups()
 
 
@@ -26,14 +32,17 @@ onMounted(async () => {
 })
 
 const initValues = () => {
-    userManagerStore.userAssociations.forEach(function (association) {
+    let associations: AssociationUser[] | AssociationUserDetail[] = userStore.userAssociations
+    if (props.editedByStaff) associations = userManagerStore.userAssociations
+    associations.forEach(function (association) {
         let role = ''
         if (association.isPresident) role = 'isPresident'
         if (association.isSecretary) role = 'isSecretary'
         if (association.isTreasurer) role = 'isTreasurer'
         userAssociations.value.push({
-            id: association.association.id,
-            name: association.association.name,
+            id: props.editedByStaff ? (association as AssociationUserDetail).association.id : (association as AssociationUser).association,
+            name: props.editedByStaff ? (association as AssociationUserDetail).association.name :
+                userStore.user?.associations.find(obj => obj.id === association.association)?.name,
             role,
             options: associationRoleOptions,
             canBePresident: association.canBePresident,
@@ -42,12 +51,14 @@ const initValues = () => {
     })
 }
 watch(() => userManagerStore.userAssociations, initValues)
+watch(() => userStore.userAssociations, initValues)
 
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
         userAssociations.value = []
-        await userManagerStore.getUserAssociations(parseInt(route.params.id as string))
+        const id = props.editedByStaff ? parseInt(route.params.id as string) : userStore.user?.id
+        await getUserAssociations(id as number, props.editedByStaff)
     } catch (e) {
         notify({
             type: 'negative',
@@ -55,7 +66,6 @@ async function onGetUserAssociations() {
         })
     }
 }
-
 </script>
 
 <template>
@@ -98,6 +108,13 @@ async function onGetUserAssociations() {
                 <FormRegisterUserAssociation/>
             </QCardSection>
         </QCard>
+        <div>
+            <QBtn
+                v-if="!props.editedByStaff"
+                label="Valider les changements"
+                @click=""
+            />
+        </div>
     </fieldset>
 </template>
 
@@ -106,17 +123,18 @@ async function onGetUserAssociations() {
     display: flex
     flex-direction: column
     gap: 20px
+    margin-top: 20px
 
-.association-cards .q-checkbox
+fieldset
+    border: none
+
+fieldset .q-checkbox
     width: 100%
 
 h4
     font-size: 1.5em
     padding: 0
     line-height: 0
-
-.q-select, .q-input
-    margin-bottom: 20px
 
 legend
     background-color: $primary

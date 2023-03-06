@@ -3,7 +3,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {onMounted} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useRoute} from "vue-router";
 import useUsers from "@/composables/useUsers";
 
@@ -23,8 +23,18 @@ const {notify, loading} = useQuasar()
 onMounted(async () => {
     loading.show
     await loadAssociations()
+    initTitle()
     loading.hide
 })
+
+const title = ref<string>()
+
+const initTitle = () => {
+    if (route.name === 'Registration') title.value = "J'ajoute les associations dont je suis membre"
+    else if (route.name === 'ManageAccount') title.value = "Ajouter de nouvelles associations"
+    else t('user-manager.register-in-new-associations')
+}
+watch(() => route.path, initTitle)
 
 async function loadAssociations() {
     try {
@@ -37,14 +47,11 @@ async function loadAssociations() {
     }
 }
 
-
 </script>
 
 <template>
     <fieldset>
-        <legend class="legend-big">{{
-                route.name === 'Registration' ? t("forms.add-my-associations") : t('user-manager.register-in-new-associations')
-            }}
+        <legend class="legend-big">{{ title }}
         </legend>
         <div v-for="(association, index) in newAssociations" :key="index">
             <QSelect

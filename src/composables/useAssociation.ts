@@ -1,10 +1,12 @@
 import {ref} from 'vue'
 import i18n from "@/plugins/i18n";
 import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
-import type {AssociationRole, AssociationUser} from '#/user'
+import type {AssociationRole, AssociationUser, AssociationUserDetail, UserManagerStore, UserStore} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useUserStore} from "@/stores/useUserStore";
+import {useUserManagerStore} from "@/stores/useUserManagerStore";
 
 
 const newAssociations = ref<AssociationRole[]>([])
@@ -19,6 +21,8 @@ let changedData = {}
 export default function () {
 
     const associationStore = useAssociationStore()
+    const userStore = useUserStore()
+    const userManagerStore = useUserManagerStore()
 
     /** Setup altLogo default value if association does not have one
      *
@@ -105,7 +109,6 @@ export default function () {
         newAssociations.value.forEach(association => {
             newAssociationsUser.value.push({
                 association: association.id,
-                name: '',
                 isPresident: association.role === 'isPresident',
                 canBePresident: false,
                 isValidatedByAdmin: false,
@@ -114,6 +117,15 @@ export default function () {
             })
         })
         return newAssociationsUser.value
+    }
+
+    async function getUserAssociations(id: number | null, managedUser: boolean) {
+        const {axiosAuthenticated} = useAxios()
+        let store: UserStore | UserManagerStore = userStore
+        if (managedUser) store = userManagerStore
+        let url = '/users/associations/'
+        if (managedUser) url += id
+        store.userAssociations = (await axiosAuthenticated.get<AssociationUser[] | AssociationUserDetail[]>(url)).data
     }
 
     /**
@@ -266,6 +278,7 @@ export default function () {
         checkHasPresident,
         updateRegisterRoleInAssociation,
         changeAssociationLogo,
-        associationRoleOptions
+        associationRoleOptions,
+        getUserAssociations
     }
 }

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
-import type { PasswordEdit } from '#/user'
-import { useAxios } from '@/composables/useAxios'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import type {PasswordEdit} from '#/user'
+import {useAxios} from '@/composables/useAxios'
 import router from '@/router'
 
-const { t } = useI18n()
-const { notify } = useQuasar()
+const {t} = useI18n()
+const {notify} = useQuasar()
 
 const editPassword = ref<PasswordEdit>({
     oldPassword: '',
@@ -15,7 +15,7 @@ const editPassword = ref<PasswordEdit>({
     newPassword2: ''
 })
 
-const { axiosAuthenticated } = useAxios()
+const {axiosAuthenticated} = useAxios()
 
 async function passwordConfirm() {
     if (editPassword.value.newPassword1 === editPassword.value.newPassword2) {
@@ -28,7 +28,7 @@ async function passwordConfirm() {
                     newPassword2: editPassword.value.newPassword2
                 }
             )
-            await router.push({ name: 'Home' })
+            await router.push({name: 'Home'})
             notify({
                 type: 'positive',
                 message: t('notifications.positive.password-changed')
@@ -51,15 +51,31 @@ async function passwordConfirm() {
 
 <template>
     <QForm class="q-gutter-md" @submit="passwordConfirm">
-        <QInput v-model="editPassword.oldPassword" :label="$t('forms.old-password')"
-            :rules="[val => val && val.length > 0 || $t('forms.required-old-password')]" filled lazy-rules
-            type="password" />
-        <QInput v-model="editPassword.newPassword1" :label="$t('forms.new-password')"
-            :rules="[val => val && val.length > 0 || $t('forms.required-new-password')]" filled lazy-rules
-            type="password" />
-        <QInput v-model="editPassword.newPassword2" :label="$t('forms.repeat-new-password')"
-            :rules="[val => val && val.length > 0 || $t('forms.required-repeat-new-password')]" filled lazy-rules
-            type="password" />
-        <QBtn :label="$t('forms.send')" color="primary" type="submit" />
+        <fieldset>
+            <legend>Mot de passe</legend>
+            <QInput v-model="editPassword.oldPassword" :label="t('forms.old-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-old-password')]" filled lazy-rules
+                    type="password"/>
+            <QInput v-model="editPassword.newPassword1" :label="t('forms.new-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-new-password')]" filled lazy-rules
+                    type="password"/>
+            <QInput v-model="editPassword.newPassword2" :label="t('forms.repeat-new-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-repeat-new-password')]" filled lazy-rules
+                    type="password"/>
+            <QBtn color="primary" label="Modifier le mot de passe" type="submit"/>
+        </fieldset>
     </QForm>
 </template>
+
+<style lang="sass" scoped>
+legend
+    background-color: $primary
+    color: #fff
+    font-size: 2em
+    text-align: center
+    width: 100%
+    margin-bottom: 10px
+
+fieldset
+    border: none
+</style>

@@ -3,51 +3,49 @@ import FormProfilePasswordEdit from '@/components/form/FormProfilePasswordEdit.v
 import {useI18n} from 'vue-i18n'
 import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import {useUserStore} from '@/stores/useUserStore'
-import {onMounted, watch} from 'vue'
-import {useQuasar} from 'quasar'
-import useUsers from '@/composables/useUsers'
+import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
+import {ref} from 'vue'
 
 const {t} = useI18n()
-const {loading} = useQuasar()
-const {user} = useUsers()
 const userStore = useUserStore()
 
-const initValues = () => {
-    user.value.firstName = userStore.user?.firstName
-    user.value.lastName = userStore.user?.lastName
-    user.value.username = userStore.user?.username
-    user.value.email = userStore.user?.email
-    user.value.phone = userStore.user?.phone as string
-}
-watch(() => userStore.user, initValues)
+const tab = ref<string>('')
 
-
-onMounted(async () => {
-    loading.show
-    initValues()
-    loading.hide
-})
 </script>
 
 <template>
-    <h2>Modifier mes informations</h2>
-    <FormUserInfosEdition :edited-by-staff="false" :user="userStore.user"/>
-    <!--
-    Nom (obligatoire, remontée)
-    Prénom (obligatoire, remontée)
-    Email (obligatoire, remontée)
-    Bouton modifier mon email -> 2 champs avec confirmation
-    Téléphone
-    Mon statut actuel : remontée (information pour changement de rôle)
-    -->
-    <h3>Les associations dont je suis membre</h3>
+    <div class="container">
+        <QTabs
+            v-model="tab"
+            active-color="primary"
+            dense
+            indicator-color="primary"
+            narrow-indicator
+        >
+            <QTab label="Mes informations" name="infos"/>
+            <QTab v-if="userStore.user?.associations.length !== 0" label="Mes associations" name="associations"/>
+            <QTab v-if="!userStore.user?.isCas" label="Mot de passe" name="password"/>
+        </QTabs>
 
-    <!--
-    Liste des associations dont je suis membre (sous forme de cards comme dans l'annuaire)
-    Modifier mon rôle dans l'association
-    Ajouter une association
-    Supprimer une association
-    -->
-    <h2>Modifier mon mot de passe</h2>
-    <FormProfilePasswordEdit/>
+        <QTabPanels v-model="tab" animated>
+            <QTabPanel name="infos">
+                <FormUserInfosEdition :edited-by-staff="false" :user="userStore.user"/>
+            </QTabPanel>
+
+            <QTabPanel name="associations">
+                <FormUpdateUserAssociations :edited-by-staff="false"/>
+            </QTabPanel>
+
+            <QTabPanel name="password">
+                <FormProfilePasswordEdit/>
+            </QTabPanel>
+        </QTabPanels>
+    </div>
 </template>
+
+<style lang="sass" scoped>
+.container
+    max-width: 1280px
+    width: 100%
+    margin: auto
+</style>
