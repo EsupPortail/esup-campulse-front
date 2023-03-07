@@ -71,7 +71,7 @@ const columns: QTableProps['columns'] = [
     },
     {
         name: 'public',
-        align: 'left',
+        align: 'right',
         label: t('directory.labels.association-public'),
         field: 'isPublic',
         sortable: true
@@ -174,7 +174,7 @@ const columns: QTableProps['columns'] = [
                                 <span class="form-state-icon form-state-green"><i class="bi bi-check-lg"></i></span>
                             </span>
                         </QTd>
-                        <QTd key="actions" :props="props" class="actions-cell">
+                        <QTd key="actions" :props="props" class="actions-cell-compact">
                             <QBtn
                                 :label="t('association.edit')"
                                 :to="{name: 'EditAssociation', params: {id: props.row.id}}"
@@ -202,3 +202,7 @@ const columns: QTableProps['columns'] = [
 .q-banner
     margin-bottom: 20px
 </style>-->
+
+<style lang="sass">
+@import '@/assets/styles/forms.scss'
+</style>

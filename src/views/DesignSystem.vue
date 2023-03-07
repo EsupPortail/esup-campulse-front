@@ -241,7 +241,7 @@ const columns: QTableProps['columns'] = [
                     <h4 class="title-3">Titre de niveau 3</h4>
 
                     <!-- PARAGRAPH -->
-                    <p>
+                    <p class="paragraph">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
                         in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
@@ -249,7 +249,7 @@ const columns: QTableProps['columns'] = [
                     </p>
 
                     <!-- PARAGRAPH WITH A FLOATING IMAGE (LEFT) -->
-                    <p>
+                    <p class="paragraph">
                         <img class="float-left" src="/images/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
@@ -262,7 +262,7 @@ const columns: QTableProps['columns'] = [
                     </p>
 
                     <!-- PARAGRAPH WITH A FLOATING IMAGE (RIGHT) -->
-                    <p>
+                    <p class="paragraph">
                         <img class="float-right" src="/images/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
@@ -276,7 +276,7 @@ const columns: QTableProps['columns'] = [
                     </p>
 
                     <!-- UNORDERED LIST -->
-                    <p>
+                    <p class="paragraph">
                         <ul role="list">
                             <li>Ceci est le premier élément de la liste ;</li>
                             <li>Ceci est le second ;</li>
@@ -285,7 +285,7 @@ const columns: QTableProps['columns'] = [
                     </p>
 
                      <!-- ORDERED LIST -->
-                     <p>
+                     <p class="paragraph">
                         <ol role="list">
                             <li>Ceci est le premier élément de la liste ;</li>
                             <li>Ceci est le second ;</li>
@@ -523,17 +523,17 @@ const columns: QTableProps['columns'] = [
                             <!-- STATE BADGES -->
                             <span class="form-state">
                                 État 1
-                                <span class="form-state-icon form-state-green"><i class="bi bi-check"></i></span>
+                                <span class="form-state-icon form-state-green" aria-hidden="true"><i class="bi bi-check"></i></span>
                             </span>
 
                             <span class="form-state">
                                 État 2
-                                <span class="form-state-icon form-state-orange"><i class="bi bi-dash"></i></span>
+                                <span class="form-state-icon form-state-orange" aria-hidden="true"><i class="bi bi-dash"></i></span>
                             </span>
 
                             <span class="form-state">
                                 État 3
-                                <span class="form-state-icon form-state-red"><i class="bi bi-x"></i></span>
+                                <span class="form-state-icon form-state-red" aria-hidden="true"><i class="bi bi-x"></i></span>
                             </span>
 
                         </div>
@@ -629,7 +629,7 @@ const columns: QTableProps['columns'] = [
                                 <p>
                                     <span class="form-state">
                                         OK
-                                        <span class="form-state-icon form-state-green"><i class="bi bi-check"></i></span>
+                                        <span class="form-state-icon form-state-green" aria-hidden="true"><i class="bi bi-check"></i></span>
                                     </span>
                                 </p>
                             </div>
@@ -647,7 +647,7 @@ const columns: QTableProps['columns'] = [
                             <!-- COMMENT -->
                             <div class="comment-row">
                                 <p class="comment-head">
-                                    <i class="bi bi-chat"></i>
+                                    <i class="bi bi-chat" aria-hidden="true"></i>
                                     Commentaire de <span class="value">Stéphane Ehrhart</span> le <span class="value">20/09/2022</span>
                                 </p>
                                 <p>
@@ -677,6 +677,9 @@ const columns: QTableProps['columns'] = [
                     <div class="form">
 
                         <!-- ADMIN TABLE -->
+                        <!-- Use the "actions-cell-compact" class on the action button cell to use the new button design (with a transparent background). -->
+                        <!-- This new design is lighter visually, and works better with taller rows. -->
+                        <!-- Note: cells containing state badge need the "state-cell" class. -->
                         <QTable
                             v-model:selected="selected"
                             :columns="columns"
@@ -735,6 +738,7 @@ const columns: QTableProps['columns'] = [
                         <!----> <div class="separator-small"></div> <!---->
 
                         <!-- ADMIN TABLE (NO LABEL ON BUTTONS) -->
+                        <!-- Remove the "label" attribute on buttons, leaving only the icon. Useful when rows have a lot of data and normal buttons would take too much space. -->
                         <QTable
                             v-model:selected="selected"
                             :columns="columns"
@@ -791,6 +795,7 @@ const columns: QTableProps['columns'] = [
                         <!----> <div class="separator-small"></div> <!---->
 
                         <!-- ADMIN TABLE (ORIGINAL BUTTON DESIGN) -->
+                        <!-- Use the "action-cell" class on the action button cell to use the old button design. -->
                         <QTable
                             v-model:selected="selected"
                             :columns="columns"
@@ -852,7 +857,7 @@ const columns: QTableProps['columns'] = [
                 <!-- PAGE NAVIGATION -->
                 <section class="form-page-navigation">
                     <QBtn label="Annuler" icon="bi-x-lg" />
-                    <p>Contrôles permettant de naviguer entre des pages, par exemple entre plusieurs étapes de formulaire. Ce texte explicatif est optionnel.</p>
+                    <p class="paragraph">Contrôles permettant de naviguer entre des pages, par exemple entre plusieurs étapes de formulaire. Ce texte explicatif est optionnel.</p>
                     <QBtn label="Étape suivante" icon-right="bi-chevron-compact-right" />
                 </section>
 

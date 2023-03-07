@@ -51,6 +51,51 @@ button.q-btn--outline {
   background: $color1 !important;
 }
 
+// Goto top button
+.navigate-top-button {
+  position: fixed;
+  top: 0rem;
+  right: calc(50% - #{ $pageWidth * 0.5 } - 6.5rem);
+  z-index: 3000;
+  opacity: 0;
+  transition: top 0.15s ease-in-out, opacity 0.15s linear;
+
+  &.visible {
+    top: 2rem;
+    opacity: 1;
+  }
+  
+  button {
+    display: block;
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    background-color: $color1;
+    color: $textColor3;
+    border-radius: 50%;
+    font-size: 2rem;
+    transition: background-color 0.03s linear;
+    cursor: pointer;
+
+    i {
+      display: inline-block;
+      transition: transform 0.03s linear;
+    }
+
+    &:hover {
+      background-color: $color1Hover;
+
+      i {
+        transform: scale(1.2);
+      }
+    }
+
+    &:active {
+      background-color: $color1Active;
+    }
+  }
+}
+
 // Page section
 .page-section {
   width: 100%;
@@ -166,6 +211,11 @@ button.q-btn--outline {
   line-height: normal;
   letter-spacing: normal;
   text-transform: uppercase;
+
+  @media only screen and (max-width: $pageWidth) {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
 }
 
 .title-1 {
@@ -184,7 +234,7 @@ button.q-btn--outline {
 }
 
 // Paragraphs
-p {
+p.paragraph {
   color: $textColor1;
   font-size: 1.125rem;
   font-weight: 400;
@@ -207,17 +257,24 @@ p {
     float: right;
     margin: 0 0 1rem 1.4rem;
   }
-}
 
-// Lists
-ul, ol {
-  padding-left: 2rem;
-
-  li {
-    padding-left: 0.4rem;
+  @media only screen and (max-width: $pageWidth) {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
   }
 }
 
-ul {
-  list-style-type: square;
+// Lists
+p.paragraph {
+  ul, ol {
+    padding-left: 2rem;
+  
+    li {
+      padding-left: 0.4rem;
+    }
+  }
+  
+  ul {
+    list-style-type: square;
+  }
 }

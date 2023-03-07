@@ -6,7 +6,7 @@ import useDirectory from '@/composables/useDirectory'
 import useAssociation from '@/composables/useAssociation'
 import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
-
+import NavigateTopButton from '@/components/NavigateTopButton.vue'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
@@ -115,22 +115,32 @@ async function clearSearch(apiSearch: boolean) {
 <template>
     <!-- <h1>{{ t("home.directory") }}</h1> -->
 
+    <!-- <div class="navigate-top-button">
+        <button>
+            <i class="bi bi-arrow-up-short"></i>
+        </button>
+    </div> -->
+
+    <NavigateTopButton />
+
     <section class="introduction">
-        <div class="intro-image">
-            <img :alt="t('directory.image-alt')" src="/images/unistra.jpg"/>
-        </div>
-        <div>
-            <h2>{{ t('directory.subtitle') }}</h2>
-            <!-- <p>{{ t('directory.introduction') }}</p> -->
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure
-                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+        <div class="content">
+            <div class="intro-image">
+                <img :alt="t('directory.image-alt')" src="/images/unistra.jpg"/>
+            </div>
+            <div>
+                <h2 class="intro-title">{{ t('directory.subtitle') }}</h2>
+                <!-- <p>{{ t('directory.introduction') }}</p> -->
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure
+                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </div>
         </div>
     </section>
     <section class="directory-search">
@@ -210,19 +220,21 @@ async function clearSearch(apiSearch: boolean) {
                         map-options
                     />
                 </fieldset>
-                <QBtn
-                    :label="t('directory.advanced-search')"
-                    color="primary"
-                    icon-right="mdi-chevron-right"
-                    type="submit"
-                    class="search-button"
-                />
-                <QBtn
-                    :label="t('directory.cancel-search')"
-                    color="secondary"
-                    icon="mdi-close"
-                    @click="clearSearch(false)"
-                />
+                <div class="buttons-group">
+                    <QBtn
+                        :label="t('directory.advanced-search')"
+                        color="primary"
+                        icon-right="mdi-chevron-right"
+                        type="submit"
+                        class="search-button"
+                    />
+                    <QBtn
+                        :label="t('directory.cancel-search')"
+                        color="secondary"
+                        icon="mdi-close"
+                        @click="clearSearch(false)"
+                    />
+                </div>
             </QExpansionItem>
         </QForm>
     </section>
@@ -257,7 +269,7 @@ async function clearSearch(apiSearch: boolean) {
                                 <QImg
                                     :alt="altLogoText(association)"
                                     :ratio="1"
-                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo.png') : '/images/no_logo.png'"
+                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo_square.png') : '/images/no_logo_square.png'"
                                 />
                             </div>
                             <div class="list-details">
