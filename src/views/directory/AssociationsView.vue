@@ -115,12 +115,6 @@ async function clearSearch(apiSearch: boolean) {
 <template>
     <!-- <h1>{{ t("home.directory") }}</h1> -->
 
-    <!-- <div class="navigate-top-button">
-        <button>
-            <i class="bi bi-arrow-up-short"></i>
-        </button>
-    </div> -->
-
     <NavigateTopButton />
 
     <section class="introduction">

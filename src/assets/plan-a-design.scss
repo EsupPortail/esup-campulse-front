@@ -74,6 +74,7 @@ button.q-btn--outline {
     color: $textColor3;
     border-radius: 50%;
     font-size: 2rem;
+    box-shadow: $fieldsBoxShadow;
     transition: background-color 0.03s linear;
     cursor: pointer;
 
@@ -92,6 +93,48 @@ button.q-btn--outline {
 
     &:active {
       background-color: $color1Active;
+    }
+  }
+
+  @media (prefers-reduced-motion) {
+    top: 2rem;
+    transition: opacity 0.15s linear;
+
+    button i {
+      transition: none;
+    }
+
+    button:hover i {
+      transform: none;
+    }
+  }
+}
+
+.variant-space-2 .navigate-top-button {
+  button {
+    background-color: $color2;
+    color: $color2Text;
+
+    &:hover {
+      background-color: $color2Hover;
+    }
+
+    &:active {
+      background-color: $color2Active;
+    }
+  }
+}
+
+.variant-space-3 .navigate-top-button {
+  button {
+    background-color: $color3;
+
+    &:hover {
+      background-color: $color3Hover;
+    }
+
+    &:active {
+      background-color: $color3Active;
     }
   }
 }

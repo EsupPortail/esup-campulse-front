@@ -2,7 +2,7 @@
 import {RouterLink, useRoute} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 import {useI18n} from 'vue-i18n'
-import {ref, watch} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 
 const {t} = useI18n()
 const route = useRoute()
@@ -12,6 +12,10 @@ watch(() => route.name, () => {
     title.value = route.meta.title as string
 })
 
+const mobileMenuVisible = ref(false);
+function ToggleMenu() {
+    mobileMenuVisible.value = !mobileMenuVisible.value;
+}
 </script>
 
 <template>
@@ -20,7 +24,15 @@ watch(() => route.name, () => {
             <QToolbarTitle>
                 <RouterLink :to="{name: 'Home'}" class="home-link">{{ t("header.title") }}</RouterLink>
             </QToolbarTitle>
-            <LayoutHeaderNav/>
+
+            <div id="menu-items">
+                <button id="mobile-menu-button" @click="ToggleMenu">
+                    <i class="bi bi-list"></i>
+                </button>
+                <span id="mobile-menu-background" :class="{ 'visible': mobileMenuVisible }" aria-hidden="true"></span>
+                
+                <LayoutHeaderNav :class="{ 'visible': mobileMenuVisible }" />
+            </div>
         </QToolbar>
 
         <div v-if="route.name !== 'Login'">

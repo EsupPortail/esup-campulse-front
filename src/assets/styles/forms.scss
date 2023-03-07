@@ -421,6 +421,10 @@ label.custom-label {
           &:hover {
             opacity: 0.8;
             transform: scale(1.15);
+
+            @media (prefers-reduced-motion) {
+              transform: none;
+            }
           }
 
           &:active {

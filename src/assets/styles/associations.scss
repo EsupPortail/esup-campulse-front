@@ -162,7 +162,7 @@
     background: $backgroundColor1;
     border: none;
     border-radius: 0;
-    box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+    box-shadow: $fieldsBoxShadow;
     margin-bottom: 1.563rem;
     overflow: hidden;
 
@@ -224,6 +224,7 @@
       position: absolute;
       top: calc(50% - 1.563rem);
       right: 1.875rem;
+      z-index: 10;
       opacity: 0;
       transition: opacity 0.1s linear, right 0.1s linear;
     }
@@ -292,6 +293,26 @@
       .card-chevron {
         opacity: 1;
         right: 0.938rem;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion) {
+    .q-card {
+      .card-chevron {
+        right: 0.938rem;
+        transition: opacity 0.1s linear;
+      }
+
+      &:hover {
+        .q-card__section {
+          box-shadow: 0.313rem 0 0 0 $color1 inset;
+          background-color: transparentize($color1Background, 0.6);
+        }
+  
+        .card-background {
+          left: -1.875rem;
+        }
       }
     }
   }
