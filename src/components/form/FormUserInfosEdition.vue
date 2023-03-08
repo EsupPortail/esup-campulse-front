@@ -57,13 +57,13 @@ async function onUpdateUserInfos() {
         await updateUserInfos(props.user, props.editedByStaff)
         notify({
             type: 'positive',
-            message: 'Les informations du compte ont bien été mises à jour.'
+            message: t('notifications.positive.update-user-infos')
         })
     } catch (error) {
         if (axios.isAxiosError(error) || error === 500) {
             notify({
                 type: 'negative',
-                message: 'Cette adresse mail est déjà associée à un compte et ne peut pas être utilisée.'
+                message: t('notifications.negative.email-used')
             })
         }
     }
@@ -76,7 +76,7 @@ async function onUpdateUserInfos() {
         @submit.prevent="onUpdateUserInfos"
     >
         <fieldset>
-            <legend>{{ t('user.infos') }}</legend>
+            <legend>{{ props.editedByStaff ? t('user.infos') : t('dashboard.my-infos') }}</legend>
             <QInput
                 v-model="userToUpdate.firstName"
                 :disable="!!props.user?.isCas"
@@ -105,7 +105,7 @@ async function onUpdateUserInfos() {
                 <QExpansionItem
                     v-if="!props.user?.isCas"
                     v-model="changeEmail"
-                    label="Modifier l'adresse mail"
+                    :label="t('forms.modify-email')"
                 >
                     <QInput
                         v-model="userToUpdate.newEmail"
@@ -121,8 +121,12 @@ async function onUpdateUserInfos() {
                         filled
                         lazy-rules
                     />
-                    <span>Attention, l'adresse mail est utilisée comme identifiant pour se connecter. En cas de modification, elle deviendra le nouvel identifiant du compte.
-                Un mail de vérification sera envoyé sur cette adresse pour la valider.</span>
+                    <QBanner class="bg-grey-3">
+                        <template v-slot:avatar>
+                            <QIcon color="primary" name="mdi-alert-circle"/>
+                        </template>
+                        <span>{{ t('alerts.modify-email') }}</span>
+                    </QBanner>
                 </QExpansionItem>
             </section>
             <QInput

@@ -145,6 +145,7 @@ export default function () {
      */
     async function register() {
         const {newAssociationsUser} = useAssociation()
+        console.log(userCASRegister)
         if (userStore.isCas) {
             await userCASRegister(newUser.phone)
             if (newAssociationsUser) {

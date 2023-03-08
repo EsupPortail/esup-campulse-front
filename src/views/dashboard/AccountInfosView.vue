@@ -9,7 +9,7 @@ import {ref} from 'vue'
 const {t} = useI18n()
 const userStore = useUserStore()
 
-const tab = ref<string>('')
+const tab = ref<string>('infos')
 
 </script>
 
@@ -22,9 +22,17 @@ const tab = ref<string>('')
             indicator-color="primary"
             narrow-indicator
         >
-            <QTab label="Mes informations" name="infos"/>
-            <QTab v-if="userStore.user?.associations.length !== 0" label="Mes associations" name="associations"/>
-            <QTab v-if="!userStore.user?.isCas" label="Mot de passe" name="password"/>
+            <QTab :label="t('dashboard.my-infos')" name="infos"/>
+            <QTab
+                v-if="userStore.user?.associations.length !== 0"
+                :label="t('dashboard.my-associations')"
+                name="associations"
+            />
+            <QTab
+                v-if="!userStore.user?.isCas"
+                :label="t('dashboard.my-password')"
+                name="password"
+            />
         </QTabs>
 
         <QTabPanels v-model="tab" animated>

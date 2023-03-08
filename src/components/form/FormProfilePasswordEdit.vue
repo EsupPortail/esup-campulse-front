@@ -52,7 +52,7 @@ async function passwordConfirm() {
 <template>
     <QForm class="q-gutter-md" @submit="passwordConfirm">
         <fieldset>
-            <legend>Mot de passe</legend>
+            <legend>{{ t('dashboard.my-password') }}</legend>
             <QInput v-model="editPassword.oldPassword" :label="t('forms.old-password')"
                     :rules="[val => val && val.length > 0 || t('forms.required-old-password')]" filled lazy-rules
                     type="password"/>
