@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import {ref, watch} from 'vue'
 import type {
     AssociationRole,
     AssociationUser,
@@ -7,21 +7,19 @@ import type {
     UserManagerStore,
     UserStore
 } from '#/user'
-import {useAxios} from "@/composables/useAxios";
-import {useUserStore} from "@/stores/useUserStore";
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
-import i18n from "@/plugins/i18n";
+import {useAxios} from '@/composables/useAxios'
+import {useUserStore} from '@/stores/useUserStore'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import i18n from '@/plugins/i18n'
 
+// Used to store a user's associations, while it is modified by a manager or during registration
+const userAssociations = ref<AssociationRole[]>([])
 
-const newAssociations = ref<AssociationRole[]>([]) // ???
-
-const newAssociationsUser = ref<AssociationUser[]>([]) // ???
+// Used to register new associations
+const newAssociations = ref<AssociationRole[]>([])
 
 // Used to store a user's new associations
-const newUserAssociations = ref<AssociationUser[]>([]) // remplacer
-
-// Used to store a user's associations, while it is modified by a manager
-const userAssociations = ref<AssociationRole[]>([]) // remplacer
+const newAssociationsUser = ref<AssociationUser[]>([])
 
 export default function () {
 
@@ -166,8 +164,35 @@ export default function () {
         store.userAssociations = (await axiosAuthenticated.get<AssociationUser[] | AssociationUserDetail[]>(url)).data
     }
 
+    function initUserAssociations(editedByStaff: boolean) {
+        userAssociations.value = []
+        let associations: AssociationUser[] | AssociationUserDetail[] = userStore.userAssociations
+        if (editedByStaff) associations = userManagerStore.userAssociations
+        associations.forEach(function (association) {
+            let role = ''
+            if (association.isPresident) role = 'isPresident'
+            if (association.isSecretary) role = 'isSecretary'
+            if (association.isTreasurer) role = 'isTreasurer'
+            userAssociations.value.push({
+                id: editedByStaff ? (association as AssociationUserDetail).association.id : (association as AssociationUser).association,
+                name: editedByStaff ? (association as AssociationUserDetail).association.name :
+                    userStore.user?.associations.find(obj => obj.id === association.association)?.name,
+                role,
+                options: associationRoleOptions,
+                canBePresident: association.canBePresident,
+                deleteAssociation: false
+            })
+        })
+    }
+
+    watch(() => userManagerStore.userAssociations, () => {
+        initUserAssociations(true)
+    })
+    watch(() => userStore.userAssociations, () => {
+        initUserAssociations(false)
+    })
+
     return {
-        newUserAssociations,
         userAssociations,
         postUserAssociations,
         updateUserAssociations,
@@ -175,9 +200,9 @@ export default function () {
         addAssociation,
         removeAssociation,
         updateRegisterRoleInAssociation,
-        newAssociations,
         newAssociationsUser,
         associationRoleOptions,
-        getUserAssociations
+        getUserAssociations,
+        newAssociations
     }
 }

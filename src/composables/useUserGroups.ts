@@ -44,12 +44,8 @@ export default function () {
             literalName: i18n.global.t('user-groups.manager-misc')
         },
         {
-            codeName: 'COMMISSION_GENERAL',
-            literalName: i18n.global.t('user-groups.commission-general')
-        },
-        {
-            codeName: 'COMMISSION_MISC',
-            literalName: i18n.global.t('user-groups.commission-misc')
+            codeName: 'COMMISSION',
+            literalName: i18n.global.t('user-groups.commission')
         },
         {
             codeName: 'STUDENT_INSTITUTION',

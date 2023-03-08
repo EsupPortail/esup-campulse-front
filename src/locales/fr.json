@@ -135,6 +135,8 @@
     "my-associations": "Mes associations",
     "my-infos": "Mes informations",
     "my-password": "Mon mot de passe",
+    "my-status": "Mon statut actuel :",
+    "update-my-status": "Pour changer de statut, merci de contacter le gestionnaire dont vous dépendez.",
     "user-add": "Ajouter un compte utilisateur",
     "user-management": "Gérer les informations des utilisateurs",
     "user-validation": "Valider les demandes de compte",
@@ -148,7 +150,8 @@
       "is-secretary": "Est secrétaire",
       "is-treasurer": "Est trésorier ou trésorière",
       "manage-my-associations": "Gérer mes associations",
-      "not-association-member": "L'utilisateur n'est membre d'aucune association."
+      "not-association-member": "L'utilisateur n'est membre d'aucune association.",
+      "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
     }
   },
   "delete": "Supprimer",
@@ -388,8 +391,7 @@
     "phone": "Numéro de téléphone"
   },
   "user-groups": {
-    "commission-general": "Membre de commission FSDIE/IdEx",
-    "commission-misc": "Membre de commission Culture/ActionS",
+    "commission": "Membre de commission",
     "manager-general": "Gestionnaire général",
     "manager-institution": "Gestionnaire établissement",
     "manager-misc": "Gestionnaire Crous",
@@ -419,5 +421,6 @@
     }
   },
   "validate": "Valider",
+  "validate-changes": "Valider les changements",
   "yes": "Oui"
 }

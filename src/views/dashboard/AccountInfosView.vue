@@ -5,7 +5,7 @@ import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import {useUserStore} from '@/stores/useUserStore'
 import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
 import {ref} from 'vue'
-import useUserGroups from "@/composables/useUserGroups";
+import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
 const userStore = useUserStore()

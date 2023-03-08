@@ -18,7 +18,7 @@ export default function () {
 
     const associationStore = useAssociationStore()
     const {updateRegisterRoleInAssociation} = useUserAssociations()
-    const {newAssociations} = useUserAssociations()
+    const {userAssociations} = useUserAssociations()
 
     /** Setup altLogo default value if association does not have one
      *
@@ -49,7 +49,7 @@ export default function () {
             if (a) {
                 association.options[0].disable = a.hasPresident
                 if (association.role === 'isPresident') {
-                    const model = newAssociations.value.find(obj => obj.id === association.id)
+                    const model = userAssociations.value.find(obj => obj.id === association.id)
                     if (model) model.role = 'isMember'
                 }
             }
@@ -191,7 +191,6 @@ export default function () {
 
     return {
         createAssociation,
-        newAssociations,
         addNetwork,
         removeNetwork,
         associationSocialNetworks,

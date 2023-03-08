@@ -25,6 +25,8 @@ export interface Association {
     institution: Institution,
     institutionComponent: InstitutionComponent,
     activityField: AssociationActivityField,
+    canSubmitProjects: boolean,
+    charterStatus: string
 }
 
 export interface AssociationLogo {

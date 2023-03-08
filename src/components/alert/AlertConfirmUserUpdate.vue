@@ -7,7 +7,6 @@ import router from "@/router";
 import {useUserManagerStore} from "@/stores/useUserManagerStore";
 import useUsers from "@/composables/useUsers";
 import useUserGroups from "@/composables/useUserGroups";
-import useAssociation from "@/composables/useAssociation";
 import useUserAssociations from "@/composables/useUserAssociations";
 
 
@@ -16,8 +15,7 @@ const {notify} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const {updateUserInfos} = useUsers()
 const {updateUserGroups} = useUserGroups()
-const {newAssociations} = useAssociation()
-const {updateUserAssociations, postUserAssociations} = useUserAssociations()
+const {updateUserAssociations, postUserAssociations, userAssociations} = useUserAssociations()
 
 
 const emit = defineEmits(['hasValidated'])
@@ -29,10 +27,10 @@ async function onValidateChanges() {
     try {
         await updateUserInfos(userManagerStore.user, true) // OK
         await updateUserAssociations(true)
-        if (newAssociations.value.length > 0) {
+        if (userAssociations.value.length > 0) {
             await postUserAssociations(userManagerStore.user?.username)
         }
-        await updateUserGroups() // OK
+        await updateUserGroups()
         emit('hasValidated')
         await router.push({name: 'ManageUsers'})
         notify({

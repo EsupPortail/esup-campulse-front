@@ -1,23 +1,21 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {onMounted, watch} from 'vue'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {onMounted} from 'vue'
 import {useRoute} from 'vue-router'
 import FormRegisterUserAssociation from '@/components/form/FormRegisterUserAssociations.vue'
-import useUserGroups from "@/composables/useUserGroups";
-import {AssociationUser, AssociationUserDetail, User} from "#/user";
-import {useUserStore} from "@/stores/useUserStore";
-import useUserAssociations from "@/composables/useUserAssociations";
+import useUserGroups from '@/composables/useUserGroups'
+import type {User} from '#/user'
+import {useUserStore} from '@/stores/useUserStore'
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const props = defineProps<{
     editedByStaff: boolean,
-    user: User
+    user: User | undefined
 }>()
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
 const route = useRoute()
 const {
@@ -34,28 +32,6 @@ onMounted(async () => {
     await onGetUserAssociations()
     loading.hide
 })
-
-const initValues = () => {
-    let associations: AssociationUser[] | AssociationUserDetail[] = userStore.userAssociations
-    if (props.editedByStaff) associations = userManagerStore.userAssociations
-    associations.forEach(function (association) {
-        let role = ''
-        if (association.isPresident) role = 'isPresident'
-        if (association.isSecretary) role = 'isSecretary'
-        if (association.isTreasurer) role = 'isTreasurer'
-        userAssociations.value.push({
-            id: props.editedByStaff ? (association as AssociationUserDetail).association.id : (association as AssociationUser).association,
-            name: props.editedByStaff ? (association as AssociationUserDetail).association.name :
-                userStore.user?.associations.find(obj => obj.id === association.association)?.name,
-            role,
-            options: associationRoleOptions,
-            canBePresident: association.canBePresident,
-            deleteAssociation: false
-        })
-    })
-}
-watch(() => userManagerStore.userAssociations, initValues)
-watch(() => userStore.userAssociations, initValues)
 
 // Load userAssociations
 async function onGetUserAssociations() {
@@ -74,7 +50,7 @@ async function onGetUserAssociations() {
 async function onUpdateUserAssociations() {
     try {
         await updateUserAssociations(props.editedByStaff)
-        await postUserAssociations(props.user.username)
+        await postUserAssociations(props.user?.username)
         notify({
             type: 'positive',
             message: 'Les associations ont bien été mises à jour.'
@@ -91,7 +67,10 @@ async function onUpdateUserAssociations() {
 <template>
     <fieldset class="association-cards">
         <legend>{{ props.editedByStaff ? t('user.associations') : t('dashboard.my-associations') }}</legend>
-        <p v-if="userAssociations.length === 0 && !editedByStaff">{{ t('user.has-no-association') }}</p>
+        <p v-if="userAssociations.length === 0">
+            {{
+                props.editedByStaff ? t('user.has-no-association') : t('dashboard.association-user.you-are-not-an-association-member')
+            }}</p>
         <QCard
             v-for="association in userAssociations"
             :key="association.id ? association.id : 0"
@@ -144,6 +123,7 @@ async function onUpdateUserAssociations() {
                             />
                         </div>
                         <QBtn
+                            v-if="!props.editedByStaff"
                             :to="{name: 'AssociationDashboard', params: {id: association.id}}"
                             label="Gérer l'association"
                         />

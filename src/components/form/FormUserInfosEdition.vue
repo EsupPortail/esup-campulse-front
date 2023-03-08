@@ -14,7 +14,7 @@ const {t} = useI18n()
 const {notify} = useQuasar()
 
 const props = defineProps<{
-    user: User,
+    user: User | undefined,
     editedByStaff: boolean
 }>()
 
@@ -143,13 +143,13 @@ async function onUpdateUserInfos() {
                 <template v-slot:avatar>
                     <QIcon color="primary" name="mdi-account"/>
                 </template>
-                <p>Mon statut actuel : <span>{{ userGroups }}</span></p>
-                <p>Pour changer de statut, merci de contacter le gestionnaire dont vous dépendez.</p>
+                <p>{{ t('dashboard.my-status') }} <span>{{ userGroups }}</span></p>
+                <p>{{ t('dashboard.update-my-status') }}</p>
             </QBanner>
 
             <QBtn
                 v-if="!props.editedByStaff"
-                label="Valider les changements"
+                :label="t('validate-changes')"
                 type="submit"
             />
         </fieldset>

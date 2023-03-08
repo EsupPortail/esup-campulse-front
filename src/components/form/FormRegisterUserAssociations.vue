@@ -10,10 +10,9 @@ import useUserAssociations from "@/composables/useUserAssociations";
 const associationStore = useAssociationStore()
 const route = useRoute()
 const {
-    userAssociations, addAssociation, removeAssociation, updateRegisterRoleInAssociation
+    userAssociations, newAssociations, addAssociation, removeAssociation, updateRegisterRoleInAssociation
 } = useUserAssociations()
 const {
-    newAssociations,
     checkHasPresident,
 } = useAssociation()
 const {t} = useI18n()
