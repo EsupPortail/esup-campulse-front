@@ -161,7 +161,7 @@ export const useAssociationStore = defineStore('associationStore', {
                 const {axiosPublic} = useAxios()
                 /* It's a GET request to the API, which returns a list of institutions. */
                 /* It's a GET request to the API, which returns a list of institutions. */
-                this.institutions = (await axiosPublic.get<Institution[]>('/institutions/institutions')).data
+                this.institutions = (await axiosPublic.get<Institution[]>('/institutions/')).data
             }
         },
         async getInstitutionComponents() {

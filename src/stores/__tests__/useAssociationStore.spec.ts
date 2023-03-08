@@ -241,7 +241,7 @@ describe('Association store', () => {
             mockedAxios.get.mockResolvedValueOnce({data: _institutions} as AxiosResponse)
             await associationStore.getInstitutions()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
-            expect(axiosPublic.get).toHaveBeenLastCalledWith('/institutions/institutions')
+            expect(axiosPublic.get).toHaveBeenLastCalledWith('/institutions/')
             expect(associationStore.institutions).toEqual(_institutions)
         })
 
