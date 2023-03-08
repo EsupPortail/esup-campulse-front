@@ -4,15 +4,15 @@ import {useQuasar} from 'quasar'
 import {onMounted, watch} from 'vue'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useRoute} from 'vue-router'
-import useUsers from '@/composables/useUsers'
-import useAssociation from "@/composables/useAssociation";
 import FormRegisterUserAssociation from '@/components/form/FormRegisterUserAssociations.vue'
 import useUserGroups from "@/composables/useUserGroups";
-import {AssociationUser, AssociationUserDetail} from "#/user";
+import {AssociationUser, AssociationUserDetail, User} from "#/user";
 import {useUserStore} from "@/stores/useUserStore";
+import useUserAssociations from "@/composables/useUserAssociations";
 
 const props = defineProps<{
-    editedByStaff: boolean
+    editedByStaff: boolean,
+    user: User
 }>()
 
 const {t} = useI18n()
@@ -20,8 +20,13 @@ const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
 const route = useRoute()
-const {userAssociations, updateUserAssociations} = useUsers()
-const {associationRoleOptions, getUserAssociations} = useAssociation()
+const {
+    userAssociations,
+    updateUserAssociations,
+    postUserAssociations,
+    associationRoleOptions,
+    getUserAssociations
+} = useUserAssociations()
 const {groupCanJoinAssociation} = useUserGroups()
 
 onMounted(async () => {
@@ -68,8 +73,8 @@ async function onGetUserAssociations() {
 
 async function onUpdateUserAssociations() {
     try {
-        userManagerStore.user = userStore.user
-        await updateUserAssociations()
+        await updateUserAssociations(props.editedByStaff)
+        await postUserAssociations(props.user.username)
         notify({
             type: 'positive',
             message: 'Les associations ont bien été mises à jour.'
@@ -86,7 +91,7 @@ async function onUpdateUserAssociations() {
 <template>
     <fieldset class="association-cards">
         <legend>{{ props.editedByStaff ? t('user.associations') : t('dashboard.my-associations') }}</legend>
-        <p v-if="userAssociations.length === 0">{{ t('user.has-no-association') }}</p>
+        <p v-if="userAssociations.length === 0 && !editedByStaff">{{ t('user.has-no-association') }}</p>
         <QCard
             v-for="association in userAssociations"
             :key="association.id ? association.id : 0"
@@ -146,7 +151,7 @@ async function onUpdateUserAssociations() {
                 </article>
             </QCardSection>
         </QCard>
-        <QCard v-if="props.editedByStaff || (route.name === 'Registration' && groupCanJoinAssociation)">
+        <QCard v-if="groupCanJoinAssociation">
             <QCardSection>
                 <FormRegisterUserAssociation/>
             </QCardSection>
@@ -194,4 +199,7 @@ legend
     display: flex
     gap: 10px
     margin-top: 15px
+
+ul
+    padding: 10px
 </style>

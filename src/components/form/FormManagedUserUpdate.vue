@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onBeforeRouteLeave, useRoute} from 'vue-router'
@@ -11,31 +11,18 @@ import router from '@/router'
 import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 import AlertConfirmUserUpdate from '@/components/alert/AlertConfirmUserUpdate.vue'
 import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
-import useUsers from '@/composables/useUsers'
+import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {groupChoiceIsValid} = useUserGroups()
-const {user} = useUsers()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
-
-const initValues = () => {
-    user.value.firstName = userManagerStore.user?.firstName
-    user.value.lastName = userManagerStore.user?.lastName
-    user.value.username = userManagerStore.user?.username
-    user.value.email = userManagerStore.user?.email
-    user.value.phone = userManagerStore.user?.phone as string
-}
-watch(() => userManagerStore.user, initValues)
-
-
 onMounted(async () => {
     loading.show
     await onGetUser()
-    initValues()
     loading.hide
 })
 
@@ -79,7 +66,7 @@ onBeforeRouteLeave((to, from, next) => {
 <template>
     <QForm class="q-gutter-md">
         <FormUserInfosEdition :edited-by-staff="true" :user="userManagerStore.user"/>
-        <FormUpdateManagedUserAssociations/>
+        <FormUpdateUserAssociations :edited-by-staff="true" :user="userManagerStore.user"/>
         <fieldset>
             <legend>{{ t('user.groups') }}</legend>
             <section>
@@ -109,7 +96,6 @@ onBeforeRouteLeave((to, from, next) => {
             />
             <AlertConfirmUserUpdate
                 v-if="groupChoiceIsValid"
-                :user="user"
                 @has-validated="hasValidated = true"
             />
             <AlertConfirmUserDelete @has-validated="hasValidated = true"/>

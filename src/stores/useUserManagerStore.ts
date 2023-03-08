@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {User, UserAssociationPatch, UserManagerStore, UserNames} from '#/user'
+import type {User, UserManagerStore, UserNames} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from "@/stores/useUserStore";
 import useSecurity from "@/composables/useSecurity";
@@ -109,14 +109,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async deleteUser() {
             const {axiosAuthenticated} = useAxios()
             await axiosAuthenticated.delete(`/users/${this.user?.id}`)
-        },
-        async deleteUserAssociation(associationId: number) {
-            const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.delete(`/users/associations/${this.user?.id}/${associationId}`)
-        },
-        async patchUserAssociations(associationId: number, infosToPatch: UserAssociationPatch) {
-            const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.patch(`/users/associations/${this.user?.id}/${associationId}`, infosToPatch)
         }
     }
 })

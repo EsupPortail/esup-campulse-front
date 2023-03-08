@@ -5,17 +5,16 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted, ref, watch} from 'vue'
 import {useRoute} from "vue-router";
-import useUsers from "@/composables/useUsers";
+import useUserAssociations from "@/composables/useUserAssociations";
 
 const associationStore = useAssociationStore()
 const route = useRoute()
-const {userAssociations} = useUsers()
+const {
+    userAssociations, addAssociation, removeAssociation, updateRegisterRoleInAssociation
+} = useUserAssociations()
 const {
     newAssociations,
-    addAssociation,
-    removeAssociation,
     checkHasPresident,
-    updateRegisterRoleInAssociation
 } = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -31,8 +30,8 @@ const title = ref<string>()
 
 const initTitle = () => {
     if (route.name === 'Registration') title.value = "J'ajoute les associations dont je suis membre"
-    else if (route.name === 'ManageAccount') title.value = "Ajouter de nouvelles associations"
-    else t('user-manager.register-in-new-associations')
+    else if (route.name === 'ManageAccount') title.value = "J'ajoute les nouvelles associations dont je suis membre"
+    else title.value = t('user-manager.register-in-new-associations')
 }
 watch(() => route.path, initTitle)
 
@@ -46,7 +45,6 @@ async function loadAssociations() {
         })
     }
 }
-
 </script>
 
 <template>

@@ -148,6 +148,7 @@ async function onUpdateUserInfos() {
             </QBanner>
 
             <QBtn
+                v-if="!props.editedByStaff"
                 label="Valider les changements"
                 type="submit"
             />

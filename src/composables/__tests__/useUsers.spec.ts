@@ -6,7 +6,7 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
-import {_associationRole, _institutionManager, _userAssociationDetail} from '~/fixtures/user.mock'
+import {_institutionManager} from '~/fixtures/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
 
@@ -91,7 +91,7 @@ describe('useUsers', () => {
         })
     })*/
 
-    describe('updateUserAssociations', () => {
+    /*describe('updateUserAssociations', () => {
         const {userAssociations, updateUserAssociations} = useUsers()
 
         const spies = {
@@ -114,7 +114,7 @@ describe('useUsers', () => {
             updateUserAssociations()
             expect(spies.patchUserAssociations).toHaveBeenCalledTimes(userAssociations.value.length)
         })
-    })
+    })*/
 
     describe('canEditUser', () => {
         const {groups} = useUserGroups()

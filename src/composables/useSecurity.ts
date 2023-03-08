@@ -1,11 +1,11 @@
 import {reactive, ref, watch} from 'vue'
 import type {AssociationUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
-import useAssociation from '@/composables/useAssociation'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
 import {useRoute} from "vue-router";
 import type {AxiosInstance} from "axios";
+import useUserAssociations from "@/composables/useUserAssociations";
 
 
 export default function () {
@@ -152,8 +152,7 @@ export default function () {
      * Finally, if the user is CAS, it clears `newUser` to avoid persistence of session.
      */
     async function register() {
-        const {newAssociationsUser} = useAssociation()
-        console.log(userCASRegister)
+        const {newAssociationsUser} = useUserAssociations()
         if (userStore.isCas) {
             await userCASRegister(newUser.phone)
             if (newAssociationsUser) {
@@ -175,7 +174,7 @@ export default function () {
      * It registers a new user as a manager, then registers the user's associations and groups
      */
     async function addUserAsManager() {
-        const {newAssociationsUser} = useAssociation()
+        const {newAssociationsUser} = useUserAssociations()
         await userLocalRegisterAsManager(newUser)
         if (newAssociationsUser.value) {
             await userAssociationsRegister(false, newUser.email, newAssociationsUser.value)

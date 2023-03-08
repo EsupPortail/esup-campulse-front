@@ -5,9 +5,11 @@ import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import {useUserStore} from '@/stores/useUserStore'
 import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
 import {ref} from 'vue'
+import useUserGroups from "@/composables/useUserGroups";
 
 const {t} = useI18n()
 const userStore = useUserStore()
+const {isStaff} = useUserGroups()
 
 const tab = ref<string>('infos')
 
@@ -24,7 +26,7 @@ const tab = ref<string>('infos')
         >
             <QTab :label="t('dashboard.my-infos')" name="infos"/>
             <QTab
-                v-if="userStore.user?.associations.length !== 0"
+                v-if="!isStaff"
                 :label="t('dashboard.my-associations')"
                 name="associations"
             />
@@ -41,7 +43,7 @@ const tab = ref<string>('infos')
             </QTabPanel>
 
             <QTabPanel name="associations">
-                <FormUpdateUserAssociations :edited-by-staff="false"/>
+                <FormUpdateUserAssociations :edited-by-staff="false" :user="userStore.user"/>
             </QTabPanel>
 
             <QTabPanel name="password">

@@ -8,30 +8,31 @@ import {useUserManagerStore} from "@/stores/useUserManagerStore";
 import useUsers from "@/composables/useUsers";
 import useUserGroups from "@/composables/useUserGroups";
 import useAssociation from "@/composables/useAssociation";
-import useSecurity from "@/composables/useSecurity";
+import useUserAssociations from "@/composables/useUserAssociations";
 
-const confirmation = ref<boolean>(false)
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const userManagerStore = useUserManagerStore()
-const {updateUserAssociations, user} = useUsers()
+const {updateUserInfos} = useUsers()
 const {updateUserGroups} = useUserGroups()
-const {newAssociations, updateRegisterRoleInAssociation} = useAssociation()
-const {userAssociationsRegister} = useSecurity()
+const {newAssociations} = useAssociation()
+const {updateUserAssociations, postUserAssociations} = useUserAssociations()
 
 
 const emit = defineEmits(['hasValidated'])
 
+const confirmation = ref<boolean>(false)
+
+
 async function onValidateChanges() {
     try {
-        await userManagerStore.updateUserInfos(user.value)
-        updateUserAssociations()
+        await updateUserInfos(userManagerStore.user, true) // OK
+        await updateUserAssociations(true)
         if (newAssociations.value.length > 0) {
-            const newAssociationsRoles = updateRegisterRoleInAssociation()
-            await userAssociationsRegister(false, user.value.username as string, newAssociationsRoles)
+            await postUserAssociations(userManagerStore.user?.username)
         }
-        await updateUserGroups()
+        await updateUserGroups() // OK
         emit('hasValidated')
         await router.push({name: 'ManageUsers'})
         notify({
