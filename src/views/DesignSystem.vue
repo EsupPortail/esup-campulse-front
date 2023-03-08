@@ -21,6 +21,8 @@ enum Variant {
 
 const { t } = useI18n()
 const variant = ref(Variant.Space1);
+
+// Breadcrumbs data
 const breadcrumbs = [
     {
         label: 'Page 1',
@@ -31,6 +33,8 @@ const breadcrumbs = [
         to: ''
     }
 ];
+
+// Fields data
 const fieldValue = ref<string>();
 const selectValue = ref<string>();
 const selectOptions = ref([
@@ -38,8 +42,16 @@ const selectOptions = ref([
 { id: 2, label: 'Option 2' },
 { id: 3, label: 'Option 3' }
 ]);
+
+// Pagination data
 const currentPage = ref(1);
 const pages = ref(5)
+
+// Header data
+const mobileMenuVisible = ref(false);
+function ToggleMenu() {
+    mobileMenuVisible.value = !mobileMenuVisible.value;
+}
 
 // Table data
 const {loading} = useQuasar()
@@ -120,7 +132,7 @@ const columns: QTableProps['columns'] = [
         <!-- VARIANT SELECTOR MENU - MADE FOR THIS PAGE AND NOT PART OF THE DESIGN! -->
         <menu id="design-system-menu">
             <li>
-                <p>Variante :</p>
+                <p>Variante :</p>
             </li>
             <li>
                 <button :class="{ 'selected': variant === Variant.Home }"
@@ -150,7 +162,16 @@ const columns: QTableProps['columns'] = [
                 <QToolbarTitle>
                     <RouterLink :to="{ name: 'Home' }" class="home-link">{{ t("header.title") }}</RouterLink>
                 </QToolbarTitle>
-                <LayoutHeaderNav />
+                
+                <div id="menu-items">
+                    <button id="mobile-menu-button" @click="ToggleMenu">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <span id="mobile-menu-background" :class="{ 'visible': mobileMenuVisible }" aria-hidden="true"></span>
+                    
+                    <LayoutHeaderNav :class="{ 'visible': mobileMenuVisible }" />
+                </div>
+
             </QToolbar>
 
             <div id="header-home-title" v-if="variant === Variant.Home">
@@ -865,7 +886,7 @@ const columns: QTableProps['columns'] = [
         </QPageContainer>
 
         <!-- FOOTER -->
-        <QFooter id="layout-footer" class="variant-space-1" elevated>
+        <QFooter id="layout-footer" :class="['variant-' + variant]" elevated>
             <div id="footer-logos">
                 <div class="wrapper">
                     <RouterLink to="/">

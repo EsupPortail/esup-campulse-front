@@ -188,6 +188,22 @@ input.custom-input, select.custom-input, textarea.custom-input {
   }
 }
 
+.variant-space-2 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $color2Hover;
+    }
+  }
+}
+
+.variant-space-3 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $color3;
+    }
+  }
+}
+
 textarea.custom-input {
   resize: vertical;
 }
@@ -213,6 +229,7 @@ label.custom-label {
 
   &:focus-visible {
     outline: 2px solid $outlineColor2 !important;
+    outline-offset: -2px;
   }
 
   .q-icon {
@@ -497,6 +514,7 @@ label.custom-label {
 
           &:focus-within {
             outline: 2px solid $outlineColor2;
+            outline-offset: 2px;
           }
 
           & > i {
@@ -919,8 +937,6 @@ label.custom-label {
         background-color: $color3;
   
         th {
-          color: $color3Text;
-
           .q-table__sort-icon svg {
             color: $color3Text;
           }
@@ -1126,7 +1142,7 @@ label.custom-label {
 
   .wrapper {
     display: inline-flex;
-    gap: 0.2rem;
+    // gap: 0.2rem;
     background-color: $backgroundColor1;
     box-shadow: $fieldsBoxShadow;
 
@@ -1282,7 +1298,7 @@ label.custom-label {
     height: 2.25rem;
     border-radius: 1.125rem;
     background-color: $color1;
-    color: $color1Text;
+    color: $textColor3;
     box-shadow: $fieldsBoxShadow;
     text-align: center;
     font-size: 1.15rem;
@@ -1305,7 +1321,6 @@ label.custom-label {
 
 .variant-space-3 .section-title i {
   background-color: $color3;
-  color: $color3Text;
 }
 
 // Image input

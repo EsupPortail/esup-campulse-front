@@ -36,6 +36,8 @@
     padding: 0.625rem 0;
 
     .q-toolbar__title {
+      overflow: visible;
+
       a {
         font-family: $titleFont;
         color: $textColor3;
@@ -47,7 +49,8 @@
         z-index: 2;
 
         &:focus-visible {
-          outline: 1px solid $outlineColor1;
+          outline: 2px solid $outlineColor1;
+          outline-offset: 2px;
         }
       }
     }
@@ -84,7 +87,8 @@
       z-index: 2;
 
       &:focus-visible {
-        outline: 1px solid $outlineColor1;
+        outline: 2px solid $outlineColor1;
+        outline-offset: 2px;
       }
 
       &::after {
@@ -171,7 +175,8 @@
       }
 
       &:focus-visible {
-        outline: 1px solid $outlineColor1 !important;
+        outline: 2px solid $outlineColor1 !important;
+        outline-offset: 2px;
       }
 
       .q-focus-helper, .q-ripple {
@@ -305,7 +310,6 @@
 
     i.space-3-icon {
       display: inline;
-      color: $color3Text;
       position: relative;
       left: -0.063rem;
     }
@@ -401,7 +405,7 @@
 
       i {
         font-size: 1.75rem;
-        color: $color1Text;
+        color: $textColor3;
         display: none;
         vertical-align: middle;
       }
