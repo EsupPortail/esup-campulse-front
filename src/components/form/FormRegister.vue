@@ -14,7 +14,7 @@ import useUserGroups from '@/composables/useUserGroups'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
-const {register, newUser, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
+const {register, newUser, initNewUserData, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
 const {groupChoiceIsValid, groupCanJoinAssociation, isStaff} = useUserGroups()
 
 
@@ -22,6 +22,7 @@ const hasConsent = ref<boolean>(false)
 
 onMounted(async () => {
     loading.show
+    initNewUserData()
     await onLoadCASUser()
     loading.hide
 })

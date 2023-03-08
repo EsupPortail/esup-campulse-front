@@ -55,6 +55,8 @@ export default function () {
         return userStore.user?.permissions.includes(permission)
     }
 
+    const emailVerification = ref<string | undefined>('')
+
     const newUser = reactive<UserRegister>({
         isCas: false,
         firstName: '',
@@ -66,16 +68,17 @@ export default function () {
     watch(() => newUser.email, () => {
         if (!newUser.isCas) newUser.username = newUser.email
     })
-    watch(() => userStore.newUser, () => {
+
+    const initNewUserData = () => {
         newUser.isCas = userStore.newUser?.isCas as boolean
         newUser.firstName = userStore.newUser?.firstName as string
         newUser.lastName = userStore.newUser?.lastName as string
         newUser.email = userStore.newUser?.email as string
         newUser.username = userStore.newUser?.username as string
         newUser.phone = userStore.newUser?.phone as string
-    })
+    }
 
-    const emailVerification = ref<string | undefined>('')
+    watch(() => userStore.newUser, initNewUserData)
 
 
     async function userLocalRegister() {
@@ -238,6 +241,7 @@ export default function () {
         userGroupsRegister,
         userLocalRegisterAsManager,
         hasPerm,
-        userAssociationsRegister
+        userAssociationsRegister,
+        initNewUserData
     }
 }
