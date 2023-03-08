@@ -315,6 +315,14 @@
     }
   }
 
+  &.variant-space-4 #header-title-icon {
+    background-color: $color4;
+
+    i.space-4-icon {
+      display: inline;
+    }
+  }
+
   &.variant-minimal {
     height: 5.375rem;
 

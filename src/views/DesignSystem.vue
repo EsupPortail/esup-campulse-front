@@ -16,7 +16,8 @@ enum Variant {
     Login = "minimal",
     Space1 = "space-1",
     Space2 = "space-2",
-    Space3 = "space-3"
+    Space3 = "space-3",
+    Space4 = "space-4"
 }
 
 const { t } = useI18n()
@@ -154,6 +155,10 @@ const columns: QTableProps['columns'] = [
                 <button :class="{ 'selected': variant === Variant.Space3 }"
                     @click="() => { variant = Variant.Space3 }">Espace CAPE</button>
             </li>
+            <li>
+                <button :class="{ 'selected': variant === Variant.Space4 }"
+                    @click="() => { variant = Variant.Space4 }">Espace autres</button>
+            </li>
         </menu>
 
         <!-- HEADER -->
@@ -185,6 +190,7 @@ const columns: QTableProps['columns'] = [
                         <i class="bi bi-geo-alt space-1-icon"></i>
                         <i class="bi bi-book space-2-icon"></i>
                         <i class="bi bi-send space-3-icon"></i>
+                        <i class="bi bi-person space-4-icon"></i>
                     </span>
                     Ceci est le titre de la page
                 </h1>

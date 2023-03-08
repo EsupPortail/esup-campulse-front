@@ -60,6 +60,10 @@
     background-color: $color3;
   }
 
+  &.variant-space-4 .q-breadcrumbs {
+    background-color: $color4;
+  }
+
   &.variant-minimal .q-breadcrumbs {
     height: 0.625rem;
     padding: 0;
