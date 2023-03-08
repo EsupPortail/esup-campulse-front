@@ -38,10 +38,10 @@ async function onGetGroups() {
 function onInitGroupLabels() {
     try {
         let privacy = false
-        if ((route.name === 'Registration') || (route.name === 'AddUser')) privacy = true
+        if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) privacy = true
         initGroupLabels(privacy)
 
-        if ((route.name === 'Registration') || (route.name === 'AddUser')) preSelectGroup('STUDENT_INSTITUTION')
+        if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) preSelectGroup('STUDENT_INSTITUTION')
     } catch (e) {
         notify({
             type: 'negative',
@@ -62,7 +62,7 @@ watch(() => userManagerStore.user, initUserGroups)
 
 <template>
     <fieldset>
-        <legend class="legend-big">{{ route.name === 'Registration' ? t('forms.status') : t('user-manager.user-status') }}
+        <legend class="legend-big">{{ route.name === 'Registration' || route.name === 'CASRegistration' ? t('forms.status') : t('user-manager.user-status') }}
         </legend>
         <QField v-if="groups" :error="!groupChoiceIsValid" :error-message="t('forms.required-status')">
             <QOptionGroup v-model="newGroups" :options="groupLabels" color="primary" type="checkbox"
