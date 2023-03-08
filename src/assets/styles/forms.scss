@@ -164,6 +164,42 @@
   }
 }
 
+.variant-space-4 {
+  .q-field {
+    .q-field__control {
+      border-color: $color4Borders;
+  
+      input {
+        color: $color4Text;
+      }
+    }
+
+    &.q-field--focused .q-field__control {
+      border-color: $color4;
+    }
+    
+    &.q-field--filled.q-field--highlighted .q-field__control::before {
+      background: $color4Background;
+    }
+    
+    &.q-field--filled .q-field__control::before {
+      background: $color4Background;
+    }
+
+    &.q-field--filled .q-field__control::after {
+      background: $color4;
+    }
+
+    &.q-field--highlighted .q-field__label {
+      color: $color4Text;
+    }
+  }
+
+  .q-select.q-field--focused .q-field__marginal {
+    color: $color4;
+  }
+}
+
 // Custom input fields
 input.custom-input, select.custom-input, textarea.custom-input {
   width: 100%;
@@ -200,6 +236,14 @@ input.custom-input, select.custom-input, textarea.custom-input {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
       border-color: $color3;
+    }
+  }
+}
+
+.variant-space-4 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $color4;
     }
   }
 }
@@ -376,6 +420,44 @@ label.custom-label {
   
       &:active {
         background-color: mix(white, $color3Text, 15%) !important;
+      }
+    }
+  }
+}
+
+.variant-space-4 {
+  .q-btn {
+    background-color: $color4;
+  
+    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+      background-color: $color4Hover !important;
+    }
+  
+    &:active, &.bg-primary:active, &.bg-secondary:active {
+      background-color: $color4Active !important;
+    }
+  
+    &.bg-primary {
+      background: $color4 !important;
+    }
+  
+    &.bg-secondary {
+      background: $color4 !important;
+    }
+
+    &.btn-alt {
+      border: 1px solid $color4Text;
+  
+      .q-btn__content > * {
+        color: $color4Text;
+      }
+  
+      &:hover {
+        background-color: $color4Text !important;
+      }
+  
+      &:active {
+        background-color: mix(white, $color4Text, 15%) !important;
       }
     }
   }
@@ -635,6 +717,34 @@ label.custom-label {
 
       &:active {
         background-color: mix(white, $color3, 10%);
+      }
+    }
+  }
+}
+
+.variant-space-4 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $color4;
+
+      & > button {
+        &:hover {
+          background-color: $color4;
+        }
+
+        &:active {
+          background-color: mix(white, $color4, 10%);
+        }
+      }
+    }
+
+    .document-input-list .document-item button {
+      &:hover {
+        background-color: $color4;
+      }
+
+      &:active {
+        background-color: mix(white, $color4, 10%);
       }
     }
   }
@@ -996,6 +1106,76 @@ label.custom-label {
   }
 }
 
+.variant-space-4 {
+  .q-table__container {
+    .q-table__bottom {
+      color: $color4Text;
+    }
+  
+    .q-table {
+      thead tr {
+        background-color: $color4;
+  
+        th {
+          .q-table__sort-icon svg {
+            color: $color4Text;
+          }
+
+          .q-checkbox__inner {
+            &.text-grey-8 {
+              .q-checkbox__svg {
+                color: $color4;
+              }
+            }
+          }
+        }
+      }
+  
+      tbody tr td {
+        color: $color4Text;
+
+        &:first-child {
+          border-color: $color4;
+        }
+
+        &.actions-cell-compact {
+          .q-btn {
+            &:hover {
+              box-shadow: 0 -0.25rem 0 0 $color4 inset;
+            }
+
+            &:active {
+              background: transparentize($color4, 0.9) !important;
+            }
+          }
+        }
+
+        &::before {
+          background: transparentize($color4, 0.95);
+        }
+
+        &::after {
+          background: transparentize($color4, 0.9);
+        }
+
+        .q-checkbox__inner {
+          &.q-checkbox__inner--truthy {
+            .q-checkbox__bg {
+              border-color: $color4;
+            }
+
+            &.q-checkbox__inner--truthy {
+              .q-checkbox__bg {
+                background-color: $color4;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 // State badges that can be used in forms.
 // Icons aren't defined here, only colors.
 .form-state {
@@ -1134,6 +1314,12 @@ label.custom-label {
   }
 }
 
+.variant-space-4 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $color4;
+  }
+}
+
 // Custom pagination
 .pagination {
   display: flex;
@@ -1220,6 +1406,18 @@ label.custom-label {
 
     &.counter-button strong {
       color: $color3;
+    }
+  }
+}
+
+.variant-space-4 {
+  .pagination .wrapper .q-btn {
+    .q-btn__content i {
+      color: $color4;
+    }
+
+    &.counter-button strong {
+      color: $color4;
     }
   }
 }
@@ -1323,6 +1521,10 @@ label.custom-label {
   background-color: $color3;
 }
 
+.variant-space-4 .section-title i {
+  background-color: $color4;
+}
+
 // Image input
 .image-input {
   display: flex;
@@ -1375,7 +1577,7 @@ label.custom-label {
       background-color: $color1;
       vertical-align: middle;
       box-shadow: $fieldsBoxShadow;
-      color: $color1Text;
+      color: $textColor3;
       font-size: 1.4rem;
       line-height: 2.7rem;
     }
@@ -1405,7 +1607,14 @@ label.custom-label {
 
   label i {
     background-color: $color3;
-    color: $color3Text;
+  }
+}
+
+.variant-space-4 .image-input {
+  box-shadow: 0 0 0 1px $color4Borders inset;
+
+  label i {
+    background-color: $color4;
   }
 }
 
@@ -1557,5 +1766,11 @@ label.custom-label {
 .variant-space-3 {
   .display-row, .comment-row {
     border-color: $color3;
+  }
+}
+
+.variant-space-4 {
+  .display-row, .comment-row {
+    border-color: $color4;
   }
 }

@@ -134,4 +134,11 @@
       border-color: $color3;
     }
   }
+
+  &.variant-space-4 {
+    #footer-logos {
+      background-color: $color4Background;
+      border-color: $color4;
+    }
+  }
 }
