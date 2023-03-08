@@ -136,10 +136,17 @@ async function onUpdateUserInfos() {
                 lazy-rules
                 type="tel"
             />
-            <section v-if="!editedByStaff">
+            <QBanner
+                v-if="!editedByStaff"
+                class="bg-grey-3 status-banner"
+            >
+                <template v-slot:avatar>
+                    <QIcon color="primary" name="mdi-account"/>
+                </template>
                 <p>Mon statut actuel : <span>{{ userGroups }}</span></p>
                 <p>Pour changer de statut, merci de contacter le gestionnaire dont vous dépendez.</p>
-            </section>
+            </QBanner>
+
             <QBtn
                 label="Valider les changements"
                 type="submit"
@@ -159,4 +166,14 @@ legend
 
 fieldset
     border: none
+
+.q-expansion-item
+    background-color: #beddff
+    padding: 10px
+    margin-bottom: 15px
+
+.status-banner
+    margin-top: 15px
+    margin-bottom: 15px
+    padding-top: 20px
 </style>
