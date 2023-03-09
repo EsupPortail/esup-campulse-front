@@ -97,6 +97,7 @@ export default function () {
                     user: username,
                     association: newUserAssociations[i].association,
                     isPresident: newUserAssociations[i].isPresident,
+                    isVicePresident: newUserAssociations[i].isVicePresident,
                     isSecretary: newUserAssociations[i].isSecretary,
                     isTreasurer: newUserAssociations[i].isTreasurer
                 })

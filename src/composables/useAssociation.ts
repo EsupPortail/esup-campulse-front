@@ -35,6 +35,10 @@ export default function () {
             value: 'isPresident',
         },
         {
+            label: i18n.global.t('forms.im-association-vice-president'),
+            value: 'isVicePresident'
+        },
+        {
             label: i18n.global.t('forms.im-association-secretary'),
             value: 'isSecretary'
         },
@@ -109,6 +113,7 @@ export default function () {
                 isPresident: association.role === 'isPresident',
                 canBePresident: false,
                 isValidatedByAdmin: false,
+                isVicePresident: association.role === 'isVicePresident',
                 isSecretary: association.role === 'isSecretary',
                 isTreasurer: association.role === 'isTreasurer'
             })

@@ -135,6 +135,7 @@ describe('useAssociation', () => {
                     isPresident: true,
                     canBePresident: false,
                     isValidatedByAdmin: false,
+                    isVicePresident: false,
                     isSecretary: false,
                     isTreasurer: false
                 }

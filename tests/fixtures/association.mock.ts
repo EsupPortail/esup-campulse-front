@@ -304,6 +304,10 @@ export const _associationRoleOptions = [
         value: 'isPresident',
     },
     {
+        label: 'Vice-Président',
+        value: 'isVicePresident',
+    },
+    {
         label: 'Secrétaire',
         value: 'isSecretary'
     },
@@ -316,4 +320,3 @@ export const _associationRoleOptions = [
         value: 'isMember'
     }
 ]
-

@@ -58,6 +58,7 @@ export default function () {
                 console.log(storeAssociation)
                 if (storeAssociation?.canBePresident !== association.canBePresident) hasChanges = true
                 if (storeAssociation?.isPresident && association.role !== 'isPresident') hasChanges = true
+                if (storeAssociation?.isVicePresident && association.role !== 'isVicePresident') hasChanges = true
                 if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
                 if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
 
@@ -65,6 +66,7 @@ export default function () {
                     const infosToPatch = {
                         isPresident: association.role === 'isPresident',
                         canBePresident: association.canBePresident ? association.canBePresident : false,
+                        isVicePresident: association.role === 'isVicePresident',
                         isSecretary: association.role === 'isSecretary',
                         isTreasurer: association.role === 'isTreasurer',
                     }

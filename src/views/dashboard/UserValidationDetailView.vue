@@ -125,6 +125,9 @@ async function onDeleteUser() {
                     <li>{{ t('dashboard.association-user.can-be-president') }} :
                         {{ association.canBePresident ? t('yes') : t('no') }}
                     </li>
+                    <li>{{ t('dashboard.association-user.is-vice-president') }} :
+                        {{ association.isVicePresident ? t('yes') : t('no') }}
+                    </li>
                     <li>{{ t('dashboard.association-user.is-secretary') }} :
                         {{ association.isSecretary ? t('yes') : t('no') }}
                     </li>

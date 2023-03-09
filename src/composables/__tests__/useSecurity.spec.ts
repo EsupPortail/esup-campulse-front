@@ -115,6 +115,7 @@ describe('useSecurity', () => {
             user: 'user',
             association: lastAssociation.association,
             isPresident: lastAssociation.isPresident,
+            isVicePresident: lastAssociation.isVicePresident,
             isSecretary: lastAssociation.isSecretary,
             isTreasurer: lastAssociation.isTreasurer
         }
@@ -282,4 +283,3 @@ describe('useSecurity', () => {
 
     */
 })
-

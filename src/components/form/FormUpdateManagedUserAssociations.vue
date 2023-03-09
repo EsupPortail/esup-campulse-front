@@ -29,6 +29,7 @@ const initValues = () => {
     userManagerStore.userAssociations.forEach(function (association) {
         let role = ''
         if (association.isPresident) role = 'isPresident'
+        if (association.isVicePresident) role = 'isVicePresident'
         if (association.isSecretary) role = 'isSecretary'
         if (association.isTreasurer) role = 'isTreasurer'
         userAssociations.value.push({

@@ -189,6 +189,7 @@ describe('User manager store', () => {
             const dataToPatch = {
                 isPresident: false,
                 canBePresident: true,
+                isVicePresident: false,
                 isSecretary: false,
                 isTreasurer: true,
             }

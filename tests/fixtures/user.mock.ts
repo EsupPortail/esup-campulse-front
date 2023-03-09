@@ -123,6 +123,7 @@ export const _userAssociations: AssociationUser[] = [
         isPresident: true,
         canBePresident: true,
         isValidatedByAdmin: true,
+        isVicePresident: false,
         isSecretary: false,
         isTreasurer: false,
         association: 1
@@ -132,6 +133,7 @@ export const _userAssociations: AssociationUser[] = [
         isPresident: false,
         canBePresident: true,
         isValidatedByAdmin: true,
+        isVicePresident: false,
         isSecretary: true,
         isTreasurer: false,
         association: 2
@@ -141,6 +143,7 @@ export const _userAssociations: AssociationUser[] = [
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: true,
+        isVicePresident: false,
         isSecretary: false,
         isTreasurer: true,
         association: 3
@@ -150,6 +153,7 @@ export const _userAssociations: AssociationUser[] = [
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: false,
+        isVicePresident: false,
         isSecretary: false,
         isTreasurer: false,
         association: 4
@@ -162,6 +166,7 @@ export const _userAssociationDetail = {
     isPresident: true,
     canBePresident: true,
     isValidatedByAdmin: true,
+    isVicePresident: false,
     isSecretary: false,
     isTreasurer: false,
     association: {
@@ -178,6 +183,7 @@ export const _userAssociationsManagement = [
         associationName: 'PLANA',
         isPresident: true,
         canBePresident: true,
+        isVicePresident: false,
         isSecretary: false,
         isTreasurer: false,
         deleteAssociation: false
@@ -187,6 +193,7 @@ export const _userAssociationsManagement = [
         associationName: 'Octant',
         isPresident: false,
         canBePresident: true,
+        isVicePresident: false,
         isSecretary: false,
         isTreasurer: true,
         deleteAssociation: false
@@ -196,6 +203,7 @@ export const _userAssociationsManagement = [
         associationName: 'Apogée',
         isPresident: false,
         canBePresident: true,
+        isVicePresident: false,
         isSecretary: true,
         isTreasurer: false,
         deleteAssociation: true
@@ -210,4 +218,3 @@ export const _associationRole: AssociationRole = {
     canBePresident: true,
     deleteAssociation: false
 }
-

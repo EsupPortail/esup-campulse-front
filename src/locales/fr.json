@@ -142,6 +142,7 @@
       "is-president": "Est président ou présidente",
       "is-secretary": "Est secrétaire",
       "is-treasurer": "Est trésorier ou trésorière",
+      "is-vice-president": "Est vice-président ou vice-présidente",
       "manage-my-associations": "Gérer mes associations",
       "not-association-member": "L'utilisateur n'est membre d'aucune association."
     }
@@ -199,6 +200,7 @@
     "im-association-president": "Présidente ou président de l'association",
     "im-association-secretary": "Secrétaire de l'association",
     "im-association-treasurer": "Trésorière ou trésorier de l'association",
+    "im-association-vice-president": "Vice-présidente ou vice-président de l'association",
     "im-from-association": "Lier une association au compte",
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
     "last-name": "Nom de famille",
