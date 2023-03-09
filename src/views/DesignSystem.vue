@@ -649,7 +649,7 @@ const columns: QTableProps['columns'] = [
                             </div>
 
                             <!-- TABLE ROW -->
-                            <div class="display-row">
+                            <div class="display-row space-between">
                                 <p>Ligne façon tableau</p>
                                 <p>Donnée 1</p>
                                 <p>Donnée 2</p>

@@ -257,7 +257,7 @@ async function clearSearch(apiSearch: boolean) {
                 <QCard v-for="association in associationsOnPage" :key="association.id" class="my-card">
                     <div class="card-background"></div>
                     <i class="card-chevron bi bi-chevron-compact-right"></i>
-                    <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
+                    <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
                         <QCardSection>
                             <div class="list-logo">
                                 <QImg
@@ -267,7 +267,11 @@ async function clearSearch(apiSearch: boolean) {
                                 />
                             </div>
                             <div class="list-details">
-                                <h3>{{ association.name }}</h3>
+                                <h3>
+                                    <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
+                                        {{ association.name }}
+                                    </RouterLink>
+                                </h3>
                                 <ul>
                                     <li v-if="association.acronym">
                                         <span class="label">
@@ -300,7 +304,7 @@ async function clearSearch(apiSearch: boolean) {
                                 </ul>
                             </div>
                         </QCardSection>
-                    </RouterLink>
+                    <!-- </RouterLink> -->
                 </QCard>
                 <QPagination
                     v-if="associationsOnPage && pages && pages > 1"

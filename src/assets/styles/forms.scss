@@ -343,6 +343,18 @@ label.custom-label {
       }
     }
   }
+
+  &.bg-red {
+    background: #e9584e !important;
+
+    &:hover {
+      background: #bd453d !important;
+    }
+
+    &:active {
+      background: #ac3e36 !important;
+    }
+  }
 }
 
 .variant-space-2 {
@@ -1717,17 +1729,26 @@ label.custom-label {
   display: flex;
   flex-direction: row;
   align-items: start;
-  justify-content: space-between;
+  justify-content: stretch;
   gap: 1.5625rem;
   width: 100%;
 
   p {
     margin: 0;
+  }
 
-    &.row-title {
-      text-transform: uppercase;
-      flex: 1 0 30%;
-    }
+  .row-title {
+    margin: 0;
+    text-transform: uppercase;
+    flex: 0 0 30%;
+    color: $textColor1;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  &.space-between {
+    justify-content: space-between;
   }
 
   @media only screen and (max-width: $responsiveWidth) {

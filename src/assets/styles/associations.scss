@@ -166,10 +166,6 @@
     margin-bottom: 1.563rem;
     overflow: hidden;
 
-    a {
-      text-decoration: none;
-    }
-
     .q-card__section {
       display: flex;
       flex-direction: row;
@@ -230,12 +226,17 @@
     }
 
     h3 {
-      font-size: 1.75rem;
-      line-height: 2.4rem;
-      font-weight: 600;
-      color: $color1Text;
-      text-transform: uppercase;
       margin-bottom: 0.5rem;
+      line-height: 2.4rem;
+
+      a {
+        font-size: 1.75rem;
+        line-height: 2.4rem;
+        font-weight: 600;
+        color: $color1Text;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
     }
 
     ul {
@@ -332,7 +333,7 @@
         display: block;
 
         .list-logo {
-          padding-top: 0.375rem;
+          // padding-top: 0.375rem;
           width: 3.125rem;
           float: left;
 
