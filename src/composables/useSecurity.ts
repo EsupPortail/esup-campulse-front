@@ -1,5 +1,5 @@
 import {reactive, ref, watch} from 'vue'
-import type {AssociationUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
+import type {LocalLogin, UserGroupRegister, UserRegister} from '#/user'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
@@ -95,23 +95,24 @@ export default function () {
      * It takes a list of associations and registers them for a user
      * @param {boolean} publicRequest - boolean - If the request is public or not
      * @param {string} username - the username of the user you want to associate with the associations
-     * @param {AssociationUser[]} newUserAssociations - an array of objects with the following structure:
      */
-    async function userAssociationsRegister(publicRequest: boolean, username: string, newUserAssociations: AssociationUser[]) {
+    // To re-test
+    async function userAssociationsRegister(publicRequest: boolean, username: string | undefined) {
         const idsAssociations = []
         const {axiosPublic, axiosAuthenticated} = useAxios()
+        const {newAssociations} = useUserAssociations()
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
-        for (let i = 0; i < newUserAssociations.length; i++) {
-            if (idsAssociations.indexOf(newUserAssociations[i].association) === -1)
+        for (let i = 0; i < newAssociations.value.length; i++) {
+            if (idsAssociations.indexOf(newAssociations.value[i].id) === -1)
                 await instance.post('/users/associations/', {
                     user: username,
-                    association: newUserAssociations[i].association,
-                    isPresident: newUserAssociations[i].isPresident,
-                    isSecretary: newUserAssociations[i].isSecretary,
-                    isTreasurer: newUserAssociations[i].isTreasurer
+                    association: newAssociations.value[i].id,
+                    isPresident: newAssociations.value[i].role === 'isPresident',
+                    isSecretary: newAssociations.value[i].role === 'isSecretary',
+                    isTreasurer: newAssociations.value[i].role === 'isTreasurer'
                 })
-            idsAssociations.push(newUserAssociations[i].association)
+            idsAssociations.push(newAssociations.value[i].id)
         }
     }
 
@@ -159,7 +160,7 @@ export default function () {
         if (userStore.isCas) {
             await userCASRegister(newUser.phone)
             if (newAssociationsUser) {
-                await userAssociationsRegister(true, newUser.username, newAssociationsUser.value)
+                await userAssociationsRegister(true, newUser.username)
             }
             await userGroupsRegister(true)
             // We must clear newUser to avoid persistence of session
@@ -167,7 +168,7 @@ export default function () {
         } else {
             await userLocalRegister()
             if (newAssociationsUser.value) {
-                await userAssociationsRegister(true, newUser.email, newAssociationsUser.value)
+                await userAssociationsRegister(true, newUser.email)
             }
             await userGroupsRegister(true)
         }
@@ -180,7 +181,7 @@ export default function () {
         const {newAssociationsUser} = useUserAssociations()
         await userLocalRegisterAsManager(newUser)
         if (newAssociationsUser.value) {
-            await userAssociationsRegister(false, newUser.email, newAssociationsUser.value)
+            await userAssociationsRegister(false, newUser.email)
         }
         await userGroupsRegister(false)
     }

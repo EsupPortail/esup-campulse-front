@@ -8,6 +8,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import type {User} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserAssociations from '@/composables/useUserAssociations'
+import useSecurity from "@/composables/useSecurity";
 
 const props = defineProps<{
     editedByStaff: boolean,
@@ -17,13 +18,14 @@ const props = defineProps<{
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
+const {userAssociationsRegister} = useSecurity()
 const route = useRoute()
 const {
     userAssociations,
     updateUserAssociations,
-    postUserAssociations,
     associationRoleOptions,
-    getUserAssociations
+    getUserAssociations,
+    newAssociations
 } = useUserAssociations()
 const {groupCanJoinAssociation} = useUserGroups()
 
@@ -50,7 +52,9 @@ async function onGetUserAssociations() {
 async function onUpdateUserAssociations() {
     try {
         await updateUserAssociations(props.editedByStaff)
-        await postUserAssociations(props.user?.username)
+        await userAssociationsRegister(route.name === 'Registration', props.user?.username)
+        newAssociations.value = []
+        await getUserAssociations(null, false)
         notify({
             type: 'positive',
             message: 'Les associations ont bien été mises à jour.'
@@ -96,6 +100,10 @@ async function onUpdateUserAssociations() {
                                 (association.role === 'isPresident' || association.canBePresident) ? t('yes') : t('no')
                             }}</span>
                         </li>
+                        <li>
+                            {{ t('dashboard.association-user.is-validated-by-admin') }}
+                            <span>{{ association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
+                        </li>
                     </ul>
                     <QCheckbox
                         v-if="props.editedByStaff"
@@ -123,7 +131,7 @@ async function onUpdateUserAssociations() {
                             />
                         </div>
                         <QBtn
-                            v-if="!props.editedByStaff"
+                            v-if="!props.editedByStaff && association.isValidatedByAdmin"
                             :to="{name: 'AssociationDashboard', params: {id: association.id}}"
                             label="Gérer l'association"
                         />

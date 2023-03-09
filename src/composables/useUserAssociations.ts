@@ -61,7 +61,6 @@ export default function () {
                 // Reactively remove the deleted item from interface
                 if (!editedByStaff) {
                     userAssociations.value.splice(userAssociations.value.findIndex(obj => obj.id === association.id))
-                    await getUserAssociations(userStore.user?.id as number, false)
                     userStore.user?.associations.splice(userAssociations.value.findIndex(obj => obj.id === association.id))
                 }
             }
@@ -103,18 +102,6 @@ export default function () {
     async function patchUserAssociations(userId: number | undefined, associationId: number, infosToPatch: UserAssociationPatch) {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.patch(`/users/associations/${userId}/${associationId}`, infosToPatch)
-    }
-
-    // To test
-    async function postUserAssociations(username: string | undefined) {
-        if (username) {
-            const {axiosAuthenticated} = useAxios()
-            for (let i = 0; i < newAssociationsUser.value.length; i++) {
-                const data = {...newAssociationsUser.value[i]}
-                data.user = username
-                await axiosAuthenticated.post(`/users/associations/`, data)
-            }
-        }
     }
 
     /**
@@ -182,6 +169,7 @@ export default function () {
                     userStore.user?.associations.find(obj => obj.id === association.association)?.name,
                 role,
                 options: associationRoleOptions,
+                isValidatedByAdmin: association.isValidatedByAdmin,
                 canBePresident: association.canBePresident,
                 deleteAssociation: false
             })
@@ -197,7 +185,6 @@ export default function () {
 
     return {
         userAssociations,
-        postUserAssociations,
         updateUserAssociations,
         patchUserAssociations,
         addAssociation,

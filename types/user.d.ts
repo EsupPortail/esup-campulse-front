@@ -53,7 +53,8 @@ export interface AssociationRole {
     role: string,
     options?: AssociationOptions[]
     canBePresident?: boolean,
-    deleteAssociation?: boolean
+    deleteAssociation?: boolean,
+    isValidatedByAdmin?: boolean
 }
 
 interface CasLogin {

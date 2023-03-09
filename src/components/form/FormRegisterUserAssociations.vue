@@ -22,6 +22,7 @@ onMounted(async () => {
     loading.show
     await loadAssociations()
     initTitle()
+    newAssociations.value = []
     loading.hide
 })
 
