@@ -14,6 +14,7 @@ import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 import {_associationRole} from '~/fixtures/user.mock'
 import type {Association} from "../../../types/association";
+import useUserAssociations from "../useUserAssociations";
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -65,39 +66,9 @@ describe('useAssociation', () => {
         })
     })
 
-    describe('addAssociation', () => {
-        const {newAssociations, addAssociation, associationRoleOptions} = useAssociation()
-
-        afterEach(() => {
-            newAssociations.value = []
-        })
-
-        it('should push a new association object into newAssociations', () => {
-            addAssociation()
-            expect(newAssociations.value).toEqual([{
-                id: null,
-                role: 'isMember',
-                options: associationRoleOptions
-            }])
-        })
-    })
-
-    describe('removeAssociation', () => {
-        const {newAssociations, addAssociation, removeAssociation} = useAssociation()
-
-        afterEach(() => {
-            newAssociations.value = []
-        })
-
-        it('should remove an association from newAssociations based on association index', () => {
-            addAssociation()
-            removeAssociation(0)
-            expect(newAssociations.value).toEqual([])
-        })
-    })
-
     describe('checkHasPresident', () => {
-        const {checkHasPresident, newAssociations} = useAssociation()
+        const {checkHasPresident} = useAssociation()
+        const {newAssociations} = useUserAssociations()
         associationStore.associationNames = _associationNames
 
         afterEach(() => {
@@ -115,30 +86,6 @@ describe('useAssociation', () => {
             checkHasPresident(_associationRole)
             const m = newAssociations.value.find(obj => obj.id === _associationRole.id)
             expect(m?.role).toEqual('isMember')
-        })
-    })
-
-    describe('updateRegisterRoleInAssociation', () => {
-        const {updateRegisterRoleInAssociation, newAssociations, newAssociationsUser} = useAssociation()
-
-        afterEach(() => {
-            newAssociations.value = []
-        })
-
-        it('should return an array of association users based on newAssociations', () => {
-            newAssociations.value = JSON.parse(JSON.stringify([_associationRole]))
-            updateRegisterRoleInAssociation()
-            expect(newAssociationsUser.value).toEqual([
-                {
-                    association: 1,
-                    name: '',
-                    isPresident: true,
-                    canBePresident: false,
-                    isValidatedByAdmin: false,
-                    isSecretary: false,
-                    isTreasurer: false
-                }
-            ])
         })
     })
 

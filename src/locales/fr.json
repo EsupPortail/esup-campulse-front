@@ -143,6 +143,8 @@
     "validate-changes": "Valider les changements",
     "welcome-message": "Bienvenue",
     "association-user": {
+      "add-my-associations": "J'ajoute les associations dont je suis membre",
+      "add-my-new-associations": "J'ajoute les nouvelles associations dont je suis membre",
       "can-be-president": "Est président délégué ou présidente déléguée",
       "delete-association": "Supprimer le rôle dans l'association",
       "edit-my-association": "Modifier la fiche de l'association",
@@ -150,7 +152,9 @@
       "is-secretary": "Est secrétaire",
       "is-treasurer": "Est trésorier ou trésorière",
       "manage-my-associations": "Gérer mes associations",
+      "my-role": "Mon rôle :",
       "not-association-member": "L'utilisateur n'est membre d'aucune association.",
+      "presidency-status": "Droit de présidence :",
       "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
     }
   },

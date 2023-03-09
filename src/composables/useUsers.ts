@@ -74,6 +74,7 @@ export default function () {
      * @param {User} user - User: the user to update
      * @param editedByStaff
      */
+    // To test
     async function updateUserInfos(user: User | undefined, editedByStaff: boolean) {
         interface InfosToPatch {
             firstName?: string,

@@ -6,9 +6,10 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
-import {_institutionManager} from '~/fixtures/user.mock'
+import {_institutionManager, _institutionStudent} from '~/fixtures/user.mock'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
+import {useAxios} from "../useAxios";
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -136,6 +137,45 @@ describe('useUsers', () => {
         it('should return false if the user is a member of a private group', () => {
             const perm = canEditUser([{userId: 2, groupId: 1}])
             expect(perm).toBeFalsy()
+        })
+    })
+
+    describe('updateUserInfos', () => {
+        const {updateUserInfos, userToUpdate} = useUsers()
+
+        it('should only patch changed infos on /users/userId', async () => {
+            userManagerStore.user = _institutionStudent
+            userToUpdate.value = {
+                username: _institutionStudent.username,
+                firstName: 'Jane',
+                lastName: _institutionStudent.lastName,
+                email: 'jane@lennon.uk',
+                newEmail: '',
+                newEmailVerification: '',
+                phone: _institutionStudent.phone
+            }
+            await updateUserInfos(userManagerStore.user, true)
+            const {axiosAuthenticated} = useAxios()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`, {
+                firstName: 'Jane',
+                email: 'jane@lennon.uk'
+            })
+        })
+        it('should not patch anything if there are no changes', async () => {
+            userManagerStore.user = _institutionStudent
+            userToUpdate.value = {
+                username: _institutionStudent.username,
+                firstName: _institutionStudent.firstName,
+                lastName: _institutionStudent.lastName,
+                email: _institutionStudent.email,
+                newEmail: '',
+                newEmailVerification: '',
+                phone: _institutionStudent.phone
+            }
+            await updateUserInfos(userManagerStore.user, true)
+            const {axiosAuthenticated} = useAxios()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledTimes(0)
         })
     })
 })

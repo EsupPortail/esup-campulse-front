@@ -15,7 +15,7 @@ import {
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
-import useAssociation from "../useAssociation";
+import useUserAssociations from "../useUserAssociations";
 
 
 config.global.plugins = [
@@ -236,7 +236,7 @@ describe('useSecurity', () => {
             newUser,
             userCASRegister
         } = useSecurity()
-        const {newAssociations} = useAssociation()
+        const {newAssociations} = useUserAssociations()
         const {newGroups} = useUserGroups()
         //const {axiosPublic} = useAxios()
         //const mockedAxios = vi.mocked(axiosPublic, true)

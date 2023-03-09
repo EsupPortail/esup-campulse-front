@@ -49,6 +49,7 @@ export default function () {
     /**
      * It updates the user associations when it is modified by a manager
      */
+    // To test
     function updateUserAssociations(editedByStaff: boolean) {
         let userId = userStore.user?.id
         if (editedByStaff) userId = userManagerStore.user?.id
@@ -155,6 +156,7 @@ export default function () {
         return newAssociationsUser.value
     }
 
+    // To test
     async function getUserAssociations(id: number | null, managedUser: boolean) {
         const {axiosAuthenticated} = useAxios()
         let store: UserStore | UserManagerStore = userStore
@@ -164,6 +166,7 @@ export default function () {
         store.userAssociations = (await axiosAuthenticated.get<AssociationUser[] | AssociationUserDetail[]>(url)).data
     }
 
+    // To test
     function initUserAssociations(editedByStaff: boolean) {
         userAssociations.value = []
         let associations: AssociationUser[] | AssociationUserDetail[] = userStore.userAssociations
@@ -203,6 +206,7 @@ export default function () {
         newAssociationsUser,
         associationRoleOptions,
         getUserAssociations,
-        newAssociations
+        newAssociations,
+        deleteUserAssociation
     }
 }

@@ -87,14 +87,14 @@ async function onUpdateUserAssociations() {
                         @update:model-value="association.role === 'isPresident' ? association.canBePresident = false : association.canBePresident"
                     />
                     <ul v-else>
-                        <li>Mon rôle : {{
+                        <li>{{ t('dashboard.association-user.my-role') }} <span>{{
                                 associationRoleOptions.find(obj => obj.value === association.role)?.label
-                            }}
+                            }}</span>
                         </li>
                         <li>
-                            Droit de présidence : {{
+                            {{ t('dashboard.association-user.presidency-status') }} <span>{{
                                 (association.role === 'isPresident' || association.canBePresident) ? t('yes') : t('no')
-                            }}
+                            }}</span>
                         </li>
                     </ul>
                     <QCheckbox

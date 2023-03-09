@@ -28,8 +28,8 @@ onMounted(async () => {
 const title = ref<string>()
 
 const initTitle = () => {
-    if (route.name === 'Registration') title.value = "J'ajoute les associations dont je suis membre"
-    else if (route.name === 'ManageAccount') title.value = "J'ajoute les nouvelles associations dont je suis membre"
+    if (route.name === 'Registration') title.value = t('dashboard.association-user.add-my-associations')
+    else if (route.name === 'ManageAccount') title.value = t('dashboard.association-user.add-my-new-associations')
     else title.value = t('user-manager.register-in-new-associations')
 }
 watch(() => route.path, initTitle)
