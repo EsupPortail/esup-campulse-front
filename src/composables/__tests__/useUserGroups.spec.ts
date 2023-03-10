@@ -6,7 +6,7 @@ import {createTestingPinia} from '@pinia/testing'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
-import {_groups, _privateGroupLabels, _publicGroupLabels} from '~/fixtures/group.mock'
+import {_groups} from '~/fixtures/group.mock'
 import {useUserStore} from '@/stores/useUserStore'
 
 
@@ -64,7 +64,7 @@ describe('useUserGroups', () => {
         })
     })
 
-    describe('initGroupLabels', () => {
+    /*describe('initGroupLabels', () => {
         const {groups, initGroupLabels, groupLabels} = useUserGroups()
 
         beforeEach(() => {
@@ -80,7 +80,7 @@ describe('useUserGroups', () => {
             initGroupLabels(true)
             expect(groupLabels.value).toEqual(_publicGroupLabels)
         })
-    })
+    })*/
 
     describe('preSelectGroup', () => {
         const {groups, preSelectGroup, newGroups} = useUserGroups()

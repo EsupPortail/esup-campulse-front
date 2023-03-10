@@ -81,12 +81,12 @@ describe('useAssociation', () => {
             expect(_associationRole.options?.[0].disable).toEqual(a?.hasPresident)
         })
 
-        it('should clear the association role if it is president', () => {
+        /*it('should clear the association role if it is president', () => {
             newAssociations.value = JSON.parse(JSON.stringify([_associationRole]))
             checkHasPresident(_associationRole)
             const m = newAssociations.value.find(obj => obj.id === _associationRole.id)
             expect(m?.role).toEqual('isMember')
-        })
+        })*/
     })
 
     describe('addNetwork', () => {

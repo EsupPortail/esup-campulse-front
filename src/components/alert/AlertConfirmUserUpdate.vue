@@ -8,6 +8,7 @@ import {useUserManagerStore} from "@/stores/useUserManagerStore";
 import useUsers from "@/composables/useUsers";
 import useUserGroups from "@/composables/useUserGroups";
 import useUserAssociations from "@/composables/useUserAssociations";
+import useSecurity from "@/composables/useSecurity";
 
 
 const {t} = useI18n()
@@ -15,7 +16,8 @@ const {notify} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const {updateUserInfos} = useUsers()
 const {updateUserGroups} = useUserGroups()
-const {updateUserAssociations, postUserAssociations, userAssociations} = useUserAssociations()
+const {updateUserAssociations, userAssociations} = useUserAssociations()
+const {userAssociationsRegister} = useSecurity()
 
 
 const emit = defineEmits(['hasValidated'])
@@ -28,7 +30,7 @@ async function onValidateChanges() {
         await updateUserInfos(userManagerStore.user, true) // OK
         await updateUserAssociations(true)
         if (userAssociations.value.length > 0) {
-            await postUserAssociations(userManagerStore.user?.username)
+            await userAssociationsRegister(false, userManagerStore.user?.username)
         }
         await updateUserGroups()
         emit('hasValidated')

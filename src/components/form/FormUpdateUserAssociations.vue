@@ -8,7 +8,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import type {User} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserAssociations from '@/composables/useUserAssociations'
-import useSecurity from "@/composables/useSecurity";
+import useSecurity from '@/composables/useSecurity'
 
 const props = defineProps<{
     editedByStaff: boolean,
@@ -57,12 +57,12 @@ async function onUpdateUserAssociations() {
         await getUserAssociations(null, false)
         notify({
             type: 'positive',
-            message: 'Les associations ont bien été mises à jour.'
+            message: t('notifications.positive.associations-successfully-updated')
         })
     } catch (error) {
         notify({
             type: 'negative',
-            message: 'Une erreur est survenue.'
+            message: t('notifications.negative.edit-user-associations-error')
         })
     }
 }
@@ -132,8 +132,8 @@ async function onUpdateUserAssociations() {
                         </div>
                         <QBtn
                             v-if="!props.editedByStaff && association.isValidatedByAdmin"
+                            :label="t('dashboard.association-user.manage-association')"
                             :to="{name: 'AssociationDashboard', params: {id: association.id}}"
-                            label="Gérer l'association"
                         />
                     </div>
                 </article>
@@ -147,7 +147,7 @@ async function onUpdateUserAssociations() {
         <div>
             <QBtn
                 v-if="!props.editedByStaff"
-                label="Valider les changements"
+                :label="t('validate-changes')"
                 @click="onUpdateUserAssociations"
             />
         </div>
