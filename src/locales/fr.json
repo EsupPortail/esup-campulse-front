@@ -4,21 +4,22 @@
     "title": "Contenu introuvable"
   },
   "alerts": {
-    "close": "Fermer",
-    "confirm-association-publish": "Voulez-vous vraiment publier cette association dans l'annuaire ? Toutes les informations la concernant présentes sur cette fiche seront visibles publiquement.",
-    "confirm-association-unpublish": "Voulez-vous vraiment dépublier cette association de l'annuaire ? Toutes les informations la concernant présentes sur cette fiche ne seront plus visibles pour le public.",
-    "leave-association-edition": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues.",
-    "leave-user-edition": "Êtes-vous sûr de vouloir quitter l'édition des informations de cet utilisateur ? Si vous avez effectué des modifications, celles-ci seront perdues.",
     "aborted-cas-registration": {
       "button": "Terminer ma création de compte",
       "message": "Votre demande d'inscription avec un compte CAS n'est pas terminée. Cliquez sur \"Terminer ma création de compte\" pour la finaliser.",
       "title": "Demande de création de compte en cours"
     },
+    "close": "Fermer",
+    "confirm-association-publish": "Voulez-vous vraiment publier cette association dans l'annuaire ? Toutes les informations la concernant présentes sur cette fiche seront visibles publiquement.",
+    "confirm-association-unpublish": "Voulez-vous vraiment dépublier cette association de l'annuaire ? Toutes les informations la concernant présentes sur cette fiche ne seront plus visibles pour le public.",
     "delete-user": {
       "confirm-delete": "Voulez-vous vraiment supprimer cet utilisateur ?",
       "confirm-no": "Non",
       "confirm-yes": "Oui"
-    }
+    },
+    "leave-association-edition": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues.",
+    "leave-user-edition": "Êtes-vous sûr de vouloir quitter l'édition des informations de cet utilisateur ? Si vous avez effectué des modifications, celles-ci seront perdues.",
+    "modify-email": "Attention, l'adresse mail est utilisée comme identifiant pour se connecter. En cas de modification, elle deviendra le nouvel identifiant du compte. Un mail de vérification sera envoyé sur cette adresse pour la valider."
   },
   "association": {
     "alert-confirm-changes": "Vous êtes sur le point de modifier les informations de cette association. Voulez-vous continuer ? Les données modifiées seront écrasées après la modification.",
@@ -103,6 +104,7 @@
   },
   "back": "Retour",
   "breadcrumbs": {
+    "account-infos": "Modifier les informations de mon compte",
     "add-user": "Ajouter un compte",
     "association-dashboard": "Gérér mon association",
     "association-detail": "Fiche association",
@@ -115,7 +117,6 @@
     "login": "Connexion",
     "manage-associations": "Gérer les associations",
     "manage-users": "Gérer les comptes",
-    "password-edit": "Modifier mon mot de passe",
     "register": "Créer un compte",
     "user-account": "Compte utilisateur",
     "validate-users": "Valider les comptes"
@@ -123,28 +124,46 @@
   "cancel": "Annuler",
   "cancel-delete": "Annuler la suppression",
   "dashboard": {
+    "account-infos": "Modifier mes informations personnelles",
     "association-management": "Gérer l'annuaire des associations",
     "create-association": "Créer une association",
     "create-user": "Créer un nouvel utilisateur",
     "edit-or-delete-association": "Modifier ou supprimer une association",
     "manage-association-directory": "Gérer l'annuaire des associations",
-    "manage-my-account": "Gérer mon compte",
+    "manage-my-account": "Mes informations",
     "manage-users": "Gérer les utilisateurs de la plateforme",
+    "my-associations": "Mes associations",
+    "my-documents": "Mes documents",
+    "my-infos": "Mes informations",
+    "my-password": "Mon mot de passe",
+    "my-status": "Mon statut actuel :",
+    "update-my-status": "Pour changer de statut, merci de contacter le gestionnaire dont vous dépendez.",
     "user-add": "Ajouter un compte utilisateur",
     "user-management": "Gérer les informations des utilisateurs",
     "user-validation": "Valider les demandes de compte",
     "validate-changes": "Valider les changements",
     "welcome-message": "Bienvenue",
     "association-user": {
+      "add-my-associations": "J'ajoute les associations dont je suis membre",
+      "add-my-new-associations": "J'ajoute les nouvelles associations dont je suis membre",
+      "association-documents": "Documents de l'association",
+      "association-procedures": "Démarches de l'association",
       "can-be-president": "Est président délégué ou présidente déléguée",
+      "charter-status-processing": "Suivi du traitement de charte",
       "delete-association": "Supprimer le rôle dans l'association",
       "edit-my-association": "Modifier la fiche de l'association",
       "is-president": "Est président ou présidente",
       "is-secretary": "Est secrétaire",
+      "is-validated-by-admin": "Affiliation à l'association validée par le ou la gestionnaire :",
       "is-treasurer": "Est trésorier ou trésorière",
       "is-vice-president": "Est vice-président ou vice-présidente",
+      "manage-association": "Gérer l'association",
       "manage-my-associations": "Gérer mes associations",
-      "not-association-member": "L'utilisateur n'est membre d'aucune association."
+      "my-associations": "Mes associations",
+      "my-role": "Mon rôle :",
+      "not-association-member": "L'utilisateur n'est membre d'aucune association.",
+      "presidency-status": "Droit de présidence :",
+      "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
     }
   },
   "delete": "Supprimer",
@@ -205,6 +224,8 @@
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
     "last-name": "Nom de famille",
     "login": "Connexion",
+    "modify-email": "Modifier l'adresse mail",
+    "new-email": "Nouvelle adresse mail",
     "new-password": "Nouveau mot de passe",
     "old-password": "Mot de passe actuel",
     "password": "Mot de passe",
@@ -220,6 +241,7 @@
     "required-first-name": "Veuillez renseigner votre prénom.",
     "required-last-name": "Veuillez renseigner votre nom de famille.",
     "required-new-password": "Veuillez saisir votre nouveau mot de passe.",
+    "required-new-email": "Veuillez saisir votre nouvelle adresse mail.",
     "required-old-password": "Veuillez saisir votre ancien mot de passe.",
     "required-password": "Veuillez saisir votre mot de passe.",
     "required-repeat-email": "Les deux adresses mail ne sont pas identiques.",
@@ -290,6 +312,7 @@
     "login-with-cas": "Connexion avec un compte CAS",
     "login-without-cas": "Connexion avec un compte externe"
   },
+  "manage": "Gérer",
   "modify": "Modifier",
   "no": "Non",
   "notifications": {
@@ -306,11 +329,12 @@
       "disable-associations-error": "Les associations suivantes ne peuvent pas être désactivées : ",
       "edit-association-error": "Une erreur est survenue lors de l'édition de l'association. Veuillez réessayer.",
       "edit-user-error": "Une erreur est survenue lors de la modification des informations du compte.",
+      "edit-user-associations-error": "Une erreur est survenue. Les associations n'ont pas pu être mises à jour.",
       "email-associations-error": "Ces associations n'ont pas d'adresse email : ",
-      "email-used": "Cette adresse email est déjà associée à un compte. Veuillez vous connecter.",
+      "email-used": "Cette adresse email est déjà associée à un compte.",
       "enable-association-error": "L'association n'a pas été activée.",
       "enable-associations-error": "Les associations suivantes ne peuvent pas être activées : ",
-      "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réesayer.",
+      "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réessayer.",
       "form-error": "Erreur lors du chargement du formulaire, veuillez recharger la page.",
       "invalid-request": "Requête invalide.",
       "invalid-token": "Jeton invalide.",
@@ -330,6 +354,7 @@
       "association-logo-updated": "Le logo de l'association a été modifié avec succès.",
       "association-successfully-updated": "L'association a bien été mise à jour.",
       "association-up-to-date": "L'association est déjà à jour.",
+      "associations-successfully-updated": "Les associations ont bien été mises à jour.",
       "delete-association": "L'association a été supprimée avec succès.",
       "delete-associations": "Les associations suivantes ont bien été supprimées : ",
       "disable-association": "L'association a été désactivée avec succès.",
@@ -344,6 +369,7 @@
       "publish-association": "L'association a bien été publiée dans l'annuaire",
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
       "unpublish-association": "L'association a bien été dépubliée de l'annuaire",
+      "update-user-infos": "Les informations du compte ont bien été mises à jour.",
       "validate-asso": "L'association a été créée avec succès.",
       "validate-association": "L'association a été créée avec succès.",
       "validate-delete-user": "Le compte a bien été supprimé.",
@@ -381,8 +407,7 @@
     "phone": "Numéro de téléphone"
   },
   "user-groups": {
-    "commission-general": "Membre de commission FSDIE/IdEx",
-    "commission-misc": "Membre de commission Culture/ActionS",
+    "commission": "Membre de commission",
     "manager-general": "Gestionnaire général",
     "manager-institution": "Gestionnaire établissement",
     "manager-misc": "Gestionnaire Crous",
@@ -412,5 +437,6 @@
     }
   },
   "validate": "Valider",
+  "validate-changes": "Valider les changements",
   "yes": "Oui"
 }

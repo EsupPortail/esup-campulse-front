@@ -1,38 +1,36 @@
 <script lang="ts" setup>
-import {type PropType, ref} from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
 import axios from "axios";
 import router from "@/router";
 import {useUserManagerStore} from "@/stores/useUserManagerStore";
 import useUsers from "@/composables/useUsers";
 import useUserGroups from "@/composables/useUserGroups";
-import useAssociation from "@/composables/useAssociation";
+import useUserAssociations from "@/composables/useUserAssociations";
 import useSecurity from "@/composables/useSecurity";
-import type {UserToUpdate} from "#/user";
 
-const confirmation = ref<boolean>(false)
-const { t } = useI18n()
-const { notify } = useQuasar()
+
+const {t} = useI18n()
+const {notify} = useQuasar()
 const userManagerStore = useUserManagerStore()
-const {updateUserAssociations} = useUsers()
+const {updateUserInfos} = useUsers()
 const {updateUserGroups} = useUserGroups()
-const {newAssociations, updateRegisterRoleInAssociation} = useAssociation()
+const {updateUserAssociations, userAssociations} = useUserAssociations()
 const {userAssociationsRegister} = useSecurity()
 
-const props = defineProps({
-    user: Object as PropType<UserToUpdate>,
-})
 
 const emit = defineEmits(['hasValidated'])
 
+const confirmation = ref<boolean>(false)
+
+
 async function onValidateChanges() {
     try {
-        await userManagerStore.updateUserInfos(props.user as UserToUpdate)
-        updateUserAssociations()
-        if (newAssociations.value.length > 0) {
-            const newAssociationsRoles = updateRegisterRoleInAssociation()
-            await userAssociationsRegister(false, props.user?.username as string, newAssociationsRoles)
+        await updateUserInfos(userManagerStore.user, true) // OK
+        await updateUserAssociations(true)
+        if (userAssociations.value.length > 0) {
+            await userAssociationsRegister(false, userManagerStore.user?.username)
         }
         await updateUserGroups()
         emit('hasValidated')

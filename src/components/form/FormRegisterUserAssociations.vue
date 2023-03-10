@@ -3,19 +3,17 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import {onMounted} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useRoute} from "vue-router";
-import useUsers from "@/composables/useUsers";
+import useUserAssociations from "@/composables/useUserAssociations";
 
 const associationStore = useAssociationStore()
 const route = useRoute()
-const {userAssociations} = useUsers()
 const {
-    newAssociations,
-    addAssociation,
-    removeAssociation,
+    userAssociations, newAssociations, addAssociation, removeAssociation, updateRegisterRoleInAssociation
+} = useUserAssociations()
+const {
     checkHasPresident,
-    updateRegisterRoleInAssociation
 } = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -23,8 +21,19 @@ const {notify, loading} = useQuasar()
 onMounted(async () => {
     loading.show
     await loadAssociations()
+    initTitle()
+    newAssociations.value = []
     loading.hide
 })
+
+const title = ref<string>()
+
+const initTitle = () => {
+    if (route.name === 'Registration') title.value = t('dashboard.association-user.add-my-associations')
+    else if (route.name === 'ManageAccount') title.value = t('dashboard.association-user.add-my-new-associations')
+    else title.value = t('user-manager.register-in-new-associations')
+}
+watch(() => route.path, initTitle)
 
 async function loadAssociations() {
     try {
@@ -36,15 +45,11 @@ async function loadAssociations() {
         })
     }
 }
-
-
 </script>
 
 <template>
     <fieldset>
-        <legend class="legend-big">{{
-                route.name === 'Registration' ? t("forms.add-my-associations") : t('user-manager.register-in-new-associations')
-            }}
+        <legend class="legend-big">{{ title }}
         </legend>
         <div v-for="(association, index) in newAssociations" :key="index">
             <QSelect

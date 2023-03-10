@@ -19,8 +19,8 @@ export interface User {
 
 // User's role in the association
 export interface AssociationUser {
+    user?: string,
     association: number | null,
-    name: string,
     isPresident: boolean,
     canBePresident: boolean,
     isValidatedByAdmin: boolean,
@@ -37,7 +37,9 @@ export interface AssociationUserDetail {
         id: number,
         name: string,
         isSite: boolean,
-        institution: number
+        institution: number,
+        isEnabled: boolean,
+        isPublic: boolean,
     }
     isPresident: boolean,
     canBePresident: boolean,
@@ -53,7 +55,9 @@ export interface AssociationRole {
     role: string,
     options?: AssociationOptions[]
     canBePresident?: boolean,
-    deleteAssociation?: boolean
+    deleteAssociation?: boolean,
+    isValidatedByAdmin?: boolean,
+    isVicePresident?: boolean
 }
 
 interface CasLogin {
@@ -141,6 +145,8 @@ export interface UserToUpdate {
     lastName: string | undefined,
     username: string | undefined,
     email: string | undefined,
+    newEmail: string,
+    newEmailVerification: string,
     phone: string | undefined
 }
 

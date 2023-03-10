@@ -1,14 +1,12 @@
 import {ref} from 'vue'
 import i18n from "@/plugins/i18n";
 import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
-import type {AssociationRole, AssociationUser} from '#/user'
+import type {AssociationRole} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useUserAssociations from "@/composables/useUserAssociations";
 
-
-const newAssociations = ref<AssociationRole[]>([])
-const newAssociationsUser = ref<AssociationUser[]>([])
 
 // Needed to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
@@ -19,6 +17,8 @@ let changedData = {}
 export default function () {
 
     const associationStore = useAssociationStore()
+    const {updateRegisterRoleInAssociation} = useUserAssociations()
+    const {userAssociations} = useUserAssociations()
 
     /** Setup altLogo default value if association does not have one
      *
@@ -28,30 +28,6 @@ export default function () {
         return association?.altLogo !== '' ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
     }
 
-    /* Used to create the options for the select in the form to create an association. */
-    const associationRoleOptions = [
-        {
-            label: i18n.global.t('forms.im-association-president'),
-            value: 'isPresident',
-        },
-        {
-            label: i18n.global.t('forms.im-association-vice-president'),
-            value: 'isVicePresident'
-        },
-        {
-            label: i18n.global.t('forms.im-association-secretary'),
-            value: 'isSecretary'
-        },
-        {
-            label: i18n.global.t('forms.im-association-treasurer'),
-            value: 'isTreasurer'
-        },
-        {
-            label: i18n.global.t('forms.im-association-member'),
-            value: 'isMember'
-        }
-    ]
-
     /**
      * It creates an association with the name provided as a parameter
      * @param newAssociation
@@ -59,26 +35,6 @@ export default function () {
     async function createAssociation(newAssociation: NewAssociation) {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.post('/associations/', newAssociation)
-    }
-
-    /**
-     * When the user clicks the 'Add Association' button in registration for example,
-     * add a new association to the list of associations.
-     *
-     * The function is called when the user clicks the 'Add Association' button
-     *
-     * It's the same for the 'Remove Association' function below.
-     */
-    function addAssociation() {
-        newAssociations.value.push({
-            id: null,
-            role: 'isMember',
-            options: associationRoleOptions
-        })
-    }
-
-    function removeAssociation(index: number) {
-        newAssociations.value.splice(index, 1)
     }
 
     /**
@@ -93,32 +49,11 @@ export default function () {
             if (a) {
                 association.options[0].disable = a.hasPresident
                 if (association.role === 'isPresident') {
-                    const model = newAssociations.value.find(obj => obj.id === association.id)
+                    const model = userAssociations.value.find(obj => obj.id === association.id)
                     if (model) model.role = 'isMember'
                 }
             }
         }
-    }
-
-    /**
-     * It takes an array of associations and returns an array of association users
-     * @returns An array of AssociationUser
-     */
-    function updateRegisterRoleInAssociation(): AssociationUser[] {
-        newAssociationsUser.value = []
-        newAssociations.value.forEach(association => {
-            newAssociationsUser.value.push({
-                association: association.id,
-                name: '',
-                isPresident: association.role === 'isPresident',
-                canBePresident: false,
-                isValidatedByAdmin: false,
-                isVicePresident: association.role === 'isVicePresident',
-                isSecretary: association.role === 'isSecretary',
-                isTreasurer: association.role === 'isTreasurer'
-            })
-        })
-        return newAssociationsUser.value
     }
 
     /**
@@ -256,10 +191,6 @@ export default function () {
 
     return {
         createAssociation,
-        newAssociations,
-        newAssociationsUser,
-        addAssociation,
-        removeAssociation,
         addNetwork,
         removeNetwork,
         associationSocialNetworks,
@@ -269,8 +200,6 @@ export default function () {
         changedData,
         altLogoText,
         checkHasPresident,
-        updateRegisterRoleInAssociation,
-        changeAssociationLogo,
-        associationRoleOptions
+        changeAssociationLogo
     }
 }

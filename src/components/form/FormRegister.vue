@@ -14,7 +14,7 @@ import useUserGroups from '@/composables/useUserGroups'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
-const {register, newUser, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
+const {register, newUser, initNewUserData, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
 const {groupChoiceIsValid, groupCanJoinAssociation, isStaff} = useUserGroups()
 
 
@@ -22,6 +22,7 @@ const hasConsent = ref<boolean>(false)
 
 onMounted(async () => {
     loading.show
+    initNewUserData()
     await onLoadCASUser()
     loading.hide
 })
@@ -83,13 +84,29 @@ async function onRegister() {
 
 <template>
     <QForm class="q-gutter-md" @submit.prevent="onRegister">
-        <QInput v-model="newUser.firstName" :disable="!!userStore.isCas" :label="t('forms.first-name')"
-                :rules="[val => val && val.length > 0 || t('forms.required-first-name')]" filled lazy-rules/>
-        <QInput v-model="newUser.lastName" :disable="!!userStore.isCas" :label="t('forms.last-name')"
-                :rules="[val => val && val.length > 0 || t('forms.required-last-name')]" filled lazy-rules/>
-        <QInput v-model="newUser.email" :disable="!!userStore.isCas" :label="t('forms.email')" :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
-        val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]" filled
-                lazy-rules>
+        <QInput
+            v-model="newUser.firstName"
+            :disable="!!userStore.isCas"
+            :label="t('forms.first-name')"
+            :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+            filled lazy-rules
+        />
+        <QInput
+            v-model="newUser.lastName"
+            :disable="!!userStore.isCas"
+            :label="t('forms.last-name')"
+            :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+            filled
+            lazy-rules
+        />
+        <QInput
+            v-model="newUser.email"
+            :disable="!!userStore.isCas"
+            :label="t('forms.email')" :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
+            val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
+            filled
+            lazy-rules
+        >
         </QInput>
         <QInput v-model="emailVerification" :disable="!!userStore.isCas" :label="t('forms.repeat-email')"
                 :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useUserStore} from '@/stores/useUserStore'
 import {ref} from 'vue'
-import {useI18n} from "vue-i18n";
+import {useI18n} from 'vue-i18n'
 
 const userStore = useUserStore()
 const newUser = userStore.newUser
@@ -19,9 +19,18 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
                 <span class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</span>
             </QCardSection>
             <QCardActions align="right">
-                <QBtn v-close-popup :label="t('alerts.close')" color="primary" flat/>
-                <QBtn v-close-popup :label="t('alerts.aborted-cas-registration.button')" color="primary"
-                      to="/register"/>
+                <QBtn
+                    v-close-popup
+                    :label="t('alerts.close')"
+                    color="primary"
+                    flat
+                />
+                <QBtn
+                    v-close-popup
+                    :label="t('alerts.aborted-cas-registration.button')"
+                    :to="{name: 'Registration'}"
+                    color="primary"
+                />
             </QCardActions>
         </QCard>
     </QDialog>

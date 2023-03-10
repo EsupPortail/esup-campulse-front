@@ -8,11 +8,13 @@ import {useRoute} from 'vue-router'
 import router from '@/router'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import useUserGroups from '@/composables/useUserGroups'
+import useUserAssociations from "@/composables/useUserAssociations";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {validateUser} = useUsers()
 const {newGroups, groupChoiceIsValid} = useUserGroups()
+const {getUserAssociations} = useUserAssociations()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -40,7 +42,7 @@ async function onGetUser() {
 // Get user associations
 async function onGetUserAssociations() {
     try {
-        await userManagerStore.getUserAssociations(userManagerStore.user?.id as number)
+        await getUserAssociations(userManagerStore.user?.id as number, true)
     } catch (e) {
         notify({
             type: 'negative',

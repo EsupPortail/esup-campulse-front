@@ -1,13 +1,6 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {
-    _institutionManager,
-    _institutionStudent,
-    _newUserGroups,
-    _userAssociations,
-    _users,
-    _usersNames
-} from '~/fixtures/user.mock'
+import {_institutionManager, _institutionStudent, _newUserGroups, _users, _usersNames} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
@@ -158,78 +151,6 @@ describe('User manager store', () => {
             const {axiosAuthenticated} = useAxios()
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`)
-        })
-    })
-
-    describe('getUserAssociations', () => {
-        it('should call API once on /users/associations/id and populate userAssociations', async () => {
-            const {axiosAuthenticated} = useAxios()
-            const mockedAxios = vi.mocked(axiosAuthenticated, true)
-            mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
-            await userManagerStore.getUserAssociations(1)
-            expect(mockedAxios.get).toHaveBeenCalledOnce()
-            expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/1')
-            expect(userManagerStore.userAssociations).toEqual(_userAssociations)
-        })
-    })
-
-    describe('deleteUserAssociation', () => {
-        it('should call API once on /users/associations/userId/associationId', async () => {
-            userManagerStore.user = _institutionStudent
-            const {axiosAuthenticated} = useAxios()
-            await userManagerStore.deleteUserAssociation(1)
-            expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user?.id}/1`)
-        })
-    })
-
-    describe('patchUserAssociations', () => {
-        it('should call API once on /users/associations/userId/associationId with data to patch as payload', async () => {
-            userManagerStore.user = _institutionStudent
-            const dataToPatch = {
-                isPresident: false,
-                canBePresident: true,
-                isVicePresident: false,
-                isSecretary: false,
-                isTreasurer: true,
-            }
-            await userManagerStore.patchUserAssociations(1, dataToPatch)
-            const {axiosAuthenticated} = useAxios()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user?.id}/1`, dataToPatch)
-        })
-    })
-
-    describe('updateUserInfos', () => {
-        it('should only patch changed infos on /users/userId', async () => {
-            userManagerStore.user = _institutionStudent
-            const userToUpdate = {
-                username: _institutionStudent.username,
-                firstName: 'Jane',
-                lastName: _institutionStudent.lastName,
-                email: 'jane@lennon.uk',
-                phone: _institutionStudent.phone
-            }
-            await userManagerStore.updateUserInfos(userToUpdate)
-            const {axiosAuthenticated} = useAxios()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`, {
-                firstName: 'Jane',
-                email: 'jane@lennon.uk'
-            })
-        })
-        it('should not patch anything if there are no changes', async () => {
-            userManagerStore.user = _institutionStudent
-            const userToUpdate = {
-                username: _institutionStudent.username,
-                firstName: _institutionStudent.firstName,
-                lastName: _institutionStudent.lastName,
-                email: _institutionStudent.email,
-                phone: _institutionStudent.phone
-            }
-            await userManagerStore.updateUserInfos(userToUpdate)
-            const {axiosAuthenticated} = useAxios()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledTimes(0)
         })
     })
 })

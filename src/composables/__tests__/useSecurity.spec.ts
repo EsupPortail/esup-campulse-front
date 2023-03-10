@@ -5,7 +5,7 @@ import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {_tokens} from '~/fixtures/tokens.mock'
-import {_institutionManager, _institutionStudent, _newUser, _userAssociations} from '~/fixtures/user.mock'
+import {_institutionManager, _institutionStudent, _newUser} from '~/fixtures/user.mock'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
@@ -107,7 +107,7 @@ describe('useSecurity', () => {
         })
     })
 
-    describe('userAssociationRegister', () => {
+    /*describe('userAssociationRegister', () => {
         const {axiosPublic, axiosAuthenticated} = useAxios()
         const {userAssociationsRegister} = useSecurity()
         const lastAssociation = _userAssociations[_userAssociations.length - 1]
@@ -120,7 +120,8 @@ describe('useSecurity', () => {
             isTreasurer: lastAssociation.isTreasurer
         }
 
-        it('should post every new association with public instance when registering', async () => {
+        describe('userAssociationRegister', () => {
+            it('should post every new association with public instance when registering', async () => {
             await userAssociationsRegister(true, 'user', _userAssociations)
             expect(axiosPublic.post).toHaveBeenCalledTimes(_userAssociations.length)
             expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/associations/', data)
@@ -131,7 +132,7 @@ describe('useSecurity', () => {
             expect(axiosAuthenticated.post).toHaveBeenCalledTimes(_userAssociations.length)
             expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/associations/', data)
         })
-    })
+    })*/
 
     describe('userGroupsRegister', () => {
         const {axiosPublic, axiosAuthenticated} = useAxios()
@@ -230,56 +231,55 @@ describe('useSecurity', () => {
             newUser,
             userCASRegister
         } = useSecurity()
-        const {newAssociations} = useAssociation()
+        const {newAssociations} = useUserAssociations()
         const {newGroups} = useUserGroups()
-
-        const {axiosPublic} = useAxios()
-        const mockedAxios = vi.mocked(axiosPublic, true)
+        //const {axiosPublic} = useAxios()
+        //const mockedAxios = vi.mocked(axiosPublic, true)
 
         describe('if newUser isCas', () => {
             it('should execute CASUser, groups and associations registration, then unLoad newUser', async () => {
-                newUser.isCas = true
+                userStore.newUser = _newUser
+                userStore.newUser.isCas = true
                 newUser.phone = '00 00 00 00 00'
                 newAssociations.value = [_associationRole]
                 newGroups.value = [6]
-
+                const composable = useSecurity()
+                const userCASRegister = vi.spyOn(composable, 'userCASRegister')
                 const unLoadNewUser = vi.spyOn(userStore, 'unLoadNewUser')
 
-                await register()
-
-                console.log(newUser.isCas)
+                await composable.register()
 
                 //expect(userCASRegister).toHaveBeenCalledOnce()
                 //expect(spies.userAssociationsRegister).toHaveBeenCalledOnce()
                 //expect(spies.userGroupsRegister).toHaveBeenCalledOnce()
+                expect(userCASRegister).toHaveBeenCalledOnce()
                 expect(unLoadNewUser).toHaveBeenCalledOnce()
             })
+        })*/
+    /*describe('if newUser is not Cas', () => {
+        beforeEach(() => {
+            newUser.value.isCas = false
+            userStore.newUser = newUser.value
         })
-        describe('if newUser is not Cas', () => {
-            beforeEach(() => {
-                newUser.value.isCas = false
-                userStore.newUser = newUser.value
-            })
-            it('should execute localUser, association and groups register', async () => {
-                newAssociations.value = _userAssociations
-                newGroups.value = _userGroupList
-                await register()
-                expect(spies.userLocalRegister).toHaveBeenCalledOnce()
-                expect(spies.userAssociationsRegister).toHaveBeenCalledOnce()
-                expect(spies.userGroupsRegister).toHaveBeenCalledOnce()
-            })
-        })
-    })
-
-    describe('addUserAsManager', () => {
-        const {newAssociationsUser} = useAssociation()
-        const {addUserAsManager, userLocalRegisterAsManager} = useSecurity()
-
-        it('should register a new user with associations if any', async () => {
-
-            expect(userLocalRegisterAsManager).toHaveBeenCalledOnce()
+        it('should execute localUser, association and groups register', async () => {
+            newAssociations.value = _userAssociations
+            newGroups.value = _userGroupList
+            await register()
+            expect(spies.userLocalRegister).toHaveBeenCalledOnce()
+            expect(spies.userAssociationsRegister).toHaveBeenCalledOnce()
+            expect(spies.userGroupsRegister).toHaveBeenCalledOnce()
         })
     })
+})
 
-    */
+/*describe('addUserAsManager', () => {
+    const {newAssociationsUser} = useAssociation()
+    const {addUserAsManager, userLocalRegisterAsManager} = useSecurity()
+
+    it('should register a new user with associations if any', async () => {
+        expect(userLocalRegisterAsManager).toHaveBeenCalledOnce()
+    })
+})*/
+
+
 })

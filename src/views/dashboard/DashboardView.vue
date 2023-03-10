@@ -2,19 +2,17 @@
 // import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from 'vue-i18n'
 import useSecurity from '@/composables/useSecurity'
-import useUserGroups from "@/composables/useUserGroups";
+import useUserGroups from '@/composables/useUserGroups'
+import {useUserStore} from '@/stores/useUserStore'
 
-// const userStore = useUserStore()
+const userStore = useUserStore()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
 const {isStaff} = useUserGroups()
 </script>
 
 <template>
-    <!-- <h1>{{ t("home.dashboard") }}</h1>
-    <p class="welcome-msg">
-        {{ t('dashboard.welcome-message') + ', ' + userStore.userName }}
-    </p> -->
+    <!-- Account management -->
     <section class="dashboard-section">
         <h2>
             <QIcon name="mdi-card-account-details-outline"/>
@@ -24,14 +22,36 @@ const {isStaff} = useUserGroups()
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        :label="t('password.edit-password')"
-                        :to="{name: 'PasswordEdit'}"
+                        :label="t('dashboard.account-infos')"
+                        :to="{name: 'ManageAccount'}"
                         color="secondary"
                     />
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- My associations, for association members only -->
+    <section v-if="userStore.user?.associations.length !== 0" class="dashboard-section">
+        <h2>
+            <QIcon name="mdi-card-account-details-outline"/>
+            {{ t('dashboard.association-user.my-associations') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <div class="button-group">
+                    <QBtn
+                        v-for="association in userStore.user?.associations"
+                        :key="association.id"
+                        :label="t('manage') + ' ' + association.name"
+                        :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Association management, for staff only -->
     <section v-if="isStaff &&
         (hasPerm('change_association') ||
             hasPerm('add_association'))" class="dashboard-section"
@@ -59,27 +79,7 @@ const {isStaff} = useUserGroups()
             </div>
         </div>
     </section>
-    <!-- Section to implement in association dashboard -->
-    <!--
-    <section v-if="userStore.user?.associations && userStore.user?.associations?.length > 0" class="dashboard-section">
-        <h2>
-            <QIcon name="mdi-pencil-box-outline"/>
-            {{ t('dashboard.association-user.manage-my-associations') }}
-        </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
-                    <QBtn
-                        :label="t('dashboard.association-user.edit-my-association')"
-                        :to="{name: 'ManageAssociations'}"
-                        color="secondary"
-                    />
-                </div>
-            </div>
-        </div>
-    </section>
-    -->
-    <!-- End -->
+    <!-- User management, for staff only -->
     <section
         v-if="isStaff && (hasPerm('change_user') ||
         hasPerm('add_user'))"
@@ -114,10 +114,12 @@ const {isStaff} = useUserGroups()
             </div>
         </div>
     </section>
-    <section class="dashboard-section">
+
+    <!-- My documents, for misc students only -->
+    <section v-if="!isStaff" class="dashboard-section">
         <h2>
             <QIcon name="mdi-pencil-box-outline"/>
-            Section test
+            {{ t('dashboard.my-documents') }}
         </h2>
         <div class="form-container">
             <div class="form">
@@ -126,7 +128,7 @@ const {isStaff} = useUserGroups()
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
                             <h4>
-                                PV de la dernière AGO
+                                Certificat de scolarité des membres élus
                             </h4>
                             <p>
                                 <a>
@@ -179,7 +181,7 @@ const {isStaff} = useUserGroups()
                         <div class="document-input">
                             <div class="document-input-header">
                                 <h4>
-                                    Certificat de scolarité des membres élus (1 document par membre)
+                                    PV de la dernière AGO
                                 </h4>
                                 <p>
                                     <a>

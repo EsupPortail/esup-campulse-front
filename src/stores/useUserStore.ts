@@ -97,8 +97,8 @@ export const useUserStore = defineStore('userStore', {
          */
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-            const {axiosAuthenticated} = useAxios()
-            const data = (await axiosAuthenticated.post('/users/auth/cas/login/', {ticket, service})).data
+            const {axiosPublic} = useAxios()
+            const data = (await axiosPublic.post('/users/auth/cas/login/', {ticket, service})).data
             const {accessToken, refreshToken, user} = data
             const {setTokens} = useSecurity()
             setTokens(accessToken, refreshToken)
