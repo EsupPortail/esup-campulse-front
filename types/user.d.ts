@@ -100,7 +100,13 @@ export interface UserAssociation {
     deleteAssociation: boolean
 }*/
 
-export type UserAssociationPatch = Pick<AssociationUser, 'isPresident' | 'canBePresident' | 'isVicePresident' | 'isSecretary' | 'isTreasurer'>
+export interface UserAssociationPatch {
+    isPresident?: boolean,
+    canBePresident?: boolean,
+    isVicePresident?: boolean,
+    isSecretary?: boolean,
+    isTreasurer?: boolean
+}
 
 // User group
 export interface UserGroup {
