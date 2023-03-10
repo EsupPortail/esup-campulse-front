@@ -145,7 +145,8 @@ describe('useSecurity', () => {
             const data = {
                 username: newUser.username,
                 group: 2,
-                institution: null
+                institution: null,
+                commission: null
             }
 
             await userGroupsRegister(true)
@@ -159,7 +160,8 @@ describe('useSecurity', () => {
             const data = {
                 username: newUser.username,
                 group: 2,
-                institution: null
+                institution: null,
+                commission: null
             }
 
             await userGroupsRegister(false)

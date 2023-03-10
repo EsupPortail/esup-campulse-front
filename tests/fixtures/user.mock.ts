@@ -39,7 +39,7 @@ export const _userGroups: UserGroup[] = [
     // Commission
     {
         userId: 3,
-        groupId: 4,
+        groupId: 4
     }
 ]
 
@@ -119,7 +119,6 @@ export const _groupLabels = _userGroups.map(
 
 export const _userAssociations: AssociationUser[] = [
     {
-        name: "PLANA",
         isPresident: true,
         canBePresident: true,
         isValidatedByAdmin: true,
@@ -129,7 +128,6 @@ export const _userAssociations: AssociationUser[] = [
         association: 1
     },
     {
-        name: "Octant",
         isPresident: false,
         canBePresident: true,
         isValidatedByAdmin: true,
@@ -139,7 +137,6 @@ export const _userAssociations: AssociationUser[] = [
         association: 2
     },
     {
-        name: "Apogée",
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: true,
@@ -149,7 +146,6 @@ export const _userAssociations: AssociationUser[] = [
         association: 3
     },
     {
-        name: "PLANB",
         isPresident: false,
         canBePresident: false,
         isValidatedByAdmin: false,

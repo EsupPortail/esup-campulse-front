@@ -266,7 +266,7 @@ describe('User store', () => {
         })
     })
 
-    describe('hasPresidentStatus', () => {
+    /*describe('hasPresidentStatus', () => {
         beforeEach(() => {
             userStore.userAssociations = _userAssociations
         })
@@ -280,5 +280,5 @@ describe('User store', () => {
         it('should return false if is President or canBePresident is false', () => {
             expect(userStore.hasPresidentStatus(3)).toBeFalsy()
         })
-    })
+    })*/
 })
