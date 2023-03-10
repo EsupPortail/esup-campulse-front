@@ -36,3 +36,7 @@ onMounted(() => {
         </QBreadcrumbs>
     </div>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/breadcrumbs.scss'
+</style>

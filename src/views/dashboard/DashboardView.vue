@@ -79,6 +79,7 @@ const {isStaff} = useUserGroups()
             </div>
         </div>
     </section>
+    
     <!-- User management, for staff only -->
     <section
         v-if="isStaff && (hasPerm('change_user') ||
@@ -218,3 +219,8 @@ const {isStaff} = useUserGroups()
         </div>
     </section>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/forms.scss'
+@import '@/assets/styles/dashboard.scss'
+</style>

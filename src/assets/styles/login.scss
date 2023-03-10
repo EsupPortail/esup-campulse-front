@@ -1,0 +1,81 @@
+@import '@/assets/variables';
+
+#login-page {
+  padding: 1.25rem 0 3.75rem;
+
+  .login-intro-text {
+    width: 100%;
+    max-width: 37.5rem;
+    margin: 0 auto 2.5rem;
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: $textColor1;
+    padding-left: 4.688rem;
+    position: relative;
+
+    .icon {
+      display: block;
+      width: 3.75rem;
+      height: 3.75rem;
+      border-radius: 50%;
+      background-color: $color1;
+      position: absolute;
+      top: calc(50% - 1.875rem);
+      left: 0;
+      text-align: center;
+
+      i {
+        color: $textColor3;
+        font-size: 2.5rem;
+      }
+    }
+  }
+
+  .q-card {
+    background-color: transparent;
+    box-shadow: none;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 0.625rem;
+
+    & > * {
+      flex-grow: 1;
+    }
+  }
+
+  .login-links {
+    text-align: center;
+    margin-top: 2.5rem;
+
+    a {
+      display: inline-block;
+      margin-bottom: 0.625rem;
+      font-size: 1.125rem;
+      font-weight: 400;
+      color: $color1;
+    }
+  }
+
+  .card-content {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: $textColor2;
+    margin-bottom: 1.563rem;
+
+    .card-title {
+      display: block;
+      font-size: 1.375rem;
+      font-weight: 400;
+      color: $color1;
+    }
+  }
+
+  form {
+    margin-top: 1.25rem;
+  }
+}

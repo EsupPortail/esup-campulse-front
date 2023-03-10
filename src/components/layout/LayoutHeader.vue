@@ -12,15 +12,29 @@ watch(() => route.name, () => {
     title.value = route.meta.title as string
 })
 
+const mobileMenuVisible = ref(false)
+
+function ToggleMenu() {
+    mobileMenuVisible.value = !mobileMenuVisible.value
+}
 </script>
 
 <template>
-    <QHeader id="layout-header" class="variant-space-1" elevated height-hint="98">
+    <QHeader id="layout-header" :class="{'variant-space-1': title, 'variant-home': route.name === 'Home'}" elevated
+             height-hint="98">
         <QToolbar>
             <QToolbarTitle>
                 <RouterLink :to="{name: 'Home'}" class="home-link">{{ t("header.title") }}</RouterLink>
             </QToolbarTitle>
-            <LayoutHeaderNav/>
+
+            <div id="menu-items">
+                <button id="mobile-menu-button" @click="ToggleMenu">
+                    <i class="bi bi-list"></i>
+                </button>
+                <span id="mobile-menu-background" :class="{ 'visible': mobileMenuVisible }" aria-hidden="true"></span>
+
+                <LayoutHeaderNav :class="{ 'visible': mobileMenuVisible }"/>
+            </div>
         </QToolbar>
 
         <div v-if="route.name !== 'Login'">
@@ -38,6 +52,7 @@ watch(() => route.name, () => {
                     <i class="bi bi-geo-alt space-1-icon"></i>
                     <i class="bi bi-book space-2-icon"></i>
                     <i class="bi bi-send space-3-icon"></i>
+                    <i class="bi bi-send space-4-icon"></i>
                 </span>
                     {{ title }}
                 </h1>
@@ -46,3 +61,7 @@ watch(() => route.name, () => {
 
     </QHeader>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/header.scss'
+</style>

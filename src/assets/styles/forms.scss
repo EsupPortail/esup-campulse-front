@@ -1,0 +1,1797 @@
+@import '@/assets/variables';
+
+// A generic form wrapper.
+// Most forms on the site must be contained in both a "form" and "form-container" element.
+.form-container {
+  position: relative;
+  background-color: $backgroundColor2;
+  padding: 1.5625rem 0;
+
+  .form {
+    width: 100%;
+    max-width: $pageWidth;
+    margin: 0 auto;
+    padding: .9375rem 0;
+
+    @media only screen and (max-width: $pageWidth) {
+      padding-left: $responsiveMargin;
+      padding-right: $responsiveMargin;
+    }
+  }
+
+  &::before, &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: .75rem;
+    position: absolute;
+    left: 0;
+  }
+
+  &::before {
+    top: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  &::after {
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) 100%);
+  }
+}
+
+// Quasar input fields
+.q-field {
+  .q-field__control {
+    background-color: $backgroundColor1;
+    border-radius: 0;
+    border: .0625rem solid $color1Borders;
+    box-shadow: $fieldsBoxShadow;
+
+    input {
+      color: $color1Text;
+    }
+  }
+
+  &.q-field--focused .q-field__control {
+    border-color: $color1;
+  }
+  
+  &.q-field--filled.q-field--highlighted .q-field__control::before {
+    background: $color1Background;
+  }
+  
+  &.q-field--filled .q-field__control::before {
+    background: $color1Background;
+    border-bottom: none;
+  }
+  
+  &.q-field--filled .q-field__control::after {
+    background: $color1;
+  }
+  
+  &.q-field--error .q-field__control::after {
+    background: currentColor;
+  }
+  
+  &.q-field--highlighted .q-field__label {
+    color: $color1Text;
+  }
+}
+
+.q-select {
+  .q-field__native {
+    padding: .375rem 0 .375rem .5rem;
+  }
+
+  .q-field__marginal {
+    color: $textColor2;
+  }
+
+  &.q-field--focused .q-field__marginal {
+    color: $color1;
+  }
+}
+
+.variant-space-2 {
+  .q-field {
+    .q-field__control {
+      border-color: $color2Borders;
+  
+      input {
+        color: $color2Text;
+      }
+    }
+
+    &.q-field--focused .q-field__control {
+      border-color: $color2;
+    }
+    
+    &.q-field--filled.q-field--highlighted .q-field__control::before {
+      background: $color2Background;
+    }
+    
+    &.q-field--filled .q-field__control::before {
+      background: $color2Background;
+    }
+
+    &.q-field--filled .q-field__control::after {
+      background: $color2;
+    }
+
+    &.q-field--highlighted .q-field__label {
+      color: $color2Text;
+    }
+  }
+
+  .q-select.q-field--focused .q-field__marginal {
+    color: $color2Active;
+  }
+}
+
+.variant-space-3 {
+  .q-field {
+    .q-field__control {
+      border-color: $color3Borders;
+  
+      input {
+        color: $color3Text;
+      }
+    }
+
+    &.q-field--focused .q-field__control {
+      border-color: $color3;
+    }
+    
+    &.q-field--filled.q-field--highlighted .q-field__control::before {
+      background: $color3Background;
+    }
+    
+    &.q-field--filled .q-field__control::before {
+      background: $color3Background;
+    }
+
+    &.q-field--filled .q-field__control::after {
+      background: $color3;
+    }
+
+    &.q-field--highlighted .q-field__label {
+      color: $color3Text;
+    }
+  }
+
+  .q-select.q-field--focused .q-field__marginal {
+    color: $color3;
+  }
+}
+
+.variant-space-4 {
+  .q-field {
+    .q-field__control {
+      border-color: $color4Borders;
+  
+      input {
+        color: $color4Text;
+      }
+    }
+
+    &.q-field--focused .q-field__control {
+      border-color: $color4;
+    }
+    
+    &.q-field--filled.q-field--highlighted .q-field__control::before {
+      background: $color4Background;
+    }
+    
+    &.q-field--filled .q-field__control::before {
+      background: $color4Background;
+    }
+
+    &.q-field--filled .q-field__control::after {
+      background: $color4;
+    }
+
+    &.q-field--highlighted .q-field__label {
+      color: $color4Text;
+    }
+  }
+
+  .q-select.q-field--focused .q-field__marginal {
+    color: $color4;
+  }
+}
+
+// Custom input fields
+input.custom-input, select.custom-input, textarea.custom-input {
+  width: 100%;
+  background-color: $backgroundColor1;
+  border-radius: 0;
+  border: .0625rem solid $color1Borders;
+  box-shadow: $fieldsBoxShadow;
+  padding: .625rem 1.25rem .75rem;
+  color: $color1Text;
+  font-size: 1.125rem;
+  font-weight: 400;
+  transition: border-color 0.07s linear;
+  margin-bottom: 1.2rem;
+
+  &:focus {
+    border-color: $color1;
+    outline: none;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.variant-space-2 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $color2Hover;
+    }
+  }
+}
+
+.variant-space-3 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $color3;
+    }
+  }
+}
+
+.variant-space-4 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $color4;
+    }
+  }
+}
+
+textarea.custom-input {
+  resize: vertical;
+}
+
+label.custom-label {
+  display: inline-block;
+  color: $textColor2;
+  font-size: .9375rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+// Quasar buttons
+.q-btn {
+  background-color: $color1;
+  border-radius: 0;
+  padding: .9375rem 1.875rem;
+  font-size: 1.125rem;
+  font-weight: 300;
+  transition: background-color 0.03s linear;
+  box-shadow: $fieldsBoxShadow;
+
+  &:focus-visible {
+    outline: 2px solid $outlineColor2 !important;
+    outline-offset: -2px;
+  }
+
+  .q-icon {
+    font-size: 1.5rem;
+  }
+
+  &::before, .q-focus-helper {
+    display: none;
+  }
+
+  &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+    background-color: $color1Hover !important;
+  }
+
+  &:active, &.bg-primary:active, &.bg-secondary:active {
+    background-color: $color1Active !important;
+  }
+
+  &.bg-primary {
+    background: $color1 !important;
+  }
+
+  &.bg-secondary {
+    background: $color1 !important;
+  }
+
+  .q-btn__content {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+
+    & > * {
+      color: $textColor3;
+    }
+  } 
+
+  &.small-button {
+    padding: .375rem 1.875rem;
+    font-size: 1rem;
+
+    i {
+      font-size: 1.125rem;
+    }
+  }
+
+  &.btn-alt {
+    box-shadow: none;
+    background-color: $backgroundColor1 !important;
+    border: 1px solid $color1Text;
+
+    .q-btn__content > * {
+      color: $color1Text;
+    }
+
+    &:hover {
+      background-color: $color1Text !important;
+
+      .q-btn__content > * {
+        color: white !important;
+      }
+    }
+
+    &:active {
+      background-color: mix(white, $color1Text, 15%) !important;
+
+      .q-btn__content > * {
+        color: white !important;
+      }
+    }
+  }
+
+  &.bg-red {
+    background: #e9584e !important;
+
+    &:hover {
+      background: #bd453d !important;
+    }
+
+    &:active {
+      background: #ac3e36 !important;
+    }
+  }
+}
+
+.variant-space-2 {
+  .q-btn {
+    background-color: $color2;
+  
+    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+      background-color: $color2Hover !important;
+    }
+  
+    &:active, &.bg-primary:active, &.bg-secondary:active {
+      background-color: $color2Active !important;
+    }
+  
+    &.bg-primary {
+      background: $color2 !important;
+    }
+  
+    &.bg-secondary {
+      background: $color2 !important;
+    }
+
+    .q-btn__content > * {
+      color: $color2Text;
+    }
+
+    &.btn-alt {
+      border: 1px solid $color2Text;
+  
+      .q-btn__content > * {
+        color: $color2Text;
+      }
+  
+      &:hover {
+        background-color: $color2Text !important;
+      }
+  
+      &:active {
+        background-color: mix(white, $color2Text, 15%) !important;
+      }
+    }
+  }
+}
+
+.variant-space-3 {
+  .q-btn {
+    background-color: $color3;
+  
+    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+      background-color: $color3Hover !important;
+    }
+  
+    &:active, &.bg-primary:active, &.bg-secondary:active {
+      background-color: $color3Active !important;
+    }
+  
+    &.bg-primary {
+      background: $color3 !important;
+    }
+  
+    &.bg-secondary {
+      background: $color3 !important;
+    }
+
+    &.btn-alt {
+      border: 1px solid $color3Text;
+  
+      .q-btn__content > * {
+        color: $color3Text;
+      }
+  
+      &:hover {
+        background-color: $color3Text !important;
+      }
+  
+      &:active {
+        background-color: mix(white, $color3Text, 15%) !important;
+      }
+    }
+  }
+}
+
+.variant-space-4 {
+  .q-btn {
+    background-color: $color4;
+  
+    &:hover, &.bg-primary:hover, &.bg-secondary:hover {
+      background-color: $color4Hover !important;
+    }
+  
+    &:active, &.bg-primary:active, &.bg-secondary:active {
+      background-color: $color4Active !important;
+    }
+  
+    &.bg-primary {
+      background: $color4 !important;
+    }
+  
+    &.bg-secondary {
+      background: $color4 !important;
+    }
+
+    &.btn-alt {
+      border: 1px solid $color4Text;
+  
+      .q-btn__content > * {
+        color: $color4Text;
+      }
+  
+      &:hover {
+        background-color: $color4Text !important;
+      }
+  
+      &:active {
+        background-color: mix(white, $color4Text, 15%) !important;
+      }
+    }
+  }
+}
+
+.buttons-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+// A document form element allowing to upload, remove and review a list of documents.
+.document-input-group {
+  .document-input {
+    margin-bottom: 1.25rem;
+
+    .document-input-header {
+      background-color: $backgroundColor1;
+      box-shadow: $fieldsBoxShadow;
+      height: 3.75rem;
+      border-left: .25rem solid $color1;
+      position: relative;
+      white-space: nowrap;
+      padding: 0 5.3125rem 0 1.5625rem;
+      line-height: 3.75rem;
+
+      & > h4 {
+        display: inline-block;
+        max-width: 100%;
+        font-size: 1.125rem;
+        font-weight: 400;
+        color: $textColor1;
+        text-transform: uppercase;
+        line-height: 3.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      & > p {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 0 0 .3125rem;
+        font-size: 1.125rem;
+        line-height: inherit;
+
+        button {
+          display: inline-block;
+          opacity: 0.6;
+          padding: .125rem .3125rem;
+          cursor: pointer;
+          vertical-align: middle;
+          line-height: normal;
+          transition: transform 0.03s linear;
+          position: relative;
+          top: -0.14rem;
+          background: transparent;
+          border: none;
+
+          &:hover {
+            opacity: 0.8;
+            transform: scale(1.15);
+
+            @media (prefers-reduced-motion) {
+              transform: none;
+            }
+          }
+
+          &:active {
+            opacity: 1;
+          }
+        }
+      }
+
+      & > button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.875rem;
+        color: $textColor1;
+        width: 3.75rem;
+        height: 3.75rem;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $color1;
+        }
+
+        &:active {
+          background-color: mix(white, $color1, 10%);
+        }
+
+        &:disabled {
+          opacity: 0.4 !important;
+
+          &:hover {
+            background-color: transparent;
+          }
+
+          &:active {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+
+    .document-input-list {
+      padding: .9375rem .5rem .9375rem .9375rem;
+
+      .document-item {
+        height: 2.8125rem;
+        position: relative;
+        padding: .3125rem 4.0625rem 0 .9375rem;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.65);
+          box-shadow: $fieldsBoxShadow;
+
+          button {
+            display: inline-block;
+
+            &:disabled {
+              display: none;
+            }
+          }
+        }
+
+        p {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          &:focus-within {
+            outline: 2px solid $outlineColor2;
+            outline-offset: 2px;
+          }
+
+          & > i {
+            font-size: 1.125rem;
+            color: $textColor1;
+            margin-right: .3125rem;
+          }
+
+          a {
+            font-size: 1.1875rem;
+            font-weight: 400;
+            color: $textColor1;
+            text-decoration: none;
+            cursor: pointer;
+
+            i {
+              font-size: 1.125rem;
+              color: $textColor1;
+              margin-left: .3125rem;
+              display: none;
+            }
+
+            &:hover {
+              text-decoration: underline;
+
+              i {
+                display: inline;
+              }
+            }
+
+            &:active {
+              opacity: 0.8;
+            }
+
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+
+        button {
+          height: 2.8125rem;
+          width: 2.8125rem;
+          background-color: transparent;
+          border: none;
+          border-radius: 0;
+          cursor: pointer;
+          display: none;
+          position: absolute;
+          top: 0;
+          right: 0;
+
+          &:hover {
+            background-color: $color1;
+          }
+
+          &:active {
+            background-color: mix(white, $color1, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  button:focus-visible {
+    outline: 2px solid $outlineColor2;
+  }
+}
+
+.variant-space-2 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $color2;
+  
+      & > button {
+        &:hover {
+          background-color: $color2;
+        }
+  
+        &:active {
+          background-color: mix(white, $color2, 10%);
+        }
+      }
+    }
+  
+    .document-input-list .document-item button {
+      &:hover {
+        background-color: $color2;
+      }
+  
+      &:active {
+        background-color: mix(white, $color2, 10%);
+      }
+    }
+  }
+}
+
+.variant-space-3 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $color3;
+
+      & > button {
+        &:hover {
+          background-color: $color3;
+        }
+
+        &:active {
+          background-color: mix(white, $color3, 10%);
+        }
+      }
+    }
+
+    .document-input-list .document-item button {
+      &:hover {
+        background-color: $color3;
+      }
+
+      &:active {
+        background-color: mix(white, $color3, 10%);
+      }
+    }
+  }
+}
+
+.variant-space-4 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $color4;
+
+      & > button {
+        &:hover {
+          background-color: $color4;
+        }
+
+        &:active {
+          background-color: mix(white, $color4, 10%);
+        }
+      }
+    }
+
+    .document-input-list .document-item button {
+      &:hover {
+        background-color: $color4;
+      }
+
+      &:active {
+        background-color: mix(white, $color4, 10%);
+      }
+    }
+  }
+}
+
+// A title that can be located on top of a form wrapper.
+.form-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: $pageWidth;
+  margin: 0 auto;
+  background-color: transparent;
+
+  h2 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: $color1Text;
+
+    i {
+      color: $color1Text;
+      font-size: 1.5rem;
+      margin-right: .875rem;
+      position: relative;
+      top: -0.1rem;
+    }
+
+    @media only screen and (max-width: $pageWidth) {
+      margin-left: 1.5rem;
+      margin-right: 1.5rem;
+    }
+  }
+}
+
+// Generic Quasar tables, as found mainly in the admin section of the site
+.q-table__container {
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+
+  .q-table__top {
+    display: none;
+  }
+
+  &.q-table--horizontal-separator thead th, &.q-table--horizontal-separator tbody td {
+    border: none;
+  }
+
+  .q-table__middle {
+    overflow: auto;
+    width: 100%;
+  }
+
+  .q-table__bottom {
+    border-top: none;
+    font-size: 1.0625rem;
+    color: $color1Text;
+    padding: 1rem 0;
+
+    .q-btn.q-btn-item {
+      margin-right: 0.25rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .q-table {
+    border-collapse: separate;
+    border-spacing: 0 .625rem;
+    width: 100%;
+    height: 1px;
+
+    thead tr {
+      background-color: $color1;
+      box-shadow: $fieldsBoxShadow;
+
+      th {
+        font-size: 1.125rem;
+        font-weight: 400;
+        color: $textColor3;
+        text-transform: uppercase;
+        padding: .3125rem .625rem;
+
+        &:first-child {
+          padding-left: .875rem;
+        }
+
+        .q-checkbox__inner {
+          color: $textColor3;
+
+          &.text-grey-8 {
+            color: $textColor3 !important;
+
+            .q-checkbox__svg {
+              color: $color1;
+            }
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        background-color: $backgroundColor1;
+        box-shadow: $fieldsBoxShadow;
+        height: 1px;
+
+        td {
+          height: unset;
+          font-size: 1.125rem;
+          font-weight: 400;
+          color: $color1Text;
+          white-space: normal;
+          padding: .4375rem .625rem;
+
+          &:first-child {
+            border-left: .25rem solid $color1;
+          }
+
+          &.actions-cell, &.actions-cell-compact {
+            padding: 0;
+            height: 100%;
+            width: 0;
+
+            .button-container {
+              display: flex;
+              height: 100%;
+              gap: 0;
+              flex-direction: row;
+              justify-content: center;
+            }
+
+            .q-btn {
+              display: flex;
+              font-size: 1rem;
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          &.actions-cell {
+            padding-left: 1rem;
+
+            .button-container {
+              gap: .125rem;
+            }
+
+            .q-btn {
+              padding: .625rem 1.2rem;
+
+              .q-btn__content {
+                flex-wrap: nowrap;
+
+                i {
+                  font-size: 1.25rem;
+                }
+              }
+            }
+          }
+
+          &.actions-cell-compact {
+            padding-left: 0.6rem;
+
+            .q-btn {
+              padding: .625rem .65rem;
+              background: transparent !important;
+              box-shadow: none;
+              transition: box-shadow 0.08s linear, background-color 0.08 linear;
+                              
+              .q-btn__content * {
+                color: $textColor2;
+                font-weight: 400;
+              }
+
+              .q-btn__content i {
+                font-size: 1.1rem;
+              }
+
+              &:hover {
+                box-shadow: 0 -0.25rem 0 0 $color1 inset;
+
+                .q-btn__content * {
+                  color: $textColor1;
+                }
+              }
+
+              &:active {
+                background: transparentize($color1, 0.9) !important;
+              }
+            }
+          }
+
+          &::before {
+            background: transparentize($color1, 0.95);
+          }
+
+          &::after {
+            background: transparentize($color1, 0.9);
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-space-2 {
+  .q-table__container {
+    .q-table__bottom {
+      color: $color2Text;
+    }
+  
+    .q-table {
+      thead tr {
+        background-color: $color2;
+  
+        th {
+          color: $color2Text;
+
+          .q-table__sort-icon svg {
+            color: $color2Text;
+          }
+
+          .q-checkbox__inner {
+            .q-checkbox__bg {
+              border-color: $color2Text;
+            }
+
+            &.q-checkbox__inner--truthy {
+              .q-checkbox__bg {
+                background-color: $color2Text;
+              }
+            }
+
+            &.text-grey-8 {
+              .q-checkbox__svg {
+                color: $color2;
+              }
+            }
+          }
+        }
+      }
+  
+      tbody tr td {
+        color: $color2Text;
+
+        &:first-child {
+          border-color: $color2;
+        }
+
+        &.actions-cell-compact {
+          .q-btn {
+            &:hover {
+              box-shadow: 0 -0.25rem 0 0 $color2 inset;
+            }
+
+            &:active {
+              background: transparentize($color2, 0.9) !important;
+            }
+          }
+        }
+
+        &::before {
+          background: transparentize($color2, 0.95);
+        }
+
+        &::after {
+          background: transparentize($color2, 0.9);
+        }
+
+        .q-checkbox__inner {
+          &.q-checkbox__inner--truthy {
+            .q-checkbox__bg {
+              border-color: $color2Text;
+            }
+
+            &.q-checkbox__inner--truthy {
+              .q-checkbox__bg {
+                background-color: $color2Text;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-space-3 {
+  .q-table__container {
+    .q-table__bottom {
+      color: $color3Text;
+    }
+  
+    .q-table {
+      thead tr {
+        background-color: $color3;
+  
+        th {
+          .q-table__sort-icon svg {
+            color: $color3Text;
+          }
+
+          .q-checkbox__inner {
+            &.text-grey-8 {
+              .q-checkbox__svg {
+                color: $color3;
+              }
+            }
+          }
+        }
+      }
+  
+      tbody tr td {
+        color: $color3Text;
+
+        &:first-child {
+          border-color: $color3;
+        }
+
+        &.actions-cell-compact {
+          .q-btn {
+            &:hover {
+              box-shadow: 0 -0.25rem 0 0 $color3 inset;
+            }
+
+            &:active {
+              background: transparentize($color3, 0.9) !important;
+            }
+          }
+        }
+
+        &::before {
+          background: transparentize($color3, 0.95);
+        }
+
+        &::after {
+          background: transparentize($color3, 0.9);
+        }
+
+        .q-checkbox__inner {
+          &.q-checkbox__inner--truthy {
+            .q-checkbox__bg {
+              border-color: $color3;
+            }
+
+            &.q-checkbox__inner--truthy {
+              .q-checkbox__bg {
+                background-color: $color3;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-space-4 {
+  .q-table__container {
+    .q-table__bottom {
+      color: $color4Text;
+    }
+  
+    .q-table {
+      thead tr {
+        background-color: $color4;
+  
+        th {
+          .q-table__sort-icon svg {
+            color: $color4Text;
+          }
+
+          .q-checkbox__inner {
+            &.text-grey-8 {
+              .q-checkbox__svg {
+                color: $color4;
+              }
+            }
+          }
+        }
+      }
+  
+      tbody tr td {
+        color: $color4Text;
+
+        &:first-child {
+          border-color: $color4;
+        }
+
+        &.actions-cell-compact {
+          .q-btn {
+            &:hover {
+              box-shadow: 0 -0.25rem 0 0 $color4 inset;
+            }
+
+            &:active {
+              background: transparentize($color4, 0.9) !important;
+            }
+          }
+        }
+
+        &::before {
+          background: transparentize($color4, 0.95);
+        }
+
+        &::after {
+          background: transparentize($color4, 0.9);
+        }
+
+        .q-checkbox__inner {
+          &.q-checkbox__inner--truthy {
+            .q-checkbox__bg {
+              border-color: $color4;
+            }
+
+            &.q-checkbox__inner--truthy {
+              .q-checkbox__bg {
+                background-color: $color4;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// State badges that can be used in forms.
+// Icons aren't defined here, only colors.
+.form-state {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: $textColor1;
+  font-size: 1.125rem;
+  font-weight: 400;
+
+  .form-state-icon {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    box-shadow: $fieldsBoxShadow;
+    line-height: 1.5rem;
+    text-align: center;
+    margin-left: .4375rem;
+
+    i {
+      display: inline-block;
+      color: $textColor3;
+      font-size: 1.2rem;
+      position: relative;
+    }
+  }
+
+  .form-state-green {
+    background-color: $stateColor1;
+  }
+
+  .form-state-orange {
+    background-color: $stateColor2;
+  }
+
+  .form-state-red {
+    background-color: $stateColor3;
+  }
+}
+
+// Select elements used to choose an action to perform on selected table rows.
+.table-actions-select {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1.875rem 0 .9375rem;
+
+  label {
+    width: 100%;
+  }
+
+  .q-btn {
+    padding: .875rem 1.875rem;
+
+    .q-btn__content {
+      flex-wrap: nowrap;
+
+      & > * {
+        color: $textColor3;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+// Quasar dialog window
+.q-dialog {
+  .q-card {
+    border-radius: 0;
+  }
+
+  .dialog-message {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $textColor1;
+    padding: 1.5625rem;
+
+    ul {
+      padding-left: 1.5625rem;
+      list-style-type: square;
+    }
+  }
+
+  .dialog-card-actions {
+    padding: 0 1.5625rem 1.5625rem;
+    display: flex;
+    gap: .9375rem;
+
+    .q-btn {
+      padding: .625rem 1.25rem;
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+}
+
+// Quasar pagination
+.q-pagination {
+  margin: 3rem 0 0.5rem;
+
+  .q-pagination__content {
+    width: 100%;
+
+    .q-pagination__middle {
+      margin: 0 auto;
+      gap: 0.2rem;
+
+      button {
+        padding: 0.7rem 1.4rem !important;
+        font-size: 1.3rem;
+
+        &.q-btn--standard {
+          background: $backgroundColor1 !important;
+          pointer-events: none;
+
+          .q-btn__content * {
+            color: $color1;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-space-2 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $color2Active;
+  }
+}
+
+.variant-space-3 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $color3;
+  }
+}
+
+.variant-space-4 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $color4;
+  }
+}
+
+// Custom pagination
+.pagination {
+  display: flex;
+  margin: 2rem 0;
+  justify-content: center;
+
+  .wrapper {
+    display: inline-flex;
+    // gap: 0.2rem;
+    background-color: $backgroundColor1;
+    box-shadow: $fieldsBoxShadow;
+
+    .q-btn {
+      box-shadow: none;
+      padding: 1rem 1.4rem;
+      background-color: $backgroundColor1;
+      
+      .q-btn__content i {
+        color: $color1;
+      }
+    
+      &:hover, &:active {
+        .q-btn__content i {
+          color: $textColor3 !important;
+        }
+      }
+  
+      &.counter-button {
+        padding: 1rem 2.4rem;
+        color: $textColor2;
+        font-size: 1.4rem;
+  
+        strong {
+          color: $color1;
+          font-weight: 800;
+          padding: 0 0.3rem;
+        }
+
+        &:hover, &:active {
+          color: $textColor3 !important;
+
+          strong {
+            color: $textColor3 !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-space-2 {
+  .pagination .wrapper .q-btn {
+    &:hover, &:active {
+      .q-btn__content i {
+        color: $color2Text !important;
+      }
+    }
+
+    .q-btn__content i {
+      color: $color2Active;
+    }
+
+    &.counter-button strong {
+      color: $color2Active;
+    }
+
+    &.counter-button {
+      &:hover, &:active {
+        color: $color2Text !important;
+
+        strong {
+          color: $color2Text !important;
+        }
+      }
+    }
+  }
+}
+
+.variant-space-3 {
+  .pagination .wrapper .q-btn {
+    .q-btn__content i {
+      color: $color3;
+    }
+
+    &.counter-button strong {
+      color: $color3;
+    }
+  }
+}
+
+.variant-space-4 {
+  .pagination .wrapper .q-btn {
+    .q-btn__content i {
+      color: $color4;
+    }
+
+    &.counter-button strong {
+      color: $color4;
+    }
+  }
+}
+
+// Info panels (error, warning...)
+.info-panel {
+  padding: 1.25rem 1.875rem;
+  border: 1px solid $textColor2;
+  background-color: transparentize($textColor2, 0.9);
+  position: relative;
+  margin: 1.2rem 0;
+
+  p {
+    color: $textColor1;
+    font-size: 1.125rem;
+    margin: 0;
+  }
+
+  &.info-panel-error {
+    border-color: $errorPanelColor;
+    background-color: transparentize($errorPanelColor, 0.9);
+
+    p {
+      color: $errorTextColor;
+    }
+
+    i {
+      background-color: $errorPanelColor;
+    }
+  }
+  
+  &.info-panel-warning {
+    border-color: $warningPanelColor;
+    background-color: transparentize($warningPanelColor, 0.9);
+
+    p {
+      color: $warningTextColor;
+    }
+
+    i {
+      background-color: $warningPanelColor;
+    }
+  }
+
+  i {
+    display: block;
+    position: absolute;
+    top: -0.3125rem;
+    left: -0.3125rem;
+    background-color: $textColor2;
+    color: $textColor3;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 0.7rem;
+    outline: 2px solid $backgroundColor1;
+    text-align: center;
+    font-size: 1.15rem;
+    line-height: 1.4rem;
+  }
+}
+
+.form-container .info-panel i {
+  outline-color: $backgroundColor2;
+}
+
+// Form section title
+.section-title {
+  color: $textColor1;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+
+  i {
+    display: inline-block;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 1.125rem;
+    background-color: $color1;
+    color: $textColor3;
+    box-shadow: $fieldsBoxShadow;
+    text-align: center;
+    font-size: 1.15rem;
+    line-height: 2.2rem;
+    vertical-align: middle;
+    margin-right: 8px;
+    position: relative;
+    top: -3px;
+  }
+
+  @media only screen and (max-width: $responsiveWidth) {
+    margin-bottom: 0.8rem;
+  }
+}
+
+.variant-space-2 .section-title i {
+  background-color: $color2;
+  color: $color2Text;
+}
+
+.variant-space-3 .section-title i {
+  background-color: $color3;
+}
+
+.variant-space-4 .section-title i {
+  background-color: $color4;
+}
+
+// Image input
+.image-input {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: $backgroundColor1;
+  box-shadow: 0 0 0 1px $color1Borders inset, $fieldsBoxShadow;
+  padding: 0.95rem;
+  position: relative;
+  align-items: center;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  input[type=file] {
+    position: absolute;
+    left: -9999px;
+
+    &:focus + label {
+      opacity: 1;
+    }
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.05s linear, background-color 0.05s linear;
+
+    i {
+      display: inline-block;
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 1.375rem;
+      background-color: $color1;
+      vertical-align: middle;
+      box-shadow: $fieldsBoxShadow;
+      color: $textColor3;
+      font-size: 1.4rem;
+      line-height: 2.7rem;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:active
+    {
+      background-color: rgba(0, 0, 0, 0.3);
+    } 
+  }
+}
+
+.variant-space-2 .image-input {
+  box-shadow: 0 0 0 1px $color2Borders inset;
+  
+  label i {
+    background-color: $color2;
+    color: $color2Text;
+  }
+}
+
+.variant-space-3 .image-input {
+  box-shadow: 0 0 0 1px $color3Borders inset;
+
+  label i {
+    background-color: $color3;
+  }
+}
+
+.variant-space-4 .image-input {
+  box-shadow: 0 0 0 1px $color4Borders inset;
+
+  label i {
+    background-color: $color4;
+  }
+}
+
+// Form page navigation
+.form-page-navigation {
+  width: 100%;
+  max-width: $pageWidth;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5rem;
+  margin: 3.2rem auto;
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
+
+  button {
+    flex: 0 0 17rem;
+  }
+
+  @media only screen and (max-width: $pageWidth) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    // flex-direction: column;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+
+    p {
+      text-align: justify;
+      flex: 1 0 100%;
+      order: 1;
+    }
+
+    button {
+      flex: 1 1 auto;
+      order: 2;
+    }
+  }
+
+  // @media only screen and (max-width: $responsiveWidth) {
+    
+  // }
+}
+
+// Multi-column form
+.form-col-container {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  margin: 2rem 0;
+
+  .form-col {
+    flex: 1 1 0;
+    padding: 0 3.2rem;
+    border-left: 1px solid $formSeparatorColor;
+
+    &:first-child {
+      padding-left: 0;
+      border: none;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+
+  @media only screen and (max-width: $pageWidth) {
+    .form-col {
+      padding: 0 2rem;
+    }
+  }
+
+  @media only screen and (max-width: $responsiveWidth) {
+    flex-direction: column;
+
+    .form-col {
+      flex: 1 1 0;
+      padding: 0;
+      border-left: none;
+      margin-bottom: 2rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Display rows
+.display-row, .comment-row {
+  background-color: $backgroundColor1;
+  box-shadow: $fieldsBoxShadow;
+  border-left: 4px solid $color1;
+  padding: 0.8rem 1.5625rem;
+  color: $textColor1;
+  font-size: 1.25rem;
+  font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: stretch;
+  gap: 1.5625rem;
+  width: 100%;
+
+  p {
+    margin: 0;
+  }
+
+  .row-title {
+    margin: 0;
+    text-transform: uppercase;
+    flex: 0 0 30%;
+    color: $textColor1;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
+
+  @media only screen and (max-width: $responsiveWidth) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.comment-row {
+  flex-direction: column;
+  gap: .625rem;
+  padding-bottom: 1.2rem;
+
+  .comment-head {
+    color: $textColor2;
+    font-size: 1.125rem;
+    font-weight: 400;
+
+    .value {
+      color: $textColor1;
+      font-weight: 600;
+    }
+
+    i {
+      margin-right: .5rem;
+    }
+  }
+}
+
+.variant-space-2 {
+  .display-row, .comment-row {
+    border-color: $color2;
+  }
+}
+
+.variant-space-3 {
+  .display-row, .comment-row {
+    border-color: $color3;
+  }
+}
+
+.variant-space-4 {
+  .display-row, .comment-row {
+    border-color: $color4;
+  }
+}

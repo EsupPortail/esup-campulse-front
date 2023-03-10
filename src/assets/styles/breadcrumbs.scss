@@ -1,0 +1,75 @@
+@import '@/assets/variables';
+
+#layout-breadcrumbs {
+  .q-breadcrumbs {
+    background-color: $color1;
+    padding: 0.938rem 0;
+
+    & > * {
+      width: 100%;
+      max-width: $pageWidth;
+      margin: 0 auto;
+    }
+
+    .q-breadcrumbs__el {
+      font-size: 1.125rem;
+      font-weight: 25rem;
+      color: $textColor3;
+      text-decoration: none;
+    }
+
+    .q-breadcrumbs--last > .q-breadcrumbs__el {
+      font-weight: 600;
+    }
+
+    .q-breadcrumbs__separator {
+      width: 2.75rem;
+      height: 0.875rem;
+      background-image: $chevronRightImage;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: auto 100%;
+    }
+
+    @media only screen and (max-width: $pageWidth) {
+      padding-left: $responsiveMargin;
+      padding-right: $responsiveMargin;
+    }
+  }
+
+  // The breadcrumbs have several variants (notably one for the home page and one for the login page).
+  // Use a different class to switch variant.
+
+  &.variant-home {
+    display: none;
+  }
+
+  &.variant-space-2 .q-breadcrumbs {
+    background-color: $color2;
+
+    .q-breadcrumbs__el {
+      color: $color2Text;
+    }
+
+    .q-breadcrumbs__separator {
+      background-image: $chevronRightCharteImage;
+    }
+  }
+
+  &.variant-space-3 .q-breadcrumbs {
+    background-color: $color3;
+  }
+
+  &.variant-space-4 .q-breadcrumbs {
+    background-color: $color4;
+  }
+
+  &.variant-minimal .q-breadcrumbs {
+    height: 0.625rem;
+    padding: 0;
+
+    & > * {
+      display: none;
+    }
+  }
+}

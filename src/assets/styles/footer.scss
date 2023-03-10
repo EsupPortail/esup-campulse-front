@@ -1,0 +1,144 @@
+@import '@/assets/variables';
+
+#layout-footer {
+  position: relative;
+  background-color: $footerBackgroundColor;
+  padding-bottom: 1.563rem;
+
+  .q-layout__shadow {
+    display: none;
+  }
+
+  #footer-logos {
+    background-color: $color1Background;
+    border-bottom: 0.625rem solid $color1;
+    padding: 1.875rem 0;
+
+    .wrapper {
+      width: 100%;
+      text-align: center;
+      margin: 0 auto;
+
+      a {
+        display: inline-block;
+        margin: 1.25rem;
+
+        img {
+          width: auto;
+          max-height: 3.125rem;
+        }
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &:focus {
+          outline: 2px solid $outlineColor2;
+          outline-offset: 0.5rem;
+        }
+      }
+    }
+
+    @media only screen and (max-width: $pageWidth) {
+      padding-left: $responsiveMargin;
+      padding-right: $responsiveMargin;
+    }
+  }
+
+  .q-toolbar {
+    margin: 1.25rem 0 0.625rem;
+  }
+
+  // Footer links
+  .footer-text {
+    width: 100%;
+    max-width: $pageWidth;
+    margin: 0 auto;
+    text-align: center;
+
+    a {
+      margin: 0 1.125rem;
+      font-size: 0.938rem;
+      font-weight: 600;
+      color: $textColor3;
+      text-decoration: none;
+      text-transform: uppercase;
+      display: inline-block;
+      border-bottom: 1px solid transparent;
+
+      i {
+        font-size: 1.22em;
+        opacity: 0.8;
+        margin-right: 0.625rem;
+        position: relative;
+        bottom: -1px;
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $outlineColor1;
+        outline-offset: 2px;
+      }
+
+      &:hover {
+        border-bottom: 1px solid transparentize($textColor3, 0.4);
+      }
+    }
+
+    @media only screen and (max-width: $pageWidth) {
+      padding-left: $responsiveMargin;
+      padding-right: $responsiveMargin;
+    }
+  }
+
+  // Footer text
+  & > p {
+    width: 100%;
+    max-width: 55rem;
+    margin: 0 auto 1.25rem;
+    text-align: center;
+    font-size: 1.063rem;
+    font-weight: 300;
+    color: $footerTextColor;
+
+    @media only screen and (max-width: $pageWidth) {
+      padding-left: $responsiveMargin;
+      padding-right: $responsiveMargin;
+    }
+  }
+
+  // The footer has several variants that change its color depending on the current space.
+  // Use a different class to switch variant.
+
+  &.variant-space-2 {
+    #footer-logos {
+      background-color: $color2Background;
+      border-color: $color2;
+    }
+  }
+
+  &.variant-space-3 {
+    #footer-logos {
+      background-color: $color3Background;
+      border-color: $color3;
+    }
+  }
+
+  &.variant-space-4 {
+    #footer-logos {
+      background-color: $color4Background;
+      border-color: $color4;
+    }
+  }
+}
