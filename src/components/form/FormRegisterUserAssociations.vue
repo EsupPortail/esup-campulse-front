@@ -78,7 +78,7 @@ async function loadAssociations() {
         <QBtn v-if="newAssociations.length < (5 - userAssociations.length)" :label="t('forms.add-association')"
               class="add-association"
               color="primary"
-              icon="mdi-plus-circle-outline" outline @click="addAssociation"/>
+              icon="mdi-plus-circle-outline" @click="addAssociation"/>
     </fieldset>
 </template>
 

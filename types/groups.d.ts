@@ -4,3 +4,10 @@ export interface Group {
     permissions: string[],
     isPublic: boolean
 }
+
+interface SelectGroupLabel {
+    value: number,
+    label: string,
+    disable: boolean,
+    commission?: number | null
+}

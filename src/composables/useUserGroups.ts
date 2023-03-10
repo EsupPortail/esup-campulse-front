@@ -3,10 +3,11 @@ import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
-import type {Group} from '#/groups'
+import type {Group, SelectGroupLabel} from '#/groups'
 import i18n from '@/plugins/i18n'
 import type {UserGroup} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
+import useCommissions from "@/composables/useCommissions";
 
 
 // Used to store groups
@@ -29,6 +30,7 @@ const isStaff = ref<boolean | undefined>(undefined)
 
 export default function () {
     const userStore = useUserStore()
+    const {getCommissions, commissions} = useCommissions()
 
     const groupNames = [
         {
@@ -91,11 +93,13 @@ export default function () {
      * @param {boolean} onlyPublicGroups - boolean - If true, only public groups will be added to the list.
      * @returns the groupLabels value
      */
-    function initGroupLabels(onlyPublicGroups: boolean) {
-        const labels: SelectLabel[] = []
+    // To re test
+    async function initGroupLabels(onlyPublicGroups: boolean) {
+        const labels: SelectGroupLabel[] = []
         groups.value?.map(function (group) {
             if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
-                const label = getGroupLiteral(group.id)
+                let label: string | undefined = ''
+                label = getGroupLiteral(group.id)
                 if (label) {
                     labels.push({
                         value: group.id,
@@ -205,6 +209,18 @@ export default function () {
         }
     }
 
+    // To test
+    const commissionMemberIsSelected = ref<boolean>(false)
+
+    const initCommissionMemberSelection = () => {
+        const commissionGroup = groups.value.find(obj => obj.name === 'COMMISSION')
+        if (commissionGroup) {
+            commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.id)
+        }
+    }
+    watch(() => newGroups.value.length, initCommissionMemberSelection)
+
+
     return {
         groups,
         getGroups,
@@ -221,6 +237,7 @@ export default function () {
         isStaff,
         initStaffStatus,
         initGroupPermToJoinAssociation,
-        groupNames
+        groupNames,
+        commissionMemberIsSelected
     }
 }

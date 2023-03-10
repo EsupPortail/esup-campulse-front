@@ -32,6 +32,5 @@ interface HomeStore {
 
 interface SelectLabel {
     value: number,
-    label: string,
-    disable: boolean
+    label: string
 }

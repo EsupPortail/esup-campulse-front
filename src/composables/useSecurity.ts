@@ -6,6 +6,7 @@ import {useAxios} from '@/composables/useAxios'
 import {useRoute} from "vue-router";
 import type {AxiosInstance} from "axios";
 import useUserAssociations from "@/composables/useUserAssociations";
+import useCommissions from "@/composables/useCommissions";
 
 
 export default function () {
@@ -122,19 +123,39 @@ export default function () {
      * @param {boolean} publicRequest - boolean - if true, the request will be made to the public API, otherwise it will be
      * made to the authenticated API.
      */
+    // To re test
     async function userGroupsRegister(publicRequest: boolean) {
         const groupsToRegister: UserGroupRegister[] = []
         const {newGroups} = useUserGroups()
+        const {userCommissions, commissions} = useCommissions()
         const {axiosPublic, axiosAuthenticated} = useAxios()
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
         if (newGroups.value.length) {
             newGroups.value.forEach(function (group) {
-                groupsToRegister.push({
-                    username: newUser.username,
-                    group,
-                    institution: null
-                })
+                // Register commission groups
+                if (userCommissions.value.length !== 0) {
+                    userCommissions.value.forEach(function (commission) {
+                        const commissionId = commissions.value.find(obj => obj.acronym === commission)?.id
+                        if (commissionId) {
+                            groupsToRegister.push({
+                                username: newUser.username,
+                                group,
+                                institution: null,
+                                commission: commissionId
+                            })
+                        }
+                    })
+                }
+                // Register other groups
+                else {
+                    groupsToRegister.push({
+                        username: newUser.username,
+                        group,
+                        institution: null,
+                        commission: null
+                    })
+                }
             })
             for (let i = 0; i < groupsToRegister.length; i++) {
                 await instance.post('/users/groups/', groupsToRegister[i])

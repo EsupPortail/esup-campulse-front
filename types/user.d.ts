@@ -120,6 +120,7 @@ export interface UserGroupRegister {
     username: string,
     group: number,
     institution: number | null,
+    commission: number | null
 }
 
 // User manager store

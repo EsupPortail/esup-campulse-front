@@ -1,21 +1,34 @@
 <script lang="ts" setup>
 import useUserGroups from '@/composables/useUserGroups'
-import { useI18n } from 'vue-i18n'
-import { onMounted, onUnmounted, watch } from 'vue'
-import { useQuasar } from 'quasar'
-import { useRoute } from 'vue-router'
-import { useUserManagerStore } from "@/stores/useUserManagerStore";
+import {useI18n} from 'vue-i18n'
+import {onMounted, onUnmounted, watch} from 'vue'
+import {useQuasar} from 'quasar'
+import {useRoute} from 'vue-router'
+import {useUserManagerStore} from "@/stores/useUserManagerStore";
+import useCommissions from "@/composables/useCommissions";
 
-const { t } = useI18n()
-const { groupChoiceIsValid, newGroups, getGroups, groupLabels, groups, initGroupLabels, preSelectGroup, initGroupPermToJoinAssociation } = useUserGroups()
-const { notify, loading } = useQuasar()
+const {t} = useI18n()
+const {
+    groupChoiceIsValid,
+    newGroups,
+    getGroups,
+    groupLabels,
+    groups,
+    initGroupLabels,
+    preSelectGroup,
+    initGroupPermToJoinAssociation,
+    commissionMemberIsSelected
+} = useUserGroups()
+const {notify, loading} = useQuasar()
 const route = useRoute()
 const userManagerStore = useUserManagerStore()
+const {getCommissions, commissionOptions, userCommissions} = useCommissions()
 
 onMounted(async () => {
     loading.show
     await onGetGroups()
     onInitGroupLabels()
+    await onGetCommissions()
     loading.hide
 })
 
@@ -27,6 +40,17 @@ onUnmounted(() => {
 async function onGetGroups() {
     try {
         await getGroups()
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.form-error')
+        })
+    }
+}
+
+async function onGetCommissions() {
+    try {
+        await getCommissions()
     } catch (e) {
         notify({
             type: 'negative',
@@ -62,12 +86,37 @@ watch(() => userManagerStore.user, initUserGroups)
 
 <template>
     <fieldset>
-        <legend class="legend-big">{{ route.name === 'Registration' || route.name === 'CASRegistration' ? t('forms.status') : t('user-manager.user-status') }}
+        <legend class="legend-big">{{
+                route.name === 'Registration' || route.name === 'CASRegistration' ? t('forms.status') : t('user-manager.user-status')
+            }}
         </legend>
-        <QField v-if="groups" :error="!groupChoiceIsValid" :error-message="t('forms.required-status')">
-            <QOptionGroup v-model="newGroups" :options="groupLabels" color="primary" type="checkbox"
-                @update:model-value="initGroupPermToJoinAssociation" />
+        <QField
+            v-if="groups"
+            :error="!groupChoiceIsValid"
+            :error-message="t('forms.required-status')"
+        >
+            <QOptionGroup
+                v-model="newGroups"
+                :options="groupLabels"
+                color="primary"
+                type="checkbox"
+                @update:model-value="initGroupPermToJoinAssociation"
+            />
         </QField>
+        <QSelect
+            v-if="commissionMemberIsSelected"
+            v-model="userCommissions"
+            :hint="t('forms.max-commissions')"
+            :label="t('commissions')"
+            :options="commissionOptions"
+            :rules="[ val => val.length >= 1]"
+            counter
+            filled
+            max-values="2"
+            multiple
+            style="width: 250px"
+        />
+
     </fieldset>
 </template>
 

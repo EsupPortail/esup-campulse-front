@@ -123,6 +123,7 @@
   },
   "cancel": "Annuler",
   "cancel-delete": "Annuler la suppression",
+  "commissions": "Commissions",
   "dashboard": {
     "account-infos": "Modifier mes informations personnelles",
     "association-management": "Gérer l'annuaire des associations",
@@ -224,6 +225,7 @@
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
     "last-name": "Nom de famille",
     "login": "Connexion",
+    "max-commissions": "2 commissions maximum.",
     "modify-email": "Modifier l'adresse mail",
     "new-email": "Nouvelle adresse mail",
     "new-password": "Nouveau mot de passe",
