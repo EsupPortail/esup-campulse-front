@@ -144,7 +144,7 @@ export interface UserRegister {
 export interface UserStore {
     user: User | undefined,
     newUser: UserRegister | undefined,
-    userAssociations: AssociationUser[]
+    userAssociations: AssociationUserDetail[]
 }
 
 export interface UserToUpdate {
