@@ -98,6 +98,7 @@ describe('useUserAssociations', () => {
                 canBePresident: true,
                 isSecretary: false,
                 isTreasurer: true,
+                isVicePresident: false
             }
             await patchUserAssociations(userManagerStore.user?.id, 1, dataToPatch)
             const {axiosAuthenticated} = useAxios()
@@ -154,7 +155,8 @@ describe('useUserAssociations', () => {
                     canBePresident: false,
                     isValidatedByAdmin: false,
                     isSecretary: false,
-                    isTreasurer: false
+                    isTreasurer: false,
+                    isVicePresident: false
                 }
             ])
         })
