@@ -9,6 +9,7 @@ import type {User} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useSecurity from '@/composables/useSecurity'
+import AlertConfirmUserQuitAssociation from "@/components/alert/AlertConfirmUserQuitAssociation.vue";
 
 const props = defineProps<{
     editedByStaff: boolean,
@@ -112,23 +113,33 @@ async function onUpdateUserAssociations() {
                         :label="t('forms.i-can-be-president')"
                     />
                     <div class="btn-group">
-                        <QBtn
-                            v-if="!association.deleteAssociation"
-                            :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
-                            color="red"
-                            icon="mdi-delete"
-                            @click="association.deleteAssociation = true"
-                        />
-                        <div v-else>
-                            <span class="delete-message">
-                                {{ t('user.delete-association-role') }}
-                            </span>
-                            <QBtn
-                                :label="t('cancel-delete')"
-                                icon="mdi-cancel"
-                                outline
-                                @click="association.deleteAssociation = false"
+                        <div v-if="!props.editedByStaff">
+                            <AlertConfirmUserQuitAssociation
+                                :edited-by-staff="props.editedByStaff"
+                                :association-id="association.id"
+                                :user-id="user.id"
+                                @user-association-deleted="onGetUserAssociations"
                             />
+                        </div>
+                        <div v-else>
+                            <QBtn
+                                v-if="!association.deleteAssociation"
+                                :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+                                color="red"
+                                icon="mdi-delete"
+                                @click="association.deleteAssociation = true"
+                            />
+                            <div v-else>
+                                <span class="delete-message">
+                                    {{ t('user.delete-association-role') }}
+                                </span>
+                                <QBtn
+                                    :label="t('cancel-delete')"
+                                    icon="mdi-cancel"
+                                    outline
+                                    @click="association.deleteAssociation = false"
+                                />
+                            </div>
                         </div>
                         <QBtn
                             v-if="!props.editedByStaff && association.isValidatedByAdmin && userStore.hasPresidentStatus(association.id)"
