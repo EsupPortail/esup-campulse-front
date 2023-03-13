@@ -41,7 +41,7 @@ const initActionOptions = () => {
 
 onMounted(initActionOptions)
 
-async function onConfirmChanges() {
+async function onConfirmChanges(emailType) {
     const associationsSuccess: string[] = []
     const associationsError: string[] = []
     const promisesToExecute: Promise<void>[] = []
@@ -56,7 +56,7 @@ async function onConfirmChanges() {
                     associationsError.push(selectedAssociation.name)
                 }
             })
-            window.open(mailto, '_blank')
+            window.open(mailto, (emailType === 'web') ? '_blank' : '_self')
             break
         case 'enable':
             props.selectedAssociations?.forEach((selectedAssociation) => {
@@ -165,10 +165,18 @@ async function onConfirmChanges() {
                 <QBtn
                     v-if="switches === 'email'"
                     v-close-popup
-                    :label="t('association.email')"
+                    :label="t('association.email-software')"
                     color="secondary"
                     icon="mdi-email"
-                    @click="onConfirmChanges()"
+                    @click="onConfirmChanges('software')"
+                />
+                <QBtn
+                    v-if="switches === 'email'"
+                    v-close-popup
+                    :label="t('association.email-web')"
+                    color="secondary"
+                    icon="mdi-email"
+                    @click="onConfirmChanges('web')"
                 />
                 <QBtn
                     v-if="switches === 'enable'"

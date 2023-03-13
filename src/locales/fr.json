@@ -48,7 +48,8 @@
     "disable-association": "Désactiver l'association",
     "disabled": "Désactivée",
     "edit": "Modifier",
-    "email": "Ouvrir l'interface d'envoi de mail",
+    "email-software": "Ouvrir le logiciel d'envoi de mail (Thunderbird, Outlook, ...)",
+    "email-web": "Ouvrir la page web d'envoi de mail (Partage, Gmail, ...)",
     "enable": "Activer",
     "enable-association": "Activer l'association",
     "enabled": "Activée",
@@ -418,6 +419,7 @@
   },
   "user-manager": {
     "add-user": "Ajouter un compte",
+    "alert-confirm-update": "Vous êtes sur le point de modifier les informations de cet utilisateur. Voulez-vous continuer ?",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
     "create-association": "Créer une association",
     "delete-account-application": "Supprimer la demande de compte",
@@ -432,7 +434,6 @@
     "users": "Utilisateurs",
     "validate-account": "Valider le compte",
     "validation": "Validation des demandes de comptes",
-    "alert-confirm-update": "Vous êtes sur le point de modifier les informations de cet utilisateur. Voulez-vous continuer ?",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",
       "status-hint": "Veuillez valider le ou les statuts présélectionnés par l'utilisateur."
