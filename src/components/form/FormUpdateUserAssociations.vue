@@ -114,7 +114,7 @@ async function onUpdateUserAssociations() {
                     <div class="btn-group">
                         <QBtn
                             v-if="!association.deleteAssociation"
-                            :label="t('dashboard.association-user.delete-association')"
+                            :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
                             color="red"
                             icon="mdi-delete"
                             @click="association.deleteAssociation = true"
