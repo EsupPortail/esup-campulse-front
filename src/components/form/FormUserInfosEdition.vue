@@ -134,6 +134,8 @@ async function onUpdateUserInfos() {
                 :label="t('forms.phone')"
                 filled
                 lazy-rules
+                hint="Format : 06 00 00 00 00"
+                mask="## ## ## ## ##"
                 type="tel"
             />
             <QBanner
