@@ -3,6 +3,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from "vue-i18n";
 import {useQuasar} from "quasar";
 import router from "@/router";
+import {onMounted} from "vue";
 
 const userStore = useUserStore()
 const {t} = useI18n()
@@ -17,6 +18,11 @@ async function onLogOut() {
         message: t('notifications.positive.logout-success')
     })
 }
+
+onMounted(async () => {
+    await userStore.getUserAssociations()
+})
+
 </script>
 
 <template>
@@ -44,12 +50,21 @@ async function onLogOut() {
                     </QItemSection>
                 </QItem>
 
-                <QItem v-for="(item) in userStore.user?.associations" :key="item.id" v-close-popup clickable
-                       @click="router.push({ name: 'AssociationDashboard', params: { id: item.id } })">
-                    <QItemSection>
-                        <QItemLabel>{{ item.name }}</QItemLabel>
-                    </QItemSection>
-                </QItem>
+                <div
+                    v-for="(item) in userStore.user?.associations"
+                    :key="item.id"
+                >
+                    <QItem
+                        v-if="userStore.userAssociations.find(obj => obj.association.id === item.id)?.isValidatedByAdmin"
+                        v-close-popup
+                        clickable
+                        @click="router.push({ name: 'AssociationDashboard', params: { id: item.id } })"
+                    >
+                        <QItemSection>
+                            <QItemLabel>{{ item.name }}</QItemLabel>
+                        </QItemSection>
+                    </QItem>
+                </div>
 
                 <QItem v-close-popup clickable @click="onLogOut">
                     <QItemSection>

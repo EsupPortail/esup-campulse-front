@@ -131,7 +131,7 @@ async function onUpdateUserAssociations() {
                             />
                         </div>
                         <QBtn
-                            v-if="!props.editedByStaff && association.isValidatedByAdmin"
+                            v-if="!props.editedByStaff && association.isValidatedByAdmin && userStore.hasPresidentStatus(association.id)"
                             :label="t('dashboard.association-user.manage-association')"
                             :to="{name: 'AssociationDashboard', params: {id: association.id}}"
                         />

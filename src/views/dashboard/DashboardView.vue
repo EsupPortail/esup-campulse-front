@@ -4,11 +4,33 @@ import {useI18n} from 'vue-i18n'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
+import {onMounted, ref, watch} from "vue";
 
 const userStore = useUserStore()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
 const {isStaff} = useUserGroups()
+
+const associationCounter = ref<number>(0)
+
+const initAssociationCounter = () => {
+    userStore.user?.associations.forEach(function (association) {
+        const hasPresidentStatus = userStore.hasPresidentStatus(association.id)
+        const a = userStore.userAssociations.find(obj => obj.association.id === association.id)
+        let isValidatedByAdmin = false
+        if (a) {
+            isValidatedByAdmin = a.isValidatedByAdmin
+        }
+        if (hasPresidentStatus && isValidatedByAdmin) associationCounter.value++
+    })
+}
+watch(() => userStore.user?.associations, initAssociationCounter)
+
+onMounted(async () => {
+    await userStore.getUserAssociations()
+    initAssociationCounter()
+})
+
 </script>
 
 <template>
@@ -32,7 +54,7 @@ const {isStaff} = useUserGroups()
     </section>
 
     <!-- My associations, for association members only -->
-    <section v-if="userStore.user?.associations.length !== 0" class="dashboard-section">
+    <section v-if="associationCounter > 0" class="dashboard-section">
         <h2>
             <QIcon name="mdi-card-account-details-outline"/>
             {{ t('dashboard.association-user.my-associations') }}
@@ -40,12 +62,16 @@ const {isStaff} = useUserGroups()
         <div class="form-container">
             <div class="form">
                 <div class="button-group">
-                    <QBtn
+                    <div
                         v-for="association in userStore.user?.associations"
                         :key="association.id"
-                        :label="t('manage') + ' ' + association.name"
-                        :to="{name: 'AssociationDashboard', params: {id: association.id}}"
-                    />
+                    >
+                        <QBtn
+                            v-if="userStore.hasPresidentStatus(association.id)"
+                            :label="t('manage') + ' ' + association.name"
+                            :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,7 +105,7 @@ const {isStaff} = useUserGroups()
             </div>
         </div>
     </section>
-    
+
     <!-- User management, for staff only -->
     <section
         v-if="isStaff && (hasPerm('change_user') ||

@@ -71,11 +71,11 @@ export default function () {
             // If we need to update the association
             else {
                 // We search for the corresponding association in store
-                let storeAssociation: AssociationUser | AssociationUserDetail | undefined
+                let storeAssociation: AssociationUserDetail | undefined
                 if (editedByStaff) {
                     storeAssociation = userManagerStore.userAssociations.find(obj => obj.association.id === association.id)
                 } else {
-                    storeAssociation = userStore.userAssociations.find(obj => obj.association === association.id)
+                    storeAssociation = userStore.userAssociations.find(obj => obj.association.id === association.id)
                 }
                 // We set a boolean to track changes
                 let hasChanges = false
@@ -141,7 +141,7 @@ export default function () {
                 isPresident: association.role === 'isPresident',
                 canBePresident: false,
                 isValidatedByAdmin: false,
-                isVicePresident: false,
+                isVicePresident: association.role === 'isVicePresident',
                 isSecretary: association.role === 'isSecretary',
                 isTreasurer: association.role === 'isTreasurer'
             })
