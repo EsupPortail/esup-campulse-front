@@ -152,13 +152,13 @@ export default function () {
         if (managedUser) store = userManagerStore
         let url = '/users/associations/'
         if (managedUser) url += id
-        store.userAssociations = (await axiosAuthenticated.get<AssociationUser[] | AssociationUserDetail[]>(url)).data
+        store.userAssociations = (await axiosAuthenticated.get<AssociationUserDetail[]>(url)).data
     }
 
     // To test
     function initUserAssociations(editedByStaff: boolean) {
         userAssociations.value = []
-        let associations: AssociationUser[] | AssociationUserDetail[] = userStore.userAssociations
+        let associations: AssociationUserDetail[] = userStore.userAssociations
         if (editedByStaff) associations = userManagerStore.userAssociations
         associations.forEach(function (association) {
             let role = ''
@@ -166,9 +166,8 @@ export default function () {
             if (association.isSecretary) role = 'isSecretary'
             if (association.isTreasurer) role = 'isTreasurer'
             userAssociations.value.push({
-                id: editedByStaff ? (association as AssociationUserDetail).association.id : (association as AssociationUser).association,
-                name: editedByStaff ? (association as AssociationUserDetail).association.name :
-                    userStore.user?.associations.find(obj => obj.id === association.association)?.name,
+                id: association.association.id,
+                name: association.association.name,
                 role,
                 options: associationRoleOptions,
                 isValidatedByAdmin: association.isValidatedByAdmin,

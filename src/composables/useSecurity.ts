@@ -178,7 +178,8 @@ export default function () {
      */
     async function register() {
         const {newAssociationsUser} = useUserAssociations()
-        if (userStore.isCas) {
+        console.log(userCASRegister)
+        /*if (userStore.isCas) {
             await userCASRegister(newUser.phone)
             if (newAssociationsUser) {
                 await userAssociationsRegister(true, newUser.username)
@@ -192,7 +193,7 @@ export default function () {
                 await userAssociationsRegister(true, newUser.email)
             }
             await userGroupsRegister(true)
-        }
+        }*/
     }
 
     /**

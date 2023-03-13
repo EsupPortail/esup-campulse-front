@@ -43,6 +43,8 @@ export interface AssociationUserDetail {
     }
     isPresident: boolean,
     canBePresident: boolean,
+    canBePresidentFrom: string,
+    canBePresidentTo: string,
     isValidatedByAdmin: boolean,
     isVicePresident: boolean,
     isSecretary: boolean,
