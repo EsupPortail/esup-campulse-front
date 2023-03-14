@@ -17,6 +17,17 @@ const userToUpdate = ref<UserToUpdate>({
     phone: ''
 })
 
+// Used to patch user
+interface InfosToPatch {
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    phone?: string,
+    username?: string
+}
+
+const infosToPatch: InfosToPatch = {}
+
 
 export default function () {
 
@@ -76,20 +87,6 @@ export default function () {
      */
     // To test
     async function updateUserInfos(user: User | undefined, editedByStaff: boolean) {
-        interface InfosToPatch {
-            firstName?: string,
-            lastName?: string,
-            email?: string,
-            phone?: string,
-            username?: string
-        }
-
-        const infosToPatch: InfosToPatch = {}
-        if (userToUpdate.value.firstName !== user?.firstName) infosToPatch.firstName = userToUpdate.value.firstName
-        if (userToUpdate.value.lastName !== user?.lastName) infosToPatch.lastName = userToUpdate.value.lastName
-        if (userToUpdate.value.newEmail && userToUpdate.value.newEmail !== userToUpdate.value.email &&
-            userToUpdate.value.newEmail === userToUpdate.value.newEmailVerification) infosToPatch.email = userToUpdate.value.newEmail
-        if (userToUpdate.value.phone !== user?.phone) infosToPatch.phone = userToUpdate.value.phone
         if (Object.keys(infosToPatch).length > 0) {
             let store: UserStore | UserManagerStore = useUserStore()
             let url = '/users/auth/user/'
@@ -102,11 +99,30 @@ export default function () {
         }
     }
 
+    /**
+     * It deletes all the properties of the infosToPatch object, then it checks if the userToUpdate object has a different
+     * value for each property, and if so, it adds the property to the infosToPatch object
+     * @param {User | undefined} user - User | undefined: The user to update.
+     */
+    // To test
+    function initInfosToPatch(user: User | undefined) {
+        for (const key of Object.keys(infosToPatch)) {
+            delete infosToPatch[key as keyof typeof infosToPatch]
+        }
+        if (userToUpdate.value.firstName !== user?.firstName) infosToPatch.firstName = userToUpdate.value.firstName
+        if (userToUpdate.value.lastName !== user?.lastName) infosToPatch.lastName = userToUpdate.value.lastName
+        if (userToUpdate.value.newEmail && userToUpdate.value.newEmail !== userToUpdate.value.email &&
+            userToUpdate.value.newEmail === userToUpdate.value.newEmailVerification) infosToPatch.email = userToUpdate.value.newEmail
+        if (userToUpdate.value.phone !== user?.phone) infosToPatch.phone = userToUpdate.value.phone
+    }
+
     return {
         getUsers,
         validateUser,
         canEditUser,
         userToUpdate,
-        updateUserInfos
+        updateUserInfos,
+        infosToPatch,
+        initInfosToPatch
     }
 }

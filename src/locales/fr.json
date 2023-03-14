@@ -379,6 +379,9 @@
       "validate-delete-user": "Le compte a bien été supprimé.",
       "validate-delete-user-association": "Le rôle de l'utilisateur dans l'association a bien été supprimé.",
       "validate-success": "Le statut du compte a bien été modifié."
+    },
+    "warning": {
+      "no-modifications-found": "Aucun changement n'a été effectué."
     }
   },
   "password": {

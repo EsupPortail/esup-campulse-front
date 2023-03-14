@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, ref, toRefs, watch} from 'vue'
 import axios from 'axios'
 import useUsers from '@/composables/useUsers'
 import type {User, UserGroup} from '#/user'
@@ -8,29 +8,32 @@ import useUserGroups from '@/composables/useUserGroups'
 import {useQuasar} from 'quasar'
 
 
-const {userToUpdate, updateUserInfos} = useUsers()
+const {userToUpdate, updateUserInfos, infosToPatch, initInfosToPatch} = useUsers()
 const {getGroupLiteral} = useUserGroups()
 const {t} = useI18n()
 const {notify} = useQuasar()
 
 const props = defineProps<{
-    user: User | undefined,
-    editedByStaff: boolean
+    editedByStaff: boolean,
+    user: User
 }>()
+
+const userRef = toRefs(props).user
 
 const changeEmail = ref<boolean>(false)
 
 const userGroups = ref<string>('')
 
-const initUser = () => {
-    userToUpdate.value.firstName = props.user?.firstName
-    userToUpdate.value.lastName = props.user?.lastName
-    userToUpdate.value.username = props.user?.username
-    userToUpdate.value.email = props.user?.email
+const initUserInfos = () => {
+    userToUpdate.value.firstName = userRef.value.firstName
+    userToUpdate.value.lastName = userRef.value.lastName
+    userToUpdate.value.username = userRef.value.username
+    userToUpdate.value.email = userRef.value.email
     userToUpdate.value.newEmail = ''
     userToUpdate.value.newEmailVerification = ''
-    userToUpdate.value.phone = props.user?.phone
+    userToUpdate.value.phone = userRef.value.phone
 }
+watch(() => userRef.value, initUserInfos)
 
 const initUserGroups = () => {
     let groups: (string | undefined)[] = []
@@ -42,23 +45,31 @@ const initUserGroups = () => {
     })
     userGroups.value = groups.join(', ')
 }
-watch(() => props.user, () => {
-    initUser()
+watch(() => userRef.value, () => {
+    initUserInfos()
     initUserGroups()
 })
 
 onMounted(() => {
-    initUser()
+    initUserInfos()
     initUserGroups()
 })
 
 async function onUpdateUserInfos() {
     try {
-        await updateUserInfos(props.user, props.editedByStaff)
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.update-user-infos')
-        })
+        initInfosToPatch(userRef.value)
+        if (Object.entries(infosToPatch).length !== 0) {
+            await updateUserInfos(userRef.value, props.editedByStaff)
+            notify({
+                type: 'positive',
+                message: t('notifications.positive.update-user-infos')
+            })
+        } else {
+            notify({
+                type: 'warning',
+                message: t('notifications.warning.no-modifications-found')
+            })
+        }
     } catch (error) {
         if (axios.isAxiosError(error) || error === 500) {
             notify({
@@ -133,8 +144,8 @@ async function onUpdateUserInfos() {
                 v-model="userToUpdate.phone"
                 :label="t('forms.phone')"
                 filled
-                lazy-rules
                 hint="Format : 06 00 00 00 00"
+                lazy-rules
                 mask="## ## ## ## ##"
                 type="tel"
             />
