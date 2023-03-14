@@ -93,7 +93,7 @@ async function onUpdateUserAssociations() {
                     />
                     <ul v-else>
                         <li>{{ t('dashboard.association-user.my-role') }} <span>{{
-                                associationRoleOptions.find(obj => obj.value === association.role)?.label
+                                associationRoleOptions.find(obj => obj.value === association.role)?.label ?? t('dashboard.association-user.member')
                             }}</span>
                         </li>
                         <li>
@@ -115,8 +115,8 @@ async function onUpdateUserAssociations() {
                     <div class="btn-group">
                         <div v-if="!props.editedByStaff">
                             <AlertConfirmUserQuitAssociation
-                                :edited-by-staff="props.editedByStaff"
                                 :association-id="association.id"
+                                :edited-by-staff="props.editedByStaff"
                                 :user-id="user.id"
                                 @user-association-deleted="onGetUserAssociations"
                             />

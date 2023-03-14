@@ -87,7 +87,7 @@ export default function () {
      */
     // To test
     async function updateUserInfos(user: User | undefined, editedByStaff: boolean) {
-        if (Object.keys(infosToPatch).length > 0) {
+        if (Object.keys(infosToPatch).length !== 0) {
             let store: UserStore | UserManagerStore = useUserStore()
             let url = '/users/auth/user/'
             if (editedByStaff) {

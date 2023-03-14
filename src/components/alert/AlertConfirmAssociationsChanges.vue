@@ -41,7 +41,7 @@ const initActionOptions = () => {
 
 onMounted(initActionOptions)
 
-async function onConfirmChanges(emailType) {
+async function onConfirmChanges(emailType: string) {
     const associationsSuccess: string[] = []
     const associationsError: string[] = []
     const promisesToExecute: Promise<void>[] = []
@@ -56,7 +56,7 @@ async function onConfirmChanges(emailType) {
                     associationsError.push(selectedAssociation.name)
                 }
             })
-            window.open(mailto, (emailType === 'web') ? '_blank' : '_self')
+            window.open(mailto, (emailType as string === 'web') ? '_blank' : '_self')
             break
         case 'enable':
             props.selectedAssociations?.forEach((selectedAssociation) => {
@@ -184,7 +184,7 @@ async function onConfirmChanges(emailType) {
                     :label="t('association.enable')"
                     color="green"
                     icon="mdi-eye-check"
-                    @click="onConfirmChanges()"
+                    @click="onConfirmChanges"
                 />
                 <QBtn
                     v-if="switches === 'disable'"
@@ -192,7 +192,7 @@ async function onConfirmChanges(emailType) {
                     :label="t('association.disable')"
                     color="orange"
                     icon="mdi-eye-remove"
-                    @click="onConfirmChanges()"
+                    @click="onConfirmChanges"
                 />
                 <QBtn
                     v-if="switches === 'delete'"
@@ -200,7 +200,7 @@ async function onConfirmChanges(emailType) {
                     :label="t('association.delete')"
                     color="red"
                     icon="mdi-delete"
-                    @click="onConfirmChanges()"
+                    @click="onConfirmChanges"
                 />
             </QCardActions>
         </QCard>
