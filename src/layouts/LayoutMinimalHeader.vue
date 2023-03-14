@@ -11,7 +11,9 @@ import LayoutFooter from '@/components/layout/LayoutFooter.vue'</script>
     </QLayout>
 </template>
 
-<style lang="sass" scoped>
+<style lang="sass">
+@import '@/assets/styles/header.scss'
+
 .q-layout
     max-width: 1280px
     margin: 0 auto

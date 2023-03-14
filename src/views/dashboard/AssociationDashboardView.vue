@@ -259,6 +259,7 @@ async function onGetUserAssociations() {
 </template>
 
 <style lang="sass" scoped>
+
 .document-input-group-header
     display: flex
     justify-content: space-between
@@ -268,5 +269,10 @@ async function onGetUserAssociations() {
     h3
         font-size: 1.5rem
         color: #152639
+</style>
+
+<style lang="sass">
+@import '@/assets/styles/dashboard.scss'
+@import '@/assets/styles/forms.scss'
 </style>
 

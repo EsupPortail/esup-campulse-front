@@ -107,4 +107,5 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
 
 <style lang="sass">
 @import '@/assets/styles/login.scss'
+@import '@/assets/styles/forms.scss'
 </style>
