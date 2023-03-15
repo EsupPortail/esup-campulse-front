@@ -10,6 +10,7 @@ import axios from 'axios'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
 import useUserGroups from '@/composables/useUserGroups'
+import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -83,6 +84,7 @@ async function onRegister() {
 </script>
 
 <template>
+    <FormAddUserFromLDAP v-if="isStaff"/>
     <QForm class="q-gutter-md" @submit.prevent="onRegister">
         <QInput
             v-model="newUser.firstName"

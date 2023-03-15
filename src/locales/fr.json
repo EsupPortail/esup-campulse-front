@@ -139,6 +139,7 @@
     "my-infos": "Mes informations",
     "my-password": "Mon mot de passe",
     "my-status": "Mon statut actuel :",
+    "search-user-via-cas": "Rechercher un utilisateur via CAS",
     "update-my-status": "Pour changer de statut, merci de contacter le gestionnaire dont vous dépendez.",
     "user-add": "Ajouter un compte utilisateur",
     "user-management": "Gérer les informations des utilisateurs",
@@ -328,6 +329,7 @@
       "association-logo-edit-error": "Une erreur est survenue lors de la modification du logo. Veuillez réessayer.",
       "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur.",
       "cas-authentication-error": "Erreur d'authentification CAS.",
+      "cas-error": "Erreur lors de l`appel au service CAS.",
       "delete-association-error": "Une erreur est survenue lors de la suppression de l'association. Veuillez réessayer.",
       "delete-associations-error": "Les associations suivantes ne peuvent pas être supprimées (sont-elles désactivées ?) : ",
       "different-emails": "Les deux adresses email ne sont pas identiques.",
@@ -369,6 +371,7 @@
       "email-associations": "Ces associations peuvent être contactées : ",
       "enable-association": "L'association a été activée avec succès.",
       "enable-associations": "Les associations suivantes ont bien été activées : ",
+      "get-cas-user-success": "Les données de l'utilisateur ont bien été récupérées.",
       "login-success": "Connexion réussie.",
       "logout-success": "Déconnexion réussie.",
       "password-changed": "Votre mot de passe a bien été modifié.",
@@ -403,6 +406,7 @@
     "register-verify-email": "Adresse e-mail vérifiée",
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
   },
+  "search": "Rechercher",
   "user": {
     "associations": "Associations",
     "delete-association-role": "Le rôle dans l'association sera supprimé après validation des changements.",

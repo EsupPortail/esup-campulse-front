@@ -3,6 +3,8 @@ import type {UserAssociation} from "#/user";
 
 
 export const _association: Association = {
+    canSubmitProjects: false,
+    charterStatus: '',
     id: 1,
     name: 'Association',
     acronym: '',
@@ -50,7 +52,7 @@ export const _association: Association = {
     activityField: {
         id: 1,
         name: 'Santé',
-    },
+    }
 }
 
 export const _editedAssociation: EditedAssociation = {

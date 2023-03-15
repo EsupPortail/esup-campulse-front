@@ -1,5 +1,5 @@
 import {reactive, ref, watch} from 'vue'
-import type {LocalLogin, UserGroupRegister, UserRegister} from '#/user'
+import type {CASUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
@@ -204,6 +204,15 @@ export default function () {
         await userGroupsRegister(false)
     }
 
+    const CASUsers = ref<CASUser[]>([])
+
+    // To test
+    async function getUsersFromCAS(lastName: string) {
+        CASUsers.value = []
+        const {axiosAuthenticated} = useAxios()
+        CASUsers.value = (await axiosAuthenticated.get<CASUser[]>(`/users/external/?last_name=${lastName}`)).data
+    }
+
     async function loadCASUser() {
         const route = useRoute()
         // For aborted CAS registration or regular CAS registration
@@ -261,6 +270,8 @@ export default function () {
         userLocalRegisterAsManager,
         hasPerm,
         userAssociationsRegister,
-        initNewUserData
+        initNewUserData,
+        getUsersFromCAS,
+        CASUsers
     }
 }
