@@ -84,6 +84,7 @@ export default function () {
                 if (storeAssociation?.isPresident && association.role !== 'isPresident') hasChanges = true
                 if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
                 if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
+                if (storeAssociation?.isVicePresident && association.role !== 'isVicePresident') hasChanges = true
 
                 if (hasChanges && association.id) {
                     const infosToPatch = {
@@ -91,7 +92,7 @@ export default function () {
                         canBePresident: association.canBePresident ? association.canBePresident : false,
                         isSecretary: association.role === 'isSecretary',
                         isTreasurer: association.role === 'isTreasurer',
-                        isVicePresident: association.isVicePresident ? association.isVicePresident : false
+                        isVicePresident: association.role === 'isVicePresident'
                     }
                     await patchUserAssociations(userId, association.id, infosToPatch)
                 }
@@ -169,6 +170,7 @@ export default function () {
             if (association.isPresident) role = 'isPresident'
             if (association.isSecretary) role = 'isSecretary'
             if (association.isTreasurer) role = 'isTreasurer'
+            if (association.isVicePresident) role = 'isVicePresident'
             userAssociations.value.push({
                 id: association.association.id,
                 name: association.association.name,
