@@ -55,7 +55,7 @@ onMounted(async () => {
                     :key="item.id"
                 >
                     <QItem
-                        v-if="userStore.userAssociations.find(obj => obj.association.id === item.id)?.isValidatedByAdmin"
+                        v-if="userStore.userAssociations.find(obj => obj.association.id === item.id)?.isValidatedByAdmin && userStore.hasPresidentStatus(item.id)"
                         v-close-popup
                         clickable
                         @click="router.push({ name: 'AssociationDashboard', params: { id: item.id } })"
