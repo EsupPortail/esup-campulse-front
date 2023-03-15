@@ -104,7 +104,7 @@ export const useAssociationStore = defineStore('associationStore', {
             const {axiosPublic} = useAxios()
             const userStore = useUserStore()
             const {isStaff} = useUserGroups()
-            let url = '/associations/names?allow_new_users=true'
+            let url = '/associations/names'
             if (isPublic) url += '?is_public=true'
             else if (isStaff.value && userStore.userInstitutions?.length !== 0) {
                 url += `?institutions=${userStore.userInstitutions?.join(',')}`
