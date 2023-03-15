@@ -64,7 +64,10 @@ onBeforeRouteLeave((to, from, next) => {
 </script>
 
 <template>
-    <QForm class="q-gutter-md">
+    <QForm
+        v-if="userManagerStore.user"
+        class="q-gutter-md"
+    >
         <FormUserInfosEdition :edited-by-staff="true" :user="userManagerStore.user"/>
         <FormUpdateUserAssociations :edited-by-staff="true" :user="userManagerStore.user"/>
         <fieldset>
