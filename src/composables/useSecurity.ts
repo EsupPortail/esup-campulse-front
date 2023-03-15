@@ -126,7 +126,7 @@ export default function () {
     // To re test
     async function userGroupsRegister(publicRequest: boolean) {
         const groupsToRegister: UserGroupRegister[] = []
-        const {newGroups} = useUserGroups()
+        const {newGroups, groups} = useUserGroups()
         const {userCommissions, commissions} = useCommissions()
         const {axiosPublic, axiosAuthenticated} = useAxios()
         let instance = axiosAuthenticated as AxiosInstance
@@ -134,9 +134,10 @@ export default function () {
         if (newGroups.value.length) {
             newGroups.value.forEach(function (group) {
                 // Register commission groups
-                if (userCommissions.value.length !== 0) {
+                if (groups.value.find(obj => obj.name === 'COMMISSION' && obj.id === group)) {
                     userCommissions.value.forEach(function (commission) {
                         const commissionId = commissions.value.find(obj => obj.acronym === commission)?.id
+                        console.log(commissionId)
                         if (commissionId) {
                             groupsToRegister.push({
                                 username: newUser.username,
@@ -145,6 +146,7 @@ export default function () {
                                 commission: commissionId
                             })
                         }
+                        console.log(groupsToRegister)
                     })
                 }
                 // Register other groups
@@ -160,9 +162,9 @@ export default function () {
             for (let i = 0; i < groupsToRegister.length; i++) {
                 await instance.post('/users/groups/', groupsToRegister[i])
             }
+            userCommissions.value = []
         }
     }
-
 
     /**
      * `register` is an async function that calls `userCASRegister` if the user is CAS, otherwise it calls
