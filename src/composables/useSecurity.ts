@@ -234,8 +234,6 @@ export default function () {
             if (route.query.ticket) {
                 await userStore.loadCASUser(route.query.ticket as string)
             }
-            /*newUser.firstName = userStore.newUser?.firstName as string
-            emailVerification.value = newUser.email*/
         }
     }
 
