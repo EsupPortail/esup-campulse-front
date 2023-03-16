@@ -45,5 +45,26 @@
     "vite": "^3.2.5",
     "vitest": "^0.29.1",
     "vue-tsc": "^1.2.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "vue/setup-compiler-macros": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended",
+      "@vue/eslint-config-typescript/recommended"
+    ],
+    "root": true,
+    "rules": {
+      "no-console": "off",
+      "no-debugger": "off",
+      "@typescript-eslint/ban-ts-comment": [
+        "error",
+        {
+          "ts-ignore": "allow-with-description"
+        }
+      ]
+    }
   }
 }
