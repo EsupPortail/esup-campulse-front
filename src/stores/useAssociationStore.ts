@@ -11,6 +11,7 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from "@/composables/useSecurity";
 import useUserGroups from "@/composables/useUserGroups";
+import type {AssociationUser} from "#/user";
 
 
 export const useAssociationStore = defineStore('associationStore', {
@@ -20,7 +21,8 @@ export const useAssociationStore = defineStore('associationStore', {
         associationNames: [],
         institutions: [],
         institutionComponents: [],
-        activityFields: []
+        activityFields: [],
+        associationUsers: []
     }),
 
     getters: {
@@ -34,17 +36,6 @@ export const useAssociationStore = defineStore('associationStore', {
                     disable: false
                 }))
         },
-        /*associationDirectory: (state: AssociationStore): AssociationDirectory => {
-            return state.associations
-                .map(association => ({
-                    id: association.id,
-                    name: association.name,
-                    acronym: association.acronym,
-                    institution: association.institution?.name,
-                    institutionComponent: association.institutionComponent?.name,
-                    activityField: association.activityField?.name,
-                }))
-        },*/
         institutionLabels: (state: AssociationStore) => {
             return state.institutions.map((
                 institution => ({
@@ -226,6 +217,12 @@ export const useAssociationStore = defineStore('associationStore', {
             const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isPublic})
             const {data} = patchedData
             this.association = data
+        },
+        // To test
+        async getAssociationUsers(associationId: number) {
+            const {axiosAuthenticated} = useAxios()
+            this.associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/?association_id=${associationId}`)).data
         }
+
     }
 })

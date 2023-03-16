@@ -1,3 +1,5 @@
+import type {AssociationUser} from "#/user";
+
 export interface Association {
     id: number,
     name: string,
@@ -86,7 +88,8 @@ export interface AssociationStore {
     associationNames: AssociationName[]
     institutions: Institution[],
     institutionComponents: InstitutionComponent[],
-    activityFields: AssociationActivityField[]
+    activityFields: AssociationActivityField[],
+    associationUsers: AssociationUser[]
 }
 
 export type AssociationDirectory = AssociationDirectoryDetail[]
