@@ -82,6 +82,13 @@ async function onGetUserAssociations() {
                         :label="t('association.more-details')"
                         :to="{ name: 'AssociationDetail', params: { id: association?.id } }"
                     />
+                    <QBtn
+                        v-if="hasPresidentStatus"
+                        :label="t('association.delegate-president-role')"
+                        :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
+                        color="primary"
+                    />
+
                 </div>
             </div>
         </div>

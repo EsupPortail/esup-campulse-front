@@ -114,7 +114,17 @@ const routes: RouteRecordRaw[] = [
                                     breadcrumb: i18n.global.t('breadcrumbs.edit-my-association'),
                                     title: i18n.global.t('breadcrumbs.edit-my-association')
                                 }
+                            },
+                            {
+                                path: 'presidency-delegation',
+                                name: 'AssociationPresidencyDelegation',
+                                component: () => import('@/views/dashboard/AssociationPresidencyDelegationView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.edit-association-president-delegation'),
+                                    title: i18n.global.t('breadcrumbs.edit-my-association')
+                                }
                             }
+
                         ]
                     },
                     {
