@@ -27,7 +27,7 @@ const confirmation = ref<boolean>(false)
 
 async function onValidateChanges() {
     try {
-        await updateUserInfos(userManagerStore.user, true) // OK
+        await updateUserInfos(userManagerStore.user, true)
         await updateUserAssociations(true)
         if (userAssociations.value.length > 0) {
             await userAssociationsRegister(false, userManagerStore.user?.username)

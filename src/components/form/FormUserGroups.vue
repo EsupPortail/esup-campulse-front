@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import useUserGroups from '@/composables/useUserGroups'
 import {useI18n} from 'vue-i18n'
-import {onMounted, onUnmounted, watch} from 'vue'
+import {onMounted, onUnmounted} from 'vue'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
-import useCommissions from "@/composables/useCommissions";
+import useCommissions from '@/composables/useCommissions'
 
 const {t} = useI18n()
 const {
@@ -17,18 +16,21 @@ const {
     initGroupLabels,
     preSelectGroup,
     initGroupPermToJoinAssociation,
-    commissionMemberIsSelected
+    commissionMemberIsSelected,
+    initCommissionMemberSelection
 } = useUserGroups()
 const {notify, loading} = useQuasar()
 const route = useRoute()
-const userManagerStore = useUserManagerStore()
 const {getCommissions, commissionOptions, userCommissions} = useCommissions()
+const {initUserCommissions} = useCommissions()
 
 onMounted(async () => {
     loading.show
     await onGetGroups()
     onInitGroupLabels()
     await onGetCommissions()
+    initCommissionMemberSelection()
+    initUserCommissions()
     loading.hide
 })
 
@@ -61,10 +63,12 @@ async function onGetCommissions() {
 
 function onInitGroupLabels() {
     try {
+        // Init group labels
         let privacy = false
         if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) privacy = true
         initGroupLabels(privacy)
 
+        // Preselect group
         if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) preSelectGroup('STUDENT_INSTITUTION')
     } catch (e) {
         notify({
@@ -74,14 +78,6 @@ function onInitGroupLabels() {
     }
 }
 
-const initUserGroups = () => {
-    if (route.name === 'UserManagementDetail') {
-        userManagerStore.user?.groups.map((group) => {
-            newGroups.value.push(group.groupId)
-        })
-    }
-}
-watch(() => userManagerStore.user, initUserGroups)
 </script>
 
 <template>
@@ -111,7 +107,9 @@ watch(() => userManagerStore.user, initUserGroups)
             :options="commissionOptions"
             :rules="[ val => val.length >= 1]"
             counter
+            emit-value
             filled
+            map-options
             max-values="2"
             multiple
             style="width: 250px"

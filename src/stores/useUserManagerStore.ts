@@ -3,6 +3,7 @@ import type {User, UserManagerStore, UserNames} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from "@/stores/useUserStore";
 import useSecurity from "@/composables/useSecurity";
+import useUserGroups from "@/composables/useUserGroups";
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
@@ -21,6 +22,14 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         },
         userGroups: (state: UserManagerStore): number[] => {
             return state.user?.groups?.map<number>(group => group.groupId) || []
+        },
+        // To test
+        userCommissions: (state: UserManagerStore): number[] => {
+            const temp: number[] = []
+            state.user?.groups?.forEach((group) => {
+                if (group.commissionId) temp.push(group.commissionId)
+            })
+            return temp
         },
         /*userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
             return {
@@ -85,18 +94,48 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         /**
          * It takes an array of group IDs, and adds the user to each group
          * @param {number[]} groupsToAdd - number[] - An array of group IDs to add to the user.
+         * @param commissionsToUpdate
          */
-        async updateUserGroups(groupsToAdd: number[]) {
+        // To retest
+        async updateUserGroups(groupsToAdd: number[], commissionsToUpdate: number[]) {
+            const {commissionGroup} = useUserGroups()
             const {axiosAuthenticated} = useAxios()
-            for (const group of groupsToAdd) {
-                await axiosAuthenticated.post('/users/groups/', {username: this.user?.username, group: group})
+
+            // Initialize object to post
+            const data: { username: string | undefined, group: number | null, institution: null, commission: number | null } = {
+                username: this.user?.username,
+                group: null,
+                institution: null,
+                commission: null
+            }
+
+            for (let i = 0; i < groupsToAdd.length; i++) {
+                data.group = groupsToAdd[i]
+                // if groupsToAdd includes commissionGroup
+                if (groupsToAdd[i] === commissionGroup.value?.id) {
+                    for (let j = 0; j < commissionsToUpdate.length; j++) {
+                        data.commission = commissionsToUpdate[j]
+                        await axiosAuthenticated.post('/users/groups/', data)
+                    }
+                } else {
+                    await axiosAuthenticated.post('/users/groups/', data)
+                }
+            }
+
+            if (!groupsToAdd.includes(commissionGroup.value?.id as number) && commissionsToUpdate.length !== 0) {
+                data.group = commissionGroup.value?.id as number
+                for (let i = 0; i < commissionsToUpdate.length; i++) {
+                    data.commission = commissionsToUpdate[i]
+                    await axiosAuthenticated.post('/users/groups/', data)
+                }
             }
         },
         /**
          * It deletes all the groups in the array `groupsToDelete` from the user with the id `this.user?.id`
          * @param {number[]} groupsToDelete - number[] - An array of group IDs to delete
          */
-        async deleteUserGroups(groupsToDelete: number[]) {
+        // To retest
+        async deleteUserGroups(groupsToDelete: number[], commissionsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
             for (let i = 0; i < groupsToDelete.length; i++) {
                 await axiosAuthenticated.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
