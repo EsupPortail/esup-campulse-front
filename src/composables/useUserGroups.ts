@@ -30,7 +30,9 @@ const isStaff = ref<boolean | undefined>(undefined)
 
 export default function () {
     const userStore = useUserStore()
-    const {getCommissions, commissions} = useCommissions()
+    const userManagerStore = useUserManagerStore()
+    const {userCommissions} = useCommissions()
+
 
     const groupNames = [
         {
@@ -122,6 +124,18 @@ export default function () {
         groupLabels.value = labels
     }
 
+    // To test
+    const initUserGroups = () => {
+        newGroups.value = []
+        userManagerStore.user?.groups.forEach((group) => {
+            newGroups.value.push(group.groupId)
+        })
+        newGroups.value = newGroups.value.filter((element, index) => {
+            return newGroups.value.indexOf(element) === index
+        })
+    }
+    watch(() => userManagerStore.user, initUserGroups)
+
     /**
      * If the groups array has a length, find the group with the name that matches the groupCodeName parameter and push the
      * group's id to the newGroups array
@@ -192,8 +206,23 @@ export default function () {
         return oldGroups.filter(x => newGroups.indexOf(x) === -1)
     }
 
+    // To re test
     function groupsToAdd(newGroups: number[], oldGroups: number[]) {
-        return newGroups.filter(x => oldGroups.indexOf(x) === -1)
+        let temp = newGroups.filter(x => oldGroups.indexOf(x) === -1)
+        temp = temp.filter((element, index) => {
+            return temp.indexOf(element) === index
+        })
+        return temp
+    }
+
+    // To test
+    function commissionsToUpdate(newCommissions: number[], oldCommissions: number[]) {
+        return newCommissions.filter(x => oldCommissions.indexOf(x) === -1)
+    }
+
+    // To test
+    function commissionsToDelete(newCommissions: number[], oldCommissions: number[]) {
+        return oldCommissions.filter(x => newCommissions.indexOf(x) === -1)
     }
 
     /**
@@ -204,18 +233,24 @@ export default function () {
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
         if (!arraysAreEqual(newGroups.value, oldGroups)) {
-            await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups))
-            await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups))
+            await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups),
+                commissionsToUpdate(userCommissions.value, userManagerStore.userCommissions))
+            await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups),
+                commissionsToDelete(userCommissions.value, userManagerStore.userCommissions))
         }
     }
 
-    // To test
     const commissionMemberIsSelected = ref<boolean>(false)
 
+    const commissionGroup = ref<Group | undefined>()
+    watch(() => groups.value.length, () => {
+        commissionGroup.value = groups.value.find(obj => obj.name === 'COMMISSION')
+    })
+
+    // To test
     const initCommissionMemberSelection = () => {
-        const commissionGroup = groups.value.find(obj => obj.name === 'COMMISSION')
-        if (commissionGroup) {
-            commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.id)
+        if (commissionGroup.value) {
+            commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.value.id)
         }
     }
     watch(() => newGroups.value.length, initCommissionMemberSelection)
@@ -238,6 +273,8 @@ export default function () {
         initStaffStatus,
         initGroupPermToJoinAssociation,
         groupNames,
-        commissionMemberIsSelected
+        commissionMemberIsSelected,
+        initCommissionMemberSelection,
+        commissionGroup
     }
 }

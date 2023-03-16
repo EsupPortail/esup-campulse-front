@@ -114,8 +114,9 @@ export interface UserAssociationPatch {
 export interface UserGroup {
     id?: number,
     userId: number,
-    institutionId?: number,
     groupId: number
+    institutionId?: number | null,
+    commissionId?: number | null
 }
 
 export interface UserGroupRegister {
