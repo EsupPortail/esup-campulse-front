@@ -144,6 +144,7 @@ export interface UserRegister {
 }
 
 export interface CASUser {
+    username: string,
     firstName: string,
     lastName: string,
     mail: string

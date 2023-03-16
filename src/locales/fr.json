@@ -3,6 +3,7 @@
     "description": "404",
     "title": "Contenu introuvable"
   },
+  "add": "Ajouter",
   "alerts": {
     "aborted-cas-registration": {
       "button": "Terminer ma création de compte",
@@ -340,7 +341,7 @@
       "edit-user-error": "Une erreur est survenue lors de la modification des informations du compte.",
       "edit-user-associations-error": "Une erreur est survenue. Les associations n'ont pas pu être mises à jour.",
       "email-associations-error": "Ces associations n'ont pas d'adresse email : ",
-      "email-used": "Cette adresse email est déjà associée à un compte.",
+      "email-used": "Cette adresse mail ou cet identifiant est déjà associé à un compte.",
       "enable-association-error": "L'association n'a pas été activée.",
       "enable-associations-error": "Les associations suivantes ne peuvent pas être activées : ",
       "error-new-association": "Une erreur lors de la création de l'association est survenue, veuillez réessayer.",
@@ -431,6 +432,7 @@
   "user-manager": {
     "add-user": "Ajouter un compte",
     "alert-confirm-update": "Vous êtes sur le point de modifier les informations de cet utilisateur. Voulez-vous continuer ?",
+    "choose-user-to-add": "Choisissez l'utilisateur que vous souhaitez ajouter.",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
     "create-association": "Créer une association",
     "delete-account-application": "Supprimer la demande de compte",
@@ -443,6 +445,7 @@
     "user-status": "Statut de l'utilisateur",
     "user-edition": "Actions sur l'utilisateur",
     "users": "Utilisateurs",
+    "users-found": "Utilisateurs trouvés",
     "validate-account": "Valider le compte",
     "validation": "Validation des demandes de comptes",
     "forms": {
