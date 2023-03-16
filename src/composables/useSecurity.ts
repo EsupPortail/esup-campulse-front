@@ -89,7 +89,9 @@ export default function () {
 
     async function userCASRegister(newUserInfo: string | null) {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo !== '' ? newUserInfo : null})
+        if (newUserInfo !== '') {
+            await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo})
+        }
     }
 
     /**
