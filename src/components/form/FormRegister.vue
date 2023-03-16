@@ -10,6 +10,7 @@ import axios from 'axios'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
 import useUserGroups from '@/composables/useUserGroups'
+import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -83,17 +84,18 @@ async function onRegister() {
 </script>
 
 <template>
+    <FormAddUserFromLDAP v-if="isStaff"/>
     <QForm class="q-gutter-md" @submit.prevent="onRegister">
         <QInput
             v-model="newUser.firstName"
-            :disable="!!userStore.isCas"
+            :disable="!!userStore.isCas || newUser.isCas"
             :label="t('forms.first-name')"
             :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
             filled lazy-rules
         />
         <QInput
             v-model="newUser.lastName"
-            :disable="!!userStore.isCas"
+            :disable="!!userStore.isCas || newUser.isCas"
             :label="t('forms.last-name')"
             :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
             filled
@@ -101,17 +103,21 @@ async function onRegister() {
         />
         <QInput
             v-model="newUser.email"
-            :disable="!!userStore.isCas"
+            :disable="!!userStore.isCas || newUser.isCas"
             :label="t('forms.email')" :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
             val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
             filled
             lazy-rules
         >
         </QInput>
-        <QInput v-model="emailVerification" :disable="!!userStore.isCas" :label="t('forms.repeat-email')"
-                :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
-                filled
-                lazy-rules/>
+        <QInput
+            v-model="emailVerification"
+            :disable="!!userStore.isCas || newUser.isCas"
+            :label="t('forms.repeat-email')"
+            :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
+            filled
+            lazy-rules
+        />
         <QInput v-model="newUser.phone" :label="t('forms.phone')" filled hint="Format : 06 00 00 00 00" lazy-rules
                 mask="## ## ## ## ##"/>
         <FormUserGroups/>

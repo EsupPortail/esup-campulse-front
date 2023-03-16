@@ -1,5 +1,5 @@
 import {reactive, ref, watch} from 'vue'
-import type {LocalLogin, UserGroupRegister, UserRegister} from '#/user'
+import type {CASUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
@@ -8,16 +8,29 @@ import type {AxiosInstance} from "axios";
 import useUserAssociations from "@/composables/useUserAssociations";
 import useCommissions from "@/composables/useCommissions";
 
+// Used for local login
+const user = ref<LocalLogin>({
+    username: '',
+    password: ''
+})
+
+const emailVerification = ref<string | undefined>('')
+
+const newUser = reactive<UserRegister>({
+    isCas: false,
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    phone: ''
+})
+watch(() => newUser.email, () => {
+    if (!newUser.isCas) newUser.username = newUser.email
+})
 
 export default function () {
 
     const userStore = useUserStore()
-
-    // Used for local login
-    const user = ref<LocalLogin>({
-        username: '',
-        password: ''
-    })
 
     /**
      * It takes two strings as arguments, and sets them as the values of two localStorage keys
@@ -56,25 +69,12 @@ export default function () {
         return userStore.user?.permissions.includes(permission)
     }
 
-    const emailVerification = ref<string | undefined>('')
-
-    const newUser = reactive<UserRegister>({
-        isCas: false,
-        firstName: '',
-        lastName: '',
-        email: '',
-        username: '',
-        phone: ''
-    })
-    watch(() => newUser.email, () => {
-        if (!newUser.isCas) newUser.username = newUser.email
-    })
-
     const initNewUserData = () => {
         newUser.isCas = userStore.newUser?.isCas as boolean
         newUser.firstName = userStore.newUser?.firstName as string
         newUser.lastName = userStore.newUser?.lastName as string
         newUser.email = userStore.newUser?.email as string
+        emailVerification.value = userStore.newUser?.email
         newUser.username = userStore.newUser?.username as string
         newUser.phone = userStore.newUser?.phone as string
     }
@@ -197,14 +197,37 @@ export default function () {
     /**
      * It registers a new user as a manager, then registers the user's associations and groups
      */
+    // To re test
     async function addUserAsManager() {
         const {newAssociationsUser} = useUserAssociations()
         await userLocalRegisterAsManager(newUser)
         if (newAssociationsUser.value) {
-            await userAssociationsRegister(false, newUser.email)
+            let username = newUser.email
+            if (newUser.isCas) username = newUser.username
+            await userAssociationsRegister(false, username)
         }
         await userGroupsRegister(false)
     }
+
+    const CASUsers = ref<CASUser[]>([])
+
+    // To test
+    async function getUsersFromCAS(lastName: string) {
+        CASUsers.value = []
+        const {axiosAuthenticated} = useAxios()
+        CASUsers.value = (await axiosAuthenticated.get<CASUser[]>(`/users/external/?last_name=${lastName}`)).data
+    }
+
+    const CASUserOptions = ref<{ value: string, label: string }[]>([])
+
+    // To test
+    const initCASUserOptions = () => {
+        CASUserOptions.value = CASUsers.value.map(user => ({
+            value: user.username,
+            label: user.firstName + ' ' + user.lastName + ' (' + user.mail + ')'
+        }))
+    }
+    watch(() => CASUsers.value.length, initCASUserOptions)
 
     async function loadCASUser() {
         const route = useRoute()
@@ -213,8 +236,8 @@ export default function () {
             if (route.query.ticket) {
                 await userStore.loadCASUser(route.query.ticket as string)
             }
-            newUser.firstName = userStore.newUser?.firstName as string
-            emailVerification.value = newUser.email
+            /*newUser.firstName = userStore.newUser?.firstName as string
+            emailVerification.value = newUser.email*/
         }
     }
 
@@ -263,6 +286,9 @@ export default function () {
         userLocalRegisterAsManager,
         hasPerm,
         userAssociationsRegister,
-        initNewUserData
+        initNewUserData,
+        getUsersFromCAS,
+        CASUsers,
+        CASUserOptions
     }
 }

@@ -143,6 +143,13 @@ export interface UserRegister {
     phone: string
 }
 
+export interface CASUser {
+    username: string,
+    firstName: string,
+    lastName: string,
+    mail: string
+}
+
 // User store
 export interface UserStore {
     user: User | undefined,
