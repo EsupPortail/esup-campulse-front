@@ -120,7 +120,7 @@ async function clearSearch(apiSearch: boolean) {
     <section class="introduction">
         <div class="content">
             <div class="intro-image">
-                <img :alt="t('directory.image-alt')" src="/images/unistra.jpg"/>
+                <img :alt="t('directory.image-alt')" src="/src/assets/img/unistra.jpg"/>
             </div>
             <div>
                 <h2 class="intro-title">{{ t('directory.subtitle') }}</h2>
@@ -263,7 +263,7 @@ async function clearSearch(apiSearch: boolean) {
                                 <QImg
                                     :alt="altLogoText(association)"
                                     :ratio="1"
-                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/images/no_logo_square.png') : '/images/no_logo_square.png'"
+                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/src/assets/img/no_logo_square.png') : '/src/assets/img/no_logo_square.png'"
                                 />
                             </div>
                             <div class="list-details">

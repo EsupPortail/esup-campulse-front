@@ -214,7 +214,7 @@ const columns: QTableProps['columns'] = [
                 <section class="introduction image-left">
                     <div class="content">
                         <div class="intro-image">
-                            <img src="/images/unistra.jpg" alt="Intro image" />
+                            <img src="/src/assets/img/unistra.jpg" alt="Intro image" />
                         </div>
                         <div>
                             <h2 class="intro-title">Ceci est un bloc d'introduction de page !</h2>
@@ -239,7 +239,7 @@ const columns: QTableProps['columns'] = [
                 <section class="introduction image-right color-background">
                     <div class="content">
                         <div class="intro-image">
-                            <img src="/images/unistra.jpg" alt="Intro image" />
+                            <img src="/src/assets/img/unistra.jpg" alt="Intro image" />
                         </div>
                         <div>
                             <h2 class="intro-title">Ceci est un bloc d'introduction de page !</h2>
@@ -277,7 +277,7 @@ const columns: QTableProps['columns'] = [
 
                     <!-- PARAGRAPH WITH A FLOATING IMAGE (LEFT) -->
                     <p class="paragraph">
-                        <img class="float-left" src="/images/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
+                        <img class="float-left" src="/src/assets/img/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
                         in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
@@ -290,7 +290,7 @@ const columns: QTableProps['columns'] = [
 
                     <!-- PARAGRAPH WITH A FLOATING IMAGE (RIGHT) -->
                     <p class="paragraph">
-                        <img class="float-right" src="/images/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
+                        <img class="float-right" src="/src/assets/img/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
                         in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
@@ -535,7 +535,7 @@ const columns: QTableProps['columns'] = [
                         <!-- The input is hidden and needs to have a unique id for the label (the actual visual) to target it. -->
                         <div style="width: 150px;">
                             <div class="image-input">
-                                <img src="public/images/logo_Ariane.png" alt="current image" />
+                                <img src="/src/assets/img/logo_Ariane.png" alt="current image" />
                                 <input id="file-input-g15er4" type="file" />
                                 <label for="file-input-g15er4">
                                     <i class="bi bi-pencil-square" aria-hidden="true"></i>
