@@ -20,19 +20,26 @@ export interface User {
 // User's role in the association
 export interface AssociationUser {
     user?: string,
-    association: number | null,
-    isPresident: boolean,
-    canBePresident: boolean,
-    isValidatedByAdmin: boolean,
-    isVicePresident: boolean,
-    isSecretary: boolean,
-    isTreasurer: boolean,
+    association?: number | null,
+    isPresident?: boolean,
+    canBePresident?: boolean,
+    canBePresidentFrom?: string,
+    canBePresidentTo?: string,
+    isValidatedByAdmin?: boolean,
+    isVicePresident?: boolean,
+    isSecretary?: boolean,
+    isTreasurer?: boolean,
 }
-
 
 export interface AssociationUserDetail {
     id: number | null,
-    user: string,
+    user: {
+        id: number,
+        username: string,
+        firstName: string,
+        lastName: string,
+        isValidatedByAdmin?: boolean
+    },
     association: {
         id: number,
         name: string,
@@ -92,22 +99,6 @@ export interface UserAssociation {
     name: string,
     isSite: boolean,
     institution: number
-}
-
-/*export interface UserAssociationManagement {
-    associationId: number | null,
-    associationName: string,
-    canBePresident: boolean,
-    role: string,
-    deleteAssociation: boolean
-}*/
-
-export interface UserAssociationPatch {
-    isPresident?: boolean,
-    canBePresident?: boolean,
-    isVicePresident?: boolean,
-    isSecretary?: boolean,
-    isTreasurer?: boolean
 }
 
 // User group

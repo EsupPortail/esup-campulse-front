@@ -1,15 +1,13 @@
 <script lang="ts" setup>
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {onMounted, ref, watch} from 'vue'
-import type {QTableProps} from 'quasar'
-import {useQuasar} from 'quasar'
+import {onMounted} from 'vue'
+import {QTableProps, useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import {useRoute} from 'vue-router'
-import type {AssociationUser} from '#/user'
-import {useAssociationStore} from "@/stores/useAssociationStore";
-import {Association} from "#/association";
-import {useUserStore} from "@/stores/useUserStore";
-import FormAssociationPresidencyDelegation from '@/components/form/FormAssociationPresidencyDelegation.vue'
+import type {AssociationUserDetail} from '#/user'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useUserStore} from '@/stores/useUserStore'
+import FormAssociationPresidencyDelegation from "@/components/form/FormAssociationPresidencyDelegation.vue";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -18,21 +16,13 @@ const route = useRoute()
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
 
-const association = ref<Association>()
-const hasPresidentStatus = ref<boolean>(false)
-
-const initValues = () => {
-    association.value = associationStore.association
-    hasPresidentStatus.value = userStore.hasPresidentStatus(association?.value?.id as number)
-}
-watch(() => associationStore.association, initValues)
 
 onMounted(async () => {
     loading.show
-    initValues()
     await onGetAssociationUsers()
     loading.hide
 })
+
 
 async function onGetAssociationUsers() {
     try {
@@ -45,56 +35,64 @@ async function onGetAssociationUsers() {
     }
 }
 
-/*
-watch(() => associationStore.associationUsers, () => {
-    associationUsers.value = associationStore.associationUsers.map(user => {
-        const watchedUser = reactive(user)
-        watch(() => [user.canBePresidentFrom, user.canBePresidentTo], ([from, to], [prevFrom, prevTo]) => {
-            if (from !== prevFrom || to !== prevTo) {
-                watchedUser.hasChanged = true
-            }
-        })
-        return watchedUser
-    })
-})
-*/
-
-function getAssociationUserRole(user: AssociationUser) {
+function getAssociationUserRole(user: AssociationUserDetail) {
     return user.isPresident ? t('dashboard.association-user.is-president') :
         user.isSecretary ? t('dashboard.association-user.is-secretary') :
             user.isTreasurer ? t('dashboard.association-user.is-treasurer') :
-                user.isVicePresident ? t('dashboard.association-user.is-vice-president') : 'none'
+                user.isVicePresident ? t('dashboard.association-user.is-vice-president') :
+                    t('dashboard.association-user.member')
 }
+
 
 const columns: QTableProps['columns'] = [
     {
-        name: 'id',
+        name: 'firstName',
         required: true,
-        label: 'ID',
+        label: t('user.first-name'),
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
+        field: 'firstName',
         sortable: true
     },
-    {name: 'userName', align: 'left', label: t('forms.email'), field: 'user', sortable: true},
+    {
+        name: 'lastName',
+        required: true,
+        label: t('user.last-name'),
+        align: 'left',
+        field: 'lastName',
+        sortable: true
+    },
     {
         name: 'role',
         align: 'left',
-        label: t('association.role-user'),
+        label: t('dashboard.association-user.role'),
         field: 'role',
         sortable: true
     },
     {
-        name: 'isValidatedByAdmin',
+        name: 'canBePresident',
         align: 'left',
-        label: t('user-manager.is-validated'),
-        field: 'isValidatedByAdmin',
+        label: 'Délégation',
+        field: 'canBePresident',
+        sortable: true
+    },
+    {
+        name: 'delegationFrom',
+        align: 'left',
+        label: 'Début',
+        field: 'delegationFrom',
+        sortable: true
+    },
+    {
+        name: 'delegationTo',
+        align: 'left',
+        label: 'Fin',
+        field: 'delegationTo',
         sortable: true
     },
     {
         name: 'delegation',
         align: 'left',
-        label: t('association.delegate-president-role'),
+        label: t('dashboard.association-user.delegate-presidency'),
         field: 'edition',
         sortable: true
     }
@@ -103,40 +101,65 @@ const columns: QTableProps['columns'] = [
 </script>
 
 <template>
-    <h1>{{ t("association.delegate-president-role") }}</h1>
-    <QTable :columns="columns" :rows="associationStore.associationUsers" :rows-per-page-options="[10, 20, 50, 0]"
-            :title="t('user-manager.users')"
-            row-key="id">
-        <template v-slot:body="props">
-            <QTr :props="props">
-                <QTd key="id" :props="props">
-                    {{ props.row.id }}
-                </QTd>
-                <QTd key="userName" :props="props">
-                    {{ props.row.user }}
-                </QTd>
-                <QTd key="role" :props="props">
-                    {{ getAssociationUserRole(props.row) }}
-                </QTd>
-                <QTd key="isValidatedByAdmin" :props="props">
-                    <QChip :color="props.row.isValidatedByAdmin ? 'teal' : 'red'" text-color="white">
-                        {{ props.row.isValidatedByAdmin ? t('yes') : t('no') }}
-                    </QChip>
-                </QTd>
-                <QTd v-if="!props.row.isPresident">
-                    <FormAssociationPresidencyDelegation
-                        :associationUser="props.row"
-                    />
-                </QTd>
-            </QTr>
-        </template>
-    </QTable>
+    <div class="form-container">
+        <div class="form">
+            <QTable
+                :columns="columns"
+                :rows="associationStore.associationUsers"
+                :rows-per-page-options="[10, 20, 50, 0]"
+                :title="t('user-manager.users')"
+                row-key="id"
+            >
+                <template v-slot:body="props">
+                    <QTr :props="props">
+                        <QTd key="firstName" :props="props">
+                            {{ props.row.user.firstName }}
+                        </QTd>
+                        <QTd key="lastName" :props="props">
+                            {{ props.row.user.lastName }}
+                        </QTd>
+                        <QTd key="role" :props="props">
+                            {{ getAssociationUserRole(props.row) }}
+                        </QTd>
+                        <QTd key="canBePresident" :props="props">
+                            <span
+                                v-if="props.row.canBePresident"
+                                class="form-state"
+                            >
+                                Activée
+                                <span class="form-state-icon form-state-green"><i class="bi bi-check"></i></span>
+                            </span>
+                            <span
+                                v-else
+                                class="form-state"
+                            >
+                                Désactivée
+                                <span class="form-state-icon form-state-red"><i class="bi bi-x"></i></span>
+                            </span>
+                        </QTd>
+                        <QTd key="delegationFrom" :props="props">
+                            {{ props.row.canBePresidentFrom }}
+                        </QTd>
+                        <QTd key="delegationTo" :props="props">
+                            {{ props.row.canBePresidentTo }}
+                        </QTd>
+                        <QTd key="delegation" :props="props" class="actions-cell-compact">
+                            <div class="button-container">
+                                <FormAssociationPresidencyDelegation :member="props.row"/>
+                            </div>
+                        </QTd>
+                    </QTr>
+                </template>
+            </QTable>
+        </div>
+    </div>
 </template>
 
-<style lang="sass" scoped>
-ul
-    margin-left: -40px
+<style lang="sass">
+@import '@/assets/styles/dashboard.scss'
+@import '@/assets/styles/forms.scss'
+</style>
 
-li
-    list-style: none
+<style lang="sass" scoped>
+
 </style>

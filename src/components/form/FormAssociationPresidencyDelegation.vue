@@ -1,106 +1,111 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {defineProps, ref, watch} from 'vue'
-import type {AssociationUser, UserAssociationPatch} from '#/user'
+import {onMounted, reactive, ref, toRefs, watch} from 'vue'
 import {useRoute} from "vue-router";
-import AlertConfirmAssociationPresidentDelegation
-    from "@/components/alert/AlertConfirmAssociationPresidentDelegation.vue";
 import {useQuasar} from "quasar";
+import type {AssociationUserDetail} from "#/user";
+import useUtility from "@/composables/useUtility";
+import useUserAssociations from "@/composables/useUserAssociations";
+
+const props = defineProps<{
+    member: AssociationUserDetail
+}>()
+
+const memberRef = toRefs(props).member
 
 const route = useRoute()
 const {notify} = useQuasar()
-
 const {t} = useI18n()
-const hasChanged = ref(false)
+const {fromDateIsAnterior} = useUtility()
+const {patchUserAssociations} = useUserAssociations()
 
+const openDelegationPanel = ref<boolean>()
 
-const props = defineProps({
-    associationUser: {
-        type: Object as () => AssociationUser,
-        required: true,
-    },
+const delegation = reactive({
+    canBePresident: false,
+    from: '',
+    to: ''
 })
 
-const associationUser = ref(props.associationUser)
-
-// create a deep copy of props.associationUser
-let initialAssociationUser = JSON.parse(JSON.stringify(props.associationUser))
-
-
-function isEqual(_associationUser: AssociationUser, _initialAssociationUser: AssociationUser): boolean {
-    //don't show button of Alert if initial canBeUser was false & user click twice the activate/desactivate delegation button even if any date input changed
-    if (!_initialAssociationUser.canBePresident && !_associationUser.canBePresident) {
-        return true;
-    }
-    return JSON.stringify(_associationUser) === JSON.stringify(_initialAssociationUser);
+const initDelegationParams = () => {
+    delegation.canBePresident = memberRef.value.canBePresident
+    delegation.from = memberRef.value.canBePresidentFrom ?? new Date().toJSON().slice(0, 10)
+    delegation.to = memberRef.value.canBePresidentTo ?? ''
 }
+watch(() => memberRef.value, initDelegationParams)
 
-watch(() => associationUser, () => {
-    const equal = isEqual(associationUser.value, initialAssociationUser)
-    if (equal) {
-        hasChanged.value = false
-    } else {
-        hasChanged.value = true
+onMounted(initDelegationParams)
+
+const dateIsLegal = ref<boolean>(false)
+
+const initDateIsLegal = () => {
+    dateIsLegal.value = fromDateIsAnterior(delegation.from, delegation.to)
+}
+watch(() => delegation.from, initDateIsLegal)
+watch(() => delegation.to, initDateIsLegal)
+
+async function onDelegatePresidency() {
+    try {
+        if (memberRef.value.id) {
+            const dataToPatch: { canBePresident: boolean, canBePresidentFrom: string, canBePresidentTo?: string } = {
+                canBePresident: !delegation.canBePresident,
+                canBePresidentFrom: delegation.from
+            }
+            if (delegation.to !== '') dataToPatch.canBePresidentTo = delegation.to
+            await patchUserAssociations(memberRef.value.user.id, parseInt(route.params.id as string), dataToPatch)
+        }
+    } catch {
+        //
     }
-
-    //in case there is some change, notify user he has to validate it to save it in db
-    if (hasChanged.value === true) {
-        notify({
-            message: t('notifications.announcement.save-delegation-change'),
-            icon: 'mdi-warning'
-        })
-    }
-}, {deep: true})
-
-const hasValidated = function (infoPatched: UserAssociationPatch) {
-    hasChanged.value = false;
-    console.log('hasValidated', infoPatched)
-    associationUser.value.canBePresident = infoPatched.canBePresident || false
-    associationUser.value.canBePresidentFrom = infoPatched.canBePresidentFrom
-    associationUser.value.canBePresidentTo = infoPatched.canBePresidentTo
-    initialAssociationUser = JSON.parse(JSON.stringify(props.associationUser))
 }
 
 </script>
 
-
 <template>
-    <QForm ref="associationEditPresidentDelegation"
-           class="q-gutter-md"
-    >
-        <div class="row">
-            <!-- /!\warning regarding 'Instance member is not accessible' should be safely ignored here -->
-            <QBtn
-                :color="associationUser.canBePresident ? 'blue': 'red'"
-                :label="t(associationUser.canBePresident ? 'association.disable-president-delegation' : 'association.enable-president-delegation')"
-                @click="associationUser.canBePresident= !associationUser.canBePresident"></QBtn>
-            <QSpace/>
-            <AlertConfirmAssociationPresidentDelegation
-                v-if="hasChanged"
-                :associationUser="associationUser"
-                @has-validated="hasValidated"
-            />
-        </div>
-        <div class="row">
-            <QInput v-if="associationUser.canBePresident" v-model="associationUser.canBePresidentFrom"
-                    :hint="t('association.delegate-president-role-from')"
-                    filled
-                    type="date">
-                <template>
-                    <QIcon name="mdi-calendar"/>
-                </template>
-            </QInput>
-            <QSpace/>
-            <QInput v-if="associationUser.canBePresident && associationUser.canBePresidentFrom"
-                    v-model="associationUser.canBePresidentTo"
-                    :hint="t('association.delegate-president-role-to')"
-                    filled
-                    type="date">
-                <template>
-                    <QIcon name="mdi-calendar"/>
-                </template>
-            </QInput>
-            <QSpace/>
-        </div>
-    </QForm>
+    <QBtn
+        :label="t('manage')"
+        color="primary"
+        icon="bi-pencil"
+        @click="openDelegationPanel = true"
+    />
+    <QDialog v-model="openDelegationPanel" persistent>
+        <QCard>
+            <QCardSection class="row items-center">
+                <QForm
+                    class="q-gutter-md"
+                    @submit.prevent="onDelegatePresidency"
+                >
+                    <h3 class="section-title"><i class="bi bi-card-text"></i>Déléguer mes droits de présidence</h3>
+
+                    <p>Je délègue mes droits de présidence à <strong>{{
+                            memberRef.user.firstName + ' ' + memberRef.user.lastName
+                        }}</strong></p>
+
+                    <QInput
+                        v-model="delegation.from"
+                        filled
+                        label="A partir du"
+                        type="date"
+                    />
+                    <QInput
+                        v-model="delegation.to"
+                        filled
+                        hint="Laisser le champ vide pour une date indéterminée."
+                        label="Jusqu'au"
+                        type="date"
+                    />
+                    <QBtn
+                        v-close-popup
+                        :label="t('cancel')"
+                    />
+                    <QBtn
+                        v-close-popup
+                        :disable="!dateIsLegal"
+                        :label="t('validate')"
+                        type="submit"
+                    />
+                </QForm>
+            </QCardSection>
+        </QCard>
+    </QDialog>
 </template>

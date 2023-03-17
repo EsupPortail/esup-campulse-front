@@ -11,7 +11,7 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from "@/composables/useSecurity";
 import useUserGroups from "@/composables/useUserGroups";
-import type {AssociationUser} from "#/user";
+import type {AssociationUserDetail} from "#/user";
 
 
 export const useAssociationStore = defineStore('associationStore', {
@@ -206,8 +206,7 @@ export const useAssociationStore = defineStore('associationStore', {
         // To test
         async getAssociationUsers(associationId: number) {
             const {axiosAuthenticated} = useAxios()
-            this.associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/?association_id=${associationId}`)).data
+            this.associationUsers = (await axiosAuthenticated.get<AssociationUserDetail[]>(`/users/associations/?association_id=${associationId}`)).data
         }
-
     }
 })
