@@ -13,6 +13,21 @@ export default function () {
         }
     }
 
+    // To test
+    function fromDateIsAnterior(from: string, to: string) {
+        let result = true
+        if (from === '' || to === '') return result
+        const splitFrom = from.split('-')
+        const splitTo = to.split('-')
+        for (let i = 0; i < splitFrom.length; i++) {
+            if (splitFrom[i] > splitTo[i]) {
+                result = false
+                break
+            }
+        }
+        return result
+    }
+
     /**
      * It simply checks if 2 arrays are equal.
      * Useful to compare if the user's groups have changed for example.
@@ -53,5 +68,5 @@ export default function () {
         return breadcrumbs
     }
 
-    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs}
+    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior}
 }

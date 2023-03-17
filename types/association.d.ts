@@ -1,4 +1,4 @@
-import type {AssociationUser} from "#/user";
+import type {AssociationUserDetail} from "#/user";
 
 export interface Association {
     id: number,
@@ -89,7 +89,7 @@ export interface AssociationStore {
     institutions: Institution[],
     institutionComponents: InstitutionComponent[],
     activityFields: AssociationActivityField[],
-    associationUsers: AssociationUser[]
+    associationUsers: AssociationUserDetail[]
 }
 
 export type AssociationDirectory = AssociationDirectoryDetail[]

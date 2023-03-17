@@ -1,12 +1,5 @@
 import {ref, watch} from 'vue'
-import type {
-    AssociationRole,
-    AssociationUser,
-    AssociationUserDetail,
-    UserAssociationPatch,
-    UserManagerStore,
-    UserStore
-} from '#/user'
+import type {AssociationRole, AssociationUser, AssociationUserDetail, UserManagerStore, UserStore} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
@@ -105,7 +98,7 @@ export default function () {
         await axiosAuthenticated.delete(`/users/${userId}/associations/${associationId}`)
     }
 
-    async function patchUserAssociations(userId: number | undefined, associationId: number, infosToPatch: UserAssociationPatch) {
+    async function patchUserAssociations(userId: number | undefined, associationId: number, infosToPatch: AssociationUser) {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.patch(`/users/${userId}/associations/${associationId}`, infosToPatch)
     }
@@ -201,6 +194,7 @@ export default function () {
     watch(() => userStore.userAssociations, () => {
         initUserAssociations(false)
     })
+
 
     return {
         userAssociations,
