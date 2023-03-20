@@ -1,0 +1,21 @@
+{
+    "root": true,
+    "extends": [
+        "plugin:vue/vue3-essential",
+        "eslint:recommended",
+        "@vue/eslint-config-typescript/recommended"
+    ],
+    "env": {
+        "vue/setup-compiler-macros": true
+    },
+    "rules": {
+        "no-console": "off",
+        "no-debugger": "off",
+        "@typescript-eslint/ban-ts-comment": [
+            "error",
+            {
+                "ts-ignore": "allow-with-description"
+            }
+        ]
+    }
+}
