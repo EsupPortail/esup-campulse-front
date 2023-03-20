@@ -3,6 +3,7 @@
     "description": "404",
     "title": "Contenu introuvable"
   },
+  "account": "Compte",
   "add": "Ajouter",
   "alerts": {
     "aborted-cas-registration": {
@@ -202,6 +203,7 @@
     }
   },
   "discard-changes": "Abandonner les modifications",
+  "edit": "Éditer",
   "footer": {
     "about": "À propos",
     "contact": "Contact",
@@ -410,6 +412,7 @@
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
   },
   "search": "Rechercher",
+  "status": "Statut",
   "user": {
     "associations": "Associations",
     "delete-association-role": "Le rôle dans l'association sera supprimé après validation des changements.",
@@ -457,5 +460,7 @@
   },
   "validate": "Valider",
   "validate-changes": "Valider les changements",
+  "validated": "Validé",
+  "validated-non": "Non validé",
   "yes": "Oui"
 }
