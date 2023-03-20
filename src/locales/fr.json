@@ -122,7 +122,9 @@
     "manage-users": "Gérer les comptes",
     "register": "Créer un compte",
     "user-account": "Compte utilisateur",
-    "validate-users": "Valider les comptes"
+    "validate-users": "Valider les comptes",
+    "validate-association-users": "Valider les affiliations aux associations",
+    "validate-association-user-detail": "Valider l'affiliation de l'utilisateur dans l'association'"
   },
   "cancel": "Annuler",
   "cancel-delete": "Annuler la suppression",

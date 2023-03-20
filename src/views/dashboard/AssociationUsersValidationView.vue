@@ -1,36 +1,37 @@
 <script lang="ts" setup>
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {onMounted} from 'vue'
-import {useI18n} from 'vue-i18n'
+import {onMounted, ref, watch} from 'vue'
+import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
-import useUsers from '@/composables/useUsers'
-import {useRoute} from 'vue-router'
-import router from '@/router'
-import FormUserGroups from '@/components/form/FormUserGroups.vue'
-import useUserGroups from '@/composables/useUserGroups'
+import {useI18n} from 'vue-i18n'
+import type {User} from '#/user'
 import useUserAssociations from "@/composables/useUserAssociations";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {validateUser} = useUsers()
-const {newGroups, groupChoiceIsValid} = useUserGroups()
-const {getUserAssociations} = useUserAssociations()
-
 const userManagerStore = useUserManagerStore()
-const route = useRoute()
+const {
+    getUnvalidatedAssociationUsers,
+    unvalidatedAssociationUsers,
+    initRole,
+    associationRoleOptions
+} = useUserAssociations()
+
+const users = ref<User[]>([])
+
+watch(() => userManagerStore.users, () => {
+    users.value = userManagerStore.users
+})
 
 onMounted(async () => {
     loading.show
-    await onGetUser()
-    newGroups.value = userManagerStore.userGroups
-    await onGetUserAssociations()
+    await onGetAssociationUsers()
     loading.hide
 })
 
-// Get user
-async function onGetUser() {
+async function onGetAssociationUsers() {
     try {
-        await userManagerStore.getUserDetail(parseInt(route.params.id as string))
+        await getUnvalidatedAssociationUsers()
     } catch (e) {
         notify({
             type: 'negative',
@@ -39,155 +40,106 @@ async function onGetUser() {
     }
 }
 
-// Get user associations
-async function onGetUserAssociations() {
-    try {
-        await getUserAssociations(userManagerStore.user?.id as number, true)
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+const columns: QTableProps['columns'] = [
+    {name: 'firstName', align: 'left', label: t('forms.first-name'), field: 'firstName', sortable: true},
+    {name: 'lastName', align: 'left', label: t('forms.last-name'), field: 'lastName', sortable: true},
+    {
+        name: 'association',
+        align: 'center',
+        label: t('association'),
+        field: 'association',
+        sortable: true
+    },
+    {
+        name: 'role',
+        align: 'center',
+        label: t('role'),
+        field: 'role',
+        sortable: true
+    },
+    {
+        name: 'isValidatedByAdmin',
+        align: 'right',
+        label: t('affiliation'),
+        field: 'isValidatedByAdmin',
+        sortable: true
+    },
+    {
+        name: 'validation',
+        align: 'center',
+        label: t('validate'),
+        field: 'validation',
+        sortable: false
     }
-}
+]
 
-// Function that verify if the user is validated by the admin or not, and send the response to the back
-async function onValidateUser() {
-    if (groupChoiceIsValid.value) {
-        try {
-            await validateUser()
-            await router.push({name: 'ValidateUsers'})
-            notify({
-                type: 'positive',
-                message: t('notifications.positive.validate-success')
-            })
-        } catch (e) {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.unknown-user')
-            })
-        }
-    }
-}
-
-async function onDeleteUser() {
-    try {
-        await userManagerStore.deleteUser()
-        await router.push({name: 'ValidateUsers'})
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.validate-delete-user')
-        })
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.unknown-user')
-        })
-    }
-}
 </script>
 
 <template>
     <section class="dashboard-section">
-        <h2>
-            <QIcon name="bi-person"/>
-            {{ t('user.infos') }}
-        </h2>
-
         <div class="form-container">
             <div class="form">
+                <QTable
+                    :columns="columns"
+                    :rows="unvalidatedAssociationUsers"
+                    :rows-per-page-options="[10, 20, 50, 0]"
+                    :title="t('user-manager.users')"
+                    row-key="id"
+                >
+                    <template v-slot:body="props">
+                        <QTr :props="props">
+                            <QTd key="firstName" :props="props">
+                                {{ props.row.user.firstName }}
+                            </QTd>
+                            <QTd key="lastName" :props="props">
+                                {{ props.row.user.lastName }}
+                            </QTd>
+                            <QTd key="association" :props="props">
+                                {{ props.row.association.name }}
+                            </QTd>
+                            <QTd key="role" :props="props">
+                                {{
+                                    associationRoleOptions.find(obj => obj.value === initRole(props.row)).label
+                                }}
+                            </QTd>
+                            <QTd key="isValidatedByAdmin" :props="props">
+                                <span class="form-state">
+                                                                            {{
+                                        props.row.isValidatedByAdmin ? t('validated') : t('validated-non')
+                                    }}
 
-                <div class="rows-container">
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.first-name') }}</h3>
-                        <p>{{ userManagerStore.user?.firstName }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.last-name') }}</h3>
-                        <p>{{ userManagerStore.user?.lastName }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.email') }}</h3>
-                        <p>{{ userManagerStore.user?.email }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.phone') }}</h3>
-                        <p>{{ userManagerStore.user?.phone }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.is-cas') }}</h3>
-                        <p>{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.is-validated-by-admin') }}</h3>
-                        <p>{{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}</p>
-                    </article>
-                </div>
+                                    <span
+                                        :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
+                                    >
+                                        <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>
+                                    </span>
+                                </span>
+                            </QTd>
+                            <QTd key="validation" :props="props" class="actions-cell-compact">
+                                <QBtn
+                                    :label="t('validate')"
+                                    :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.user.id, associationId: props.row.association.id}}"
+                                    color="secondary"
+                                    icon="mdi-check-circle"
+                                />
+                            </QTd>
+                        </QTr>
+                    </template>
+                </QTable>
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
-        <h2>
-            <QIcon name="bi-person-lines-fill"/>
-            {{ t('directory.title') }}
-        </h2>
-
-        <div class="form-container">
-            <div class="form">
-
-                <div v-if="userManagerStore.userAssociations.length">
-
-                    <div class="rows-container">
-                        <article v-for="(association, index) in userManagerStore.userAssociations" :key="index"
-                                 class="display-row">
-                            <h3 class="row-title">{{ association.association.name }}</h3>
-                            <ul>
-                                <li>{{ t('dashboard.association-user.is-president') }} :
-                                    {{ association.isPresident ? t('yes') : t('no') }}
-                                </li>
-                                <li>{{ t('dashboard.association-user.can-be-president') }} :
-                                    {{ association.canBePresident ? t('yes') : t('no') }}
-                                </li>
-                                <li>{{ t('dashboard.association-user.is-secretary') }} :
-                                    {{ association.isSecretary ? t('yes') : t('no') }}
-                                </li>
-                                <li>{{ t('dashboard.association-user.is-treasurer') }} :
-                                    {{ association.isTreasurer ? t('yes') : t('no') }}
-                                </li>
-                            </ul>
-                        </article>
-                    </div>
-
-                </div>
-                <div v-else>
-                    <p class="no-data-label">{{ t('dashboard.association-user.not-association-member') }}</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-    <section class="dashboard-section">
-        <h2>
-            <QIcon name="bi-person-lines-fill"/>
-            {{ t('user.groups') }}
-        </h2>
-        <div class="form-container">
-            <div class="form">
-                <FormUserGroups/>
-            </div>
-        </div>
-    </section>
-    <section class="form-page-navigation">
-        <QBtn :label="t('back')" :to="{ name: 'ValidateUsers' }" color="secondary" icon="bi-chevron-compact-left"/>
-        <QBtn :label="t('user-manager.delete-account-application')" color="red" icon="bi-file-earmark-x"
-              @click="onDeleteUser"/>
-        <QBtn :label="t('user-manager.validate-account')" color="primary" icon-right="bi-check2"
-              @click="onValidateUser"/>
     </section>
 </template>
 
 <style lang="sass">
-@import '@/assets/styles/forms.scss'
 @import '@/assets/styles/dashboard.scss'
-@import '@/assets/styles/user-validation-detail.scss'
+@import '@/assets/styles/forms.scss'
+</style>
+
+<style lang="sass" scoped>
+ul
+    margin-left: -40px
+
+li
+    list-style: none
 </style>

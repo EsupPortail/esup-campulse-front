@@ -11,6 +11,7 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
+import useSecurity from "@/composables/useSecurity";
 
 // Used to store a user's associations, while it is modified by a manager or during registration
 const userAssociations = ref<AssociationRole[]>([])
@@ -20,6 +21,8 @@ const newAssociations = ref<AssociationRole[]>([])
 
 // Used to store a user's new associations
 const newAssociationsUser = ref<AssociationUser[]>([])
+
+const unvalidatedAssociationUsers = ref<AssociationUserDetail[]>([])
 
 export default function () {
 
@@ -161,16 +164,22 @@ export default function () {
     }
 
     // To test
+    function initRole(associationUser: AssociationUserDetail) {
+        let role = 'isMember'
+        if (associationUser.isPresident) role = 'isPresident'
+        if (associationUser.isSecretary) role = 'isSecretary'
+        if (associationUser.isTreasurer) role = 'isTreasurer'
+        if (associationUser.isVicePresident) role = 'isVicePresident'
+        return role
+    }
+
+    // To test
     function initUserAssociations(editedByStaff: boolean) {
         userAssociations.value = []
         let associations: AssociationUserDetail[] = userStore.userAssociations
         if (editedByStaff) associations = userManagerStore.userAssociations
         associations.forEach(function (association) {
-            let role = 'isMember'
-            if (association.isPresident) role = 'isPresident'
-            if (association.isSecretary) role = 'isSecretary'
-            if (association.isTreasurer) role = 'isTreasurer'
-            if (association.isVicePresident) role = 'isVicePresident'
+            const role = initRole(association)
             userAssociations.value.push({
                 id: association.association.id,
                 name: association.association.name,
@@ -190,6 +199,15 @@ export default function () {
         initUserAssociations(false)
     })
 
+    async function getUnvalidatedAssociationUsers() {
+        const {axiosAuthenticated} = useAxios()
+        const {hasPerm} = useSecurity()
+        let institutions = userStore.userInstitutions?.join(',')
+        if (hasPerm('change_user_misc')) institutions += ','
+        const url = `/users/associations/?institutions=${institutions}&is_validated_by_admin=false`
+        unvalidatedAssociationUsers.value = (await axiosAuthenticated.get<AssociationUserDetail[]>(url)).data
+    }
+
     return {
         userAssociations,
         updateUserAssociations,
@@ -201,6 +219,9 @@ export default function () {
         associationRoleOptions,
         getUserAssociations,
         newAssociations,
-        deleteUserAssociation
+        deleteUserAssociation,
+        getUnvalidatedAssociationUsers,
+        unvalidatedAssociationUsers,
+        initRole
     }
 }
