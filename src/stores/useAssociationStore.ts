@@ -69,6 +69,18 @@ export const useAssociationStore = defineStore('associationStore', {
     },
 
     actions: {
+        getAssociationSubDetails(association: Association) {
+            association.institution = this.institutions.find((institution) => institution.id === association.institution)
+            association.institutionComponent = this.institutionComponents.find((institutionComponent) => institutionComponent.id === association.institutionComponent)
+            association.activityField = this.activityFields.find((activityField) => activityField.id === association.activityField)
+            return association
+        },
+        getAssociationsSubDetails(associations: Association[]) {
+            associations.forEach((association, index) => {
+                associations[index] = this.getAssociationSubDetails(association)
+            });
+            return associations
+        },
         /**
          * It gets a list of associations from the server, and stores them in the `associations` variable
          * returned.
@@ -83,7 +95,9 @@ export const useAssociationStore = defineStore('associationStore', {
 
             if (!isPublic) instance = axiosAuthenticated
 
-            this.associations = (await instance.get<Association[]>(url)).data
+            await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
+            const associations = (await instance.get<Association[]>(url)).data
+            this.associations = this.getAssociationsSubDetails(associations)
         },
         /**
          * This function gets the associations that the user (manager) is a member of
@@ -92,7 +106,8 @@ export const useAssociationStore = defineStore('associationStore', {
             const {axiosAuthenticated} = useAxios()
             const userStore = useUserStore()
             const url = `/associations/?institutions=${userStore.userInstitutions?.join(',')}`
-            this.associations = (await axiosAuthenticated.get<Association[]>(url)).data
+            await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
+            this.associations = this.getAssociationsSubDetails((await axiosAuthenticated.get<Association[]>(url)).data)
         },
         /**
          * It gets the names of all associations, or all public associations, or all associations that the user is a member
@@ -122,10 +137,11 @@ export const useAssociationStore = defineStore('associationStore', {
             if (!isStaff.value && hasPerm('change_association')) {
                 const {axiosAuthenticated} = useAxios()
                 this.associations = []
+                await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
                 for (let i = 0; i < (userStore.user?.associations.length as number); i++) {
                     const associationId = userStore.user?.associations[i].id as number
                     const association = (await axiosAuthenticated.get<Association>(`/associations/${associationId}`)).data
-                    this.associations.push(association)
+                    this.associations.push(this.getAssociationSubDetails(association))
                 }
             } else if (hasPerm('change_association_any_institution')) {
                 await this.getAssociations(false)
@@ -143,7 +159,8 @@ export const useAssociationStore = defineStore('associationStore', {
             const {axiosPublic, axiosAuthenticated} = useAxios()
             let instance = axiosAuthenticated
             if (publicRequest) instance = axiosPublic
-            this.association = (await instance.get<Association>(`/associations/${id}`)).data
+            await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
+            this.association = this.getAssociationSubDetails((await instance.get<Association>(`/associations/${id}`)).data)
         },
         // To test
         async updateAssociationLogo(logoData: FormData | object, id: number) {
@@ -159,8 +176,6 @@ export const useAssociationStore = defineStore('associationStore', {
         async getInstitutions() {
             if (this.institutions.length === 0) {
                 const {axiosPublic} = useAxios()
-                /* It's a GET request to the API, which returns a list of institutions. */
-                /* It's a GET request to the API, which returns a list of institutions. */
                 this.institutions = (await axiosPublic.get<Institution[]>('/institutions/')).data
             }
         },
