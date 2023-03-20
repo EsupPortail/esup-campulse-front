@@ -3,6 +3,7 @@
     "description": "404",
     "title": "Contenu introuvable"
   },
+  "account": "Compte",
   "add": "Ajouter",
   "alerts": {
     "aborted-cas-registration": {
@@ -167,8 +168,9 @@
       "manage-association": "Gérer l'association",
       "manage-my-associations": "Gérer mes associations",
       "member": "Membre",
-      "my-associations": "Mes associations",
+      "my-associations": "Mes associations actuelles",
       "my-role": "Mon rôle :",
+      "new-associations": "Nouvelles associations",
       "not-association-member": "L'utilisateur n'est membre d'aucune association.",
       "presidency-status": "Droit de présidence :",
       "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
@@ -201,6 +203,7 @@
     }
   },
   "discard-changes": "Abandonner les modifications",
+  "edit": "Éditer",
   "footer": {
     "about": "À propos",
     "contact": "Contact",
@@ -210,6 +213,7 @@
   "forms": {
     "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
+    "add-selected-associations": "Ajouter les associations sélectionnées",
     "association-institution": "Établissement de rattachement",
     "association-is-site": "Association chartée (rend l'association visible sur l'annuaire)",
     "association-name": "Nom de l'association",
@@ -408,6 +412,7 @@
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
   },
   "search": "Rechercher",
+  "status": "Statut",
   "user": {
     "associations": "Associations",
     "delete-association-role": "Le rôle dans l'association sera supprimé après validation des changements.",
@@ -455,5 +460,7 @@
   },
   "validate": "Valider",
   "validate-changes": "Valider les changements",
+  "validated": "Validé",
+  "validated-non": "Non validé",
   "yes": "Oui"
 }

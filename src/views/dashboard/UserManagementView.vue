@@ -52,106 +52,118 @@ async function onGetUserGroups() {
 }
 
 const columns: QTableProps['columns'] = [
-    {
-        name: 'id',
-        required: true,
-        label: 'ID',
-        align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
-    },
     {name: 'firstName', align: 'left', label: t('forms.first-name'), field: 'firstName', sortable: true},
     {name: 'lastName', align: 'left', label: t('forms.last-name'), field: 'lastName', sortable: true},
     {name: 'email', align: 'left', label: t('forms.email'), field: 'email', sortable: true},
     {
         name: 'associations',
-        align: 'left',
+        align: 'center',
         label: t('directory.title'),
         field: 'associations',
         sortable: false
     },
-    {name: 'groups', align: 'left', label: t('user-manager.user-status'), field: 'groups', sortable: false},
+    {name: 'groups', align: 'center', label: t('status'), field: 'groups', sortable: false},
     {
         name: 'isValidatedByAdmin',
-        align: 'left',
-        label: t('user-manager.is-validated'),
+        align: 'right',
+        label: t('account'),
         field: 'isValidatedByAdmin',
         sortable: true
     },
     {
         name: 'edition',
         align: 'left',
-        label: t('user-manager.user-edition'),
+        label: t('edit'),
         field: 'edition',
-        sortable: true
+        sortable: false
     }
 ]
 
 </script>
 
 <template>
-    <h1>{{ route.name === 'ValidateUsers' ? t("user-manager.validation") : t("user-manager.management") }}</h1>
-    <QTable :columns="columns" :rows="users" :rows-per-page-options="[10, 20, 50, 0]" :title="t('user-manager.users')"
-            row-key="id">
-        <template v-slot:body="props">
-            <QTr :props="props">
-                <QTd key="id" :props="props">
-                    {{ props.row.id }}
-                </QTd>
-                <QTd key="firstName" :props="props">
-                    {{ props.row.firstName }}
-                </QTd>
-                <QTd key="lastName" :props="props">
-                    {{ props.row.lastName }}
-                </QTd>
-                <QTd key="email" :props="props">
-                    {{ props.row.email }}
-                </QTd>
-                <QTd key="associations" :props="props">
-                    <ul>
-                        <li v-for="(association, index) in props.row.associations" :key="index">
-                            <QChip>{{ association.name }}</QChip>
-                        </li>
-                    </ul>
-                </QTd>
-                <QTd key="groups" :props="props">
-                    <ul>
-                        <li v-for="(group, index) in props.row.groups" :key="index">
-                            <QChip
-                                v-if="props.row.groups.map((g) => g.groupId).indexOf(group.groupId) === index">
-                                {{
-                                    getGroupLiteral(group.groupId)
-                                }}
-                            </QChip>
-                        </li>
-                    </ul>
-                </QTd>
-                <QTd key="isValidatedByAdmin" :props="props">
-                    <QChip :color="props.row.isValidatedByAdmin ? 'teal' : 'red'" text-color="white">
-                        {{ props.row.isValidatedByAdmin ? t('yes') : t('no') }}
-                    </QChip>
-                </QTd>
-                <QTd>
-                    <QBtn
-                        v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"
-                        :label="t('modify')"
-                        :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
-                        color="primary"
-                        icon="mdi-pencil"
-                    />
-                    <QBtn
-                        v-if="route.name === 'ValidateUsers'"
-                        :label="t('validate')"
-                        :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
-                        color="secondary"
-                        icon="mdi-check-circle"
-                    />
-                </QTd>
-            </QTr>
-        </template>
-    </QTable>
+
+    <section class="dashboard-section">
+        <h2>
+            <i aria-hidden="true" class="bi bi-pencil-square"></i>
+            {{ route.name === 'ValidateUsers' ? t("user-manager.validation") : t("user-manager.management") }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <QTable :columns="columns" :rows="users" :rows-per-page-options="[10, 20, 50, 0]"
+                        :title="t('user-manager.users')"
+                        row-key="id">
+                    <template v-slot:body="props">
+                        <QTr :props="props">
+                            <QTd key="firstName" :props="props">
+                                {{ props.row.firstName }}
+                            </QTd>
+                            <QTd key="lastName" :props="props">
+                                {{ props.row.lastName }}
+                            </QTd>
+                            <QTd key="email" :props="props">
+                                {{ props.row.email }}
+                            </QTd>
+                            <QTd key="associations" :props="props">
+                                <ul>
+                                    <li v-for="(association, index) in props.row.associations" :key="index">
+                                        <QChip>{{ association.name }}</QChip>
+                                    </li>
+                                </ul>
+                            </QTd>
+                            <QTd key="groups" :props="props">
+                                <ul>
+                                    <li v-for="(group, index) in props.row.groups" :key="index">
+                                        <QChip
+                                            v-if="props.row.groups.map((g) => g.groupId).indexOf(group.groupId) === index">
+                                            {{
+                                                getGroupLiteral(group.groupId)
+                                            }}
+                                        </QChip>
+                                    </li>
+                                </ul>
+                            </QTd>
+                            <QTd key="isValidatedByAdmin" :props="props">
+                                <span class="form-state">
+                                                                            {{
+                                        props.row.isValidatedByAdmin ? t('validated') : t('validated-non')
+                                    }}
+
+                                    <span
+                                        :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
+                                    >
+                                        <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>
+                                    </span>
+                                </span>
+                            </QTd>
+                            <QTd key="edition" :props="props" class="actions-cell-compact">
+                                <div class="button-container">
+                                    <QBtn
+                                        v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"
+                                        :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
+                                        icon="bi-pencil"
+                                    />
+                                    <QBtn
+                                        v-if="route.name === 'ValidateUsers'"
+                                        :label="t('validate')"
+                                        :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
+                                        color="secondary"
+                                        icon="mdi-check-circle"
+                                    />
+                                </div>
+                            </QTd>
+                        </QTr>
+                    </template>
+                </QTable>
+            </div>
+        </div>
+    </section>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/dashboard.scss'
+@import '@/assets/styles/forms.scss'
+</style>
 
 <style lang="sass" scoped>
 ul

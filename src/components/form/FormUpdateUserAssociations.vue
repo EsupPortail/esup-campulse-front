@@ -70,107 +70,139 @@ async function onUpdateUserAssociations() {
 </script>
 
 <template>
-    <fieldset class="association-cards">
-        <legend>{{ props.editedByStaff ? t('user.associations') : t('dashboard.my-associations') }}</legend>
-        <p v-if="userAssociations.length === 0">
-            {{
-                props.editedByStaff ? t('user.has-no-association') : t('dashboard.association-user.you-are-not-an-association-member')
-            }}</p>
-        <QCard
-            v-for="association in userAssociations"
-            :key="association.id ? association.id : 0"
-            class="association-card"
-        >
-            <QCardSection>
-                <article>
-                    <h4>{{ association.name }}</h4>
-                    <QOptionGroup
-                        v-if="props.editedByStaff"
-                        v-model="association.role"
-                        :options="association.options"
-                        color="primary"
-                        @update:model-value="association.role === 'isPresident' ? association.canBePresident = false : association.canBePresident"
-                    />
-                    <ul v-else>
-                        <li>{{ t('dashboard.association-user.my-role') }} <span>{{
-                                associationRoleOptions.find(obj => obj.value === association.role)?.label ?? t('dashboard.association-user.member')
-                            }}</span>
-                        </li>
-                        <li>
-                            {{ t('dashboard.association-user.presidency-status') }} <span>{{
-                                (association.role === 'isPresident' || association.canBePresident) ? t('yes') : t('no')
-                            }}</span>
-                        </li>
-                        <li>
-                            {{ t('dashboard.association-user.is-validated-by-admin') }}
-                            <span>{{ association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
-                        </li>
-                    </ul>
-                    <QCheckbox
-                        v-if="props.editedByStaff"
-                        v-model="association.canBePresident"
-                        :disable="association.role === 'isPresident'"
-                        :label="t('forms.i-can-be-president')"
-                    />
-                    <div class="btn-group">
-                        <div v-if="!props.editedByStaff">
-                            <AlertConfirmUserQuitAssociation
-                                :association-id="association.id"
-                                :edited-by-staff="props.editedByStaff"
-                                :user-id="user.id"
-                                @user-association-deleted="onGetUserAssociations"
+    <section class="association-cards dashboard-section">
+        <div class="form-title">
+            <h2>
+                <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                {{ props.editedByStaff ? t('user.associations') : t('dashboard.association-user.my-associations') }}
+            </h2>
+        </div>
+
+        <div class="form-container">
+            <div class="form">
+                <p v-if="userAssociations.length === 0">
+                    {{
+                        props.editedByStaff ? t('user.has-no-association') : t('dashboard.association-user.you-are-not-an-association-member')
+                    }}</p>
+                <QCard
+                    v-for="association in userAssociations"
+                    :key="association.id ? association.id : 0"
+                    class="association-card"
+                >
+                    <QCardSection>
+                        <QForm>
+                            <h4>{{ association.name }}</h4>
+                            <QOptionGroup
+                                v-if="props.editedByStaff"
+                                v-model="association.role"
+                                :options="association.options"
+                                color="primary"
+                                @update:model-value="association.role === 'isPresident' ? association.canBePresident = false : association.canBePresident"
                             />
-                        </div>
-                        <div v-else>
-                            <QBtn
-                                v-if="!association.deleteAssociation"
-                                :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
-                                color="red"
-                                icon="mdi-delete"
-                                @click="association.deleteAssociation = true"
+                            <ul v-else>
+                                <li>{{ t('dashboard.association-user.my-role') }} <span>{{
+                                        associationRoleOptions.find(obj => obj.value === association.role)?.label ?? t('dashboard.association-user.member')
+                                    }}</span>
+                                </li>
+                                <li>
+                                    {{ t('dashboard.association-user.presidency-status') }} <span>{{
+                                        (association.role === 'isPresident' || association.canBePresident) ? t('yes') : t('no')
+                                    }}</span>
+                                </li>
+                                <li>
+                                    {{ t('dashboard.association-user.is-validated-by-admin') }}
+                                    <span>{{ association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
+                                </li>
+                            </ul>
+                            <QCheckbox
+                                v-if="props.editedByStaff"
+                                v-model="association.canBePresident"
+                                :disable="association.role === 'isPresident'"
+                                :label="t('forms.i-can-be-president')"
                             />
-                            <div v-else>
+                            <div class="btn-group">
+                                <div v-if="!props.editedByStaff">
+                                    <AlertConfirmUserQuitAssociation
+                                        :association-id="association.id"
+                                        :edited-by-staff="props.editedByStaff"
+                                        :user-id="user.id"
+                                        @user-association-deleted="onGetUserAssociations"
+                                    />
+                                </div>
+                                <div v-else>
+                                    <QBtn
+                                        v-if="!association.deleteAssociation"
+                                        :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+                                        color="red"
+                                        icon="mdi-delete"
+                                        @click="association.deleteAssociation = true"
+                                    />
+                                    <div v-else>
                                 <span class="delete-message">
                                     {{ t('user.delete-association-role') }}
                                 </span>
+                                        <QBtn
+                                            :label="t('cancel-delete')"
+                                            icon="mdi-cancel"
+                                            outline
+                                            @click="association.deleteAssociation = false"
+                                        />
+                                    </div>
+                                </div>
                                 <QBtn
-                                    :label="t('cancel-delete')"
-                                    icon="mdi-cancel"
-                                    outline
-                                    @click="association.deleteAssociation = false"
+                                    v-if="!props.editedByStaff && association.isValidatedByAdmin && userStore.hasPresidentStatus(association.id)"
+                                    :label="t('dashboard.association-user.manage-association')"
+                                    :to="{name: 'AssociationDashboard', params: {id: association.id}}"
                                 />
                             </div>
-                        </div>
-                        <QBtn
-                            v-if="!props.editedByStaff && association.isValidatedByAdmin && userStore.hasPresidentStatus(association.id)"
-                            :label="t('dashboard.association-user.manage-association')"
-                            :to="{name: 'AssociationDashboard', params: {id: association.id}}"
-                        />
-                    </div>
-                </article>
-            </QCardSection>
-        </QCard>
-        <QCard v-if="groupCanJoinAssociation">
-            <QCardSection>
-                <FormRegisterUserAssociation/>
-            </QCardSection>
-        </QCard>
-        <div>
-            <QBtn
-                v-if="!props.editedByStaff"
-                :label="t('validate-changes')"
-                @click="onUpdateUserAssociations"
-            />
+                        </QForm>
+                    </QCardSection>
+                </QCard>
+            </div>
         </div>
-    </fieldset>
+    </section>
+
+    <section class="association-cards dashboard-section">
+        <div class="form-title">
+            <h2>
+                <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                {{ t('dashboard.association-user.new-associations') }}
+            </h2>
+        </div>
+
+        <div class="form-container">
+            <div class="form">
+
+                <QCard v-if="groupCanJoinAssociation">
+                    <QCardSection>
+                        <FormRegisterUserAssociation/>
+                    </QCardSection>
+                </QCard>
+                <div>
+                    <QBtn
+                        v-if="!props.editedByStaff && newAssociations.length > 0 && newAssociations[0].id"
+                        :label="t('forms.add-selected-associations')"
+                        @click="onUpdateUserAssociations"
+                    />
+                </div>
+
+            </div>
+        </div>
+    </section>
 </template>
 
+<style lang="sass">
+@import '@/assets/styles/forms.scss'
+</style>
+
 <style lang="sass" scoped>
-.association-cards, .association-cards article
+.form
     display: flex
     flex-direction: column
-    gap: 20px
-    margin-top: 20px
+    gap: 1rem
+
+.association-card
+    padding: 1rem
 
 fieldset
     border: none
@@ -183,22 +215,15 @@ h4
     padding: 0
     line-height: 0
 
-legend
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-    width: 100%
-    margin-bottom: 10px
-
 .delete-message
     color: red
 
 .btn-group
     display: flex
-    gap: 10px
-    margin-top: 15px
+    gap: 1rem
+    margin-top: 1rem
 
 ul
-    padding: 10px
+    padding: 1rem
+    margin-top: 1rem
 </style>
