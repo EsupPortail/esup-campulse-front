@@ -48,38 +48,40 @@ async function loadAssociations() {
 </script>
 
 <template>
-    <fieldset>
-        <legend class="legend-big">{{ title }}
-        </legend>
-        <div v-for="(association, index) in newAssociations" :key="index">
-            <QSelect
-                v-model="association.id"
-                :label="t('forms.select-association')"
-                :options="associationStore.associationLabels"
-                emit-value
-                filled
-                map-options
-                @update:model-value="checkHasPresident(association)"
-            />
-            <QOptionGroup
-                v-model="association.role"
-                :options="association.options"
-                inline
-                @update:model-value="updateRegisterRoleInAssociation"
-            />
-            <QBtn
-                :label="t('forms.delete-association')"
-                color="red" icon="mdi-minus-circle-outline"
-                outline
-                @click="removeAssociation(index)"
-            />
-            <QSeparator/>
-        </div>
-        <QBtn v-if="newAssociations.length < (5 - userAssociations.length)" :label="t('forms.add-association')"
-              class="add-association"
-              color="primary"
-              icon="mdi-plus-circle-outline" @click="addAssociation"/>
-    </fieldset>
+    <QForm>
+        <fieldset>
+            <legend class="legend-big">{{ title }}
+            </legend>
+            <div v-for="(association, index) in newAssociations" :key="index">
+                <QSelect
+                    v-model="association.id"
+                    :label="t('forms.select-association')"
+                    :options="associationStore.associationLabels"
+                    emit-value
+                    filled
+                    map-options
+                    @update:model-value="checkHasPresident(association)"
+                />
+                <QOptionGroup
+                    v-model="association.role"
+                    :options="association.options"
+                    inline
+                    @update:model-value="updateRegisterRoleInAssociation"
+                />
+                <QBtn
+                    :label="t('forms.delete-association')"
+                    color="red" icon="mdi-minus-circle-outline"
+                    outline
+                    @click="removeAssociation(index)"
+                />
+                <QSeparator/>
+            </div>
+            <QBtn v-if="newAssociations.length < (5 - userAssociations.length)" :label="t('forms.add-association')"
+                  class="add-association"
+                  color="primary"
+                  icon="mdi-plus-circle-outline" @click="addAssociation"/>
+        </fieldset>
+    </QForm>
 </template>
 
 <style lang="sass" scoped>

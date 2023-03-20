@@ -167,8 +167,9 @@
       "manage-association": "Gérer l'association",
       "manage-my-associations": "Gérer mes associations",
       "member": "Membre",
-      "my-associations": "Mes associations",
+      "my-associations": "Mes associations actuelles",
       "my-role": "Mon rôle :",
+      "new-associations": "Nouvelles associations",
       "not-association-member": "L'utilisateur n'est membre d'aucune association.",
       "presidency-status": "Droit de présidence :",
       "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
@@ -210,6 +211,7 @@
   "forms": {
     "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
+    "add-selected-associations": "Ajouter les associations sélectionnées",
     "association-institution": "Établissement de rattachement",
     "association-is-site": "Association chartée (rend l'association visible sur l'annuaire)",
     "association-name": "Nom de l'association",

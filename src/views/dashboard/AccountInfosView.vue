@@ -16,46 +16,37 @@ const tab = ref<string>('infos')
 </script>
 
 <template>
-    <div class="container">
-        <QTabs
-            v-model="tab"
-            active-color="primary"
-            dense
-            indicator-color="primary"
-            narrow-indicator
-        >
-            <QTab :label="t('dashboard.my-infos')" name="infos"/>
-            <QTab
-                v-if="!isStaff"
-                :label="t('dashboard.my-associations')"
-                name="associations"
-            />
-            <QTab
-                v-if="!userStore.user?.isCas"
-                :label="t('dashboard.my-password')"
-                name="password"
-            />
-        </QTabs>
+    <QTabs
+        v-model="tab"
+        active-color="primary"
+        dense
+        indicator-color="primary"
+        narrow-indicator
+    >
+        <QTab :label="t('dashboard.my-infos')" name="infos"/>
+        <QTab
+            v-if="!isStaff"
+            :label="t('dashboard.my-associations')"
+            name="associations"
+        />
+        <QTab
+            v-if="!userStore.user?.isCas"
+            :label="t('dashboard.my-password')"
+            name="password"
+        />
+    </QTabs>
 
-        <QTabPanels v-model="tab" animated>
-            <QTabPanel name="infos">
-                <FormUserInfosEdition :edited-by-staff="false" :user="userStore.user"/>
-            </QTabPanel>
+    <QTabPanels v-model="tab" animated>
+        <QTabPanel name="infos">
+            <FormUserInfosEdition :edited-by-staff="false" :user="userStore.user"/>
+        </QTabPanel>
 
-            <QTabPanel name="associations">
-                <FormUpdateUserAssociations :edited-by-staff="false" :user="userStore.user"/>
-            </QTabPanel>
+        <QTabPanel name="associations">
+            <FormUpdateUserAssociations :edited-by-staff="false" :user="userStore.user"/>
+        </QTabPanel>
 
-            <QTabPanel name="password">
-                <FormProfilePasswordEdit/>
-            </QTabPanel>
-        </QTabPanels>
-    </div>
+        <QTabPanel name="password">
+            <FormProfilePasswordEdit/>
+        </QTabPanel>
+    </QTabPanels>
 </template>
-
-<style lang="sass" scoped>
-.container
-    max-width: 1280px
-    width: 100%
-    margin: auto
-</style>
