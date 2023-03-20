@@ -81,17 +81,17 @@ describe('useUserAssociations', () => {
     })*/
 
     describe('deleteUserAssociation', () => {
-        it('should call API once on /users/associations/userId/associationId', async () => {
+        it('should call API once on /users/userId/associations/associationId', async () => {
             userManagerStore.user = _institutionStudent
             const {axiosAuthenticated} = useAxios()
             await deleteUserAssociation(userManagerStore.user?.id, 1)
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user?.id}/1`)
+            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}/associations/1`)
         })
     })
 
     describe('patchUserAssociations', () => {
-        it('should call API once on /users/associations/userId/associationId with data to patch as payload', async () => {
+        it('should call API once on /users/userId/associations/associationId with data to patch as payload', async () => {
             userManagerStore.user = _institutionStudent
             const dataToPatch = {
                 isPresident: false,
@@ -103,7 +103,7 @@ describe('useUserAssociations', () => {
             await patchUserAssociations(userManagerStore.user?.id, 1, dataToPatch)
             const {axiosAuthenticated} = useAxios()
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/associations/${userManagerStore.user?.id}/1`, dataToPatch)
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}/associations/1`, dataToPatch)
         })
     })
 
@@ -163,13 +163,13 @@ describe('useUserAssociations', () => {
     })
 
     describe('getUserAssociations', () => {
-        it('should call API once on /users/associations/id and populate userAssociations', async () => {
+        it('should call API once on /users/id/associations/ and populate userAssociations', async () => {
             const {axiosAuthenticated} = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
             await getUserAssociations(1, true)
             expect(mockedAxios.get).toHaveBeenCalledOnce()
-            expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/1')
+            expect(mockedAxios.get).toHaveBeenCalledWith('/users/1/associations/')
             expect(userManagerStore.userAssociations).toEqual(_userAssociations)
         })
     })
