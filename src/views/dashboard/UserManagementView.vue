@@ -145,7 +145,7 @@ const columns: QTableProps['columns'] = [
                                     />
                                     <QBtn
                                         v-if="route.name === 'ValidateUsers'"
-                                        :label="t('validate')"
+                                        :label="t('consult')"
                                         :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
                                         color="secondary"
                                         icon="mdi-check-circle"
