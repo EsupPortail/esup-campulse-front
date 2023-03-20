@@ -121,13 +121,13 @@ describe('User manager store', () => {
     })
 
     describe('deleteUserGroups', () => {
-        it('should call API for each group on /users/groups/userId/groupId', async () => {
+        it('should call API for each group on /users/userId/groups/groupId', async () => {
             userManagerStore.user = _institutionStudent
             await userManagerStore.deleteUserGroups([3, 2])
             const {axiosAuthenticated} = useAxios()
             expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(2)
             expect(axiosAuthenticated.delete).toHaveBeenLastCalledWith(
-                `/users/groups/${userManagerStore.user?.id}/${2}`
+                `/users/${userManagerStore.user?.id}/groups/${2}`
             )
         })
     })

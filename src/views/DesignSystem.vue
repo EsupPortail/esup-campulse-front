@@ -133,7 +133,7 @@ const columns: QTableProps['columns'] = [
         <!-- VARIANT SELECTOR MENU - MADE FOR THIS PAGE AND NOT PART OF THE DESIGN! -->
         <menu id="design-system-menu">
             <li>
-                <p>Variante :</p>
+                <p>Variante</p>
             </li>
             <li>
                 <button :class="{ 'selected': variant === Variant.Home }"

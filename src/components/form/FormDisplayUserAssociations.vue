@@ -2,7 +2,6 @@
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
-import {useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserAssociations from '@/composables/useUserAssociations'
 import AlertConfirmUserQuitAssociation from "@/components/alert/AlertConfirmUserQuitAssociation.vue";
@@ -11,7 +10,6 @@ import AlertConfirmUserQuitAssociation from "@/components/alert/AlertConfirmUser
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
-const route = useRoute()
 const {
     userAssociations,
     associationRoleOptions,

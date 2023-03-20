@@ -102,12 +102,12 @@ export default function () {
 
     async function deleteUserAssociation(userId: number | undefined, associationId: number) {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.delete(`/users/associations/${userId}/${associationId}`)
+        await axiosAuthenticated.delete(`/users/${userId}/associations/${associationId}`)
     }
 
     async function patchUserAssociations(userId: number | undefined, associationId: number, infosToPatch: UserAssociationPatch) {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.patch(`/users/associations/${userId}/${associationId}`, infosToPatch)
+        await axiosAuthenticated.patch(`/users/${userId}/associations/${associationId}`, infosToPatch)
     }
 
     /**
@@ -155,9 +155,21 @@ export default function () {
         const {axiosAuthenticated} = useAxios()
         let store: UserStore | UserManagerStore = userStore
         if (managedUser) store = userManagerStore
-        let url = '/users/associations/'
-        if (managedUser) url += id
-        store.userAssociations = (await axiosAuthenticated.get<AssociationUserDetail[]>(url)).data
+        const url = (managedUser) ? `/users/${id}/associations/` : '/users/associations/'
+        const userAssociations = (await axiosAuthenticated.get<AssociationUserDetail[]>(url)).data
+        for (const index in userAssociations) {
+            const associationId = userAssociations[index].association
+            const association = (await axiosAuthenticated.get(`/associations/${associationId}`)).data
+            userAssociations[index].association = {
+                id: associationId,
+                name: association.name,
+                isSite: association.isSite,
+                institution: association.institution,
+                isEnabled: association.isEnabled,
+                isPublic: association.isPublic,
+            }
+        }
+        store.userAssociations = userAssociations
     }
 
     // To test

@@ -138,7 +138,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async deleteUserGroups(groupsToDelete: number[], commissionsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
             for (let i = 0; i < groupsToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
+                await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${groupsToDelete[i]}`)
             }
         },
         async validateUser() {

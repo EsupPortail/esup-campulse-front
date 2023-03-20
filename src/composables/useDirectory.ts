@@ -79,7 +79,9 @@ export default function () {
      */
     async function simpleAssociationSearch(value: string): Promise<Association[]> {
         const {axiosPublic} = useAxios()
-        return (await axiosPublic.get<Association[]>(`/associations/?is_public=true&search=${value}`)).data
+        await Promise.all([associationStore.getInstitutions(), associationStore.getInstitutionComponents(), associationStore.getActivityFields()])
+        const associations = (await axiosPublic.get<Association[]>(`/associations/?is_public=true&search=${value}`)).data
+        return associationStore.getAssociationsSubDetails(associations)
     }
 
     return {

@@ -76,7 +76,20 @@ export const useUserStore = defineStore('userStore', {
         async getUserAssociations() {
             if (this.user && this.user.associations.length > 0) {
                 const {axiosAuthenticated} = useAxios()
-                this.userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
+                const userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
+                for (const index in userAssociations) {
+                    const associationId = userAssociations[index].association
+                    const association = (await axiosAuthenticated.get(`/associations/${associationId}`)).data
+                    userAssociations[index].association = {
+                        id: associationId,
+                        name: association.name,
+                        isSite: association.isSite,
+                        institution: association.institution,
+                        isEnabled: association.isEnabled,
+                        isPublic: association.isPublic,
+                    }
+                }
+                this.userAssociations = userAssociations
             }
         },
         unLoadUser() {
@@ -119,4 +132,3 @@ export const useUserStore = defineStore('userStore', {
         }
     }
 })
-
