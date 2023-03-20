@@ -11,6 +11,7 @@ const {t} = useI18n()
 const {hasPerm} = useSecurity()
 const {isStaff} = useUserGroups()
 
+
 const associationCounter = ref<number>(0)
 
 const initAssociationCounter = () => {
@@ -123,6 +124,12 @@ onMounted(async () => {
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-validation')"
                         :to="{name: 'ValidateUsers'}"
+                        color="secondary"
+                    />
+                    <QBtn
+                        v-if="hasPerm('change_user')"
+                        :label="t('user-manager.association-validation')"
+                        :to="{name: 'ValidateAssociationUsers'}"
                         color="secondary"
                     />
                     <QBtn
