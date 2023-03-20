@@ -117,5 +117,6 @@ function onInitGroupLabels() {
 <style lang="sass" scoped>
 fieldset
     border: none
-    margin: 0
+    margin: 0 0 0 0.4rem
+
 </style>

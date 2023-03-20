@@ -84,52 +84,72 @@ async function onRegister() {
 </script>
 
 <template>
-    <FormAddUserFromLDAP v-if="isStaff"/>
-    <QForm class="q-gutter-md" @submit.prevent="onRegister">
-        <QInput
-            v-model="newUser.firstName"
-            :disable="!!userStore.isCas || newUser.isCas"
-            :label="t('forms.first-name')"
-            :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-            filled lazy-rules
-        />
-        <QInput
-            v-model="newUser.lastName"
-            :disable="!!userStore.isCas || newUser.isCas"
-            :label="t('forms.last-name')"
-            :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
-            filled
-            lazy-rules
-        />
-        <QInput
-            v-model="newUser.email"
-            :disable="!!userStore.isCas || newUser.isCas"
-            :label="t('forms.email')" :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
+    <div class="form-container">
+        <div class="form">
+
+            <h3 class="section-title"><i class="bi bi-card-text"></i>{{ t('user.infos') }}</h3>
+
+            <FormAddUserFromLDAP v-if="isStaff"/>
+
+            <QForm class="q-gutter-md" @submit.prevent="onRegister">
+                <QInput
+                    v-model="newUser.firstName"
+                    :disable="!!userStore.isCas || newUser.isCas"
+                    :label="t('forms.first-name')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+                    filled lazy-rules
+                />
+                <QInput
+                    v-model="newUser.lastName"
+                    :disable="!!userStore.isCas || newUser.isCas"
+                    :label="t('forms.last-name')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+                    filled
+                    lazy-rules
+                />
+                <QInput
+                    v-model="newUser.email"
+                    :disable="!!userStore.isCas || newUser.isCas"
+                    :label="t('forms.email')" :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
             val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
-            filled
-            lazy-rules
-        >
-        </QInput>
-        <QInput
-            v-model="emailVerification"
-            :disable="!!userStore.isCas || newUser.isCas"
-            :label="t('forms.repeat-email')"
-            :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
-            filled
-            lazy-rules
-        />
-        <QInput v-model="newUser.phone" :label="t('forms.phone')" filled hint="Format : 06 00 00 00 00" lazy-rules
-                mask="## ## ## ## ##"/>
-        <FormUserGroups/>
-        <QSeparator/>
-        <!-- If manager role checked we do not display this form -->
-        <FormRegisterUserAssociations v-if="groupCanJoinAssociation"/>
-        <QSeparator/>
-        <!-- If isStaff, we do not display this -->
-        <LayoutGDPRConsent v-if="!isStaff" :has-consent="hasConsent" @update-consent="hasConsent = !hasConsent"/>
-        <QBtn :label="t('forms.send')" color="primary" type="submit"/>
-    </QForm>
+                    filled
+                    lazy-rules
+                >
+                </QInput>
+                <QInput
+                    v-model="emailVerification"
+                    :disable="!!userStore.isCas || newUser.isCas"
+                    :label="t('forms.repeat-email')"
+                    :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
+                    filled
+                    lazy-rules
+                />
+                <QInput v-model="newUser.phone" :label="t('forms.phone')" filled hint="Format : 06 00 00 00 00"
+                        lazy-rules
+                        mask="## ## ## ## ##"/>
+
+                <h3 class="section-title"><i class="bi bi-card-text"></i>{{ t('status') }}</h3>
+                <FormUserGroups/>
+
+                <div v-if="groupCanJoinAssociation">
+                    <h3 class="section-title"><i class="bi bi-card-text"></i>{{ t('associations') }}</h3>
+                    <FormRegisterUserAssociations/>
+                </div>
+
+                <LayoutGDPRConsent
+                    v-if="!isStaff"
+                    :has-consent="hasConsent"
+                    @update-consent="hasConsent = !hasConsent"
+                />
+                <QBtn :label="t('forms.send')" color="primary" type="submit"/>
+            </QForm>
+        </div>
+    </div>
 </template>
+
+<style lang="sass">
+@import '@/assets/styles/forms.scss'
+</style>
 
 <style lang="sass" scoped>
 .q-separator

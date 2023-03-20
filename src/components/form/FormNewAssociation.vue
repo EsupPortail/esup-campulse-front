@@ -25,6 +25,7 @@ const institutions = ref<({ value: number, label: string } | undefined)[]>([])
 const newAssociationForm = ref(QForm)
 
 const initValues = () => {
+    institutions.value = []
     if (userStore.userInstitutions && userStore.userInstitutions?.length !== 0) {
         associationStore.institutions.forEach(function (institution) {
             if (userStore.userInstitutions?.includes(institution.id)) {
