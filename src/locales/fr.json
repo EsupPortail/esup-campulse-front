@@ -389,7 +389,7 @@
       "validate-association": "L'association a été créée avec succès.",
       "validate-delete-user": "Le compte a bien été supprimé.",
       "validate-delete-user-association": "Le rôle de l'utilisateur dans l'association a bien été supprimé.",
-      "validate-success": "Le statut du compte a bien été modifié."
+      "validate-success": "Le compte a bien été modifié."
     },
     "warning": {
       "no-modifications-found": "Aucun changement n'a été effectué."
@@ -446,9 +446,11 @@
     "manage-account": "Gérer les informations du compte",
     "management": "Gestion des comptes",
     "register-in-new-associations": "Ajouter l'utilisateur dans de nouvelles associations",
+    "user-associations": "Associations de l'utilisateur",
     "user-association-confirm-delete": "Êtes-vous sûr de vouloir supprimer le rôle de l'utilisateur dans cette association ? Attention cette action est irréversible et toutes les données seront perdues.",
     "user-status": "Statut de l'utilisateur",
     "user-edition": "Actions sur l'utilisateur",
+    "user-infos": "Informations de l'utilisateur",
     "users": "Utilisateurs",
     "users-found": "Utilisateurs trouvés",
     "validate-account": "Valider le compte",

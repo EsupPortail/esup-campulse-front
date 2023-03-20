@@ -166,7 +166,7 @@ export default function () {
         let associations: AssociationUserDetail[] = userStore.userAssociations
         if (editedByStaff) associations = userManagerStore.userAssociations
         associations.forEach(function (association) {
-            let role = ''
+            let role = 'isMember'
             if (association.isPresident) role = 'isPresident'
             if (association.isSecretary) role = 'isSecretary'
             if (association.isTreasurer) role = 'isTreasurer'

@@ -6,9 +6,11 @@ import {useQuasar} from 'quasar'
 import {onMounted, ref, watch} from 'vue'
 import {useRoute} from "vue-router";
 import useUserAssociations from "@/composables/useUserAssociations";
+import useUserGroups from "@/composables/useUserGroups";
 
 const associationStore = useAssociationStore()
 const route = useRoute()
+const {groupCanJoinAssociation} = useUserGroups()
 const {
     userAssociations, newAssociations, addAssociation, removeAssociation, updateRegisterRoleInAssociation
 } = useUserAssociations()
@@ -48,40 +50,43 @@ async function loadAssociations() {
 </script>
 
 <template>
-    <QForm>
-        <fieldset>
-            <legend class="legend-big">{{ title }}
-            </legend>
-            <div v-for="(association, index) in newAssociations" :key="index">
-                <QSelect
-                    v-model="association.id"
-                    :label="t('forms.select-association')"
-                    :options="associationStore.associationLabels"
-                    emit-value
-                    filled
-                    map-options
-                    @update:model-value="checkHasPresident(association)"
-                />
-                <QOptionGroup
-                    v-model="association.role"
-                    :options="association.options"
-                    inline
-                    @update:model-value="updateRegisterRoleInAssociation"
-                />
-                <QBtn
-                    :label="t('forms.delete-association')"
-                    color="red" icon="mdi-minus-circle-outline"
-                    outline
-                    @click="removeAssociation(index)"
-                />
-                <QSeparator/>
-            </div>
-            <QBtn v-if="newAssociations.length < (5 - userAssociations.length)" :label="t('forms.add-association')"
-                  class="add-association"
-                  color="primary"
-                  icon="mdi-plus-circle-outline" @click="addAssociation"/>
-        </fieldset>
-    </QForm>
+    <QCard v-if="groupCanJoinAssociation">
+        <QCardSection>
+            <fieldset>
+                <legend class="legend-big">{{ title }}</legend>
+
+                <div v-for="(association, index) in newAssociations" :key="index">
+                    <QSelect
+                        v-model="association.id"
+                        :label="t('forms.select-association')"
+                        :options="associationStore.associationLabels"
+                        emit-value
+                        filled
+                        map-options
+                        @update:model-value="checkHasPresident(association)"
+                    />
+                    <QOptionGroup
+                        v-model="association.role"
+                        :options="association.options"
+                        inline
+                        @update:model-value="updateRegisterRoleInAssociation"
+                    />
+                    <QBtn
+                        :label="t('forms.delete-association')"
+                        color="red" icon="mdi-minus-circle-outline"
+                        outline
+                        @click="removeAssociation(index)"
+                    />
+                    <QSeparator/>
+                </div>
+                <QBtn v-if="newAssociations.length < (5 - userAssociations.length)" :label="t('forms.add-association')"
+                      class="add-association"
+                      color="primary"
+                      icon="mdi-plus-circle-outline" @click="addAssociation"/>
+            </fieldset>
+        </QCardSection>
+    </QCard>
+
 </template>
 
 <style lang="sass" scoped>

@@ -82,10 +82,6 @@ function onInitGroupLabels() {
 
 <template>
     <fieldset>
-        <legend class="legend-big">{{
-                route.name === 'Registration' || route.name === 'CASRegistration' ? t('forms.status') : t('user-manager.user-status')
-            }}
-        </legend>
         <QField
             v-if="groups"
             :error="!groupChoiceIsValid"
@@ -119,6 +115,7 @@ function onInitGroupLabels() {
 </template>
 
 <style lang="sass" scoped>
-.legend-big
-    font-size: 1.5em
+fieldset
+    border: none
+    margin: 0
 </style>

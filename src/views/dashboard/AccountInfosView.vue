@@ -3,15 +3,68 @@ import FormProfilePasswordEdit from '@/components/form/FormProfilePasswordEdit.v
 import {useI18n} from 'vue-i18n'
 import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import {useUserStore} from '@/stores/useUserStore'
-import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
+import axios from "axios";
+import useUsers from "@/composables/useUsers";
+import {useQuasar} from "quasar";
+import useUserAssociations from "@/composables/useUserAssociations";
+import FormDisplayUserAssociations from "@/components/form/FormDisplayUserAssociations.vue";
+import FormRegisterUserAssociations from "@/components/form/FormRegisterUserAssociations.vue";
+import useSecurity from "@/composables/useSecurity";
 
 const {t} = useI18n()
 const userStore = useUserStore()
 const {isStaff} = useUserGroups()
-
+const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
+const {notify} = useQuasar()
+const {userAssociationsRegister} = useSecurity()
+const {userAssociations, newAssociations, updateUserAssociations, getUserAssociations} = useUserAssociations()
+const {groupCanJoinAssociation} = useUserGroups()
 const tab = ref<string>('infos')
+
+async function onUpdateUserInfos() {
+    try {
+        initInfosToPatch(userStore.user)
+        if (Object.entries(infosToPatch).length !== 0) {
+            await updateUserInfos(userStore.user, false)
+            notify({
+                type: 'positive',
+                message: t('notifications.positive.update-user-infos')
+            })
+        } else {
+            notify({
+                type: 'warning',
+                message: t('notifications.warning.no-modifications-found')
+            })
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error) || error === 500) {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.email-used')
+            })
+        }
+    }
+}
+
+async function onUpdateUserAssociations() {
+    try {
+        await updateUserAssociations(false)
+        await userAssociationsRegister(false, userStore.user?.username)
+        newAssociations.value = []
+        await getUserAssociations(null, false)
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.associations-successfully-updated')
+        })
+    } catch (error) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.edit-user-associations-error')
+        })
+    }
+}
 
 </script>
 
@@ -38,11 +91,72 @@ const tab = ref<string>('infos')
 
     <QTabPanels v-model="tab" animated>
         <QTabPanel name="infos">
-            <FormUserInfosEdition :edited-by-staff="false" :user="userStore.user"/>
+            <section class="association-cards dashboard-section">
+                <div class="form-title">
+                    <h2>
+                        <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                        {{ t('dashboard.my-infos') }}
+                    </h2>
+                </div>
+
+                <div class="form-container">
+                    <div class="form">
+                        <QForm
+                            class="q-gutter-md"
+                            @submit.prevent="onUpdateUserInfos"
+                        >
+                            <FormUserInfosEdition :edited-by-staff="false" :user="userStore.user"/>
+                            <QBtn
+                                :label="t('validate-changes')"
+                                type="submit"
+                            />
+                        </QForm>
+                    </div>
+                </div>
+            </section>
         </QTabPanel>
 
         <QTabPanel name="associations">
-            <FormUpdateUserAssociations :edited-by-staff="false" :user="userStore.user"/>
+            <section class="association-cards dashboard-section">
+                <div class="form-title">
+                    <h2>
+                        <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                        {{ t('dashboard.association-user.my-associations') }}
+                    </h2>
+                </div>
+
+                <div class="form-container">
+                    <div class="form">
+                        <FormDisplayUserAssociations/>
+                    </div>
+                </div>
+            </section>
+
+            <section class="association-cards dashboard-section">
+                <div class="form-title">
+                    <h2>
+                        <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                        {{ t('dashboard.association-user.new-associations') }}
+                    </h2>
+                </div>
+
+                <div class="form-container">
+                    <div class="form">
+                        <QForm
+                            @submit.prevent="onUpdateUserAssociations"
+                        >
+                            <FormRegisterUserAssociations/>
+                            <div>
+                                <QBtn
+                                    v-if="newAssociations.length > 0 && newAssociations[0].id"
+                                    :label="t('forms.add-selected-associations')"
+                                    type="submit"
+                                />
+                            </div>
+                        </QForm>
+                    </div>
+                </div>
+            </section>
         </QTabPanel>
 
         <QTabPanel name="password">

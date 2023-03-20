@@ -5,7 +5,8 @@ import {onMounted} from 'vue'
 import {useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserAssociations from '@/composables/useUserAssociations'
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
+import AlertConfirmUserQuitAssociation from "@/components/alert/AlertConfirmUserQuitAssociation.vue";
+
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -13,9 +14,9 @@ const userStore = useUserStore()
 const route = useRoute()
 const {
     userAssociations,
+    associationRoleOptions,
     getUserAssociations,
 } = useUserAssociations()
-const userManagerStore = useUserManagerStore()
 
 onMounted(async () => {
     loading.show
@@ -27,7 +28,7 @@ onMounted(async () => {
 async function onGetUserAssociations() {
     try {
         userAssociations.value = []
-        await getUserAssociations(userManagerStore.user?.id as number, true)
+        await getUserAssociations(userStore.user?.id as number, false)
     } catch (e) {
         notify({
             type: 'negative',
@@ -40,7 +41,7 @@ async function onGetUserAssociations() {
 <template>
     <p v-if="userAssociations.length === 0">
         {{
-            t('user.has-no-association')
+            t('dashboard.association-user.you-are-not-an-association-member')
         }}</p>
     <QCard
         v-for="association in userAssociations"
@@ -50,38 +51,35 @@ async function onGetUserAssociations() {
         <QCardSection>
             <section>
                 <h4>{{ association.name }}</h4>
-                <QOptionGroup
-                    v-model="association.role"
-                    :options="association.options"
-                    color="primary"
-                    @update:model-value="association.role === 'isPresident' ? association.canBePresident = false : association.canBePresident"
-                />
-                <QCheckbox
-                    v-model="association.canBePresident"
-                    :disable="association.role === 'isPresident'"
-                    :label="t('forms.i-can-be-president')"
-                />
+                <ul>
+                    <li>{{ t('dashboard.association-user.my-role') }} <span>{{
+                            associationRoleOptions.find(obj => obj.value === association.role)?.label ?? t('dashboard.association-user.member')
+                        }}</span>
+                    </li>
+                    <li>
+                        {{ t('dashboard.association-user.presidency-status') }} <span>{{
+                            (association.role === 'isPresident' || association.canBePresident) ? t('yes') : t('no')
+                        }}</span>
+                    </li>
+                    <li>
+                        {{ t('dashboard.association-user.is-validated-by-admin') }}
+                        <span>{{ association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
+                    </li>
+                </ul>
                 <div class="btn-group">
                     <div>
-                        <QBtn
-                            v-if="!association.deleteAssociation"
-                            :label="t('dashboard.association-user.delete-association')"
-                            color="red"
-                            icon="mdi-delete"
-                            @click="association.deleteAssociation = true"
+                        <AlertConfirmUserQuitAssociation
+                            :association-id="association.id"
+                            :edited-by-staff="false"
+                            :user-id="userStore.user?.id"
+                            @user-association-deleted="onGetUserAssociations"
                         />
-                        <div v-else>
-                                <span class="delete-message">
-                                    {{ t('user.delete-association-role') }}
-                                </span>
-                            <QBtn
-                                :label="t('cancel-delete')"
-                                icon="mdi-cancel"
-                                outline
-                                @click="association.deleteAssociation = false"
-                            />
-                        </div>
                     </div>
+                    <QBtn
+                        v-if="association.isValidatedByAdmin && userStore.hasPresidentStatus(association.id)"
+                        :label="t('dashboard.association-user.manage-association')"
+                        :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                    />
                 </div>
             </section>
         </QCardSection>

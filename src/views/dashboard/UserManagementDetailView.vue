@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup xmlns="http://www.w3.org/1999/html">
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {onMounted, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
@@ -12,6 +12,7 @@ import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 import AlertConfirmUserUpdate from '@/components/alert/AlertConfirmUserUpdate.vue'
 import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
+import FormRegisterUserAssociations from "@/components/form/FormRegisterUserAssociations.vue";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -67,24 +68,63 @@ onBeforeRouteLeave((to, from, next) => {
     <QForm
         v-if="userManagerStore.user"
         class="q-gutter-md"
+        @submit.prevent="openAlert = true"
     >
-        <FormUserInfosEdition :edited-by-staff="true" :user="userManagerStore.user"/>
-        <FormUpdateUserAssociations :edited-by-staff="true" :user="userManagerStore.user"/>
-        <fieldset>
-            <legend>{{ t('user.groups') }}</legend>
-            <section>
-                <article>
-                    <h3>{{ t('user.is-cas') }}</h3>
-                    <p>{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}</p>
-                </article>
-                <article>
-                    <h3>{{ t("user.is-validated-by-admin") }}</h3>
-                    <p>{{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}</p>
-                </article>
-            </section>
-        </fieldset>
-        <FormUserGroups/>
-        <section class="btn-group">
+        <section class="association-cards dashboard-section">
+            <div class="form-title">
+                <h2>
+                    <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                    {{ t('user-manager.user-infos') }}
+                </h2>
+            </div>
+
+            <div class="form-container">
+                <div class="form">
+                    <FormUserInfosEdition :edited-by-staff="true" :user="userManagerStore.user"/>
+                </div>
+            </div>
+        </section>
+
+        <section class="association-cards dashboard-section">
+            <div class="form-title">
+                <h2>
+                    <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                    {{ t('user-manager.user-associations') }}
+                </h2>
+            </div>
+
+            <div class="form-container">
+                <div class="form">
+                    <FormUpdateUserAssociations/>
+                    <FormRegisterUserAssociations/>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <div class="form-title">
+                <h2>
+                    <QIcon name="bi-person-lines-fill"/>
+                    {{ t('user-manager.user-status') }}
+                </h2>
+            </div>
+            <div class="form-container">
+                <div class="form">
+                    <FormUserGroups/>
+                    <ul>
+                        <li>
+                            <strong>{{ t('user.is-cas') }}</strong> :
+                            {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
+                        </li>
+                        <li>
+                            <strong>{{ t("user.is-validated-by-admin") }}</strong> :
+                            {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="form-page-navigation">
             <QBtn
                 :label="t('back')"
                 color="secondary"
@@ -107,35 +147,7 @@ onBeforeRouteLeave((to, from, next) => {
 </template>
 
 <style lang="sass" scoped>
-section
-    article > *
-        margin: 0
-        width: 50%
-
-    article
-        display: flex
-        align-items: center
-        background-color: lightgrey
-        padding: 0 20px 0 20px
-        margin: 5px 0
-
-        h3
-            font-size: 1.2em
-            text-transform: uppercase
-
-legend
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-    width: 100%
-    margin-bottom: 10px
-
-.btn-group
-    display: flex
-    gap: 20px
-    margin: 30px 0 30px 0
-
-fieldset
-    border: none
+ul
+    margin-left: 1rem
+    list-style: none
 </style>
