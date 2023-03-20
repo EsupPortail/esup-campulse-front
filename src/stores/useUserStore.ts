@@ -17,12 +17,8 @@ export const useUserStore = defineStore('userStore', {
         userName: (state: UserStore): string | undefined => {
             return state.user?.firstName + ' ' + state.user?.lastName
         },
-        userInstitutions: (state: UserStore): (number | undefined)[] | undefined => {
-            const temp: number[] = []
-            state.user?.groups?.forEach((group) => {
-                if (group.commissionId) temp.push(group.commissionId)
-            })
-            return temp
+        userInstitutions: (state: UserStore): (number | null | undefined)[] | undefined => {
+            return state.user?.groups?.map(group => group.institutionId) || []
         },
         isAssociationMember: (state: UserStore): boolean => {
             return !!state.user?.associations?.length
