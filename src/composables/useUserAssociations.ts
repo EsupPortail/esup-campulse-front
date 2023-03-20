@@ -155,8 +155,21 @@ export default function () {
         const {axiosAuthenticated} = useAxios()
         let store: UserStore | UserManagerStore = userStore
         if (managedUser) store = userManagerStore
-        let url = (managedUser) ? `/users/${id}/associations` : '/users/associations/'
-        store.userAssociations = (await axiosAuthenticated.get<AssociationUserDetail[]>(url)).data
+        const url = (managedUser) ? `/users/${id}/associations/` : '/users/associations/'
+        const userAssociations = (await axiosAuthenticated.get<AssociationUserDetail[]>(url)).data
+        for (const index in userAssociations) {
+            const associationId = userAssociations[index].association
+            const association = (await axiosAuthenticated.get(`/associations/${associationId}`)).data
+            userAssociations[index].association = {
+                id: associationId,
+                name: association.name,
+                isSite: association.isSite,
+                institution: association.institution,
+                isEnabled: association.isEnabled,
+                isPublic: association.isPublic,
+            }
+        }
+        store.userAssociations = userAssociations
     }
 
     // To test
