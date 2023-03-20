@@ -8,6 +8,6 @@ export interface Group {
 interface SelectGroupLabel {
     value: number,
     label: string,
-    disable: boolean,
+    disable?: boolean,
     commission?: number | null
 }

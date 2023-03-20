@@ -2,12 +2,12 @@ import {computed, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useAxios} from '@/composables/useAxios'
-import type {SelectLabel} from '#/index'
 import type {Group, SelectGroupLabel} from '#/groups'
 import i18n from '@/plugins/i18n'
 import type {UserGroup} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from "@/composables/useCommissions";
+import useSecurity from "@/composables/useSecurity";
 
 
 // Used to store groups
@@ -87,7 +87,7 @@ export default function () {
         }
     }
 
-    const groupLabels = ref<SelectLabel[]>([])
+    const groupLabels = ref<SelectGroupLabel[]>([])
 
     /**
      * It takes a boolean parameter, and if it's true, it will only return the public groups, otherwise it will return all
@@ -97,16 +97,20 @@ export default function () {
      */
     // To re test
     async function initGroupLabels(onlyPublicGroups: boolean) {
+        const {hasPerm} = useSecurity()
         const labels: SelectGroupLabel[] = []
         groups.value?.map(function (group) {
             if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
-                let label: string | undefined = ''
-                label = getGroupLiteral(group.id)
+                const label: string | undefined = getGroupLiteral(group.id)
                 if (label) {
+                    let disable = !group.isPublic
+                    if (hasPerm('add_groupinstitutioncommissionusers_any_group') && group.name !== 'MANAGER_GENERAL') {
+                        disable = false
+                    }
                     labels.push({
                         value: group.id,
                         label,
-                        disable: !group.isPublic
+                        disable
                     })
                 }
             }

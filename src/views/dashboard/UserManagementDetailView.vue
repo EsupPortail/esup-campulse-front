@@ -1,4 +1,4 @@
-<script lang="ts" setup xmlns="http://www.w3.org/1999/html">
+<script lang="ts" setup>
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {onMounted, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
