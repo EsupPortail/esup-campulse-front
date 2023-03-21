@@ -1,27 +1,16 @@
 <script lang="ts" setup>
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, ref} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import type {User} from '#/user'
 import useUserAssociations from "@/composables/useUserAssociations";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const userManagerStore = useUserManagerStore()
 const {
     getUnvalidatedAssociationUsers,
-    unvalidatedAssociationUsers,
-    initRole,
-    associationRoleOptions
+    associationMembers
 } = useUserAssociations()
-
-const users = ref<User[]>([])
-
-watch(() => userManagerStore.users, () => {
-    users.value = userManagerStore.users
-})
 
 onMounted(async () => {
     loading.show
@@ -29,9 +18,12 @@ onMounted(async () => {
     loading.hide
 })
 
+const isLoaded = ref<boolean>(false)
+
 async function onGetAssociationUsers() {
     try {
         await getUnvalidatedAssociationUsers()
+        isLoaded.value = true
     } catch (e) {
         notify({
             type: 'negative',
@@ -46,14 +38,14 @@ const columns: QTableProps['columns'] = [
     {
         name: 'association',
         align: 'center',
-        label: t('association'),
+        label: t('dashboard.association-user.association'),
         field: 'association',
         sortable: true
     },
     {
         name: 'role',
         align: 'center',
-        label: t('role'),
+        label: t('dashboard.association-user.role'),
         field: 'role',
         sortable: true
     },
@@ -81,7 +73,8 @@ const columns: QTableProps['columns'] = [
             <div class="form">
                 <QTable
                     :columns="columns"
-                    :rows="unvalidatedAssociationUsers"
+                    :loading="!isLoaded"
+                    :rows="associationMembers"
                     :rows-per-page-options="[10, 20, 50, 0]"
                     :title="t('user-manager.users')"
                     row-key="id"
@@ -89,25 +82,22 @@ const columns: QTableProps['columns'] = [
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd key="firstName" :props="props">
-                                {{ props.row.user.firstName }}
+                                {{ props.row.firstName }}
                             </QTd>
                             <QTd key="lastName" :props="props">
-                                {{ props.row.user.lastName }}
+                                {{ props.row.lastName }}
                             </QTd>
                             <QTd key="association" :props="props">
-                                {{ props.row.association.name }}
+                                {{ props.row.associationName }}
                             </QTd>
                             <QTd key="role" :props="props">
-                                {{
-                                    associationRoleOptions.find(obj => obj.value === initRole(props.row)).label
-                                }}
+                                {{ props.row.role }}
                             </QTd>
                             <QTd key="isValidatedByAdmin" :props="props">
                                 <span class="form-state">
-                                                                            {{
+                                    {{
                                         props.row.isValidatedByAdmin ? t('validated') : t('validated-non')
                                     }}
-
                                     <span
                                         :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
                                     >
@@ -118,7 +108,7 @@ const columns: QTableProps['columns'] = [
                             <QTd key="validation" :props="props" class="actions-cell-compact">
                                 <QBtn
                                     :label="t('validate')"
-                                    :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.user.id, associationId: props.row.association.id}}"
+                                    :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
                                     color="secondary"
                                     icon="mdi-check-circle"
                                 />

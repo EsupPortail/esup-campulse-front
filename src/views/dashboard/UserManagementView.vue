@@ -12,7 +12,7 @@ import type {User} from '#/user'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
-const {getUsers, canEditUser} = useUsers()
+const {canEditUser} = useUsers()
 const route = useRoute()
 const {getGroups, getGroupLiteral} = useUserGroups()
 
@@ -31,7 +31,9 @@ onMounted(async () => {
 
 async function onGetUsers() {
     try {
-        await getUsers(route.name as string)
+        let status = 'all'
+        if (route.name === 'ValidateUsers') status = 'unvalidated'
+        await userManagerStore.getUsers(status)
     } catch (e) {
         notify({
             type: 'negative',

@@ -154,6 +154,7 @@
     "association-user": {
       "add-my-associations": "J'ajoute les associations dont je suis membre",
       "add-my-new-associations": "J'ajoute les nouvelles associations dont je suis membre",
+      "association": "Association",
       "association-documents": "Documents de l'association",
       "association-procedures": "Démarches de l'association",
       "can-be-president": "Est président délégué ou présidente déléguée",
@@ -176,6 +177,7 @@
       "new-associations": "Nouvelles associations",
       "not-association-member": "L'utilisateur n'est membre d'aucune association.",
       "presidency-status": "Droit de présidence :",
+      "role": "Rôle",
       "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
     }
   },
