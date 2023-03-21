@@ -7,10 +7,12 @@ import useUserAssociations from "@/composables/useUserAssociations";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
+
 const {
     getUnvalidatedAssociationUsers,
     associationMembers
 } = useUserAssociations()
+
 
 onMounted(async () => {
     loading.show

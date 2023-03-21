@@ -13,10 +13,8 @@ import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
 import useSecurity from "@/composables/useSecurity";
-import {useRoute} from "vue-router";
 import {useAssociationStore} from "@/stores/useAssociationStore";
 
-const route = useRoute()
 
 // Used to store a user's associations, while it is modified by a manager or during registration
 const userAssociations = ref<AssociationRole[]>([])
@@ -28,6 +26,7 @@ const newAssociations = ref<AssociationRole[]>([])
 const newAssociationsUser = ref<AssociationUser[]>([])
 
 const associationMembers = ref<AssociationMember[]>([])
+
 
 export default function () {
 
@@ -187,7 +186,6 @@ export default function () {
             user.isVicePresident ? 'isVicePresident' : 'isMember'
     }
 
-
     // To test
     function initUserAssociations(editedByStaff: boolean) {
         userAssociations.value = []
@@ -213,6 +211,7 @@ export default function () {
     watch(() => userStore.userAssociations, () => {
         initUserAssociations(false)
     })
+
 
     // To test
     async function getUnvalidatedAssociationUsers() {
