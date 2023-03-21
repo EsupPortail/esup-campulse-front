@@ -1,4 +1,4 @@
-import type {AssociationUserDetail} from "#/user";
+import type {AssociationUser} from "#/user";
 
 export interface Association {
     id: number,
@@ -24,9 +24,9 @@ export interface Association {
     lastGoaDate?: string,
     cgaDate?: string,
     socialNetworks?: AssociationSocialNetwork[],
-    institution: Institution,
-    institutionComponent: InstitutionComponent,
-    activityField: AssociationActivityField,
+    institution: Institution | undefined | number,
+    institutionComponent: InstitutionComponent | undefined | number,
+    activityField: AssociationActivityField | undefined | number,
     canSubmitProjects: boolean,
     charterStatus: string
 }
@@ -89,7 +89,7 @@ export interface AssociationStore {
     institutions: Institution[],
     institutionComponents: InstitutionComponent[],
     activityFields: AssociationActivityField[],
-    associationUsers: AssociationUserDetail[]
+    associationUsers: AssociationUser[]
 }
 
 export type AssociationDirectory = AssociationDirectoryDetail[]

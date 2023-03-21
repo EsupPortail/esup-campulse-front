@@ -3,12 +3,12 @@ import {useI18n} from 'vue-i18n'
 import {onMounted, reactive, ref, toRefs, watch} from 'vue'
 import {useRoute} from "vue-router";
 import {useQuasar} from "quasar";
-import type {AssociationUserDetail} from "#/user";
+import type {AssociationMember} from "#/user";
 import useUtility from "@/composables/useUtility";
 import useUserAssociations from "@/composables/useUserAssociations";
 
 const props = defineProps<{
-    member: AssociationUserDetail
+    member: AssociationMember
 }>()
 
 const memberRef = toRefs(props).member
@@ -17,7 +17,7 @@ const route = useRoute()
 const {notify} = useQuasar()
 const {t} = useI18n()
 const {fromDateIsAnterior} = useUtility()
-const {patchUserAssociations} = useUserAssociations()
+const {patchUserAssociations, initAssociationMembers} = useUserAssociations()
 
 const openDelegationPanel = ref<boolean>()
 
@@ -28,7 +28,7 @@ const delegation = reactive({
 })
 
 const initDelegationParams = () => {
-    delegation.canBePresident = memberRef.value.canBePresident
+    delegation.canBePresident = memberRef.value.canBePresident as boolean
     delegation.from = memberRef.value.canBePresidentFrom ?? new Date().toJSON().slice(0, 10)
     delegation.to = memberRef.value.canBePresidentTo ?? ''
 }
@@ -44,18 +44,29 @@ const initDateIsLegal = () => {
 watch(() => delegation.from, initDateIsLegal)
 watch(() => delegation.to, initDateIsLegal)
 
-async function onDelegatePresidency() {
+async function onDelegatePresidency(activate: boolean) {
     try {
         if (memberRef.value.id) {
-            const dataToPatch: { canBePresident: boolean, canBePresidentFrom: string, canBePresidentTo?: string } = {
-                canBePresident: !delegation.canBePresident,
-                canBePresidentFrom: delegation.from
+            const dataToPatch: { canBePresident: boolean, canBePresidentFrom: string | null, canBePresidentTo: string | null } = {
+                canBePresident: activate,
+                canBePresidentFrom: activate ? delegation.from : null,
+                canBePresidentTo: activate && delegation.to !== '' ? delegation.to : null
             }
-            if (delegation.to !== '') dataToPatch.canBePresidentTo = delegation.to
-            await patchUserAssociations(memberRef.value.user.id, parseInt(route.params.id as string), dataToPatch)
+            const associationId = parseInt(route.params.id as string)
+            await patchUserAssociations(memberRef.value.id, associationId, dataToPatch)
+
+            await initAssociationMembers(associationId)
+
+            notify({
+                type: 'positive',
+                message: t('notifications.positive.delegation-success')
+            })
         }
     } catch {
-        //
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.delegation-fail')
+        })
     }
 }
 
@@ -73,25 +84,27 @@ async function onDelegatePresidency() {
             <QCardSection class="row items-center">
                 <QForm
                     class="q-gutter-md"
-                    @submit.prevent="onDelegatePresidency"
+                    @submit.prevent="onDelegatePresidency(true)"
                 >
-                    <h3 class="section-title"><i class="bi bi-card-text"></i>Déléguer mes droits de présidence</h3>
+                    <h3 class="section-title"><i class="bi bi-card-text"></i>
+                        {{ t('dashboard.association-user.delegate-presidency') }}
+                    </h3>
 
-                    <p>Je délègue mes droits de présidence à <strong>{{
-                            memberRef.user.firstName + ' ' + memberRef.user.lastName
+                    <p>{{ t('dashboard.association-user.i-delegate-presidency') }} <strong>{{
+                            memberRef.firstName + ' ' + memberRef.lastName
                         }}</strong></p>
 
                     <QInput
                         v-model="delegation.from"
+                        :label="t('from')"
                         filled
-                        label="A partir du"
                         type="date"
                     />
                     <QInput
                         v-model="delegation.to"
+                        :hint="t('forms.hint-delegation-to')"
+                        :label="t('to')"
                         filled
-                        hint="Laisser le champ vide pour une date indéterminée."
-                        label="Jusqu'au"
                         type="date"
                     />
                     <QBtn
@@ -101,8 +114,15 @@ async function onDelegatePresidency() {
                     <QBtn
                         v-close-popup
                         :disable="!dateIsLegal"
-                        :label="t('validate')"
+                        :label="t('activate')"
                         type="submit"
+                    />
+                    <QBtn
+                        v-if="props.member.canBePresident"
+                        v-close-popup
+                        :label="t('deactivate')"
+                        color="red"
+                        @click="onDelegatePresidency(false)"
                     />
                 </QForm>
             </QCardSection>

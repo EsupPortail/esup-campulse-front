@@ -17,7 +17,6 @@ const userStore = useUserStore()
 onMounted(async function () {
     loading.show
     await onGetAssociationDetail()
-    await onGetUserAssociations()
     loading.hide
 })
 
@@ -41,17 +40,6 @@ watch(() => userStore.userAssociations, initValues)
 async function onGetAssociationDetail() {
     try {
         await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
-    } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
-    }
-}
-
-async function onGetUserAssociations() {
-    try {
-        await userStore.getUserAssociations()
     } catch (error) {
         notify({
             type: 'negative',
@@ -84,7 +72,7 @@ async function onGetUserAssociations() {
                     />
                     <QBtn
                         v-if="hasPresidentStatus"
-                        :label="t('association.delegate-president-role')"
+                        :label="t('dashboard.association-user.delegate-presidency')"
                         :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
                         color="primary"
                     />

@@ -2,6 +2,7 @@ import {defineStore} from 'pinia'
 import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
+import useUserGroups from "@/composables/useUserGroups";
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -45,8 +46,10 @@ export const useUserStore = defineStore('userStore', {
         },
         async logOut() {
             const {removeTokens} = useSecurity()
+            const {isStaff} = useUserGroups()
             removeTokens()
             this.unLoadUser()
+            isStaff.value = undefined
         },
         /**
          * It gets the user data from the server, and if the user is validated by the admin, it sets the user data to the

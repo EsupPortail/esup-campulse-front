@@ -65,7 +65,7 @@ export default function () {
      * It gets the groups from the server and puts them in the groups variable.
      */
     async function getGroups() {
-        if (!groups.value?.length) {
+        if (groups.value.length === 0) {
             const {axiosPublic} = useAxios()
             groups.value = (await axiosPublic.get<Group[]>('/groups/')).data
         }
@@ -179,10 +179,9 @@ export default function () {
     /**
      * If the user is a member of a non-public group, then they are staff
      */
-    async function initStaffStatus() {
+    function initStaffStatus() {
         let perm = false
         const userGroups = userStore.user?.groups
-        await getGroups()
 
         for (let i = 0; i < (userGroups?.length as number); i++) {
             const g = groups.value?.find(obj => obj.id === (userGroups?.[i] as UserGroup).groupId)
@@ -193,10 +192,6 @@ export default function () {
         }
         isStaff.value = perm
     }
-
-    watch(() => userStore.user, async () => {
-        await initStaffStatus()
-    })
 
 
     /**
