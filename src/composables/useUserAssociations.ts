@@ -241,6 +241,7 @@ export default function () {
         })
     }
 
+
     return {
         userAssociations,
         updateUserAssociations,

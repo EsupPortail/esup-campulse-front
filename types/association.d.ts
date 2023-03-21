@@ -92,9 +92,6 @@ export interface AssociationStore {
     associationUsers: AssociationUser[]
 }
 
-export type AssociationDirectory = AssociationDirectoryDetail[]
-export type AssociationDirectoryDetail = { id: number, name: string, acronym: string, institution: string, institutionComponent: string, activityField: string }
-
 export type CreateAssociation = Pick<Association, "name">
 
 export interface EditedAssociation {

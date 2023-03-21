@@ -65,8 +65,8 @@ export interface AssociationMember {
     lastName?: string,
     role: string,
     canBePresident?: boolean,
-    canBePresidentFrom?: string,
-    canBePresidentTo?: string,
+    canBePresidentFrom?: string | null,
+    canBePresidentTo?: string | null,
     isValidatedByAdmin: boolean
 }
 
