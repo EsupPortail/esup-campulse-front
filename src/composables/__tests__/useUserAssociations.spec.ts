@@ -33,7 +33,6 @@ config.global.plugins = [
     })
 ]
 
-let userStore = useUserStore()
 let userManagerStore = useUserManagerStore()
 
 describe('useUserAssociations', () => {
@@ -43,8 +42,6 @@ describe('useUserAssociations', () => {
     })
 
     const {
-        updateUserAssociations,
-        userAssociations,
         deleteUserAssociation,
         patchUserAssociations,
         getUserAssociations
@@ -174,6 +171,5 @@ describe('useUserAssociations', () => {
         })
     })
 })
-
 
 

@@ -19,8 +19,7 @@ const {isStaff} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
 const {notify} = useQuasar()
 const {userAssociationsRegister} = useSecurity()
-const {userAssociations, newAssociations, updateUserAssociations, getUserAssociations} = useUserAssociations()
-const {groupCanJoinAssociation} = useUserGroups()
+const {newAssociations, updateUserAssociations, getUserAssociations} = useUserAssociations()
 const tab = ref<string>('infos')
 
 async function onUpdateUserInfos() {

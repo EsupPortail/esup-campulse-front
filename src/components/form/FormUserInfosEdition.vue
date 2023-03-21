@@ -4,13 +4,11 @@ import useUsers from '@/composables/useUsers'
 import type {User, UserGroup} from '#/user'
 import {useI18n} from 'vue-i18n'
 import useUserGroups from '@/composables/useUserGroups'
-import {useQuasar} from 'quasar'
 
 
 const {userToUpdate} = useUsers()
 const {getGroupLiteral} = useUserGroups()
 const {t} = useI18n()
-const {notify} = useQuasar()
 
 const props = defineProps<{
     editedByStaff: boolean,

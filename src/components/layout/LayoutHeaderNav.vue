@@ -2,7 +2,6 @@
 import LayoutHeaderProfileButton from '@/components/layout/LayoutHeaderProfileButton.vue'
 import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from 'vue-i18n'
-import {ref} from 'vue'
 
 const userStore = useUserStore()
 const {t} = useI18n()
