@@ -22,9 +22,9 @@ export interface Association {
     lastGoaDate?: string,
     cgaDate?: string,
     socialNetworks?: AssociationSocialNetwork[],
-    institution: Institution,
-    institutionComponent: InstitutionComponent,
-    activityField: AssociationActivityField,
+    institution: number,
+    institutionComponent: number,
+    activityField: number,
     canSubmitProjects: boolean,
     charterStatus: string
 }

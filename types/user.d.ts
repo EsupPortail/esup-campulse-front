@@ -33,8 +33,8 @@ export interface AssociationUser {
 }
 
 export interface AssociationUserDetail {
-    id: number | null,
-    user: string,
+    id?: number | null,
+    user?: string,
     association: {
         id: number,
         name: string,
@@ -123,6 +123,7 @@ export interface UserAssociationPatch {
     isVicePresident?: boolean,
     isSecretary?: boolean,
     isTreasurer?: boolean
+    isValidatedByAdmin?: boolean
 }
 
 // User group

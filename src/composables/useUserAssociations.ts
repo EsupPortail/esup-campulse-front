@@ -14,6 +14,7 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
 import useSecurity from "@/composables/useSecurity";
 import {useAssociationStore} from "@/stores/useAssociationStore";
+import type {Association} from "#/association";
 
 
 // Used to store a user's associations, while it is modified by a manager or during registration
@@ -159,25 +160,40 @@ export default function () {
     }
 
     // To test
-    async function getUserAssociations(id: number | null, managedUser: boolean) {
+    async function getUserAssociations(userId: number | null, managedUser: boolean) {
         const {axiosAuthenticated} = useAxios()
+
         let store: UserStore | UserManagerStore = userStore
         if (managedUser) store = userManagerStore
-        const url = (managedUser) ? `/users/${id}/associations/` : '/users/associations/'
-        const userAssociations = (await axiosAuthenticated.get<AssociationUserDetail[]>(url)).data
-        for (const index in userAssociations) {
-            const associationId = userAssociations[index].association.id
-            const association = (await axiosAuthenticated.get(`/associations/${associationId}`)).data
-            userAssociations[index].association = {
-                id: associationId,
-                name: association.name,
-                isSite: association.isSite,
-                institution: association.institution,
-                isEnabled: association.isEnabled,
-                isPublic: association.isPublic,
-            }
+
+        store.userAssociations = []
+
+        const url = (managedUser) ? `/users/${userId}/associations/` : '/users/associations/'
+
+        const userAssociations = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
+
+        for (let i = 0; i < userAssociations.length; i++) {
+            const associationDetails = (await axiosAuthenticated.get<Association>(`/associations/${userAssociations[i].association}`)).data
+            store.userAssociations.push(
+                {
+                    association: {
+                        id: userAssociations[i].association as number,
+                        name: associationDetails.name,
+                        isSite: associationDetails.isSite,
+                        institution: associationDetails.institution,
+                        isEnabled: associationDetails.isEnabled,
+                        isPublic: associationDetails.isPublic,
+                    },
+                    isPresident: userAssociations[i].isPresident as boolean,
+                    canBePresident: userAssociations[i].canBePresident as boolean,
+                    canBePresidentFrom: userAssociations[i].canBePresidentFrom as string,
+                    canBePresidentTo: userAssociations[i].canBePresidentTo as string,
+                    isValidatedByAdmin: userAssociations[i].isValidatedByAdmin,
+                    isVicePresident: userAssociations[i].isVicePresident as boolean,
+                    isSecretary: userAssociations[i].isSecretary as boolean,
+                    isTreasurer: userAssociations[i].isTreasurer as boolean,
+                })
         }
-        store.userAssociations = userAssociations
     }
 
     // To test
@@ -215,6 +231,8 @@ export default function () {
 
     // To test
     async function getUnvalidatedAssociationUsers() {
+        associationMembers.value = []
+
         const {axiosAuthenticated} = useAxios()
         const {hasPerm} = useSecurity()
 
@@ -224,7 +242,7 @@ export default function () {
 
         const users = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
         await associationStore.getAssociationNames(false)
-        await userManagerStore.getUsers('all')
+        await userManagerStore.getUsers('validated')
 
         users.forEach((user) => {
             const extendedUser = userManagerStore.users.find(obj => obj.id === user.user)
@@ -259,6 +277,7 @@ export default function () {
         newAssociations,
         deleteUserAssociation,
         getUnvalidatedAssociationUsers,
-        associationMembers
+        associationMembers,
+        getAssociationUserRole
     }
 }

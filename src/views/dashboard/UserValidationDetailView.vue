@@ -42,7 +42,7 @@ async function onGetUser() {
 // Get user associations
 async function onGetUserAssociations() {
     try {
-        await getUserAssociations(userManagerStore.user?.id as number, true)
+        await getUserAssociations(parseInt(route.params.id as string), true)
     } catch (e) {
         notify({
             type: 'negative',
