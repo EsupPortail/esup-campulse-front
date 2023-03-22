@@ -54,7 +54,7 @@ async function onRegister() {
                     await router.push({name: 'Dashboard'})
                 } else {
                     await register()
-                    await router.push({name: 'RegistrationSuccessful'})
+                    if (!newUser.isCas) await router.push({name: 'RegistrationSuccessful'})
                 }
             } catch (error) {
                 if (axios.isAxiosError(error)) {
