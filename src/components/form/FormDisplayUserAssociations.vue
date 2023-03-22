@@ -14,6 +14,7 @@ const {
     userAssociations,
     associationRoleOptions,
     getUserAssociations,
+    initUserAssociations
 } = useUserAssociations()
 
 onMounted(async () => {
@@ -25,8 +26,8 @@ onMounted(async () => {
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
-        userAssociations.value = []
         await getUserAssociations(userStore.user?.id as number, false)
+        initUserAssociations(false)
     } catch (e) {
         notify({
             type: 'negative',

@@ -1,4 +1,4 @@
-import {ref, watch} from 'vue'
+import {ref} from 'vue'
 import type {
     AssociationMember,
     AssociationRole,
@@ -205,7 +205,7 @@ export default function () {
     // To test
     function initUserAssociations(editedByStaff: boolean) {
         userAssociations.value = []
-        let associations: AssociationUserDetail[] | AssociationUser[] = userStore.userAssociations
+        let associations: AssociationUserDetail[] = userStore.userAssociations
         if (editedByStaff) associations = userManagerStore.userAssociations
         associations.forEach(function (association) {
             const role = getAssociationUserRole(association)
@@ -220,14 +220,6 @@ export default function () {
             })
         })
     }
-
-    watch(() => userManagerStore.userAssociations, () => {
-        initUserAssociations(true)
-    })
-    watch(() => userStore.userAssociations, () => {
-        initUserAssociations(false)
-    })
-
 
     // To test
     async function getUnvalidatedAssociationUsers() {
@@ -278,6 +270,7 @@ export default function () {
         deleteUserAssociation,
         getUnvalidatedAssociationUsers,
         associationMembers,
-        getAssociationUserRole
+        getAssociationUserRole,
+        initUserAssociations
     }
 }

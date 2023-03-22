@@ -10,6 +10,7 @@ const {notify, loading} = useQuasar()
 const {
     userAssociations,
     getUserAssociations,
+    initUserAssociations
 } = useUserAssociations()
 const userManagerStore = useUserManagerStore()
 
@@ -22,8 +23,8 @@ onMounted(async () => {
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
-        userAssociations.value = []
         await getUserAssociations(userManagerStore.user?.id as number, true)
+        initUserAssociations(true)
     } catch (e) {
         notify({
             type: 'negative',
