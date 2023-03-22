@@ -43,6 +43,14 @@ async function onGetAssociationDetail() {
     }
 }
 
+function reverseDate(date: string | null) {
+    if (!date) return '-'
+    else {
+        const dateArray = date.split('-')
+        return dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0]
+    }
+}
+
 const columns: QTableProps['columns'] = [
     {
         name: 'firstName',
@@ -108,7 +116,7 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <h2>
+        <h2 v-if="associationStore.association">
             <i aria-hidden="true" class="bi bi-award"></i>
             {{ t('dashboard.association-user.delegate') + ' ' + associationStore.association?.name }}
         </h2>
@@ -151,10 +159,10 @@ const columns: QTableProps['columns'] = [
                             </span>
                             </QTd>
                             <QTd key="delegationFrom" :props="props">
-                                {{ props.row.canBePresidentFrom }}
+                                {{ reverseDate(props.row.canBePresidentFrom) }}
                             </QTd>
                             <QTd key="delegationTo" :props="props">
-                                {{ props.row.canBePresidentTo }}
+                                {{ reverseDate(props.row.canBePresidentTo) }}
                             </QTd>
                             <QTd key="delegation" :props="props" class="actions-cell-compact">
                                 <div
