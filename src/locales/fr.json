@@ -4,6 +4,7 @@
     "title": "Contenu introuvable"
   },
   "account": "Compte",
+  "activate": "Activer",
   "add": "Ajouter",
   "alerts": {
     "aborted-cas-registration": {
@@ -105,6 +106,7 @@
       "info": "Informations"
     }
   },
+  "activated": "Activée",
   "back": "Retour",
   "breadcrumbs": {
     "account-infos": "Modifier les informations de mon compte",
@@ -115,6 +117,7 @@
     "dashboard": "Tableau de bord",
     "directory": "Annuaire des associations",
     "edit-association": "Editer l'association",
+    "edit-association-president-delegation": "Déléguer la presidence",
     "edit-my-association": "Editer mon association",
     "home": "Accueil",
     "login": "Connexion",
@@ -156,16 +159,20 @@
       "association-procedures": "Démarches de l'association",
       "can-be-president": "Est président délégué ou présidente déléguée",
       "charter-status-processing": "Suivi du traitement de charte",
+      "delegate": "Déléguer",
+      "delegate-presidency": "Gérer la présidence",
+      "delegation": "Délégation",
       "delete-association": "Supprimer le rôle dans l'association",
       "delete-association-self": "Quitter l'association",
       "confirm-delete": "Voulez-vous vraiment supprimer le rôle de l'utilisateur pour cette association ? Une fois l'action validée le changement sera immédiat et irréversible.",
       "confirm-delete-self": "Voulez-vous vraiment quitter cette association ? Une fois l'action validée le changement sera immédiat et irréversible.",
       "edit-my-association": "Modifier la fiche de l'association",
-      "is-president": "Est président ou présidente",
-      "is-secretary": "Est secrétaire",
+      "i-delegate-presidency": "Je délègue mes droits de présidence à",
+      "is-president": "Président ou présidente",
+      "is-secretary": "Secrétaire",
       "is-validated-by-admin": "Affiliation à l'association validée par le ou la gestionnaire :",
-      "is-treasurer": "Est trésorier ou trésorière",
-      "is-vice-president": "Est vice-président ou vice-présidente",
+      "is-treasurer": "Trésorier ou trésorière",
+      "is-vice-president": "Vice-président ou vice-présidente",
       "manage-association": "Gérer l'association",
       "manage-my-associations": "Gérer mes associations",
       "member": "Membre",
@@ -174,9 +181,12 @@
       "new-associations": "Nouvelles associations",
       "not-association-member": "L'utilisateur n'est membre d'aucune association.",
       "presidency-status": "Droit de présidence :",
+      "role": "Rôle",
       "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
     }
   },
+  "deactivate": "Désactiver",
+  "deactivated": "Désactivée",
   "delete": "Supprimer",
   "directory": {
     "advanced-search": "Recherche avancée",
@@ -205,6 +215,7 @@
   },
   "discard-changes": "Abandonner les modifications",
   "edit": "Éditer",
+  "end": "Fin",
   "footer": {
     "about": "À propos",
     "contact": "Contact",
@@ -235,6 +246,7 @@
     "im-association-vice-president": "Vice-présidente ou vice-président de l'association",
     "im-from-association": "Lier une association au compte",
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
+    "hint-delegation-to": "Laisser le champ vide pour une date indéterminée.",
     "last-name": "Nom de famille",
     "login": "Connexion",
     "max-commissions": "2 commissions maximum.",
@@ -277,6 +289,7 @@
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
     "validated-account": "Compte validé"
   },
+  "from": "À partir du",
   "header": {
     "associations": "Annuaire",
     "charter": "Charte",
@@ -336,6 +349,7 @@
       "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur.",
       "cas-authentication-error": "Erreur d'authentification CAS.",
       "cas-error": "Erreur lors de l`appel au service CAS.",
+      "delegation-fail": "La délégation a échoué.",
       "delete-association-error": "Une erreur est survenue lors de la suppression de l'association. Veuillez réessayer.",
       "delete-associations-error": "Les associations suivantes ne peuvent pas être supprimées (sont-elles désactivées ?) : ",
       "different-emails": "Les deux adresses email ne sont pas identiques.",
@@ -370,6 +384,7 @@
       "association-successfully-updated": "L'association a bien été mise à jour.",
       "association-up-to-date": "L'association est déjà à jour.",
       "associations-successfully-updated": "Les associations ont bien été mises à jour.",
+      "delegation-success": "La délégation a bien été mise à jour.",
       "delete-association": "L'association a été supprimée avec succès.",
       "delete-associations": "Les associations suivantes ont bien été supprimées : ",
       "disable-association": "L'association a été désactivée avec succès.",
@@ -413,7 +428,9 @@
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
   },
   "search": "Rechercher",
+  "start": "Début",
   "status": "Statut",
+  "to": "Jusqu'au",
   "user": {
     "associations": "Associations",
     "delete-association-role": "Le rôle dans l'association sera supprimé après validation des changements.",

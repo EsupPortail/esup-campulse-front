@@ -24,10 +24,9 @@ const initAssociationCounter = () => {
         if (hasPresidentStatus && isValidatedByAdmin) associationCounter.value++
     })
 }
-watch(() => userStore.user?.associations, initAssociationCounter)
+watch(() => userStore.userAssociations.length, initAssociationCounter)
 
 onMounted(async () => {
-    await userStore.getUserAssociations()
     initAssociationCounter()
 })
 

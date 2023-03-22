@@ -17,7 +17,6 @@ const userStore = useUserStore()
 onMounted(async function () {
     loading.show
     await onGetAssociationDetail()
-    await onGetUserAssociations()
     loading.hide
 })
 
@@ -49,17 +48,6 @@ async function onGetAssociationDetail() {
     }
 }
 
-async function onGetUserAssociations() {
-    try {
-        await userStore.getUserAssociations()
-    } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
-    }
-}
-
 </script>
 
 <template>
@@ -82,6 +70,13 @@ async function onGetUserAssociations() {
                         :label="t('association.more-details')"
                         :to="{ name: 'AssociationDetail', params: { id: association?.id } }"
                     />
+                    <QBtn
+                        v-if="hasPresidentStatus"
+                        :label="t('dashboard.association-user.delegate-presidency')"
+                        :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
+                        color="primary"
+                    />
+
                 </div>
             </div>
         </div>

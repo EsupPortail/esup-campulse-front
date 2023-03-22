@@ -10,7 +10,7 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
-    const {initStaffStatus, isStaff} = useUserGroups()
+    const {initStaffStatus, isStaff, getGroups} = useUserGroups()
 
     // Get auth user with token
     const accessToken = localStorage.getItem('JWT__access__token')
@@ -19,7 +19,10 @@ router.beforeEach(async (to) => {
     }
 
     // Get isStaff status if user is auth
-    if (userStore.isAuth && isStaff.value === undefined) await initStaffStatus()
+    if (userStore.isAuth && isStaff.value === undefined) {
+        await getGroups()
+        await initStaffStatus()
+    }
 
     if (to.meta.requiresAuth && !userStore.isAuth) {
         return {name: 'Login'}
