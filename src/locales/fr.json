@@ -125,7 +125,9 @@
     "manage-users": "Gérer les comptes",
     "register": "Créer un compte",
     "user-account": "Compte utilisateur",
-    "validate-users": "Valider les comptes"
+    "validate-users": "Valider les comptes",
+    "validate-association-users": "Valider les affiliations aux associations",
+    "validate-association-user-detail": "Valider l'affiliation de l'utilisateur dans l'association"
   },
   "cancel": "Annuler",
   "cancel-delete": "Annuler la suppression",
@@ -155,6 +157,7 @@
     "association-user": {
       "add-my-associations": "J'ajoute les associations dont je suis membre",
       "add-my-new-associations": "J'ajoute les nouvelles associations dont je suis membre",
+      "association": "Association",
       "association-documents": "Documents de l'association",
       "association-procedures": "Démarches de l'association",
       "can-be-president": "Est président délégué ou présidente déléguée",
@@ -405,6 +408,7 @@
       "validate-association": "L'association a été créée avec succès.",
       "validate-delete-user": "Le compte a bien été supprimé.",
       "validate-delete-user-association": "Le rôle de l'utilisateur dans l'association a bien été supprimé.",
+      "validate-user-association": "Le rôle dans l'utilisateur dans l'association a bien été validé.",
       "validate-success": "Le compte a bien été modifié."
     },
     "warning": {
@@ -455,10 +459,12 @@
   "user-manager": {
     "add-user": "Ajouter un compte",
     "alert-confirm-update": "Vous êtes sur le point de modifier les informations de cet utilisateur. Voulez-vous continuer ?",
+    "association-validation": "Valider les affiliations aux associations",
     "choose-user-to-add": "Choisissez l'utilisateur que vous souhaitez ajouter.",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",
     "create-association": "Créer une association",
     "delete-account-application": "Supprimer la demande de compte",
+    "delete-association-user": "Supprimer l'affiliation",
     "delete-user": "Supprimer l'utilisateur",
     "is-validated": "Validé par le gestionnaire",
     "manage-account": "Gérer les informations du compte",
@@ -472,6 +478,7 @@
     "users": "Utilisateurs",
     "users-found": "Utilisateurs trouvés",
     "validate-account": "Valider le compte",
+    "validate-association-user": "Valider l'affiliation",
     "validation": "Validation des demandes de comptes",
     "forms": {
       "required-status": "Maximum deux statuts autorisés.",

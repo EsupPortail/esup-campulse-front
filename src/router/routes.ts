@@ -154,6 +154,32 @@ const routes: RouteRecordRaw[] = [
                         ]
                     },
                     {
+                        path: 'validate-association-users',
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.validate-association-users'),
+                            staffOnly: true
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'ValidateAssociationUsers',
+                                component: () => import('@/views/dashboard/AssociationUsersValidationView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.validate-association-users')
+                                }
+                            },
+                            {
+                                path: ':userId/:associationId',
+                                name: 'AssociationUserValidationDetail',
+                                component: () => import('@/views/dashboard/AssociationUserValidationDetailView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.validate-association-user-detail'),
+                                    title: i18n.global.t('breadcrumbs.validate-association-user-detail')
+                                }
+                            }
+                        ]
+                    },
+                    {
                         path: 'manage-users',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.manage-users'),

@@ -33,14 +33,8 @@ export interface AssociationUser {
 }
 
 export interface AssociationUserDetail {
-    id: number | null,
-    user: {
-        id: number,
-        username: string,
-        firstName: string,
-        lastName: string,
-        isValidatedByAdmin?: boolean
-    },
+    id?: number | null,
+    user?: string,
     association: {
         id: number,
         name: string,
@@ -63,6 +57,8 @@ export interface AssociationMember {
     id: number,
     firstName?: string,
     lastName?: string,
+    associationId?: number,
+    associationName?: string,
     role: string,
     canBePresident?: boolean,
     canBePresidentFrom?: string | null,
@@ -111,6 +107,15 @@ export interface UserAssociation {
     name: string,
     isSite: boolean,
     institution: number
+}
+
+export interface UserAssociationPatch {
+    isPresident?: boolean,
+    canBePresident?: boolean,
+    isVicePresident?: boolean,
+    isSecretary?: boolean,
+    isTreasurer?: boolean
+    isValidatedByAdmin?: boolean
 }
 
 // User group

@@ -57,29 +57,21 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         /**
          * It gets the users from the API, and if the user has institutions, it gets the users from those institutions
          */
-        async getUsers() {
-            const {axiosAuthenticated} = useAxios()
+        async getUsers(status: 'all' | 'validated' | 'unvalidated' | string) {
             const {hasPerm} = useSecurity()
-            const userStore = useUserStore()
-            let url = '/users/?institutions='
-            if (userStore.userInstitutions?.length !== 0) {
-                url += userStore.userInstitutions?.join(',')
-                if (hasPerm('change_user_misc')) url += ','
-                this.users = (await axiosAuthenticated.get<User[]>(url)).data
-            }
-        },
-        /**
-         * It gets all the users that are not validated by the admin, and if the user is an admin, it filters the users by
-         * the institutions the admin is associated with
-         */
-        async getUnvalidatedUsers() {
-            const {axiosAuthenticated} = useAxios()
-            const {hasPerm} = useSecurity()
-            const userStore = useUserStore()
-            let url = '/users/?is_validated_by_admin=false'
-            if (userStore.userInstitutions && userStore.userInstitutions?.length !== 0) {
-                url += `&institutions=${userStore.userInstitutions?.join(',')}`
-                if (hasPerm('change_user_misc')) url += ','
+            if (hasPerm('change_associationusers')) {
+                const {axiosAuthenticated} = useAxios()
+                const userStore = useUserStore()
+
+                let url = '/users/?institutions='
+                if (userStore.userInstitutions?.length !== 0) {
+                    url += userStore.userInstitutions?.join(',')
+                    if (hasPerm('change_user_misc')) url += ','
+                }
+
+                if (status === 'validated') url += '&is_validated_by_admin=true'
+                else if (status === 'unvalidated') url += '&is_validated_by_admin=false'
+
                 this.users = (await axiosAuthenticated.get<User[]>(url)).data
             }
         },

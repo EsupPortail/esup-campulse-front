@@ -24,9 +24,9 @@ export interface Association {
     lastGoaDate?: string,
     cgaDate?: string,
     socialNetworks?: AssociationSocialNetwork[],
-    institution: Institution | undefined | number,
-    institutionComponent: InstitutionComponent | undefined | number,
-    activityField: AssociationActivityField | undefined | number,
+    institution: number,
+    institutionComponent: number,
+    activityField: number,
     canSubmitProjects: boolean,
     charterStatus: string
 }

@@ -4,7 +4,6 @@ import type {
     AssociationRole,
     AssociationUser,
     AssociationUserDetail,
-    User,
     UserManagerStore,
     UserStore
 } from '#/user'
@@ -13,6 +12,9 @@ import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
 import {useAssociationStore} from "@/stores/useAssociationStore";
+import useSecurity from "@/composables/useSecurity";
+import type {Association} from "#/association";
+
 
 // Used to store a user's associations, while it is modified by a manager or during registration
 const userAssociations = ref<AssociationRole[]>([])
@@ -25,6 +27,7 @@ const newAssociationsUser = ref<AssociationUser[]>([])
 
 // Used for presidency delegation and association management
 const associationMembers = ref<AssociationMember[]>([])
+
 
 export default function () {
 
@@ -157,38 +160,55 @@ export default function () {
     }
 
     // To test
-    async function getUserAssociations(id: number | null, managedUser: boolean) {
+    async function getUserAssociations(userId: number | null, managedUser: boolean) {
         const {axiosAuthenticated} = useAxios()
+
         let store: UserStore | UserManagerStore = userStore
         if (managedUser) store = userManagerStore
-        const url = (managedUser) ? `/users/${id}/associations/` : '/users/associations/'
-        const userAssociations = (await axiosAuthenticated.get<AssociationUserDetail[]>(url)).data
-        for (const index in userAssociations) {
-            const associationId = userAssociations[index].association.id
-            const association = (await axiosAuthenticated.get(`/associations/${associationId}`)).data
-            userAssociations[index].association = {
-                id: associationId,
-                name: association.name,
-                isSite: association.isSite,
-                institution: association.institution,
-                isEnabled: association.isEnabled,
-                isPublic: association.isPublic,
-            }
+
+        store.userAssociations = []
+
+        const url = (managedUser) ? `/users/${userId}/associations/` : '/users/associations/'
+
+        const userAssociations = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
+
+        for (let i = 0; i < userAssociations.length; i++) {
+            const associationDetails = (await axiosAuthenticated.get<Association>(`/associations/${userAssociations[i].association}`)).data
+            store.userAssociations.push(
+                {
+                    association: {
+                        id: userAssociations[i].association as number,
+                        name: associationDetails.name,
+                        isSite: associationDetails.isSite,
+                        institution: associationDetails.institution,
+                        isEnabled: associationDetails.isEnabled,
+                        isPublic: associationDetails.isPublic,
+                    },
+                    isPresident: userAssociations[i].isPresident as boolean,
+                    canBePresident: userAssociations[i].canBePresident as boolean,
+                    canBePresidentFrom: userAssociations[i].canBePresidentFrom as string,
+                    canBePresidentTo: userAssociations[i].canBePresidentTo as string,
+                    isValidatedByAdmin: userAssociations[i].isValidatedByAdmin as boolean,
+                    isVicePresident: userAssociations[i].isVicePresident as boolean,
+                    isSecretary: userAssociations[i].isSecretary as boolean,
+                    isTreasurer: userAssociations[i].isTreasurer as boolean,
+                })
         }
-        store.userAssociations = userAssociations
+    }
+
+    // To test
+    function getAssociationUserRole(user: AssociationUser | AssociationUserDetail) {
+        return user.isPresident ? 'isPresident' : user.isSecretary ? 'isSecretary' : user.isTreasurer ? 'isTreasurer' :
+            user.isVicePresident ? 'isVicePresident' : 'isMember'
     }
 
     // To test
     function initUserAssociations(editedByStaff: boolean) {
         userAssociations.value = []
-        let associations: AssociationUserDetail[] = userStore.userAssociations
+        let associations: AssociationUserDetail[] | AssociationUser[] = userStore.userAssociations
         if (editedByStaff) associations = userManagerStore.userAssociations
         associations.forEach(function (association) {
-            let role = 'isMember'
-            if (association.isPresident) role = 'isPresident'
-            if (association.isSecretary) role = 'isSecretary'
-            if (association.isTreasurer) role = 'isTreasurer'
-            if (association.isVicePresident) role = 'isVicePresident'
+            const role = getAssociationUserRole(association)
             userAssociations.value.push({
                 id: association.association.id,
                 name: association.association.name,
@@ -208,29 +228,32 @@ export default function () {
         initUserAssociations(false)
     })
 
-    // To test
-    function getAssociationUserRole(user: AssociationUser) {
-        return user.isPresident ? 'isPresident' : user.isSecretary ? 'isSecretary' : user.isTreasurer ? 'isTreasurer' :
-            user.isVicePresident ? 'isVicePresident' : 'isMember'
-    }
 
     // To test
-    async function getAssociationUsersNames(associationId: number) {
-        const {axiosAuthenticated} = useAxios()
-        return (await axiosAuthenticated.get(`/users/?association_id=${associationId}`)).data
-    }
-
-    const initAssociationMembers = async (associationId: number) => {
+    async function getUnvalidatedAssociationUsers() {
         associationMembers.value = []
-        const userNames: User[] = await getAssociationUsersNames(associationId)
-        await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function (user) {
-            const member = userNames.find(obj => obj.id === user.user)
-            if (member) {
+
+        const {axiosAuthenticated} = useAxios()
+        const {hasPerm} = useSecurity()
+
+        let institutions = userStore.userInstitutions?.join(',')
+        if (hasPerm('change_user_misc')) institutions += ','
+        const url = `/users/associations/?institutions=${institutions}&is_validated_by_admin=false`
+
+        const users = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
+        await associationStore.getAssociationNames(false)
+        await userManagerStore.getUsers('validated')
+
+        users.forEach((user) => {
+            const extendedUser = userManagerStore.users.find(obj => obj.id === user.user)
+            const associationName = associationStore.associationNames.find(obj => obj.id === user.association)?.name
+            if (extendedUser && associationName) {
                 associationMembers.value.push({
                     id: user.user as number,
-                    firstName: member.firstName,
-                    lastName: member.lastName,
+                    associationId: user.association as number,
+                    associationName,
+                    firstName: extendedUser.firstName,
+                    lastName: extendedUser.lastName,
                     role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(user))?.label as string,
                     canBePresident: user.canBePresident,
                     canBePresidentFrom: user.canBePresidentFrom,
@@ -240,7 +263,6 @@ export default function () {
             }
         })
     }
-
 
     return {
         userAssociations,
@@ -254,7 +276,8 @@ export default function () {
         getUserAssociations,
         newAssociations,
         deleteUserAssociation,
-        initAssociationMembers,
-        associationMembers
+        getUnvalidatedAssociationUsers,
+        associationMembers,
+        getAssociationUserRole
     }
 }
