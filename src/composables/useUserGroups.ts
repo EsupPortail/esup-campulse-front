@@ -28,6 +28,9 @@ const groupCanJoinAssociation = ref<boolean>(true)
 // Helper to know if a user in userStore if a staff member
 const isStaff = ref<boolean | undefined>(undefined)
 
+// Used to display or not the select for commissions
+const commissionMemberIsSelected = ref<boolean>(false)
+
 export default function () {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
@@ -239,8 +242,6 @@ export default function () {
         }
     }
 
-    const commissionMemberIsSelected = ref<boolean>(false)
-
     const commissionGroup = ref<Group | undefined>()
     watch(() => groups.value.length, () => {
         commissionGroup.value = groups.value.find(obj => obj.name === 'COMMISSION')
@@ -249,10 +250,11 @@ export default function () {
     // To test
     const initCommissionMemberSelection = () => {
         if (commissionGroup.value) {
-            commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.value.id)
+            commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.value?.id)
+            console.log(commissionMemberIsSelected.value)
         }
     }
-    watch(() => newGroups.value.length, initCommissionMemberSelection)
+    watch(() => newGroups.value, initCommissionMemberSelection)
 
 
     return {
