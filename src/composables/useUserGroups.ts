@@ -251,7 +251,6 @@ export default function () {
     const initCommissionMemberSelection = () => {
         if (commissionGroup.value) {
             commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.value?.id)
-            console.log(commissionMemberIsSelected.value)
         }
     }
     watch(() => newGroups.value, initCommissionMemberSelection)
