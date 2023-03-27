@@ -64,7 +64,7 @@ const columns: QTableProps['columns'] = [
         field: 'associations',
         sortable: false
     },
-    {name: 'groups', align: 'center', label: t('status'), field: 'groups', sortable: false},
+    {name: 'groups', align: 'center', label: t('user.groups'), field: 'groups', sortable: false},
     {
         name: 'isValidatedByAdmin',
         align: 'right',

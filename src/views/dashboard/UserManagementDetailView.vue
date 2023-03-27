@@ -13,12 +13,14 @@ import AlertConfirmUserUpdate from '@/components/alert/AlertConfirmUserUpdate.vu
 import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
 import FormRegisterUserAssociations from "@/components/form/FormRegisterUserAssociations.vue";
+import {useUserStore} from "@/stores/useUserStore";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {groupChoiceIsValid} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
+const userStore = useUserStore()
 const route = useRoute()
 
 onMounted(async () => {
@@ -51,7 +53,8 @@ function onLeaveEdition() {
 
 // Check is there are any changes before leaving the page
 onBeforeRouteLeave((to, from, next) => {
-    if (!hasValidated.value) {
+    // We open pop-up if manager has nos validated changes and manager is auth (to prevent pop-up to open on logout)
+    if (!hasValidated.value && userStore.isAuth) {
         openAlert.value = true
         if (!leaveEdition.value) {
             next(false)
