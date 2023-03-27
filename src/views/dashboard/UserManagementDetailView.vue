@@ -17,7 +17,7 @@ import {useUserStore} from "@/stores/useUserStore";
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {groupChoiceIsValid} = useUserGroups()
+const {groupChoiceIsValid, groupCanJoinAssociation} = useUserGroups()
 
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
@@ -99,7 +99,7 @@ onBeforeRouteLeave((to, from, next) => {
             <div class="form-container">
                 <div class="form">
                     <FormUpdateUserAssociations/>
-                    <FormRegisterUserAssociations/>
+                    <FormRegisterUserAssociations v-if="groupCanJoinAssociation"/>
                 </div>
             </div>
         </section>

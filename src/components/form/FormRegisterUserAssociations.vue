@@ -6,11 +6,9 @@ import {useQuasar} from 'quasar'
 import {onMounted, ref, watch} from 'vue'
 import {useRoute} from "vue-router";
 import useUserAssociations from "@/composables/useUserAssociations";
-import useUserGroups from "@/composables/useUserGroups";
 
 const associationStore = useAssociationStore()
 const route = useRoute()
-const {groupCanJoinAssociation} = useUserGroups()
 const {
     userAssociations, newAssociations, addAssociation, removeAssociation, updateRegisterRoleInAssociation
 } = useUserAssociations()
@@ -64,7 +62,7 @@ function clearOptions() {
 </script>
 
 <template>
-    <QCard v-if="groupCanJoinAssociation">
+    <QCard v-if="title">
         <QCardSection>
             <fieldset>
                 <legend class="legend-big">{{ title }}</legend>
