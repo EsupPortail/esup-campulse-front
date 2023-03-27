@@ -177,18 +177,18 @@ export default function () {
         const {newAssociationsUser} = useUserAssociations()
         if (userStore.isCas) {
             await userCASRegister(newUser.phone)
+            await userGroupsRegister(true)
             if (newAssociationsUser) {
                 await userAssociationsRegister(true, newUser.username)
             }
-            await userGroupsRegister(true)
             // We must clear newUser to avoid persistence of session
             userStore.unLoadNewUser()
         } else {
             await userLocalRegister()
+            await userGroupsRegister(true)
             if (newAssociationsUser.value) {
                 await userAssociationsRegister(true, newUser.email)
             }
-            await userGroupsRegister(true)
         }
     }
 

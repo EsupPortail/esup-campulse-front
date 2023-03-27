@@ -30,6 +30,8 @@ onMounted(async () => {
 
 const title = ref<string>()
 
+const options = ref(associationStore.associationLabels)
+
 const initTitle = () => {
     if (route.name === 'Registration') title.value = t('dashboard.association-user.add-my-associations')
     else if (route.name === 'ManageAccount') title.value = t('dashboard.association-user.add-my-new-associations')
@@ -47,6 +49,18 @@ async function loadAssociations() {
         })
     }
 }
+
+function filterAssociations(val: string, update: (cb: () => void) => void) {
+    update(() => {
+        const lower = val.toLowerCase()
+        options.value = associationStore.associationLabels.filter(obj => obj.label.toLowerCase().indexOf(lower) > -1)
+    })
+}
+
+function clearOptions() {
+    options.value = []
+}
+
 </script>
 
 <template>
@@ -59,10 +73,17 @@ async function loadAssociations() {
                     <QSelect
                         v-model="association.id"
                         :label="t('forms.select-association')"
-                        :options="associationStore.associationLabels"
+                        :options="options"
+                        clearable
                         emit-value
+                        fill-input
                         filled
+                        hide-selected
+                        input-debounce="0"
                         map-options
+                        use-input
+                        @filter="filterAssociations"
+                        @input="clearOptions"
                         @update:model-value="checkHasPresident(association)"
                     />
                     <QOptionGroup
