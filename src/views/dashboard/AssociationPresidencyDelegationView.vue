@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {onMounted} from 'vue'
-import {QTableProps, useQuasar} from 'quasar'
+import type {QTableProps} from 'quasar'
+import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import {useRoute} from 'vue-router'
 import {useAssociationStore} from '@/stores/useAssociationStore'
