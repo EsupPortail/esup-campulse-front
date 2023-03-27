@@ -16,6 +16,7 @@ import useUtility from '@/composables/useUtility'
 import type {AssociationLogo, EditedAssociation} from '#/association'
 import axios from 'axios'
 import useUserGroups from '@/composables/useUserGroups'
+import useSecurity from "@/composables/useSecurity";
 
 
 const {t} = useI18n()
@@ -27,6 +28,7 @@ const {
     changeAssociationLogo
 } = useAssociation()
 const {isStaff} = useUserGroups()
+const {hasPerm} = useSecurity()
 
 const associationStore = useAssociationStore()
 
@@ -47,7 +49,7 @@ const association = ref<EditedAssociation>({
     presidentPhone: '',
     approvalDate: '',
     lastGoaDate: '',
-    studentCount: null,
+    amountMembersAllowed: null,
     isPublic: false,
     altLogo: ''
 })
@@ -66,10 +68,10 @@ const initValues = () => {
     association.value.presidentPhone = associationStore.association?.presidentPhone as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
-    association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution?.id)?.value
-    association.value.institutionComponent = associationStore.institutionComponentLabels.find(({value}) => value === associationStore.association?.institutionComponent?.id)?.value
-    association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField?.id)?.value
-    association.value.studentCount = associationStore.association?.studentCount as number
+    association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution)?.value
+    association.value.institutionComponent = associationStore.institutionComponentLabels.find(({value}) => value === associationStore.association?.institutionComponent)?.value
+    association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField)?.value
+    association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed as number
     association.value.isPublic = associationStore.association?.isPublic as boolean
 }
 watch(() => associationStore.association, initValues)
@@ -123,7 +125,7 @@ async function onChangeLogo(action: string) {
         } else if (action === 'delete') {
             const deleteLogoData = {'altLogo': null, 'pathLogo': null}
             await changeAssociationLogo(undefined, "", deleteLogoData)
-            altLogo.value = ""
+            altLogo.value = ''
             newLogo.value = undefined
         }
         notify({
@@ -191,8 +193,14 @@ async function onChangeLogo(action: string) {
                 filled
                 map-options
             />
-            <QSelect v-model="association.institutionComponent" :label="t('association.labels.institution-component')"
-                     :options="associationStore.institutionComponentLabels" emit-value filled map-options/>
+            <QSelect
+                v-model="association.institutionComponent"
+                :label="t('association.labels.institution-component')"
+                :options="associationStore.institutionComponentLabels"
+                emit-value
+                filled
+                map-options
+            />
             <QSelect v-model="association.activityField" :label="t('association.labels.activity-field')"
                      :options="associationStore.activityFieldLabels" emit-value filled map-options/>
         </fieldset>
@@ -206,8 +214,14 @@ async function onChangeLogo(action: string) {
                 </template>
             </QInput>
             <QInput v-model="association.siret" :label="t('association.labels.siret')" filled inputmode="numeric"/>
-            <QInput v-model="association.studentCount" :label="t('association.labels.student-count')" filled
-                    inputmode="numeric"/>
+            <QInput
+                v-if="hasPerm('change_association_all_fields')"
+                v-model="association.amountMembersAllowed"
+                :label="t('association.labels.amount-members-allowed')"
+                filled
+                inputmode="numeric"
+                type="number"
+            />
         </fieldset>
         <fieldset>
             <legend>{{ t('association.titles.contact') }}</legend>

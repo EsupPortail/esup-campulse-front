@@ -84,18 +84,18 @@ export default function () {
         const {formatDate} = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
-            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone', 'studentCount']
+            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone', 'amountMembersAllowed']
             if (indexes.indexOf(key) !== -1) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})
                 }
             }
             // Check institution, component and field
-            else if (key == 'institution' && value !== associationStore.association?.institution?.id) {
+            else if (key == 'institution' && value !== associationStore.association?.institution) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'institutionComponent' && value !== associationStore.association?.institutionComponent?.id) {
+            } else if (key == 'institutionComponent' && value !== associationStore.association?.institutionComponent) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'activityField' && value !== associationStore.association?.activityField?.id) {
+            } else if (key == 'activityField' && value !== associationStore.association?.activityField) {
                 changedData = Object.assign(changedData, {[key]: value})
             }
             // Check date

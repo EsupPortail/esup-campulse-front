@@ -29,6 +29,7 @@ export interface Association {
     activityField?: number,
     canSubmitProjects: boolean,
     charterStatus: string
+    amountMembersAllowed: number
 }
 
 export interface AssociationLogo {
@@ -113,7 +114,8 @@ export interface EditedAssociation {
     institution?: number | null | undefined,
     institutionComponent?: number | null | undefined,
     activityField?: number | null | undefined,
-    altLogo?: string
+    altLogo?: string,
+    amountMembersAllowed: number | null
 }
 
 export interface NewAssociation {
