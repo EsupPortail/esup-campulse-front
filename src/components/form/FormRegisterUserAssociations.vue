@@ -41,7 +41,7 @@ watch(() => route.path, initTitle)
 
 async function loadAssociations() {
     try {
-        await associationStore.getAssociationNames(false)
+        await associationStore.getAssociationNames(false, true)
     } catch (e) {
         notify({
             type: 'negative',

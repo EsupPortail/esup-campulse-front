@@ -180,7 +180,7 @@ export default function () {
                         id: userAssociations[i].association as number,
                         name: associationDetails.name,
                         isSite: associationDetails.isSite,
-                        institution: associationDetails.institution,
+                        institution: associationDetails.institution as number,
                         isEnabled: associationDetails.isEnabled,
                         isPublic: associationDetails.isPublic,
                     },
@@ -233,7 +233,7 @@ export default function () {
         const url = `/users/associations/?institutions=${institutions}&is_validated_by_admin=false`
 
         const users = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
-        await associationStore.getAssociationNames(false)
+        await associationStore.getAssociationNames(false, false)
         await userManagerStore.getUsers('validated')
 
         users.forEach((user) => {

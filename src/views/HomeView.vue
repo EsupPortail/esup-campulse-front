@@ -25,7 +25,7 @@ watch(() => associationStore.associationNames.length, () => {
 
 async function onGetAssociationNames() {
     try {
-        await associationStore.getAssociationNames(true)
+        await associationStore.getAssociationNames(true, false)
     } catch (error) {
         notify({
             type: 'negative',

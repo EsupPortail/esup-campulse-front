@@ -61,9 +61,9 @@ export const useAssociationStore = defineStore('associationStore', {
 
     actions: {
         getAssociationSubDetails(association: Association) {
-            association.institution = this.institutions.find((institution) => institution.id === association.institution)
-            association.institutionComponent = this.institutionComponents.find((institutionComponent) => institutionComponent.id === association.institutionComponent)
-            association.activityField = this.activityFields.find((activityField) => activityField.id === association.activityField)
+            association.institution = this.institutions.find((institution) => institution.id === association.institution)?.id
+            association.institutionComponent = this.institutionComponents.find((institutionComponent) => institutionComponent.id === association.institutionComponent)?.id
+            association.activityField = this.activityFields.find((activityField) => activityField.id === association.activityField)?.id
             return association
         },
         getAssociationsSubDetails(associations: Association[]) {
@@ -105,17 +105,27 @@ export const useAssociationStore = defineStore('associationStore', {
          * of
          * @param {boolean} isPublic - boolean - If true, only public associations will be fetched. If false, only
          * associations that the user is a member of will be fetched.
+         * @param allowNewUsers
          */
-        async getAssociationNames(isPublic: boolean) {
+        // To re test
+        async getAssociationNames(isPublic: boolean, allowNewUsers: boolean) {
             const {axiosPublic} = useAxios()
             const userStore = useUserStore()
             const {isStaff} = useUserGroups()
-            let url = '/associations/names'
-            if (isPublic) url += '?is_public=true'
-            else if (isStaff.value && userStore.userInstitutions?.length !== 0) {
-                url += `?institutions=${userStore.userInstitutions?.join(',')}`
+
+            let urlString = '/associations/names'
+            const urlArray = []
+
+            if (isPublic) urlArray.push('is_public=true')
+            if (isStaff.value && userStore.userInstitutions?.length !== 0) urlArray.push(`institutions=${userStore.userInstitutions?.join(',')}`)
+            if (allowNewUsers) urlArray.push('allow_new_users=true')
+
+            if (urlArray.length > 0) {
+                urlString += '?'
+                urlString += urlArray.join('&')
             }
-            this.associationNames = (await axiosPublic.get<AssociationName[]>(url)).data
+
+            this.associationNames = (await axiosPublic.get<AssociationName[]>(urlString)).data
         },
         /**
          * It the user is a manager, it simply gets all associations
