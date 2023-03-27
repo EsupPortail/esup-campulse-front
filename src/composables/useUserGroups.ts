@@ -133,15 +133,9 @@ export default function () {
 
     // To test
     const initUserGroups = () => {
-        newGroups.value = []
-        userManagerStore.user?.groups.forEach((group) => {
-            newGroups.value.push(group.groupId)
-        })
-        newGroups.value = newGroups.value.filter((element, index) => {
-            return newGroups.value.indexOf(element) === index
-        })
+        newGroups.value = [...userManagerStore.userGroups]
     }
-    watch(() => userManagerStore.user, initUserGroups)
+    watch(() => userManagerStore.userGroups, initUserGroups)
 
     /**
      * If the groups array has a length, find the group with the name that matches the groupCodeName parameter and push the
@@ -234,7 +228,7 @@ export default function () {
         const userManagerStore = useUserManagerStore()
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
-        if (!arraysAreEqual(newGroups.value, oldGroups)) {
+        if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userCommissions.value, userManagerStore.userCommissions)) {
             await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups),
                 commissionsToUpdate(userCommissions.value, userManagerStore.userCommissions))
             await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups),
@@ -242,8 +236,8 @@ export default function () {
         }
     }
 
-    const commissionGroup = ref<Group | undefined>()
-    watch(() => groups.value.length, () => {
+    const commissionGroup = ref<Group | undefined>(groups.value.find(obj => obj.name === 'COMMISSION'))
+    watch(() => groups.value, () => {
         commissionGroup.value = groups.value.find(obj => obj.name === 'COMMISSION')
     })
 

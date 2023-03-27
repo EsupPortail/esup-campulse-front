@@ -4,6 +4,7 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from "@/stores/useUserStore";
 import useSecurity from "@/composables/useSecurity";
 import useUserGroups from "@/composables/useUserGroups";
+import useCommissions from "@/composables/useCommissions";
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
@@ -21,7 +22,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 }))
         },
         userGroups: (state: UserManagerStore): number[] => {
-            return state.user?.groups?.map<number>(group => group.groupId) || []
+            return [...new Set(state.user?.groups?.map<number>(group => group.groupId))]
         },
         // To test
         userCommissions: (state: UserManagerStore): number[] => {
@@ -125,12 +126,24 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         /**
          * It deletes all the groups in the array `groupsToDelete` from the user with the id `this.user?.id`
          * @param {number[]} groupsToDelete - number[] - An array of group IDs to delete
+         * @param commissionsToDelete
          */
         // To retest
         async deleteUserGroups(groupsToDelete: number[], commissionsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
+            const {commissionGroup} = useUserGroups()
+            const {userCommissions} = useCommissions()
             for (let i = 0; i < groupsToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${groupsToDelete[i]}`)
+                if (groupsToDelete[i] !== commissionGroup.value?.id) {
+                    await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${groupsToDelete[i]}`)
+                } else {
+                    for (let i = 0; i < userCommissions.value.length; i++) {
+                        await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${commissionGroup.value?.id}/commissions/${userCommissions.value[i]}`)
+                    }
+                }
+            }
+            for (let i = 0; i < commissionsToDelete.length; i++) {
+                await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${commissionGroup.value?.id}/commissions/${commissionsToDelete[i]}`)
             }
         },
         async validateUser() {
