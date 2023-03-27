@@ -254,7 +254,8 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/RegisterLocalView.vue'),
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.register'),
-                    title: i18n.global.t('breadcrumbs.register')
+                    title: i18n.global.t('breadcrumbs.register'),
+                    colorVariant: 'space-4'
                 },
             },
             {
@@ -265,27 +266,42 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'register-successful',
                 name: 'RegistrationSuccessful',
-                component: () => import('@/views/RegisterSuccessfulView.vue')
+                component: () => import('@/views/RegisterSuccessfulView.vue'),
+                meta: {
+                    colorVariant: 'space-4'
+                }
             },
             {
                 path: 'register-verify-email',
                 name: 'RegistrationVerifyEmail',
-                component: () => import('@/views/RegisterVerifyEmailView.vue')
+                component: () => import('@/views/RegisterVerifyEmailView.vue'),
+                meta: {
+                    colorVariant: 'space-4'
+                }
             },
             {
                 path: 'register-resend-email',
                 name: 'RegistrationResendEmail',
-                component: () => import('@/views/RegisterResendEmailView.vue')
+                component: () => import('@/views/RegisterResendEmailView.vue'),
+                meta: {
+                    colorVariant: 'space-4'
+                }
             },
             {
                 path: 'password-reset',
                 name: 'PasswordReset',
-                component: () => import('@/views/PasswordResetView.vue')
+                component: () => import('@/views/PasswordResetView.vue'),
+                meta: {
+                    colorVariant: 'space-4'
+                }
             },
             {
                 path: 'password-reset-confirm',
                 name: 'PasswordResetConfirm',
-                component: () => import('@/views/PasswordResetConfirmView.vue')
+                component: () => import('@/views/PasswordResetConfirmView.vue'),
+                meta: {
+                    colorVariant: 'space-4'
+                }
             },
             // This must be last
             {
