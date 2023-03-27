@@ -3,12 +3,16 @@ import {useRoute} from 'vue-router'
 import {onMounted, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
+import useColorVariants from "@/composables/useColorVariants";
 
 const {t} = useI18n()
 const route = useRoute()
 const {initBreadcrumbs} = useUtility()
+const {colorVariant} = useColorVariants()
+
 
 const breadcrumbs = ref<{ label: string, to: string }[]>([])
+
 
 watch(() => route.path, () => {
     breadcrumbs.value = initBreadcrumbs(route.matched, route.params)
@@ -21,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div id="layout-breadcrumbs" class="variant-space-1">
+    <div id="layout-breadcrumbs" :class="'variant-' + colorVariant">
         <QBreadcrumbs gutter="none" separator="">
             <QBreadcrumbsEl
                 :label="t('breadcrumbs.home')"

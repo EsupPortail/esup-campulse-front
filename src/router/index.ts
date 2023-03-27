@@ -2,11 +2,15 @@ import {createRouter, createWebHistory} from 'vue-router'
 import routes from '@/router/routes'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserGroups from '@/composables/useUserGroups'
+import {ref} from "vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
 })
+
+const colorVariant = ref<string>('')
+
 
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
@@ -23,6 +27,8 @@ router.beforeEach(async (to) => {
         await getGroups()
         await initStaffStatus()
     }
+
+    colorVariant.value = to.meta.colorVariant as string
 
     if (to.meta.requiresAuth && !userStore.isAuth) {
         return {name: 'Login'}

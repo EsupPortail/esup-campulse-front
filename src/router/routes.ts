@@ -17,6 +17,7 @@ const routes: RouteRecordRaw[] = [
                 path: 'associations',
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.directory'),
+                    colorVariant: 'space-1'
                 },
                 children: [
                     {
@@ -43,7 +44,8 @@ const routes: RouteRecordRaw[] = [
                 name: 'Charter',
                 component: () => import('@/views/CharterView.vue'),
                 meta: {
-                    requiresAuth: true
+                    requiresAuth: true,
+                    colorVariant: 'space-2'
                 }
             },
             {
@@ -51,17 +53,10 @@ const routes: RouteRecordRaw[] = [
                 name: 'Commission',
                 component: () => import('@/views/CommissionView.vue'),
                 meta: {
-                    requiresAuth: true
+                    requiresAuth: true,
+                    colorVariant: 'space-3'
                 }
             },
-            /*{
-                path: 'login',
-                name: 'Login',
-                component: () => import('@/views/LoginView.vue'),
-                meta: {
-                    breadcrumb: i18n.global.t('breadcrumbs.login'),
-                }
-            },*/
             {
                 path: 'cas-login',
                 name: 'CASLogin',
@@ -71,7 +66,8 @@ const routes: RouteRecordRaw[] = [
                 path: 'dashboard',
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.dashboard'),
-                    requiresAuth: true
+                    requiresAuth: true,
+                    colorVariant: 'space-4'
                 },
                 children: [
                     {

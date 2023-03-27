@@ -3,9 +3,11 @@ import {RouterLink, useRoute} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 import {useI18n} from 'vue-i18n'
 import {ref, watch} from 'vue'
+import useColorVariants from "@/composables/useColorVariants";
 
 const {t} = useI18n()
 const route = useRoute()
+const {colorVariant} = useColorVariants()
 
 const title = ref<string>(route.meta.title as string)
 watch(() => route.name, () => {
@@ -20,8 +22,12 @@ function ToggleMenu() {
 </script>
 
 <template>
-    <QHeader id="layout-header" :class="{'variant-space-1': title, 'variant-home': route.name === 'Home'}" elevated
-             height-hint="98">
+    <QHeader
+        id="layout-header"
+        :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
+        elevated
+        height-hint="98"
+    >
         <QToolbar>
             <QToolbarTitle>
                 <RouterLink :to="{name: 'Home'}" class="home-link">{{ t("header.title") }}</RouterLink>
