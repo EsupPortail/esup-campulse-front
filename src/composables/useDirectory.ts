@@ -46,26 +46,26 @@ export default function () {
             }
             if (settings.institution) {
                 if (matches.length) {
-                    const newMatches = matches.filter(association => association.institution?.id === settings.institution)
+                    const newMatches = matches.filter(association => association.institution === settings.institution)
                     matches = [...newMatches]
                 } else {
-                    matches = associationStore.associations.filter(association => association.institution?.id === settings.institution)
+                    matches = associationStore.associations.filter(association => association.institution === settings.institution)
                 }
             }
             if (settings.institutionComponent) {
                 if (matches.length) {
-                    const newMatches = matches.filter(association => association.institutionComponent?.id === settings.institutionComponent)
+                    const newMatches = matches.filter(association => association.institutionComponent === settings.institutionComponent)
                     matches = [...newMatches]
                 } else {
-                    matches = associationStore.associations.filter(association => association.institutionComponent?.id === settings.institutionComponent)
+                    matches = associationStore.associations.filter(association => association.institutionComponent === settings.institutionComponent)
                 }
             }
             if (settings.activityField) {
                 if (matches.length) {
-                    const newMatches = matches.filter(association => association.activityField?.id === settings.activityField)
+                    const newMatches = matches.filter(association => association.activityField === settings.activityField)
                     matches = [...newMatches]
                 } else {
-                    matches = associationStore.associations.filter(association => association.activityField?.id === settings.activityField)
+                    matches = associationStore.associations.filter(association => association.activityField === settings.activityField)
                 }
             }
             return matches
