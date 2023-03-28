@@ -98,17 +98,15 @@ function onInitGroupLabels() {
         <QSelect
             v-if="commissionMemberIsSelected"
             v-model="userCommissions"
-            :hint="t('forms.max-commissions')"
             :label="t('commissions')"
             :options="commissionOptions"
-            :rules="[ val => val.length >= 1]"
-            counter
+            :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
             emit-value
             filled
             map-options
-            max-values="2"
             multiple
             style="width: 250px"
+            use-chips
         />
 
     </fieldset>
