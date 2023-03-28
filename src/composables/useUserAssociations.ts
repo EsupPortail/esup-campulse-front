@@ -4,6 +4,7 @@ import type {
     AssociationRole,
     AssociationUser,
     AssociationUserDetail,
+    User,
     UserManagerStore,
     UserStore
 } from '#/user'
@@ -203,6 +204,33 @@ export default function () {
     }
 
     // To test
+    async function getAssociationUsersNames(associationId: number) {
+        const {axiosAuthenticated} = useAxios()
+        return (await axiosAuthenticated.get(`/users/?association_id=${associationId}`)).data
+    }
+
+    const initAssociationMembers = async (associationId: number) => {
+        associationMembers.value = []
+        const userNames: User[] = await getAssociationUsersNames(associationId)
+        await associationStore.getAssociationUsers(associationId)
+        associationStore.associationUsers.forEach(function (user) {
+            const member = userNames.find(obj => obj.id === user.user)
+            if (member) {
+                associationMembers.value.push({
+                    id: user.user as number,
+                    firstName: member.firstName,
+                    lastName: member.lastName,
+                    role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(user))?.label as string,
+                    canBePresident: user.canBePresident,
+                    canBePresidentFrom: user.canBePresidentFrom,
+                    canBePresidentTo: user.canBePresidentTo,
+                    isValidatedByAdmin: user.isValidatedByAdmin as boolean
+                })
+            }
+        })
+    }
+
+    // To test
     function initUserAssociations(editedByStaff: boolean) {
         userAssociations.value = []
         let associations: AssociationUserDetail[] = userStore.userAssociations
@@ -271,6 +299,7 @@ export default function () {
         getUnvalidatedAssociationUsers,
         associationMembers,
         getAssociationUserRole,
-        initUserAssociations
+        initUserAssociations,
+        initAssociationMembers
     }
 }
