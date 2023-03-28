@@ -1,4 +1,4 @@
-import type {AssociationUser, User, UserGroup, UserRegister} from "#/user";
+import type {AssociationUser, AssociationUserDetail, User, UserGroup, UserRegister} from "#/user";
 import {_userAssociation} from "~/fixtures/association.mock";
 import {_groups} from "~/fixtures/group.mock";
 
@@ -20,16 +20,19 @@ export const _userGroups: UserGroup[] = [
         userId: 1,
         groupId: 1,
         institutionId: 1,
+        commissionId: null
     },
     {
         userId: 1,
         groupId: 2,
         institutionId: 2,
+        commissionId: null
     },
     {
         userId: 1,
         groupId: 3,
         institutionId: 3,
+        commissionId: null
     },
     // Student
     {
@@ -39,7 +42,8 @@ export const _userGroups: UserGroup[] = [
     // Commission
     {
         userId: 3,
-        groupId: 4
+        groupId: 4,
+        commissionId: 1
     }
 ]
 
@@ -90,6 +94,21 @@ export const _institutionStudent: User = {
     permissions: getUserGroupsPermissions([_userGroups[3]])
 }
 
+export const _commission: User = {
+    id: 6,
+    username: 'commission@unistra.fr',
+    firstName: 'Commission',
+    lastName: 'Member',
+    phone: '',
+    email: 'commission@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[4]],
+    permissions: getUserGroupsPermissions([_userGroups[4]])
+}
+
 export const _newUser: UserRegister = {
     isCas: false,
     username: 'john.lennon@bbc.com',
@@ -121,6 +140,8 @@ export const _userAssociations: AssociationUser[] = [
     {
         isPresident: true,
         canBePresident: true,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
         isValidatedByAdmin: true,
         isVicePresident: false,
         isSecretary: false,
@@ -130,6 +151,8 @@ export const _userAssociations: AssociationUser[] = [
     {
         isPresident: false,
         canBePresident: true,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
         isValidatedByAdmin: true,
         isVicePresident: false,
         isSecretary: true,
@@ -139,6 +162,8 @@ export const _userAssociations: AssociationUser[] = [
     {
         isPresident: false,
         canBePresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
         isValidatedByAdmin: true,
         isVicePresident: false,
         isSecretary: false,
@@ -148,6 +173,8 @@ export const _userAssociations: AssociationUser[] = [
     {
         isPresident: false,
         canBePresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
         isValidatedByAdmin: false,
         isVicePresident: false,
         isSecretary: false,
@@ -156,20 +183,22 @@ export const _userAssociations: AssociationUser[] = [
     }
 ]
 
-export const _userAssociationDetail = {
-    id: 1,
-    user: 'Jane',
+export const _userAssociationDetail: AssociationUserDetail = {
     isPresident: true,
     canBePresident: true,
+    canBePresidentFrom: null,
+    canBePresidentTo: null,
     isValidatedByAdmin: true,
     isVicePresident: false,
     isSecretary: false,
     isTreasurer: false,
     association: {
         id: 1,
-        name: 'PLANA',
+        name: 'Association',
         isSite: true,
-        institution: 1
+        institution: 1,
+        isEnabled: true,
+        isPublic: true
     }
 }
 
@@ -207,10 +236,12 @@ export const _userAssociationsManagement = [
 ]
 
 export const _associationRole: AssociationUser = {
-    user: 'Jane',
+    user: 1,
     association: 1,
     isPresident: true,
     canBePresident: true,
+    canBePresidentFrom: null,
+    canBePresidentTo: null,
     isValidatedByAdmin: true,
     isVicePresident: false,
     isSecretary: false,

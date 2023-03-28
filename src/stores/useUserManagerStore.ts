@@ -31,27 +31,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 if (group.commissionId) temp.push(group.commissionId)
             })
             return temp
-        },
-        /*userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
-            return {
-                firstName: state.user?.firstName as string,
-                lastName: state.user?.lastName as string,
-                username: state.user?.username as string,
-                email: state.user?.email as string,
-                phone: state.user?.phone as string
-            }
-        },*/
-        /*userAssociationStatus: (state: UserManagerStore): AssociationUser[] => {
-            return state.userAssociations.map(association => ({
-                association: association.association.id,
-                name: association.association.name,
-                isPresident: association.isPresident,
-                canBePresident: association.canBePresident,
-                isValidatedByAdmin: association.isValidatedByAdmin,
-                isSecretary: association.isSecretary,
-                isTreasurer: association.isTreasurer,
-            }))
-        }*/
+        }
     },
 
     actions: {

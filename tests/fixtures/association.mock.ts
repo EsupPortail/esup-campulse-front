@@ -18,6 +18,7 @@ export const _association: Association = {
     siret: '',
     website: '',
     studentCount: 0,
+    amountMembersAllowed: 4,
     presidentNames: '',
     presidentPhone: '',
     isEnabled: true,
@@ -33,26 +34,9 @@ export const _association: Association = {
             location: 'https://mastodon.social'
         }
     ],
-    institution: {
-        id: 1,
-        name: 'Université de Strasbourg',
-        acronym: 'Unistra',
-        email: 'test@pas-unistra.fr'
-    },
-    institutionComponent: {
-        id: 1,
-        name: 'Faculté de médecine',
-        institution: {
-            id: 1,
-            name: 'Université de Strasbourg',
-            acronym: 'Unistra',
-            email: 'test@pas-unistra.fr'
-        }
-    },
-    activityField: {
-        id: 1,
-        name: 'Santé',
-    }
+    institution: 1,
+    institutionComponent: 1,
+    activityField: 1
 }
 
 export const _editedAssociation: EditedAssociation = {
@@ -75,6 +59,7 @@ export const _editedAssociation: EditedAssociation = {
     institution: 2,
     institutionComponent: 2,
     activityField: 2,
+    amountMembersAllowed: 5
 }
 
 export const _nonEditedAssociation: EditedAssociation = {
@@ -97,6 +82,7 @@ export const _nonEditedAssociation: EditedAssociation = {
     institution: 1,
     institutionComponent: 1,
     activityField: 1,
+    amountMembersAllowed: 4
 }
 
 export const _associations: Association[] = [
@@ -110,26 +96,12 @@ export const _associations: Association[] = [
         isEnabled: true,
         isPublic: true,
         isSite: true,
-        institution: {
-            id: 1,
-            name: 'Université de Strasbourg',
-            acronym: 'Unistra',
-            email: 'test@pas-unistra.fr'
-        },
-        institutionComponent: {
-            id: 1,
-            name: 'Faculté de médecine',
-            institution: {
-                id: 1,
-                name: 'Université de Strasbourg',
-                acronym: 'Unistra',
-                email: 'test@pas-unistra.fr'
-            }
-        },
-        activityField: {
-            id: 1,
-            name: 'Santé',
-        },
+        institution: 1,
+        institutionComponent: 1,
+        activityField: 1,
+        canSubmitProjects: true,
+        charterStatus: 'draft',
+        amountMembersAllowed: 4
     },
     {
         id: 2,
@@ -141,26 +113,12 @@ export const _associations: Association[] = [
         isEnabled: true,
         isPublic: false,
         isSite: true,
-        institution: {
-            id: 2,
-            name: 'Université de Haute-Alsace',
-            acronym: 'UHA',
-            email: 'test@pas-uha.fr'
-        },
-        institutionComponent: {
-            id: 2,
-            name: 'Faculté de Chimie',
-            institution: {
-                id: 2,
-                name: 'Université de Haute-Alsace',
-                acronym: 'UHA',
-                email: 'test@pas-uha.fr'
-            }
-        },
-        activityField: {
-            id: 2,
-            name: 'Sciences',
-        },
+        institution: 2,
+        institutionComponent: 2,
+        activityField: 2,
+        canSubmitProjects: true,
+        charterStatus: 'draft',
+        amountMembersAllowed: 4
     }
 ]
 

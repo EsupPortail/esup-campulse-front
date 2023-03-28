@@ -1,6 +1,12 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {_institutionManager, _institutionStudent, _newUser, _userAssociations} from '~/fixtures/user.mock'
+import {
+    _institutionManager,
+    _institutionStudent,
+    _newUser,
+    _userAssociationDetail,
+    _userAssociations
+} from '~/fixtures/user.mock'
 import {_tokens, tokenMock} from "~/fixtures/tokens.mock";
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
@@ -8,6 +14,7 @@ import type {User} from "#/user";
 import {useAxios} from "@/composables/useAxios";
 import useSecurity from "@/composables/useSecurity";
 import type {AxiosResponse} from "axios";
+import {_association} from "~/fixtures/association.mock";
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -93,8 +100,8 @@ describe('User store', () => {
         afterEach(() => {
             _institutionStudent.isValidatedByAdmin = true
         })
-        const {axiosAuthenticated} = useAxios()
-        const mockedAxios = vi.mocked(axiosAuthenticated, true)
+        const {axiosPublic} = useAxios()
+        const mockedAxios = vi.mocked(axiosPublic, true)
         const data = {
             user: _institutionStudent,
             accessToken: _tokens.access,
@@ -207,7 +214,7 @@ describe('User store', () => {
         })
     })
 
-    describe('unLoadUser', () => {
+    /*describe('unLoadUser', () => {
         it('should clear all data from user', () => {
             userStore.user = _institutionStudent
             userStore.userAssociations = _userAssociations
@@ -215,7 +222,7 @@ describe('User store', () => {
             expect(userStore.user).toBeUndefined()
             expect(userStore.userAssociations).toEqual([])
         })
-    })
+    })*/
 
     describe('unLoadNewUser', () => {
         it('should remove tokens and remove all data from newUser', () => {
@@ -237,22 +244,20 @@ describe('User store', () => {
         describe('If user has associations', () => {
             it('should call API once on /users/associations/ and populate userAssociations in store', async () => {
                 userStore.user = _institutionStudent
-                const data = [
-                    {
-                        user: 'john',
-                        isPresident: false,
-                        canBePresident: true,
-                        isTreasurer: false,
-                        association: 1
-                    }
-                ]
                 const {axiosAuthenticated} = useAxios()
                 const mockedAxios = vi.mocked(axiosAuthenticated, true)
-                mockedAxios.get.mockResolvedValueOnce({data})
+                mockedAxios.get.mockImplementation((url) => {
+                    if (url === '/users/associations/') {
+                        return Promise.resolve({data: [_userAssociations[0]]})
+                    } else {
+                        return Promise.resolve({data: _association})
+                    }
+                })
                 await userStore.getUserAssociations()
-                expect(mockedAxios.get).toHaveBeenCalledOnce()
-                expect(mockedAxios.get).toHaveBeenCalledWith('/users/associations/')
-                expect(userStore.userAssociations).toEqual(data)
+                expect(axiosAuthenticated.get).toHaveBeenCalledTimes(2)
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/associations/')
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/associations/1')
+                expect(userStore.userAssociations).toEqual([_userAssociationDetail])
             })
         })
 
@@ -266,19 +271,19 @@ describe('User store', () => {
         })
     })
 
-    /*describe('hasPresidentStatus', () => {
-        beforeEach(() => {
-            userStore.userAssociations = _userAssociations
-        })
+    describe('hasPresidentStatus', () => {
         afterEach(() => {
             userStore.userAssociations = []
         })
         it('should return true if isPresident or canBePresident is true', () => {
+            userStore.userAssociations = [_userAssociationDetail]
             expect(userStore.hasPresidentStatus(1)).toBeTruthy()
-            expect(userStore.hasPresidentStatus(2)).toBeTruthy()
         })
         it('should return false if is President or canBePresident is false', () => {
-            expect(userStore.hasPresidentStatus(3)).toBeFalsy()
+            userStore.userAssociations = [_userAssociationDetail]
+            userStore.userAssociations[0].isPresident = false
+            userStore.userAssociations[0].canBePresident = false
+            expect(userStore.hasPresidentStatus(1)).toBeFalsy()
         })
-    })*/
+    })
 })

@@ -14,10 +14,6 @@ export const useUserStore = defineStore('userStore', {
     getters: {
         isAuth: (state: UserStore): boolean => !!state.user,
         isCas: (state: UserStore): boolean | undefined => state.user?.isCas || state.newUser?.isCas,
-        // To test ? Should we keep it ?
-        userName: (state: UserStore): string | undefined => {
-            return state.user?.firstName + ' ' + state.user?.lastName
-        },
         userInstitutions: (state: UserStore): (number | null | undefined)[] | undefined => {
             return state.user?.groups?.map(group => group.institutionId) || []
         },
@@ -31,10 +27,9 @@ export const useUserStore = defineStore('userStore', {
          * @param {string} url - The url to send the request to.
          * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
          */
-        // Should we pass it to axiosPublic instance ?
         async logIn(url: string, data: LocalLogin | CasLogin) {
-            const {axiosAuthenticated} = useAxios()
-            const response = await axiosAuthenticated.post(url, data)
+            const {axiosPublic} = useAxios()
+            const response = await axiosPublic.post(url, data)
             const {accessToken, refreshToken, user} = response.data
             if (user.isValidatedByAdmin) {
                 const {setTokens} = useSecurity()

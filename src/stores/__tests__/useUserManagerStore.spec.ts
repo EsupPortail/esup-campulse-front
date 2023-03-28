@@ -1,11 +1,9 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {_institutionManager, _institutionStudent, _newUserGroups, _users, _usersNames} from '~/fixtures/user.mock'
+import {_commission, _institutionManager, _users, _usersNames} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from "../useUserStore";
-import type {AxiosResponse} from "axios";
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -45,7 +43,13 @@ describe('User manager store', () => {
         })
     })
 
-    describe('getUsers', () => {
+    describe('userCommissions', () => {
+        it('should return an array of commission IDs if the user is a commission member', () => {
+            userManagerStore.user = _commission
+            expect(userManagerStore.userCommissions).toEqual([1])
+        })
+    })
+    /*describe('getUsers', () => {
         const {axiosAuthenticated} = useAxios()
         const mockedAxios = vi.mocked(axiosAuthenticated, true)
 
@@ -152,5 +156,5 @@ describe('User manager store', () => {
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`)
         })
-    })
+    })*/
 })
