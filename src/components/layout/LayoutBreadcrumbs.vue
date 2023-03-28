@@ -25,7 +25,10 @@ onMounted(() => {
 </script>
 
 <template>
-    <div id="layout-breadcrumbs" :class="'variant-' + colorVariant">
+    <div
+        id="layout-breadcrumbs"
+        :class="'variant-' + colorVariant"
+    >
         <QBreadcrumbs gutter="none" separator="">
             <QBreadcrumbsEl
                 :label="t('breadcrumbs.home')"

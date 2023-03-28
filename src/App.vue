@@ -1,8 +1,15 @@
 <script lang="ts" setup>
-import {RouterView} from 'vue-router'</script>
+import {RouterView, useRoute} from 'vue-router'
+import useColorVariants from '@/composables/useColorVariants'
+
+const {colorVariant} = useColorVariants()
+const route = useRoute()
+</script>
 
 <template>
-    <RouterView/>
+    <RouterView
+        v-if="colorVariant || route.name === 'Home'"
+    />
 </template>
 
 <style lang="sass">
