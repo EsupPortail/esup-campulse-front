@@ -7,8 +7,9 @@ const route = useRoute()
 </script>
 
 <template>
+    <!-- TODO: optimize this mess-->
     <RouterView
-        v-if="colorVariant || (route.name === 'Home' || route.name === 'Login' || route.name === 'DesignSystem')"
+        v-if="colorVariant || (route.name === 'Home' || route.name === 'Login' || route.name === '404' || route.name === 'DesignSystem')"
     />
 </template>
 

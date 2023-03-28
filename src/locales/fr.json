@@ -403,7 +403,7 @@
       "password-changed": "Votre mot de passe a bien été modifié.",
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
       "publish-association": "L'association a bien été publiée dans l'annuaire",
-      "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administation.",
+      "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administration.",
       "unpublish-association": "L'association a bien été dépubliée de l'annuaire",
       "update-user-infos": "Les informations du compte ont bien été mises à jour.",
       "validate-asso": "L'association a été créée avec succès.",
@@ -431,7 +431,8 @@
     "register-resend": "Reconfirmer l'adresse email",
     "register-success": "Demande d'inscription réussie",
     "register-verify-email": "Adresse e-mail vérifiée",
-    "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail."
+    "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail.",
+    "registration-ok-cas": "Votre demande d'inscription a bien été prise en compte. Vous pouvez dès à présent vous connecter avec vos identifiants CAS."
   },
   "search": "Rechercher",
   "start": "Début",
