@@ -237,7 +237,7 @@ async function onChangeLogo(action: string) {
         <FormAssociationSocialNetworks/>
         <section class="btn-group">
             <QBtn
-                :label="t('association.go-back')"
+                :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
                 :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
                 color="secondary"
                 icon="mdi-arrow-left-circle"

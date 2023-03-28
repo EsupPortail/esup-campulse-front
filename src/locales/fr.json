@@ -171,6 +171,7 @@
       "confirm-delete": "Voulez-vous vraiment supprimer le rôle de l'utilisateur pour cette association ? Une fois l'action validée le changement sera immédiat et irréversible.",
       "confirm-delete-self": "Voulez-vous vraiment quitter cette association ? Une fois l'action validée le changement sera immédiat et irréversible.",
       "edit-my-association": "Modifier la fiche de l'association",
+      "back-to-association-dashboard": "Retourner au tableau de bord",
       "i-delegate-presidency": "Je délègue mes droits de présidence à",
       "is-president": "Président ou présidente",
       "is-secretary": "Secrétaire",
