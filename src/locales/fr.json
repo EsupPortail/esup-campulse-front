@@ -157,6 +157,7 @@
     "welcome-message": "Bienvenue",
     "association-user": {
       "add-my-associations": "J'ajoute les associations dont je suis membre",
+      "add-my-associations-note": "Seules les associations pouvant accueillir de nouveaux membres sur la plate-forme peuvent être sélectionnées. Veuillez contacter votre gestionnaire en cas de problème.",
       "add-my-new-associations": "J'ajoute les nouvelles associations dont je suis membre",
       "association": "Association",
       "association-documents": "Documents de l'association",
