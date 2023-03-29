@@ -1,9 +1,11 @@
 $pageWidth: 80rem;
-$responsiveWidth: 56rem;
 $responsiveMargin: 1.56rem;
 $fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
-// Images
+// ---------------- Responsive----------------
+$responsiveWidth: 56.25rem;
+
+// ---------------- Images ----------------
 $headerBackground: url('./img/resized/header-background2.jpg');
 $chevronRightImage: url('./img/chevron-right.png');
 $chevronRightCharteImage: url('./img/chevron-right-charte.png');
@@ -11,11 +13,43 @@ $homeDirectoryImage: url('./img/resized/background-annuaire-2.jpg');
 $homeCharterImage: url('./img/resized/background-charte-2.jpg');
 $homeCapeImage: url('./img/resized/background-cape.jpg');
 
-// Fonts
+// ---------------- Fonts ----------------
 $baseFont: 'Titillium Web', sans-serif;
 $titleFont: 'Open Sans', sans-serif;
 
-// Colors
+// ---------------- Paddings ----------------
+$qBannerDotsMobilePadding: .30rem;
+$qBannerDotsComputerPadding: .40rem;
+
+// ---------------- Width ----------------
+$fullWidth: 100%;
+
+// ---------------- Sizes ----------------
+
+// Home Banner
+$qBannerInfoIconSize: 1.25rem;
+$qBannerDotsMobileSize: 1.063rem;
+
+// Login Page
+$LoginLogoMobileSize: 3.75rem;
+$LogoMobileSize: 3rem;
+$LogoComputerSize: 3.55rem;
+
+// ---------------- Weights ----------------
+$hairline-weight: 100;
+$thin-weight: 200;
+$light-weight: 300;
+$normal-weight: 400;
+$medium-weight: 500;
+$semibold-weight: 600;
+$bold-weight: 700;
+$xbold-weight: 800;
+$black-weight: 900;
+
+// ---------------- Radius ----------------
+$radiusCircle: 50%;
+
+// ---------------- Colors ----------------
 $backgroundColor1: #ffffff;
 $backgroundColor2: #f5f5f5;
 $footerBackgroundColor: #2c2c2c;
