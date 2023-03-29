@@ -3,6 +3,7 @@ import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from "@/composables/useUserGroups";
+import {useAssociationStore} from "@/stores/useAssociationStore";
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -76,15 +77,28 @@ export const useUserStore = defineStore('userStore', {
                 const {axiosAuthenticated} = useAxios()
                 const userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
                 for (const index in userAssociations) {
-                    const associationId = userAssociations[index].association
-                    const association = (await axiosAuthenticated.get(`/associations/${associationId}`)).data
-                    userAssociations[index].association = {
-                        id: associationId,
-                        name: association.name,
-                        isSite: association.isSite,
-                        institution: association.institution,
-                        isEnabled: association.isEnabled,
-                        isPublic: association.isPublic,
+                    const temp = {
+                        id: userAssociations[index].association,
+                        name: '',
+                        isSite: undefined,
+                        institution: undefined,
+                        isEnabled: undefined,
+                        isPublic: undefined,
+                    }
+                    if (userAssociations[index].isValidatedByAdmin) {
+                        const association = (await axiosAuthenticated.get(`/associations/${userAssociations[index].association}`)).data
+                        temp.name = association.name
+                        temp.isSite = association.isSite
+                        temp.institution = association.institution
+                        temp.isEnabled = association.isEnabled
+                        temp.isPublic = association.isPublic
+                    } else {
+                        const associationStore = useAssociationStore()
+                        await associationStore.getAssociationNames(false, false)
+                        const association = associationStore.associationNames.find(obj => obj.id === userAssociations[index].association)
+                        if (association) {
+                            temp.name = association.name
+                        }
                     }
                 }
                 this.userAssociations = userAssociations
