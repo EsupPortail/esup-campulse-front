@@ -27,9 +27,9 @@ export interface AssociationUser {
     canBePresidentFrom?: string | null,
     canBePresidentTo?: string | null,
     isValidatedByAdmin?: boolean,
-    isVicePresident: boolean,
-    isSecretary: boolean,
-    isTreasurer: boolean,
+    isVicePresident?: boolean,
+    isSecretary?: boolean,
+    isTreasurer?: boolean,
 }
 
 export interface AssociationUserDetail {

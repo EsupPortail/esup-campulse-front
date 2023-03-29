@@ -96,6 +96,7 @@ watch(() => associationStore.association?.pathLogo, () => {
 // Open alert if user leaves without saving
 const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(false)
+const hasValidated = ref<boolean>(false)
 
 function onLeaveEdition() {
     leaveEdition.value = true
@@ -104,7 +105,7 @@ function onLeaveEdition() {
 
 // Check is there are any changes before leaving the page
 onBeforeRouteLeave((to, from, next) => {
-    if (Object.keys(checkChanges(association.value)).length > 0) {
+    if (Object.keys(checkChanges(association.value)).length > 0 && !hasValidated.value) {
         openAlert.value = true
         if (!leaveEdition.value) {
             next(false)
@@ -206,7 +207,11 @@ async function onChangeLogo(action: string) {
         </fieldset>
         <fieldset>
             <legend>{{ t('association.titles.admin') }}</legend>
-            <QInput v-model="association.presidentNames" :label="t('association.labels.president-name')" filled/>
+            <QInput
+                v-model="association.presidentNames"
+                :label="t('association.labels.president-name')"
+                filled
+            />
             <QInput v-model="association.presidentPhone" :label="t('association.labels.president-phone')" filled/>
             <QInput v-model="association.lastGoaDate" :label="t('association.labels.last-goa')" filled type="date">
                 <template v-slot:prepend>
@@ -244,6 +249,7 @@ async function onChangeLogo(action: string) {
             />
             <AlertConfirmAssociationUpdate
                 v-if="Object.keys(checkChanges(association)).length > 0"
+                @has-validated="hasValidated = true"
             />
             <AlertConfirmAssociationEnabled
                 v-if="isStaff"

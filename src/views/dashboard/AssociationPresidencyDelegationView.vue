@@ -24,7 +24,7 @@ onMounted(async () => {
 async function onGetAssociationUsers() {
     try {
         const associationId = parseInt(route.params.id as string)
-        await initAssociationMembers(associationId)
+        await initAssociationMembers(associationId, false)
     } catch (error) {
         notify({
             type: 'negative',
@@ -125,6 +125,7 @@ const columns: QTableProps['columns'] = [
             <div class="form">
                 <QTable
                     :columns="columns"
+                    :no-data-label="t('dashboard.association-user.no-member')"
                     :rows="associationMembers"
                     :rows-per-page-options="[10, 20, 50, 0]"
                     :title="t('user-manager.users')"
@@ -176,6 +177,12 @@ const columns: QTableProps['columns'] = [
                         </QTr>
                     </template>
                 </QTable>
+                <section class="form-page-navigation">
+                    <QBtn :label="t('back')"
+                          :to="{name: 'AssociationDashboard', params: {id: route.params.id}}"
+                          icon="bi-chevron-compact-left"
+                    />
+                </section>
             </div>
         </div>
     </section>

@@ -216,23 +216,27 @@ export default function () {
         return (await axiosAuthenticated.get(`/users/?association_id=${associationId}`)).data
     }
 
-    const initAssociationMembers = async (associationId: number) => {
+    const initAssociationMembers = async (associationId: number, withPresident: boolean) => {
         associationMembers.value = []
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
         associationStore.associationUsers.forEach(function (user) {
-            const member = userNames.find(obj => obj.id === user.user)
-            if (member) {
-                associationMembers.value.push({
-                    id: user.user as number,
-                    firstName: member.firstName,
-                    lastName: member.lastName,
-                    role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(user))?.label as string,
-                    canBePresident: user.canBePresident,
-                    canBePresidentFrom: user.canBePresidentFrom,
-                    canBePresidentTo: user.canBePresidentTo,
-                    isValidatedByAdmin: user.isValidatedByAdmin as boolean
-                })
+            if (!withPresident && user.user === userStore.user?.id) {
+                return
+            } else {
+                const member = userNames.find(obj => obj.id === user.user)
+                if (member) {
+                    associationMembers.value.push({
+                        id: user.user as number,
+                        firstName: member.firstName,
+                        lastName: member.lastName,
+                        role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(user))?.label as string,
+                        canBePresident: user.canBePresident,
+                        canBePresidentFrom: user.canBePresidentFrom,
+                        canBePresidentTo: user.canBePresidentTo,
+                        isValidatedByAdmin: user.isValidatedByAdmin as boolean
+                    })
+                }
             }
         })
     }

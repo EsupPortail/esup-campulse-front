@@ -1,18 +1,23 @@
 <script lang="ts" setup>
 import {ref} from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
 import axios from "axios";
 import useAssociation from "@/composables/useAssociation";
+import router from '@/router'
 
-const { t } = useI18n()
+const {t} = useI18n()
 const confirmation = ref<boolean>(false)
-const { notify } = useQuasar()
-const { updateAssociation } = useAssociation()
+const {notify} = useQuasar()
+const {updateAssociation} = useAssociation()
+
+const emit = defineEmits(['hasValidated'])
 
 async function onValidateChanges() {
     try {
         await updateAssociation()
+        emit('hasValidated')
+        await router.push({name: 'ManageAssociations'})
         notify({
             message: t('notifications.positive.association-successfully-updated'),
             type: 'positive'

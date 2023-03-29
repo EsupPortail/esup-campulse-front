@@ -55,7 +55,7 @@ async function onDelegatePresidency(activate: boolean) {
             const associationId = parseInt(route.params.id as string)
             await patchUserAssociations(memberRef.value.id, associationId, dataToPatch)
 
-            await initAssociationMembers(associationId)
+            await initAssociationMembers(associationId, false)
 
             notify({
                 type: 'positive',
