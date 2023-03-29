@@ -66,6 +66,7 @@ function clearOptions() {
         <QCardSection>
             <fieldset>
                 <legend class="legend-big">{{ title }}</legend>
+                <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
                 <div v-for="(association, index) in newAssociations" :key="index">
                     <QSelect

@@ -112,7 +112,7 @@
   "breadcrumbs": {
     "account-infos": "Modifier les informations de mon compte",
     "add-user": "Ajouter un compte",
-    "association-dashboard": "Gérér mon association",
+    "association-dashboard": "Gérer mon association",
     "association-detail": "Fiche association",
     "create-association": "Créer une association",
     "dashboard": "Tableau de bord",
@@ -157,6 +157,7 @@
     "welcome-message": "Bienvenue",
     "association-user": {
       "add-my-associations": "J'ajoute les associations dont je suis membre",
+      "add-my-associations-note": "Seules les associations pouvant accueillir de nouveaux membres sur la plate-forme peuvent être sélectionnées. Veuillez contacter votre gestionnaire en cas de problème.",
       "add-my-new-associations": "J'ajoute les nouvelles associations dont je suis membre",
       "association": "Association",
       "association-documents": "Documents de l'association",
