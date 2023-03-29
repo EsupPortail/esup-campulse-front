@@ -200,8 +200,8 @@ export default function () {
                 }
             }
             userAssociations[index].association = temp
-            store.userAssociations.push(userAssociations[index])
         }
+        store.userAssociations = userAssociations
     }
 
     // To test

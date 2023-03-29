@@ -15,7 +15,7 @@ export const useUserStore = defineStore('userStore', {
         isAuth: (state: UserStore): boolean => !!state.user,
         isCas: (state: UserStore): boolean | undefined => state.user?.isCas || state.newUser?.isCas,
         userInstitutions: (state: UserStore): (number | null | undefined)[] | undefined => {
-            const institutionsArray = []
+            const institutionsArray: number[] = []
             state.user?.groups?.forEach((group) => {
                 if (group.institutionId) {
                     institutionsArray.push(group.institutionId)

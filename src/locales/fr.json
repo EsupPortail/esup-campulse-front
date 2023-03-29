@@ -462,6 +462,7 @@
   "user-manager": {
     "add-user": "Ajouter un compte",
     "alert-confirm-update": "Vous êtes sur le point de modifier les informations de cet utilisateur. Voulez-vous continuer ?",
+    "association-affiliation": "Affiliation",
     "association-validation": "Valider les affiliations aux associations",
     "choose-user-to-add": "Choisissez l'utilisateur que vous souhaitez ajouter.",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ce compte ? Attention cette action est irréversible et toutes les données seront perdues.",

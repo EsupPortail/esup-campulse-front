@@ -54,7 +54,7 @@ const columns: QTableProps['columns'] = [
     {
         name: 'isValidatedByAdmin',
         align: 'right',
-        label: t('affiliation'),
+        label: t('user-manager.association-affiliation'),
         field: 'isValidatedByAdmin',
         sortable: true
     },

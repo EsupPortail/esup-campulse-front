@@ -20,7 +20,7 @@ const initAssociationCounter = () => {
         if (a && a.isValidatedByAdmin) associationCounter.value++
     })
 }
-watch(() => userStore.user?.associations.length, initAssociationCounter)
+watch(() => userStore.userAssociations.length, initAssociationCounter)
 
 onMounted(async () => {
     initAssociationCounter()
