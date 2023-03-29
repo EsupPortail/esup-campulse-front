@@ -61,7 +61,7 @@ const columns: QTableProps['columns'] = [
     {
         name: 'validation',
         align: 'center',
-        label: t('validate'),
+        label: t('manage'),
         field: 'validation',
         sortable: false
     }
@@ -109,7 +109,7 @@ const columns: QTableProps['columns'] = [
                             </QTd>
                             <QTd key="validation" :props="props" class="actions-cell-compact">
                                 <QBtn
-                                    :label="t('validate')"
+                                    :label="t('manage')"
                                     :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
                                     color="secondary"
                                     icon="mdi-check-circle"
@@ -118,6 +118,9 @@ const columns: QTableProps['columns'] = [
                         </QTr>
                     </template>
                 </QTable>
+                <section class="form-page-navigation">
+                    <QBtn :label="t('back')" :to="{ name: 'Dashboard' }" icon="bi-chevron-compact-left"/>
+                </section>
             </div>
         </div>
     </section>
