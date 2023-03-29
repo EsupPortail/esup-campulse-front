@@ -26,6 +26,7 @@ const {
     initUserAssociations,
     userAssociations
 } = useUserAssociations()
+
 const tab = ref<string>('infos')
 
 async function onUpdateUserInfos() {
@@ -63,10 +64,11 @@ async function onUpdateUserAssociations() {
         newAssociations.value = []
         await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.associations-successfully-updated')
-        })
+        await
+            notify({
+                type: 'positive',
+                message: t('notifications.positive.associations-successfully-updated')
+            })
     } catch (error) {
         notify({
             type: 'negative',
