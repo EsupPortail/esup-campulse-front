@@ -2,7 +2,7 @@
 
 #layout-breadcrumbs {
   .q-breadcrumbs {
-    background-color: $color1;
+    background-color: $annuaireColor;
     padding: 0.938rem 0;
 
     & > * {
@@ -13,7 +13,7 @@
 
     .q-breadcrumbs__el {
       font-size: 1.125rem;
-      font-weight: 25rem;
+      //font-weight: 25rem;
       color: $textColor3;
       text-decoration: none;
     }
@@ -45,10 +45,10 @@
   }
 
   &.variant-space-2 .q-breadcrumbs {
-    background-color: $color2;
+    background-color: $charteColor;
 
     .q-breadcrumbs__el {
-      color: $color2Text;
+      color: $charteColorText;
     }
 
     .q-breadcrumbs__separator {
@@ -57,7 +57,7 @@
   }
 
   &.variant-space-3 .q-breadcrumbs {
-    background-color: $color3;
+    background-color: $capeColor;
   }
 
   &.variant-space-4 .q-breadcrumbs {
