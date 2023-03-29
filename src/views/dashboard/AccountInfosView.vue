@@ -17,12 +17,19 @@ const {t} = useI18n()
 const userStore = useUserStore()
 const {isStaff} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
-const {notify} = useQuasar()
+const {notify, loading} = useQuasar()
 const {userAssociationsRegister} = useSecurity()
-const {newAssociations, updateUserAssociations, getUserAssociations} = useUserAssociations()
+const {
+    newAssociations,
+    updateUserAssociations,
+    getUserAssociations,
+    initUserAssociations,
+    userAssociations
+} = useUserAssociations()
 const tab = ref<string>('infos')
 
 async function onUpdateUserInfos() {
+    loading.show
     try {
         initInfosToPatch(userStore.user)
         if (Object.entries(infosToPatch).length !== 0) {
@@ -45,14 +52,17 @@ async function onUpdateUserInfos() {
             })
         }
     }
+    loading.hide
 }
 
 async function onUpdateUserAssociations() {
+    loading.show
     try {
         await updateUserAssociations(false)
         await userAssociationsRegister(false, userStore.user?.username)
         newAssociations.value = []
-        await getUserAssociations(null, false)
+        await getUserAssociations(userStore.user?.id, false)
+        initUserAssociations(false)
         notify({
             type: 'positive',
             message: t('notifications.positive.associations-successfully-updated')
@@ -63,6 +73,7 @@ async function onUpdateUserAssociations() {
             message: t('notifications.negative.edit-user-associations-error')
         })
     }
+    loading.hide
 }
 
 </script>
@@ -131,7 +142,10 @@ async function onUpdateUserAssociations() {
                 </div>
             </section>
 
-            <section class="association-cards dashboard-section">
+            <section
+                v-if="userAssociations.length < 5"
+                class="association-cards dashboard-section"
+            >
                 <div class="form-title">
                     <h2>
                         <i aria-hidden="true" class="bi bi-pencil-square"></i>

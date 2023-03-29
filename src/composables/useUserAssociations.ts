@@ -14,6 +14,7 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
 import {useAssociationStore} from "@/stores/useAssociationStore";
 import useSecurity from "@/composables/useSecurity";
+import type {AssociationName} from "#/association";
 
 
 // Used to store a user's associations, while it is modified by a manager or during registration
@@ -160,7 +161,7 @@ export default function () {
     }
 
     // To test
-    async function getUserAssociations(userId: number | null, managedUser: boolean) {
+    async function getUserAssociations(userId: number | null | undefined, managedUser: boolean) {
         const {axiosAuthenticated} = useAxios()
 
         let store: UserStore | UserManagerStore = userStore
@@ -170,37 +171,36 @@ export default function () {
 
         const url = (managedUser) ? `/users/${userId}/associations/` : '/users/associations/'
 
-        const associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
+        const userAssociations = (await axiosAuthenticated.get(url)).data
 
-        for (let i = 0; i < associationUsers.length; i++) {
+        let associationNames: AssociationName[] = []
 
-            const associationUser: AssociationUserDetail = {
-                association: {
-                    id: associationUsers[i].association as number,
-                    name: '',
-                },
-                isPresident: associationUsers[i].isPresident as boolean,
-                canBePresident: associationUsers[i].canBePresident as boolean,
-                canBePresidentFrom: associationUsers[i].canBePresidentFrom as string,
-                canBePresidentTo: associationUsers[i].canBePresidentTo as string,
-                isValidatedByAdmin: associationUsers[i].isValidatedByAdmin as boolean,
-                isVicePresident: associationUsers[i].isVicePresident as boolean,
-                isSecretary: associationUsers[i].isSecretary as boolean,
-                isTreasurer: associationUsers[i].isTreasurer as boolean,
+        for (const index in userAssociations) {
+            const temp = {
+                id: userAssociations[index].association,
+                name: '',
+                isSite: undefined,
+                institution: undefined,
+                isEnabled: undefined,
+                isPublic: undefined,
             }
-
-            if (managedUser) {
-                await associationStore.getAssociationDetail(associationUsers[i].association as number, false)
-                associationUser.association.name = associationStore.association?.name as string
-                associationUser.association.isSite = associationStore.association?.isSite
-                associationUser.association.institution = associationStore.association?.institution
-                associationUser.association.isEnabled = associationStore.association?.isEnabled
-                associationUser.association.isPublic = associationStore.association?.isPublic
+            if (userAssociations[index].isValidatedByAdmin) {
+                const association = (await axiosAuthenticated.get(`/associations/${userAssociations[index].association}`)).data
+                temp.name = association.name
+                temp.isSite = association.isSite
+                temp.institution = association.institution
+                temp.isEnabled = association.isEnabled
+                temp.isPublic = association.isPublic
             } else {
-                await associationStore.getAssociationNames(false, false)
-                associationUser.association.name = associationStore.associationNames.find(obj => obj.id === associationUsers[i].association)?.name as string
+                const {axiosPublic} = useAxios()
+                if (associationNames.length === 0) associationNames = (await axiosPublic.get('/associations/names')).data
+                const association = associationNames.find(obj => obj.id === userAssociations[index].association)
+                if (association) {
+                    temp.name = association.name
+                }
             }
-            store.userAssociations.push(associationUser)
+            userAssociations[index].association = temp
+            store.userAssociations.push(userAssociations[index])
         }
     }
 
@@ -238,7 +238,7 @@ export default function () {
     }
 
     // To test
-    function initUserAssociations(editedByStaff: boolean) {
+    const initUserAssociations = (editedByStaff: boolean) => {
         userAssociations.value = []
         let associations: AssociationUserDetail[] = userStore.userAssociations
         if (editedByStaff) associations = userManagerStore.userAssociations

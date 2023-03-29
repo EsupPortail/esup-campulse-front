@@ -20,6 +20,7 @@ onMounted(async function () {
     loading.hide
 })
 
+// TODO; find a way to avoid double request
 watch(() => route.path, async () => {
     if (route.name === 'AssociationDashboard') await onGetAssociationDetail()
 })
@@ -34,7 +35,7 @@ const initValues = () => {
 }
 
 watch(() => associationStore.association, initValues)
-watch(() => userStore.userAssociations, initValues)
+watch(() => userStore.userAssociations.length, initValues)
 
 
 async function onGetAssociationDetail() {

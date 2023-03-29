@@ -3,11 +3,15 @@ import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from "vue-i18n";
 import {useQuasar} from "quasar";
 import router from "@/router";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
+import useUserAssociations from "@/composables/useUserAssociations";
 
 const userStore = useUserStore()
 const {t} = useI18n()
-const {notify} = useQuasar()
+const {notify, loading} = useQuasar()
+const {getUserAssociations} = useUserAssociations()
+
+const isLoaded = ref(false)
 
 
 async function onLogOut() {
@@ -20,7 +24,9 @@ async function onLogOut() {
 }
 
 onMounted(async () => {
-    await userStore.getUserAssociations()
+    loading.show
+    await getUserAssociations(userStore.user?.id as number, false)
+    loading.hide
 })
 
 </script>
@@ -51,17 +57,17 @@ onMounted(async () => {
                 </QItem>
 
                 <div
-                    v-for="(item) in userStore.user?.associations"
+                    v-for="(item) in userStore.userAssociations"
                     :key="item.id"
                 >
                     <QItem
-                        v-if="userStore.userAssociations.find(obj => obj.association.id === item.id)?.isValidatedByAdmin && userStore.hasPresidentStatus(item.id)"
+                        v-if="item.isValidatedByAdmin"
                         v-close-popup
                         clickable
                         @click="router.push({ name: 'AssociationDashboard', params: { id: item.id } })"
                     >
                         <QItemSection>
-                            <QItemLabel>{{ item.name }}</QItemLabel>
+                            <QItemLabel>{{ item.association.name }}</QItemLabel>
                         </QItemSection>
                     </QItem>
                 </div>

@@ -10,6 +10,7 @@ import type {Association} from "#/association";
 import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
+import useUserAssociations from "@/composables/useUserAssociations";
 
 enum Variant {
     Home = "home",
@@ -58,6 +59,7 @@ function ToggleMenu() {
 const {loading} = useQuasar()
 const userStore = useUserStore()
 const associationStore = useAssociationStore()
+const {getUserAssociations} = useUserAssociations()
 const associations = ref<Association[]>()
 const initValues = () => {
     associations.value = associationStore.associations
@@ -66,7 +68,9 @@ watch(() => associationStore.associations, initValues)
 onMounted(async function () {
     loading.show
     await associationStore.getManagedAssociations()
-    await userStore.getUserAssociations()
+    if (userStore.user) {
+        await getUserAssociations(userStore.user.id, false)
+    }
     initValues()
     loading.hide
 })

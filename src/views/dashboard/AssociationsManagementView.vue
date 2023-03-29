@@ -3,13 +3,11 @@ import {onMounted, ref, watch} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import AlertConfirmAssociationsChanges from '@/components/alert/AlertConfirmAssociationsChanges.vue'
 import useSecurity from '@/composables/useSecurity'
 import type {Association} from "#/association";
 
-const userStore = useUserStore()
 const associationStore = useAssociationStore()
 const {loading} = useQuasar()
 const {t} = useI18n()
@@ -25,7 +23,6 @@ watch(() => associationStore.associations, initValues)
 onMounted(async function () {
     loading.show
     await associationStore.getManagedAssociations()
-    await userStore.getUserAssociations()
     initValues()
     loading.hide
 })

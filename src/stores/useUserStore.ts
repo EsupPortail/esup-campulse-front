@@ -3,7 +3,6 @@ import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from "@/composables/useUserGroups";
-import {useAssociationStore} from "@/stores/useAssociationStore";
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -72,7 +71,7 @@ export const useUserStore = defineStore('userStore', {
                 }
             }
         },
-        async getUserAssociations() {
+        /*async getUserAssociations() {
             if (this.user && this.user.associations.length > 0) {
                 const {axiosAuthenticated} = useAxios()
                 const userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
@@ -103,7 +102,7 @@ export const useUserStore = defineStore('userStore', {
                 }
                 this.userAssociations = userAssociations
             }
-        },
+        },*/
         unLoadUser() {
             this.user = undefined
             this.userAssociations = []

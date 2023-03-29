@@ -26,7 +26,7 @@ onMounted(async () => {
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
-        await getUserAssociations(userStore.user?.id as number, false)
+        await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
     } catch (e) {
         notify({

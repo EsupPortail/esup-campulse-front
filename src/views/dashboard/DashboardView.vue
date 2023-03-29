@@ -16,16 +16,11 @@ const associationCounter = ref<number>(0)
 
 const initAssociationCounter = () => {
     userStore.user?.associations.forEach(function (association) {
-        const hasPresidentStatus = userStore.hasPresidentStatus(association.id)
         const a = userStore.userAssociations.find(obj => obj.association.id === association.id)
-        let isValidatedByAdmin = false
-        if (a) {
-            isValidatedByAdmin = a.isValidatedByAdmin
-        }
-        if (hasPresidentStatus && isValidatedByAdmin) associationCounter.value++
+        if (a && a.isValidatedByAdmin) associationCounter.value++
     })
 }
-watch(() => userStore.userAssociations.length, initAssociationCounter)
+watch(() => userStore.user?.associations.length, initAssociationCounter)
 
 onMounted(async () => {
     initAssociationCounter()
