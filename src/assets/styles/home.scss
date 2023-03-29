@@ -350,8 +350,8 @@
 
             i {
               background-color: $charteColor;
-              top: -0.5rem;
-              left: 0.25rem;
+              top: $bsIconHomeCardPosition;
+              left: $bsIconHomeCardPosition;
             }
           }
 
@@ -419,8 +419,8 @@
             color: $capeColorText;
 
             i {
-              top: -0.125rem;
-              left: -0.125rem;
+              top: $bsIconHomeCardPosition;
+              left: $bsIconHomeCardPosition;
             }
           }
         }
