@@ -48,7 +48,7 @@ body {
 
 // TODO Hotfix for outline buttons.
 button.q-btn--outline {
-  background: $color1 !important;
+  background: $annuaireColor !important;
 }
 
 // Goto top button
@@ -64,13 +64,13 @@ button.q-btn--outline {
     top: 2rem;
     opacity: 1;
   }
-  
+
   button {
     display: block;
     width: 4rem;
     height: 4rem;
     border: none;
-    background-color: $color1;
+    background-color: $annuaireColor;
     color: $textColor3;
     border-radius: 50%;
     font-size: 2rem;
@@ -84,7 +84,7 @@ button.q-btn--outline {
     }
 
     &:hover {
-      background-color: $color1Hover;
+      background-color: $annuaireColorHover;
 
       i {
         transform: scale(1.2);
@@ -92,7 +92,7 @@ button.q-btn--outline {
     }
 
     &:active {
-      background-color: $color1Active;
+      background-color: $annuaireColorActive;
     }
   }
 
@@ -112,29 +112,29 @@ button.q-btn--outline {
 
 .variant-space-2 .navigate-top-button {
   button {
-    background-color: $color2;
-    color: $color2Text;
+    background-color: $charteColor;
+    color: $charteColorText;
 
     &:hover {
-      background-color: $color2Hover;
+      background-color: $charteColorHover;
     }
 
     &:active {
-      background-color: $color2Active;
+      background-color: $charteColorActive;
     }
   }
 }
 
 .variant-space-3 .navigate-top-button {
   button {
-    background-color: $color3;
+    background-color: $capeColor;
 
     &:hover {
-      background-color: $color3Hover;
+      background-color: $capeColorHover;
     }
 
     &:active {
-      background-color: $color3Active;
+      background-color: $capeColorActive;
     }
   }
 }
@@ -150,7 +150,7 @@ button.q-btn--outline {
 .introduction {
   margin: 2rem 0 4rem;
   padding: 0;
-  
+
   .content {
     display: flex;
     gap: 3.125rem;
@@ -162,26 +162,26 @@ button.q-btn--outline {
     .intro-image {
       flex: 0 0 300px;
       font-size: 0;
-  
+
       img {
         width: 18.75rem;
         height: auto;
       }
     }
-  
+
     .intro-title {
       font-size: 1.875rem;
       line-height: 2.5rem;
       font-weight: 400;
-      color: $color1Text;
+      color: $annuaireColorText;
       text-transform: uppercase;
       margin-bottom: 0.625rem;
     }
-  
+
     p {
       font-size: 1.125rem;
       font-weight: 400;
-      color: $color1Text;
+      color: $annuaireColorText;
       text-align: justify;
 
       &:last-child {
@@ -193,13 +193,13 @@ button.q-btn--outline {
   &.image-right {
     padding: 2.5rem 0;
 
-      .content {
-        flex-direction: row-reverse;
+    .content {
+      flex-direction: row-reverse;
     }
   }
 
   &.color-background {
-    background-color: $color1Background;
+    background-color: $annuaireColorBackground;
   }
 
   @media only screen and (max-width: $pageWidth) {
@@ -210,7 +210,7 @@ button.q-btn--outline {
 
       .intro-image {
         flex: 0 0 15.625rem;
-  
+
         img {
           width: 15.625rem;
         }
@@ -228,7 +228,7 @@ button.q-btn--outline {
         margin-bottom: 0.938rem;
         height: 9.375rem;
         overflow: hidden;
-  
+
         img {
           width: 100%;
           position: relative;
@@ -240,11 +240,11 @@ button.q-btn--outline {
 }
 
 .variant-space-2 .introduction.color-background {
-  background-color: $color2Background;
+  background-color: $charteColorBackground;
 }
 
 .variant-space-3 .introduction.color-background {
-  background-color: $color3Background;
+  background-color: $capeColorBackground;
 }
 
 .variant-space-4 .introduction.color-background {
@@ -315,12 +315,12 @@ p.paragraph {
 p.paragraph {
   ul, ol {
     padding-left: 2rem;
-  
+
     li {
       padding-left: 0.4rem;
     }
   }
-  
+
   ul {
     list-style-type: square;
   }

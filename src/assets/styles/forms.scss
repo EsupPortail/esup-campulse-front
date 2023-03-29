@@ -44,37 +44,37 @@
   .q-field__control {
     background-color: $backgroundColor1;
     border-radius: 0;
-    border: .0625rem solid $color1Borders;
+    border: .0625rem solid $annuaireColorBorders;
     box-shadow: $fieldsBoxShadow;
 
     input {
-      color: $color1Text;
+      color: $annuaireColorText;
     }
   }
 
   &.q-field--focused .q-field__control {
-    border-color: $color1;
+    border-color: $annuaireColor;
   }
-  
+
   &.q-field--filled.q-field--highlighted .q-field__control::before {
-    background: $color1Background;
+    background: $annuaireColorBackground;
   }
-  
+
   &.q-field--filled .q-field__control::before {
-    background: $color1Background;
+    background: $annuaireColorBackground;
     border-bottom: none;
   }
-  
+
   &.q-field--filled .q-field__control::after {
-    background: $color1;
+    background: $annuaireColor;
   }
-  
+
   &.q-field--error .q-field__control::after {
     background: currentColor;
   }
-  
+
   &.q-field--highlighted .q-field__label {
-    color: $color1Text;
+    color: $annuaireColorText;
   }
 }
 
@@ -88,79 +88,79 @@
   }
 
   &.q-field--focused .q-field__marginal {
-    color: $color1;
+    color: $annuaireColor;
   }
 }
 
 .variant-space-2 {
   .q-field {
     .q-field__control {
-      border-color: $color2Borders;
-  
+      border-color: $charteColorBorders;
+
       input {
-        color: $color2Text;
+        color: $charteColorText;
       }
     }
 
     &.q-field--focused .q-field__control {
-      border-color: $color2;
+      border-color: $charteColor;
     }
-    
+
     &.q-field--filled.q-field--highlighted .q-field__control::before {
-      background: $color2Background;
+      background: $charteColorBackground;
     }
-    
+
     &.q-field--filled .q-field__control::before {
-      background: $color2Background;
+      background: $charteColorBackground;
     }
 
     &.q-field--filled .q-field__control::after {
-      background: $color2;
+      background: $charteColor;
     }
 
     &.q-field--highlighted .q-field__label {
-      color: $color2Text;
+      color: $charteColorText;
     }
   }
 
   .q-select.q-field--focused .q-field__marginal {
-    color: $color2Active;
+    color: $charteColorActive;
   }
 }
 
 .variant-space-3 {
   .q-field {
     .q-field__control {
-      border-color: $color3Borders;
-  
+      border-color: $capeColorBorders;
+
       input {
-        color: $color3Text;
+        color: $capeColorText;
       }
     }
 
     &.q-field--focused .q-field__control {
-      border-color: $color3;
+      border-color: $capeColor;
     }
-    
+
     &.q-field--filled.q-field--highlighted .q-field__control::before {
-      background: $color3Background;
+      background: $capeColorBackground;
     }
-    
+
     &.q-field--filled .q-field__control::before {
-      background: $color3Background;
+      background: $capeColorBackground;
     }
 
     &.q-field--filled .q-field__control::after {
-      background: $color3;
+      background: $capeColor;
     }
 
     &.q-field--highlighted .q-field__label {
-      color: $color3Text;
+      color: $capeColorText;
     }
   }
 
   .q-select.q-field--focused .q-field__marginal {
-    color: $color3;
+    color: $capeColor;
   }
 }
 
@@ -168,7 +168,7 @@
   .q-field {
     .q-field__control {
       border-color: $color4Borders;
-  
+
       input {
         color: $color4Text;
       }
@@ -177,11 +177,11 @@
     &.q-field--focused .q-field__control {
       border-color: $color4;
     }
-    
+
     &.q-field--filled.q-field--highlighted .q-field__control::before {
       background: $color4Background;
     }
-    
+
     &.q-field--filled .q-field__control::before {
       background: $color4Background;
     }
@@ -205,17 +205,17 @@ input.custom-input, select.custom-input, textarea.custom-input {
   width: 100%;
   background-color: $backgroundColor1;
   border-radius: 0;
-  border: .0625rem solid $color1Borders;
+  border: .0625rem solid $annuaireColorBorders;
   box-shadow: $fieldsBoxShadow;
   padding: .625rem 1.25rem .75rem;
-  color: $color1Text;
+  color: $annuaireColorText;
   font-size: 1.125rem;
   font-weight: 400;
   transition: border-color 0.07s linear;
   margin-bottom: 1.2rem;
 
   &:focus {
-    border-color: $color1;
+    border-color: $annuaireColor;
     outline: none;
   }
 
@@ -227,7 +227,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
 .variant-space-2 {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
-      border-color: $color2Hover;
+      border-color: $charteColorHover;
     }
   }
 }
@@ -235,7 +235,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
 .variant-space-3 {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
-      border-color: $color3;
+      border-color: $capeColor;
     }
   }
 }
@@ -263,7 +263,7 @@ label.custom-label {
 
 // Quasar buttons
 .q-btn {
-  background-color: $color1;
+  background-color: $annuaireColor;
   border-radius: 0;
   padding: .9375rem 1.875rem;
   font-size: 1.125rem;
@@ -285,19 +285,19 @@ label.custom-label {
   }
 
   &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-    background-color: $color1Hover !important;
+    background-color: $annuaireColorHover !important;
   }
 
   &:active, &.bg-primary:active, &.bg-secondary:active {
-    background-color: $color1Active !important;
+    background-color: $annuaireColorActive !important;
   }
 
   &.bg-primary {
-    background: $color1 !important;
+    background: $annuaireColor !important;
   }
 
   &.bg-secondary {
-    background: $color1 !important;
+    background: $annuaireColor !important;
   }
 
   .q-btn__content {
@@ -307,7 +307,7 @@ label.custom-label {
     & > * {
       color: $textColor3;
     }
-  } 
+  }
 
   &.small-button {
     padding: .375rem 1.875rem;
@@ -321,14 +321,14 @@ label.custom-label {
   &.btn-alt {
     box-shadow: none;
     background-color: $backgroundColor1 !important;
-    border: 1px solid $color1Text;
+    border: 1px solid $annuaireColorText;
 
     .q-btn__content > * {
-      color: $color1Text;
+      color: $annuaireColorText;
     }
 
     &:hover {
-      background-color: $color1Text !important;
+      background-color: $annuaireColorText !important;
 
       .q-btn__content > * {
         color: white !important;
@@ -336,7 +336,7 @@ label.custom-label {
     }
 
     &:active {
-      background-color: mix(white, $color1Text, 15%) !important;
+      background-color: mix(white, $annuaireColorText, 15%) !important;
 
       .q-btn__content > * {
         color: white !important;
@@ -359,41 +359,41 @@ label.custom-label {
 
 .variant-space-2 {
   .q-btn {
-    background-color: $color2;
-  
+    background-color: $charteColor;
+
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $color2Hover !important;
+      background-color: $charteColorHover !important;
     }
-  
+
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $color2Active !important;
+      background-color: $charteColorActive !important;
     }
-  
+
     &.bg-primary {
-      background: $color2 !important;
+      background: $charteColor !important;
     }
-  
+
     &.bg-secondary {
-      background: $color2 !important;
+      background: $charteColor !important;
     }
 
     .q-btn__content > * {
-      color: $color2Text;
+      color: $charteColorText;
     }
 
     &.btn-alt {
-      border: 1px solid $color2Text;
-  
+      border: 1px solid $charteColorText;
+
       .q-btn__content > * {
-        color: $color2Text;
+        color: $charteColorText;
       }
-  
+
       &:hover {
-        background-color: $color2Text !important;
+        background-color: $charteColorText !important;
       }
-  
+
       &:active {
-        background-color: mix(white, $color2Text, 15%) !important;
+        background-color: mix(white, $charteColorText, 15%) !important;
       }
     }
   }
@@ -401,37 +401,37 @@ label.custom-label {
 
 .variant-space-3 {
   .q-btn {
-    background-color: $color3;
-  
+    background-color: $capeColor;
+
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $color3Hover !important;
+      background-color: $capeColorHover !important;
     }
-  
+
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $color3Active !important;
+      background-color: $capeColorActive !important;
     }
-  
+
     &.bg-primary {
-      background: $color3 !important;
+      background: $capeColor !important;
     }
-  
+
     &.bg-secondary {
-      background: $color3 !important;
+      background: $capeColor !important;
     }
 
     &.btn-alt {
-      border: 1px solid $color3Text;
-  
+      border: 1px solid $capeColorText;
+
       .q-btn__content > * {
-        color: $color3Text;
+        color: $capeColorText;
       }
-  
+
       &:hover {
-        background-color: $color3Text !important;
+        background-color: $capeColorText !important;
       }
-  
+
       &:active {
-        background-color: mix(white, $color3Text, 15%) !important;
+        background-color: mix(white, $capeColorText, 15%) !important;
       }
     }
   }
@@ -440,34 +440,34 @@ label.custom-label {
 .variant-space-4 {
   .q-btn {
     background-color: $color4;
-  
+
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
       background-color: $color4Hover !important;
     }
-  
+
     &:active, &.bg-primary:active, &.bg-secondary:active {
       background-color: $color4Active !important;
     }
-  
+
     &.bg-primary {
       background: $color4 !important;
     }
-  
+
     &.bg-secondary {
       background: $color4 !important;
     }
 
     &.btn-alt {
       border: 1px solid $color4Text;
-  
+
       .q-btn__content > * {
         color: $color4Text;
       }
-  
+
       &:hover {
         background-color: $color4Text !important;
       }
-  
+
       &:active {
         background-color: mix(white, $color4Text, 15%) !important;
       }
@@ -490,7 +490,7 @@ label.custom-label {
       background-color: $backgroundColor1;
       box-shadow: $fieldsBoxShadow;
       height: 3.75rem;
-      border-left: .25rem solid $color1;
+      border-left: .25rem solid $annuaireColor;
       position: relative;
       white-space: nowrap;
       padding: 0 5.3125rem 0 1.5625rem;
@@ -558,11 +558,11 @@ label.custom-label {
         cursor: pointer;
 
         &:hover {
-          background-color: $color1;
+          background-color: $annuaireColor;
         }
 
         &:active {
-          background-color: mix(white, $color1, 10%);
+          background-color: mix(white, $annuaireColor, 10%);
         }
 
         &:disabled {
@@ -662,11 +662,11 @@ label.custom-label {
           right: 0;
 
           &:hover {
-            background-color: $color1;
+            background-color: $annuaireColor;
           }
 
           &:active {
-            background-color: mix(white, $color1, 10%);
+            background-color: mix(white, $annuaireColor, 10%);
           }
         }
       }
@@ -681,26 +681,26 @@ label.custom-label {
 .variant-space-2 {
   .document-input-group .document-input {
     .document-input-header {
-      border-color: $color2;
-  
+      border-color: $charteColor;
+
       & > button {
         &:hover {
-          background-color: $color2;
+          background-color: $charteColor;
         }
-  
+
         &:active {
-          background-color: mix(white, $color2, 10%);
+          background-color: mix(white, $charteColor, 10%);
         }
       }
     }
-  
+
     .document-input-list .document-item button {
       &:hover {
-        background-color: $color2;
+        background-color: $charteColor;
       }
-  
+
       &:active {
-        background-color: mix(white, $color2, 10%);
+        background-color: mix(white, $charteColor, 10%);
       }
     }
   }
@@ -709,26 +709,26 @@ label.custom-label {
 .variant-space-3 {
   .document-input-group .document-input {
     .document-input-header {
-      border-color: $color3;
+      border-color: $capeColor;
 
       & > button {
         &:hover {
-          background-color: $color3;
+          background-color: $capeColor;
         }
 
         &:active {
-          background-color: mix(white, $color3, 10%);
+          background-color: mix(white, $capeColor, 10%);
         }
       }
     }
 
     .document-input-list .document-item button {
       &:hover {
-        background-color: $color3;
+        background-color: $capeColor;
       }
 
       &:active {
-        background-color: mix(white, $color3, 10%);
+        background-color: mix(white, $capeColor, 10%);
       }
     }
   }
@@ -776,10 +776,10 @@ label.custom-label {
   h2 {
     font-size: 2rem;
     text-transform: uppercase;
-    color: $color1Text;
+    color: $annuaireColorText;
 
     i {
-      color: $color1Text;
+      color: $annuaireColorText;
       font-size: 1.5rem;
       margin-right: .875rem;
       position: relative;
@@ -815,7 +815,7 @@ label.custom-label {
   .q-table__bottom {
     border-top: none;
     font-size: 1.0625rem;
-    color: $color1Text;
+    color: $annuaireColorText;
     padding: 1rem 0;
 
     .q-btn.q-btn-item {
@@ -834,7 +834,7 @@ label.custom-label {
     height: 1px;
 
     thead tr {
-      background-color: $color1;
+      background-color: $annuaireColor;
       box-shadow: $fieldsBoxShadow;
 
       th {
@@ -855,7 +855,7 @@ label.custom-label {
             color: $textColor3 !important;
 
             .q-checkbox__svg {
-              color: $color1;
+              color: $annuaireColor;
             }
           }
         }
@@ -872,12 +872,12 @@ label.custom-label {
           height: unset;
           font-size: 1.125rem;
           font-weight: 400;
-          color: $color1Text;
+          color: $annuaireColorText;
           white-space: normal;
           padding: .4375rem .625rem;
 
           &:first-child {
-            border-left: .25rem solid $color1;
+            border-left: .25rem solid $annuaireColor;
           }
 
           &.actions-cell, &.actions-cell-compact {
@@ -929,7 +929,7 @@ label.custom-label {
               background: transparent !important;
               box-shadow: none;
               transition: box-shadow 0.08s linear, background-color 0.08 linear;
-                              
+
               .q-btn__content * {
                 color: $textColor2;
                 font-weight: 400;
@@ -940,7 +940,7 @@ label.custom-label {
               }
 
               &:hover {
-                box-shadow: 0 -0.25rem 0 0 $color1 inset;
+                box-shadow: 0 -0.25rem 0 0 $annuaireColor inset;
 
                 .q-btn__content * {
                   color: $textColor1;
@@ -948,17 +948,17 @@ label.custom-label {
               }
 
               &:active {
-                background: transparentize($color1, 0.9) !important;
+                background: transparentize($annuaireColor, 0.9) !important;
               }
             }
           }
 
           &::before {
-            background: transparentize($color1, 0.95);
+            background: transparentize($annuaireColor, 0.95);
           }
 
           &::after {
-            background: transparentize($color1, 0.9);
+            background: transparentize($annuaireColor, 0.9);
           }
         }
       }
@@ -969,76 +969,76 @@ label.custom-label {
 .variant-space-2 {
   .q-table__container {
     .q-table__bottom {
-      color: $color2Text;
+      color: $charteColorText;
     }
-  
+
     .q-table {
       thead tr {
-        background-color: $color2;
-  
+        background-color: $charteColor;
+
         th {
-          color: $color2Text;
+          color: $charteColorText;
 
           .q-table__sort-icon svg {
-            color: $color2Text;
+            color: $charteColorText;
           }
 
           .q-checkbox__inner {
             .q-checkbox__bg {
-              border-color: $color2Text;
+              border-color: $charteColorText;
             }
 
             &.q-checkbox__inner--truthy {
               .q-checkbox__bg {
-                background-color: $color2Text;
+                background-color: $charteColorText;
               }
             }
 
             &.text-grey-8 {
               .q-checkbox__svg {
-                color: $color2;
+                color: $charteColor;
               }
             }
           }
         }
       }
-  
+
       tbody tr td {
-        color: $color2Text;
+        color: $charteColorText;
 
         &:first-child {
-          border-color: $color2;
+          border-color: $charteColor;
         }
 
         &.actions-cell-compact {
           .q-btn {
             &:hover {
-              box-shadow: 0 -0.25rem 0 0 $color2 inset;
+              box-shadow: 0 -0.25rem 0 0 $charteColor inset;
             }
 
             &:active {
-              background: transparentize($color2, 0.9) !important;
+              background: transparentize($charteColor, 0.9) !important;
             }
           }
         }
 
         &::before {
-          background: transparentize($color2, 0.95);
+          background: transparentize($charteColor, 0.95);
         }
 
         &::after {
-          background: transparentize($color2, 0.9);
+          background: transparentize($charteColor, 0.9);
         }
 
         .q-checkbox__inner {
           &.q-checkbox__inner--truthy {
             .q-checkbox__bg {
-              border-color: $color2Text;
+              border-color: $charteColorText;
             }
 
             &.q-checkbox__inner--truthy {
               .q-checkbox__bg {
-                background-color: $color2Text;
+                background-color: $charteColorText;
               }
             }
           }
@@ -1051,64 +1051,64 @@ label.custom-label {
 .variant-space-3 {
   .q-table__container {
     .q-table__bottom {
-      color: $color3Text;
+      color: $capeColorText;
     }
-  
+
     .q-table {
       thead tr {
-        background-color: $color3;
-  
+        background-color: $capeColor;
+
         th {
           .q-table__sort-icon svg {
-            color: $color3Text;
+            color: $capeColorText;
           }
 
           .q-checkbox__inner {
             &.text-grey-8 {
               .q-checkbox__svg {
-                color: $color3;
+                color: $capeColor;
               }
             }
           }
         }
       }
-  
+
       tbody tr td {
-        color: $color3Text;
+        color: $capeColorText;
 
         &:first-child {
-          border-color: $color3;
+          border-color: $capeColor;
         }
 
         &.actions-cell-compact {
           .q-btn {
             &:hover {
-              box-shadow: 0 -0.25rem 0 0 $color3 inset;
+              box-shadow: 0 -0.25rem 0 0 $capeColor inset;
             }
 
             &:active {
-              background: transparentize($color3, 0.9) !important;
+              background: transparentize($capeColor, 0.9) !important;
             }
           }
         }
 
         &::before {
-          background: transparentize($color3, 0.95);
+          background: transparentize($capeColor, 0.95);
         }
 
         &::after {
-          background: transparentize($color3, 0.9);
+          background: transparentize($capeColor, 0.9);
         }
 
         .q-checkbox__inner {
           &.q-checkbox__inner--truthy {
             .q-checkbox__bg {
-              border-color: $color3;
+              border-color: $capeColor;
             }
 
             &.q-checkbox__inner--truthy {
               .q-checkbox__bg {
-                background-color: $color3;
+                background-color: $capeColor;
               }
             }
           }
@@ -1123,11 +1123,11 @@ label.custom-label {
     .q-table__bottom {
       color: $color4Text;
     }
-  
+
     .q-table {
       thead tr {
         background-color: $color4;
-  
+
         th {
           .q-table__sort-icon svg {
             color: $color4Text;
@@ -1142,7 +1142,7 @@ label.custom-label {
           }
         }
       }
-  
+
       tbody tr td {
         color: $color4Text;
 
@@ -1305,7 +1305,7 @@ label.custom-label {
           pointer-events: none;
 
           .q-btn__content * {
-            color: $color1;
+            color: $annuaireColor;
             font-weight: 600;
           }
         }
@@ -1316,13 +1316,13 @@ label.custom-label {
 
 .variant-space-2 {
   .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
-    color: $color2Active;
+    color: $charteColorActive;
   }
 }
 
 .variant-space-3 {
   .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
-    color: $color3;
+    color: $capeColor;
   }
 }
 
@@ -1348,24 +1348,24 @@ label.custom-label {
       box-shadow: none;
       padding: 1rem 1.4rem;
       background-color: $backgroundColor1;
-      
+
       .q-btn__content i {
-        color: $color1;
+        color: $annuaireColor;
       }
-    
+
       &:hover, &:active {
         .q-btn__content i {
           color: $textColor3 !important;
         }
       }
-  
+
       &.counter-button {
         padding: 1rem 2.4rem;
         color: $textColor2;
         font-size: 1.4rem;
-  
+
         strong {
-          color: $color1;
+          color: $annuaireColor;
           font-weight: 800;
           padding: 0 0.3rem;
         }
@@ -1386,24 +1386,24 @@ label.custom-label {
   .pagination .wrapper .q-btn {
     &:hover, &:active {
       .q-btn__content i {
-        color: $color2Text !important;
+        color: $charteColorText !important;
       }
     }
 
     .q-btn__content i {
-      color: $color2Active;
+      color: $charteColorActive;
     }
 
     &.counter-button strong {
-      color: $color2Active;
+      color: $charteColorActive;
     }
 
     &.counter-button {
       &:hover, &:active {
-        color: $color2Text !important;
+        color: $charteColorText !important;
 
         strong {
-          color: $color2Text !important;
+          color: $charteColorText !important;
         }
       }
     }
@@ -1413,11 +1413,11 @@ label.custom-label {
 .variant-space-3 {
   .pagination .wrapper .q-btn {
     .q-btn__content i {
-      color: $color3;
+      color: $capeColor;
     }
 
     &.counter-button strong {
-      color: $color3;
+      color: $capeColor;
     }
   }
 }
@@ -1460,7 +1460,7 @@ label.custom-label {
       background-color: $errorPanelColor;
     }
   }
-  
+
   &.info-panel-warning {
     border-color: $warningPanelColor;
     background-color: transparentize($warningPanelColor, 0.9);
@@ -1507,7 +1507,7 @@ label.custom-label {
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 1.125rem;
-    background-color: $color1;
+    background-color: $annuaireColor;
     color: $textColor3;
     box-shadow: $fieldsBoxShadow;
     text-align: center;
@@ -1525,12 +1525,12 @@ label.custom-label {
 }
 
 .variant-space-2 .section-title i {
-  background-color: $color2;
-  color: $color2Text;
+  background-color: $charteColor;
+  color: $charteColorText;
 }
 
 .variant-space-3 .section-title i {
-  background-color: $color3;
+  background-color: $capeColor;
 }
 
 .variant-space-4 .section-title i {
@@ -1543,7 +1543,7 @@ label.custom-label {
   width: 100%;
   aspect-ratio: 1;
   background-color: $backgroundColor1;
-  box-shadow: 0 0 0 1px $color1Borders inset, $fieldsBoxShadow;
+  box-shadow: 0 0 0 1px $annuaireColorBorders inset, $fieldsBoxShadow;
   padding: 0.95rem;
   position: relative;
   align-items: center;
@@ -1586,7 +1586,7 @@ label.custom-label {
       width: 2.75rem;
       height: 2.75rem;
       border-radius: 1.375rem;
-      background-color: $color1;
+      background-color: $annuaireColor;
       vertical-align: middle;
       box-shadow: $fieldsBoxShadow;
       color: $textColor3;
@@ -1598,27 +1598,26 @@ label.custom-label {
       opacity: 1;
     }
 
-    &:active
-    {
+    &:active {
       background-color: rgba(0, 0, 0, 0.3);
-    } 
+    }
   }
 }
 
 .variant-space-2 .image-input {
-  box-shadow: 0 0 0 1px $color2Borders inset;
-  
+  box-shadow: 0 0 0 1px $charteColorBorders inset;
+
   label i {
-    background-color: $color2;
-    color: $color2Text;
+    background-color: $charteColor;
+    color: $charteColorText;
   }
 }
 
 .variant-space-3 .image-input {
-  box-shadow: 0 0 0 1px $color3Borders inset;
+  box-shadow: 0 0 0 1px $capeColorBorders inset;
 
   label i {
-    background-color: $color3;
+    background-color: $capeColor;
   }
 }
 
@@ -1669,7 +1668,7 @@ label.custom-label {
   }
 
   // @media only screen and (max-width: $responsiveWidth) {
-    
+
   // }
 }
 
@@ -1721,7 +1720,7 @@ label.custom-label {
 .display-row, .comment-row {
   background-color: $backgroundColor1;
   box-shadow: $fieldsBoxShadow;
-  border-left: 4px solid $color1;
+  border-left: 4px solid $annuaireColor;
   padding: 0.8rem 1.5625rem;
   color: $textColor1;
   font-size: 1.25rem;
@@ -1780,13 +1779,13 @@ label.custom-label {
 
 .variant-space-2 {
   .display-row, .comment-row {
-    border-color: $color2;
+    border-color: $charteColor;
   }
 }
 
 .variant-space-3 {
   .display-row, .comment-row {
-    border-color: $color3;
+    border-color: $capeColor;
   }
 }
 
