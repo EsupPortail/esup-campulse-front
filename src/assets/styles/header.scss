@@ -11,7 +11,7 @@
 
   &#layout-minimal-header {
     height: 5.5rem;
-    border-bottom: 0.5rem solid $color1;
+    border-bottom: 0.5rem solid $annuaireColor;
   }
 
   @media only screen and (max-width: $responsiveWidth) {
@@ -118,15 +118,15 @@
 
       // Links are underlined in the color of the space they point to
       &.space-1::after {
-        border-color: $color1;
+        border-color: $annuaireColor;
       }
 
       &.space-2::after {
-        border-color: $color2;
+        border-color: $charteColor;
       }
 
       &.space-3::after {
-        border-color: $color3;
+        border-color: $capeColor;
       }
 
       @media only screen and (max-width: $responsiveWidth) {
@@ -297,16 +297,16 @@
   }
 
   &.variant-space-2 #header-title-icon {
-    background-color: $color2;
+    background-color: $charteColor;
 
     i.space-2-icon {
       display: inline;
-      color: $color2Text;
+      color: $charteColorText;
     }
   }
 
   &.variant-space-3 #header-title-icon {
-    background-color: $color3;
+    background-color: $capeColor;
 
     i.space-3-icon {
       display: inline;
@@ -404,7 +404,7 @@
       width: 3.375rem;
       height: 3.375rem;
       border-radius: 50%;
-      background-color: $color1;
+      background-color: $annuaireColor;
       position: absolute;
       top: 0.375rem;
       left: 0;

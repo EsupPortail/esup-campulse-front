@@ -44,7 +44,7 @@ async function onGetAssociationNames() {
       :title="home.banner.title"
   />
 
-  <section id="home-sections">
+  <section id="home-section">
     <HomeCard
         :buttonLabel="home.cards[0].buttonLabel"
         :cssClass="home.cards[0].cssClass"

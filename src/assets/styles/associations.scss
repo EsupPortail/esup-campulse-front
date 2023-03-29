@@ -16,7 +16,7 @@
         flex-grow: 1;
 
         .q-field__control {
-          border: 1px solid $color1;
+          border: 1px solid $annuaireColor;
         }
       }
 
@@ -68,7 +68,7 @@
 
         i {
           font-size: 1.75rem;
-          color: $color1;
+          color: $annuaireColor;
         }
       }
 
@@ -83,10 +83,10 @@
       }
 
       .q-focus-helper {
-        background: $color1;
+        background: $annuaireColor;
 
         &::before {
-          background: $color1;
+          background: $annuaireColor;
         }
       }
     }
@@ -149,7 +149,7 @@
       color: $textColor2;
 
       & > span {
-        color: $color1;
+        color: $annuaireColor;
         font-weight: 800;
       }
     }
@@ -171,7 +171,7 @@
       flex-direction: row;
       align-items: center;
       gap: 4.688rem;
-      box-shadow: 0.313rem 0 0 0 $color1 inset;
+      box-shadow: 0.313rem 0 0 0 $annuaireColor inset;
       transition: box-shadow 0.1s linear;
       padding: 1.25rem 3rem 1.563rem 1.875rem;
 
@@ -197,7 +197,7 @@
       position: absolute;
       top: calc(50% - 12.5rem);
       left: -1.875rem;
-      background-color: $color1Background;
+      background-color: $annuaireColorBackground;
       z-index: 0;
       transition: left 0.1s linear;
 
@@ -207,7 +207,7 @@
         height: 0;
         border-style: solid;
         border-width: 12.5rem 0 12.5rem 4.375rem;
-        border-color: transparent transparent transparent $color1Background;
+        border-color: transparent transparent transparent $annuaireColorBackground;
         position: absolute;
         top: 0;
         right: -4.313rem;
@@ -216,7 +216,7 @@
 
     .card-chevron {
       font-size: 2.125rem;
-      color: $color1;
+      color: $annuaireColor;
       position: absolute;
       top: calc(50% - 1.563rem);
       right: 1.875rem;
@@ -233,7 +233,7 @@
         font-size: 1.75rem;
         line-height: 2.4rem;
         font-weight: 600;
-        color: $color1Text;
+        color: $annuaireColorText;
         text-transform: uppercase;
         text-decoration: none;
       }
@@ -256,7 +256,7 @@
           text-transform: none;
           font-size: 1.125rem;
           font-weight: 400;
-          color: $color1Text;
+          color: $annuaireColorText;
           padding-right: 1.25rem;
         }
 
@@ -284,7 +284,7 @@
 
     &:hover {
       .q-card__section {
-        box-shadow: 0.5rem 0 0 0 $color1 inset;
+        box-shadow: 0.5rem 0 0 0 $annuaireColor inset;
       }
 
       .card-background {
@@ -307,10 +307,10 @@
 
       &:hover {
         .q-card__section {
-          box-shadow: 0.313rem 0 0 0 $color1 inset;
-          background-color: transparentize($color1Background, 0.6);
+          box-shadow: 0.313rem 0 0 0 $annuaireColor inset;
+          background-color: transparentize($annuaireColorBackground, 0.6);
         }
-  
+
         .card-background {
           left: -1.875rem;
         }

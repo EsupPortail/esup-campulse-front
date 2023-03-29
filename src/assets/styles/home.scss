@@ -29,7 +29,7 @@
     width: 2.188rem;
     height: 2.188rem;
     border-radius: $radiusCircle;
-    border: 3px solid $color1;
+    border: 3px solid $annuaireColor;
     background-color: transparent;
     position: absolute;
     top: calc(50% - 54px);
@@ -37,7 +37,7 @@
 
     i {
       font-size: $qBannerInfoIconSize;
-      color: $color1;
+      color: $annuaireColor;
       position: absolute;
       top: .28rem;
       left: .25rem;
@@ -63,12 +63,12 @@
     }
 
     &::before {
-      background-color: $color2;
+      background-color: $charteColor;
       bottom: -1.875rem;
     }
 
     &::after {
-      background-color: $color3;
+      background-color: $capeColor;
       bottom: -57px;
     }
 
@@ -126,30 +126,32 @@
   }
 
   .section-card {
+    width: 95%;
+    display: block;
+    position: relative;
     background-color: $backgroundColor1;
     box-shadow: 0rem 0rem 1.25rem .125rem rgba(0, 0, 0, 0.2);
-    padding: 2.5rem 3.75rem 3.125rem;
-    display: flex;
+    padding: 2rem;
     gap: 6.25rem;
     align-items: center;
-    position: relative;
     overflow: hidden;
 
     .section-background {
-      background-color: $color1Background;
-      width: 26.875rem;
+      background-color: $annuaireColorBackground;
+      width: 3rem;
       height: 50rem;
       position: absolute;
       top: calc(50% - 25rem);
       left: 0;
       z-index: 0;
+      opacity: 0.8;
 
       span {
         width: 0;
         height: 0;
         border-style: solid;
         border-width: 25rem 0 25rem 6.25rem;
-        border-color: transparent transparent transparent $color1Background;
+        border-color: transparent transparent transparent $annuaireColorBackground;
         position: absolute;
         right: -6.1875rem;
         top: 0;
@@ -165,18 +167,18 @@
         display: flex;
         gap: .9375rem;
         font-family: $titleFont;
-        font-size: 3.75rem;
-        font-weight: 600;
-        color: $color1Text;
+        font-size: 3rem;
+        font-weight: $semibold-weight;
+        color: $annuaireColorText;
         text-transform: uppercase;
         line-height: 3.875rem;
       }
 
-      h2 {
+      .section-subtitle {
         font-family: $titleFont;
-        font-size: 3.125rem;
+        font-size: 2rem;
         font-weight: 400;
-        color: $color1Text;
+        color: $annuaireColorText;
         line-height: 3.4375rem;
       }
 
@@ -189,13 +191,13 @@
           display: inline-block;
           width: 1.0625rem;
           height: 1.0625rem;
-          background-color: $color1;
-          border-radius: 50%;
+          background-color: $annuaireColor;
+          border-radius: $radiusCircle;
 
           &:first-child {
             width: 3.375rem;
             height: 3.375rem;
-            color: $color1Text;
+            color: $annuaireColorText;
             font-size: 1.6875rem;
             text-align: center;
 
@@ -210,13 +212,12 @@
 
     .section-info {
       font-size: 1.375rem;
-      font-weight: 400;
+      font-weight: $normal-weight;
       line-height: 1.75rem;
-      color: $color1Text;
-      border-left: .25rem solid $color1;
-      padding-left: 1.125rem;
-      margin-top: 1.25rem;
-      display: inline-block;
+      color: $annuaireColorText;
+      border-left: .25rem solid $annuaireColor;
+      padding: 0 0 0 1.125rem;
+      margin: 1.25rem auto 1rem;
 
       p {
         margin: 0;
@@ -229,24 +230,27 @@
     }
 
     .section-content {
+      position: relative;
+      z-index: 1;
+
       p {
         font-size: 1.25rem;
-        font-weight: 400;
-        color: $color1Text;
+        font-weight: $normal-weight;
+        color: $annuaireColorText;
       }
 
       .section-buttons {
         text-align: center;
-        margin-top: 2.5rem;
+        margin: 1rem;
 
         a {
           display: inline-block;
-          padding: 1rem 4.375rem;
-          font-size: 1.125rem;
-          font-weight: 400;
-          color: $color1Text;
+          padding: 1rem;
+          font-size: 1.1rem;
+          font-weight: $normal-weight;
+          color: $annuaireColorText;
           border-radius: 0;
-          border: .0625rem solid $color1Text;
+          border: .0625rem solid $annuaireColorText;
           background-color: transparent;
           text-decoration: none;
           text-transform: uppercase;
@@ -260,14 +264,44 @@
           }
 
           &:hover {
-            background-color: $color1Text;
+            background-color: $annuaireColorText;
             color: $textColor3;
           }
 
           &:active {
-            background-color: transparentize($color1Text, 0.1);
+            background-color: transparentize($annuaireColorText, 0.1);
             color: $textColor3;
           }
+        }
+      }
+    }
+
+    @media screen and (min-width: $responsiveWidth) {
+      display: flex;
+      padding: 3rem;
+
+      .section-background {
+        width: 26.875rem;
+        opacity: 1;
+      }
+
+      .section-title {
+        h1 {
+          font-size: 3.75rem;
+        }
+
+        .section-subtitle {
+          font-size: 2.75rem;
+        }
+      }
+
+      .section-content {
+        .section-buttons {
+          a {
+            padding: 1rem 4.375rem;
+            font-size: 1.125rem;
+          }
+
         }
       }
     }
@@ -284,13 +318,13 @@
   &.home-section-charte {
     .section-card {
       .section-background {
-        background-color: $color2Background;
+        background-color: $charteColorBackground;
         right: 0;
         left: unset;
 
         span {
           border-width: 25rem 6.25rem 25rem 0;
-          border-color: transparent $color2Background transparent transparent;
+          border-color: transparent $charteColorBackground transparent transparent;
           left: -6.1875rem;
         }
       }
@@ -300,22 +334,24 @@
 
         h1 {
           flex-direction: row-reverse;
-          color: $color2Text;
+          color: $charteColorText;
         }
 
-        h2 {
-          color: $color2Text;
+        .section-subtitle {
+          color: $charteColorText;
         }
 
         .section-icon {
           flex-direction: row-reverse;
 
           span {
-            background-color: $color2;
-            color: $color2Text;
+            background-color: $charteColor;
+            color: $charteColorText;
 
             i {
-              top: -0.1875rem;
+              background-color: $charteColor;
+              top: -0.5rem;
+              left: 0.25rem;
             }
           }
 
@@ -327,29 +363,29 @@
 
       .section-info {
         border-left: none;
-        border-right: .25rem solid $color2;
+        border-right: .25rem solid $charteColor;
         padding-left: 0;
         padding-right: 1.125rem;
-        color: $color2Text;
+        color: $charteColorText;
       }
 
       .section-content {
         p {
-          color: $color2Text;
+          color: $charteColorText;
         }
 
         .section-buttons {
           a {
-            color: $color2Text;
-            border-color: $color2Text;
+            color: $charteColorText;
+            border-color: $charteColorText;
 
             &:hover {
-              background-color: $color2Text;
+              background-color: $charteColorText;
               color: $textColor3;
             }
 
             &:active {
-              background-color: transparentize($color2Text, 0.1);
+              background-color: transparentize($charteColorText, 0.1);
               color: $textColor3;
             }
           }
@@ -361,26 +397,26 @@
   &.home-section-cape {
     .section-card {
       .section-background {
-        background-color: $color3Background;
+        background-color: $capeColorBackground;
 
         span {
-          border-color: transparent transparent transparent $color3Background;
+          border-color: transparent transparent transparent $capeColorBackground;
         }
       }
 
       .section-title {
         h1 {
-          color: $color3Text;
+          color: $capeColorText;
         }
 
-        h2 {
-          color: $color3Text;
+        .section-subtitle {
+          color: $capeColorText;
         }
 
         .section-icon {
           span {
-            background-color: $color3;
-            color: $color3Text;
+            background-color: $capeColor;
+            color: $capeColorText;
 
             i {
               top: -0.125rem;
@@ -391,27 +427,27 @@
       }
 
       .section-info {
-        border-color: $color3;
-        color: $color3Text;
+        border-color: $capeColor;
+        color: $capeColorText;
       }
 
       .section-content {
         p {
-          color: $color3Text;
+          color: $capeColorText;
         }
 
         .section-buttons {
           a {
-            color: $color3Text;
-            border-color: $color3Text;
+            color: $capeColorText;
+            border-color: $capeColorText;
 
             &:hover {
-              background-color: $color3Text;
+              background-color: $capeColorText;
               color: $textColor3;
             }
 
             &:active {
-              background-color: transparentize($color3Text, 0.1);
+              background-color: transparentize($capeColorText, 0.1);
               color: $textColor3;
             }
           }
