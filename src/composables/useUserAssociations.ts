@@ -14,7 +14,6 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
 import {useAssociationStore} from "@/stores/useAssociationStore";
 import useSecurity from "@/composables/useSecurity";
-import type {Association} from "#/association";
 
 
 // Used to store a user's associations, while it is modified by a manager or during registration
@@ -171,29 +170,37 @@ export default function () {
 
         const url = (managedUser) ? `/users/${userId}/associations/` : '/users/associations/'
 
-        const userAssociations = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
+        const associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
 
-        for (let i = 0; i < userAssociations.length; i++) {
-            const associationDetails = (await axiosAuthenticated.get<Association>(`/associations/${userAssociations[i].association}`)).data
-            store.userAssociations.push(
-                {
-                    association: {
-                        id: userAssociations[i].association as number,
-                        name: associationDetails.name,
-                        isSite: associationDetails.isSite,
-                        institution: associationDetails.institution as number,
-                        isEnabled: associationDetails.isEnabled,
-                        isPublic: associationDetails.isPublic,
-                    },
-                    isPresident: userAssociations[i].isPresident as boolean,
-                    canBePresident: userAssociations[i].canBePresident as boolean,
-                    canBePresidentFrom: userAssociations[i].canBePresidentFrom as string,
-                    canBePresidentTo: userAssociations[i].canBePresidentTo as string,
-                    isValidatedByAdmin: userAssociations[i].isValidatedByAdmin as boolean,
-                    isVicePresident: userAssociations[i].isVicePresident as boolean,
-                    isSecretary: userAssociations[i].isSecretary as boolean,
-                    isTreasurer: userAssociations[i].isTreasurer as boolean,
-                })
+        for (let i = 0; i < associationUsers.length; i++) {
+
+            const associationUser: AssociationUserDetail = {
+                association: {
+                    id: associationUsers[i].association as number,
+                    name: '',
+                },
+                isPresident: associationUsers[i].isPresident as boolean,
+                canBePresident: associationUsers[i].canBePresident as boolean,
+                canBePresidentFrom: associationUsers[i].canBePresidentFrom as string,
+                canBePresidentTo: associationUsers[i].canBePresidentTo as string,
+                isValidatedByAdmin: associationUsers[i].isValidatedByAdmin as boolean,
+                isVicePresident: associationUsers[i].isVicePresident as boolean,
+                isSecretary: associationUsers[i].isSecretary as boolean,
+                isTreasurer: associationUsers[i].isTreasurer as boolean,
+            }
+
+            if (managedUser) {
+                await associationStore.getAssociationDetail(associationUsers[i].association as number, false)
+                associationUser.association.name = associationStore.association?.name as string
+                associationUser.association.isSite = associationStore.association?.isSite
+                associationUser.association.institution = associationStore.association?.institution
+                associationUser.association.isEnabled = associationStore.association?.isEnabled
+                associationUser.association.isPublic = associationStore.association?.isPublic
+            } else {
+                await associationStore.getAssociationNames(false, false)
+                associationUser.association.name = associationStore.associationNames.find(obj => obj.id === associationUsers[i].association)?.name as string
+            }
+            store.userAssociations.push(associationUser)
         }
     }
 

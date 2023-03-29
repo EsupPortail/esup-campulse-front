@@ -38,10 +38,10 @@ export interface AssociationUserDetail {
     association: {
         id: number,
         name: string,
-        isSite: boolean,
-        institution: number,
-        isEnabled: boolean,
-        isPublic: boolean,
+        isSite?: boolean,
+        institution?: number,
+        isEnabled?: boolean,
+        isPublic?: boolean,
     }
     isPresident: boolean,
     canBePresident: boolean,
