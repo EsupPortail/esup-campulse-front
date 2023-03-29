@@ -175,7 +175,7 @@ export default function () {
     async function changeAssociationLogo(newLogo: undefined | Blob, altLogo: string, deleteLogoData: null | object) {
         if (deleteLogoData === null) {
             const patchLogoData = new FormData()
-            if (typeof newLogo === 'object') {
+            if (newLogo instanceof Blob) {
                 patchLogoData.append('pathLogo', newLogo)
                 if (altLogo === associationStore.association?.altLogo) {
                     altLogo = ''

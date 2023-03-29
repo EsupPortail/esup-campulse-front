@@ -1,9 +1,12 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {_commission, _institutionManager, _users, _usersNames} from '~/fixtures/user.mock'
+import {_commission, _institutionManager, _institutionStudent, _users, _usersNames} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useUserStore} from "../useUserStore";
+import {useAxios} from "../../composables/useAxios";
+import useUserGroups from "../../composables/useUserGroups";
+import {_groups} from "../../../tests/fixtures/group.mock";
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -49,48 +52,47 @@ describe('User manager store', () => {
             expect(userManagerStore.userCommissions).toEqual([1])
         })
     })
-    /*describe('getUsers', () => {
+    describe('getUsers', () => {
         const {axiosAuthenticated} = useAxios()
         const mockedAxios = vi.mocked(axiosAuthenticated, true)
 
-        it('should call API once on /users/?institutions if user is linked to institutions', async () => {
+        beforeEach(() => {
             userStore.user = _institutionManager
             mockedAxios.get.mockResolvedValueOnce({data: _users})
-            const {axiosAuthenticated} = useAxios()
-            await userManagerStore.getUsers()
-            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/users/?institutions=${userStore.userInstitutions?.join(',')},`)
-            expect(userManagerStore.users).toEqual(_users)
         })
-    })
 
-    describe('getUnvalidatedUsers', () => {
         afterEach(() => {
             userStore.user = undefined
-            userManagerStore.users = []
-            userManagerStore.user = undefined
         })
 
-        const {axiosAuthenticated} = useAxios()
-        const mockedAxios = vi.mocked(axiosAuthenticated, true)
-
-        it('should call API once on /users/?is_validated_by_admin=false&institutions if user is linked to institutions', async () => {
-            userStore.user = _institutionManager
-            mockedAxios.get.mockResolvedValueOnce({data: _users} as AxiosResponse)
-            const url = '/users/?is_validated_by_admin=false&institutions=' + userStore.userInstitutions?.join(',') + ','
-            const {axiosAuthenticated} = useAxios()
-            await userManagerStore.getUnvalidatedUsers()
-            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-            expect(userManagerStore.users).toEqual(_users)
+        describe('if user is linked to institutions', () => {
+            it('should call API once on /users/?institutions if user is linked to institutions', async () => {
+                await userManagerStore.getUsers('all')
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                const url = `/users/?institutions=${userStore.userInstitutions?.join(',')},`
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
+                expect(userManagerStore.users).toEqual(_users)
+            })
         })
 
-        it('should do nothing if user is linked to no association', async () => {
-            mockedAxios.get.mockResolvedValueOnce({data: _users} as AxiosResponse)
-            const {axiosAuthenticated} = useAxios()
-            await userManagerStore.getUnvalidatedUsers()
-            expect(axiosAuthenticated.get).toHaveBeenCalledTimes(0)
-            expect(userManagerStore.users).toEqual([])
+        describe('if we want to get only validated users', () => {
+            it('should call API once on /users/is_validated_by_admin=true', async () => {
+                await userManagerStore.getUsers('validated')
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                const url = `/users/?institutions=${userStore.userInstitutions?.join(',')},&is_validated_by_admin=true`
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
+                expect(userManagerStore.users).toEqual(_users)
+            })
+        })
+
+        describe('if we want to get only unvalidated users', () => {
+            it('should call API once on /users/is_validated_by_admin=false', async () => {
+                await userManagerStore.getUsers('unvalidated')
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                const url = `/users/?institutions=${userStore.userInstitutions?.join(',')},&is_validated_by_admin=false`
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
+                expect(userManagerStore.users).toEqual(_users)
+            })
         })
     })
 
@@ -112,27 +114,77 @@ describe('User manager store', () => {
     })
 
     describe('updateUserGroups', () => {
-        it('should call API once on /users/groups/ with groups as payload', async () => {
-            userManagerStore.user = _institutionStudent
-            const {axiosAuthenticated} = useAxios()
-            await userManagerStore.updateUserGroups(_newUserGroups)
-            expect(axiosAuthenticated.post).toHaveBeenCalledTimes(_newUserGroups.length)
-            expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/', {
-                username: userManagerStore.user?.username,
-                group: _newUserGroups[_newUserGroups.length - 1]
+        const {groups} = useUserGroups()
+        const {axiosAuthenticated} = useAxios()
+        groups.value = _groups
+        userManagerStore.user = _commission
+
+        describe('if COMMISSION is a new group to post', () => {
+            it('should post every new group and commission on /users/groups/', async () => {
+                await userManagerStore.updateUserGroups([4, 5], [1, 2])
+                expect(axiosAuthenticated.post).toHaveBeenCalledTimes(3)
+                expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/',
+                    {
+                        username: userManagerStore.user?.username,
+                        group: 5,
+                        institution: null,
+                        commission: null
+                    }
+                )
             })
         })
+
+        /*describe('if COMMISSION is an old group and we new to update commissions', () => {
+            it('should post every new commission on /users/groups/', async () => {
+                await userManagerStore.updateUserGroups([], [1, 2])
+                expect(axiosAuthenticated.post).toHaveBeenCalledTimes(2)
+                expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/',
+                    {
+                        username: userManagerStore.user?.username,
+                        group: 4,
+                        institution: null,
+                        commission: 2
+                    }
+                )
+            })
+        })*/
     })
 
     describe('deleteUserGroups', () => {
-        it('should call API for each group on /users/userId/groups/groupId', async () => {
-            userManagerStore.user = _institutionStudent
-            await userManagerStore.deleteUserGroups([3, 2])
-            const {axiosAuthenticated} = useAxios()
-            expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(2)
-            expect(axiosAuthenticated.delete).toHaveBeenLastCalledWith(
-                `/users/${userManagerStore.user?.id}/groups/${2}`
-            )
+        const {axiosAuthenticated} = useAxios()
+
+        describe('if we delete groups (not COMMISSION)', () => {
+            beforeEach(() => {
+                userManagerStore.user = _institutionStudent
+            })
+
+            afterEach(() => {
+                userManagerStore.user = undefined
+            })
+
+            it('should delete groups on /users/userId/groups/groupId', async () => {
+                await userManagerStore.deleteUserGroups([5, 6], [])
+                expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(2)
+                const url = `/users/${userManagerStore.user?.id}/groups/6`
+                expect(axiosAuthenticated.delete).toHaveBeenLastCalledWith(url)
+            })
+        })
+
+        describe('if we delete groups (including COMMISSION)', () => {
+            beforeEach(() => {
+                userManagerStore.user = _commission
+            })
+
+            afterEach(() => {
+                userManagerStore.user = undefined
+            })
+
+            it('should delete groups on /users/userId/groups/groupId', async () => {
+                await userManagerStore.deleteUserGroups([4], [])
+                expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(1)
+                const url = `/users/${userManagerStore.user?.id}/groups/6`
+                expect(axiosAuthenticated.delete).toHaveBeenLastCalledWith(url)
+            })
         })
     })
 
@@ -156,5 +208,5 @@ describe('User manager store', () => {
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}`)
         })
-    })*/
+    })
 })

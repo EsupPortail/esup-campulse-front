@@ -90,20 +90,7 @@ export const _groups: Group[] = [
     },
     {
         id: 4,
-        name: "COMMISSION_GENERAL",
-        isPublic: true,
-        permissions: [
-            "view_association_not_public",
-            "view_user",
-            "view_user_misc",
-            "view_user_anyone",
-            "view_associationusers",
-            "view_groupinstitutionusers"
-        ]
-    },
-    {
-        id: 5,
-        name: "COMMISSION_MISC",
+        name: "COMMISSION",
         isPublic: true,
         permissions: [
             "view_association_not_public",

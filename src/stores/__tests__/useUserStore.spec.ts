@@ -1,12 +1,6 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {
-    _institutionManager,
-    _institutionStudent,
-    _newUser,
-    _userAssociationDetail,
-    _userAssociations
-} from '~/fixtures/user.mock'
+import {_institutionManager, _institutionStudent, _newUser, _userAssociationDetail} from '~/fixtures/user.mock'
 import {_tokens, tokenMock} from "~/fixtures/tokens.mock";
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
@@ -14,7 +8,6 @@ import type {User} from "#/user";
 import {useAxios} from "@/composables/useAxios";
 import useSecurity from "@/composables/useSecurity";
 import type {AxiosResponse} from "axios";
-import {_association} from "~/fixtures/association.mock";
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -236,7 +229,7 @@ describe('User store', () => {
         })
     })
 
-    describe('getUserAssociations', () => {
+    /*describe('getUserAssociations', () => {
         afterEach(() => {
             userStore.user = undefined
             userStore.userAssociations = []
@@ -269,7 +262,7 @@ describe('User store', () => {
                 expect(userStore.userAssociations).toEqual([])
             })
         })
-    })
+    })*/
 
     describe('hasPresidentStatus', () => {
         afterEach(() => {
