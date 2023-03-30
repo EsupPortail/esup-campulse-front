@@ -6,6 +6,7 @@ export const _groups: Group[] = [
         name: "MANAGER_GENERAL",
         isPublic: false,
         permissions: [
+            // associations
             "add_association",
             "add_association_any_institution",
             "change_association",
@@ -15,24 +16,56 @@ export const _groups: Group[] = [
             "delete_association_any_institution",
             "view_association_not_enabled",
             "view_association_not_public",
+            // commissions
+            "add_commissiondate",
+            "delete_commissiondate",
+            // documents
+            "add_document",
+            "add_document_any_commission",
+            "add_document_any_institution",
+            "delete_document",
+            "delete_document_any_commission",
+            "delete_document_any_institution",
+            "add_documentupload",
+            "add_documentupload_all",
+            "change_documentupload",
+            "delete_documentupload",
+            "delete_documentupload_all",
+            "view_documentupload",
+            "view_documentupload_all",
+            // projects
+            "change_project",
+            "change_project_restricted_fields",
+            "change_projectcommissiondate",
+            "change_projectcommissiondate_restricted_fields",
+            "view_project",
+            "view_project_all",
+            "view_projectcategory",
+            "view_projectcategory_all",
+            "view_projectcommissiondate",
+            "view_projectcommissiondate_all",
+            // users
             "add_user",
             "add_user_misc",
             "change_user",
             "change_user_misc",
+            "change_user_all_fields",
             "delete_user",
             "delete_user_misc",
             "view_user",
             "view_user_misc",
             "view_user_anyone",
-            "change_associationusers",
-            "change_associationusers_any_institution",
-            "delete_associationusers",
-            "delete_associationusers_any_institution",
-            "view_associationusers",
-            "view_associationusers_anyone",
-            "delete_groupinstitutionusers",
-            "view_groupinstitutionusers",
-            "view_groupinstitutionusers_anyone"
+            "change_associationuser",
+            "change_associationuser_any_institution",
+            "delete_associationuser",
+            "delete_associationuser_any_institution",
+            "view_associationuser",
+            "view_associationuser_anyone",
+            "add_groupinstitutioncommissionuser_any_group",
+            "delete_groupinstitutioncommissionuser",
+            "delete_groupinstitutioncommissionuser_any_group",
+            "view_groupinstitutioncommissionuser",
+            "view_groupinstitutioncommissionuser_any_group",
         ]
     },
     {
@@ -40,24 +73,51 @@ export const _groups: Group[] = [
         name: "MANAGER_INSTITUTION",
         isPublic: false,
         permissions: [
+            // associations
             "add_association",
             "change_association",
             "change_association_all_fields",
             "delete_association",
             "view_association_not_enabled",
             "view_association_not_public",
+            // commissions
+            "add_commissiondate",
+            "delete_commissiondate",
+            // documents
+            "add_document",
+            "delete_document",
+            "add_documentupload",
+            "add_documentupload_all",
+            "change_documentupload",
+            "delete_documentupload",
+            "delete_documentupload_all",
+            "view_documentupload",
+            "view_documentupload_all",
+            // projects
+            "change_project",
+            "change_project_restricted_fields",
+            "change_projectcommissiondate",
+            "change_projectcommissiondate_restricted_fields",
+            "view_project",
+            "view_project_all",
+            "view_projectcategory",
+            "view_projectcategory_all",
+            "view_projectcommissiondate",
+            "view_projectcommissiondate_all",
+            // users
             "add_user",
             "change_user",
+            "change_user_all_fields",
             "delete_user",
             "view_user",
             "view_user_anyone",
-            "change_associationusers",
-            "delete_associationusers",
-            "view_associationusers",
-            "view_associationusers_anyone",
-            "delete_groupinstitutionusers",
-            "view_groupinstitutionusers",
-            "view_groupinstitutionusers_anyone"
+            "change_associationuser",
+            "delete_associationuser",
+            "view_associationuser",
+            "view_associationuser_anyone",
+            "delete_groupinstitutioncommissionuser",
+            "view_groupinstitutioncommissionuser",
+            "view_groupinstitutioncommissionuser_any_group",
         ]
     },
     {
@@ -65,27 +125,54 @@ export const _groups: Group[] = [
         name: "MANAGER_MISC",
         isPublic: false,
         permissions: [
+            // associations
             "add_association",
             "change_association",
             "change_association_all_fields",
             "delete_association",
             "view_association_not_enabled",
             "view_association_not_public",
+            // commissions
+            "add_commissiondate",
+            "delete_commissiondate",
+            // documents
+            "add_document",
+            "delete_document",
+            "add_documentupload",
+            "add_documentupload_all",
+            "change_documentupload",
+            "delete_documentupload",
+            "delete_documentupload_all",
+            "view_documentupload",
+            "view_documentupload_all",
+            // projects
+            "change_project",
+            "change_project_restricted_fields",
+            "change_projectcommissiondate",
+            "change_projectcommissiondate_restricted_fields",
+            "view_project",
+            "view_project_all",
+            "view_projectcategory",
+            "view_projectcategory_all",
+            "view_projectcommissiondate",
+            "view_projectcommissiondate_all",
+            // users
             "add_user",
             "add_user_misc",
             "change_user",
             "change_user_misc",
+            "change_user_all_fields",
             "delete_user",
             "delete_user_misc",
             "view_user",
             "view_user_misc",
-            "change_associationusers",
-            "delete_associationusers",
-            "view_associationusers",
-            "view_associationusers_anyone",
-            "delete_groupinstitutionusers",
-            "view_groupinstitutionusers",
-            "view_groupinstitutionusers_anyone"
+            "change_associationuser",
+            "delete_associationuser",
+            "view_associationuser",
+            "view_associationuser_anyone",
+            "delete_groupinstitutioncommissionuser",
+            "view_groupinstitutioncommissionuser",
+            "view_groupinstitutioncommissionuser_any_group",
         ]
     },
     {
@@ -93,12 +180,24 @@ export const _groups: Group[] = [
         name: "COMMISSION",
         isPublic: true,
         permissions: [
+            // associations
             "view_association_not_public",
+            // documents
+            "view_documentupload",
+            "view_documentupload_all",
+            // projects
+            "view_project",
+            "view_project_all",
+            "view_projectcategory",
+            "view_projectcategory_all",
+            "view_projectcommissiondate",
+            "view_projectcommissiondate_all",
+            // users
             "view_user",
             "view_user_misc",
             "view_user_anyone",
-            "view_associationusers",
-            "view_groupinstitutionusers"
+            "view_associationuser",
+            "view_groupinstitutioncommissionuser",
         ]
     },
     {
@@ -106,11 +205,31 @@ export const _groups: Group[] = [
         name: "STUDENT_INSTITUTION",
         isPublic: true,
         permissions: [
+            // associations
             "change_association",
-            "change_associationusers",
-            "delete_associationusers",
-            "view_associationusers",
-            "view_groupinstitutionusers"
+            // documents
+            "add_documentupload",
+            "delete_documentupload",
+            "view_documentupload",
+            // projects
+            "add_project",
+            "change_project",
+            "change_project_basic_fields",
+            "view_project",
+            "add_projectcategory",
+            "delete_projectcategory",
+            "view_projectcategory",
+            "add_projectcommissiondate",
+            "change_projectcommissiondate",
+            "change_projectcommissiondate_basic_fields",
+            "delete_projectcommissiondate",
+            "view_projectcommissiondate",
+            // users
+            "view_user",
+            "change_associationuser",
+            "delete_associationuser",
+            "view_associationuser",
+            "view_groupinstitutioncommissionuser",
         ]
     },
     {
@@ -118,7 +237,25 @@ export const _groups: Group[] = [
         name: "STUDENT_MISC",
         isPublic: true,
         permissions: [
-            "view_groupinstitutionusers"
+            // documents
+            "add_documentupload",
+            "delete_documentupload",
+            "view_documentupload",
+            // projects
+            "add_project",
+            "change_project",
+            "change_project_basic_fields",
+            "view_project",
+            "add_projectcategory",
+            "delete_projectcategory",
+            "view_projectcategory",
+            "add_projectcommissiondate",
+            "change_projectcommissiondate",
+            "change_projectcommissiondate_basic_fields",
+            "delete_projectcommissiondate",
+            "view_projectcommissiondate",
+            // users
+            "view_groupinstitutioncommissionuser",
         ]
     },
 ]
