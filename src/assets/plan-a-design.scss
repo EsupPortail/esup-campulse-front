@@ -15,19 +15,19 @@ $bootstrap-icons-font-src: url("../../node_modules/bootstrap-icons/font/fonts/bo
 }
 
 html {
-  height: 100%;
-  width: 100%;
+  height: $fullWidth;
+  width: $fullWidth;
 }
 
 body {
-  height: 100%;
-  width: 100%;
+  height: $fullWidth;
+  width: $fullWidth;
 }
 
 // Displaying the layout as a table (and the different layout parts as table-rows) is a common trick to make sure the footer stays 
 // at the bottom of the viewport even when the page's height is inferior to the viewport's height (without giving the footer an absolute or fixed position).
 #layout-page {
-  width: 100%;
+  width: $fullWidth;
   max-width: unset;
   display: table;
   table-layout: fixed;
@@ -39,8 +39,8 @@ body {
 }
 
 #layout-content {
-  height: 100%;
-  
+  height: $fullWidth;
+
 }
 
 // TODO Hotfix for outline buttons.
@@ -138,7 +138,7 @@ button.q-btn--outline {
 
 // Page section
 .page-section {
-  width: 100%;
+  width: $fullWidth;
   max-width: $pageWidth;
   margin: 0 auto;
 }
@@ -245,7 +245,7 @@ button.q-btn--outline {
 }
 
 .variant-space-4 .introduction.color-background {
-  background-color: $color4Background;
+  background-color: $dashboardColorBackground;
 }
 
 // Titles
