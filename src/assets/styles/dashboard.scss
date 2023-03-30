@@ -2,30 +2,25 @@
 
 .dashboard-section {
   h2 {
-    width: 100%;
+    width: $fullWidth;
     max-width: $pageWidth;
-    margin: 0 auto;
+    margin: auto 1.5rem 0;
     background-color: transparent;
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-transform: uppercase;
     color: $annuaireColorText;
 
     i {
       color: $annuaireColorText;
       font-size: 1.75rem;
-      margin-right: 0.875rem;
+      margin-right: 0.300rem;
       position: relative;
       top: -0.188rem;
-    }
-
-    @media only screen and (max-width: $pageWidth) {
-      margin-left: 1.5rem;
-      margin-right: 1.5rem;
     }
   }
 
   .button-group {
-    width: 28.75rem;
+    width: auto;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -33,7 +28,30 @@
 
     a {
       display: block;
-      width: 100%;
+      width: auto;
+    }
+
+    .q-btn {
+      font-size: 1rem;
+    }
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    h2 {
+      margin: 0 auto;
+      font-size: 2rem;
+
+      i {
+        margin-right: 0.875rem;
+      }
+    }
+
+    .button-group {
+      width: 28.75rem;
+
+      .q-btn {
+        font-size: 1.125rem;
+      }
     }
   }
 }
