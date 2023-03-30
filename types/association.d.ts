@@ -42,7 +42,6 @@ export interface Institution {
     id: number,
     name: string,
     acronym: string,
-    email: string,
 }
 
 export interface InstitutionComponent {
