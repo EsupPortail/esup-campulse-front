@@ -134,18 +134,22 @@ onMounted(() => {
 @import '@/assets/styles/forms.scss'
 </style>
 
-<style lang="sass" scoped>
-.q-expansion-item
-  background-color: #beddff
-  padding: 10px
-  margin-bottom: 15px
+<style lang="scss">
+@import "@/assets/_variables.scss";
 
-.status-banner
-  margin-top: 15px
-  margin-bottom: 15px
-  padding-top: 20px
+.q-expansion-item {
+  background-color: $dashboardColorBorders;
+  padding: 0.625rem;
+  margin-bottom: 0.938rem;
+}
 
-fieldset
-  border: none
-  padding: 0
+.status-banner {
+  margin: 0.938rem 0 0.938rem;
+  padding-top: 1.25rem;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+}
 </style>
