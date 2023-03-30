@@ -40,7 +40,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
          */
         async getUsers(status: 'all' | 'validated' | 'unvalidated' | string) {
             const {hasPerm} = useSecurity()
-            if (hasPerm('change_associationusers')) {
+            if (hasPerm('change_associationuser')) {
                 const {axiosAuthenticated} = useAxios()
                 const userStore = useUserStore()
 
@@ -143,5 +143,4 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         }
     }
 })
-
 

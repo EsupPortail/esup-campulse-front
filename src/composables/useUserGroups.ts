@@ -107,7 +107,7 @@ export default function () {
                 const label: string | undefined = getGroupLiteral(group.id)
                 if (label) {
                     let disable = !group.isPublic
-                    if (hasPerm('add_groupinstitutioncommissionusers_any_group') && group.name !== 'MANAGER_GENERAL') {
+                    if (hasPerm('add_groupinstitutioncommissionuser_any_group') && group.name !== 'MANAGER_GENERAL') {
                         disable = false
                     }
                     labels.push({
