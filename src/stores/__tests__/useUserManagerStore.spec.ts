@@ -134,7 +134,7 @@ describe('User manager store', () => {
             })
         })
 
-        /*describe('if COMMISSION is an old group and we new to update commissions', () => {
+        describe('if COMMISSION is an old group and we new to update commissions', () => {
             it('should post every new commission on /users/groups/', async () => {
                 await userManagerStore.updateUserGroups([], [1, 2])
                 expect(axiosAuthenticated.post).toHaveBeenCalledTimes(2)
@@ -147,7 +147,7 @@ describe('User manager store', () => {
                     }
                 )
             })
-        })*/
+        })
     })
 
     describe('deleteUserGroups', () => {
@@ -182,7 +182,24 @@ describe('User manager store', () => {
             it('should delete groups on /users/userId/groups/groupId', async () => {
                 await userManagerStore.deleteUserGroups([4], [])
                 expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(1)
-                const url = `/users/${userManagerStore.user?.id}/groups/6`
+                const url = `/users/${userManagerStore.user?.id}/groups/4/commissions/${userManagerStore.userCommissions[0]}`
+                expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
+            })
+        })
+
+        describe('if we delete commissions while not deleting COMMISSION group', () => {
+            beforeEach(() => {
+                userManagerStore.user = _commission
+            })
+
+            afterEach(() => {
+                userManagerStore.user = undefined
+            })
+
+            it('should delete each commission in the array', async () => {
+                await userManagerStore.deleteUserGroups([], [1, 2])
+                expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(2)
+                const url = `/users/${userManagerStore.user?.id}/groups/4/commissions/2`
                 expect(axiosAuthenticated.delete).toHaveBeenLastCalledWith(url)
             })
         })

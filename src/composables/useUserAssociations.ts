@@ -63,10 +63,9 @@ export default function () {
     /**
      * It updates the user associations when it is modified by a manager
      */
-    // To test
     function updateUserAssociations(editedByStaff: boolean) {
-        let userId = userStore.user?.id
-        if (editedByStaff) userId = userManagerStore.user?.id
+        const instance = editedByStaff ? userManagerStore : userStore
+        const userId = instance.user?.id
 
         userAssociations.value.forEach(async function (association) {
             // If we need to delete the association
@@ -74,19 +73,15 @@ export default function () {
                 await deleteUserAssociation(userId, association.id)
                 // Reactively remove the deleted item from interface
                 if (!editedByStaff) {
-                    userAssociations.value.splice(userAssociations.value.findIndex(obj => obj.id === association.id))
-                    userStore.user?.associations.splice(userAssociations.value.findIndex(obj => obj.id === association.id))
+                    userAssociations.value.splice(userAssociations.value.findIndex(obj => obj.id === association.id), 1)
+                    userStore.user?.associations.splice(userAssociations.value.findIndex(obj => obj.id === association.id), 1)
                 }
             }
             // If we need to update the association
             else {
                 // We search for the corresponding association in store
-                let storeAssociation: AssociationUserDetail | undefined
-                if (editedByStaff) {
-                    storeAssociation = userManagerStore.userAssociations.find(obj => obj.association?.id === association.id)
-                } else {
-                    storeAssociation = userStore.userAssociations.find(obj => obj.association?.id === association.id)
-                }
+
+                const storeAssociation = instance.userAssociations.find(obj => obj.association?.id === association.id)
                 // We set a boolean to track changes
                 let hasChanges = false
                 // We compare the 2 objects
@@ -160,7 +155,7 @@ export default function () {
         return newAssociationsUser.value
     }
 
-    // To test
+    // TODO: to test
     async function getUserAssociations(userId: number | null | undefined, managedUser: boolean) {
         const {axiosAuthenticated} = useAxios()
 
@@ -204,13 +199,11 @@ export default function () {
         store.userAssociations = userAssociations
     }
 
-    // To test
     function getAssociationUserRole(user: AssociationUser | AssociationUserDetail) {
         return user.isPresident ? 'isPresident' : user.isSecretary ? 'isSecretary' : user.isTreasurer ? 'isTreasurer' :
             user.isVicePresident ? 'isVicePresident' : 'isMember'
     }
 
-    // To test
     async function getAssociationUsersNames(associationId: number) {
         const {axiosAuthenticated} = useAxios()
         return (await axiosAuthenticated.get(`/users/?association_id=${associationId}`)).data
@@ -221,7 +214,7 @@ export default function () {
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
         associationStore.associationUsers.forEach(function (user) {
-            if (!withPresident && user.user === userStore.user?.id) {
+            if (!withPresident && user.user === userStore.user?.id) { // TODO: test condition
                 return
             } else {
                 const member = userNames.find(obj => obj.id === user.user)
@@ -241,7 +234,7 @@ export default function () {
         })
     }
 
-    // To test
+    // TODO: test
     const initUserAssociations = (editedByStaff: boolean) => {
         userAssociations.value = []
         let associations: AssociationUserDetail[] = userStore.userAssociations
@@ -260,7 +253,7 @@ export default function () {
         })
     }
 
-    // To test
+    // TODO: test
     async function getUnvalidatedAssociationUsers() {
         associationMembers.value = []
 
@@ -311,6 +304,7 @@ export default function () {
         associationMembers,
         getAssociationUserRole,
         initUserAssociations,
-        initAssociationMembers
+        initAssociationMembers,
+        getAssociationUsersNames
     }
 }

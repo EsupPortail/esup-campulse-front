@@ -140,7 +140,25 @@ export const _associationNames = [
     },
     {
         id: 2,
-        name: 'OCTANT',
+        name: 'LUCIE',
+        hasPresident: false,
+        institution: 1
+    },
+    {
+        id: 3,
+        name: 'CAMPULSE',
+        hasPresident: false,
+        institution: 1
+    },
+    {
+        id: 4,
+        name: 'OPALINE',
+        hasPresident: false,
+        institution: 1
+    },
+    {
+        id: 5,
+        name: 'CAMPULSE',
         hasPresident: false,
         institution: 1
     },

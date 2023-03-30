@@ -1,4 +1,12 @@
-import type {AssociationUser, AssociationUserDetail, User, UserGroup, UserRegister} from "#/user";
+import type {
+    AssociationMember,
+    AssociationRole,
+    AssociationUser,
+    AssociationUserDetail,
+    User,
+    UserGroup,
+    UserRegister
+} from "#/user";
 import {_userAssociation} from "~/fixtures/association.mock";
 import {_groups} from "~/fixtures/group.mock";
 
@@ -138,6 +146,7 @@ export const _groupLabels = _userGroups.map(
 
 export const _userAssociations: AssociationUser[] = [
     {
+        user: 1,
         isPresident: true,
         canBePresident: true,
         canBePresidentFrom: null,
@@ -149,6 +158,7 @@ export const _userAssociations: AssociationUser[] = [
         association: 1
     },
     {
+        user: 2,
         isPresident: false,
         canBePresident: true,
         canBePresidentFrom: null,
@@ -160,6 +170,7 @@ export const _userAssociations: AssociationUser[] = [
         association: 2
     },
     {
+        user: 3,
         isPresident: false,
         canBePresident: false,
         canBePresidentFrom: null,
@@ -171,6 +182,19 @@ export const _userAssociations: AssociationUser[] = [
         association: 3
     },
     {
+        user: 4,
+        isPresident: false,
+        canBePresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: false,
+        isVicePresident: true,
+        isSecretary: false,
+        isTreasurer: false,
+        association: 4
+    },
+    {
+        user: 5,
         isPresident: false,
         canBePresident: false,
         canBePresidentFrom: null,
@@ -179,7 +203,105 @@ export const _userAssociations: AssociationUser[] = [
         isVicePresident: false,
         isSecretary: false,
         isTreasurer: false,
-        association: 4
+        association: 5
+    }
+]
+
+export const _userAssociationDetails: AssociationUserDetail[] = [
+    {
+        user: 1,
+        isPresident: true,
+        canBePresident: true,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: false,
+        association: {
+            id: 1,
+            name: 'Association',
+            isSite: true,
+            institution: 1,
+            isEnabled: true,
+            isPublic: true
+        }
+    },
+    {
+        user: 2,
+        isPresident: false,
+        canBePresident: true,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: true,
+        isTreasurer: false,
+        association: {
+            id: 2,
+            name: 'Association',
+            isSite: true,
+            institution: 1,
+            isEnabled: true,
+            isPublic: true
+        }
+    },
+    {
+        user: 3,
+        isPresident: false,
+        canBePresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: true,
+        association: {
+            id: 3,
+            name: 'Association',
+            isSite: true,
+            institution: 1,
+            isEnabled: true,
+            isPublic: true
+        }
+    },
+    {
+        user: 4,
+        isPresident: false,
+        canBePresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: false,
+        isVicePresident: true,
+        isSecretary: false,
+        isTreasurer: false,
+        association: {
+            id: 4,
+            name: 'OPALINE',
+            isSite: undefined,
+            institution: undefined,
+            isEnabled: undefined,
+            isPublic: undefined
+        }
+    },
+    {
+        user: 5,
+        isPresident: false,
+        canBePresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: false,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: false,
+        association: {
+            id: 5,
+            name: 'CAMPULSE',
+            isSite: undefined,
+            institution: undefined,
+            isEnabled: undefined,
+            isPublic: undefined
+        }
     }
 ]
 
@@ -235,15 +357,35 @@ export const _userAssociationsManagement = [
     }
 ]
 
-export const _associationRole: AssociationUser = {
-    user: 1,
-    association: 1,
-    isPresident: true,
+export const _associationRole: AssociationRole = {
+    id: 1,
+    name: 'Jane',
+    role: 'isPresident',
+    deleteAssociation: false,
     canBePresident: true,
-    canBePresidentFrom: null,
-    canBePresidentTo: null,
     isValidatedByAdmin: true,
-    isVicePresident: false,
-    isSecretary: false,
-    isTreasurer: false,
 }
+
+export const _associationMembers: AssociationMember[] = [
+    {
+        id: _institutionManager.id,
+        firstName: _institutionManager.firstName,
+        lastName: _institutionManager.lastName,
+        role: 'Présidente ou président de l\'association',
+        canBePresident: _userAssociations[0].canBePresident,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: _userAssociations[0].isValidatedByAdmin as boolean
+    },
+    {
+        id: _institutionStudent.id,
+        firstName: _institutionStudent.firstName,
+        lastName: _institutionStudent.lastName,
+        role: 'Autre membre de l\'association',
+        canBePresident: _userAssociations[4].canBePresident,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: _userAssociations[4].isValidatedByAdmin as boolean
+    }
+]
+

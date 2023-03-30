@@ -74,7 +74,9 @@ export interface AssociationRole {
     canBePresident?: boolean,
     deleteAssociation?: boolean,
     isValidatedByAdmin?: boolean,
-    isVicePresident?: boolean
+    /*
+        isVicePresident?: boolean
+    */
 }
 
 interface CasLogin {
