@@ -167,36 +167,36 @@
 .variant-space-4 {
   .q-field {
     .q-field__control {
-      border-color: $color4Borders;
+      border-color: $dashboardColorBorders;
 
       input {
-        color: $color4Text;
+        color: $dashboardColorText;
       }
     }
 
     &.q-field--focused .q-field__control {
-      border-color: $color4;
+      border-color: $dashboardColor;
     }
 
     &.q-field--filled.q-field--highlighted .q-field__control::before {
-      background: $color4Background;
+      background: $dashboardColorBackground;
     }
 
     &.q-field--filled .q-field__control::before {
-      background: $color4Background;
+      background: $dashboardColorBackground;
     }
 
     &.q-field--filled .q-field__control::after {
-      background: $color4;
+      background: $dashboardColor;
     }
 
     &.q-field--highlighted .q-field__label {
-      color: $color4Text;
+      color: $dashboardColorText;
     }
   }
 
   .q-select.q-field--focused .q-field__marginal {
-    color: $color4;
+    color: $dashboardColor;
   }
 }
 
@@ -243,7 +243,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
 .variant-space-4 {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
-      border-color: $color4;
+      border-color: $dashboardColor;
     }
   }
 }
@@ -439,37 +439,37 @@ label.custom-label {
 
 .variant-space-4 {
   .q-btn {
-    background-color: $color4;
+    background-color: $dashboardColor;
 
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $color4Hover !important;
+      background-color: $dashboardColorHover !important;
     }
 
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $color4Active !important;
+      background-color: $dashboardColorActive !important;
     }
 
     &.bg-primary {
-      background: $color4 !important;
+      background: $dashboardColor !important;
     }
 
     &.bg-secondary {
-      background: $color4 !important;
+      background: $dashboardColor !important;
     }
 
     &.btn-alt {
-      border: 1px solid $color4Text;
+      border: 1px solid $dashboardColorText;
 
       .q-btn__content > * {
-        color: $color4Text;
+        color: $dashboardColorText;
       }
 
       &:hover {
-        background-color: $color4Text !important;
+        background-color: $dashboardColorText !important;
       }
 
       &:active {
-        background-color: mix(white, $color4Text, 15%) !important;
+        background-color: mix(white, $dashboardColorText, 15%) !important;
       }
     }
   }
@@ -737,26 +737,26 @@ label.custom-label {
 .variant-space-4 {
   .document-input-group .document-input {
     .document-input-header {
-      border-color: $color4;
+      border-color: $dashboardColor;
 
       & > button {
         &:hover {
-          background-color: $color4;
+          background-color: $dashboardColor;
         }
 
         &:active {
-          background-color: mix(white, $color4, 10%);
+          background-color: mix(white, $dashboardColor, 10%);
         }
       }
     }
 
     .document-input-list .document-item button {
       &:hover {
-        background-color: $color4;
+        background-color: $dashboardColor;
       }
 
       &:active {
-        background-color: mix(white, $color4, 10%);
+        background-color: mix(white, $dashboardColor, 10%);
       }
     }
   }
@@ -1121,22 +1121,22 @@ label.custom-label {
 .variant-space-4 {
   .q-table__container {
     .q-table__bottom {
-      color: $color4Text;
+      color: $dashboardColorText;
     }
 
     .q-table {
       thead tr {
-        background-color: $color4;
+        background-color: $dashboardColor;
 
         th {
           .q-table__sort-icon svg {
-            color: $color4Text;
+            color: $dashboardColorText;
           }
 
           .q-checkbox__inner {
             &.text-grey-8 {
               .q-checkbox__svg {
-                color: $color4;
+                color: $dashboardColor;
               }
             }
           }
@@ -1144,41 +1144,41 @@ label.custom-label {
       }
 
       tbody tr td {
-        color: $color4Text;
+        color: $dashboardColorText;
 
         &:first-child {
-          border-color: $color4;
+          border-color: $dashboardColor;
         }
 
         &.actions-cell-compact {
           .q-btn {
             &:hover {
-              box-shadow: 0 -0.25rem 0 0 $color4 inset;
+              box-shadow: 0 -0.25rem 0 0 $dashboardColor inset;
             }
 
             &:active {
-              background: transparentize($color4, 0.9) !important;
+              background: transparentize($dashboardColor, 0.9) !important;
             }
           }
         }
 
         &::before {
-          background: transparentize($color4, 0.95);
+          background: transparentize($dashboardColor, 0.95);
         }
 
         &::after {
-          background: transparentize($color4, 0.9);
+          background: transparentize($dashboardColor, 0.9);
         }
 
         .q-checkbox__inner {
           &.q-checkbox__inner--truthy {
             .q-checkbox__bg {
-              border-color: $color4;
+              border-color: $dashboardColor;
             }
 
             &.q-checkbox__inner--truthy {
               .q-checkbox__bg {
-                background-color: $color4;
+                background-color: $dashboardColor;
               }
             }
           }
@@ -1328,7 +1328,7 @@ label.custom-label {
 
 .variant-space-4 {
   .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
-    color: $color4;
+    color: $dashboardColor;
   }
 }
 
@@ -1425,11 +1425,11 @@ label.custom-label {
 .variant-space-4 {
   .pagination .wrapper .q-btn {
     .q-btn__content i {
-      color: $color4;
+      color: $dashboardColor;
     }
 
     &.counter-button strong {
-      color: $color4;
+      color: $dashboardColor;
     }
   }
 }
@@ -1534,7 +1534,7 @@ label.custom-label {
 }
 
 .variant-space-4 .section-title i {
-  background-color: $color4;
+  background-color: $dashboardColor;
 }
 
 // Image input
@@ -1622,10 +1622,10 @@ label.custom-label {
 }
 
 .variant-space-4 .image-input {
-  box-shadow: 0 0 0 1px $color4Borders inset;
+  box-shadow: 0 0 0 1px $dashboardColorBorders inset;
 
   label i {
-    background-color: $color4;
+    background-color: $dashboardColor;
   }
 }
 
@@ -1791,6 +1791,6 @@ label.custom-label {
 
 .variant-space-4 {
   .display-row, .comment-row {
-    border-color: $color4;
+    border-color: $dashboardColor;
   }
 }
