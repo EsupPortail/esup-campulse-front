@@ -75,7 +75,7 @@ legend {
   color: #fff;
   font-size: 1.3rem;
   text-align: center;
-  width: $fullWidth;
+  width: $fullSize;
   margin-bottom: 0.625rem;
 }
 

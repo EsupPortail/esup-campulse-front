@@ -2,13 +2,13 @@
 
 // Intro element on the home page
 #home-info-panel {
-  width: $fullWidth;
+  width: $fullSize;
   background: none !important;
   margin: 0 auto;
   padding: 1.25rem;
 
   .q-banner__content {
-    width: $fullWidth;
+    width: $fullSize;
     max-width: 62.5rem;
     margin: 0 auto;
     color: $textColor1;
