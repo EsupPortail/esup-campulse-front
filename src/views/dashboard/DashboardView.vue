@@ -62,7 +62,6 @@ onMounted(async () => {
                         :key="association.id"
                     >
                         <QBtn
-                            v-if="userStore.hasPresidentStatus(association.id)"
                             :label="t('manage') + ' ' + association.name"
                             :to="{name: 'AssociationDashboard', params: {id: association.id}}"
                         />

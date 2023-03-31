@@ -72,7 +72,7 @@ async function onGetAssociationDetail() {
                         :to="{ name: 'AssociationDetail', params: { id: association?.id } }"
                     />
                     <QBtn
-                        v-if="hasPresidentStatus"
+                        v-if="userStore.userAssociations.find(obj => obj.association.id === association?.id).isPresident"
                         :label="t('dashboard.association-user.delegate-presidency')"
                         :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
                         color="primary"
