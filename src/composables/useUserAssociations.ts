@@ -179,7 +179,7 @@ export default function () {
                 isEnabled: undefined,
                 isPublic: undefined,
             }
-            if (userAssociations[index].isValidatedByAdmin) {
+            if (managedUser || userAssociations[index].isValidatedByAdmin) {
                 const association = (await axiosAuthenticated.get(`/associations/${userAssociations[index].association}`)).data
                 temp.name = association.name
                 temp.isSite = association.isSite
@@ -273,7 +273,7 @@ export default function () {
             const associationName = associationStore.associationNames.find(obj => obj.id === associationUser.association)?.name
             if (extendedUser && associationName) {
                 associationMembers.value.push({
-                    id: associationUser.id as number,
+                    id: associationUser.user as number,
                     associationId: associationUser.association as number,
                     associationName,
                     firstName: extendedUser.firstName,
