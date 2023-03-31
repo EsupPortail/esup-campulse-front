@@ -341,33 +341,38 @@
   z-index: 1;
   text-align: center;
 
-  h2 {
+  h1 {
     font-family: $titleFont;
     color: $textColor3;
     font-weight: $normal-weight;
     font-size: 3.125rem;
     margin-bottom: 0.5rem;
+    line-height: 4rem;
 
     strong {
-      font-weight: $bold-weight;
       text-transform: uppercase;
     }
   }
 
-  h3 {
+  h2 {
     display: inline-block;
     color: $textColor3;
     font-weight: $medium-weight;
     font-size: 1.4rem;
     border: 1px solid white;
-    padding: 1.125rem;
+    padding: .5rem;
     margin: 0 2rem 2rem;
+    line-height: 3rem;
     background-color: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(0.125rem);
   }
 
   @media screen and (min-width: $responsiveWidth) {
     font-size: 1.625rem;
+
+    h2 {
+      padding: 1.125rem;
+    }
   }
 }
 
@@ -385,7 +390,7 @@
     width: $fullSize;
     font-family: $titleFont;
     color: $textColor3;
-    font-weight: 400;
+    font-weight: $normal-weight;
     font-size: 3.438rem;
     padding-left: 4.375rem;
     line-height: 1.15;
@@ -394,7 +399,7 @@
       font-family: $titleFont;
       font-size: 4.375rem;
       text-transform: uppercase;
-      font-weight: 400;
+      font-weight: $normal-weight;
     }
 
     #header-title-icon {

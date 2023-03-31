@@ -449,7 +449,6 @@
       }
     }
 
-
     ul, a {
       display: flex;
       flex-direction: row;
@@ -466,11 +465,17 @@
     }
   }
 
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
 
   @media screen and (min-width: $responsiveWidth) {
     p, ul {
       font-size: 1.1rem;
     }
+
     .association-logo-title {
       .association-name {
         font-size: 2.875rem;
@@ -481,6 +486,11 @@
       h2 {
         font-size: 2rem;
       }
+    }
+
+    .btn-group {
+      flex-direction: row;
+      padding-top: 1rem;
     }
   }
 
