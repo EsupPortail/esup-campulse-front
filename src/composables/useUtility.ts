@@ -1,4 +1,4 @@
-import type { RouteLocationMatched, RouteParams } from 'vue-router'
+import type {RouteLocationMatched, RouteParams} from 'vue-router'
 
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
 
@@ -71,5 +71,5 @@ export default function() {
         return breadcrumbs
     }
 
-    return { formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior }
+    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior}
 }
