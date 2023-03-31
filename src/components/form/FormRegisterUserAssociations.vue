@@ -4,8 +4,8 @@ import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted, ref, watch} from 'vue'
-import {useRoute} from "vue-router";
-import useUserAssociations from "@/composables/useUserAssociations";
+import {useRoute} from 'vue-router'
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const associationStore = useAssociationStore()
 const route = useRoute()

@@ -3,7 +3,7 @@ import {RouterLink, useRoute} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 import {useI18n} from 'vue-i18n'
 import {ref, watch} from 'vue'
-import useColorVariants from "@/composables/useColorVariants";
+import useColorVariants from '@/composables/useColorVariants'
 
 const {t} = useI18n()
 const route = useRoute()

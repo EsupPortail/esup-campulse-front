@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useUserManagerStore } from '@/stores/useUserManagerStore'
-import { useQuasar } from 'quasar'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useQuasar} from 'quasar'
 import axios from 'axios'
 import router from '@/router'
 
-const { t } = useI18n()
+const {t} = useI18n()
 const confirm = ref<boolean>(false)
 const userManagerStore = useUserManagerStore()
-const { notify } = useQuasar()
+const {notify} = useQuasar()
 
 const emit = defineEmits(['hasValidated'])
 
@@ -17,7 +17,7 @@ async function onDeleteUser() {
     try {
         await userManagerStore.deleteUser()
         emit('hasValidated')
-        await router.push({ name: 'ManageUsers' })
+        await router.push({name: 'ManageUsers'})
         notify({
             type: 'positive',
             message: t('notifications.positive.validate-delete-user')

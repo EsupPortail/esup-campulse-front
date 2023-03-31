@@ -4,7 +4,7 @@ import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserAssociations from '@/composables/useUserAssociations'
-import AlertConfirmUserQuitAssociation from "@/components/alert/AlertConfirmUserQuitAssociation.vue";
+import AlertConfirmUserQuitAssociation from '@/components/alert/AlertConfirmUserQuitAssociation.vue'
 
 
 const {t} = useI18n()

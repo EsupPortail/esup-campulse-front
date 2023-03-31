@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import {useUserStore} from '@/stores/useUserStore'
-import {useI18n} from "vue-i18n";
-import {useQuasar} from "quasar";
-import router from "@/router";
-import {onMounted} from "vue";
-import useUserAssociations from "@/composables/useUserAssociations";
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import router from '@/router'
+import {onMounted} from 'vue'
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const userStore = useUserStore()
 const {t} = useI18n()

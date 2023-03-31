@@ -12,8 +12,8 @@ import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 import AlertConfirmUserUpdate from '@/components/alert/AlertConfirmUserUpdate.vue'
 import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
-import FormRegisterUserAssociations from "@/components/form/FormRegisterUserAssociations.vue";
-import {useUserStore} from "@/stores/useUserStore";
+import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
+import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()

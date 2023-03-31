@@ -3,7 +3,7 @@ import {onMounted, ref} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import useUserAssociations from "@/composables/useUserAssociations";
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()

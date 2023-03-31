@@ -1,21 +1,21 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
 import router from '@/router'
-import { useAssociationStore } from '@/stores/useAssociationStore'
-import { useQuasar } from 'quasar'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useQuasar} from 'quasar'
 
-const { t } = useI18n()
+const {t} = useI18n()
 const confirmation = ref<boolean>(false)
-const deletionWord = ref<string>("")
+const deletionWord = ref<string>('')
 const associationStore = useAssociationStore()
-const { notify } = useQuasar()
+const {notify} = useQuasar()
 
 async function onDeleteAssociation() {
     try {
         if (deletionWord.value === t('association.before-deletion-word')) {
             await associationStore.deleteAssociation(associationStore.association?.id)
-            await router.push({ name: 'ManageAssociations' })
+            await router.push({name: 'ManageAssociations'})
             notify({
                 type: 'positive',
                 message: t('notifications.positive.delete-association')

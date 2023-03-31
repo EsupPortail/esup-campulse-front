@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
 import {useUserStore} from '@/stores/useUserStore'
-import {useI18n} from "vue-i18n";
+import {useI18n} from 'vue-i18n'
 
 const userStore = useUserStore()
 const newUser = userStore.newUser

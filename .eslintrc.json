@@ -9,8 +9,24 @@
         "vue/setup-compiler-macros": true
     },
     "rules": {
+        "indent": [
+            "warn",
+            4
+        ],
         "no-console": "off",
         "no-debugger": "off",
+        "object-curly-spacing": [
+            "warn",
+            "never"
+        ],
+        "quotes": [
+            "warn",
+            "single"
+        ],
+        "semi": [
+            "warn",
+            "never"
+        ],
         "@typescript-eslint/ban-ts-comment": [
             "error",
             {

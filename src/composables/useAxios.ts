@@ -1,7 +1,7 @@
-import type { AxiosInstance } from 'axios'
+import type {AxiosInstance} from 'axios'
 import axios from 'axios'
-import { reactive } from 'vue'
-import { useCasAuthentication } from '@vue-unistra/cas-authentication'
+import {reactive} from 'vue'
+import {useCasAuthentication} from '@vue-unistra/cas-authentication'
 import router from '@/router'
 
 interface UseAxiosState {
@@ -9,13 +9,13 @@ interface UseAxiosState {
     axiosAuth: () => AxiosInstance;
 }
 
-const config = { baseURL: import.meta.env.VITE_APP_BASE_URL }
+const config = {baseURL: import.meta.env.VITE_APP_BASE_URL}
 
 const state = reactive<UseAxiosState>({
     axios: () => axios.create(config),
     axiosAuth: () => {
         const _axios = axios.create(config)
-        const { axiosRequestInterceptor } = useCasAuthentication()
+        const {axiosRequestInterceptor} = useCasAuthentication()
 
         _axios.interceptors.request.use(
             axiosRequestInterceptor({
@@ -23,7 +23,7 @@ const state = reactive<UseAxiosState>({
                 router,
                 jwtServerUrl: import.meta.env.VITE_APP_BASE_URL + '/users/auth',
                 options: {
-                    loginRoute: { name: 'Login' },
+                    loginRoute: {name: 'Login'},
                     loginRouteIsInternal: true
                 }
             },

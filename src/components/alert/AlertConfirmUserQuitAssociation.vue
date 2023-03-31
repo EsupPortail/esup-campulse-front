@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import useUserAssociation from '@/composables/useUserAssociations'
 import {useQuasar} from 'quasar'
-import {useAssociationStore} from "@/stores/useAssociationStore";
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const {t} = useI18n()
 const confirmation = ref<boolean>(false)

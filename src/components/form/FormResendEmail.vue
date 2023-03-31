@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
 import useSecurity from '@/composables/useSecurity'
 import axios from 'axios'
 
-const { t } = useI18n()
-const { notify } = useQuasar()
-const { resendEmail } = useSecurity()
+const {t} = useI18n()
+const {notify} = useQuasar()
+const {resendEmail} = useSecurity()
 const email = ref<string>()
 const isResend = ref<boolean>(false)
 
@@ -19,15 +19,15 @@ async function resend() {
         if (axios.isAxiosError(error)) {
             let errorMessage = null
             switch (error.response?.status) {
-                case 404:
-                    errorMessage = t('notifications.negative.unknown-email')
-                    break;
-                case 403:
-                    errorMessage = t('notifications.negative.restricted-email')
-                    break;
-                default:
-                    errorMessage = t('notifications.negative.invalid-request')
-                    break;
+            case 404:
+                errorMessage = t('notifications.negative.unknown-email')
+                break
+            case 403:
+                errorMessage = t('notifications.negative.restricted-email')
+                break
+            default:
+                errorMessage = t('notifications.negative.invalid-request')
+                break
             }
             notify({
                 type: 'negative',

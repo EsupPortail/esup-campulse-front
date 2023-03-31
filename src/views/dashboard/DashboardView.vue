@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref, watch} from 'vue'
 
 const userStore = useUserStore()
 const {t} = useI18n()

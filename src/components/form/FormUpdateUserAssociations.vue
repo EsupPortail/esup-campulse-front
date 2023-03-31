@@ -3,7 +3,7 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
 import useUserAssociations from '@/composables/useUserAssociations'
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()

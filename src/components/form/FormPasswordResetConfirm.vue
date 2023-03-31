@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
-import { useQuasar } from 'quasar'
-import type { PasswordReset } from '#/user'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useRoute} from 'vue-router'
+import {useQuasar} from 'quasar'
+import type {PasswordReset} from '#/user'
 import router from '@/router'
 import useSecurity from '@/composables/useSecurity'
 
-const { t } = useI18n()
-const { notify } = useQuasar()
-const { passwordResetConfirm } = useSecurity()
+const {t} = useI18n()
+const {notify} = useQuasar()
+const {passwordResetConfirm} = useSecurity()
 const route = useRoute()
 
 const newPassword = ref<PasswordReset>({
@@ -21,7 +21,7 @@ async function resetConfirm() {
     if (newPassword.value.newPassword1 === newPassword.value.newPassword2) {
         try {
             await passwordResetConfirm(route.query.uid as string, route.query.token as string, newPassword.value.newPassword1, newPassword.value.newPassword2)
-            await router.push({ name: 'Login' })
+            await router.push({name: 'Login'})
             notify({
                 type: 'positive',
                 message: t('notifications.positive.password-reseted')

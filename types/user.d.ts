@@ -1,4 +1,4 @@
-import type {AssociationOptions} from "#/association";
+import type {AssociationOptions} from '#/association'
 
 export interface User {
     id: number,

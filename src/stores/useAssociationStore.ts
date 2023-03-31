@@ -9,9 +9,9 @@ import type {
 } from '#/association'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
-import useSecurity from "@/composables/useSecurity";
-import useUserGroups from "@/composables/useUserGroups";
-import type {AssociationUser} from "#/user";
+import useSecurity from '@/composables/useSecurity'
+import useUserGroups from '@/composables/useUserGroups'
+import type {AssociationUser} from '#/user'
 
 
 export const useAssociationStore = defineStore('associationStore', {
@@ -69,7 +69,7 @@ export const useAssociationStore = defineStore('associationStore', {
         getAssociationsSubDetails(associations: Association[]) {
             associations.forEach((association, index) => {
                 associations[index] = this.getAssociationSubDetails(association)
-            });
+            })
             return associations
         },
         /**

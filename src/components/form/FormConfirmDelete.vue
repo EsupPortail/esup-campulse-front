@@ -1,29 +1,29 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import { useI18n } from "vue-i18n";
-import router from "@/router";
-import { useUserManagerStore } from "@/stores/useUserManagerStore";
-import { useQuasar } from "quasar";
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import router from '@/router'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useQuasar} from 'quasar'
 
-const { t } = useI18n()
+const {t} = useI18n()
 const confirm = ref<boolean>(false)
 const userManagerStore = useUserManagerStore()
-const { notify } = useQuasar()
+const {notify} = useQuasar()
 
 async function onDeleteUser() {
-  try {
-    await userManagerStore.deleteUser()
-    await router.push({ name: 'ManageUsers' })
-    notify({
-      type: 'positive',
-      message: t('notifications.positive.validate-delete-user')
-    })
-  } catch (e) {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.unknown-user')
-    })
-  }
+    try {
+        await userManagerStore.deleteUser()
+        await router.push({name: 'ManageUsers'})
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.validate-delete-user')
+        })
+    } catch (e) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.unknown-user')
+        })
+    }
 }
 </script>
 

@@ -15,11 +15,11 @@ import {
     _institutionLabels,
     _institutions
 } from '~/fixtures/association.mock'
-import {useAxios} from "@/composables/useAxios";
-import type {AxiosResponse} from "axios";
-import {_generalManager, _institutionManager, _institutionStudent} from "~/fixtures/user.mock";
-import useUserGroups from "../../composables/useUserGroups";
-import {_groups} from "../../../tests/fixtures/group.mock";
+import {useAxios} from '@/composables/useAxios'
+import type {AxiosResponse} from 'axios'
+import {_generalManager, _institutionManager, _institutionStudent} from '~/fixtures/user.mock'
+import useUserGroups from '../../composables/useUserGroups'
+import {_groups} from '../../../tests/fixtures/group.mock'
 
 
 vi.mock('@/composables/useAxios', () => ({

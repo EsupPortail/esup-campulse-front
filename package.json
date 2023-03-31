@@ -6,11 +6,12 @@
     "build:test": "vue-tsc --noEmit && vite build --mode deploy_test",
     "build:preprod": "vue-tsc --noEmit && vite build --mode deploy_pprd",
     "build:prod": "vue-tsc --noEmit && vite build --mode deploy_prod",
+    "lint": "eslint . --ext .vue,.ts,.js --fix --ignore-path .gitignore",
+    "opalint": "eslint . --ext .vue,.ts,.js --fix --ignore-path .gitignore && echo '\\033[0;32mgropif\\033[0;32m'",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "test:unit:coverage": "vitest --environment jsdom --coverage",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
   "dependencies": {
     "@quasar/extras": "^1.15.11",

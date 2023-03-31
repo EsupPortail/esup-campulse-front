@@ -1,4 +1,4 @@
-import type {AssociationUser} from "#/user";
+import type {AssociationUser} from '#/user'
 
 export interface Association {
     id: number,
@@ -92,7 +92,7 @@ export interface AssociationStore {
     associationUsers: AssociationUser[]
 }
 
-export type CreateAssociation = Pick<Association, "name">
+export type CreateAssociation = Pick<Association, 'name'>
 
 export interface EditedAssociation {
     name: string,

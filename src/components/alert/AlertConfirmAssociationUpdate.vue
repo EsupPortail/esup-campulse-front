@@ -2,11 +2,11 @@
 import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import axios from "axios";
-import useAssociation from "@/composables/useAssociation";
+import axios from 'axios'
+import useAssociation from '@/composables/useAssociation'
 import router from '@/router'
-import useUserGroups from "@/composables/useUserGroups";
-import {useAssociationStore} from "@/stores/useAssociationStore";
+import useUserGroups from '@/composables/useUserGroups'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const {t} = useI18n()
 const confirmation = ref<boolean>(false)

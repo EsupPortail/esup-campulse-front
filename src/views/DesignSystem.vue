@@ -1,28 +1,28 @@
 <script lang="ts" setup>
-import { RouterLink } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { onMounted, ref, watch } from 'vue'
+import {RouterLink} from 'vue-router'
+import {useI18n} from 'vue-i18n'
+import {onMounted, ref, watch} from 'vue'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 
 // Table imports
 import type {QTableProps} from 'quasar'
-import type {Association} from "#/association";
+import type {Association} from '#/association'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
-import useUserAssociations from "@/composables/useUserAssociations";
+import useUserAssociations from '@/composables/useUserAssociations'
 
 enum Variant {
-    Home = "home",
-    Login = "minimal",
-    Space1 = "space-1",
-    Space2 = "space-2",
-    Space3 = "space-3",
-    Space4 = "space-4"
+    Home = 'home',
+    Login = 'minimal',
+    Space1 = 'space-1',
+    Space2 = 'space-2',
+    Space3 = 'space-3',
+    Space4 = 'space-4'
 }
 
-const { t } = useI18n()
-const variant = ref(Variant.Space1);
+const {t} = useI18n()
+const variant = ref(Variant.Space1)
 
 // Breadcrumbs data
 const breadcrumbs = [
@@ -34,25 +34,25 @@ const breadcrumbs = [
         label: 'Page 2',
         to: ''
     }
-];
+]
 
 // Fields data
-const fieldValue = ref<string>();
-const selectValue = ref<string>();
+const fieldValue = ref<string>()
+const selectValue = ref<string>()
 const selectOptions = ref([
-{ id: 1, label: 'Option 1' },
-{ id: 2, label: 'Option 2' },
-{ id: 3, label: 'Option 3' }
-]);
+    {id: 1, label: 'Option 1'},
+    {id: 2, label: 'Option 2'},
+    {id: 3, label: 'Option 3'}
+])
 
 // Pagination data
-const currentPage = ref(1);
+const currentPage = ref(1)
 const pages = ref(5)
 
 // Header data
-const mobileMenuVisible = ref(false);
+const mobileMenuVisible = ref(false)
 function ToggleMenu() {
-    mobileMenuVisible.value = !mobileMenuVisible.value;
+    mobileMenuVisible.value = !mobileMenuVisible.value
 }
 
 // Table data

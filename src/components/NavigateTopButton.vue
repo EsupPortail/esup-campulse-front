@@ -2,25 +2,25 @@
 import {onMounted, onUnmounted, ref} from 'vue'
 
 onMounted(async function () {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll)
 })
 
 onUnmounted(async function () {
-    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('scroll', handleScroll)
 })
 
 function handleScroll() {
-    const main = document.getElementsByTagName('main')[0] as HTMLElement;
-    if (!main) return;
-    const scrollRect = main.getBoundingClientRect();
-    buttonVisible.value = scrollRect.y < 0;
+    const main = document.getElementsByTagName('main')[0] as HTMLElement
+    if (!main) return
+    const scrollRect = main.getBoundingClientRect()
+    buttonVisible.value = scrollRect.y < 0
 }
 
 function scrollToTop() {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    document.body.scrollTop = document.documentElement.scrollTop = 0
 }
 
-const buttonVisible = ref(false);
+const buttonVisible = ref(false)
 </script>
 
 <template>

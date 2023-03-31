@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {RouterView} from 'vue-router'
 import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegistration.vue'
-import useColorVariants from "@/composables/useColorVariants";
+import useColorVariants from '@/composables/useColorVariants'
 
 const {colorVariant} = useColorVariants()
 

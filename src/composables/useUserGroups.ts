@@ -6,8 +6,8 @@ import type {Group, SelectGroupLabel} from '#/groups'
 import i18n from '@/plugins/i18n'
 import type {UserGroup} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
-import useCommissions from "@/composables/useCommissions";
-import useSecurity from "@/composables/useSecurity";
+import useCommissions from '@/composables/useCommissions'
+import useSecurity from '@/composables/useSecurity'
 
 
 // Used to store groups

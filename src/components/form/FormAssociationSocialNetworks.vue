@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import useAssociation from '@/composables/useAssociation'
-import { useI18n } from 'vue-i18n'
+import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
-import type { AssociationSocialNetwork } from '#/association'
-import { onMounted, watch } from 'vue'
-import { useAssociationStore } from '@/stores/useAssociationStore'
+import type {AssociationSocialNetwork} from '#/association'
+import {onMounted, watch} from 'vue'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
-const { addNetwork, removeNetwork, associationSocialNetworks } = useAssociation()
-const { urlRegex } = useUtility()
-const { t } = useI18n()
+const {addNetwork, removeNetwork, associationSocialNetworks} = useAssociation()
+const {urlRegex} = useUtility()
+const {t} = useI18n()
 const associationStore = useAssociationStore()
 
 

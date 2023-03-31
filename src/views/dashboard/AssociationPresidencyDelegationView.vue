@@ -5,8 +5,8 @@ import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import {useRoute} from 'vue-router'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import FormAssociationPresidencyDelegation from "@/components/form/FormAssociationPresidencyDelegation.vue";
-import useUserAssociations from "@/composables/useUserAssociations";
+import FormAssociationPresidencyDelegation from '@/components/form/FormAssociationPresidencyDelegation.vue'
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()

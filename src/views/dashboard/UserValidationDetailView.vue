@@ -8,7 +8,7 @@ import {useRoute} from 'vue-router'
 import router from '@/router'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import useUserGroups from '@/composables/useUserGroups'
-import useUserAssociations from "@/composables/useUserAssociations";
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()

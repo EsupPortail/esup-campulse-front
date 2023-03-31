@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {useAssociationStore} from "@/stores/useAssociationStore";
-import {onMounted, ref, watch} from "vue";
-import {useQuasar} from "quasar";
-import {useRoute} from "vue-router";
-import {useUserStore} from "@/stores/useUserStore";
-import type {Association} from "#/association";
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import {onMounted, ref, watch} from 'vue'
+import {useQuasar} from 'quasar'
+import {useRoute} from 'vue-router'
+import {useUserStore} from '@/stores/useUserStore'
+import type {Association} from '#/association'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()

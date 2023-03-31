@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useAssociationStore } from '@/stores/useAssociationStore'
-import { useQuasar } from 'quasar'
+import {onMounted, ref, watch} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useQuasar} from 'quasar'
 
-const { t } = useI18n()
+const {t} = useI18n()
 const associationStore = useAssociationStore()
-const { notify } = useQuasar()
+const {notify} = useQuasar()
 
 const isEnabled = ref<boolean>(false)
 watch(() => associationStore.association, () => {

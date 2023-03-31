@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {RouterLink} from 'vue-router'
 import {useI18n} from 'vue-i18n'
-import useColorVariants from "@/composables/useColorVariants";
+import useColorVariants from '@/composables/useColorVariants'
 
 const {t} = useI18n()
 const {colorVariant} = useColorVariants()

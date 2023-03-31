@@ -1,5 +1,5 @@
-import {useRoute} from "vue-router";
-import {ref, watch} from "vue";
+import {useRoute} from 'vue-router'
+import {ref, watch} from 'vue'
 
 const colorVariant = ref<string>('')
 

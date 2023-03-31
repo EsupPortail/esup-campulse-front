@@ -6,7 +6,7 @@ import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import AlertConfirmAssociationsChanges from '@/components/alert/AlertConfirmAssociationsChanges.vue'
 import useSecurity from '@/composables/useSecurity'
-import type {Association} from "#/association";
+import type {Association} from '#/association'
 
 const associationStore = useAssociationStore()
 const {loading} = useQuasar()

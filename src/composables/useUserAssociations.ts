@@ -12,9 +12,9 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
-import {useAssociationStore} from "@/stores/useAssociationStore";
-import useSecurity from "@/composables/useSecurity";
-import type {AssociationName} from "#/association";
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import useSecurity from '@/composables/useSecurity'
+import type {AssociationName} from '#/association'
 
 
 // Used to store a user's associations, while it is modified by a manager or during registration

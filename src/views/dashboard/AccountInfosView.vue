@@ -5,13 +5,13 @@ import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import {useUserStore} from '@/stores/useUserStore'
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
-import axios from "axios";
-import useUsers from "@/composables/useUsers";
-import {useQuasar} from "quasar";
-import useUserAssociations from "@/composables/useUserAssociations";
-import FormDisplayUserAssociations from "@/components/form/FormDisplayUserAssociations.vue";
-import FormRegisterUserAssociations from "@/components/form/FormRegisterUserAssociations.vue";
-import useSecurity from "@/composables/useSecurity";
+import axios from 'axios'
+import useUsers from '@/composables/useUsers'
+import {useQuasar} from 'quasar'
+import useUserAssociations from '@/composables/useUserAssociations'
+import FormDisplayUserAssociations from '@/components/form/FormDisplayUserAssociations.vue'
+import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
+import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
 const userStore = useUserStore()
@@ -65,10 +65,10 @@ async function onUpdateUserAssociations() {
         await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
         await
-            notify({
-                type: 'positive',
-                message: t('notifications.positive.associations-successfully-updated')
-            })
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.associations-successfully-updated')
+        })
     } catch (error) {
         notify({
             type: 'negative',

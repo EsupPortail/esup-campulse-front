@@ -16,7 +16,7 @@ import useUtility from '@/composables/useUtility'
 import type {AssociationLogo, EditedAssociation} from '#/association'
 import axios from 'axios'
 import useUserGroups from '@/composables/useUserGroups'
-import useSecurity from "@/composables/useSecurity";
+import useSecurity from '@/composables/useSecurity'
 
 
 const {t} = useI18n()
@@ -125,7 +125,7 @@ async function onChangeLogo(action: string) {
             altLogo.value = altLogoComputed.value
         } else if (action === 'delete') {
             const deleteLogoData = {'altLogo': null, 'pathLogo': null}
-            await changeAssociationLogo(undefined, "", deleteLogoData)
+            await changeAssociationLogo(undefined, '', deleteLogoData)
             altLogo.value = ''
             newLogo.value = undefined
         }
