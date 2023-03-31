@@ -15,18 +15,37 @@ export default function () {
 
     // To test
     function fromDateIsAnterior(from: string, to: string) {
-        let result = true
-        if (from === '' || to === '') return result
         const splitFrom = from.split('-')
         const splitTo = to.split('-')
-        for (let i = 0; i < splitFrom.length; i++) {
-            if (splitFrom[i] > splitTo[i]) {
-                result = false
-                break
-            }
-        }
-        return result
+        const splitNow = (new Date().toJSON().slice(0, 10)).split('-')
+
+        if (splitFrom[0] !== splitNow[0]) return false
+        if (splitFrom[1] !== splitNow[1]) return false
+        if (splitFrom[2] !== splitNow[2]) return false
+
+        if (from === '' || to === '') return true
+
+        if (splitFrom[0] > splitTo[0]) return false
+        if (splitFrom[1] > splitTo[1]) return false
+        if (splitFrom[2] > splitTo[2]) return false
+        return true
     }
+
+    /*function fromDateIsAnterior(from: string, to: string) {
+        let dateFrom = from
+        let dateTo = to
+        if (from !== '') {
+            dateFrom = new Date(from)
+        }
+        if (to !== '') {
+            dateTo = new Date(to)
+        }
+        const dateToday = (new Date()).setHours(0, 0, 0, 0)
+        let result = true
+        if ((dateFrom < dateToday) || (dateTo !== '' && dateTo < dateToday)) result = false
+        else if (dateTo !== '' && dateFrom > dateTo) result = false
+        return result
+    }*/
 
     /**
      * It simply checks if 2 arrays are equal.

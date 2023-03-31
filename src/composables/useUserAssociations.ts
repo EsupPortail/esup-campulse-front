@@ -271,10 +271,9 @@ export default function () {
         users.forEach((user) => {
             const extendedUser = userManagerStore.users.find(obj => obj.id === user.id)
             const associationName = associationStore.associationNames.find(obj => obj.id === user.association)?.name
-            console.log(extendedUser)
             if (extendedUser && associationName) {
                 associationMembers.value.push({
-                    id: user.user as number,
+                    id: user.id as number,
                     associationId: user.association as number,
                     associationName,
                     firstName: extendedUser.firstName,
