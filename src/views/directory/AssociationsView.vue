@@ -115,7 +115,7 @@ async function clearSearch(apiSearch: boolean) {
 <template>
     <!-- <h1>{{ t("home.directory") }}</h1> -->
 
-    <NavigateTopButton />
+    <NavigateTopButton/>
 
     <section class="introduction">
         <div class="content">
@@ -129,11 +129,13 @@ async function clearSearch(apiSearch: boolean) {
                 <h2 class="intro-title">{{ t('directory.subtitle') }}</h2>
                 <!-- <p>{{ t('directory.introduction') }}</p> -->
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et
                     dolore magna aliqua.
                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                     consequat. Duis aute irure
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                    sint
                     occaecat cupidatat non
                     proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </p>
@@ -160,10 +162,10 @@ async function clearSearch(apiSearch: boolean) {
                 </QInput>
                 <QBtn
                     :label="t('directory.search')"
+                    class="search-button"
                     color="primary"
                     icon-right="mdi-chevron-right"
-                    @click="onSearch"
-                    class="search-button"
+                    type="submit"
                 />
                 <QBtn
                     :label="t('directory.cancel-search')"
@@ -225,10 +227,10 @@ async function clearSearch(apiSearch: boolean) {
                 <div class="buttons-group">
                     <QBtn
                         :label="t('directory.advanced-search')"
+                        class="search-button"
                         color="primary"
                         icon-right="mdi-chevron-right"
                         type="submit"
-                        class="search-button"
                     />
                     <QBtn
                         :label="t('directory.cancel-search')"

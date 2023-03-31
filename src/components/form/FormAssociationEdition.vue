@@ -100,7 +100,10 @@ const hasValidated = ref<boolean>(false)
 
 function onLeaveEdition() {
     leaveEdition.value = true
-    router.push(isStaff ? {name: 'ManageAssociations'} : {name: 'AssociationDashboard'})
+    router.push(isStaff.value ? {name: 'ManageAssociations'} : {
+        name: 'AssociationDashboard',
+        params: {id: associationStore.association?.id}
+    })
 }
 
 // Check is there are any changes before leaving the page
@@ -301,7 +304,7 @@ async function onChangeLogo(action: string) {
         <section class="btn-group">
             <QBtn
                 :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
-                :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
+                :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard', params: {id: associationStore.association?.id} }"
                 color="secondary"
                 icon="mdi-arrow-left-circle"
             />
