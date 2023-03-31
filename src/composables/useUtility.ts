@@ -1,8 +1,8 @@
-import type {RouteLocationMatched, RouteParams} from 'vue-router'
+import type { RouteLocationMatched, RouteParams } from 'vue-router'
 
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
 
-export default function () {
+export default function() {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -15,37 +15,21 @@ export default function () {
 
     // To test
     function fromDateIsAnterior(from: string, to: string) {
-        const splitFrom = from.split('-')
-        const splitTo = to.split('-')
-        const splitNow = (new Date().toJSON().slice(0, 10)).split('-')
-
-        if (splitFrom[0] !== splitNow[0]) return false
-        if (splitFrom[1] !== splitNow[1]) return false
-        if (splitFrom[2] !== splitNow[2]) return false
-
-        if (from === '' || to === '') return true
-
-        if (splitFrom[0] > splitTo[0]) return false
-        if (splitFrom[1] > splitTo[1]) return false
-        if (splitFrom[2] > splitTo[2]) return false
-        return true
-    }
-
-    /*function fromDateIsAnterior(from: string, to: string) {
-        let dateFrom = from
-        let dateTo = to
+        let dateFrom: string | Date = from
+        let dateTo: string | Date = to
         if (from !== '') {
             dateFrom = new Date(from)
         }
         if (to !== '') {
             dateTo = new Date(to)
         }
-        const dateToday = (new Date()).setHours(0, 0, 0, 0)
+        const dateToday = new Date()
+        dateToday.setHours(0, 0, 0, 0)
         let result = true
         if ((dateFrom < dateToday) || (dateTo !== '' && dateTo < dateToday)) result = false
         else if (dateTo !== '' && dateFrom > dateTo) result = false
         return result
-    }*/
+    }
 
     /**
      * It simply checks if 2 arrays are equal.
@@ -87,5 +71,5 @@ export default function () {
         return breadcrumbs
     }
 
-    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior}
+    return { formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior }
 }

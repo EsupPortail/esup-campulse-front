@@ -6,10 +6,10 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
-import useUserGroups from "@/composables/useUserGroups";
-import {_groups} from "~/fixtures/group.mock";
-import {_institutionStudent} from "~/fixtures/user.mock";
-import {useAxios} from "@/composables/useAxios";
+import useUserGroups from '@/composables/useUserGroups'
+import {_groups} from '~/fixtures/group.mock'
+import {_institutionStudent} from '~/fixtures/user.mock'
+import {useAxios} from '@/composables/useAxios'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
