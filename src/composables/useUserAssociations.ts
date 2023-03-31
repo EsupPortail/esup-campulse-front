@@ -269,8 +269,9 @@ export default function () {
         await userManagerStore.getUsers('validated')
 
         users.forEach((user) => {
-            const extendedUser = userManagerStore.users.find(obj => obj.id === user.user)
+            const extendedUser = userManagerStore.users.find(obj => obj.id === user.id)
             const associationName = associationStore.associationNames.find(obj => obj.id === user.association)?.name
+            console.log(extendedUser)
             if (extendedUser && associationName) {
                 associationMembers.value.push({
                     id: user.user as number,

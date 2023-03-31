@@ -61,13 +61,13 @@ onMounted(async () => {
             <div class="form">
                 <div class="button-group">
                     <div
-                        v-for="association in userStore.user?.associations"
-                        :key="association.id"
+                        v-for="association in userStore.userAssociations"
+                        :key="association.association.id"
                     >
                         <QBtn
-                            v-if="userStore.hasPresidentStatus(association.id)"
-                            :label="t('manage') + ' ' + association.name"
-                            :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                            v-if="association.isValidatedByAdmin"
+                            :label="t('manage') + ' ' + association.association.name"
+                            :to="{name: 'AssociationDashboard', params: {id: association.association.id}}"
                         />
                     </div>
                 </div>
