@@ -23,7 +23,7 @@ onMounted(initValues)
 </script>
 <template>
     <fieldset>
-        <legend>{{ t('association.labels.socials') }}</legend>
+        <h2><i class="bi bi-megaphone"></i>{{ t('association.labels.socials') }}</h2>
         <section
             v-for="(socialNetwork, index) in associationSocialNetworks"
             :key="index"
@@ -64,6 +64,8 @@ onMounted(initValues)
 </template>
 
 <style lang="sass" scoped>
+@import "@/assets/styles/associations.scss"
+
 fieldset
     section
         display: flex

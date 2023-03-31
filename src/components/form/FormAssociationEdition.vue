@@ -145,44 +145,48 @@ async function onChangeLogo(action: string) {
 </script>
 
 <template>
-    <QForm @submit.prevent="onChangeLogo('update')">
-        <fieldset>
-            <div class="logo">
+    <QForm class="association-edition" @submit.prevent="onChangeLogo('update')">
+        <fieldset class="association-logo-title">
+            <div class="association-logo">
                 <QImg
                     :alt="altLogoText(association)"
                     :ratio="1"
                     :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '/src/assets/img/no_logo_square.png') : '/src/assets/img/no_logo_square.png'"
                 />
             </div>
-            <QFile
-                v-model="newLogo"
-                :label="t('association.logo.pickup')"
-                accept=".jpg, .jpeg, .png"
-                filled
-            />
-            <QInput
-                v-model="altLogo"
-                :label="t('association.logo.alt')"
-                filled
-            />
-            <QBtn
-                :label="t('association.logo.update')"
-                color="primary"
-                icon="mdi-check-circle"
-                type="submit"
-            />
-            <QBtn
-                :label="t('association.logo.remove')"
-                color="red"
-                icon="mdi-delete"
-                @click="onChangeLogo('delete')"
-            />
+
+            <div class="btn-group">
+                <QFile
+                    v-model="newLogo"
+                    :label="t('association.logo.pickup')"
+                    accept=".jpg, .jpeg, .png"
+                    filled
+                />
+                <QInput
+                    v-model="altLogo"
+                    :label="t('association.logo.alt')"
+                    class="logo-input"
+                    filled
+                />
+                <QBtn
+                    :label="t('association.logo.update')"
+                    class="logo-submit"
+                    icon="mdi-check-circle"
+                    type="submit"
+                />
+                <QBtn
+                    :label="t('association.logo.remove')"
+                    class="logo-delete"
+                    icon="mdi-delete"
+                    @click="onChangeLogo('delete')"
+                />
+            </div>
         </fieldset>
     </QForm>
 
-    <QForm>
+    <QForm class="association-edition">
         <fieldset>
-            <legend>{{ t('association.titles.info') }}</legend>
+            <h2><i class="bi bi-book"></i>{{ t('association.titles.info') }}</h2>
             <QInput
                 v-model="association.name"
                 :disable=!isStaff
@@ -235,7 +239,7 @@ async function onChangeLogo(action: string) {
             />
         </fieldset>
         <fieldset>
-            <legend>{{ t('association.titles.admin') }}</legend>
+            <h2><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h2>
             <QInput
                 v-model="association.presidentNames"
                 :label="t('association.labels.president-name')"
@@ -272,7 +276,7 @@ async function onChangeLogo(action: string) {
             />
         </fieldset>
         <fieldset>
-            <legend>{{ t('association.titles.contact') }}</legend>
+            <h2><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h2>
             <QInput
                 v-model="association.address"
                 :label="t('association.labels.address')"
@@ -297,11 +301,14 @@ async function onChangeLogo(action: string) {
                 type="url"
             />
         </fieldset>
+
         <FormAssociationSocialNetworks/>
-        <section class="btn-group">
+
+        <fieldset class="btn-group">
             <QBtn
                 :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
                 :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
+                class="bottom-btn"
                 color="secondary"
                 icon="mdi-arrow-left-circle"
             />
@@ -318,7 +325,8 @@ async function onChangeLogo(action: string) {
             <AlertConfirmAssociationDeletion
                 v-if="isStaff && !associationStore.association?.isEnabled"
             />
-        </section>
+        </fieldset>
+
         <AlertLeaveEdition
             :open-alert="openAlert"
             :text="t('alerts.leave-association-edition')"
@@ -328,28 +336,13 @@ async function onChangeLogo(action: string) {
     </QForm>
 </template>
 
-<style lang="sass" scoped>
-fieldset
-    border: none
+<style lang="scss">
+@import "@/assets/styles/associations.scss";
 
-.logo
-    width: 150px
-    height: 150px
+fieldset {
+    border: none;
+}
 
-.btn-group
-    display: flex
-    gap: 10px
-    padding-left: 15px
-    margin: 25px auto 20px auto
-
-.q-select
-    margin-bottom: 20px
-
-legend
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-    width: 100%
-    margin-bottom: 15px
 </style>
+
+

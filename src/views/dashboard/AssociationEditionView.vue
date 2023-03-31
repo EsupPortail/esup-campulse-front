@@ -74,3 +74,14 @@ onMounted(async function () {
     <h1>{{ associationStore.association?.name }}</h1>
     <FormAssociationEdition v-if="isLoaded"/>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/_variables.scss";
+
+h1 {
+    font-size: 1.875rem;
+    font-weight: $semibold-weight;
+    line-height: 3.4rem;
+    text-align: center;
+}
+</style>

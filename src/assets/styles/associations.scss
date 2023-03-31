@@ -388,7 +388,7 @@
   }
 }
 
-#association-detail {
+#association-detail, .association-edition {
   padding: 1rem;
   position: relative;
 
@@ -421,7 +421,7 @@
     }
   }
 
-  section {
+  section, fieldset {
     position: relative;
 
     h2 {
@@ -471,6 +471,7 @@
     gap: 0.625rem;
   }
 
+
   @media screen and (min-width: $responsiveWidth) {
     p, ul {
       font-size: 1.1rem;
@@ -495,3 +496,51 @@
   }
 
 }
+
+.association-edition {
+  padding: 0;
+
+  fieldset {
+    width: auto;
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+
+      .q-btn, .q-file, .logo-input {
+        font-size: 1rem;
+      }
+
+      .q-file {
+        margin-top: 1rem;
+      }
+
+      .q-btn {
+        padding: 1rem;
+      }
+
+      .logo-submit {
+        background: $dashboardColor;
+        color: white;
+      }
+
+      .logo-delete {
+        background: $errorPanelColor;
+        color: white;
+      }
+
+    }
+  }
+
+  legend {
+
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    .btn-logo-group {
+      flex-direction: row;
+    }
+  }
+}
+
