@@ -264,25 +264,25 @@ export default function () {
         if (hasPerm('change_user_misc')) institutions += ','
         const url = `/users/associations/?institutions=${institutions}&is_validated_by_admin=false`
 
-        const users = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
+        const associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
         await associationStore.getAssociationNames(false, false)
         await userManagerStore.getUsers('validated')
 
-        users.forEach((user) => {
-            const extendedUser = userManagerStore.users.find(obj => obj.id === user.id)
-            const associationName = associationStore.associationNames.find(obj => obj.id === user.association)?.name
+        associationUsers.forEach((associationUser) => {
+            const extendedUser = userManagerStore.users.find(obj => obj.id === associationUser.user)
+            const associationName = associationStore.associationNames.find(obj => obj.id === associationUser.association)?.name
             if (extendedUser && associationName) {
                 associationMembers.value.push({
-                    id: user.id as number,
-                    associationId: user.association as number,
+                    id: associationUser.id as number,
+                    associationId: associationUser.association as number,
                     associationName,
                     firstName: extendedUser.firstName,
                     lastName: extendedUser.lastName,
-                    role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(user))?.label as string,
-                    canBePresident: user.canBePresident,
-                    canBePresidentFrom: user.canBePresidentFrom,
-                    canBePresidentTo: user.canBePresidentTo,
-                    isValidatedByAdmin: user.isValidatedByAdmin as boolean
+                    role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label as string,
+                    canBePresident: associationUser.canBePresident,
+                    canBePresidentFrom: associationUser.canBePresidentFrom,
+                    canBePresidentTo: associationUser.canBePresidentTo,
+                    isValidatedByAdmin: associationUser.isValidatedByAdmin as boolean
                 })
             }
         })
