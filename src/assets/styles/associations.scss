@@ -423,7 +423,7 @@
 
   section {
     position: relative;
-    
+
     h2 {
       width: $fullSize;
       margin: auto 1.5rem 0;
@@ -448,9 +448,29 @@
         font-weight: $semibold-weight;
       }
     }
+
+
+    ul, a {
+      display: flex;
+      flex-direction: row;
+      text-decoration: none;
+      color: black;
+      font-weight: $light-weight;
+      font-size: 1rem;
+      gap: 1rem;
+
+      li {
+        list-style: none;
+      }
+
+    }
   }
 
+
   @media screen and (min-width: $responsiveWidth) {
+    p, ul {
+      font-size: 1.1rem;
+    }
     .association-logo-title {
       .association-name {
         font-size: 2.875rem;

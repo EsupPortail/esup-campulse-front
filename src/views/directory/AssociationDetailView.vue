@@ -147,7 +147,8 @@ async function onGetAssociationDetail() {
           </a>
         </article>
 
-        <article v-if="association?.socialNetworks && association?.socialNetworks?.length > 0" class="display-row">
+        <article v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
+                 class="display-row">
           <h3>{{ t("association.labels.socials") }}</h3>
           <ul>
             <li v-for="(socialNetwork, index) in association?.socialNetworks" :key="index">
