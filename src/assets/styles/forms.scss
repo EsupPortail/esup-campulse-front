@@ -8,7 +8,7 @@
   padding: 1.5625rem 0;
 
   .form {
-    width: 100%;
+    width: $fullSize;
     max-width: $pageWidth;
     margin: 0 auto;
     padding: .9375rem 0;
@@ -22,7 +22,7 @@
   &::before, &::after {
     content: '';
     display: block;
-    width: 100%;
+    width: $fullSize;
     height: .75rem;
     position: absolute;
     left: 0;
@@ -30,12 +30,12 @@
 
   &::before {
     top: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) $fullSize);
   }
 
   &::after {
     bottom: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) $fullSize);
   }
 }
 
@@ -202,7 +202,7 @@
 
 // Custom input fields
 input.custom-input, select.custom-input, textarea.custom-input {
-  width: 100%;
+  width: $fullSize;
   background-color: $backgroundColor1;
   border-radius: 0;
   border: .0625rem solid $annuaireColorBorders;
@@ -210,7 +210,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
   padding: .625rem 1.25rem .75rem;
   color: $annuaireColorText;
   font-size: 1.125rem;
-  font-weight: 400;
+  font-weight: $medium-weight;
   transition: border-color 0.07s linear;
   margin-bottom: 1.2rem;
 
@@ -256,7 +256,7 @@ label.custom-label {
   display: inline-block;
   color: $textColor2;
   font-size: .9375rem;
-  font-weight: 600;
+  font-weight: $semibold-weight;
   text-transform: uppercase;
   margin-bottom: 0.3rem;
 }
@@ -267,7 +267,7 @@ label.custom-label {
   border-radius: 0;
   padding: .9375rem 1.875rem;
   font-size: 1.125rem;
-  font-weight: 300;
+  font-weight: $light-weight;
   transition: background-color 0.03s linear;
   box-shadow: $fieldsBoxShadow;
 
@@ -498,9 +498,9 @@ label.custom-label {
 
       & > h4 {
         display: inline-block;
-        max-width: 100%;
+        max-width: $fullSize;
         font-size: 1.125rem;
-        font-weight: 400;
+        font-weight: $medium-weight;
         color: $textColor1;
         text-transform: uppercase;
         line-height: 3.75rem;
@@ -601,7 +601,7 @@ label.custom-label {
         }
 
         p {
-          width: 100%;
+          width: $fullSize;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -619,7 +619,7 @@ label.custom-label {
 
           a {
             font-size: 1.1875rem;
-            font-weight: 400;
+            font-weight: $medium-weight;
             color: $textColor1;
             text-decoration: none;
             cursor: pointer;
@@ -768,7 +768,7 @@ label.custom-label {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: $fullSize;
   max-width: $pageWidth;
   margin: 0 auto;
   background-color: transparent;
@@ -809,7 +809,7 @@ label.custom-label {
 
   .q-table__middle {
     overflow: auto;
-    width: 100%;
+    width: $fullSize;
   }
 
   .q-table__bottom {
@@ -830,7 +830,7 @@ label.custom-label {
   .q-table {
     border-collapse: separate;
     border-spacing: 0 .625rem;
-    width: 100%;
+    width: $fullSize;
     height: 1px;
 
     thead tr {
@@ -839,7 +839,7 @@ label.custom-label {
 
       th {
         font-size: 1.125rem;
-        font-weight: 400;
+        font-weight: $medium-weight;
         color: $textColor3;
         text-transform: uppercase;
         padding: .3125rem .625rem;
@@ -871,7 +871,7 @@ label.custom-label {
         td {
           height: unset;
           font-size: 1.125rem;
-          font-weight: 400;
+          font-weight: $medium-weight;
           color: $annuaireColorText;
           white-space: normal;
           padding: .4375rem .625rem;
@@ -882,12 +882,12 @@ label.custom-label {
 
           &.actions-cell, &.actions-cell-compact {
             padding: 0;
-            height: 100%;
+            height: $fullSize;
             width: 0;
 
             .button-container {
               display: flex;
-              height: 100%;
+              height: $fullSize;
               gap: 0;
               flex-direction: row;
               justify-content: center;
@@ -896,8 +896,8 @@ label.custom-label {
             .q-btn {
               display: flex;
               font-size: 1rem;
-              width: 100%;
-              height: 100%;
+              width: $fullSize;
+              height: $fullSize;
             }
           }
 
@@ -932,7 +932,7 @@ label.custom-label {
 
               .q-btn__content * {
                 color: $textColor2;
-                font-weight: 400;
+                font-weight: $medium-weight;
               }
 
               .q-btn__content i {
@@ -1196,13 +1196,13 @@ label.custom-label {
   vertical-align: middle;
   color: $textColor1;
   font-size: 1.125rem;
-  font-weight: 400;
+  font-weight: $medium-weight;
 
   .form-state-icon {
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
-    border-radius: 50%;
+    border-radius: $radiusCircle;
     box-shadow: $fieldsBoxShadow;
     line-height: 1.5rem;
     text-align: center;
@@ -1237,7 +1237,7 @@ label.custom-label {
   margin: 1.875rem 0 .9375rem;
 
   label {
-    width: 100%;
+    width: $fullSize;
   }
 
   .q-btn {
@@ -1262,7 +1262,7 @@ label.custom-label {
 
   .dialog-message {
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: $medium-weight;
     color: $textColor1;
     padding: 1.5625rem;
 
@@ -1290,7 +1290,7 @@ label.custom-label {
   margin: 3rem 0 0.5rem;
 
   .q-pagination__content {
-    width: 100%;
+    width: $fullSize;
 
     .q-pagination__middle {
       margin: 0 auto;
@@ -1306,7 +1306,7 @@ label.custom-label {
 
           .q-btn__content * {
             color: $annuaireColor;
-            font-weight: 600;
+            font-weight: $semibold-weight;
           }
         }
       }
@@ -1366,7 +1366,7 @@ label.custom-label {
 
         strong {
           color: $annuaireColor;
-          font-weight: 800;
+          font-weight: $xbold-weight;
           padding: 0 0.3rem;
         }
 
@@ -1540,7 +1540,7 @@ label.custom-label {
 // Image input
 .image-input {
   display: flex;
-  width: 100%;
+  width: $fullSize;
   aspect-ratio: 1;
   background-color: $backgroundColor1;
   box-shadow: 0 0 0 1px $annuaireColorBorders inset, $fieldsBoxShadow;
@@ -1550,9 +1550,9 @@ label.custom-label {
   overflow: hidden;
 
   img {
-    width: 100%;
+    width: $fullSize;
     height: auto;
-    max-height: 100%;
+    max-height: $fullSize;
     position: relative;
     z-index: 1;
   }
@@ -1571,8 +1571,8 @@ label.custom-label {
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.25);
-    width: 100%;
-    height: 100%;
+    width: $fullSize;
+    height: $fullSize;
     position: absolute;
     top: 0;
     left: 0;
@@ -1631,7 +1631,7 @@ label.custom-label {
 
 // Form page navigation
 .form-page-navigation {
-  width: 100%;
+  width: $fullSize;
   max-width: $pageWidth;
   display: flex;
   align-items: center;
@@ -1657,7 +1657,7 @@ label.custom-label {
 
     p {
       text-align: justify;
-      flex: 1 0 100%;
+      flex: 1 0 $fullSize;
       order: 1;
     }
 
@@ -1676,7 +1676,7 @@ label.custom-label {
 .form-col-container {
   display: flex;
   align-items: stretch;
-  width: 100%;
+  width: $fullSize;
   margin: 2rem 0;
 
   .form-col {
@@ -1724,13 +1724,13 @@ label.custom-label {
   padding: 0.8rem 1.5625rem;
   color: $textColor1;
   font-size: 1.25rem;
-  font-weight: 400;
+  font-weight: $medium-weight;
   display: flex;
   flex-direction: row;
   align-items: start;
   justify-content: stretch;
   gap: 1.5625rem;
-  width: 100%;
+  width: $fullSize;
 
   p {
     margin: 0;
@@ -1742,7 +1742,7 @@ label.custom-label {
     flex: 0 0 30%;
     color: $textColor1;
     font-size: 1.25rem;
-    font-weight: 400;
+    font-weight: $medium-weight;
     line-height: normal;
   }
 
@@ -1764,11 +1764,11 @@ label.custom-label {
   .comment-head {
     color: $textColor2;
     font-size: 1.125rem;
-    font-weight: 400;
+    font-weight: $medium-weight;
 
     .value {
       color: $textColor1;
-      font-weight: 600;
+      font-weight: $semibold-weight;
     }
 
     i {
@@ -1794,3 +1794,4 @@ label.custom-label {
     border-color: $dashboardColor;
   }
 }
+

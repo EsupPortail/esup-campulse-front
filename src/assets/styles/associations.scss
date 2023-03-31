@@ -2,7 +2,7 @@
 
 // Search and advanced search forms
 .directory-search {
-  width: 100%;
+  width: $fullSize;
   max-width: $pageWidth;
   margin: 0 auto;
 
@@ -21,7 +21,7 @@
       }
 
       .q-btn {
-        padding: 0px 1.25rem;
+        padding: 0 1.25rem;
       }
     }
   }
@@ -40,7 +40,7 @@
         flex: 0 0 calc(50% - 0.75rem);
 
         &.full-size {
-          flex: 0 0 100%;
+          flex: 0 0 $fullSize;
         }
       }
     }
@@ -74,7 +74,7 @@
 
       .q-item__section--main {
         font-size: 1.063rem;
-        font-weight: 400;
+        font-weight: $medium-weight;
         color: $textColor2;
       }
 
@@ -109,7 +109,7 @@
         gap: 1rem;
 
         .q-btn {
-          width: 100%;
+          width: $fullSize;
           padding: 0.938rem 1.875rem;
         }
 
@@ -129,7 +129,7 @@
       }
 
       .q-btn {
-        width: 100%;
+        width: $fullSize;
       }
     }
   }
@@ -145,12 +145,12 @@
 
     p {
       font-size: 1.25rem;
-      font-weight: 400;
+      font-weight: $normal-weight;
       color: $textColor2;
 
       & > span {
         color: $annuaireColor;
-        font-weight: 800;
+        font-weight: $xbold-weight;
       }
     }
   }
@@ -177,17 +177,17 @@
 
       .list-logo {
         flex: 0 0 5.625rem;
-        border-radius: 50%;
+        border-radius: $radiusCircle;
         overflow: hidden;
 
         .q-img {
-          width: 100%;
+          width: $fullSize;
           height: auto;
         }
       }
 
       .list-details {
-        width: 100%;
+        width: $fullSize;
       }
     }
 
@@ -232,7 +232,7 @@
       a {
         font-size: 1.75rem;
         line-height: 2.4rem;
-        font-weight: 600;
+        font-weight: $semibold-weight;
         color: $annuaireColorText;
         text-transform: uppercase;
         text-decoration: none;
@@ -244,18 +244,18 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      width: 100%;
+      width: $fullSize;
 
       li {
         display: flex;
-        align-items: top;
-        flex: 0 0 100%;
+        //align-items: top;
+        flex: 0 0 $fullSize;
         margin-bottom: 0.25rem;
 
         & > span.value {
           text-transform: none;
           font-size: 1.125rem;
-          font-weight: 400;
+          font-weight: $medium-weight;
           color: $annuaireColorText;
           padding-right: 1.25rem;
         }
@@ -264,7 +264,7 @@
           display: inline-block;
           flex: 0 0 12.5rem;
           font-size: 1rem;
-          font-weight: 400;
+          font-weight: $medium-weight;
           color: $textColor2;
           text-transform: uppercase;
           padding-top: 0.063rem;
@@ -338,7 +338,7 @@
           float: left;
 
           .q-img {
-            width: 100%;
+            width: $fullSize;
             height: auto;
           }
         }
@@ -357,7 +357,7 @@
 
         li {
           display: block;
-          width: 100%;
+          width: $fullSize;
 
           & > span.label {
             width: 12.5rem;
@@ -386,4 +386,82 @@
       }
     }
   }
+}
+
+#association-detail {
+  padding: 1rem;
+  position: relative;
+
+  p {
+    text-align: justify;
+    font-size: 1rem;
+    font-weight: $normal-weight;
+  }
+
+  .association-logo-title {
+    .association-logo {
+      width: $associationLogoSize;
+      height: $associationLogoSize;
+      display: block;
+      margin: auto;
+    }
+
+    .association-name {
+      h1 {
+        font-size: 1.875rem;
+        font-weight: $semibold-weight;
+        line-height: 3.4rem;
+        text-align: center;
+      }
+
+      .acronym {
+        text-align: center;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  section {
+    position: relative;
+    
+    h2 {
+      width: $fullSize;
+      margin: auto 1.5rem 0;
+      font-size: 1.7rem;
+      text-transform: uppercase;
+      color: $annuaireColorText;
+
+      i {
+        color: $annuaireColorText;
+        font-size: 1.5rem;
+        margin-right: 0.300rem;
+        top: -0.01rem;
+      }
+    }
+
+    .display-row {
+      display: block;
+      margin-bottom: .5rem;
+
+      h3 {
+        font-size: 1.5rem;
+        font-weight: $semibold-weight;
+      }
+    }
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    .association-logo-title {
+      .association-name {
+        font-size: 2.875rem;
+      }
+    }
+
+    section {
+      h2 {
+        font-size: 2rem;
+      }
+    }
+  }
+
 }
