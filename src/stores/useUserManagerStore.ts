@@ -1,10 +1,10 @@
 import {defineStore} from 'pinia'
 import type {User, UserManagerStore, UserNames} from '#/user'
 import {useAxios} from '@/composables/useAxios'
-import {useUserStore} from "@/stores/useUserStore";
-import useSecurity from "@/composables/useSecurity";
-import useUserGroups from "@/composables/useUserGroups";
-import useCommissions from "@/composables/useCommissions";
+import {useUserStore} from '@/stores/useUserStore'
+import useSecurity from '@/composables/useSecurity'
+import useUserGroups from '@/composables/useUserGroups'
+import useCommissions from '@/composables/useCommissions'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({

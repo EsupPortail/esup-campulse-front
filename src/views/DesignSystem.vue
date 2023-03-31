@@ -1,28 +1,28 @@
 <script lang="ts" setup>
-import { RouterLink } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { onMounted, ref, watch } from 'vue'
+import {RouterLink} from 'vue-router'
+import {useI18n} from 'vue-i18n'
+import {onMounted, ref, watch} from 'vue'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 
 // Table imports
 import type {QTableProps} from 'quasar'
-import type {Association} from "#/association";
+import type {Association} from '#/association'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
-import useUserAssociations from "@/composables/useUserAssociations";
+import useUserAssociations from '@/composables/useUserAssociations'
 
 enum Variant {
-    Home = "home",
-    Login = "minimal",
-    Space1 = "space-1",
-    Space2 = "space-2",
-    Space3 = "space-3",
-    Space4 = "space-4"
+    Home = 'home',
+    Login = 'minimal',
+    Space1 = 'space-1',
+    Space2 = 'space-2',
+    Space3 = 'space-3',
+    Space4 = 'space-4'
 }
 
-const { t } = useI18n()
-const variant = ref(Variant.Space1);
+const {t} = useI18n()
+const variant = ref(Variant.Space1)
 
 // Breadcrumbs data
 const breadcrumbs = [
@@ -34,25 +34,25 @@ const breadcrumbs = [
         label: 'Page 2',
         to: ''
     }
-];
+]
 
 // Fields data
-const fieldValue = ref<string>();
-const selectValue = ref<string>();
+const fieldValue = ref<string>()
+const selectValue = ref<string>()
 const selectOptions = ref([
-{ id: 1, label: 'Option 1' },
-{ id: 2, label: 'Option 2' },
-{ id: 3, label: 'Option 3' }
-]);
+    {id: 1, label: 'Option 1'},
+    {id: 2, label: 'Option 2'},
+    {id: 3, label: 'Option 3'}
+])
 
 // Pagination data
-const currentPage = ref(1);
+const currentPage = ref(1)
 const pages = ref(5)
 
 // Header data
-const mobileMenuVisible = ref(false);
+const mobileMenuVisible = ref(false)
 function ToggleMenu() {
-    mobileMenuVisible.value = !mobileMenuVisible.value;
+    mobileMenuVisible.value = !mobileMenuVisible.value
 }
 
 // Table data
@@ -132,63 +132,109 @@ const columns: QTableProps['columns'] = [
 </script>
 
 <template>
-    <QLayout id="layout-page" view="hHh lpR fFf">
-
+    <QLayout
+        id="layout-page"
+        view="hHh lpR fFf"
+    >
         <!-- VARIANT SELECTOR MENU - MADE FOR THIS PAGE AND NOT PART OF THE DESIGN! -->
         <menu id="design-system-menu">
             <li>
                 <p>Variante</p>
             </li>
             <li>
-                <button :class="{ 'selected': variant === Variant.Home }"
-                    @click="() => { variant = Variant.Home }">Home</button>
+                <button
+                    :class="{ 'selected': variant === Variant.Home }"
+                    @click="() => { variant = Variant.Home }"
+                >
+                    Home
+                </button>
             </li>
             <li>
-                <button :class="{ 'selected': variant === Variant.Login }"
-                    @click="() => { variant = Variant.Login }">Login</button>
+                <button
+                    :class="{ 'selected': variant === Variant.Login }"
+                    @click="() => { variant = Variant.Login }"
+                >
+                    Login
+                </button>
             </li>
             <li>
-                <button :class="{ 'selected': variant === Variant.Space1 }"
-                    @click="() => { variant = Variant.Space1 }">Espace annuaire</button>
+                <button
+                    :class="{ 'selected': variant === Variant.Space1 }"
+                    @click="() => { variant = Variant.Space1 }"
+                >
+                    Espace annuaire
+                </button>
             </li>
             <li>
-                <button :class="{ 'selected': variant === Variant.Space2 }"
-                    @click="() => { variant = Variant.Space2 }">Espace charte</button>
+                <button
+                    :class="{ 'selected': variant === Variant.Space2 }"
+                    @click="() => { variant = Variant.Space2 }"
+                >
+                    Espace charte
+                </button>
             </li>
             <li>
-                <button :class="{ 'selected': variant === Variant.Space3 }"
-                    @click="() => { variant = Variant.Space3 }">Espace CAPE</button>
+                <button
+                    :class="{ 'selected': variant === Variant.Space3 }"
+                    @click="() => { variant = Variant.Space3 }"
+                >
+                    Espace CAPE
+                </button>
             </li>
             <li>
-                <button :class="{ 'selected': variant === Variant.Space4 }"
-                    @click="() => { variant = Variant.Space4 }">Espace autres</button>
+                <button
+                    :class="{ 'selected': variant === Variant.Space4 }"
+                    @click="() => { variant = Variant.Space4 }"
+                >
+                    Espace autres
+                </button>
             </li>
         </menu>
 
         <!-- HEADER -->
-        <QHeader id="layout-header" :class="['variant-' + variant]">
+        <QHeader
+            id="layout-header"
+            :class="['variant-' + variant]"
+        >
             <QToolbar>
                 <QToolbarTitle>
-                    <RouterLink :to="{ name: 'Home' }" class="home-link">{{ t("header.title") }}</RouterLink>
+                    <RouterLink
+                        :to="{ name: 'Home' }"
+                        class="home-link"
+                    >
+                        {{ t("header.title") }}
+                    </RouterLink>
                 </QToolbarTitle>
                 
                 <div id="menu-items">
-                    <button id="mobile-menu-button" @click="ToggleMenu">
+                    <button
+                        id="mobile-menu-button"
+                        @click="ToggleMenu"
+                    >
                         <i class="bi bi-list"></i>
                     </button>
-                    <span id="mobile-menu-background" :class="{ 'visible': mobileMenuVisible }" aria-hidden="true"></span>
+                    <span
+                        id="mobile-menu-background"
+                        :class="{ 'visible': mobileMenuVisible }"
+                        aria-hidden="true"
+                    ></span>
                     
                     <LayoutHeaderNav :class="{ 'visible': mobileMenuVisible }" />
                 </div>
-
             </QToolbar>
 
-            <div id="header-home-title" v-if="variant === Variant.Home">
+            <div
+                id="header-home-title"
+                v-if="variant === Variant.Home"
+            >
                 <h2>Bienvenue sur <strong>OPALINE</strong></h2>
                 <h3>Le site de la vie étudiante de l'UNISTRA</h3>
             </div>
 
-            <div id="header-title" v-if="variant !== Variant.Home && variant !== Variant.Login">
+            <div
+                id="header-title"
+                v-if="variant !== Variant.Home && variant !== Variant.Login"
+            >
                 <h1>
                     <span id="header-title-icon">
                         <i class="bi bi-geo-alt space-1-icon"></i>
@@ -202,23 +248,41 @@ const columns: QTableProps['columns'] = [
         </QHeader>
 
         <!-- BREADCRUMBS -->
-        <div id="layout-breadcrumbs" :class="['variant-' + variant]">
-            <QBreadcrumbs gutter="none" separator="">
-                <QBreadcrumbsEl :label="t('breadcrumbs.home')" :to="{ name: 'Home' }" />
-                <QBreadcrumbsEl v-for="(element, index) in breadcrumbs" :key="index" :label="element.label"
-                    :to="element.to" />
+        <div
+            id="layout-breadcrumbs"
+            :class="['variant-' + variant]"
+        >
+            <QBreadcrumbs
+                gutter="none"
+                separator=""
+            >
+                <QBreadcrumbsEl
+                    :label="t('breadcrumbs.home')"
+                    :to="{ name: 'Home' }"
+                />
+                <QBreadcrumbsEl
+                    v-for="(element, index) in breadcrumbs"
+                    :key="index"
+                    :label="element.label"
+                    :to="element.to"
+                />
             </QBreadcrumbs>
         </div>
 
-        <QPageContainer id="layout-content" :class="['variant-' + variant]">
+        <QPageContainer
+            id="layout-content"
+            :class="['variant-' + variant]"
+        >
             <main>
-
                 <!-- PAGE INTRO (image on the left) -->
                 <!-- The h2 can be replaced by another title tag as long as the "intro-title" class isn't removed. -->
                 <section class="introduction image-left">
                     <div class="content">
                         <div class="intro-image">
-                            <img src="/src/assets/img/unistra.jpg" alt="Intro image" />
+                            <img
+                                src="/src/assets/img/unistra.jpg"
+                                alt="Intro image"
+                            />
                         </div>
                         <div>
                             <h2 class="intro-title">Ceci est un bloc d'introduction de page !</h2>
@@ -243,7 +307,10 @@ const columns: QTableProps['columns'] = [
                 <section class="introduction image-right color-background">
                     <div class="content">
                         <div class="intro-image">
-                            <img src="/src/assets/img/unistra.jpg" alt="Intro image" />
+                            <img
+                                src="/src/assets/img/unistra.jpg"
+                                alt="Intro image"
+                            />
                         </div>
                         <div>
                             <h2 class="intro-title">Ceci est un bloc d'introduction de page !</h2>
@@ -264,7 +331,6 @@ const columns: QTableProps['columns'] = [
 
                 <!-- PAGE SECTION -->
                 <section class="page-section">
-
                     <!-- TITLES -->
                     <!-- Styles are applied to the class, not the tags. Replace by the title tag that makes sense syntactically. -->
                     <h2 class="title-1">Titre de niveau 1</h2>
@@ -281,7 +347,12 @@ const columns: QTableProps['columns'] = [
 
                     <!-- PARAGRAPH WITH A FLOATING IMAGE (LEFT) -->
                     <p class="paragraph">
-                        <img class="float-left" src="/src/assets/img/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
+                        <img
+                            class="float-left"
+                            src="/src/assets/img/unistra.jpg"
+                            alt="Intro image"
+                            style="width: 16rem; height: auto;"
+                        />
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
                         in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
@@ -294,7 +365,12 @@ const columns: QTableProps['columns'] = [
 
                     <!-- PARAGRAPH WITH A FLOATING IMAGE (RIGHT) -->
                     <p class="paragraph">
-                        <img class="float-right" src="/src/assets/img/unistra.jpg" alt="Intro image" style="width: 16rem; height: auto;" />
+                        <img
+                            class="float-right"
+                            src="/src/assets/img/unistra.jpg"
+                            alt="Intro image"
+                            style="width: 16rem; height: auto;"
+                        />
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
                         in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
@@ -315,15 +391,14 @@ const columns: QTableProps['columns'] = [
                         </ul>
                     </p>
 
-                     <!-- ORDERED LIST -->
-                     <p class="paragraph">
+                    <!-- ORDERED LIST -->
+                    <p class="paragraph">
                         <ol role="list">
                             <li>Ceci est le premier élément de la liste ;</li>
                             <li>Ceci est le second ;</li>
                             <li>Et finalement, ceci est le troisième et dernier élément.</li>
                         </ol>
                     </p>
-
                 </section>
 
                 <!----> <div class="separator"></div> <!---->
@@ -331,7 +406,10 @@ const columns: QTableProps['columns'] = [
                 <!-- DASHBOARD SECTION -->
                 <section class="dashboard-section">
                     <h2>
-                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        <i
+                            class="bi bi-pencil-square"
+                            aria-hidden="true"
+                        ></i>
                         Titre de la section
                     </h2>
                     <div class="form-container">
@@ -345,7 +423,10 @@ const columns: QTableProps['columns'] = [
                 <!-- FORM TITLE -->
                 <div class="form-title">
                     <h2>
-                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        <i
+                            class="bi bi-pencil-square"
+                            aria-hidden="true"
+                        ></i>
                         Éléments de formulaire Quasar
                     </h2>
                 </div>
@@ -353,11 +434,16 @@ const columns: QTableProps['columns'] = [
                 <!-- BASIC FORM CONTAINER -->
                 <div class="form-container">
                     <div class="form">
-
                         <!-- FORM ELEMENTS -->
 
                         <!-- INPUT FIELD -->
-                        <QInput v-model="fieldValue" label="Input field" :rules="[val => val && val.length > 0]" filled lazy-rules />
+                        <QInput
+                            v-model="fieldValue"
+                            label="Input field"
+                            :rules="[val => val && val.length > 0]"
+                            filled
+                            lazy-rules
+                        />
 
                         <!-- SELECT FIELD -->
                         <QSelect
@@ -376,17 +462,34 @@ const columns: QTableProps['columns'] = [
                         <!-- BASIC BUTTONS -->
                         <div class="buttons-group">
                             <QBtn label="Bouton basique" />
-                            <QBtn label="Bouton icône gauche" icon="bi-chevron-compact-right" />
-                            <QBtn label="Bouton icône droite" icon-right="bi-chevron-compact-right" />
+                            <QBtn
+                                label="Bouton icône gauche"
+                                icon="bi-chevron-compact-right"
+                            />
+                            <QBtn
+                                label="Bouton icône droite"
+                                icon-right="bi-chevron-compact-right"
+                            />
                         </div>
 
                         <!----> <div class="separator-small"></div> <!---->
 
                         <!-- ALT BUTTONS -->
                         <div class="buttons-group">
-                            <QBtn class="btn-alt" label="Bouton alternatif" />
-                            <QBtn class="btn-alt" label="Bouton icône gauche" icon="bi-chevron-compact-right" />
-                            <QBtn class="btn-alt" label="Bouton icône droite" icon-right="bi-chevron-compact-right" />
+                            <QBtn
+                                class="btn-alt"
+                                label="Bouton alternatif"
+                            />
+                            <QBtn
+                                class="btn-alt"
+                                label="Bouton icône gauche"
+                                icon="bi-chevron-compact-right"
+                            />
+                            <QBtn
+                                class="btn-alt"
+                                label="Bouton icône droite"
+                                icon-right="bi-chevron-compact-right"
+                            />
                         </div>
 
                         <!-- PAGINATION QUASAR -->
@@ -398,12 +501,17 @@ const columns: QTableProps['columns'] = [
                         <!-- PAGINATION CUSTOM -->
                         <div class="pagination">
                             <div class="wrapper">
-                                <QBtn label="" icon="bi-chevron-compact-left" />
+                                <QBtn
+                                    label=""
+                                    icon="bi-chevron-compact-left"
+                                />
                                 <QBtn class="counter-button">Page <strong>1</strong> / 25</QBtn>
-                                <QBtn label="" icon-right="bi-chevron-compact-right" />
+                                <QBtn
+                                    label=""
+                                    icon-right="bi-chevron-compact-right"
+                                />
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -412,7 +520,10 @@ const columns: QTableProps['columns'] = [
                 <!-- FORM TITLE -->
                 <div class="form-title">
                     <h2>
-                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        <i
+                            class="bi bi-pencil-square"
+                            aria-hidden="true"
+                        ></i>
                         Éléments de formulaire custom
                     </h2>
                 </div>
@@ -420,7 +531,6 @@ const columns: QTableProps['columns'] = [
                 <!-- BASIC FORM CONTAINER -->
                 <div class="form-container">
                     <div class="form">
-
                         <!-- FORM ELEMENTS -->
 
                         <!-- DOCUMENTS INPUT -->
@@ -442,10 +552,19 @@ const columns: QTableProps['columns'] = [
                                 <div class="document-input-list">
                                     <div class="document-item">
                                         <p>
-                                            <i class="bi bi-file-earmark" aria-hidden="true"></i>
-                                            <a href="/" target="_blank">
+                                            <i
+                                                class="bi bi-file-earmark"
+                                                aria-hidden="true"
+                                            ></i>
+                                            <a
+                                                href="/"
+                                                target="_blank"
+                                            >
                                                 cert_scol_membre1.pdf
-                                                <i class="bi bi-eye" aria-hidden="true"></i>
+                                                <i
+                                                    class="bi bi-eye"
+                                                    aria-hidden="true"
+                                                ></i>
                                             </a>
                                         </p>
                                         <button>
@@ -454,10 +573,19 @@ const columns: QTableProps['columns'] = [
                                     </div>
                                     <div class="document-item">
                                         <p>
-                                            <i class="bi bi-file-earmark" aria-hidden="true"></i>
-                                            <a href="/" target="_blank">
+                                            <i
+                                                class="bi bi-file-earmark"
+                                                aria-hidden="true"
+                                            ></i>
+                                            <a
+                                                href="/"
+                                                target="_blank"
+                                            >
                                                 cert_scol_membre2.pdf
-                                                <i class="bi bi-eye" aria-hidden="true"></i>
+                                                <i
+                                                    class="bi bi-eye"
+                                                    aria-hidden="true"
+                                                ></i>
                                             </a>
                                         </p>
                                         <button>
@@ -466,10 +594,19 @@ const columns: QTableProps['columns'] = [
                                     </div>
                                     <div class="document-item">
                                         <p>
-                                            <i class="bi bi-file-earmark" aria-hidden="true"></i>
-                                            <a href="/" target="_blank">
+                                            <i
+                                                class="bi bi-file-earmark"
+                                                aria-hidden="true"
+                                            ></i>
+                                            <a
+                                                href="/"
+                                                target="_blank"
+                                            >
                                                 cert_scol_membre3.pdf
-                                                <i class="bi bi-eye" aria-hidden="true"></i>
+                                                <i
+                                                    class="bi bi-eye"
+                                                    aria-hidden="true"
+                                                ></i>
                                             </a>
                                         </p>
                                         <button disabled>
@@ -518,17 +655,26 @@ const columns: QTableProps['columns'] = [
 
                         <!-- INFO PANELS -->
                         <div class="info-panel">
-                            <i class="bi bi-exclamation-lg" aria-hidden="true"></i>
+                            <i
+                                class="bi bi-exclamation-lg"
+                                aria-hidden="true"
+                            ></i>
                             <p>Ceci est un message d'info. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                         </div>
 
                         <div class="info-panel info-panel-error">
-                            <i class="bi bi-exclamation-lg" aria-hidden="true"></i>
+                            <i
+                                class="bi bi-exclamation-lg"
+                                aria-hidden="true"
+                            ></i>
                             <p>Ceci est un message d'erreur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                         </div>
 
                         <div class="info-panel info-panel-warning">
-                            <i class="bi bi-exclamation-lg" aria-hidden="true"></i>
+                            <i
+                                class="bi bi-exclamation-lg"
+                                aria-hidden="true"
+                            ></i>
                             <p>Ceci est un message d'avertissement. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                         </div>
 
@@ -539,10 +685,19 @@ const columns: QTableProps['columns'] = [
                         <!-- The input is hidden and needs to have a unique id for the label (the actual visual) to target it. -->
                         <div style="width: 150px;">
                             <div class="image-input">
-                                <img src="/src/assets/img/logo_Ariane.png" alt="current image" />
-                                <input id="file-input-g15er4" type="file" />
+                                <img
+                                    src="/src/assets/img/logo_Ariane.png"
+                                    alt="current image"
+                                />
+                                <input
+                                    id="file-input-g15er4"
+                                    type="file"
+                                />
                                 <label for="file-input-g15er4">
-                                    <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                    <i
+                                        class="bi bi-pencil-square"
+                                        aria-hidden="true"
+                                    ></i>
                                 </label>
                             </div>
                         </div>
@@ -550,23 +705,30 @@ const columns: QTableProps['columns'] = [
                         <!----> <div class="separator"></div> <!---->
 
                         <div style="display: flex; gap: 3.5rem;">
-
                             <!-- STATE BADGES -->
                             <span class="form-state">
                                 État 1
-                                <span class="form-state-icon form-state-green" aria-hidden="true"><i class="bi bi-check"></i></span>
+                                <span
+                                    class="form-state-icon form-state-green"
+                                    aria-hidden="true"
+                                ><i class="bi bi-check"></i></span>
                             </span>
 
                             <span class="form-state">
                                 État 2
-                                <span class="form-state-icon form-state-orange" aria-hidden="true"><i class="bi bi-dash"></i></span>
+                                <span
+                                    class="form-state-icon form-state-orange"
+                                    aria-hidden="true"
+                                ><i class="bi bi-dash"></i></span>
                             </span>
 
                             <span class="form-state">
                                 État 3
-                                <span class="form-state-icon form-state-red" aria-hidden="true"><i class="bi bi-x"></i></span>
+                                <span
+                                    class="form-state-icon form-state-red"
+                                    aria-hidden="true"
+                                ><i class="bi bi-x"></i></span>
                             </span>
-
                         </div>
 
                         <!----> <div class="separator-small"></div> <!---->
@@ -574,32 +736,48 @@ const columns: QTableProps['columns'] = [
                         <!-- MULTI-COLUMN FORM -->
                         <div class="form-col-container">
                             <div class="form-col">
-
                                 <!-- SECTION TITLE -->
                                 <!-- Works with any title tag, use the one that makes sense syntactically. -->
                                 <h3 class="section-title">
-                                    <i class="bi bi-card-text" aria-hidden="true"></i>
+                                    <i
+                                        class="bi bi-card-text"
+                                        aria-hidden="true"
+                                    ></i>
                                     Titre de la section
                                 </h3>
 
                                 <!-- CHAMPS TEXTE CUSTOM -->
                                 <label class="custom-label">Champ texte normal :</label>
-                                <input class="custom-input" type="text" value="Valeur du champ" />
+                                <input
+                                    class="custom-input"
+                                    type="text"
+                                    value="Valeur du champ"
+                                />
 
                                 <label class="custom-label">Champ texte avec placeholder :</label>
-                                <input class="custom-input" type="text" placeholder="Tapez du texte ici..." />
+                                <input
+                                    class="custom-input"
+                                    type="text"
+                                    placeholder="Tapez du texte ici..."
+                                />
 
                                 <label class="custom-label">Champ texte désactivé :</label>
-                                <input class="custom-input" type="text" value="Cette valeur ne pourra pas être modifiée" disabled="true" />
-
+                                <input
+                                    class="custom-input"
+                                    type="text"
+                                    value="Cette valeur ne pourra pas être modifiée"
+                                    disabled="true"
+                                />
                             </div>
 
                             <div class="form-col">
-
                                 <!-- SECTION TITLE -->
                                 <!-- Works with any title tag, use the one that makes sense syntactically. -->
                                 <h3 class="section-title">
-                                    <i class="bi bi-card-text" aria-hidden="true"></i>
+                                    <i
+                                        class="bi bi-card-text"
+                                        aria-hidden="true"
+                                    ></i>
                                     Titre de la section
                                 </h3>
 
@@ -620,10 +798,8 @@ const columns: QTableProps['columns'] = [
                                 <!-- TEXTAREA -->
                                 <label class="custom-label">Champ texte multiligne :</label>
                                 <textarea class="custom-input"></textarea>
-
                             </div>
                         </div>
-                        
                     </div>
                 </div>
 
@@ -632,7 +808,10 @@ const columns: QTableProps['columns'] = [
                 <!-- FORM TITLE -->
                 <div class="form-title">
                     <h2>
-                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        <i
+                            class="bi bi-pencil-square"
+                            aria-hidden="true"
+                        ></i>
                         Lignes d'affichage
                     </h2>
                 </div>
@@ -640,13 +819,11 @@ const columns: QTableProps['columns'] = [
                 <!-- BASIC FORM CONTAINER -->
                 <div class="form-container">
                     <div class="form">
-
                         <!-- DISPLAY ROWS -->
                         <!-- These rows can be used to display various types of data. They look like table rows but are more flexible. -->
 
                         <!-- This wrapper isn't part of the component: -->
                         <div style="display: flex; flex-direction: column; gap: .9375rem; margin: 1.5rem 0;">
-
                             <!-- BASIC ROW -->
                             <div class="display-row">
                                 <p>Ligne basique contenant une seule donnée</p>
@@ -660,7 +837,10 @@ const columns: QTableProps['columns'] = [
                                 <p>
                                     <span class="form-state">
                                         OK
-                                        <span class="form-state-icon form-state-green" aria-hidden="true"><i class="bi bi-check"></i></span>
+                                        <span
+                                            class="form-state-icon form-state-green"
+                                            aria-hidden="true"
+                                        ><i class="bi bi-check"></i></span>
                                     </span>
                                 </p>
                             </div>
@@ -678,7 +858,10 @@ const columns: QTableProps['columns'] = [
                             <!-- COMMENT -->
                             <div class="comment-row">
                                 <p class="comment-head">
-                                    <i class="bi bi-chat" aria-hidden="true"></i>
+                                    <i
+                                        class="bi bi-chat"
+                                        aria-hidden="true"
+                                    ></i>
                                     Commentaire de <span class="value">Stéphane Ehrhart</span> le <span class="value">20/09/2022</span>
                                 </p>
                                 <p>
@@ -687,9 +870,7 @@ const columns: QTableProps['columns'] = [
                                     dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                                 </p>
                             </div>
-
                         </div>
-                        
                     </div>
                 </div>
 
@@ -698,7 +879,10 @@ const columns: QTableProps['columns'] = [
                 <!-- FORM TITLE -->
                 <div class="form-title">
                     <h2>
-                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        <i
+                            class="bi bi-pencil-square"
+                            aria-hidden="true"
+                        ></i>
                         Tableaux admin
                     </h2>
                 </div>
@@ -706,7 +890,6 @@ const columns: QTableProps['columns'] = [
                 <!-- BASIC FORM CONTAINER -->
                 <div class="form-container">
                     <div class="form">
-
                         <!-- ADMIN TABLE -->
                         <!-- Use the "actions-cell-compact" class on the action button cell to use the new button design (with a transparent background). -->
                         <!-- This new design is lighter visually, and works better with taller rows. -->
@@ -726,27 +909,50 @@ const columns: QTableProps['columns'] = [
                                     <QTd>
                                         <QCheckbox v-model="props.selected"/>
                                     </QTd>
-                                    <QTd key="name" :props="props">
+                                    <QTd
+                                        key="name"
+                                        :props="props"
+                                    >
                                         {{ props.row.name }}
                                     </QTd>
-                                    <QTd key="acronym" :props="props">
+                                    <QTd
+                                        key="acronym"
+                                        :props="props"
+                                    >
                                         {{ props.row.acronym }}
                                     </QTd>
-                                    <QTd key="activityField" :props="props">
+                                    <QTd
+                                        key="activityField"
+                                        :props="props"
+                                    >
                                         {{ props.row.activityField?.name }}
                                     </QTd>
-                                    <QTd key="status" :props="props" class="state-cell">
-                                        <span v-if="!props.row.isEnabled" class="form-state">
+                                    <QTd
+                                        key="status"
+                                        :props="props"
+                                        class="state-cell"
+                                    >
+                                        <span
+                                            v-if="!props.row.isEnabled"
+                                            class="form-state"
+                                        >
                                             {{ t('association.disabled') }}
                                             <span class="form-state-icon form-state-red"><i class="bi bi-x"></i></span>
                                         </span>
 
-                                        <span v-else class="form-state">
+                                        <span
+                                            v-else
+                                            class="form-state"
+                                        >
                                             {{ t('association.enabled') }}
                                             <span class="form-state-icon form-state-green"><i class="bi bi-check"></i></span>
                                         </span>
                                     </QTd>
-                                    <QTd key="actions" :props="props" class="actions-cell-compact">
+                                    <QTd
+                                        key="actions"
+                                        :props="props"
+                                        class="actions-cell-compact"
+                                    >
                                         <div class="button-container">
                                             <QBtn
                                                 :label="t('association.edit')"
@@ -785,27 +991,50 @@ const columns: QTableProps['columns'] = [
                                     <QTd>
                                         <QCheckbox v-model="props.selected"/>
                                     </QTd>
-                                    <QTd key="name" :props="props">
+                                    <QTd
+                                        key="name"
+                                        :props="props"
+                                    >
                                         {{ props.row.name }}
                                     </QTd>
-                                    <QTd key="acronym" :props="props">
+                                    <QTd
+                                        key="acronym"
+                                        :props="props"
+                                    >
                                         {{ props.row.acronym }}
                                     </QTd>
-                                    <QTd key="activityField" :props="props">
+                                    <QTd
+                                        key="activityField"
+                                        :props="props"
+                                    >
                                         {{ props.row.activityField?.name }}
                                     </QTd>
-                                    <QTd key="status" :props="props" class="state-cell">
-                                        <span v-if="!props.row.isEnabled" class="form-state">
+                                    <QTd
+                                        key="status"
+                                        :props="props"
+                                        class="state-cell"
+                                    >
+                                        <span
+                                            v-if="!props.row.isEnabled"
+                                            class="form-state"
+                                        >
                                             {{ t('association.disabled') }}
                                             <span class="form-state-icon form-state-red"><i class="bi bi-x"></i></span>
                                         </span>
 
-                                        <span v-else class="form-state">
+                                        <span
+                                            v-else
+                                            class="form-state"
+                                        >
                                             {{ t('association.enabled') }}
                                             <span class="form-state-icon form-state-green"><i class="bi bi-check"></i></span>
                                         </span>
                                     </QTd>
-                                    <QTd key="actions" :props="props" class="actions-cell-compact">
+                                    <QTd
+                                        key="actions"
+                                        :props="props"
+                                        class="actions-cell-compact"
+                                    >
                                         <div class="button-container">
                                             <QBtn
                                                 :to="{name: 'EditAssociation', params: {id: props.row.id}}"
@@ -842,27 +1071,50 @@ const columns: QTableProps['columns'] = [
                                     <QTd>
                                         <QCheckbox v-model="props.selected"/>
                                     </QTd>
-                                    <QTd key="name" :props="props">
+                                    <QTd
+                                        key="name"
+                                        :props="props"
+                                    >
                                         {{ props.row.name }}
                                     </QTd>
-                                    <QTd key="acronym" :props="props">
+                                    <QTd
+                                        key="acronym"
+                                        :props="props"
+                                    >
                                         {{ props.row.acronym }}
                                     </QTd>
-                                    <QTd key="activityField" :props="props">
+                                    <QTd
+                                        key="activityField"
+                                        :props="props"
+                                    >
                                         {{ props.row.activityField?.name }}
                                     </QTd>
-                                    <QTd key="status" :props="props" class="state-cell">
-                                        <span v-if="!props.row.isEnabled" class="form-state">
+                                    <QTd
+                                        key="status"
+                                        :props="props"
+                                        class="state-cell"
+                                    >
+                                        <span
+                                            v-if="!props.row.isEnabled"
+                                            class="form-state"
+                                        >
                                             {{ t('association.disabled') }}
                                             <span class="form-state-icon form-state-red"><i class="bi bi-x"></i></span>
                                         </span>
 
-                                        <span v-else class="form-state">
+                                        <span
+                                            v-else
+                                            class="form-state"
+                                        >
                                             {{ t('association.enabled') }}
                                             <span class="form-state-icon form-state-green"><i class="bi bi-check"></i></span>
                                         </span>
                                     </QTd>
-                                    <QTd key="actions" :props="props" class="actions-cell">
+                                    <QTd
+                                        key="actions"
+                                        :props="props"
+                                        class="actions-cell"
+                                    >
                                         <div class="button-container">
                                             <QBtn
                                                 :label="t('association.edit')"
@@ -881,22 +1133,30 @@ const columns: QTableProps['columns'] = [
                                 </QTr>
                             </template>
                         </QTable>
-                        
                     </div>
                 </div>
 
                 <!-- PAGE NAVIGATION -->
                 <section class="form-page-navigation">
-                    <QBtn label="Annuler" icon="bi-x-lg" />
+                    <QBtn
+                        label="Annuler"
+                        icon="bi-x-lg"
+                    />
                     <p class="paragraph">Contrôles permettant de naviguer entre des pages, par exemple entre plusieurs étapes de formulaire. Ce texte explicatif est optionnel.</p>
-                    <QBtn label="Étape suivante" icon-right="bi-chevron-compact-right" />
+                    <QBtn
+                        label="Étape suivante"
+                        icon-right="bi-chevron-compact-right"
+                    />
                 </section>
-
             </main>
         </QPageContainer>
 
         <!-- FOOTER -->
-        <QFooter id="layout-footer" :class="['variant-' + variant]" elevated>
+        <QFooter
+            id="layout-footer"
+            :class="['variant-' + variant]"
+            elevated
+        >
             <div id="footer-logos">
                 <div class="wrapper">
                     <RouterLink to="/">
@@ -921,9 +1181,24 @@ const columns: QTableProps['columns'] = [
             </div>
             <QToolbar>
                 <div class="footer-text">
-                    <RouterLink class="li-footer" to="/"><i class="bi bi-card-text"></i>{{ t("footer.about") }}</RouterLink>
-                    <RouterLink class="li-footer" to="/"><i class="bi bi-card-checklist"></i>{{ t("footer.legal-notice") }}</RouterLink>
-                    <RouterLink class="li-footer" to="/"><i class="bi bi-envelope"></i>{{ t("footer.contact") }}</RouterLink>
+                    <RouterLink
+                        class="li-footer"
+                        to="/"
+                    >
+                        <i class="bi bi-card-text"></i>{{ t("footer.about") }}
+                    </RouterLink>
+                    <RouterLink
+                        class="li-footer"
+                        to="/"
+                    >
+                        <i class="bi bi-card-checklist"></i>{{ t("footer.legal-notice") }}
+                    </RouterLink>
+                    <RouterLink
+                        class="li-footer"
+                        to="/"
+                    >
+                        <i class="bi bi-envelope"></i>{{ t("footer.contact") }}
+                    </RouterLink>
                 </div>
             </QToolbar>
             <p>
@@ -933,7 +1208,6 @@ const columns: QTableProps['columns'] = [
             </p>
             <p>{{ t("footer.copyright") }}</p>
         </QFooter>
-
     </QLayout>
 </template>
 

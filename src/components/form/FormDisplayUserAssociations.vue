@@ -4,7 +4,7 @@ import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserAssociations from '@/composables/useUserAssociations'
-import AlertConfirmUserQuitAssociation from "@/components/alert/AlertConfirmUserQuitAssociation.vue";
+import AlertConfirmUserQuitAssociation from '@/components/alert/AlertConfirmUserQuitAssociation.vue'
 
 
 const {t} = useI18n()
@@ -41,7 +41,8 @@ async function onGetUserAssociations() {
     <p v-if="userAssociations.length === 0">
         {{
             t('dashboard.association-user.you-are-not-an-association-member')
-        }}</p>
+        }}
+    </p>
     <QCard
         v-for="association in userAssociations"
         :key="association.id ? association.id : 0"
@@ -51,7 +52,8 @@ async function onGetUserAssociations() {
             <section>
                 <h4>{{ association.name }}</h4>
                 <ul>
-                    <li>{{ t('dashboard.association-user.my-role') }} <span>{{
+                    <li>
+                        {{ t('dashboard.association-user.my-role') }} <span>{{
                             associationRoleOptions.find(obj => obj.value === association.role)?.label ?? t('dashboard.association-user.member')
                         }}</span>
                     </li>

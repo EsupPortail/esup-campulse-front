@@ -3,7 +3,7 @@ import {onMounted, ref} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import useUserAssociations from "@/composables/useUserAssociations";
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -83,19 +83,34 @@ const columns: QTableProps['columns'] = [
                 >
                     <template v-slot:body="props">
                         <QTr :props="props">
-                            <QTd key="firstName" :props="props">
+                            <QTd
+                                key="firstName"
+                                :props="props"
+                            >
                                 {{ props.row.firstName }}
                             </QTd>
-                            <QTd key="lastName" :props="props">
+                            <QTd
+                                key="lastName"
+                                :props="props"
+                            >
                                 {{ props.row.lastName }}
                             </QTd>
-                            <QTd key="association" :props="props">
+                            <QTd
+                                key="association"
+                                :props="props"
+                            >
                                 {{ props.row.associationName }}
                             </QTd>
-                            <QTd key="role" :props="props">
+                            <QTd
+                                key="role"
+                                :props="props"
+                            >
                                 {{ props.row.role }}
                             </QTd>
-                            <QTd key="isValidatedByAdmin" :props="props">
+                            <QTd
+                                key="isValidatedByAdmin"
+                                :props="props"
+                            >
                                 <span class="form-state">
                                     {{
                                         props.row.isValidatedByAdmin ? t('validated') : t('validated-non')
@@ -107,7 +122,11 @@ const columns: QTableProps['columns'] = [
                                     </span>
                                 </span>
                             </QTd>
-                            <QTd key="validation" :props="props" class="actions-cell-compact">
+                            <QTd
+                                key="validation"
+                                :props="props"
+                                class="actions-cell-compact"
+                            >
                                 <QBtn
                                     :label="t('manage')"
                                     :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
@@ -119,7 +138,11 @@ const columns: QTableProps['columns'] = [
                     </template>
                 </QTable>
                 <section class="form-page-navigation">
-                    <QBtn :label="t('back')" :to="{ name: 'Dashboard' }" icon="bi-chevron-compact-left"/>
+                    <QBtn
+                        :label="t('back')"
+                        :to="{ name: 'Dashboard' }"
+                        icon="bi-chevron-compact-left"
+                    />
                 </section>
             </div>
         </div>

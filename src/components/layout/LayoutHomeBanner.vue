@@ -7,8 +7,14 @@ defineProps({
 </script>
 
 <template>
-  <QBanner v-if="isDisplayed" class="bg-primary text-white">
-    <div id="home-banner-icon" class="variant-default">
+  <QBanner
+      v-if="isDisplayed"
+      class="bg-primary text-white"
+  >
+    <div
+        id="home-banner-icon"
+        class="variant-default"
+    >
       <i class="bi bi-info-circle"></i>
     </div>
 

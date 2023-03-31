@@ -3,10 +3,10 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {_commission, _institutionManager, _institutionStudent, _users, _usersNames} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {useUserStore} from "../useUserStore";
-import {useAxios} from "../../composables/useAxios";
-import useUserGroups from "../../composables/useUserGroups";
-import {_groups} from "../../../tests/fixtures/group.mock";
+import {useUserStore} from '../useUserStore'
+import {useAxios} from '../../composables/useAxios'
+import useUserGroups from '../../composables/useUserGroups'
+import {_groups} from '../../../tests/fixtures/group.mock'
 
 
 vi.mock('@/composables/useAxios', () => ({

@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
-import useUserGroups from "@/composables/useUserGroups";
+import useUserGroups from '@/composables/useUserGroups'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({

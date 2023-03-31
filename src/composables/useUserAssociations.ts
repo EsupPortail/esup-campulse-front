@@ -12,9 +12,9 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
-import {useAssociationStore} from "@/stores/useAssociationStore";
-import useSecurity from "@/composables/useSecurity";
-import type {AssociationName} from "#/association";
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import useSecurity from '@/composables/useSecurity'
+import type {AssociationName} from '#/association'
 
 
 // Used to store a user's associations, while it is modified by a manager or during registration
@@ -264,25 +264,25 @@ export default function () {
         if (hasPerm('change_user_misc')) institutions += ','
         const url = `/users/associations/?institutions=${institutions}&is_validated_by_admin=false`
 
-        const users = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
+        const associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
         await associationStore.getAssociationNames(false, false)
         await userManagerStore.getUsers('validated')
 
-        users.forEach((user) => {
-            const extendedUser = userManagerStore.users.find(obj => obj.id === user.user)
-            const associationName = associationStore.associationNames.find(obj => obj.id === user.association)?.name
+        associationUsers.forEach((associationUser) => {
+            const extendedUser = userManagerStore.users.find(obj => obj.id === associationUser.user)
+            const associationName = associationStore.associationNames.find(obj => obj.id === associationUser.association)?.name
             if (extendedUser && associationName) {
                 associationMembers.value.push({
-                    id: user.user as number,
-                    associationId: user.association as number,
+                    id: associationUser.id as number,
+                    associationId: associationUser.association as number,
                     associationName,
                     firstName: extendedUser.firstName,
                     lastName: extendedUser.lastName,
-                    role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(user))?.label as string,
-                    canBePresident: user.canBePresident,
-                    canBePresidentFrom: user.canBePresidentFrom,
-                    canBePresidentTo: user.canBePresidentTo,
-                    isValidatedByAdmin: user.isValidatedByAdmin as boolean
+                    role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label as string,
+                    canBePresident: associationUser.canBePresident,
+                    canBePresidentFrom: associationUser.canBePresidentFrom,
+                    canBePresidentTo: associationUser.canBePresidentTo,
+                    isValidatedByAdmin: associationUser.isValidatedByAdmin as boolean
                 })
             }
         })

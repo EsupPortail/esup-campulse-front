@@ -3,7 +3,7 @@ import {useRoute} from 'vue-router'
 import {onMounted, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
-import useColorVariants from "@/composables/useColorVariants";
+import useColorVariants from '@/composables/useColorVariants'
 
 const {t} = useI18n()
 const route = useRoute()
@@ -29,7 +29,10 @@ onMounted(() => {
         id="layout-breadcrumbs"
         :class="'variant-' + colorVariant"
     >
-        <QBreadcrumbs gutter="none" separator="">
+        <QBreadcrumbs
+            gutter="none"
+            separator=""
+        >
             <QBreadcrumbsEl
                 :label="t('breadcrumbs.home')"
                 :to="{ name: 'Home' }"

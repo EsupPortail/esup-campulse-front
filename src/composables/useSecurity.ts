@@ -3,10 +3,10 @@ import type {CASUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
-import {useRoute} from "vue-router";
-import type {AxiosInstance} from "axios";
-import useUserAssociations from "@/composables/useUserAssociations";
-import useCommissions from "@/composables/useCommissions";
+import {useRoute} from 'vue-router'
+import type {AxiosInstance} from 'axios'
+import useUserAssociations from '@/composables/useUserAssociations'
+import useCommissions from '@/composables/useCommissions'
 
 // Used for local login
 const user = ref<LocalLogin>({

@@ -5,7 +5,7 @@ import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 import type {Association} from '#/association'
-import useSecurity from "@/composables/useSecurity";
+import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
@@ -45,55 +45,55 @@ async function onConfirmChanges(emailType: string) {
     const associationsSuccess: string[] = []
     const associationsError: string[] = []
     const promisesToExecute: Promise<void>[] = []
-    let mailto = "mailto:?bcc="
+    let mailto = 'mailto:?bcc='
     switch (switches.value) {
-        case 'email':
-            props.selectedAssociations?.forEach((selectedAssociation) => {
-                if (selectedAssociation.email) {
-                    mailto += `${selectedAssociation.email},`
-                    associationsSuccess.push(selectedAssociation.name)
-                } else {
-                    associationsError.push(selectedAssociation.name)
-                }
-            })
-            window.open(mailto, (emailType as string === 'web') ? '_blank' : '_self')
-            break
-        case 'enable':
-            props.selectedAssociations?.forEach((selectedAssociation) => {
-                promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
-                    associationsSuccess.push(selectedAssociation.name)
-                }))
-            })
-            break
-        case 'disable':
-            props.selectedAssociations?.forEach((selectedAssociation) => {
-                promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
-                    associationsSuccess.push(selectedAssociation.name)
-                }))
-            })
-            break
-        case 'delete':
-            if (deletionWord.value === t('association.before-deletion-word')) {
-                props.selectedAssociations?.forEach((selectedAssociation) => {
-                    promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
-                        associationsSuccess.push(selectedAssociation.name)
-                        if (props.selectedAssociations) {
-                            let newSelectedAssociations = props.selectedAssociations
-                            newSelectedAssociations = newSelectedAssociations?.splice(props.selectedAssociations?.indexOf(selectedAssociation), 1)
-                            emit('updateSelectedAssociations', newSelectedAssociations)
-                        }
-                    }).catch(() => {
-                        associationsError.push(selectedAssociation.name)
-                    }))
-                })
-                deletionWord.value = ''
+    case 'email':
+        props.selectedAssociations?.forEach((selectedAssociation) => {
+            if (selectedAssociation.email) {
+                mailto += `${selectedAssociation.email},`
+                associationsSuccess.push(selectedAssociation.name)
             } else {
-                notify({
-                    type: 'negative',
-                    message: t('association.before-deletion-word-error')
-                })
+                associationsError.push(selectedAssociation.name)
             }
-            break
+        })
+        window.open(mailto, (emailType as string === 'web') ? '_blank' : '_self')
+        break
+    case 'enable':
+        props.selectedAssociations?.forEach((selectedAssociation) => {
+            promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
+                associationsSuccess.push(selectedAssociation.name)
+            }))
+        })
+        break
+    case 'disable':
+        props.selectedAssociations?.forEach((selectedAssociation) => {
+            promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
+                associationsSuccess.push(selectedAssociation.name)
+            }))
+        })
+        break
+    case 'delete':
+        if (deletionWord.value === t('association.before-deletion-word')) {
+            props.selectedAssociations?.forEach((selectedAssociation) => {
+                promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                    associationsSuccess.push(selectedAssociation.name)
+                    if (props.selectedAssociations) {
+                        let newSelectedAssociations = props.selectedAssociations
+                        newSelectedAssociations = newSelectedAssociations?.splice(props.selectedAssociations?.indexOf(selectedAssociation), 1)
+                        emit('updateSelectedAssociations', newSelectedAssociations)
+                    }
+                }).catch(() => {
+                    associationsError.push(selectedAssociation.name)
+                }))
+            })
+            deletionWord.value = ''
+        } else {
+            notify({
+                type: 'negative',
+                message: t('association.before-deletion-word-error')
+            })
+        }
+        break
     }
 
     Promise.all(promisesToExecute).then(() => {
@@ -134,28 +134,45 @@ async function onConfirmChanges(emailType: string) {
             :label="t('association.confirm-all-changes')"
             color="primary"
             icon="mdi-pencil"
-            @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"/>
+            @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"
+        />
     </div>
 
-    <QDialog v-model="changes" persistent>
+    <QDialog
+        v-model="changes"
+        persistent
+    >
         <QCard>
             <QCardSection class="row items-center dialog-message">
                 <span class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</span>
                 <template v-if="switches === 'email'">
-                    <ul v-for="association in selectedAssociations" :key="association.id">
+                    <ul
+                        v-for="association in selectedAssociations"
+                        :key="association.id"
+                    >
                         <li v-if="association.email !== ''">{{ association.name }}</li>
                     </ul>
                 </template>
                 <template v-else>
-                    <ul v-for="association in selectedAssociations" :key="association.id">
+                    <ul
+                        v-for="association in selectedAssociations"
+                        :key="association.id"
+                    >
                         <li>{{ association.name }}</li>
                     </ul>
                 </template>
             </QCardSection>
             <QCardSection v-if="switches === 'delete'">
-                <QInput v-model=deletionWord :label="t('association.before-deletion-word-instruction')" @paste.prevent/>
+                <QInput
+                    v-model=deletionWord
+                    :label="t('association.before-deletion-word-instruction')"
+                    @paste.prevent
+                />
             </QCardSection>
-            <QCardActions align="center" class="dialog-card-actions">
+            <QCardActions
+                align="center"
+                class="dialog-card-actions"
+            >
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"

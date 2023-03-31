@@ -13,8 +13,8 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 import {_associationRole} from '~/fixtures/user.mock'
-import type {Association} from "../../../types/association";
-import useUserAssociations from "../useUserAssociations";
+import type {Association} from '../../../types/association'
+import useUserAssociations from '../useUserAssociations'
 
 
 vi.mock('@/composables/useAxios', () => ({

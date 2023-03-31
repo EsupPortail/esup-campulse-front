@@ -1,8 +1,8 @@
 import {ref, watch} from 'vue'
 import type {Commission} from '#/commissions'
 import {useAxios} from '@/composables/useAxios'
-import type {SelectLabel} from "#/index";
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
+import type {SelectLabel} from '#/index'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 
 const commissions = ref<Commission[]>([])

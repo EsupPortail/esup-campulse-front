@@ -2,13 +2,13 @@
 import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import axios from "axios";
-import router from "@/router";
-import {useUserManagerStore} from "@/stores/useUserManagerStore";
-import useUsers from "@/composables/useUsers";
-import useUserGroups from "@/composables/useUserGroups";
-import useUserAssociations from "@/composables/useUserAssociations";
-import useSecurity from "@/composables/useSecurity";
+import axios from 'axios'
+import router from '@/router'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import useUsers from '@/composables/useUsers'
+import useUserGroups from '@/composables/useUserGroups'
+import useUserAssociations from '@/composables/useUserAssociations'
+import useSecurity from '@/composables/useSecurity'
 
 
 const {t} = useI18n()
@@ -58,7 +58,10 @@ async function onValidateChanges() {
         @click="confirmation = true"
     />
 
-    <QDialog v-model="confirmation" persistent>
+    <QDialog
+        v-model="confirmation"
+        persistent
+    >
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{ t('user-manager.alert-confirm-update') }}</span>

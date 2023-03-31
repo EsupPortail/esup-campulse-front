@@ -2,8 +2,8 @@ import {createRouter, createWebHistory} from 'vue-router'
 import routes from '@/router/routes'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserGroups from '@/composables/useUserGroups'
-import {ref} from "vue";
-import useSecurity from "@/composables/useSecurity";
+import {ref} from 'vue'
+import useSecurity from '@/composables/useSecurity'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

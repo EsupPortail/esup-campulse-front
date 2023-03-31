@@ -6,9 +6,9 @@ import type {
     User,
     UserGroup,
     UserRegister
-} from "#/user";
-import {_userAssociation} from "~/fixtures/association.mock";
-import {_groups} from "~/fixtures/group.mock";
+} from '#/user'
+import {_userAssociation} from '~/fixtures/association.mock'
+import {_groups} from '~/fixtures/group.mock'
 
 function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
     const permissions: string[] = []

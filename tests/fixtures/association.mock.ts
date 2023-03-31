@@ -1,5 +1,5 @@
 import type {Association, AssociationSearch, AssociationSocialNetwork, EditedAssociation} from '#/association'
-import type {UserAssociation} from "#/user";
+import type {UserAssociation} from '#/user'
 
 
 export const _association: Association = {

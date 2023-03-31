@@ -1,11 +1,11 @@
 import {ref} from 'vue'
-import i18n from "@/plugins/i18n";
+import i18n from '@/plugins/i18n'
 import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
 import type {AssociationRole} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useUserAssociations from "@/composables/useUserAssociations";
+import useUserAssociations from '@/composables/useUserAssociations'
 
 
 // Needed to modify the social networks of an association

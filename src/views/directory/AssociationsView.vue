@@ -120,7 +120,10 @@ async function clearSearch(apiSearch: boolean) {
     <section class="introduction">
         <div class="content">
             <div class="intro-image">
-                <img :alt="t('directory.image-alt')" src="/src/assets/img/unistra.jpg"/>
+                <img
+                    :alt="t('directory.image-alt')"
+                    src="/src/assets/img/unistra.jpg"
+                />
             </div>
             <div>
                 <h2 class="intro-title">{{ t('directory.subtitle') }}</h2>
@@ -144,8 +147,13 @@ async function clearSearch(apiSearch: boolean) {
             @submit.prevent="onSearch"
         >
             <fieldset>
-                <QInput v-model="settings.search" :label="t('directory.search')"
-                        :placeholder="t('directory.search-placeholder')" filled lazy-rules>
+                <QInput
+                    v-model="settings.search"
+                    :label="t('directory.search')"
+                    :placeholder="t('directory.search-placeholder')"
+                    filled
+                    lazy-rules
+                >
                     <template v-slot:prepend>
                         <QIcon name="mdi-magnify"/>
                     </template>
@@ -235,7 +243,6 @@ async function clearSearch(apiSearch: boolean) {
     <section class="directory-list">
         <div class="form-container">
             <div class="form">
-
                 <section class="directory-sorting">
                     <section>
                         <p v-if="associations.length > 0">
@@ -254,56 +261,60 @@ async function clearSearch(apiSearch: boolean) {
                     </section>
                 </section>
 
-                <QCard v-for="association in associationsOnPage" :key="association.id" class="my-card">
+                <QCard
+                    v-for="association in associationsOnPage"
+                    :key="association.id"
+                    class="my-card"
+                >
                     <div class="card-background"></div>
                     <i class="card-chevron bi bi-chevron-compact-right"></i>
                     <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
-                        <QCardSection>
-                            <div class="list-logo">
-                                <QImg
-                                    :alt="altLogoText(association)"
-                                    :ratio="1"
-                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/src/assets/img/no_logo_square.png') : '/src/assets/img/no_logo_square.png'"
-                                />
-                            </div>
-                            <div class="list-details">
-                                <h3>
-                                    <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
-                                        {{ association.name }}
-                                    </RouterLink>
-                                </h3>
-                                <ul>
-                                    <li v-if="association.acronym">
-                                        <span class="label">
-                                            <i class="bi bi-tag"></i>
-                                            {{ t('directory.labels.association-acronym') + ' : ' }}
-                                        </span>
-                                        <span class="value">{{ association.acronym }}</span>
-                                    </li>
-                                    <li v-if="association.institution">
-                                        <span class="label">
-                                            <i class="bi bi-bank2"></i>
-                                            {{ t('directory.labels.association-institution') + ' : ' }}
-                                        </span>
-                                        <span class="value">{{ association.institution.name }}</span>
-                                    </li>
-                                    <li v-if="association.activityField">
-                                        <span class="label">
-                                            <i class="bi bi-globe"></i>
-                                            {{ t('directory.labels.association-activity-field') + ' : ' }}
-                                        </span>
-                                        <span class="value">{{ association.activityField.name }}</span>
-                                    </li>
-                                    <li v-if="association.institutionComponent">
-                                        <span class="label">
-                                            <i class="bi bi-mortarboard"></i>
-                                            {{ t('directory.labels.association-institution-component') + ' : ' }}
-                                        </span>
-                                        <span class="value">{{ association.institutionComponent.name }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </QCardSection>
+                    <QCardSection>
+                        <div class="list-logo">
+                            <QImg
+                                :alt="altLogoText(association)"
+                                :ratio="1"
+                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '/src/assets/img/no_logo_square.png') : '/src/assets/img/no_logo_square.png'"
+                            />
+                        </div>
+                        <div class="list-details">
+                            <h3>
+                                <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
+                                    {{ association.name }}
+                                </RouterLink>
+                            </h3>
+                            <ul>
+                                <li v-if="association.acronym">
+                                    <span class="label">
+                                        <i class="bi bi-tag"></i>
+                                        {{ t('directory.labels.association-acronym') + ' : ' }}
+                                    </span>
+                                    <span class="value">{{ association.acronym }}</span>
+                                </li>
+                                <li v-if="association.institution">
+                                    <span class="label">
+                                        <i class="bi bi-bank2"></i>
+                                        {{ t('directory.labels.association-institution') + ' : ' }}
+                                    </span>
+                                    <span class="value">{{ association.institution.name }}</span>
+                                </li>
+                                <li v-if="association.activityField">
+                                    <span class="label">
+                                        <i class="bi bi-globe"></i>
+                                        {{ t('directory.labels.association-activity-field') + ' : ' }}
+                                    </span>
+                                    <span class="value">{{ association.activityField.name }}</span>
+                                </li>
+                                <li v-if="association.institutionComponent">
+                                    <span class="label">
+                                        <i class="bi bi-mortarboard"></i>
+                                        {{ t('directory.labels.association-institution-component') + ' : ' }}
+                                    </span>
+                                    <span class="value">{{ association.institutionComponent.name }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </QCardSection>
                     <!-- </RouterLink> -->
                 </QCard>
                 <QPagination

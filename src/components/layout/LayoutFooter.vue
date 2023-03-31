@@ -1,14 +1,18 @@
 <script lang="ts" setup>
 import {RouterLink} from 'vue-router'
 import {useI18n} from 'vue-i18n'
-import useColorVariants from "@/composables/useColorVariants";
+import useColorVariants from '@/composables/useColorVariants'
 
 const {t} = useI18n()
 const {colorVariant} = useColorVariants()
 </script>
 
 <template>
-    <QFooter id="layout-footer" :class="'variant-' + colorVariant" elevated>
+    <QFooter
+        id="layout-footer"
+        :class="'variant-' + colorVariant"
+        elevated
+    >
         <div id="footer-logos">
             <div class="wrapper">
                 <RouterLink to="/">
@@ -33,10 +37,23 @@ const {colorVariant} = useColorVariants()
         </div>
         <QToolbar>
             <div class="footer-text">
-                <RouterLink class="li-footer" to="/"><i class="bi bi-card-text"></i>{{ t("footer.about") }}</RouterLink>
-                <RouterLink class="li-footer" to="/"><i class="bi bi-envelope"></i>{{ t("footer.legal-notice") }}
+                <RouterLink
+                    class="li-footer"
+                    to="/"
+                >
+                    <i class="bi bi-card-text"></i>{{ t("footer.about") }}
                 </RouterLink>
-                <RouterLink class="li-footer" to="/"><i class="bi bi-envelope"></i>{{ t("footer.contact") }}
+                <RouterLink
+                    class="li-footer"
+                    to="/"
+                >
+                    <i class="bi bi-envelope"></i>{{ t("footer.legal-notice") }}
+                </RouterLink>
+                <RouterLink
+                    class="li-footer"
+                    to="/"
+                >
+                    <i class="bi bi-envelope"></i>{{ t("footer.contact") }}
                 </RouterLink>
                 <!-- <QToolbarTitle>{{ t("footer.copyright") }}</QToolbarTitle> -->
             </div>

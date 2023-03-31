@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
 import {useUserStore} from '@/stores/useUserStore'
-import {useI18n} from "vue-i18n";
+import {useI18n} from 'vue-i18n'
 
 const userStore = useUserStore()
 const newUser = userStore.newUser
@@ -21,8 +21,14 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
             </span>
             Connectez-vous pour accéder à votre espace et effectuer vos démarches !
         </p>
-        <div v-if="!newUser && !isCas" class="form-container">
-            <QCard id="cas-login" class="card">
+        <div
+            v-if="!newUser && !isCas"
+            class="form-container"
+        >
+            <QCard
+                id="cas-login"
+                class="card"
+            >
                 <QCardSection>
                     <div class="card-content">
                         <span class="card-title">{{ t("login.im-cas-user") }}</span>
@@ -42,7 +48,10 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                     </div>
                 </QCardSection>
             </QCard>
-            <QCard id="local-login" class="card">
+            <QCard
+                id="local-login"
+                class="card"
+            >
                 <QCardSection>
                     <div class="card-content">
                         <span class="card-title">{{ t("login.im-not-cas-user") }}</span>
@@ -52,13 +61,19 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                 </QCardSection>
             </QCard>
         </div>
-        <div v-else class="form-container">
-            <QCard id="aborted-cas-registration" class="card">
+        <div
+            v-else
+            class="form-container"
+        >
+            <QCard
+                id="aborted-cas-registration"
+                class="card"
+            >
                 <QCardSection>
                     <div class="card-content">
-            <span class="card-title">
-                {{ t('alerts.aborted-cas-registration.title') }}
-            </span>
+                        <span class="card-title">
+                            {{ t('alerts.aborted-cas-registration.title') }}
+                        </span>
                         {{ t('alerts.aborted-cas-registration.message') }}
                         <div>
                             <QBtn

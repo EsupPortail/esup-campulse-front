@@ -2,7 +2,7 @@ import type {RouteLocationMatched, RouteParams} from 'vue-router'
 
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
 
-export default function () {
+export default function() {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -15,16 +15,19 @@ export default function () {
 
     // To test
     function fromDateIsAnterior(from: string, to: string) {
-        let result = true
-        if (from === '' || to === '') return result
-        const splitFrom = from.split('-')
-        const splitTo = to.split('-')
-        for (let i = 0; i < splitFrom.length; i++) {
-            if (splitFrom[i] > splitTo[i]) {
-                result = false
-                break
-            }
+        let dateFrom: string | Date = from
+        let dateTo: string | Date = to
+        if (from !== '') {
+            dateFrom = new Date(from)
         }
+        if (to !== '') {
+            dateTo = new Date(to)
+        }
+        const dateToday = new Date()
+        dateToday.setHours(0, 0, 0, 0)
+        let result = true
+        if ((dateFrom < dateToday) || (dateTo !== '' && dateTo < dateToday)) result = false
+        else if (dateTo !== '' && dateFrom > dateTo) result = false
         return result
     }
 

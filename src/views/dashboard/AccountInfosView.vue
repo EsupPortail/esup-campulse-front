@@ -5,13 +5,13 @@ import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import {useUserStore} from '@/stores/useUserStore'
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
-import axios from "axios";
-import useUsers from "@/composables/useUsers";
-import {useQuasar} from "quasar";
-import useUserAssociations from "@/composables/useUserAssociations";
-import FormDisplayUserAssociations from "@/components/form/FormDisplayUserAssociations.vue";
-import FormRegisterUserAssociations from "@/components/form/FormRegisterUserAssociations.vue";
-import useSecurity from "@/composables/useSecurity";
+import axios from 'axios'
+import useUsers from '@/composables/useUsers'
+import {useQuasar} from 'quasar'
+import useUserAssociations from '@/composables/useUserAssociations'
+import FormDisplayUserAssociations from '@/components/form/FormDisplayUserAssociations.vue'
+import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
+import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
 const userStore = useUserStore()
@@ -65,10 +65,10 @@ async function onUpdateUserAssociations() {
         await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
         await
-            notify({
-                type: 'positive',
-                message: t('notifications.positive.associations-successfully-updated')
-            })
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.associations-successfully-updated')
+        })
     } catch (error) {
         notify({
             type: 'negative',
@@ -88,7 +88,10 @@ async function onUpdateUserAssociations() {
         indicator-color="primary"
         narrow-indicator
     >
-        <QTab :label="t('dashboard.my-infos')" name="infos"/>
+        <QTab
+            :label="t('dashboard.my-infos')"
+            name="infos"
+        />
         <QTab
             v-if="!isStaff"
             :label="t('dashboard.my-associations')"
@@ -101,12 +104,18 @@ async function onUpdateUserAssociations() {
         />
     </QTabs>
 
-    <QTabPanels v-model="tab" animated>
+    <QTabPanels
+        v-model="tab"
+        animated
+    >
         <QTabPanel name="infos">
             <section class="association-cards dashboard-section">
                 <div class="form-title">
                     <h2>
-                        <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
+                        ></i>
                         {{ t('dashboard.my-infos') }}
                     </h2>
                 </div>
@@ -117,7 +126,10 @@ async function onUpdateUserAssociations() {
                             class="q-gutter-md"
                             @submit.prevent="onUpdateUserInfos"
                         >
-                            <FormUserInfosEdition :edited-by-staff="false" :user="userStore.user"/>
+                            <FormUserInfosEdition
+                                :edited-by-staff="false"
+                                :user="userStore.user"
+                            />
                             <QBtn
                                 :label="t('validate-changes')"
                                 type="submit"
@@ -132,7 +144,10 @@ async function onUpdateUserAssociations() {
             <section class="association-cards dashboard-section">
                 <div class="form-title">
                     <h2>
-                        <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
+                        ></i>
                         {{ t('dashboard.association-user.my-associations') }}
                     </h2>
                 </div>
@@ -150,7 +165,10 @@ async function onUpdateUserAssociations() {
             >
                 <div class="form-title">
                     <h2>
-                        <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
+                        ></i>
                         {{ t('dashboard.association-user.new-associations') }}
                     </h2>
                 </div>

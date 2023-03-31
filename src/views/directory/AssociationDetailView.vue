@@ -44,6 +44,7 @@ async function onGetAssociationDetail() {
 </script>
 
 <template>
+  <<<<<<< HEAD
   <section id="association-detail">
     <section class="association-logo-title">
       <div class="association-logo">
@@ -96,6 +97,7 @@ async function onGetAssociationDetail() {
         <article v-if="association?.presidentNames" class="display-row">
           <h3>{{ t("association.labels.president-name") }}</h3>
           <p>{{ association?.presidentNames }}</p>
+
         </article>
 
         <article v-if="association?.presidentPhone" class="display-row">
@@ -161,10 +163,20 @@ async function onGetAssociationDetail() {
       </div>
     </section>
     <section class="btn-group">
-      <QBtn :label="t('association.back-directory')" color="secondary" icon="mdi-arrow-left-circle"
-            to="/associations"/>
-      <QBtn v-if="association?.email" :href="`mailto:${association?.email}`" :label="t('association.contact')"
-            :title="`${t('association.contact')} ${association?.name}`" color="primary" icon="mdi-email"/>
+      <QBtn
+          :label="t('association.back-directory')"
+          color="secondary"
+          icon="mdi-arrow-left-circle"
+          to="/associations"
+      />
+      <QBtn
+          v-if="association?.email"
+          :href="`mailto:${association?.email}`"
+          :label="t('association.contact')"
+          :title="`${t('association.contact')} ${association?.name}`"
+          color="primary"
+          icon="mdi-email"
+      />
     </section>
   </section>
 </template>

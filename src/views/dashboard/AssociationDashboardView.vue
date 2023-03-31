@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {useAssociationStore} from "@/stores/useAssociationStore";
-import {onMounted, ref, watch} from "vue";
-import {useQuasar} from "quasar";
-import {useRoute} from "vue-router";
-import {useUserStore} from "@/stores/useUserStore";
-import type {Association} from "#/association";
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import {onMounted, ref, watch} from 'vue'
+import {useQuasar} from 'quasar'
+import {useRoute} from 'vue-router'
+import {useUserStore} from '@/stores/useUserStore'
+import type {Association} from '#/association'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -52,10 +52,13 @@ async function onGetAssociationDetail() {
 </script>
 
 <template>
-    <section class="dashboard-section">
+    <section
+        v-if="hasPresidentStatus || association?.isPublic || userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
+        class="dashboard-section"
+    >
         <h2>
             <QIcon name="mdi-format-list-bulleted-square"/>
-            {{ t('dashboard.manage-association-directory') }}
+            {{ t('dashboard.association-user.manage-association') }}
         </h2>
         <div class="form-container">
             <div class="form">
@@ -72,12 +75,11 @@ async function onGetAssociationDetail() {
                         :to="{ name: 'AssociationDetail', params: { id: association?.id } }"
                     />
                     <QBtn
-                        v-if="hasPresidentStatus"
+                        v-if="userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
                         :label="t('dashboard.association-user.delegate-presidency')"
                         :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
                         color="primary"
                     />
-
                 </div>
             </div>
         </div>
@@ -90,7 +92,6 @@ async function onGetAssociationDetail() {
         </h2>
         <div class="form-container">
             <div class="form">
-
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">

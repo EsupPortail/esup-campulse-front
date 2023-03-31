@@ -12,10 +12,17 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
 </script>
 
 <template>
-    <QDialog v-model="isCas" persistent>
+    <QDialog
+        v-model="isCas"
+        persistent
+    >
         <QCard>
             <QCardSection class="row no-wrap">
-                <QIcon color="negative" name="mdi-information-outline" size="md"/>
+                <QIcon
+                    color="negative"
+                    name="mdi-information-outline"
+                    size="md"
+                />
                 <span class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</span>
             </QCardSection>
             <QCardActions align="right">

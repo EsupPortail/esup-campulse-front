@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
-import useUserGroups from "@/composables/useUserGroups";
+import useUserGroups from '@/composables/useUserGroups'
 import type {User} from '#/user'
 
 const {t} = useI18n()
@@ -84,40 +84,68 @@ const columns: QTableProps['columns'] = [
 </script>
 
 <template>
-
     <section class="dashboard-section">
         <h2>
-            <i aria-hidden="true" class="bi bi-pencil-square"></i>
+            <i
+                aria-hidden="true"
+                class="bi bi-pencil-square"
+            ></i>
             {{ route.name === 'ValidateUsers' ? t("user-manager.validation") : t("user-manager.management") }}
         </h2>
         <div class="form-container">
             <div class="form">
-                <QTable :columns="columns" :rows="users" :rows-per-page-options="[10, 20, 50, 0]"
-                        :title="t('user-manager.users')"
-                        row-key="id">
+                <QTable
+                    :columns="columns"
+                    :rows="users"
+                    :rows-per-page-options="[10, 20, 50, 0]"
+                    :title="t('user-manager.users')"
+                    row-key="id"
+                >
                     <template v-slot:body="props">
                         <QTr :props="props">
-                            <QTd key="firstName" :props="props">
+                            <QTd
+                                key="firstName"
+                                :props="props"
+                            >
                                 {{ props.row.firstName }}
                             </QTd>
-                            <QTd key="lastName" :props="props">
+                            <QTd
+                                key="lastName"
+                                :props="props"
+                            >
                                 {{ props.row.lastName }}
                             </QTd>
-                            <QTd key="email" :props="props">
+                            <QTd
+                                key="email"
+                                :props="props"
+                            >
                                 {{ props.row.email }}
                             </QTd>
-                            <QTd key="associations" :props="props">
+                            <QTd
+                                key="associations"
+                                :props="props"
+                            >
                                 <ul>
-                                    <li v-for="(association, index) in props.row.associations" :key="index">
+                                    <li
+                                        v-for="(association, index) in props.row.associations"
+                                        :key="index"
+                                    >
                                         <QChip>{{ association.name }}</QChip>
                                     </li>
                                 </ul>
                             </QTd>
-                            <QTd key="groups" :props="props">
+                            <QTd
+                                key="groups"
+                                :props="props"
+                            >
                                 <ul>
-                                    <li v-for="(group, index) in props.row.groups" :key="index">
+                                    <li
+                                        v-for="(group, index) in props.row.groups"
+                                        :key="index"
+                                    >
                                         <QChip
-                                            v-if="props.row.groups.map((g) => g.groupId).indexOf(group.groupId) === index">
+                                            v-if="props.row.groups.map((g) => g.groupId).indexOf(group.groupId) === index"
+                                        >
                                             {{
                                                 getGroupLiteral(group.groupId)
                                             }}
@@ -125,9 +153,12 @@ const columns: QTableProps['columns'] = [
                                     </li>
                                 </ul>
                             </QTd>
-                            <QTd key="isValidatedByAdmin" :props="props">
+                            <QTd
+                                key="isValidatedByAdmin"
+                                :props="props"
+                            >
                                 <span class="form-state">
-                                                                            {{
+                                    {{
                                         props.row.isValidatedByAdmin ? t('validated') : t('validated-non')
                                     }}
 
@@ -138,7 +169,11 @@ const columns: QTableProps['columns'] = [
                                     </span>
                                 </span>
                             </QTd>
-                            <QTd key="edition" :props="props" class="actions-cell-compact">
+                            <QTd
+                                key="edition"
+                                :props="props"
+                                class="actions-cell-compact"
+                            >
                                 <div class="button-container">
                                     <QBtn
                                         v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"

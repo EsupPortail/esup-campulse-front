@@ -1,7 +1,7 @@
 import {fileURLToPath, URL} from 'url'
 
 import {defineConfig} from 'vite'
-import {quasar, transformAssetUrls} from '@quasar/vite-plugin';
+import {quasar, transformAssetUrls} from '@quasar/vite-plugin'
 import vue from '@vitejs/plugin-vue'
 
 
@@ -27,7 +27,7 @@ export default defineConfig({
         port: 3000,
     },
     test: {
-        environment: "jsdom"
+        environment: 'jsdom'
     }
     /*
     // Enable coverage for untested files.
