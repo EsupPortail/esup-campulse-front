@@ -24,18 +24,42 @@ onMounted(initValues)
 <template>
     <fieldset>
         <legend>{{ t('association.labels.socials') }}</legend>
-        <section v-for="(socialNetwork, index) in associationSocialNetworks" :key="index">
-            <QInput v-model="socialNetwork.type" :hint="t('forms.social-network-type-hint')"
+        <section
+            v-for="(socialNetwork, index) in associationSocialNetworks"
+            :key="index"
+        >
+            <QInput
+                v-model="socialNetwork.type"
+                :hint="t('forms.social-network-type-hint')"
                 :label="t('association.labels.social-network-type')"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]" filled lazy-rules />
-            <QInput v-model="socialNetwork.location" :hint="t('forms.social-network-location-hint')"
+                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                filled
+                lazy-rules
+            />
+            <QInput
+                v-model="socialNetwork.location"
+                :hint="t('forms.social-network-location-hint')"
                 :label="t('association.labels.social-network-location')"
-                :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]" filled
-                lazy-rules type="url" />
-            <QBtn :label="t('delete')" color="red" icon="mdi-delete" outline @click="removeNetwork(index)" />
+                :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
+                filled
+                lazy-rules
+                type="url"
+            />
+            <QBtn
+                :label="t('delete')"
+                color="red"
+                icon="mdi-delete"
+                outline
+                @click="removeNetwork(index)"
+            />
         </section>
-        <QBtn :label="t('association.labels.add-social-network')" color="primary" icon="mdi-plus-circle-outline" outline
-            @click="addNetwork" />
+        <QBtn
+            :label="t('association.labels.add-social-network')"
+            color="primary"
+            icon="mdi-plus-circle-outline"
+            outline
+            @click="addNetwork"
+        />
     </fieldset>
 </template>
 

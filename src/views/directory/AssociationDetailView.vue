@@ -46,16 +46,27 @@ async function onGetAssociationDetail() {
 <template>
     <section class="title">
         <div class="logo">
-            <QImg v-if="association" :alt="altLogoText(association)"
-                  :src="hasLogo ? association?.pathLogo?.detail : '/src/assets/img/no_logo_square.png'"/>
+            <QImg
+                v-if="association"
+                :alt="altLogoText(association)"
+                :src="hasLogo ? association?.pathLogo?.detail : '/src/assets/img/no_logo_square.png'"
+            />
         </div>
         <div class="name">
             <h1>{{ association?.name }}</h1>
-            <p v-if="association?.acronym" class="acronym">{{ association?.acronym }}</p>
+            <p
+                v-if="association?.acronym"
+                class="acronym"
+            >
+                {{ association?.acronym }}
+            </p>
             <p>{{ t("association.labels.charter-validity") }}</p>
         </div>
     </section>
-    <section v-if="association?.socialObject" class="socialObjectSection">
+    <section
+        v-if="association?.socialObject"
+        class="socialObjectSection"
+    >
         <p>{{ association?.socialObject }}</p>
     </section>
     <section>
@@ -78,7 +89,8 @@ async function onGetAssociationDetail() {
         </article>
     </section>
     <section
-        v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret">
+        v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret"
+    >
         <h2>{{ t("association.titles.admin") }}</h2>
         <article v-if="association?.presidentNames">
             <h3>{{ t("association.labels.president-name") }}</h3>
@@ -102,7 +114,8 @@ async function onGetAssociationDetail() {
         </article>
     </section>
     <section
-        v-if="association?.address || association?.phone || association?.email || association?.website || (association?.socialNetworks && association?.socialNetworks?.length > 0)">
+        v-if="association?.address || association?.phone || association?.email || association?.website || (association?.socialNetworks && association?.socialNetworks?.length > 0)"
+    >
         <h2>{{ t("association.titles.contact") }}</h2>
         <article v-if="association?.address">
             <h3>{{ t("association.labels.address") }}</h3>
@@ -118,14 +131,20 @@ async function onGetAssociationDetail() {
         </article>
         <article v-if="association?.website">
             <h3>{{ t("association.labels.website") }}</h3>
-            <a :href="association?.website" :title="`${t('association.labels.website-link')} ${association?.name}`">
+            <a
+                :href="association?.website"
+                :title="`${t('association.labels.website-link')} ${association?.name}`"
+            >
                 {{ association?.website }}
             </a>
         </article>
         <article v-if="association?.socialNetworks && association?.socialNetworks?.length > 0">
             <h3>{{ t("association.labels.socials") }}</h3>
             <ul>
-                <li v-for="(socialNetwork, index) in association?.socialNetworks" :key="index">
+                <li
+                    v-for="(socialNetwork, index) in association?.socialNetworks"
+                    :key="index"
+                >
                     <a :href="socialNetwork?.location">
                         {{ socialNetwork?.type }}
                     </a>
@@ -134,10 +153,20 @@ async function onGetAssociationDetail() {
         </article>
     </section>
     <section class="btn-group">
-        <QBtn :label="t('association.back-directory')" color="secondary" icon="mdi-arrow-left-circle"
-              to="/associations"/>
-        <QBtn v-if="association?.email" :href="`mailto:${association?.email}`" :label="t('association.contact')"
-              :title="`${t('association.contact')} ${association?.name}`" color="primary" icon="mdi-email"/>
+        <QBtn
+            :label="t('association.back-directory')"
+            color="secondary"
+            icon="mdi-arrow-left-circle"
+            to="/associations"
+        />
+        <QBtn
+            v-if="association?.email"
+            :href="`mailto:${association?.email}`"
+            :label="t('association.contact')"
+            :title="`${t('association.contact')} ${association?.name}`"
+            color="primary"
+            icon="mdi-email"
+        />
     </section>
 </template>
 

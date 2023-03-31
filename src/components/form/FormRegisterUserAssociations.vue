@@ -68,7 +68,10 @@ function clearOptions() {
                 <legend class="legend-big">{{ title }}</legend>
                 <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
-                <div v-for="(association, index) in newAssociations" :key="index">
+                <div
+                    v-for="(association, index) in newAssociations"
+                    :key="index"
+                >
                     <QSelect
                         v-model="association.id"
                         :label="t('forms.select-association')"
@@ -93,20 +96,24 @@ function clearOptions() {
                     />
                     <QBtn
                         :label="t('forms.delete-association')"
-                        color="red" icon="mdi-minus-circle-outline"
+                        color="red"
+                        icon="mdi-minus-circle-outline"
                         outline
                         @click="removeAssociation(index)"
                     />
                     <QSeparator/>
                 </div>
-                <QBtn v-if="newAssociations.length < (5 - userAssociations.length)" :label="t('forms.add-association')"
-                      class="add-association"
-                      color="primary"
-                      icon="mdi-plus-circle-outline" @click="addAssociation"/>
+                <QBtn
+                    v-if="newAssociations.length < (5 - userAssociations.length)"
+                    :label="t('forms.add-association')"
+                    class="add-association"
+                    color="primary"
+                    icon="mdi-plus-circle-outline"
+                    @click="addAssociation"
+                />
             </fieldset>
         </QCardSection>
     </QCard>
-
 </template>
 
 <style lang="sass" scoped>

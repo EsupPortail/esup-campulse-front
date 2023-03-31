@@ -79,20 +79,26 @@ async function onDelegatePresidency(activate: boolean) {
         icon="bi-pencil"
         @click="openDelegationPanel = true"
     />
-    <QDialog v-model="openDelegationPanel" persistent>
+    <QDialog
+        v-model="openDelegationPanel"
+        persistent
+    >
         <QCard>
             <QCardSection class="row items-center">
                 <QForm
                     class="q-gutter-md"
                     @submit.prevent="onDelegatePresidency(true)"
                 >
-                    <h3 class="section-title"><i class="bi bi-card-text"></i>
+                    <h3 class="section-title">
+                        <i class="bi bi-card-text"></i>
                         {{ t('dashboard.association-user.delegate-presidency') }}
                     </h3>
 
-                    <p>{{ t('dashboard.association-user.i-delegate-presidency') }} <strong>{{
+                    <p>
+                        {{ t('dashboard.association-user.i-delegate-presidency') }} <strong>{{
                             memberRef.firstName + ' ' + memberRef.lastName
-                        }}</strong></p>
+                        }}</strong>
+                    </p>
 
                     <QInput
                         v-model="delegation.from"

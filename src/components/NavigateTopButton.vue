@@ -24,7 +24,10 @@ const buttonVisible = ref(false)
 </script>
 
 <template>
-    <div class="navigate-top-button" :class="{ 'visible': buttonVisible }">
+    <div
+        class="navigate-top-button"
+        :class="{ 'visible': buttonVisible }"
+    >
         <button @click="scrollToTop">
             <i class="bi bi-arrow-up-short"></i>
         </button>

@@ -9,7 +9,10 @@ const route = useRoute()
 </script>
 
 <template>
-    <QLayout id="layout-page" view="hHh lpR fFf">
+    <QLayout
+        id="layout-page"
+        view="hHh lpR fFf"
+    >
         <LayoutHeader/>
         <LayoutBreadcrumbs v-if="route.name !== 'Home'"/>
         <LayoutContent/>

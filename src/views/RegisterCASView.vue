@@ -3,11 +3,11 @@ import FormRegister from '@/components/form/FormRegister.vue'
 </script>
 
 <template>
-  <QCard class="card">
-    <QCardSection>
-      <FormRegister />
-    </QCardSection>
-  </QCard>
+    <QCard class="card">
+        <QCardSection>
+            <FormRegister />
+        </QCardSection>
+    </QCard>
 </template>
 
 <style lang="sass" scoped>

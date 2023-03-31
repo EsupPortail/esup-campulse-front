@@ -9,16 +9,10 @@
         "vue/setup-compiler-macros": true
     },
     "rules": {
-        "indent": [
-            "warn",
-            4
-        ],
+        "indent": "warn",
         "no-console": "off",
         "no-debugger": "off",
-        "object-curly-spacing": [
-            "warn",
-            "never"
-        ],
+        "object-curly-spacing": "warn",
         "quotes": [
             "warn",
             "single"
@@ -32,6 +26,14 @@
             {
                 "ts-ignore": "allow-with-description"
             }
-        ]
+        ],
+        "vue/first-attribute-linebreak": "warn",
+        "vue/html-closing-bracket-newline": "warn",
+        "vue/html-indent": [
+            "warn",
+            4
+        ],
+        "vue/max-attributes-per-line": "warn",
+        "vue/multiline-html-element-content-newline": "warn"
     }
 }

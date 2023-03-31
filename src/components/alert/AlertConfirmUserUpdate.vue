@@ -58,7 +58,10 @@ async function onValidateChanges() {
         @click="confirmation = true"
     />
 
-    <QDialog v-model="confirmation" persistent>
+    <QDialog
+        v-model="confirmation"
+        persistent
+    >
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{ t('user-manager.alert-confirm-update') }}</span>

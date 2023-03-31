@@ -134,28 +134,45 @@ async function onConfirmChanges(emailType: string) {
             :label="t('association.confirm-all-changes')"
             color="primary"
             icon="mdi-pencil"
-            @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"/>
+            @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"
+        />
     </div>
 
-    <QDialog v-model="changes" persistent>
+    <QDialog
+        v-model="changes"
+        persistent
+    >
         <QCard>
             <QCardSection class="row items-center dialog-message">
                 <span class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</span>
                 <template v-if="switches === 'email'">
-                    <ul v-for="association in selectedAssociations" :key="association.id">
+                    <ul
+                        v-for="association in selectedAssociations"
+                        :key="association.id"
+                    >
                         <li v-if="association.email !== ''">{{ association.name }}</li>
                     </ul>
                 </template>
                 <template v-else>
-                    <ul v-for="association in selectedAssociations" :key="association.id">
+                    <ul
+                        v-for="association in selectedAssociations"
+                        :key="association.id"
+                    >
                         <li>{{ association.name }}</li>
                     </ul>
                 </template>
             </QCardSection>
             <QCardSection v-if="switches === 'delete'">
-                <QInput v-model=deletionWord :label="t('association.before-deletion-word-instruction')" @paste.prevent/>
+                <QInput
+                    v-model=deletionWord
+                    :label="t('association.before-deletion-word-instruction')"
+                    @paste.prevent
+                />
             </QCardSection>
-            <QCardActions align="center" class="dialog-card-actions">
+            <QCardActions
+                align="center"
+                class="dialog-card-actions"
+            >
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"

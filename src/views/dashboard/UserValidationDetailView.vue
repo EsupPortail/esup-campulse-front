@@ -96,7 +96,6 @@ async function onDeleteUser() {
 
         <div class="form-container">
             <div class="form">
-
                 <div class="rows-container">
                     <article class="display-row">
                         <h3 class="row-title">{{ t('user.first-name') }}</h3>
@@ -134,35 +133,38 @@ async function onDeleteUser() {
 
         <div class="form-container">
             <div class="form">
-
                 <div v-if="userManagerStore.userAssociations.length">
-
                     <div class="rows-container">
-                        <article v-for="(association, index) in userManagerStore.userAssociations" :key="index"
-                                 class="display-row">
+                        <article
+                            v-for="(association, index) in userManagerStore.userAssociations"
+                            :key="index"
+                            class="display-row"
+                        >
                             <h3 class="row-title">{{ association.association.name }}</h3>
                             <ul>
-                                <li>{{ t('dashboard.association-user.is-president') }} :
+                                <li>
+                                    {{ t('dashboard.association-user.is-president') }} :
                                     {{ association.isPresident ? t('yes') : t('no') }}
                                 </li>
-                                <li>{{ t('dashboard.association-user.can-be-president') }} :
+                                <li>
+                                    {{ t('dashboard.association-user.can-be-president') }} :
                                     {{ association.canBePresident ? t('yes') : t('no') }}
                                 </li>
-                                <li>{{ t('dashboard.association-user.is-secretary') }} :
+                                <li>
+                                    {{ t('dashboard.association-user.is-secretary') }} :
                                     {{ association.isSecretary ? t('yes') : t('no') }}
                                 </li>
-                                <li>{{ t('dashboard.association-user.is-treasurer') }} :
+                                <li>
+                                    {{ t('dashboard.association-user.is-treasurer') }} :
                                     {{ association.isTreasurer ? t('yes') : t('no') }}
                                 </li>
                             </ul>
                         </article>
                     </div>
-
                 </div>
                 <div v-else>
                     <p class="no-data-label">{{ t('dashboard.association-user.not-association-member') }}</p>
                 </div>
-
             </div>
         </div>
     </section>
@@ -178,11 +180,24 @@ async function onDeleteUser() {
         </div>
     </section>
     <section class="form-page-navigation">
-        <QBtn :label="t('back')" :to="{ name: 'ValidateUsers' }" color="secondary" icon="bi-chevron-compact-left"/>
-        <QBtn :label="t('user-manager.delete-account-application')" color="red" icon="bi-file-earmark-x"
-              @click="onDeleteUser"/>
-        <QBtn :label="t('user-manager.validate-account')" color="primary" icon-right="bi-check2"
-              @click="onValidateUser"/>
+        <QBtn
+            :label="t('back')"
+            :to="{ name: 'ValidateUsers' }"
+            color="secondary"
+            icon="bi-chevron-compact-left"
+        />
+        <QBtn
+            :label="t('user-manager.delete-account-application')"
+            color="red"
+            icon="bi-file-earmark-x"
+            @click="onDeleteUser"
+        />
+        <QBtn
+            :label="t('user-manager.validate-account')"
+            color="primary"
+            icon-right="bi-check2"
+            @click="onValidateUser"
+        />
     </section>
 </template>
 

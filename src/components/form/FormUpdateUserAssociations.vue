@@ -38,7 +38,8 @@ async function onGetUserAssociations() {
     <p v-if="userAssociations.length === 0">
         {{
             t('user.has-no-association')
-        }}</p>
+        }}
+    </p>
     <QCard
         v-for="association in userAssociations"
         :key="association.id ? association.id : 0"
@@ -68,9 +69,9 @@ async function onGetUserAssociations() {
                             @click="association.deleteAssociation = true"
                         />
                         <div v-else>
-                                <span class="delete-message">
-                                    {{ t('user.delete-association-role') }}
-                                </span>
+                            <span class="delete-message">
+                                {{ t('user.delete-association-role') }}
+                            </span>
                             <QBtn
                                 :label="t('cancel-delete')"
                                 icon="mdi-cancel"

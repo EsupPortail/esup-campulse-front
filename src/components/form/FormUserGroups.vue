@@ -108,7 +108,6 @@ function onInitGroupLabels() {
             style="width: 250px"
             use-chips
         />
-
     </fieldset>
 </template>
 

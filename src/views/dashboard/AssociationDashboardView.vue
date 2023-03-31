@@ -77,7 +77,6 @@ async function onGetAssociationDetail() {
                         :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
                         color="primary"
                     />
-
                 </div>
             </div>
         </div>
@@ -90,7 +89,6 @@ async function onGetAssociationDetail() {
         </h2>
         <div class="form-container">
             <div class="form">
-
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">

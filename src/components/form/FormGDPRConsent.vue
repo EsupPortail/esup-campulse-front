@@ -11,7 +11,11 @@ const props = defineProps({
 <template>
     <fieldset>
         <div>
-            <QCheckbox :label="t('forms.gdpr')" :model-value="props.hasConsent" @click="$emit('updateConsent')"/>
+            <QCheckbox
+                :label="t('forms.gdpr')"
+                :model-value="props.hasConsent"
+                @click="$emit('updateConsent')"
+            />
         </div>
     </fieldset>
 </template>

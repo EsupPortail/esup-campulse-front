@@ -30,14 +30,26 @@ function ToggleMenu() {
     >
         <QToolbar>
             <QToolbarTitle>
-                <RouterLink :to="{name: 'Home'}" class="home-link">{{ t("header.title") }}</RouterLink>
+                <RouterLink
+                    :to="{name: 'Home'}"
+                    class="home-link"
+                >
+                    {{ t("header.title") }}
+                </RouterLink>
             </QToolbarTitle>
 
             <div id="menu-items">
-                <button id="mobile-menu-button" @click="ToggleMenu">
+                <button
+                    id="mobile-menu-button"
+                    @click="ToggleMenu"
+                >
                     <i class="bi bi-list"></i>
                 </button>
-                <span id="mobile-menu-background" :class="{ 'visible': mobileMenuVisible }" aria-hidden="true"></span>
+                <span
+                    id="mobile-menu-background"
+                    :class="{ 'visible': mobileMenuVisible }"
+                    aria-hidden="true"
+                ></span>
 
                 <LayoutHeaderNav :class="{ 'visible': mobileMenuVisible }"/>
             </div>
@@ -54,17 +66,16 @@ function ToggleMenu() {
 
             <div id="header-title">
                 <h1 v-if="title">
-                <span id="header-title-icon">
-                    <i class="bi bi-geo-alt space-1-icon"></i>
-                    <i class="bi bi-book space-2-icon"></i>
-                    <i class="bi bi-send space-3-icon"></i>
-                    <i class="bi bi-send space-4-icon"></i>
-                </span>
+                    <span id="header-title-icon">
+                        <i class="bi bi-geo-alt space-1-icon"></i>
+                        <i class="bi bi-book space-2-icon"></i>
+                        <i class="bi bi-send space-3-icon"></i>
+                        <i class="bi bi-send space-4-icon"></i>
+                    </span>
                     {{ title }}
                 </h1>
             </div>
         </div>
-
     </QHeader>
 </template>
 

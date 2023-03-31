@@ -91,17 +91,20 @@ async function onRegister() {
 
 <template>
     <section class="dashboard-section">
-
-        <QForm class="q-gutter-md" @submit.prevent="onRegister">
-
+        <QForm
+            class="q-gutter-md"
+            @submit.prevent="onRegister"
+        >
             <h2>
-                <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
                 {{ t('user.infos') }}
             </h2>
 
             <div class="form-container">
                 <div class="form">
-
                     <FormAddUserFromLDAP v-if="isStaff"/>
 
                     <QInput
@@ -109,7 +112,8 @@ async function onRegister() {
                         :disable="!!userStore.isCas || newUser.isCas"
                         :label="t('forms.first-name')"
                         :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-                        filled lazy-rules
+                        filled
+                        lazy-rules
                     />
                     <QInput
                         v-model="newUser.lastName"
@@ -122,8 +126,9 @@ async function onRegister() {
                     <QInput
                         v-model="newUser.email"
                         :disable="!!userStore.isCas || newUser.isCas"
-                        :label="t('forms.email')" :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
-                        val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
+                        :label="t('forms.email')"
+                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
+                                 val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
                         filled
                         lazy-rules
                     >
@@ -136,14 +141,21 @@ async function onRegister() {
                         filled
                         lazy-rules
                     />
-                    <QInput v-model="newUser.phone" :label="t('forms.phone')" filled hint="Format : 06 00 00 00 00"
-                            lazy-rules
-                            mask="## ## ## ## ##"/>
-
+                    <QInput
+                        v-model="newUser.phone"
+                        :label="t('forms.phone')"
+                        filled
+                        hint="Format : 06 00 00 00 00"
+                        lazy-rules
+                        mask="## ## ## ## ##"
+                    />
                 </div>
             </div>
             <h2>
-                <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
                 {{ t('user.groups') }}
             </h2>
             <div class="form-container">
@@ -153,7 +165,10 @@ async function onRegister() {
             </div>
 
             <h2>
-                <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
                 {{ t('user.associations') }}
             </h2>
             <div class="form-container">
@@ -164,7 +179,10 @@ async function onRegister() {
 
             >
             <h2>
-                <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
                 {{ t('forms.gdpr-title') }}
             </h2>
             <div class="form-container">
@@ -174,7 +192,11 @@ async function onRegister() {
                         :has-consent="hasConsent"
                         @update-consent="hasConsent = !hasConsent"
                     />
-                    <QBtn :label="t('forms.send')" color="primary" type="submit"/>
+                    <QBtn
+                        :label="t('forms.send')"
+                        color="primary"
+                        type="submit"
+                    />
                 </div>
             </div>
         </QForm>

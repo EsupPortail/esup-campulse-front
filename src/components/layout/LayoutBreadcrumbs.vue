@@ -29,7 +29,10 @@ onMounted(() => {
         id="layout-breadcrumbs"
         :class="'variant-' + colorVariant"
     >
-        <QBreadcrumbs gutter="none" separator="">
+        <QBreadcrumbs
+            gutter="none"
+            separator=""
+        >
             <QBreadcrumbsEl
                 :label="t('breadcrumbs.home')"
                 :to="{ name: 'Home' }"

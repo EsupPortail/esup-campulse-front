@@ -4,7 +4,10 @@ import LayoutContent from '@/components/layout/LayoutContent.vue'
 import LayoutFooter from '@/components/layout/LayoutFooter.vue'</script>
 
 <template>
-    <QLayout id="layout-page" view="hHh lpR fFf">
+    <QLayout
+        id="layout-page"
+        view="hHh lpR fFf"
+    >
         <LayoutMinimalHeader/>
         <LayoutContent/>
         <LayoutFooter/>

@@ -96,7 +96,6 @@ function onReset() {
                     class="q-gutter-md"
                     @submit.prevent="onGetUsersFromCAS"
                 >
-
                     <h3>{{ t('dashboard.search-user-via-cas') }}</h3>
                     <QInput
                         v-model="lastName"
@@ -106,8 +105,16 @@ function onReset() {
                         lazy-rules
                     />
                     <div class="btn-group">
-                        <QBtn :label="t('cancel')" color="primary" @click="onReset"/>
-                        <QBtn :label="t('search')" color="primary" type="submit"/>
+                        <QBtn
+                            :label="t('cancel')"
+                            color="primary"
+                            @click="onReset"
+                        />
+                        <QBtn
+                            :label="t('search')"
+                            color="primary"
+                            type="submit"
+                        />
                     </div>
                 </QForm>
                 <QForm

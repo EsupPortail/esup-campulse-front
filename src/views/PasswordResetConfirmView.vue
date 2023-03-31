@@ -6,6 +6,6 @@ const {t} = useI18n()
 </script>
 
 <template>
-  <h1>{{ t("password.new-password") }}</h1>
-  <FormPasswordResetConfirm />
+    <h1>{{ t("password.new-password") }}</h1>
+    <FormPasswordResetConfirm />
 </template>

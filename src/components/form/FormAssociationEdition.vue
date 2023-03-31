@@ -148,13 +148,35 @@ async function onChangeLogo(action: string) {
     <QForm @submit.prevent="onChangeLogo('update')">
         <fieldset>
             <div class="logo">
-                <QImg :alt="altLogoText(association)" :ratio="1"
-                      :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '/src/assets/img/no_logo_square.png') : '/src/assets/img/no_logo_square.png'"/>
+                <QImg
+                    :alt="altLogoText(association)"
+                    :ratio="1"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '/src/assets/img/no_logo_square.png') : '/src/assets/img/no_logo_square.png'"
+                />
             </div>
-            <QFile v-model="newLogo" :label="t('association.logo.pickup')" accept=".jpg, .jpeg, .png" filled/>
-            <QInput v-model="altLogo" :label="t('association.logo.alt')" filled/>
-            <QBtn :label="t('association.logo.update')" color="primary" icon="mdi-check-circle" type="submit"/>
-            <QBtn :label="t('association.logo.remove')" color="red" icon="mdi-delete" @click="onChangeLogo('delete')"/>
+            <QFile
+                v-model="newLogo"
+                :label="t('association.logo.pickup')"
+                accept=".jpg, .jpeg, .png"
+                filled
+            />
+            <QInput
+                v-model="altLogo"
+                :label="t('association.logo.alt')"
+                filled
+            />
+            <QBtn
+                :label="t('association.logo.update')"
+                color="primary"
+                icon="mdi-check-circle"
+                type="submit"
+            />
+            <QBtn
+                :label="t('association.logo.remove')"
+                color="red"
+                icon="mdi-delete"
+                @click="onChangeLogo('delete')"
+            />
         </fieldset>
     </QForm>
 
@@ -165,7 +187,8 @@ async function onChangeLogo(action: string) {
                 v-model="association.name"
                 :disable=!isStaff
                 :label="t('association.labels.name')"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]" filled
+                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                filled
                 lazy-rules
             />
             <QInput
@@ -202,8 +225,14 @@ async function onChangeLogo(action: string) {
                 filled
                 map-options
             />
-            <QSelect v-model="association.activityField" :label="t('association.labels.activity-field')"
-                     :options="associationStore.activityFieldLabels" emit-value filled map-options/>
+            <QSelect
+                v-model="association.activityField"
+                :label="t('association.labels.activity-field')"
+                :options="associationStore.activityFieldLabels"
+                emit-value
+                filled
+                map-options
+            />
         </fieldset>
         <fieldset>
             <legend>{{ t('association.titles.admin') }}</legend>
@@ -212,13 +241,27 @@ async function onChangeLogo(action: string) {
                 :label="t('association.labels.president-name')"
                 filled
             />
-            <QInput v-model="association.presidentPhone" :label="t('association.labels.president-phone')" filled/>
-            <QInput v-model="association.lastGoaDate" :label="t('association.labels.last-goa')" filled type="date">
+            <QInput
+                v-model="association.presidentPhone"
+                :label="t('association.labels.president-phone')"
+                filled
+            />
+            <QInput
+                v-model="association.lastGoaDate"
+                :label="t('association.labels.last-goa')"
+                filled
+                type="date"
+            >
                 <template v-slot:prepend>
                     <QIcon name="mdi-calendar"/>
                 </template>
             </QInput>
-            <QInput v-model="association.siret" :label="t('association.labels.siret')" filled inputmode="numeric"/>
+            <QInput
+                v-model="association.siret"
+                :label="t('association.labels.siret')"
+                filled
+                inputmode="numeric"
+            />
             <QInput
                 v-if="hasPerm('change_association_all_fields')"
                 v-model="association.amountMembersAllowed"
@@ -235,9 +278,24 @@ async function onChangeLogo(action: string) {
                 :label="t('association.labels.address')"
                 filled
             />
-            <QInput v-model="association.phone" :label="t('association.labels.phone')" filled type="tel"/>
-            <QInput v-model="association.email" :label="t('association.labels.mail')" filled type="email"/>
-            <QInput v-model="association.website" :label="t('association.labels.website')" filled type="url"/>
+            <QInput
+                v-model="association.phone"
+                :label="t('association.labels.phone')"
+                filled
+                type="tel"
+            />
+            <QInput
+                v-model="association.email"
+                :label="t('association.labels.mail')"
+                filled
+                type="email"
+            />
+            <QInput
+                v-model="association.website"
+                :label="t('association.labels.website')"
+                filled
+                type="url"
+            />
         </fieldset>
         <FormAssociationSocialNetworks/>
         <section class="btn-group">
@@ -255,7 +313,8 @@ async function onChangeLogo(action: string) {
                 v-if="isStaff"
             />
             <AlertConfirmAssociationPublication
-                v-if="associationStore.association?.isEnabled && associationStore.association?.isSite"/>
+                v-if="associationStore.association?.isEnabled && associationStore.association?.isSite"
+            />
             <AlertConfirmAssociationDeletion
                 v-if="isStaff && !associationStore.association?.isEnabled"
             />

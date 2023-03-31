@@ -6,6 +6,6 @@ const {t} = useI18n()
 </script>
 
 <template>
-  <h1>{{ t("register.register-resend") }}</h1>
-  <FormResendEmail />
+    <h1>{{ t("register.register-resend") }}</h1>
+    <FormResendEmail />
 </template>

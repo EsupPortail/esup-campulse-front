@@ -38,11 +38,17 @@ async function onEnableAssociation() {
 </script>
 
 <template>
-    <QBtn :color="isEnabled ? 'orange' : 'green'" :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
+    <QBtn
+        :color="isEnabled ? 'orange' : 'green'"
+        :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
         :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
-        @click="openAlert = true" />
+        @click="openAlert = true"
+    />
 
-    <QDialog v-model="openAlert" persistent>
+    <QDialog
+        v-model="openAlert"
+        persistent
+    >
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{
@@ -51,11 +57,19 @@ async function onEnableAssociation() {
             </QCardSection>
 
             <QCardActions align="right">
-                <QBtn v-close-popup :label="t('cancel')" color="secondary" icon="mdi-arrow-left-circle" />
-                <QBtn v-close-popup :color="isEnabled ? 'orange' : 'green'"
+                <QBtn
+                    v-close-popup
+                    :label="t('cancel')"
+                    color="secondary"
+                    icon="mdi-arrow-left-circle"
+                />
+                <QBtn
+                    v-close-popup
+                    :color="isEnabled ? 'orange' : 'green'"
                     :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
                     :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
-                    @click="onEnableAssociation" />
+                    @click="onEnableAssociation"
+                />
             </QCardActions>
         </QCard>
     </QDialog>

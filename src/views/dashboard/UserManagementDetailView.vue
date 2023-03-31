@@ -76,14 +76,20 @@ onBeforeRouteLeave((to, from, next) => {
         <section class="association-cards dashboard-section">
             <div class="form-title">
                 <h2>
-                    <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
+                    ></i>
                     {{ t('user-manager.user-infos') }}
                 </h2>
             </div>
 
             <div class="form-container">
                 <div class="form">
-                    <FormUserInfosEdition :edited-by-staff="true" :user="userManagerStore.user"/>
+                    <FormUserInfosEdition
+                        :edited-by-staff="true"
+                        :user="userManagerStore.user"
+                    />
                 </div>
             </div>
         </section>
@@ -91,7 +97,10 @@ onBeforeRouteLeave((to, from, next) => {
         <section class="association-cards dashboard-section">
             <div class="form-title">
                 <h2>
-                    <i aria-hidden="true" class="bi bi-pencil-square"></i>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
+                    ></i>
                     {{ t('user-manager.user-associations') }}
                 </h2>
             </div>

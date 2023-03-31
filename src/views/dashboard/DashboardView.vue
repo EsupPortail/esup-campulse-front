@@ -49,7 +49,10 @@ onMounted(async () => {
     </section>
 
     <!-- My associations, for association members only -->
-    <section v-if="associationCounter > 0" class="dashboard-section">
+    <section
+        v-if="associationCounter > 0"
+        class="dashboard-section"
+    >
         <h2>
             <QIcon name="mdi-card-account-details-outline"/>
             {{ t('dashboard.association-user.my-associations') }}
@@ -73,9 +76,11 @@ onMounted(async () => {
     </section>
 
     <!-- Association management, for staff only -->
-    <section v-if="isStaff &&
-        (hasPerm('change_association') ||
-            hasPerm('add_association'))" class="dashboard-section"
+    <section
+        v-if="isStaff &&
+            (hasPerm('change_association') ||
+                hasPerm('add_association'))"
+        class="dashboard-section"
     >
         <h2>
             <QIcon name="mdi-format-list-bulleted-square"/>
@@ -104,7 +109,7 @@ onMounted(async () => {
     <!-- User management, for staff only -->
     <section
         v-if="isStaff && (hasPerm('change_user') ||
-        hasPerm('add_user'))"
+            hasPerm('add_user'))"
         class="dashboard-section"
     >
         <h2>
@@ -144,14 +149,16 @@ onMounted(async () => {
     </section>
 
     <!-- My documents, for misc students only -->
-    <section v-if="!isStaff" class="dashboard-section">
+    <section
+        v-if="!isStaff"
+        class="dashboard-section"
+    >
         <h2>
             <QIcon name="mdi-pencil-box-outline"/>
             {{ t('dashboard.my-documents') }}
         </h2>
         <div class="form-container">
             <div class="form">
-
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
@@ -241,7 +248,6 @@ onMounted(async () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>

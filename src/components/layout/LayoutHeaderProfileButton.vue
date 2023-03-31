@@ -30,11 +30,16 @@ onMounted(async () => {
 
 <template>
     <div class="q-pa-md">
-        <QBtnDropdown :menu-offset="[0, 8]" align="between" color="secondary" content-class="profile-menu" no-caps
-                      padding="0">
+        <QBtnDropdown
+            :menu-offset="[0, 8]"
+            align="between"
+            color="secondary"
+            content-class="profile-menu"
+            no-caps
+            padding="0"
+        >
             <template v-slot:label>
                 <div class="row items-center no-wrap">
-
                     <div class="avatar">
                         <i class="bi bi-person-circle"></i>
                     </div>
@@ -42,12 +47,15 @@ onMounted(async () => {
                     <div class="text-center">
                         <p>{{ t("header.my-account") }}</p>
                     </div>
-
                 </div>
             </template>
 
             <QList>
-                <QItem v-close-popup clickable @click="router.push({ name: 'Dashboard' })">
+                <QItem
+                    v-close-popup
+                    clickable
+                    @click="router.push({ name: 'Dashboard' })"
+                >
                     <QItemSection>
                         <QItemLabel>{{ t("header.my-profile") }}</QItemLabel>
                     </QItemSection>
@@ -69,7 +77,11 @@ onMounted(async () => {
                     </QItem>
                 </div>
 
-                <QItem v-close-popup clickable @click="onLogOut">
+                <QItem
+                    v-close-popup
+                    clickable
+                    @click="onLogOut"
+                >
                     <QItemSection>
                         <QItemLabel>{{ t('header.logout') }}</QItemLabel>
                     </QItemSection>

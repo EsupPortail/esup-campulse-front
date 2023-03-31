@@ -9,7 +9,10 @@ const {colorVariant} = useColorVariants()
 
 
 <template>
-    <QPageContainer id="layout-content" :class="'variant-' + colorVariant">
+    <QPageContainer
+        id="layout-content"
+        :class="'variant-' + colorVariant"
+    >
         <main>
             <!--<LayoutBreadcrumbs/>-->
             <Suspense>

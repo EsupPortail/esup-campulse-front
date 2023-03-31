@@ -127,14 +127,17 @@ async function onDeleteAssociationUser() {
                     <div class="rows-container">
                         <div class="display-row">
                             <h3 class="row-title">{{ t('directory.labels.association-name') }}</h3>
-                            <p>{{ associationUser?.association.name }}
+                            <p>
+                                {{ associationUser?.association.name }}
                             </p>
                         </div>
                         <div class="display-row">
                             <h3 class="row-title">{{ t('directory.labels.association-institution') }}</h3>
-                            <p>{{
+                            <p>
+                                {{
                                     associationStore.institutions.find(obj => obj.id === associationUser?.association.institution)?.name
-                                }}</p>
+                                }}
+                            </p>
                         </div>
                         <div class="display-row">
                             <h3 class="row-title">{{ t('dashboard.association-user.role') }}</h3>
@@ -149,12 +152,24 @@ async function onDeleteAssociationUser() {
             </div>
         </section>
         <section class="form-page-navigation">
-            <QBtn :label="t('back')" :to="{ name: 'ValidateAssociationUsers' }" color="secondary"
-                  icon="bi-chevron-compact-left"/>
-            <QBtn :label="t('user-manager.delete-association-user')" color="red" icon="bi-file-earmark-x"
-                  @click="onDeleteAssociationUser"/>
-            <QBtn :label="t('user-manager.validate-association-user')" color="primary" icon-right="bi-check2"
-                  type="submit"/>
+            <QBtn
+                :label="t('back')"
+                :to="{ name: 'ValidateAssociationUsers' }"
+                color="secondary"
+                icon="bi-chevron-compact-left"
+            />
+            <QBtn
+                :label="t('user-manager.delete-association-user')"
+                color="red"
+                icon="bi-file-earmark-x"
+                @click="onDeleteAssociationUser"
+            />
+            <QBtn
+                :label="t('user-manager.validate-association-user')"
+                color="primary"
+                icon-right="bi-check2"
+                type="submit"
+            />
         </section>
     </QForm>
 </template>
