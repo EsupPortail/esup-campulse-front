@@ -3,10 +3,10 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {_associations, _associationWrongSearchSettings} from '~/fixtures/association.mock'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {useAxios} from '@/composables/useAxios'
+import {_associations, _associationWrongSearchSettings} from '~/fixtures/association.mock'
 import type {AssociationSearch} from '#/association'
+import {useAxios} from '@/composables/useAxios'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -110,14 +110,23 @@ describe('useDirectory', () => {
     })
 
     describe('simpleAssociationSearch', () => {
-        it('should call API once on /associations/?is_public=true&search=query', () => {
+        it('should call API once on /associations/?is_public=true&search=query', async () => {
             const {simpleAssociationSearch} = useDirectory()
+
             const {axiosPublic} = useAxios()
             const mockedAxios = vi.mocked(axiosPublic, true)
-            mockedAxios.get.mockResolvedValueOnce({})
-            simpleAssociationSearch('query')
+            mockedAxios.get.mockResolvedValueOnce({data: _associations})
+
+            associationStore.getInstitutions = vi.fn()
+            associationStore.getInstitutionComponents = vi.fn()
+            associationStore.getActivityFields = vi.fn()
+            associationStore.getAssociationsSubDetails = vi.fn()
+
+            await simpleAssociationSearch('query')
+
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_public=true&search=query')
+            expect(associationStore.getAssociationsSubDetails).toHaveBeenCalledOnce()
         })
     })
 })

@@ -107,7 +107,6 @@ export const useAssociationStore = defineStore('associationStore', {
          * associations that the user is a member of will be fetched.
          * @param allowNewUsers
          */
-        // To re test
         async getAssociationNames(isPublic: boolean, allowNewUsers: boolean) {
             const {axiosPublic} = useAxios()
             const userStore = useUserStore()
@@ -135,7 +134,7 @@ export const useAssociationStore = defineStore('associationStore', {
             const userStore = useUserStore()
             const {hasPerm} = useSecurity()
             const {isStaff} = useUserGroups()
-            if (!isStaff.value && hasPerm('change_association')) {
+            if (!isStaff.value && hasPerm('change_association')) { // Student institution
                 const {axiosAuthenticated} = useAxios()
                 this.associations = []
                 await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
@@ -144,9 +143,9 @@ export const useAssociationStore = defineStore('associationStore', {
                     const association = (await axiosAuthenticated.get<Association>(`/associations/${associationId}`)).data
                     this.associations.push(this.getAssociationSubDetails(association))
                 }
-            } else if (hasPerm('change_association_any_institution')) {
+            } else if (hasPerm('change_association_any_institution')) { // Manager general
                 await this.getAssociations(false)
-            } else if (hasPerm('change_association')) {
+            } else if (hasPerm('change_association')) { // Manager institution
                 await this.getInstitutionAssociations()
             }
         },
@@ -163,7 +162,7 @@ export const useAssociationStore = defineStore('associationStore', {
             await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
             this.association = this.getAssociationSubDetails((await instance.get<Association>(`/associations/${id}`)).data)
         },
-        // To test
+        // TODO: test
         async updateAssociationLogo(logoData: FormData | object, id: number) {
             if (this.association) {
                 const {axiosAuthenticated} = useAxios()
@@ -228,7 +227,6 @@ export const useAssociationStore = defineStore('associationStore', {
             const {data} = patchedData
             this.association = data
         },
-        // To test
         async getAssociationUsers(associationId: number) {
             const {axiosAuthenticated} = useAxios()
             this.associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/?association_id=${associationId}`)).data

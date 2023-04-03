@@ -6,7 +6,7 @@ export const _association: Association = {
     canSubmitProjects: false,
     charterStatus: '',
     id: 1,
-    name: 'Association',
+    name: 'PLANA',
     acronym: '',
     pathLogo: null,
     altLogo: '',
@@ -63,7 +63,7 @@ export const _editedAssociation: EditedAssociation = {
 }
 
 export const _nonEditedAssociation: EditedAssociation = {
-    name: 'Association',
+    name: 'PLANA',
     acronym: '',
     altLogo: '',
     socialObject: '',
@@ -146,7 +146,7 @@ export const _associationNames = [
     },
     {
         id: 3,
-        name: 'CAMPULSE',
+        name: 'OCTANT',
         hasPresident: false,
         institution: 1
     },
@@ -173,16 +173,6 @@ export const _associationLabels = _associationNames.map(
         disable: false
     })
 )
-
-
-export const _associationSearchSettings: AssociationSearch = {
-    search: '',
-    name: 'Chimie',
-    acronym: 'AEC',
-    institution: 2,
-    institutionComponent: 2,
-    activityField: 2
-}
 
 export const _associationWrongSearchSettings: AssociationSearch = {
     search: '',
@@ -275,26 +265,3 @@ export const _activityFieldLabels = _activityFields.map(field => ({
     value: field.id,
     label: field.name
 }))
-
-export const _associationRoleOptions = [
-    {
-        label: 'Président',
-        value: 'isPresident',
-    },
-    {
-        label: 'Vice-Président',
-        value: 'isVicePresident',
-    },
-    {
-        label: 'Secrétaire',
-        value: 'isSecretary'
-    },
-    {
-        label: 'Trésorier',
-        value: 'isTreasurer'
-    },
-    {
-        label: 'Membre',
-        value: 'isMember'
-    }
-]

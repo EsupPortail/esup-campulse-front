@@ -155,7 +155,6 @@ export default function () {
         return newAssociationsUser.value
     }
 
-    // TODO: to test
     async function getUserAssociations(userId: number | null | undefined, managedUser: boolean) {
         const {axiosAuthenticated} = useAxios()
 
@@ -171,30 +170,27 @@ export default function () {
         let associationNames: AssociationName[] = []
 
         for (const index in userAssociations) {
-            const temp = {
-                id: userAssociations[index].association,
-                name: '',
-                isSite: undefined,
-                institution: undefined,
-                isEnabled: undefined,
-                isPublic: undefined,
-            }
             if (managedUser || userAssociations[index].isValidatedByAdmin) {
                 const association = (await axiosAuthenticated.get(`/associations/${userAssociations[index].association}`)).data
-                temp.name = association.name
-                temp.isSite = association.isSite
-                temp.institution = association.institution
-                temp.isEnabled = association.isEnabled
-                temp.isPublic = association.isPublic
+                userAssociations[index].association = {
+                    id: userAssociations[index].association,
+                    name: association.name,
+                    isSite: association.isSite,
+                    institution: association.institution,
+                    isEnabled: association.isEnabled,
+                    isPublic: association.isPublic
+                }
             } else {
                 const {axiosPublic} = useAxios()
                 if (associationNames.length === 0) associationNames = (await axiosPublic.get('/associations/names')).data
                 const association = associationNames.find(obj => obj.id === userAssociations[index].association)
                 if (association) {
-                    temp.name = association.name
+                    userAssociations[index].association = {
+                        id: userAssociations[index].association,
+                        name: association.name
+                    }
                 }
             }
-            userAssociations[index].association = temp
         }
         store.userAssociations = userAssociations
     }
