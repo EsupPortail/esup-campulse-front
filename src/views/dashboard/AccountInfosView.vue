@@ -179,13 +179,20 @@ async function onUpdateUserAssociations() {
                             @submit.prevent="onUpdateUserAssociations"
                         >
                             <FormRegisterUserAssociations/>
-                            <div>
+                            <section class="form-page-navigation">
+                                <QBtn
+                                    :label="t('back')"
+                                    :to="{ name: 'Dashboard' }"
+                                    icon="bi-chevron-compact-left"
+                                />
                                 <QBtn
                                     v-if="newAssociations.length > 0 && newAssociations[0].id"
-                                    :label="t('forms.add-selected-associations')"
+                                    :label="t('validate')"
+                                    class="validate-button"
+                                    icon-right="bi-check2"
                                     type="submit"
                                 />
-                            </div>
+                            </section>
                         </QForm>
                     </div>
                 </div>
@@ -197,3 +204,8 @@ async function onUpdateUserAssociations() {
         </QTabPanel>
     </QTabPanels>
 </template>
+
+<style lang="sass" scoped>
+.validate-button
+    margin-top: 2rem
+</style>

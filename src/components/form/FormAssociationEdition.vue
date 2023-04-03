@@ -100,7 +100,10 @@ const hasValidated = ref<boolean>(false)
 
 function onLeaveEdition() {
     leaveEdition.value = true
-    router.push(isStaff ? {name: 'ManageAssociations'} : {name: 'AssociationDashboard'})
+    router.push(isStaff.value ? {name: 'ManageAssociations'} : {
+        name: 'AssociationDashboard',
+        params: {id: associationStore.association?.id}
+    })
 }
 
 // Check is there are any changes before leaving the page
