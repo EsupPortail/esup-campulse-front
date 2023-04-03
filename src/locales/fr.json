@@ -114,6 +114,7 @@
     "add-user": "Ajouter un compte",
     "association-dashboard": "Gérer mon association",
     "association-detail": "Fiche association",
+    "commission": "CAPE",
     "create-association": "Créer une association",
     "dashboard": "Tableau de bord",
     "directory": "Annuaire des associations",
@@ -125,6 +126,7 @@
     "manage-associations": "Gérer les associations",
     "manage-users": "Gérer les comptes",
     "register": "Créer un compte",
+    "submit-project": "Demande de subventionnement",
     "user-account": "Compte utilisateur",
     "validate-users": "Valider les comptes",
     "validate-association-users": "Valider les affiliations aux associations",
@@ -134,6 +136,7 @@
   "cancel-delete": "Annuler la suppression",
   "commissions": "Commissions",
   "consult": "Consulter",
+  "continue": "Continuer",
   "dashboard": {
     "account-infos": "Modifier mes informations personnelles",
     "association-management": "Gérer l'annuaire des associations",
@@ -259,6 +262,7 @@
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
     "hint-delegation-to": "Laisser le champ vide pour une date indéterminée.",
     "last-name": "Nom de famille",
+    "legal-dates": "Veuillez saisir une date de fin postérieure à la date de début.",
     "login": "Connexion",
     "modify-email": "Modifier l'adresse mail",
     "new-email": "Nouvelle adresse mail",
@@ -381,6 +385,7 @@
       "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
       "no-ticket": "Pas de ticket.",
+      "project-creation-error": "Erreur lors de la création du projet.",
       "publish-association-error": "L'association n'a pas pu être publiée dans l'annuaire",
       "request-error": "Une erreur est survenue. Veuillez rafraîchir la page et réessayer.",
       "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
@@ -427,6 +432,16 @@
     "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
     "reset-password": "Mot de passe oublié"
+  },
+  "project": {
+    "before-start": "Avant-propos",
+    "categories": "Catégories",
+    "general-infos": "Informations générales",
+    "location": "Lieu(x) du projet",
+    "name": "Nom du projet",
+    "planned-end-date": "Date de fin du projet",
+    "planned-start-date": "Date de début du projet",
+    "submit": "Déposer une nouvelle demande de subventionnement"
   },
   "register": {
     "back-to-home": "Retour à l'accueil",
