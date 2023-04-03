@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import type { CasLogin, LocalLogin, User, UserStore } from '#/user'
+import {defineStore} from 'pinia'
+import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
-import { useAxios } from '@/composables/useAxios'
+import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 
 export const useUserStore = defineStore('userStore', {
@@ -34,11 +34,11 @@ export const useUserStore = defineStore('userStore', {
          * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
          */
         async logIn(url: string, data: LocalLogin | CasLogin) {
-            const { axiosPublic } = useAxios()
+            const {axiosPublic} = useAxios()
             const response = await axiosPublic.post(url, data)
-            const { accessToken, refreshToken, user } = response.data
+            const {accessToken, refreshToken, user} = response.data
             if (user.isValidatedByAdmin) {
-                const { setTokens } = useSecurity()
+                const {setTokens} = useSecurity()
                 setTokens(accessToken, refreshToken)
                 this.user = user
             } else {
@@ -46,8 +46,8 @@ export const useUserStore = defineStore('userStore', {
             }
         },
         async logOut() {
-            const { removeTokens } = useSecurity()
-            const { isStaff } = useUserGroups()
+            const {removeTokens} = useSecurity()
+            const {isStaff} = useUserGroups()
             removeTokens()
             this.unLoadUser()
             isStaff.value = undefined
@@ -57,7 +57,7 @@ export const useUserStore = defineStore('userStore', {
          * user variable, and if the user is not validated by the admin, it sets the user data to the newUser variable
          */
         async getUser() {
-            const { axiosAuthenticated } = useAxios()
+            const {axiosAuthenticated} = useAxios()
             const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
             if (user.isValidatedByAdmin) {
                 this.user = user
@@ -114,7 +114,7 @@ export const useUserStore = defineStore('userStore', {
             this.userAssociations = []
         },
         unLoadNewUser() {
-            const { removeTokens } = useSecurity()
+            const {removeTokens} = useSecurity()
             removeTokens()
             this.newUser = undefined
         },
@@ -125,10 +125,10 @@ export const useUserStore = defineStore('userStore', {
          */
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-            const { axiosPublic } = useAxios()
-            const data = (await axiosPublic.post('/users/auth/cas/login/', { ticket, service })).data
-            const { accessToken, refreshToken, user } = data
-            const { setTokens } = useSecurity()
+            const {axiosPublic} = useAxios()
+            const data = (await axiosPublic.post('/users/auth/cas/login/', {ticket, service})).data
+            const {accessToken, refreshToken, user} = data
+            const {setTokens} = useSecurity()
             setTokens(accessToken, refreshToken)
             this.newUser = user
         },
