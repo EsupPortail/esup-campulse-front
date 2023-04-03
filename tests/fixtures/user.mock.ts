@@ -9,6 +9,7 @@ import type {
 } from '#/user'
 import {_userAssociation} from '~/fixtures/association.mock'
 import {_groups} from '~/fixtures/group.mock'
+import i18n from '@/plugins/i18n'
 
 function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
     const permissions: string[] = []
@@ -54,8 +55,6 @@ export const _userGroups: UserGroup[] = [
         commissionId: 1
     }
 ]
-
-export const _newUserGroups: number[] = [1, 2]
 
 export const _institutionManager: User = {
     id: 1,
@@ -135,15 +134,6 @@ export const _usersNames = _users.map(
     })
 )
 
-export const _userGroupList: (number | undefined)[] = _userGroups.map(group => group.id)
-
-export const _groupLabels = _userGroups.map(
-    group => ({
-        value: group.groupId,
-        label: _groups.find(_group => _group.id === group.groupId)?.name
-    })
-)
-
 export const _userAssociations: AssociationUser[] = [
     {
         user: 1,
@@ -220,7 +210,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
         isTreasurer: false,
         association: {
             id: 1,
-            name: 'Association',
+            name: 'PLANA',
             isSite: true,
             institution: 1,
             isEnabled: true,
@@ -239,7 +229,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
         isTreasurer: false,
         association: {
             id: 2,
-            name: 'Association',
+            name: 'LUCIE',
             isSite: true,
             institution: 1,
             isEnabled: true,
@@ -258,7 +248,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
         isTreasurer: true,
         association: {
             id: 3,
-            name: 'Association',
+            name: 'OCTANT',
             isSite: true,
             institution: 1,
             isEnabled: true,
@@ -278,10 +268,10 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
         association: {
             id: 4,
             name: 'OPALINE',
-            isSite: undefined,
-            institution: undefined,
-            isEnabled: undefined,
-            isPublic: undefined
+            isSite: true,
+            institution: 1,
+            isEnabled: true,
+            isPublic: true
         }
     },
     {
@@ -296,11 +286,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
         isTreasurer: false,
         association: {
             id: 5,
-            name: 'CAMPULSE',
-            isSite: undefined,
-            institution: undefined,
-            isEnabled: undefined,
-            isPublic: undefined
+            name: 'CAMPULSE'
         }
     }
 ]
@@ -324,39 +310,6 @@ export const _userAssociationDetail: AssociationUserDetail = {
     }
 }
 
-export const _userAssociationsManagement = [
-    {
-        associationId: 1,
-        associationName: 'PLANA',
-        isPresident: true,
-        canBePresident: true,
-        isVicePresident: false,
-        isSecretary: false,
-        isTreasurer: false,
-        deleteAssociation: false
-    },
-    {
-        associationId: 2,
-        associationName: 'Octant',
-        isPresident: false,
-        canBePresident: true,
-        isVicePresident: false,
-        isSecretary: false,
-        isTreasurer: true,
-        deleteAssociation: false
-    },
-    {
-        associationId: 3,
-        associationName: 'Apogée',
-        isPresident: false,
-        canBePresident: true,
-        isVicePresident: false,
-        isSecretary: true,
-        isTreasurer: false,
-        deleteAssociation: true
-    }
-]
-
 export const _associationRole: AssociationRole = {
     id: 1,
     name: 'Jane',
@@ -364,6 +317,28 @@ export const _associationRole: AssociationRole = {
     deleteAssociation: false,
     canBePresidentPermanent: true,
     isValidatedByAdmin: true,
+    options: [
+        {
+            label: i18n.global.t('forms.im-association-president'),
+            value: 'isPresident',
+        },
+        {
+            label: i18n.global.t('forms.im-association-secretary'),
+            value: 'isSecretary'
+        },
+        {
+            label: i18n.global.t('forms.im-association-treasurer'),
+            value: 'isTreasurer'
+        },
+        {
+            label: i18n.global.t('forms.im-association-vice-president'),
+            value: 'isVicePresident'
+        },
+        {
+            label: i18n.global.t('forms.im-association-member'),
+            value: 'isMember'
+        }
+    ]
 }
 
 export const _associationMembers: AssociationMember[] = [
