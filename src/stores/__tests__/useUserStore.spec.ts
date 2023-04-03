@@ -275,7 +275,7 @@ describe('User store', () => {
         it('should return false if is President or canBePresident is false', () => {
             userStore.userAssociations = [_userAssociationDetail]
             userStore.userAssociations[0].isPresident = false
-            userStore.userAssociations[0].canBePresident = false
+            userStore.userAssociations[0].canBePresidentPermanent = false
             expect(userStore.hasPresidentStatus(1)).toBeFalsy()
         })
     })

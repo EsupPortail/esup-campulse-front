@@ -138,7 +138,7 @@ export const _userAssociations: AssociationUser[] = [
     {
         user: 1,
         isPresident: true,
-        canBePresident: true,
+        canBePresidentPermanent: true,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: true,
@@ -150,7 +150,7 @@ export const _userAssociations: AssociationUser[] = [
     {
         user: 2,
         isPresident: false,
-        canBePresident: true,
+        canBePresidentPermanent: true,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: true,
@@ -162,7 +162,7 @@ export const _userAssociations: AssociationUser[] = [
     {
         user: 3,
         isPresident: false,
-        canBePresident: false,
+        canBePresidentPermanent: false,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: true,
@@ -174,7 +174,7 @@ export const _userAssociations: AssociationUser[] = [
     {
         user: 4,
         isPresident: false,
-        canBePresident: false,
+        canBePresidentPermanent: false,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: false,
@@ -186,7 +186,7 @@ export const _userAssociations: AssociationUser[] = [
     {
         user: 5,
         isPresident: false,
-        canBePresident: false,
+        canBePresidentPermanent: false,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: false,
@@ -201,7 +201,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
     {
         user: 1,
         isPresident: true,
-        canBePresident: true,
+        canBePresidentPermanent: true,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: true,
@@ -220,7 +220,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
     {
         user: 2,
         isPresident: false,
-        canBePresident: true,
+        canBePresidentPermanent: true,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: true,
@@ -239,7 +239,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
     {
         user: 3,
         isPresident: false,
-        canBePresident: false,
+        canBePresidentPermanent: false,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: true,
@@ -258,7 +258,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
     {
         user: 4,
         isPresident: false,
-        canBePresident: false,
+        canBePresidentPermanent: false,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: false,
@@ -277,7 +277,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
     {
         user: 5,
         isPresident: false,
-        canBePresident: false,
+        canBePresidentPermanent: false,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: false,
@@ -293,7 +293,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
 
 export const _userAssociationDetail: AssociationUserDetail = {
     isPresident: true,
-    canBePresident: true,
+    canBePresidentPermanent: true,
     canBePresidentFrom: null,
     canBePresidentTo: null,
     isValidatedByAdmin: true,
@@ -315,7 +315,7 @@ export const _associationRole: AssociationRole = {
     name: 'Jane',
     role: 'isPresident',
     deleteAssociation: false,
-    canBePresident: true,
+    canBePresidentPermanent: true,
     isValidatedByAdmin: true,
     options: [
         {
@@ -347,7 +347,7 @@ export const _associationMembers: AssociationMember[] = [
         firstName: _institutionManager.firstName,
         lastName: _institutionManager.lastName,
         role: 'Présidente ou président de l\'association',
-        canBePresident: _userAssociations[0].canBePresident,
+        canBePresidentPermanent: _userAssociations[0].canBePresidentPermanent,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: _userAssociations[0].isValidatedByAdmin as boolean
@@ -357,10 +357,9 @@ export const _associationMembers: AssociationMember[] = [
         firstName: _institutionStudent.firstName,
         lastName: _institutionStudent.lastName,
         role: 'Autre membre de l\'association',
-        canBePresident: _userAssociations[4].canBePresident,
+        canBePresidentPermanent: _userAssociations[4].canBePresidentPermanent,
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: _userAssociations[4].isValidatedByAdmin as boolean
     }
 ]
-
