@@ -52,10 +52,10 @@ async function onGetUserAssociations() {
                     v-model="association.role"
                     :options="association.options"
                     color="primary"
-                    @update:model-value="association.role === 'isPresident' ? association.canBePresident = false : association.canBePresident"
+                    @update:model-value="association.role === 'isPresident' ? association.canBePresidentPermanent = false : association.canBePresidentPermanent"
                 />
                 <QCheckbox
-                    v-model="association.canBePresident"
+                    v-model="association.canBePresidentPermanent"
                     :disable="association.role === 'isPresident'"
                     :label="t('forms.i-can-be-president')"
                 />

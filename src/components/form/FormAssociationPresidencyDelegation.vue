@@ -22,13 +22,13 @@ const {patchUserAssociations, initAssociationMembers} = useUserAssociations()
 const openDelegationPanel = ref<boolean>()
 
 const delegation = reactive({
-    canBePresident: false,
+    canBePresidentPermanent: false,
     from: '',
     to: ''
 })
 
 const initDelegationParams = () => {
-    delegation.canBePresident = memberRef.value.canBePresident as boolean
+    delegation.canBePresidentPermanent = memberRef.value.canBePresidentPermanent as boolean
     delegation.from = memberRef.value.canBePresidentFrom ?? new Date().toJSON().slice(0, 10)
     delegation.to = memberRef.value.canBePresidentTo ?? ''
 }
@@ -47,8 +47,8 @@ watch(() => delegation.to, initDateIsLegal)
 async function onDelegatePresidency(activate: boolean) {
     try {
         if (memberRef.value.id) {
-            const dataToPatch: { canBePresident: boolean, canBePresidentFrom: string | null, canBePresidentTo: string | null } = {
-                canBePresident: activate,
+            const dataToPatch: { canBePresidentPermanent: boolean, canBePresidentFrom: string | null, canBePresidentTo: string | null } = {
+                canBePresidentPermanent: (delegation.from === '' && delegation.to === '') ? activate : false,
                 canBePresidentFrom: activate ? delegation.from : null,
                 canBePresidentTo: activate && delegation.to !== '' ? delegation.to : null
             }
@@ -124,7 +124,7 @@ async function onDelegatePresidency(activate: boolean) {
                         type="submit"
                     />
                     <QBtn
-                        v-if="props.member.canBePresident"
+                        v-if="props.member.canBePresidentPermanent || props.member.canBePresidentFrom || props.member.canBePresidentTo"
                         v-close-popup
                         :label="t('deactivate')"
                         color="red"

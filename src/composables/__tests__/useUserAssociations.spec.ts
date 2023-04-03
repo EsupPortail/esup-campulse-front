@@ -147,7 +147,9 @@ describe('useUserAssociations', () => {
             userManagerStore.user = _institutionStudent
             const dataToPatch = {
                 isPresident: false,
-                canBePresident: true,
+                canBePresidentPermanent: true,
+                canBePresidentFrom: null,
+                canBePresidentTo: null,
                 isSecretary: false,
                 isTreasurer: true,
                 isVicePresident: false
@@ -204,7 +206,9 @@ describe('useUserAssociations', () => {
                 {
                     association: 1,
                     isPresident: true,
-                    canBePresident: false,
+                    canBePresidentPermanent: false,
+                    canBePresidentFrom: null,
+                    canBePresidentTo: null,
                     isValidatedByAdmin: false,
                     isSecretary: false,
                     isTreasurer: false,
@@ -332,5 +336,3 @@ describe('useUserAssociations', () => {
         })
     })
 })
-
-

@@ -84,10 +84,10 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {
-        name: 'canBePresident',
+        name: 'canBePresidentPermanent',
         align: 'right',
         label: t('dashboard.association-user.delegation'),
-        field: 'canBePresident',
+        field: 'canBePresidentPermanent',
         sortable: true
     },
     {
@@ -168,15 +168,15 @@ const columns: QTableProps['columns'] = [
                                 </span>
                             </QTd>
                             <QTd
-                                key="canBePresident"
+                                key="canBePresidentPermanent"
                                 :props="props"
                             >
                                 <span class="form-state">
-                                    {{ props.row.canBePresident ? t('activated') : t('deactivated') }}
+                                    {{ props.row.canBePresidentPermanent ? t('activated') : t('deactivated') }}
                                     <span
-                                        :class="props.row.canBePresident ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
+                                        :class="props.row.canBePresidentPermanent ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
                                     >
-                                        <i :class="props.row.canBePresident ? 'bi bi-check' : 'bi bi-x'"></i>
+                                        <i :class="props.row.canBePresidentPermanent ? 'bi bi-check' : 'bi bi-x'"></i>
                                     </span>
                                 </span>
                             </QTd>
