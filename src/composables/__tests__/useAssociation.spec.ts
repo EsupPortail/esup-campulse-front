@@ -13,8 +13,8 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'
 import {_associationRole} from '~/fixtures/user.mock'
-import type {Association} from '../../../types/association'
-import useUserAssociations from '../useUserAssociations'
+import useUserAssociations from '@/composables/useUserAssociations'
+import type {Association} from '#/association'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -47,7 +47,7 @@ describe('useAssociation', () => {
         })
 
         it('should return the default alt of the logo if no alt is given', () => {
-            expect(altLogoText(_association)).toEqual('Logo de l\'association : Association')
+            expect(altLogoText(_association)).toEqual('Logo de l\'association : PLANA')
         })
     })
 
@@ -69,50 +69,26 @@ describe('useAssociation', () => {
     describe('checkHasPresident', () => {
         const {checkHasPresident} = useAssociation()
         const {newAssociations} = useUserAssociations()
-        associationStore.associationNames = _associationNames
+
+        beforeEach(() => {
+            associationStore.associationNames = _associationNames
+            newAssociations.value = [_associationRole]
+        })
 
         afterEach(() => {
             newAssociations.value = []
         })
 
         it('should disable the association object if hasPresident is true', () => {
-            checkHasPresident(_associationRole)
-            const a = associationStore.associationNames.find(obj => obj.id === _associationRole.id)
-            expect(_associationRole.options?.[0].disable).toEqual(a?.hasPresident)
+            checkHasPresident(newAssociations.value[0])
+            expect(newAssociations.value[0].role).toEqual('isMember')
         })
 
-        /*it('should clear the association role if it is president', () => {
-            newAssociations.value = JSON.parse(JSON.stringify([_associationRole]))
-            checkHasPresident(_associationRole)
-            const m = newAssociations.value.find(obj => obj.id === _associationRole.id)
-            expect(m?.role).toEqual('isMember')
+        it('should not disable the association object if hasPresident is false', () => {
+            newAssociations.value[0].role = 'isSecretary'
+            checkHasPresident(newAssociations.value[0])
+            expect(newAssociations.value[0].role).toEqual('isSecretary')
         })
-    })
-
-    describe('updateRegisterRoleInAssociation', () => {
-        const {updateRegisterRoleInAssociation, newAssociations, newAssociationsUser} = useAssociation()
-
-        afterEach(() => {
-            newAssociations.value = []
-        })
-
-        it('should return an array of association users based on newAssociations', () => {
-            newAssociations.value = JSON.parse(JSON.stringify([_associationRole]))
-            updateRegisterRoleInAssociation()
-            expect(newAssociationsUser.value).toEqual([
-                {
-                    association: 1,
-                    name: '',
-                    isPresident: true,
-                    canBePresident: false,
-                    isValidatedByAdmin: false,
-                    isVicePresident: false,
-                    isSecretary: false,
-                    isTreasurer: false
-                }
-            ])
-        })
-        })*/
     })
 
     describe('addNetwork', () => {
@@ -225,6 +201,7 @@ describe('useAssociation', () => {
                 institution: 2,
                 institutionComponent: 2,
                 activityField: 2,
+                amountMembersAllowed: 5,
                 socialNetworks: [
                     {
                         type: 'PeerTube',

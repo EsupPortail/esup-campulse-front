@@ -71,7 +71,6 @@ export default function () {
      * @param {User} user - User: the user to update
      * @param editedByStaff
      */
-    // To test
     async function updateUserInfos(user: User | undefined, editedByStaff: boolean) {
         if (Object.keys(infosToPatch).length !== 0) {
             let store: UserStore | UserManagerStore = useUserStore()
@@ -90,7 +89,6 @@ export default function () {
      * value for each property, and if so, it adds the property to the infosToPatch object
      * @param {User | undefined} user - User | undefined: The user to update.
      */
-    // To test
     function initInfosToPatch(user: User | undefined) {
         for (const key of Object.keys(infosToPatch)) {
             delete infosToPatch[key as keyof typeof infosToPatch]

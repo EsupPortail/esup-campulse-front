@@ -147,7 +147,8 @@ describe('useUserAssociations', () => {
             userManagerStore.user = _institutionStudent
             const dataToPatch = {
                 isPresident: false,
-                canBePresident: true,
+                canBePresidentFrom: null,
+                canBePresidentTo: null,
                 isSecretary: false,
                 isTreasurer: true,
                 isVicePresident: false
@@ -204,7 +205,8 @@ describe('useUserAssociations', () => {
                 {
                     association: 1,
                     isPresident: true,
-                    canBePresident: false,
+                    canBePresidentFrom: null,
+                    canBePresidentTo: null,
                     isValidatedByAdmin: false,
                     isSecretary: false,
                     isTreasurer: false,
@@ -228,26 +230,24 @@ describe('useUserAssociations', () => {
             afterEach(() => {
                 userManagerStore.user = undefined
                 userManagerStore.userAssociations = []
+                vi.restoreAllMocks()
             })
 
             it('should get extended userAssociations', async () => {
                 const userAssociationsUrl = `/users/${userManagerStore.user?.id}/associations/`
 
-                // TODO: differentiate axiosAuth and axiosPublic
-                const mockedAuthAxios = vi.mocked(axiosAuthenticated, true)
-                mockedAuthAxios.get.mockImplementation((url) => {
-                    if (url === userAssociationsUrl) return Promise.resolve({data: _userAssociations})
-                    else if (url === associationNamesUrl) return Promise.resolve({data: _associationNames})
+                const mockedAxios = vi.mocked(axiosAuthenticated, true)
+                mockedAxios.get.mockImplementation((url) => {
+                    if (url === userAssociationsUrl) return Promise.resolve({data: [_userAssociations[0]]})
                     else return Promise.resolve({data: _association})
                 })
 
                 await getUserAssociations(userManagerStore.user?.id, true)
 
-                //expect(axiosAuthenticated.get).toHaveBeenCalledTimes(1 + userManagerStore.userAssociations.length)
+                expect(axiosAuthenticated.get).toHaveBeenCalledTimes(2)
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(userAssociationsUrl)
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith(associationNamesUrl)
-
-                expect(userManagerStore.userAssociations).toEqual(_userAssociationDetails)
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/associations/1')
+                expect(userManagerStore.userAssociations).toEqual([_userAssociationDetails[0]])
             })
         })
 
@@ -264,21 +264,19 @@ describe('useUserAssociations', () => {
             it('should get extended userAssociations', async () => {
                 const userAssociationsUrl = '/users/associations/'
 
-                // TODO: differentiate axiosAuth and axiosPublic
                 const mockedAxios = vi.mocked(axiosAuthenticated, true)
                 mockedAxios.get.mockImplementation((url) => {
-                    if (url === userAssociationsUrl) return Promise.resolve({data: _userAssociations})
+                    if (url === userAssociationsUrl) return Promise.resolve({data: [_userAssociations[4]]})
                     else if (url === associationNamesUrl) return Promise.resolve({data: _associationNames})
                     else return Promise.resolve({data: _association})
                 })
 
                 await getUserAssociations(userStore.user?.id, false)
 
-                //expect(axiosAuthenticated.get).toHaveBeenCalledTimes(1 + userStore.userAssociations.length)
+                expect(axiosAuthenticated.get).toHaveBeenCalledTimes(2)
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(userAssociationsUrl)
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(associationNamesUrl)
-                // TODO: why does it put an object inside the association id ?
-                //expect(userStore.userAssociations).toEqual(_userAssociationDetails)
+                expect(userStore.userAssociations).toEqual([_userAssociationDetails[4]])
             })
         })
     })
@@ -332,5 +330,3 @@ describe('useUserAssociations', () => {
         })
     })
 })
-
-

@@ -10,6 +10,8 @@ import AlertConfirmUserQuitAssociation from '@/components/alert/AlertConfirmUser
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
+const today = new Date()
+today.setHours(0, 0, 0, 0)
 const {
     userAssociations,
     associationRoleOptions,
@@ -59,7 +61,7 @@ async function onGetUserAssociations() {
                     </li>
                     <li>
                         {{ t('dashboard.association-user.presidency-status') }} <span>{{
-                            (association.role === 'isPresident' || association.canBePresident) ? t('yes') : t('no')
+                            (association.role === 'isPresident' || (association?.canBePresidentFrom !== null && association?.canBePresidentFrom >= today) || (association?.canBePresidentTo !== null && association?.canBePresidentTo <= today)) ? t('yes') : t('no')
                         }}</span>
                     </li>
                     <li>

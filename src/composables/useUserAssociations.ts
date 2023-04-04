@@ -30,7 +30,7 @@ const newAssociationsUser = ref<AssociationUser[]>([])
 const associationMembers = ref<AssociationMember[]>([])
 
 
-export default function () {
+export default function() {
 
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
@@ -67,7 +67,7 @@ export default function () {
         const instance = editedByStaff ? userManagerStore : userStore
         const userId = instance.user?.id
 
-        userAssociations.value.forEach(async function (association) {
+        userAssociations.value.forEach(async function(association) {
             // If we need to delete the association
             if (association.id && association.deleteAssociation) {
                 await deleteUserAssociation(userId, association.id)
@@ -85,7 +85,8 @@ export default function () {
                 // We set a boolean to track changes
                 let hasChanges = false
                 // We compare the 2 objects
-                if (storeAssociation?.canBePresident !== association.canBePresident) hasChanges = true
+                if (storeAssociation?.canBePresidentFrom !== association.canBePresidentFrom) hasChanges = true
+                if (storeAssociation?.canBePresidentTo !== association.canBePresidentTo) hasChanges = true
                 if (storeAssociation?.isPresident && association.role !== 'isPresident') hasChanges = true
                 if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
                 if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
@@ -94,7 +95,8 @@ export default function () {
                 if (hasChanges && association.id) {
                     const infosToPatch = {
                         isPresident: association.role === 'isPresident',
-                        canBePresident: association.canBePresident ? association.canBePresident : false,
+                        canBePresidentFrom: association.canBePresidentFrom ? association.canBePresidentFrom : null,
+                        canBePresidentTo: association.canBePresidentTo ? association.canBePresidentTo : null,
                         isSecretary: association.role === 'isSecretary',
                         isTreasurer: association.role === 'isTreasurer',
                         isVicePresident: association.role === 'isVicePresident'
@@ -145,7 +147,8 @@ export default function () {
             newAssociationsUser.value.push({
                 association: association.id,
                 isPresident: association.role === 'isPresident',
-                canBePresident: false,
+                canBePresidentFrom: null,
+                canBePresidentTo: null,
                 isValidatedByAdmin: false,
                 isVicePresident: association.role === 'isVicePresident',
                 isSecretary: association.role === 'isSecretary',
@@ -155,7 +158,6 @@ export default function () {
         return newAssociationsUser.value
     }
 
-    // TODO: to test
     async function getUserAssociations(userId: number | null | undefined, managedUser: boolean) {
         const {axiosAuthenticated} = useAxios()
 
@@ -171,30 +173,27 @@ export default function () {
         let associationNames: AssociationName[] = []
 
         for (const index in userAssociations) {
-            const temp = {
-                id: userAssociations[index].association,
-                name: '',
-                isSite: undefined,
-                institution: undefined,
-                isEnabled: undefined,
-                isPublic: undefined,
-            }
             if (managedUser || userAssociations[index].isValidatedByAdmin) {
                 const association = (await axiosAuthenticated.get(`/associations/${userAssociations[index].association}`)).data
-                temp.name = association.name
-                temp.isSite = association.isSite
-                temp.institution = association.institution
-                temp.isEnabled = association.isEnabled
-                temp.isPublic = association.isPublic
+                userAssociations[index].association = {
+                    id: userAssociations[index].association,
+                    name: association.name,
+                    isSite: association.isSite,
+                    institution: association.institution,
+                    isEnabled: association.isEnabled,
+                    isPublic: association.isPublic
+                }
             } else {
                 const {axiosPublic} = useAxios()
                 if (associationNames.length === 0) associationNames = (await axiosPublic.get('/associations/names')).data
                 const association = associationNames.find(obj => obj.id === userAssociations[index].association)
                 if (association) {
-                    temp.name = association.name
+                    userAssociations[index].association = {
+                        id: userAssociations[index].association,
+                        name: association.name
+                    }
                 }
             }
-            userAssociations[index].association = temp
         }
         store.userAssociations = userAssociations
     }
@@ -213,7 +212,7 @@ export default function () {
         associationMembers.value = []
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function (user) {
+        associationStore.associationUsers.forEach(function(user) {
             if (!withPresident && user.user === userStore.user?.id) { // TODO: test condition
                 return
             } else {
@@ -224,7 +223,6 @@ export default function () {
                         firstName: member.firstName,
                         lastName: member.lastName,
                         role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(user))?.label as string,
-                        canBePresident: user.canBePresident,
                         canBePresidentFrom: user.canBePresidentFrom,
                         canBePresidentTo: user.canBePresidentTo,
                         isValidatedByAdmin: user.isValidatedByAdmin as boolean
@@ -239,7 +237,7 @@ export default function () {
         userAssociations.value = []
         let associations: AssociationUserDetail[] = userStore.userAssociations
         if (editedByStaff) associations = userManagerStore.userAssociations
-        associations.forEach(function (association) {
+        associations.forEach(function(association) {
             const role = getAssociationUserRole(association)
             userAssociations.value.push({
                 id: association.association.id,
@@ -247,7 +245,8 @@ export default function () {
                 role,
                 options: associationRoleOptions,
                 isValidatedByAdmin: association.isValidatedByAdmin,
-                canBePresident: association.canBePresident,
+                canBePresidentFrom: association.canBePresidentFrom,
+                canBePresidentTo: association.canBePresidentTo,
                 deleteAssociation: false
             })
         })
@@ -279,7 +278,6 @@ export default function () {
                     firstName: extendedUser.firstName,
                     lastName: extendedUser.lastName,
                     role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label as string,
-                    canBePresident: associationUser.canBePresident,
                     canBePresidentFrom: associationUser.canBePresidentFrom,
                     canBePresidentTo: associationUser.canBePresidentTo,
                     isValidatedByAdmin: associationUser.isValidatedByAdmin as boolean
