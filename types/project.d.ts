@@ -3,14 +3,10 @@ export interface Project {
     plannedStartDate: string,
     plannedEndDate: string,
     location: string,
-    user: number,
-    association: number,
+    user: number | null,
+    association: number | null,
     categories: ProjectCategory[],
-    firstEdition: {
-        'additionalProp1': 'string',
-        'additionalProp2': 'string',
-        'additionalProp3': 'string'
-    },
+    firstEdition: ProjectFirstEdition[],
     amountsPreviousEdition: {
         'additionalProp1': 'string',
         'additionalProp2': 'string',
@@ -43,8 +39,18 @@ type ProjectStatus =
 
 interface ProjectCategory {
     id: number,
-    project: string,
-    category: string
+    projectId?: string,
+    categoryId: string
+}
+
+interface ProjectFirstEdition {
+    commissionDateId: string,
+    isFirstEdition: boolean
+}
+
+export interface ProjectCategoryName {
+    id: number,
+    name: string
 }
 
 export interface ProjectBasicInfos {
@@ -57,8 +63,39 @@ export interface ProjectBasicInfos {
     categories: number[]
 }
 
+export interface ProjectBudget {
+    firstEdition: {
+        'additionalProp1': 'string',
+        'additionalProp2': 'string',
+        'additionalProp3': 'string'
+    },
+    amountsPreviousEdition: {
+        'additionalProp1': 'string',
+        'additionalProp2': 'string',
+        'additionalProp3': 'string'
+    },
+    budgetPreviousEdition: number | null,
+    targetAudience: string,
+    typeTargetAudience: string,
+    amountTargetAudience: number | null,
+    amountStudentsTargetAudience: number | null,
+    ticketPrice: number | null,
+    individualCost: number | null
+}
+
+export interface ProjectCommissionDate {
+    id: number,
+    project: string,
+    commissionDate: string,
+    isFirstEdition: boolean,
+    amountAskedPreviousEdition: number | null,
+    amountEarnedPreviousEdition: number | null,
+    amountAsked: number | null,
+    amountEarned: number | null
+}
+
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
-    projectCategories: ProjectCategory[]
+    projectCategoryNames: ProjectCategoryName[]
 }

@@ -55,24 +55,24 @@
   &.q-field--focused .q-field__control {
     border-color: $color1;
   }
-  
+
   &.q-field--filled.q-field--highlighted .q-field__control::before {
     background: $color1Background;
   }
-  
+
   &.q-field--filled .q-field__control::before {
     background: $color1Background;
     border-bottom: none;
   }
-  
+
   &.q-field--filled .q-field__control::after {
     background: $color1;
   }
-  
+
   &.q-field--error .q-field__control::after {
     background: currentColor;
   }
-  
+
   &.q-field--highlighted .q-field__label {
     color: $color1Text;
   }
@@ -96,7 +96,7 @@
   .q-field {
     .q-field__control {
       border-color: $color2Borders;
-  
+
       input {
         color: $color2Text;
       }
@@ -105,11 +105,11 @@
     &.q-field--focused .q-field__control {
       border-color: $color2;
     }
-    
+
     &.q-field--filled.q-field--highlighted .q-field__control::before {
       background: $color2Background;
     }
-    
+
     &.q-field--filled .q-field__control::before {
       background: $color2Background;
     }
@@ -132,7 +132,7 @@
   .q-field {
     .q-field__control {
       border-color: $color3Borders;
-  
+
       input {
         color: $color3Text;
       }
@@ -141,11 +141,11 @@
     &.q-field--focused .q-field__control {
       border-color: $color3;
     }
-    
+
     &.q-field--filled.q-field--highlighted .q-field__control::before {
       background: $color3Background;
     }
-    
+
     &.q-field--filled .q-field__control::before {
       background: $color3Background;
     }
@@ -162,13 +162,19 @@
   .q-select.q-field--focused .q-field__marginal {
     color: $color3;
   }
+
+  .q-stepper {
+    .q-stepper__tab--active, .q-stepper__tab--done {
+      color: $color3
+    }
+  }
 }
 
 .variant-space-4 {
   .q-field {
     .q-field__control {
       border-color: $color4Borders;
-  
+
       input {
         color: $color4Text;
       }
@@ -177,11 +183,11 @@
     &.q-field--focused .q-field__control {
       border-color: $color4;
     }
-    
+
     &.q-field--filled.q-field--highlighted .q-field__control::before {
       background: $color4Background;
     }
-    
+
     &.q-field--filled .q-field__control::before {
       background: $color4Background;
     }
@@ -307,7 +313,7 @@ label.custom-label {
     & > * {
       color: $textColor3;
     }
-  } 
+  }
 
   &.small-button {
     padding: .375rem 1.875rem;
@@ -360,19 +366,19 @@ label.custom-label {
 .variant-space-2 {
   .q-btn {
     background-color: $color2;
-  
+
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
       background-color: $color2Hover !important;
     }
-  
+
     &:active, &.bg-primary:active, &.bg-secondary:active {
       background-color: $color2Active !important;
     }
-  
+
     &.bg-primary {
       background: $color2 !important;
     }
-  
+
     &.bg-secondary {
       background: $color2 !important;
     }
@@ -383,15 +389,15 @@ label.custom-label {
 
     &.btn-alt {
       border: 1px solid $color2Text;
-  
+
       .q-btn__content > * {
         color: $color2Text;
       }
-  
+
       &:hover {
         background-color: $color2Text !important;
       }
-  
+
       &:active {
         background-color: mix(white, $color2Text, 15%) !important;
       }
@@ -402,34 +408,34 @@ label.custom-label {
 .variant-space-3 {
   .q-btn {
     background-color: $color3;
-  
+
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
       background-color: $color3Hover !important;
     }
-  
+
     &:active, &.bg-primary:active, &.bg-secondary:active {
       background-color: $color3Active !important;
     }
-  
+
     &.bg-primary {
       background: $color3 !important;
     }
-  
+
     &.bg-secondary {
       background: $color3 !important;
     }
 
     &.btn-alt {
       border: 1px solid $color3Text;
-  
+
       .q-btn__content > * {
         color: $color3Text;
       }
-  
+
       &:hover {
         background-color: $color3Text !important;
       }
-  
+
       &:active {
         background-color: mix(white, $color3Text, 15%) !important;
       }
@@ -440,34 +446,34 @@ label.custom-label {
 .variant-space-4 {
   .q-btn {
     background-color: $color4;
-  
+
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
       background-color: $color4Hover !important;
     }
-  
+
     &:active, &.bg-primary:active, &.bg-secondary:active {
       background-color: $color4Active !important;
     }
-  
+
     &.bg-primary {
       background: $color4 !important;
     }
-  
+
     &.bg-secondary {
       background: $color4 !important;
     }
 
     &.btn-alt {
       border: 1px solid $color4Text;
-  
+
       .q-btn__content > * {
         color: $color4Text;
       }
-  
+
       &:hover {
         background-color: $color4Text !important;
       }
-  
+
       &:active {
         background-color: mix(white, $color4Text, 15%) !important;
       }
@@ -479,6 +485,11 @@ label.custom-label {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+fieldset {
+  border: none;
+  padding-left: 0;
 }
 
 // A document form element allowing to upload, remove and review a list of documents.
@@ -682,23 +693,23 @@ label.custom-label {
   .document-input-group .document-input {
     .document-input-header {
       border-color: $color2;
-  
+
       & > button {
         &:hover {
           background-color: $color2;
         }
-  
+
         &:active {
           background-color: mix(white, $color2, 10%);
         }
       }
     }
-  
+
     .document-input-list .document-item button {
       &:hover {
         background-color: $color2;
       }
-  
+
       &:active {
         background-color: mix(white, $color2, 10%);
       }
@@ -929,7 +940,7 @@ label.custom-label {
               background: transparent !important;
               box-shadow: none;
               transition: box-shadow 0.08s linear, background-color 0.08 linear;
-                              
+
               .q-btn__content * {
                 color: $textColor2;
                 font-weight: 400;
@@ -971,11 +982,11 @@ label.custom-label {
     .q-table__bottom {
       color: $color2Text;
     }
-  
+
     .q-table {
       thead tr {
         background-color: $color2;
-  
+
         th {
           color: $color2Text;
 
@@ -1002,7 +1013,7 @@ label.custom-label {
           }
         }
       }
-  
+
       tbody tr td {
         color: $color2Text;
 
@@ -1053,11 +1064,11 @@ label.custom-label {
     .q-table__bottom {
       color: $color3Text;
     }
-  
+
     .q-table {
       thead tr {
         background-color: $color3;
-  
+
         th {
           .q-table__sort-icon svg {
             color: $color3Text;
@@ -1072,7 +1083,7 @@ label.custom-label {
           }
         }
       }
-  
+
       tbody tr td {
         color: $color3Text;
 
@@ -1123,11 +1134,11 @@ label.custom-label {
     .q-table__bottom {
       color: $color4Text;
     }
-  
+
     .q-table {
       thead tr {
         background-color: $color4;
-  
+
         th {
           .q-table__sort-icon svg {
             color: $color4Text;
@@ -1142,7 +1153,7 @@ label.custom-label {
           }
         }
       }
-  
+
       tbody tr td {
         color: $color4Text;
 
@@ -1348,22 +1359,22 @@ label.custom-label {
       box-shadow: none;
       padding: 1rem 1.4rem;
       background-color: $backgroundColor1;
-      
+
       .q-btn__content i {
         color: $color1;
       }
-    
+
       &:hover, &:active {
         .q-btn__content i {
           color: $textColor3 !important;
         }
       }
-  
+
       &.counter-button {
         padding: 1rem 2.4rem;
         color: $textColor2;
         font-size: 1.4rem;
-  
+
         strong {
           color: $color1;
           font-weight: 800;
@@ -1460,7 +1471,7 @@ label.custom-label {
       background-color: $errorPanelColor;
     }
   }
-  
+
   &.info-panel-warning {
     border-color: $warningPanelColor;
     background-color: transparentize($warningPanelColor, 0.9);
@@ -1598,16 +1609,15 @@ label.custom-label {
       opacity: 1;
     }
 
-    &:active
-    {
+    &:active {
       background-color: rgba(0, 0, 0, 0.3);
-    } 
+    }
   }
 }
 
 .variant-space-2 .image-input {
   box-shadow: 0 0 0 1px $color2Borders inset;
-  
+
   label i {
     background-color: $color2;
     color: $color2Text;
@@ -1669,7 +1679,7 @@ label.custom-label {
   }
 
   // @media only screen and (max-width: $responsiveWidth) {
-    
+
   // }
 }
 

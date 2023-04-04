@@ -64,7 +64,7 @@ button.q-btn--outline {
     top: 2rem;
     opacity: 1;
   }
-  
+
   button {
     display: block;
     width: 4rem;
@@ -150,7 +150,7 @@ button.q-btn--outline {
 .introduction {
   margin: 2rem 0 4rem;
   padding: 0;
-  
+
   .content {
     display: flex;
     gap: 3.125rem;
@@ -162,13 +162,13 @@ button.q-btn--outline {
     .intro-image {
       flex: 0 0 300px;
       font-size: 0;
-  
+
       img {
         width: 18.75rem;
         height: auto;
       }
     }
-  
+
     .intro-title {
       font-size: 1.875rem;
       line-height: 2.5rem;
@@ -177,7 +177,7 @@ button.q-btn--outline {
       text-transform: uppercase;
       margin-bottom: 0.625rem;
     }
-  
+
     p {
       font-size: 1.125rem;
       font-weight: 400;
@@ -193,8 +193,8 @@ button.q-btn--outline {
   &.image-right {
     padding: 2.5rem 0;
 
-      .content {
-        flex-direction: row-reverse;
+    .content {
+      flex-direction: row-reverse;
     }
   }
 
@@ -210,7 +210,7 @@ button.q-btn--outline {
 
       .intro-image {
         flex: 0 0 15.625rem;
-  
+
         img {
           width: 15.625rem;
         }
@@ -228,7 +228,7 @@ button.q-btn--outline {
         margin-bottom: 0.938rem;
         height: 9.375rem;
         overflow: hidden;
-  
+
         img {
           width: 100%;
           position: relative;
@@ -252,7 +252,7 @@ button.q-btn--outline {
 }
 
 // Titles
-.title-1, .title-2, .title-3 {
+.title-1, .title-2, .title-3, .title-4 {
   color: $textColor1;
   font-weight: 400;
   line-height: normal;
@@ -278,6 +278,16 @@ button.q-btn--outline {
 .title-3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+}
+
+.title-4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.title-5 {
+  font-size: 1rem;
+  margin-bottom: 0.18rem;
 }
 
 // Paragraphs
@@ -315,12 +325,12 @@ p.paragraph {
 p.paragraph {
   ul, ol {
     padding-left: 2rem;
-  
+
     li {
       padding-left: 0.4rem;
     }
   }
-  
+
   ul {
     list-style-type: square;
   }

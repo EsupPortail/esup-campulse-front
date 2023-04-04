@@ -1,5 +1,5 @@
 import {ref} from 'vue'
-import type {ProjectBasicInfos} from '#/project'
+import type {ProjectBasicInfos, ProjectBudget, ProjectCommissionDate} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
@@ -15,6 +15,31 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         categories: []
     }
 )
+
+const projectBudget = ref<ProjectBudget>(
+    {
+        firstEdition: {
+            'additionalProp1': 'string',
+            'additionalProp2': 'string',
+            'additionalProp3': 'string'
+        },
+        amountsPreviousEdition: {
+            'additionalProp1': 'string',
+            'additionalProp2': 'string',
+            'additionalProp3': 'string'
+        },
+        budgetPreviousEdition: null,
+        targetAudience: '',
+        typeTargetAudience: '',
+        amountTargetAudience: null,
+        amountStudentsTargetAudience: null,
+        ticketPrice: null,
+        individualCost: null
+    }
+)
+
+const projectCommissions = ref<ProjectCommissionDate[]>([])
+
 
 export default function () {
     const projectStore = useProjectStore()
@@ -41,6 +66,8 @@ export default function () {
 
     return {
         projectBasicInfos,
+        projectBudget,
+        projectCommissions,
         initProjectBasicInfos,
         postNewProject
     }

@@ -435,12 +435,18 @@
   },
   "project": {
     "before-start": "Avant-propos",
+    "budget": "Budget",
+    "budget-form-help": "Si vous rencontrez des difficultés pour remplir ce formulaire, n'hésitez pas à prendre contact avec le responsable de votre commission.",
     "categories": "Catégories",
+    "commission-amount-earned": "Montant obtenu pour la commission",
     "general-infos": "Informations générales",
+    "re-edition": "Réédition d'un précédent projet",
     "location": "Lieu(x) du projet",
     "name": "Nom du projet",
     "planned-end-date": "Date de fin du projet",
     "planned-start-date": "Date de début du projet",
+    "previous-edition": "Edition précédente",
+    "previous-demands": "Subvention(s) demandée(s) pour l'édition précédente",
     "submit": "Déposer une nouvelle demande de subventionnement"
   },
   "register": {

@@ -7,19 +7,27 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
+import useCommissions from '@/composables/useCommissions'
 
 const {t} = useI18n()
-const {projectBasicInfos, postNewProject} = useSubmitProject()
+const {
+    projectBasicInfos,
+    projectBudget,
+    postNewProject
+}
+    = useSubmitProject()
 const {fromDateIsAnterior} = useUtility()
+const {getCommissions, commissions} = useCommissions()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
 const route = useRoute()
 
-onMounted(() => {
+onMounted(async () => {
     loading.show
     initApplicant()
-    onGetProjectCategories()
+    await onGetProjectCategories()
+    await onGetCommissions()
     loading.hide
 })
 
@@ -29,6 +37,8 @@ const done2 = ref(false)
 const done3 = ref(false)
 
 const applicant = ref<'association' | 'user' | undefined>()
+
+const projectReEdition = ref<boolean>(false)
 
 const datesAreLegal = ref<boolean>(false)
 watch(() => projectBasicInfos.value.plannedStartDate, () => {
@@ -52,6 +62,17 @@ watch(() => userStore.user, initApplicant)
 async function onGetProjectCategories() {
     try {
         await projectStore.getProjectCategories()
+    } catch {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.loading-error')
+        })
+    }
+}
+
+async function onGetCommissions() {
+    try {
+        await getCommissions()
     } catch {
         notify({
             type: 'negative',
@@ -99,9 +120,9 @@ async function onSubmitBasicInfos() {
                             :done="done1"
                             :name="1"
                             :title="t('project.before-start')"
-                            icon="mdi-lightbulb-outline"
+                            icon="mdi-information-outline"
                         >
-                            <h4 class="title-3">{{ t('project.before-start') }}</h4>
+                            <h3 class="title-3">{{ t('project.before-start') }}</h3>
 
                             <p>
                                 Vous êtes sur le point de commencer une demande de subventionnement en tant que
@@ -115,23 +136,25 @@ async function onSubmitBasicInfos() {
                                 <li>...</li>
                             </ul>
 
-                            <QStepperNavigation>
+                            <section class="form-page-navigation">
                                 <QBtn
                                     :label="t('continue')"
+                                    icon-right="bi-check2"
                                     @click="() => { done1 = true; step = 2 }"
                                 />
-                            </QStepperNavigation>
+                            </section>
                         </QStep>
 
                         <QStep
                             :done="done2"
                             :name="2"
                             :title="t('project.general-infos')"
+                            icon="mdi-card-text-outline"
                         >
                             <QForm
                                 @submit.prevent="onSubmitBasicInfos"
                             >
-                                <h4 class="title-3">{{ t('project.general-infos') }}</h4>
+                                <h3 class="title-3">{{ t('project.general-infos') }}</h3>
 
                                 <QInput
                                     v-model="projectBasicInfos.name"
@@ -180,45 +203,81 @@ async function onSubmitBasicInfos() {
                                     stack-label
                                     use-chips
                                 />
-                                <QStepperNavigation>
-                                    <QBtn
-                                        :label="t('continue')"
-                                        type="submit"
-                                    />
+                                <section class="form-page-navigation">
                                     <QBtn
                                         :label="t('back')"
-                                        class="q-ml-sm"
-                                        flat
+                                        icon="bi-chevron-left"
                                         @click="step = 1"
                                     />
-                                </QStepperNavigation>
+                                    <QBtn
+                                        :label="t('continue')"
+                                        icon-right="bi-check2"
+                                        type="submit"
+                                    />
+                                </section>
                             </QForm>
                         </QStep>
 
                         <QStep
                             :done="done3"
                             :name="3"
-                            icon="add_comment"
-                            title="Create an ad"
+                            :title="t('project.budget')"
+                            icon="mdi-hand-coin-outline"
                         >
-                            Try out different ad text to see what brings in the most customers, and learn how to
-                            enhance your ads using features like ad extensions. If you run into any problems with
-                            your ads, find out how to tell if they're running and how to resolve approval issues.
+                            <QForm>
+                                <div class="title-help-section">
+                                    <h3 class="title-3">{{ t('project.budget') }}</h3>
+                                    <QIcon
+                                        name="mdi-information-outline"
+                                    >
+                                        <QTooltip>
+                                            {{ t('project.budget-form-help') }}
+                                        </QTooltip>
+                                    </QIcon>
+                                </div>
+                                <QCheckbox
+                                    v-model="projectReEdition"
+                                    :label="t('project.re-edition')"
+                                />
 
-                            <QStepperNavigation>
-                                <QBtn
-                                    color="primary"
-                                    label="Finish"
-                                    @click="done3 = true"
-                                />
-                                <QBtn
-                                    class="q-ml-sm"
-                                    color="primary"
-                                    flat
-                                    label="Back"
-                                    @click="step = 2"
-                                />
-                            </QStepperNavigation>
+                                <section
+                                    v-if="projectReEdition"
+                                    class="project-re-edition"
+                                >
+                                    <h4 class="title-4">{{ t('project.previous-edition') }}</h4>
+
+                                    <fieldset class="previous-budget">
+                                        <legend class="title-5">{{ t('project.previous-demands') }} :</legend>
+                                        <section class="previous-budget-section">
+                                            <div
+                                                v-for="commission in commissions"
+                                                :key="commission.id"
+                                            >
+                                                <QInput
+                                                    v-if="applicant === 'association'"
+                                                    v-model="projectBudget.amountsPreviousEdition"
+                                                    :label="t('project.commission-amount-earned') + ' ' + commission.acronym"
+                                                    filled
+                                                    type="number"
+                                                />
+                                            </div>
+                                        </section>
+                                    </fieldset>
+                                </section>
+
+                                <section class="form-page-navigation">
+                                    <QBtn
+                                        :label="t('back')"
+                                        icon="bi-chevron-left"
+                                        @click="step = 2"
+                                    />
+                                    <QBtn
+                                        :label="t('continue')"
+                                        icon-right="bi-check2"
+                                        type="submit"
+                                    />
+                                </section>
+                            </QForm>
                         </QStep>
                     </QStepper>
                 </div>
@@ -229,4 +288,22 @@ async function onSubmitBasicInfos() {
 
 <style lang="sass">
 @import '@/assets/styles/forms.scss'
+</style>
+
+<style lang="sass" scoped>
+h3
+    padding: 1.5rem 0 1rem 0
+
+.project-re-edition
+    margin-top: 1rem
+
+.previous-budget-section
+    display: flex
+    flex-direction: column
+    gap: 1rem
+
+.title-help-section
+    display: flex
+    align-items: center
+    gap: 0.5rem
 </style>
