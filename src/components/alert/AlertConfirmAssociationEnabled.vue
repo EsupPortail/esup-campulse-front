@@ -42,6 +42,7 @@ async function onEnableAssociation() {
         :color="isEnabled ? 'orange' : 'green'"
         :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
         :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+        class="btn-association"
         @click="openAlert = true"
     />
 
@@ -52,8 +53,8 @@ async function onEnableAssociation() {
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{
-                    isEnabled ? t("association.confirm-disable") : t("association.confirm-enable")
-                }}</span>
+                        isEnabled ? t("association.confirm-disable") : t("association.confirm-enable")
+                    }}</span>
             </QCardSection>
 
             <QCardActions align="right">

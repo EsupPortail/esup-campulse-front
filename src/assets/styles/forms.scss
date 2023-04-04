@@ -5,19 +5,6 @@
 .form-container {
   position: relative;
   background-color: $backgroundColor2;
-  padding: 1.5625rem 0;
-
-  .form {
-    width: $fullSize;
-    max-width: $pageWidth;
-    margin: 0 auto;
-    padding: .9375rem 0;
-
-    @media only screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
-  }
 
   &::before, &::after {
     content: '';
@@ -262,14 +249,19 @@ label.custom-label {
 }
 
 // Quasar buttons
+// MARK: DO NOT DELETE
 .q-btn {
   background-color: $annuaireColor;
-  border-radius: 0;
-  padding: .9375rem 1.875rem;
+  border-radius: .3rem;
+  padding: .9rem;
   font-size: 1.125rem;
   font-weight: $light-weight;
   transition: background-color 0.03s linear;
   box-shadow: $fieldsBoxShadow;
+
+  & > * {
+    color: $textColor3;
+  }
 
   &:focus-visible {
     outline: 2px solid $outlineColor2 !important;
@@ -277,7 +269,7 @@ label.custom-label {
   }
 
   .q-icon {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   &::before, .q-focus-helper {
@@ -302,11 +294,7 @@ label.custom-label {
 
   .q-btn__content {
     flex-wrap: nowrap;
-    white-space: nowrap;
 
-    & > * {
-      color: $textColor3;
-    }
   }
 
   &.small-button {
@@ -341,18 +329,6 @@ label.custom-label {
       .q-btn__content > * {
         color: white !important;
       }
-    }
-  }
-
-  &.bg-red {
-    background: #e9584e !important;
-
-    &:hover {
-      background: #bd453d !important;
-    }
-
-    &:active {
-      background: #ac3e36 !important;
     }
   }
 }
@@ -457,7 +433,15 @@ label.custom-label {
       background: $dashboardColor !important;
     }
 
-    &.btn-alt {
+    &.bg-delete {
+      background: $stateColor3;
+
+      &:hover {
+        background: $errorPanelColor !important;
+      }
+    }
+
+    &.bg-alt {
       border: 1px solid $dashboardColorText;
 
       .q-btn__content > * {
@@ -470,6 +454,14 @@ label.custom-label {
 
       &:active {
         background-color: mix(white, $dashboardColorText, 15%) !important;
+      }
+    }
+
+    &.bg-misc {
+      background: $annuaireColor;
+
+      &:hover {
+        background: $errorPanelColor !important;
       }
     }
   }
@@ -761,6 +753,8 @@ label.custom-label {
     }
   }
 }
+
+// MARK: DO NOT DELETE
 
 // A title that can be located on top of a form wrapper.
 .form-title {
@@ -1632,12 +1626,8 @@ label.custom-label {
 // Form page navigation
 .form-page-navigation {
   width: $fullSize;
-  max-width: $pageWidth;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 5rem;
-  margin: 3.2rem auto;
+  flex-direction: column;
 
   p {
     margin: 0;
@@ -1647,29 +1637,6 @@ label.custom-label {
   button {
     flex: 0 0 17rem;
   }
-
-  @media only screen and (max-width: $pageWidth) {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    // flex-direction: column;
-    flex-wrap: wrap;
-    gap: 2.5rem;
-
-    p {
-      text-align: justify;
-      flex: 1 0 $fullSize;
-      order: 1;
-    }
-
-    button {
-      flex: 1 1 auto;
-      order: 2;
-    }
-  }
-
-  // @media only screen and (max-width: $responsiveWidth) {
-
-  // }
 }
 
 // Multi-column form
@@ -1718,6 +1685,9 @@ label.custom-label {
 
 // Display rows
 .display-row, .comment-row {
+  width: $fullSize;
+  display: flex;
+  flex-direction: column;
   background-color: $backgroundColor1;
   box-shadow: $fieldsBoxShadow;
   border-left: 4px solid $annuaireColor;
@@ -1725,12 +1695,6 @@ label.custom-label {
   color: $textColor1;
   font-size: 1.25rem;
   font-weight: $medium-weight;
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-  justify-content: stretch;
-  gap: 1.5625rem;
-  width: $fullSize;
 
   p {
     margin: 0;
@@ -1750,9 +1714,8 @@ label.custom-label {
     justify-content: space-between;
   }
 
-  @media only screen and (max-width: $responsiveWidth) {
-    flex-direction: column;
-    gap: 1rem;
+  .q-select, .q-textarea, .q-input {
+    margin-bottom: .625rem;
   }
 }
 

@@ -22,11 +22,14 @@ onMounted(initValues)
 
 </script>
 <template>
-    <fieldset>
+    <fieldset class="form-container">
         <h2><i class="bi bi-megaphone"></i>{{ t('association.labels.socials') }}</h2>
-        <section
+
+        <div
             v-for="(socialNetwork, index) in associationSocialNetworks"
+            id="network-section"
             :key="index"
+            class="display-row"
         >
             <QInput
                 v-model="socialNetwork.type"
@@ -47,42 +50,63 @@ onMounted(initValues)
             />
             <QBtn
                 :label="t('delete')"
-                color="red"
+                class="delete-network-btn"
+                color="delete"
                 icon="mdi-delete"
-                outline
                 @click="removeNetwork(index)"
             />
-        </section>
+        </div>
+
         <QBtn
             :label="t('association.labels.add-social-network')"
-            color="primary"
+            class="add-network-btn"
+            color="misc"
             icon="mdi-plus-circle-outline"
-            outline
-            @click="addNetwork"
+            outline @click="addNetwork"
         />
     </fieldset>
 </template>
 
-<style lang="sass" scoped>
-@import "@/assets/styles/associations.scss"
+<style lang="scss">
+@import "@/assets/styles/associations.scss";
+@import "@/assets/_variables.scss";
+@import "@/assets/styles/forms.scss";
 
-fieldset
-    section
-        display: flex
-        gap: 10px
+.add-network-btn {
+    margin-top: .625rem;
+    width: $fullSize;
+}
 
-    section > .q-input
-        flex-grow: 2
-        margin-bottom: 10px
+// Mobile version
+.delete-network-btn {
+    margin-top: .625rem;
+}
 
-    section > .q-btn
-        margin-bottom: 30px
+@media screen and (min-width: $responsiveWidth) {
+    #network-section {
+        flex-direction: row;
+        gap: .625rem;
 
-legend
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-    width: 100%
-    margin-bottom: 15px
+        .q-input {
+            flex-grow: 2;
+            margin-bottom: .625rem;
+        }
+
+        .q-btn {
+            justify-content: center;
+        }
+
+        .delete-network-btn {
+            margin-top: -.001rem;
+            height: 3.5rem;
+        }
+    }
+
+    .add-network-btn {
+        width: auto;
+    }
+}
+
+
 </style>
+

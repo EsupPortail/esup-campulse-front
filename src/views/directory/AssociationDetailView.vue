@@ -45,7 +45,7 @@ async function onGetAssociationDetail() {
 
 <template>
     <section id="association-detail">
-        <section class="association-logo-title">
+        <section id="association-logo-title">
             <div class="association-logo">
                 <QImg
                     v-if="association"
@@ -63,6 +63,7 @@ async function onGetAssociationDetail() {
                 </p>
                 <p>{{ t("association.labels.charter-validity") }}</p>
             </div>
+
         </section>
 
         <section
@@ -109,7 +110,6 @@ async function onGetAssociationDetail() {
                 </article>
             </div>
         </section>
-
 
         <section
             v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret"
@@ -218,6 +218,7 @@ async function onGetAssociationDetail() {
                 </article>
             </div>
         </section>
+
         <section class="btn-group">
             <QBtn
                 :label="t('association.back-directory')"
@@ -241,4 +242,14 @@ async function onGetAssociationDetail() {
 @import "@/assets/styles/associations.scss";
 @import "@/assets/styles/forms.scss";
 
+// Remove shadows
+.form-container {
+    &::before, &::after {
+        content: none;
+    }
+}
+
+.btn-group {
+    margin: .625rem auto .625rem;
+}
 </style>

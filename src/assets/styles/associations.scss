@@ -388,24 +388,15 @@
   }
 }
 
-#association-detail, .association-edition {
-  padding: 1rem;
+#association-detail, #association-edition {
   position: relative;
 
-  p {
-    text-align: justify;
-    font-size: 1rem;
-    font-weight: $normal-weight;
+  section, fieldset {
+    border: none;
+    padding: 1rem;
   }
 
-  .association-logo-title {
-    .association-logo {
-      width: $associationLogoSize;
-      height: $associationLogoSize;
-      display: block;
-      margin: auto;
-    }
-
+  #association-logo-title {
     .association-name {
       h1 {
         font-size: 1.875rem;
@@ -419,14 +410,29 @@
         font-size: 1rem;
       }
     }
+
+    .association-logo {
+      width: $associationLogoSize;
+      height: $associationLogoSize;
+      display: block;
+      margin: auto;
+    }
+
+    .q-file, .q-input {
+      margin-bottom: .6rem;
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
   }
 
   section, fieldset {
-    position: relative;
-
-    h2 {
+    h2, legend {
       width: $fullSize;
-      margin: auto 1.5rem 0;
+      margin: auto;
       font-size: 1.7rem;
       text-transform: uppercase;
       color: $annuaireColorText;
@@ -434,113 +440,45 @@
       i {
         color: $annuaireColorText;
         font-size: 1.5rem;
-        margin-right: 0.300rem;
+        margin: auto 0.300rem auto 1rem;
         top: -0.01rem;
       }
     }
 
     .display-row {
-      display: block;
-      margin-bottom: .5rem;
-
       h3 {
         font-size: 1.5rem;
         font-weight: $semibold-weight;
-      }
-    }
-
-    ul, a {
-      display: flex;
-      flex-direction: row;
-      text-decoration: none;
-      color: black;
-      font-weight: $light-weight;
-      font-size: 1rem;
-      gap: 1rem;
-
-      li {
-        list-style: none;
+        line-height: 2.3rem;
+        margin-bottom: .6rem;
       }
 
-    }
-  }
-
-  .btn-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
-  }
-
-
-  @media screen and (min-width: $responsiveWidth) {
-    p, ul {
-      font-size: 1.1rem;
-    }
-
-    .association-logo-title {
-      .association-name {
-        font-size: 2.875rem;
-      }
-    }
-
-    section {
-      h2 {
-        font-size: 2rem;
-      }
-    }
-
-    .btn-group {
-      flex-direction: row;
-      padding-top: 1rem;
-    }
-  }
-
-}
-
-.association-edition {
-  padding: 0;
-
-  fieldset {
-    width: auto;
-
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: .6rem;
-
-      .q-btn, .q-file, .logo-input {
+      p {
         font-size: 1rem;
+        text-align: justify;
       }
+    }
+  }
 
-      .q-file {
+  @media screen and (min-width: 62.5rem) {
+    section, fieldset {
+      padding: 0 20rem 0;
+    }
+
+    #association-logo-title {
+      .association-logo {
         margin-top: 1rem;
       }
-
-      .q-btn {
-        padding: 1rem;
-      }
-
-      .logo-submit {
-        background: $dashboardColor;
-        color: white;
-      }
-
-      .logo-delete {
-        background: $errorPanelColor;
-        color: white;
-      }
-
     }
-  }
 
-  legend {
-
-  }
-
-  @media screen and (min-width: $responsiveWidth) {
-    .btn-logo-group {
+    .btn-group {
+      display: flex;
       flex-direction: row;
     }
+
+    .q-btn {
+      line-height: 1.3rem;
+    }
+
   }
 }
-

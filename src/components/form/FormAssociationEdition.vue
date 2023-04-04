@@ -148,8 +148,8 @@ async function onChangeLogo(action: string) {
 </script>
 
 <template>
-    <QForm class="association-edition" @submit.prevent="onChangeLogo('update')">
-        <fieldset class="association-logo-title">
+    <QForm id="association-edition" @submit.prevent="onChangeLogo('update')">
+        <fieldset id="association-logo-title" class="form-container">
             <div class="association-logo">
                 <QImg
                     :alt="altLogoText(association)"
@@ -158,176 +158,193 @@ async function onChangeLogo(action: string) {
                 />
             </div>
 
+            <div class="association-name">
+                <h1>{{ association?.name }}</h1>
+                <p
+                    v-if="association?.acronym"
+                    class="acronym"
+                >
+                    {{ association?.acronym }}
+                </p>
+            </div>
+
+            <QFile
+                v-model="newLogo"
+                :label="t('association.logo.pickup')"
+                accept=".jpg, .jpeg, .png"
+                filled
+            />
+            <QInput
+                v-model="altLogo"
+                :label="t('association.logo.alt')"
+                class="logo-input"
+                filled
+            />
+
             <div class="btn-group">
-                <QFile
-                    v-model="newLogo"
-                    :label="t('association.logo.pickup')"
-                    accept=".jpg, .jpeg, .png"
-                    filled
-                />
-                <QInput
-                    v-model="altLogo"
-                    :label="t('association.logo.alt')"
-                    class="logo-input"
-                    filled
-                />
                 <QBtn
                     :label="t('association.logo.update')"
-                    class="logo-submit"
                     icon="mdi-check-circle"
                     type="submit"
                 />
                 <QBtn
                     :label="t('association.logo.remove')"
-                    class="logo-delete"
+                    color="delete"
                     icon="mdi-delete"
                     @click="onChangeLogo('delete')"
                 />
             </div>
         </fieldset>
-    </QForm>
 
-    <QForm class="association-edition">
-        <fieldset>
+        <fieldset class="form-container">
             <h2><i class="bi bi-book"></i>{{ t('association.titles.info') }}</h2>
-            <QInput
-                v-model="association.name"
-                :disable=!isStaff
-                :label="t('association.labels.name')"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="association.acronym"
-                :label="t('association.labels.acronym')"
-                filled
-            />
-            <QInput
-                v-model="association.socialObject"
-                :hint="t('forms.social-object-hint')"
-                :label="t('association.labels.social-object')"
-                filled
-                type="textarea"
-            />
-            <QInput
-                v-model="association.currentProjects"
-                :label="t('association.labels.current-projects')"
-                filled
-                type="textarea"
-            />
-            <QSelect
-                v-model="association.institution"
-                :label="t('association.labels.institution')"
-                :options="associationStore.institutionLabels"
-                emit-value
-                filled
-                map-options
-            />
-            <QSelect
-                v-model="association.institutionComponent"
-                :label="t('association.labels.institution-component')"
-                :options="associationStore.institutionComponentLabels"
-                emit-value
-                filled
-                map-options
-            />
-            <QSelect
-                v-model="association.activityField"
-                :label="t('association.labels.activity-field')"
-                :options="associationStore.activityFieldLabels"
-                emit-value
-                filled
-                map-options
-            />
+            <div class="display-row">
+                <QInput
+                    v-model="association.name"
+                    :disable=!isStaff
+                    :label="t('association.labels.name')"
+                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                    filled
+                    lazy-rules
+                />
+                <QInput
+                    v-model="association.acronym"
+                    :label="t('association.labels.acronym')"
+                    filled
+                />
+                <QInput
+                    v-model="association.socialObject"
+                    :hint="t('forms.social-object-hint')"
+                    :label="t('association.labels.social-object')"
+                    filled
+                    type="textarea"
+                />
+                <QInput
+                    v-model="association.currentProjects"
+                    :label="t('association.labels.current-projects')"
+                    filled
+                    type="textarea"
+                />
+                <QSelect
+                    v-model="association.institution"
+                    :label="t('association.labels.institution')"
+                    :options="associationStore.institutionLabels"
+                    emit-value
+                    filled
+                    map-options
+                />
+                <QSelect
+                    v-model="association.institutionComponent"
+                    :label="t('association.labels.institution-component')"
+                    :options="associationStore.institutionComponentLabels"
+                    emit-value
+                    filled
+                    map-options
+                />
+                <QSelect
+                    v-model="association.activityField"
+                    :label="t('association.labels.activity-field')"
+                    :options="associationStore.activityFieldLabels"
+                    emit-value
+                    filled
+                    map-options
+                />
+            </div>
         </fieldset>
-        <fieldset>
+
+        <fieldset class="form-container">
             <h2><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h2>
-            <QInput
-                v-model="association.presidentNames"
-                :label="t('association.labels.president-name')"
-                filled
-            />
-            <QInput
-                v-model="association.presidentPhone"
-                :label="t('association.labels.president-phone')"
-                filled
-            />
-            <QInput
-                v-model="association.lastGoaDate"
-                :label="t('association.labels.last-goa')"
-                filled
-                type="date"
-            >
-                <template v-slot:prepend>
-                    <QIcon name="mdi-calendar"/>
-                </template>
-            </QInput>
-            <QInput
-                v-model="association.siret"
-                :label="t('association.labels.siret')"
-                filled
-                inputmode="numeric"
-            />
-            <QInput
-                v-if="hasPerm('change_association_all_fields')"
-                v-model="association.amountMembersAllowed"
-                :label="t('association.labels.amount-members-allowed')"
-                filled
-                inputmode="numeric"
-                type="number"
-            />
+            <div class="display-row">
+                <QInput
+                    v-model="association.presidentNames"
+                    :label="t('association.labels.president-name')"
+                    filled
+                />
+                <QInput
+                    v-model="association.presidentPhone"
+                    :label="t('association.labels.president-phone')"
+                    filled
+                />
+                <QInput
+                    v-model="association.lastGoaDate"
+                    :label="t('association.labels.last-goa')"
+                    filled
+                    type="date"
+                >
+                    <template v-slot:prepend>
+                        <QIcon name="mdi-calendar"/>
+                    </template>
+                </QInput>
+                <QInput
+                    v-model="association.siret"
+                    :label="t('association.labels.siret')"
+                    filled
+                    inputmode="numeric"
+                />
+                <QInput
+                    v-if="hasPerm('change_association_all_fields')"
+                    v-model="association.amountMembersAllowed"
+                    :label="t('association.labels.amount-members-allowed')"
+                    filled
+                    inputmode="numeric"
+                    type="number"
+                />
+            </div>
         </fieldset>
-        <fieldset>
+
+        <fieldset class="form-container">
             <h2><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h2>
-            <QInput
-                v-model="association.address"
-                :label="t('association.labels.address')"
-                filled
-            />
-            <QInput
-                v-model="association.phone"
-                :label="t('association.labels.phone')"
-                filled
-                type="tel"
-            />
-            <QInput
-                v-model="association.email"
-                :label="t('association.labels.mail')"
-                filled
-                type="email"
-            />
-            <QInput
-                v-model="association.website"
-                :label="t('association.labels.website')"
-                filled
-                type="url"
-            />
+            <div class="display-row">
+                <QInput
+                    v-model="association.address"
+                    :label="t('association.labels.address')"
+                    filled
+                />
+                <QInput
+                    v-model="association.phone"
+                    :label="t('association.labels.phone')"
+                    filled
+                    type="tel"
+                />
+                <QInput
+                    v-model="association.email"
+                    :label="t('association.labels.mail')"
+                    filled
+                    type="email"
+                />
+                <QInput
+                    v-model="association.website"
+                    :label="t('association.labels.website')"
+                    filled
+                    type="url"
+                />
+            </div>
         </fieldset>
 
         <FormAssociationSocialNetworks/>
 
-        <fieldset class="btn-group">
-            <QBtn
-                :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
-                :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
-                class="bottom-btn"
-                color="secondary"
-                icon="mdi-arrow-left-circle"
-            />
-            <AlertConfirmAssociationUpdate
-                v-if="Object.keys(checkChanges(association)).length > 0"
-                @has-validated="hasValidated = true"
-            />
-            <AlertConfirmAssociationEnabled
-                v-if="isStaff"
-            />
-            <AlertConfirmAssociationPublication
-                v-if="associationStore.association?.isEnabled && associationStore.association?.isSite"
-            />
-            <AlertConfirmAssociationDeletion
-                v-if="isStaff && !associationStore.association?.isEnabled"
-            />
+        <fieldset class="form-container">
+            <div class="btn-group">
+                <QBtn
+                    :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
+                    :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
+                    color="secondary"
+                    icon="mdi-arrow-left-circle"
+                />
+                <AlertConfirmAssociationUpdate
+                    v-if="Object.keys(checkChanges(association)).length > 0"
+                    @has-validated="hasValidated = true"
+                />
+                <AlertConfirmAssociationEnabled
+                    v-if="isStaff"
+                />
+                <AlertConfirmAssociationPublication
+                    v-if="associationStore.association?.isEnabled && associationStore.association?.isSite"
+                />
+                <AlertConfirmAssociationDeletion
+                    v-if="isStaff && !associationStore.association?.isEnabled"
+                />
+            </div>
         </fieldset>
 
         <AlertLeaveEdition
@@ -341,11 +358,19 @@ async function onChangeLogo(action: string) {
 
 <style lang="scss">
 @import "@/assets/styles/associations.scss";
+@import "@/assets/styles/forms.scss";
 
-fieldset {
-    border: none;
+// Remove shadows
+
+.btn-group {
+    margin: .625rem auto .625rem;
 }
 
+.form-container {
+    &::before, &::after {
+        content: none;
+    }
+}
 </style>
 
 
