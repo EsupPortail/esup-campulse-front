@@ -85,7 +85,6 @@ export default function() {
                 // We set a boolean to track changes
                 let hasChanges = false
                 // We compare the 2 objects
-                if (storeAssociation?.canBePresidentPermanent !== association.canBePresidentPermanent) hasChanges = true
                 if (storeAssociation?.canBePresidentFrom !== association.canBePresidentFrom) hasChanges = true
                 if (storeAssociation?.canBePresidentTo !== association.canBePresidentTo) hasChanges = true
                 if (storeAssociation?.isPresident && association.role !== 'isPresident') hasChanges = true
@@ -96,9 +95,8 @@ export default function() {
                 if (hasChanges && association.id) {
                     const infosToPatch = {
                         isPresident: association.role === 'isPresident',
-                        canBePresidentPermanent: association.canBePresidentPermanent ? association.canBePresidentPermanent : false,
-                        canBePresidentFrom: association.canBePresidentPermanent ? association.canBePresidentFrom : null,
-                        canBePresidentTo: association.canBePresidentPermanent ? association.canBePresidentTo : null,
+                        canBePresidentFrom: association.canBePresidentFrom ? association.canBePresidentFrom : null,
+                        canBePresidentTo: association.canBePresidentTo ? association.canBePresidentTo : null,
                         isSecretary: association.role === 'isSecretary',
                         isTreasurer: association.role === 'isTreasurer',
                         isVicePresident: association.role === 'isVicePresident'
@@ -149,7 +147,6 @@ export default function() {
             newAssociationsUser.value.push({
                 association: association.id,
                 isPresident: association.role === 'isPresident',
-                canBePresidentPermanent: false,
                 canBePresidentFrom: null,
                 canBePresidentTo: null,
                 isValidatedByAdmin: false,
@@ -226,7 +223,6 @@ export default function() {
                         firstName: member.firstName,
                         lastName: member.lastName,
                         role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(user))?.label as string,
-                        canBePresidentPermanent: user.canBePresidentPermanent,
                         canBePresidentFrom: user.canBePresidentFrom,
                         canBePresidentTo: user.canBePresidentTo,
                         isValidatedByAdmin: user.isValidatedByAdmin as boolean
@@ -249,7 +245,6 @@ export default function() {
                 role,
                 options: associationRoleOptions,
                 isValidatedByAdmin: association.isValidatedByAdmin,
-                canBePresidentPermanent: association.canBePresidentPermanent,
                 canBePresidentFrom: association.canBePresidentFrom,
                 canBePresidentTo: association.canBePresidentTo,
                 deleteAssociation: false
@@ -283,7 +278,6 @@ export default function() {
                     firstName: extendedUser.firstName,
                     lastName: extendedUser.lastName,
                     role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label as string,
-                    canBePresidentPermanent: associationUser.canBePresidentPermanent,
                     canBePresidentFrom: associationUser.canBePresidentFrom,
                     canBePresidentTo: associationUser.canBePresidentTo,
                     isValidatedByAdmin: associationUser.isValidatedByAdmin as boolean
