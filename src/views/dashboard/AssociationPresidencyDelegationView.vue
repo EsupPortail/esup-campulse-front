@@ -86,14 +86,14 @@ const columns: QTableProps['columns'] = [
     {
         name: 'delegationFrom',
         align: 'left',
-        label: t('start'),
+        label: t('dashboard.association-user.delegate-from'),
         field: 'delegationFrom',
         sortable: true
     },
     {
         name: 'delegationTo',
         align: 'left',
-        label: t('end'),
+        label: t('dashboard.association-user.delegate-to'),
         field: 'delegationTo',
         sortable: true
     },
