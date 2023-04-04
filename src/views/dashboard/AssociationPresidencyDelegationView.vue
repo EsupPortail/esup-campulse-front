@@ -84,23 +84,16 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {
-        name: 'canBePresidentPermanent',
-        align: 'right',
-        label: t('dashboard.association-user.delegation'),
-        field: 'canBePresidentPermanent',
-        sortable: true
-    },
-    {
         name: 'delegationFrom',
         align: 'left',
-        label: t('start'),
+        label: t('dashboard.association-user.delegate-from'),
         field: 'delegationFrom',
         sortable: true
     },
     {
         name: 'delegationTo',
         align: 'left',
-        label: t('end'),
+        label: t('dashboard.association-user.delegate-to'),
         field: 'delegationTo',
         sortable: true
     },
@@ -164,19 +157,6 @@ const columns: QTableProps['columns'] = [
                                         :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
                                     >
                                         <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>
-                                    </span>
-                                </span>
-                            </QTd>
-                            <QTd
-                                key="canBePresidentPermanent"
-                                :props="props"
-                            >
-                                <span class="form-state">
-                                    {{ props.row.canBePresidentPermanent ? t('activated') : t('deactivated') }}
-                                    <span
-                                        :class="props.row.canBePresidentPermanent ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
-                                    >
-                                        <i :class="props.row.canBePresidentPermanent ? 'bi bi-check' : 'bi bi-x'"></i>
                                     </span>
                                 </span>
                             </QTd>
