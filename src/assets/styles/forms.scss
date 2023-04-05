@@ -1713,7 +1713,7 @@ label.custom-label {
   }
 
   @media screen and (min-width: $responsiveWidth) {
-    width: 50%;
+    width: $halfSize;
     margin-left: auto;
     margin-right: auto;
   }

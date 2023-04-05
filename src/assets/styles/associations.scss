@@ -476,13 +476,13 @@
   @media screen and (min-width: $responsiveWidth) {
     section, fieldset {
       h2 {
-        width: 50%;
+        width: $halfSize;
         margin: auto;
       }
     }
 
     #association-logo-title {
-      width: 50%;
+      width: $halfSize;
       margin: auto;
 
       .association-logo {
@@ -496,7 +496,7 @@
     }
 
     #bottom-btns {
-      width: 50%;
+      width: $halfSize;
     }
 
     .q-btn {
