@@ -65,10 +65,10 @@ async function onUpdateUserAssociations() {
         await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
         await
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.associations-successfully-updated')
-        })
+            notify({
+                type: 'positive',
+                message: t('notifications.positive.associations-successfully-updated')
+            })
     } catch (error) {
         notify({
             type: 'negative',
@@ -183,14 +183,8 @@ async function onUpdateUserAssociations() {
                                 <QBtn
                                     :label="t('back')"
                                     :to="{ name: 'Dashboard' }"
+                                    class="back-btn"
                                     icon="bi-chevron-compact-left"
-                                />
-                                <QBtn
-                                    v-if="newAssociations.length > 0 && newAssociations[0].id"
-                                    :label="t('validate')"
-                                    class="validate-button"
-                                    icon-right="bi-check2"
-                                    type="submit"
                                 />
                             </section>
                         </QForm>
@@ -205,7 +199,38 @@ async function onUpdateUserAssociations() {
     </QTabPanels>
 </template>
 
-<style lang="sass" scoped>
-.validate-button
-    margin-top: 2rem
+<style lang="scss">
+@import "@/assets/_variables.scss";
+
+.q-tab-panel {
+    padding: 0;
+}
+
+.q-card {
+    margin: .625rem;
+}
+
+.form-container {
+    .back-btn {
+        width: 50%;
+        font-size: 1rem;
+        margin: 0 1.5rem;
+        padding: .5rem;
+    }
+}
+
+@media screen and (min-width: $responsiveWidth) {
+    .q-btn {
+        width: 30%;
+        font-size: 1.125rem;
+        padding: 1rem;
+    }
+
+    .form-container {
+        .back-btn {
+            width: 29%;
+            padding: 1rem;
+        }
+    }
+}
 </style>

@@ -458,6 +458,13 @@ label.custom-label {
       }
     }
 
+    &.bg-delete {
+      background: $stateColor3;
+
+      &:hover {
+        background: $errorPanelColor !important;
+      }
+    }
   }
 }
 

@@ -65,7 +65,7 @@ function clearOptions() {
     <QCard v-if="title">
         <QCardSection>
             <fieldset>
-                <legend class="legend-big">{{ title }}</legend>
+                <legend>{{ title }}</legend>
                 <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
                 <div
@@ -94,12 +94,22 @@ function clearOptions() {
                         inline
                         @update:model-value="updateRegisterRoleInAssociation"
                     />
-                    <QBtn
-                        :label="t('forms.delete-association')"
-                        icon="mdi-minus-circle-outline"
-                        outline
-                        @click="removeAssociation(index)"
-                    />
+
+                    <div class="btn-group">
+                        <QBtn
+                            :label="t('forms.delete-association')"
+                            icon="mdi-minus-circle-outline"
+                            outline
+                            @click="removeAssociation(index)"
+                        />
+                        <QBtn
+                            v-if="newAssociations.length > 0 && newAssociations[0].id"
+                            :label="t('validate')"
+                            class="validate-button"
+                            icon-right="bi-check2"
+                            type="submit"
+                        />
+                    </div>
                     <QSeparator/>
                 </div>
                 <QBtn
@@ -114,20 +124,27 @@ function clearOptions() {
     </QCard>
 </template>
 
-<style lang="sass" scoped>
-fieldset
-    border: none
+<style lang="scss">
+@import "@/assets/styles/forms.scss";
 
-.legend-big
-    font-size: 1.5em
+fieldset {
+    legend {
+        font-size: 1.5rem;
+    }
 
-.q-btn
-    margin: 15px 0
-    display: block
+    .q-btn {
+        font-size: 1rem;
+        padding: .5rem;
+        margin-top: .5rem;
+        line-height: 1.5rem;
+    }
 
-.q-input
-    margin: 15px 0
+    @media screen and (min-width: $responsiveWidth) {
+        .q-btn {
+            font-size: 1.125rem;
+            padding: 1rem;
+        }
+    }
 
-.add-association
-    margin: 15px 0 0 0
+}
 </style>
