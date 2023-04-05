@@ -65,22 +65,58 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
-                        path: 'submit-project-association/:id',
-                        name: 'SubmitProjectAssociation',
-                        component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
+                        path: 'association/:associationId',
                         meta: {
                             title: i18n.global.t('breadcrumbs.submit-project'),
                             breadcrumb: i18n.global.t('breadcrumbs.submit-project')
-                        }
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'CommissionAssociationDashboard',
+                                component: () => import('@/views/dashboard/projectManagement/CommissionAssociationDashboardView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.submit-project'),
+                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                                }
+                            },
+                            {
+                                path: 'submit-project/:projectId?',
+                                name: 'SubmitProjectAssociation',
+                                component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.submit-project'),
+                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                                }
+                            }
+                        ]
                     },
                     {
-                        path: 'submit-project-individual',
-                        name: 'SubmitProjectIndividual',
-                        component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
+                        path: 'individual',
                         meta: {
                             title: i18n.global.t('breadcrumbs.submit-project'),
                             breadcrumb: i18n.global.t('breadcrumbs.submit-project')
-                        }
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'CommissionIndividualDashboard',
+                                component: () => import('@/views/dashboard/projectManagement/CommissionIndividualDashboardView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.submit-project'),
+                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                                }
+                            },
+                            {
+                                path: 'submit-project',
+                                name: 'SubmitProjectIndividual',
+                                component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.submit-project'),
+                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                                }
+                            }
+                        ]
                     }
                 ]
             },

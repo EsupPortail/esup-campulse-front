@@ -4,3 +4,10 @@ export interface Commission {
     acronym: string,
     institution: number
 }
+
+export interface CommissionDate {
+    id: number,
+    submissionDate: string,
+    commissionDate: string,
+    commission: number
+}

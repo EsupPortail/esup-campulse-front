@@ -1,17 +1,13 @@
 export interface Project {
+    id: number,
     name: string,
     plannedStartDate: string,
     plannedEndDate: string,
     location: string,
     user: number | null,
     association: number | null,
-    categories: ProjectCategory[],
-    firstEdition: ProjectFirstEdition[],
-    amountsPreviousEdition: {
-        'additionalProp1': 'string',
-        'additionalProp2': 'string',
-        'additionalProp3': 'string'
-    },
+    categories: ProjectCategoryName[],
+    commissionDates: CommissionDate[],
     budgetPreviousEdition: number,
     targetAudience: string,
     typeTargetAudience: string,
@@ -43,14 +39,16 @@ interface ProjectCategory {
     categoryId: string
 }
 
-interface ProjectFirstEdition {
-    commissionDateId: string,
-    isFirstEdition: boolean
-}
-
 export interface ProjectCategoryName {
     id: number,
     name: string
+}
+
+interface CommissionDate {
+    id: number,
+    submissionDate: string,
+    commissionDate: string,
+    commission: number
 }
 
 export interface ProjectBasicInfos {
@@ -59,21 +57,10 @@ export interface ProjectBasicInfos {
     plannedEndDate: string,
     location: string,
     user: number | null,
-    association: number | null,
-    categories: number[]
+    association: number | null
 }
 
 export interface ProjectBudget {
-    firstEdition: {
-        'additionalProp1': 'string',
-        'additionalProp2': 'string',
-        'additionalProp3': 'string'
-    },
-    amountsPreviousEdition: {
-        'additionalProp1': 'string',
-        'additionalProp2': 'string',
-        'additionalProp3': 'string'
-    },
     budgetPreviousEdition: number | null,
     targetAudience: string,
     typeTargetAudience: string,
@@ -83,15 +70,32 @@ export interface ProjectBudget {
     individualCost: number | null
 }
 
-export interface ProjectCommissionDate {
-    id: number,
-    project: string,
-    commissionDate: string,
-    isFirstEdition: boolean,
+export interface ProjectGoals {
+    goals: string,
+    summary: string,
+    plannedActivities: string,
+    preventionSafety: string,
+    marketingCampaign: string,
+}
+
+export interface ProjectAmount {
+    commissionId: number,
+    commissionDate: number,
     amountAskedPreviousEdition: number | null,
     amountEarnedPreviousEdition: number | null,
-    amountAsked: number | null,
-    amountEarned: number | null
+    amountAsked?: number | null,
+    amountEarned?: number | null
+}
+
+export interface ProjectCommissionDate {
+    id?: number,
+    project: number,
+    commissionDate: number,
+    isFirstEdition?: boolean,
+    amountAskedPreviousEdition?: number | null,
+    amountEarnedPreviousEdition?: number | null,
+    amountAsked?: number | null,
+    amountEarned?: number | null
 }
 
 // STORE

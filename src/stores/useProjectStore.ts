@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {ProjectCategoryName, ProjectStore} from '#/project'
+import type {Project, ProjectCategoryName, ProjectStore} from '#/project'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 
@@ -24,6 +24,11 @@ export const useProjectStore = defineStore('projectStore', {
             if (!this.projectCategoryNames.length) {
                 this.projectCategoryNames = (await axiosAuthenticated.get<ProjectCategoryName[]>('/projects/categories/names')).data
             }
+        },
+
+        async getProjectDetail(id: number) {
+            const {axiosAuthenticated} = useAxios()
+            this.project = (await axiosAuthenticated.get<Project>(`/projects/${id}`)).data
         }
     }
 })
