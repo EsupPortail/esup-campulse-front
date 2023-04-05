@@ -42,7 +42,7 @@ async function onEnableAssociation() {
         :color="isEnabled ? 'orange' : 'green'"
         :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
         :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
-        class="btn-association"
+        class="test"
         @click="openAlert = true"
     />
 
@@ -75,3 +75,9 @@ async function onEnableAssociation() {
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss">
+.test:hover {
+    background-color: red;
+}
+</style>

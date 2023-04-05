@@ -61,7 +61,7 @@ async function onGetAssociationDetail() {
                 >
                     {{ association?.acronym }}
                 </p>
-                <p>{{ t("association.labels.charter-validity") }}</p>
+                <p><i>{{ t("association.labels.charter-validity") }}</i></p>
             </div>
 
         </section>
@@ -219,7 +219,7 @@ async function onGetAssociationDetail() {
             </div>
         </section>
 
-        <section class="btn-group">
+        <section id="bottom-btns" class="btn-group">
             <QBtn
                 :label="t('association.back-directory')"
                 color="secondary"
@@ -241,13 +241,6 @@ async function onGetAssociationDetail() {
 <style lang="scss">
 @import "@/assets/styles/associations.scss";
 @import "@/assets/styles/forms.scss";
-
-// Remove shadows
-.form-container {
-    &::before, &::after {
-        content: none;
-    }
-}
 
 .btn-group {
     margin: .625rem auto .625rem;

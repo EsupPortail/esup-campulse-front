@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {RouterLink} from 'vue-router'
 import {useI18n} from 'vue-i18n'
 import useColorVariants from '@/composables/useColorVariants'
 
@@ -15,7 +14,7 @@ const {colorVariant} = useColorVariants()
     >
         <div id="footer-logos">
             <div class="wrapper">
-                <RouterLink to="/">
+                <!--<RouterLink to="/">
                     <img src="@/assets/img/logos/uha.png"/>
                 </RouterLink>
                 <RouterLink to="/">
@@ -29,9 +28,12 @@ const {colorVariant} = useColorVariants()
                 </RouterLink>
                 <RouterLink to="/">
                     <img src="@/assets/img/logos/engees.png"/>
-                </RouterLink>
+                </RouterLink>-->
                 <RouterLink to="/">
                     <img src="@/assets/img/logos/unistra.png"/>
+                </RouterLink>
+                <RouterLink to="/">
+                    <img src="@/assets/img/logos/crous.png"/>
                 </RouterLink>
             </div>
         </div>

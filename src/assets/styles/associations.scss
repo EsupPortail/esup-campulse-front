@@ -393,10 +393,15 @@
 
   section, fieldset {
     border: none;
-    padding: 1rem;
+  }
+
+  fieldset {
+    padding: 0rem;
   }
 
   #association-logo-title {
+    padding: .5rem;
+
     .association-name {
       h1 {
         font-size: 1.875rem;
@@ -427,12 +432,15 @@
     display: flex;
     flex-direction: column;
     gap: .6rem;
+    margin: .625rem auto;
+  }
+
+  #bottom-btns {
+    padding: .5rem;
   }
 
   section, fieldset {
-    h2, legend {
-      width: $fullSize;
-      margin: auto;
+    h2 {
       font-size: 1.7rem;
       text-transform: uppercase;
       color: $annuaireColorText;
@@ -443,6 +451,11 @@
         margin: auto 0.300rem auto 1rem;
         top: -0.01rem;
       }
+    }
+
+    p {
+      margin: .625rem;
+      text-align: center;
     }
 
     .display-row {
@@ -460,12 +473,18 @@
     }
   }
 
-  @media screen and (min-width: 62.5rem) {
+  @media screen and (min-width: $responsiveWidth) {
     section, fieldset {
-      padding: 0 20rem 0;
+      h2 {
+        width: 50%;
+        margin: auto;
+      }
     }
 
     #association-logo-title {
+      width: 50%;
+      margin: auto;
+
       .association-logo {
         margin-top: 1rem;
       }
@@ -474,6 +493,10 @@
     .btn-group {
       display: flex;
       flex-direction: row;
+    }
+
+    #bottom-btns {
+      width: 50%;
     }
 
     .q-btn {

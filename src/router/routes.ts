@@ -108,7 +108,8 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/AssociationEditionView.vue'),
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.edit-my-association'),
-                                    title: i18n.global.t('breadcrumbs.edit-my-association')
+                                    colorVariant: 'space-1',
+                                    title: i18n.global.t('breadcrumbs.edit-my-association'),
                                 }
                             },
                             {
@@ -231,7 +232,8 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/AssociationEditionView.vue'),
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.edit-association'),
-                                    title: i18n.global.t('breadcrumbs.edit-association')
+                                    title: i18n.global.t('breadcrumbs.edit-association'),
+                                    colorVariant: 'space-1'
                                 },
                             },
                             {

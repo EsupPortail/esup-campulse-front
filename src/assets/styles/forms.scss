@@ -5,6 +5,7 @@
 .form-container {
   position: relative;
   background-color: $backgroundColor2;
+  padding: 1rem;
 
   &::before, &::after {
     content: '';
@@ -294,7 +295,6 @@ label.custom-label {
 
   .q-btn__content {
     flex-wrap: nowrap;
-
   }
 
   &.small-button {
@@ -331,6 +331,15 @@ label.custom-label {
       }
     }
   }
+
+  &.bg-delete {
+    background: $stateColor3;
+
+    &:hover {
+      background: $errorPanelColor !important;
+    }
+  }
+
 }
 
 .variant-space-2 {
@@ -433,14 +442,6 @@ label.custom-label {
       background: $dashboardColor !important;
     }
 
-    &.bg-delete {
-      background: $stateColor3;
-
-      &:hover {
-        background: $errorPanelColor !important;
-      }
-    }
-
     &.bg-alt {
       border: 1px solid $dashboardColorText;
 
@@ -457,13 +458,6 @@ label.custom-label {
       }
     }
 
-    &.bg-misc {
-      background: $annuaireColor;
-
-      &:hover {
-        background: $errorPanelColor !important;
-      }
-    }
   }
 }
 
@@ -1716,6 +1710,12 @@ label.custom-label {
 
   .q-select, .q-textarea, .q-input {
     margin-bottom: .625rem;
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 

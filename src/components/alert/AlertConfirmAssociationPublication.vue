@@ -43,8 +43,8 @@ async function onPublishAssociation() {
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{
-                    !associationStore.association?.isPublic ? t('alerts.confirm-association-publish') : t('alerts.confirm-association-unpublish')
-                }}</span>
+                        !associationStore.association?.isPublic ? t('alerts.confirm-association-publish') : t('alerts.confirm-association-unpublish')
+                    }}</span>
             </QCardSection>
 
             <QCardActions align="right">

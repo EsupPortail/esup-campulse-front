@@ -22,49 +22,51 @@ onMounted(initValues)
 
 </script>
 <template>
-    <fieldset class="form-container">
+    <fieldset>
         <h2><i class="bi bi-megaphone"></i>{{ t('association.labels.socials') }}</h2>
-
-        <div
-            v-for="(socialNetwork, index) in associationSocialNetworks"
-            id="network-section"
-            :key="index"
-            class="display-row"
-        >
-            <QInput
-                v-model="socialNetwork.type"
-                :hint="t('forms.social-network-type-hint')"
-                :label="t('association.labels.social-network-type')"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-            />
-            <QInput
-                v-model="socialNetwork.location"
-                :hint="t('forms.social-network-location-hint')"
-                :label="t('association.labels.social-network-location')"
-                :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
-                filled
-                lazy-rules
-                type="url"
-            />
-            <QBtn
-                :label="t('delete')"
-                class="delete-network-btn"
-                color="delete"
-                icon="mdi-delete"
-                @click="removeNetwork(index)"
-            />
-        </div>
-
-        <QBtn
-            :label="t('association.labels.add-social-network')"
-            class="add-network-btn"
-            color="misc"
-            icon="mdi-plus-circle-outline"
-            outline @click="addNetwork"
-        />
+        <section class="form-container">
+            <div
+                v-for="(socialNetwork, index) in associationSocialNetworks"
+                id="network-section"
+                :key="index"
+                class="display-row"
+            >
+                <QInput
+                    v-model="socialNetwork.type"
+                    :hint="t('forms.social-network-type-hint')"
+                    :label="t('association.labels.social-network-type')"
+                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                    filled
+                    lazy-rules
+                />
+                <QInput
+                    v-model="socialNetwork.location"
+                    :hint="t('forms.social-network-location-hint')"
+                    :label="t('association.labels.social-network-location')"
+                    :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
+                    filled
+                    lazy-rules
+                    type="url"
+                />
+                <QBtn
+                    :label="t('delete')"
+                    class="delete-network-btn"
+                    color="delete"
+                    icon="mdi-delete"
+                    @click="removeNetwork(index)"
+                />
+            </div>
+            <div class="display-row">
+                <QBtn
+                    :label="t('association.labels.add-social-network')"
+                    class="add-network-btn"
+                    icon="mdi-plus-circle-outline"
+                    outline @click="addNetwork"
+                />
+            </div>
+        </section>
     </fieldset>
+
 </template>
 
 <style lang="scss">
@@ -73,8 +75,8 @@ onMounted(initValues)
 @import "@/assets/styles/forms.scss";
 
 .add-network-btn {
-    margin-top: .625rem;
     width: $fullSize;
+    background: pink;
 }
 
 // Mobile version
@@ -103,7 +105,7 @@ onMounted(initValues)
     }
 
     .add-network-btn {
-        width: auto;
+        width: 35%;
     }
 }
 
