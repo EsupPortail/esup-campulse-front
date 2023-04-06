@@ -147,12 +147,8 @@ async function onDeleteUser() {
                                     {{ association.isPresident ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.can-be-president-from') }} :
-                                    {{ association.canBePresidentFrom ? association.canBePresidentFrom : t('dashboard.association-user.not-can-be-president-from') }}
-                                </li>
-                                <li>
-                                    {{ t('dashboard.association-user.can-be-president-to') }} :
-                                    {{ association.canBePresidentTo ? association.canBePresidentFrom : t('dashboard.association-user.not-can-be-president-to') }}
+                                    {{ t('dashboard.association-user.is-vice-president') }} :
+                                    {{ association.isVicePresident ? t('yes') : t('no') }}
                                 </li>
                                 <li>
                                     {{ t('dashboard.association-user.is-secretary') }} :
