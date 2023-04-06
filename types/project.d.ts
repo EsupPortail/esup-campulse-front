@@ -35,8 +35,8 @@ type ProjectStatus =
 
 interface ProjectCategory {
     id: number,
-    projectId?: string,
-    categoryId: string
+    project: number,
+    category: number
 }
 
 export interface ProjectCategoryName {
@@ -61,13 +61,13 @@ export interface ProjectBasicInfos {
 }
 
 export interface ProjectBudget {
-    budgetPreviousEdition: number | null,
+    budgetPreviousEdition: number | string,
     targetAudience: string,
     typeTargetAudience: string,
-    amountTargetAudience: number | null,
-    amountStudentsTargetAudience: number | null,
-    ticketPrice: number | null,
-    individualCost: number | null
+    amountTargetAudience: number | string,
+    amountStudentsTargetAudience: number | string,
+    ticketPrice: number | string,
+    individualCost: number | string
 }
 
 export interface ProjectGoals {
@@ -78,18 +78,9 @@ export interface ProjectGoals {
     marketingCampaign: string,
 }
 
-export interface ProjectAmount {
-    commissionId: number,
-    commissionDate: number,
-    amountAskedPreviousEdition: number | null,
-    amountEarnedPreviousEdition: number | null,
-    amountAsked?: number | null,
-    amountEarned?: number | null
-}
-
 export interface ProjectCommissionDate {
     id?: number,
-    project: number,
+    project?: number,
     commissionDate: number,
     isFirstEdition?: boolean,
     amountAskedPreviousEdition?: number | null,
@@ -101,5 +92,7 @@ export interface ProjectCommissionDate {
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
+    projectCategories: ProjectCategory[],
+    projectCommissionDates: ProjectCommissionDate[],
     projectCategoryNames: ProjectCategoryName[]
 }

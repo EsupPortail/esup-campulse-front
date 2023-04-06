@@ -1,5 +1,5 @@
 import {ref, watch} from 'vue'
-import type {Commission} from '#/commissions'
+import type {Commission, SelectCommissionDateLabel} from '#/commissions'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
@@ -18,7 +18,7 @@ const userCommissions = ref<number[]>([])
 const commissionDates = ref<CommissionDate[]>([])
 
 // Used to store commission dates labels for project submission
-const commissionDatesLabels = ref<SelectLabel[]>([])
+const commissionDatesLabels = ref<SelectCommissionDateLabel[]>([])
 
 export default function () {
 
@@ -58,10 +58,13 @@ export default function () {
 
     const initCommissionDates = async () => {
         await getCommissions()
-        commissionDatesLabels.value = commissionDates.value.map(function (commission) {
+        commissionDatesLabels.value = commissionDates.value.map(function (commissionDate) {
+            const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
             return {
-                value: commission.id,
-                label: `${commissions.value.find(obj => obj.id === commission.commission)?.acronym} (${commission.commissionDate.split('-').reverse().join('/')})`
+                value: commissionDate.id,
+                label: `${commission?.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
+                commission: commission?.id as number,
+                disable: false
             }
         })
     }

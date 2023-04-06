@@ -15,12 +15,19 @@ const {
     postNewProject,
     projectCategories,
     projectCommissionDatesModel,
-    projectAmounts,
+    projectCommissionDates,
     projectBudget,
-    postProjectCommissionDates,
+    updateProjectCommissionDates,
     projectGoals,
-    postProjectCategories,
-    initProjectBasicInfos
+    updateProjectCategories,
+    initProjectBasicInfos,
+    patchProjectBasicInfos,
+    initProjectCategories,
+    initProjectCommissionDatesModel,
+    initProjectBudget,
+    patchProjectBudget,
+    patchProjectCommissionDates,
+    initProjectCommissionDates
 }
     = useSubmitProject()
 const {fromDateIsAnterior} = useUtility()
@@ -28,7 +35,8 @@ const {
     getCommissions,
     commissions,
     getCommissionDates,
-    commissionDatesLabels
+    commissionDatesLabels,
+    commissionDates
 } = useCommissions()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
@@ -39,10 +47,7 @@ onMounted(async () => {
     loading.show
     initApplicant()
     if (route.params.projectId) newProject.value = false
-    if (!newProject.value) {
-        await onGetProjectDetail()
-        initProjectBasicInfos()
-    }
+    await onGetProjectDetail()
     if (applicant.value === 'association') {
         associationName.value = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))?.name
     }
@@ -57,10 +62,13 @@ const done3 = ref(false)
 const done4 = ref(false)
 
 watch(() => step.value === 2, async () => {
-    await onGetCommissions()
     await onGetCommissionDates()
 })
+watch(() => step.value === 3, async () => {
+    await onGetProjectBudget()
+})
 
+// REFS
 const applicant = ref<'association' | 'user' | undefined>()
 
 const associationName = ref<string | undefined>('')
@@ -69,14 +77,7 @@ const newProject = ref<boolean>(true)
 
 const projectReEdition = ref<boolean>(false)
 
-const datesAreLegal = ref<boolean>(false)
-watch(() => projectBasicInfos.value.plannedStartDate, () => {
-    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate)
-})
-watch(() => projectBasicInfos.value.plannedEndDate, () => {
-    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate)
-})
-
+// INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
     if (route.name === 'SubmitProjectAssociation') {
         projectBasicInfos.value.association = parseInt(route.params.associationId as string)
@@ -88,9 +89,22 @@ const initApplicant = () => {
 }
 watch(() => userStore.user, initApplicant)
 
+// CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
+const datesAreLegal = ref<boolean>(false)
+watch(() => projectBasicInfos.value.plannedStartDate, () => {
+    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate)
+})
+watch(() => projectBasicInfos.value.plannedEndDate, () => {
+    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate)
+})
+
+// GET DATA FOR STEP 1
 async function onGetProjectDetail() {
     try {
-        await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
+        if (!newProject.value) {
+            await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
+            initProjectBasicInfos()
+        }
     } catch {
         notify({
             type: 'negative',
@@ -101,7 +115,11 @@ async function onGetProjectDetail() {
 
 async function onGetProjectCategories() {
     try {
-        await projectStore.getProjectCategories()
+        await projectStore.getProjectCategoryNames()
+        if (!newProject.value) {
+            await projectStore.getProjectCategories()
+            initProjectCategories()
+        }
     } catch {
         notify({
             type: 'negative',
@@ -110,33 +128,53 @@ async function onGetProjectCategories() {
     }
 }
 
-async function onGetCommissions() {
-    try {
-        await getCommissions()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
-    }
-}
-
+// GET DATA FOR STEP 2
 async function onGetCommissionDates() {
-    try {
-        await getCommissionDates()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    if (!projectCommissionDatesModel.value.length) {
+        try {
+            await getCommissions()
+            await getCommissionDates()
+            if (!newProject.value) {
+                await projectStore.getProjectCommissionDates()
+                initProjectCommissionDatesModel()
+            }
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.loading-error')
+            })
+        }
     }
 }
 
+// GET DATA FOR STEP 3
+async function onGetProjectBudget() {
+    if (!projectCommissionDatesModel.value.length) {
+        try {
+            await getCommissions()
+            await getCommissionDates()
+            await projectStore.getProjectCommissionDates()
+            initProjectCommissionDates()
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.loading-error')
+            })
+        }
+    }
+    initProjectBudget()
+}
+
+// SUBMIT STEP 1
 async function onSubmitBasicInfos() {
     try {
-        await postNewProject()
+        if (newProject.value) {
+            await postNewProject()
+        } else {
+            await patchProjectBasicInfos()
+        }
         if (projectStore.project) {
-            await postProjectCategories()
+            await updateProjectCategories()
             done1.value = true
             step.value = 2
         }
@@ -148,33 +186,37 @@ async function onSubmitBasicInfos() {
     }
 }
 
+// SUBMIT STEP 2
 async function onSubmitCommissionDates() {
-    try {
-        if (projectStore.project) {
-            await postProjectCommissionDates()
+    if (projectStore.project) {
+        try {
+            await updateProjectCommissionDates()
             done2.value = true
             step.value = 3
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.commission-dates-error')
+            })
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.commission-dates-error')
-        })
     }
 }
 
+// SUBMIT STEP 3
 async function onSubmitBudget() {
-    try {
-        if (projectStore.project) {
-            //await patchProjectCommissionDates()
+    if (projectStore.project) {
+        try {
+            await patchProjectBudget()
+            await patchProjectCommissionDates(!projectReEdition.value)
             done3.value = true
             step.value = 4
+
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.commission-dates-error')
+            })
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.commission-dates-error')
-        })
     }
 }
 </script>
@@ -206,8 +248,7 @@ async function onSubmitBudget() {
                         }}
                     </p>
                     <p>
-                        Avant de débuter la procédure, assurez-vous de disposer des documents suivants
-                        numérisés :
+                        Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés :
                     </p>
                 </div>
 
@@ -298,6 +339,16 @@ async function onSubmitBudget() {
                         >
                             <h3 class="title-3">{{ t('project.commission-choice') }}</h3>
 
+                            <div class="info-panel">
+                                <i
+                                    aria-hidden="true"
+                                    class="bi bi-exclamation-lg"
+                                ></i>
+                                <p>
+                                    Attention, vous ne pouvez choisir qu'une seule date par commission.
+                                </p>
+                            </div>
+
                             <QSelect
                                 v-model="projectCommissionDatesModel"
                                 :hint="t('project.commission-choice-hint')"
@@ -347,17 +398,17 @@ async function onSubmitBudget() {
 
                             <!-- Previous amounts -->
                             <section
-                                v-if="projectAmounts.length && projectReEdition"
+                                v-if="projectCommissionDates.length && projectReEdition"
                                 class="previous-budget"
                             >
                                 <fieldset class="previous-budget-fieldset">
                                     <legend class="title-5">{{ t('project.previous-asked') }} :</legend>
                                     <section class="previous-budget-section">
                                         <QInput
-                                            v-for="(commission, index) in projectAmounts"
+                                            v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
-                                            v-model="commission.amountAskedPreviousEdition"
-                                            :label="commissions.find(obj => obj.id === commission.commissionId)?.acronym"
+                                            v-model="commissionDate.amountAskedPreviousEdition"
+                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym"
                                             filled
                                             type="number"
                                         />
@@ -368,10 +419,10 @@ async function onSubmitBudget() {
                                     <legend class="title-5">{{ t('project.previous-earned') }} :</legend>
                                     <section class="previous-budget-section">
                                         <QInput
-                                            v-for="(commission, index) in projectAmounts"
+                                            v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
-                                            v-model="commission.amountEarnedPreviousEdition"
-                                            :label="commissions.find(obj => obj.id === commission.commissionId)?.acronym"
+                                            v-model="commissionDate.amountEarnedPreviousEdition"
+                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym"
                                             filled
                                             type="number"
                                         />
@@ -458,10 +509,10 @@ async function onSubmitBudget() {
                                     <legend class="title-5">{{ t('project.amounts-asked') }} :</legend>
                                     <section class="asked-budget-section">
                                         <QInput
-                                            v-for="(commission, index) in projectAmounts"
+                                            v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
-                                            v-model="commission.amountAsked"
-                                            :label="commissions.find(obj => obj.id === commission.commissionId)?.acronym"
+                                            v-model="commissionDate.amountAsked"
+                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym"
                                             filled
                                             type="number"
                                         />
