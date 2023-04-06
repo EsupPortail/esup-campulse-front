@@ -15,24 +15,29 @@ const {colorVariant} = useColorVariants()
     >
         <div id="footer-logos">
             <div class="wrapper">
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/uha.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/hear-white.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/insa.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/ensas.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/engees.png"/>
-                </RouterLink>
-                <RouterLink to="/">
+                <a href="https://www.crous-strasbourg.fr/">
+                    <img src="@/assets/img/logos/crous.png"/>
+                </a>
+                <a href="https://www.unistra.fr/">
                     <img src="@/assets/img/logos/unistra.png"/>
-                </RouterLink>
+                </a>
+                <!--
+                <a href="https://www.uha.fr/">
+                    <img src="@/assets/img/logos/uha.png"/>
+                </a>
+                <a href="https://www.insa-strasbourg.fr/">
+                    <img src="@/assets/img/logos/insa.png"/>
+                </a>
+                <a href="https://www.hear.fr/">
+                    <img src="@/assets/img/logos/hear-white.png"/>
+                </a>
+                <a href="https://engees.unistra.fr/">
+                    <img src="@/assets/img/logos/engees.png"/>
+                </a>
+                <a href="https://www.strasbourg.archi.fr/">
+                    <img src="@/assets/img/logos/ensas.png"/>
+                </a>
+                -->
             </div>
         </div>
         <QToolbar>
