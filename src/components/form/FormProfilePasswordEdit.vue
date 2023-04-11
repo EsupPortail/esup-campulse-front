@@ -10,98 +10,107 @@ const {t} = useI18n()
 const {notify} = useQuasar()
 
 const editPassword = ref<PasswordEdit>({
-  oldPassword: '',
-  newPassword1: '',
-  newPassword2: ''
+    oldPassword: '',
+    newPassword1: '',
+    newPassword2: ''
 })
 
 const {axiosAuthenticated} = useAxios()
 
 async function passwordConfirm() {
-  if (editPassword.value.newPassword1 === editPassword.value.newPassword2) {
-    try {
-      await axiosAuthenticated.post(
-          '/users/auth/password/change/',
-          {
-            oldPassword: editPassword.value.oldPassword,
-            newPassword1: editPassword.value.newPassword1,
-            newPassword2: editPassword.value.newPassword2
-          }
-      )
-      await router.push({name: 'Home'})
-      notify({
-        type: 'positive',
-        message: t('notifications.positive.password-changed')
-      })
-    } catch (e) {
-      // TODO
-      notify({
-        type: 'negative',
-        message: t('notifications.negative.invalid-request')
-      })
+    if (editPassword.value.newPassword1 === editPassword.value.newPassword2) {
+        try {
+            await axiosAuthenticated.post(
+                '/users/auth/password/change/',
+                {
+                    oldPassword: editPassword.value.oldPassword,
+                    newPassword1: editPassword.value.newPassword1,
+                    newPassword2: editPassword.value.newPassword2
+                }
+            )
+            await router.push({name: 'Home'})
+            notify({
+                type: 'positive',
+                message: t('notifications.positive.password-changed')
+            })
+        } catch (e) {
+            // TODO
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.invalid-request')
+            })
+        }
+    } else {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.different-passwords')
+        })
     }
-  } else {
-    notify({
-      type: 'negative',
-      message: t('notifications.negative.different-passwords')
-    })
-  }
 }
 </script>
 
 <template>
-  <QForm
-      class="q-gutter-md"
-      @submit="passwordConfirm"
-  >
     <fieldset>
-      <legend>{{ t('dashboard.my-password') }}</legend>
-      <QInput
-          v-model="editPassword.oldPassword"
-          :label="t('forms.old-password')"
-          :rules="[val => val && val.length > 0 || t('forms.required-old-password')]"
-          filled
-          lazy-rules
-          type="password"
-      />
-      <QInput
-          v-model="editPassword.newPassword1"
-          :label="t('forms.new-password')"
-          :rules="[val => val && val.length > 0 || t('forms.required-new-password')]"
-          filled
-          lazy-rules
-          type="password"
-      />
-      <QInput
-          v-model="editPassword.newPassword2"
-          :label="t('forms.repeat-new-password')"
-          :rules="[val => val && val.length > 0 || t('forms.required-repeat-new-password')]"
-          filled
-          lazy-rules
-          type="password"
-      />
-      <QBtn
-          color="primary"
-          label="Modifier le mot de passe"
-          type="submit"
-      />
+        <div class="form-title">
+            <h2>
+                <i class="bi bi-key"></i>
+                {{ t('dashboard.my-password') }}
+            </h2>
+        </div>
+
+        <div class="form-container">
+            <div class="form">
+                <QInput
+                    v-model="editPassword.oldPassword"
+                    :label="t('forms.old-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-old-password')]"
+                    filled
+                    lazy-rules
+                    type="password"
+                />
+                <QInput
+                    v-model="editPassword.newPassword1"
+                    :label="t('forms.new-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-new-password')]"
+                    filled
+                    lazy-rules
+                    type="password"
+                />
+                <QInput
+                    v-model="editPassword.newPassword2"
+                    :label="t('forms.repeat-new-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-repeat-new-password')]"
+                    filled
+                    lazy-rules
+                    type="password"
+                />
+                <QBtn
+                    color="primary"
+                    label="Modifier le mot de passe"
+                    @click="passwordConfirm"
+                />
+            </div>
+        </div>
+
     </fieldset>
-  </QForm>
 </template>
 
-<style lang="scss" scoped>
-@import "@/assets/styles/dashboard.scss";
-
-legend {
-  background-color: $dashboardColor;
-  color: #fff;
-  font-size: 1.3rem;
-  text-align: center;
-  width: $fullSize;
-  margin-bottom: 0.625rem;
-}
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
 
 fieldset {
-  border: none;
+    h2 {
+        font-size: 2rem;
+        text-transform: uppercase;
+        color: $annuaireColorText;
+
+        i {
+            color: $annuaireColorText;
+            font-size: 1.5rem;
+            margin: auto 0.875rem;
+            position: relative;
+        }
+    }
 }
 </style>

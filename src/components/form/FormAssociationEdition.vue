@@ -149,7 +149,7 @@ async function onChangeLogo(action: string) {
 
 <template>
     <QForm id="association-edition" @submit.prevent="onChangeLogo('update')">
-        <fieldset id="association-logo-title" class="form-container">
+        <fieldset id="association-logo-title">
             <div class="association-logo">
                 <QImg
                     :alt="altLogoText(association)"
@@ -196,7 +196,7 @@ async function onChangeLogo(action: string) {
             </div>
         </fieldset>
 
-        <fieldset class="form-container">
+        <fieldset>
             <h2><i class="bi bi-book"></i>{{ t("association.titles.info") }}</h2>
             <section class="form-container">
                 <div class="display-row">
