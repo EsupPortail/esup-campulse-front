@@ -295,6 +295,7 @@
     "resend-email-ok": "Votre demande a bien été prise en compte, consultez votre boîte mail.",
     "reset-password": "Mot de passe oublié ?",
     "select-association": "Sélectionner une association",
+    "select-document": "Veuillez déposer un document",
     "select-option": "Veuillez choisir une option",
     "send": "Envoyer",
     "social-network-location-hint": "Saisir une adresse valide ; Par exemple : https://facebook.com/",
@@ -435,6 +436,8 @@
     "reset-password": "Mot de passe oublié"
   },
   "project": {
+    "amount-asked": "Montant demandé",
+    "amount-earned": "Montant obtenu",
     "amounts-asked": "Montants demandés pour les commissions sélectionnées",
     "before-start": "Avant-propos",
     "budget": "Budget",
@@ -443,6 +446,13 @@
     "commission-amount-earned": "Montant obtenu pour la commission",
     "commission-choice": "Choix des commissions",
     "commission-choice-hint": "Veuillez choisir les commissions auxquelles vous souhaitez participer. Plusieurs choix possibles.",
+    "document": {
+      "bank-account-details": "Relevé d'identité bancaire (RIB)",
+      "edited": "Documents édités pour le projet (affiches, tracts, guides, livrets, journaux...)",
+      "misc": "Documents complémentaires",
+      "project-presentation": "Dossier détaillé présentant le projet"
+    },
+    "documents": "Documents",
     "form-help": "Si vous rencontrez des difficultés pour remplir ce formulaire, n'hésitez pas à prendre contact avec le responsable de votre commission.",
     "general-infos": "Informations générales",
     "goals": "Objectifs visés par le projet",
@@ -462,14 +472,17 @@
     "previous-edition": "Edition précédente",
     "previous-earned": "Montant(s) obtenu(s) pour l'édition précédente",
     "re-edition": "Réédition d'un précédent projet",
+    "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
+    "submit-new-project": "Déposer une nouvelle demande de subventionnement",
     "summary": "Résumé du projet",
     "target-audience": "Public visé par le projet",
     "target-audience-amount": "Nombre de personnes visées",
     "target-audience-amount-students": "Nombre de personnes visées dont étudiants et étudiantes",
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
-    "submit": "Déposer une nouvelle demande de subventionnement"
+    "validate": "Valider et soumettre le projet"
   },
+  "recap": "Récapitulatif",
   "register": {
     "back-to-home": "Retour à l'accueil",
     "email-not-verified": "Votre adresse e-mail n'a pas pu être vérifiée.",

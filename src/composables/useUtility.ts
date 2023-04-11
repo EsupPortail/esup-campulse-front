@@ -1,8 +1,10 @@
 import type {RouteLocationMatched, RouteParams} from 'vue-router'
 
+const CURRENCY = '€'
+
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
 
-export default function() {
+export default function () {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -71,5 +73,5 @@ export default function() {
         return breadcrumbs
     }
 
-    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior}
+    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior, CURRENCY}
 }

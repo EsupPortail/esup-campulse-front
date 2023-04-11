@@ -90,6 +90,15 @@
   &.q-field--focused .q-field__marginal {
     color: $color1;
   }
+
+  .q-uploader__header {
+    background-color: $color1Background;
+    color: $color1Text;
+
+    .q-btn {
+      box-shadow: none;
+    }
+  }
 }
 
 .variant-space-2 {
@@ -125,6 +134,15 @@
 
   .q-select.q-field--focused .q-field__marginal {
     color: $color2Active;
+  }
+
+  .q-uploader__header {
+    background-color: $color2Background;
+    color: $color2Text;
+
+    .q-btn {
+      box-shadow: none;
+    }
   }
 }
 
@@ -168,6 +186,15 @@
       color: $color3
     }
   }
+
+  .q-uploader__header {
+    background-color: $color3Background;
+    color: $color3Text;
+
+    .q-btn {
+      box-shadow: none;
+    }
+  }
 }
 
 .variant-space-4 {
@@ -203,6 +230,15 @@
 
   .q-select.q-field--focused .q-field__marginal {
     color: $color4;
+  }
+
+  .q-uploader__header {
+    background-color: $color4Background;
+    color: $color4Text;
+
+    .q-btn {
+      box-shadow: none;
+    }
   }
 }
 

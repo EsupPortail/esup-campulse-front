@@ -9,6 +9,7 @@ export const useProjectStore = defineStore('projectStore', {
         project: undefined,
         projectCategories: [],
         projectCommissionDates: [],
+        projectDocuments: [],
         projectCategoryNames: []
     }),
 

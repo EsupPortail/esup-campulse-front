@@ -8,6 +8,7 @@ import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
+import useProjectDocuments from '@/composables/useProjectDocuments'
 
 const {t} = useI18n()
 const {
@@ -27,10 +28,13 @@ const {
     initProjectBudget,
     patchProjectBudget,
     patchProjectCommissionDates,
-    initProjectCommissionDates
+    initProjectCommissionDates,
+    patchProjectGoals,
+    initProjectGoals
 }
     = useSubmitProject()
-const {fromDateIsAnterior} = useUtility()
+const {newAssociationProjectDocuments, getDocumentTypes, projectDocuments, documentTypes} = useProjectDocuments()
+const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
     getCommissions,
     commissions,
@@ -60,12 +64,20 @@ const done1 = ref(false)
 const done2 = ref(false)
 const done3 = ref(false)
 const done4 = ref(false)
+const done5 = ref(false)
+const done6 = ref(false)
 
 watch(() => step.value === 2, async () => {
     await onGetCommissionDates()
 })
 watch(() => step.value === 3, async () => {
     await onGetProjectBudget()
+})
+watch(() => step.value === 4, async () => {
+    await onGetProjectGoals()
+})
+watch(() => step.value === 5, async () => {
+    await onGetProjectDocuments()
 })
 
 // REFS
@@ -154,7 +166,6 @@ async function onGetProjectBudget() {
             await getCommissions()
             await getCommissionDates()
             await projectStore.getProjectCommissionDates()
-            initProjectCommissionDates()
         } catch {
             notify({
                 type: 'negative',
@@ -162,7 +173,28 @@ async function onGetProjectBudget() {
             })
         }
     }
+    initProjectCommissionDates()
     initProjectBudget()
+}
+
+// GET DATA FOR STEP 4
+function onGetProjectGoals() {
+    if (projectStore.project) {
+        initProjectGoals()
+    }
+}
+
+// GET DATA FOR STEP 5
+async function onGetProjectDocuments() {
+    try {
+        await getDocumentTypes()
+        // get docs
+    } catch {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.loading-error')
+        })
+    }
 }
 
 // SUBMIT STEP 1
@@ -219,6 +251,55 @@ async function onSubmitBudget() {
         }
     }
 }
+
+// SUBMIT STEP 4
+async function onSubmitGoals() {
+    if (projectStore.project) {
+        try {
+            await patchProjectGoals()
+            done4.value = true
+            step.value = 5
+
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.commission-dates-error')
+            })
+        }
+    }
+}
+
+// SUBMIT STEP 5
+async function onSubmitDocuments() {
+    if (projectStore.project) {
+        try {
+            //
+            done5.value = true
+            step.value = 6
+
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.commission-dates-error')
+            })
+        }
+    }
+}
+
+// SUBMIT STEP 6
+async function onSubmitProject() {
+    if (projectStore.project) {
+        try {
+            //
+            done6.value = true
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.commission-dates-error')
+            })
+        }
+    }
+}
 </script>
 
 <template>
@@ -229,7 +310,7 @@ async function onSubmitBudget() {
                     aria-hidden="true"
                     class="bi bi-pencil-square"
                 ></i>
-                {{ t('project.submit') }}
+                {{ t('project.submit-new-project') }}
             </h2>
         </div>
 
@@ -268,7 +349,7 @@ async function onSubmitBudget() {
                         <QForm
                             @submit.prevent="onSubmitBasicInfos"
                         >
-                            <h3 class="title-3">{{ t('project.general-infos') }}</h3>
+                            <h3 class="title-2">{{ t('project.general-infos') }}</h3>
 
                             <QInput
                                 v-model="projectBasicInfos.name"
@@ -332,12 +413,12 @@ async function onSubmitBudget() {
                         :done="done2"
                         :name="2"
                         :title="t('project.commission-choice')"
-                        icon="mdi-star-check-outline"
+                        icon="mdi-calendar-blank"
                     >
                         <QForm
                             @submit.prevent="onSubmitCommissionDates"
                         >
-                            <h3 class="title-3">{{ t('project.commission-choice') }}</h3>
+                            <h3 class="title-2">{{ t('project.commission-choice') }}</h3>
 
                             <div class="info-panel">
                                 <i
@@ -389,7 +470,7 @@ async function onSubmitBudget() {
                         <QForm
                             @submit.prevent="onSubmitBudget"
                         >
-                            <h3 class="title-3">{{ t('project.budget') }}</h3>
+                            <h3 class="title-2">{{ t('project.budget') }}</h3>
 
                             <QCheckbox
                                 v-model="projectReEdition"
@@ -542,8 +623,10 @@ async function onSubmitBudget() {
                         :title="t('project.goals-title')"
                         icon="mdi-flag-checkered"
                     >
-                        <QForm>
-                            <h3 class="title-3">{{ t('project.goals-title') }}</h3>
+                        <QForm
+                            @submit.prevent="onSubmitGoals"
+                        >
+                            <h3 class="title-2">{{ t('project.goals-title') }}</h3>
 
                             <QInput
                                 v-model="projectGoals.goals"
@@ -609,6 +692,426 @@ async function onSubmitBudget() {
                             </section>
                         </QForm>
                     </QStep>
+
+                    <!-- DOCUMENTS -->
+                    <QStep
+                        :done="done5"
+                        :name="5"
+                        :title="t('project.documents')"
+                        icon="mdi-file-document-outline"
+                    >
+                        <QForm
+                            @submit.prevent="onSubmitDocuments"
+                        >
+                            <h3 class="title-2">{{ t('project.documents') }}</h3>
+
+                            <div class="info-panel info-panel-warning">
+                                <i
+                                    aria-hidden="true"
+                                    class="bi bi-exclamation-lg"
+                                ></i>
+                                <p>{{ t('project.sign-charter') }}</p>
+                            </div>
+
+                            <QFile
+                                v-for="(projectDocument, index) in newAssociationProjectDocuments"
+                                :key="index"
+                                v-model="projectDocument.pathFile"
+                                :aria-required="projectDocument.required"
+                                :label="t(`project.document.${projectDocument.label}`) + (projectDocument.required ? ' *' : '')"
+                                :max-files="projectDocument.isMultiple ? 10 : 1"
+                                :rules="projectDocument.required ? [ val => val || t('forms.select-document')] : []"
+                                clearable
+                                counter
+                                filled
+                                lazy-rules
+                                use-chips
+                            >
+                                <template v-slot:prepend>
+                                    <QIcon name="mdi-paperclip"/>
+                                </template>
+                            </QFile>
+
+                            <section class="form-page-navigation">
+                                <QBtn
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="step = 3"
+                                />
+                                <QBtn
+                                    :label="t('continue')"
+                                    icon-right="bi-check2"
+                                    type="submit"
+                                />
+                            </section>
+                        </QForm>
+                    </QStep>
+
+                    <!-- RECAP -->
+                    <QStep
+                        :done="done6"
+                        :name="6"
+                        :title="t('recap')"
+                        icon="mdi-check"
+                    >
+                        <QForm
+                            @submit.prevent="onSubmitProject"
+                        >
+                            <h3 class="title-2">{{ t('recap') }}</h3>
+
+                            <section class="recap-sections">
+                                <!-- BASIC INFOS -->
+                                <section class="recap-section">
+                                    <div class="recap-section-title">
+                                        <h4 class="title-3">{{ t('project.general-infos') }}</h4>
+                                        <QBtn
+                                            :label="t('modify')"
+                                            icon="bi-pencil"
+                                            @click="() => step = 1"
+                                        />
+                                    </div>
+
+                                    <section class="recap-rows">
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.name') }}</p>
+                                            <p>{{ projectBasicInfos.name }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.planned-start-date') }}</p>
+                                            <p>
+                                                {{
+                                                    projectBasicInfos.plannedStartDate.split('-').reverse().join('/')
+                                                }}
+                                            </p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.planned-end-date') }}</p>
+                                            <p>{{ projectBasicInfos.plannedEndDate.split('-').reverse().join('/') }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.location') }}</p>
+                                            <p>{{ projectBasicInfos.location }}</p>
+                                        </div>
+                                    </section>
+                                </section>
+
+                                <!-- COMMISSION CHOICE -->
+                                <section class="recap-section">
+                                    <div class="recap-section-title">
+                                        <h4 class="title-3">{{ t('project.commission-choice') }}</h4>
+                                        <QBtn
+                                            :label="t('modify')"
+                                            icon="bi-pencil"
+                                            @click="() => step = 2"
+                                        />
+                                    </div>
+
+                                    <section class="recap-chips">
+                                        <QChip
+                                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                                            :key="index"
+                                        >
+                                            {{
+                                                commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate).label
+                                            }}
+                                        </QChip>
+                                    </section>
+                                </section>
+
+                                <!-- BUDGET -->
+                                <section class="recap-section">
+                                    <div class="recap-section-title">
+                                        <h4 class="title-3">{{ t('project.budget') }}</h4>
+                                        <QBtn
+                                            :label="t('modify')"
+                                            icon="bi-pencil"
+                                            @click="() => step = 3"
+                                        />
+                                    </div>
+
+                                    <section class="recap-rows">
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.re-edition') }}</p>
+                                            <p>
+                                                {{
+                                                    projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false) ? t('yes') : t('no')
+                                                }}
+                                            </p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.target-audience') }}</p>
+                                            <p>{{ projectBudget.targetAudience }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.target-audience-type') }}</p>
+                                            <p>{{ projectBudget.typeTargetAudience }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.target-audience-amount') }}</p>
+                                            <p>{{ projectBudget.amountTargetAudience }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.target-audience-amount-students') }}</p>
+                                            <p>{{ projectBudget.amountStudentsTargetAudience }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.ticket-price') }}</p>
+                                            <p>{{ projectBudget.ticketPrice + CURRENCY }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.individual-cost') }}</p>
+                                            <p>{{ projectBudget.individualCost + CURRENCY }}</p>
+                                        </div>
+
+                                        <div
+                                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                                            :key="index"
+                                            class="display-row"
+                                        >
+                                            <p class="row-title">
+                                                {{
+                                                    `${t('project.amount-asked')}
+                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                                }}
+                                            </p>
+                                            <p>{{ commissionDate.amountAsked + CURRENCY }}</p>
+                                        </div>
+
+                                        <section
+                                            v-if="projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)"
+                                            class="recap-rows"
+                                        >
+                                            <h5 class="title-4">{{ t('project.previous-edition') }}</h5>
+
+                                            <div
+                                                v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                                                :key="index"
+                                                class="display-row"
+                                            >
+                                                <p class="row-title">
+                                                    {{
+                                                        `${t('project.previous-asked')}
+                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                                    }}
+                                                </p>
+                                                <p>{{ commissionDate.amountAskedPreviousEdition + CURRENCY }}</p>
+                                            </div>
+
+                                            <div
+                                                v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                                                :key="index"
+                                                class="display-row"
+                                            >
+                                                <p class="row-title">
+                                                    {{
+                                                        `${t('project.previous-earned')}
+                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                                    }}
+                                                </p>
+                                                <p>{{ commissionDate.amountEarnedPreviousEdition + CURRENCY }}</p>
+                                            </div>
+
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('project.budget-previous-edition') }}</p>
+                                                <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
+                                            </div>
+                                        </section>
+                                    </section>
+                                </section>
+
+                                <!-- GOALS -->
+                                <section class="recap-section">
+                                    <div class="recap-section-title">
+                                        <h4 class="title-3">{{ t('project.goals') }}</h4>
+                                        <QBtn
+                                            :label="t('modify')"
+                                            icon="bi-pencil"
+                                            @click="() => step = 4"
+                                        />
+                                    </div>
+
+                                    <section class="recap-rows">
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.goals-title') }}</p>
+                                            <p>{{ projectGoals.goals }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.summary') }}</p>
+                                            <p>{{ projectGoals.summary }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.planned-activities') }}</p>
+                                            <p>{{ projectGoals.plannedActivities }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.prevention-safety') }}</p>
+                                            <p>{{ projectGoals.preventionSafety }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.marketing-campaign') }}</p>
+                                            <p>{{ projectGoals.marketingCampaign }}</p>
+                                        </div>
+                                    </section>
+                                </section>
+
+                                <!-- DOCUMENTS -->
+                                <section class="recap-section">
+                                    <div class="recap-section-title">
+                                        <h4 class="title-3">{{ t('project.documents') }}</h4>
+                                        <QBtn
+                                            :label="t('modify')"
+                                            icon="bi-pencil"
+                                            @click="() => step = 5"
+                                        />
+                                    </div>
+
+                                    <div class="document-input-group">
+                                        <div class="document-input variant-space-1">
+                                            <div class="document-input-header">
+                                                <h4>
+                                                    PV de la dernière AGO
+                                                </h4>
+                                                <p>
+                                                    <button>
+                                                        <i class="bi bi-info-circle"></i>
+                                                    </button>
+                                                </p>
+                                                <button>
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </div>
+                                            <div class="document-input-list">
+                                                <div class="document-item">
+                                                    <p>
+                                                        <i
+                                                            aria-hidden="true"
+                                                            class="bi bi-file-earmark"
+                                                        ></i>
+                                                        <a
+                                                            href="/"
+                                                            target="_blank"
+                                                        >
+                                                            cert_scol_membre1.pdf
+                                                            <i
+                                                                aria-hidden="true"
+                                                                class="bi bi-eye"
+                                                            ></i>
+                                                        </a>
+                                                    </p>
+                                                    <button>
+                                                        <i class="bi bi-x-lg"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="document-item">
+                                                    <p>
+                                                        <i
+                                                            aria-hidden="true"
+                                                            class="bi bi-file-earmark"
+                                                        ></i>
+                                                        <a
+                                                            href="/"
+                                                            target="_blank"
+                                                        >
+                                                            cert_scol_membre2.pdf
+                                                            <i
+                                                                aria-hidden="true"
+                                                                class="bi bi-eye"
+                                                            ></i>
+                                                        </a>
+                                                    </p>
+                                                    <button>
+                                                        <i class="bi bi-x-lg"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="document-item">
+                                                    <p>
+                                                        <i
+                                                            aria-hidden="true"
+                                                            class="bi bi-file-earmark"
+                                                        ></i>
+                                                        <a
+                                                            href="/"
+                                                            target="_blank"
+                                                        >
+                                                            cert_scol_membre3.pdf
+                                                            <i
+                                                                aria-hidden="true"
+                                                                class="bi bi-eye"
+                                                            ></i>
+                                                        </a>
+                                                    </p>
+                                                    <button disabled>
+                                                        <i class="bi bi-x-lg"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="document-input">
+                                                <div class="document-input-header">
+                                                    <h4>
+                                                        Certificat de scolarité des membres élus (1 document par membre)
+                                                    </h4>
+                                                    <p>
+                                                        <button>
+                                                            <i class="bi bi-info-circle"></i>
+                                                        </button>
+                                                    </p>
+                                                    <button>
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <!-- <div class="document-input-list"></div> -->
+                                            </div>
+
+                                            <div class="document-input">
+                                                <div class="document-input-header">
+                                                    <h4>
+                                                        Certificat envoyé par le tribunal judiciaire
+                                                    </h4>
+                                                    <!-- <p>
+                                                        <button>
+                                                            <i class="bi bi-info-circle"></i>
+                                                        </button>
+                                                    </p> -->
+                                                    <button disabled>
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <!-- <div class="document-input-list"></div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </section>
+
+
+                            <section class="form-page-navigation">
+                                <QBtn
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="step = 5"
+                                />
+                                <QBtn
+                                    :label="t('project.validate')"
+                                    icon-right="bi-check2"
+                                    type="submit"
+                                />
+                            </section>
+                        </QForm>
+                    </QStep>
                 </QStepper>
             </div>
         </div>
@@ -620,6 +1123,8 @@ async function onSubmitBudget() {
 </style>
 
 <style lang="sass" scoped>
+@import '@/assets/_variables.scss'
+
 .project-re-edition
     margin-top: 1rem
 
@@ -639,4 +1144,26 @@ section > .q-separator
 
 h3
     margin-bottom: 1rem
+
+
+.recap-rows
+    display: flex
+    flex-direction: column
+    gap: 1rem
+
+.recap-sections
+    display: flex
+    flex-direction: column
+    gap: 1.5rem
+
+    h5
+        margin: 1.5rem 0 0.5rem 0
+
+    .recap-section-title
+        display: flex
+        align-items: center
+        justify-content: space-between
+
+        h4
+            margin: 2rem 0 1rem 0
 </style>

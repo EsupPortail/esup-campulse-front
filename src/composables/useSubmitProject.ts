@@ -49,7 +49,7 @@ export default function () {
 
     const projectStore = useProjectStore()
     const {axiosAuthenticated} = useAxios()
-    const {commissionDates, commissionDatesLabels} = useCommissions()
+    const {commissionDatesLabels} = useCommissions()
     const {arraysAreEqual} = useUtility()
 
 
@@ -223,6 +223,18 @@ export default function () {
         }
     }
 
+    async function patchProjectGoals() {
+        let dataToPatch = {}
+        for (const [key, value] of Object.entries(projectGoals.value)) {
+            if (value !== projectStore.project?.[key as keyof typeof projectStore.project]) {
+                dataToPatch = Object.assign(dataToPatch, {[key]: value})
+            }
+        }
+        if (Object.entries(dataToPatch).length) {
+            projectStore.project = (await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}`, dataToPatch)).data
+        }
+    }
+
 
     return {
         projectBasicInfos,
@@ -242,6 +254,7 @@ export default function () {
         initProjectBudget,
         patchProjectBudget,
         patchProjectCommissionDates,
-        initProjectCommissionDates
+        initProjectCommissionDates,
+        patchProjectGoals
     }
 }

@@ -1,3 +1,5 @@
+import type {ProjectDocument} from '#/documents'
+
 export interface Project {
     id: number,
     name: string,
@@ -94,5 +96,6 @@ export interface ProjectStore {
     project: Project | undefined,
     projectCategories: ProjectCategory[],
     projectCommissionDates: ProjectCommissionDate[],
+    projectDocuments: ProjectDocument[],
     projectCategoryNames: ProjectCategoryName[]
 }
