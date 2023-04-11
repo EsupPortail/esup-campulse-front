@@ -70,6 +70,8 @@
   nav {
     display: flex;
     align-items: center;
+    z-index: 2;
+    background: red;
 
     a {
       font-size: 1.063rem;
@@ -155,6 +157,7 @@
       }
     }
   }
+
 
   .profile-button {
     display: inline-block;
@@ -379,20 +382,19 @@
 // Page title in the header - appears in all pages not using the home or minimal variant of the header.
 #header-title {
   width: $fullSize;
-  max-width: $pageWidth;
   position: absolute;
-  left: calc(50% - #{$pageWidth * 0.5});
+  font-size: 3.438rem;
   bottom: 0;
   z-index: 1;
-  padding-bottom: 1.563rem;
+  padding: 0 1.56rem 0 1.56rem;
 
   h1 {
     width: $fullSize;
     font-family: $titleFont;
     color: $textColor3;
     font-weight: $normal-weight;
-    font-size: 3.438rem;
-    padding-left: 4.375rem;
+    font-size: 2.5rem;
+    padding: 0 0 1rem 3rem;
     line-height: 1.15;
 
     strong {
@@ -406,13 +408,11 @@
       display: inline-block;
       width: 3.375rem;
       height: 3.375rem;
-      border-radius: 50%;
+      border-radius: $radiusCircle;
       background-color: $annuaireColor;
       position: absolute;
-      top: 0.375rem;
-      left: 0;
+      left: .5rem;
       text-align: center;
-      line-height: 2.563rem;
 
       i {
         font-size: 1.75rem;
@@ -423,33 +423,8 @@
     }
   }
 
-  @media only screen and (max-width: $pageWidth) {
-    padding-left: $responsiveMargin;
-    padding-right: $responsiveMargin;
-    left: 0;
-
-    h1 #header-title-icon {
-      left: $responsiveMargin;
-    }
-  }
-
-  @media only screen and (max-width: $responsiveWidth) {
-    position: relative;
-    left: 0;
-
-    h1 {
-      font-size: 2.8rem;
-
-      #header-title-icon {
-        width: 3rem;
-        height: 3rem;
-        line-height: 2.4rem;
-
-        i {
-          font-size: 1.6rem;
-        }
-      }
-    }
+  @media only screen and (min-width: $responsiveWidth) {
+    left: calc(50% - #{$pageWidth * 0.5});
   }
 }
 
