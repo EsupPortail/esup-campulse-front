@@ -206,31 +206,26 @@ async function onUpdateUserAssociations() {
     padding: 0;
 }
 
-.q-card {
-    margin: .625rem;
-}
-
 .form-container {
     .back-btn {
         width: 50%;
         font-size: 1rem;
-        margin: 0 1.5rem;
-        padding: .5rem;
+        margin-top: 1rem;
+        padding: 1rem;
     }
 }
 
 @media screen and (min-width: $responsiveWidth) {
     .q-btn {
-        width: 30%;
         font-size: 1.125rem;
-        padding: 1rem;
     }
 
     .form-container {
         .back-btn {
-            width: 29%;
+            width: 30%;
             padding: 1rem;
         }
     }
 }
+
 </style>

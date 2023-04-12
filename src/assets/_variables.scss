@@ -17,6 +17,10 @@ $homeCapeImage: url('./img/resized/background-cape.jpg');
 $baseFont: 'Titillium Web', sans-serif;
 $titleFont: 'Open Sans', sans-serif;
 
+// Font-size
+$formTitleMobileSize: 1.5rem;
+$formTitleComputerSize: 2rem;
+
 // ---------------- Paddings ----------------
 // Home Banner
 $qBannerDotsMobilePadding: .30rem;
@@ -29,6 +33,9 @@ $bsIconHomeCardPosition: -0.125rem;
 // ---------------- Sizes ----------------
 $fullSize: 100%;
 $halfSize: 50%;
+
+// Line-height :
+$lineHeightSize: 2rem;
 
 // Association Logo
 $associationLogoSize: 9.375rem;

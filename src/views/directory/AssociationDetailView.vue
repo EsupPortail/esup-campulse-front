@@ -205,7 +205,8 @@ async function onGetAssociationDetail() {
                     class="display-row"
                 >
                     <h3>{{ t("association.labels.socials") }}</h3>
-                    <ul>
+                    <ul
+                    >
                         <li
                             v-for="(socialNetwork, index) in association?.socialNetworks"
                             :key="index"
@@ -242,7 +243,17 @@ async function onGetAssociationDetail() {
 @import "@/assets/styles/associations.scss";
 @import "@/assets/styles/forms.scss";
 
-.btn-group {
-    margin: .625rem auto .625rem;
+a:link, a:visited {
+    font-size: 1.125rem;
+    text-decoration: none;
+    color: $annuaireColor;
+}
+
+a:hover {
+    color: $annuaireColorHover;
+}
+
+ul {
+    margin: 0;
 }
 </style>

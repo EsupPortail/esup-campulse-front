@@ -126,25 +126,26 @@ function clearOptions() {
 
 <style lang="scss">
 @import "@/assets/styles/forms.scss";
+@import "@/assets/_variables.scss";
 
-fieldset {
-    legend {
-        font-size: 1.5rem;
+.q-card {
+    margin-bottom: 1rem;
+}
+
+legend {
+    font-weight: $semibold-weight;
+    font-size: 1.5rem;
+}
+
+.add-association {
+    margin-top: 1rem;
+    display: flex;
+}
+
+@media screen and (min-width: $responsiveWidth) {
+    .btn-group {
+        margin: 0;
+        justify-content: flex-start;
     }
-
-    .q-btn {
-        font-size: 1rem;
-        padding: .5rem;
-        margin-top: .5rem;
-        line-height: 1.5rem;
-    }
-
-    @media screen and (min-width: $responsiveWidth) {
-        .q-btn {
-            font-size: 1.125rem;
-            padding: 1rem;
-        }
-    }
-
 }
 </style>

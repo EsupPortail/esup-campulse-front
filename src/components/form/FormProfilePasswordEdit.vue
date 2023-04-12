@@ -85,8 +85,8 @@ async function passwordConfirm() {
                     type="password"
                 />
                 <QBtn
-                    color="primary"
-                    label="Modifier le mot de passe"
+                    :label="t('password.edit-password')"
+                    class="edit-passwd"
                     @click="passwordConfirm"
                 />
             </div>
@@ -95,22 +95,11 @@ async function passwordConfirm() {
     </fieldset>
 </template>
 
-<style lang="scss">
-@import '@/assets/styles/forms.scss';
-@import '@/assets/styles/dashboard.scss';
+<style lang="scss" scoped>
 
-fieldset {
-    h2 {
-        font-size: 2rem;
-        text-transform: uppercase;
-        color: $annuaireColorText;
-
-        i {
-            color: $annuaireColorText;
-            font-size: 1.5rem;
-            margin: auto 0.875rem;
-            position: relative;
-        }
-    }
+.edit-passwd {
+    padding: 1rem;
+    font-size: 1.125rem;
 }
+
 </style>

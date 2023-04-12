@@ -1,4 +1,4 @@
-@import '@/assets/variables';
+@import '@/assets/_variables.scss';
 
 // A generic form wrapper.
 // Most forms on the site must be contained in both a "form" and "form-container" element.
@@ -339,7 +339,6 @@ label.custom-label {
       background: $errorPanelColor !important;
     }
   }
-
 }
 
 .variant-space-2 {
@@ -467,6 +466,20 @@ label.custom-label {
     }
   }
 }
+
+.btn-group {
+  width: 80%;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+
+  @media screen and (min-width: $responsiveWidth) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
 
 .buttons-group {
   display: flex;
@@ -766,20 +779,32 @@ label.custom-label {
   width: $fullSize;
   max-width: $pageWidth;
   margin: 0 auto;
+  padding: 1rem;
   background-color: transparent;
 
   h2 {
-    font-size: 2rem;
+    font-size: $formTitleMobileSize;
+    line-height: 2rem;
     text-transform: uppercase;
     color: $annuaireColorText;
 
     i {
       color: $annuaireColorText;
-      font-size: 1.5rem;
+      font-size: $formTitleMobileSize;
       margin-right: .875rem;
       position: relative;
       top: -0.1rem;
     }
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    padding: 0;
+
+    h2 {
+      font-size: $formTitleComputerSize;
+      line-height: 4rem;
+    }
+
   }
 }
 
@@ -1488,7 +1513,7 @@ label.custom-label {
 // Form section title
 .section-title {
   color: $textColor1;
-  font-size: 1.6rem;
+  font-size: $formTitleMobileSize;
   text-transform: uppercase;
   margin-bottom: 1.4rem;
 
