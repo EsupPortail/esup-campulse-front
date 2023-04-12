@@ -1,7 +1,7 @@
-import {fileURLToPath, URL} from 'url'
+import { fileURLToPath, URL } from 'url'
 
-import {defineConfig} from 'vite'
-import {quasar, transformAssetUrls} from '@quasar/vite-plugin'
+import { defineConfig } from 'vite'
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 import vue from '@vitejs/plugin-vue'
 
 
@@ -9,7 +9,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
     plugins: [
         vue({
-            template: {transformAssetUrls}
+            template: { transformAssetUrls }
         }),
 
         quasar({
@@ -21,7 +21,8 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url)),
             '#': fileURLToPath(new URL('./types', import.meta.url)),
             '~': fileURLToPath(new URL('./tests', import.meta.url)),
-            'vue': fileURLToPath(new URL('./node_modules/vue/dist/vue.runtime.esm-bundler.js', import.meta.url)),
+            // TODO Enable this line to disable script unsafe-eval in Nginx config.
+            // 'vue': fileURLToPath(new URL('./node_modules/vue/dist/vue.runtime.esm-bundler.js', import.meta.url)),
         },
     },
     server: {
