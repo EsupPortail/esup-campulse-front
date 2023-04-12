@@ -160,7 +160,7 @@ async function onChangeLogo(action: string) {
             <QFile
                 v-model="newLogo"
                 :label="t('association.logo.pickup')"
-                accept=".jpg, .jpeg, .png"
+                accept="image/png, image/jpeg"
                 filled
             />
             <QInput
