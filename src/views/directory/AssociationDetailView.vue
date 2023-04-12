@@ -49,7 +49,7 @@ async function onGetAssociationDetail() {
             <QImg
                 v-if="association"
                 :alt="altLogoText(association)"
-                :src="hasLogo ? association?.pathLogo?.detail : '/src/assets/img/no_logo_square.png'"
+                :src="hasLogo ? association?.pathLogo?.detail : '../src/assets/img/no_logo_square.png'"
             />
         </div>
         <div class="name">

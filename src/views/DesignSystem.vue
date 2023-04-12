@@ -280,7 +280,7 @@ const columns: QTableProps['columns'] = [
                     <div class="content">
                         <div class="intro-image">
                             <img
-                                src="/src/assets/img/unistra.jpg"
+                                src="@/assets/img/unistra.jpg"
                                 alt="Intro image"
                             />
                         </div>
@@ -308,7 +308,7 @@ const columns: QTableProps['columns'] = [
                     <div class="content">
                         <div class="intro-image">
                             <img
-                                src="/src/assets/img/unistra.jpg"
+                                src="@/assets/img/unistra.jpg"
                                 alt="Intro image"
                             />
                         </div>
@@ -349,7 +349,7 @@ const columns: QTableProps['columns'] = [
                     <p class="paragraph">
                         <img
                             class="float-left"
-                            src="/src/assets/img/unistra.jpg"
+                            src="@/assets/img/unistra.jpg"
                             alt="Intro image"
                             style="width: 16rem; height: auto;"
                         />
@@ -367,7 +367,7 @@ const columns: QTableProps['columns'] = [
                     <p class="paragraph">
                         <img
                             class="float-right"
-                            src="/src/assets/img/unistra.jpg"
+                            src="@/assets/img/unistra.jpg"
                             alt="Intro image"
                             style="width: 16rem; height: auto;"
                         />
@@ -686,7 +686,7 @@ const columns: QTableProps['columns'] = [
                         <div style="width: 150px;">
                             <div class="image-input">
                                 <img
-                                    src="/src/assets/img/logo_Ariane.png"
+                                    src="@/assets/img/logo_Ariane.png"
                                     alt="current image"
                                 />
                                 <input
