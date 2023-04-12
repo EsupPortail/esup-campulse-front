@@ -58,8 +58,8 @@
     "enabled": "Activée",
     "go-back": "Revenir à la liste des associations",
     "more-details": "Fiche détail de l'association",
-    "not-public": "Non Publique",
-    "public": "Publique",
+    "not-public": "Non Publiée",
+    "public": "Publiée",
     "publish-in-directory": "Publier dans l'annuaire",
     "unpublish-in-directory": "Dépublier de l'annuaire",
     "validate-all-changes": "Valider tous les changements",
@@ -139,7 +139,7 @@
     "association-management": "Gérer l'annuaire des associations",
     "create-association": "Créer une association",
     "create-user": "Créer un nouvel utilisateur",
-    "edit-or-delete-association": "Modifier ou supprimer une association",
+    "edit-or-delete-association": "Gérer les associations",
     "manage-association-directory": "Gérer l'annuaire des associations",
     "manage-my-account": "Mes informations",
     "manage-users": "Gérer les utilisateurs de la plateforme",
@@ -357,7 +357,7 @@
   "no": "Non",
   "notifications": {
     "negative": {
-      "association-already-exists": "Impossible d'ajouter cette association car elle existe déjà.",
+      "association-already-exists": "Ce nom est déjà pris par une autre association.",
       "association-logo-edit-error": "Une erreur est survenue lors de la modification du logo. Veuillez réessayer.",
       "cannot-delete-superuser": "Les utilisateurs gestionnaires ne peuvent être supprimés. Veuillez contacter l'administrateur.",
       "cas-authentication-error": "Erreur d'authentification CAS.",
