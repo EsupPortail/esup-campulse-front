@@ -21,6 +21,7 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url)),
             '#': fileURLToPath(new URL('./types', import.meta.url)),
             '~': fileURLToPath(new URL('./tests', import.meta.url)),
+            'vue': fileURLToPath(new URL('./node_modules/vue/dist/vue.runtime.esm-bundler.js', import.meta.url)),
         },
     },
     server: {
