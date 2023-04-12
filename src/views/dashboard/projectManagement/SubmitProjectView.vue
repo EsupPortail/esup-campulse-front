@@ -33,7 +33,12 @@ const {
     initProjectGoals
 }
     = useSubmitProject()
-const {newAssociationProjectDocuments, getDocumentTypes, projectDocuments, documentTypes} = useProjectDocuments()
+const {
+    getDocumentTypes,
+    initProcessProjectDocuments,
+    processProjectDocuments,
+    postProjectDocuments
+} = useProjectDocuments()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
     getCommissions,
@@ -188,7 +193,7 @@ function onGetProjectGoals() {
 async function onGetProjectDocuments() {
     try {
         await getDocumentTypes()
-        // get docs
+        initProcessProjectDocuments('DOCUMENT_PROJECT')
     } catch {
         notify({
             type: 'negative',
@@ -273,10 +278,11 @@ async function onSubmitGoals() {
 async function onSubmitDocuments() {
     if (projectStore.project) {
         try {
-            //
+            loading.show
+            await postProjectDocuments(parseInt(route.params.associationId as string))
+            loading.hide
             done5.value = true
             step.value = 6
-
         } catch {
             notify({
                 type: 'negative',
@@ -713,24 +719,30 @@ async function onSubmitProject() {
                                 <p>{{ t('project.sign-charter') }}</p>
                             </div>
 
-                            <QFile
-                                v-for="(projectDocument, index) in newAssociationProjectDocuments"
-                                :key="index"
-                                v-model="projectDocument.pathFile"
-                                :aria-required="projectDocument.required"
-                                :label="t(`project.document.${projectDocument.label}`) + (projectDocument.required ? ' *' : '')"
-                                :max-files="projectDocument.isMultiple ? 10 : 1"
-                                :rules="projectDocument.required ? [ val => val || t('forms.select-document')] : []"
-                                clearable
-                                counter
-                                filled
-                                lazy-rules
-                                use-chips
-                            >
-                                <template v-slot:prepend>
-                                    <QIcon name="mdi-paperclip"/>
-                                </template>
-                            </QFile>
+                            <section class="flex-section">
+                                <QFile
+                                    v-for="(projectDocument, index) in processProjectDocuments"
+                                    :key="index"
+                                    v-model="projectDocument.pathFile"
+                                    :accept="projectDocument.mimeTypes.join(', ')"
+                                    :aria-required="projectDocument.isRequiredInProcess"
+                                    :hint="t('project.document-hint') + (projectDocument.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
+                                    :label="projectDocument.label + (projectDocument.isRequiredInProcess ? ' *' : '')"
+                                    :max-files="projectDocument.isMultiple ? 10 : 1"
+                                    :multiple="projectDocument.isMultiple"
+                                    :rules="projectDocument.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
+                                    append
+                                    clearable
+                                    counter
+                                    filled
+                                    lazy-rules
+                                    use-chips
+                                >
+                                    <template v-slot:prepend>
+                                        <QIcon name="mdi-paperclip"/>
+                                    </template>
+                                </QFile>
+                            </section>
 
                             <section class="form-page-navigation">
                                 <QBtn
@@ -771,7 +783,7 @@ async function onSubmitProject() {
                                         />
                                     </div>
 
-                                    <section class="recap-rows">
+                                    <section class="flex-section">
                                         <div class="display-row">
                                             <p class="row-title">{{ t('project.name') }}</p>
                                             <p>{{ projectBasicInfos.name }}</p>
@@ -832,7 +844,7 @@ async function onSubmitProject() {
                                         />
                                     </div>
 
-                                    <section class="recap-rows">
+                                    <section class="flex-section">
                                         <div class="display-row">
                                             <p class="row-title">{{ t('project.re-edition') }}</p>
                                             <p>
@@ -888,7 +900,7 @@ async function onSubmitProject() {
 
                                         <section
                                             v-if="projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)"
-                                            class="recap-rows"
+                                            class="flex-section"
                                         >
                                             <h5 class="title-4">{{ t('project.previous-edition') }}</h5>
 
@@ -939,7 +951,7 @@ async function onSubmitProject() {
                                         />
                                     </div>
 
-                                    <section class="recap-rows">
+                                    <section class="flex-section">
                                         <div class="display-row">
                                             <p class="row-title">{{ t('project.goals-title') }}</p>
                                             <p>{{ projectGoals.goals }}</p>
@@ -1145,25 +1157,19 @@ section > .q-separator
 h3
     margin-bottom: 1rem
 
-
-.recap-rows
-    display: flex
-    flex-direction: column
-    gap: 1rem
-
-.recap-sections
+.flex-section
     display: flex
     flex-direction: column
     gap: 1.5rem
 
-    h5
-        margin: 1.5rem 0 0.5rem 0
+h5
+    margin: 1.5rem 0 0.5rem 0
 
-    .recap-section-title
-        display: flex
-        align-items: center
-        justify-content: space-between
+.recap-section-title
+    display: flex
+    align-items: center
+    justify-content: space-between
 
-        h4
-            margin: 2rem 0 1rem 0
+    h4
+        margin: 2rem 0 1rem 0
 </style>

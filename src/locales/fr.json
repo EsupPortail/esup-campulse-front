@@ -452,6 +452,8 @@
       "misc": "Documents complémentaires",
       "project-presentation": "Dossier détaillé présentant le projet"
     },
+    "document-hint": "Cliquez sur le champ pour ajouter un document.",
+    "document-hint-multiple": "Vous pouvez sélectionner plusieurs documents.",
     "documents": "Documents",
     "form-help": "Si vous rencontrez des difficultés pour remplir ce formulaire, n'hésitez pas à prendre contact avec le responsable de votre commission.",
     "general-infos": "Informations générales",

@@ -5,12 +5,13 @@ export interface Document {
     description: string,
     contact: string,
     isMultiple: boolean,
+    isRequiredInProcess: boolean,
     daysBeforeExpiration: string,
     pathTemplate: null, // ??
     mimeTypes: MimeType[],
     processType: DocumentProcessType,
     institution: number | null,
-    commission: number | null
+    commission: number | null,
 }
 
 type MimeType =
@@ -39,7 +40,20 @@ export interface ProjectDocument {
     document: number,
     user?: number | null,
     association?: number | null,
-    project?: number
+    project?: number,
+    isMultiple?: boolean
+}
+
+export interface ProcessProjectDocument {
+    id?: number,
+    uploadDate?: string,
+    pathFile: Blob | Blob[] | undefined | [],
+    documentUploadStatus?: DocumentUploadStatus,
+    document: number,
+    label: string,
+    isMultiple: boolean,
+    isRequiredInProcess: boolean,
+    mimeTypes: MimeType[]
 }
 
 type DocumentUploadStatus = 'DOCUMENT_REJECTED' | 'DOCUMENT_PROCESSING' | 'DOCUMENT_VALIDATED'
