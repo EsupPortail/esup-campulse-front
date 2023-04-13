@@ -148,13 +148,16 @@ async function onChangeLogo(action: string) {
 </script>
 
 <template>
-    <QForm id="association-edition" @submit.prevent="onChangeLogo('update')">
+    <QForm
+        id="association-edition"
+        @submit.prevent="onChangeLogo('update')"
+    >
         <fieldset id="association-logo-title">
             <div class="association-logo">
                 <QImg
                     :alt="altLogoText(association)"
                     :ratio="1"
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '/src/assets/img/no_logo_square.png') : '/src/assets/img/no_logo_square.png'"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '../src/assets/img/no_logo_square.png') : '../src/assets/img/no_logo_square.png'"
                 />
             </div>
 
@@ -171,7 +174,7 @@ async function onChangeLogo(action: string) {
             <QFile
                 v-model="newLogo"
                 :label="t('association.logo.pickup')"
-                accept=".jpg, .jpeg, .png"
+                accept="image/png, image/jpeg"
                 filled
             />
             <QInput
@@ -293,7 +296,6 @@ async function onChangeLogo(action: string) {
                         type="number"
                     />
                 </div>
-
             </section>
         </fieldset>
 
@@ -331,7 +333,10 @@ async function onChangeLogo(action: string) {
         <FormAssociationSocialNetworks/>
 
         <fieldset>
-            <div id="bottom-btns" class="btn-group">
+            <div
+                id="bottom-btns"
+                class="btn-group"
+            >
                 <QBtn
                     :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
                     :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"

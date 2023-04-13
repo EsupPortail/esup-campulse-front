@@ -61,12 +61,12 @@ onMounted(initValues)
                     :label="t('association.labels.add-social-network')"
                     class="add-network-btn"
                     icon="mdi-plus-circle-outline"
-                    outline @click="addNetwork"
+                    outline
+                    @click="addNetwork"
                 />
             </div>
         </section>
     </fieldset>
-
 </template>
 
 <style lang="scss">

@@ -89,15 +89,15 @@ onMounted(async () => {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        v-if="hasPerm('change_association')"
-                        :label="t('dashboard.edit-or-delete-association')"
-                        :to="{name: 'ManageAssociations'}"
-                        color="secondary"
-                    />
-                    <QBtn
                         v-if="hasPerm('add_association')"
                         :label="t('dashboard.create-association')"
                         :to="{name: 'CreateAssociation'}"
+                        color="secondary"
+                    />
+                    <QBtn
+                        v-if="hasPerm('change_association')"
+                        :label="t('dashboard.edit-or-delete-association')"
+                        :to="{name: 'ManageAssociations'}"
                         color="secondary"
                     />
                 </div>

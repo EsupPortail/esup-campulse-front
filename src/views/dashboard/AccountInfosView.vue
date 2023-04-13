@@ -65,10 +65,10 @@ async function onUpdateUserAssociations() {
         await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
         await
-            notify({
-                type: 'positive',
-                message: t('notifications.positive.associations-successfully-updated')
-            })
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.associations-successfully-updated')
+        })
     } catch (error) {
         notify({
             type: 'negative',
@@ -185,6 +185,13 @@ async function onUpdateUserAssociations() {
                                     :to="{ name: 'Dashboard' }"
                                     class="back-btn"
                                     icon="bi-chevron-compact-left"
+                                />
+                                <QBtn
+                                    v-if="newAssociations.length > 0 && newAssociations[0].id"
+                                    :label="t('association.validate-new-associations')"
+                                    class="validate-button"
+                                    icon-right="bi-check2"
+                                    type="submit"
                                 />
                             </section>
                         </QForm>

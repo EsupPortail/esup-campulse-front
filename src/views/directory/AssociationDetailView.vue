@@ -50,7 +50,7 @@ async function onGetAssociationDetail() {
                 <QImg
                     v-if="association"
                     :alt="altLogoText(association)"
-                    :src="hasLogo ? association?.pathLogo?.detail : '/src/assets/img/no_logo_square.png'"
+                    :src="hasLogo ? association?.pathLogo?.detail : '../src/assets/img/no_logo_square.png'"
                 />
             </div>
             <div class="association-name">
@@ -63,7 +63,6 @@ async function onGetAssociationDetail() {
                 </p>
                 <p><i>{{ t("association.labels.charter-validity") }}</i></p>
             </div>
-
         </section>
 
         <section
@@ -201,12 +200,10 @@ async function onGetAssociationDetail() {
 
                 <article
                     v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
-
                     class="display-row"
                 >
                     <h3>{{ t("association.labels.socials") }}</h3>
-                    <ul
-                    >
+                    <ul>
                         <li
                             v-for="(socialNetwork, index) in association?.socialNetworks"
                             :key="index"
@@ -220,7 +217,10 @@ async function onGetAssociationDetail() {
             </div>
         </section>
 
-        <section id="bottom-btns" class="btn-group">
+        <section
+            id="bottom-btns"
+            class="btn-group"
+        >
             <QBtn
                 :label="t('association.back-directory')"
                 color="secondary"

@@ -14,27 +14,50 @@ const {colorVariant} = useColorVariants()
     >
         <div id="footer-logos">
             <div class="wrapper">
-                <!--<RouterLink to="/">
-                    <img src="@/assets/img/logos/uha.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/hear-white.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/insa.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/ensas.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/engees.png"/>
-                </RouterLink>-->
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/unistra.png"/>
-                </RouterLink>
-                <RouterLink to="/">
-                    <img src="@/assets/img/logos/crous.png"/>
-                </RouterLink>
+                <a href="https://www.crous-strasbourg.fr/">
+                    <img
+                        src="@/assets/img/logos/crous.png"
+                        alt="Logo du Centre régional des œuvres universitaires et scolaires"
+                    />
+                </a>
+                <a href="https://www.unistra.fr/">
+                    <img
+                        src="@/assets/img/logos/unistra.png"
+                        alt="Logo de l'Université de Strasbourg"
+                    />
+                </a>
+                <!--
+                <a href="https://www.uha.fr/">
+                    <img
+                        src="@/assets/img/logos/uha.png"
+                        alt="Logo de l'Université de Haute-Alsace"
+                    />
+                </a>
+                <a href="https://www.insa-strasbourg.fr/">
+                    <img
+                        src="@/assets/img/logos/insa.png"
+                        alt="Logo de l'Institut National des Sciences Appliquées Strasbourg"
+                    />
+                </a>
+                <a href="https://www.hear.fr/">
+                    <img
+                        src="@/assets/img/logos/hear-white.png"
+                        alt="Logo de la Haute École des Arts du Rhin"
+                    />
+                </a>
+                <a href="https://engees.unistra.fr/">
+                    <img
+                        src="@/assets/img/logos/engees.png"
+                        alt="Logo de l'École Nationale du Génie de l'Eau et de l'Environnement de Strasbourg"
+                    />
+                </a>
+                <a href="https://www.strasbourg.archi.fr/">
+                    <img
+                        src="@/assets/img/logos/ensas.png"
+                        alt="Logo de l'École Nationale Supérieure d'Architecture de Strasbourg"
+                    />
+                </a>
+                -->
             </div>
         </div>
         <QToolbar>
