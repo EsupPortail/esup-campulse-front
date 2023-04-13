@@ -108,7 +108,7 @@ const routes: RouteRecordRaw[] = [
                                 }
                             },
                             {
-                                path: 'submit-project',
+                                path: 'submit-project/:projectId?',
                                 name: 'SubmitProjectIndividual',
                                 component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
                                 meta: {

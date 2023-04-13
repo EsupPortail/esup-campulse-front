@@ -26,7 +26,7 @@ export default function () {
             processDocuments.value.push({
                 document: document.id,
                 isMultiple: document.isMultiple,
-                label: document.description,
+                description: document.description,
                 pathFile: document.isMultiple ? [] : undefined,
                 isRequiredInProcess: document.isRequiredInProcess,
                 mimeTypes: document.mimeTypes
@@ -38,13 +38,12 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         projectStore.projectDocuments.forEach((document) => {
-            const label = documentTypes.value.find(obj => obj.id === document.document)?.description
-            if (documentIds.includes(document.document) && label) {
+            if (documentIds.includes(document.document)) {
                 documentUploads.value.push({
                     id: document.id,
                     document: document.document,
                     pathFile: document.pathFile as string,
-                    label
+                    name: document.name as string
                 })
             }
         })

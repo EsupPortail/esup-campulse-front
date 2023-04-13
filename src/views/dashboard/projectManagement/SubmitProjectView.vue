@@ -9,6 +9,7 @@ import {useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useProjectDocuments from '@/composables/useProjectDocuments'
+import router from '@/router'
 
 const {t} = useI18n()
 const {
@@ -30,7 +31,8 @@ const {
     patchProjectCommissionDates,
     initProjectCommissionDates,
     patchProjectGoals,
-    initProjectGoals
+    initProjectGoals,
+    submitProject
 } = useSubmitProject()
 const {
     getDocumentTypes,
@@ -56,11 +58,21 @@ const route = useRoute()
 
 onMounted(async () => {
     loading.show
-    initApplicant()
+
     if (route.params.projectId) newProject.value = false
+
     await onGetProjectDetail()
+
+    // If project is not a draft, then push to 404
+    if (projectStore.project && projectStore.project?.projectStatus !== 'PROJECT_DRAFT') {
+        await router.push({name: '404'})
+    }
+
+    initApplicant()
     if (applicant.value === 'association') {
-        associationName.value = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))?.name
+        const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))
+        if (association) associationName.value = association.name
+        else await router.push({name: '404'})
     }
     await onGetProjectCategories()
     await onGetDocumentTypes()
@@ -97,6 +109,9 @@ const newProject = ref<boolean>(true)
 
 const projectReEdition = ref<boolean>(false)
 
+// CONST
+const MAX_FILES = 10
+
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
     if (route.name === 'SubmitProjectAssociation') {
@@ -120,23 +135,25 @@ watch(() => projectBasicInfos.value.plannedEndDate, () => {
 
 // GET DATA FOR STEP 1
 async function onGetProjectDetail() {
-    try {
-        if (!newProject.value) {
+    if (!newProject.value) {
+        try {
             await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
             initProjectBasicInfos()
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        catch {
+            await router.push({name: '404'})
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.loading-error')
+            })
+        }
     }
 }
 
 async function onGetProjectCategories() {
     try {
         await projectStore.getProjectCategoryNames()
-        if (!newProject.value) {
+        if (!newProject.value && projectStore.project) {
             await projectStore.getProjectCategories()
             initProjectCategories()
         }
@@ -268,7 +285,7 @@ async function onSubmitBudget() {
         } catch {
             notify({
                 type: 'negative',
-                message: t('notifications.negative.commission-dates-error')
+                message: t('notifications.negative.project-edition-error')
             })
         }
     }
@@ -285,14 +302,14 @@ async function onSubmitGoals() {
         } catch {
             notify({
                 type: 'negative',
-                message: t('notifications.negative.commission-dates-error')
+                message: t('notifications.negative.project-edition-error')
             })
         }
     }
 }
 
 // SUBMIT STEP 5
-async function onSubmitDocuments() {
+async function onUploadDocuments() {
     if (projectStore.project) {
         try {
             loading.show
@@ -303,7 +320,7 @@ async function onSubmitDocuments() {
         } catch {
             notify({
                 type: 'negative',
-                message: t('notifications.negative.commission-dates-error')
+                message: t('notifications.negative.upload-documents-error')
             })
         }
     }
@@ -318,7 +335,7 @@ async function onDeleteDocumentUpload(documentId: number) {
     } catch {
         notify({
             type: 'negative',
-            message: t('notifications.negative.commission-dates-error')
+            message: t('notifications.negative.delete-document-error')
         })
     }
 }
@@ -327,12 +344,12 @@ async function onDeleteDocumentUpload(documentId: number) {
 async function onSubmitProject() {
     if (projectStore.project) {
         try {
-            //
+            await submitProject()
             done6.value = true
         } catch {
             notify({
                 type: 'negative',
-                message: t('notifications.negative.commission-dates-error')
+                message: t('notifications.negative.submit-project-error')
             })
         }
     }
@@ -360,13 +377,12 @@ async function onSubmitProject() {
                     ></i>
                     <p>{{ t('project.form-help') }}</p>
                     <p>
-                        {{
-                            `${t('project.info-panel-status')}
-                            ${(applicant === 'association' ? t('project.info-panel-status-association') + ' ' + associationName : t('project.info-panel-status-individual'))}.`
-                        }}
+                        {{ t('project.info-panel-status') }}
+                        {{ applicant === 'association' ? t('project.info-panel-status-association') : t('project.info-panel-status-individual') }}
+                        <strong>{{ applicant === 'association' ? associationName : '' }}</strong>.
                     </p>
                     <p>
-                        Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés :
+                        {{ t('project.required-documents-list') + ' :' }}
                     </p>
                     <p class="paragraph">
                         <ul role="list">
@@ -374,7 +390,7 @@ async function onSubmitProject() {
                                 v-for="(document, index) in processDocuments"
                                 :key="index"
                             >
-                                {{ document.label }}
+                                {{ document.description }}
                             </li>
                         </ul>
                     </p>
@@ -384,7 +400,6 @@ async function onSubmitProject() {
                     ref="stepper"
                     v-model="step"
                     animated
-                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
@@ -748,7 +763,7 @@ async function onSubmitProject() {
                         icon="mdi-file-document-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitDocuments"
+                            @submit.prevent="onUploadDocuments"
                         >
                             <h3 class="title-2">{{ t('project.documents') }}</h3>
 
@@ -762,24 +777,27 @@ async function onSubmitProject() {
 
                             <section class="flex-section">
                                 <div
-                                    v-for="(projectDocument, index) in processDocuments"
+                                    v-for="(document, index) in processDocuments"
                                     :key="index"
                                 >
                                     <QFile
-                                        v-model="projectDocument.pathFile"
-                                        :accept="projectDocument.mimeTypes?.join(', ')"
-                                        :aria-required="projectDocument.isRequiredInProcess"
-                                        :hint="t('project.document-hint') + (projectDocument.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
-                                        :label="projectDocument.label + (projectDocument.isRequiredInProcess ? ' *' : '')"
-                                        :max-files="projectDocument.isMultiple ? 10 : 1"
-                                        :multiple="projectDocument.isMultiple"
-
+                                        v-model="document.pathFile"
+                                        :accept="document.mimeTypes?.join(', ')"
+                                        :aria-required="document.isRequiredInProcess"
+                                        :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
+                                        :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
+                                        :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
+                                            (1 - documentUploads.filter(obj => obj.document === document.document).length)"
+                                        :multiple="document.isMultiple"
+                                        :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
                                         append
                                         clearable
-                                        counter
                                         filled
                                         lazy-rules
                                         use-chips
+                                        counter
+                                        :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
+                                            !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
                                     >
                                         <template v-slot:prepend>
                                             <QIcon name="mdi-paperclip"/>
@@ -791,7 +809,7 @@ async function onSubmitProject() {
                                             <div class="document-input-list">
                                                 <div
                                                     class="document-item"
-                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === projectDocument.document)"
+                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                                                     :key="uploadedDocument.id"
                                                 >
                                                     <p>
@@ -803,7 +821,7 @@ async function onSubmitProject() {
                                                             :href="uploadedDocument.pathFile"
                                                             target="_blank"
                                                         >
-                                                            {{ uploadedDocument.label }}
+                                                            {{ uploadedDocument.name }}
                                                             <i
                                                                 class="bi bi-eye"
                                                                 aria-hidden="true"
@@ -1069,122 +1087,28 @@ async function onSubmitProject() {
                                         />
                                     </div>
 
-                                    <div class="document-input-group">
-                                        <div class="document-input variant-space-1">
-                                            <div class="document-input-header">
-                                                <h4>
-                                                    PV de la dernière AGO
-                                                </h4>
-                                                <p>
-                                                    <button>
-                                                        <i class="bi bi-info-circle"></i>
-                                                    </button>
-                                                </p>
-                                                <button>
-                                                    <i class="bi bi-plus"></i>
-                                                </button>
-                                            </div>
-                                            <div class="document-input-list">
-                                                <div class="document-item">
-                                                    <p>
-                                                        <i
-                                                            aria-hidden="true"
-                                                            class="bi bi-file-earmark"
-                                                        ></i>
+                                    <section class="flex-section">
+                                        <div
+                                            class="display-row"
+                                            v-for="(document, index) in processDocuments"
+                                            :key="index"
+                                        >
+                                            <p class="row-title">{{ document.description }}</p>
+                                            <p class="paragraph">
+                                                <ul role="list">
+                                                    <li
+                                                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                                                        :key="uploadedDocument.id"
+                                                    >
                                                         <a
-                                                            href="/"
+                                                            :href="uploadedDocument.pathFile"
                                                             target="_blank"
-                                                        >
-                                                            cert_scol_membre1.pdf
-                                                            <i
-                                                                aria-hidden="true"
-                                                                class="bi bi-eye"
-                                                            ></i>
-                                                        </a>
-                                                    </p>
-                                                    <button>
-                                                        <i class="bi bi-x-lg"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="document-item">
-                                                    <p>
-                                                        <i
-                                                            aria-hidden="true"
-                                                            class="bi bi-file-earmark"
-                                                        ></i>
-                                                        <a
-                                                            href="/"
-                                                            target="_blank"
-                                                        >
-                                                            cert_scol_membre2.pdf
-                                                            <i
-                                                                aria-hidden="true"
-                                                                class="bi bi-eye"
-                                                            ></i>
-                                                        </a>
-                                                    </p>
-                                                    <button>
-                                                        <i class="bi bi-x-lg"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="document-item">
-                                                    <p>
-                                                        <i
-                                                            aria-hidden="true"
-                                                            class="bi bi-file-earmark"
-                                                        ></i>
-                                                        <a
-                                                            href="/"
-                                                            target="_blank"
-                                                        >
-                                                            cert_scol_membre3.pdf
-                                                            <i
-                                                                aria-hidden="true"
-                                                                class="bi bi-eye"
-                                                            ></i>
-                                                        </a>
-                                                    </p>
-                                                    <button disabled>
-                                                        <i class="bi bi-x-lg"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <div class="document-input">
-                                                <div class="document-input-header">
-                                                    <h4>
-                                                        Certificat de scolarité des membres élus (1 document par membre)
-                                                    </h4>
-                                                    <p>
-                                                        <button>
-                                                            <i class="bi bi-info-circle"></i>
-                                                        </button>
-                                                    </p>
-                                                    <button>
-                                                        <i class="bi bi-plus"></i>
-                                                    </button>
-                                                </div>
-                                                <!-- <div class="document-input-list"></div> -->
-                                            </div>
-
-                                            <div class="document-input">
-                                                <div class="document-input-header">
-                                                    <h4>
-                                                        Certificat envoyé par le tribunal judiciaire
-                                                    </h4>
-                                                    <!-- <p>
-                                                        <button>
-                                                            <i class="bi bi-info-circle"></i>
-                                                        </button>
-                                                    </p> -->
-                                                    <button disabled>
-                                                        <i class="bi bi-plus"></i>
-                                                    </button>
-                                                </div>
-                                                <!-- <div class="document-input-list"></div> -->
-                                            </div>
+                                                        >{{ uploadedDocument.name }}</a>
+                                                    </li>
+                                                </ul>
+                                            </p>
                                         </div>
-                                    </div>
+                                    </section>
                                 </section>
                             </section>
 
@@ -1244,6 +1168,9 @@ h3
 h5
     margin: 1.5rem 0 0.5rem 0
 
+.recap-section
+    margin-bottom: 2rem
+
 .recap-section-title
     display: flex
     align-items: center
@@ -1252,6 +1179,6 @@ h5
     h4
         margin: 2rem 0 1rem 0
 
-.document-input
+.flex-section .document-input
     margin-bottom: 0
 </style>

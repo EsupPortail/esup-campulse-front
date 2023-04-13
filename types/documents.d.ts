@@ -40,7 +40,8 @@ export interface ProjectDocument {
     document: number,
     user?: number | null,
     association?: number | null,
-    project?: number
+    project?: number,
+    name?: string
 }
 
 export interface ProcessDocument {
@@ -49,10 +50,11 @@ export interface ProcessDocument {
     pathFile: Blob | Blob[] | undefined | [] | string,
     documentUploadStatus?: DocumentUploadStatus,
     document?: number,
-    label: string,
+    description?: string,
     isMultiple?: boolean,
     isRequiredInProcess?: boolean,
     mimeTypes?: MimeType[],
+    name?: string
 }
 
 type DocumentUploadStatus = 'DOCUMENT_REJECTED' | 'DOCUMENT_PROCESSING' | 'DOCUMENT_VALIDATED'
