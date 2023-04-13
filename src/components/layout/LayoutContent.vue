@@ -2,6 +2,7 @@
 import {RouterView} from 'vue-router'
 import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegistration.vue'
 import useColorVariants from '@/composables/useColorVariants'
+import NavigateTopButton from '@/components/NavigateTopButton.vue'
 
 const {colorVariant} = useColorVariants()
 
@@ -15,6 +16,7 @@ const {colorVariant} = useColorVariants()
     >
         <main>
             <!--<LayoutBreadcrumbs/>-->
+            <NavigateTopButton/>
             <Suspense>
                 <RouterView/>
             </Suspense>

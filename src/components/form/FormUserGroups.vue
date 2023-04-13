@@ -86,11 +86,12 @@ function onInitGroupLabels() {
             v-if="groups"
             :error="!groupChoiceIsValid"
             :error-message="t('forms.required-status')"
+            borderless
         >
             <QOptionGroup
                 v-model="newGroups"
                 :options="groupLabels"
-                color="primary"
+                color="teal"
                 type="checkbox"
                 @update:model-value="initGroupPermToJoinAssociation"
             />
@@ -111,9 +112,15 @@ function onInitGroupLabels() {
     </fieldset>
 </template>
 
-<style lang="sass" scoped>
-fieldset
-    border: none
-    margin: 0 0 0 0.4rem
+<style lang="scss">
+@import "@/assets/_variables.scss";
 
+fieldset {
+    border: none;
+    margin: 0 0 0 .4rem;
+}
+
+.q-option-group {
+    color: $dashboardColor;
+}
 </style>

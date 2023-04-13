@@ -7,5 +7,5 @@ const {t} = useI18n()
 
 <template>
     <h1>{{ t("password.reset-password") }}</h1>
-    <FormPassWordReset />
+    <FormPassWordReset/>
 </template>

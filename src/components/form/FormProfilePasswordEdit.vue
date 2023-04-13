@@ -50,54 +50,55 @@ async function passwordConfirm() {
 </script>
 
 <template>
-    <QForm
-        class="q-gutter-md"
-        @submit="passwordConfirm"
-    >
-        <fieldset>
-            <legend>{{ t('dashboard.my-password') }}</legend>
-            <QInput
-                v-model="editPassword.oldPassword"
-                :label="t('forms.old-password')"
-                :rules="[val => val && val.length > 0 || t('forms.required-old-password')]"
-                filled
-                lazy-rules
-                type="password"
-            />
-            <QInput
-                v-model="editPassword.newPassword1"
-                :label="t('forms.new-password')"
-                :rules="[val => val && val.length > 0 || t('forms.required-new-password')]"
-                filled
-                lazy-rules
-                type="password"
-            />
-            <QInput
-                v-model="editPassword.newPassword2"
-                :label="t('forms.repeat-new-password')"
-                :rules="[val => val && val.length > 0 || t('forms.required-repeat-new-password')]"
-                filled
-                lazy-rules
-                type="password"
-            />
-            <QBtn
-                color="primary"
-                label="Modifier le mot de passe"
-                type="submit"
-            />
-        </fieldset>
-    </QForm>
+    <fieldset>
+        <div class="form-title">
+            <h2>
+                <i class="bi bi-key"></i>
+                {{ t('dashboard.my-password') }}
+            </h2>
+        </div>
+
+        <div class="form-container">
+            <div class="form">
+                <QInput
+                    v-model="editPassword.oldPassword"
+                    :label="t('forms.old-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-old-password')]"
+                    filled
+                    lazy-rules
+                    type="password"
+                />
+                <QInput
+                    v-model="editPassword.newPassword1"
+                    :label="t('forms.new-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-new-password')]"
+                    filled
+                    lazy-rules
+                    type="password"
+                />
+                <QInput
+                    v-model="editPassword.newPassword2"
+                    :label="t('forms.repeat-new-password')"
+                    :rules="[val => val && val.length > 0 || t('forms.required-repeat-new-password')]"
+                    filled
+                    lazy-rules
+                    type="password"
+                />
+                <QBtn
+                    :label="t('password.edit-password')"
+                    class="edit-passwd"
+                    @click="passwordConfirm"
+                />
+            </div>
+        </div>
+    </fieldset>
 </template>
 
-<style lang="sass" scoped>
-legend
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-    width: 100%
-    margin-bottom: 10px
+<style lang="scss" scoped>
 
-fieldset
-    border: none
+.edit-passwd {
+    padding: 1rem;
+    font-size: 1.125rem;
+}
+
 </style>

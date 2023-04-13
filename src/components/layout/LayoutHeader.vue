@@ -60,8 +60,8 @@ function ToggleMenu() {
                 v-if="route.name === 'Home'"
                 id="header-home-title"
             >
-                <h2>Bienvenue sur <strong>OPALINE</strong></h2>
-                <h3>Le site de la vie étudiante de l'UNISTRA</h3>
+                <h1>Bienvenue sur <strong>{{ t("header.title") }}</strong></h1>
+                <h2>{{ t("header.subtitle") }}</h2>
             </div>
 
             <div id="header-title">

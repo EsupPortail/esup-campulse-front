@@ -28,7 +28,7 @@ interface InfosToPatch {
 const infosToPatch: InfosToPatch = {}
 
 
-export default function () {
+export default function() {
 
     const userManagerStore = useUserManagerStore()
     const {updateUserGroups} = useUserGroups()

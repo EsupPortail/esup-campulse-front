@@ -10,8 +10,8 @@
   }
 
   #footer-logos {
-    background-color: $color1Background;
-    border-bottom: 0.625rem solid $color1;
+    background-color: $annuaireColorBackground;
+    border-bottom: 0.625rem solid $annuaireColor;
     padding: 1.875rem 0;
 
     .wrapper {
@@ -123,22 +123,22 @@
 
   &.variant-space-2 {
     #footer-logos {
-      background-color: $color2Background;
-      border-color: $color2;
+      background-color: $charteColorBackground;
+      border-color: $charteColor;
     }
   }
 
   &.variant-space-3 {
     #footer-logos {
-      background-color: $color3Background;
-      border-color: $color3;
+      background-color: $capeColorBackground;
+      border-color: $capeColor;
     }
   }
 
   &.variant-space-4 {
     #footer-logos {
-      background-color: $color4Background;
-      border-color: $color4;
+      background-color: $dashboardColorBackground;
+      border-color: $dashboardColor;
     }
   }
 }

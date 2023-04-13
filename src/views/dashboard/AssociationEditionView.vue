@@ -71,6 +71,5 @@ onMounted(async function () {
 </script>
 
 <template>
-    <h1>{{ associationStore.association?.name }}</h1>
     <FormAssociationEdition v-if="isLoaded"/>
 </template>

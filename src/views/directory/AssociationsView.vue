@@ -6,7 +6,6 @@ import useDirectory from '@/composables/useDirectory'
 import useAssociation from '@/composables/useAssociation'
 import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
-import NavigateTopButton from '@/components/NavigateTopButton.vue'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
@@ -114,9 +113,6 @@ async function clearSearch(apiSearch: boolean) {
 
 <template>
     <!-- <h1>{{ t("home.directory") }}</h1> -->
-
-    <NavigateTopButton/>
-
     <section class="introduction">
         <div class="content">
             <div class="intro-image">
@@ -143,6 +139,7 @@ async function clearSearch(apiSearch: boolean) {
         </div>
     </section>
     <section class="directory-search">
+        <h2>{{ t('directory.search-association') }}</h2>
         <QForm
             id="search-form"
             class="search-text-field"
@@ -246,7 +243,8 @@ async function clearSearch(apiSearch: boolean) {
         <div class="form-container">
             <div class="form">
                 <section class="directory-sorting">
-                    <section>
+                    <h2>{{ t('directory.list') }}</h2>
+                    <div>
                         <p v-if="associations.length > 0">
                             <span>{{ associations.length }}</span>
                             {{
@@ -260,7 +258,7 @@ async function clearSearch(apiSearch: boolean) {
                                 associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') : t('directory.associations-on-page-singular')
                             }} :
                         </p>
-                    </section>
+                    </div>
                 </section>
 
                 <QCard

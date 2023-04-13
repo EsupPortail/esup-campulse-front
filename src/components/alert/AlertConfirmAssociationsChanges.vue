@@ -201,7 +201,7 @@ async function onConfirmChanges(emailType: string) {
                     :label="t('association.enable')"
                     color="green"
                     icon="mdi-eye-check"
-                    @click="onConfirmChanges"
+                    @click="onConfirmChanges('')"
                 />
                 <QBtn
                     v-if="switches === 'disable'"
@@ -209,7 +209,7 @@ async function onConfirmChanges(emailType: string) {
                     :label="t('association.disable')"
                     color="orange"
                     icon="mdi-eye-remove"
-                    @click="onConfirmChanges"
+                    @click="onConfirmChanges('')"
                 />
                 <QBtn
                     v-if="switches === 'delete'"
@@ -217,7 +217,7 @@ async function onConfirmChanges(emailType: string) {
                     :label="t('association.delete')"
                     color="red"
                     icon="mdi-delete"
-                    @click="onConfirmChanges"
+                    @click="onConfirmChanges('')"
                 />
             </QCardActions>
         </QCard>

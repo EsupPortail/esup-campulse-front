@@ -61,7 +61,7 @@ async function onGetUserAssociations() {
                     </li>
                     <li>
                         {{ t('dashboard.association-user.presidency-status') }} <span>{{
-                            (association.role === 'isPresident' || (association?.canBePresidentFrom !== null && association?.canBePresidentFrom >= today) || (association?.canBePresidentTo !== null && association?.canBePresidentTo <= today)) ? t('yes') : t('no')
+                            (association.role === 'isPresident' || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <= today)) ? t('yes') : t('no')
                         }}</span>
                     </li>
                     <li>
@@ -70,18 +70,17 @@ async function onGetUserAssociations() {
                     </li>
                 </ul>
                 <div class="btn-group">
-                    <div>
-                        <AlertConfirmUserQuitAssociation
-                            :association-id="association.id"
-                            :edited-by-staff="false"
-                            :user-id="userStore.user?.id"
-                            @user-association-deleted="onGetUserAssociations"
-                        />
-                    </div>
+                    <AlertConfirmUserQuitAssociation
+                        :association-id="association.id ? association.id : 0"
+                        :edited-by-staff="false"
+                        :user-id="userStore.user?.id ? userStore.user?.id : 0"
+                        @user-association-deleted="onGetUserAssociations"
+                    />
                     <QBtn
-                        v-if="association.isValidatedByAdmin && userStore.hasPresidentStatus(association.id)"
+                        v-if="association.isValidatedByAdmin && association.id !== null && userStore.hasPresidentStatus(association.id)"
                         :label="t('dashboard.association-user.manage-association')"
                         :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                        icon="mdi-pencil"
                     />
                 </div>
             </section>
@@ -89,39 +88,43 @@ async function onGetUserAssociations() {
     </QCard>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-</style>
+<style lang="scss">
+@import "@/assets/styles/forms.scss";
+@import "@/assets/_variables.scss";
 
-<style lang="sass" scoped>
-.form
-    display: flex
-    flex-direction: column
-    gap: 1rem
+section {
+    ul {
+        padding: 1rem;
+    }
+}
 
-.association-card
-    padding: 1rem
+// Change size of associations btn (quit or edit association)
+.btn-group {
+    display: flex;
+    gap: .5rem;
 
-fieldset
-    border: none
+    .q-btn {
+        font-size: 1rem;
+        padding: .5rem;
+        line-height: 1.5rem;
+    }
+}
 
-fieldset .q-checkbox
-    width: 100%
+@media screen and (min-width: $responsiveWidth) {
+    .form {
+        width: 70%;
+        margin: auto;
+    }
 
-h4
-    font-size: 1.5em
-    padding: 0
-    line-height: 0
+    .btn-group {
+        display: flex;
+        gap: 1rem;
 
-.delete-message
-    color: red
+        .q-btn {
+            font-size: 1.125rem;
+            padding: 1rem;
+        }
+    }
+}
 
-.btn-group
-    display: flex
-    gap: 1rem
-    margin-top: 1rem
-
-ul
-    padding: 1rem
-    margin-top: 1rem
 </style>

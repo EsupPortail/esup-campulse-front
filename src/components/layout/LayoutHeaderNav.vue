@@ -40,3 +40,8 @@ const {t} = useI18n()
         />
     </nav>
 </template>
+
+<style lang="scss">
+@import '@/assets/_variables.scss';
+
+</style>
