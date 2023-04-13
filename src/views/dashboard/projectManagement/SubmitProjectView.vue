@@ -49,7 +49,8 @@ const {
     commissions,
     getCommissionDates,
     commissionDatesLabels,
-    commissionDates
+    commissionDates,
+    initCommissionDates
 } = useCommissions()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
@@ -74,6 +75,9 @@ onMounted(async () => {
         if (association) associationName.value = association.name
         else await router.push({name: '404'})
     }
+
+    initIsSite()
+
     await onGetProjectCategories()
     await onGetDocumentTypes()
     loading.hide
@@ -108,21 +112,25 @@ const associationName = ref<string | undefined>('')
 const newProject = ref<boolean>(true)
 
 const projectReEdition = ref<boolean>(false)
+watch(() => projectStore.projectCommissionDates.length, () => {
+    if (projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
+})
+
+const isSite = ref<boolean | undefined>(undefined)
 
 // CONST
 const MAX_FILES = 10
 
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
-    if (route.name === 'SubmitProjectAssociation') {
-        projectBasicInfos.value.association = parseInt(route.params.associationId as string)
-        applicant.value = 'association'
-    } else {
-        projectBasicInfos.value.user = userStore.user?.id as number
-        applicant.value = 'user'
-    }
+    if (route.name === 'SubmitProjectAssociation') applicant.value = 'association'
+    else applicant.value = 'user'
 }
-watch(() => userStore.user, initApplicant)
+
+// INIT IS SITE
+const initIsSite = () => {
+    isSite.value = applicant.value === 'association' && userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))?.isSite
+}
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
 const datesAreLegal = ref<boolean>(false)
@@ -183,6 +191,7 @@ async function onGetCommissionDates() {
         try {
             await getCommissions()
             await getCommissionDates()
+            await initCommissionDates(isSite.value)
             if (!newProject.value) {
                 await projectStore.getProjectCommissionDates()
                 initProjectCommissionDatesModel()
@@ -240,7 +249,7 @@ async function onGetProjectDocuments() {
 async function onSubmitBasicInfos() {
     try {
         if (newProject.value) {
-            await postNewProject()
+            await postNewProject(parseInt(route.params.associationId as string))
         } else {
             await patchProjectBasicInfos()
         }
@@ -277,7 +286,7 @@ async function onSubmitCommissionDates() {
 async function onSubmitBudget() {
     if (projectStore.project) {
         try {
-            await patchProjectBudget()
+            await patchProjectBudget(!projectReEdition.value)
             await patchProjectCommissionDates(!projectReEdition.value)
             done3.value = true
             step.value = 4
@@ -378,8 +387,8 @@ async function onSubmitProject() {
                     <p>{{ t('project.form-help') }}</p>
                     <p>
                         {{ t('project.info-panel-status') }}
-                        {{ applicant === 'association' ? t('project.info-panel-status-association') : t('project.info-panel-status-individual') }}
-                        <strong>{{ applicant === 'association' ? associationName : '' }}</strong>.
+                        {{ applicant === 'association' ? t('project.info-panel-status-association') : t('project.info-panel-status-individual') + '.' }}
+                        <span v-if="applicant === 'association'"><strong>{{ associationName }}</strong></span>
                     </p>
                     <p>
                         {{ t('project.required-documents-list') + ' :' }}
@@ -551,7 +560,8 @@ async function onSubmitProject() {
                                             v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
                                             v-model="commissionDate.amountAskedPreviousEdition"
-                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym"
+                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
+                                            :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                             filled
                                             type="number"
                                         />
@@ -565,9 +575,10 @@ async function onSubmitProject() {
                                             v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
                                             v-model="commissionDate.amountEarnedPreviousEdition"
-                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym"
+                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             filled
                                             type="number"
+                                            :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                         />
                                     </section>
                                 </fieldset>
@@ -655,9 +666,11 @@ async function onSubmitProject() {
                                             v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
                                             v-model="commissionDate.amountAsked"
-                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym"
+                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             filled
                                             type="number"
+                                            inputmode="numeric"
+                                            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                         />
                                     </section>
                                 </fieldset>

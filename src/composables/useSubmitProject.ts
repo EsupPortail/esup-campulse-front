@@ -4,6 +4,7 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import useCommissions from '@/composables/useCommissions'
+import {useUserStore} from '@/stores/useUserStore'
 
 const projectBasicInfos = ref<ProjectBasicInfos>(
     {
@@ -48,6 +49,7 @@ const projectGoals = ref<ProjectGoals>(
 export default function () {
 
     const projectStore = useProjectStore()
+    const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
     const {commissionDatesLabels} = useCommissions()
     const {arraysAreEqual} = useUtility()
@@ -73,6 +75,7 @@ export default function () {
         projectCommissionDatesModel.value = projectStore.projectCommissionDates.map(commissionDate => commissionDate.commissionDate)
     }
 
+
     // Used to check if only 1 commission date per commission is selected (submit project step 2)
     watch(() => projectCommissionDatesModel.value.length, () => {
         commissionDatesLabels.value.forEach((label) => {
@@ -91,6 +94,11 @@ export default function () {
 
     const initProjectCommissionDates = () => {
         projectCommissionDates.value = JSON.parse(JSON.stringify(projectStore.projectCommissionDates))
+        projectCommissionDates.value.forEach((commissionDate) => {
+            commissionDate.amountAskedPreviousEdition = commissionDate.amountAskedPreviousEdition?.toString()
+            commissionDate.amountEarnedPreviousEdition = commissionDate.amountEarnedPreviousEdition?.toString()
+            commissionDate.amountAsked = commissionDate.amountAsked?.toString()
+        })
     }
 
     const initProjectBudget = () => {
@@ -100,6 +108,7 @@ export default function () {
         projectBudget.value.amountStudentsTargetAudience = projectStore.project?.amountStudentsTargetAudience.toString() as string
         projectBudget.value.ticketPrice = projectStore.project?.ticketPrice.toString() as string
         projectBudget.value.individualCost = projectStore.project?.individualCost.toString() as string
+        projectBudget.value.budgetPreviousEdition = projectStore.project?.budgetPreviousEdition.toString() as string
     }
 
     const initProjectGoals = () => {
@@ -111,7 +120,9 @@ export default function () {
     }
 
     // POSTS
-    async function postNewProject() {
+    async function postNewProject(associationId: number | undefined) {
+        if (associationId) projectBasicInfos.value.association = associationId
+        else projectBasicInfos.value.user = userStore.user?.id as number
         const dataToPost = JSON.parse(JSON.stringify(projectBasicInfos.value))
         dataToPost.plannedStartDate += 'T00:00:00.000Z'
         dataToPost.plannedEndDate += 'T00:00:00.000Z'
@@ -186,22 +197,30 @@ export default function () {
         }
     }
 
-    async function patchProjectBudget() {
+    async function patchProjectBudget(isFirstEdition: boolean) {
         let dataToPatch = {}
         for (const [key, value] of Object.entries(projectBudget.value)) {
             const numbers = ['amountTargetAudience', 'amountStudentsTargetAudience', 'ticketPrice', 'individualCost']
-            if (numbers.indexOf(key) !== -1) {
+            if (numbers.includes(key)) {
                 if (parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
                     dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
+                }
+            } else if (key === 'budgetPreviousEdition') {
+                if (isFirstEdition && projectStore.project && projectStore.project.budgetPreviousEdition > 0) {
+                    dataToPatch = Object.assign(dataToPatch, {[key]: 0})
+                } else {
+                    if (parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
+                        dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
+                    }
                 }
             } else {
                 if (value !== projectStore.project?.[key as keyof typeof projectStore.project]) {
                     dataToPatch = Object.assign(dataToPatch, {[key]: value})
                 }
             }
-            if (Object.entries(dataToPatch).length) {
-                projectStore.project = (await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}`, dataToPatch)).data
-            }
+        }
+        if (Object.entries(dataToPatch).length) {
+            projectStore.project = (await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}`, dataToPatch)).data
         }
     }
 
@@ -212,9 +231,25 @@ export default function () {
             const newCommission = projectCommissionDates.value[i]
             newCommission.isFirstEdition = isFirstEdition
 
+            const numbers = ['amountAskedPreviousEdition', 'amountEarnedPreviousEdition', 'amountAsked']
+
             for (const [key, value] of Object.entries(newCommission)) {
-                if (value !== oldCommission?.[key as keyof typeof oldCommission]) {
+                if (key === 'isFirstEdition' && value === true && value !== oldCommission?.[key as keyof typeof oldCommission]) {
                     dataToPatch = Object.assign(dataToPatch, {[key]: value})
+                    dataToPatch = Object.assign(dataToPatch, {amountAskedPreviousEdition: 0})
+                    dataToPatch = Object.assign(dataToPatch, {amountEarnedPreviousEdition: 0})
+                    dataToPatch = Object.assign(dataToPatch, {amountAsked: newCommission.amountAsked})
+                } else {
+                    if (numbers.includes(key)) {
+                        if (parseInt(value as string) !== oldCommission?.[key as keyof typeof oldCommission]) {
+                            dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
+                        }
+                    } else {
+                        if (value !== oldCommission?.[key as keyof typeof oldCommission]) {
+                            dataToPatch = Object.assign(dataToPatch, {[key]: value})
+
+                        }
+                    }
                 }
             }
             if (Object.entries(dataToPatch).length) {
