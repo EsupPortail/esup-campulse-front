@@ -6,7 +6,6 @@ import useDirectory from '@/composables/useDirectory'
 import useAssociation from '@/composables/useAssociation'
 import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
-import NavigateTopButton from '@/components/NavigateTopButton.vue'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
@@ -114,9 +113,6 @@ async function clearSearch(apiSearch: boolean) {
 
 <template>
     <!-- <h1>{{ t("home.directory") }}</h1> -->
-
-    <NavigateTopButton/>
-
     <section class="introduction">
         <div class="content">
             <div class="intro-image">
