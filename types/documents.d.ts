@@ -40,20 +40,19 @@ export interface ProjectDocument {
     document: number,
     user?: number | null,
     association?: number | null,
-    project?: number,
-    isMultiple?: boolean
+    project?: number
 }
 
-export interface ProcessProjectDocument {
+export interface ProcessDocument {
     id?: number,
     uploadDate?: string,
-    pathFile: Blob | Blob[] | undefined | [],
+    pathFile: Blob | Blob[] | undefined | [] | string,
     documentUploadStatus?: DocumentUploadStatus,
-    document: number,
+    document?: number,
     label: string,
-    isMultiple: boolean,
-    isRequiredInProcess: boolean,
-    mimeTypes: MimeType[]
+    isMultiple?: boolean,
+    isRequiredInProcess?: boolean,
+    mimeTypes?: MimeType[],
 }
 
 type DocumentUploadStatus = 'DOCUMENT_REJECTED' | 'DOCUMENT_PROCESSING' | 'DOCUMENT_VALIDATED'

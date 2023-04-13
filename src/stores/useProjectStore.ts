@@ -2,6 +2,7 @@ import {defineStore} from 'pinia'
 import type {Project, ProjectCategory, ProjectCategoryName, ProjectCommissionDate, ProjectStore} from '#/project'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
+import type {ProjectDocument} from '#/documents'
 
 
 export const useProjectStore = defineStore('projectStore', {
@@ -42,6 +43,11 @@ export const useProjectStore = defineStore('projectStore', {
         async getProjectCommissionDates() {
             const {axiosAuthenticated} = useAxios()
             this.projectCommissionDates = (await axiosAuthenticated.get<ProjectCommissionDate[]>(`/projects/${this.project?.id}/commission_dates`)).data
+        },
+
+        async getProjectDocuments() {
+            const {axiosAuthenticated} = useAxios()
+            this.projectDocuments = (await axiosAuthenticated.get<ProjectDocument[]>('/documents/uploads')).data
         }
     }
 })

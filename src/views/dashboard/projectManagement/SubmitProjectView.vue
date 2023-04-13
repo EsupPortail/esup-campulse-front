@@ -31,13 +31,15 @@ const {
     initProjectCommissionDates,
     patchProjectGoals,
     initProjectGoals
-}
-    = useSubmitProject()
+} = useSubmitProject()
 const {
     getDocumentTypes,
     initProcessProjectDocuments,
-    processProjectDocuments,
-    postProjectDocuments
+    processDocuments,
+    postProjectDocuments,
+    initDocumentUploads,
+    documentUploads,
+    deleteDocumentUpload
 } = useProjectDocuments()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
@@ -61,6 +63,7 @@ onMounted(async () => {
         associationName.value = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))?.name
     }
     await onGetProjectCategories()
+    await onGetDocumentTypes()
     loading.hide
 })
 
@@ -145,6 +148,18 @@ async function onGetProjectCategories() {
     }
 }
 
+async function onGetDocumentTypes() {
+    try {
+        await getDocumentTypes()
+        initProcessProjectDocuments('DOCUMENT_PROJECT')
+    } catch {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.loading-error')
+        })
+    }
+}
+
 // GET DATA FOR STEP 2
 async function onGetCommissionDates() {
     if (!projectCommissionDatesModel.value.length) {
@@ -194,6 +209,8 @@ async function onGetProjectDocuments() {
     try {
         await getDocumentTypes()
         initProcessProjectDocuments('DOCUMENT_PROJECT')
+        await projectStore.getProjectDocuments()
+        initDocumentUploads()
     } catch {
         notify({
             type: 'negative',
@@ -292,6 +309,20 @@ async function onSubmitDocuments() {
     }
 }
 
+// DELETE DOCS ON STEP 5
+async function onDeleteDocumentUpload(documentId: number) {
+    try {
+        loading.show
+        await deleteDocumentUpload(documentId)
+        loading.hide
+    } catch {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.commission-dates-error')
+        })
+    }
+}
+
 // SUBMIT STEP 6
 async function onSubmitProject() {
     if (projectStore.project) {
@@ -336,6 +367,16 @@ async function onSubmitProject() {
                     </p>
                     <p>
                         Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés :
+                    </p>
+                    <p class="paragraph">
+                        <ul role="list">
+                            <li
+                                v-for="(document, index) in processDocuments"
+                                :key="index"
+                            >
+                                {{ document.label }}
+                            </li>
+                        </ul>
                     </p>
                 </div>
 
@@ -720,28 +761,66 @@ async function onSubmitProject() {
                             </div>
 
                             <section class="flex-section">
-                                <QFile
-                                    v-for="(projectDocument, index) in processProjectDocuments"
+                                <div
+                                    v-for="(projectDocument, index) in processDocuments"
                                     :key="index"
-                                    v-model="projectDocument.pathFile"
-                                    :accept="projectDocument.mimeTypes.join(', ')"
-                                    :aria-required="projectDocument.isRequiredInProcess"
-                                    :hint="t('project.document-hint') + (projectDocument.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
-                                    :label="projectDocument.label + (projectDocument.isRequiredInProcess ? ' *' : '')"
-                                    :max-files="projectDocument.isMultiple ? 10 : 1"
-                                    :multiple="projectDocument.isMultiple"
-                                    :rules="projectDocument.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
-                                    append
-                                    clearable
-                                    counter
-                                    filled
-                                    lazy-rules
-                                    use-chips
                                 >
-                                    <template v-slot:prepend>
-                                        <QIcon name="mdi-paperclip"/>
-                                    </template>
-                                </QFile>
+                                    <QFile
+                                        v-model="projectDocument.pathFile"
+                                        :accept="projectDocument.mimeTypes?.join(', ')"
+                                        :aria-required="projectDocument.isRequiredInProcess"
+                                        :hint="t('project.document-hint') + (projectDocument.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
+                                        :label="projectDocument.label + (projectDocument.isRequiredInProcess ? ' *' : '')"
+                                        :max-files="projectDocument.isMultiple ? 10 : 1"
+                                        :multiple="projectDocument.isMultiple"
+
+                                        append
+                                        clearable
+                                        counter
+                                        filled
+                                        lazy-rules
+                                        use-chips
+                                    >
+                                        <template v-slot:prepend>
+                                            <QIcon name="mdi-paperclip"/>
+                                        </template>
+                                    </QFile>
+
+                                    <div class="document-input-group">
+                                        <div class="document-input variant-space-3">
+                                            <div class="document-input-list">
+                                                <div
+                                                    class="document-item"
+                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === projectDocument.document)"
+                                                    :key="uploadedDocument.id"
+                                                >
+                                                    <p>
+                                                        <i
+                                                            class="bi bi-file-earmark"
+                                                            aria-hidden="true"
+                                                        ></i>
+                                                        <a
+                                                            :href="uploadedDocument.pathFile"
+                                                            target="_blank"
+                                                        >
+                                                            {{ uploadedDocument.label }}
+                                                            <i
+                                                                class="bi bi-eye"
+                                                                aria-hidden="true"
+                                                            ></i>
+                                                        </a>
+                                                    </p>
+                                                    <button
+                                                        type="button"
+                                                        @click="onDeleteDocumentUpload(uploadedDocument.id)"
+                                                    >
+                                                        <i class="bi bi-x-lg"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </section>
 
                             <section class="form-page-navigation">
@@ -1172,4 +1251,7 @@ h5
 
     h4
         margin: 2rem 0 1rem 0
+
+.document-input
+    margin-bottom: 0
 </style>
