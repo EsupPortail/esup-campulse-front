@@ -384,7 +384,7 @@ const columns: QTableProps['columns'] = [
 
                     <!-- UNORDERED LIST -->
                     <p class="paragraph">
-                        <ul role="list">
+                        <ul>
                             <li>Ceci est le premier élément de la liste ;</li>
                             <li>Ceci est le second ;</li>
                             <li>Et finalement, ceci est le troisième et dernier élément.</li>
@@ -393,7 +393,7 @@ const columns: QTableProps['columns'] = [
 
                     <!-- ORDERED LIST -->
                     <p class="paragraph">
-                        <ol role="list">
+                        <ol>
                             <li>Ceci est le premier élément de la liste ;</li>
                             <li>Ceci est le second ;</li>
                             <li>Et finalement, ceci est le troisième et dernier élément.</li>

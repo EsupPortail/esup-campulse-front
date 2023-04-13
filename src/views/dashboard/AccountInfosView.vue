@@ -187,7 +187,7 @@ async function onUpdateUserAssociations() {
                                 />
                                 <QBtn
                                     v-if="newAssociations.length > 0 && newAssociations[0].id"
-                                    :label="t('validate')"
+                                    :label="t('association.validate-new-associations')"
                                     class="validate-button"
                                     icon-right="bi-check2"
                                     type="submit"

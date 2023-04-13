@@ -63,6 +63,7 @@
     "publish-in-directory": "Publier dans l'annuaire",
     "unpublish-in-directory": "Dépublier de l'annuaire",
     "validate-all-changes": "Valider tous les changements",
+    "validate-new-associations": "Valider les ajouts d'associations",
     "labels": {
       "acronym": "Acronyme",
       "activity-field": "Domaine d'activité",
