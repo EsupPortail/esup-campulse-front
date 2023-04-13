@@ -44,7 +44,7 @@ async function onGetAssociationNames() {
         :title="home.banner.title"
     />
 
-    <section id="home-sections">
+    <div id="home-section">
         <HomeCard
             :buttonLabel="home.cards[0].buttonLabel"
             :cssClass="home.cards[0].cssClass"
@@ -84,9 +84,9 @@ async function onGetAssociationNames() {
             :titleLine1="home.cards[2].titleLine1"
             :titleLine2="home.cards[2].titleLine2"
         />
-    </section>
+    </div>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/home.scss'
+<style lang="scss">
+@import '@/assets/styles/home.scss';
 </style>

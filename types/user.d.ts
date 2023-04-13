@@ -22,7 +22,7 @@ export interface AssociationUser {
     id?: number,
     user?: number,
     association?: number | null,
-    isPresident: boolean,
+    isPresident?: boolean,
     canBePresidentFrom?: string | null,
     canBePresidentTo?: string | null,
     isValidatedByAdmin?: boolean,
@@ -32,7 +32,7 @@ export interface AssociationUser {
 }
 
 export interface AssociationUserDetail {
-    id?: number | null,
+    id?: number,
     user?: number | null,
     association: {
         id: number,

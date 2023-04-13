@@ -47,7 +47,6 @@ onMounted(async () => {
             </div>
         </div>
     </section>
-
     <!-- My associations, for association members only -->
     <section
         v-if="associationCounter > 0"
@@ -249,11 +248,83 @@ onMounted(async () => {
                     </div>
                 </div>
             </div>
+            <div class="document-input-list">
+                <div class="document-item">
+                    <p>
+                        <i class="bi bi-file-earmark"></i>
+                        <a>
+                            cert_scol_membre1.pdf
+                            <i class="bi bi-eye"></i>
+                        </a>
+                    </p>
+                    <button>
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="document-item">
+                    <p>
+                        <i class="bi bi-file-earmark"></i>
+                        <a>
+                            cert_scol_membre2.pdf
+                            <i class="bi bi-eye"></i>
+                        </a>
+                    </p>
+                    <button>
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="document-item">
+                    <p>
+                        <i class="bi bi-file-earmark"></i>
+                        <a>
+                            cert_scol_membre3.pdf
+                            <i class="bi bi-eye"></i>
+                        </a>
+                    </p>
+                    <button disabled>
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="document-input">
+                <div class="document-input-header">
+                    <h4>
+                        PV de la dernière AGO
+                    </h4>
+                    <p>
+                        <a>
+                            <i class="bi bi-info-circle"></i>
+                        </a>
+                    </p>
+                    <button>
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+                <!-- <div class="document-input-list"></div> -->
+            </div>
+
+            <div class="document-input">
+                <div class="document-input-header">
+                    <h4>
+                        Certificat envoyé par le tribunal judiciaire
+                    </h4>
+                    <!-- <p>
+                        <a>
+                            <i class="bi bi-info-circle"></i>
+                        </a>
+                    </p> -->
+                    <button disabled>
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+                <!-- <div class="document-input-list"></div> -->
+            </div>
         </div>
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-@import '@/assets/styles/dashboard.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
 </style>

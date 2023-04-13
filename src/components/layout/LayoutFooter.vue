@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {RouterLink} from 'vue-router'
 import {useI18n} from 'vue-i18n'
 import useColorVariants from '@/composables/useColorVariants'
 
@@ -16,26 +15,47 @@ const {colorVariant} = useColorVariants()
         <div id="footer-logos">
             <div class="wrapper">
                 <a href="https://www.crous-strasbourg.fr/">
-                    <img src="@/assets/img/logos/crous.png"/>
+                    <img
+                        src="@/assets/img/logos/crous.png"
+                        alt="Logo du Centre régional des œuvres universitaires et scolaires"
+                    />
                 </a>
                 <a href="https://www.unistra.fr/">
-                    <img src="@/assets/img/logos/unistra.png"/>
+                    <img
+                        src="@/assets/img/logos/unistra.png"
+                        alt="Logo de l'Université de Strasbourg"
+                    />
                 </a>
                 <!--
                 <a href="https://www.uha.fr/">
-                    <img src="@/assets/img/logos/uha.png"/>
+                    <img
+                        src="@/assets/img/logos/uha.png"
+                        alt="Logo de l'Université de Haute-Alsace"
+                    />
                 </a>
                 <a href="https://www.insa-strasbourg.fr/">
-                    <img src="@/assets/img/logos/insa.png"/>
+                    <img
+                        src="@/assets/img/logos/insa.png"
+                        alt="Logo de l'Institut National des Sciences Appliquées Strasbourg"
+                    />
                 </a>
                 <a href="https://www.hear.fr/">
-                    <img src="@/assets/img/logos/hear-white.png"/>
+                    <img
+                        src="@/assets/img/logos/hear-white.png"
+                        alt="Logo de la Haute École des Arts du Rhin"
+                    />
                 </a>
                 <a href="https://engees.unistra.fr/">
-                    <img src="@/assets/img/logos/engees.png"/>
+                    <img
+                        src="@/assets/img/logos/engees.png"
+                        alt="Logo de l'École Nationale du Génie de l'Eau et de l'Environnement de Strasbourg"
+                    />
                 </a>
                 <a href="https://www.strasbourg.archi.fr/">
-                    <img src="@/assets/img/logos/ensas.png"/>
+                    <img
+                        src="@/assets/img/logos/ensas.png"
+                        alt="Logo de l'École Nationale Supérieure d'Architecture de Strasbourg"
+                    />
                 </a>
                 -->
             </div>

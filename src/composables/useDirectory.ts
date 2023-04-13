@@ -3,7 +3,7 @@ import type {Association, AssociationSearch} from '#/association'
 import {useAxios} from '@/composables/useAxios'
 
 
-export default function () {
+export default function() {
 
     const associationStore = useAssociationStore()
 

@@ -41,7 +41,7 @@ async function onDeleteUser() {
 <template>
     <QBtn
         :label="t('user-manager.delete-user')"
-        color="red"
+        color="delete"
         icon="mdi-delete"
         @click="confirm = true"
     />

@@ -1,9 +1,11 @@
 $pageWidth: 80rem;
-$responsiveWidth: 56rem;
 $responsiveMargin: 1.56rem;
 $fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
-// Images
+// ---------------- Responsive----------------
+$responsiveWidth: 56.25rem;
+
+// ---------------- Images ----------------
 $headerBackground: url('./img/resized/header-background2.jpg');
 $chevronRightImage: url('./img/chevron-right.png');
 $chevronRightCharteImage: url('./img/chevron-right-charte.png');
@@ -11,11 +13,57 @@ $homeDirectoryImage: url('./img/resized/background-annuaire-2.jpg');
 $homeCharterImage: url('./img/resized/background-charte-2.jpg');
 $homeCapeImage: url('./img/resized/background-cape.jpg');
 
-// Fonts
+// ---------------- Fonts ----------------
 $baseFont: 'Titillium Web', sans-serif;
 $titleFont: 'Open Sans', sans-serif;
 
-// Colors
+// Font-size
+$formTitleMobileSize: 1.5rem;
+$formTitleComputerSize: 2rem;
+
+// ---------------- Paddings ----------------
+// Home Banner
+$qBannerDotsMobilePadding: .30rem;
+$qBannerDotsComputerPadding: .40rem;
+
+// Home Card Icons
+$bsIconHomeCardPosition: -0.125rem;
+
+
+// ---------------- Sizes ----------------
+$fullSize: 100%;
+$halfSize: 50%;
+
+// Line-height :
+$lineHeightSize: 2rem;
+
+// Association Logo
+$associationLogoSize: 9.375rem;
+
+// Home Banner
+$qBannerInfoIconSize: 1.25rem;
+$qBannerDotsMobileSize: 1.063rem;
+
+// Login Page
+$LoginLogoMobileSize: 3.75rem;
+$LogoMobileSize: 3rem;
+$LogoComputerSize: 3.55rem;
+
+// ---------------- Weights ----------------
+$hairline-weight: 100;
+$thin-weight: 200;
+$light-weight: 300;
+$normal-weight: 400;
+$medium-weight: 500;
+$semibold-weight: 600;
+$bold-weight: 700;
+$xbold-weight: 800;
+$black-weight: 900;
+
+// ---------------- Radius ----------------
+$radiusCircle: 50%;
+
+// ---------------- Colors ----------------
 $backgroundColor1: #ffffff;
 $backgroundColor2: #f5f5f5;
 $footerBackgroundColor: #2c2c2c;
@@ -24,39 +72,39 @@ $textColor1: #272727;
 $textColor2: #85909c;
 $textColor3: #ffffff;
 
-$color1: #3976cf;
-$color1Background: #e7efff;
-$color1Text: #152639;
-$color1Borders: #aeb8c4;
-$color1Hover: #3065b4;
-$color1Active: #285496;
+$annuaireColor: #3976cf;
+$annuaireColorBackground: #e7efff;
+$annuaireColorText: #152639;
+$annuaireColorBorders: #aeb8c4;
+$annuaireColorHover: #3065b4;
+$annuaireColorActive: #285496;
 
-$color2: #ffc64a;
-$color2Background: #fff6e4;
-$color2Text: #4d3a1e;
-$color2Borders: #c4b8ae;
-$color2Hover: #fab83e;
-$color2Active: #f1ad2d;
+$charteColor: #ffc64a;
+$charteColorBackground: #fff6e4;
+$charteColorText: #4d3a1e;
+$charteColorBorders: #c4b8ae;
+$charteColorHover: #fab83e;
+$charteColorActive: #f1ad2d;
 
-$color3: #f46b34;
-$color3Background: #ffefe9;
-$color3Text: #4d271b;
-$color3Borders: #c4b3ae;
-$color3Hover: #e25c27;
-$color3Active: #c74f20;
+$capeColor: #f46b34;
+$capeColorBackground: #ffefe9;
+$capeColorText: #4d271b;
+$capeColorBorders: #c4b3ae;
+$capeColorHover: #e25c27;
+$capeColorActive: #c74f20;
 
-$color4: #34968e;
-$color4Background: #e7f3f2;
-$color4Text: #10312e;
-$color4Borders: #a2b9b7;
-$color4Hover: #2e857d;
-$color4Active: #27746d;
+$dashboardColor: #34968e;
+$dashboardColorBackground: #e7f3f2;
+$dashboardColorText: #10312e;
+$dashboardColorBorders: #a2b9b7;
+$dashboardColorHover: #2e857d;
+$dashboardColorActive: #27746d;
 
 $stateColor1: #5cc887;
 $stateColor2: #fba04c;
 $stateColor3: #e85b63;
 
-$errorPanelColor: #db483f;
+$errorPanelColor: #db463d;
 $errorTextColor: #7a2520;
 $warningPanelColor: #e7902a;
 $warningTextColor: #7a4120;

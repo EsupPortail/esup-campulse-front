@@ -136,7 +136,7 @@ onBeforeRouteLeave((to, from, next) => {
                 </div>
             </div>
         </section>
-        <section class="form-page-navigation">
+        <section class="btn-group">
             <QBtn
                 :label="t('back')"
                 color="secondary"
@@ -158,8 +158,29 @@ onBeforeRouteLeave((to, from, next) => {
     </QForm>
 </template>
 
-<style lang="sass" scoped>
-ul
-    margin-left: 1rem
-    list-style: none
+<style lang="scss">
+@import "@/assets/_variables.scss";
+
+ul {
+    margin-left: 1rem;
+    list-style: none;
+}
+
+
+@media screen and (min-width: $responsiveWidth) {
+    section {
+        .form-container {
+            .form {
+                width: $halfSize;
+                margin: auto;
+            }
+        }
+
+        .form-title {
+            width: $halfSize;
+            margin: auto;
+        }
+    }
+
+}
 </style>

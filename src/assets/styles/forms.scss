@@ -1,28 +1,16 @@
-@import '@/assets/variables';
+@import '@/assets/_variables.scss';
 
 // A generic form wrapper.
 // Most forms on the site must be contained in both a "form" and "form-container" element.
 .form-container {
   position: relative;
   background-color: $backgroundColor2;
-  padding: 1.5625rem 0;
-
-  .form {
-    width: 100%;
-    max-width: $pageWidth;
-    margin: 0 auto;
-    padding: .9375rem 0;
-
-    @media only screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
-  }
+  padding: 1rem;
 
   &::before, &::after {
     content: '';
     display: block;
-    width: 100%;
+    width: $fullSize;
     height: .75rem;
     position: absolute;
     left: 0;
@@ -30,12 +18,12 @@
 
   &::before {
     top: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) $fullSize);
   }
 
   &::after {
     bottom: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) $fullSize);
   }
 }
 
@@ -44,29 +32,29 @@
   .q-field__control {
     background-color: $backgroundColor1;
     border-radius: 0;
-    border: .0625rem solid $color1Borders;
+    border: .0625rem solid $annuaireColorBorders;
     box-shadow: $fieldsBoxShadow;
 
     input {
-      color: $color1Text;
+      color: $annuaireColorText;
     }
   }
 
   &.q-field--focused .q-field__control {
-    border-color: $color1;
+    border-color: $annuaireColor;
   }
 
   &.q-field--filled.q-field--highlighted .q-field__control::before {
-    background: $color1Background;
+    background: $annuaireColorBackground;
   }
 
   &.q-field--filled .q-field__control::before {
-    background: $color1Background;
+    background: $annuaireColorBackground;
     border-bottom: none;
   }
 
   &.q-field--filled .q-field__control::after {
-    background: $color1;
+    background: $annuaireColor;
   }
 
   &.q-field--error .q-field__control::after {
@@ -74,7 +62,7 @@
   }
 
   &.q-field--highlighted .q-field__label {
-    color: $color1Text;
+    color: $annuaireColorText;
   }
 }
 
@@ -88,12 +76,12 @@
   }
 
   &.q-field--focused .q-field__marginal {
-    color: $color1;
+    color: $annuaireColor;
   }
 
   .q-uploader__header {
-    background-color: $color1Background;
-    color: $color1Text;
+    background-color: $annuaireColorBackground;
+    color: $annuaireColorText;
 
     .q-btn {
       box-shadow: none;
@@ -104,41 +92,41 @@
 .variant-space-2 {
   .q-field {
     .q-field__control {
-      border-color: $color2Borders;
+      border-color: $charteColorBorders;
 
       input {
-        color: $color2Text;
+        color: $charteColorText;
       }
     }
 
     &.q-field--focused .q-field__control {
-      border-color: $color2;
+      border-color: $charteColor;
     }
 
     &.q-field--filled.q-field--highlighted .q-field__control::before {
-      background: $color2Background;
+      background: $charteColorBackground;
     }
 
     &.q-field--filled .q-field__control::before {
-      background: $color2Background;
+      background: $charteColorBackground;
     }
 
     &.q-field--filled .q-field__control::after {
-      background: $color2;
+      background: $charteColor;
     }
 
     &.q-field--highlighted .q-field__label {
-      color: $color2Text;
+      color: $charteColorText;
     }
   }
 
   .q-select.q-field--focused .q-field__marginal {
-    color: $color2Active;
+    color: $charteColorActive;
   }
 
   .q-uploader__header {
-    background-color: $color2Background;
-    color: $color2Text;
+    background-color: $charteColorBackground;
+    color: $charteColorText;
 
     .q-btn {
       box-shadow: none;
@@ -149,47 +137,47 @@
 .variant-space-3 {
   .q-field {
     .q-field__control {
-      border-color: $color3Borders;
+      border-color: $capeColorBorders;
 
       input {
-        color: $color3Text;
+        color: $capeColorText;
       }
     }
 
     &.q-field--focused .q-field__control {
-      border-color: $color3;
+      border-color: $capeColor;
     }
 
     &.q-field--filled.q-field--highlighted .q-field__control::before {
-      background: $color3Background;
+      background: $capeColorBackground;
     }
 
     &.q-field--filled .q-field__control::before {
-      background: $color3Background;
+      background: $capeColorBackground;
     }
 
     &.q-field--filled .q-field__control::after {
-      background: $color3;
+      background: $capeColor;
     }
 
     &.q-field--highlighted .q-field__label {
-      color: $color3Text;
+      color: $capeColorText;
     }
   }
 
   .q-select.q-field--focused .q-field__marginal {
-    color: $color3;
+    color: $capeColor;
   }
 
   .q-stepper {
     .q-stepper__tab--active, .q-stepper__tab--done {
-      color: $color3
+      color: $capeColor;
     }
   }
 
   .q-uploader__header {
-    background-color: $color3Background;
-    color: $color3Text;
+    background-color: $capeColorBackground;
+    color: $capeColorText;
 
     .q-btn {
       box-shadow: none;
@@ -200,41 +188,41 @@
 .variant-space-4 {
   .q-field {
     .q-field__control {
-      border-color: $color4Borders;
+      border-color: $dashboardColorBorders;
 
       input {
-        color: $color4Text;
+        color: $dashboardColorText;
       }
     }
 
     &.q-field--focused .q-field__control {
-      border-color: $color4;
+      border-color: $dashboardColor;
     }
 
     &.q-field--filled.q-field--highlighted .q-field__control::before {
-      background: $color4Background;
+      background: $dashboardColorBackground;
     }
 
     &.q-field--filled .q-field__control::before {
-      background: $color4Background;
+      background: $dashboardColorBackground;
     }
 
     &.q-field--filled .q-field__control::after {
-      background: $color4;
+      background: $dashboardColor;
     }
 
     &.q-field--highlighted .q-field__label {
-      color: $color4Text;
+      color: $dashboardColorText;
     }
   }
 
   .q-select.q-field--focused .q-field__marginal {
-    color: $color4;
+    color: $dashboardColor;
   }
 
   .q-uploader__header {
-    background-color: $color4Background;
-    color: $color4Text;
+    background-color: $dashboardColorBackground;
+    color: $dashboardColorText;
 
     .q-btn {
       box-shadow: none;
@@ -244,20 +232,20 @@
 
 // Custom input fields
 input.custom-input, select.custom-input, textarea.custom-input {
-  width: 100%;
+  width: $fullSize;
   background-color: $backgroundColor1;
   border-radius: 0;
-  border: .0625rem solid $color1Borders;
+  border: .0625rem solid $annuaireColorBorders;
   box-shadow: $fieldsBoxShadow;
   padding: .625rem 1.25rem .75rem;
-  color: $color1Text;
+  color: $annuaireColorText;
   font-size: 1.125rem;
-  font-weight: 400;
+  font-weight: $medium-weight;
   transition: border-color 0.07s linear;
   margin-bottom: 1.2rem;
 
   &:focus {
-    border-color: $color1;
+    border-color: $annuaireColor;
     outline: none;
   }
 
@@ -269,7 +257,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
 .variant-space-2 {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
-      border-color: $color2Hover;
+      border-color: $charteColorHover;
     }
   }
 }
@@ -277,7 +265,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
 .variant-space-3 {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
-      border-color: $color3;
+      border-color: $capeColor;
     }
   }
 }
@@ -285,7 +273,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
 .variant-space-4 {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
-      border-color: $color4;
+      border-color: $dashboardColor;
     }
   }
 }
@@ -298,20 +286,25 @@ label.custom-label {
   display: inline-block;
   color: $textColor2;
   font-size: .9375rem;
-  font-weight: 600;
+  font-weight: $semibold-weight;
   text-transform: uppercase;
   margin-bottom: 0.3rem;
 }
 
 // Quasar buttons
+// MARK: DO NOT DELETE
 .q-btn {
-  background-color: $color1;
-  border-radius: 0;
-  padding: .9375rem 1.875rem;
+  background-color: $annuaireColor;
+  border-radius: .3rem;
+  padding: .9rem;
   font-size: 1.125rem;
-  font-weight: 300;
+  font-weight: $light-weight;
   transition: background-color 0.03s linear;
   box-shadow: $fieldsBoxShadow;
+
+  & > * {
+    color: $textColor3;
+  }
 
   &:focus-visible {
     outline: 2px solid $outlineColor2 !important;
@@ -319,7 +312,7 @@ label.custom-label {
   }
 
   .q-icon {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   &::before, .q-focus-helper {
@@ -327,19 +320,19 @@ label.custom-label {
   }
 
   &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-    background-color: $color1Hover !important;
+    background-color: $annuaireColorHover !important;
   }
 
   &:active, &.bg-primary:active, &.bg-secondary:active {
-    background-color: $color1Active !important;
+    background-color: $annuaireColorActive !important;
   }
 
   &.bg-primary {
-    background: $color1 !important;
+    background: $annuaireColor !important;
   }
 
   &.bg-secondary {
-    background: $color1 !important;
+    background: $annuaireColor !important;
   }
 
   .q-btn__content {
@@ -363,14 +356,14 @@ label.custom-label {
   &.btn-alt {
     box-shadow: none;
     background-color: $backgroundColor1 !important;
-    border: 1px solid $color1Text;
+    border: 1px solid $annuaireColorText;
 
     .q-btn__content > * {
-      color: $color1Text;
+      color: $annuaireColorText;
     }
 
     &:hover {
-      background-color: $color1Text !important;
+      background-color: $annuaireColorText !important;
 
       .q-btn__content > * {
         color: white !important;
@@ -378,7 +371,7 @@ label.custom-label {
     }
 
     &:active {
-      background-color: mix(white, $color1Text, 15%) !important;
+      background-color: mix(white, $annuaireColorText, 15%) !important;
 
       .q-btn__content > * {
         color: white !important;
@@ -386,56 +379,52 @@ label.custom-label {
     }
   }
 
-  &.bg-red {
-    background: #e9584e !important;
+  &.bg-delete {
+    background: $stateColor3;
 
     &:hover {
-      background: #bd453d !important;
-    }
-
-    &:active {
-      background: #ac3e36 !important;
+      background: $errorPanelColor !important;
     }
   }
 }
 
 .variant-space-2 {
   .q-btn {
-    background-color: $color2;
+    background-color: $charteColor;
 
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $color2Hover !important;
+      background-color: $charteColorHover !important;
     }
 
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $color2Active !important;
+      background-color: $charteColorActive !important;
     }
 
     &.bg-primary {
-      background: $color2 !important;
+      background: $charteColor !important;
     }
 
     &.bg-secondary {
-      background: $color2 !important;
+      background: $charteColor !important;
     }
 
     .q-btn__content > * {
-      color: $color2Text;
+      color: $charteColorText;
     }
 
     &.btn-alt {
-      border: 1px solid $color2Text;
+      border: 1px solid $charteColorText;
 
       .q-btn__content > * {
-        color: $color2Text;
+        color: $charteColorText;
       }
 
       &:hover {
-        background-color: $color2Text !important;
+        background-color: $charteColorText !important;
       }
 
       &:active {
-        background-color: mix(white, $color2Text, 15%) !important;
+        background-color: mix(white, $charteColorText, 15%) !important;
       }
     }
   }
@@ -443,37 +432,37 @@ label.custom-label {
 
 .variant-space-3 {
   .q-btn {
-    background-color: $color3;
+    background-color: $capeColor;
 
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $color3Hover !important;
+      background-color: $capeColorHover !important;
     }
 
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $color3Active !important;
+      background-color: $capeColorActive !important;
     }
 
     &.bg-primary {
-      background: $color3 !important;
+      background: $capeColor !important;
     }
 
     &.bg-secondary {
-      background: $color3 !important;
+      background: $capeColor !important;
     }
 
     &.btn-alt {
-      border: 1px solid $color3Text;
+      border: 1px solid $capeColorText;
 
       .q-btn__content > * {
-        color: $color3Text;
+        color: $capeColorText;
       }
 
       &:hover {
-        background-color: $color3Text !important;
+        background-color: $capeColorText !important;
       }
 
       &:active {
-        background-color: mix(white, $color3Text, 15%) !important;
+        background-color: mix(white, $capeColorText, 15%) !important;
       }
     }
   }
@@ -481,41 +470,63 @@ label.custom-label {
 
 .variant-space-4 {
   .q-btn {
-    background-color: $color4;
+    background-color: $dashboardColor;
 
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $color4Hover !important;
+      background-color: $dashboardColorHover !important;
     }
 
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $color4Active !important;
+      background-color: $dashboardColorActive !important;
     }
 
     &.bg-primary {
-      background: $color4 !important;
+      background: $dashboardColor !important;
     }
 
     &.bg-secondary {
-      background: $color4 !important;
+      background: $dashboardColor !important;
     }
 
-    &.btn-alt {
-      border: 1px solid $color4Text;
+    &.bg-alt {
+      border: 1px solid $dashboardColorText;
 
       .q-btn__content > * {
-        color: $color4Text;
+        color: $dashboardColorText;
       }
 
       &:hover {
-        background-color: $color4Text !important;
+        background-color: $dashboardColorText !important;
       }
 
       &:active {
-        background-color: mix(white, $color4Text, 15%) !important;
+        background-color: mix(white, $dashboardColorText, 15%) !important;
+      }
+    }
+
+    &.bg-delete {
+      background: $stateColor3;
+
+      &:hover {
+        background: $errorPanelColor !important;
       }
     }
   }
 }
+
+.btn-group {
+  width: 80%;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+
+  @media screen and (min-width: $responsiveWidth) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
 
 .buttons-group {
   display: flex;
@@ -538,7 +549,7 @@ fieldset {
       background-color: $backgroundColor1;
       box-shadow: $fieldsBoxShadow;
       height: 3.75rem;
-      border-left: .25rem solid $color1;
+      border-left: .25rem solid $annuaireColor;
       position: relative;
       white-space: nowrap;
       padding: 0 5.3125rem 0 1.5625rem;
@@ -546,9 +557,9 @@ fieldset {
 
       & > h4 {
         display: inline-block;
-        max-width: 100%;
+        max-width: $fullSize;
         font-size: 1.125rem;
-        font-weight: 400;
+        font-weight: $medium-weight;
         color: $textColor1;
         text-transform: uppercase;
         line-height: 3.75rem;
@@ -606,11 +617,11 @@ fieldset {
         cursor: pointer;
 
         &:hover {
-          background-color: $color1;
+          background-color: $annuaireColor;
         }
 
         &:active {
-          background-color: mix(white, $color1, 10%);
+          background-color: mix(white, $annuaireColor, 10%);
         }
 
         &:disabled {
@@ -649,7 +660,7 @@ fieldset {
         }
 
         p {
-          width: 100%;
+          width: $fullSize;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -667,7 +678,7 @@ fieldset {
 
           a {
             font-size: 1.1875rem;
-            font-weight: 400;
+            font-weight: $medium-weight;
             color: $textColor1;
             text-decoration: none;
             cursor: pointer;
@@ -710,11 +721,11 @@ fieldset {
           right: 0;
 
           &:hover {
-            background-color: $color1;
+            background-color: $annuaireColor;
           }
 
           &:active {
-            background-color: mix(white, $color1, 10%);
+            background-color: mix(white, $annuaireColor, 10%);
           }
         }
       }
@@ -729,26 +740,26 @@ fieldset {
 .variant-space-2 {
   .document-input-group .document-input {
     .document-input-header {
-      border-color: $color2;
+      border-color: $charteColor;
 
       & > button {
         &:hover {
-          background-color: $color2;
+          background-color: $charteColor;
         }
 
         &:active {
-          background-color: mix(white, $color2, 10%);
+          background-color: mix(white, $charteColor, 10%);
         }
       }
     }
 
     .document-input-list .document-item button {
       &:hover {
-        background-color: $color2;
+        background-color: $charteColor;
       }
 
       &:active {
-        background-color: mix(white, $color2, 10%);
+        background-color: mix(white, $charteColor, 10%);
       }
     }
   }
@@ -757,26 +768,26 @@ fieldset {
 .variant-space-3 {
   .document-input-group .document-input {
     .document-input-header {
-      border-color: $color3;
+      border-color: $capeColor;
 
       & > button {
         &:hover {
-          background-color: $color3;
+          background-color: $capeColor;
         }
 
         &:active {
-          background-color: mix(white, $color3, 10%);
+          background-color: mix(white, $capeColor, 10%);
         }
       }
     }
 
     .document-input-list .document-item button {
       &:hover {
-        background-color: $color3;
+        background-color: $capeColor;
       }
 
       &:active {
-        background-color: mix(white, $color3, 10%);
+        background-color: mix(white, $capeColor, 10%);
       }
     }
   }
@@ -785,30 +796,32 @@ fieldset {
 .variant-space-4 {
   .document-input-group .document-input {
     .document-input-header {
-      border-color: $color4;
+      border-color: $dashboardColor;
 
       & > button {
         &:hover {
-          background-color: $color4;
+          background-color: $dashboardColor;
         }
 
         &:active {
-          background-color: mix(white, $color4, 10%);
+          background-color: mix(white, $dashboardColor, 10%);
         }
       }
     }
 
     .document-input-list .document-item button {
       &:hover {
-        background-color: $color4;
+        background-color: $dashboardColor;
       }
 
       &:active {
-        background-color: mix(white, $color4, 10%);
+        background-color: mix(white, $dashboardColor, 10%);
       }
     }
   }
 }
+
+// MARK: DO NOT DELETE
 
 // A title that can be located on top of a form wrapper.
 .form-title {
@@ -816,28 +829,35 @@ fieldset {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: $fullSize;
   max-width: $pageWidth;
   margin: 0 auto;
+  padding: 1rem;
   background-color: transparent;
 
   h2 {
-    font-size: 2rem;
+    font-size: $formTitleMobileSize;
+    line-height: 2rem;
     text-transform: uppercase;
-    color: $color1Text;
+    color: $annuaireColorText;
 
     i {
-      color: $color1Text;
-      font-size: 1.5rem;
+      color: $annuaireColorText;
+      font-size: $formTitleMobileSize;
       margin-right: .875rem;
       position: relative;
       top: -0.1rem;
     }
+  }
 
-    @media only screen and (max-width: $pageWidth) {
-      margin-left: 1.5rem;
-      margin-right: 1.5rem;
+  @media screen and (min-width: $responsiveWidth) {
+    padding: 0;
+
+    h2 {
+      font-size: $formTitleComputerSize;
+      line-height: 4rem;
     }
+
   }
 }
 
@@ -857,13 +877,13 @@ fieldset {
 
   .q-table__middle {
     overflow: auto;
-    width: 100%;
+    width: $fullSize;
   }
 
   .q-table__bottom {
     border-top: none;
     font-size: 1.0625rem;
-    color: $color1Text;
+    color: $annuaireColorText;
     padding: 1rem 0;
 
     .q-btn.q-btn-item {
@@ -878,16 +898,16 @@ fieldset {
   .q-table {
     border-collapse: separate;
     border-spacing: 0 .625rem;
-    width: 100%;
+    width: $fullSize;
     height: 1px;
 
     thead tr {
-      background-color: $color1;
+      background-color: $annuaireColor;
       box-shadow: $fieldsBoxShadow;
 
       th {
         font-size: 1.125rem;
-        font-weight: 400;
+        font-weight: $medium-weight;
         color: $textColor3;
         text-transform: uppercase;
         padding: .3125rem .625rem;
@@ -903,7 +923,7 @@ fieldset {
             color: $textColor3 !important;
 
             .q-checkbox__svg {
-              color: $color1;
+              color: $annuaireColor;
             }
           }
         }
@@ -919,23 +939,23 @@ fieldset {
         td {
           height: unset;
           font-size: 1.125rem;
-          font-weight: 400;
-          color: $color1Text;
+          font-weight: $medium-weight;
+          color: $annuaireColorText;
           white-space: normal;
           padding: .4375rem .625rem;
 
           &:first-child {
-            border-left: .25rem solid $color1;
+            border-left: .25rem solid $annuaireColor;
           }
 
           &.actions-cell, &.actions-cell-compact {
             padding: 0;
-            height: 100%;
+            height: $fullSize;
             width: 0;
 
             .button-container {
               display: flex;
-              height: 100%;
+              height: $fullSize;
               gap: 0;
               flex-direction: row;
               justify-content: center;
@@ -944,8 +964,8 @@ fieldset {
             .q-btn {
               display: flex;
               font-size: 1rem;
-              width: 100%;
-              height: 100%;
+              width: $fullSize;
+              height: $fullSize;
             }
           }
 
@@ -976,11 +996,11 @@ fieldset {
               padding: .625rem .65rem;
               background: transparent !important;
               box-shadow: none;
-              transition: box-shadow 0.08s linear, background-color 0.08 linear;
+              transition: box-shadow 0.08s linear, background-color 0.08s linear;
 
               .q-btn__content * {
                 color: $textColor2;
-                font-weight: 400;
+                font-weight: $medium-weight;
               }
 
               .q-btn__content i {
@@ -988,7 +1008,7 @@ fieldset {
               }
 
               &:hover {
-                box-shadow: 0 -0.25rem 0 0 $color1 inset;
+                box-shadow: 0 -0.25rem 0 0 $annuaireColor inset;
 
                 .q-btn__content * {
                   color: $textColor1;
@@ -996,17 +1016,17 @@ fieldset {
               }
 
               &:active {
-                background: transparentize($color1, 0.9) !important;
+                background: transparentize($annuaireColor, 0.9) !important;
               }
             }
           }
 
           &::before {
-            background: transparentize($color1, 0.95);
+            background: transparentize($annuaireColor, 0.95);
           }
 
           &::after {
-            background: transparentize($color1, 0.9);
+            background: transparentize($annuaireColor, 0.9);
           }
         }
       }
@@ -1017,34 +1037,34 @@ fieldset {
 .variant-space-2 {
   .q-table__container {
     .q-table__bottom {
-      color: $color2Text;
+      color: $charteColorText;
     }
 
     .q-table {
       thead tr {
-        background-color: $color2;
+        background-color: $charteColor;
 
         th {
-          color: $color2Text;
+          color: $charteColorText;
 
           .q-table__sort-icon svg {
-            color: $color2Text;
+            color: $charteColorText;
           }
 
           .q-checkbox__inner {
             .q-checkbox__bg {
-              border-color: $color2Text;
+              border-color: $charteColorText;
             }
 
             &.q-checkbox__inner--truthy {
               .q-checkbox__bg {
-                background-color: $color2Text;
+                background-color: $charteColorText;
               }
             }
 
             &.text-grey-8 {
               .q-checkbox__svg {
-                color: $color2;
+                color: $charteColor;
               }
             }
           }
@@ -1052,41 +1072,41 @@ fieldset {
       }
 
       tbody tr td {
-        color: $color2Text;
+        color: $charteColorText;
 
         &:first-child {
-          border-color: $color2;
+          border-color: $charteColor;
         }
 
         &.actions-cell-compact {
           .q-btn {
             &:hover {
-              box-shadow: 0 -0.25rem 0 0 $color2 inset;
+              box-shadow: 0 -0.25rem 0 0 $charteColor inset;
             }
 
             &:active {
-              background: transparentize($color2, 0.9) !important;
+              background: transparentize($charteColor, 0.9) !important;
             }
           }
         }
 
         &::before {
-          background: transparentize($color2, 0.95);
+          background: transparentize($charteColor, 0.95);
         }
 
         &::after {
-          background: transparentize($color2, 0.9);
+          background: transparentize($charteColor, 0.9);
         }
 
         .q-checkbox__inner {
           &.q-checkbox__inner--truthy {
             .q-checkbox__bg {
-              border-color: $color2Text;
+              border-color: $charteColorText;
             }
 
             &.q-checkbox__inner--truthy {
               .q-checkbox__bg {
-                background-color: $color2Text;
+                background-color: $charteColorText;
               }
             }
           }
@@ -1099,22 +1119,22 @@ fieldset {
 .variant-space-3 {
   .q-table__container {
     .q-table__bottom {
-      color: $color3Text;
+      color: $capeColorText;
     }
 
     .q-table {
       thead tr {
-        background-color: $color3;
+        background-color: $capeColor;
 
         th {
           .q-table__sort-icon svg {
-            color: $color3Text;
+            color: $capeColorText;
           }
 
           .q-checkbox__inner {
             &.text-grey-8 {
               .q-checkbox__svg {
-                color: $color3;
+                color: $capeColor;
               }
             }
           }
@@ -1122,41 +1142,41 @@ fieldset {
       }
 
       tbody tr td {
-        color: $color3Text;
+        color: $capeColorText;
 
         &:first-child {
-          border-color: $color3;
+          border-color: $capeColor;
         }
 
         &.actions-cell-compact {
           .q-btn {
             &:hover {
-              box-shadow: 0 -0.25rem 0 0 $color3 inset;
+              box-shadow: 0 -0.25rem 0 0 $capeColor inset;
             }
 
             &:active {
-              background: transparentize($color3, 0.9) !important;
+              background: transparentize($capeColor, 0.9) !important;
             }
           }
         }
 
         &::before {
-          background: transparentize($color3, 0.95);
+          background: transparentize($capeColor, 0.95);
         }
 
         &::after {
-          background: transparentize($color3, 0.9);
+          background: transparentize($capeColor, 0.9);
         }
 
         .q-checkbox__inner {
           &.q-checkbox__inner--truthy {
             .q-checkbox__bg {
-              border-color: $color3;
+              border-color: $capeColor;
             }
 
             &.q-checkbox__inner--truthy {
               .q-checkbox__bg {
-                background-color: $color3;
+                background-color: $capeColor;
               }
             }
           }
@@ -1169,22 +1189,22 @@ fieldset {
 .variant-space-4 {
   .q-table__container {
     .q-table__bottom {
-      color: $color4Text;
+      color: $dashboardColorText;
     }
 
     .q-table {
       thead tr {
-        background-color: $color4;
+        background-color: $dashboardColor;
 
         th {
           .q-table__sort-icon svg {
-            color: $color4Text;
+            color: $dashboardColorText;
           }
 
           .q-checkbox__inner {
             &.text-grey-8 {
               .q-checkbox__svg {
-                color: $color4;
+                color: $dashboardColor;
               }
             }
           }
@@ -1192,41 +1212,41 @@ fieldset {
       }
 
       tbody tr td {
-        color: $color4Text;
+        color: $dashboardColorText;
 
         &:first-child {
-          border-color: $color4;
+          border-color: $dashboardColor;
         }
 
         &.actions-cell-compact {
           .q-btn {
             &:hover {
-              box-shadow: 0 -0.25rem 0 0 $color4 inset;
+              box-shadow: 0 -0.25rem 0 0 $dashboardColor inset;
             }
 
             &:active {
-              background: transparentize($color4, 0.9) !important;
+              background: transparentize($dashboardColor, 0.9) !important;
             }
           }
         }
 
         &::before {
-          background: transparentize($color4, 0.95);
+          background: transparentize($dashboardColor, 0.95);
         }
 
         &::after {
-          background: transparentize($color4, 0.9);
+          background: transparentize($dashboardColor, 0.9);
         }
 
         .q-checkbox__inner {
           &.q-checkbox__inner--truthy {
             .q-checkbox__bg {
-              border-color: $color4;
+              border-color: $dashboardColor;
             }
 
             &.q-checkbox__inner--truthy {
               .q-checkbox__bg {
-                background-color: $color4;
+                background-color: $dashboardColor;
               }
             }
           }
@@ -1244,13 +1264,13 @@ fieldset {
   vertical-align: middle;
   color: $textColor1;
   font-size: 1.125rem;
-  font-weight: 400;
+  font-weight: $medium-weight;
 
   .form-state-icon {
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
-    border-radius: 50%;
+    border-radius: $radiusCircle;
     box-shadow: $fieldsBoxShadow;
     line-height: 1.5rem;
     text-align: center;
@@ -1285,7 +1305,7 @@ fieldset {
   margin: 1.875rem 0 .9375rem;
 
   label {
-    width: 100%;
+    width: $fullSize;
   }
 
   .q-btn {
@@ -1310,7 +1330,7 @@ fieldset {
 
   .dialog-message {
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: $medium-weight;
     color: $textColor1;
     padding: 1.5625rem;
 
@@ -1338,7 +1358,7 @@ fieldset {
   margin: 3rem 0 0.5rem;
 
   .q-pagination__content {
-    width: 100%;
+    width: $fullSize;
 
     .q-pagination__middle {
       margin: 0 auto;
@@ -1353,8 +1373,8 @@ fieldset {
           pointer-events: none;
 
           .q-btn__content * {
-            color: $color1;
-            font-weight: 600;
+            color: $annuaireColor;
+            font-weight: $semibold-weight;
           }
         }
       }
@@ -1364,19 +1384,19 @@ fieldset {
 
 .variant-space-2 {
   .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
-    color: $color2Active;
+    color: $charteColorActive;
   }
 }
 
 .variant-space-3 {
   .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
-    color: $color3;
+    color: $capeColor;
   }
 }
 
 .variant-space-4 {
   .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
-    color: $color4;
+    color: $dashboardColor;
   }
 }
 
@@ -1398,7 +1418,7 @@ fieldset {
       background-color: $backgroundColor1;
 
       .q-btn__content i {
-        color: $color1;
+        color: $annuaireColor;
       }
 
       &:hover, &:active {
@@ -1413,8 +1433,8 @@ fieldset {
         font-size: 1.4rem;
 
         strong {
-          color: $color1;
-          font-weight: 800;
+          color: $annuaireColor;
+          font-weight: $xbold-weight;
           padding: 0 0.3rem;
         }
 
@@ -1434,24 +1454,24 @@ fieldset {
   .pagination .wrapper .q-btn {
     &:hover, &:active {
       .q-btn__content i {
-        color: $color2Text !important;
+        color: $charteColorText !important;
       }
     }
 
     .q-btn__content i {
-      color: $color2Active;
+      color: $charteColorActive;
     }
 
     &.counter-button strong {
-      color: $color2Active;
+      color: $charteColorActive;
     }
 
     &.counter-button {
       &:hover, &:active {
-        color: $color2Text !important;
+        color: $charteColorText !important;
 
         strong {
-          color: $color2Text !important;
+          color: $charteColorText !important;
         }
       }
     }
@@ -1461,11 +1481,11 @@ fieldset {
 .variant-space-3 {
   .pagination .wrapper .q-btn {
     .q-btn__content i {
-      color: $color3;
+      color: $capeColor;
     }
 
     &.counter-button strong {
-      color: $color3;
+      color: $capeColor;
     }
   }
 }
@@ -1473,11 +1493,11 @@ fieldset {
 .variant-space-4 {
   .pagination .wrapper .q-btn {
     .q-btn__content i {
-      color: $color4;
+      color: $dashboardColor;
     }
 
     &.counter-button strong {
-      color: $color4;
+      color: $dashboardColor;
     }
   }
 }
@@ -1546,7 +1566,7 @@ fieldset {
 // Form section title
 .section-title {
   color: $textColor1;
-  font-size: 1.6rem;
+  font-size: $formTitleMobileSize;
   text-transform: uppercase;
   margin-bottom: 1.4rem;
 
@@ -1555,7 +1575,7 @@ fieldset {
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 1.125rem;
-    background-color: $color1;
+    background-color: $annuaireColor;
     color: $textColor3;
     box-shadow: $fieldsBoxShadow;
     text-align: center;
@@ -1573,34 +1593,34 @@ fieldset {
 }
 
 .variant-space-2 .section-title i {
-  background-color: $color2;
-  color: $color2Text;
+  background-color: $charteColor;
+  color: $charteColorText;
 }
 
 .variant-space-3 .section-title i {
-  background-color: $color3;
+  background-color: $capeColor;
 }
 
 .variant-space-4 .section-title i {
-  background-color: $color4;
+  background-color: $dashboardColor;
 }
 
 // Image input
 .image-input {
   display: flex;
-  width: 100%;
-  aspect-ratio: 1;
+  width: $fullSize;
+  aspect-ratio: 1 / 1;
   background-color: $backgroundColor1;
-  box-shadow: 0 0 0 1px $color1Borders inset, $fieldsBoxShadow;
+  box-shadow: 0 0 0 1px $annuaireColorBorders inset, $fieldsBoxShadow;
   padding: 0.95rem;
   position: relative;
   align-items: center;
   overflow: hidden;
 
   img {
-    width: 100%;
+    width: $fullSize;
     height: auto;
-    max-height: 100%;
+    max-height: $fullSize;
     position: relative;
     z-index: 1;
   }
@@ -1619,8 +1639,8 @@ fieldset {
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.25);
-    width: 100%;
-    height: 100%;
+    width: $fullSize;
+    height: $fullSize;
     position: absolute;
     top: 0;
     left: 0;
@@ -1634,7 +1654,7 @@ fieldset {
       width: 2.75rem;
       height: 2.75rem;
       border-radius: 1.375rem;
-      background-color: $color1;
+      background-color: $annuaireColor;
       vertical-align: middle;
       box-shadow: $fieldsBoxShadow;
       color: $textColor3;
@@ -1653,39 +1673,35 @@ fieldset {
 }
 
 .variant-space-2 .image-input {
-  box-shadow: 0 0 0 1px $color2Borders inset;
+  box-shadow: 0 0 0 1px $charteColorBorders inset;
 
   label i {
-    background-color: $color2;
-    color: $color2Text;
+    background-color: $charteColor;
+    color: $charteColorText;
   }
 }
 
 .variant-space-3 .image-input {
-  box-shadow: 0 0 0 1px $color3Borders inset;
+  box-shadow: 0 0 0 1px $capeColorBorders inset;
 
   label i {
-    background-color: $color3;
+    background-color: $capeColor;
   }
 }
 
 .variant-space-4 .image-input {
-  box-shadow: 0 0 0 1px $color4Borders inset;
+  box-shadow: 0 0 0 1px $dashboardColorBorders inset;
 
   label i {
-    background-color: $color4;
+    background-color: $dashboardColor;
   }
 }
 
 // Form page navigation
 .form-page-navigation {
-  width: 100%;
-  max-width: $pageWidth;
+  width: $fullSize;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 5rem;
-  margin: 3.2rem auto;
+  flex-direction: column;
 
   p {
     margin: 0;
@@ -1724,7 +1740,7 @@ fieldset {
 .form-col-container {
   display: flex;
   align-items: stretch;
-  width: 100%;
+  width: $fullSize;
   margin: 2rem 0;
 
   .form-col {
@@ -1766,19 +1782,16 @@ fieldset {
 
 // Display rows
 .display-row, .comment-row {
+  width: $fullSize;
+  display: flex;
+  flex-direction: column;
   background-color: $backgroundColor1;
   box-shadow: $fieldsBoxShadow;
-  border-left: 4px solid $color1;
+  border-left: 4px solid $annuaireColor;
   padding: 0.8rem 1.5625rem;
   color: $textColor1;
   font-size: 1.25rem;
-  font-weight: 400;
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-  justify-content: stretch;
-  gap: 1.5625rem;
-  width: 100%;
+  font-weight: $medium-weight;
 
   p {
     margin: 0;
@@ -1790,7 +1803,7 @@ fieldset {
     flex: 0 0 30%;
     color: $textColor1;
     font-size: 1.25rem;
-    font-weight: 400;
+    font-weight: $medium-weight;
     line-height: normal;
   }
 
@@ -1798,9 +1811,14 @@ fieldset {
     justify-content: space-between;
   }
 
-  @media only screen and (max-width: $responsiveWidth) {
-    flex-direction: column;
-    gap: 1rem;
+  .q-select, .q-textarea, .q-input {
+    margin-bottom: .625rem;
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    width: $halfSize;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -1812,11 +1830,11 @@ fieldset {
   .comment-head {
     color: $textColor2;
     font-size: 1.125rem;
-    font-weight: 400;
+    font-weight: $medium-weight;
 
     .value {
       color: $textColor1;
-      font-weight: 600;
+      font-weight: $semibold-weight;
     }
 
     i {
@@ -1827,18 +1845,19 @@ fieldset {
 
 .variant-space-2 {
   .display-row, .comment-row {
-    border-color: $color2;
+    border-color: $charteColor;
   }
 }
 
 .variant-space-3 {
   .display-row, .comment-row {
-    border-color: $color3;
+    border-color: $capeColor;
   }
 }
 
 .variant-space-4 {
   .display-row, .comment-row {
-    border-color: $color4;
+    border-color: $dashboardColor;
   }
 }
+

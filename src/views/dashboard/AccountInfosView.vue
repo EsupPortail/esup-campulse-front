@@ -183,11 +183,12 @@ async function onUpdateUserAssociations() {
                                 <QBtn
                                     :label="t('back')"
                                     :to="{ name: 'Dashboard' }"
+                                    class="back-btn"
                                     icon="bi-chevron-compact-left"
                                 />
                                 <QBtn
                                     v-if="newAssociations.length > 0 && newAssociations[0].id"
-                                    :label="t('validate')"
+                                    :label="t('association.validate-new-associations')"
                                     class="validate-button"
                                     icon-right="bi-check2"
                                     type="submit"
@@ -205,7 +206,33 @@ async function onUpdateUserAssociations() {
     </QTabPanels>
 </template>
 
-<style lang="sass" scoped>
-.validate-button
-    margin-top: 2rem
+<style lang="scss">
+@import "@/assets/_variables.scss";
+
+.q-tab-panel {
+    padding: 0;
+}
+
+.form-container {
+    .back-btn {
+        width: 50%;
+        font-size: 1rem;
+        margin-top: 1rem;
+        padding: 1rem;
+    }
+}
+
+@media screen and (min-width: $responsiveWidth) {
+    .q-btn {
+        font-size: 1.125rem;
+    }
+
+    .form-container {
+        .back-btn {
+            width: 30%;
+            padding: 1rem;
+        }
+    }
+}
+
 </style>

@@ -20,7 +20,7 @@ const commissionDates = ref<CommissionDate[]>([])
 // Used to store commission dates labels for project submission
 const commissionDatesLabels = ref<SelectCommissionDateLabel[]>([])
 
-export default function () {
+export default function() {
 
     const {axiosPublic} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -39,7 +39,7 @@ export default function () {
     // INIT COMMISSION DATA
     const initCommissionLabels = () => {
         commissionOptions.value = []
-        commissions.value.forEach(function (commission) {
+        commissions.value.forEach(function(commission) {
             commissionOptions.value.push({
                 value: commission.id,
                 label: commission.acronym
@@ -58,7 +58,7 @@ export default function () {
 
     const initCommissionDates = async () => {
         await getCommissions()
-        commissionDatesLabels.value = commissionDates.value.map(function (commissionDate) {
+        commissionDatesLabels.value = commissionDates.value.map(function(commissionDate) {
             const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
             return {
                 value: commissionDate.id,

@@ -15,19 +15,19 @@ $bootstrap-icons-font-src: url("../../node_modules/bootstrap-icons/font/fonts/bo
 }
 
 html {
-  height: 100%;
-  width: 100%;
+  height: $fullSize;
+  width: $fullSize;
 }
 
 body {
-  height: 100%;
-  width: 100%;
+  height: $fullSize;
+  width: $fullSize;
 }
 
 // Displaying the layout as a table (and the different layout parts as table-rows) is a common trick to make sure the footer stays 
 // at the bottom of the viewport even when the page's height is inferior to the viewport's height (without giving the footer an absolute or fixed position).
 #layout-page {
-  width: 100%;
+  width: $fullSize;
   max-width: unset;
   display: table;
   table-layout: fixed;
@@ -39,23 +39,15 @@ body {
 }
 
 #layout-content {
-  height: 100%;
+  height: $fullSize;
 
-  main {
-    padding: 2.5rem 0 7.5rem;
-  }
-}
-
-// TODO Hotfix for outline buttons.
-button.q-btn--outline {
-  background: $color1 !important;
 }
 
 // Goto top button
 .navigate-top-button {
   position: fixed;
   top: 0rem;
-  right: calc(50% - #{ $pageWidth * 0.5 } - 6.5rem);
+  left: calc(100vw - 6.5rem);
   z-index: 3000;
   opacity: 0;
   transition: top 0.15s ease-in-out, opacity 0.15s linear;
@@ -70,7 +62,7 @@ button.q-btn--outline {
     width: 4rem;
     height: 4rem;
     border: none;
-    background-color: $color1;
+    background-color: $annuaireColor;
     color: $textColor3;
     border-radius: 50%;
     font-size: 2rem;
@@ -84,7 +76,7 @@ button.q-btn--outline {
     }
 
     &:hover {
-      background-color: $color1Hover;
+      background-color: $annuaireColorHover;
 
       i {
         transform: scale(1.2);
@@ -92,7 +84,7 @@ button.q-btn--outline {
     }
 
     &:active {
-      background-color: $color1Active;
+      background-color: $annuaireColorActive;
     }
   }
 
@@ -112,36 +104,50 @@ button.q-btn--outline {
 
 .variant-space-2 .navigate-top-button {
   button {
-    background-color: $color2;
-    color: $color2Text;
+    background-color: $charteColor;
+    color: $charteColorText;
 
     &:hover {
-      background-color: $color2Hover;
+      background-color: $charteColorHover;
     }
 
     &:active {
-      background-color: $color2Active;
+      background-color: $charteColorActive;
     }
   }
 }
 
 .variant-space-3 .navigate-top-button {
   button {
-    background-color: $color3;
+    background-color: $capeColor;
 
     &:hover {
-      background-color: $color3Hover;
+      background-color: $capeColorHover;
     }
 
     &:active {
-      background-color: $color3Active;
+      background-color: $capeColorActive;
+    }
+  }
+}
+
+.variant-space-4 .navigate-top-button {
+  button {
+    background-color: $dashboardColor;
+
+    &:hover {
+      background-color: $dashboardColorHover;
+    }
+
+    &:active {
+      background-color: $dashboardColorActive;
     }
   }
 }
 
 // Page section
 .page-section {
-  width: 100%;
+  width: $fullSize;
   max-width: $pageWidth;
   margin: 0 auto;
 }
@@ -173,7 +179,7 @@ button.q-btn--outline {
       font-size: 1.875rem;
       line-height: 2.5rem;
       font-weight: 400;
-      color: $color1Text;
+      color: $annuaireColorText;
       text-transform: uppercase;
       margin-bottom: 0.625rem;
     }
@@ -181,7 +187,7 @@ button.q-btn--outline {
     p {
       font-size: 1.125rem;
       font-weight: 400;
-      color: $color1Text;
+      color: $annuaireColorText;
       text-align: justify;
 
       &:last-child {
@@ -199,7 +205,7 @@ button.q-btn--outline {
   }
 
   &.color-background {
-    background-color: $color1Background;
+    background-color: $annuaireColorBackground;
   }
 
   @media only screen and (max-width: $pageWidth) {
@@ -240,15 +246,15 @@ button.q-btn--outline {
 }
 
 .variant-space-2 .introduction.color-background {
-  background-color: $color2Background;
+  background-color: $charteColorBackground;
 }
 
 .variant-space-3 .introduction.color-background {
-  background-color: $color3Background;
+  background-color: $capeColorBackground;
 }
 
 .variant-space-4 .introduction.color-background {
-  background-color: $color4Background;
+  background-color: $dashboardColorBackground;
 }
 
 // Titles

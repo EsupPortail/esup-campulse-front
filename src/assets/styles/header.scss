@@ -2,7 +2,7 @@
 
 #layout-header, #layout-minimal-header {
   position: relative;
-  width: 100%;
+  width: $fullSize;
   background-image: $headerBackground;
   background-repeat: no-repeat;
   background-size: cover;
@@ -11,26 +11,22 @@
 
   &#layout-minimal-header {
     height: 5.5rem;
-    border-bottom: 0.5rem solid $color1;
-  }
-
-  @media only screen and (max-width: $responsiveWidth) {
-    height: auto;
+    border-bottom: 0.5rem solid $annuaireColor;
   }
 
   &::before {
     content: ' ';
     display: block;
-    width: 100%;
-    height: 100%;
+    width: $fullSize;
+    height: $fullSize;
     position: absolute;
     top: 0;
     left: 0;
-    background: linear-gradient(180deg, rgba(9, 22, 40, 0.55) 0%, rgba(0, 0, 0, 0.3) 100%);
+    background: linear-gradient(180deg, rgba(9, 22, 40, 0.55) 0%, rgba(0, 0, 0, 0.3) $fullSize);
   }
 
   .q-toolbar {
-    width: 100%;
+    width: $fullSize;
     max-width: $pageWidth;
     margin: auto;
     padding: 0.625rem 0;
@@ -74,6 +70,7 @@
   nav {
     display: flex;
     align-items: center;
+    z-index: 2;
 
     a {
       font-size: 1.063rem;
@@ -94,8 +91,8 @@
       &::after {
         content: '';
         display: block;
-        width: calc(100% - 2.125rem);
-        height: calc(100% + 0.5rem);
+        width: calc($fullSize - 2.125rem);
+        height: calc($fullSize + 0.5rem);
         border-bottom: 2px solid $backgroundColor1;
         position: absolute;
         left: 1.063rem;
@@ -118,15 +115,15 @@
 
       // Links are underlined in the color of the space they point to
       &.space-1::after {
-        border-color: $color1;
+        border-color: $annuaireColor;
       }
 
       &.space-2::after {
-        border-color: $color2;
+        border-color: $charteColor;
       }
 
       &.space-3::after {
-        border-color: $color3;
+        border-color: $capeColor;
       }
 
       @media only screen and (max-width: $responsiveWidth) {
@@ -134,7 +131,7 @@
         padding-left: 0.625rem;
 
         &::after {
-          width: calc(100% - 1.25rem);
+          width: calc($fullSize - 1.25rem);
           left: 0.625rem;
         }
       }
@@ -159,6 +156,7 @@
       }
     }
   }
+
 
   .profile-button {
     display: inline-block;
@@ -243,13 +241,13 @@
   }
 
   #mobile-menu-background {
-    width: 100%;
-    height: 100%;
+    width: $fullSize;
+    height: $fullSize;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 0;
-    background: linear-gradient(270deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) $fullSize);
     display: none;
     opacity: 0;
     // transition: opacity 0.2s ease-in-out;
@@ -297,16 +295,16 @@
   }
 
   &.variant-space-2 #header-title-icon {
-    background-color: $color2;
+    background-color: $charteColor;
 
     i.space-2-icon {
       display: inline;
-      color: $color2Text;
+      color: $charteColorText;
     }
   }
 
   &.variant-space-3 #header-title-icon {
-    background-color: $color3;
+    background-color: $capeColor;
 
     i.space-3-icon {
       display: inline;
@@ -316,7 +314,7 @@
   }
 
   &.variant-space-4 #header-title-icon {
-    background-color: $color4;
+    background-color: $dashboardColor;
 
     i.space-4-icon {
       display: inline;
@@ -338,78 +336,82 @@
 
 // Site title in the header - appears only on the home page
 #header-home-title {
-  width: 100%;
+  width: $fullSize;
   max-width: $pageWidth;
   margin: auto;
   position: relative;
   z-index: 1;
   text-align: center;
 
-  h2 {
+  h1 {
     font-family: $titleFont;
     color: $textColor3;
-    font-weight: 400;
+    font-weight: $normal-weight;
     font-size: 3.125rem;
     margin-bottom: 0.5rem;
+    line-height: 4rem;
 
     strong {
-      font-weight: 800;
+      text-transform: uppercase;
     }
   }
 
-  h3 {
+  h2 {
     display: inline-block;
     color: $textColor3;
-    font-weight: 500;
-    font-size: 1.625rem;
+    font-weight: $medium-weight;
+    font-size: 1.4rem;
     border: 1px solid white;
-    padding: 1.125rem 2.625rem;
+    padding: .5rem;
+    margin: 0 2rem 2rem;
+    line-height: 3rem;
     background-color: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(0.125rem);
   }
 
-  @media only screen and (max-width: $responsiveWidth) {
-    padding: 0 2rem 2rem;
+  @media screen and (min-width: $responsiveWidth) {
+    font-size: 1.625rem;
+
+    h2 {
+      padding: 1.125rem;
+    }
   }
 }
 
 // Page title in the header - appears in all pages not using the home or minimal variant of the header.
 #header-title {
-  width: 100%;
-  max-width: $pageWidth;
+  width: $fullSize;
   position: absolute;
-  left: calc(50% - #{$pageWidth * 0.5});
+  font-size: 3.438rem;
   bottom: 0;
   z-index: 1;
-  padding-bottom: 1.563rem;
+  padding: 0 1.56rem 0 1.56rem;
 
   h1 {
-    width: 100%;
+    width: $fullSize;
     font-family: $titleFont;
     color: $textColor3;
-    font-weight: 400;
-    font-size: 3.438rem;
-    padding-left: 4.375rem;
+    font-weight: $normal-weight;
+    font-size: 2.5rem;
+    padding: 0 0 1rem 3rem;
     line-height: 1.15;
 
     strong {
       font-family: $titleFont;
       font-size: 4.375rem;
       text-transform: uppercase;
-      font-weight: 400;
+      font-weight: $normal-weight;
     }
 
     #header-title-icon {
       display: inline-block;
       width: 3.375rem;
       height: 3.375rem;
-      border-radius: 50%;
-      background-color: $color1;
+      border-radius: $radiusCircle;
+      background-color: $annuaireColor;
       position: absolute;
-      top: 0.375rem;
-      left: 0;
+      left: .5rem;
       text-align: center;
-      line-height: 2.563rem;
 
       i {
         font-size: 1.75rem;
@@ -420,33 +422,8 @@
     }
   }
 
-  @media only screen and (max-width: $pageWidth) {
-    padding-left: $responsiveMargin;
-    padding-right: $responsiveMargin;
-    left: 0;
-
-    h1 #header-title-icon {
-      left: $responsiveMargin;
-    }
-  }
-
-  @media only screen and (max-width: $responsiveWidth) {
-    position: relative;
-    left: 0;
-
-    h1 {
-      font-size: 2.8rem;
-
-      #header-title-icon {
-        width: 3rem;
-        height: 3rem;
-        line-height: 2.4rem;
-
-        i {
-          font-size: 1.6rem;
-        }
-      }
-    }
+  @media only screen and (min-width: $responsiveWidth) {
+    left: calc(50% - #{$pageWidth * 0.5});
   }
 }
 
@@ -499,7 +476,7 @@
         text-transform: uppercase;
         display: inline-block;
         padding: 0.625rem 1.25rem;
-        width: 100%;
+        width: $fullSize;
         transition: background 0.03s linear;
 
         &:hover {

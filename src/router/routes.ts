@@ -171,7 +171,8 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/AssociationEditionView.vue'),
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.edit-my-association'),
-                                    title: i18n.global.t('breadcrumbs.edit-my-association')
+                                    colorVariant: 'space-1',
+                                    title: i18n.global.t('breadcrumbs.edit-my-association'),
                                 }
                             },
                             {
@@ -294,7 +295,8 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/AssociationEditionView.vue'),
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.edit-association'),
-                                    title: i18n.global.t('breadcrumbs.edit-association')
+                                    title: i18n.global.t('breadcrumbs.edit-association'),
+                                    colorVariant: 'space-1'
                                 },
                             },
                             {
@@ -324,7 +326,12 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'cas-register',
                 name: 'CASRegistration',
-                component: () => import('@/views/RegisterCASView.vue')
+                component: () => import('@/views/RegisterCASView.vue'),
+                meta: {
+                    breadcrumb: i18n.global.t('breadcrumbs.register'),
+                    title: i18n.global.t('breadcrumbs.register'),
+                    colorVariant: 'space-4'
+                },
             },
             {
                 path: 'register-successful',
