@@ -4,12 +4,13 @@ import useColorVariants from '@/composables/useColorVariants'
 
 const {colorVariant} = useColorVariants()
 const route = useRoute()
+
+const routesNames = ['Home', 'Login', 'CASLogin', '404', 'DesignSystem']
 </script>
 
 <template>
-    <!-- TODO: optimize this mess-->
     <RouterView
-        v-if="colorVariant || (route.name === 'Home' || route.name === 'Login' || route.name === 'CASLogin' || route.name === '404' || route.name === 'DesignSystem')"
+        v-if="colorVariant || (routesNames.indexOf(route.name) !== -1)"
     />
 </template>
 
