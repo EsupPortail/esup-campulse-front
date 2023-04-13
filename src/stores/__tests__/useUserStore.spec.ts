@@ -268,14 +268,13 @@ describe('User store', () => {
         afterEach(() => {
             userStore.userAssociations = []
         })
-        it('should return true if isPresident or canBePresident is true', () => {
+        it('should return true if isPresident', () => {
             userStore.userAssociations = [_userAssociationDetail]
             expect(userStore.hasPresidentStatus(1)).toBeTruthy()
         })
-        it('should return false if is President or canBePresident is false', () => {
+        it('should return false if is President', () => {
             userStore.userAssociations = [_userAssociationDetail]
             userStore.userAssociations[0].isPresident = false
-            userStore.userAssociations[0].canBePresidentPermanent = false
             expect(userStore.hasPresidentStatus(1)).toBeFalsy()
         })
     })

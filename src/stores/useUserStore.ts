@@ -145,7 +145,7 @@ export const useUserStore = defineStore('userStore', {
                 const association = this.userAssociations.find(obj => obj.association.id === associationId)
                 today = new Date()
                 today.setHours(0, 0, 0, 0)
-                if (association?.isPresident || association?.canBePresidentPermanent || (association?.canBePresidentFrom && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo && (new Date(association?.canBePresidentTo)) <= today)) perm = true
+                if (association?.isPresident || (association?.canBePresidentFrom && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo && (new Date(association?.canBePresidentTo)) <= today)) perm = true
 
             }
             return perm

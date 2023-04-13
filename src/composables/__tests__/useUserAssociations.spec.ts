@@ -61,7 +61,6 @@ describe('useUserAssociations', () => {
     const {
         deleteUserAssociation,
         patchUserAssociations,
-        getUserAssociations,
         userAssociations
     } = useUserAssociations()
 
@@ -84,7 +83,7 @@ describe('useUserAssociations', () => {
 
             it('should delete userAssociations if the deleteAssociation param is set to true', async () => {
                 userAssociations.value[0].deleteAssociation = true
-                await updateUserAssociations(true)
+                updateUserAssociations(true)
                 expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
                 const url = `/users/${userManagerStore.user?.id}/associations/${userAssociations.value[0].id}`
                 expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
@@ -95,7 +94,7 @@ describe('useUserAssociations', () => {
                 userManagerStore.userAssociations = [_userAssociationDetail]
                 userManagerStore.userAssociations[0].isPresident = false
                 userManagerStore.userAssociations[0].isSecretary = true
-                await updateUserAssociations(true)
+                updateUserAssociations(true)
                 expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             })
         })
@@ -114,7 +113,7 @@ describe('useUserAssociations', () => {
 
             it('should delete userAssociations if the deleteAssociation param is set to true and splice it from composable and store', async () => {
                 userAssociations.value[0].deleteAssociation = true
-                await updateUserAssociations(false)
+                updateUserAssociations(false)
                 expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
                 const url = `/users/${userStore.user?.id}/associations/${userAssociations.value[0].id}`
                 expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
@@ -126,7 +125,7 @@ describe('useUserAssociations', () => {
                 userStore.userAssociations = [_userAssociationDetail]
                 userStore.userAssociations[0].isPresident = false
                 userStore.userAssociations[0].isSecretary = true
-                await updateUserAssociations(false)
+                updateUserAssociations(false)
                 expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             })
         })
@@ -147,7 +146,6 @@ describe('useUserAssociations', () => {
             userManagerStore.user = _institutionStudent
             const dataToPatch = {
                 isPresident: false,
-                canBePresidentPermanent: true,
                 canBePresidentFrom: null,
                 canBePresidentTo: null,
                 isSecretary: false,
@@ -206,7 +204,6 @@ describe('useUserAssociations', () => {
                 {
                     association: 1,
                     isPresident: true,
-                    canBePresidentPermanent: false,
                     canBePresidentFrom: null,
                     canBePresidentTo: null,
                     isValidatedByAdmin: false,

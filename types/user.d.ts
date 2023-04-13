@@ -23,7 +23,6 @@ export interface AssociationUser {
     user?: number,
     association?: number | null,
     isPresident: boolean,
-    canBePresidentPermanent: boolean,
     canBePresidentFrom?: string | null,
     canBePresidentTo?: string | null,
     isValidatedByAdmin?: boolean,
@@ -44,7 +43,6 @@ export interface AssociationUserDetail {
         isPublic?: boolean,
     }
     isPresident: boolean,
-    canBePresidentPermanent: boolean,
     canBePresidentFrom: string | null,
     canBePresidentTo: string | null,
     isValidatedByAdmin: boolean,
@@ -60,7 +58,6 @@ export interface AssociationMember {
     associationId?: number,
     associationName?: string,
     role: string,
-    canBePresidentPermanent?: boolean,
     canBePresidentFrom?: string | null,
     canBePresidentTo?: string | null,
     isValidatedByAdmin: boolean
@@ -71,7 +68,6 @@ export interface AssociationRole {
     name?: string,
     role: string,
     options?: AssociationOptions[]
-    canBePresidentPermanent?: boolean,
     canBePresidentFrom?: string | null,
     canBePresidentTo?: string | null,
     deleteAssociation?: boolean,
@@ -115,7 +111,6 @@ export interface UserAssociation {
 
 export interface UserAssociationPatch {
     isPresident?: boolean,
-    canBePresidentPermanent?: boolean,
     canBePresidentFrom?: string | null,
     canBePresidentTo?: string | null,
     isVicePresident?: boolean,

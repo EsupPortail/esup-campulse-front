@@ -154,13 +154,13 @@ async function onChangeLogo(action: string) {
                 <QImg
                     :alt="altLogoText(association)"
                     :ratio="1"
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '/src/assets/img/no_logo_square.png') : '/src/assets/img/no_logo_square.png'"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '../src/assets/img/no_logo_square.png') : '../src/assets/img/no_logo_square.png'"
                 />
             </div>
             <QFile
                 v-model="newLogo"
                 :label="t('association.logo.pickup')"
-                accept=".jpg, .jpeg, .png"
+                accept="image/png, image/jpeg"
                 filled
             />
             <QInput
