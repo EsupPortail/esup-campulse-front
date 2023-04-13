@@ -162,7 +162,7 @@ async function onChangeLogo(action: string) {
             </div>
 
             <div class="association-name">
-                <h1>{{ association?.name }}</h1>
+                <h2>{{ association?.name }}</h2>
                 <p
                     v-if="association?.acronym"
                     class="acronym"
@@ -200,7 +200,7 @@ async function onChangeLogo(action: string) {
         </fieldset>
 
         <fieldset>
-            <h2><i class="bi bi-book"></i>{{ t("association.titles.info") }}</h2>
+            <h3><i class="bi bi-book"></i>{{ t("association.titles.info") }}</h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -258,7 +258,7 @@ async function onChangeLogo(action: string) {
         </fieldset>
 
         <fieldset>
-            <h2><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h2>
+            <h3><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -300,7 +300,7 @@ async function onChangeLogo(action: string) {
         </fieldset>
 
         <fieldset>
-            <h2><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h2>
+            <h3><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -372,5 +372,4 @@ async function onChangeLogo(action: string) {
 @import "@/assets/styles/associations.scss";
 @import "@/assets/styles/forms.scss";
 </style>
-
 

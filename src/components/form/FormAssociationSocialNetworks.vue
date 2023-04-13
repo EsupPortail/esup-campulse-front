@@ -23,7 +23,7 @@ onMounted(initValues)
 </script>
 <template>
     <fieldset>
-        <h2><i class="bi bi-megaphone"></i>{{ t('association.labels.socials') }}</h2>
+        <h3><i class="bi bi-megaphone"></i>{{ t('association.labels.socials') }}</h3>
         <section class="form-container">
             <div
                 v-for="(socialNetwork, index) in associationSocialNetworks"
@@ -61,7 +61,6 @@ onMounted(initValues)
                     :label="t('association.labels.add-social-network')"
                     class="add-network-btn"
                     icon="mdi-plus-circle-outline"
-                    outline
                     @click="addNetwork"
                 />
             </div>
@@ -111,4 +110,3 @@ onMounted(initValues)
 
 
 </style>
-
