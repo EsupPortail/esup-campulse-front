@@ -136,6 +136,20 @@ button.q-btn--outline {
   }
 }
 
+.variant-space-4 .navigate-top-button {
+  button {
+    background-color: $dashboardColor;
+
+    &:hover {
+      background-color: $dashboardColorHover;
+    }
+
+    &:active {
+      background-color: $dashboardColorActive;
+    }
+  }
+}
+
 // Page section
 .page-section {
   width: $fullSize;
