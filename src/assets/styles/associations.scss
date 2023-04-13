@@ -139,7 +139,7 @@
 .directory-sorting {
   margin-bottom: 0.625rem;
 
-  section {
+  div {
     display: flex;
     justify-content: space-between;
 
@@ -403,7 +403,7 @@
     padding: .5rem;
 
     .association-name {
-      h1 {
+      h2 {
         font-size: 1.875rem;
         font-weight: $semibold-weight;
         line-height: 3.4rem;
@@ -440,7 +440,7 @@
   }
 
   section, fieldset {
-    h2 {
+    h3 {
       font-size: 1.7rem;
       text-transform: uppercase;
       color: $annuaireColorText;
@@ -459,7 +459,7 @@
     }
 
     .display-row {
-      h3 {
+      h4 {
         font-size: 1.5rem;
         font-weight: $semibold-weight;
         line-height: 2.3rem;
@@ -475,7 +475,7 @@
 
   @media screen and (min-width: $responsiveWidth) {
     section, fieldset {
-      h2 {
+      h3 {
         width: $halfSize;
         margin: auto;
       }

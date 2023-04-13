@@ -943,7 +943,7 @@ label.custom-label {
               padding: .625rem .65rem;
               background: transparent !important;
               box-shadow: none;
-              transition: box-shadow 0.08s linear, background-color 0.08 linear;
+              transition: box-shadow 0.08s linear, background-color 0.08s linear;
 
               .q-btn__content * {
                 color: $textColor2;
@@ -1556,7 +1556,7 @@ label.custom-label {
 .image-input {
   display: flex;
   width: $fullSize;
-  aspect-ratio: 1;
+  aspect-ratio: 1 / 1;
   background-color: $backgroundColor1;
   box-shadow: 0 0 0 1px $annuaireColorBorders inset, $fieldsBoxShadow;
   padding: 0.95rem;

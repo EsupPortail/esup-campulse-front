@@ -11,7 +11,7 @@ const commissionOptions = ref<SelectLabel[]>([])
 
 const userCommissions = ref<number[]>([])
 
-export default function () {
+export default function() {
 
     const {axiosPublic} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -24,7 +24,7 @@ export default function () {
 
     const initCommissionLabels = () => {
         commissionOptions.value = []
-        commissions.value.forEach(function (commission) {
+        commissions.value.forEach(function(commission) {
             commissionOptions.value.push({
                 value: commission.id,
                 label: commission.acronym

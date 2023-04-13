@@ -23,15 +23,15 @@ defineProps({
             <div class="section-background"><span></span></div>
             <div class="section-title">
                 <div>
-                    <h1>
+                    <h2 :aria-label="titleLine1 + ' ' + titleLine2">
                         {{ titleLine1 }}
-                        <div class="section-icon">
+                        <span class="section-icon">
                             <span><i :class="[ iconClass ]"></i></span>
                             <span></span>
                             <span></span>
                             <span></span>
-                        </div>
-                    </h1>
+                        </span>
+                    </h2>
                     <div class="section-subtitle">{{ titleLine2 }}</div>
                 </div>
                 <div class="section-info">

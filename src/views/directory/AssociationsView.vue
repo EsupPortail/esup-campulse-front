@@ -143,6 +143,7 @@ async function clearSearch(apiSearch: boolean) {
         </div>
     </section>
     <section class="directory-search">
+        <h2>{{ t('directory.search-association') }}</h2>
         <QForm
             id="search-form"
             class="search-text-field"
@@ -246,7 +247,8 @@ async function clearSearch(apiSearch: boolean) {
         <div class="form-container">
             <div class="form">
                 <section class="directory-sorting">
-                    <section>
+                    <h2>{{ t('directory.list') }}</h2>
+                    <div>
                         <p v-if="associations.length > 0">
                             <span>{{ associations.length }}</span>
                             {{
@@ -260,7 +262,7 @@ async function clearSearch(apiSearch: boolean) {
                                 associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') : t('directory.associations-on-page-singular')
                             }} :
                         </p>
-                    </section>
+                    </div>
                 </section>
 
                 <QCard

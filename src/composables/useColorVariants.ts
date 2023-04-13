@@ -4,7 +4,7 @@ import {ref, watch} from 'vue'
 const colorVariant = ref<string>('')
 
 
-export default function () {
+export default function() {
     const route = useRoute()
 
     const initColorVariant = () => {

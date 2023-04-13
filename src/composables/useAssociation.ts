@@ -14,7 +14,7 @@ const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
 // Changed data when modifying an association
 let changedData = {}
 
-export default function () {
+export default function() {
 
     const associationStore = useAssociationStore()
     const {updateRegisterRoleInAssociation} = useUserAssociations()
