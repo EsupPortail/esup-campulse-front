@@ -264,7 +264,7 @@ body {
 }
 
 // Titles
-.title-1, .title-2, .title-3 {
+.title-1, .title-2, .title-3, .title-4 {
   color: $textColor1;
   font-weight: 400;
   line-height: normal;
@@ -290,6 +290,16 @@ body {
 .title-3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+}
+
+.title-4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.title-5 {
+  font-size: 1rem;
+  margin-bottom: 0.18rem;
 }
 
 // Paragraphs

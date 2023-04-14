@@ -224,9 +224,15 @@ async function onGetAssociationDetail() {
                 <div class="document-input-group">
                     <div class="document-input-group-header">
                         <h3>Suivi du traitement des dossiers CAPE</h3>
-                        <QBtn
-                            label="Gestion des dossiers CAPE"
-                        />
+                        <div class="flex-btn-group">
+                            <QBtn
+                                :label="t('project.submit-new-project')"
+                                :to="{name: 'SubmitProjectAssociation', params: {associationId: association?.id}}"
+                            />
+                            <QBtn
+                                label="Gestion des dossiers CAPE"
+                            />
+                        </div>
                     </div>
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
@@ -254,6 +260,7 @@ async function onGetAssociationDetail() {
         </div>
     </section>
 </template>
+
 
 <style lang="scss">
 @import '@/assets/styles/dashboard.scss';

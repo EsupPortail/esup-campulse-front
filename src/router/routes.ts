@@ -50,12 +50,83 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'commission',
-                name: 'Commission',
-                component: () => import('@/views/CommissionView.vue'),
                 meta: {
+                    breadcrumb: i18n.global.t('breadcrumbs.commission'),
                     requiresAuth: true,
                     colorVariant: 'space-3'
-                }
+                },
+                children: [
+                    {
+                        path: '',
+                        name: 'Commission',
+                        component: () => import('@/views/CommissionView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.commission')
+                        }
+                    },
+                    {
+                        path: 'association/:associationId',
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
+                            requiresAddProjectPerm: true
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'CommissionAssociationDashboard',
+                                component: () => import('@/views/dashboard/projectManagement/CommissionAssociationDashboardView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.manage-my-projects')
+                                }
+                            },
+                            {
+                                path: 'submit-project/:projectId?',
+                                name: 'SubmitProjectAssociation',
+                                component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.submit-project'),
+                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        path: 'individual',
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
+                            requiresAddProjectPerm: true
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'CommissionIndividualDashboard',
+                                component: () => import('@/views/dashboard/projectManagement/CommissionIndividualDashboardView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.manage-my-projects')
+                                }
+                            },
+                            {
+                                path: 'submit-project/:projectId?',
+                                name: 'SubmitProjectIndividual',
+                                component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.submit-project'),
+                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        path: 'submit-project-successful/:projectId',
+                        name: 'SubmitProjectSuccessful',
+                        component: () => import('@/views/dashboard/projectManagement/SubmitProjectSuccessfulView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
+                            requiresAddProjectPerm: true
+                        }
+                    }
+                ]
             },
             {
                 path: 'cas-login',

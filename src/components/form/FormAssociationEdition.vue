@@ -157,7 +157,7 @@ async function onChangeLogo(action: string) {
                 <QImg
                     :alt="altLogoText(association)"
                     :ratio="1"
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '../src/assets/img/no_logo_square.png') : '../src/assets/img/no_logo_square.png'"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '../../../src/assets/img/no_logo_square.png') : '../../../src/assets/img/no_logo_square.png'"
                 />
             </div>
 
@@ -372,4 +372,3 @@ async function onChangeLogo(action: string) {
 @import "@/assets/styles/associations.scss";
 @import "@/assets/styles/forms.scss";
 </style>
-
