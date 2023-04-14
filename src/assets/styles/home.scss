@@ -1,18 +1,18 @@
-@import '@/assets/variables';
+@import '@/assets/_variables.scss';
 
 // Intro element on the home page
 #home-info-panel {
   width: $fullSize;
   background: none !important;
   margin: 0 auto;
-  padding: 1.25rem;
+  padding: 1.5rem;
 
   .q-banner__content {
     width: $fullSize;
-    max-width: 62.5rem;
+    max-width: 62rem;
     margin: 0 auto;
     color: $textColor1;
-    font-size: 1.188rem;
+    font-size: 1.2rem;
     font-weight: $normal-weight;
     position: relative;
     padding-left: 3rem;
@@ -26,10 +26,10 @@
 
   #home-banner-icon {
     display: inline-block;
-    width: 2.188rem;
-    height: 2.188rem;
+    width: 2.2rem;
+    height: 2.2rem;
     border-radius: $radiusCircle;
-    border: 3px solid $annuaireColor;
+    border: solid $annuaireColor; //.188rem
     background-color: transparent;
     position: absolute;
     top: calc(50% - 54px);
@@ -39,13 +39,8 @@
       font-size: $qBannerInfoIconSize;
       color: $annuaireColor;
       position: absolute;
-      top: .28rem;
-      left: .25rem;
-
-      @media screen and (min-width: $responsiveWidth) {
-        top: .318rem;
-        left: .340rem;
-      }
+      top: .320rem;
+      left: .320rem;
     }
 
     &::before, &::after {
@@ -64,26 +59,20 @@
 
     &::before {
       background-color: $charteColor;
-      bottom: -1.875rem;
+      bottom: -1.5rem;
     }
 
     &::after {
       background-color: $capeColor;
-      bottom: -57px;
+      bottom: -3rem;
     }
 
     &.variant-minimal {
-      top: calc(50% - 27px);
+      top: calc(50% - 1.688rem);
 
       &::before, &::after {
         display: none;
       }
-    }
-  }
-
-  @media screen and (min-width: $responsiveWidth) {
-
-    &::before, &::after {
     }
   }
 }
@@ -92,11 +81,10 @@
 .home-section {
   background-repeat: no-repeat;
   background-size: cover;
-  margin-bottom: .3125rem;
-  padding: 70px 0;
+  padding: 4rem 0;
 
   & > div {
-    width: 100%;
+    width: $fullSize;
     max-width: $pageWidth;
     margin: 0 auto;
     padding: 0;
@@ -130,9 +118,9 @@
     display: block;
     position: relative;
     background-color: $backgroundColor1;
-    box-shadow: 0rem 0rem 1.25rem .125rem rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.2);
     padding: 2rem;
-    gap: 6.25rem;
+    gap: 6rem;
     align-items: center;
     overflow: hidden;
 
@@ -150,10 +138,10 @@
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: 25rem 0 25rem 6.25rem;
+        border-width: 25rem 0 25rem 6.20rem;
         border-color: transparent transparent transparent $annuaireColorBackground;
         position: absolute;
-        right: -6.1875rem;
+        right: -6rem;
         top: 0;
       }
     }
@@ -165,9 +153,9 @@
 
       h2 {
         display: flex;
-        gap: .9375rem;
+        gap: 1rem;
         font-family: $titleFont;
-        font-size: 3rem;
+        font-size: $homeTitleSize;
         font-weight: $semibold-weight;
         color: $annuaireColorText;
         text-transform: uppercase;
@@ -176,40 +164,37 @@
 
       .section-subtitle {
         font-family: $titleFont;
-        font-size: 2rem;
-        font-weight: 400;
+        font-size: $homeSubTitleSize;
+        font-weight: $normal-weight;
         color: $annuaireColorText;
-        line-height: 3.4375rem;
+        line-height: 3.5rem;
       }
 
       .section-icon {
         display: inline-flex;
-        gap: .625rem;
+        gap: .6rem;
         align-items: center;
 
         span {
           display: inline-block;
-          width: 1.0625rem;
-          height: 1.0625rem;
+          width: 1rem;
+          height: 1rem;
           background-color: $annuaireColor;
+          color: $annuaireColorText;
           border-radius: $radiusCircle;
 
           &:first-child {
-            width: 3.375rem;
-            height: 3.375rem;
+            width: 3.5rem;
+            height: 3.5rem;
             color: $annuaireColorText;
-            font-size: 1.6875rem;
             text-align: center;
 
             i {
               position: relative;
-              top: $iconHomeCardTopPosition;
-              left: $iconHomeCardLeftPosition;
-
-              @media screen and (min-width: $responsiveWidth) {
-                top: -.125rem;
-                left: .050rem;
-              }
+              font-size: $iconSize;
+              color: $annuaireColorText;
+              top: $iconHomeCardTopMobilePosition;
+              left: $iconHomeCardLeftMobilePosition;
             }
           }
         }
@@ -217,20 +202,20 @@
     }
 
     .section-info {
-      font-size: 1.375rem;
+      font-size: $textSize;
       font-weight: $normal-weight;
       line-height: 1.75rem;
       color: $annuaireColorText;
       border-left: .25rem solid $annuaireColor;
-      padding: 0 0 0 1.125rem;
+      padding: 0 0 0 1rem;
       margin: 1.25rem auto 1rem;
 
       p {
         margin: 0;
 
         strong {
-          font-size: 1.375rem;
-          font-weight: 700;
+          font-size: $textSize;
+          font-weight: $bold-weight;
         }
       }
     }
@@ -240,7 +225,7 @@
       z-index: 1;
 
       p {
-        font-size: 1.25rem;
+        font-size: $textSize;
         font-weight: $normal-weight;
         color: $annuaireColorText;
       }
@@ -252,7 +237,7 @@
         a {
           display: inline-block;
           padding: 1rem;
-          font-size: 1.1rem;
+          font-size: 1.2rem;
           font-weight: $normal-weight;
           color: $annuaireColorText;
           border-radius: 0;
@@ -263,10 +248,9 @@
           transition: background-color 0.03s linear, color 0.03s linear;
 
           i {
-            font-size: 1.375rem;
+            font-size: $iconSize;
             position: relative;
-            top: .0625rem;
-            margin-left: .625rem;
+            top: .07rem;
           }
 
           &:hover {
@@ -284,30 +268,17 @@
 
     @media screen and (min-width: $responsiveWidth) {
       display: flex;
-      padding: 3rem;
 
       .section-background {
-        width: 26.875rem;
+        width: 26rem;
         opacity: 1;
-      }
-
-      .section-title {
-        h2 {
-          font-size: 3.75rem;
-        }
-
-        .section-subtitle {
-          font-size: 2.75rem;
-        }
       }
 
       .section-content {
         .section-buttons {
           a {
-            padding: 1rem 4.375rem;
-            font-size: 1.125rem;
+            padding: 1rem 4rem;
           }
-
         }
       }
     }
@@ -329,9 +300,9 @@
         left: unset;
 
         span {
-          border-width: 25rem 6.25rem 25rem 0;
+          border-width: 25rem 6.2rem 25rem 0;
           border-color: transparent $charteColorBackground transparent transparent;
-          left: -6.1875rem;
+          left: -6rem;
         }
       }
 
@@ -356,14 +327,10 @@
 
             i {
               background-color: $charteColor;
-              top: $iconHomeCardTopPosition;
-              left: $iconHomeCardLeftPosition;
+              color: $charteColorText;
 
-              @media screen and (min-width: $responsiveWidth) {
-                top: -.125rem;
-                left: 0;
-              }
             }
+
           }
 
           span:nth-child(4) {
@@ -376,7 +343,7 @@
         border-left: none;
         border-right: .25rem solid $charteColor;
         padding-left: 0;
-        padding-right: 1.125rem;
+        padding-right: 1rem;
         color: $charteColorText;
       }
 
@@ -430,14 +397,8 @@
             color: $capeColorText;
 
             i {
-              top: $iconHomeCardTopPosition;
-              left: $iconHomeCardLeftPosition;
               background-color: $capeColor;
-
-              @media screen and (min-width: $responsiveWidth) {
-                top: -.125rem;
-                left: -.125rem;
-              }
+              left: 0;
             }
           }
         }

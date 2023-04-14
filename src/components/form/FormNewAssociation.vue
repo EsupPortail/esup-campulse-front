@@ -143,8 +143,8 @@ h2 {
     padding-left: 1rem;
 }
 
-.form-container {
-    margin: 0;
+.q-card__section {
+    padding: 0;
 }
 
 @media screen and (min-width: $responsiveWidth) {

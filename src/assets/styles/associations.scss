@@ -4,24 +4,29 @@
 .directory-search {
   width: $fullSize;
   max-width: $pageWidth;
+  padding: 0 $responsiveMargin;
   margin: 0 auto;
+
+  h2 {
+    font-size: $titleSize;
+    font-weight: $normal-weight;
+  }
 
   #search-form {
     fieldset {
       border: none;
       padding: 0;
       display: flex;
+      flex-direction: column;
+      gap: 1rem;
 
       label {
         flex-grow: 1;
 
         .q-field__control {
           border: 1px solid $annuaireColor;
+          padding-bottom: 1rem;
         }
-      }
-
-      .q-btn {
-        padding: 0 1.25rem;
       }
     }
   }
@@ -43,11 +48,6 @@
           flex: 0 0 $fullSize;
         }
       }
-    }
-
-    .buttons-group {
-      gap: 1.5rem;
-      padding: 2rem 0 0.5rem;
     }
 
     .q-btn {
@@ -90,27 +90,27 @@
         }
       }
     }
+
+    .buttons-group {
+      margin: 1rem 0;
+      gap: 1.5rem;
+    }
   }
 
-  .search-button {
-    border-right: 1px solid white;
-  }
 
-  @media only screen and (max-width: $pageWidth) {
-    padding-left: $responsiveMargin;
-    padding-right: $responsiveMargin;
+  @media screen and (min-width: $responsiveWidth) {
+    #search-form {
+      fieldset {
+        flex-direction: row;
+      }
+    }
   }
 
   @media only screen and (max-width: $responsiveWidth) {
     #search-form {
       fieldset {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-
         .q-btn {
           width: $fullSize;
-          padding: 0.938rem 1.875rem;
         }
 
         .search-button {
@@ -139,14 +139,21 @@
 .directory-sorting {
   margin-bottom: 0.625rem;
 
+  h2 {
+    font-size: $titleSize;
+    font-weight: $normal-weight;
+  }
+
   div {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 
     p {
-      font-size: 1.25rem;
+      font-size: $textSize;
       font-weight: $normal-weight;
       color: $textColor2;
+      line-height: 1.2rem;
 
       & > span {
         color: $annuaireColor;
@@ -298,7 +305,7 @@
     }
   }
 
-  @media (prefers-reduced-motion) {
+  /*@media (prefers-reduced-motion) {
     .q-card {
       .card-chevron {
         right: 0.938rem;
@@ -316,7 +323,7 @@
         }
       }
     }
-  }
+  }*/
 
   @media only screen and (max-width: $responsiveWidth) {
     .q-card {

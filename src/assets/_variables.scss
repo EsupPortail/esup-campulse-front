@@ -21,14 +21,21 @@ $titleFont: 'Open Sans', sans-serif;
 $formTitleMobileSize: 1.5rem;
 $formTitleComputerSize: 2rem;
 
+$homeTitleSize: 3.1rem;
+$homeSubTitleSize: 2.5rem;
+
+$titleSize: 2.3rem;
+$textSize: 1.2rem;
+
+
 // ---------------- Paddings ----------------
 // Home Banner
 $qBannerDotsMobilePadding: .30rem;
-$qBannerDotsComputerPadding: .40rem;
+$qBannerDotsComputerPadding: .35rem;
 
 // Home Card Icons
-$iconHomeCardTopPosition: -.5rem;
-$iconHomeCardLeftPosition: .3rem;
+$iconHomeCardTopMobilePosition: -.6rem;
+$iconHomeCardLeftMobilePosition: .04rem;
 
 // ---------------- Sizes ----------------
 $fullSize: 100%;
@@ -37,8 +44,9 @@ $halfSize: 50%;
 // Line-height :
 $lineHeightSize: 2rem;
 
-// Association Logo
+// Logos
 $associationLogoSize: 9.375rem;
+$iconSize: 1.8rem;
 
 // Home Banner
 $qBannerInfoIconSize: 1.25rem;

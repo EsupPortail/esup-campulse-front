@@ -20,7 +20,10 @@ defineProps({
 <template>
     <section :class="['home-section', cssClass]">
         <div class="section-card">
-            <div class="section-background"><span></span></div>
+            <div class="section-background">
+                <span></span>
+            </div>
+
             <div class="section-title">
                 <div>
                     <h2 :aria-label="titleLine1 + ' ' + titleLine2">
