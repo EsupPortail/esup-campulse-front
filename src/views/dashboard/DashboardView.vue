@@ -329,4 +329,3 @@ onMounted(async () => {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 </style>
-

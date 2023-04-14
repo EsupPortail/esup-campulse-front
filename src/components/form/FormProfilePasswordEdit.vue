@@ -91,7 +91,6 @@ async function passwordConfirm() {
                 />
             </div>
         </div>
-
     </fieldset>
 </template>
 

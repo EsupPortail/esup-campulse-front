@@ -99,7 +99,6 @@ function clearOptions() {
                         <QBtn
                             :label="t('forms.delete-association')"
                             icon="mdi-minus-circle-outline"
-                            outline
                             @click="removeAssociation(index)"
                         />
                         <QBtn

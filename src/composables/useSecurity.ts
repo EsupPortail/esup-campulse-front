@@ -28,7 +28,7 @@ watch(() => newUser.email, () => {
     if (!newUser.isCas) newUser.username = newUser.email
 })
 
-export default function () {
+export default function() {
 
     const userStore = useUserStore()
 
@@ -132,10 +132,10 @@ export default function () {
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
         if (newGroups.value.length) {
-            newGroups.value.forEach(function (group) {
+            newGroups.value.forEach(function(group) {
                 // Register commission groups
                 if (group === commissionGroup.value?.id) {
-                    userCommissions.value.forEach(function (commission) {
+                    userCommissions.value.forEach(function(commission) {
                         groupsToRegister.push({
                             username: newUser.username,
                             group,

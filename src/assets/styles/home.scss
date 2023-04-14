@@ -163,7 +163,7 @@
       position: relative;
       z-index: 2;
 
-      h1 {
+      h2 {
         display: flex;
         gap: .9375rem;
         font-family: $titleFont;
@@ -292,7 +292,7 @@
       }
 
       .section-title {
-        h1 {
+        h2 {
           font-size: 3.75rem;
         }
 
@@ -338,7 +338,7 @@
       .section-title {
         text-align: right;
 
-        h1 {
+        h2 {
           flex-direction: row-reverse;
           color: $charteColorText;
         }

@@ -102,7 +102,10 @@ onMounted(() => {
                 />
                 <QBanner class="bg-grey-3">
                     <template v-slot:avatar>
-                        <QIcon color="secondary" name="mdi-alert-circle"/>
+                        <QIcon
+                            color="secondary"
+                            name="mdi-alert-circle"
+                        />
                     </template>
                     <span>{{ t('alerts.modify-email') }}</span>
                 </QBanner>
@@ -122,7 +125,10 @@ onMounted(() => {
             class="bg-grey-3 status-banner"
         >
             <template v-slot:avatar>
-                <QIcon color="secondary" name="mdi-account"/>
+                <QIcon
+                    color="secondary"
+                    name="mdi-account"
+                />
             </template>
             <p>{{ t('dashboard.my-status') }} <span>{{ userGroups }}</span></p>
             <p>{{ t('dashboard.update-my-status') }}</p>

@@ -143,7 +143,7 @@ async function onDeleteAssociationUser() {
                             <h3 class="row-title">{{ t('dashboard.association-user.role') }}</h3>
                             <p v-if="associationUser">
                                 {{
-                                    associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label
+                                    associationRoleOptions.find(obj => obj.value === (associationUser ? getAssociationUserRole(associationUser) : undefined))?.label
                                 }}
                             </p>
                         </div>

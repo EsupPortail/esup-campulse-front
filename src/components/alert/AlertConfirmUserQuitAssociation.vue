@@ -57,8 +57,8 @@ async function onDeleteUserAssociation() {
                 <span
                     class="q-ml-sm"
                 >{{
-                        props.editedByStaff ? t("dashboard.association-user.confirm-delete") : t("dashboard.association-user.confirm-delete-self")
-                    }}</span>
+                    props.editedByStaff ? t("dashboard.association-user.confirm-delete") : t("dashboard.association-user.confirm-delete-self")
+                }}</span>
             </QCardSection>
 
             <QCardActions align="right">

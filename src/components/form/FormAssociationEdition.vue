@@ -148,7 +148,10 @@ async function onChangeLogo(action: string) {
 </script>
 
 <template>
-    <QForm id="association-edition" @submit.prevent="onChangeLogo('update')">
+    <QForm
+        id="association-edition"
+        @submit.prevent="onChangeLogo('update')"
+    >
         <fieldset id="association-logo-title">
             <div class="association-logo">
                 <QImg
@@ -159,7 +162,7 @@ async function onChangeLogo(action: string) {
             </div>
 
             <div class="association-name">
-                <h1>{{ association?.name }}</h1>
+                <h2>{{ association?.name }}</h2>
                 <p
                     v-if="association?.acronym"
                     class="acronym"
@@ -171,7 +174,7 @@ async function onChangeLogo(action: string) {
             <QFile
                 v-model="newLogo"
                 :label="t('association.logo.pickup')"
-                accept=".jpg, .jpeg, .png"
+                accept="image/png, image/jpeg"
                 filled
             />
             <QInput
@@ -197,7 +200,7 @@ async function onChangeLogo(action: string) {
         </fieldset>
 
         <fieldset>
-            <h2><i class="bi bi-book"></i>{{ t("association.titles.info") }}</h2>
+            <h3><i class="bi bi-book"></i>{{ t("association.titles.info") }}</h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -255,7 +258,7 @@ async function onChangeLogo(action: string) {
         </fieldset>
 
         <fieldset>
-            <h2><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h2>
+            <h3><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -293,12 +296,11 @@ async function onChangeLogo(action: string) {
                         type="number"
                     />
                 </div>
-
             </section>
         </fieldset>
 
         <fieldset>
-            <h2><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h2>
+            <h3><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -331,7 +333,10 @@ async function onChangeLogo(action: string) {
         <FormAssociationSocialNetworks/>
 
         <fieldset>
-            <div id="bottom-btns" class="btn-group">
+            <div
+                id="bottom-btns"
+                class="btn-group"
+            >
                 <QBtn
                     :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
                     :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
@@ -367,5 +372,4 @@ async function onChangeLogo(action: string) {
 @import "@/assets/styles/associations.scss";
 @import "@/assets/styles/forms.scss";
 </style>
-
 

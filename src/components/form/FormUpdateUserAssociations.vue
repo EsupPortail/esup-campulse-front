@@ -69,7 +69,6 @@ async function onGetUserAssociations() {
                             <QBtn
                                 :label="t('cancel-delete')"
                                 icon="mdi-cancel"
-                                outline
                                 @click="association.deleteAssociation = false"
                             />
                         </div>

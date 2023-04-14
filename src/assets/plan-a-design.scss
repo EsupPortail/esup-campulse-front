@@ -43,16 +43,11 @@ body {
 
 }
 
-// TODO Hotfix for outline buttons.
-button.q-btn--outline {
-  background: $annuaireColor !important;
-}
-
 // Goto top button
 .navigate-top-button {
   position: fixed;
   top: 0rem;
-  right: calc(50% - #{ $pageWidth * 0.5 } - 6.5rem);
+  left: calc(100vw - 6.5rem);
   z-index: 3000;
   opacity: 0;
   transition: top 0.15s ease-in-out, opacity 0.15s linear;
@@ -132,6 +127,20 @@ button.q-btn--outline {
 
     &:active {
       background-color: $capeColorActive;
+    }
+  }
+}
+
+.variant-space-4 .navigate-top-button {
+  button {
+    background-color: $dashboardColor;
+
+    &:hover {
+      background-color: $dashboardColorHover;
+    }
+
+    &:active {
+      background-color: $dashboardColorActive;
     }
   }
 }
