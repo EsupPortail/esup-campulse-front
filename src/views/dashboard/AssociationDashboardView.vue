@@ -194,7 +194,7 @@ async function onGetAssociationDetail() {
             <div class="form">
                 <div class="document-input-group">
                     <div class="document-input-group-header">
-                        <h3>Suivi du traitement des chartes</h3>
+                        <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
                         <QBtn
                             :label="t('dashboard.association-user.charter-status-processing')"
                         />
@@ -255,21 +255,8 @@ async function onGetAssociationDetail() {
     </section>
 </template>
 
-<style lang="sass" scoped>
-
-.document-input-group-header
-    display: flex
-    justify-content: space-between
-    margin-bottom: 1rem
-    align-items: flex-end
-
-    h3
-        font-size: 1.5rem
-        color: #152639
-</style>
-
-<style lang="sass">
-@import '@/assets/styles/dashboard.scss'
-@import '@/assets/styles/forms.scss'
+<style lang="scss">
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/forms.scss';
 </style>
 

@@ -3,7 +3,7 @@ $responsiveMargin: 1.56rem;
 $fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
 // ---------------- Responsive----------------
-$responsiveWidth: 56.25rem;
+$responsiveWidth: 56rem;
 
 // ---------------- Images ----------------
 $headerBackground: url('./img/resized/header-background2.jpg');
@@ -27,8 +27,8 @@ $qBannerDotsMobilePadding: .30rem;
 $qBannerDotsComputerPadding: .40rem;
 
 // Home Card Icons
-$bsIconHomeCardPosition: -0.125rem;
-
+$iconHomeCardTopPosition: -.5rem;
+$iconHomeCardLeftPosition: .3rem;
 
 // ---------------- Sizes ----------------
 $fullSize: 100%;

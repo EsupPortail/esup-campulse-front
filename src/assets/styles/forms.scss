@@ -27,6 +27,13 @@
   }
 }
 
+.form {
+  @media screen and (min-width: $responsiveWidth) {
+    width: $halfSize;
+    margin: auto;
+  }
+}
+
 // Quasar input fields
 .q-field {
   .q-field__control {

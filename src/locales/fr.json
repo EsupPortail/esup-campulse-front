@@ -346,6 +346,7 @@
   "loading": "Chargement...",
   "login": {
     "create-account": "Créer un compte",
+    "introduction-login": "Connectez-vous pour accéder à votre espace et effectuer vos démarches !\n",
     "im-cas-user": "Je suis étudiant, étudiante, ou je fais partie du personnel de l'Université de Strasbourg",
     "im-not-cas-user": "Je ne fais pas partie de l'Université de Strasbourg",
     "login": "Connexion",

@@ -47,6 +47,7 @@ onMounted(async () => {
             </div>
         </div>
     </section>
+
     <!-- My associations, for association members only -->
     <section
         v-if="associationCounter > 0"

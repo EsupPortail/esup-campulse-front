@@ -203,7 +203,13 @@
 
             i {
               position: relative;
-              top: -0.25rem;
+              top: $iconHomeCardTopPosition;
+              left: $iconHomeCardLeftPosition;
+
+              @media screen and (min-width: $responsiveWidth) {
+                top: -.125rem;
+                left: .050rem;
+              }
             }
           }
         }
@@ -350,8 +356,13 @@
 
             i {
               background-color: $charteColor;
-              top: $bsIconHomeCardPosition;
-              left: $bsIconHomeCardPosition;
+              top: $iconHomeCardTopPosition;
+              left: $iconHomeCardLeftPosition;
+
+              @media screen and (min-width: $responsiveWidth) {
+                top: -.125rem;
+                left: 0;
+              }
             }
           }
 
@@ -419,8 +430,14 @@
             color: $capeColorText;
 
             i {
-              top: $bsIconHomeCardPosition;
-              left: $bsIconHomeCardPosition;
+              top: $iconHomeCardTopPosition;
+              left: $iconHomeCardLeftPosition;
+              background-color: $capeColor;
+
+              @media screen and (min-width: $responsiveWidth) {
+                top: -.125rem;
+                left: -.125rem;
+              }
             }
           }
         }
