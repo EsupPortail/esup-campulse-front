@@ -1,52 +1,28 @@
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- 🌐 #62 Changed names in delegate array.
-- ♻️ #62 Removed can_be_president (only can_be_president_from and can_be_president_to are available).
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- ✏️ Typo
-- 💚 Reactivate CI & tests
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- ✅ Update tests
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- ♻️ Changed can_be_president to can_be_president_permanent.
-- 🩹 Quick fixes after debug session: button wording, and router push condition
-- 🩹 Association institution for associationUser validation detail
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- 🐛 Fix (again) types in associationUser typing
-- 🚨 Need to set those linters correctly on my side.
-- 🐛 Fixed dates.
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- 🩹 Fix date conditions on presidency delegation
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- 🩹 Fix type on userAssociation validation
-- 🩹 Fix dashboard permissions
-- ✅ Tests for useUsers composable and debug for dashboards
-- 🚨 Added last linter rules for multi-line elements.
-- ⬆️ Upgrade NPM dependencies.
-- 🚨 Added linter rules.
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- ✅ Tests for associationUser fonctions and fix on association edition router push when non staff
-- 🗃️ Changed Institution type.
-- ♻️ Changed permissions names.
-- 🩹 Fix refresh of association names after quiting an association
-- 💬 Update action text for associationUser validation
-- ✅ Update tests for userStore and userManagerStore
-- 🩹 Fix QTable no data message and back button on presidency delegation
-- 🐛 Debug association dashboard view after changing API
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- 🐛 Bugs everywhere in associationUser UI
-- 🐛 Fixed commas on GET requests using institutions parameter.
-- 🌐 #88 Added note on UserAssociations form if association is full.
-- Merge branch 'develop' of git.unistra.fr:di/plan_a/front into develop
-- ✏️ Typo in string.
-- 🐛 Fix getUserAssociations
-- 🐛 Fix presidency delegation view
-- ✅ Update tests for userStore and userManagerStore
-- 🩹 No limit on commissions for registration and QChips
-- 🩹 Optimize register successful message and router config for CAS users
-- 💬 Button label for institution student on association edition form
-- 🐛 Fix condition on routerview for colorVariant (again)
-- 🩹 Fix async for loading colorVariant
-- 💄 Finish to add meta to routes
-- 💄 Dynamic styling based on router #WIP
-- 🐛 Fix add new association button in user infos panel
-- 🐛 Fix Quasar type for deployment
+- ✨ Submit project is done #64
+- 🎨 Optimize breadcrumbs for new ids, restrict access to projects to 'add_project' perm only
+- 🎨 Dynamic CommissionDate change on home page.
+- 🚧 Optimize project budget and individual cases #64
+- 💄 Corrected outline button problem.
+- ✨ Submit project as an association #64
+- 💄 Corrected NavigateTopButton style on dashboard.
+- 🐛 Fixed hasPresidentStatus with canBePresidentFrom and canBePresidentTo.
+- ✨ Moved NavigateTopButton to LayoutContent.
+- ♿️ Improved HTML (titles, sections, ...).
+- 🚑️ Fixed broken CAS register and login
+- 🚧 Get and delete documentUploads
+- ♿️ Small fixes for accessibility.
+- 🚧 Upload documents #64
+- 🎨 Changed accept format in QFile.
+- :lipstick: fix!: btn groups class is now global
+- 🐛 Fixed images path problem.
+- 🚧 WIP document upload in project submit #64
+- :lipstick: [WIP] fix!: hamburger menu
+- :lipstick: feat!: account info views are now responsive
+- 🍱 Compressed logos images.
+- 🍱 Changed logos in footer.
+- 🌐 Removed useless fields from user validation page.
+- :lipstick: [WIP] feat: refacto and redo account infos view
+- 🗃️ Added is_site to Commission.
+- :lipstick: fix: convert raw variables into a global one
+- :lipstick: feat!: association detail/edit view are now responsive.
+- 💚 Replaced Sentry in .env .
