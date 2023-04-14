@@ -10,7 +10,7 @@ const routesNames = ['Home', 'Login', 'CASLogin', '404', 'DesignSystem']
 
 <template>
     <RouterView
-        v-if="colorVariant || (routesNames.indexOf(route.name) !== -1)"
+        v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
     />
 </template>
 
