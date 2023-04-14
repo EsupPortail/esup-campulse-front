@@ -207,20 +207,18 @@ async function onGetCommissionDates() {
 
 // GET DATA FOR STEP 3
 async function onGetProjectBudget() {
-    if (!projectCommissionDatesModel.value.length) {
-        try {
-            await getCommissions()
-            await getCommissionDates()
-            await projectStore.getProjectCommissionDates()
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.loading-error')
-            })
-        }
+    try {
+        await getCommissions()
+        await getCommissionDates()
+        await projectStore.getProjectCommissionDates()
+        initProjectCommissionDates()
+        initProjectBudget()
+    } catch {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.loading-error')
+        })
     }
-    initProjectCommissionDates()
-    initProjectBudget()
 }
 
 // GET DATA FOR STEP 4
@@ -355,6 +353,7 @@ async function onSubmitProject() {
         try {
             await submitProject()
             done6.value = true
+            await router.push({name: 'SubmitProjectSuccessful', params: {projectId: projectStore.project?.id}})
         } catch {
             notify({
                 type: 'negative',

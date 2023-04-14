@@ -47,7 +47,7 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getProjectDocuments() {
             const {axiosAuthenticated} = useAxios()
-            this.projectDocuments = (await axiosAuthenticated.get<ProjectDocument[]>('/documents/uploads')).data
+            this.projectDocuments = (await axiosAuthenticated.get<ProjectDocument[]>(`/documents/uploads?project_id=${this.project?.id}`)).data
         }
     }
 })

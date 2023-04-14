@@ -33,7 +33,9 @@ export default function () {
     }
 
     async function getCommissionDates() {
-        commissionDates.value = (await axiosPublic.get<CommissionDate[]>('/commissions/commission_dates')).data
+        if (commissionDates.value.length === 0) {
+            commissionDates.value = (await axiosPublic.get<CommissionDate[]>('/commissions/commission_dates')).data
+        }
     }
 
     // INIT COMMISSION DATA
@@ -61,13 +63,15 @@ export default function () {
         commissionDatesLabels.value = []
         commissionDates.value.forEach((commissionDate) => {
             const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
-            if (commission && commission.isSite === isSite) {
-                commissionDatesLabels.value.push({
-                    value: commissionDate.id,
-                    label: `${commission.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
-                    commission: commission.id as number,
-                    disable: false
-                })
+            if (commission) {
+                if (isSite || (!isSite && !commission.isSite)) {
+                    commissionDatesLabels.value.push({
+                        value: commissionDate.id,
+                        label: `${commission.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
+                        commission: commission.id as number,
+                        disable: false
+                    })
+                }
             }
         })
     }

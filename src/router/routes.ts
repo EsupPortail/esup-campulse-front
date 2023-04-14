@@ -115,6 +115,16 @@ const routes: RouteRecordRaw[] = [
                                 }
                             }
                         ]
+                    },
+                    {
+                        path: 'submit-project-successful/:projectId',
+                        name: 'SubmitProjectSuccessful',
+                        component: () => import('@/views/dashboard/projectManagement/SubmitProjectSuccessfulView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
+                            requiresAddProjectPerm: true
+                        }
                     }
                 ]
             },
