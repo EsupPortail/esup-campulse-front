@@ -58,7 +58,6 @@ async function onGetContents() {
             :iconClass="home.cards[0].iconClass"
             :infoContent="'<strong>' + associationCount + '</strong> ' + home.cards[0].infoContent"
             :link="home.cards[0].link"
-            :title="home.cards[0].title"
             :titleLine1="home.cards[0].titleLine1"
             :titleLine2="home.cards[0].titleLine2"
         />
@@ -69,7 +68,6 @@ async function onGetContents() {
             :iconClass="home.cards[1].iconClass"
             :infoContent="home.cards[1].infoContent"
             :link="home.cards[1].link"
-            :title="home.cards[1].title"
             :titleLine1="home.cards[1].titleLine1"
             :titleLine2="home.cards[1].titleLine2"
         />
@@ -80,7 +78,6 @@ async function onGetContents() {
             :iconClass="home.cards[2].iconClass"
             :infoContent="home.cards[2].infoContent + ' <strong>' + nextCommissionDate + '</strong>'"
             :link="home.cards[2].link"
-            :title="home.cards[2].title"
             :titleLine1="home.cards[2].titleLine1"
             :titleLine2="home.cards[2].titleLine2"
         />
