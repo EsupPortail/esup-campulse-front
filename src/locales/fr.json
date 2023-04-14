@@ -4,6 +4,7 @@
     "title": "Contenu introuvable"
   },
   "account": "Compte",
+  "account-validated": "Compte validé",
   "activate": "Activer",
   "add": "Ajouter",
   "alerts": {
@@ -206,6 +207,7 @@
   },
   "deactivate": "Désactiver",
   "deactivated": "Désactivée",
+  "delegate": "Déléguer",
   "delete": "Supprimer",
   "directory": {
     "advanced-search": "Recherche avancée",
