@@ -93,7 +93,7 @@ function onInitGroupLabels() {
                 :options="groupLabels"
                 color="teal"
                 type="checkbox"
-                @update:model-value="initGroupPermToJoinAssociation"
+                @update:model-value="initGroupPermToJoinAssociation(newGroups)"
             />
         </QField>
         <QSelect

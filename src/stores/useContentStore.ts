@@ -7,10 +7,7 @@ export const useHomeContent = defineStore('homeContent', {
     state: (): HomeStore => ({
         cards: [
             {
-                title: i18n.global.t('home.cards.charter.title'),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', //i18n.global.t('home.cards.charter.description'),
-                imagePath: '/src/assets/img/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.charter.image-alt'),
                 link: '/associations',
                 cssClass: 'home-section-annuaire',
                 buttonLabel: 'Consulter l\'annuaire',
@@ -20,10 +17,7 @@ export const useHomeContent = defineStore('homeContent', {
                 iconClass: 'bi bi-geo-alt'
             },
             {
-                title: i18n.global.t('home.cards.directory.title'),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', //i18n.global.t('home.cards.directory.description'),
-                imagePath: '/src/assets/img/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.directory.image-alt'),
                 link: '/charter',
                 cssClass: 'home-section-charte',
                 buttonLabel: 'Espace charte',
@@ -33,14 +27,11 @@ export const useHomeContent = defineStore('homeContent', {
                 iconClass: 'bi bi-book'
             },
             {
-                title: i18n.global.t('home.cards.commission.title'),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', //i18n.global.t('home.cards.commission.description'),
-                imagePath: '/src/assets/img/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.commission.image-alt'),
                 link: '/commission',
                 cssClass: 'home-section-cape',
                 buttonLabel: 'Espace CAPE',
-                infoContent: 'Prochaine commission :<br /><strong>CAPE Octobre - 10/10/2022</strong>',
+                infoContent: 'Prochaine commission :<br>',
                 titleLine1: 'CAPE',
                 titleLine2: 'Commission d\'Aide aux Projets Étudiants',
                 iconClass: 'bi bi-send'

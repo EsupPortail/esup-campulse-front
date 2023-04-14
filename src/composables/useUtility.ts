@@ -1,8 +1,10 @@
 import type {RouteLocationMatched, RouteParams} from 'vue-router'
 
+const CURRENCY = '€'
+
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
 
-export default function() {
+export default function () {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -56,9 +58,12 @@ export default function() {
         for (let i = 0; i < routeMatched.length; i++) {
             if (routeMatched[i].meta.breadcrumb) {
                 let path = ''
-                if (routeMatched[i].path.includes(':id')) {
+                if (routeMatched[i].path.includes(':id') || routeMatched[i].path.includes(':associationId') ||
+                    routeMatched[i].path.includes(':projectId')) {
                     const id = routeParams.id as string
-                    path = routeMatched[i].path.replace(':id', id)
+                    const associationId = routeParams.associationId as string
+                    const projectId = routeParams.projectId as string
+                    path = routeMatched[i].path.replace(':id', id).replace(':associationId', associationId).replace(':projectId', projectId)
                 } else {
                     path = routeMatched[i].path
                 }
@@ -71,5 +76,5 @@ export default function() {
         return breadcrumbs
     }
 
-    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior}
+    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior, CURRENCY}
 }

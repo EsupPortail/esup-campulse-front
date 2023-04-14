@@ -78,6 +78,15 @@
   &.q-field--focused .q-field__marginal {
     color: $annuaireColor;
   }
+
+  .q-uploader__header {
+    background-color: $annuaireColorBackground;
+    color: $annuaireColorText;
+
+    .q-btn {
+      box-shadow: none;
+    }
+  }
 }
 
 .variant-space-2 {
@@ -113,6 +122,15 @@
 
   .q-select.q-field--focused .q-field__marginal {
     color: $charteColorActive;
+  }
+
+  .q-uploader__header {
+    background-color: $charteColorBackground;
+    color: $charteColorText;
+
+    .q-btn {
+      box-shadow: none;
+    }
   }
 }
 
@@ -150,6 +168,21 @@
   .q-select.q-field--focused .q-field__marginal {
     color: $capeColor;
   }
+
+  .q-stepper {
+    .q-stepper__tab--active, .q-stepper__tab--done {
+      color: $capeColor;
+    }
+  }
+
+  .q-uploader__header {
+    background-color: $capeColorBackground;
+    color: $capeColorText;
+
+    .q-btn {
+      box-shadow: none;
+    }
+  }
 }
 
 .variant-space-4 {
@@ -185,6 +218,15 @@
 
   .q-select.q-field--focused .q-field__marginal {
     color: $dashboardColor;
+  }
+
+  .q-uploader__header {
+    background-color: $dashboardColorBackground;
+    color: $dashboardColorText;
+
+    .q-btn {
+      box-shadow: none;
+    }
   }
 }
 
@@ -295,6 +337,11 @@ label.custom-label {
 
   .q-btn__content {
     flex-wrap: nowrap;
+    white-space: nowrap;
+
+    & > * {
+      color: $textColor3;
+    }
   }
 
   &.small-button {
@@ -485,6 +532,12 @@ label.custom-label {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+fieldset {
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 // A document form element allowing to upload, remove and review a list of documents.
@@ -1658,6 +1711,29 @@ label.custom-label {
   button {
     flex: 0 0 17rem;
   }
+
+  @media only screen and (max-width: $pageWidth) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    // flex-direction: column;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+
+    p {
+      text-align: justify;
+      flex: 1 0 100%;
+      order: 1;
+    }
+
+    button {
+      flex: 1 1 auto;
+      order: 2;
+    }
+  }
+
+  // @media only screen and (max-width: $responsiveWidth) {
+
+  // }
 }
 
 // Multi-column form
