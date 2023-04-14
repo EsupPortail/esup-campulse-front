@@ -85,10 +85,10 @@ export interface ProjectCommissionDate {
     project?: number,
     commissionDate: number,
     isFirstEdition?: boolean,
-    amountAskedPreviousEdition?: number | null,
-    amountEarnedPreviousEdition?: number | null,
-    amountAsked?: number | null,
-    amountEarned?: number | null
+    amountAskedPreviousEdition?: number | string,
+    amountEarnedPreviousEdition?: number | string,
+    amountAsked?: number | string,
+    amountEarned?: number | string
 }
 
 // STORE

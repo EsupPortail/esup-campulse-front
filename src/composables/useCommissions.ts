@@ -20,7 +20,7 @@ const commissionDates = ref<CommissionDate[]>([])
 // Used to store commission dates labels for project submission
 const commissionDatesLabels = ref<SelectCommissionDateLabel[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -39,7 +39,7 @@ export default function() {
     // INIT COMMISSION DATA
     const initCommissionLabels = () => {
         commissionOptions.value = []
-        commissions.value.forEach(function(commission) {
+        commissions.value.forEach(function (commission) {
             commissionOptions.value.push({
                 value: commission.id,
                 label: commission.acronym
@@ -56,19 +56,21 @@ export default function() {
     }
     watch(() => userManagerStore.user, initUserCommissions)
 
-    const initCommissionDates = async () => {
+    const initCommissionDates = async (isSite: boolean | undefined) => {
         await getCommissions()
-        commissionDatesLabels.value = commissionDates.value.map(function(commissionDate) {
+        commissionDatesLabels.value = []
+        commissionDates.value.forEach((commissionDate) => {
             const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
-            return {
-                value: commissionDate.id,
-                label: `${commission?.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
-                commission: commission?.id as number,
-                disable: false
+            if (commission && commission.isSite === isSite) {
+                commissionDatesLabels.value.push({
+                    value: commissionDate.id,
+                    label: `${commission.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
+                    commission: commission.id as number,
+                    disable: false
+                })
             }
         })
     }
-    watch(() => commissionDates.value.length, initCommissionDates)
 
     return {
         getCommissions,
@@ -78,6 +80,7 @@ export default function() {
         initUserCommissions,
         commissionDates,
         getCommissionDates,
-        commissionDatesLabels
+        commissionDatesLabels,
+        initCommissionDates
     }
 }
