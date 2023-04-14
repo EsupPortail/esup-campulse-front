@@ -327,23 +327,6 @@
       "description": "Association, porteur ou porteuse de projet, venez présenter votre projet.",
       "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022"
     },
-    "cards": {
-      "charter": {
-        "description": "Lorem ipsum description",
-        "image-alt": "Logo charte",
-        "title": "Charte des associations du site Alsace"
-      },
-      "directory": {
-        "description": "Lorem ipsum description",
-        "image-alt": "Logo annuaire",
-        "title": "Annuaire des associations"
-      },
-      "commission": {
-        "description": "Lorem ipsum description",
-        "image-alt": "Logo commissions",
-        "title": "Commission d'aide aux projets étudiants"
-      }
-    },
     "back-dashboard": "Retourner vers votre espace",
     "charter": "Charte des associations",
     "commission": "Commission d'aide aux projets étudiants",

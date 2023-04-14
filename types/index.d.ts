@@ -4,10 +4,7 @@
  *  @params: title, description, imagePath, imageAlt
  */
 export interface HomeCard {
-    title: string,
     description: string,
-    imagePath: string,
-    imageAlt: string,
     link: string,
     cssClass: string,
     buttonLabel: string,

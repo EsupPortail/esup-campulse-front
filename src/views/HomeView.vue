@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import HomeCard from '@/components/layout/LayoutHomeCard.vue'
 import HomeBanner from '@/components/layout/LayoutHomeBanner.vue'
+import useCommissions from '@/composables/useCommissions'
 import {useHomeContent} from '@/stores/useContentStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
@@ -9,12 +10,13 @@ import {onMounted, ref, watch} from 'vue'
 
 const home = useHomeContent()
 const associationStore = useAssociationStore()
+const {getCommissionDates, commissionDates} = useCommissions()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 
 onMounted(async () => {
     loading.show
-    await onGetAssociationNames()
+    await onGetContents()
     loading.hide
 })
 
@@ -23,9 +25,13 @@ watch(() => associationStore.associationNames.length, () => {
     associationCount.value = associationStore.associationNames.length
 })
 
-async function onGetAssociationNames() {
+const nextCommissionDate = ref<string>()
+
+async function onGetContents() {
     try {
         await associationStore.getAssociationNames(true, false)
+        await getCommissionDates()
+        nextCommissionDate.value = (new Date(commissionDates.value[0].commissionDate)).toLocaleDateString('fr-FR')
     } catch (error) {
         notify({
             type: 'negative',
@@ -50,9 +56,7 @@ async function onGetAssociationNames() {
             :cssClass="home.cards[0].cssClass"
             :description="home.cards[0].description"
             :iconClass="home.cards[0].iconClass"
-            :imageAlt="home.cards[0].imageAlt"
-            :imagePath="home.cards[0].imagePath"
-            :infoContent="associationCount + ' ' + home.cards[0].infoContent"
+            :infoContent="'<strong>' + associationCount + '</strong> ' + home.cards[0].infoContent"
             :link="home.cards[0].link"
             :title="home.cards[0].title"
             :titleLine1="home.cards[0].titleLine1"
@@ -63,8 +67,6 @@ async function onGetAssociationNames() {
             :cssClass="home.cards[1].cssClass"
             :description="home.cards[1].description"
             :iconClass="home.cards[1].iconClass"
-            :imageAlt="home.cards[1].imageAlt"
-            :imagePath="home.cards[1].imagePath"
             :infoContent="home.cards[1].infoContent"
             :link="home.cards[1].link"
             :title="home.cards[1].title"
@@ -76,9 +78,7 @@ async function onGetAssociationNames() {
             :cssClass="home.cards[2].cssClass"
             :description="home.cards[2].description"
             :iconClass="home.cards[2].iconClass"
-            :imageAlt="home.cards[2].imageAlt"
-            :imagePath="home.cards[2].imagePath"
-            :infoContent="home.cards[2].infoContent"
+            :infoContent="home.cards[2].infoContent + ' <strong>' + nextCommissionDate + '</strong>'"
             :link="home.cards[2].link"
             :title="home.cards[2].title"
             :titleLine1="home.cards[2].titleLine1"
