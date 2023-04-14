@@ -71,7 +71,7 @@ async function onDelegatePresidency(activate: boolean) {
 
 <template>
     <QBtn
-        :label="t('manage')"
+        :label="t('delegate')"
         color="primary"
         icon="bi-pencil"
         @click="openDelegationPanel = true"

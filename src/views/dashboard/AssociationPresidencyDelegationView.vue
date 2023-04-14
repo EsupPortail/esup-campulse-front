@@ -79,7 +79,7 @@ const columns: QTableProps['columns'] = [
     {
         name: 'isValidatedByAdmin',
         align: 'left',
-        label: t('validated'),
+        label: t('account-validated'),
         field: 'isValidatedByAdmin',
         sortable: true
     },
