@@ -1709,7 +1709,8 @@ fieldset {
   }
 
   button {
-    flex: 0 0 17rem;
+    margin: 0.5rem 0;
+    // flex: 0 0 17rem;
   }
 
   @media only screen and (max-width: $pageWidth) {
