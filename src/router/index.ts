@@ -14,9 +14,10 @@ const colorVariant = ref<string>('')
 
 
 router.beforeEach(async (to) => {
+
     const userStore = useUserStore()
     const {initStaffStatus, isStaff, getGroups} = useUserGroups()
-    const {newUser} = useSecurity()
+    const {newUser, hasPerm} = useSecurity()
 
     // Get auth user with token
     const accessToken = localStorage.getItem('JWT__access__token')
@@ -51,6 +52,8 @@ router.beforeEach(async (to) => {
             return {name: 'ProfilePasswordEdit'}
         }
     }
+    
+    if (to.meta.requiresAddProjectPerm && !hasPerm('add_project')) return {name: '404'}
 })
 
 export default router

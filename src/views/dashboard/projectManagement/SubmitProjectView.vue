@@ -388,7 +388,7 @@ async function onSubmitProject() {
                     <p>
                         {{ t('project.info-panel-status') }}
                         {{ applicant === 'association' ? t('project.info-panel-status-association') : t('project.info-panel-status-individual') + '.' }}
-                        <span v-if="applicant === 'association'"><strong>{{ associationName }}</strong></span>
+                        <span v-if="applicant === 'association'"><strong>{{ associationName }}</strong>.</span>
                     </p>
                     <p>
                         {{ t('project.required-documents-list') + ' :' }}

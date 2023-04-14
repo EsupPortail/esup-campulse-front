@@ -67,8 +67,8 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'association/:associationId',
                         meta: {
-                            title: i18n.global.t('breadcrumbs.submit-project'),
-                            breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
+                            requiresAddProjectPerm: true
                         },
                         children: [
                             {
@@ -76,8 +76,7 @@ const routes: RouteRecordRaw[] = [
                                 name: 'CommissionAssociationDashboard',
                                 component: () => import('@/views/dashboard/projectManagement/CommissionAssociationDashboardView.vue'),
                                 meta: {
-                                    title: i18n.global.t('breadcrumbs.submit-project'),
-                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                                    title: i18n.global.t('breadcrumbs.manage-my-projects')
                                 }
                             },
                             {
@@ -94,8 +93,8 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'individual',
                         meta: {
-                            title: i18n.global.t('breadcrumbs.submit-project'),
-                            breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
+                            requiresAddProjectPerm: true
                         },
                         children: [
                             {
@@ -103,8 +102,7 @@ const routes: RouteRecordRaw[] = [
                                 name: 'CommissionIndividualDashboard',
                                 component: () => import('@/views/dashboard/projectManagement/CommissionIndividualDashboardView.vue'),
                                 meta: {
-                                    title: i18n.global.t('breadcrumbs.submit-project'),
-                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project')
+                                    title: i18n.global.t('breadcrumbs.manage-my-projects')
                                 }
                             },
                             {

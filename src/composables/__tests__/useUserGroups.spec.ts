@@ -105,13 +105,13 @@ describe('useUserGroups', () => {
 
         it('should return true if at least one of the groups is enabled to join associations', () => {
             newGroups.value = [6, 7] // student institution & student misc
-            initGroupPermToJoinAssociation()
+            initGroupPermToJoinAssociation(newGroups.value)
             expect(groupCanJoinAssociation.value).toBeTruthy()
         })
 
         it('should return false if none of the groups are enabled to join associations', () => {
             newGroups.value = [1, 2] // general manager & institution manager
-            initGroupPermToJoinAssociation()
+            initGroupPermToJoinAssociation(newGroups.value)
             expect(groupCanJoinAssociation.value).toBeFalsy()
         })
     })

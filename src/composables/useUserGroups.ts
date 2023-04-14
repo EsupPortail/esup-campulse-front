@@ -31,7 +31,7 @@ const isStaff = ref<boolean | undefined>(undefined)
 // Used to display or not the select for commissions
 const commissionMemberIsSelected = ref<boolean>(false)
 
-export default function() {
+export default function () {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const {userCommissions} = useCommissions()
@@ -102,7 +102,7 @@ export default function() {
     async function initGroupLabels(onlyPublicGroups: boolean) {
         const {hasPerm} = useSecurity()
         const labels: SelectGroupLabel[] = []
-        groups.value?.map(function(group) {
+        groups.value?.map(function (group) {
             if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
                 const label: string | undefined = getGroupLiteral(group.id)
                 if (label) {
@@ -119,7 +119,7 @@ export default function() {
             }
         })
         // Sort by alphabetical order
-        labels.sort(function(a, b) {
+        labels.sort(function (a, b) {
             const labelA = a.label.toLowerCase().normalize('NFD'), labelB = b.label.toLowerCase().normalize('NFD')
             if (labelA < labelB)
                 return -1
@@ -158,11 +158,11 @@ export default function() {
      * If the user has selected a group that is not in the list of groups that can join the association, then the user
      * cannot join the association
      */
-    const initGroupPermToJoinAssociation = () => {
+    const initGroupPermToJoinAssociation = (groupArray: number[]) => {
         let perm = false
-        if (newGroups.value.length && groups.value?.length) {
-            for (let i = 0; i < newGroups.value.length; i++) {
-                const g = groups.value?.find(obj => obj.id === newGroups.value[i])
+        if (groupArray.length && groups.value?.length) {
+            for (let i = 0; i < groupArray.length; i++) {
+                const g = groups.value?.find(obj => obj.id === groupArray[i])
                 if (g && canJoinAssociationGroups.includes(g.name)) {
                     perm = true
                     break
@@ -171,7 +171,9 @@ export default function() {
         }
         groupCanJoinAssociation.value = perm
     }
-    watch(() => newGroups.value.length, initGroupPermToJoinAssociation)
+    watch(() => newGroups.value.length, () => {
+        initGroupPermToJoinAssociation(newGroups.value)
+    })
 
     /**
      * If the user is a member of a non-public group, then they are staff
