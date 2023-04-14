@@ -100,7 +100,7 @@ const columns: QTableProps['columns'] = [
     {
         name: 'delegation',
         align: 'right',
-        label: t('manage'),
+        label: t('delegate'),
         field: 'delegation',
         sortable: false
     }
