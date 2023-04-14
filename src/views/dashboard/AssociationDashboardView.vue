@@ -6,6 +6,8 @@ import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import type {Association} from '#/association'
+import type {AssociationUserDetail} from '#/user'
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -13,6 +15,7 @@ const route = useRoute()
 
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
+const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
 
 onMounted(async function () {
     loading.show
@@ -37,6 +40,24 @@ const initValues = () => {
 watch(() => associationStore.association, initValues)
 watch(() => userStore.userAssociations.length, initValues)
 
+const associationUser = ref<AssociationUserDetail>()
+watch(() => userStore.userAssociations.length, () => {
+    associationUser.value = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.id as string))
+})
+
+const associationUserRole = ref<{ codeName: string, literalName: string }>({
+    codeName: '',
+    literalName: ''
+})
+watch(() => associationUser.value, () => {
+    if (associationUser.value) {
+        const codeName = getAssociationUserRole(associationUser.value)
+        const literalName = associationRoleOptions.find(obj => obj.value === codeName)?.label ?? ''
+        associationUserRole.value.codeName = codeName
+        associationUserRole.value.literalName = literalName
+    }
+})
+
 
 async function onGetAssociationDetail() {
     try {
@@ -52,6 +73,22 @@ async function onGetAssociationDetail() {
 </script>
 
 <template>
+    <section class="dashboard-section">
+        <h2>
+            <QIcon name="mdi-account"/>
+            {{ t('dashboard.association-user.my-role') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <p class="paragraph">
+                    {{
+                        associationUserRole.literalName + (associationUserRole.codeName !== 'isPresident' ?
+                            ` ${hasPresidentStatus ? t('with') : t('without')} droits de présidence` : '')
+                    }}
+                </p>
+            </div>
+        </div>
+    </section>
     <section
         v-if="hasPresidentStatus || association?.isPublic || userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
         class="dashboard-section"
