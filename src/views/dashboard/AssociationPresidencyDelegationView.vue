@@ -121,6 +121,7 @@ const columns: QTableProps['columns'] = [
             <div class="form">
                 <QTable
                     :columns="columns"
+                    :loading="!associationMembers"
                     :no-data-label="t('dashboard.association-user.no-member')"
                     :rows="associationMembers"
                     :rows-per-page-options="[10, 20, 50, 0]"
