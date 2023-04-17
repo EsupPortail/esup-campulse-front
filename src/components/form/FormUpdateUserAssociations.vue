@@ -78,30 +78,36 @@ async function onGetUserAssociations() {
     </QCard>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
 </style>
 
-<style lang="sass" scoped>
-.form
-    display: flex
-    flex-direction: column
-    gap: 1rem
+<style lang="scss" scoped>
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
-.association-card
-    padding: 1rem
+.association-card {
+    padding: 1rem;
+}
 
-fieldset
-    border: none
+fieldset {
+    border: none;
+}
 
-fieldset .q-checkbox
-    width: 100%
+fieldset .q-checkbox {
+    width: 100%;
+}
 
-.delete-message
-    color: red
+.delete-message {
+    color: red;
+}
 
-.btn-group
-    display: flex
-    gap: 1rem
-    margin-top: 1rem
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
 </style>

@@ -201,8 +201,8 @@ async function onDeleteUser() {
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-@import '@/assets/styles/dashboard.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/user-validation-detail.scss'
 </style>

@@ -136,7 +136,7 @@ const clearValues = () => {
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/forms.scss";
+@import '@/assets/styles/forms.scss';
 
 .q-card__section {
     padding: 1rem 0 0 0;
@@ -157,5 +157,4 @@ h2 {
         margin: 1rem 0 0 0;
     }
 }
-
 </style>

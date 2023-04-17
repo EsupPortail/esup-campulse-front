@@ -131,8 +131,8 @@ function clearOptions() {
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/forms.scss";
-@import "@/assets/_variables.scss";
+@import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
 .q-card {
     margin-bottom: 1rem;

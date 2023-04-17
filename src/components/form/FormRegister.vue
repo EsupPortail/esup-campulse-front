@@ -205,7 +205,6 @@ async function onRegister() {
                     />
                 </div>
             </div>
-
         </QForm>
     </section>
 </template>

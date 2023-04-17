@@ -150,15 +150,17 @@ function onReset() {
     </QDialog>
 </template>
 
-<style lang="sass">
-@import "@/assets/styles/forms.scss"
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
 </style>
 
-<style lang="sass" scoped>
-.btn-group
-    display: flex
-    gap: 5px
+<style lang="scss" scoped>
+.btn-group {
+    display: flex;
+    gap: 5px;
+}
 
-fieldset
-    border: none
+fieldset {
+    border: none;
+}
 </style>

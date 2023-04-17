@@ -206,7 +206,7 @@ async function onUpdateUserAssociations() {
 </template>
 
 <style lang="scss">
-@import "@/assets/_variables.scss";
+@import '@/assets/_variables.scss';
 
 .q-tab-panel {
     padding: 0;
@@ -224,5 +224,4 @@ async function onUpdateUserAssociations() {
         }
     }
 }
-
 </style>
