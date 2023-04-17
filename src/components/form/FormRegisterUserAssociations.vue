@@ -98,12 +98,13 @@ function clearOptions() {
                     <div class="btn-group">
                         <QBtn
                             :label="t('forms.delete-association')"
-                            icon="mdi-minus-circle-outline"
+                            icon="mdi-trash-can-outline"
                             @click="removeAssociation(index)"
+                            class="bg-delete"
                         />
                         <QBtn
                             v-if="newAssociations.length > 0 && newAssociations[0].id"
-                            :label="t('validate')"
+                            :label="t('forms.validate-association')"
                             class="validate-button"
                             icon-right="bi-check2"
                             type="submit"

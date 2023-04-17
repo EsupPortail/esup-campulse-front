@@ -64,7 +64,7 @@
     "publish-in-directory": "Publier dans l'annuaire",
     "unpublish-in-directory": "Dépublier de l'annuaire",
     "validate-all-changes": "Valider tous les changements",
-    "validate-new-associations": "Valider les ajouts d'associations",
+    "validate-new-associations": "Valider tous les ajouts d'associations",
     "labels": {
       "acronym": "Acronyme",
       "activity-field": "Domaine d'activité",
@@ -246,7 +246,7 @@
     "legal-notice": "Mentions légales"
   },
   "forms": {
-    "add-association": "Ajouter une association",
+    "add-association": "Ajouter une association supplémentaire",
     "add-my-associations": "Ajouter les associations liées",
     "add-selected-associations": "Ajouter les associations sélectionnées",
     "association-institution": "Établissement de rattachement",
@@ -254,7 +254,7 @@
     "association-name": "Nom de l'association",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "create-account": "Créer un compte",
-    "delete-association": "Supprimer l'association",
+    "delete-association": "Supprimer",
     "email": "Adresse mail",
     "error-unistra-mail-domain": "Cette adresse provient de l'Université de Strasbourg, veuillez passer par le formulaire CAS pour vous inscrire.",
     "fill-field": "Veuillez remplir ce champ",
@@ -312,6 +312,7 @@
     "social-object-hint": "Objet figurant sur les statuts de l'association",
     "status": "Mon statut",
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
+    "validate-association": "Valider cet ajout",
     "validated-account": "Compte validé"
   },
   "from": "À partir du",
