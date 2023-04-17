@@ -21,6 +21,7 @@ onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
     initAssociationUser()
+    initAssociationUserRole()
     loading.hide()
 })
 
@@ -52,14 +53,15 @@ const associationUserRole = ref<{ codeName: string, literalName: string }>({
     codeName: '',
     literalName: ''
 })
-watch(() => associationUser.value, () => {
+const initAssociationUserRole = () => {
     if (associationUser.value) {
         const codeName = getAssociationUserRole(associationUser.value)
         const literalName = associationRoleOptions.find(obj => obj.value === codeName)?.label ?? ''
         associationUserRole.value.codeName = codeName
         associationUserRole.value.literalName = literalName
     }
-})
+}
+watch(() => associationUser.value, initAssociationUserRole)
 
 
 async function onGetAssociationDetail() {
@@ -83,7 +85,10 @@ async function onGetAssociationDetail() {
         </h2>
         <div class="form-container">
             <div class="form">
-                <p class="paragraph">
+                <p
+                    v-if="associationUserRole.literalName"
+                    class="paragraph"
+                >
                     {{
                         associationUserRole.literalName + (associationUserRole.codeName !== 'isPresident' ?
                             ` ${hasPresidentStatus ? t('with') : t('without')} droits de présidence` : '')
