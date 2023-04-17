@@ -115,12 +115,8 @@ function onInitGroupLabels() {
 <style lang="scss">
 @import "@/assets/_variables.scss";
 
-fieldset {
-    border: none;
-    margin: 0 0 0 .4rem;
-}
-
 .q-option-group {
     color: $dashboardColor;
+    padding: 1rem;
 }
 </style>

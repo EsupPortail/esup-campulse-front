@@ -132,25 +132,29 @@ const clearValues = () => {
                 </section>
             </div>
         </div>
-
     </QForm>
 </template>
 
 <style lang="scss">
 @import "@/assets/styles/forms.scss";
 
-h2 {
-    padding-left: 1rem;
+.q-card__section {
+    padding: 1rem 0 0 0;
 }
 
-.q-card__section {
-    padding: 0;
+h2 {
+    padding-left: 1rem;
 }
 
 @media screen and (min-width: $responsiveWidth) {
     .form {
         width: $halfSize;
         margin: auto;
+    }
+
+    .btn-group {
+        justify-content: flex-start;
+        margin: 1rem 0 0 0;
     }
 }
 

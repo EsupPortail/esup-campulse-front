@@ -69,14 +69,9 @@ onMounted(initValues)
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/associations.scss";
 @import "@/assets/_variables.scss";
 @import "@/assets/styles/forms.scss";
 
-.add-network-btn {
-    width: $fullSize;
-    background: pink;
-}
 
 // Mobile version
 .delete-network-btn {
@@ -84,6 +79,11 @@ onMounted(initValues)
 }
 
 @media screen and (min-width: $responsiveWidth) {
+    .form-container {
+        display: flex;
+        flex-direction: column;
+    }
+
     #network-section {
         flex-direction: row;
         gap: .625rem;
@@ -91,10 +91,6 @@ onMounted(initValues)
         .q-input {
             flex-grow: 2;
             margin-bottom: .625rem;
-        }
-
-        .q-btn {
-            justify-content: center;
         }
 
         .delete-network-btn {
@@ -106,6 +102,7 @@ onMounted(initValues)
     .add-network-btn {
         width: 35%;
     }
+
 }
 
 

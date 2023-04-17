@@ -166,21 +166,18 @@ ul {
     list-style: none;
 }
 
-
 @media screen and (min-width: $responsiveWidth) {
-    section {
-        .form-container {
-            .form {
-                width: $halfSize;
-                margin: auto;
-            }
-        }
-
-        .form-title {
-            width: $halfSize;
-            margin: auto;
-        }
+    .form, .form-title, .btn-group {
+        width: $halfSize;
+        margin: auto;
     }
 
+    .btn-group {
+        justify-content: center;
+
+        .q-btn {
+            width: 30%;
+        }
+    }
 }
 </style>

@@ -149,15 +149,12 @@ const columns: QTableProps['columns'] = [
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/dashboard.scss'
-@import '@/assets/styles/forms.scss'
-</style>
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
-<style lang="sass" scoped>
-ul
-    margin-left: -40px
-
-li
-    list-style: none
+.form-page-navigation {
+    width: $buttonSize;
+    padding: 0;
+}
 </style>

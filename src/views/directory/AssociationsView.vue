@@ -333,10 +333,4 @@ async function clearSearch(apiSearch: boolean) {
 <style lang="scss">
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
-
-@media screen and (min-width: 62.5rem) {
-    .form {
-        width: $fullSize;
-    }
-}
 </style>

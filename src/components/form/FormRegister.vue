@@ -102,7 +102,6 @@ async function onRegister() {
                 ></i>
                 {{ t('user.infos') }}
             </h2>
-
             <div class="form-container">
                 <div class="form">
                     <FormAddUserFromLDAP v-if="isStaff"/>
@@ -151,6 +150,7 @@ async function onRegister() {
                     />
                 </div>
             </div>
+
             <h2>
                 <i
                     aria-hidden="true"
@@ -177,7 +177,6 @@ async function onRegister() {
                 </div>
             </div>
 
-            >
             <h2>
                 <i
                     aria-hidden="true"
@@ -199,25 +198,24 @@ async function onRegister() {
                     />
                 </div>
             </div>
+
         </QForm>
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-@import '@/assets/styles/dashboard.scss'
-</style>
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
 
-<style lang="sass" scoped>
-.q-separator
-    margin: 10px 0
+.dashboard-section {
+    h2 {
+        padding: 1rem 1rem 0;
+    }
 
-fieldset + .q-separator
-    margin-left: 15px
-
-.q-btn[type="submit"]
-    margin: 15px 0 5px 15px
-
-fieldset
-    border: none
+    @media screen and (min-width: $responsiveWidth) {
+        .q-input {
+            width: 62.5rem;
+        }
+    }
+}
 </style>

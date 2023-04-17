@@ -109,7 +109,7 @@ const columns: QTableProps['columns'] = [
     <div class="form-title">
         <h2>
             <QIcon name="mdi-pencil-box-outline"/>
-            Liste des associations
+            {{ t('directory.list') }}
         </h2>
         <QBtn
             v-if="hasPerm('add_association')"
@@ -230,4 +230,21 @@ const columns: QTableProps['columns'] = [
 
 <style lang="scss">
 @import '@/assets/styles/forms.scss';
+@import '@/assets/_variables';
+
+.form-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .q-btn {
+        padding: .5rem;
+        margin-top: .6rem;
+    }
+
+    @media screen and (min-width: $responsiveWidth) {
+        flex-direction: row;
+    }
+}
+
 </style>
