@@ -386,6 +386,7 @@
       "invalid-token": "Jeton invalide.",
       "loading-error": "Erreur lors du chargement de la page, veuillez rafraîchir.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
+      "not-allowed-to-manage-this-commission": "Vous n'êtes pas autorisé à gérer cette commission.",
       "no-ticket": "Pas de ticket.",
       "project-creation-error": "Erreur lors de la création du projet.",
       "project-edition-error": "Erreur lors de l'édition du projet.",

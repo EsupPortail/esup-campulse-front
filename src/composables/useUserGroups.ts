@@ -35,6 +35,7 @@ export default function () {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const {userCommissions} = useCommissions()
+    const {hasPerm} = useSecurity()
 
 
     const groupNames = [
@@ -192,7 +193,6 @@ export default function () {
         isStaff.value = perm
     }
 
-
     /**
      * Return the old groups that are not in the new groups.
      * @param {number[]} newGroups - The new groups that the user is a member of.
@@ -230,19 +230,6 @@ export default function () {
         const userManagerStore = useUserManagerStore()
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
-
-        let hasPrivateGroups = false
-        let hasPublicGroups = false
-
-        newGroups.value.forEach((group) => {
-            const GROUP = groups.value.find(obj => obj.id === group)
-            if (GROUP?.isPublic) hasPublicGroups = true
-            else hasPrivateGroups = true
-
-            if (hasPublicGroups && hasPrivateGroups) {
-                throw 'cannot-attribute-public-and-private-roles'
-            }
-        })
 
         if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userCommissions.value, userManagerStore.userCommissions)) {
             await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups),

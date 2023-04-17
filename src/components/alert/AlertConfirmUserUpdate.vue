@@ -41,14 +41,22 @@ async function onValidateChanges() {
         })
     } catch (error) {
         if (axios.isAxiosError(error)) {
+            if (error.response?.data.error === 'Cannot register in a public and a private group at the same time.') {
+                notify({
+                    type: 'negative',
+                    message: t('notifications.negative.cannot-attribute-public-and-private-roles')
+                })
+            } else if (error.response?.data.error === 'Adding commission in this group is not possible.' ||
+                error.response?.data.error === 'Not allowed to delete this link between user and group.') {
+                notify({
+                    type: 'negative',
+                    message: t('notifications.negative.not-allowed-to-manage-this-commission')
+                })
+            }
+        } else {
             notify({
                 message: t('notifications.negative.edit-user-error'),
                 type: 'negative'
-            })
-        } else if (error === 'cannot-attribute-public-and-private-roles') {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.cannot-attribute-public-and-private-roles')
             })
         }
     }
