@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
+import axios from 'axios'
 import useSubmitProject from '@/composables/useSubmitProject'
 import useUtility from '@/composables/useUtility'
 import {useProjectStore} from '@/stores/useProjectStore'
@@ -120,6 +121,7 @@ const isSite = ref<boolean | undefined>(undefined)
 
 // CONST
 const MAX_FILES = 10
+const MAX_FILE_SIZE = 8388608
 
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
@@ -243,6 +245,14 @@ async function onGetProjectDocuments() {
     }
 }
 
+// FILE TOO LARGE ON STEP 5
+async function onDocumentRejected() {
+    notify({
+        type: 'negative',
+        message: t('notifications.negative.upload-documents-error-too-large')
+    })
+}
+
 // SUBMIT STEP 1
 async function onSubmitBasicInfos() {
     try {
@@ -324,11 +334,17 @@ async function onUploadDocuments() {
             loading.hide()
             done5.value = true
             step.value = 6
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.upload-documents-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 413) {
+                    onDocumentRejected()
+                } else {
+                    notify({
+                        type: 'negative',
+                        message: t('notifications.negative.upload-documents-error')
+                    })
+                }
+            }
         }
     }
 }
@@ -790,6 +806,7 @@ async function onSubmitProject() {
                                         :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
                                         :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                                             (1 - documentUploads.filter(obj => obj.document === document.document).length)"
+                                        :max-file-size="MAX_FILE_SIZE"
                                         :multiple="document.isMultiple"
                                         :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
                                         append
@@ -800,6 +817,7 @@ async function onSubmitProject() {
                                         counter
                                         :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                                             !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
+                                        @rejected="onDocumentRejected"
                                     >
                                         <template v-slot:prepend>
                                             <QIcon name="mdi-paperclip"/>
