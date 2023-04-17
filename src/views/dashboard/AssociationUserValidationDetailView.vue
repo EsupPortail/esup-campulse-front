@@ -116,6 +116,7 @@ async function onDeleteAssociationUser() {
                 </div>
             </div>
         </section>
+
         <section class="dashboard-section">
             <h2>
                 <QIcon name="bi-person-lines-fill"/>
@@ -153,7 +154,8 @@ async function onDeleteAssociationUser() {
                 </div>
             </div>
         </section>
-        <section class="form-page-navigation">
+
+        <section class="btn-group">
             <QBtn
                 :label="t('back')"
                 :to="{ name: 'ValidateAssociationUsers' }"
@@ -176,8 +178,24 @@ async function onDeleteAssociationUser() {
     </QForm>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-@import '@/assets/styles/dashboard.scss'
-@import '@/assets/styles/user-validation-detail.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/_variables.scss';
+
+.rows-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media screen and (min-width: $responsiveWidth) {
+    .q-btn {
+        width: 20%;
+    }
+
+    .display-row {
+        width: 62.5rem;
+    }
+}
 </style>

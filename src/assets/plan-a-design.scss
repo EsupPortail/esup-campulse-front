@@ -153,46 +153,42 @@ body {
 }
 
 // Intro element (Image, title, text) that can be used at the top of pages
-.introduction {
+.introduction-section {
   margin: 2rem 0 4rem;
-  padding: 0;
+  //padding: 0;
 
   .content {
     display: flex;
-    gap: 3.125rem;
+    gap: 3rem;
     align-items: center;
-    width: 100%;
+    width: $fullSize;
     max-width: $pageWidth;
     margin: 0 auto 0;
 
     .intro-image {
-      flex: 0 0 300px;
+      flex: 0 0 19rem;
       font-size: 0;
 
       img {
-        width: 18.75rem;
+        width: 19rem;
         height: auto;
       }
     }
 
     .intro-title {
-      font-size: 1.875rem;
+      font-size: $titleSize;
       line-height: 2.5rem;
-      font-weight: 400;
+      font-weight: $normal-weight;
       color: $annuaireColorText;
       text-transform: uppercase;
-      margin-bottom: 0.625rem;
+      margin-bottom: .6rem;
     }
 
     p {
-      font-size: 1.125rem;
-      font-weight: 400;
+      font-size: $textSize;
+      font-weight: $normal-weight;
       color: $annuaireColorText;
       text-align: justify;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
     }
   }
 
@@ -206,6 +202,16 @@ body {
 
   &.color-background {
     background-color: $annuaireColorBackground;
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    .content {
+      .intro-image {
+        img {
+          margin-left: 1rem;
+        }
+      }
+    }
   }
 
   @media only screen and (max-width: $pageWidth) {

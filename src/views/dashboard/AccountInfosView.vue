@@ -64,7 +64,6 @@ async function onUpdateUserAssociations() {
         newAssociations.value = []
         await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
-        await
         notify({
             type: 'positive',
             message: t('notifications.positive.associations-successfully-updated')
@@ -211,15 +210,6 @@ async function onUpdateUserAssociations() {
 
 .q-tab-panel {
     padding: 0;
-}
-
-.form-container {
-    .back-btn {
-        width: 50%;
-        font-size: 1rem;
-        margin-top: 1rem;
-        padding: 1rem;
-    }
 }
 
 @media screen and (min-width: $responsiveWidth) {

@@ -168,7 +168,7 @@ async function onChangeLogo(action: string) {
         id="association-edition"
         @submit.prevent="onChangeLogo('update')"
     >
-        <fieldset id="association-logo-title">
+        <section id="association-logo-title">
             <div class="association-logo">
                 <QImg
                     :alt="altLogoText(association)"
@@ -215,7 +215,7 @@ async function onChangeLogo(action: string) {
                     @click="onChangeLogo('delete')"
                 />
             </div>
-        </fieldset>
+        </section>
 
         <fieldset>
             <h3><i class="bi bi-book"></i>{{ t("association.titles.info") }}</h3>
@@ -352,7 +352,6 @@ async function onChangeLogo(action: string) {
 
         <fieldset>
             <div
-                id="bottom-btns"
                 class="btn-group"
             >
                 <QBtn

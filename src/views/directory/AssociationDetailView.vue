@@ -242,18 +242,4 @@ async function onGetAssociationDetail() {
 <style lang="scss">
 @import "@/assets/styles/associations.scss";
 @import "@/assets/styles/forms.scss";
-
-a:link, a:visited {
-    font-size: 1.125rem;
-    text-decoration: none;
-    color: $annuaireColor;
-}
-
-a:hover {
-    color: $annuaireColorHover;
-}
-
-ul {
-    margin: 0;
-}
 </style>

@@ -4,15 +4,16 @@
   h2 {
     width: $fullSize;
     max-width: $pageWidth;
-    margin: auto 1.5rem 0;
     background-color: transparent;
-    font-size: 1.5rem;
+    font-size: $formTitleMobileSize;
     text-transform: uppercase;
     color: $annuaireColorText;
+    line-height: 3rem;
+    margin-left: 1rem;
 
     i {
       color: $annuaireColorText;
-      font-size: 1.75rem;
+      font-size: $formTitleMobileSize;
       margin-right: 0.300rem;
       position: relative;
       top: -0.188rem;
@@ -33,6 +34,21 @@
 
     .q-btn {
       font-size: 1rem;
+    }
+  }
+
+  .document-input-group-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    h3 {
+      font-size: 1.5rem;
+      color: $annuaireColorText;
+    }
+
+    .q-btn {
+      margin: 0 0 1rem 0;
     }
   }
 

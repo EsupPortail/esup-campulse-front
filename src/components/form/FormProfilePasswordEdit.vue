@@ -93,12 +93,3 @@ async function passwordConfirm() {
         </div>
     </fieldset>
 </template>
-
-<style lang="scss" scoped>
-
-.edit-passwd {
-    padding: 1rem;
-    font-size: 1.125rem;
-}
-
-</style>

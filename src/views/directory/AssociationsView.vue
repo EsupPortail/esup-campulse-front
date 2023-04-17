@@ -113,7 +113,7 @@ async function clearSearch(apiSearch: boolean) {
 
 <template>
     <!-- <h1>{{ t("home.directory") }}</h1> -->
-    <section class="introduction">
+    <section class="introduction-section">
         <div class="content">
             <div class="intro-image">
                 <img
@@ -123,7 +123,6 @@ async function clearSearch(apiSearch: boolean) {
             </div>
             <div>
                 <h2 class="intro-title">{{ t('directory.subtitle') }}</h2>
-                <!-- <p>{{ t('directory.introduction') }}</p> -->
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et
@@ -167,11 +166,12 @@ async function clearSearch(apiSearch: boolean) {
                 <QBtn
                     :label="t('directory.cancel-search')"
                     color="secondary"
-                    icon="mdi-close"
+                    icon-right="mdi-close"
                     @click="clearSearch(true)"
                 />
             </fieldset>
         </QForm>
+
         <QForm
             id="advanced-search-form"
             class="search-text-field"
@@ -221,6 +221,7 @@ async function clearSearch(apiSearch: boolean) {
                         map-options
                     />
                 </fieldset>
+
                 <div class="buttons-group">
                     <QBtn
                         :label="t('directory.advanced-search')"
@@ -232,13 +233,14 @@ async function clearSearch(apiSearch: boolean) {
                     <QBtn
                         :label="t('directory.cancel-search')"
                         color="secondary"
-                        icon="mdi-close"
+                        icon-right="mdi-close"
                         @click="clearSearch(false)"
                     />
                 </div>
             </QExpansionItem>
         </QForm>
     </section>
+
     <section class="directory-list">
         <div class="form-container">
             <div class="form">
@@ -330,7 +332,7 @@ async function clearSearch(apiSearch: boolean) {
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-@import '@/assets/styles/associations.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/associations.scss';
 </style>

@@ -129,7 +129,7 @@ onBeforeRouteLeave((to, from, next) => {
                             {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
                         </li>
                         <li>
-                            <strong>{{ t("user.is-validated-by-admin") }}</strong> :
+                            <strong>{{ t("user.is-validated-by-admin") }}</strong>
                             {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
                         </li>
                     </ul>
@@ -170,21 +170,18 @@ ul {
     list-style: none;
 }
 
-
 @media screen and (min-width: $responsiveWidth) {
-    section {
-        .form-container {
-            .form {
-                width: $halfSize;
-                margin: auto;
-            }
-        }
-
-        .form-title {
-            width: $halfSize;
-            margin: auto;
-        }
+    .form, .form-title, .btn-group {
+        width: $halfSize;
+        margin: auto;
     }
 
+    .btn-group {
+        justify-content: center;
+
+        .q-btn {
+            width: 30%;
+        }
+    }
 }
 </style>

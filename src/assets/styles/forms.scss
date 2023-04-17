@@ -25,6 +25,11 @@
     bottom: 0;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) $fullSize);
   }
+
+  @media screen and (min-width: $responsiveWidth) {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 // Quasar input fields
@@ -527,7 +532,6 @@ label.custom-label {
   }
 }
 
-
 .buttons-group {
   display: flex;
   gap: 0.5rem;
@@ -900,7 +904,6 @@ fieldset {
     border-collapse: separate;
     border-spacing: 0 .625rem;
     width: $fullSize;
-    height: 1px;
 
     thead tr {
       background-color: $annuaireColor;

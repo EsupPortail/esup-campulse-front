@@ -87,46 +87,75 @@ const clearValues = () => {
         @reset="clearValues"
         @submit.prevent="onCreate"
     >
-        <QInput
-            v-model="newAssociation.name"
-            :label="t('forms.association-name')"
-            :rules="[val => val.length > 0 || t('forms.fill-field')]"
-            filled
-            lazy-rules
-        />
-        <QSelect
-            v-model="newAssociation.institution"
-            :label="t('forms.association-institution')"
-            :options="institutions"
-            :rules="[val => val !== undefined || t('forms.select-option')]"
-            emit-value
-            filled
-            lazy-rules
-            map-options
-        />
-        <QCheckbox
-            v-model="newAssociation.isSite"
-            :label="t('forms.association-is-site')"
-        />
-        <section class="btn-group">
-            <QBtn
-                :label="t('home.back-dashboard')"
-                :to="{ name: 'Dashboard' }"
-                color="secondary"
-                icon="mdi-arrow-left-circle"
-            />
-            <QBtn
-                :label="t('user-manager.create-association')"
-                color="primary"
-                icon="mdi-check-circle"
-                type="submit"
-            />
-        </section>
+        <div class="form-title">
+            <h2>
+                <i class="bi bi-plus-square"></i>
+                Créer une nouvelle association
+            </h2>
+        </div>
+        <div class="form-container">
+            <div class="form">
+                <QInput
+                    v-model="newAssociation.name"
+                    :label="t('forms.association-name')"
+                    :rules="[val => val.length > 0 || t('forms.fill-field')]"
+                    filled
+                    lazy-rules
+                />
+                <QSelect
+                    v-model="newAssociation.institution"
+                    :label="t('forms.association-institution')"
+                    :options="institutions"
+                    :rules="[val => val !== undefined || t('forms.select-option')]"
+                    emit-value
+                    filled
+                    lazy-rules
+                    map-options
+                />
+                <QCheckbox
+                    v-model="newAssociation.isSite"
+                    :label="t('forms.association-is-site')"
+                />
+                <section class="btn-group">
+                    <QBtn
+                        :label="t('home.back-dashboard')"
+                        :to="{ name: 'Dashboard' }"
+                        color="secondary"
+                        icon="mdi-arrow-left-circle"
+                    />
+                    <QBtn
+                        :label="t('user-manager.create-association')"
+                        color="primary"
+                        icon="mdi-check-circle"
+                        type="submit"
+                    />
+                </section>
+            </div>
+        </div>
     </QForm>
 </template>
 
-<style lang="sass" scoped>
-.btn-group
-    display: flex
-    gap: 10px
+<style lang="scss">
+@import "@/assets/styles/forms.scss";
+
+.q-card__section {
+    padding: 1rem 0 0 0;
+}
+
+h2 {
+    padding-left: 1rem;
+}
+
+@media screen and (min-width: $responsiveWidth) {
+    .form {
+        width: $halfSize;
+        margin: auto;
+    }
+
+    .btn-group {
+        justify-content: flex-start;
+        margin: 1rem 0 0 0;
+    }
+}
+
 </style>

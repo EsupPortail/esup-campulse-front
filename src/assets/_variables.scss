@@ -3,7 +3,7 @@ $responsiveMargin: 1.56rem;
 $fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
 // ---------------- Responsive----------------
-$responsiveWidth: 56.25rem;
+$responsiveWidth: 56rem;
 
 // ---------------- Images ----------------
 $headerBackground: url('./img/resized/header-background2.jpg');
@@ -21,14 +21,21 @@ $titleFont: 'Open Sans', sans-serif;
 $formTitleMobileSize: 1.5rem;
 $formTitleComputerSize: 2rem;
 
+$homeTitleSize: 3.1rem;
+$homeSubTitleSize: 2.5rem;
+
+$titleSize: 2.3rem;
+$textSize: 1.2rem;
+
+
 // ---------------- Paddings ----------------
 // Home Banner
 $qBannerDotsMobilePadding: .30rem;
-$qBannerDotsComputerPadding: .40rem;
+$qBannerDotsComputerPadding: .35rem;
 
 // Home Card Icons
-$bsIconHomeCardPosition: -0.125rem;
-
+$iconHomeCardTopMobilePosition: -.6rem;
+$iconHomeCardLeftMobilePosition: .04rem;
 
 // ---------------- Sizes ----------------
 $fullSize: 100%;
@@ -37,8 +44,9 @@ $halfSize: 50%;
 // Line-height :
 $lineHeightSize: 2rem;
 
-// Association Logo
+// Logos
 $associationLogoSize: 9.375rem;
+$iconSize: 1.8rem;
 
 // Home Banner
 $qBannerInfoIconSize: 1.25rem;
@@ -48,6 +56,9 @@ $qBannerDotsMobileSize: 1.063rem;
 $LoginLogoMobileSize: 3.75rem;
 $LogoMobileSize: 3rem;
 $LogoComputerSize: 3.55rem;
+
+// Btn
+$buttonSize: 30%;
 
 // ---------------- Weights ----------------
 $hairline-weight: 100;

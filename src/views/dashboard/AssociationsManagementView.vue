@@ -241,15 +241,23 @@ const columns: QTableProps['columns'] = [
     </div>
 </template>
 
-<!--<style lang="sass" scoped>
-.edition-buttons
-    display: flex
-    gap: 10px
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/_variables';
 
-.q-banner
-    margin-bottom: 20px
-</style>-->
+.form-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
+    .q-btn {
+        padding: .5rem;
+        margin-top: .6rem;
+    }
+
+    @media screen and (min-width: $responsiveWidth) {
+        flex-direction: row;
+    }
+}
+
 </style>
