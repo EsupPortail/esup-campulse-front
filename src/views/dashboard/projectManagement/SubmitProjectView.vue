@@ -606,18 +606,8 @@ async function onSubmitProject() {
                             />
 
                             <QInput
-                                v-model="projectBudget.typeTargetAudience"
-                                :label="t('project.target-audience-type') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                aria-required="true"
-                                filled
-                                lazy-rules
-                                type="textarea"
-                            />
-
-                            <QInput
-                                v-model="projectBudget.amountTargetAudience"
-                                :label="t('project.target-audience-amount') + ' *'"
+                                v-model="projectBudget.amountStudentsAudience"
+                                :label="t('project.target-students-amount') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
                                 filled
@@ -626,8 +616,8 @@ async function onSubmitProject() {
                             />
 
                             <QInput
-                                v-model="projectBudget.amountStudentsTargetAudience"
-                                :label="t('project.target-audience-amount-students') + ' *'"
+                                v-model="projectBudget.amountAllAudience"
+                                :label="t('project.target-all-amount') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
                                 filled
@@ -969,18 +959,13 @@ async function onSubmitProject() {
                                         </div>
 
                                         <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-audience-type') }}</p>
-                                            <p>{{ projectBudget.typeTargetAudience }}</p>
+                                            <p class="row-title">{{ t('project.target-students-amount') }}</p>
+                                            <p>{{ projectBudget.amountStudentsAudience }}</p>
                                         </div>
 
                                         <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-audience-amount') }}</p>
-                                            <p>{{ projectBudget.amountTargetAudience }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-audience-amount-students') }}</p>
-                                            <p>{{ projectBudget.amountStudentsTargetAudience }}</p>
+                                            <p class="row-title">{{ t('project.target-all-amount') }}</p>
+                                            <p>{{ projectBudget.amountAllAudience }}</p>
                                         </div>
 
                                         <div class="display-row">

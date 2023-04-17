@@ -480,9 +480,9 @@
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "submit-new-project": "Déposer une nouvelle demande de subventionnement",
     "summary": "Résumé du projet",
+    "target-all-amount": "Nombre de personnes visées au total",
     "target-audience": "Public visé par le projet",
-    "target-audience-amount": "Nombre de personnes visées",
-    "target-audience-amount-students": "Nombre de personnes visées dont étudiants et étudiantes",
+    "target-students-amount": "Nombre d'étudiantes et étudiants visés",
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
     "validate": "Valider et soumettre le projet"

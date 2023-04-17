@@ -23,9 +23,8 @@ const projectBudget = ref<ProjectBudget>(
     {
         budgetPreviousEdition: 0,
         targetAudience: '',
-        typeTargetAudience: '',
-        amountTargetAudience: 0,
-        amountStudentsTargetAudience: 0,
+        amountStudentsAudience: 0,
+        amountAllAudience: 0,
         ticketPrice: 0,
         individualCost: 0
     }
@@ -46,7 +45,7 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function () {
+export default function() {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -103,9 +102,8 @@ export default function () {
 
     const initProjectBudget = () => {
         projectBudget.value.targetAudience = projectStore.project?.targetAudience as string
-        projectBudget.value.typeTargetAudience = projectStore.project?.typeTargetAudience as string
-        projectBudget.value.amountTargetAudience = projectStore.project?.amountTargetAudience.toString() as string
-        projectBudget.value.amountStudentsTargetAudience = projectStore.project?.amountStudentsTargetAudience.toString() as string
+        projectBudget.value.amountStudentsAudience = projectStore.project?.amountStudentsAudience.toString() as string
+        projectBudget.value.amountAllAudience = projectStore.project?.amountAllAudience.toString() as string
         projectBudget.value.ticketPrice = projectStore.project?.ticketPrice.toString() as string
         projectBudget.value.individualCost = projectStore.project?.individualCost.toString() as string
         projectBudget.value.budgetPreviousEdition = projectStore.project?.budgetPreviousEdition.toString() as string
@@ -200,7 +198,7 @@ export default function () {
     async function patchProjectBudget(isFirstEdition: boolean) {
         let dataToPatch = {}
         for (const [key, value] of Object.entries(projectBudget.value)) {
-            const numbers = ['amountTargetAudience', 'amountStudentsTargetAudience', 'ticketPrice', 'individualCost']
+            const numbers = ['amountStudentsAudience', 'amountAllAudience', 'ticketPrice', 'individualCost']
             if (numbers.includes(key)) {
                 if (parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
                     dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
