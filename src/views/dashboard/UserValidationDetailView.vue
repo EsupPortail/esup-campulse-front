@@ -20,11 +20,11 @@ const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetUser()
     newGroups.value = userManagerStore.userGroups
     await onGetUserAssociations()
-    loading.hide
+    loading.hide()
 })
 
 // Get user
@@ -201,7 +201,7 @@ async function onDeleteUser() {
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-@import '@/assets/styles/dashboard.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
 </style>

@@ -15,9 +15,9 @@ const {
 const userManagerStore = useUserManagerStore()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetUserAssociations()
-    loading.hide
+    loading.hide()
 })
 
 // Load userAssociations
@@ -47,11 +47,10 @@ async function onGetUserAssociations() {
     >
         <QCardSection>
             <section>
-                <h4>{{ association.name }}</h4>
+                <h4 class="title-4">{{ association.name }}</h4>
                 <QOptionGroup
                     v-model="association.role"
                     :options="association.options"
-                    color="primary"
                 />
                 <div class="btn-group">
                     <div>
@@ -79,39 +78,36 @@ async function onGetUserAssociations() {
     </QCard>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
 </style>
 
-<style lang="sass" scoped>
-.form
-    display: flex
-    flex-direction: column
-    gap: 1rem
+<style lang="scss" scoped>
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
-.association-card
-    padding: 1rem
+.association-card {
+    padding: 1rem;
+}
 
-fieldset
-    border: none
+fieldset {
+    border: none;
+}
 
-fieldset .q-checkbox
-    width: 100%
+fieldset .q-checkbox {
+    width: 100%;
+}
 
-h4
-    font-size: 1.5em
-    padding: 0
-    line-height: 0
+.delete-message {
+    color: red;
+}
 
-.delete-message
-    color: red
-
-.btn-group
-    display: flex
-    gap: 1rem
-    margin-top: 1rem
-
-ul
-    padding: 1rem
-    margin-top: 1rem
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
 </style>

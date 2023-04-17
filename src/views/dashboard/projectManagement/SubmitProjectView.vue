@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
+import axios from 'axios'
 import useSubmitProject from '@/composables/useSubmitProject'
 import useUtility from '@/composables/useUtility'
 import {useProjectStore} from '@/stores/useProjectStore'
@@ -58,7 +59,7 @@ const userStore = useUserStore()
 const route = useRoute()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
 
     if (route.params.projectId) newProject.value = false
 
@@ -80,7 +81,7 @@ onMounted(async () => {
 
     await onGetProjectCategories()
     await onGetDocumentTypes()
-    loading.hide
+    loading.hide()
 })
 
 const step = ref(1)
@@ -120,6 +121,7 @@ const isSite = ref<boolean | undefined>(undefined)
 
 // CONST
 const MAX_FILES = 10
+const MAX_FILE_SIZE = 8388608
 
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
@@ -190,7 +192,7 @@ async function onGetCommissionDates() {
     if (!projectCommissionDatesModel.value.length) {
         try {
             await getCommissions()
-            await getCommissionDates()
+            await getCommissionDates(true)
             await initCommissionDates(isSite.value)
             if (!newProject.value) {
                 await projectStore.getProjectCommissionDates()
@@ -209,7 +211,7 @@ async function onGetCommissionDates() {
 async function onGetProjectBudget() {
     try {
         await getCommissions()
-        await getCommissionDates()
+        await getCommissionDates(true)
         await projectStore.getProjectCommissionDates()
         initProjectCommissionDates()
         initProjectBudget()
@@ -241,6 +243,14 @@ async function onGetProjectDocuments() {
             message: t('notifications.negative.loading-error')
         })
     }
+}
+
+// FILE TOO LARGE ON STEP 5
+async function onDocumentRejected() {
+    notify({
+        type: 'negative',
+        message: t('notifications.negative.upload-documents-error-too-large')
+    })
 }
 
 // SUBMIT STEP 1
@@ -319,16 +329,22 @@ async function onSubmitGoals() {
 async function onUploadDocuments() {
     if (projectStore.project) {
         try {
-            loading.show
+            loading.show()
             await postProjectDocuments(parseInt(route.params.associationId as string))
-            loading.hide
+            loading.hide()
             done5.value = true
             step.value = 6
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.upload-documents-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 413) {
+                    onDocumentRejected()
+                } else {
+                    notify({
+                        type: 'negative',
+                        message: t('notifications.negative.upload-documents-error')
+                    })
+                }
+            }
         }
     }
 }
@@ -336,9 +352,9 @@ async function onUploadDocuments() {
 // DELETE DOCS ON STEP 5
 async function onDeleteDocumentUpload(documentId: number) {
     try {
-        loading.show
+        loading.show()
         await deleteDocumentUpload(documentId)
-        loading.hide
+        loading.hide()
     } catch {
         notify({
             type: 'negative',
@@ -606,18 +622,8 @@ async function onSubmitProject() {
                             />
 
                             <QInput
-                                v-model="projectBudget.typeTargetAudience"
-                                :label="t('project.target-audience-type') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                aria-required="true"
-                                filled
-                                lazy-rules
-                                type="textarea"
-                            />
-
-                            <QInput
-                                v-model="projectBudget.amountTargetAudience"
-                                :label="t('project.target-audience-amount') + ' *'"
+                                v-model="projectBudget.amountStudentsAudience"
+                                :label="t('project.target-students-amount') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
                                 filled
@@ -626,8 +632,8 @@ async function onSubmitProject() {
                             />
 
                             <QInput
-                                v-model="projectBudget.amountStudentsTargetAudience"
-                                :label="t('project.target-audience-amount-students') + ' *'"
+                                v-model="projectBudget.amountAllAudience"
+                                :label="t('project.target-all-amount') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
                                 filled
@@ -800,6 +806,7 @@ async function onSubmitProject() {
                                         :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
                                         :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                                             (1 - documentUploads.filter(obj => obj.document === document.document).length)"
+                                        :max-file-size="MAX_FILE_SIZE"
                                         :multiple="document.isMultiple"
                                         :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
                                         append
@@ -810,6 +817,7 @@ async function onSubmitProject() {
                                         counter
                                         :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                                             !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
+                                        @rejected="onDocumentRejected"
                                     >
                                         <template v-slot:prepend>
                                             <QIcon name="mdi-paperclip"/>
@@ -969,18 +977,13 @@ async function onSubmitProject() {
                                         </div>
 
                                         <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-audience-type') }}</p>
-                                            <p>{{ projectBudget.typeTargetAudience }}</p>
+                                            <p class="row-title">{{ t('project.target-students-amount') }}</p>
+                                            <p>{{ projectBudget.amountStudentsAudience }}</p>
                                         </div>
 
                                         <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-audience-amount') }}</p>
-                                            <p>{{ projectBudget.amountTargetAudience }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-audience-amount-students') }}</p>
-                                            <p>{{ projectBudget.amountStudentsTargetAudience }}</p>
+                                            <p class="row-title">{{ t('project.target-all-amount') }}</p>
+                                            <p>{{ projectBudget.amountAllAudience }}</p>
                                         </div>
 
                                         <div class="display-row">
@@ -1145,52 +1148,64 @@ async function onSubmitProject() {
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
 </style>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 
-.project-re-edition
-    margin-top: 1rem
+.project-re-edition {
+    margin-top: 1rem;
+}
 
-.previous-budget, .asked-budget, .previous-budget-section, .asked-budget-section
-    display: flex
-    flex-direction: column
-    gap: 1rem
+.previous-budget, .asked-budget, .previous-budget-section, .asked-budget-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
-.q-checkbox
-    margin: 0 0 1rem 0
+.q-checkbox {
+    margin: 0 0 1rem 0;
+}
 
-section > .q-separator
-    margin: 0 0 2rem 0
+section > .q-separator {
+    margin: 0 0 2rem 0;
+}
 
-.q-separator
-    margin: 1rem 0 2rem 0
+.q-separator {
+    margin: 1rem 0 2rem 0;
+}
 
-h3
-    margin-bottom: 1rem
+h3 {
+    margin-bottom: 1rem;
+}
 
-.flex-section
-    display: flex
-    flex-direction: column
-    gap: 1.5rem
+.flex-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
 
-h5
-    margin: 1.5rem 0 0.5rem 0
+h5 {
+    margin: 1.5rem 0 0.5rem 0;
+}
 
-.recap-section
-    margin-bottom: 2rem
+.recap-section {
+    margin-bottom: 2rem;
+}
 
-.recap-section-title
-    display: flex
-    align-items: center
-    justify-content: space-between
+.recap-section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    h4
-        margin: 2rem 0 1rem 0
+    h4 {
+        margin: 2rem 0 1rem 0;
+    }
+}
 
-.flex-section .document-input
-    margin-bottom: 0
+.flex-section .document-input {
+    margin-bottom: 0;
+}
 </style>

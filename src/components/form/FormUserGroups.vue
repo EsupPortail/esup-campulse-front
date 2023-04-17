@@ -25,13 +25,13 @@ const {getCommissions, commissionOptions, userCommissions} = useCommissions()
 const {initUserCommissions} = useCommissions()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetGroups()
     onInitGroupLabels()
     await onGetCommissions()
     initCommissionMemberSelection()
     initUserCommissions()
-    loading.hide
+    loading.hide()
 })
 
 // Used to clean newGroups value
@@ -113,7 +113,7 @@ function onInitGroupLabels() {
 </template>
 
 <style lang="scss">
-@import "@/assets/_variables.scss";
+@import '@/assets/_variables.scss';
 
 .q-option-group {
     color: $dashboardColor;

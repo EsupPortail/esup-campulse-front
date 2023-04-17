@@ -79,6 +79,6 @@ function ToggleMenu() {
     </QHeader>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/header.scss'
+<style lang="scss">
+@import '@/assets/styles/header.scss';
 </style>

@@ -21,9 +21,9 @@ async function onLogOut() {
 }
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     if (userStore.user?.associations.length !== 0) await getUserAssociations(userStore.user?.id as number, false)
-    loading.hide
+    loading.hide()
 })
 
 </script>
@@ -91,7 +91,8 @@ onMounted(async () => {
     </div>
 </template>
 
-<style lang="sass" scoped>
-.q-list
-    color: white
+<style lang="scss" scoped>
+.q-list {
+    color: white;
+}
 </style>

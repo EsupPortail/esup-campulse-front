@@ -15,10 +15,10 @@ const associationStore = useAssociationStore()
 const {initAssociationMembers, associationMembers} = useUserAssociations()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetAssociationUsers()
     await onGetAssociationDetail()
-    loading.hide
+    loading.hide()
 })
 
 async function onGetAssociationUsers() {
@@ -121,6 +121,7 @@ const columns: QTableProps['columns'] = [
             <div class="form">
                 <QTable
                     :columns="columns"
+                    :loading="!associationMembers"
                     :no-data-label="t('dashboard.association-user.no-member')"
                     :rows="associationMembers"
                     :rows-per-page-options="[10, 20, 50, 0]"
@@ -199,11 +200,7 @@ const columns: QTableProps['columns'] = [
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/dashboard.scss'
-@import '@/assets/styles/forms.scss'
-</style>
-
-<style lang="sass" scoped>
-
+<style lang="scss">
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/forms.scss';
 </style>

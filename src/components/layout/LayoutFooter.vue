@@ -94,6 +94,6 @@ const {colorVariant} = useColorVariants()
     </QFooter>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/footer.scss'
+<style lang="scss">
+@import '@/assets/styles/footer.scss';
 </style>

@@ -80,22 +80,27 @@ async function resend() {
     </QForm>
 </template>
 
-<style lang="sass" scoped>
-.instructions
-    font-size: 1.2em
+<style lang="scss" scoped>
+.instructions {
+    font-size: 1.2em;
 
-    p
-        text-align: center
+    p {
+        text-align: center;
+    }
+}
 
-.q-form, .instructions
-    max-width: 720px
-    width: 100%
-    margin: auto
+.q-form, .instructions {
+    max-width: 720px;
+    width: 100%;
+    margin: auto;
+}
 
-fieldset
-    padding-top: 30px
-    border: none
+fieldset {
+    padding-top: 30px;
+    border: none;
+}
 
-.q-btn
-    margin-top: 10px
+.q-btn {
+    margin-top: 10px;
+}
 </style>

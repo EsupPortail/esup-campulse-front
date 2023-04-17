@@ -10,7 +10,8 @@ import FormRegister from '@/components/form/FormRegister.vue'
     </QCard>
 </template>
 
-<style lang="sass" scoped>
-.card
-  margin-bottom: 30px
+<style lang="scss" scoped>
+.card {
+  margin-bottom: 30px;
+}
 </style>

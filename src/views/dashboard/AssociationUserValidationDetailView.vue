@@ -24,12 +24,12 @@ const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await userManagerStore.getUserDetail(parseInt(route.params.userId as string))
     await onGetUserAssociations()
     await associationStore.getInstitutions()
     initAssociationMember()
-    loading.hide
+    loading.hide()
 })
 
 const associationUser = ref<AssociationUserDetail | undefined>()
@@ -136,7 +136,8 @@ async function onDeleteAssociationUser() {
                             <h3 class="row-title">{{ t('directory.labels.association-institution') }}</h3>
                             <p>
                                 {{
-                                    associationStore.institutions.find(obj => obj.id === associationUser?.association.institution)?.name
+                                    associationStore.institutions.find(obj => obj.id ===
+                                        associationUser?.association.institution)?.name
                                 }}
                             </p>
                         </div>
@@ -144,7 +145,8 @@ async function onDeleteAssociationUser() {
                             <h3 class="row-title">{{ t('dashboard.association-user.role') }}</h3>
                             <p v-if="associationUser">
                                 {{
-                                    associationRoleOptions.find(obj => obj.value === (associationUser ? getAssociationUserRole(associationUser) : undefined))?.label
+                                    associationRoleOptions.find(obj => obj.value === (associationUser ?
+                                        getAssociationUserRole(associationUser) : undefined))?.label
                                 }}
                             </p>
                         </div>

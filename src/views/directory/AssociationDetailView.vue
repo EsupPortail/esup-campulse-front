@@ -22,9 +22,9 @@ watch(() => associationStore.association, () => {
 })
 
 onMounted(async function () {
-    loading.show
+    loading.show()
     await onGetAssociationDetail()
-    loading.hide
+    loading.hide()
 })
 
 const hasLogo = computed(() => {
@@ -240,6 +240,6 @@ async function onGetAssociationDetail() {
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/associations.scss";
-@import "@/assets/styles/forms.scss";
+@import '@/assets/styles/associations.scss';
+@import '@/assets/styles/forms.scss';
 </style>

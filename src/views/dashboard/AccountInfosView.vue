@@ -30,8 +30,8 @@ const {
 const tab = ref<string>('infos')
 
 async function onUpdateUserInfos() {
-    loading.show
     try {
+        loading.show()
         initInfosToPatch(userStore.user)
         if (Object.entries(infosToPatch).length !== 0) {
             await updateUserInfos(userStore.user, false)
@@ -45,6 +45,7 @@ async function onUpdateUserInfos() {
                 message: t('notifications.warning.no-modifications-found')
             })
         }
+        loading.hide()
     } catch (error) {
         if (axios.isAxiosError(error) || error === 500) {
             notify({
@@ -53,29 +54,27 @@ async function onUpdateUserInfos() {
             })
         }
     }
-    loading.hide
 }
 
 async function onUpdateUserAssociations() {
-    loading.show
     try {
+        loading.show()
         await updateUserAssociations(false)
         await userAssociationsRegister(false, userStore.user?.username)
         newAssociations.value = []
         await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
-        await
-            notify({
-                type: 'positive',
-                message: t('notifications.positive.associations-successfully-updated')
-            })
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.associations-successfully-updated')
+        })
+        loading.hide()
     } catch (error) {
         notify({
             type: 'negative',
             message: t('notifications.negative.edit-user-associations-error')
         })
     }
-    loading.hide
 }
 
 </script>
@@ -186,13 +185,13 @@ async function onUpdateUserAssociations() {
                                     class="back-btn"
                                     icon="bi-chevron-compact-left"
                                 />
-                                <QBtn
-                                    v-if="newAssociations.length > 0 && newAssociations[0].id"
-                                    :label="t('association.validate-new-associations')"
-                                    class="validate-button"
-                                    icon-right="bi-check2"
-                                    type="submit"
-                                />
+                                <!--                                <QBtn
+                                                                    v-if="newAssociations.length > 0 && newAssociations[0].id"
+                                                                    :label="t('association.validate-new-associations')"
+                                                                    class="validate-button"
+                                                                    icon-right="bi-check2"
+                                                                    type="submit"
+                                                                />-->
                             </section>
                         </QForm>
                     </div>
@@ -207,7 +206,7 @@ async function onUpdateUserAssociations() {
 </template>
 
 <style lang="scss">
-@import "@/assets/_variables.scss";
+@import '@/assets/_variables.scss';
 
 .q-tab-panel {
     padding: 0;
@@ -225,5 +224,4 @@ async function onUpdateUserAssociations() {
         }
     }
 }
-
 </style>

@@ -15,7 +15,8 @@ const {newUser} = useSecurity()
     </div>
 </template>
 
-<style lang="sass" scoped>
-div
-    text-align: center
+<style lang="scss" scoped>
+div {
+    text-align: center;
+}
 </style>

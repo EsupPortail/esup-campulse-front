@@ -64,7 +64,7 @@
     "publish-in-directory": "Publier dans l'annuaire",
     "unpublish-in-directory": "Dépublier de l'annuaire",
     "validate-all-changes": "Valider tous les changements",
-    "validate-new-associations": "Valider les ajouts d'associations",
+    "validate-new-associations": "Valider tous les ajouts d'associations",
     "labels": {
       "acronym": "Acronyme",
       "activity-field": "Domaine d'activité",
@@ -143,6 +143,7 @@
   "continue": "Continuer",
   "dashboard": {
     "account-infos": "Modifier mes informations personnelles",
+    "association-list": "Liste des associations",
     "association-management": "Gérer l'annuaire des associations",
     "cape-dashboard": "Tableau de bord CAPE",
     "create-association": "Créer une association",
@@ -246,7 +247,7 @@
     "legal-notice": "Mentions légales"
   },
   "forms": {
-    "add-association": "Ajouter une association",
+    "add-association": "Ajouter une association supplémentaire",
     "add-my-associations": "Ajouter les associations liées",
     "add-selected-associations": "Ajouter les associations sélectionnées",
     "association-institution": "Établissement de rattachement",
@@ -254,13 +255,15 @@
     "association-name": "Nom de l'association",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "create-account": "Créer un compte",
-    "delete-association": "Supprimer l'association",
+    "delete-association": "Supprimer",
     "email": "Adresse mail",
     "error-unistra-mail-domain": "Cette adresse provient de l'Université de Strasbourg, veuillez passer par le formulaire CAS pour vous inscrire.",
     "fill-field": "Veuillez remplir ce champ",
     "first-name": "Prénom",
     "gdpr": "Lorem Elsass ipsum in, Chulien leo picon bière adipiscing leverwurscht condimentum elit bissame Pfourtz ! schneck nüdle ac Oberschaeffolsheim porta Chulia Roberstau semper eget tchao bissame schpeck libero, Yo dû. senectus sed non aliquam so Christkindelsmärik mänele gewurztraminer sed flammekueche gravida rhoncus mamsell Morbi tellus  sit hopla Gal ! Hans sagittis jetz gehts los dignissim hoplageiss id hopla s'guelt vulputate consectetur schnaps non suspendisse vielmols, geïz Spätzle dolor turpis ac tellus purus blottkopf, libero, elementum bredele pellentesque risus, ullamcorper commodo Gal. messti de Bischheim réchime météor lacus amet geht's kougelhopf",
     "gdpr-title": "Gestion des données personnelles",
+    "hint-delegation-to": "Laisser le champ vide pour une date indéterminée.",
+    "hint-phone": "Format : 0102030405 ou +(identifiant)102030405",
     "i-can-be-president": "Président délégué ou présidente déléguée",
     "im-association-member": "Autre membre de l'association",
     "im-association-president": "Présidente ou président de l'association",
@@ -269,7 +272,6 @@
     "im-association-vice-president": "Vice-présidente ou vice-président de l'association",
     "im-from-association": "Lier une association au compte",
     "im-in-association": "Associations étudiantes rattachées au compte et statuts y correspondant :",
-    "hint-delegation-to": "Laisser le champ vide pour une date indéterminée.",
     "last-name": "Nom de famille",
     "legal-dates": "Veuillez saisir une date de fin postérieure à la date de début.",
     "login": "Connexion",
@@ -312,6 +314,7 @@
     "social-object-hint": "Objet figurant sur les statuts de l'association",
     "status": "Mon statut",
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
+    "validate-association": "Valider cet ajout",
     "validated-account": "Compte validé"
   },
   "from": "À partir du",
@@ -393,7 +396,9 @@
       "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail.",
       "unknown-user": "Aucun compte n'a été trouvé.",
       "unpublish-association-error": "L'association n'a pas pu être dépubliée de l'annuaire",
-      "upload-documents-error": "Erreur lors de la soumission des documents."
+      "upload-documents-error": "Erreur lors de la soumission des documents.",
+      "upload-documents-error-too-large": "La taille du fichier est trop haute.",
+      "upload-images-error-too-large": "La taille de l'image est trop haute."
     },
     "positive": {
       "account-created": "Compte créé.",
@@ -480,9 +485,9 @@
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "submit-new-project": "Déposer une nouvelle demande de subventionnement",
     "summary": "Résumé du projet",
+    "target-all-amount": "Nombre de personnes visées au total",
     "target-audience": "Public visé par le projet",
-    "target-audience-amount": "Nombre de personnes visées",
-    "target-audience-amount-students": "Nombre de personnes visées dont étudiants et étudiantes",
+    "target-students-amount": "Nombre d'étudiantes et étudiants visés",
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
     "validate": "Valider et soumettre le projet"

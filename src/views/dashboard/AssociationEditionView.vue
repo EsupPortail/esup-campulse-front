@@ -60,13 +60,13 @@ async function onGetAssociationActivityFields() {
 }
 
 onMounted(async function () {
-    loading.show
+    loading.show()
     await onGetAssociationDetail()
     await onGetInstitutions()
     await onGetInstitutionComponents()
     await onGetAssociationActivityFields()
     isLoaded.value = true
-    loading.hide
+    loading.hide()
 })
 </script>
 
