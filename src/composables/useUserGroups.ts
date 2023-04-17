@@ -230,6 +230,20 @@ export default function () {
         const userManagerStore = useUserManagerStore()
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
+
+        let hasPrivateGroups = false
+        let hasPublicGroups = false
+
+        newGroups.value.forEach((group) => {
+            const GROUP = groups.value.find(obj => obj.id === group)
+            if (GROUP?.isPublic) hasPublicGroups = true
+            else hasPrivateGroups = true
+
+            if (hasPublicGroups && hasPrivateGroups) {
+                throw 'cannot-attribute-public-and-private-roles'
+            }
+        })
+
         if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userCommissions.value, userManagerStore.userCommissions)) {
             await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups),
                 commissionsToUpdate(userCommissions.value, userManagerStore.userCommissions))

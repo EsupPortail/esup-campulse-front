@@ -45,6 +45,11 @@ async function onValidateChanges() {
                 message: t('notifications.negative.edit-user-error'),
                 type: 'negative'
             })
+        } else if (error === 'cannot-attribute-public-and-private-roles') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.cannot-attribute-public-and-private-roles')
+            })
         }
     }
 }
