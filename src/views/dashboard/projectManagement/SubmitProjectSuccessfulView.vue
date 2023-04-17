@@ -12,9 +12,9 @@ const {loading} = useQuasar()
 const {t} = useI18n()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetProjectDetail()
-    loading.hide
+    loading.hide()
 })
 
 async function onGetProjectDetail() {
@@ -60,22 +60,25 @@ async function onGetProjectDetail() {
 @import '@/assets/styles/forms.scss';
 </style>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 
-i
-    color: $capeColor
-    font-size: 5rem
+i {
+    color: $capeColor;
+    font-size: 5rem;
+}
 
-.project-recap
-    text-align: center
-    padding: 3rem 0 3rem 0
-    display: flex
-    flex-direction: column
-    gap: 1.2rem
+.project-recap {
+    text-align: center;
+    padding: 3rem 0 3rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
 
-    .flex-btn-group
-        display: flex
-        gap: 1rem
-        justify-content: center
+    .flex-btn-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+}
 </style>

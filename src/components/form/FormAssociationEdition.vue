@@ -77,9 +77,9 @@ const initValues = () => {
 watch(() => associationStore.association, initValues)
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     initValues()
-    loading.hide
+    loading.hide()
 })
 
 // Logo management
@@ -92,6 +92,14 @@ const pathLogo = ref<AssociationLogo | null | undefined>(associationStore.associ
 watch(() => associationStore.association?.pathLogo, () => {
     pathLogo.value = associationStore.association?.pathLogo
 })
+const MAX_FILE_SIZE = 8388608
+
+async function onLogoRejected() {
+    notify({
+        type: 'negative',
+        message: t('notifications.negative.upload-images-error-too-large')
+    })
+}
 
 // Open alert if user leaves without saving
 const openAlert = ref<boolean>(false)
@@ -142,6 +150,14 @@ async function onChangeLogo(action: string) {
                 message: t('notifications.negative.association-logo-edit-error'),
                 type: 'negative'
             })
+            if (error.response?.status === 413) {
+                onLogoRejected()
+            } else {
+                notify({
+                    type: 'negative',
+                    message: t('notifications.negative.association-logo-edit-error')
+                })
+            }
         }
     }
 }
@@ -176,6 +192,8 @@ async function onChangeLogo(action: string) {
                 :label="t('association.logo.pickup')"
                 accept="image/png, image/jpeg"
                 filled
+                :max-file-size="MAX_FILE_SIZE"
+                @rejected="onLogoRejected"
             />
             <QInput
                 v-model="altLogo"
@@ -368,6 +386,6 @@ async function onChangeLogo(action: string) {
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/associations.scss";
-@import "@/assets/styles/forms.scss";
+@import '@/assets/styles/associations.scss';
+@import '@/assets/styles/forms.scss';
 </style>

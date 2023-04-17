@@ -15,9 +15,9 @@ const {
 const userManagerStore = useUserManagerStore()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetUserAssociations()
-    loading.hide
+    loading.hide()
 })
 
 // Load userAssociations
@@ -47,11 +47,10 @@ async function onGetUserAssociations() {
     >
         <QCardSection>
             <section>
-                <h4>{{ association.name }}</h4>
+                <h4 class="title-4">{{ association.name }}</h4>
                 <QOptionGroup
                     v-model="association.role"
                     :options="association.options"
-                    color="primary"
                 />
                 <div class="btn-group btn-delete">
                     <div>
@@ -94,20 +93,6 @@ section {
         justify-content: flex-start;
         padding: 0;
         margin: 0;
-    }
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    section {
-        .btn-delete {
-            margin: 0;
-            justify-content: left;
-        }
-
-        .cancel-delete {
-            display: flex;
-            flex-direction: column;
-        }
     }
 }
 </style>

@@ -12,9 +12,8 @@ export interface Project {
     commissionDates: CommissionDate[],
     budgetPreviousEdition: number,
     targetAudience: string,
-    typeTargetAudience: string,
-    amountTargetAudience: number,
-    amountStudentsTargetAudience: number,
+    amountStudentsAudience: number,
+    amountAllAudience: number,
     ticketPrice: number,
     individualCost: number,
     goals: string,
@@ -65,9 +64,8 @@ export interface ProjectBasicInfos {
 export interface ProjectBudget {
     budgetPreviousEdition: number | string,
     targetAudience: string,
-    typeTargetAudience: string,
-    amountTargetAudience: number | string,
-    amountStudentsTargetAudience: number | string,
+    amountStudentsAudience: number | string,
+    amountAllAudience: number | string,
     ticketPrice: number | string,
     individualCost: number | string
 }

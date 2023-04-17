@@ -20,8 +20,9 @@ const route = useRoute()
     </QLayout>
 </template>
 
-<style lang="sass" scoped>
-.q-layout
-    max-width: 1280px
-    margin: 0 auto
+<style lang="scss" scoped>
+.q-layout {
+    max-width: 1280px;
+    margin: 0 auto;
+}
 </style>

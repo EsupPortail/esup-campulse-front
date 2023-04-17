@@ -18,9 +18,11 @@ const userStore = useUserStore()
 const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
 
 onMounted(async function () {
-    loading.show
+    loading.show()
     await onGetAssociationDetail()
-    loading.hide
+    initAssociationUser()
+    initAssociationUserRole()
+    loading.hide()
 })
 
 // TODO; find a way to avoid double request
@@ -41,22 +43,25 @@ watch(() => associationStore.association, initValues)
 watch(() => userStore.userAssociations.length, initValues)
 
 const associationUser = ref<AssociationUserDetail>()
-watch(() => userStore.userAssociations.length, () => {
+
+const initAssociationUser = () => {
     associationUser.value = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.id as string))
-})
+}
+watch(() => userStore.userAssociations.length, initAssociationUser)
 
 const associationUserRole = ref<{ codeName: string, literalName: string }>({
     codeName: '',
     literalName: ''
 })
-watch(() => associationUser.value, () => {
+const initAssociationUserRole = () => {
     if (associationUser.value) {
         const codeName = getAssociationUserRole(associationUser.value)
         const literalName = associationRoleOptions.find(obj => obj.value === codeName)?.label ?? ''
         associationUserRole.value.codeName = codeName
         associationUserRole.value.literalName = literalName
     }
-})
+}
+watch(() => associationUser.value, initAssociationUserRole)
 
 
 async function onGetAssociationDetail() {
@@ -80,7 +85,10 @@ async function onGetAssociationDetail() {
         </h2>
         <div class="form-container">
             <div class="form">
-                <p class="paragraph">
+                <p
+                    v-if="associationUserRole.literalName"
+                    class="paragraph"
+                >
                     {{
                         associationUserRole.literalName + (associationUserRole.codeName !== 'isPresident' ?
                             ` ${hasPresidentStatus ? t('with') : t('without')} droits de présidence` : '')
@@ -303,4 +311,3 @@ async function onGetAssociationDetail() {
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 </style>
-

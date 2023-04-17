@@ -19,20 +19,25 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await loadAssociations()
     initTitle()
     newAssociations.value = []
-    loading.hide
+    loading.hide()
 })
 
 const title = ref<string>()
 
 const options = ref(associationStore.associationLabels)
 
+const routeName = ref<string>(route.name as string)
+watch(() => route.name, () => {
+    routeName.value = route.name as string
+})
+
 const initTitle = () => {
-    if (route.name === 'Registration') title.value = t('dashboard.association-user.add-my-associations')
-    else if (route.name === 'ManageAccount') title.value = t('dashboard.association-user.add-my-new-associations')
+    if (routeName.value === 'Registration') title.value = t('dashboard.association-user.add-my-associations')
+    else if (routeName.value === 'ManageAccount') title.value = t('dashboard.association-user.add-my-new-associations')
     else title.value = t('user-manager.register-in-new-associations')
 }
 watch(() => route.path, initTitle)
@@ -65,7 +70,7 @@ function clearOptions() {
     <QCard v-if="title">
         <QCardSection>
             <fieldset>
-                <legend>{{ title }}</legend>
+                <legend class="title-3">{{ title }}</legend>
                 <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
                 <div
@@ -97,22 +102,24 @@ function clearOptions() {
 
                     <div class="btn-group">
                         <QBtn
-                            :label="t('forms.delete-association')"
-                            icon="mdi-minus-circle-outline"
+                            :aria-label="t('forms.delete-association')"
+                            class="bg-delete"
+                            icon="mdi-delete"
                             @click="removeAssociation(index)"
                         />
                         <QBtn
-                            v-if="newAssociations.length > 0 && newAssociations[0].id"
+                            v-if="(newAssociations.length > 0 && newAssociations[0].id) && routeName !== 'UserManagementDetail'"
                             :label="t('validate')"
                             class="validate-button"
                             icon-right="bi-check2"
                             type="submit"
                         />
                     </div>
-                    <QSeparator/>
+                    <QSeparator v-if="routeName !== 'ManageAccount'"/>
                 </div>
                 <QBtn
-                    v-if="newAssociations.length < (5 - userAssociations.length)"
+                    v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
                     :label="t('forms.add-association')"
                     class="add-association"
                     icon="mdi-plus-circle-outline"
@@ -124,8 +131,8 @@ function clearOptions() {
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/forms.scss";
-@import "@/assets/_variables.scss";
+@import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
 .q-card {
     margin-bottom: 1rem;

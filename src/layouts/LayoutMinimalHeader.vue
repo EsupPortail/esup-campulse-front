@@ -14,10 +14,11 @@ import LayoutFooter from '@/components/layout/LayoutFooter.vue'</script>
     </QLayout>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/header.scss'
+<style lang="scss">
+@import '@/assets/styles/header.scss';
 
-.q-layout
-    max-width: 1280px
-    margin: 0 auto
+.q-layout {
+    max-width: 1280px;
+    margin: 0 auto;
+}
 </style>

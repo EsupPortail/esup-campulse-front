@@ -9,7 +9,7 @@ import useSecurity from '@/composables/useSecurity'
 import type {Association} from '#/association'
 
 const associationStore = useAssociationStore()
-const {loading} = useQuasar()
+const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
 
@@ -21,11 +21,24 @@ const initValues = () => {
 watch(() => associationStore.associations, initValues)
 
 onMounted(async function () {
-    loading.show
-    await associationStore.getManagedAssociations()
+    loading.show()
+    await onGetManagedAssociations()
     initValues()
-    loading.hide
+    loading.hide()
 })
+
+async function onGetManagedAssociations() {
+    try {
+        await associationStore.getManagedAssociations()
+        await associationStore.getInstitutions()
+        await associationStore.getActivityFields()
+    } catch (error) {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.loading-error')
+        })
+    }
+}
 
 const selected = ref<QTableProps['selected']>([])
 const columns: QTableProps['columns'] = [
@@ -51,7 +64,7 @@ const columns: QTableProps['columns'] = [
         label: t('directory.labels.association-institution'),
         field: 'institution',
         sortable: true,
-        sort: (a, b) => a.name.localeCompare(b.name)
+        sort: (a, b) => (associationStore.institutions.find(obj => obj.id === a)?.name as string).localeCompare(associationStore.institutions.find(obj => obj.id === b)?.name as string)
     },
     {
         name: 'activityField',
@@ -59,7 +72,7 @@ const columns: QTableProps['columns'] = [
         label: t('directory.labels.association-activity-field'),
         field: 'activityField',
         sortable: true,
-        sort: (a, b) => a.name.localeCompare(b.name)
+        sort: (a, b) => (associationStore.activityFields.find(obj => obj.id === a)?.name as string).localeCompare(associationStore.activityFields.find(obj => obj.id === b)?.name as string)
     },
     {
         name: 'status',
@@ -109,7 +122,7 @@ const columns: QTableProps['columns'] = [
     <div class="form-title">
         <h2>
             <QIcon name="mdi-pencil-box-outline"/>
-            {{ t('directory.list') }}
+            {{ t('dashboard.association-list') }}
         </h2>
         <QBtn
             v-if="hasPerm('add_association')"
@@ -154,13 +167,13 @@ const columns: QTableProps['columns'] = [
                             key="institution"
                             :props="props"
                         >
-                            {{ props.row.institution?.name }}
+                            {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
                         </QTd>
                         <QTd
                             key="activityField"
                             :props="props"
                         >
-                            {{ props.row.activityField?.name }}
+                            {{ associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name }}
                         </QTd>
                         <QTd
                             key="status"
@@ -246,5 +259,4 @@ const columns: QTableProps['columns'] = [
         flex-direction: row;
     }
 }
-
 </style>
