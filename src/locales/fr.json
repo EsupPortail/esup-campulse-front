@@ -64,7 +64,7 @@
     "publish-in-directory": "Publier dans l'annuaire",
     "unpublish-in-directory": "Dépublier de l'annuaire",
     "validate-all-changes": "Valider tous les changements",
-    "validate-new-associations": "Valider les ajouts d'associations",
+    "validate-new-associations": "Valider tous les ajouts d'associations",
     "labels": {
       "acronym": "Acronyme",
       "activity-field": "Domaine d'activité",
@@ -255,7 +255,7 @@
     "association-name": "Nom de l'association",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "create-account": "Créer un compte",
-    "delete-association": "Supprimer l'association",
+    "delete-association": "Supprimer",
     "email": "Adresse mail",
     "error-unistra-mail-domain": "Cette adresse provient de l'Université de Strasbourg, veuillez passer par le formulaire CAS pour vous inscrire.",
     "fill-field": "Veuillez remplir ce champ",
@@ -313,6 +313,7 @@
     "social-object-hint": "Objet figurant sur les statuts de l'association",
     "status": "Mon statut",
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
+    "validate-association": "Valider cet ajout",
     "validated-account": "Compte validé"
   },
   "from": "À partir du",
@@ -480,9 +481,9 @@
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "submit-new-project": "Déposer une nouvelle demande de subventionnement",
     "summary": "Résumé du projet",
+    "target-all-amount": "Nombre de personnes visées au total",
     "target-audience": "Public visé par le projet",
-    "target-audience-amount": "Nombre de personnes visées",
-    "target-audience-amount-students": "Nombre de personnes visées dont étudiants et étudiantes",
+    "target-students-amount": "Nombre d'étudiantes et étudiants visés",
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
     "validate": "Valider et soumettre le projet"

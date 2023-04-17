@@ -103,6 +103,7 @@ function clearOptions() {
                     <div class="btn-group">
                         <QBtn
                             :aria-label="t('forms.delete-association')"
+                            class="bg-delete"
                             icon="mdi-delete"
                             @click="removeAssociation(index)"
                         />
