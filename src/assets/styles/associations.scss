@@ -396,57 +396,14 @@
 }
 
 #association-detail, #association-edition {
-  position: relative;
-
-  section, fieldset {
-    border: none;
-  }
 
   fieldset {
     padding: 0;
   }
 
-  #association-logo-title {
-    padding: .5rem;
-
-    .association-name {
-      h2 {
-        font-size: 1.875rem;
-        font-weight: $semibold-weight;
-        line-height: 3.4rem;
-        text-align: center;
-      }
-
-      .acronym {
-        text-align: center;
-        font-size: 1rem;
-      }
-    }
-
-    .association-logo {
-      width: $associationLogoSize;
-      height: $associationLogoSize;
-      display: block;
-      margin: auto;
-    }
-
-    .q-file, .q-input {
-      margin-bottom: .6rem;
-    }
-  }
-
-  .btn-group {
-    display: flex;
-    flex-direction: column;
-    gap: .6rem;
-    margin: .625rem auto;
-  }
-
-  #bottom-btns {
-    padding: .5rem;
-  }
-
   section, fieldset {
+    border: none;
+
     h3 {
       font-size: 1.7rem;
       text-transform: uppercase;
@@ -479,6 +436,47 @@
       }
     }
   }
+
+  #association-logo-title {
+    padding: .5rem;
+
+    .association-name {
+      h2 {
+        font-size: $titleSize;
+        font-weight: $semibold-weight;
+        text-align: center;
+      }
+
+      .acronym {
+        text-align: center;
+        font-size: $textSize;
+      }
+    }
+
+    .association-logo {
+      width: $associationLogoSize;
+      height: $associationLogoSize;
+      display: block;
+      margin: auto;
+    }
+
+    .q-file, .q-input {
+      margin-bottom: .6rem;
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    margin: .625rem auto;
+    background: green;
+  }
+
+  #bottom-btns {
+    padding: .5rem;
+  }
+
 
   @media screen and (min-width: $responsiveWidth) {
     section, fieldset {

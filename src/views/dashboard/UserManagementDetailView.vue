@@ -129,7 +129,7 @@ onBeforeRouteLeave((to, from, next) => {
                             {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
                         </li>
                         <li>
-                            <strong>{{ t("user.is-validated-by-admin") }}</strong> :
+                            <strong>{{ t("user.is-validated-by-admin") }}</strong>
                             {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
                         </li>
                     </ul>

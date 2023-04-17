@@ -141,6 +141,10 @@ legend {
     display: flex;
 }
 
+.back-btn {
+    margin: 0;
+}
+
 @media screen and (min-width: $responsiveWidth) {
     .btn-group {
         margin: 0;

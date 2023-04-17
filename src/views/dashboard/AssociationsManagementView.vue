@@ -228,15 +228,6 @@ const columns: QTableProps['columns'] = [
     </div>
 </template>
 
-<!--<style lang="sass" scoped>
-.edition-buttons
-    display: flex
-    gap: 10px
-
-.q-banner
-    margin-bottom: 20px
-</style>-->
-
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
 </style>
