@@ -54,6 +54,8 @@ const association = ref<EditedAssociation>({
     altLogo: ''
 })
 
+const associationStudentCount = ref(0)
+
 const initValues = () => {
     association.value.name = associationStore.association?.name as string
     association.value.acronym = associationStore.association?.acronym as string
@@ -73,6 +75,7 @@ const initValues = () => {
     association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField)?.value
     association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed as number
     association.value.isPublic = associationStore.association?.isPublic as boolean
+    associationStudentCount.value = associationStore.association?.studentCount as number
 }
 watch(() => associationStore.association, initValues)
 
@@ -190,9 +193,9 @@ async function onChangeLogo(action: string) {
             <QFile
                 v-model="newLogo"
                 :label="t('association.logo.pickup')"
+                :max-file-size="MAX_FILE_SIZE"
                 accept="image/png, image/jpeg"
                 filled
-                :max-file-size="MAX_FILE_SIZE"
                 @rejected="onLogoRejected"
             />
             <QInput
@@ -309,8 +312,10 @@ async function onChangeLogo(action: string) {
                         v-if="hasPerm('change_association_all_fields')"
                         v-model="association.amountMembersAllowed"
                         :label="t('association.labels.amount-members-allowed')"
+                        :rules="[val => val >= associationStudentCount || t('forms.amount-members-allowed-must-be-superior-to-student-count')]"
                         filled
                         inputmode="numeric"
+                        lazy-rules
                         type="number"
                     />
                 </div>
