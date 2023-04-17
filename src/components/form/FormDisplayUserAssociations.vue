@@ -55,17 +55,17 @@ async function onGetUserAssociations() {
                 <h4>{{ association.name }}</h4>
                 <ul>
                     <li>
-                        {{ t('dashboard.association-user.my-role') }} <span>{{
+                        {{ t('dashboard.association-user.my-role') }} : <span>{{
                             associationRoleOptions.find(obj => obj.value === association.role)?.label ?? t('dashboard.association-user.member')
                         }}</span>
                     </li>
                     <li>
-                        {{ t('dashboard.association-user.presidency-status') }} <span>{{
+                        {{ t('dashboard.association-user.presidency-status') }} : <span>{{
                             (association.role === 'isPresident' || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <= today)) ? t('yes') : t('no')
                         }}</span>
                     </li>
                     <li>
-                        {{ t('dashboard.association-user.is-validated-by-admin') }}
+                        {{ t('dashboard.association-user.is-validated-by-admin') }} :
                         <span>{{ association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
                     </li>
                 </ul>

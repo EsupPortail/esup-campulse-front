@@ -323,7 +323,7 @@ async function clearSearch(apiSearch: boolean) {
                     v-if="associationsOnPage && pages && pages > 1"
                     v-model="currentPage"
                     :max="pages"
-                    @click="scrollToTop"
+                    @update:model-value="scrollToTop"
                 />
             </div>
         </div>
