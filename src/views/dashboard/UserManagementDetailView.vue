@@ -174,10 +174,6 @@ ul {
 
     .btn-group {
         justify-content: center;
-
-        .q-btn {
-            width: 30%;
-        }
     }
 }
 </style>

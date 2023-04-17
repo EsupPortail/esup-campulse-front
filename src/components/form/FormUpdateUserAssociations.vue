@@ -53,24 +53,26 @@ async function onGetUserAssociations() {
                     :options="association.options"
                     color="primary"
                 />
-                <div class="btn-group">
+                <div class="btn-group btn-delete">
                     <div>
                         <QBtn
                             v-if="!association.deleteAssociation"
                             :label="t('dashboard.association-user.delete-association')"
-                            color="red"
+                            color="delete"
                             icon="mdi-delete"
                             @click="association.deleteAssociation = true"
                         />
                         <div v-else>
-                            <span class="delete-message">
-                                {{ t('user.delete-association-role') }}
-                            </span>
-                            <QBtn
-                                :label="t('cancel-delete')"
-                                icon="mdi-cancel"
-                                @click="association.deleteAssociation = false"
-                            />
+                            <div class="cancel-delete">
+                                <QBtn
+                                    :label="t('cancel-delete')"
+                                    icon="mdi-cancel"
+                                    @click="association.deleteAssociation = false"
+                                />
+                                <span class="delete-message">
+                                    {{ t('user.delete-association-role') }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,39 +81,33 @@ async function onGetUserAssociations() {
     </QCard>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-</style>
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
-<style lang="sass" scoped>
-.form
-    display: flex
-    flex-direction: column
-    gap: 1rem
+section {
+    display: flex;
+    flex-direction: column;
 
-.association-card
-    padding: 1rem
+    // TODO: Delete button not centered
+    .btn-delete {
+        justify-content: flex-start;
+        padding: 0;
+        margin: 0;
+    }
+}
 
-fieldset
-    border: none
+@media screen and (min-width: $responsiveWidth) {
+    section {
+        .btn-delete {
+            margin: 0;
+            justify-content: left;
+        }
 
-fieldset .q-checkbox
-    width: 100%
-
-h4
-    font-size: 1.5em
-    padding: 0
-    line-height: 0
-
-.delete-message
-    color: red
-
-.btn-group
-    display: flex
-    gap: 1rem
-    margin-top: 1rem
-
-ul
-    padding: 1rem
-    margin-top: 1rem
+        .cancel-delete {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
 </style>
