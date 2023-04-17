@@ -21,9 +21,9 @@ async function onLogOut() {
 }
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     if (userStore.user?.associations.length !== 0) await getUserAssociations(userStore.user?.id as number, false)
-    loading.hide
+    loading.hide()
 })
 
 </script>

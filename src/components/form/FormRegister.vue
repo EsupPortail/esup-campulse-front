@@ -22,10 +22,10 @@ const {groupChoiceIsValid, groupCanJoinAssociation, isStaff} = useUserGroups()
 const hasConsent = ref<boolean>(false)
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     initNewUserData()
     await onLoadCASUser()
-    loading.hide
+    loading.hide()
 })
 
 async function onLoadCASUser() {

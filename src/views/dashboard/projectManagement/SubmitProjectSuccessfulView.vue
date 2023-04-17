@@ -12,9 +12,9 @@ const {loading} = useQuasar()
 const {t} = useI18n()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetProjectDetail()
-    loading.hide
+    loading.hide()
 })
 
 async function onGetProjectDetail() {

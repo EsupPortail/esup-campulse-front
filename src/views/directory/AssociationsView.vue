@@ -14,10 +14,10 @@ const {loading, notify} = useQuasar()
 const {t} = useI18n()
 
 onMounted(async function () {
-    loading.show
+    loading.show()
     await associationStore.getAssociations(true)
     await loadAssociationsActivityFields()
-    loading.hide
+    loading.hide()
 })
 
 // Initialize a clone of associations from the store to do some searching and pagination
@@ -248,14 +248,16 @@ async function clearSearch(apiSearch: boolean) {
                         <p v-if="associations.length > 0">
                             <span>{{ associations.length }}</span>
                             {{
-                                associations.length > 1 ? t('directory.found-associations-plural') : t('directory.found-associations-singular')
+                                associations.length > 1 ? t('directory.found-associations-plural') :
+                                t('directory.found-associations-singular')
                             }} :
                         </p>
                         <p v-else>{{ t('directory.no-match') }}</p>
                         <p>
                             <span>{{ associationsOnPage.length }}</span>
                             {{
-                                associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') : t('directory.associations-on-page-singular')
+                                associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') :
+                                t('directory.associations-on-page-singular')
                             }} :
                         </p>
                     </div>

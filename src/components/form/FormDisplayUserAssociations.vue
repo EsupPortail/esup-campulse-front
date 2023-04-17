@@ -20,9 +20,9 @@ const {
 } = useUserAssociations()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetUserAssociations()
-    loading.hide
+    loading.hide()
 })
 
 // Load userAssociations
@@ -52,7 +52,7 @@ async function onGetUserAssociations() {
     >
         <QCardSection>
             <section>
-                <h4>{{ association.name }}</h4>
+                <h4 class="title-3">{{ association.name }}</h4>
                 <ul>
                     <li>
                         {{ t('dashboard.association-user.my-role') }} : <span>{{
@@ -94,7 +94,7 @@ async function onGetUserAssociations() {
 
 section {
     ul {
-        padding: 1rem;
+        padding: 0 1rem 1rem 1rem;
     }
 }
 

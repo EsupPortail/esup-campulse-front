@@ -15,9 +15,9 @@ const {notify, loading} = useQuasar()
 const {t} = useI18n()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetContents()
-    loading.hide
+    loading.hide()
 })
 
 const associationCount = ref<number>(associationStore.associationNames.length)

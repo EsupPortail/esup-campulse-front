@@ -77,9 +77,9 @@ const initValues = () => {
 watch(() => associationStore.association, initValues)
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     initValues()
-    loading.hide
+    loading.hide()
 })
 
 // Logo management

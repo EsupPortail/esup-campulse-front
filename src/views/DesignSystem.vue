@@ -66,13 +66,13 @@ const initValues = () => {
 }
 watch(() => associationStore.associations, initValues)
 onMounted(async function () {
-    loading.show
+    loading.show()
     await associationStore.getManagedAssociations()
     if (userStore.user) {
         await getUserAssociations(userStore.user.id, false)
     }
     initValues()
-    loading.hide
+    loading.hide()
 })
 const selected = ref<QTableProps['selected']>([])
 const columns: QTableProps['columns'] = [

@@ -18,9 +18,10 @@ const userStore = useUserStore()
 const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
 
 onMounted(async function () {
-    loading.show
+    loading.show()
     await onGetAssociationDetail()
-    loading.hide
+    initAssociationUser()
+    loading.hide()
 })
 
 // TODO; find a way to avoid double request
@@ -41,9 +42,11 @@ watch(() => associationStore.association, initValues)
 watch(() => userStore.userAssociations.length, initValues)
 
 const associationUser = ref<AssociationUserDetail>()
-watch(() => userStore.userAssociations.length, () => {
+
+const initAssociationUser = () => {
     associationUser.value = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.id as string))
-})
+}
+watch(() => userStore.userAssociations.length, initAssociationUser)
 
 const associationUserRole = ref<{ codeName: string, literalName: string }>({
     codeName: '',

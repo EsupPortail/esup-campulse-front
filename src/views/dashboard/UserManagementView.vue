@@ -23,10 +23,10 @@ watch(() => userManagerStore.users, () => {
 })
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetUsers()
     await onGetUserGroups()
-    loading.hide
+    loading.hide()
 })
 
 async function onGetUsers() {
@@ -61,8 +61,7 @@ const columns: QTableProps['columns'] = [
         name: 'associations',
         align: 'center',
         label: t('directory.title'),
-        field: 'associations',
-        sortable: false
+        field: 'associations'
     },
     {name: 'groups', align: 'center', label: t('user.groups'), field: 'groups', sortable: false},
     {
@@ -96,6 +95,7 @@ const columns: QTableProps['columns'] = [
             <div class="form">
                 <QTable
                     :columns="columns"
+                    :loading="!users"
                     :rows="users"
                     :rows-per-page-options="[10, 20, 50, 0]"
                     :title="t('user-manager.users')"

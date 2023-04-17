@@ -58,7 +58,7 @@ const userStore = useUserStore()
 const route = useRoute()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
 
     if (route.params.projectId) newProject.value = false
 
@@ -80,7 +80,7 @@ onMounted(async () => {
 
     await onGetProjectCategories()
     await onGetDocumentTypes()
-    loading.hide
+    loading.hide()
 })
 
 const step = ref(1)
@@ -319,9 +319,9 @@ async function onSubmitGoals() {
 async function onUploadDocuments() {
     if (projectStore.project) {
         try {
-            loading.show
+            loading.show()
             await postProjectDocuments(parseInt(route.params.associationId as string))
-            loading.hide
+            loading.hide()
             done5.value = true
             step.value = 6
         } catch {
@@ -336,9 +336,9 @@ async function onUploadDocuments() {
 // DELETE DOCS ON STEP 5
 async function onDeleteDocumentUpload(documentId: number) {
     try {
-        loading.show
+        loading.show()
         await deleteDocumentUpload(documentId)
-        loading.hide
+        loading.hide()
     } catch {
         notify({
             type: 'negative',

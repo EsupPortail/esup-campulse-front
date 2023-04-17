@@ -15,9 +15,9 @@ const {
 const userManagerStore = useUserManagerStore()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetUserAssociations()
-    loading.hide
+    loading.hide()
 })
 
 // Load userAssociations
@@ -47,11 +47,10 @@ async function onGetUserAssociations() {
     >
         <QCardSection>
             <section>
-                <h4>{{ association.name }}</h4>
+                <h4 class="title-4">{{ association.name }}</h4>
                 <QOptionGroup
                     v-model="association.role"
                     :options="association.options"
-                    color="primary"
                 />
                 <div class="btn-group">
                     <div>
@@ -98,20 +97,11 @@ fieldset
 fieldset .q-checkbox
     width: 100%
 
-h4
-    font-size: 1.5em
-    padding: 0
-    line-height: 0
-
 .delete-message
     color: red
 
 .btn-group
     display: flex
     gap: 1rem
-    margin-top: 1rem
-
-ul
-    padding: 1rem
     margin-top: 1rem
 </style>

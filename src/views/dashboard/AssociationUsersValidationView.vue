@@ -15,9 +15,9 @@ const {
 
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetAssociationUsers()
-    loading.hide
+    loading.hide()
 })
 
 const isLoaded = ref<boolean>(false)

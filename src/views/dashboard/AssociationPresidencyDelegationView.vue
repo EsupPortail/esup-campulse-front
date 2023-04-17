@@ -15,10 +15,10 @@ const associationStore = useAssociationStore()
 const {initAssociationMembers, associationMembers} = useUserAssociations()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetAssociationUsers()
     await onGetAssociationDetail()
-    loading.hide
+    loading.hide()
 })
 
 async function onGetAssociationUsers() {

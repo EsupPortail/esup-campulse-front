@@ -19,9 +19,9 @@ const selectedUser = ref<string>('')
 async function onGetUsersFromCAS() {
     if (lastName.value) {
         try {
-            loading.show
+            loading.show()
             await getUsersFromCAS(lastName.value)
-            loading.hide
+            loading.hide()
         } catch (error) {
             notify({
                 type: 'negative',
@@ -32,7 +32,7 @@ async function onGetUsersFromCAS() {
 }
 
 function onImportUser() {
-    loading.show
+    loading.show()
 
     const extendedCASUser = CASUsers.value.find(obj => obj.username === selectedUser.value)
 
@@ -48,7 +48,7 @@ function onImportUser() {
         displayResetButton.value = true
         lastName.value = ''
 
-        loading.hide
+        loading.hide()
 
         notify({
             type: 'positive',
@@ -58,7 +58,7 @@ function onImportUser() {
 }
 
 function onReset() {
-    loading.show
+    loading.show()
     open.value = false
     selectedUser.value = ''
     newUser.isCas = false
@@ -70,7 +70,7 @@ function onReset() {
     CASUsers.value = []
     displayResetButton.value = false
     lastName.value = ''
-    loading.hide
+    loading.hide()
 }
 </script>
 

@@ -24,9 +24,9 @@ const userStore = useUserStore()
 const route = useRoute()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetUser()
-    loading.hide
+    loading.hide()
 })
 
 // Load user
@@ -135,31 +135,35 @@ onBeforeRouteLeave((to, from, next) => {
                     </ul>
                 </div>
             </div>
-        </section>
-        <section class="btn-group">
-            <QBtn
-                :label="t('back')"
-                color="secondary"
-                icon="mdi-arrow-left-circle"
-                @click="openAlert = true"
-            />
-            <AlertLeaveEdition
-                :open-alert="openAlert"
-                :text="t('alerts.leave-user-edition')"
-                @closeAlert="openAlert = !openAlert"
-                @leaveEdition="onLeaveEdition"
-            />
-            <AlertConfirmUserUpdate
-                v-if="groupChoiceIsValid"
-                @has-validated="hasValidated = true"
-            />
-            <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
+            <div class="form-container">
+                <div class="form">
+                    <section class="form-page-navigation">
+                        <QBtn
+                            :label="t('back')"
+                            color="secondary"
+                            icon="mdi-arrow-left-circle"
+                            @click="openAlert = true"
+                        />
+                        <AlertLeaveEdition
+                            :open-alert="openAlert"
+                            :text="t('alerts.leave-user-edition')"
+                            @closeAlert="openAlert = !openAlert"
+                            @leaveEdition="onLeaveEdition"
+                        />
+                        <AlertConfirmUserUpdate
+                            v-if="groupChoiceIsValid"
+                            @has-validated="hasValidated = true"
+                        />
+                        <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
+                    </section>
+                </div>
+            </div>
         </section>
     </QForm>
 </template>
 
 <style lang="scss">
-@import "@/assets/_variables.scss";
+@import '@/assets/_variables.scss';
 
 ul {
     margin-left: 1rem;

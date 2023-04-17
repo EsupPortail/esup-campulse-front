@@ -22,9 +22,9 @@ watch(() => associationStore.association, () => {
 })
 
 onMounted(async function () {
-    loading.show
+    loading.show()
     await onGetAssociationDetail()
-    loading.hide
+    loading.hide()
 })
 
 const hasLogo = computed(() => {

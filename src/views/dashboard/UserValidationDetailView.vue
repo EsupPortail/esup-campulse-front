@@ -20,11 +20,11 @@ const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
 onMounted(async () => {
-    loading.show
+    loading.show()
     await onGetUser()
     newGroups.value = userManagerStore.userGroups
     await onGetUserAssociations()
-    loading.hide
+    loading.hide()
 })
 
 // Get user
