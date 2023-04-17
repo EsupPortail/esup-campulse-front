@@ -395,7 +395,8 @@
       "unknown-user": "Aucun compte n'a été trouvé.",
       "unpublish-association-error": "L'association n'a pas pu être dépubliée de l'annuaire",
       "upload-documents-error": "Erreur lors de la soumission des documents.",
-      "upload-documents-error-too-large": "La taille du fichier est trop haute."
+      "upload-documents-error-too-large": "La taille du fichier est trop haute.",
+      "upload-images-error-too-large": "La taille de l'image est trop haute."
     },
     "positive": {
       "account-created": "Compte créé.",
