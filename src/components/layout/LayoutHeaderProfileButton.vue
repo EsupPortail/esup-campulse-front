@@ -91,7 +91,8 @@ onMounted(async () => {
     </div>
 </template>
 
-<style lang="sass" scoped>
-.q-list
-    color: white
+<style lang="scss" scoped>
+.q-list {
+    color: white;
+}
 </style>

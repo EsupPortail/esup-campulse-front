@@ -197,15 +197,17 @@ const columns: QTableProps['columns'] = [
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/dashboard.scss'
-@import '@/assets/styles/forms.scss'
+<style lang="scss">
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/forms.scss';
 </style>
 
-<style lang="sass" scoped>
-ul
-    margin-left: -40px
+<style lang="scss" scoped>
+ul {
+    margin-left: -40px;
+}
 
-li
-    list-style: none
+li {
+    list-style: none;
+}
 </style>

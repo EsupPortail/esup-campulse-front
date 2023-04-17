@@ -259,5 +259,4 @@ const columns: QTableProps['columns'] = [
         flex-direction: row;
     }
 }
-
 </style>

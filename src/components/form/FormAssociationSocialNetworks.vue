@@ -69,9 +69,8 @@ onMounted(initValues)
 </template>
 
 <style lang="scss">
-@import "@/assets/_variables.scss";
-@import "@/assets/styles/forms.scss";
-
+@import '@/assets/_variables.scss';
+@import '@/assets/styles/forms.scss';
 
 // Mobile version
 .delete-network-btn {
@@ -102,8 +101,5 @@ onMounted(initValues)
     .add-network-btn {
         width: 35%;
     }
-
 }
-
-
 </style>

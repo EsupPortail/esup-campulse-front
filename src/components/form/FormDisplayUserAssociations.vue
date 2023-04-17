@@ -89,8 +89,8 @@ async function onGetUserAssociations() {
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/forms.scss";
-@import "@/assets/_variables.scss";
+@import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
 section {
     ul {
@@ -126,5 +126,4 @@ section {
         }
     }
 }
-
 </style>

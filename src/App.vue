@@ -14,7 +14,7 @@ const routesNames = ['Home', 'Login', 'CASLogin', '404', 'DesignSystem']
     />
 </template>
 
-<style lang="sass">
-@import "@/assets/base.css"
-@import "@/assets/plan-a-design.scss"
+<style lang="scss">
+@import '@/assets/base.css';
+@import '@/assets/plan-a-design.scss';
 </style>

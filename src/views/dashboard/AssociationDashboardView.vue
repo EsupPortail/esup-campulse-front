@@ -311,4 +311,3 @@ async function onGetAssociationDetail() {
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 </style>
-

@@ -1211,15 +1211,15 @@ const columns: QTableProps['columns'] = [
     </QLayout>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/header.scss'
-@import '@/assets/styles/breadcrumbs.scss'
-@import '@/assets/styles/footer.scss'
-@import '@/assets/styles/forms.scss'
-@import '@/assets/styles/home.scss'
-@import '@/assets/styles/dashboard.scss'
+<style lang="scss">
+@import '@/assets/styles/header.scss';
+@import '@/assets/styles/breadcrumbs.scss';
+@import '@/assets/styles/footer.scss';
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/home.scss';
+@import '@/assets/styles/dashboard.scss';
 </style>
 
-<style lang="sass" scoped>
-@import '@/assets/styles/design-system.scss'
+<style lang="scss" scoped>
+@import '@/assets/styles/design-system.scss';
 </style>

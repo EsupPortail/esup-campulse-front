@@ -20,7 +20,8 @@ const props = defineProps({
     </fieldset>
 </template>
 
-<style lang="sass" scoped>
-legend
-    font-size: 1.5em
+<style lang="scss" scoped>
+legend {
+    font-size: 1.5em;
+}
 </style>

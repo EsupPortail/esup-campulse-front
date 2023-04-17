@@ -137,9 +137,8 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-@import "@/assets/_variables.scss";
+@import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
-
 
 .q-expansion-item {
     background-color: $dashboardColorBorders;
@@ -156,5 +155,4 @@ fieldset {
     border: none;
     padding: 0;
 }
-
 </style>

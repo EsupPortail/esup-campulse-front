@@ -47,6 +47,6 @@ onMounted(() => {
     </div>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/breadcrumbs.scss'
+<style lang="scss">
+@import '@/assets/styles/breadcrumbs.scss';
 </style>

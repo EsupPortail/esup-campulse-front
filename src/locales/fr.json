@@ -510,7 +510,7 @@
   "to": "Jusqu'au",
   "user": {
     "associations": "Associations",
-    "delete-association-role": "Le rôle dans l'association sera supprimé après validation des changements.",
+    "delete-association-role": "Note : Le rôle dans l'association sera supprimé après validation des changements.",
     "email": "E-mail",
     "first-name": "Prénom",
     "groups": "Statut",

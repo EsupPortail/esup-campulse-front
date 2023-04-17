@@ -386,6 +386,6 @@ async function onChangeLogo(action: string) {
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/associations.scss";
-@import "@/assets/styles/forms.scss";
+@import '@/assets/styles/associations.scss';
+@import '@/assets/styles/forms.scss';
 </style>

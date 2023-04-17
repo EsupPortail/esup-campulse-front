@@ -1153,52 +1153,64 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
     </section>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
 </style>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 
-.project-re-edition
-    margin-top: 1rem
+.project-re-edition {
+    margin-top: 1rem;
+}
 
-.previous-budget, .asked-budget, .previous-budget-section, .asked-budget-section
-    display: flex
-    flex-direction: column
-    gap: 1rem
+.previous-budget, .asked-budget, .previous-budget-section, .asked-budget-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
-.q-checkbox
-    margin: 0 0 1rem 0
+.q-checkbox {
+    margin: 0 0 1rem 0;
+}
 
-section > .q-separator
-    margin: 0 0 2rem 0
+section > .q-separator {
+    margin: 0 0 2rem 0;
+}
 
-.q-separator
-    margin: 1rem 0 2rem 0
+.q-separator {
+    margin: 1rem 0 2rem 0;
+}
 
-h3
-    margin-bottom: 1rem
+h3 {
+    margin-bottom: 1rem;
+}
 
-.flex-section
-    display: flex
-    flex-direction: column
-    gap: 1.5rem
+.flex-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
 
-h5
-    margin: 1.5rem 0 0.5rem 0
+h5 {
+    margin: 1.5rem 0 0.5rem 0;
+}
 
-.recap-section
-    margin-bottom: 2rem
+.recap-section {
+    margin-bottom: 2rem;
+}
 
-.recap-section-title
-    display: flex
-    align-items: center
-    justify-content: space-between
+.recap-section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    h4
-        margin: 2rem 0 1rem 0
+    h4 {
+        margin: 2rem 0 1rem 0;
+    }
+}
 
-.flex-section .document-input
-    margin-bottom: 0
+.flex-section .document-input {
+    margin-bottom: 0;
+}
 </style>

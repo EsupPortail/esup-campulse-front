@@ -35,7 +35,7 @@ defineProps({
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/_variables.scss";
+@import '@/assets/_variables.scss';
 
 .text-h6 {
   font-weight: $xbold-weight;

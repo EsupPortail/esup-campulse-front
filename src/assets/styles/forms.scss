@@ -26,10 +26,10 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) $fullSize);
   }
 
-  @media screen and (min-width: $responsiveWidth) {
-    display: flex;
-    justify-content: center;
-  }
+  /*  @media screen and (min-width: $responsiveWidth) {
+      display: flex;
+      justify-content: center;
+    }*/
 }
 
 // Quasar input fields

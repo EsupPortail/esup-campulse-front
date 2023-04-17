@@ -52,24 +52,26 @@ async function onGetUserAssociations() {
                     v-model="association.role"
                     :options="association.options"
                 />
-                <div class="btn-group">
+                <div class="btn-group btn-delete">
                     <div>
                         <QBtn
                             v-if="!association.deleteAssociation"
                             :label="t('dashboard.association-user.delete-association')"
-                            color="red"
+                            color="delete"
                             icon="mdi-delete"
                             @click="association.deleteAssociation = true"
                         />
                         <div v-else>
-                            <span class="delete-message">
-                                {{ t('user.delete-association-role') }}
-                            </span>
-                            <QBtn
-                                :label="t('cancel-delete')"
-                                icon="mdi-cancel"
-                                @click="association.deleteAssociation = false"
-                            />
+                            <div class="cancel-delete">
+                                <QBtn
+                                    :label="t('cancel-delete')"
+                                    icon="mdi-cancel"
+                                    @click="association.deleteAssociation = false"
+                                />
+                                <span class="delete-message">
+                                    {{ t('user.delete-association-role') }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,30 +80,19 @@ async function onGetUserAssociations() {
     </QCard>
 </template>
 
-<style lang="sass">
-@import '@/assets/styles/forms.scss'
-</style>
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
-<style lang="sass" scoped>
-.form
-    display: flex
-    flex-direction: column
-    gap: 1rem
+section {
+    display: flex;
+    flex-direction: column;
 
-.association-card
-    padding: 1rem
-
-fieldset
-    border: none
-
-fieldset .q-checkbox
-    width: 100%
-
-.delete-message
-    color: red
-
-.btn-group
-    display: flex
-    gap: 1rem
-    margin-top: 1rem
+    // TODO: Delete button not centered
+    .btn-delete {
+        justify-content: flex-start;
+        padding: 0;
+        margin: 0;
+    }
+}
 </style>
