@@ -5,6 +5,7 @@ import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import useCommissions from '@/composables/useCommissions'
 import {useUserStore} from '@/stores/useUserStore'
+import useProjectDocuments from '@/composables/useProjectDocuments'
 
 const projectBasicInfos = ref<ProjectBasicInfos>(
     {
@@ -45,13 +46,14 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function() {
+export default function () {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
     const {commissionDatesLabels} = useCommissions()
     const {arraysAreEqual} = useUtility()
+    const {processDocuments} = useProjectDocuments()
 
 
     // INIT DATA
@@ -80,15 +82,6 @@ export default function() {
         commissionDatesLabels.value.forEach((label) => {
             label.disable = false
         })
-        projectCommissionDatesModel.value.forEach((commissionDate) => {
-            const label = commissionDatesLabels.value.find(obj => obj.value === commissionDate)
-            const duplicateLabels = commissionDatesLabels.value.filter(obj => obj.commission === label?.commission)
-            if (duplicateLabels.length) {
-                duplicateLabels.forEach((duplicateLabel) => {
-                    if (duplicateLabel.value !== commissionDate) duplicateLabel.disable = true
-                })
-            }
-        })
     })
 
     const initProjectCommissionDates = () => {
@@ -115,6 +108,30 @@ export default function() {
         projectGoals.value.plannedActivities = projectStore.project?.plannedActivities as string
         projectGoals.value.preventionSafety = projectStore.project?.preventionSafety as string
         projectGoals.value.marketingCampaign = projectStore.project?.marketingCampaign as string
+    }
+
+    // REINITIALIZE FORM
+    const reInitSubmitProjectForm = () => {
+        projectBasicInfos.value.name = ''
+        projectBasicInfos.value.plannedStartDate = ''
+        projectBasicInfos.value.plannedEndDate = ''
+        projectBasicInfos.value.location = ''
+        projectBasicInfos.value.user = null
+        projectBasicInfos.value.association = null
+        projectCategories.value = []
+        projectCommissionDates.value = []
+        projectBudget.value.targetAudience = ''
+        projectBudget.value.amountStudentsAudience = 0
+        projectBudget.value.amountAllAudience = 0
+        projectBudget.value.ticketPrice = 0
+        projectBudget.value.individualCost = 0
+        projectBudget.value.budgetPreviousEdition = 0
+        projectGoals.value.goals = ''
+        projectGoals.value.summary = ''
+        projectGoals.value.plannedActivities = ''
+        projectGoals.value.preventionSafety = ''
+        projectGoals.value.marketingCampaign = ''
+        processDocuments.value = []
     }
 
     // POSTS
@@ -293,6 +310,7 @@ export default function() {
         patchProjectCommissionDates,
         initProjectCommissionDates,
         patchProjectGoals,
-        submitProject
+        submitProject,
+        reInitSubmitProjectForm
     }
 }

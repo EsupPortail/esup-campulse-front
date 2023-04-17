@@ -20,7 +20,7 @@ const commissionDates = ref<CommissionDate[]>([])
 // Used to store commission dates labels for project submission
 const commissionDatesLabels = ref<SelectCommissionDateLabel[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -32,16 +32,16 @@ export default function() {
         }
     }
 
-    async function getCommissionDates(only_next = false) {
+    async function getCommissionDates(onlyNext: boolean) {
         if (commissionDates.value.length === 0) {
-            commissionDates.value = (await axiosPublic.get<CommissionDate[]>(`/commissions/commission_dates?only_next=${only_next}`)).data
+            commissionDates.value = (await axiosPublic.get<CommissionDate[]>(`/commissions/commission_dates?only_next=${onlyNext}`)).data
         }
     }
 
     // INIT COMMISSION DATA
     const initCommissionLabels = () => {
         commissionOptions.value = []
-        commissions.value.forEach(function(commission) {
+        commissions.value.forEach(function (commission) {
             commissionOptions.value.push({
                 value: commission.id,
                 label: commission.acronym

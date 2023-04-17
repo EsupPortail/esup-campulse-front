@@ -6,7 +6,7 @@ import useSubmitProject from '@/composables/useSubmitProject'
 import useUtility from '@/composables/useUtility'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useQuasar} from 'quasar'
-import {useRoute} from 'vue-router'
+import {onBeforeRouteLeave, useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useProjectDocuments from '@/composables/useProjectDocuments'
@@ -33,7 +33,8 @@ const {
     initProjectCommissionDates,
     patchProjectGoals,
     initProjectGoals,
-    submitProject
+    submitProject,
+    reInitSubmitProjectForm
 } = useSubmitProject()
 const {
     getDocumentTypes,
@@ -337,7 +338,7 @@ async function onUploadDocuments() {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 413) {
-                    onDocumentRejected()
+                    await onDocumentRejected()
                 } else {
                     notify({
                         type: 'negative',
@@ -378,6 +379,10 @@ async function onSubmitProject() {
         }
     }
 }
+
+// WHEN THE USER LEAVES THE PAGE, WE CLEAR OR INPUTS
+onBeforeRouteLeave(reInitSubmitProjectForm)
+
 </script>
 
 <template>
