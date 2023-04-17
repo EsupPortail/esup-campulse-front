@@ -155,7 +155,7 @@
     "my-documents": "Mes documents",
     "my-infos": "Mes informations",
     "my-password": "Mon mot de passe",
-    "my-status": "Mon statut actuel :",
+    "my-status": "Mon statut actuel",
     "search-user-via-cas": "Rechercher un utilisateur via CAS",
     "update-my-status": "Pour changer de statut, merci de contacter le gestionnaire dont vous dépendez.",
     "user-add": "Ajouter un compte utilisateur",
@@ -194,13 +194,13 @@
       "manage-my-associations": "Gérer mes associations",
       "member": "Membre",
       "my-associations": "Mes associations actuelles",
-      "my-role": "Mon rôle :",
+      "my-role": "Mon rôle",
       "new-associations": "Nouvelles associations",
       "no-member": "Pas d'autres membres dans l'association.",
       "not-association-member": "L'utilisateur n'est membre d'aucune association.",
       "not-can-be-president-from": "Non renseigné",
       "not-can-be-president-to": "Non renseigné",
-      "presidency-status": "Droit de présidence :",
+      "presidency-status": "Droit de présidence",
       "role": "Rôle",
       "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
     }
@@ -558,5 +558,7 @@
   "validate-changes": "Valider les changements",
   "validated": "Validé",
   "validated-non": "Non validé",
+  "with": "avec",
+  "without": "sans",
   "yes": "Oui"
 }
