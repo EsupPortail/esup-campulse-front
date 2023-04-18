@@ -90,7 +90,7 @@ async function onGetAssociationDetail() {
                     class="display-row"
                 >
                     <h4>{{ t("association.labels.institution") }}</h4>
-                    <p>{{ association?.institution?.name }}</p>
+                    <p>{{ associationStore.institutions.find(obj => obj.id === association?.institution)?.name }}</p>
                 </article>
 
                 <article
@@ -98,7 +98,7 @@ async function onGetAssociationDetail() {
                     class="display-row"
                 >
                     <h4>{{ t("association.labels.institution-component") }}</h4>
-                    <p>{{ association?.institutionComponent?.name }}</p>
+                    <p>{{ associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name }}</p>
                 </article>
 
                 <article
@@ -106,7 +106,7 @@ async function onGetAssociationDetail() {
                     class="display-row"
                 >
                     <h4>{{ t("association.labels.activity-field") }}</h4>
-                    <p>{{ association?.activityField?.name }}</p>
+                    <p>{{ associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name }}</p>
                 </article>
             </div>
         </section>

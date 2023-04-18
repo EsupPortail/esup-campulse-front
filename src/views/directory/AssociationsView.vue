@@ -301,21 +301,21 @@ async function clearSearch(apiSearch: boolean) {
                                         <i class="bi bi-bank2"></i>
                                         {{ t('directory.labels.association-institution') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ association.institution.name }}</span>
+                                    <span class="value">{{ associationStore.institutions.find(obj => obj.id === association?.institution)?.name }}</span>
                                 </li>
                                 <li v-if="association.activityField">
                                     <span class="label">
                                         <i class="bi bi-globe"></i>
                                         {{ t('directory.labels.association-activity-field') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ association.activityField.name }}</span>
+                                    <span class="value">{{ associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name }}</span>
                                 </li>
                                 <li v-if="association.institutionComponent">
                                     <span class="label">
                                         <i class="bi bi-mortarboard"></i>
                                         {{ t('directory.labels.association-institution-component') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ association.institutionComponent.name }}</span>
+                                    <span class="value">{{ associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name }}</span>
                                 </li>
                             </ul>
                         </div>
