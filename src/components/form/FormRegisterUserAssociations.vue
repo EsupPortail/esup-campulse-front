@@ -108,7 +108,8 @@ function clearOptions() {
                             @click="removeAssociation(index)"
                         />
                         <QBtn
-                            v-if="(newAssociations.length > 0 && newAssociations[0].id) && routeName !== 'UserManagementDetail'"
+                            v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
+                                routeName === 'AccountInfos'"
                             :label="t('validate')"
                             class="validate-button"
                             icon-right="bi-check2"
