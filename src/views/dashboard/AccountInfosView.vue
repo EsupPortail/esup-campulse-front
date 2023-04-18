@@ -219,7 +219,7 @@ async function onUpdateUserAssociations() {
 
     .form-container {
         .back-btn {
-            width: 30%;
+            width: $buttonSize;
             padding: 1rem;
         }
     }

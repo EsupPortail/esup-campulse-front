@@ -170,8 +170,14 @@ ul {
     list-style: none;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 @media screen and (min-width: $responsiveWidth) {
-    .form, .form-title, .btn-group {
+    .form, .form-title {
         width: $halfSize;
         margin: auto;
     }
