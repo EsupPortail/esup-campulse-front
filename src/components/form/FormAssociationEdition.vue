@@ -374,7 +374,7 @@ async function onChangeLogo(action: string) {
                     v-if="isStaff"
                 />
                 <AlertConfirmAssociationPublication
-                    v-if="associationStore.association?.isEnabled && associationStore.association?.isSite"
+                    v-if="associationStore.association?.isEnabled && associationStore.association?.isSite && isStaff"
                 />
                 <AlertConfirmAssociationDeletion
                     v-if="isStaff && !associationStore.association?.isEnabled"
