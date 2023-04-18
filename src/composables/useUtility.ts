@@ -4,9 +4,9 @@ const CURRENCY = '€'
 
 const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
 
-const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
+const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
 
-export default function () {
+export default function() {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)

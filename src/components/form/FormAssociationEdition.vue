@@ -317,6 +317,7 @@ async function onChangeLogo(action: string) {
                         inputmode="numeric"
                         lazy-rules
                         type="number"
+                        min="0"
                     />
                 </div>
             </section>

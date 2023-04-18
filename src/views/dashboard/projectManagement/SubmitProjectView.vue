@@ -511,16 +511,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         >
                             <h3 class="title-2">{{ t('project.commission-choice') }}</h3>
 
-                            <div class="info-panel">
-                                <i
-                                    aria-hidden="true"
-                                    class="bi bi-exclamation-lg"
-                                ></i>
-                                <p>
-                                    Attention, vous ne pouvez choisir qu'une seule date par commission.
-                                </p>
-                            </div>
-
                             <QSelect
                                 v-model="projectCommissionDatesModel"
                                 :hint="t('project.commission-choice-hint')"
@@ -584,6 +574,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                             filled
                                             type="number"
+                                            min="0"
                                         />
                                     </section>
                                 </fieldset>
@@ -598,6 +589,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             filled
                                             type="number"
+                                            min="0"
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                         />
                                     </section>
@@ -611,6 +603,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     filled
                                     lazy-rules
                                     type="number"
+                                    min="0"
                                 />
 
                                 <QSeparator/>
@@ -634,6 +627,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="number"
+                                min="0"
                             />
 
                             <QInput
@@ -644,6 +638,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="number"
+                                min="0"
                             />
 
                             <QInput
@@ -654,6 +649,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="number"
+                                min="0"
                             />
 
                             <QInput
@@ -664,6 +660,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="number"
+                                min="0"
                             />
 
                             <QSeparator/>
@@ -679,6 +676,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             filled
                                             type="number"
+                                            min="0"
                                             inputmode="numeric"
                                             :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                         />
