@@ -255,6 +255,7 @@
     "association-is-site": "Association chartée (rend l'association visible sur l'annuaire)",
     "association-name": "Nom de l'association",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
+    "correct-amount-audience": "Le nombre d'étudiants doit être inférieur ou égal au nombre total de personnes visées.",
     "create-account": "Créer un compte",
     "delete-association": "Supprimer",
     "email": "Adresse mail",
