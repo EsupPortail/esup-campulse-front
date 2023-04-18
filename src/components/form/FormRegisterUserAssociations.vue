@@ -102,22 +102,21 @@ function clearOptions() {
                             @update:model-value="updateRegisterRoleInAssociation"
                         />
 
-                        <div class="btn-group">
-                            <QBtn
-                                :label="t('forms.delete-association')"
-                                class="bg-delete"
-                                icon="mdi-delete"
-                                @click="removeAssociation(index)"
-                            />
-                            <QBtn
-                                v-if="(newAssociations.length > 0 && newAssociations[0].id) && routeName !== 'UserManagementDetail'"
-                                :label="t('validate')"
-                                class="validate-button"
-                                icon-right="bi-check2"
-                                type="submit"
-                            />
-                        </div>
-                        <QSeparator v-if="routeName !== 'ManageAccount'"/>
+                    <div class="btn-group">
+                        <QBtn
+                            :aria-label="t('forms.delete-association')"
+                            class="bg-delete"
+                            icon="mdi-delete"
+                            @click="removeAssociation(index)"
+                        />
+                        <QBtn
+                            v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
+                                routeName === 'AccountInfos'"
+                            :label="t('validate')"
+                            class="validate-button"
+                            icon-right="bi-check2"
+                            type="submit"
+                        />
                     </div>
                     <QBtn
                         v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||

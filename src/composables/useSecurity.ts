@@ -199,12 +199,12 @@ export default function () {
     async function addUserAsManager() {
         const {newAssociationsUser} = useUserAssociations()
         await userLocalRegisterAsManager(newUser)
+        await userGroupsRegister(false)
         if (newAssociationsUser.value) {
             let username = newUser.email
             if (newUser.isCas) username = newUser.username
             await userAssociationsRegister(false, username)
         }
-        await userGroupsRegister(false)
     }
 
     const CASUsers = ref<CASUser[]>([])
