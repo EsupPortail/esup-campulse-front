@@ -109,7 +109,7 @@ function clearOptions() {
                         />
                         <QBtn
                             v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
-                                routeName === 'AccountInfos'"
+                                routeName === 'ManageAccount'"
                             :label="t('validate')"
                             class="validate-button"
                             icon-right="bi-check2"
