@@ -7,12 +7,14 @@ import useAssociation from '@/composables/useAssociation'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserStore} from '@/stores/useUserStore'
 import type {NewAssociation} from '#/association'
+import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {createAssociation} = useAssociation()
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
+const {hasPerm} = useSecurity()
 
 
 const newAssociation = reactive<NewAssociation>({
@@ -113,6 +115,7 @@ const clearValues = () => {
                     map-options
                 />
                 <QCheckbox
+                    v-if="hasPerm('add_association_all_fields')"
                     v-model="newAssociation.isSite"
                     :label="t('forms.association-is-site')"
                 />
