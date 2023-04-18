@@ -1,28 +1,21 @@
-- ✨ Submit project is done #64
-- 🎨 Optimize breadcrumbs for new ids, restrict access to projects to 'add_project' perm only
-- 🎨 Dynamic CommissionDate change on home page.
-- 🚧 Optimize project budget and individual cases #64
-- 💄 Corrected outline button problem.
-- ✨ Submit project as an association #64
-- 💄 Corrected NavigateTopButton style on dashboard.
-- 🐛 Fixed hasPresidentStatus with canBePresidentFrom and canBePresidentTo.
-- ✨ Moved NavigateTopButton to LayoutContent.
-- ♿️ Improved HTML (titles, sections, ...).
-- 🚑️ Fixed broken CAS register and login
-- 🚧 Get and delete documentUploads
-- ♿️ Small fixes for accessibility.
-- 🚧 Upload documents #64
-- 🎨 Changed accept format in QFile.
-- :lipstick: fix!: btn groups class is now global
-- 🐛 Fixed images path problem.
-- 🚧 WIP document upload in project submit #64
-- :lipstick: [WIP] fix!: hamburger menu
-- :lipstick: feat!: account info views are now responsive
-- 🍱 Compressed logos images.
-- 🍱 Changed logos in footer.
-- 🌐 Removed useless fields from user validation page.
-- :lipstick: [WIP] feat: refacto and redo account infos view
-- 🗃️ Added is_site to Commission.
-- :lipstick: fix: convert raw variables into a global one
-- :lipstick: feat!: association detail/edit view are now responsive.
-- 💚 Replaced Sentry in .env .
+- 🎨 Restrict amount student allowed in association to always be superior or equal to student count
+- 🥅 Catch errors from API for group management
+- 🥅 Managers cannot give public and private roles at the same time
+- 🐛 Fix getComissionDates params on HomeView
+- 🎨 Clear all fields after route leave on project submit
+- 🚨 Converted SASS calls to SCSS.
+- 🔀 Merge SCSS into develop.
+- :lipstick: [BREAKING CHANGE] fix!: every page is now responsive
+- ✨ #64 Added only_next paramter to /commissions/commission_dates .
+- ✨ Added file size limit on association logo.
+- ✨ #64 Added file size limit on DocumentUpload.
+- 🎨 Add aria-required and phone regex on register
+- 🎨 Minor optimizations on QTable loading and association user role state in dashboard
+- 🩹 Fixing loading and association management for user account
+- 🗃️ #64 Changed fields in Project type.
+- 🌐 Changed texts on user associations dashboard.
+- 💄 Display associationUser role in associationDashboard
+- 💄 Fixed pagination problem on Association Directory.
+- 🌐 Changed Compte to Compte Validé.
+- 🌐 Changed Gérer to Déléguer.
+- 💄 Small fix on buttons.
