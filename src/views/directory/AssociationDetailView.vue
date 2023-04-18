@@ -6,6 +6,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUtility from '@/composables/useUtility'
 import {useRoute} from 'vue-router'
 import useAssociation from '@/composables/useAssociation'
+import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -50,7 +51,7 @@ async function onGetAssociationDetail() {
                 <QImg
                     v-if="association"
                     :alt="altLogoText(association)"
-                    :src="hasLogo ? association?.pathLogo?.detail : '../src/assets/img/no_logo_square.png'"
+                    :src="hasLogo ? association?.pathLogo?.detail : noLogoSquare.default"
                 />
             </div>
             <div class="association-name">

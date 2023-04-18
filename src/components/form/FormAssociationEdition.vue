@@ -17,7 +17,7 @@ import type {AssociationLogo, EditedAssociation} from '#/association'
 import axios from 'axios'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
-
+import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -176,7 +176,7 @@ async function onChangeLogo(action: string) {
                 <QImg
                     :alt="altLogoText(association)"
                     :ratio="1"
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '../../../src/assets/img/no_logo_square.png') : '../../../src/assets/img/no_logo_square.png'"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : noLogoSquare.default) : noLogoSquare.default"
                 />
             </div>
 

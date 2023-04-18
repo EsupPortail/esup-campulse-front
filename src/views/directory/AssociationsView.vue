@@ -6,6 +6,7 @@ import useDirectory from '@/composables/useDirectory'
 import useAssociation from '@/composables/useAssociation'
 import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
+import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
@@ -278,7 +279,7 @@ async function clearSearch(apiSearch: boolean) {
                             <QImg
                                 :alt="altLogoText(association)"
                                 :ratio="1"
-                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '../src/assets/img/no_logo_square.png') : '../src/assets/img/no_logo_square.png'"
+                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : noLogoSquare.default) : noLogoSquare.default"
                             />
                         </div>
                         <div class="list-details">
