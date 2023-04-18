@@ -46,11 +46,12 @@ async function onGetUserAssociations() {
         class="association-card"
     >
         <QCardSection>
-            <section>
+            <section id="association-user-update">
                 <h4 class="title-4">{{ association.name }}</h4>
                 <QOptionGroup
                     v-model="association.role"
                     :options="association.options"
+                    color="teal"
                 />
                 <div class="btn-group btn-delete">
                     <div>
@@ -82,17 +83,5 @@ async function onGetUserAssociations() {
 
 <style lang="scss">
 @import '@/assets/styles/forms.scss';
-@import '@/assets/_variables.scss';
-
-section {
-    display: flex;
-    flex-direction: column;
-
-    // TODO: Delete button not centered
-    .btn-delete {
-        justify-content: flex-start;
-        padding: 0;
-        margin: 0;
-    }
-}
+@import '@/assets/styles/associations.scss';
 </style>

@@ -26,10 +26,10 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) $fullSize);
   }
 
-  /*  @media screen and (min-width: $responsiveWidth) {
-      display: flex;
-      justify-content: center;
-    }*/
+  @media screen and (min-width: $responsiveWidth) {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 // Quasar input fields
@@ -1706,39 +1706,23 @@ fieldset {
   width: $fullSize;
   display: flex;
   flex-direction: column;
+  padding: 0 1.5rem 0;
+  gap: 1rem;
 
-  p {
-    margin: 0;
-    text-align: center;
-  }
 
-  button {
-    margin: 0.5rem 0;
-    // flex: 0 0 17rem;
-  }
-
-  @media only screen and (max-width: $pageWidth) {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    // flex-direction: column;
-    flex-wrap: wrap;
-    gap: 2.5rem;
+  @media screen and (min-width: $responsiveWidth) {
+    display: flex;
+    flex-direction: row;
 
     p {
-      text-align: justify;
-      flex: 1 0 100%;
-      order: 1;
+      margin: 0;
+      text-align: center;
     }
 
-    button {
-      flex: 1 1 auto;
-      order: 2;
+    .q-btn {
+      width: 40%;
     }
   }
-
-  // @media only screen and (max-width: $responsiveWidth) {
-
-  // }
 }
 
 // Multi-column form

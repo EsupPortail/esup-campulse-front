@@ -70,35 +70,37 @@ function clearOptions() {
     <QCard v-if="title">
         <QCardSection>
             <fieldset>
-                <legend class="title-3">{{ title }}</legend>
-                <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
+                <div id="association-user-add">
+                    <legend>{{ title }}</legend>
+                    <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
-                <div
-                    v-for="(association, index) in newAssociations"
-                    :key="index"
-                >
-                    <QSelect
-                        v-model="association.id"
-                        :label="t('forms.select-association')"
-                        :options="options"
-                        clearable
-                        emit-value
-                        fill-input
-                        filled
-                        hide-selected
-                        input-debounce="0"
-                        map-options
-                        use-input
-                        @filter="filterAssociations"
-                        @input="clearOptions"
-                        @update:model-value="checkHasPresident(association)"
-                    />
-                    <QOptionGroup
-                        v-model="association.role"
-                        :options="association.options"
-                        inline
-                        @update:model-value="updateRegisterRoleInAssociation"
-                    />
+                    <div
+                        v-for="(association, index) in newAssociations"
+                        :key="index"
+                    >
+                        <QSelect
+                            v-model="association.id"
+                            :label="t('forms.select-association')"
+                            :options="options"
+                            clearable
+                            emit-value
+                            fill-input
+                            filled
+                            hide-selected
+                            input-debounce="0"
+                            map-options
+                            use-input
+                            @filter="filterAssociations"
+                            @input="clearOptions"
+                            @update:model-value="checkHasPresident(association)"
+                        />
+                        <QOptionGroup
+                            v-model="association.role"
+                            :options="association.options"
+                            color="teal"
+                            inline
+                            @update:model-value="updateRegisterRoleInAssociation"
+                        />
 
                     <div class="btn-group">
                         <QBtn
@@ -108,23 +110,23 @@ function clearOptions() {
                             @click="removeAssociation(index)"
                         />
                         <QBtn
-                            v-if="(newAssociations.length > 0 && newAssociations[0].id) && routeName !== 'UserManagementDetail'"
+                            v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
+                                routeName === 'ManageAccount'"
                             :label="t('validate')"
                             class="validate-button"
                             icon-right="bi-check2"
                             type="submit"
                         />
                     </div>
-                    <QSeparator v-if="routeName !== 'ManageAccount'"/>
-                </div>
-                <QBtn
-                    v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                    <QBtn
+                        v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
                         (routeName === 'ManageAccount' && newAssociations.length === 0)"
-                    :label="t('forms.add-association')"
-                    class="add-association"
-                    icon="mdi-plus-circle-outline"
-                    @click="addAssociation"
-                />
+                        :label="t('forms.add-association')"
+                        class="add-association"
+                        icon="mdi-plus-circle-outline"
+                        @click="addAssociation"
+                    />
+                </div>
             </fieldset>
         </QCardSection>
     </QCard>
@@ -132,30 +134,5 @@ function clearOptions() {
 
 <style lang="scss">
 @import '@/assets/styles/forms.scss';
-@import '@/assets/_variables.scss';
-
-.q-card {
-    margin-bottom: 1rem;
-}
-
-legend {
-    font-weight: $semibold-weight;
-    font-size: 1.5rem;
-}
-
-.add-association {
-    margin-top: 1rem;
-    display: flex;
-}
-
-.back-btn {
-    margin: 0;
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    .btn-group {
-        margin: 0;
-        justify-content: flex-start;
-    }
-}
+@import '@/assets/styles/associations.scss';
 </style>

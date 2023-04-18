@@ -395,6 +395,7 @@
   }
 }
 
+// Association detail and edition views
 #association-detail, #association-edition {
   fieldset {
     padding: 0;
@@ -533,4 +534,59 @@
     flex-direction: column;
     gap: 1rem;
   }
+}
+
+// User's association update view
+#association-user-update {
+  display: flex;
+  flex-direction: column;
+
+  .btn-group {
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    width: $fullSize;
+  }
+
+  .cancel-delete {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+    span {
+      text-align: center;
+      font-style: italic;
+    }
+  }
+
+  .q-btn {
+    width: $fullSize;
+    font-size: 1rem;
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+
+  }
+
+}
+
+#association-user-add {
+  display: flex;
+  flex-direction: column;
+
+  legend {
+    font-weight: $semibold-weight;
+    font-size: $formTitleMobileSize;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .btn-group {
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    width: $fullSize;
+  }
+
+
 }

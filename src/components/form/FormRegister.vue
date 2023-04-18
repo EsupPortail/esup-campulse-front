@@ -150,7 +150,7 @@ async function onRegister() {
                         v-model="newUser.phone"
                         :hint="t('forms.hint-phone')"
                         :label="t('forms.phone')"
-                        :rules="newUser.phone.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                        :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
                         filled
                         lazy-rules
                         type="tel"
@@ -184,27 +184,29 @@ async function onRegister() {
                 </div>
             </div>
 
-            <h2>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
-                ></i>
-                {{ t('forms.gdpr-title') }}
-            </h2>
-            <div class="form-container">
-                <div class="form">
-                    <LayoutGDPRConsent
-                        v-if="!isStaff"
-                        :has-consent="hasConsent"
-                        @update-consent="hasConsent = !hasConsent"
-                    />
-                    <QBtn
-                        :label="t('forms.send')"
-                        color="primary"
-                        type="submit"
-                    />
+            <section v-if="!isStaff">
+                <h2>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
+                    ></i>
+                    {{ t('forms.gdpr-title') }}
+                </h2>
+                <div class="form-container">
+                    <div class="form">
+                        <LayoutGDPRConsent
+                            :has-consent="hasConsent"
+                            @update-consent="hasConsent = !hasConsent"
+                        />
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <QBtn
+                :label="t('forms.send')"
+                color="primary"
+                type="submit"
+            />
         </QForm>
     </section>
 </template>
