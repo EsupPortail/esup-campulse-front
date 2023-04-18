@@ -144,6 +144,15 @@ watch(() => projectBasicInfos.value.plannedEndDate, () => {
     datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate)
 })
 
+// CHECKING IF PROJECT AUDIENCE AMOUNT NUMBERS ARE POSSIBLE
+const correctAudienceAmount = ref<boolean>(false)
+watch(() => projectBudget.value.amountStudentsAudience, () => {
+    correctAudienceAmount.value = Number(projectBudget.value.amountStudentsAudience) <= Number(projectBudget.value.amountAllAudience)
+})
+watch(() => projectBudget.value.amountAllAudience, () => {
+    correctAudienceAmount.value = Number(projectBudget.value.amountStudentsAudience) <= Number(projectBudget.value.amountAllAudience)
+})
+
 // GET DATA FOR STEP 1
 async function onGetProjectDetail() {
     if (!newProject.value) {
@@ -622,7 +631,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountStudentsAudience"
                                 :label="t('project.target-students-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.legal-dates')]"
                                 aria-required="true"
                                 filled
                                 lazy-rules
@@ -633,7 +642,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.legal-dates')]"
                                 aria-required="true"
                                 filled
                                 lazy-rules
