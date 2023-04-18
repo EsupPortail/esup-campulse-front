@@ -57,13 +57,13 @@ async function onRegister() {
                 } else {
                     await register()
                     await router.push({name: 'RegistrationSuccessful'})
-                    newUser.isCas = false
-                    newUser.firstName = ''
-                    newUser.lastName = ''
-                    newUser.username = ''
-                    newUser.email = ''
-                    newUser.phone = ''
                 }
+                newUser.isCas = false
+                newUser.firstName = ''
+                newUser.lastName = ''
+                newUser.username = ''
+                newUser.email = ''
+                newUser.phone = ''
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     const data = error.response?.data

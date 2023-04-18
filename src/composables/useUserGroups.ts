@@ -35,6 +35,7 @@ export default function () {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const {userCommissions} = useCommissions()
+    const {hasPerm} = useSecurity()
 
 
     const groupNames = [
@@ -192,7 +193,6 @@ export default function () {
         isStaff.value = perm
     }
 
-
     /**
      * Return the old groups that are not in the new groups.
      * @param {number[]} newGroups - The new groups that the user is a member of.
@@ -230,6 +230,7 @@ export default function () {
         const userManagerStore = useUserManagerStore()
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
+
         if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userCommissions.value, userManagerStore.userCommissions)) {
             await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups),
                 commissionsToUpdate(userCommissions.value, userManagerStore.userCommissions))
