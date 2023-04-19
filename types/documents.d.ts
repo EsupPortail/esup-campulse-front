@@ -54,7 +54,8 @@ export interface ProcessDocument {
     isMultiple?: boolean,
     isRequiredInProcess?: boolean,
     mimeTypes?: MimeType[],
-    name?: string
+    name?: string,
+    pathTemplate?: string
 }
 
 type DocumentUploadStatus = 'DOCUMENT_REJECTED' | 'DOCUMENT_PROCESSING' | 'DOCUMENT_VALIDATED'

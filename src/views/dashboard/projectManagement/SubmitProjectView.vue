@@ -476,6 +476,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     ref="stepper"
                     v-model="step"
                     animated
+                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
@@ -873,6 +874,23 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             <QIcon name="mdi-paperclip"/>
                                         </template>
                                     </QFile>
+
+                                    <div
+                                        v-if="document.pathTemplate"
+                                        class="info-panel info-panel-warning"
+                                    >
+                                        <i
+                                            aria-hidden="true"
+                                            class="bi bi-exclamation-lg"
+                                        ></i>
+                                        <p>
+                                            {{ t('project.document.use-template') }} <span>
+                                                <a
+                                                    :href="document.pathTemplate"
+                                                    target="_blank"
+                                                >{{ `${t('project.document.download-template')} "${document.description}".` }}</a></span>
+                                        </p>
+                                    </div>
 
                                     <div class="document-input-group">
                                         <div class="document-input variant-space-3">

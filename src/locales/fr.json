@@ -432,7 +432,9 @@
       "bank-account-details": "Relevé d'identité bancaire (RIB)",
       "edited": "Documents édités pour le projet (affiches, tracts, guides, livrets, journaux...)",
       "misc": "Documents complémentaires",
-      "project-presentation": "Dossier détaillé présentant le projet"
+      "project-presentation": "Dossier détaillé présentant le projet",
+      "download-template": "Télécharger le document-type",
+      "use-template": "Merci de télécharger et de remplir impérativement le document-type mis à disposition. Tout document non conforme entrainera le rejet du projet."
     },
     "document-hint": "Cliquez sur le champ pour ajouter un document.",
     "document-hint-multiple": "Vous pouvez sélectionner plusieurs documents.",
