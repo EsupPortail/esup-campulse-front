@@ -18,6 +18,7 @@ import axios from 'axios'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -29,6 +30,7 @@ const {
 } = useAssociation()
 const {isStaff} = useUserGroups()
 const {hasPerm} = useSecurity()
+const {catchHTTPError} = useErrors()
 
 const associationStore = useAssociationStore()
 
@@ -100,7 +102,7 @@ const MAX_FILE_SIZE = 8388608
 async function onLogoRejected() {
     notify({
         type: 'negative',
-        message: t('notifications.negative.upload-images-error-too-large')
+        message: t('notifications.negative.413-error')
     })
 }
 
@@ -148,19 +150,11 @@ async function onChangeLogo(action: string) {
             type: 'positive'
         })
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (axios.isAxiosError(error) && error.response) {
             notify({
-                message: t('notifications.negative.association-logo-edit-error'),
-                type: 'negative'
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
             })
-            if (error.response?.status === 413) {
-                onLogoRejected()
-            } else {
-                notify({
-                    type: 'negative',
-                    message: t('notifications.negative.association-logo-edit-error')
-                })
-            }
         }
     }
 }
@@ -316,8 +310,8 @@ async function onChangeLogo(action: string) {
                         filled
                         inputmode="numeric"
                         lazy-rules
-                        type="number"
                         min="0"
+                        type="number"
                     />
                 </div>
             </section>

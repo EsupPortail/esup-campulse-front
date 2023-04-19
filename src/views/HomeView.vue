@@ -7,12 +7,15 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import {onMounted, ref, watch} from 'vue'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const home = useHomeContent()
 const associationStore = useAssociationStore()
 const {getCommissionDates, commissionDates} = useCommissions()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
+const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     loading.show()
@@ -33,10 +36,12 @@ async function onGetContents() {
         await getCommissionDates(true)
         nextCommissionDate.value = (new Date(commissionDates.value[0].commissionDate)).toLocaleDateString('fr-FR')
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

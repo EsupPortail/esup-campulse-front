@@ -8,14 +8,16 @@ import {useUserStore} from '@/stores/useUserStore'
 import type {Association} from '#/association'
 import type {AssociationUserDetail} from '#/user'
 import useUserAssociations from '@/composables/useUserAssociations'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const route = useRoute()
-
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
 const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
+const {catchHTTPError} = useErrors()
 
 onMounted(async function () {
     loading.show()
@@ -68,10 +70,12 @@ async function onGetAssociationDetail() {
     try {
         await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

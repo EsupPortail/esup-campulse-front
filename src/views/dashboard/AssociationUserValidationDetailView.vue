@@ -8,6 +8,8 @@ import router from '@/router'
 import useUserAssociations from '@/composables/useUserAssociations'
 import type {AssociationUserDetail} from '#/user'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -18,8 +20,8 @@ const {
     patchUserAssociations,
     deleteUserAssociation
 } = useUserAssociations()
+const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
-
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
 
@@ -43,11 +45,13 @@ watch(() => userManagerStore.userAssociations.length, initAssociationMember)
 async function onGetUserAssociations() {
     try {
         await getUserAssociations(parseInt(route.params.userId as string), true)
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -61,11 +65,13 @@ async function onValidateAssociationUser() {
             type: 'positive',
             message: t('notifications.positive.validate-user-association')
         })
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.invalid-request')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -79,11 +85,13 @@ async function onDeleteAssociationUser() {
             type: 'positive',
             message: t('notifications.positive.validate-delete-user-association')
         })
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.invalid-request')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 </script>

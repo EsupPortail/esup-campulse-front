@@ -5,11 +5,14 @@ import {useRoute} from 'vue-router'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import router from '@/router'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const projectStore = useProjectStore()
 const route = useRoute()
-const {loading} = useQuasar()
+const {loading, notify} = useQuasar()
 const {t} = useI18n()
+const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     loading.show()
@@ -22,9 +25,19 @@ async function onGetProjectDetail() {
         await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
         if (projectStore.project?.projectStatus !== 'PROJECT_PROCESSING') {
             await router.push({name: '404'})
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.project-edition-not-enabled')
+            })
         }
-    } catch {
+    } catch (error) {
         await router.push({name: '404'})
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 </script>

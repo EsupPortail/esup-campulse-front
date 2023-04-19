@@ -8,6 +8,8 @@ import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
 import useUserGroups from '@/composables/useUserGroups'
 import type {User} from '#/user'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -15,6 +17,7 @@ const userManagerStore = useUserManagerStore()
 const {canEditUser} = useUsers()
 const route = useRoute()
 const {getGroups, getGroupLiteral} = useUserGroups()
+const {catchHTTPError} = useErrors()
 
 const users = ref<User[]>([])
 
@@ -34,22 +37,26 @@ async function onGetUsers() {
         let status = 'all'
         if (route.name === 'ValidateUsers') status = 'unvalidated'
         await userManagerStore.getUsers(status)
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
 async function onGetUserGroups() {
     try {
         await getGroups()
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

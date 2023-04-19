@@ -8,6 +8,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserStore} from '@/stores/useUserStore'
 import type {NewAssociation} from '#/association'
 import useSecurity from '@/composables/useSecurity'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -15,6 +16,7 @@ const {createAssociation} = useAssociation()
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
 const {hasPerm} = useSecurity()
+const {catchHTTPError} = useErrors()
 
 
 const newAssociation = reactive<NewAssociation>({
@@ -60,17 +62,20 @@ async function onCreate() {
             newAssociationForm.value.reset()
         }
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response?.data.error === 'Association name already taken.') {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.association-already-exists')
-            })
-        } else {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.error-new-association')
-            })
+        if (axios.isAxiosError(error) && error.response) {
+            if (error.response.data.error === 'Association name already taken.') {
+                notify({
+                    type: 'negative',
+                    message: t('notifications.negative.association-already-exists')
+                })
+            } else {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
+
     }
 }
 

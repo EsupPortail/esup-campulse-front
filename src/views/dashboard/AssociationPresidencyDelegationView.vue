@@ -1,54 +1,54 @@
 <script lang="ts" setup>
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import {useRoute} from 'vue-router'
-import {useAssociationStore} from '@/stores/useAssociationStore'
 import FormAssociationPresidencyDelegation from '@/components/form/FormAssociationPresidencyDelegation.vue'
 import useUserAssociations from '@/composables/useUserAssociations'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
+import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const route = useRoute()
-const associationStore = useAssociationStore()
 const {initAssociationMembers, associationMembers} = useUserAssociations()
+const {catchHTTPError} = useErrors()
+const userStore = useUserStore()
 
 onMounted(async () => {
     loading.show()
     await onGetAssociationUsers()
-    await onGetAssociationDetail()
+    initAssociationName()
     loading.hide()
 })
+
+const associationName = ref<string>('')
+
+const initAssociationName = () => {
+    const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.id as string))
+    if (association) associationName.value = association.name
+}
 
 async function onGetAssociationUsers() {
     try {
         const associationId = parseInt(route.params.id as string)
         await initAssociationMembers(associationId, false)
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
-    }
-}
-
-async function onGetAssociationDetail() {
-    try {
-        await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
-    } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
 function reverseDate(date: string | null) {
     if (!date) return '-'
     else {
-        const dateArray = date.split('-')
-        return dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0]
+        return date.split('-').reverse().join('/')
     }
 }
 
@@ -110,12 +110,12 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <h2 v-if="associationStore.association">
+        <h2>
             <i
                 aria-hidden="true"
                 class="bi bi-award"
             ></i>
-            {{ t('dashboard.association-user.delegate') + ' ' + associationStore.association?.name }}
+            {{ t('dashboard.association-user.delegate') + ' ' + associationName }}
         </h2>
         <div class="form-container">
             <div class="form">

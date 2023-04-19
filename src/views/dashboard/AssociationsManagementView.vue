@@ -7,11 +7,14 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import AlertConfirmAssociationsChanges from '@/components/alert/AlertConfirmAssociationsChanges.vue'
 import useSecurity from '@/composables/useSecurity'
 import type {Association} from '#/association'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const associationStore = useAssociationStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
+const {catchHTTPError} = useErrors()
 
 const associations = ref<Association[]>()
 
@@ -33,10 +36,12 @@ async function onGetManagedAssociations() {
         await associationStore.getInstitutions()
         await associationStore.getActivityFields()
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

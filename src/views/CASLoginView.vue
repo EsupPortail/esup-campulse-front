@@ -5,11 +5,14 @@ import {useRoute} from 'vue-router'
 import {useQuasar} from 'quasar'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
+import axios from 'axios/index'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const route = useRoute()
 const userStore = useUserStore()
+const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     try {
@@ -29,12 +32,14 @@ onMounted(async () => {
                 message: t('notifications.negative.no-ticket')
             })
         }
-    } catch (e) {
+    } catch (error) {
         await router.push({name: 'Login'})
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.cas-authentication-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 })
 </script>

@@ -5,7 +5,8 @@ import {onMounted} from 'vue'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserAssociations from '@/composables/useUserAssociations'
 import AlertConfirmUserQuitAssociation from '@/components/alert/AlertConfirmUserQuitAssociation.vue'
-
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -18,6 +19,7 @@ const {
     getUserAssociations,
     initUserAssociations
 } = useUserAssociations()
+const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     loading.show()
@@ -30,11 +32,13 @@ async function onGetUserAssociations() {
     try {
         await getUserAssociations(userStore.user?.id, false)
         initUserAssociations(false)
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 </script>

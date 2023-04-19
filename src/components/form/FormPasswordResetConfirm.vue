@@ -6,11 +6,14 @@ import {useQuasar} from 'quasar'
 import type {PasswordReset} from '#/user'
 import router from '@/router'
 import useSecurity from '@/composables/useSecurity'
+import axios from 'axios/index'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {passwordResetConfirm} = useSecurity()
 const route = useRoute()
+const {catchHTTPError} = useErrors()
 
 const newPassword = ref<PasswordReset>({
     newPassword1: '',
@@ -26,11 +29,13 @@ async function resetConfirm() {
                 type: 'positive',
                 message: t('notifications.positive.password-reseted')
             })
-        } catch (e) {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.invalid-request')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     } else {
         notify({

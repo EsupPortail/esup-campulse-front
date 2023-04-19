@@ -11,6 +11,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {
@@ -54,6 +55,7 @@ const {
     commissionDates,
     initCommissionDates
 } = useCommissions()
+const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
@@ -160,12 +162,14 @@ async function onGetProjectDetail() {
             await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
             initProjectBasicInfos()
         }
-        catch {
+        catch (error) {
             await router.push({name: '404'})
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.loading-error')
-            })
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -177,11 +181,13 @@ async function onGetProjectCategories() {
             await projectStore.getProjectCategories()
             initProjectCategories()
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -189,11 +195,13 @@ async function onGetDocumentTypes() {
     try {
         await getDocumentTypes()
         initProcessProjectDocuments('DOCUMENT_PROJECT')
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -208,11 +216,13 @@ async function onGetCommissionDates() {
                 await projectStore.getProjectCommissionDates()
                 initProjectCommissionDatesModel()
             }
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.loading-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -225,11 +235,13 @@ async function onGetProjectBudget() {
         await projectStore.getProjectCommissionDates()
         initProjectCommissionDates()
         initProjectBudget()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -247,11 +259,13 @@ async function onGetProjectDocuments() {
         initProcessProjectDocuments('DOCUMENT_PROJECT')
         await projectStore.getProjectDocuments()
         initDocumentUploads()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -259,7 +273,7 @@ async function onGetProjectDocuments() {
 async function onDocumentRejected() {
     notify({
         type: 'negative',
-        message: t('notifications.negative.upload-documents-error-too-large')
+        message: t('notifications.negative.413-error')
     })
 }
 
@@ -276,11 +290,13 @@ async function onSubmitBasicInfos() {
             done1.value = true
             step.value = 2
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.project-creation-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -291,11 +307,13 @@ async function onSubmitCommissionDates() {
             await updateProjectCommissionDates()
             done2.value = true
             step.value = 3
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.commission-dates-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -309,11 +327,13 @@ async function onSubmitBudget() {
             done3.value = true
             step.value = 4
 
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.project-edition-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -326,11 +346,13 @@ async function onSubmitGoals() {
             done4.value = true
             step.value = 5
 
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.project-edition-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -345,15 +367,11 @@ async function onUploadDocuments() {
             done5.value = true
             step.value = 6
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status === 413) {
-                    await onDocumentRejected()
-                } else {
-                    notify({
-                        type: 'negative',
-                        message: t('notifications.negative.upload-documents-error')
-                    })
-                }
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
             }
         }
     }
@@ -365,11 +383,13 @@ async function onDeleteDocumentUpload(documentId: number) {
         loading.show()
         await deleteDocumentUpload(documentId)
         loading.hide()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.delete-document-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -380,11 +400,13 @@ async function onSubmitProject() {
             await submitProject()
             done6.value = true
             await router.push({name: 'SubmitProjectSuccessful', params: {projectId: projectStore.project?.id}})
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.submit-project-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }

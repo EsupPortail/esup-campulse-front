@@ -5,19 +5,31 @@ import {useQuasar} from 'quasar'
 import router from '@/router'
 import {onMounted} from 'vue'
 import useUserAssociations from '@/composables/useUserAssociations'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const userStore = useUserStore()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {getUserAssociations} = useUserAssociations()
+const {catchHTTPError} = useErrors()
 
 async function onLogOut() {
-    await userStore.logOut()
-    await router.push({name: 'Login'})
-    notify({
-        type: 'positive',
-        message: t('notifications.positive.logout-success')
-    })
+    try {
+        await userStore.logOut()
+        await router.push({name: 'Login'})
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.logout-success')
+        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
 }
 
 onMounted(async () => {

@@ -5,6 +5,8 @@ import {onMounted, onUnmounted} from 'vue'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import useCommissions from '@/composables/useCommissions'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {
@@ -23,6 +25,7 @@ const {notify, loading} = useQuasar()
 const route = useRoute()
 const {getCommissions, commissionOptions, userCommissions} = useCommissions()
 const {initUserCommissions} = useCommissions()
+const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     loading.show()
@@ -42,22 +45,26 @@ onUnmounted(() => {
 async function onGetGroups() {
     try {
         await getGroups()
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
 async function onGetCommissions() {
     try {
         await getCommissions()
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -70,11 +77,13 @@ function onInitGroupLabels() {
 
         // Preselect group
         if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) preSelectGroup('STUDENT_INSTITUTION')
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

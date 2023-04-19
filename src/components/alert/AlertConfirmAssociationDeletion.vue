@@ -4,12 +4,15 @@ import {useI18n} from 'vue-i18n'
 import router from '@/router'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const confirmation = ref<boolean>(false)
 const deletionWord = ref<string>('')
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 async function onDeleteAssociation() {
     try {
@@ -26,11 +29,13 @@ async function onDeleteAssociation() {
                 message: t('association.before-deletion-word-error')
             })
         }
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.delete-association-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 </script>
@@ -54,8 +59,8 @@ async function onDeleteAssociation() {
             <QCardSection>
                 <QInput
                     v-model=deletionWord
-                    @paste.prevent
                     :label="t('association.before-deletion-word-instruction')"
+                    @paste.prevent
                 />
             </QCardSection>
 
