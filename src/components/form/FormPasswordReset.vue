@@ -26,7 +26,7 @@ async function reset() {
                 errorMessage = t('notifications.negative.restricted-email')
                 break
             default:
-                errorMessage = t('notifications.negative.invalid-request')
+                errorMessage = t('notifications.negative.error')
                 break
             }
             notify({
@@ -82,25 +82,25 @@ async function reset() {
 
 <style lang="scss">
 .instructions {
-  font-size: 1.2em;
+    font-size: 1.2em;
 }
 
 p {
-  text-align: center;
+    text-align: center;
 }
 
 .q-form, .instructions {
-  max-width: 720px;
-  width: 100%;
-  margin: auto;
+    max-width: 720px;
+    width: 100%;
+    margin: auto;
 }
 
 fieldset {
-  padding-top: 30px;
-  border: none;
+    padding-top: 30px;
+    border: none;
 }
 
 .q-btn {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 </style>

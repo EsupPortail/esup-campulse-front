@@ -7,15 +7,17 @@ import useUtility from '@/composables/useUtility'
 import {useRoute} from 'vue-router'
 import useAssociation from '@/composables/useAssociation'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {loading} = useQuasar()
 const {formatDate} = useUtility()
 const route = useRoute()
-
 const associationStore = useAssociationStore()
 const {altLogoText} = useAssociation()
+const {catchHTTPError} = useErrors()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
@@ -36,10 +38,12 @@ async function onGetAssociationDetail() {
     try {
         await associationStore.getAssociationDetail(parseInt(route.params.id as string), true)
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 </script>
@@ -98,7 +102,11 @@ async function onGetAssociationDetail() {
                     class="display-row"
                 >
                     <h4>{{ t("association.labels.institution-component") }}</h4>
-                    <p>{{ associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name }}</p>
+                    <p>
+                        {{
+                            associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
+                        }}
+                    </p>
                 </article>
 
                 <article
@@ -106,7 +114,11 @@ async function onGetAssociationDetail() {
                     class="display-row"
                 >
                     <h4>{{ t("association.labels.activity-field") }}</h4>
-                    <p>{{ associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name }}</p>
+                    <p>
+                        {{
+                            associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
+                        }}
+                    </p>
                 </article>
             </div>
         </section>

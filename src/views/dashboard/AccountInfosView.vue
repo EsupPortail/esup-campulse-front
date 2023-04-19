@@ -12,6 +12,7 @@ import useUserAssociations from '@/composables/useUserAssociations'
 import FormDisplayUserAssociations from '@/components/form/FormDisplayUserAssociations.vue'
 import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
 import useSecurity from '@/composables/useSecurity'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const userStore = useUserStore()
@@ -19,6 +20,7 @@ const {isStaff} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
 const {notify, loading} = useQuasar()
 const {userAssociationsRegister} = useSecurity()
+const {catchHTTPError} = useErrors()
 const {
     newAssociations,
     updateUserAssociations,
@@ -47,10 +49,10 @@ async function onUpdateUserInfos() {
         }
         loading.hide()
     } catch (error) {
-        if (axios.isAxiosError(error) || error === 500) {
+        if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t('notifications.negative.email-used')
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
             })
         }
     }
@@ -70,10 +72,12 @@ async function onUpdateUserAssociations() {
         })
         loading.hide()
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.edit-user-associations-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

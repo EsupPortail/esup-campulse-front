@@ -11,6 +11,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {
@@ -54,6 +55,7 @@ const {
     commissionDates,
     initCommissionDates
 } = useCommissions()
+const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
@@ -94,16 +96,24 @@ const done5 = ref(false)
 const done6 = ref(false)
 
 watch(() => step.value === 2, async () => {
+    loading.show()
     await onGetCommissionDates()
+    loading.hide()
 })
 watch(() => step.value === 3, async () => {
+    loading.show()
     await onGetProjectBudget()
+    loading.hide()
 })
 watch(() => step.value === 4, async () => {
+    loading.show()
     await onGetProjectGoals()
+    loading.hide()
 })
 watch(() => step.value === 5, async () => {
+    loading.show()
     await onGetProjectDocuments()
+    loading.hide()
 })
 
 // REFS
@@ -160,12 +170,14 @@ async function onGetProjectDetail() {
             await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
             initProjectBasicInfos()
         }
-        catch {
+        catch (error) {
             await router.push({name: '404'})
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.loading-error')
-            })
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -177,11 +189,13 @@ async function onGetProjectCategories() {
             await projectStore.getProjectCategories()
             initProjectCategories()
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -189,11 +203,13 @@ async function onGetDocumentTypes() {
     try {
         await getDocumentTypes()
         initProcessProjectDocuments('DOCUMENT_PROJECT')
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -208,11 +224,13 @@ async function onGetCommissionDates() {
                 await projectStore.getProjectCommissionDates()
                 initProjectCommissionDatesModel()
             }
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.loading-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -225,11 +243,13 @@ async function onGetProjectBudget() {
         await projectStore.getProjectCommissionDates()
         initProjectCommissionDates()
         initProjectBudget()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -247,11 +267,13 @@ async function onGetProjectDocuments() {
         initProcessProjectDocuments('DOCUMENT_PROJECT')
         await projectStore.getProjectDocuments()
         initDocumentUploads()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -259,12 +281,13 @@ async function onGetProjectDocuments() {
 async function onDocumentRejected() {
     notify({
         type: 'negative',
-        message: t('notifications.negative.upload-documents-error-too-large')
+        message: t('notifications.negative.413-error')
     })
 }
 
 // SUBMIT STEP 1
 async function onSubmitBasicInfos(nextStep: number) {
+    loading.show()
     try {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
@@ -274,119 +297,134 @@ async function onSubmitBasicInfos(nextStep: number) {
         if (projectStore.project) {
             await updateProjectCategories()
             done1.value = true
-            step.value = nextStep//2
+            step.value = nextStep
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.project-creation-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 2
 async function onSubmitCommissionDates(nextStep: number) {
+    loading.show()
     if (projectStore.project) {
         try {
             await updateProjectCommissionDates()
             done2.value = true
             step.value = nextStep
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.commission-dates-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 3
 async function onSubmitBudget(nextStep: number) {
+    loading.show()
     if (projectStore.project) {
         try {
             await patchProjectBudget(!projectReEdition.value)
             await patchProjectCommissionDates(!projectReEdition.value)
             done3.value = true
             step.value = nextStep
-
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.project-edition-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 4
 async function onSubmitGoals(nextStep: number) {
+    loading.show()
     if (projectStore.project) {
         try {
             await patchProjectGoals()
             done4.value = true
             step.value = nextStep
-
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.project-edition-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 5
 async function onUploadDocuments(nextStep: number) {
+    loading.show()
     if (projectStore.project) {
         try {
-            loading.show()
             await postProjectDocuments(parseInt(route.params.associationId as string))
-            loading.hide()
             done5.value = true
             step.value = nextStep
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status === 413) {
-                    await onDocumentRejected()
-                } else {
-                    notify({
-                        type: 'negative',
-                        message: t('notifications.negative.upload-documents-error')
-                    })
-                }
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
             }
         }
     }
+    loading.hide()
 }
 
 // DELETE DOCS ON STEP 5
 async function onDeleteDocumentUpload(documentId: number) {
+    loading.show()
     try {
-        loading.show()
         await deleteDocumentUpload(documentId)
-        loading.hide()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.delete-document-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 6
 async function onSubmitProject() {
+    loading.show()
     if (projectStore.project) {
         try {
             await submitProject()
             done6.value = true
             await router.push({name: 'SubmitProjectSuccessful', params: {projectId: projectStore.project?.id}})
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.submit-project-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
+    loading.hide()
 }
 
 // WHEN THE USER LEAVES THE PAGE, WE CLEAR OR INPUTS

@@ -5,11 +5,13 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import router from '@/router'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const confirm = ref<boolean>(false)
 const userManagerStore = useUserManagerStore()
 const {notify} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 const emit = defineEmits(['hasValidated'])
 
@@ -22,16 +24,11 @@ async function onDeleteUser() {
             type: 'positive',
             message: t('notifications.positive.validate-delete-user')
         })
-    } catch (e) {
-        if (axios.isAxiosError(e) || e === 403) {
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t('notifications.negative.cannot-delete-superuser')
-            })
-        } else {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.unknown-user')
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
             })
         }
     }

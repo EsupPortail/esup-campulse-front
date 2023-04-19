@@ -4,9 +4,12 @@ import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useUserAssociations from '@/composables/useUserAssociations'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 const {
     getUnvalidatedAssociationUsers,
@@ -26,11 +29,13 @@ async function onGetAssociationUsers() {
     try {
         await getUnvalidatedAssociationUsers()
         isLoaded.value = true
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

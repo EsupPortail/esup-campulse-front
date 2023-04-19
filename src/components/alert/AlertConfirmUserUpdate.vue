@@ -9,6 +9,7 @@ import useUsers from '@/composables/useUsers'
 import useUserGroups from '@/composables/useUserGroups'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useSecurity from '@/composables/useSecurity'
+import useErrors from '@/composables/useErrors'
 
 
 const {t} = useI18n()
@@ -18,6 +19,7 @@ const {updateUserInfos} = useUsers()
 const {updateUserGroups} = useUserGroups()
 const {updateUserAssociations, userAssociations} = useUserAssociations()
 const {userAssociationsRegister} = useSecurity()
+const {catchHTTPError} = useErrors()
 
 
 const emit = defineEmits(['hasValidated'])
@@ -40,23 +42,10 @@ async function onValidateChanges() {
             message: t('notifications.positive.validate-success')
         })
     } catch (error) {
-        if (axios.isAxiosError(error)) {
-            if (error.response?.data.error === 'Cannot register in a public and a private group at the same time.') {
-                notify({
-                    type: 'negative',
-                    message: t('notifications.negative.cannot-attribute-public-and-private-roles')
-                })
-            } else if (error.response?.data.error === 'Adding commission in this group is not possible.' ||
-                error.response?.data.error === 'Not allowed to delete this link between user and group.') {
-                notify({
-                    type: 'negative',
-                    message: t('notifications.negative.not-allowed-to-manage-this-commission')
-                })
-            }
-        } else {
+        if (axios.isAxiosError(error) && error.response) {
             notify({
-                message: t('notifications.negative.edit-user-error'),
-                type: 'negative'
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
             })
         }
     }

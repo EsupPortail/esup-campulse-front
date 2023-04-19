@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from 'vue-i18n'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
@@ -10,7 +9,6 @@ const userStore = useUserStore()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
 const {isStaff} = useUserGroups()
-
 
 const associationCounter = ref<number>(0)
 

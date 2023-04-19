@@ -14,10 +14,13 @@ import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import FormUpdateUserAssociations from '@/components/form/FormUpdateUserAssociations.vue'
 import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
 import {useUserStore} from '@/stores/useUserStore'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {groupChoiceIsValid, groupCanJoinAssociation} = useUserGroups()
+const {catchHTTPError} = useErrors()
 
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
@@ -33,11 +36,13 @@ onMounted(async () => {
 async function onGetUser() {
     try {
         await userManagerStore.getUserDetail(parseInt(route.params.id as string))
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

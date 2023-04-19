@@ -7,12 +7,15 @@ import useAssociation from '@/composables/useAssociation'
 import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
 const {altLogoText} = useAssociation()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
+const {catchHTTPError} = useErrors()
 
 onMounted(async function () {
     loading.show()
@@ -77,11 +80,13 @@ async function loadAssociationsActivityFields() {
         await associationStore.getInstitutions()
         await associationStore.getInstitutionComponents()
         await associationStore.getActivityFields()
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -301,21 +306,27 @@ async function clearSearch(apiSearch: boolean) {
                                         <i class="bi bi-bank2"></i>
                                         {{ t('directory.labels.association-institution') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ associationStore.institutions.find(obj => obj.id === association?.institution)?.name }}</span>
+                                    <span class="value">{{
+                                        associationStore.institutions.find(obj => obj.id === association?.institution)?.name
+                                    }}</span>
                                 </li>
                                 <li v-if="association.activityField">
                                     <span class="label">
                                         <i class="bi bi-globe"></i>
                                         {{ t('directory.labels.association-activity-field') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name }}</span>
+                                    <span class="value">{{
+                                        associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
+                                    }}</span>
                                 </li>
                                 <li v-if="association.institutionComponent">
                                     <span class="label">
                                         <i class="bi bi-mortarboard"></i>
                                         {{ t('directory.labels.association-institution-component') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name }}</span>
+                                    <span class="value">{{
+                                        associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
+                                    }}</span>
                                 </li>
                             </ul>
                         </div>
