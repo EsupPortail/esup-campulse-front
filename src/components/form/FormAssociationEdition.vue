@@ -51,7 +51,7 @@ const association = ref<EditedAssociation>({
     presidentPhone: '',
     approvalDate: '',
     lastGoaDate: '',
-    amountMembersAllowed: null,
+    amountMembersAllowed: '',
     isPublic: false,
     altLogo: ''
 })
@@ -75,7 +75,7 @@ const initValues = () => {
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution)?.value
     association.value.institutionComponent = associationStore.institutionComponentLabels.find(({value}) => value === associationStore.association?.institutionComponent)?.value
     association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField)?.value
-    association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed as number
+    association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed.toString() as string
     association.value.isPublic = associationStore.association?.isPublic as boolean
     associationStudentCount.value = associationStore.association?.studentCount as number
 }
