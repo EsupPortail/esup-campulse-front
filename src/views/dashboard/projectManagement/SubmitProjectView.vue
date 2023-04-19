@@ -264,7 +264,7 @@ async function onDocumentRejected() {
 }
 
 // SUBMIT STEP 1
-async function onSubmitBasicInfos() {
+async function onSubmitBasicInfos(nextStep: number) {
     try {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
@@ -274,7 +274,7 @@ async function onSubmitBasicInfos() {
         if (projectStore.project) {
             await updateProjectCategories()
             done1.value = true
-            step.value = 2
+            step.value = nextStep//2
         }
     } catch {
         notify({
@@ -285,12 +285,12 @@ async function onSubmitBasicInfos() {
 }
 
 // SUBMIT STEP 2
-async function onSubmitCommissionDates() {
+async function onSubmitCommissionDates(nextStep: number) {
     if (projectStore.project) {
         try {
             await updateProjectCommissionDates()
             done2.value = true
-            step.value = 3
+            step.value = nextStep
         } catch {
             notify({
                 type: 'negative',
@@ -301,13 +301,13 @@ async function onSubmitCommissionDates() {
 }
 
 // SUBMIT STEP 3
-async function onSubmitBudget() {
+async function onSubmitBudget(nextStep: number) {
     if (projectStore.project) {
         try {
             await patchProjectBudget(!projectReEdition.value)
             await patchProjectCommissionDates(!projectReEdition.value)
             done3.value = true
-            step.value = 4
+            step.value = nextStep
 
         } catch {
             notify({
@@ -319,12 +319,12 @@ async function onSubmitBudget() {
 }
 
 // SUBMIT STEP 4
-async function onSubmitGoals() {
+async function onSubmitGoals(nextStep: number) {
     if (projectStore.project) {
         try {
             await patchProjectGoals()
             done4.value = true
-            step.value = 5
+            step.value = nextStep
 
         } catch {
             notify({
@@ -336,14 +336,14 @@ async function onSubmitGoals() {
 }
 
 // SUBMIT STEP 5
-async function onUploadDocuments() {
+async function onUploadDocuments(nextStep: number) {
     if (projectStore.project) {
         try {
             loading.show()
             await postProjectDocuments(parseInt(route.params.associationId as string))
             loading.hide()
             done5.value = true
-            step.value = 6
+            step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 413) {
@@ -447,7 +447,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-card-text-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitBasicInfos"
+                            @submit.prevent="onSubmitBasicInfos(2)"
                         >
                             <h3 class="title-2">{{ t('project.general-infos') }}</h3>
 
@@ -516,7 +516,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-calendar-blank"
                     >
                         <QForm
-                            @submit.prevent="onSubmitCommissionDates"
+                            @submit.prevent="onSubmitCommissionDates(3)"
                         >
                             <h3 class="title-2">{{ t('project.commission-choice') }}</h3>
 
@@ -539,7 +539,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="step = 1"
+                                    @click="onSubmitCommissionDates(1)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -558,7 +558,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-hand-coin-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitBudget"
+                            @submit.prevent="onSubmitBudget(4)"
                         >
                             <h3 class="title-2">{{ t('project.budget') }}</h3>
 
@@ -697,7 +697,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="step = 2"
+                                    @click="onSubmitBudget(2)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -716,7 +716,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-flag-checkered"
                     >
                         <QForm
-                            @submit.prevent="onSubmitGoals"
+                            @submit.prevent="onSubmitGoals(5)"
                         >
                             <h3 class="title-2">{{ t('project.goals-title') }}</h3>
 
@@ -774,7 +774,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="step = 3"
+                                    @click="onSubmitGoals(3)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -793,7 +793,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-file-document-outline"
                     >
                         <QForm
-                            @submit.prevent="onUploadDocuments"
+                            @submit.prevent="onUploadDocuments(6)"
                         >
                             <h3 class="title-2">{{ t('project.documents') }}</h3>
 
@@ -877,7 +877,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="step = 3"
+                                    @click="onUploadDocuments(4)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
