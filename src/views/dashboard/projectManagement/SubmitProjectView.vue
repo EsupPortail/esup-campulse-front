@@ -483,7 +483,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     ref="stepper"
                     v-model="step"
                     animated
-                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
@@ -1175,6 +1174,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             icon="bi-pencil"
                                             @click="() => step = 5"
                                         />
+                                    </div>
+
+                                    <div class="info-panel info-panel-warning">
+                                        <i
+                                            class="bi bi-exclamation-lg"
+                                            aria-hidden="true"
+                                        ></i>
+                                        <p>{{ t('project.document.verify') }}</p>
                                     </div>
 
                                     <section class="flex-section">
