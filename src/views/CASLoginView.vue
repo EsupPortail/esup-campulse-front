@@ -5,7 +5,7 @@ import {useRoute} from 'vue-router'
 import {useQuasar} from 'quasar'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
-import axios from 'axios/index'
+import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()

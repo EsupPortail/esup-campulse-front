@@ -5,7 +5,7 @@ import {useQuasar} from 'quasar'
 import type {PasswordEdit} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import router from '@/router'
-import axios from 'axios/index'
+import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()

@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import type {PasswordReset} from '#/user'
 import router from '@/router'
 import useSecurity from '@/composables/useSecurity'
-import axios from 'axios/index'
+import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
