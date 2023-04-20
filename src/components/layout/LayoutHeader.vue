@@ -15,6 +15,7 @@ watch(() => route.name, () => {
 })
 
 const mobileMenuVisible = ref(false)
+const siteName = import.meta.env.VITE_APP_SITE_NAME
 
 function ToggleMenu() {
     mobileMenuVisible.value = !mobileMenuVisible.value
@@ -34,7 +35,7 @@ function ToggleMenu() {
                     :to="{name: 'Home'}"
                     class="home-link"
                 >
-                    {{ t("header.title") }}
+                    {{ siteName }}
                 </RouterLink>
             </QToolbarTitle>
 
