@@ -6,6 +6,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useI18n} from 'vue-i18n'
 import useAssociation from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
+import type {RouteRecordName} from 'vue-router'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const {t} = useI18n()
@@ -13,6 +14,9 @@ const associationStore = useAssociationStore()
 const {associations} = useAssociation()
 const {loading} = useQuasar()
 
+const props = defineProps<{
+    route: RouteRecordName
+}>()
 
 watch(() => associationStore.associations, () => {
     associations.value = associationStore.associations
@@ -29,7 +33,9 @@ const settings = ref<AssociationSearch>({
 
 async function onSearch() {
     loading.show()
-    associations.value = await simpleAssociationSearch(settings.value.search)
+    let isPublic = true
+    if (props.route === 'ManageAssociations') isPublic = false
+    associations.value = await simpleAssociationSearch(settings.value.search, isPublic)
     loading.hide()
 }
 
@@ -52,7 +58,8 @@ async function clearSearch(apiSearch: boolean) {
         activityField: null
     }
     if (apiSearch) {
-        await associationStore.getAssociations(true)
+        if (props.route === 'Associations') await associationStore.getAssociations(true)
+        else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
     } else {
         associations.value = associationStore.associations
     }

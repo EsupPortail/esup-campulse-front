@@ -73,13 +73,16 @@ export default function () {
 
     /**
      * It searches for associations that are public and match the search value on the API.
-     * @param {string} value - The value to search for
+     * @param {string} query - The value to search for
+     * @param isPublic
      * @returns An array of AssociationList objects.
      */
-    async function simpleAssociationSearch(value: string): Promise<Association[]> {
-        const {axiosPublic} = useAxios()
+    async function simpleAssociationSearch(query: string, isPublic: boolean): Promise<Association[]> {
+        const {axiosPublic, axiosAuthenticated} = useAxios()
+        let instance = axiosAuthenticated
+        if (isPublic) instance = axiosPublic
         await Promise.all([associationStore.getInstitutions(), associationStore.getInstitutionComponents(), associationStore.getActivityFields()])
-        const associations = (await axiosPublic.get<Association[]>(`/associations/?is_public=true&search=${value}`)).data
+        const associations = (await instance.get<Association[]>(`/associations/?is_public=${isPublic}&search=${query}`)).data
         return associationStore.getAssociationsSubDetails(associations)
     }
 
