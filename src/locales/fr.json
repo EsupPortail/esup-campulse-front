@@ -280,6 +280,7 @@
     "legal-dates": "Veuillez saisir une date de fin postérieure à la date de début.",
     "login": "Connexion",
     "modify-email": "Modifier l'adresse mail",
+    "multiple-choices-enabled": "Plusieurs choix possibles.",
     "new-email": "Nouvelle adresse mail",
     "new-password": "Nouveau mot de passe",
     "old-password": "Mot de passe actuel",

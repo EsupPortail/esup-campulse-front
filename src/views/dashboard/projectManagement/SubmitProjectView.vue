@@ -542,6 +542,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 multiple
                                 stack-label
                                 use-chips
+                                :hint="t('forms.multiple-choices-enabled')"
                             />
                             <section class="form-page-navigation">
                                 <QBtn
