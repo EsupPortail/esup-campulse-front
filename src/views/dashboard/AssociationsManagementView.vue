@@ -6,17 +6,17 @@ import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import AlertConfirmAssociationsChanges from '@/components/alert/AlertConfirmAssociationsChanges.vue'
 import useSecurity from '@/composables/useSecurity'
-import type {Association} from '#/association'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
+import useAssociation from '@/composables/useAssociation'
 
 const associationStore = useAssociationStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
-
-const associations = ref<Association[]>()
+const {associations} = useAssociation()
 
 const initValues = () => {
     associations.value = associationStore.associations
@@ -104,26 +104,6 @@ const columns: QTableProps['columns'] = [
 </script>
 
 <template>
-    <!-- <h1>{{
-            userStore.isUniManager ? t('dashboard.association-management') : t('dashboard.association-user.manage-my-associations')
-        }}</h1> -->
-    <!--    <QBanner v-if="!userStore.isUniManager" class="bg-grey-3">
-            <template v-slot:avatar>
-                <QIcon color="primary" name="mdi-information-outline" size="md"/>
-            </template>
-            <strong>{{ t('dashboard.association-user.has-office-status-needed') }}</strong>
-            <template v-slot:action>
-            </template>
-        </QBanner>-->
-
-    <!-- <QBtn
-        :label="t('home.back-dashboard')"
-        :to="{name: 'Dashboard'}"
-        color="secondary"
-        icon="mdi-arrow-left-circle"
-    /> -->
-
-
     <div class="form-title">
         <h2>
             <QIcon name="mdi-pencil-box-outline"/>
@@ -141,6 +121,8 @@ const columns: QTableProps['columns'] = [
 
     <div class="form-container">
         <div class="form">
+            <FormAssociationSearch/>
+
             <QTable
                 v-model:selected="selected"
                 :columns="columns"

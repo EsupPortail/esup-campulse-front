@@ -11,6 +11,9 @@ import useUserAssociations from '@/composables/useUserAssociations'
 // Needed to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
 
+// Needed to temporarily store associations (for searching and pagination)
+const associations = ref<Association[]>([])
+
 // Changed data when modifying an association
 let changedData = {}
 
@@ -207,6 +210,7 @@ export default function () {
         changedData,
         altLogoText,
         checkHasPresident,
-        changeAssociationLogo
+        changeAssociationLogo,
+        associations
     }
 }
