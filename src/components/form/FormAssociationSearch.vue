@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {Association, AssociationSearch} from '#/association'
+import type {Association, AssociationSearch} from '#/association'
 import {ref, watch} from 'vue'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
