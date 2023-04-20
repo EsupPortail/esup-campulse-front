@@ -104,7 +104,7 @@ export interface EditedAssociation {
     email?: string | null,
     siret?: string | null,
     website?: string | null,
-    studentCount?: number | null,
+    studentCount?: string,
     presidentNames?: string | null,
     presidentPhone?: string | null,
     isPublic?: boolean,

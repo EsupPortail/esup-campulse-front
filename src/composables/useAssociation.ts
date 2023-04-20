@@ -91,7 +91,7 @@ export default function () {
                 }
             }
             // Check amountMembersAllowed
-            else if (key == 'amountMembersAllowed') {
+            else if (key == 'amountMembersAllowed' || key == 'studentCount') {
                 if (parseInt(value) !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: parseInt(value)})
                 }
