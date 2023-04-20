@@ -466,7 +466,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 v-for="(document, index) in processDocuments"
                                 :key="index"
                             >
-                                {{ document.description }}
+                                <span v-if="document.pathTemplate">
+                                    <a
+                                        :href="document.pathTemplate"
+                                        target="_blank"
+                                        :title="t('project.document.download-template')"
+                                    >{{ document.description }}</a>
+                                </span>
+                                <span v-else>{{ document.description }}</span>
                             </li>
                         </ul>
                     </p>
