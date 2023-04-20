@@ -61,7 +61,7 @@ function ToggleMenu() {
                 v-if="route.name === 'Home'"
                 id="header-home-title"
             >
-                <h1>Bienvenue sur <strong>{{ t("header.title") }}</strong></h1>
+                <h1>Bienvenue sur <strong>{{ siteName }}</strong></h1>
                 <h2>{{ t("header.subtitle") }}</h2>
             </div>
 

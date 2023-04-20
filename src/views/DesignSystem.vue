@@ -23,6 +23,7 @@ enum Variant {
 
 const {t} = useI18n()
 const variant = ref(Variant.Space1)
+const siteName = import.meta.env.VITE_APP_SITE_NAME
 
 // Breadcrumbs data
 const breadcrumbs = [
@@ -202,7 +203,7 @@ const columns: QTableProps['columns'] = [
                         :to="{ name: 'Home' }"
                         class="home-link"
                     >
-                        {{ t("header.title") }}
+                        {{ siteName }}
                     </RouterLink>
                 </QToolbarTitle>
                 
