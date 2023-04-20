@@ -318,6 +318,15 @@ const routes: RouteRecordRaw[] = [
                                 },
                             }
                         ]
+                    },
+                    {
+                        path: 'template-documents-library',
+                        name: 'TemplateDocumentsLibrary',
+                        component: () => import('@/views/dashboard/TemplateDocumentsLibraryView.vue'),
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.template-documents-library'),
+                            title: i18n.global.t('breadcrumbs.template-documents-library'),
+                        },
                     }
                 ]
             },

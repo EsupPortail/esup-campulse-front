@@ -3,6 +3,7 @@ import type {Document, ProcessDocument} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useUserStore} from '@/stores/useUserStore'
+import useDocuments from '@/composables/useDocuments'
 
 const documentTypes = ref<Document[]>([])
 
@@ -12,17 +13,16 @@ const documentUploads = ref<ProcessDocument[]>([])
 
 export default function () {
 
-    const {axiosPublic, axiosAuthenticated} = useAxios()
+    const {axiosAuthenticated} = useAxios()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
+    const {getDocuments, documents} = useDocuments()
 
-    // INIT
-
-    // REQUIRED DOCUMENTS PER PROCESS
-    const initProcessProjectDocuments = (process: 'DOCUMENT_PROJECT') => {
+    // REQUIRED DOCUMENTS FOR THIS PROCESS
+    const initProcessProjectDocuments = async (process: 'DOCUMENT_PROJECT') => {
         processDocuments.value = []
-        const documents = documentTypes.value.filter(obj => obj.processType === process)
-        documents.forEach((document) => {
+        await getDocuments()
+        documents.value.filter(obj => obj.processType === process).forEach((document) => {
             processDocuments.value.push({
                 document: document.id,
                 isMultiple: document.isMultiple,
@@ -47,13 +47,6 @@ export default function () {
                 })
             }
         })
-    }
-
-    // GET
-    async function getDocumentTypes() {
-        if (!documentTypes.value?.length) {
-            documentTypes.value = (await axiosPublic.get<Document[]>('/documents/')).data
-        }
     }
 
     class DocumentUpload {
@@ -114,7 +107,6 @@ export default function () {
     }
 
     return {
-        getDocumentTypes,
         documentTypes,
         processDocuments,
         initProcessProjectDocuments,

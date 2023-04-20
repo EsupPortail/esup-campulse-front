@@ -39,7 +39,6 @@ onMounted(async () => {
                     <QBtn
                         :label="t('dashboard.account-infos')"
                         :to="{name: 'ManageAccount'}"
-                        color="secondary"
                     />
                 </div>
             </div>
@@ -91,13 +90,36 @@ onMounted(async () => {
                         v-if="hasPerm('add_association')"
                         :label="t('dashboard.create-association')"
                         :to="{name: 'CreateAssociation'}"
-                        color="secondary"
                     />
                     <QBtn
                         v-if="hasPerm('change_association')"
                         :label="t('dashboard.edit-or-delete-association')"
                         :to="{name: 'ManageAssociations'}"
-                        color="secondary"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Template document library management -->
+    <section
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="mdi-file-multiple-outline"/>
+            {{ t('dashboard.template-document-library') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <div class="button-group">
+                    <QBtn
+                        v-if="hasPerm('add_document')"
+                        :label="t('dashboard.manage-template-documents')"
+                        :to="{name: 'TemplateDocumentsLibrary'}"
+                    />
+                    <QBtn
+                        :label="t('dashboard.view-template-documents')"
+                        disable
                     />
                 </div>
             </div>
@@ -121,25 +143,21 @@ onMounted(async () => {
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-validation')"
                         :to="{name: 'ValidateUsers'}"
-                        color="secondary"
                     />
                     <QBtn
                         v-if="hasPerm('change_user')"
                         :label="t('user-manager.association-validation')"
                         :to="{name: 'ValidateAssociationUsers'}"
-                        color="secondary"
                     />
                     <QBtn
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-management')"
                         :to="{name: 'ManageUsers'}"
-                        color="secondary"
                     />
                     <QBtn
                         v-if="hasPerm('add_user')"
                         :label="t('dashboard.create-user')"
                         :to="{name: 'AddUser'}"
-                        color="secondary"
                     />
                 </div>
             </div>
