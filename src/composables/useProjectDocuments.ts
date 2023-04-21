@@ -10,7 +10,7 @@ const processDocuments = ref<ProcessDocument[]>([])
 
 const documentUploads = ref<ProcessDocument[]>([])
 
-export default function () {
+export default function() {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const projectStore = useProjectStore()
@@ -42,7 +42,7 @@ export default function () {
                 documentUploads.value.push({
                     id: document.id,
                     document: document.document,
-                    pathFile: document.pathFile as string,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                     name: document.name as string
                 })
             }
@@ -113,6 +113,10 @@ export default function () {
         documentUploads.value.splice(documentIndex, 1)
     }
 
+    async function getFile(pathFile: string) {
+        return (await axiosAuthenticated.get(pathFile, {responseType: 'blob'})).data
+    }
+
     return {
         getDocumentTypes,
         documentTypes,
@@ -121,6 +125,7 @@ export default function () {
         postProjectDocuments,
         initDocumentUploads,
         documentUploads,
-        deleteDocumentUpload
+        deleteDocumentUpload,
+        getFile
     }
 }
