@@ -74,7 +74,7 @@ function clearOptions() {
 <template>
     <QCard v-if="title">
         <QCardSection>
-            <fieldset id="association-user-add">
+            <section id="association-user-add">
                 <legend>{{ title }}</legend>
                 <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
@@ -106,31 +106,30 @@ function clearOptions() {
                         @update:model-value="updateRegisterRoleInAssociation"
                     />
 
-                        <div class="btn-group">
-                            <QBtn
-                                :aria-label="t('forms.delete-association')"
-                                class="bg-delete"
-                                icon="mdi-delete"
-                                @click="removeAssociation(index)"
-                            />
-                            <QBtn
-                                v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
-                                routeName === 'ManageAccount'"
-                                :label="t('validate')"
-                                class="validate-button"
-                                icon-right="bi-check2"
-                                type="submit"
-                            />
-                        </div>
+                    <div class="btn-group">
                         <QBtn
-                            v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
-                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
-                            :label="t('forms.add-association')"
-                            class="add-association"
-                            icon="mdi-plus-circle-outline"
-                            @click="addAssociation"
+                            :aria-label="t('forms.delete-association')"
+                            class="bg-delete"
+                            icon="mdi-delete"
+                            @click="removeAssociation(index)"
+                        />
+                        <QBtn
+                            v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
+                                routeName === 'ManageAccount'"
+                            :label="t('validate')"
+                            class="validate-button"
+                            icon-right="bi-check2"
+                            type="submit"
                         />
                     </div>
+                    <QBtn
+                        v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
+                        :label="t('forms.add-association')"
+                        class="add-association"
+                        icon="mdi-plus-circle-outline"
+                        @click="addAssociation"
+                    />
                 </div>
                 <QBtn
                     v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
@@ -140,12 +139,8 @@ function clearOptions() {
                     icon="mdi-plus-circle-outline"
                     @click="addAssociation"
                 />
-            </fieldset>
+            </section>
         </QCardSection>
     </QCard>
 </template>
 
-<style lang="scss">
-@import '@/assets/styles/forms.scss';
-@import '@/assets/styles/associations.scss';
-</style>

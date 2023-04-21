@@ -247,7 +247,7 @@
     "legal-notice": "Mentions légales"
   },
   "forms": {
-    "add-association": "Ajouter une association supplémentaire",
+    "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
     "add-selected-associations": "Ajouter les associations sélectionnées",
     "amount-members-allowed-must-be-superior-to-members": "Veuillez choisir un nombre supérieur ou égal au nombre de membres actuels.",

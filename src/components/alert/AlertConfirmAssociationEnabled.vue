@@ -53,8 +53,8 @@ async function onEnableAssociation() {
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{
-                    isEnabled ? t("association.confirm-disable") : t("association.confirm-enable")
-                }}</span>
+                        isEnabled ? t("association.confirm-disable") : t("association.confirm-enable")
+                    }}</span>
             </QCardSection>
 
             <QCardActions align="right">
@@ -75,9 +75,3 @@ async function onEnableAssociation() {
         </QCard>
     </QDialog>
 </template>
-
-<style lang="scss">
-.test:hover {
-    background-color: red;
-}
-</style>

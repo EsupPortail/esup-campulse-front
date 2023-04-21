@@ -207,14 +207,16 @@ const columns: QTableProps['columns'] = [
 <style lang="scss">
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
-</style>
-
-<style lang="scss" scoped>
-ul {
-    margin-left: -40px;
-}
 
 li {
     list-style: none;
+}
+
+.q-table {
+    width: $fullSize;
+}
+
+.form {
+    width: auto;
 }
 </style>

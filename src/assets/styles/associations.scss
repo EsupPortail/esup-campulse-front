@@ -563,13 +563,9 @@
     width: $fullSize;
     font-size: 1rem;
   }
-
-  @media screen and (min-width: $responsiveWidth) {
-
-  }
-
 }
 
+// Add new association btn on AccountInfosView
 #association-user-add {
   display: flex;
   flex-direction: column;
@@ -588,5 +584,32 @@
     width: $fullSize;
   }
 
+  @media screen and (min-width: $responsiveWidth) {
+    .q-btn {
+      width: 30%;
+      margin: 1rem 0;
+    }
+  }
+}
 
+#association-card {
+
+  ul {
+    padding: 0 1rem;
+
+    li {
+      span {
+        font-weight: $semibold-weight;
+      }
+    }
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    width: 62rem;
+
+    .btn-group {
+      margin: 1rem 0;
+      justify-content: flex-start;
+    }
+  }
 }
