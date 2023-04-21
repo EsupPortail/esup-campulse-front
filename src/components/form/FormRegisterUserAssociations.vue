@@ -74,7 +74,7 @@ function clearOptions() {
 <template>
     <QCard v-if="title">
         <QCardSection>
-            <fieldset id="association-user-add">
+            <section id="association-user-add">
                 <legend>{{ title }}</legend>
                 <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
@@ -122,6 +122,14 @@ function clearOptions() {
                             type="submit"
                         />
                     </div>
+                    <QBtn
+                        v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
+                        :label="t('forms.add-association')"
+                        class="add-association"
+                        icon="mdi-plus-circle-outline"
+                        @click="addAssociation"
+                    />
                 </div>
                 <QBtn
                     v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
@@ -131,12 +139,8 @@ function clearOptions() {
                     icon="mdi-plus-circle-outline"
                     @click="addAssociation"
                 />
-            </fieldset>
+            </section>
         </QCardSection>
     </QCard>
 </template>
 
-<style lang="scss">
-@import '@/assets/styles/forms.scss';
-@import '@/assets/styles/associations.scss';
-</style>

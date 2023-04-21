@@ -50,7 +50,7 @@
     "delete": "Supprimer",
     "delete-association": "Supprimer l'association",
     "disable": "Désactiver",
-    "disable-association": "Désactiver l'association",
+    "disable-association": "Désactiver",
     "disabled": "Désactivée",
     "edit": "Modifier",
     "email-software": "Ouvrir le logiciel d'envoi de mail (Thunderbird, Outlook, ...)",
@@ -58,7 +58,7 @@
     "enable": "Activer",
     "enable-association": "Activer l'association",
     "enabled": "Activée",
-    "go-back": "Revenir à la liste des associations",
+    "go-back": "Retour",
     "more-details": "Fiche détail de l'association",
     "not-public": "Non Publiée",
     "public": "Publiée",
@@ -101,8 +101,8 @@
       "alt": "Ajouter un texte alternatif décrivant le logo de l'association",
       "default-alt": "Logo de l'association : ",
       "pickup": "Choisir un nouveau logo",
-      "remove": "Supprimer le logo de l'association",
-      "update": "Remplacer le logo de l'association par l'image sélectionnée"
+      "remove": "Supprimer",
+      "update": "Valider le changement de logo"
     },
     "titles": {
       "admin": "Administration",
@@ -247,7 +247,7 @@
     "legal-notice": "Mentions légales"
   },
   "forms": {
-    "add-association": "Ajouter une association supplémentaire",
+    "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
     "add-selected-associations": "Ajouter les associations sélectionnées",
     "amount-members-allowed-must-be-superior-to-members": "Veuillez choisir un nombre supérieur ou égal au nombre de membres actuels.",
