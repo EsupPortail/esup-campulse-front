@@ -1299,6 +1299,10 @@ fieldset {
   .form-state-red {
     background-color: $stateColor3;
   }
+
+  .form-state-grey {
+    background-color: $stateColor4;
+  }
 }
 
 // Select elements used to choose an action to perform on selected table rows.

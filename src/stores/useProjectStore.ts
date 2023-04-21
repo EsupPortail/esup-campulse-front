@@ -48,9 +48,16 @@ export const useProjectStore = defineStore('projectStore', {
             this.project = (await axiosAuthenticated.get<Project>(`/projects/${id}`)).data
         },
 
-        async getProjectCommissionDates() {
+        async getProjectCommissionDates(asManager: boolean, commissionDate: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            this.projectCommissionDates = (await axiosAuthenticated.get<ProjectCommissionDate[]>(`/projects/${this.project?.id}/commission_dates`)).data
+            let url = ''
+            if (asManager) {
+                url = '/projects/commission_dates'
+                if (commissionDate) url += `?commission_id=${commissionDate}`
+            } else {
+                url = `/projects/${this.project?.id}/commission_dates`
+            }
+            this.projectCommissionDates = (await axiosAuthenticated.get<ProjectCommissionDate[]>(url)).data
         },
 
         async getProjectDocuments() {

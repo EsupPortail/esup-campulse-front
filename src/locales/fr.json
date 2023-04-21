@@ -142,6 +142,9 @@
   "cancel": "Annuler",
   "cancel-delete": "Annuler la suppression",
   "cancel-search": "Annuler la recherche",
+  "commission": {
+    "select-date": "Sélectionner une date de commission"
+  },
   "commissions": "Commissions",
   "consult": "Consulter",
   "continue": "Continuer",
@@ -466,14 +469,19 @@
     "previous-asked": "Subvention(s) demandée(s) pour l'édition précédente",
     "previous-edition": "Edition précédente",
     "previous-earned": "Montant(s) obtenu(s) pour l'édition précédente",
+    "project": "Projet",
     "re-edition": "Réédition d'un précédent projet",
     "required-documents-list": "Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés",
+    "review": "Bilan",
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "status": {
+      "archived": "Archivé",
       "processing": "En attente de traitement",
-      "validated": "Validé, en attente de commission",
+      "rejected": "Refusé",
+      "review-cancelled": "Annulé",
       "review-processing": "En attente de bilan",
-      "archived": "Archivé"
+      "review-rejected": "Bilan refusé",
+      "validated": "Validé, en attente de commission"
     },
     "submit-new-project": "Déposer une nouvelle demande de subventionnement",
     "summary": "Résumé du projet",

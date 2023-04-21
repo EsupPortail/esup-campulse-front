@@ -3,26 +3,33 @@ import {onMounted, ref, watch} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import useUsers from '@/composables/useUsers'
-import {useRoute} from 'vue-router'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import type {ProjectList} from '#/project'
 import useUtility from '@/composables/useUtility'
+import useCommissions from '@/composables/useCommissions'
+import useSecurity from '@/composables/useSecurity'
+import type {SelectCommissionDateLabel} from '#/commissions'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {canEditUser} = useUsers()
-const route = useRoute()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
 const {formatDate} = useUtility()
+const {getCommissionDates, commissionDatesLabels, initCommissionDates} = useCommissions()
+const {hasPerm} = useSecurity()
+const associationStore = useAssociationStore()
+const userManagerStore = useUserManagerStore()
 
 
 onMounted(async () => {
     loading.show()
     await onGetProjects()
+    await onGetApplicants()
+    await onGetCommissionDates()
     loading.hide()
 })
 
@@ -31,9 +38,85 @@ watch(() => projectStore.projects, () => {
     projects.value = projectStore.projects
 })
 
+const commission = ref<SelectCommissionDateLabel>()
+watch(() => commission.value, async () => {
+    loading.show()
+    if (commission.value?.value) {
+        await onGetProjectCommissionDates(commission.value?.value)
+        if (projectStore.projects.length) {
+            projects.value = []
+            const commissionProjects = projectStore.projectCommissionDates.map(project => project.project)
+            projectStore.projects.forEach((project) => {
+                if (commissionProjects.includes(project.id)) {
+                    projects.value.push(project)
+                }
+            })
+        }
+    } else {
+        projects.value = projectStore.projects
+    }
+    loading.hide()
+})
+
+const applicant = (association: number | null, user: number | null) => {
+    if (association) {
+        return associationStore.associationNames.find(obj => obj.id === association)?.name
+    } else {
+        const userObj = userManagerStore.users.find(obj => obj.id === user)
+        return `${userObj?.firstName} ${userObj?.lastName}`
+    }
+}
+
 async function onGetProjects() {
     try {
         await projectStore.getProjects()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetCommissionDates() {
+    try {
+        await getCommissionDates(false)
+        await initCommissionDates(hasPerm('view_project_all'))
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetProjectCommissionDates(commissionDate: number) {
+    try {
+        await projectStore.getProjectCommissionDates(true, commissionDate)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetApplicants() {
+    try {
+        if (projectStore.projects.length) {
+            if (projectStore.projects.find(obj => obj.association !== null)) {
+                await associationStore.getAssociationNames(false, false)
+            }
+            if (projectStore.projects.find(obj => obj.user !== null)) {
+                await userManagerStore.getUsers('validated')
+            }
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -58,6 +141,20 @@ const columns: QTableProps['columns'] = [
     <section class="dashboard-section">
         <div class="form-container">
             <div class="form">
+                <h3 class="section-title">
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-card-text"
+                    ></i>
+                    {{ t('commission.select-date') }}
+                </h3>
+                <QSelect
+                    v-model="commission"
+                    :label="t('commissions')"
+                    :options="commissionDatesLabels"
+                    clearable
+                    filled
+                />
                 <QTable
                     :columns="columns"
                     :loading="!projects"
@@ -78,7 +175,7 @@ const columns: QTableProps['columns'] = [
                                 key="applicant"
                                 :props="props"
                             >
-                                {{ props.row.association ?? props.row.user }}
+                                {{ applicant(props.row.association, props.row.user) }}
                             </QTd>
                             <QTd
                                 key="lastModifiedDate"
@@ -91,6 +188,16 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 class="state-cell"
                             >
+                                <span
+                                    v-if="props.row.projectStatus === 'PROJECT_REJECTED'"
+                                    class="form-state"
+                                >
+                                    {{ t('project.status.rejected') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
+                                    ><i class="bi bi-x"></i></span>
+                                </span>
                                 <span
                                     v-if="props.row.projectStatus === 'PROJECT_PROCESSING'"
                                     class="form-state"
@@ -112,13 +219,34 @@ const columns: QTableProps['columns'] = [
                                     ><i class="bi bi-check"></i></span>
                                 </span>
                                 <span
-                                    v-if="props.row.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
+                                    v-if="props.row.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
+                                        props.row.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
                                     class="form-state"
                                 >
-                                    {{ t('project.status.validated') }}
+                                    {{ t('project.status.review-processing') }}
                                     <span
                                         aria-hidden="true"
-                                        class="form-state-icon form-state-green"
+                                        class="form-state-icon form-state-orange"
+                                    ><i class="bi bi-dash"></i></span>
+                                </span>
+                                <span
+                                    v-if="props.row.projectStatus === 'PROJECT_REVIEW_REJECTED'"
+                                    class="form-state"
+                                >
+                                    {{ t('project.status.review-rejected') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
+                                    ><i class="bi bi-x"></i></span>
+                                </span>
+                                <span
+                                    v-if="props.row.projectStatus === 'PROJECT_REVIEW_VALIDATED'"
+                                    class="form-state"
+                                >
+                                    {{ t('project.status.archived') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-grey"
                                     ><i class="bi bi-check"></i></span>
                                 </span>
                             </QTd>
@@ -129,14 +257,14 @@ const columns: QTableProps['columns'] = [
                             >
                                 <div class="button-container">
                                     <QBtn
-                                        :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
+                                        :label="t('project.project')"
+                                        disable
                                         icon="bi-pencil"
                                     />
                                     <QBtn
-                                        :label="t('consult')"
-                                        :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
-                                        color="secondary"
-                                        icon="mdi-check-circle"
+                                        :label="t('project.review')"
+                                        disable
+                                        icon="bi-pencil"
                                     />
                                 </div>
                             </QTd>
