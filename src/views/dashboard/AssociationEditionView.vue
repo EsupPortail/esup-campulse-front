@@ -5,12 +5,15 @@ import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useRoute} from 'vue-router'
 import FormAssociationEdition from '@/components/form/FormAssociationEdition.vue'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
 const route = useRoute()
 const associationStore = useAssociationStore()
+const {catchHTTPError} = useErrors()
 
 const isLoaded = ref(false)
 
@@ -19,10 +22,12 @@ async function onGetAssociationDetail() {
     try {
         await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -30,10 +35,12 @@ async function onGetInstitutions() {
     try {
         await associationStore.getInstitutions()
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -41,10 +48,12 @@ async function onGetInstitutionComponents() {
     try {
         await associationStore.getInstitutionComponents()
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -52,10 +61,12 @@ async function onGetAssociationActivityFields() {
     try {
         await associationStore.getActivityFields()
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

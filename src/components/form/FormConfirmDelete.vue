@@ -4,11 +4,14 @@ import {useI18n} from 'vue-i18n'
 import router from '@/router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useQuasar} from 'quasar'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const confirm = ref<boolean>(false)
 const userManagerStore = useUserManagerStore()
 const {notify} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 async function onDeleteUser() {
     try {
@@ -18,11 +21,13 @@ async function onDeleteUser() {
             type: 'positive',
             message: t('notifications.positive.validate-delete-user')
         })
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.unknown-user')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 </script>

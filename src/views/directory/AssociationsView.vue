@@ -2,28 +2,28 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
-import useDirectory from '@/composables/useDirectory'
 import useAssociation from '@/composables/useAssociation'
-import type {Association, AssociationSearch} from '#/association'
 import {useQuasar} from 'quasar'
+import * as noLogoSquare from '@/assets/img/no_logo_square.png'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
+import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
+import {useRoute} from 'vue-router'
 
-const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const associationStore = useAssociationStore()
 const {altLogoText} = useAssociation()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
+const {catchHTTPError} = useErrors()
+const {associations} = useAssociation()
+const route = useRoute()
 
 onMounted(async function () {
     loading.show()
     await associationStore.getAssociations(true)
+    associations.value = associationStore.associations
     await loadAssociationsActivityFields()
     loading.hide()
-})
-
-// Initialize a clone of associations from the store to do some searching and pagination
-const associations = ref<Association[]>([...associationStore.associations])
-watch(() => associationStore.associations, () => {
-    associations.value = associationStore.associations
 })
 
 // Used for pagination
@@ -60,55 +60,22 @@ function scrollToTop() {
     searchFields.scrollIntoView()
 }
 
-// Used for searching
-const settings = ref<AssociationSearch>({
-    search: '',
-    name: '',
-    acronym: '',
-    institution: null,
-    institutionComponent: null,
-    activityField: null
-})
-
 // Functions
 async function loadAssociationsActivityFields() {
     try {
         await associationStore.getInstitutions()
         await associationStore.getInstitutionComponents()
         await associationStore.getActivityFields()
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
-async function onSearch() {
-    associations.value = await simpleAssociationSearch(settings.value.search)
-}
-
-function onAdvancedSearch() {
-    associations.value = advancedSearch(settings.value) as Association[]
-}
-
-// A function that clears the search,
-// for API search it re-gets associations, for front search it looks back in store
-async function clearSearch(apiSearch: boolean) {
-    settings.value = {
-        search: '',
-        name: '',
-        acronym: '',
-        institution: null,
-        institutionComponent: null,
-        activityField: null
-    }
-    if (apiSearch) {
-        await associationStore.getAssociations(true)
-    } else {
-        associations.value = associationStore.associations
-    }
-}
 </script>
 
 <template>
@@ -137,109 +104,8 @@ async function clearSearch(apiSearch: boolean) {
             </div>
         </div>
     </section>
-    <section class="directory-search">
-        <h2>{{ t('directory.search-association') }}</h2>
-        <QForm
-            id="search-form"
-            class="search-text-field"
-            @submit.prevent="onSearch"
-        >
-            <fieldset>
-                <QInput
-                    v-model="settings.search"
-                    :label="t('directory.search')"
-                    :placeholder="t('directory.search-placeholder')"
-                    filled
-                    lazy-rules
-                >
-                    <template v-slot:prepend>
-                        <QIcon name="mdi-magnify"/>
-                    </template>
-                </QInput>
-                <QBtn
-                    :label="t('directory.search')"
-                    class="search-button"
-                    color="primary"
-                    icon-right="mdi-chevron-right"
-                    type="submit"
-                />
-                <QBtn
-                    :label="t('directory.cancel-search')"
-                    color="secondary"
-                    icon-right="mdi-close"
-                    @click="clearSearch(true)"
-                />
-            </fieldset>
-        </QForm>
 
-        <QForm
-            id="advanced-search-form"
-            class="search-text-field"
-            @submit.prevent="onAdvancedSearch"
-        >
-            <QExpansionItem
-                :label="t('directory.advanced-search')"
-                expand-separator
-                icon="mdi-menu-right"
-            >
-                <fieldset>
-                    <QInput
-                        v-model="settings.name"
-                        :label="t('directory.labels.association-name')"
-                        class="full-size"
-                        filled
-                        lazy-rules
-                    />
-                    <QInput
-                        v-model="settings.acronym"
-                        :label="t('directory.labels.association-acronym')"
-                        filled
-                        lazy-rules
-                    />
-                    <QSelect
-                        v-model="settings.institution"
-                        :label="t('directory.labels.association-institution')"
-                        :options="associationStore.institutionLabels"
-                        emit-value
-                        filled
-                        map-options
-                    />
-                    <QSelect
-                        v-model="settings.institutionComponent"
-                        :label="t('directory.labels.association-institution-component')"
-                        :options="associationStore.institutionComponentLabels"
-                        emit-value
-                        filled
-                        map-options
-                    />
-                    <QSelect
-                        v-model="settings.activityField"
-                        :label="t('directory.labels.association-activity-field')"
-                        :options="associationStore.activityFieldLabels"
-                        emit-value
-                        filled
-                        map-options
-                    />
-                </fieldset>
-
-                <div class="buttons-group">
-                    <QBtn
-                        :label="t('directory.advanced-search')"
-                        class="search-button"
-                        color="primary"
-                        icon-right="mdi-chevron-right"
-                        type="submit"
-                    />
-                    <QBtn
-                        :label="t('directory.cancel-search')"
-                        color="secondary"
-                        icon-right="mdi-close"
-                        @click="clearSearch(false)"
-                    />
-                </div>
-            </QExpansionItem>
-        </QForm>
-    </section>
+    <FormAssociationSearch :route="route.name"/>
 
     <section class="directory-list">
         <div class="form-container">
@@ -278,7 +144,7 @@ async function clearSearch(apiSearch: boolean) {
                             <QImg
                                 :alt="altLogoText(association)"
                                 :ratio="1"
-                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : '../src/assets/img/no_logo_square.png') : '../src/assets/img/no_logo_square.png'"
+                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : noLogoSquare.default) : noLogoSquare.default"
                             />
                         </div>
                         <div class="list-details">
@@ -300,21 +166,27 @@ async function clearSearch(apiSearch: boolean) {
                                         <i class="bi bi-bank2"></i>
                                         {{ t('directory.labels.association-institution') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ association.institution.name }}</span>
+                                    <span class="value">{{
+                                        associationStore.institutions.find(obj => obj.id === association?.institution)?.name
+                                    }}</span>
                                 </li>
                                 <li v-if="association.activityField">
                                     <span class="label">
                                         <i class="bi bi-globe"></i>
                                         {{ t('directory.labels.association-activity-field') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ association.activityField.name }}</span>
+                                    <span class="value">{{
+                                        associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
+                                    }}</span>
                                 </li>
                                 <li v-if="association.institutionComponent">
                                     <span class="label">
                                         <i class="bi bi-mortarboard"></i>
                                         {{ t('directory.labels.association-institution-component') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ association.institutionComponent.name }}</span>
+                                    <span class="value">{{
+                                        associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
+                                    }}</span>
                                 </li>
                             </ul>
                         </div>

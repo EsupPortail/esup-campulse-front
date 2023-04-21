@@ -4,6 +4,8 @@ import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
 import useUserAssociations from '@/composables/useUserAssociations'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -13,6 +15,7 @@ const {
     initUserAssociations
 } = useUserAssociations()
 const userManagerStore = useUserManagerStore()
+const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     loading.show()
@@ -25,11 +28,13 @@ async function onGetUserAssociations() {
     try {
         await getUserAssociations(userManagerStore.user?.id as number, true)
         initUserAssociations(true)
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.form-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 </script>

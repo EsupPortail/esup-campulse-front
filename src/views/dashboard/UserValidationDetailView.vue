@@ -9,12 +9,15 @@ import router from '@/router'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import useUserGroups from '@/composables/useUserGroups'
 import useUserAssociations from '@/composables/useUserAssociations'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {validateUser} = useUsers()
 const {newGroups, groupChoiceIsValid} = useUserGroups()
 const {getUserAssociations} = useUserAssociations()
+const {catchHTTPError} = useErrors()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -31,11 +34,13 @@ onMounted(async () => {
 async function onGetUser() {
     try {
         await userManagerStore.getUserDetail(parseInt(route.params.id as string))
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -43,11 +48,13 @@ async function onGetUser() {
 async function onGetUserAssociations() {
     try {
         await getUserAssociations(parseInt(route.params.id as string), true)
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -61,11 +68,13 @@ async function onValidateUser() {
                 type: 'positive',
                 message: t('notifications.positive.validate-success')
             })
-        } catch (e) {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.unknown-user')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -78,11 +87,13 @@ async function onDeleteUser() {
             type: 'positive',
             message: t('notifications.positive.validate-delete-user')
         })
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.unknown-user')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 </script>

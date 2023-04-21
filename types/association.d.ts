@@ -104,7 +104,7 @@ export interface EditedAssociation {
     email?: string | null,
     siret?: string | null,
     website?: string | null,
-    studentCount?: number | null,
+    studentCount?: string,
     presidentNames?: string | null,
     presidentPhone?: string | null,
     isPublic?: boolean,
@@ -114,7 +114,7 @@ export interface EditedAssociation {
     institutionComponent?: number | null | undefined,
     activityField?: number | null | undefined,
     altLogo?: string,
-    amountMembersAllowed: number | null
+    amountMembersAllowed: string
 }
 
 export interface NewAssociation {

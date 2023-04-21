@@ -17,7 +17,8 @@ import type {AssociationLogo, EditedAssociation} from '#/association'
 import axios from 'axios'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
-
+import * as noLogoSquare from '@/assets/img/no_logo_square.png'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -29,6 +30,7 @@ const {
 } = useAssociation()
 const {isStaff} = useUserGroups()
 const {hasPerm} = useSecurity()
+const {catchHTTPError} = useErrors()
 
 const associationStore = useAssociationStore()
 
@@ -49,12 +51,11 @@ const association = ref<EditedAssociation>({
     presidentPhone: '',
     approvalDate: '',
     lastGoaDate: '',
-    amountMembersAllowed: null,
+    amountMembersAllowed: '',
     isPublic: false,
-    altLogo: ''
+    altLogo: '',
+    studentCount: ''
 })
-
-const associationStudentCount = ref(0)
 
 const initValues = () => {
     association.value.name = associationStore.association?.name as string
@@ -73,15 +74,26 @@ const initValues = () => {
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution)?.value
     association.value.institutionComponent = associationStore.institutionComponentLabels.find(({value}) => value === associationStore.association?.institutionComponent)?.value
     association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField)?.value
-    association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed as number
+    association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed.toString() as string
     association.value.isPublic = associationStore.association?.isPublic as boolean
-    associationStudentCount.value = associationStore.association?.studentCount as number
+    association.value.studentCount = (associationStore.association?.studentCount as number).toString()
 }
 watch(() => associationStore.association, initValues)
+
+const membersCount = ref<number>(0)
+
+const initMembersCount = () => {
+    if (associationStore.association) {
+        associationStore.getAssociationUsers(associationStore.association.id)
+        membersCount.value = associationStore.associationUsers.length
+    }
+}
+watch(() => associationStore.association, initMembersCount)
 
 onMounted(async () => {
     loading.show()
     initValues()
+    initMembersCount()
     loading.hide()
 })
 
@@ -100,7 +112,7 @@ const MAX_FILE_SIZE = 8388608
 async function onLogoRejected() {
     notify({
         type: 'negative',
-        message: t('notifications.negative.upload-images-error-too-large')
+        message: t('notifications.negative.413-error')
     })
 }
 
@@ -148,19 +160,11 @@ async function onChangeLogo(action: string) {
             type: 'positive'
         })
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (axios.isAxiosError(error) && error.response) {
             notify({
-                message: t('notifications.negative.association-logo-edit-error'),
-                type: 'negative'
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
             })
-            if (error.response?.status === 413) {
-                onLogoRejected()
-            } else {
-                notify({
-                    type: 'negative',
-                    message: t('notifications.negative.association-logo-edit-error')
-                })
-            }
         }
     }
 }
@@ -176,7 +180,7 @@ async function onChangeLogo(action: string) {
                 <QImg
                     :alt="altLogoText(association)"
                     :ratio="1"
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : '../../../src/assets/img/no_logo_square.png') : '../../../src/assets/img/no_logo_square.png'"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : noLogoSquare.default) : noLogoSquare.default"
                 />
             </div>
 
@@ -311,11 +315,21 @@ async function onChangeLogo(action: string) {
                     <QInput
                         v-if="hasPerm('change_association_all_fields')"
                         v-model="association.amountMembersAllowed"
+                        :hint="`${t('forms.amount-student-allowed-cannot-be-inferior-to-members')} : ${membersCount}`"
                         :label="t('association.labels.amount-members-allowed')"
-                        :rules="[val => val >= associationStudentCount || t('forms.amount-members-allowed-must-be-superior-to-student-count')]"
+                        :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
                         filled
                         inputmode="numeric"
                         lazy-rules
+                        min="0"
+                        type="number"
+                    />
+                    <QInput
+                        v-model="association.studentCount"
+                        :label="t('forms.association-student-count')"
+                        filled
+                        inputmode="numeric"
+                        min="0"
                         type="number"
                     />
                 </div>
@@ -373,7 +387,7 @@ async function onChangeLogo(action: string) {
                     v-if="isStaff"
                 />
                 <AlertConfirmAssociationPublication
-                    v-if="associationStore.association?.isEnabled && associationStore.association?.isSite"
+                    v-if="associationStore.association?.isEnabled && associationStore.association?.isSite && isStaff"
                 />
                 <AlertConfirmAssociationDeletion
                     v-if="isStaff && !associationStore.association?.isEnabled"

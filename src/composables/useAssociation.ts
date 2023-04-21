@@ -11,10 +11,13 @@ import useUserAssociations from '@/composables/useUserAssociations'
 // Needed to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
 
+// Needed to temporarily store associations (for searching and pagination)
+const associations = ref<Association[]>([])
+
 // Changed data when modifying an association
 let changedData = {}
 
-export default function() {
+export default function () {
 
     const associationStore = useAssociationStore()
     const {updateRegisterRoleInAssociation} = useUserAssociations()
@@ -84,10 +87,16 @@ export default function() {
         const {formatDate} = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
-            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone', 'amountMembersAllowed']
-            if (indexes.indexOf(key) !== -1) {
+            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone']
+            if (indexes.includes(key)) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})
+                }
+            }
+            // Check amountMembersAllowed
+            else if (key == 'amountMembersAllowed' || key == 'studentCount') {
+                if (parseInt(value) !== associationStore.association?.[key as keyof typeof associationStore.association]) {
+                    changedData = Object.assign(changedData, {[key]: parseInt(value)})
                 }
             }
             // Check institution, component and field
@@ -201,6 +210,7 @@ export default function() {
         changedData,
         altLogoText,
         checkHasPresident,
-        changeAssociationLogo
+        changeAssociationLogo,
+        associations
     }
 }

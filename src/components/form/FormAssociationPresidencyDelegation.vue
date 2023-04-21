@@ -6,6 +6,8 @@ import {useQuasar} from 'quasar'
 import type {AssociationMember} from '#/user'
 import useUtility from '@/composables/useUtility'
 import useUserAssociations from '@/composables/useUserAssociations'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const props = defineProps<{
     member: AssociationMember
@@ -18,6 +20,7 @@ const {notify} = useQuasar()
 const {t} = useI18n()
 const {fromDateIsAnterior} = useUtility()
 const {patchUserAssociations, initAssociationMembers} = useUserAssociations()
+const {catchHTTPError} = useErrors()
 
 const openDelegationPanel = ref<boolean>()
 
@@ -59,11 +62,13 @@ async function onDelegatePresidency(activate: boolean) {
                 message: t('notifications.positive.delegation-success')
             })
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.delegation-fail')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 

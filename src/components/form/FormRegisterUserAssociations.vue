@@ -6,6 +6,8 @@ import {useQuasar} from 'quasar'
 import {onMounted, ref, watch} from 'vue'
 import {useRoute} from 'vue-router'
 import useUserAssociations from '@/composables/useUserAssociations'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const associationStore = useAssociationStore()
 const route = useRoute()
@@ -17,6 +19,7 @@ const {
 } = useAssociation()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     loading.show()
@@ -45,11 +48,13 @@ watch(() => route.path, initTitle)
 async function loadAssociations() {
     try {
         await associationStore.getAssociationNames(false, true)
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -69,38 +74,37 @@ function clearOptions() {
 <template>
     <QCard v-if="title">
         <QCardSection>
-            <fieldset>
-                <div id="association-user-add">
-                    <legend>{{ title }}</legend>
-                    <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
+            <fieldset id="association-user-add">
+                <legend>{{ title }}</legend>
+                <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
-                    <div
-                        v-for="(association, index) in newAssociations"
-                        :key="index"
-                    >
-                        <QSelect
-                            v-model="association.id"
-                            :label="t('forms.select-association')"
-                            :options="options"
-                            clearable
-                            emit-value
-                            fill-input
-                            filled
-                            hide-selected
-                            input-debounce="0"
-                            map-options
-                            use-input
-                            @filter="filterAssociations"
-                            @input="clearOptions"
-                            @update:model-value="checkHasPresident(association)"
-                        />
-                        <QOptionGroup
-                            v-model="association.role"
-                            :options="association.options"
-                            color="teal"
-                            inline
-                            @update:model-value="updateRegisterRoleInAssociation"
-                        />
+                <div
+                    v-for="(association, index) in newAssociations"
+                    :key="index"
+                >
+                    <QSelect
+                        v-model="association.id"
+                        :label="t('forms.select-association')"
+                        :options="options"
+                        clearable
+                        emit-value
+                        fill-input
+                        filled
+                        hide-selected
+                        input-debounce="0"
+                        map-options
+                        use-input
+                        @filter="filterAssociations"
+                        @input="clearOptions"
+                        @update:model-value="checkHasPresident(association)"
+                    />
+                    <QOptionGroup
+                        v-model="association.role"
+                        :options="association.options"
+                        color="teal"
+                        inline
+                        @update:model-value="updateRegisterRoleInAssociation"
+                    />
 
                         <div class="btn-group">
                             <QBtn
@@ -128,6 +132,14 @@ function clearOptions() {
                         />
                     </div>
                 </div>
+                <QBtn
+                    v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
+                    :label="t('forms.add-association')"
+                    class="add-association"
+                    icon="mdi-plus-circle-outline"
+                    @click="addAssociation"
+                />
             </fieldset>
         </QCardSection>
     </QCard>

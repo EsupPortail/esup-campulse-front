@@ -11,6 +11,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {
@@ -54,6 +55,7 @@ const {
     commissionDates,
     initCommissionDates
 } = useCommissions()
+const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
@@ -94,16 +96,24 @@ const done5 = ref(false)
 const done6 = ref(false)
 
 watch(() => step.value === 2, async () => {
+    loading.show()
     await onGetCommissionDates()
+    loading.hide()
 })
 watch(() => step.value === 3, async () => {
+    loading.show()
     await onGetProjectBudget()
+    loading.hide()
 })
 watch(() => step.value === 4, async () => {
+    loading.show()
     await onGetProjectGoals()
+    loading.hide()
 })
 watch(() => step.value === 5, async () => {
+    loading.show()
     await onGetProjectDocuments()
+    loading.hide()
 })
 
 // REFS
@@ -144,6 +154,15 @@ watch(() => projectBasicInfos.value.plannedEndDate, () => {
     datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate)
 })
 
+// CHECKING IF PROJECT AUDIENCE AMOUNT NUMBERS ARE POSSIBLE
+const correctAudienceAmount = ref<boolean>(false)
+watch(() => projectBudget.value.amountStudentsAudience, () => {
+    correctAudienceAmount.value = Number(projectBudget.value.amountStudentsAudience) <= Number(projectBudget.value.amountAllAudience)
+})
+watch(() => projectBudget.value.amountAllAudience, () => {
+    correctAudienceAmount.value = Number(projectBudget.value.amountStudentsAudience) <= Number(projectBudget.value.amountAllAudience)
+})
+
 // GET DATA FOR STEP 1
 async function onGetProjectDetail() {
     if (!newProject.value) {
@@ -151,12 +170,14 @@ async function onGetProjectDetail() {
             await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
             initProjectBasicInfos()
         }
-        catch {
+        catch (error) {
             await router.push({name: '404'})
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.loading-error')
-            })
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -168,11 +189,13 @@ async function onGetProjectCategories() {
             await projectStore.getProjectCategories()
             initProjectCategories()
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -180,11 +203,13 @@ async function onGetDocumentTypes() {
     try {
         await getDocumentTypes()
         initProcessProjectDocuments('DOCUMENT_PROJECT')
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -199,11 +224,13 @@ async function onGetCommissionDates() {
                 await projectStore.getProjectCommissionDates()
                 initProjectCommissionDatesModel()
             }
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.loading-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
@@ -216,11 +243,13 @@ async function onGetProjectBudget() {
         await projectStore.getProjectCommissionDates()
         initProjectCommissionDates()
         initProjectBudget()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -238,11 +267,13 @@ async function onGetProjectDocuments() {
         initProcessProjectDocuments('DOCUMENT_PROJECT')
         await projectStore.getProjectDocuments()
         initDocumentUploads()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -250,12 +281,13 @@ async function onGetProjectDocuments() {
 async function onDocumentRejected() {
     notify({
         type: 'negative',
-        message: t('notifications.negative.upload-documents-error-too-large')
+        message: t('notifications.negative.413-error')
     })
 }
 
 // SUBMIT STEP 1
-async function onSubmitBasicInfos() {
+async function onSubmitBasicInfos(nextStep: number) {
+    loading.show()
     try {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
@@ -265,119 +297,134 @@ async function onSubmitBasicInfos() {
         if (projectStore.project) {
             await updateProjectCategories()
             done1.value = true
-            step.value = 2
+            step.value = nextStep
         }
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.project-creation-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 2
-async function onSubmitCommissionDates() {
+async function onSubmitCommissionDates(nextStep: number) {
+    loading.show()
     if (projectStore.project) {
         try {
             await updateProjectCommissionDates()
             done2.value = true
-            step.value = 3
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.commission-dates-error')
-            })
+            step.value = nextStep
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 3
-async function onSubmitBudget() {
+async function onSubmitBudget(nextStep: number) {
+    loading.show()
     if (projectStore.project) {
         try {
             await patchProjectBudget(!projectReEdition.value)
             await patchProjectCommissionDates(!projectReEdition.value)
             done3.value = true
-            step.value = 4
-
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.project-edition-error')
-            })
+            step.value = nextStep
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 4
-async function onSubmitGoals() {
+async function onSubmitGoals(nextStep: number) {
+    loading.show()
     if (projectStore.project) {
         try {
             await patchProjectGoals()
             done4.value = true
-            step.value = 5
-
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.project-edition-error')
-            })
-        }
-    }
-}
-
-// SUBMIT STEP 5
-async function onUploadDocuments() {
-    if (projectStore.project) {
-        try {
-            loading.show()
-            await postProjectDocuments(parseInt(route.params.associationId as string))
-            loading.hide()
-            done5.value = true
-            step.value = 6
+            step.value = nextStep
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status === 413) {
-                    await onDocumentRejected()
-                } else {
-                    notify({
-                        type: 'negative',
-                        message: t('notifications.negative.upload-documents-error')
-                    })
-                }
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
             }
         }
     }
+    loading.hide()
+}
+
+// SUBMIT STEP 5
+async function onUploadDocuments(nextStep: number) {
+    loading.show()
+    if (projectStore.project) {
+        try {
+            await postProjectDocuments(parseInt(route.params.associationId as string))
+            done5.value = true
+            step.value = nextStep
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
+        }
+    }
+    loading.hide()
 }
 
 // DELETE DOCS ON STEP 5
 async function onDeleteDocumentUpload(documentId: number) {
+    loading.show()
     try {
-        loading.show()
         await deleteDocumentUpload(documentId)
-        loading.hide()
-    } catch {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.delete-document-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
+    loading.hide()
 }
 
 // SUBMIT STEP 6
 async function onSubmitProject() {
+    loading.show()
     if (projectStore.project) {
         try {
             await submitProject()
             done6.value = true
             await router.push({name: 'SubmitProjectSuccessful', params: {projectId: projectStore.project?.id}})
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.submit-project-error')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
+    loading.hide()
 }
 
 // WHEN THE USER LEAVES THE PAGE, WE CLEAR OR INPUTS
@@ -419,7 +466,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 v-for="(document, index) in processDocuments"
                                 :key="index"
                             >
-                                {{ document.description }}
+                                <span v-if="document.pathTemplate">
+                                    <a
+                                        :href="document.pathTemplate"
+                                        target="_blank"
+                                        :title="t('project.document.download-template')"
+                                    >{{ document.description }}</a>
+                                </span>
+                                <span v-else>{{ document.description }}</span>
                             </li>
                         </ul>
                     </p>
@@ -438,7 +492,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-card-text-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitBasicInfos"
+                            @submit.prevent="onSubmitBasicInfos(2)"
                         >
                             <h3 class="title-2">{{ t('project.general-infos') }}</h3>
 
@@ -488,6 +542,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 multiple
                                 stack-label
                                 use-chips
+                                :hint="t('forms.multiple-choices-enabled')"
                             />
                             <section class="form-page-navigation">
                                 <QBtn
@@ -507,19 +562,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-calendar-blank"
                     >
                         <QForm
-                            @submit.prevent="onSubmitCommissionDates"
+                            @submit.prevent="onSubmitCommissionDates(3)"
                         >
                             <h3 class="title-2">{{ t('project.commission-choice') }}</h3>
-
-                            <div class="info-panel">
-                                <i
-                                    aria-hidden="true"
-                                    class="bi bi-exclamation-lg"
-                                ></i>
-                                <p>
-                                    Attention, vous ne pouvez choisir qu'une seule date par commission.
-                                </p>
-                            </div>
 
                             <QSelect
                                 v-model="projectCommissionDatesModel"
@@ -540,7 +585,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="step = 1"
+                                    @click="onSubmitCommissionDates(1)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -559,7 +604,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-hand-coin-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitBudget"
+                            @submit.prevent="onSubmitBudget(4)"
                         >
                             <h3 class="title-2">{{ t('project.budget') }}</h3>
 
@@ -584,6 +629,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                             filled
                                             type="number"
+                                            min="0"
                                         />
                                     </section>
                                 </fieldset>
@@ -598,6 +644,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             filled
                                             type="number"
+                                            min="0"
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                         />
                                     </section>
@@ -611,6 +658,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     filled
                                     lazy-rules
                                     type="number"
+                                    min="0"
                                 />
 
                                 <QSeparator/>
@@ -629,21 +677,23 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountStudentsAudience"
                                 :label="t('project.target-students-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 filled
                                 lazy-rules
                                 type="number"
+                                min="0"
                             />
 
                             <QInput
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 filled
                                 lazy-rules
                                 type="number"
+                                min="0"
                             />
 
                             <QInput
@@ -654,6 +704,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="number"
+                                min="0"
                             />
 
                             <QInput
@@ -664,6 +715,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="number"
+                                min="0"
                             />
 
                             <QSeparator/>
@@ -679,6 +731,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             filled
                                             type="number"
+                                            min="0"
                                             inputmode="numeric"
                                             :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                         />
@@ -690,7 +743,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="step = 2"
+                                    @click="onSubmitBudget(2)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -709,7 +762,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-flag-checkered"
                     >
                         <QForm
-                            @submit.prevent="onSubmitGoals"
+                            @submit.prevent="onSubmitGoals(5)"
                         >
                             <h3 class="title-2">{{ t('project.goals-title') }}</h3>
 
@@ -767,7 +820,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="step = 3"
+                                    @click="onSubmitGoals(3)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -786,7 +839,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="mdi-file-document-outline"
                     >
                         <QForm
-                            @submit.prevent="onUploadDocuments"
+                            @submit.prevent="onUploadDocuments(6)"
                         >
                             <h3 class="title-2">{{ t('project.documents') }}</h3>
 
@@ -829,6 +882,23 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         </template>
                                     </QFile>
 
+                                    <div
+                                        v-if="document.pathTemplate"
+                                        class="info-panel info-panel-warning"
+                                    >
+                                        <i
+                                            aria-hidden="true"
+                                            class="bi bi-exclamation-lg"
+                                        ></i>
+                                        <p>
+                                            {{ t('project.document.use-template') }} <span>
+                                                <a
+                                                    :href="document.pathTemplate"
+                                                    target="_blank"
+                                                >{{ `${t('project.document.download-template')} "${document.description}".` }}</a></span>
+                                        </p>
+                                    </div>
+
                                     <div class="document-input-group">
                                         <div class="document-input variant-space-3">
                                             <div class="document-input-list">
@@ -870,7 +940,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="step = 3"
+                                    @click="onUploadDocuments(4)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -1105,6 +1175,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             icon="bi-pencil"
                                             @click="() => step = 5"
                                         />
+                                    </div>
+
+                                    <div class="info-panel info-panel-warning">
+                                        <i
+                                            class="bi bi-exclamation-lg"
+                                            aria-hidden="true"
+                                        ></i>
+                                        <p>{{ t('project.document.verify') }}</p>
                                     </div>
 
                                     <section class="flex-section">

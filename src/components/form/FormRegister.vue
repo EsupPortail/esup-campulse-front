@@ -12,6 +12,7 @@ import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAsso
 import useUserGroups from '@/composables/useUserGroups'
 import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 import useUtility from '@/composables/useUtility'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -19,6 +20,7 @@ const userStore = useUserStore()
 const {register, newUser, initNewUserData, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
 const {groupChoiceIsValid, groupCanJoinAssociation, isStaff} = useUserGroups()
 const {phoneRegex} = useUtility()
+const {catchHTTPError} = useErrors()
 
 
 const hasConsent = ref<boolean>(false)
@@ -35,10 +37,12 @@ async function onLoadCASUser() {
         await loadCASUser()
     } catch (error) {
         await router.push({name: 'Login'})
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.cas-authentication-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 }
 
@@ -65,18 +69,18 @@ async function onRegister() {
                 newUser.email = ''
                 newUser.phone = ''
             } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    const data = error.response?.data
+                if (axios.isAxiosError(error) && error.response) {
+                    const data = error.response.data
                     if (data.email) {
+                        await router.push({name: 'Login'})
                         notify({
                             type: 'negative',
                             message: t('notifications.negative.email-used')
                         })
-                        await router.push({name: 'Login'})
                     } else {
                         notify({
                             type: 'negative',
-                            message: t('notifications.negative.invalid-request')
+                            message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
                         })
                     }
                 }

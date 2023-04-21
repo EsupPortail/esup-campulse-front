@@ -7,12 +7,14 @@ import useAssociation from '@/composables/useAssociation'
 import router from '@/router'
 import useUserGroups from '@/composables/useUserGroups'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const confirmation = ref<boolean>(false)
 const {notify} = useQuasar()
 const {updateAssociation} = useAssociation()
 const {isStaff} = useUserGroups()
+const {catchHTTPError} = useErrors()
 
 const associationStore = useAssociationStore()
 
@@ -33,10 +35,10 @@ async function onValidateChanges() {
             type: 'positive'
         })
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (axios.isAxiosError(error) && error.response) {
             notify({
-                message: t('notifications.negative.edit-association-error'),
-                type: 'negative'
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
             })
         }
     }

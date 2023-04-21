@@ -3,10 +3,13 @@ import useSecurity from '@/composables/useSecurity'
 import {ref} from 'vue'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {getUsersFromCAS, CASUsers, CASUserOptions, newUser, emailVerification} = useSecurity()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
+const {catchHTTPError} = useErrors()
 
 const lastName = ref<string>('')
 
@@ -23,10 +26,12 @@ async function onGetUsersFromCAS() {
             await getUsersFromCAS(lastName.value)
             loading.hide()
         } catch (error) {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.cas-error')
-            })
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }

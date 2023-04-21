@@ -5,9 +5,12 @@ import {useQuasar} from 'quasar'
 import type {PasswordEdit} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import router from '@/router'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 const editPassword = ref<PasswordEdit>({
     oldPassword: '',
@@ -33,12 +36,13 @@ async function passwordConfirm() {
                 type: 'positive',
                 message: t('notifications.positive.password-changed')
             })
-        } catch (e) {
-            // TODO
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.invalid-request')
-            })
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     } else {
         notify({

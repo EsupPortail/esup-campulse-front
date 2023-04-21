@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import {RouterLink} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
-import {useI18n} from 'vue-i18n'
 
-const {t} = useI18n()
+const siteName = import.meta.env.VITE_APP_SITE_NAME
 
 </script>
 
@@ -20,7 +19,7 @@ const {t} = useI18n()
                     :to="{name: 'Home'}"
                     class="home-link"
                 >
-                    {{ t("header.title") }}
+                    {{ siteName }}
                 </RouterLink>
             </QToolbarTitle>
             <LayoutHeaderNav/>

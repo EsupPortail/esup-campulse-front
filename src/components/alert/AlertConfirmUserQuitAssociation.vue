@@ -4,11 +4,14 @@ import {useI18n} from 'vue-i18n'
 import useUserAssociation from '@/composables/useUserAssociations'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
 
 const {t} = useI18n()
 const confirmation = ref<boolean>(false)
 const {deleteUserAssociation} = useUserAssociation()
 const {notify} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 const associationStore = useAssociationStore()
 
@@ -29,11 +32,13 @@ async function onDeleteUserAssociation() {
             type: 'positive',
             message: t('notifications.positive.validate-delete-user-association')
         })
-    } catch (e) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.edit-user-associations-error')
-        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
     }
 
 }

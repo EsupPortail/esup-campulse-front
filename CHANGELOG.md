@@ -1,21 +1,11 @@
-- 🎨 Restrict amount student allowed in association to always be superior or equal to student count
-- 🥅 Catch errors from API for group management
-- 🥅 Managers cannot give public and private roles at the same time
-- 🐛 Fix getComissionDates params on HomeView
-- 🎨 Clear all fields after route leave on project submit
-- 🚨 Converted SASS calls to SCSS.
-- 🔀 Merge SCSS into develop.
-- :lipstick: [BREAKING CHANGE] fix!: every page is now responsive
-- ✨ #64 Added only_next paramter to /commissions/commission_dates .
-- ✨ Added file size limit on association logo.
-- ✨ #64 Added file size limit on DocumentUpload.
-- 🎨 Add aria-required and phone regex on register
-- 🎨 Minor optimizations on QTable loading and association user role state in dashboard
-- 🩹 Fixing loading and association management for user account
-- 🗃️ #64 Changed fields in Project type.
-- 🌐 Changed texts on user associations dashboard.
-- 💄 Display associationUser role in associationDashboard
-- 💄 Fixed pagination problem on Association Directory.
-- 🌐 Changed Compte to Compte Validé.
-- 🌐 Changed Gérer to Déléguer.
-- 💄 Small fix on buttons.
+- ♿️ Add hint for categories in projet submit form
+- ✨ Search form for associationManagement view #95
+- 💬 Add warning text for documents before project validation
+- 🎨 Link to document template on top of submit project form
+- 🎨 Link to document template in project submit form
+- 💥 New methodology to handle HTTP errors
+- ✨ Added form data save when return on previous steps in submission form
+- 🐛 Cannot have more students than global audience on submissions form
+- 🐛 #101 A Misc Manager cannot create a is_site association.
+- ✨ A president cannot unpublish an association anymore.
+- 🐛 #100 #103 #104 Corrected shown institution fields.
