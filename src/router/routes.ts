@@ -33,8 +33,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'AssociationDetail',
                         component: () => import('@/views/directory/AssociationDetailView.vue'),
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.association-detail'),
-                            title: i18n.global.t('breadcrumbs.association-detail'),
+                            breadcrumb: i18n.global.t('breadcrumbs.association-detail')
                         }
                     }
                 ]
@@ -303,7 +302,6 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/AssociationEditionView.vue'),
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.edit-association'),
-                                    title: i18n.global.t('breadcrumbs.edit-association'),
                                     colorVariant: 'space-1'
                                 },
                             },

@@ -13,7 +13,7 @@ import useErrors from '@/composables/useErrors'
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {loading} = useQuasar()
-const {formatDate} = useUtility()
+const {formatDate, dynamicTitle} = useUtility()
 const route = useRoute()
 const associationStore = useAssociationStore()
 const {altLogoText} = useAssociation()
@@ -27,6 +27,7 @@ watch(() => associationStore.association, () => {
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
+    dynamicTitle.value = associationStore.association?.name
     loading.hide()
 })
 
@@ -59,7 +60,7 @@ async function onGetAssociationDetail() {
                 />
             </div>
             <div class="association-name">
-                <h2>{{ association?.name }}</h2>
+                <!--<h2>{{ association?.name }}</h2>-->
                 <p
                     v-if="association?.acronym"
                     class="acronym"

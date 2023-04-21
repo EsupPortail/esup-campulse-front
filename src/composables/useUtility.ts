@@ -1,12 +1,16 @@
 import type {RouteLocationMatched, RouteParams} from 'vue-router'
+import {ref} from 'vue'
+
+// Used to display dynamic title on certain pages like association detail
+const dynamicTitle = ref<string | undefined>(undefined)
 
 const CURRENCY = '€'
 
-const urlRegex = /^(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?$/
+const urlRegex = /^(https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%\-/]))?$/
 
 const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
 
-export default function() {
+export default function () {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -78,5 +82,14 @@ export default function() {
         return breadcrumbs
     }
 
-    return {formatDate, arraysAreEqual, urlRegex, initBreadcrumbs, fromDateIsAnterior, CURRENCY, phoneRegex}
+    return {
+        formatDate,
+        arraysAreEqual,
+        urlRegex,
+        initBreadcrumbs,
+        fromDateIsAnterior,
+        CURRENCY,
+        phoneRegex,
+        dynamicTitle
+    }
 }

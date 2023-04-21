@@ -7,6 +7,7 @@ import {useRoute} from 'vue-router'
 import FormAssociationEdition from '@/components/form/FormAssociationEdition.vue'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -14,6 +15,7 @@ const {notify, loading} = useQuasar()
 const route = useRoute()
 const associationStore = useAssociationStore()
 const {catchHTTPError} = useErrors()
+const {dynamicTitle} = useUtility()
 
 const isLoaded = ref(false)
 
@@ -73,6 +75,7 @@ async function onGetAssociationActivityFields() {
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
+    dynamicTitle.value = associationStore.association?.name
     await onGetInstitutions()
     await onGetInstitutionComponents()
     await onGetAssociationActivityFields()
