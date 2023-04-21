@@ -5,7 +5,7 @@
     width: $fullSize;
     max-width: $pageWidth;
     background-color: transparent;
-    font-size: $formTitleMobileSize;
+    font-size: $headTitleMobileSize;
     text-transform: uppercase;
     color: $annuaireColorText;
     line-height: 3rem;
@@ -13,7 +13,7 @@
 
     i {
       color: $annuaireColorText;
-      font-size: $formTitleMobileSize;
+      font-size: $headTitleMobileSize;
       margin-right: 0.300rem;
       position: relative;
       top: -0.188rem;

@@ -12,8 +12,8 @@
     position: relative;
 
     .icon {
-      width: 3.75rem;
-      height: 3.75rem;
+      width: $logoSize;
+      height: $logoSize;
       border-radius: $radiusCircle;
       background-color: $annuaireColor;
       position: absolute;
@@ -23,7 +23,7 @@
 
       i {
         color: $textColor3;
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
     }
   }
@@ -32,7 +32,7 @@
     background-color: transparent;
     box-shadow: none;
     width: $fullSize;
-    max-width: 37.5rem;
+    max-width: 37rem;
     margin: auto;
   }
 
@@ -43,7 +43,7 @@
     a {
       display: inline-block;
       margin-bottom: 0.625rem;
-      font-size: 1.125rem;
+      font-size: $textSize;
       font-weight: $normal-weight;
       color: $annuaireColor;
     }
@@ -63,15 +63,20 @@
     }
   }
 
+  .btn-group {
+    justify-content: center;
+    display: flex;
+  }
+
   @media screen and (min-width: $responsiveWidth) {
+    .form-container {
+      display: block;
+    }
+
     .login-intro-text {
       max-width: 37.5rem;
       margin: 2rem auto;
     }
 
-    .btn-group {
-      margin: 0;
-      justify-content: flex-start;
-    }
   }
 }

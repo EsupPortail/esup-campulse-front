@@ -251,8 +251,7 @@ const columns: QTableProps['columns'] = [
     align-items: flex-start;
 
     .q-btn {
-        padding: .5rem;
-        margin-top: .6rem;
+        margin-top: .650rem;
     }
 
     @media screen and (min-width: $responsiveWidth) {
