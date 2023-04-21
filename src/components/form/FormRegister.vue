@@ -118,6 +118,7 @@ async function onRegister() {
                         :label="t('forms.first-name') + ' *'"
                         :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
                         aria-required="true"
+                        clearable
                         filled
                         lazy-rules
                     />
@@ -127,6 +128,7 @@ async function onRegister() {
                         :label="t('forms.last-name') + ' *'"
                         :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
                         aria-required="true"
+                        clearable
                         filled
                         lazy-rules
                     />
@@ -137,6 +139,7 @@ async function onRegister() {
                         :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
                                  val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
                         aria-required="true"
+                        clearable
                         filled
                         lazy-rules
                     >
@@ -147,6 +150,7 @@ async function onRegister() {
                         :label="t('forms.repeat-email') + ' *'"
                         :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
                         aria-required="true"
+                        clearable
                         filled
                         lazy-rules
                     />
@@ -155,6 +159,7 @@ async function onRegister() {
                         :hint="t('forms.hint-phone')"
                         :label="t('forms.phone')"
                         :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                        clearable
                         filled
                         lazy-rules
                         type="tel"
