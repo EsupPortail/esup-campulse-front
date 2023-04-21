@@ -122,7 +122,7 @@ describe('useDirectory', () => {
             associationStore.getActivityFields = vi.fn()
             associationStore.getAssociationsSubDetails = vi.fn()
 
-            await simpleAssociationSearch('query')
+            await simpleAssociationSearch('query', true)
 
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_public=true&search=query')
