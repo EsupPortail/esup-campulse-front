@@ -49,7 +49,7 @@ onMounted(initValues)
                     type="url"
                 />
                 <QBtn
-                    :label="t('delete')"
+                    :aria-label="t('delete')"
                     class="delete-network-btn"
                     color="delete"
                     icon="mdi-delete"

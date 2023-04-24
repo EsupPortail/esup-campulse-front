@@ -123,8 +123,7 @@ function clearOptions() {
                         />
                     </div>
                     <QBtn
-                        v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
-                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
+                        v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) || (routeName === 'ManageAccount' && newAssociations.length === 0)"
                         :label="t('forms.add-association')"
                         class="add-association"
                         icon="mdi-plus-circle-outline"

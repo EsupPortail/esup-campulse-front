@@ -219,15 +219,9 @@ async function onRegister() {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 
-.dashboard-section {
-    h2 {
-        padding: 1rem 1rem 0;
-    }
-
-    @media screen and (min-width: $responsiveWidth) {
-        .q-input {
-            width: 62.5rem;
-        }
+.q-form {
+    .q-btn {
+        justify-content: center;
     }
 }
 </style>

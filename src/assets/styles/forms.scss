@@ -32,6 +32,9 @@
   }
 }
 
+.q-tab-panel {
+  padding: 0;
+}
 
 // Quasar input fields
 .q-field {
@@ -826,8 +829,6 @@ fieldset {
     }
   }
 }
-
-// MARK: DO NOT DELETE
 
 // A title that can be located on top of a form wrapper.
 .form-title {
