@@ -1,11 +1,15 @@
-- ♿️ Add hint for categories in projet submit form
-- ✨ Search form for associationManagement view #95
-- 💬 Add warning text for documents before project validation
-- 🎨 Link to document template on top of submit project form
-- 🎨 Link to document template in project submit form
-- 💥 New methodology to handle HTTP errors
-- ✨ Added form data save when return on previous steps in submission form
-- 🐛 Cannot have more students than global audience on submissions form
-- 🐛 #101 A Misc Manager cannot create a is_site association.
-- ✨ A president cannot unpublish an association anymore.
-- 🐛 #100 #103 #104 Corrected shown institution fields.
+- 🗃️ #64 New fields on Project (third-party user).
+- 💄 #53 Corrected UI problem that covered some parts of the app.
+- :sparkles: feat!: About and Contact page
+- :lipstick: fix!: btns on dialogs
+- :lipstick: fix: update btns
+- 🩹 Fix rule on phone and add clearable attribute on register form
+- ✨ Dynamic title for association details
+- ✨ #64 Changed way to handle project uploaded files (for encryption).
+- ✅ Start tests for documents
+- ✅ Fix test after changes in API search function
+- 🐛 Fix search association for managers
+- :lipstick: fix: association user view (account info)
+- :lipstick: [WIP] fix! : bugs
+- 🩹 Association search for manager institution with private axios
+- 🐛 Fix axios error on deploy
