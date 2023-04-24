@@ -67,7 +67,7 @@
   }
 
   &.q-field--error .q-field__control::after {
-    background: currentColor;
+    // background: $errorPanelColor;
   }
 
   &.q-field--highlighted .q-field__label {
