@@ -50,7 +50,7 @@ export const _editedAssociation: EditedAssociation = {
     email: 'asso-medecine@unistra.fr',
     siret: '0123456789',
     website: 'https://asso-medecine.fr',
-    studentCount: 0,
+    studentCount: '0',
     presidentNames: 'Jeanne Dupont',
     presidentPhone: '',
     isPublic: true,
@@ -59,7 +59,7 @@ export const _editedAssociation: EditedAssociation = {
     institution: 2,
     institutionComponent: 2,
     activityField: 2,
-    amountMembersAllowed: 5
+    amountMembersAllowed: '5'
 }
 
 export const _nonEditedAssociation: EditedAssociation = {
@@ -73,7 +73,7 @@ export const _nonEditedAssociation: EditedAssociation = {
     email: '',
     siret: '',
     website: '',
-    studentCount: 0,
+    studentCount: '0',
     presidentNames: '',
     presidentPhone: '',
     isPublic: false,
@@ -82,7 +82,7 @@ export const _nonEditedAssociation: EditedAssociation = {
     institution: 1,
     institutionComponent: 1,
     activityField: 1,
-    amountMembersAllowed: 4
+    amountMembersAllowed: '4'
 }
 
 export const _associations: Association[] = [

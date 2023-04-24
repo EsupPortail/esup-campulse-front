@@ -130,6 +130,7 @@ async function onUpdateUserAssociations() {
                             @submit.prevent="onUpdateUserInfos"
                         >
                             <FormUserInfosEdition
+                                v-if="userStore.user"
                                 :edited-by-staff="false"
                                 :user="userStore.user"
                             />

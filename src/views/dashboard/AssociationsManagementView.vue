@@ -123,7 +123,10 @@ const columns: QTableProps['columns'] = [
 
     <div class="form-container">
         <div class="form">
-            <FormAssociationSearch :route="route.name"/>
+            <FormAssociationSearch
+                v-if="route.name"
+                :route="route.name"
+            />
 
             <QTable
                 v-model:selected="selected"

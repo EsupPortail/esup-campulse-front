@@ -940,7 +940,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     </p>
                                                     <button
                                                         type="button"
-                                                        @click="onDeleteDocumentUpload(uploadedDocument.id)"
+                                                        @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
                                                     >
                                                         <i class="bi bi-x-lg"></i>
                                                     </button>
@@ -1034,7 +1034,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :key="index"
                                         >
                                             {{
-                                                commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate).label
+                                                commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate)?.label
                                             }}
                                         </QChip>
                                     </section>
