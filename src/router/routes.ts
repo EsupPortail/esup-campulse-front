@@ -44,7 +44,9 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/CharterView.vue'),
                 meta: {
                     requiresAuth: true,
-                    colorVariant: 'space-2'
+                    colorVariant: 'space-2',
+                    title: i18n.global.t('breadcrumbs.charter'),
+                    breadcrumb: i18n.global.t('breadcrumbs.charter') // ADDED
                 }
             },
             {
@@ -377,6 +379,23 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/PasswordResetConfirmView.vue'),
                 meta: {
                     colorVariant: 'space-4'
+                }
+            },
+            // ADDED
+            {
+                path: 'about-page',
+                component: () => import('@/views/AboutView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.about'),
+                    breadcrumb: i18n.global.t('breadcrumbs.about')
+                }
+            },
+            {
+                path: 'contact-page',
+                component: () => import('@/views/ContactView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.contact'),
+                    breadcrumb: i18n.global.t('breadcrumbs.contact')
                 }
             },
             // This must be last

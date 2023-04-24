@@ -16,14 +16,14 @@ const {colorVariant} = useColorVariants()
             <div class="wrapper">
                 <a href="https://www.crous-strasbourg.fr/">
                     <img
-                        src="@/assets/img/logos/crous.png"
                         alt="Logo du Centre régional des œuvres universitaires et scolaires"
+                        src="@/assets/img/logos/crous.png"
                     />
                 </a>
                 <a href="https://www.unistra.fr/">
                     <img
-                        src="@/assets/img/logos/unistra.png"
                         alt="Logo de l'Université de Strasbourg"
+                        src="@/assets/img/logos/unistra.png"
                     />
                 </a>
                 <!--
@@ -64,7 +64,7 @@ const {colorVariant} = useColorVariants()
             <div class="footer-text">
                 <RouterLink
                     class="li-footer"
-                    to="/"
+                    to="/about-page"
                 >
                     <i class="bi bi-card-text"></i>{{ t("footer.about") }}
                 </RouterLink>
@@ -76,7 +76,7 @@ const {colorVariant} = useColorVariants()
                 </RouterLink>
                 <RouterLink
                     class="li-footer"
-                    to="/"
+                    to="contact-page"
                 >
                     <i class="bi bi-envelope"></i>{{ t("footer.contact") }}
                 </RouterLink>
