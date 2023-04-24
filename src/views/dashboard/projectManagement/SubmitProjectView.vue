@@ -44,7 +44,8 @@ const {
     postProjectDocuments,
     initDocumentUploads,
     documentUploads,
-    deleteDocumentUpload
+    deleteDocumentUpload,
+    getFile
 } = useProjectDocuments()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
@@ -204,6 +205,25 @@ async function onGetDocumentTypes() {
         await getDocumentTypes()
         initProcessProjectDocuments('DOCUMENT_PROJECT')
     } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetFile(pathFile: string, fileName: string) {
+    try {
+        const file = await getFile(pathFile)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(file)
+        link.download = fileName
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    }  catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
@@ -907,25 +927,20 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                                                     :key="uploadedDocument.id"
                                                 >
-                                                    <p>
+                                                    <p @click="onGetFile(uploadedDocument.pathFile, uploadedDocument.name)">
                                                         <i
                                                             class="bi bi-file-earmark"
                                                             aria-hidden="true"
                                                         ></i>
-                                                        <a
-                                                            :href="uploadedDocument.pathFile"
-                                                            target="_blank"
-                                                        >
-                                                            {{ uploadedDocument.name }}
-                                                            <i
-                                                                class="bi bi-eye"
-                                                                aria-hidden="true"
-                                                            ></i>
-                                                        </a>
+                                                        {{ uploadedDocument.name }}
+                                                        <i
+                                                            class="bi bi-eye"
+                                                            aria-hidden="true"
+                                                        ></i>
                                                     </p>
                                                     <button
                                                         type="button"
-                                                        @click="onDeleteDocumentUpload(uploadedDocument.id)"
+                                                        @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
                                                     >
                                                         <i class="bi bi-x-lg"></i>
                                                     </button>
@@ -1019,7 +1034,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :key="index"
                                         >
                                             {{
-                                                commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate).label
+                                                commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate)?.label
                                             }}
                                         </QChip>
                                     </section>
@@ -1197,11 +1212,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     <li
                                                         v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                                                         :key="uploadedDocument.id"
+                                                        @click="onGetFile(uploadedDocument.pathFile, uploadedDocument.name)"
                                                     >
-                                                        <a
-                                                            :href="uploadedDocument.pathFile"
-                                                            target="_blank"
-                                                        >{{ uploadedDocument.name }}</a>
+                                                        {{ uploadedDocument.name }}
                                                     </li>
                                                 </ul>
                                             </p>

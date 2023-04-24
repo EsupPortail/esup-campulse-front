@@ -185,7 +185,7 @@ async function onChangeLogo(action: string) {
             </div>
 
             <div class="association-name">
-                <h2>{{ association?.name }}</h2>
+                <!--<h2>{{ association?.name }}</h2>-->
                 <p
                     v-if="association?.acronym"
                     class="acronym"

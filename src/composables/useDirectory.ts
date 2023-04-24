@@ -1,10 +1,12 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {Association, AssociationSearch} from '#/association'
 import {useAxios} from '@/composables/useAxios'
+import {useUserStore} from '@/stores/useUserStore'
 
 export default function () {
 
     const associationStore = useAssociationStore()
+    const userStore = useUserStore()
 
     /**
      * It takes a string, removes all spaces, converts it to lowercase, removes all accents, and returns the result
@@ -74,15 +76,26 @@ export default function () {
     /**
      * It searches for associations that are public and match the search value on the API.
      * @param {string} query - The value to search for
-     * @param isPublic
+     * @param forDirectory
      * @returns An array of AssociationList objects.
      */
-    async function simpleAssociationSearch(query: string, isPublic: boolean): Promise<Association[]> {
+    async function simpleAssociationSearch(query: string, forDirectory: boolean): Promise<Association[]> {
         const {axiosPublic, axiosAuthenticated} = useAxios()
         let instance = axiosAuthenticated
-        if (isPublic) instance = axiosPublic
+        if (forDirectory) instance = axiosPublic
+
+        let stringUrl = '/associations/?'
+        const arrayUrl = []
+
+        if (forDirectory) arrayUrl.push('is_public=true')
+        else arrayUrl.push(`institutions=${userStore.userInstitutions?.join(',')}`)
+
+        arrayUrl.push(`search=${query}`)
+
+        stringUrl += arrayUrl.join('&')
+
         await Promise.all([associationStore.getInstitutions(), associationStore.getInstitutionComponents(), associationStore.getActivityFields()])
-        const associations = (await instance.get<Association[]>(`/associations/?is_public=${isPublic}&search=${query}`)).data
+        const associations = (await instance.get<Association[]>(stringUrl)).data
         return associationStore.getAssociationsSubDetails(associations)
     }
 

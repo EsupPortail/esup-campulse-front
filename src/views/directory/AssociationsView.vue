@@ -105,7 +105,10 @@ async function loadAssociationsActivityFields() {
         </div>
     </section>
 
-    <FormAssociationSearch :route="route.name"/>
+    <FormAssociationSearch
+        v-if="route.name"
+        :route="route.name"
+    />
 
     <section class="directory-list">
         <div class="form-container">

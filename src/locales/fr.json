@@ -301,6 +301,7 @@
     "required-new-email": "Veuillez saisir votre nouvelle adresse mail.",
     "required-old-password": "Veuillez saisir votre ancien mot de passe.",
     "required-password": "Veuillez saisir votre mot de passe.",
+    "required-phone": "Veuillez saisir un numéro de téléphone valide.",
     "required-repeat-email": "Les deux adresses mail ne sont pas identiques.",
     "required-repeat-new-password": "Veuillez répéter votre nouveau mot de passe.",
     "required-status": "Veuillez choisir un statut. Maximum deux statuts autorisés.",

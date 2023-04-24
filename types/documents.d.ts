@@ -7,7 +7,7 @@ export interface Document {
     isMultiple: boolean,
     isRequiredInProcess: boolean,
     daysBeforeExpiration: string,
-    pathTemplate: null, // ??
+    pathTemplate: string | null,
     mimeTypes: MimeType[],
     processType: DocumentProcessType,
     institution: number | null,
@@ -55,7 +55,7 @@ export interface ProcessDocument {
     isRequiredInProcess?: boolean,
     mimeTypes?: MimeType[],
     name?: string,
-    pathTemplate?: string
+    pathTemplate?: string | null
 }
 
 type DocumentUploadStatus = 'DOCUMENT_REJECTED' | 'DOCUMENT_PROCESSING' | 'DOCUMENT_VALIDATED'
