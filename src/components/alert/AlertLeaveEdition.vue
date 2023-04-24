@@ -30,7 +30,7 @@ const props = defineProps({
                 <QBtn
                     v-close-popup
                     :label="t('discard-changes')"
-                    color="red"
+                    color="delete"
                     icon="mdi-close-circle-outline"
                     @click="$emit('leaveEdition')"
                 />

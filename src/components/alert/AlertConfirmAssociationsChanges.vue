@@ -47,53 +47,53 @@ async function onConfirmChanges(emailType: string) {
     const promisesToExecute: Promise<void>[] = []
     let mailto = 'mailto:?bcc='
     switch (switches.value) {
-    case 'email':
-        props.selectedAssociations?.forEach((selectedAssociation) => {
-            if (selectedAssociation.email) {
-                mailto += `${selectedAssociation.email},`
-                associationsSuccess.push(selectedAssociation.name)
-            } else {
-                associationsError.push(selectedAssociation.name)
-            }
-        })
-        window.open(mailto, (emailType as string === 'web') ? '_blank' : '_self')
-        break
-    case 'enable':
-        props.selectedAssociations?.forEach((selectedAssociation) => {
-            promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
-                associationsSuccess.push(selectedAssociation.name)
-            }))
-        })
-        break
-    case 'disable':
-        props.selectedAssociations?.forEach((selectedAssociation) => {
-            promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
-                associationsSuccess.push(selectedAssociation.name)
-            }))
-        })
-        break
-    case 'delete':
-        if (deletionWord.value === t('association.before-deletion-word')) {
+        case 'email':
             props.selectedAssociations?.forEach((selectedAssociation) => {
-                promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                if (selectedAssociation.email) {
+                    mailto += `${selectedAssociation.email},`
                     associationsSuccess.push(selectedAssociation.name)
-                    if (props.selectedAssociations) {
-                        let newSelectedAssociations = props.selectedAssociations
-                        newSelectedAssociations = newSelectedAssociations?.splice(props.selectedAssociations?.indexOf(selectedAssociation), 1)
-                        emit('updateSelectedAssociations', newSelectedAssociations)
-                    }
-                }).catch(() => {
+                } else {
                     associationsError.push(selectedAssociation.name)
+                }
+            })
+            window.open(mailto, (emailType as string === 'web') ? '_blank' : '_self')
+            break
+        case 'enable':
+            props.selectedAssociations?.forEach((selectedAssociation) => {
+                promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
+                    associationsSuccess.push(selectedAssociation.name)
                 }))
             })
-            deletionWord.value = ''
-        } else {
-            notify({
-                type: 'negative',
-                message: t('association.before-deletion-word-error')
+            break
+        case 'disable':
+            props.selectedAssociations?.forEach((selectedAssociation) => {
+                promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
+                    associationsSuccess.push(selectedAssociation.name)
+                }))
             })
-        }
-        break
+            break
+        case 'delete':
+            if (deletionWord.value === t('association.before-deletion-word')) {
+                props.selectedAssociations?.forEach((selectedAssociation) => {
+                    promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                        associationsSuccess.push(selectedAssociation.name)
+                        if (props.selectedAssociations) {
+                            let newSelectedAssociations = props.selectedAssociations
+                            newSelectedAssociations = newSelectedAssociations?.splice(props.selectedAssociations?.indexOf(selectedAssociation), 1)
+                            emit('updateSelectedAssociations', newSelectedAssociations)
+                        }
+                    }).catch(() => {
+                        associationsError.push(selectedAssociation.name)
+                    }))
+                })
+                deletionWord.value = ''
+            } else {
+                notify({
+                    type: 'negative',
+                    message: t('association.before-deletion-word-error')
+                })
+            }
+            break
     }
 
     Promise.all(promisesToExecute).then(() => {
@@ -215,7 +215,7 @@ async function onConfirmChanges(emailType: string) {
                     v-if="switches === 'delete'"
                     v-close-popup
                     :label="t('association.delete')"
-                    color="red"
+                    color="delete"
                     icon="mdi-delete"
                     @click="onConfirmChanges('')"
                 />

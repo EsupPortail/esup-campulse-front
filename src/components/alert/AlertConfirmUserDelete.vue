@@ -62,7 +62,7 @@ async function onDeleteUser() {
                 <QBtn
                     v-close-popup
                     :label="t('user-manager.delete-user')"
-                    color="red"
+                    color="delete"
                     icon="mdi-delete"
                     @click="onDeleteUser"
                 />

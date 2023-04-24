@@ -52,13 +52,13 @@ async function onDeleteUser() {
             <QCardActions align="right">
                 <QBtn
                     v-close-popup
-                    color="primary"
+                    color="secondary"
                     flat
                     label="t('cancel')"
                 />
                 <QBtn
                     v-close-popup
-                    color="red"
+                    color="delete"
                     flat
                     label="t('delete')"
                     @click="onDeleteUser"
