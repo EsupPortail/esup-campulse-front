@@ -6,8 +6,6 @@ unit test:
   only:
     - develop
   script:
-    - mkdir /.npm
-    - chown -R 1000750000:0 "/.npm"
     - npm install --progress=false
     - npm run test:unit:coverage
   coverage: /All files\s*\|\s*([\d\.]+)/
