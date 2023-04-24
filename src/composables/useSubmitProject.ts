@@ -13,6 +13,10 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         plannedStartDate: '',
         plannedEndDate: '',
         location: '',
+        otherFirstName: '',
+        otherLastName: '',
+        otherEmail: '',
+        otherPhone: '',
         user: null,
         association: null
     }
@@ -46,7 +50,7 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function () {
+export default function() {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -63,6 +67,10 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
         projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
         projectBasicInfos.value.location = projectStore.project?.location as string
+        projectBasicInfos.value.otherFirstName = projectStore.project?.otherFirstName as string
+        projectBasicInfos.value.otherLastName = projectStore.project?.otherLastName as string
+        projectBasicInfos.value.otherEmail = projectStore.project?.otherEmail as string
+        projectBasicInfos.value.otherPhone = projectStore.project?.otherPhone as string
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
     }
@@ -116,6 +124,10 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = ''
         projectBasicInfos.value.plannedEndDate = ''
         projectBasicInfos.value.location = ''
+        projectBasicInfos.value.otherFirstName = ''
+        projectBasicInfos.value.otherLastName = ''
+        projectBasicInfos.value.otherEmail = ''
+        projectBasicInfos.value.otherPhone = ''
         projectBasicInfos.value.user = null
         projectBasicInfos.value.association = null
         projectCategories.value = []
@@ -205,6 +217,18 @@ export default function () {
         }
         if (projectBasicInfos.value.location !== projectStore.project?.location) {
             dataToPatch = Object.assign(dataToPatch, {['location']: projectBasicInfos.value.location})
+        }
+        if (projectBasicInfos.value.otherFirstName !== projectStore.project?.otherFirstName) {
+            dataToPatch = Object.assign(dataToPatch, {['otherFirstName']: projectBasicInfos.value.otherFirstName})
+        }
+        if (projectBasicInfos.value.otherLastName !== projectStore.project?.otherLastName) {
+            dataToPatch = Object.assign(dataToPatch, {['otherLastName']: projectBasicInfos.value.otherLastName})
+        }
+        if (projectBasicInfos.value.otherEmail !== projectStore.project?.otherEmail) {
+            dataToPatch = Object.assign(dataToPatch, {['otherEmail']: projectBasicInfos.value.otherEmail})
+        }
+        if (projectBasicInfos.value.otherPhone !== projectStore.project?.otherPhone) {
+            dataToPatch = Object.assign(dataToPatch, {['otherPhone']: projectBasicInfos.value.otherPhone})
         }
 
         if (Object.entries(dataToPatch).length) {

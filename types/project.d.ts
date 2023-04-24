@@ -6,6 +6,10 @@ export interface Project {
     plannedStartDate: string,
     plannedEndDate: string,
     location: string,
+    otherFirstName: string | null,
+    otherLastName: string | null,
+    otherEmail: string | null,
+    otherPhone: string | null,
     user: number | null,
     association: number | null,
     categories?: ProjectCategoryName[],
@@ -29,6 +33,7 @@ type ProjectStatus =
     | 'PROJECT_REJECTED'
     | 'PROJECT_PROCESSING'
     | 'PROJECT_VALIDATED'
+    | 'PROJECT_REVIEW_CANCELLED'
     | 'PROJECT_REVIEW_DRAFT'
     | 'PROJECT_REVIEW_REJECTED'
     | 'PROJECT_REVIEW_PROCESSING'
@@ -57,6 +62,10 @@ export interface ProjectBasicInfos {
     plannedStartDate: string,
     plannedEndDate: string,
     location: string,
+    otherFirstName: string | null,
+    otherLastName: string | null,
+    otherEmail: string | null,
+    otherPhone: string | null,
     user: number | null,
     association: number | null
 }

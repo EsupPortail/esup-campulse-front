@@ -550,6 +550,30 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                             />
+                            <QInput
+                                v-model="projectBasicInfos.otherFirstName"
+                                :label="t('project.other-first-name')"
+                                filled
+                                lazy-rules
+                            />
+                            <QInput
+                                v-model="projectBasicInfos.otherLastName"
+                                :label="t('project.other-last-name')"
+                                filled
+                                lazy-rules
+                            />
+                            <QInput
+                                v-model="projectBasicInfos.otherEmail"
+                                :label="t('project.other-email')"
+                                filled
+                                lazy-rules
+                            />
+                            <QInput
+                                v-model="projectBasicInfos.otherPhone"
+                                :label="t('project.other-phone')"
+                                filled
+                                lazy-rules
+                            />
                             <QSelect
                                 v-model="projectCategories"
                                 :label="t('project.categories') + ' *'"
@@ -1013,6 +1037,26 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         <div class="display-row">
                                             <p class="row-title">{{ t('project.location') }}</p>
                                             <p>{{ projectBasicInfos.location }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.other-first-name') }}</p>
+                                            <p>{{ projectBasicInfos.otherFirstName }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.other-last-name') }}</p>
+                                            <p>{{ projectBasicInfos.otherLastName }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.other-email') }}</p>
+                                            <p>{{ projectBasicInfos.otherEmail }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.other-phone') }}</p>
+                                            <p>{{ projectBasicInfos.otherPhone }}</p>
                                         </div>
                                     </section>
                                 </section>
