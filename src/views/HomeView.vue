@@ -2,7 +2,7 @@
 import HomeCard from '@/components/layout/LayoutHomeCard.vue'
 import HomeBanner from '@/components/layout/LayoutHomeBanner.vue'
 import useCommissions from '@/composables/useCommissions'
-import {useHomeContent} from '@/stores/useContentStore'
+import {useContentStore} from '@/stores/useContentStore'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
@@ -10,7 +10,7 @@ import {onMounted, ref, watch} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 
-const home = useHomeContent()
+const home = useContentStore()
 const associationStore = useAssociationStore()
 const {getCommissionDates, commissionDates} = useCommissions()
 const {notify, loading} = useQuasar()

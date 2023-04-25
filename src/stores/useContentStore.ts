@@ -43,10 +43,15 @@ export const useContentStore = defineStore('contentStore', {
             description: i18n.global.t('home.banner.description'),
             isDisplayed: true
         },
-        about: []
+        about: [],
+        contact: []
     }),
 
     actions: {
+        /**
+         * It gets the content data from the server
+         * Available for the public
+         */
         async getContent() {
             if (!this.about.length) {
                 const {axiosPublic} = useAxios()

@@ -47,9 +47,31 @@ watch(() => contentStore.about.length, () => {
 </script>
 
 <template>
-    <p>{{ aboutInfo?.body }}</p>
-    <p>{{ aboutContact?.body }}</p>
-    <p>{{ aboutServices?.body }}</p>
+    <section :class="['home-section']">
+        <div class="section-card">
+            <div class="section-background">
+                <span></span>
+            </div>
+
+            <div class="section-title">
+                <div>
+                    <h2
+                    >
+                        {{ aboutInfo?.code }}
+                    </h2>
+                    <div class="title-2">{{ titleLine2 }}</div>
+                </div>
+                <div class="section-info">
+                    <p v-html="aboutInfo?.label"></p>
+                </div>
+            </div>
+            <div class="section-content">
+                <p>{{ aboutInfo?.body }}</p>
+                <div class="section-buttons">
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
 
