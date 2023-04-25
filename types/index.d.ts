@@ -31,3 +31,11 @@ interface SelectLabel {
     value: number,
     label: string
 }
+
+/*
+export interface aboutStore {
+    id: number,
+    code: string,
+    label: string,
+    body: string
+}*/

@@ -44,3 +44,21 @@ export const useHomeContent = defineStore('homeContent', {
         }
     }),
 })
+
+
+/*export const useAboutContent = defineStore('aboutContent', {
+    state: (): aboutStore => ({
+        id: 0,
+        code: '',
+        label: '',
+        body: ''
+    }),
+
+    getter: {},
+
+    actions: {
+        async getContent() {
+            const {axiosAuth}
+        }
+    }
+})*/

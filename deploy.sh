@@ -69,10 +69,14 @@ if [ "$SETUP_NGINX" == true ]; then
         scp -r "nginx/$TARGET_NGINX_CONF" "$i:/etc/nginx/sites-available/"
         # TODO: using systemctl instead of service ?
         ssh -q "$i" ln -s "/etc/nginx/sites-available/$TARGET_NGINX_CONF /etc/nginx/sites-enabled/$TARGET_NGINX_CONF && service nginx reload"
-      elif [ "$3" == "--update-nginx-conf" ]; then
-        echo "🏗 Update nginx vhost for $i"
-        scp -r "nginx/$TARGET_NGINX_CONF" "$i:/etc/nginx/sites-available/"
-        ssh -q "$i" service nginx reload
+      else
+        for i in "$@"; do
+            if [ "$i" == "--update-nginx-conf" ]; then
+                echo "🏗 Update nginx vhost for $i"
+                scp -r "nginx/$TARGET_NGINX_CONF" "$i:/etc/nginx/sites-available/"
+                ssh -q "$i" service nginx reload
+            fi
+        done
       fi
   done
 fi

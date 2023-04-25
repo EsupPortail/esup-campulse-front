@@ -45,7 +45,7 @@ const routes: RouteRecordRaw[] = [
                 meta: {
                     requiresAuth: true,
                     colorVariant: 'space-2',
-                    title: i18n.global.t('breadcrumbs.charter'),
+                    title: i18n.global.t('breadcrumbs.charter'), // ADDED
                     breadcrumb: i18n.global.t('breadcrumbs.charter') // ADDED
                 }
             },
@@ -398,7 +398,7 @@ const routes: RouteRecordRaw[] = [
                     breadcrumb: i18n.global.t('breadcrumbs.contact')
                 }
             },
-            // This must be last
+            // This must be lasst
             {
                 path: '404-not-found',
                 name: '404',
