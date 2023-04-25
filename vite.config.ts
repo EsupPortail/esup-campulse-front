@@ -21,8 +21,8 @@ export default defineConfig({
             '#': fileURLToPath(new URL('./types', import.meta.url)),
             '~': fileURLToPath(new URL('./tests', import.meta.url)),
             // Enable these lines to disable script unsafe-eval in Nginx config.
-            'vue': fileURLToPath(new URL('./node_modules/vue/dist/vue.runtime.esm-bundler.js', import.meta.url)),
-            'vue-i18n': fileURLToPath(new URL('./node_modules/vue-i18n/dist/vue-i18n.cjs.js', import.meta.url)),
+            // 'vue': fileURLToPath(new URL('./node_modules/vue/dist/vue.runtime.esm-bundler.js', import.meta.url)),
+            // 'vue-i18n': fileURLToPath(new URL('./node_modules/vue-i18n/dist/vue-i18n.cjs.js', import.meta.url)),
         },
     },
     server: {
