@@ -381,21 +381,24 @@ const routes: RouteRecordRaw[] = [
                     colorVariant: 'space-4'
                 }
             },
-            // ADDED
             {
                 path: 'about-page',
+                name: 'About',
                 component: () => import('@/views/AboutView.vue'),
                 meta: {
                     title: i18n.global.t('breadcrumbs.about'),
-                    breadcrumb: i18n.global.t('breadcrumbs.about')
+                    breadcrumb: i18n.global.t('breadcrumbs.about'),
+                    colorVariant: 'space-1',
                 }
             },
             {
                 path: 'contact-page',
+                name: 'Contact',
                 component: () => import('@/views/ContactView.vue'),
                 meta: {
                     title: i18n.global.t('breadcrumbs.contact'),
-                    breadcrumb: i18n.global.t('breadcrumbs.contact')
+                    breadcrumb: i18n.global.t('breadcrumbs.contact'),
+                    colorVariant: 'space-1',
                 }
             },
             // This must be lasst

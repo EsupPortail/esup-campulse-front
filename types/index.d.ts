@@ -22,9 +22,10 @@ export interface HomeBanner {
     isDisplayed: boolean
 }
 
-interface HomeStore {
+interface ContentStore {
     cards: HomeCards,
-    banner: HomeBanner
+    banner: HomeBanner,
+    about: AboutStore[]
 }
 
 interface SelectLabel {
@@ -32,10 +33,20 @@ interface SelectLabel {
     label: string
 }
 
-/*
-export interface aboutStore {
+export interface AboutStore {
     id: number,
-    code: string,
+    code: contentCode,
     label: string,
     body: string
-}*/
+}
+
+type contentCode =
+    'HOME_ASSOCIATION' |
+    'HOME_CHARTER' |
+    'HOME_PROJECT' |
+    'HOME_INFO' |
+    'ABOUT_INFO' |
+    'ABOUT_SERVICES' |
+    'ABOUT_CONTACT' |
+    'CONTACT_INFO' |
+    'CONTACT_LIST'
