@@ -64,7 +64,7 @@ const {colorVariant} = useColorVariants()
             <div class="footer-text">
                 <RouterLink
                     class="li-footer"
-                    to="/about-page"
+                    to="about-page"
                 >
                     <i class="bi bi-card-text"></i>{{ t("footer.about") }}
                 </RouterLink>
