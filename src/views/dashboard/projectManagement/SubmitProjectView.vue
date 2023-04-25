@@ -218,7 +218,7 @@ async function onGetCommissionDates() {
     if (!projectCommissionDatesModel.value.length) {
         try {
             await getCommissions()
-            await getCommissionDates(true)
+            await getCommissionDates(true, true)
             await initCommissionDates(isSite.value)
             if (!newProject.value) {
                 await projectStore.getProjectCommissionDates(false, undefined)
@@ -239,7 +239,7 @@ async function onGetCommissionDates() {
 async function onGetProjectBudget() {
     try {
         await getCommissions()
-        await getCommissionDates(true)
+        await getCommissionDates(true, true)
         await projectStore.getProjectCommissionDates(false, undefined)
         initProjectCommissionDates()
         initProjectBudget()

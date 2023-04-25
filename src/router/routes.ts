@@ -129,7 +129,7 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'manage-projects',
                         name: 'ManageProjects',
-                        component: () => import('@/views/dashboard/projectManagement/ProjectManagementView.vue'),
+                        component: () => import('@/views/dashboard/projectManagement/ProjectsManagementView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.manage-projects'),
                             breadcrumb: i18n.global.t('breadcrumbs.manage-projects'),

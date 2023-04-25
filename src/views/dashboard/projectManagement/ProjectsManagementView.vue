@@ -82,8 +82,8 @@ async function onGetProjects() {
 
 async function onGetCommissionDates() {
     try {
-        await getCommissionDates(false)
-        await initCommissionDates(hasPerm('view_project_all'))
+        await getCommissionDates(false, true)
+        await initCommissionDates(hasPerm('view_project_any_commission'))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

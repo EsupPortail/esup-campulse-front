@@ -32,10 +32,13 @@ export default function () {
         }
     }
 
-    async function getCommissionDates(onlyNext: boolean) {
-        if (commissionDates.value.length === 0) {
-            commissionDates.value = (await axiosPublic.get<CommissionDate[]>(`/commissions/commission_dates?only_next=${onlyNext}`)).data
-        }
+    async function getCommissionDates(onlyNext: boolean, active: boolean) {
+        let urlString = '/commissions/commission_dates'
+        const urlArray = []
+        if (onlyNext) urlArray.push('only_next=true')
+        if (active) urlArray.push('active_projects=true')
+        if (urlArray.length) urlString += `?${urlArray.join('&')}`
+        commissionDates.value = (await axiosPublic.get<CommissionDate[]>(urlString)).data
     }
 
     // INIT COMMISSION DATA
