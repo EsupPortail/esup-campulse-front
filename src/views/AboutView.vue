@@ -1,13 +1,14 @@
 <script lang="ts" setup>
+import AboutCard from '@/components/layout/LayoutAboutCard.vue'
 import {useContentStore} from '@/stores/useContentStore'
-import useErrors from '@/composables/useErrors'
 import {onMounted, ref, watch} from 'vue'
+import {AboutStore} from '#/index'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
+import useErrors from '@/composables/useErrors'
 import axios from 'axios'
-import type {AboutStore} from '#/index'
 
-const contentStore = useContentStore()
+const content = useContentStore()
 const aboutInfo = ref<AboutStore>()
 const aboutContact = ref<AboutStore>()
 const aboutServices = ref<AboutStore>()
@@ -23,7 +24,7 @@ onMounted(async function () {
 
 async function onGetContent() {
     try {
-        await contentStore.getContent()
+        await content.getContent()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -35,45 +36,30 @@ async function onGetContent() {
 }
 
 function findContentObject(code: string) {
-    return contentStore.about.find(obj => obj.code === code)
+    return content.about.find(obj => obj.code === code)
 }
 
-watch(() => contentStore.about.length, () => {
+watch(() => content.about.length, () => {
     aboutInfo.value = findContentObject('ABOUT_INFO')
     aboutContact.value = findContentObject('ABOUT_CONTACT')
     aboutServices.value = findContentObject('ABOUT_SERVICES')
 })
-
 </script>
 
 <template>
-    <section :class="['home-section']">
-        <div class="section-card">
-            <div class="section-background">
-                <span></span>
-            </div>
-
-            <div class="section-title">
-                <div>
-                    <h2
-                    >
-                        {{ aboutInfo?.code }}
-                    </h2>
-                    <div class="title-2">{{ titleLine2 }}</div>
-                </div>
-                <div class="section-info">
-                    <p v-html="aboutInfo?.label"></p>
-                </div>
-            </div>
-            <div class="section-content">
-                <p>{{ aboutInfo?.body }}</p>
-                <div class="section-buttons">
-                </div>
-            </div>
-        </div>
-    </section>
+    <div id="home-section">
+        <AboutCard
+            :body="aboutInfo?.body"
+            :label="aboutInfo?.label"
+        />
+        <AboutCard
+            :body="aboutServices?.body"
+            :label="aboutServices?.label"
+            :title="test"
+        />
+        <AboutCard
+            :body="aboutContact?.body"
+            :label="aboutContact?.label"
+        />
+    </div>
 </template>
-
-
-<style lang="scss">
-</style>
