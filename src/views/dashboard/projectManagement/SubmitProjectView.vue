@@ -53,7 +53,7 @@ const {
     getCommissionDates,
     commissionDatesLabels,
     commissionDates,
-    initCommissionDates
+    initCommissionDatesLabels
 } = useCommissions()
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
@@ -219,7 +219,7 @@ async function onGetCommissionDates() {
         try {
             await getCommissions()
             await getCommissionDates(true, true)
-            await initCommissionDates(isSite.value)
+            await initCommissionDatesLabels(isSite.value)
             if (!newProject.value) {
                 await projectStore.getProjectCommissionDates(false, undefined)
                 initProjectCommissionDatesModel()

@@ -65,9 +65,26 @@ export const useProjectStore = defineStore('projectStore', {
             this.projectDocuments = (await axiosAuthenticated.get<ProjectDocument[]>(`/documents/uploads?project_id=${this.project?.id}`)).data
         },
 
-        async getProjects() {
+        async getProjects(archived: boolean, commissionDates: number[]) {
             const {axiosAuthenticated} = useAxios()
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
-        }
+            const unarchivedStatus = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED',
+                'PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_PROCESSING']
+            const archivedStatus = ['PROJECT_REJECTED', 'PROJECT_REVIEW_CANCELLED', 'PROJECT_REVIEW_VALIDATED']
+            const url = `/projects/?project_statuses=${archived ? archivedStatus.join(',') :
+                unarchivedStatus.join(',')}&commission_dates=${commissionDates.join(',')}`
+            this.projects = (await axiosAuthenticated.get<ProjectList[]>(url)).data
+        },
+
+        /*async getProjectsPerCommissionOrInstitutions(commission: number[], institutions: number[]) {
+            const {axiosAuthenticated} = useAxios()
+            if (commissionDates.length || institutions.length) {
+                let urlString = '/projects/?'
+                const urlArray = []
+                if (commissionDates.length) urlArray.push(`commission_dates=${commissionDates.join(',')}`)
+                if (institutions.length) urlArray.push(`institutions=${institutions.join(',')}`)
+                urlString += urlArray.join('&')
+                this.projects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
+            }
+        }*/
     }
 })

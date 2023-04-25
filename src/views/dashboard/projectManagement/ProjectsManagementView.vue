@@ -9,29 +9,40 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import type {ProjectList} from '#/project'
 import useUtility from '@/composables/useUtility'
 import useCommissions from '@/composables/useCommissions'
-import useSecurity from '@/composables/useSecurity'
 import type {SelectCommissionDateLabel} from '#/commissions'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
 const {formatDate} = useUtility()
-const {getCommissionDates, commissionDatesLabels, initCommissionDates} = useCommissions()
-const {hasPerm} = useSecurity()
+const {getCommissionDates, commissionDatesLabels, initCommissionDatesLabels, commissionDates} = useCommissions()
 const associationStore = useAssociationStore()
 const userManagerStore = useUserManagerStore()
+const userStore = useUserStore()
 
 
 onMounted(async () => {
     loading.show()
-    await onGetProjects()
-    await onGetApplicants()
     await onGetCommissionDates()
+    initManagedCommissionDates()
+    await onGetProjects(managedCommissionDates.value)
+    await onGetApplicants()
     loading.hide()
 })
+
+const managedCommissionDates = ref<number[]>([])
+
+const initManagedCommissionDates = () => {
+    commissionDates.value.forEach((commissionDate) => {
+        if (userStore.userCommissions?.includes(commissionDate.commission)) {
+            managedCommissionDates.value.push(commissionDate.id)
+        }
+    })
+}
 
 const projects = ref<ProjectList[]>([])
 watch(() => projectStore.projects, () => {
@@ -42,18 +53,9 @@ const commission = ref<SelectCommissionDateLabel>()
 watch(() => commission.value, async () => {
     loading.show()
     if (commission.value?.value) {
-        await onGetProjectCommissionDates(commission.value?.value)
-        if (projectStore.projects.length) {
-            projects.value = []
-            const commissionProjects = projectStore.projectCommissionDates.map(project => project.project)
-            projectStore.projects.forEach((project) => {
-                if (commissionProjects.includes(project.id)) {
-                    projects.value.push(project)
-                }
-            })
-        }
+        await onGetProjects([commission.value?.value])
     } else {
-        projects.value = projectStore.projects
+        await onGetProjects(managedCommissionDates.value)
     }
     loading.hide()
 })
@@ -67,23 +69,10 @@ const applicant = (association: number | null, user: number | null) => {
     }
 }
 
-async function onGetProjects() {
-    try {
-        await projectStore.getProjects()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-}
-
 async function onGetCommissionDates() {
     try {
         await getCommissionDates(false, true)
-        await initCommissionDates(hasPerm('view_project_any_commission'))
+        await initCommissionDatesLabels(undefined)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -94,9 +83,9 @@ async function onGetCommissionDates() {
     }
 }
 
-async function onGetProjectCommissionDates(commissionDate: number) {
+async function onGetProjects(commissionsDates: number[]) {
     try {
-        await projectStore.getProjectCommissionDates(true, commissionDate)
+        await projectStore.getProjects(false, commissionsDates)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -111,7 +100,7 @@ async function onGetApplicants() {
     try {
         if (projectStore.projects.length) {
             if (projectStore.projects.find(obj => obj.association !== null)) {
-                await associationStore.getAssociationNames(false, false)
+                await associationStore.getAssociationNames(true, false)
             }
             if (projectStore.projects.find(obj => obj.user !== null)) {
                 await userManagerStore.getUsers('validated')
@@ -132,7 +121,7 @@ const columns: QTableProps['columns'] = [
     {name: 'applicant', align: 'left', label: t('project.applicant'), field: 'applicant', sortable: true},
     {name: 'lastModifiedDate', align: 'left', label: t('project.last-modified-date'), field: 'email', sortable: true},
     {name: 'status', align: 'left', label: t('status'), field: 'status', sortable: true},
-    {name: 'edition', align: 'left', label: t('manage'), field: 'edition', sortable: false},
+    {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
 ]
 
 </script>
@@ -258,12 +247,15 @@ const columns: QTableProps['columns'] = [
                                 <div class="button-container">
                                     <QBtn
                                         :label="t('project.project')"
-                                        disable
                                         icon="bi-pencil"
                                     />
                                     <QBtn
+                                        :disable="props.row.projectStatus !== 'PROJECT_VALIDATED' ||
+                                            props.row.projectStatus !== 'PROJECT_REVIEW_DRAFT' ||
+                                            props.row.projectStatus !== 'PROJECT_REVIEW_REJECTED' ||
+                                            props.row.projectStatus !== 'PROJECT_REVIEW_PROCESSING' ||
+                                            props.row.projectStatus !== 'PROJECT_REVIEW_VALIDATED'"
                                         :label="t('project.review')"
-                                        disable
                                         icon="bi-pencil"
                                     />
                                 </div>

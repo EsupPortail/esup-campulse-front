@@ -16,6 +16,5 @@ export interface CommissionDate {
 export interface SelectCommissionDateLabel {
     value: number,
     label: string,
-    commission: number,
-    disable: boolean
+    commission: number
 }
