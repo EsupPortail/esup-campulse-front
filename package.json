@@ -1,6 +1,6 @@
 {
   "name": "plana",
-  "version": "0.1.20230424",
+  "version": "0.1.20230426",
   "scripts": {
     "dev": "vite",
     "build:test": "vue-tsc --noEmit && vite build --mode deploy_test",
