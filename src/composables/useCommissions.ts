@@ -34,11 +34,11 @@ export default function () {
         }
     }
 
-    async function getCommissionDates(onlyNext: boolean, active: boolean) {
+    async function getCommissionDates(onlyNext: boolean, onlyActive: boolean) {
         let urlString = '/commissions/commission_dates'
         const urlArray = []
         if (onlyNext) urlArray.push('only_next=true')
-        if (active) urlArray.push('active_projects=true')
+        if (onlyActive) urlArray.push('active_projects=true')
         if (urlArray.length) urlString += `?${urlArray.join('&')}`
         commissionDates.value = (await axiosPublic.get<CommissionDate[]>(urlString)).data
     }
