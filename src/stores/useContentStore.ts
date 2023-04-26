@@ -44,7 +44,8 @@ export const useContentStore = defineStore('contentStore', {
             isDisplayed: true
         },
         about: [],
-        contact: []
+        contact: [],
+        home: []
     }),
 
     actions: {

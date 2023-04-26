@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import AboutCard from '@/components/layout/LayoutAboutCard.vue'
+import ServiceCard from '@/components/layout/LayoutAboutServiceCard.vue'
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref, watch} from 'vue'
 import {AboutStore} from '#/index'
@@ -12,6 +13,9 @@ const content = useContentStore()
 const aboutInfo = ref<AboutStore>()
 const aboutContact = ref<AboutStore>()
 const aboutServices = ref<AboutStore>()
+const homeAssociation = ref<AboutStore>()
+const homeCharter = ref<AboutStore>()
+const homeProject = ref<AboutStore>()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -43,23 +47,57 @@ watch(() => content.about.length, () => {
     aboutInfo.value = findContentObject('ABOUT_INFO')
     aboutContact.value = findContentObject('ABOUT_CONTACT')
     aboutServices.value = findContentObject('ABOUT_SERVICES')
+    homeAssociation.value = findContentObject('HOME_ASSOCIATION')
+    homeProject.value = findContentObject('HOME_PROJECT')
+    homeCharter.value = findContentObject('HOME_CHARTER')
 })
 </script>
 
 <template>
-    <div id="home-section">
+    <section id="home-section">
+        <!--
+        <div class="section-headtitle">
+            <h3>{{ t('about.presentation') }}</h3>
+        </div>
+        -->
+        
         <AboutCard
             :body="aboutInfo?.body"
             :label="aboutInfo?.label"
         />
         <AboutCard
             :body="aboutServices?.body"
+            :header="aboutServices?.header"
             :label="aboutServices?.label"
-            :title="test"
         />
         <AboutCard
             :body="aboutContact?.body"
+            :header="aboutContact?.header"
             :label="aboutContact?.label"
         />
-    </div>
+
+        <div class="section-headtitle">
+            <h3>{{ t('about.services') }}</h3>
+        </div>
+
+        <div class="services-section">
+            <ServiceCard
+                :body="homeAssociation?.body"
+                :footer="homeAssociation?.header"
+                :header="homeAssociation?.header"
+            />
+
+            <ServiceCard
+                :body="homeCharter?.body"
+                :footer="homeCharter?.header"
+                :header="homeCharter?.header"
+            />
+
+            <ServiceCard
+                :body="homeProject?.body"
+                :footer="homeProject?.footer"
+                :header="homeProject?.header"
+            />
+        </div>
+    </section>
 </template>

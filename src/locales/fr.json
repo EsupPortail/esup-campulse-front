@@ -3,6 +3,10 @@
     "description": "404",
     "title": "Contenu introuvable"
   },
+  "about": {
+    "presentation": "Présentation",
+    "services": "Services de l'application"
+  },
   "account": "Compte",
   "account-validated": "Compte validé",
   "activate": "Activer",

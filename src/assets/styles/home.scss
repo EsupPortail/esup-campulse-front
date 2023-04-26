@@ -426,3 +426,67 @@
     }
   }
 }
+
+.section-headtitle {
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: .5rem;
+  text-decoration-color: $annuaireColor;
+  text-decoration-thickness: .1rem;
+  margin-top: 1rem;
+}
+
+.services-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+
+  .card-item {
+    width: 95%;
+    display: block;
+    position: relative;
+    background-color: $backgroundColor1;
+    box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.2);
+    gap: 6rem;
+    padding: 1.5rem;
+    margin: 2rem;
+    align-items: center;
+
+    .card-icon {
+      text-align: center;
+
+      i {
+        font-size: $iconSize;
+        color: $annuaireColor;
+      }
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .section-content {
+      text-align: justify;
+      font-size: $textSize;
+    }
+
+    .btn-group {
+      justify-content: center;
+      text-align: center;
+      border: .1rem $annuaireColorBorders solid;
+      font-size: $textSize;
+    }
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: normal;
+
+    .card-item {
+      width: 30rem;
+    }
+  }
+}

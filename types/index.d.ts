@@ -26,7 +26,8 @@ interface ContentStore {
     cards: HomeCards,
     banner: HomeBanner,
     about: AboutStore[],
-    contact: ContactStore[]
+    contact: ContactStore[],
+    home: HomeStore[]
 }
 
 interface SelectLabel {
@@ -38,14 +39,27 @@ export interface AboutStore {
     id: number,
     code: contentCode,
     label: string,
-    body: string
+    header: string,
+    body: string,
+    footer: string
 }
 
 export interface ContactStore {
     id: number,
     code: contentCode,
     label: string,
-    body: string
+    header: string,
+    body: string,
+    footer: string
+}
+
+export interface HomeStore {
+    id: number,
+    code: contentCode,
+    label: string,
+    header: string,
+    body: string,
+    footer: string
 }
 
 type contentCode =

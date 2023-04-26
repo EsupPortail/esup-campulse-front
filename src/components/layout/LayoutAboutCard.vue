@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 defineProps({
-    title: String,
+    header: String,
     label: String,
     code: String,
     body: String,
-    cssClass: String,
 })
 </script>
 
@@ -17,13 +16,8 @@ defineProps({
             </div>
 
             <div class="section-title">
-                <div>
-                    <h2>
-                        {{ title }}
-                    </h2>
-                </div>
                 <div class="section-info">
-                    <p v-html="label"></p>
+                    <h2 v-html="header"></h2>
                 </div>
             </div>
             <div class="section-content">
