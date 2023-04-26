@@ -5,12 +5,13 @@ import useSecurity from '@/composables/useSecurity'
 import {useRouter} from 'vue-router'
 
 const {t} = useI18n()
-const {notify} = useQuasar()
+const {notify, loading} = useQuasar()
 const router = useRouter()
 
 const {user, logIn} = useSecurity()
 
 async function onLogIn() {
+    loading.show()
     try {
         await logIn()
         await router.push({name: 'Dashboard'})
@@ -24,6 +25,7 @@ async function onLogIn() {
             message: t('notifications.negative.unknown-credentials')
         })
     }
+    loading.hide()
 }
 
 </script>
