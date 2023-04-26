@@ -39,7 +39,6 @@ onMounted(async () => {
                     <QBtn
                         :label="t('dashboard.account-infos')"
                         :to="{name: 'ManageAccount'}"
-                        color="secondary"
                     />
                 </div>
             </div>
@@ -91,13 +90,32 @@ onMounted(async () => {
                         v-if="hasPerm('add_association')"
                         :label="t('dashboard.create-association')"
                         :to="{name: 'CreateAssociation'}"
-                        color="secondary"
                     />
                     <QBtn
                         v-if="hasPerm('change_association')"
                         :label="t('dashboard.edit-or-delete-association')"
                         :to="{name: 'ManageAssociations'}"
-                        color="secondary"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commission management, for staff only -->
+    <section
+        v-if="isStaff && (hasPerm('view_project'))"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="mdi-folder-edit-outline"/>
+            {{ t('dashboard.manage-commissions') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <div class="button-group">
+                    <QBtn
+                        :label="t('dashboard.manage-projects')"
+                        :to="{name: 'ManageProjects'}"
                     />
                 </div>
             </div>
@@ -121,25 +139,21 @@ onMounted(async () => {
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-validation')"
                         :to="{name: 'ValidateUsers'}"
-                        color="secondary"
                     />
                     <QBtn
                         v-if="hasPerm('change_user')"
                         :label="t('user-manager.association-validation')"
                         :to="{name: 'ValidateAssociationUsers'}"
-                        color="secondary"
                     />
                     <QBtn
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-management')"
                         :to="{name: 'ManageUsers'}"
-                        color="secondary"
                     />
                     <QBtn
                         v-if="hasPerm('add_user')"
                         :label="t('dashboard.create-user')"
                         :to="{name: 'AddUser'}"
-                        color="secondary"
                     />
                 </div>
             </div>
