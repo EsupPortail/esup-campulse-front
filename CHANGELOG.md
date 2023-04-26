@@ -1,15 +1,7 @@
-- 🗃️ #64 New fields on Project (third-party user).
-- 💄 #53 Corrected UI problem that covered some parts of the app.
-- :sparkles: feat!: About and Contact page
-- :lipstick: fix!: btns on dialogs
-- :lipstick: fix: update btns
-- 🩹 Fix rule on phone and add clearable attribute on register form
-- ✨ Dynamic title for association details
-- ✨ #64 Changed way to handle project uploaded files (for encryption).
-- ✅ Start tests for documents
-- ✅ Fix test after changes in API search function
-- 🐛 Fix search association for managers
-- :lipstick: fix: association user view (account info)
-- :lipstick: [WIP] fix! : bugs
-- 🩹 Association search for manager institution with private axios
-- 🐛 Fix axios error on deploy
+- 🩹 Fix getCommissionDates with onlyActive param
+- 🏷️ Remove PROJECT_REVIEW_CANCELLED from project statuses
+- ✨ Manage projects dashboard for managers #84 & #105
+- 🚧 Optimize getCommissionDates to get only active commissions
+- :sparkles: new const on content store
+- 🔨 Better optional arg management in deploy.sh .
+- 🔧 Corrected CSP conf.
