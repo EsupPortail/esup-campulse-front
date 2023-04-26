@@ -16,6 +16,7 @@ export default defineConfig({
         quasar({
             autoImportComponentCase: 'pascal'
         }),
+        // See https://vue-i18n.intlify.dev/guide/advanced/optimization.html
         VueI18nPlugin({
             include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**'),
         }),
