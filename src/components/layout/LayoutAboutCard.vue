@@ -9,7 +9,7 @@ defineProps({
 
 
 <template>
-    <section :class="['home-section', cssClass]">
+    <section class="home-section">
         <div class="section-card">
             <div class="section-background">
                 <span></span>
@@ -17,7 +17,7 @@ defineProps({
 
             <div class="section-title">
                 <div class="section-info">
-                    <h2 v-html="header"></h2>
+                    <p v-html="header"></p>
                 </div>
             </div>
             <div class="section-content">
@@ -29,4 +29,17 @@ defineProps({
 
 <style lang="scss">
 @import '@/assets/styles/home.scss';
+@import '@/assets/_variables.scss';
+
+
+.section-title {
+    p {
+        font-size: 2.5rem;
+        line-height: 3rem;
+        text-transform: uppercase;
+        font-weight: $semibold-weight;
+    }
+}
+
+
 </style>

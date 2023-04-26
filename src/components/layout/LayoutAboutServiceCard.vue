@@ -31,4 +31,14 @@ defineProps({
 
 <style lang="scss">
 @import '@/assets/styles/home.scss';
+@import '@/assets/_variables.scss';
+
+.section-title {
+    h4 {
+        font-size: 2rem;
+        line-height: 3rem;
+        text-transform: uppercase;
+        font-weight: $semibold-weight;
+    }
+}
 </style>

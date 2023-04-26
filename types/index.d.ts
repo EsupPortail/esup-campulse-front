@@ -67,8 +67,8 @@ type contentCode =
     'HOME_CHARTER' |
     'HOME_PROJECT' |
     'HOME_INFO' |
-    'ABOUT_INFO' |
-    'ABOUT_SERVICES' |
-    'ABOUT_CONTACT' |
+    'ABOUT_APP' |
+    'ABOUT_FUNDING' |
+    'ABOUT_PARTNERSHIP' |
     'CONTACT_INFO' |
     'CONTACT_LIST'

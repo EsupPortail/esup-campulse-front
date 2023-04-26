@@ -10,9 +10,9 @@ import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 
 const content = useContentStore()
-const aboutInfo = ref<AboutStore>()
-const aboutContact = ref<AboutStore>()
-const aboutServices = ref<AboutStore>()
+const aboutApp = ref<AboutStore>()
+const aboutFunding = ref<AboutStore>()
+const aboutPartnership = ref<AboutStore>()
 const homeAssociation = ref<AboutStore>()
 const homeCharter = ref<AboutStore>()
 const homeProject = ref<AboutStore>()
@@ -44,9 +44,9 @@ function findContentObject(code: string) {
 }
 
 watch(() => content.about.length, () => {
-    aboutInfo.value = findContentObject('ABOUT_INFO')
-    aboutContact.value = findContentObject('ABOUT_CONTACT')
-    aboutServices.value = findContentObject('ABOUT_SERVICES')
+    aboutApp.value = findContentObject('ABOUT_APP')
+    aboutFunding.value = findContentObject('ABOUT_FUNDING')
+    aboutPartnership.value = findContentObject('ABOUT_PARTNERSHIP')
     homeAssociation.value = findContentObject('HOME_ASSOCIATION')
     homeProject.value = findContentObject('HOME_PROJECT')
     homeCharter.value = findContentObject('HOME_CHARTER')
@@ -57,18 +57,18 @@ watch(() => content.about.length, () => {
     <section id="home-section">
         <div class="presentation-project">
             <AboutCard
-                :body="aboutInfo?.body"
-                :label="aboutInfo?.label"
+                :body="aboutApp?.body"
+                :header="aboutApp?.header"
             />
             <AboutCard
-                :body="aboutServices?.body"
-                :header="aboutServices?.header"
-                :label="aboutServices?.label"
+                :body="aboutFunding?.body"
+                :header="aboutFunding?.header"
+                :label="aboutFunding?.label"
             />
             <AboutCard
-                :body="aboutContact?.body"
-                :header="aboutContact?.header"
-                :label="aboutContact?.label"
+                :body="aboutPartnership?.body"
+                :header="aboutPartnership?.header"
+                :label="aboutPartnership?.label"
             />
         </div>
 
@@ -97,7 +97,6 @@ watch(() => content.about.length, () => {
         </div>
 
         <div class="contact">
-
         </div>
     </section>
 </template>
