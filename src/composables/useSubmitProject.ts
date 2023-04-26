@@ -1,9 +1,8 @@
-import {ref, watch} from 'vue'
+import {ref} from 'vue'
 import type {Project, ProjectBasicInfos, ProjectBudget, ProjectCommissionDate, ProjectGoals} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
-import useCommissions from '@/composables/useCommissions'
 import {useUserStore} from '@/stores/useUserStore'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 
@@ -50,12 +49,11 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function() {
+export default function () {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
-    const {commissionDatesLabels} = useCommissions()
     const {arraysAreEqual} = useUtility()
     const {processDocuments} = useProjectDocuments()
 
@@ -83,14 +81,6 @@ export default function() {
     const initProjectCommissionDatesModel = () => {
         projectCommissionDatesModel.value = projectStore.projectCommissionDates.map(commissionDate => commissionDate.commissionDate)
     }
-
-
-    // Used to check if only 1 commission date per commission is selected (submit project step 2)
-    watch(() => projectCommissionDatesModel.value.length, () => {
-        commissionDatesLabels.value.forEach((label) => {
-            label.disable = false
-        })
-    })
 
     const initProjectCommissionDates = () => {
         projectCommissionDates.value = JSON.parse(JSON.stringify(projectStore.projectCommissionDates))
@@ -150,10 +140,15 @@ export default function() {
     async function postNewProject(associationId: number | undefined) {
         if (associationId) projectBasicInfos.value.association = associationId
         else projectBasicInfos.value.user = userStore.user?.id as number
-        const dataToPost = JSON.parse(JSON.stringify(projectBasicInfos.value))
-        dataToPost.plannedStartDate += 'T00:00:00.000Z'
-        dataToPost.plannedEndDate += 'T00:00:00.000Z'
+        let dataToPost = {}
+        for (const [key, value] of Object.entries(projectBasicInfos.value)) {
+            if (value) {
+                dataToPost = Object.assign(dataToPost, {[key]: value + (key.includes('Date') ? 'T00:00:00.000Z' : '')})
+            }
+        }
         projectStore.project = (await axiosAuthenticated.post('/projects/', dataToPost)).data
+
+
     }
 
     // UPDATES = POSTS AND DELETES

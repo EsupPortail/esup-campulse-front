@@ -523,6 +523,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 filled
                                 lazy-rules
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedStartDate"
@@ -532,6 +533,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="date"
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedEndDate"
@@ -541,6 +543,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="date"
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.location"
@@ -549,30 +552,35 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 filled
                                 lazy-rules
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.otherFirstName"
                                 :label="t('project.other-first-name')"
                                 filled
                                 lazy-rules
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.otherLastName"
                                 :label="t('project.other-last-name')"
                                 filled
                                 lazy-rules
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.otherEmail"
                                 :label="t('project.other-email')"
                                 filled
                                 lazy-rules
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.otherPhone"
                                 :label="t('project.other-phone')"
                                 filled
                                 lazy-rules
+                                clearable
                             />
                             <QSelect
                                 v-model="projectCategories"
@@ -587,6 +595,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 stack-label
                                 use-chips
                                 :hint="t('forms.multiple-choices-enabled')"
+                                clearable
                             />
                             <section class="form-page-navigation">
                                 <QBtn
