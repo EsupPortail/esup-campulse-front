@@ -330,7 +330,8 @@
     "status": "Mon statut",
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
     "validate-association": "Valider cet ajout",
-    "validated-account": "Compte validé"
+    "validated-account": "Compte validé",
+    "view-password": "Afficher le mot de passe"
   },
   "from": "À partir du",
   "header": {

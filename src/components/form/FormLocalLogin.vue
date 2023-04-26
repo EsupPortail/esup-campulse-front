@@ -3,12 +3,14 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import useSecurity from '@/composables/useSecurity'
 import {useRouter} from 'vue-router'
+import {ref} from 'vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const router = useRouter()
-
 const {user, logIn} = useSecurity()
+
+const passwordVisibility = ref<boolean>(false)
 
 async function onLogIn() {
     loading.show()
@@ -46,9 +48,13 @@ async function onLogIn() {
             v-model="user.password"
             :label="t('forms.password')"
             :rules="[ val => val && val.length > 0 || t('forms.required-password')]"
+            :type="passwordVisibility ? 'text' : 'password'"
             filled
             lazy-rules
-            type="password"
+        />
+        <QCheckbox
+            v-model="passwordVisibility"
+            :label="t('forms.view-password')"
         />
         <div class="btn-group">
             <QBtn
@@ -58,8 +64,8 @@ async function onLogIn() {
             />
             <QBtn
                 :label="t('forms.create-account')"
+                :to="{name: 'Registration'}"
                 color="secondary"
-                to="/register"
             />
         </div>
         <!-- <QBtn :label="t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
@@ -86,3 +92,8 @@ async function onLogIn() {
         </div>
     </QForm>
 </template>
+
+<style lang="sass" scoped>
+.q-checkbox
+    margin-top: -0.5rem
+</style>
