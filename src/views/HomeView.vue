@@ -33,7 +33,7 @@ const nextCommissionDate = ref<string>()
 async function onGetContents() {
     try {
         await associationStore.getAssociationNames(true, false)
-        await getCommissionDates(true)
+        await getCommissionDates(true, false)
         nextCommissionDate.value = (new Date(commissionDates.value[0].commissionDate)).toLocaleDateString('fr-FR')
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

@@ -4,6 +4,7 @@ import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {CommissionDate} from '#/project'
+import {useUserStore} from '@/stores/useUserStore'
 
 // Used to store commissions from /commissions/
 const commissions = ref<Commission[]>([])
@@ -24,6 +25,7 @@ export default function () {
 
     const {axiosPublic} = useAxios()
     const userManagerStore = useUserManagerStore()
+    const userStore = useUserStore()
 
     // GET COMMISSION INFOS
     async function getCommissions() {
@@ -32,10 +34,13 @@ export default function () {
         }
     }
 
-    async function getCommissionDates(onlyNext: boolean) {
-        if (commissionDates.value.length === 0) {
-            commissionDates.value = (await axiosPublic.get<CommissionDate[]>(`/commissions/commission_dates?only_next=${onlyNext}`)).data
-        }
+    async function getCommissionDates(onlyNext: boolean, active: boolean) {
+        let urlString = '/commissions/commission_dates'
+        const urlArray = []
+        if (onlyNext) urlArray.push('only_next=true')
+        if (active) urlArray.push('active_projects=true')
+        if (urlArray.length) urlString += `?${urlArray.join('&')}`
+        commissionDates.value = (await axiosPublic.get<CommissionDate[]>(urlString)).data
     }
 
     // INIT COMMISSION DATA
@@ -58,18 +63,20 @@ export default function () {
     }
     watch(() => userManagerStore.user, initUserCommissions)
 
-    const initCommissionDates = async (isSite: boolean | undefined) => {
+    const initCommissionDatesLabels = async (isSite: boolean | undefined) => {
         await getCommissions()
         commissionDatesLabels.value = []
         commissionDates.value.forEach((commissionDate) => {
             const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
             if (commission) {
-                if (isSite || (!isSite && !commission.isSite)) {
+                // 1st option : We simply initialize commissionDates based on isSite param
+                // 2nd option : We look at commissions in userGroups to init commissionDates
+                if (isSite || (isSite === false && !commission.isSite) ||
+                    (isSite === undefined && userStore.userCommissions?.includes(commission.id))) {
                     commissionDatesLabels.value.push({
                         value: commissionDate.id,
                         label: `${commission.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
-                        commission: commission.id as number,
-                        disable: false
+                        commission: commission.id as number
                     })
                 }
             }
@@ -85,6 +92,6 @@ export default function () {
         commissionDates,
         getCommissionDates,
         commissionDatesLabels,
-        initCommissionDates
+        initCommissionDatesLabels
     }
 }

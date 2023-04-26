@@ -23,6 +23,15 @@ export const useUserStore = defineStore('userStore', {
             })
             return institutionsArray
         },
+        userCommissions: (state: UserStore): (number | null | undefined)[] | undefined => {
+            const commissionsArray: number[] = []
+            state.user?.groups?.forEach((group) => {
+                if (group.commissionId) {
+                    commissionsArray.push(group.commissionId)
+                }
+            })
+            return commissionsArray
+        },
         isAssociationMember: (state: UserStore): boolean => {
             return !!state.user?.associations?.length
         }

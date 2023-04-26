@@ -54,7 +54,7 @@ const {
     getCommissionDates,
     commissionDatesLabels,
     commissionDates,
-    initCommissionDates
+    initCommissionDatesLabels
 } = useCommissions()
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
@@ -238,10 +238,10 @@ async function onGetCommissionDates() {
     if (!projectCommissionDatesModel.value.length) {
         try {
             await getCommissions()
-            await getCommissionDates(true)
-            await initCommissionDates(isSite.value)
+            await getCommissionDates(true, true)
+            await initCommissionDatesLabels(isSite.value)
             if (!newProject.value) {
-                await projectStore.getProjectCommissionDates()
+                await projectStore.getProjectCommissionDates(false, undefined)
                 initProjectCommissionDatesModel()
             }
         } catch (error) {
@@ -259,8 +259,8 @@ async function onGetCommissionDates() {
 async function onGetProjectBudget() {
     try {
         await getCommissions()
-        await getCommissionDates(true)
-        await projectStore.getProjectCommissionDates()
+        await getCommissionDates(true, true)
+        await projectStore.getProjectCommissionDates(false, undefined)
         initProjectCommissionDates()
         initProjectBudget()
     } catch (error) {

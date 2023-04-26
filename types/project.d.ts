@@ -28,6 +28,15 @@ export interface Project {
     projectStatus: ProjectStatus
 }
 
+export interface ProjectList {
+    id: number,
+    name: string,
+    association: number | null,
+    user: number | null,
+    editionDate: string,
+    projectStatus: ProjectStatus
+}
+
 type ProjectStatus =
     'PROJECT_DRAFT'
     | 'PROJECT_REJECTED'
@@ -101,6 +110,7 @@ export interface ProjectCommissionDate {
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
+    projects: ProjectList[],
     projectCategories: ProjectCategory[],
     projectCommissionDates: ProjectCommissionDate[],
     projectDocuments: ProjectDocument[],
