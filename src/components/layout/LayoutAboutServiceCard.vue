@@ -31,5 +31,4 @@ defineProps({
 
 <style lang="scss">
 @import '@/assets/styles/home.scss';
-@import '@/assets/styles/forms.scss';
 </style>

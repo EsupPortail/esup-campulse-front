@@ -55,26 +55,22 @@ watch(() => content.about.length, () => {
 
 <template>
     <section id="home-section">
-        <!--
-        <div class="section-headtitle">
-            <h3>{{ t('about.presentation') }}</h3>
+        <div class="presentation-project">
+            <AboutCard
+                :body="aboutInfo?.body"
+                :label="aboutInfo?.label"
+            />
+            <AboutCard
+                :body="aboutServices?.body"
+                :header="aboutServices?.header"
+                :label="aboutServices?.label"
+            />
+            <AboutCard
+                :body="aboutContact?.body"
+                :header="aboutContact?.header"
+                :label="aboutContact?.label"
+            />
         </div>
-        -->
-        
-        <AboutCard
-            :body="aboutInfo?.body"
-            :label="aboutInfo?.label"
-        />
-        <AboutCard
-            :body="aboutServices?.body"
-            :header="aboutServices?.header"
-            :label="aboutServices?.label"
-        />
-        <AboutCard
-            :body="aboutContact?.body"
-            :header="aboutContact?.header"
-            :label="aboutContact?.label"
-        />
 
         <div class="section-headtitle">
             <h3>{{ t('about.services') }}</h3>
@@ -98,6 +94,10 @@ watch(() => content.about.length, () => {
                 :footer="homeProject?.footer"
                 :header="homeProject?.header"
             />
+        </div>
+
+        <div class="contact">
+
         </div>
     </section>
 </template>
