@@ -4,32 +4,32 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useAssociation from '@/composables/useAssociation'
-import router from '@/router'
-import useUserGroups from '@/composables/useUserGroups'
-import {useAssociationStore} from '@/stores/useAssociationStore'
+//import useUserGroups from '@/composables/useUserGroups'
 import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const confirmation = ref<boolean>(false)
 const {notify} = useQuasar()
 const {updateAssociation} = useAssociation()
-const {isStaff} = useUserGroups()
+//const {isStaff} = useUserGroups()
 const {catchHTTPError} = useErrors()
+const {loading} = useQuasar()
 
-const associationStore = useAssociationStore()
+//const associationStore = useAssociationStore()
 
-const associationId = ref<number | undefined>(associationStore.association?.id)
+//const associationId = ref<number | undefined>(associationStore.association?.id)
 
 const emit = defineEmits(['hasValidated'])
 
 async function onValidateChanges() {
+    loading.show()
     try {
         await updateAssociation()
         emit('hasValidated')
-        await router.push(isStaff.value ? {name: 'ManageAssociations'} : {
+        /*await router.push(isStaff.value ? {name: 'ManageAssociations'} : {
             name: 'AssociationDashboard',
             params: {id: associationId.value}
-        })
+        })*/
         notify({
             message: t('notifications.positive.association-successfully-updated'),
             type: 'positive'
@@ -42,6 +42,7 @@ async function onValidateChanges() {
             })
         }
     }
+    loading.hide()
 }
 </script>
 

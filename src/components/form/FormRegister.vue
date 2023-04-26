@@ -142,6 +142,7 @@ async function onRegister() {
                         clearable
                         filled
                         lazy-rules
+                        type="email"
                     >
                     </QInput>
                     <QInput
@@ -153,6 +154,7 @@ async function onRegister() {
                         clearable
                         filled
                         lazy-rules
+                        type="email"
                     />
                     <QInput
                         v-model="newUser.phone"

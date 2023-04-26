@@ -110,7 +110,7 @@ export default function () {
             // Check date
             else if (key == 'lastGoaDate' && value !== formatDate(associationStore.association?.lastGoaDate as string)) {
                 if (value !== null) {
-                    changedData = Object.assign(changedData, {lastGoaDate: `${value}T00:00:00.000Z`})
+                    changedData = Object.assign(changedData, {lastGoaDate: value})
                 }
             }
         }
