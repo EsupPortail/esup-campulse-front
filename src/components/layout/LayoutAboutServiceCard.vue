@@ -5,42 +5,51 @@ defineProps({
     label: String,
     code: String,
     body: String,
+    cssClass: String
 })
 </script>
 
 
 <template>
-    <div class="card-item">
-        <div class="section-card">
-            <div class="section-background">
-                <span></span>
-            </div>
+    <section :class="['services-section', 'home-section', cssClass]">
+        <div :class="['section-card', 'service-card']">
+            <div>
+                <div class="card-icon">
+                    <i class="bi bi-filter-circle"></i>
+                </div>
+                <div :class="['section-title', 'services-title']">
+                    <h4 v-html="header"></h4>
+                </div>
 
-            <div class="card-icon">
-                <i class="bi bi-filter-circle"></i>
-            </div>
-
-            <div class="section-title">
-                <h4 v-html="header"></h4>
-            </div>
-
-            <div class="section-content">
-                {{ body }}
+                <div class="section-content">
+                    {{ body }}
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <style lang="scss">
 @import '@/assets/styles/home.scss';
 @import '@/assets/_variables.scss';
 
-.section-title {
-    h4 {
-        font-size: 2rem;
-        line-height: 3rem;
-        text-transform: uppercase;
-        font-weight: $semibold-weight;
+.home-section {
+    .section-card {
+        .section-title {
+            h4 {
+                text-align: center;
+                font-weight: $semibold-weight;
+            }
+        }
+    }
+
+    @media screen and (min-width: $responsiveWidth) {
+        &.home-section-charte {
+            .service-card {
+                flex-direction: column !important;
+            }
+        }
     }
 }
+
 </style>

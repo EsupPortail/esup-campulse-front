@@ -4,12 +4,13 @@ defineProps({
     label: String,
     code: String,
     body: String,
+    cssClass: String
 })
 </script>
 
 
 <template>
-    <section class="home-section">
+    <section :class="['home-section', 'form-container', cssClass]">
         <div class="section-card">
             <div class="section-background">
                 <span></span>
@@ -29,8 +30,8 @@ defineProps({
 
 <style lang="scss">
 @import '@/assets/styles/home.scss';
+@import '@/assets/styles/forms.scss';
 @import '@/assets/_variables.scss';
-
 
 .section-title {
     p {

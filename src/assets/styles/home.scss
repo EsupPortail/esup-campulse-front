@@ -97,6 +97,15 @@
   &.home-section-annuaire {
     background-image: $homeDirectoryImage;
     background-position: center center;
+
+    .card-icon {
+      text-align: center;
+
+      i {
+        font-size: $iconSize;
+        color: $annuaireColor;
+      }
+    }
   }
 
   &.home-section-charte {
@@ -105,16 +114,34 @@
 
     .section-card {
       flex-direction: row-reverse;
+
+      .card-icon {
+        text-align: center;
+
+        i {
+          font-size: $iconSize;
+          color: $charteColor;
+        }
+      }
     }
   }
 
   &.home-section-cape {
     background-image: $homeCapeImage;
     background-position: center center;
+
+    .card-icon {
+      text-align: center;
+
+      i {
+        font-size: $iconSize;
+        color: $capeColor;
+      }
+    }
   }
 
   .section-card {
-    width: 98%;
+    width: 95%;
     display: block;
     border-radius: 1rem;
     position: relative;
@@ -192,6 +219,11 @@
           }
         }
       }
+    }
+
+    // Title on about's page (Services part)
+    .services-title {
+      flex: 0;
     }
 
     .section-info {
@@ -430,88 +462,23 @@
 
 .section-headtitle {
   text-align: center;
-  text-decoration: underline;
-  text-underline-offset: .5rem;
-  text-decoration-color: $annuaireColor;
-  text-decoration-thickness: .1rem;
-  margin-top: 1rem;
+  padding: 1rem;
 }
 
 .services-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   align-items: center;
-
-  .card-item {
-    width: 95%;
-    display: block;
-    position: relative;
-    background-color: $backgroundColor1;
-    box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.2);
-    border-radius: 1rem;
-    gap: 6rem;
-    padding: 1.5rem;
-    margin: 2rem;
-    align-items: center;
-
-    .section-background {
-      background-color: $annuaireColorBackground;
-      width: 5rem;
-      height: 50rem;
-      position: absolute;
-      top: calc(50% - 12.3rem);
-      left: 0;
-      z-index: 0;
-      opacity: 0.8;
-
-      span {
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 25rem 0 25rem 6.20rem;
-        border-color: transparent transparent transparent $annuaireColorBackground;
-        position: absolute;
-        right: -6rem;
-        top: 0;
-      }
-    }
-
-    .card-icon {
-      text-align: center;
-
-      i {
-        font-size: $iconSize;
-        color: $annuaireColor;
-      }
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-    }
-
-    .section-content {
-      text-align: justify;
-      font-size: $textSize;
-    }
-
-    /*.btn-group {
-      justify-content: center;
-      text-align: center;
-      border: .1rem $annuaireColorBorders solid;
-      font-size: $textSize;
-    }*/
-  }
 
   @media screen and (min-width: $responsiveWidth) {
     flex-direction: row;
     justify-content: center;
     align-items: normal;
+    gap: 1rem;
 
-    .card-item {
-      width: 30rem;
+    .section-card {
+      height: auto;
+      flex-direction: column;
     }
   }
 }
