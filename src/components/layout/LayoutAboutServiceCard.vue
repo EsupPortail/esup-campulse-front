@@ -11,20 +11,22 @@ defineProps({
 
 <template>
     <div class="card-item">
-        <div class="section-background">
-            <span></span>
-        </div>
+        <div class="section-card">
+            <div class="section-background">
+                <span></span>
+            </div>
 
-        <div class="card-icon">
-            <i class="bi bi-filter-circle"></i>
-        </div>
+            <div class="card-icon">
+                <i class="bi bi-filter-circle"></i>
+            </div>
 
-        <div class="section-title">
-            <h4 v-html="header"></h4>
-        </div>
+            <div class="section-title">
+                <h4 v-html="header"></h4>
+            </div>
 
-        <div class="section-content">
-            {{ body }}
+            <div class="section-content">
+                {{ body }}
+            </div>
         </div>
     </div>
 </template>

@@ -455,6 +455,28 @@
     margin: 2rem;
     align-items: center;
 
+    .section-background {
+      background-color: $annuaireColorBackground;
+      width: 5rem;
+      height: 50rem;
+      position: absolute;
+      top: calc(50% - 12.3rem);
+      left: 0;
+      z-index: 0;
+      opacity: 0.8;
+
+      span {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 25rem 0 25rem 6.20rem;
+        border-color: transparent transparent transparent $annuaireColorBackground;
+        position: absolute;
+        right: -6rem;
+        top: 0;
+      }
+    }
+
     .card-icon {
       text-align: center;
 
