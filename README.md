@@ -1,4 +1,4 @@
-# PlanA / Opaline / Campulse
+# PlanA / Opaline
 
 ## Health
 
