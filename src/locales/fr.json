@@ -1,6 +1,6 @@
 {
   "404": {
-    "description": "404",
+    "description": "Le contenu que vous avez demandé est introuvable. Vous pouvez retourner sur la page d'accueil ou votre espace, si vous êtes connecté.",
     "title": "Contenu introuvable"
   },
   "account": "Compte",
@@ -113,6 +113,8 @@
   },
   "activated": "Activée",
   "back": "Retour",
+  "back-to-dashboard": "Retourner dans mon espace",
+  "back-to-home": "Retourner à l'accueil",
   "breadcrumbs": {
     "about": "A propos",
     "account-infos": "Modifier les informations de mon compte",
