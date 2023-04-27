@@ -1,7 +1,14 @@
-- 🩹 Fix getCommissionDates with onlyActive param
-- 🏷️ Remove PROJECT_REVIEW_CANCELLED from project statuses
-- ✨ Manage projects dashboard for managers #84 & #105
-- 🚧 Optimize getCommissionDates to get only active commissions
-- :sparkles: new const on content store
-- 🔨 Better optional arg management in deploy.sh .
-- 🔧 Corrected CSP conf.
+- 🩹 Optmize UX and fix buttons on FormRegisterUserAssociations
+- ✅ Update test in useAssociation
+- 🔧 Conf fixes for preprod.
+- 🎨 Add a proper 404 page
+- 📝 Added link to doc about vue-i18n optimization.
+- 🔧 Corrected Vue call in Vite config.
+- 🚧 Solution for unsafe-eval possibly found. Needs discussion.
+- 🔧 Trying to remove unsafe-eval CSP.
+- 🎨 Add toggle to view password on logIn
+- 🔧 Trying to remove unsafe-eval from CSP.
+- 🧪 Fonctionnal testing on LDAP registration #47 -> everything works fine
+- 🎨 Add loading on logIn and logOut
+- 🩹 Don't post other infos in POST /projects/ when empty
+- ♿️ Optimize UX and accessibility on association edition and registration forms
