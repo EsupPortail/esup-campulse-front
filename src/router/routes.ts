@@ -410,18 +410,6 @@ const routes: RouteRecordRaw[] = [
                     breadcrumb: i18n.global.t('breadcrumbs.contact'),
                     colorVariant: 'space-1',
                 }
-            },
-            // This must be lasst
-            {
-                path: '404-not-found',
-                name: '404',
-                component: () => import('@/views/404View.vue')
-            },
-            {
-                path: '/:catchAll(.*)',
-                redirect: {
-                    name: '404'
-                }
             }
         ]
     },
@@ -437,10 +425,29 @@ const routes: RouteRecordRaw[] = [
         ]
     },
     {
+        path: '/404',
+        component: () => import('@/layouts/LayoutMinimalHeader.vue'),
+        children: [
+            {
+                path: '',
+                name: '404',
+                component: () => import('@/views/404View.vue')
+            }
+        ]
+    },
+    // TO DELETE AFTER DEVELOPMENT
+    {
         path: '/design-system',
         name: 'DesignSystem',
         component: () => import('@/views/DesignSystem.vue'),
     },
+    // This must be last
+    {
+        path: '/:catchAll(.*)',
+        redirect: {
+            name: '404'
+        }
+    }
 ]
 
 export default routes

@@ -101,97 +101,106 @@ async function onRegister() {
             class="q-gutter-md"
             @submit.prevent="onRegister"
         >
-            <h2>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
-                ></i>
-                {{ t('user.infos') }}
-            </h2>
-            <div class="form-container">
-                <div class="form">
-                    <FormAddUserFromLDAP v-if="isStaff"/>
+            <section>
+                <h2>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
+                    ></i>
+                    {{ t('user.infos') }}
+                </h2>
+                <div class="form-container">
+                    <div class="form">
+                        <FormAddUserFromLDAP v-if="isStaff"/>
 
-                    <QInput
-                        v-model="newUser.firstName"
-                        :disable="!!userStore.isCas || newUser.isCas"
-                        :label="t('forms.first-name') + ' *'"
-                        :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-                        aria-required="true"
-                        clearable
-                        filled
-                        lazy-rules
-                    />
-                    <QInput
-                        v-model="newUser.lastName"
-                        :disable="!!userStore.isCas || newUser.isCas"
-                        :label="t('forms.last-name') + ' *'"
-                        :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
-                        aria-required="true"
-                        clearable
-                        filled
-                        lazy-rules
-                    />
-                    <QInput
-                        v-model="newUser.email"
-                        :disable="!!userStore.isCas || newUser.isCas"
-                        :label="t('forms.email') + ' *'"
-                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
-                                 val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
-                        aria-required="true"
-                        clearable
-                        filled
-                        lazy-rules
-                    >
-                    </QInput>
-                    <QInput
-                        v-model="emailVerification"
-                        :disable="!!userStore.isCas || newUser.isCas"
-                        :label="t('forms.repeat-email') + ' *'"
-                        :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
-                        aria-required="true"
-                        clearable
-                        filled
-                        lazy-rules
-                    />
-                    <QInput
-                        v-model="newUser.phone"
-                        :hint="t('forms.hint-phone')"
-                        :label="t('forms.phone')"
-                        :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                        clearable
-                        filled
-                        lazy-rules
-                        type="tel"
-                    />
+                        <QInput
+                            v-model="newUser.firstName"
+                            :disable="!!userStore.isCas || newUser.isCas"
+                            :label="t('forms.first-name') + ' *'"
+                            :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+                            aria-required="true"
+                            clearable
+                            filled
+                            lazy-rules
+                        />
+                        <QInput
+                            v-model="newUser.lastName"
+                            :disable="!!userStore.isCas || newUser.isCas"
+                            :label="t('forms.last-name') + ' *'"
+                            :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+                            aria-required="true"
+                            clearable
+                            filled
+                            lazy-rules
+                        />
+                        <QInput
+                            v-model="newUser.email"
+                            :disable="!!userStore.isCas || newUser.isCas"
+                            :label="t('forms.email') + ' *'"
+                            :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
+                                     val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
+                            aria-required="true"
+                            clearable
+                            filled
+                            lazy-rules
+                            type="email"
+                        >
+                        </QInput>
+                        <QInput
+                            v-model="emailVerification"
+                            :disable="!!userStore.isCas || newUser.isCas"
+                            :label="t('forms.repeat-email') + ' *'"
+                            :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
+                            aria-required="true"
+                            clearable
+                            filled
+                            lazy-rules
+                            type="email"
+                        />
+                        <QInput
+                            v-model="newUser.phone"
+                            :hint="t('forms.hint-phone')"
+                            :label="t('forms.phone')"
+                            :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                            clearable
+                            filled
+                            lazy-rules
+                            type="tel"
+                        />
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <h2>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
-                ></i>
-                {{ t('user.groups') }}
-            </h2>
-            <div class="form-container">
-                <div class="form">
-                    <FormUserGroups/>
+            <section>
+                <h2>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
+                    ></i>
+                    {{ t('user.groups') }}
+                </h2>
+                <div class="form-container">
+                    <div class="form">
+                        <FormUserGroups/>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <h2>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
-                ></i>
-                {{ t('user.associations') }}
-            </h2>
-            <div class="form-container">
-                <div class="form">
-                    <FormRegisterUserAssociations v-if="groupCanJoinAssociation"/>
+            <section v-if="groupCanJoinAssociation">
+                <h2>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
+                    ></i>
+                    {{ t('user.associations') }}
+                </h2>
+                <div class="form-container">
+                    <div class="form">
+                        <FormRegisterUserAssociations/>
+                    </div>
                 </div>
-            </div>
+            </section>
+
 
             <section v-if="!isStaff">
                 <h2>

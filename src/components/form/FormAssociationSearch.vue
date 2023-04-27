@@ -79,7 +79,9 @@ async function clearSearch(apiSearch: boolean) {
                     v-model="settings.search"
                     :label="t('search')"
                     :placeholder="t('search')"
+                    clearable
                     filled
+                    inputmode="search"
                     lazy-rules
                 >
                     <template v-slot:prepend>
@@ -117,12 +119,14 @@ async function clearSearch(apiSearch: boolean) {
                         v-model="settings.name"
                         :label="t('directory.labels.association-name')"
                         class="full-size"
+                        clearable
                         filled
                         lazy-rules
                     />
                     <QInput
                         v-model="settings.acronym"
                         :label="t('directory.labels.association-acronym')"
+                        clearable
                         filled
                         lazy-rules
                     />
@@ -130,6 +134,7 @@ async function clearSearch(apiSearch: boolean) {
                         v-model="settings.institution"
                         :label="t('directory.labels.association-institution')"
                         :options="associationStore.institutionLabels"
+                        clearable
                         emit-value
                         filled
                         map-options
@@ -138,6 +143,7 @@ async function clearSearch(apiSearch: boolean) {
                         v-model="settings.institutionComponent"
                         :label="t('directory.labels.association-institution-component')"
                         :options="associationStore.institutionComponentLabels"
+                        clearable
                         emit-value
                         filled
                         map-options
@@ -146,6 +152,7 @@ async function clearSearch(apiSearch: boolean) {
                         v-model="settings.activityField"
                         :label="t('directory.labels.association-activity-field')"
                         :options="associationStore.activityFieldLabels"
+                        clearable
                         emit-value
                         filled
                         map-options

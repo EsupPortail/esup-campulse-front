@@ -22,7 +22,7 @@ import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {formatDate} = useUtility()
+const {formatDate, phoneRegex, urlRegex} = useUtility()
 const {
     checkChanges,
     altLogoText,
@@ -145,6 +145,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 // Update association logo details
 async function onChangeLogo(action: string) {
+    loading.show()
     try {
         if (action === 'update') {
             await changeAssociationLogo(newLogo.value, altLogo.value, null)
@@ -167,6 +168,7 @@ async function onChangeLogo(action: string) {
             })
         }
     }
+    loading.hide()
 }
 </script>
 
@@ -199,13 +201,17 @@ async function onChangeLogo(action: string) {
                 :label="t('association.logo.pickup')"
                 :max-file-size="MAX_FILE_SIZE"
                 accept="image/png, image/jpeg"
+                clearable
                 filled
                 @rejected="onLogoRejected"
             />
             <QInput
                 v-model="altLogo"
-                :label="t('association.logo.alt')"
+                :label="t('association.logo.alt') + ' *'"
+                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                aria-required="true"
                 class="logo-input"
+                clearable
                 filled
             />
 
@@ -231,33 +237,41 @@ async function onChangeLogo(action: string) {
                     <QInput
                         v-model="association.name"
                         :disable=!isStaff
-                        :label="t('association.labels.name')"
+                        :label="t('association.labels.name') + ' *'"
                         :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                        aria-required="true"
+                        clearable
                         filled
                         lazy-rules
                     />
                     <QInput
                         v-model="association.acronym"
                         :label="t('association.labels.acronym')"
+                        clearable
                         filled
                     />
                     <QInput
                         v-model="association.socialObject"
                         :hint="t('forms.social-object-hint')"
                         :label="t('association.labels.social-object')"
+                        clearable
                         filled
                         type="textarea"
                     />
                     <QInput
                         v-model="association.currentProjects"
                         :label="t('association.labels.current-projects')"
+                        clearable
                         filled
                         type="textarea"
                     />
                     <QSelect
                         v-model="association.institution"
-                        :label="t('association.labels.institution')"
+                        :label="t('association.labels.institution') + ' *'"
                         :options="associationStore.institutionLabels"
+                        :rules="[val => val || t('forms.fill-field')]"
+                        aria-required="true"
+                        clearable
                         emit-value
                         filled
                         map-options
@@ -266,14 +280,18 @@ async function onChangeLogo(action: string) {
                         v-model="association.institutionComponent"
                         :label="t('association.labels.institution-component')"
                         :options="associationStore.institutionComponentLabels"
+                        clearable
                         emit-value
                         filled
                         map-options
                     />
                     <QSelect
                         v-model="association.activityField"
-                        :label="t('association.labels.activity-field')"
+                        :label="t('association.labels.activity-field') + ' *'"
                         :options="associationStore.activityFieldLabels"
+                        :rules="[val => val || t('forms.fill-field')]"
+                        aria-required="true"
+                        clearable
                         emit-value
                         filled
                         map-options
@@ -289,16 +307,21 @@ async function onChangeLogo(action: string) {
                     <QInput
                         v-model="association.presidentNames"
                         :label="t('association.labels.president-name')"
+                        clearable
                         filled
                     />
                     <QInput
                         v-model="association.presidentPhone"
                         :label="t('association.labels.president-phone')"
+                        :rules="association.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                        clearable
                         filled
+                        type="tel"
                     />
                     <QInput
                         v-model="association.lastGoaDate"
                         :label="t('association.labels.last-goa')"
+                        clearable
                         filled
                         type="date"
                     >
@@ -309,6 +332,7 @@ async function onChangeLogo(action: string) {
                     <QInput
                         v-model="association.siret"
                         :label="t('association.labels.siret')"
+                        clearable
                         filled
                         inputmode="numeric"
                     />
@@ -318,6 +342,7 @@ async function onChangeLogo(action: string) {
                         :hint="`${t('forms.amount-student-allowed-cannot-be-inferior-to-members')} : ${membersCount}`"
                         :label="t('association.labels.amount-members-allowed')"
                         :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
+                        clearable
                         filled
                         inputmode="numeric"
                         lazy-rules
@@ -327,6 +352,7 @@ async function onChangeLogo(action: string) {
                     <QInput
                         v-model="association.studentCount"
                         :label="t('forms.association-student-count')"
+                        clearable
                         filled
                         inputmode="numeric"
                         min="0"
@@ -343,23 +369,30 @@ async function onChangeLogo(action: string) {
                     <QInput
                         v-model="association.address"
                         :label="t('association.labels.address')"
+                        clearable
                         filled
                     />
                     <QInput
                         v-model="association.phone"
                         :label="t('association.labels.phone')"
+                        :rules="association.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                        clearable
                         filled
                         type="tel"
                     />
                     <QInput
                         v-model="association.email"
                         :label="t('association.labels.mail')"
+                        :rules="association.email ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
+                        clearable
                         filled
                         type="email"
                     />
                     <QInput
                         v-model="association.website"
                         :label="t('association.labels.website')"
+                        :rules="association.website ? [val => urlRegex.test(val) || t('forms.required-valid-url')] : []"
+                        clearable
                         filled
                         type="url"
                     />
