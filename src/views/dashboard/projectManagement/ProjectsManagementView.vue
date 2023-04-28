@@ -170,7 +170,7 @@ const columns: QTableProps['columns'] = [
                                 key="lastModifiedDate"
                                 :props="props"
                             >
-                                {{ formatDate(props.row.editionDate).split('-').reverse().join('/') }}
+                                {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
                             </QTd>
                             <QTd
                                 key="status"

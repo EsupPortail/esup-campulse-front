@@ -31,16 +31,28 @@ npm run dev
 
 ## Commandes utiles
 
+### Mettre à jour les versions mineures des dépendances
+
+```sh
+npm update --save
+```
+
+### Obtenir la liste des dépendances dont une mise à jour majeure est disponible
+
+```sh
+npm outdated
+```
+
+### Vérifier le linting
+
+```sh
+npm run lint
+```
+
 ### Vérifier le typage
 
 ```sh
 npm run typecheck
-```
-
-### Vérifier le lint
-
-```sh
-npm run lint
 ```
 
 ### Lancer les tests avec Vitest
@@ -61,12 +73,14 @@ Consulter le [wiki d'aide au développement](https://git.unistra.fr/di/plan_a/fr
 
 ### Avant un commit
 
-- Vérifier que les tests passent bien.
+- Vérifier le linting.
 - Vérifier le typage.
+- Vérifier que les tests passent bien.
 
 ```sh
-npm run test:unit
+npm run lint
 npm run typecheck
+npm run test:unit
 ```
 
 ### Déployer sur le serveur de test
