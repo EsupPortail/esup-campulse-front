@@ -45,10 +45,25 @@ watch(() => contentStore.about.length, () => {
 </script>
 
 <template>
-    <p>{{ contactInfo?.body }}</p>
-    <p>{{ contactList?.body }}</p>
+    <section
+        :class="['form-container', 'contact-section']"
+    >
+        <div class="contact-title">
+            <h4>{{ contactInfo?.header }}</h4>
+            <span>{{ contactInfo?.body }}</span>
+        </div>
+
+        <div class="contact-list">
+            <h5 class="display-row">Gestionnaires</h5>
+            <div>
+                {{ contactInfo?.label }}
+            </div>
+        </div>
+    </section>
 </template>
 
 
 <style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/contact.scss';
 </style>

@@ -128,6 +128,7 @@ watch(() => content.about.length, () => {
 <style lang="scss">
 @import '@/assets/styles/home.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/styles/contact.scss';
 
 .home-section {
     padding: 2rem 0;

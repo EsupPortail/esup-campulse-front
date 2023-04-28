@@ -66,9 +66,9 @@
     background: $annuaireColor;
   }
 
-  &.q-field--error .q-field__control::after {
-    // background: $errorPanelColor;
-  }
+  /*&.q-field--error .q-field__control::after {
+    background: $errorPanelColor;
+  }*/
 
   &.q-field--highlighted .q-field__label {
     color: $annuaireColorText;

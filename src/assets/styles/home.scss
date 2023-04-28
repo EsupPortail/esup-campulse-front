@@ -460,6 +460,10 @@
   }
 }
 
+
+/*
+  * About section
+ */
 .section-headtitle {
   text-align: center;
   padding: 2rem 0;
@@ -480,38 +484,6 @@
       .section-card {
         flex-direction: column;
       }
-    }
-  }
-}
-
-.contact-project {
-  justify-content: center;
-  text-align: center;
-
-  .form-container {
-    .contact-content {
-      display: flex;
-      flex-direction: column;
-      margin: 1rem;
-
-      .contact-link {
-        margin: 1rem auto;
-        text-decoration: none;
-        color: $textColor3;
-        font-size: $textSize;
-        background: $annuaireColor;
-        border-radius: 1rem;
-        padding: 1rem;
-
-        &:hover {
-          color: $textColor3;
-          background: $annuaireColorHover;
-        }
-      }
-    }
-
-    @media screen and (min-width: $responsiveWidth) {
-      flex-direction: column;
     }
   }
 }
