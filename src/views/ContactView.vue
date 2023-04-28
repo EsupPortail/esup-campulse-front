@@ -55,7 +55,7 @@ watch(() => contentStore.about.length, () => {
 
         <div class="contact-list">
             <h5 class="display-row">Gestionnaires</h5>
-            <div>
+            <div class="contact-item">
                 {{ contactInfo?.label }}
             </div>
         </div>

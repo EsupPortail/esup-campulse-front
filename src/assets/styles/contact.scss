@@ -56,6 +56,10 @@
     .display-row {
       width: $fullSize;
     }
+
+    .contact-item {
+      padding: 1rem;
+    }
   }
 
   @media screen and (min-width: $responsiveWidth) {
