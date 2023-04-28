@@ -145,16 +145,3 @@ function clearOptions() {
         </QCardSection>
     </QCard>
 </template>
-
-<style lang="sass" scoped>
-.flex-group
-    display: flex
-    gap: 2rem
-    align-items: center
-    padding: 1.5rem 0
-
-    .q-btn
-        padding: 1rem 2rem
-
-</style>
-

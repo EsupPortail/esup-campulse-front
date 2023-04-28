@@ -49,7 +49,7 @@ async function onDeleteUserAssociation() {
     <QBtn
         :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
         color="delete"
-        icon="mdi-delete"
+        icon="mdi-arrow-left-box"
         @click="confirmation = true"
     />
 
@@ -61,23 +61,23 @@ async function onDeleteUserAssociation() {
             <QCardSection class="row items-center">
                 <span
                     class="q-ml-sm"
-                >{{
-                    props.editedByStaff ? t("dashboard.association-user.confirm-delete") : t("dashboard.association-user.confirm-delete-self")
-                }}</span>
+                >
+                    {{ props.editedByStaff ? t("dashboard.association-user.confirm-delete") : t("dashboard.association-user.confirm-delete-self") }}
+                </span>
             </QCardSection>
 
             <QCardActions align="right">
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"
-                    color="secondary"
+                    color="primary"
                     icon="mdi-arrow-left-circle"
                 />
                 <QBtn
                     v-close-popup
                     :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
                     color="delete"
-                    icon="mdi-delete"
+                    icon="mdi-arrow-left-box"
                     @click="onDeleteUserAssociation"
                 />
             </QCardActions>

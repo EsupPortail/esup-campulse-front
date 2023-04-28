@@ -232,10 +232,4 @@ async function onRegister() {
 <style lang="scss">
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-
-.q-form {
-    .q-btn {
-        justify-content: center;
-    }
-}
 </style>
