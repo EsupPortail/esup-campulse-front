@@ -108,9 +108,19 @@ watch(() => content.about.length, () => {
             </div>
         </div>
 
-        <div>
-            <div class="section-headtitle">
-                <h3>{{ t('about.contact') }}</h3>
+        <div class="contact-project">
+            <div class="form-container">
+                <div class="section-headtitle">
+                    <h3>{{ t('about.contact') }}</h3>
+                </div>
+
+                <div class="contact-content">
+                    <h4>{{ t('about.intro-contact') }}</h4>
+
+                    <RouterLink :to="{name: 'Contact'}" class="contact-link">
+                        {{ t('about.contact-us') }}
+                    </RouterLink>
+                </div>
             </div>
         </div>
     </section>
@@ -129,6 +139,8 @@ watch(() => content.about.length, () => {
 }
 
 .form-container {
+    padding: 2rem 0;
+
     &:nth-child(1), &:nth-child(2), &:nth-child(3) {
         &::before, &::after {
             background: none;

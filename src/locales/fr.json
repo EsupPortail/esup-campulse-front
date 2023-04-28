@@ -6,7 +6,9 @@
   "about": {
     "presentation": "Présentation",
     "services": "Services de l'application",
-    "contact": "Contact"
+    "contact": "Contact",
+    "intro-contact": "Un soucis, un bogue, une idée ?",
+    "contact-us": "Contactez-nous"
   },
   "account": "Compte",
   "account-validated": "Compte validé",
