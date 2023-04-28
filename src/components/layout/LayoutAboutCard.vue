@@ -36,9 +36,8 @@ defineProps({
 .section-title {
     p {
         font-size: 2.5rem;
-        line-height: 3rem;
-        text-transform: uppercase;
         font-weight: $semibold-weight;
+        line-height: 3rem;
     }
 }
 

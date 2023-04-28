@@ -34,20 +34,10 @@ defineProps({
 @import '@/assets/_variables.scss';
 
 .home-section {
-    .section-card {
-        .section-title {
-            h4 {
-                text-align: center;
-                font-weight: $semibold-weight;
-            }
-        }
-    }
-
-    @media screen and (min-width: $responsiveWidth) {
-        &.home-section-charte {
-            .service-card {
-                flex-direction: column !important;
-            }
+    .section-title {
+        h4 {
+            text-align: center;
+            font-weight: $semibold-weight;
         }
     }
 }

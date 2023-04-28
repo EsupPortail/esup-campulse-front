@@ -55,7 +55,6 @@ watch(() => content.about.length, () => {
 
 <template>
     <section id="home-section">
-
         <div class="presentation-project">
             <div :class="['section-headtitle', 'form-container']">
                 <h3>{{ t('about.presentation') }}</h3>
