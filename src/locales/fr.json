@@ -5,7 +5,8 @@
   },
   "about": {
     "presentation": "Présentation",
-    "services": "Services de l'application"
+    "services": "Services de l'application",
+    "contact": "Contact"
   },
   "account": "Compte",
   "account-validated": "Compte validé",

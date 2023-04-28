@@ -55,6 +55,7 @@ watch(() => content.about.length, () => {
 
 <template>
     <section id="home-section">
+
         <div class="presentation-project">
             <div :class="['section-headtitle', 'form-container']">
                 <h3>{{ t('about.presentation') }}</h3>
@@ -79,34 +80,39 @@ watch(() => content.about.length, () => {
             />
         </div>
 
-        <div class="section-headtitle">
-            <h3>{{ t('about.services') }}</h3>
+        <div class="services-project">
+            <div class="section-headtitle">
+                <h3>{{ t('about.services') }}</h3>
+            </div>
+
+            <div class="services-section">
+                <ServiceCard
+                    :body="homeAssociation?.body"
+                    :cssClass="content.cards[0].cssClass"
+                    :footer="homeAssociation?.header"
+                    :header="homeAssociation?.header"
+                />
+
+                <ServiceCard
+                    :body="homeCharter?.body"
+                    :cssClass="content.cards[1].cssClass"
+                    :footer="homeCharter?.header"
+                    :header="homeCharter?.header"
+                />
+
+                <ServiceCard
+                    :body="homeProject?.body"
+                    :cssClass="content.cards[2].cssClass"
+                    :footer="homeProject?.footer"
+                    :header="homeProject?.header"
+                />
+            </div>
         </div>
 
-        <div class="services-section">
-            <ServiceCard
-                :body="homeAssociation?.body"
-                :cssClass="content.cards[0].cssClass"
-                :footer="homeAssociation?.header"
-                :header="homeAssociation?.header"
-            />
-
-            <ServiceCard
-                :body="homeCharter?.body"
-                :cssClass="content.cards[1].cssClass"
-                :footer="homeCharter?.header"
-                :header="homeCharter?.header"
-            />
-
-            <ServiceCard
-                :body="homeProject?.body"
-                :cssClass="content.cards[2].cssClass"
-                :footer="homeProject?.footer"
-                :header="homeProject?.header"
-            />
-        </div>
-
-        <div class="contact">
+        <div>
+            <div class="section-headtitle">
+                <h3>{{ t('about.contact') }}</h3>
+            </div>
         </div>
     </section>
 </template>
