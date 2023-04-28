@@ -145,3 +145,9 @@ function clearOptions() {
         </QCardSection>
     </QCard>
 </template>
+
+<style lang="scss">
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/associations.scss';
+</style>
+

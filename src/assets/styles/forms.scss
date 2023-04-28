@@ -29,6 +29,12 @@
   @media screen and (min-width: $responsiveWidth) {
     display: flex;
     justify-content: center;
+
+    .form {
+      display: block;
+      margin: auto;
+      width: $halfSize;
+    }
   }
 }
 
