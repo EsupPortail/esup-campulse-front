@@ -32,9 +32,9 @@ export const useProjectStore = defineStore('projectStore', {
     },
     actions: {
         async getProjectCategoryNames() {
-            const {axiosAuthenticated} = useAxios()
             if (!this.projectCategoryNames.length) {
-                this.projectCategoryNames = (await axiosAuthenticated.get<ProjectCategoryName[]>('/projects/categories/names')).data
+                const {axiosPublic} = useAxios()
+                this.projectCategoryNames = (await axiosPublic.get<ProjectCategoryName[]>('/projects/categories/names')).data
             }
         },
 
@@ -48,12 +48,12 @@ export const useProjectStore = defineStore('projectStore', {
             this.project = (await axiosAuthenticated.get<Project>(`/projects/${id}`)).data
         },
 
-        async getProjectCommissionDates(asManager: boolean, commissionDate: number | undefined) {
+        async getProjectCommissionDates(asManager: boolean, commission: number | undefined) {
             const {axiosAuthenticated} = useAxios()
             let url = ''
             if (asManager) {
                 url = '/projects/commission_dates'
-                if (commissionDate) url += `?commission_id=${commissionDate}`
+                if (commission) url += `?commission_id=${commission}`
             } else {
                 url = `/projects/${this.project?.id}/commission_dates`
             }
@@ -67,23 +67,11 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getProjects(archived: boolean, commissionDates: number[]) {
             const {axiosAuthenticated} = useAxios()
-            const unarchivedStatus = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_PROCESSING']
-            const archivedStatus = ['PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED']
-            const url = `/projects/?project_statuses=${archived ? archivedStatus.join(',') :
-                unarchivedStatus.join(',')}&commission_dates=${commissionDates.join(',')}`
+            const unarchivedStatus = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_PROCESSING'].join(',')
+            const archivedStatus = ['PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED'].join(',')
+            let url = `/projects/?project_statuses=${archived ? archivedStatus : unarchivedStatus}`
+            if (commissionDates.length) url += `&commission_dates=${commissionDates.join(',')}`
             this.projects = (await axiosAuthenticated.get<ProjectList[]>(url)).data
-        },
-
-        /*async getProjectsPerCommissionOrInstitutions(commission: number[], institutions: number[]) {
-            const {axiosAuthenticated} = useAxios()
-            if (commissionDates.length || institutions.length) {
-                let urlString = '/projects/?'
-                const urlArray = []
-                if (commissionDates.length) urlArray.push(`commission_dates=${commissionDates.join(',')}`)
-                if (institutions.length) urlArray.push(`institutions=${institutions.join(',')}`)
-                urlString += urlArray.join('&')
-                this.projects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
-            }
-        }*/
+        }
     }
 })
