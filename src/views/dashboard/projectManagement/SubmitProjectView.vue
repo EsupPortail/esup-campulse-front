@@ -242,7 +242,7 @@ async function onGetCommissionDates() {
         try {
             await getCommissions()
             await getCommissionDates(true, false)
-            await initCommissionDatesLabels(isSite.value)
+            initCommissionDatesLabels(isSite.value)
             if (!newProject.value) {
                 await projectStore.getProjectCommissionDates(false, undefined)
                 initProjectCommissionDatesModel()
