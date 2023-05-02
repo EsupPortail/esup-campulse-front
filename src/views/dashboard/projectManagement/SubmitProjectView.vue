@@ -75,13 +75,16 @@ onMounted(async () => {
     }
 
     initApplicant()
+    // If the applicant is an association and the person trying to submit project is not a member of the association,
+    // redirect to 404
     if (applicant.value === 'association') {
         const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))
-        if (association) associationName.value = association.name
+        if (association) {
+            associationName.value = association.name
+            initIsSite()
+        }
         else await router.push({name: '404'})
     }
-
-    initIsSite()
 
     await onGetProjectCategories()
     await onGetDocumentTypes()

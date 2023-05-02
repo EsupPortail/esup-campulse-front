@@ -69,7 +69,7 @@ const routes: RouteRecordRaw[] = [
                         path: 'association/:associationId',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
-                            requiresAddProjectPerm: true
+                            projectBearersOnly: true
                         },
                         children: [
                             {
@@ -95,7 +95,7 @@ const routes: RouteRecordRaw[] = [
                         path: 'individual',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
-                            requiresAddProjectPerm: true
+                            projectBearersOnly: true
                         },
                         children: [
                             {
@@ -124,7 +124,7 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),
                             breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
-                            requiresAddProjectPerm: true
+                            projectBearersOnly: true
                         }
                     },
                     {
