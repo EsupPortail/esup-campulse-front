@@ -6,9 +6,9 @@ export const _groups: Group[] = [
         name: 'MANAGER_GENERAL',
         isPublic: false,
         permissions: [
-            // associations
             'add_association',
             'add_association_any_institution',
+            'add_association_all_fields',
             'change_association',
             'change_association_any_institution',
             'change_association_all_fields',
@@ -16,13 +16,15 @@ export const _groups: Group[] = [
             'delete_association_any_institution',
             'view_association_not_enabled',
             'view_association_not_public',
-            // commissions
             'add_commissiondate',
             'delete_commissiondate',
-            // documents
+            'change_content',
             'add_document',
             'add_document_any_commission',
             'add_document_any_institution',
+            'change_document',
+            'change_document_any_commission',
+            'change_document_any_institution',
             'delete_document',
             'delete_document_any_commission',
             'delete_document_any_institution',
@@ -33,18 +35,21 @@ export const _groups: Group[] = [
             'delete_documentupload_all',
             'view_documentupload',
             'view_documentupload_all',
-            // projects
             'change_project',
-            'change_project_restricted_fields',
-            'change_projectcommissiondate',
-            'change_projectcommissiondate_restricted_fields',
+            'change_project_as_validator',
             'view_project',
-            'view_project_all',
+            'view_project_any_commission',
             'view_projectcategory',
-            'view_projectcategory_all',
+            'view_projectcategory_any_commission',
+            'add_projectcomment',
+            'change_projectcomment',
+            'delete_projectcomment',
+            'view_projectcomment',
+            'view_projectcomment_any_commission',
+            'change_projectcommissiondate',
+            'change_projectcommissiondate_as_validator',
             'view_projectcommissiondate',
-            'view_projectcommissiondate_all',
-            // users
+            'view_projectcommissiondate_any_commission',
             'add_user',
             'add_user_misc',
             'change_user',
@@ -65,7 +70,7 @@ export const _groups: Group[] = [
             'delete_groupinstitutioncommissionuser',
             'delete_groupinstitutioncommissionuser_any_group',
             'view_groupinstitutioncommissionuser',
-            'view_groupinstitutioncommissionuser_any_group',
+            'view_groupinstitutioncommissionuser_any_group'
         ]
     },
     {
@@ -73,18 +78,17 @@ export const _groups: Group[] = [
         name: 'MANAGER_INSTITUTION',
         isPublic: false,
         permissions: [
-            // associations
             'add_association',
+            'add_association_all_fields',
             'change_association',
             'change_association_all_fields',
             'delete_association',
             'view_association_not_enabled',
             'view_association_not_public',
-            // commissions
             'add_commissiondate',
             'delete_commissiondate',
-            // documents
             'add_document',
+            'change_document',
             'delete_document',
             'add_documentupload',
             'add_documentupload_all',
@@ -93,18 +97,17 @@ export const _groups: Group[] = [
             'delete_documentupload_all',
             'view_documentupload',
             'view_documentupload_all',
-            // projects
             'change_project',
-            'change_project_restricted_fields',
-            'change_projectcommissiondate',
-            'change_projectcommissiondate_restricted_fields',
+            'change_project_as_validator',
             'view_project',
-            'view_project_all',
             'view_projectcategory',
-            'view_projectcategory_all',
+            'add_projectcomment',
+            'change_projectcomment',
+            'delete_projectcomment',
+            'view_projectcomment',
+            'change_projectcommissiondate',
+            'change_projectcommissiondate_as_validator',
             'view_projectcommissiondate',
-            'view_projectcommissiondate_all',
-            // users
             'add_user',
             'change_user',
             'change_user_all_fields',
@@ -117,7 +120,7 @@ export const _groups: Group[] = [
             'view_associationuser_anyone',
             'delete_groupinstitutioncommissionuser',
             'view_groupinstitutioncommissionuser',
-            'view_groupinstitutioncommissionuser_any_group',
+            'view_groupinstitutioncommissionuser_any_group'
         ]
     },
     {
@@ -125,18 +128,16 @@ export const _groups: Group[] = [
         name: 'MANAGER_MISC',
         isPublic: false,
         permissions: [
-            // associations
             'add_association',
             'change_association',
             'change_association_all_fields',
             'delete_association',
             'view_association_not_enabled',
             'view_association_not_public',
-            // commissions
             'add_commissiondate',
             'delete_commissiondate',
-            // documents
             'add_document',
+            'change_document',
             'delete_document',
             'add_documentupload',
             'add_documentupload_all',
@@ -145,18 +146,17 @@ export const _groups: Group[] = [
             'delete_documentupload_all',
             'view_documentupload',
             'view_documentupload_all',
-            // projects
             'change_project',
-            'change_project_restricted_fields',
-            'change_projectcommissiondate',
-            'change_projectcommissiondate_restricted_fields',
+            'change_project_as_validator',
             'view_project',
-            'view_project_all',
             'view_projectcategory',
-            'view_projectcategory_all',
+            'add_projectcomment',
+            'change_projectcomment',
+            'delete_projectcomment',
+            'view_projectcomment',
+            'change_projectcommissiondate',
+            'change_projectcommissiondate_as_validator',
             'view_projectcommissiondate',
-            'view_projectcommissiondate_all',
-            // users
             'add_user',
             'add_user_misc',
             'change_user',
@@ -172,7 +172,7 @@ export const _groups: Group[] = [
             'view_associationuser_anyone',
             'delete_groupinstitutioncommissionuser',
             'view_groupinstitutioncommissionuser',
-            'view_groupinstitutioncommissionuser_any_group',
+            'view_groupinstitutioncommissionuser_any_group'
         ]
     },
     {
@@ -180,24 +180,18 @@ export const _groups: Group[] = [
         name: 'COMMISSION',
         isPublic: true,
         permissions: [
-            // associations
             'view_association_not_public',
-            // documents
             'view_documentupload',
             'view_documentupload_all',
-            // projects
             'view_project',
-            'view_project_all',
             'view_projectcategory',
-            'view_projectcategory_all',
+            'view_projectcomment',
             'view_projectcommissiondate',
-            'view_projectcommissiondate_all',
-            // users
             'view_user',
             'view_user_misc',
             'view_user_anyone',
             'view_associationuser',
-            'view_groupinstitutioncommissionuser',
+            'view_groupinstitutioncommissionuser'
         ]
     },
     {
@@ -205,31 +199,29 @@ export const _groups: Group[] = [
         name: 'STUDENT_INSTITUTION',
         isPublic: true,
         permissions: [
-            // associations
             'change_association',
-            // documents
             'add_documentupload',
             'delete_documentupload',
             'view_documentupload',
-            // projects
             'add_project',
+            'add_project_association',
             'change_project',
-            'change_project_basic_fields',
+            'change_project_as_bearer',
             'view_project',
             'add_projectcategory',
             'delete_projectcategory',
             'view_projectcategory',
+            'view_projectcomment',
             'add_projectcommissiondate',
             'change_projectcommissiondate',
-            'change_projectcommissiondate_basic_fields',
+            'change_projectcommissiondate_as_bearer',
             'delete_projectcommissiondate',
             'view_projectcommissiondate',
-            // users
             'view_user',
             'change_associationuser',
             'delete_associationuser',
             'view_associationuser',
-            'view_groupinstitutioncommissionuser',
+            'view_groupinstitutioncommissionuser'
         ]
     },
     {
@@ -237,25 +229,24 @@ export const _groups: Group[] = [
         name: 'STUDENT_MISC',
         isPublic: true,
         permissions: [
-            // documents
             'add_documentupload',
             'delete_documentupload',
             'view_documentupload',
-            // projects
             'add_project',
+            'add_project_user',
             'change_project',
-            'change_project_basic_fields',
+            'change_project_as_bearer',
             'view_project',
             'add_projectcategory',
             'delete_projectcategory',
             'view_projectcategory',
+            'view_projectcomment',
             'add_projectcommissiondate',
             'change_projectcommissiondate',
-            'change_projectcommissiondate_basic_fields',
+            'change_projectcommissiondate_as_bearer',
             'delete_projectcommissiondate',
             'view_projectcommissiondate',
-            // users
-            'view_groupinstitutioncommissionuser',
+            'view_groupinstitutioncommissionuser'
         ]
     },
 ]
