@@ -21,6 +21,14 @@ type MimeType =
     | 'application/vnd.oasis.opendocument.spreadsheet'
     | 'application/vnd.ms-excel'
     | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    | 'application/msword'
+    | 'application/vnd.oasis.opendocument.text'
+    | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    | 'application/x-7z-compressed'
+    | 'application/x-bzip2'
+    | 'application/x-rar-compressed'
+    | 'application/x-tar'
+    | 'application/zip'
 
 type DocumentProcessType =
     'CHARTER_ASSOCIATION'
