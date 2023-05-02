@@ -123,6 +123,7 @@ export default function () {
         initDocumentUploads,
         documentUploads,
         deleteDocumentUpload,
-        getFile
+        getFile,
+        DocumentUpload
     }
 }

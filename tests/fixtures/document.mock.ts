@@ -73,3 +73,28 @@ export const _documents: Document[] = [
         commission: 1
     }
 ]
+
+export const _processDocuments = [
+    {
+        id: 1,
+        document: 10,
+        isMultiple: true,
+        description: 'Document 10',
+        pathFile: ['PathFile Document 10 1/2', 'PathFile Document 10 2/2'],
+        isRequiredInProcess: false,
+        mimeTypes: [
+            'application/pdf'
+        ]
+    },
+    {
+        id: 2,
+        document: 11,
+        isMultiple: false,
+        description: 'Document 11',
+        pathFile: ['PathFile Document 11'],
+        isRequiredInProcess: true,
+        mimeTypes: [
+            'application/pdf'
+        ]
+    }
+]
