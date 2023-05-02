@@ -38,10 +38,10 @@ const {
     reInitSubmitProjectForm
 } = useSubmitProject()
 const {
-    getDocumentTypes,
+    getDocuments,
     initProcessProjectDocuments,
     processDocuments,
-    postProjectDocuments,
+    uploadDocuments,
     initDocumentUploads,
     documentUploads,
     deleteDocumentUpload,
@@ -202,8 +202,8 @@ async function onGetProjectCategories() {
 
 async function onGetDocumentTypes() {
     try {
-        await getDocumentTypes()
-        initProcessProjectDocuments('DOCUMENT_PROJECT')
+        await getDocuments('DOCUMENT_PROJECT')
+        initProcessProjectDocuments()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -283,8 +283,8 @@ function onGetProjectGoals() {
 // GET DATA FOR STEP 5
 async function onGetProjectDocuments() {
     try {
-        await getDocumentTypes()
-        initProcessProjectDocuments('DOCUMENT_PROJECT')
+        await getDocuments('DOCUMENT_PROJECT')
+        initProcessProjectDocuments()
         await projectStore.getProjectDocuments()
         initDocumentUploads()
     } catch (error) {
@@ -396,7 +396,7 @@ async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await postProjectDocuments(parseInt(route.params.associationId as string))
+            await uploadDocuments(parseInt(route.params.associationId as string))
             done5.value = true
             step.value = nextStep
         } catch (error) {

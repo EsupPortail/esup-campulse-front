@@ -1,28 +1,25 @@
 import {ref} from 'vue'
-import type {Document, ProcessDocument} from '#/documents'
+import type {Document, DocumentProcessType, ProcessDocument} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useUserStore} from '@/stores/useUserStore'
 
-const documentTypes = ref<Document[]>([])
+const documents = ref<Document[]>([])
 
 const processDocuments = ref<ProcessDocument[]>([])
 
 const documentUploads = ref<ProcessDocument[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
 
-    // INIT
-
-    // REQUIRED DOCUMENTS PER PROCESS
-    const initProcessProjectDocuments = (process: 'DOCUMENT_PROJECT') => {
+    // Init documents to work on
+    const initProcessProjectDocuments = () => {
         processDocuments.value = []
-        const documents = documentTypes.value.filter(obj => obj.processType === process)
-        documents.forEach((document) => {
+        documents.value.forEach((document) => {
             processDocuments.value.push({
                 document: document.id,
                 isMultiple: document.isMultiple,
@@ -49,11 +46,11 @@ export default function() {
         })
     }
 
-    // GET
-    async function getDocumentTypes() {
-        if (!documentTypes.value?.length) {
-            documentTypes.value = (await axiosPublic.get<Document[]>('/documents/')).data
-        }
+    // Get documents
+    async function getDocuments(process: DocumentProcessType | 'all') {
+        let url = '/documents/'
+        if (process !== 'all') url += `?process_type=${process}`
+        documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
     class DocumentUpload {
@@ -82,8 +79,8 @@ export default function() {
         }
     }
 
-    // POST
-    async function postProjectDocuments(associationId: number | undefined) {
+    // Post document uploads
+    async function uploadDocuments(associationId: number | undefined) {
         for (let i = 0; i < processDocuments.value.length; i++) {
 
             if (processDocuments.value[i].pathFile) {
@@ -106,7 +103,7 @@ export default function() {
         }
     }
 
-    // DELETE
+    // Delete document
     async function deleteDocumentUpload(documentId: number) {
         await axiosAuthenticated.delete(`/documents/uploads/${documentId}`)
         const documentIndex = documentUploads.value.findIndex(obj => obj.id === documentId)
@@ -118,11 +115,11 @@ export default function() {
     }
 
     return {
-        getDocumentTypes,
-        documentTypes,
+        getDocuments,
+        documents,
         processDocuments,
         initProcessProjectDocuments,
-        postProjectDocuments,
+        uploadDocuments,
         initDocumentUploads,
         documentUploads,
         deleteDocumentUpload,
