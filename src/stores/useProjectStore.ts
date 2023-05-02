@@ -67,9 +67,8 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getProjects(archived: boolean, commissionDates: number[]) {
             const {axiosAuthenticated} = useAxios()
-            const unarchivedStatus = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED',
-                'PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_PROCESSING']
-            const archivedStatus = ['PROJECT_REJECTED', 'PROJECT_REVIEW_VALIDATED']
+            const unarchivedStatus = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_PROCESSING']
+            const archivedStatus = ['PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED']
             const url = `/projects/?project_statuses=${archived ? archivedStatus.join(',') :
                 unarchivedStatus.join(',')}&commission_dates=${commissionDates.join(',')}`
             this.projects = (await axiosAuthenticated.get<ProjectList[]>(url)).data
