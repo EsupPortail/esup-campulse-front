@@ -9,7 +9,7 @@ import type {
 } from '#/project'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
-import type {ProjectDocument} from '#/documents'
+import type {DocumentUpload} from '#/documents'
 
 
 export const useProjectStore = defineStore('projectStore', {
@@ -62,7 +62,7 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getProjectDocuments() {
             const {axiosAuthenticated} = useAxios()
-            this.projectDocuments = (await axiosAuthenticated.get<ProjectDocument[]>(`/documents/uploads?project_id=${this.project?.id}`)).data
+            this.projectDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?project_id=${this.project?.id}`)).data
         },
 
         async getProjects(archived: boolean, commissionDates: number[]) {

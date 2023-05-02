@@ -40,10 +40,11 @@ type DocumentProcessType =
     | 'DOCUMENT_PROJECT_REVIEW'
     | 'DOCUMENT_PROCESSING'
 
-export interface ProjectDocument {
+export interface DocumentUpload {
     id?: number,
     uploadDate?: string,
     pathFile: string,
+    size: number,
     documentUploadStatus?: DocumentUploadStatus,
     document: number,
     user?: number | null,

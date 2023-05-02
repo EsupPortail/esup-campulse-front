@@ -1,4 +1,4 @@
-import type {ProjectDocument} from '#/documents'
+import type {DocumentUpload} from '#/documents'
 
 export interface Project {
     id: number,
@@ -112,6 +112,6 @@ export interface ProjectStore {
     projects: ProjectList[],
     projectCategories: ProjectCategory[],
     projectCommissionDates: ProjectCommissionDate[],
-    projectDocuments: ProjectDocument[],
+    projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[]
 }
