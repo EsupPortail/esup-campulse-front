@@ -43,17 +43,17 @@ describe('useProjectDocuments', () => {
         vi.restoreAllMocks()
     })
 
-    const {documentTypes, getDocumentTypes} = useProjectDocuments()
+    const {documents, getDocuments} = useProjectDocuments()
     const {axiosPublic} = useAxios()
 
     describe('getDocumentTypes', () => {
         it('should get documents on /documents/', async () => {
             const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({data: _documents})
-            await getDocumentTypes()
+            await getDocuments('all')
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/documents/')
-            expect(documentTypes.value).toEqual(_documents)
+            expect(documents.value).toEqual(_documents)
         })
     })
 })

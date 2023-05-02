@@ -1,5 +1,5 @@
 import {ref} from 'vue'
-import type {Project, ProjectBasicInfos, ProjectBudget, ProjectCommissionDate, ProjectGoals} from '#/project'
+import type {ProjectBasicInfos, ProjectBudget, ProjectCommissionDate, ProjectGoals} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
@@ -305,7 +305,7 @@ export default function () {
     }
 
     async function submitProject() {
-        projectStore.project = (await axiosAuthenticated.patch<Project>(`/projects/${projectStore.project?.id}`, {projectStatus: 'PROJECT_PROCESSING'})).data
+        await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/status`, {projectStatus: 'PROJECT_PROCESSING'})
     }
 
 
