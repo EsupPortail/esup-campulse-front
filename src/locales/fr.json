@@ -136,6 +136,8 @@
     "manage-my-projects": "Gérer mes projets",
     "manage-projects": "Gérer les demandes de subventionnement",
     "manage-users": "Gérer les comptes",
+    "password-reset": "Mot de passe oublié",
+    "password-reset-confirm": "Modifier mon mot de passe",
     "project-recap": "Ré'CAPE du projet",
     "register": "Créer un compte",
     "submit-project": "Demande de subventionnement",
@@ -316,6 +318,7 @@
     "required-repeat-email": "Les deux adresses mail ne sont pas identiques.",
     "required-repeat-new-password": "Veuillez répéter votre nouveau mot de passe.",
     "required-status": "Veuillez choisir un statut. Maximum deux statuts autorisés.",
+    "required-strong-password": "Veuillez saisir un mot de passe plus fort.",
     "required-valid-url": "Veuillez saisir une URL valide.",
     "resend-email": "Renvoyer le mail de confirmation",
     "resend-email-cas": "Si vous êtes étudiant, étudiante ou personnel de l'Université de Strasbourg et que vous vous avez terminé votre inscription avec votre compte CAS, votre adresse email est déjà validée.",
@@ -430,6 +433,13 @@
     "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
     "policy": {
+      "labels": {
+        "very-low": "Très faible",
+        "low": "Faible",
+        "moderate": "Modéré",
+        "strong": "Fort",
+        "very-strong": "Très fort"
+      },
       "min-length": "caractères minimum",
       "must-contain": "Le mot de passe doit contenir :",
       "must-contain-lowercase-char": "Au moins une minuscule",

@@ -7,6 +7,8 @@ import {useRoute} from 'vue-router'
 import type {AxiosInstance} from 'axios'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useCommissions from '@/composables/useCommissions'
+// @ts-ignore Missing types when importing
+import zxcvbn from 'zxcvbn'
 
 // Used for local login
 const user = ref<LocalLogin>({
@@ -269,6 +271,7 @@ export default function () {
     function checkPasswordStrength(password: string) {
         const passwordChecker = {
             valid: true,
+            score: zxcvbn(password).score,
             tests: [
                 {
                     valid: password.length >= passwordMinLength,
@@ -297,9 +300,8 @@ export default function () {
                 }
             ]
         }
-        if (passwordChecker.tests.find(test => !test.valid)) passwordChecker.valid = false
+        if (passwordChecker.tests.find(test => !test.valid) || passwordChecker.score < 4) passwordChecker.valid = false
         return passwordChecker
-        // implement zxcvbn
     }
 
     return {

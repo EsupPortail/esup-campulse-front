@@ -90,8 +90,8 @@ interface LocalLogin {
 
 // Password reset
 export interface PasswordReset {
-    newPassword1: string,
-    newPassword2: string
+    newPassword1: string | null,
+    newPassword2: string | null
 }
 
 // Profile password edition
