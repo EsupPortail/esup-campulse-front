@@ -56,7 +56,7 @@ async function resetConfirm() {
         <div class="form">
             <QForm
                 class="q-gutter-md"
-                @submit="resetConfirm"
+                @submit.prevent="resetConfirm"
             >
                 <QInput
                     v-model="newPassword.newPassword1"
