@@ -380,7 +380,9 @@ const routes: RouteRecordRaw[] = [
                 name: 'PasswordReset',
                 component: () => import('@/views/PasswordResetView.vue'),
                 meta: {
-                    colorVariant: 'space-4'
+                    colorVariant: 'space-4',
+                    breadcrumb: i18n.global.t('breadcrumbs.password-reset'),
+                    title: i18n.global.t('breadcrumbs.password-reset'),
                 }
             },
             {
@@ -388,7 +390,9 @@ const routes: RouteRecordRaw[] = [
                 name: 'PasswordResetConfirm',
                 component: () => import('@/views/PasswordResetConfirmView.vue'),
                 meta: {
-                    colorVariant: 'space-4'
+                    colorVariant: 'space-4',
+                    breadcrumb: i18n.global.t('breadcrumbs.password-reset-confirm'),
+                    title: i18n.global.t('breadcrumbs.password-reset-confirm'),
                 }
             },
             // ADDED

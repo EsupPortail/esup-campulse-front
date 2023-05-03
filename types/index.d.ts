@@ -32,6 +32,18 @@ interface SelectLabel {
     label: string
 }
 
+export interface PasswordChecker {
+    valid: boolean,
+    score: number,
+    tests: PasswordCheckerTest[]
+}
+
+interface PasswordCheckerTest {
+    valid: boolean,
+    message: string,
+    additionalMessage: string
+}
+
 /*
 export interface aboutStore {
     id: number,
