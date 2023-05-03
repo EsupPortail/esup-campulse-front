@@ -8,6 +8,7 @@ import useSecurity from '@/composables/useSecurity'
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {passwordReset} = useSecurity()
+
 const email = ref<string>()
 const isReset = ref<boolean>(false)
 

@@ -429,6 +429,14 @@
   "password": {
     "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
+    "policy": {
+      "min-length": "caractères minimum",
+      "must-contain": "Le mot de passe doit contenir :",
+      "must-contain-lowercase-char": "Au moins une minuscule",
+      "must-contain-uppercase-char": "Au moins une majuscule",
+      "must-contain-digit": "Au moins un chiffre",
+      "must-contain-special-char": "Au moins un caractère spécial"
+    },
     "reset-password": "Mot de passe oublié"
   },
   "project": {

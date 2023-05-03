@@ -32,6 +32,10 @@ export default function () {
 
     const userStore = useUserStore()
 
+    const passwordMinLength = 8
+
+    const passwordSpecialChars = ['/', '*', '-', '+', '=', '.', ',', ';', ':', '!', '?', '&', '"', '\'', '(', ')', '_', '[', ']', '{', '}', '@', '%', '#', '$', '<', '>']
+
     /**
      * It takes two strings as arguments, and sets them as the values of two localStorage keys
      * @param {string} access - The access token that is used to authenticate the user.
@@ -262,6 +266,42 @@ export default function () {
         await axiosPublic.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
     }
 
+    function checkPasswordStrength(password: string) {
+        const passwordChecker = {
+            valid: true,
+            tests: [
+                {
+                    valid: password.length >= passwordMinLength,
+                    message: 'min-length',
+                    additionalMessage: ''
+                },
+                {
+                    valid: new RegExp('[a-z]').test(password),
+                    message: 'must-contain-lowercase-char',
+                    additionalMessage: ''
+                },
+                {
+                    valid: new RegExp('[A-Z]').test(password),
+                    message: 'must-contain-uppercase-char',
+                    additionalMessage: ''
+                },
+                {
+                    valid: new RegExp('[0-9]').test(password),
+                    message: 'must-contain-digit',
+                    additionalMessage: ''
+                },
+                {
+                    valid: new RegExp('[!-/:-@[-`{-~]').test(password),
+                    message: 'must-contain-special-char',
+                    additionalMessage: `(${passwordSpecialChars.join(' ')})`
+                }
+            ]
+        }
+        if (passwordChecker.tests.find(test => !test.valid)) passwordChecker.valid = false
+        return passwordChecker
+        // implement zxcvbn
+    }
+
     return {
         logIn,
         user,
@@ -285,6 +325,9 @@ export default function () {
         initNewUserData,
         getUsersFromCAS,
         CASUsers,
-        CASUserOptions
+        CASUserOptions,
+        checkPasswordStrength,
+        passwordSpecialChars,
+        passwordMinLength
     }
 }

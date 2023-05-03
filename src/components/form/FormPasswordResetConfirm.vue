@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useRoute} from 'vue-router'
 import {useQuasar} from 'quasar'
@@ -8,16 +8,23 @@ import router from '@/router'
 import useSecurity from '@/composables/useSecurity'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import type {PasswordChecker} from '#/index'
+import FormPasswordChecker from '@/components/form/FormPasswordChecker.vue'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
-const {passwordResetConfirm} = useSecurity()
+const {passwordResetConfirm, checkPasswordStrength} = useSecurity()
 const route = useRoute()
 const {catchHTTPError} = useErrors()
 
 const newPassword = ref<PasswordReset>({
     newPassword1: '',
     newPassword2: ''
+})
+
+const passwordChecker = ref<PasswordChecker>(checkPasswordStrength(''))
+watch(() => newPassword.value.newPassword1, () => {
+    passwordChecker.value = checkPasswordStrength(newPassword.value.newPassword1)
 })
 
 async function resetConfirm() {
@@ -70,6 +77,7 @@ async function resetConfirm() {
             lazy-rules
             type="password"
         />
+        <FormPasswordChecker :password-checker="passwordChecker"/>
         <QBtn
             :label="t('forms.send')"
             color="primary"

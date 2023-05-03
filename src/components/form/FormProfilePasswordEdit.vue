@@ -18,6 +18,7 @@ const editPassword = ref<PasswordEdit>({
     newPassword2: ''
 })
 
+
 const {axiosAuthenticated} = useAxios()
 
 async function passwordConfirm() {
