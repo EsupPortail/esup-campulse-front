@@ -509,7 +509,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     ref="stepper"
                     v-model="step"
                     animated
-                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
