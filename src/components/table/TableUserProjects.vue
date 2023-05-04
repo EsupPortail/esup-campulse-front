@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {QTableProps} from 'quasar'
+import type {QTableProps} from 'quasar'
 import {useProjectStore} from '@/stores/useProjectStore'
 import type {ProjectList} from '#/project'
 import useUtility from '@/composables/useUtility'

@@ -7,7 +7,7 @@ import {useAxios} from '@/composables/useAxios'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import FormPasswordChecker from '@/components/form/FormPasswordChecker.vue'
-import {PasswordChecker} from '#/index'
+import type {PasswordChecker} from '#/index'
 import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
