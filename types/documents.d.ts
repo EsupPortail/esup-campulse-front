@@ -11,7 +11,7 @@ export interface Document {
     mimeTypes: MimeType[],
     processType: DocumentProcessType,
     institution: number | null,
-    commission: number | null,
+    commission: number | null
 }
 
 type MimeType =
@@ -39,6 +39,7 @@ type DocumentProcessType =
     | 'DOCUMENT_PROJECT'
     | 'DOCUMENT_PROJECT_REVIEW'
     | 'DOCUMENT_PROCESSING'
+    | 'NO_PROCESS'
 
 export interface DocumentUpload {
     id?: number,

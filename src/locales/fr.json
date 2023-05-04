@@ -255,6 +255,12 @@
     }
   },
   "discard-changes": "Abandonner les modifications",
+  "documents": {
+    "choose-file": "Choisir un document",
+    "choose-name": "Nom du document",
+    "no-process-library": "Documents de la bibliothèque",
+    "upload-new": "Déposer un nouveau document"
+  },
   "edit": "Éditer",
   "end": "Fin",
   "footer": {
@@ -550,6 +556,7 @@
   "start": "Début",
   "status": "statut",
   "to": "Jusqu'au",
+  "update": "Mettre à jour",
   "user": {
     "associations": "Associations",
     "delete-association-role": "Note : Le rôle dans l'association sera supprimé après validation des changements.",
