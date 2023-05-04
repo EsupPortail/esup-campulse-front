@@ -81,6 +81,7 @@ onMounted(async () => {
         const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))
         if (association) {
             associationName.value = association.name
+            associationId.value = association.id
             initIsSite()
         }
         else await router.push({name: '404'})
@@ -124,6 +125,7 @@ watch(() => step.value === 5, async () => {
 const applicant = ref<'association' | 'user' | undefined>()
 
 const associationName = ref<string | undefined>('')
+const associationId = ref<number>()
 
 const newProject = ref<boolean>(true)
 
@@ -132,7 +134,7 @@ watch(() => projectStore.projectCommissionDates.length, () => {
     if (projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
 })
 
-const isSite = ref<boolean | undefined>(undefined)
+const isSite = ref<boolean>(false)
 
 // CONST
 const MAX_FILES = 10
@@ -146,7 +148,8 @@ const initApplicant = () => {
 
 // INIT IS SITE
 const initIsSite = () => {
-    isSite.value = applicant.value === 'association' && userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))?.isSite
+    const association = userStore.user?.associations.find(obj => obj.id === associationId.value)
+    if (association && association.isSite && applicant.value === 'association') isSite.value = true
 }
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
@@ -506,6 +509,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     ref="stepper"
                     v-model="step"
                     animated
+                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
