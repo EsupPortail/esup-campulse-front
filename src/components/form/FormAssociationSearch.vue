@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import {Association, AssociationSearch} from '#/association'
+import type {Association, AssociationSearch} from '#/association'
 import {ref, watch} from 'vue'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useI18n} from 'vue-i18n'
 import useAssociation from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
+import type {RouteRecordName} from 'vue-router'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const {t} = useI18n()
@@ -13,6 +14,9 @@ const associationStore = useAssociationStore()
 const {associations} = useAssociation()
 const {loading} = useQuasar()
 
+const props = defineProps<{
+    route: RouteRecordName
+}>()
 
 watch(() => associationStore.associations, () => {
     associations.value = associationStore.associations
@@ -29,7 +33,9 @@ const settings = ref<AssociationSearch>({
 
 async function onSearch() {
     loading.show()
-    associations.value = await simpleAssociationSearch(settings.value.search)
+    let isPublic = true
+    if (props.route === 'ManageAssociations') isPublic = false
+    associations.value = await simpleAssociationSearch(settings.value.search, isPublic)
     loading.hide()
 }
 
@@ -52,7 +58,8 @@ async function clearSearch(apiSearch: boolean) {
         activityField: null
     }
     if (apiSearch) {
-        await associationStore.getAssociations(true)
+        if (props.route === 'Associations') await associationStore.getAssociations(true)
+        else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
     } else {
         associations.value = associationStore.associations
     }
@@ -72,7 +79,9 @@ async function clearSearch(apiSearch: boolean) {
                     v-model="settings.search"
                     :label="t('search')"
                     :placeholder="t('search')"
+                    clearable
                     filled
+                    inputmode="search"
                     lazy-rules
                 >
                     <template v-slot:prepend>
@@ -110,12 +119,14 @@ async function clearSearch(apiSearch: boolean) {
                         v-model="settings.name"
                         :label="t('directory.labels.association-name')"
                         class="full-size"
+                        clearable
                         filled
                         lazy-rules
                     />
                     <QInput
                         v-model="settings.acronym"
                         :label="t('directory.labels.association-acronym')"
+                        clearable
                         filled
                         lazy-rules
                     />
@@ -123,6 +134,7 @@ async function clearSearch(apiSearch: boolean) {
                         v-model="settings.institution"
                         :label="t('directory.labels.association-institution')"
                         :options="associationStore.institutionLabels"
+                        clearable
                         emit-value
                         filled
                         map-options
@@ -131,6 +143,7 @@ async function clearSearch(apiSearch: boolean) {
                         v-model="settings.institutionComponent"
                         :label="t('directory.labels.association-institution-component')"
                         :options="associationStore.institutionComponentLabels"
+                        clearable
                         emit-value
                         filled
                         map-options
@@ -139,6 +152,7 @@ async function clearSearch(apiSearch: boolean) {
                         v-model="settings.activityField"
                         :label="t('directory.labels.association-activity-field')"
                         :options="associationStore.activityFieldLabels"
+                        clearable
                         emit-value
                         filled
                         map-options

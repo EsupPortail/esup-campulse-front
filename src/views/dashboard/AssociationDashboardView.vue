@@ -10,6 +10,7 @@ import type {AssociationUserDetail} from '#/user'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -18,18 +19,21 @@ const associationStore = useAssociationStore()
 const userStore = useUserStore()
 const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
 const {catchHTTPError} = useErrors()
+const {dynamicTitle} = useUtility()
 
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
     initAssociationUser()
     initAssociationUserRole()
+    dynamicTitle.value = association.value?.name
     loading.hide()
 })
 
 // TODO; find a way to avoid double request
 watch(() => route.path, async () => {
     if (route.name === 'AssociationDashboard') await onGetAssociationDetail()
+    dynamicTitle.value = association.value?.name
 })
 
 const association = ref<Association>()
@@ -274,10 +278,6 @@ async function onGetAssociationDetail() {
                     <div class="document-input-group-header">
                         <h3>Suivi du traitement des dossiers CAPE</h3>
                         <div class="flex-btn-group">
-                            <QBtn
-                                :label="t('project.submit-new-project')"
-                                :to="{name: 'SubmitProjectAssociation', params: {associationId: association?.id}}"
-                            />
                             <QBtn
                                 label="Gestion des dossiers CAPE"
                             />

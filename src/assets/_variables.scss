@@ -18,14 +18,14 @@ $baseFont: 'Titillium Web', sans-serif;
 $titleFont: 'Open Sans', sans-serif;
 
 // Font-size
-$formTitleMobileSize: 1.5rem;
-$formTitleComputerSize: 2rem;
+$headTitleMobileSize: 1.5rem;
+$headTitleComputerSize: 2rem;
 
 $homeTitleSize: 3.1rem;
 $homeSubTitleSize: 2.5rem;
 
 $titleSize: 2.3rem;
-$textSize: 1.2rem;
+$textSize: 1.1rem;
 
 
 // ---------------- Paddings ----------------
@@ -41,21 +41,14 @@ $iconHomeCardLeftMobilePosition: .04rem;
 $fullSize: 100%;
 $halfSize: 50%;
 
-// Line-height :
-$lineHeightSize: 2rem;
-
 // Logos
-$associationLogoSize: 9.375rem;
+$associationLogoSize: 9rem;
 $iconSize: 1.8rem;
+$logoSize: 3rem;
 
-// Home Banner
+// Home Banner q: quasar
 $qBannerInfoIconSize: 1.25rem;
 $qBannerDotsMobileSize: 1.063rem;
-
-// Login Page
-$LoginLogoMobileSize: 3.75rem;
-$LogoMobileSize: 3rem;
-$LogoComputerSize: 3.55rem;
 
 // Btn
 $buttonSize: 30%;
@@ -114,6 +107,7 @@ $dashboardColorActive: #27746d;
 $stateColor1: #5cc887;
 $stateColor2: #fba04c;
 $stateColor3: #e85b63;
+$stateColor4: #a2a2a2;
 
 $errorPanelColor: #db463d;
 $errorTextColor: #7a2520;

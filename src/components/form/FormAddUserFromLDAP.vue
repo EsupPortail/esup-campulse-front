@@ -112,7 +112,7 @@ function onReset() {
                     <div class="btn-group">
                         <QBtn
                             :label="t('cancel')"
-                            color="primary"
+                            color="secondary"
                             @click="onReset"
                         />
                         <QBtn

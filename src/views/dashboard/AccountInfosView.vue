@@ -130,6 +130,7 @@ async function onUpdateUserAssociations() {
                             @submit.prevent="onUpdateUserInfos"
                         >
                             <FormUserInfosEdition
+                                v-if="userStore.user"
                                 :edited-by-staff="false"
                                 :user="userStore.user"
                             />
@@ -144,7 +145,7 @@ async function onUpdateUserAssociations() {
         </QTabPanel>
 
         <QTabPanel name="associations">
-            <section class="association-cards dashboard-section">
+            <div class="dashboard-section">
                 <div class="form-title">
                     <h2>
                         <i
@@ -160,11 +161,11 @@ async function onUpdateUserAssociations() {
                         <FormDisplayUserAssociations/>
                     </div>
                 </div>
-            </section>
+            </div>
 
             <section
                 v-if="userAssociations.length < 5"
-                class="association-cards dashboard-section"
+                class="dashboard-section"
             >
                 <div class="form-title">
                     <h2>
@@ -182,20 +183,21 @@ async function onUpdateUserAssociations() {
                             @submit.prevent="onUpdateUserAssociations"
                         >
                             <FormRegisterUserAssociations/>
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                     :label="t('back')"
                                     :to="{ name: 'Dashboard' }"
                                     class="back-btn"
                                     icon="bi-chevron-compact-left"
                                 />
-                                <!--                                <QBtn
-                                                                    v-if="newAssociations.length > 0 && newAssociations[0].id"
-                                                                    :label="t('association.validate-new-associations')"
-                                                                    class="validate-button"
-                                                                    icon-right="bi-check2"
-                                                                    type="submit"
-                                                                />-->
+                                <!--
+                                <QBtn v-if="newAssociations.length > 0 && newAssociations[0].id"
+                                     :label="t('association.validate-new-associations')"
+                                     class="validate-button"
+                                     icon-right="bi-check2"
+                                     type="submit"
+                                />
+                                -->
                             </section>
                         </QForm>
                     </div>
@@ -211,21 +213,6 @@ async function onUpdateUserAssociations() {
 
 <style lang="scss">
 @import '@/assets/_variables.scss';
-
-.q-tab-panel {
-    padding: 0;
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    .q-btn {
-        font-size: 1.125rem;
-    }
-
-    .form-container {
-        .back-btn {
-            width: $buttonSize;
-            padding: 1rem;
-        }
-    }
-}
+@import '@/assets/styles/associations.scss';
+@import '@/assets/styles/dashboard.scss';
 </style>

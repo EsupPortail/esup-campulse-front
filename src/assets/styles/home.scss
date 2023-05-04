@@ -152,6 +152,10 @@
       z-index: 2;
 
       h2 {
+        line-height: 1rem;
+      }
+
+      h2 > span:first-child {
         display: flex;
         gap: 1rem;
         font-family: $titleFont;
@@ -160,14 +164,6 @@
         color: $annuaireColorText;
         text-transform: uppercase;
         line-height: 3.875rem;
-      }
-
-      .section-subtitle {
-        font-family: $titleFont;
-        font-size: $homeSubTitleSize;
-        font-weight: $normal-weight;
-        color: $annuaireColorText;
-        line-height: 3.5rem;
       }
 
       .section-icon {
@@ -309,7 +305,7 @@
       .section-title {
         text-align: right;
 
-        h2 {
+        h2 > span {
           flex-direction: row-reverse;
           color: $charteColorText;
         }

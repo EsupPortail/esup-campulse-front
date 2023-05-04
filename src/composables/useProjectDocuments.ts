@@ -1,11 +1,10 @@
 import {ref} from 'vue'
-import type {Document, ProcessDocument} from '#/documents'
+import type {Document, DocumentProcessType, ProcessDocument} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useUserStore} from '@/stores/useUserStore'
-import useDocuments from '@/composables/useDocuments'
 
-const documentTypes = ref<Document[]>([])
+const documents = ref<Document[]>([])
 
 const processDocuments = ref<ProcessDocument[]>([])
 
@@ -13,16 +12,14 @@ const documentUploads = ref<ProcessDocument[]>([])
 
 export default function () {
 
-    const {axiosAuthenticated} = useAxios()
+    const {axiosPublic, axiosAuthenticated} = useAxios()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
-    const {getDocuments, documents} = useDocuments()
 
-    // REQUIRED DOCUMENTS FOR THIS PROCESS
-    const initProcessProjectDocuments = async (process: 'DOCUMENT_PROJECT') => {
+    // Init documents to work on
+    const initProcessProjectDocuments = () => {
         processDocuments.value = []
-        await getDocuments()
-        documents.value.filter(obj => obj.processType === process).forEach((document) => {
+        documents.value.forEach((document) => {
             processDocuments.value.push({
                 document: document.id,
                 isMultiple: document.isMultiple,
@@ -42,11 +39,18 @@ export default function () {
                 documentUploads.value.push({
                     id: document.id,
                     document: document.document,
-                    pathFile: document.pathFile as string,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                     name: document.name as string
                 })
             }
         })
+    }
+
+    // Get documents
+    async function getDocuments(process: DocumentProcessType | 'all') {
+        let url = '/documents/'
+        if (process !== 'all') url += `?process_type=${process}`
+        documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
     class DocumentUpload {
@@ -75,8 +79,8 @@ export default function () {
         }
     }
 
-    // POST
-    async function postProjectDocuments(associationId: number | undefined) {
+    // Post document uploads
+    async function uploadDocuments(associationId: number | undefined) {
         for (let i = 0; i < processDocuments.value.length; i++) {
 
             if (processDocuments.value[i].pathFile) {
@@ -99,20 +103,27 @@ export default function () {
         }
     }
 
-    // DELETE
+    // Delete document
     async function deleteDocumentUpload(documentId: number) {
         await axiosAuthenticated.delete(`/documents/uploads/${documentId}`)
         const documentIndex = documentUploads.value.findIndex(obj => obj.id === documentId)
         documentUploads.value.splice(documentIndex, 1)
     }
 
+    async function getFile(pathFile: string) {
+        return (await axiosAuthenticated.get(pathFile, {responseType: 'blob'})).data
+    }
+
     return {
-        documentTypes,
+        getDocuments,
+        documents,
         processDocuments,
         initProcessProjectDocuments,
-        postProjectDocuments,
+        uploadDocuments,
         initDocumentUploads,
         documentUploads,
-        deleteDocumentUpload
+        deleteDocumentUpload,
+        getFile,
+        DocumentUpload
     }
 }

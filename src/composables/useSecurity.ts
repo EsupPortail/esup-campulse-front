@@ -7,6 +7,8 @@ import {useRoute} from 'vue-router'
 import type {AxiosInstance} from 'axios'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useCommissions from '@/composables/useCommissions'
+// @ts-ignore Missing types when importing
+import zxcvbn from 'zxcvbn'
 
 // Used for local login
 const user = ref<LocalLogin>({
@@ -31,6 +33,10 @@ watch(() => newUser.email, () => {
 export default function () {
 
     const userStore = useUserStore()
+
+    const passwordMinLength = 8
+
+    const passwordSpecialChars = ['/', '*', '-', '+', '=', '.', ',', ';', ':', '!', '?', '&', '"', '\'', '(', ')', '_', '[', ']', '{', '}', '@', '%', '#', '$', '<', '>']
 
     /**
      * It takes two strings as arguments, and sets them as the values of two localStorage keys
@@ -262,6 +268,42 @@ export default function () {
         await axiosPublic.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
     }
 
+    function checkPasswordStrength(password: string) {
+        const passwordChecker = {
+            valid: true,
+            score: zxcvbn(password).score,
+            tests: [
+                {
+                    valid: password.length >= passwordMinLength,
+                    message: 'min-length',
+                    additionalMessage: ''
+                },
+                {
+                    valid: new RegExp('[a-z]').test(password),
+                    message: 'must-contain-lowercase-char',
+                    additionalMessage: ''
+                },
+                {
+                    valid: new RegExp('[A-Z]').test(password),
+                    message: 'must-contain-uppercase-char',
+                    additionalMessage: ''
+                },
+                {
+                    valid: new RegExp('[0-9]').test(password),
+                    message: 'must-contain-digit',
+                    additionalMessage: ''
+                },
+                {
+                    valid: new RegExp('[!-/:-@[-`{-~]').test(password),
+                    message: 'must-contain-special-char',
+                    additionalMessage: `(${passwordSpecialChars.join(' ')})`
+                }
+            ]
+        }
+        if (passwordChecker.tests.find(test => !test.valid) || passwordChecker.score < 4) passwordChecker.valid = false
+        return passwordChecker
+    }
+
     return {
         logIn,
         user,
@@ -285,6 +327,9 @@ export default function () {
         initNewUserData,
         getUsersFromCAS,
         CASUsers,
-        CASUserOptions
+        CASUserOptions,
+        checkPasswordStrength,
+        passwordSpecialChars,
+        passwordMinLength
     }
 }

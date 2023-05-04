@@ -15,6 +15,7 @@ const {getUserAssociations} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 
 async function onLogOut() {
+    loading.show()
     try {
         await userStore.logOut()
         await router.push({name: 'Login'})
@@ -30,6 +31,7 @@ async function onLogOut() {
             })
         }
     }
+    loading.hide()
 }
 
 onMounted(async () => {

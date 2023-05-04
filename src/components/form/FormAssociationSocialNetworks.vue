@@ -34,22 +34,26 @@ onMounted(initValues)
                 <QInput
                     v-model="socialNetwork.type"
                     :hint="t('forms.social-network-type-hint')"
-                    :label="t('association.labels.social-network-type')"
+                    :label="t('association.labels.social-network-type') + ' *'"
                     :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                    aria-required="true"
+                    clearable
                     filled
                     lazy-rules
                 />
                 <QInput
                     v-model="socialNetwork.location"
                     :hint="t('forms.social-network-location-hint')"
-                    :label="t('association.labels.social-network-location')"
+                    :label="t('association.labels.social-network-location') + ' *'"
                     :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
+                    aria-required="true"
+                    clearable
                     filled
                     lazy-rules
                     type="url"
                 />
                 <QBtn
-                    :label="t('delete')"
+                    :aria-label="t('delete')"
                     class="delete-network-btn"
                     color="delete"
                     icon="mdi-delete"

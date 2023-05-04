@@ -32,6 +32,10 @@
   }
 }
 
+.q-tab-panel {
+  padding: 0;
+}
+
 // Quasar input fields
 .q-field {
   .q-field__control {
@@ -63,7 +67,7 @@
   }
 
   &.q-field--error .q-field__control::after {
-    background: currentColor;
+    // background: $errorPanelColor;
   }
 
   &.q-field--highlighted .q-field__label {
@@ -826,8 +830,6 @@ fieldset {
   }
 }
 
-// MARK: DO NOT DELETE
-
 // A title that can be located on top of a form wrapper.
 .form-title {
   display: flex;
@@ -841,14 +843,14 @@ fieldset {
   background-color: transparent;
 
   h2 {
-    font-size: $formTitleMobileSize;
+    font-size: $headTitleMobileSize;
     line-height: 2rem;
     text-transform: uppercase;
     color: $annuaireColorText;
 
     i {
       color: $annuaireColorText;
-      font-size: $formTitleMobileSize;
+      font-size: $headTitleMobileSize;
       margin-right: .875rem;
       position: relative;
       top: -0.1rem;
@@ -859,7 +861,7 @@ fieldset {
     padding: 0;
 
     h2 {
-      font-size: $formTitleComputerSize;
+      font-size: $headTitleComputerSize;
       line-height: 4rem;
     }
 
@@ -1299,6 +1301,10 @@ fieldset {
   .form-state-red {
     background-color: $stateColor3;
   }
+
+  .form-state-grey {
+    background-color: $stateColor4;
+  }
 }
 
 // Select elements used to choose an action to perform on selected table rows.
@@ -1570,7 +1576,7 @@ fieldset {
 // Form section title
 .section-title {
   color: $textColor1;
-  font-size: $formTitleMobileSize;
+  font-size: $headTitleMobileSize;
   text-transform: uppercase;
   margin-bottom: 1.4rem;
 

@@ -197,7 +197,7 @@ describe('useAssociation', () => {
                 siret: '0123456789',
                 website: 'https://asso-medecine.fr',
                 presidentNames: 'Jeanne Dupont',
-                lastGoaDate: '2023-01-24T00:00:00.000Z',
+                lastGoaDate: '2023-01-24',
                 institution: 2,
                 institutionComponent: 2,
                 activityField: 2,

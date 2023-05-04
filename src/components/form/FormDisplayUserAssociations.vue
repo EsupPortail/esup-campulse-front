@@ -55,7 +55,7 @@ async function onGetUserAssociations() {
         class="association-card"
     >
         <QCardSection>
-            <section>
+            <section id="association-card">
                 <h4 class="title-3">{{ association.name }}</h4>
                 <ul>
                     <li>
@@ -94,40 +94,5 @@ async function onGetUserAssociations() {
 
 <style lang="scss">
 @import '@/assets/styles/forms.scss';
-@import '@/assets/_variables.scss';
-
-section {
-    ul {
-        padding: 0 1rem 1rem 1rem;
-    }
-}
-
-// Change size of associations btn (quit or edit association)
-.btn-group {
-    display: flex;
-    gap: .5rem;
-
-    .q-btn {
-        font-size: 1rem;
-        padding: .5rem;
-        line-height: 1.5rem;
-    }
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    .form {
-        width: 70%;
-        margin: auto;
-    }
-
-    .btn-group {
-        display: flex;
-        gap: 1rem;
-
-        .q-btn {
-            font-size: 1.125rem;
-            padding: 1rem;
-        }
-    }
-}
+@import '@/assets/styles/associations.scss';
 </style>

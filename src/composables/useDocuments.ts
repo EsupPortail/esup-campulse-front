@@ -6,7 +6,7 @@ const documents = ref<Document[]>([])
 
 export default function () {
 
-    const {axiosPublic, axiosAuthenticated} = useAxios()
+    const {axiosPublic} = useAxios()
     //const projectStore = useProjectStore()
     //const userStore = useUserStore()
 

@@ -215,7 +215,7 @@ async function onConfirmChanges(emailType: string) {
                     v-if="switches === 'delete'"
                     v-close-popup
                     :label="t('association.delete')"
-                    color="red"
+                    color="delete"
                     icon="mdi-delete"
                     @click="onConfirmChanges('')"
                 />

@@ -15,9 +15,9 @@ import {
     _users
 } from '~/fixtures/user.mock'
 import useUserAssociations from '@/composables/useUserAssociations'
-import {useAxios} from '../useAxios'
-import {_association, _associationNames} from '../../../tests/fixtures/association.mock'
-import {useAssociationStore} from '../../stores/useAssociationStore'
+import {useAxios} from '@/composables/useAxios'
+import {_association, _associationNames} from '~/fixtures/association.mock'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({

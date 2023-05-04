@@ -103,11 +103,11 @@ export const useAssociationStore = defineStore('associationStore', {
         /**
          * It gets the names of all associations, or all public associations, or all associations that the user is a member
          * of
-         * @param {boolean} isPublic - boolean - If true, only public associations will be fetched. If false, only
+         * @param {boolean} publicRequest - boolean - If true, only public associations will be fetched. If false, only
          * associations that the user is a member of will be fetched.
          * @param allowNewUsers
          */
-        async getAssociationNames(isPublic: boolean, allowNewUsers: boolean) {
+        async getAssociationNames(publicRequest: boolean, allowNewUsers: boolean) {
             const {axiosPublic} = useAxios()
             const userStore = useUserStore()
             const {isStaff} = useUserGroups()
@@ -115,8 +115,10 @@ export const useAssociationStore = defineStore('associationStore', {
             let urlString = '/associations/names'
             const urlArray = []
 
-            if (isPublic) urlArray.push('is_public=true')
-            if (isStaff.value && userStore.userInstitutions?.length !== 0) urlArray.push(`institutions=${userStore.userInstitutions?.join(',')}`)
+            if (publicRequest) urlArray.push('is_public=true')
+            if (!publicRequest && isStaff.value && userStore.userInstitutions?.length !== 0) {
+                urlArray.push(`institutions=${userStore.userInstitutions?.join(',')}`)
+            }
             if (allowNewUsers) urlArray.push('allow_new_users=true')
 
             if (urlArray.length > 0) {

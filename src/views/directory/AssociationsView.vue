@@ -8,6 +8,7 @@ import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
+import {useRoute} from 'vue-router'
 
 const associationStore = useAssociationStore()
 const {altLogoText} = useAssociation()
@@ -15,6 +16,7 @@ const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {associations} = useAssociation()
+const route = useRoute()
 
 onMounted(async function () {
     loading.show()
@@ -103,7 +105,10 @@ async function loadAssociationsActivityFields() {
         </div>
     </section>
 
-    <FormAssociationSearch/>
+    <FormAssociationSearch
+        v-if="route.name"
+        :route="route.name"
+    />
 
     <section class="directory-list">
         <div class="form-container">

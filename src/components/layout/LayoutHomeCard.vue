@@ -25,8 +25,8 @@ defineProps({
             </div>
 
             <div class="section-title">
-                <div>
-                    <h2 :aria-label="titleLine1 + ' ' + titleLine2">
+                <h2 :aria-label="titleLine1 + ' ' + titleLine2">
+                    <span>
                         {{ titleLine1 }}
                         <span class="section-icon">
                             <span><i :class="[ iconClass ]"></i></span>
@@ -34,9 +34,9 @@ defineProps({
                             <span></span>
                             <span></span>
                         </span>
-                    </h2>
-                    <div class="section-subtitle">{{ titleLine2 }}</div>
-                </div>
+                    </span>
+                    <span class="title-2">{{ titleLine2 }}</span>
+                </h2>
                 <div class="section-info">
                     <p v-html="infoContent"></p>
                 </div>

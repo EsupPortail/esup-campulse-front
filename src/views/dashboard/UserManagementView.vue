@@ -7,7 +7,7 @@ import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUsers'
 import {useRoute} from 'vue-router'
 import useUserGroups from '@/composables/useUserGroups'
-import type {User} from '#/user'
+import type {User, UserGroup} from '#/user'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 
@@ -151,7 +151,7 @@ const columns: QTableProps['columns'] = [
                                         :key="index"
                                     >
                                         <QChip
-                                            v-if="props.row.groups.map((g) => g.groupId).indexOf(group.groupId) === index"
+                                            v-if="props.row.groups.map((g: UserGroup) => g.groupId).indexOf(group.groupId) === index"
                                         >
                                             {{
                                                 getGroupLiteral(group.groupId)
@@ -207,14 +207,16 @@ const columns: QTableProps['columns'] = [
 <style lang="scss">
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
-</style>
-
-<style lang="scss" scoped>
-ul {
-    margin-left: -40px;
-}
 
 li {
     list-style: none;
+}
+
+.q-table {
+    width: $fullSize;
+}
+
+.form {
+    width: auto;
 }
 </style>

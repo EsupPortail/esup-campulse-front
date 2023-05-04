@@ -76,7 +76,7 @@ async function onDeleteUserAssociation() {
                 <QBtn
                     v-close-popup
                     :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
-                    color="red"
+                    color="delete"
                     icon="mdi-delete"
                     @click="onDeleteUserAssociation"
                 />

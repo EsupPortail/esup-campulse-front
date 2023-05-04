@@ -1,21 +1,14 @@
-- 🎨 Restrict amount student allowed in association to always be superior or equal to student count
-- 🥅 Catch errors from API for group management
-- 🥅 Managers cannot give public and private roles at the same time
-- 🐛 Fix getComissionDates params on HomeView
-- 🎨 Clear all fields after route leave on project submit
-- 🚨 Converted SASS calls to SCSS.
-- 🔀 Merge SCSS into develop.
-- :lipstick: [BREAKING CHANGE] fix!: every page is now responsive
-- ✨ #64 Added only_next paramter to /commissions/commission_dates .
-- ✨ Added file size limit on association logo.
-- ✨ #64 Added file size limit on DocumentUpload.
-- 🎨 Add aria-required and phone regex on register
-- 🎨 Minor optimizations on QTable loading and association user role state in dashboard
-- 🩹 Fixing loading and association management for user account
-- 🗃️ #64 Changed fields in Project type.
-- 🌐 Changed texts on user associations dashboard.
-- 💄 Display associationUser role in associationDashboard
-- 💄 Fixed pagination problem on Association Directory.
-- 🌐 Changed Compte to Compte Validé.
-- 🌐 Changed Gérer to Déléguer.
-- 💄 Small fix on buttons.
+- 🩹 Optmize UX and fix buttons on FormRegisterUserAssociations
+- ✅ Update test in useAssociation
+- 🔧 Conf fixes for preprod.
+- 🎨 Add a proper 404 page
+- 📝 Added link to doc about vue-i18n optimization.
+- 🔧 Corrected Vue call in Vite config.
+- 🚧 Solution for unsafe-eval possibly found. Needs discussion.
+- 🔧 Trying to remove unsafe-eval CSP.
+- 🎨 Add toggle to view password on logIn
+- 🔧 Trying to remove unsafe-eval from CSP.
+- 🧪 Fonctionnal testing on LDAP registration #47 -> everything works fine
+- 🎨 Add loading on logIn and logOut
+- 🩹 Don't post other infos in POST /projects/ when empty
+- ♿️ Optimize UX and accessibility on association edition and registration forms

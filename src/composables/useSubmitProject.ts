@@ -1,9 +1,8 @@
-import {ref, watch} from 'vue'
-import type {Project, ProjectBasicInfos, ProjectBudget, ProjectCommissionDate, ProjectGoals} from '#/project'
+import {ref} from 'vue'
+import type {ProjectBasicInfos, ProjectBudget, ProjectCommissionDate, ProjectGoals} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
-import useCommissions from '@/composables/useCommissions'
 import {useUserStore} from '@/stores/useUserStore'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 
@@ -13,6 +12,10 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         plannedStartDate: '',
         plannedEndDate: '',
         location: '',
+        otherFirstName: '',
+        otherLastName: '',
+        otherEmail: '',
+        otherPhone: '',
         user: null,
         association: null
     }
@@ -51,7 +54,6 @@ export default function () {
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
-    const {commissionDatesLabels} = useCommissions()
     const {arraysAreEqual} = useUtility()
     const {processDocuments} = useProjectDocuments()
 
@@ -63,6 +65,10 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
         projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
         projectBasicInfos.value.location = projectStore.project?.location as string
+        projectBasicInfos.value.otherFirstName = projectStore.project?.otherFirstName as string
+        projectBasicInfos.value.otherLastName = projectStore.project?.otherLastName as string
+        projectBasicInfos.value.otherEmail = projectStore.project?.otherEmail as string
+        projectBasicInfos.value.otherPhone = projectStore.project?.otherPhone as string
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
     }
@@ -75,14 +81,6 @@ export default function () {
     const initProjectCommissionDatesModel = () => {
         projectCommissionDatesModel.value = projectStore.projectCommissionDates.map(commissionDate => commissionDate.commissionDate)
     }
-
-
-    // Used to check if only 1 commission date per commission is selected (submit project step 2)
-    watch(() => projectCommissionDatesModel.value.length, () => {
-        commissionDatesLabels.value.forEach((label) => {
-            label.disable = false
-        })
-    })
 
     const initProjectCommissionDates = () => {
         projectCommissionDates.value = JSON.parse(JSON.stringify(projectStore.projectCommissionDates))
@@ -116,6 +114,10 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = ''
         projectBasicInfos.value.plannedEndDate = ''
         projectBasicInfos.value.location = ''
+        projectBasicInfos.value.otherFirstName = ''
+        projectBasicInfos.value.otherLastName = ''
+        projectBasicInfos.value.otherEmail = ''
+        projectBasicInfos.value.otherPhone = ''
         projectBasicInfos.value.user = null
         projectBasicInfos.value.association = null
         projectCategories.value = []
@@ -138,10 +140,15 @@ export default function () {
     async function postNewProject(associationId: number | undefined) {
         if (associationId) projectBasicInfos.value.association = associationId
         else projectBasicInfos.value.user = userStore.user?.id as number
-        const dataToPost = JSON.parse(JSON.stringify(projectBasicInfos.value))
-        dataToPost.plannedStartDate += 'T00:00:00.000Z'
-        dataToPost.plannedEndDate += 'T00:00:00.000Z'
+        let dataToPost = {}
+        for (const [key, value] of Object.entries(projectBasicInfos.value)) {
+            if (value) {
+                dataToPost = Object.assign(dataToPost, {[key]: value + (key.includes('Date') ? 'T00:00:00.000Z' : '')})
+            }
+        }
         projectStore.project = (await axiosAuthenticated.post('/projects/', dataToPost)).data
+
+
     }
 
     // UPDATES = POSTS AND DELETES
@@ -205,6 +212,18 @@ export default function () {
         }
         if (projectBasicInfos.value.location !== projectStore.project?.location) {
             dataToPatch = Object.assign(dataToPatch, {['location']: projectBasicInfos.value.location})
+        }
+        if (projectBasicInfos.value.otherFirstName !== projectStore.project?.otherFirstName) {
+            dataToPatch = Object.assign(dataToPatch, {['otherFirstName']: projectBasicInfos.value.otherFirstName})
+        }
+        if (projectBasicInfos.value.otherLastName !== projectStore.project?.otherLastName) {
+            dataToPatch = Object.assign(dataToPatch, {['otherLastName']: projectBasicInfos.value.otherLastName})
+        }
+        if (projectBasicInfos.value.otherEmail !== projectStore.project?.otherEmail) {
+            dataToPatch = Object.assign(dataToPatch, {['otherEmail']: projectBasicInfos.value.otherEmail})
+        }
+        if (projectBasicInfos.value.otherPhone !== projectStore.project?.otherPhone) {
+            dataToPatch = Object.assign(dataToPatch, {['otherPhone']: projectBasicInfos.value.otherPhone})
         }
 
         if (Object.entries(dataToPatch).length) {
@@ -286,7 +305,7 @@ export default function () {
     }
 
     async function submitProject() {
-        projectStore.project = (await axiosAuthenticated.patch<Project>(`/projects/${projectStore.project?.id}`, {projectStatus: 'PROJECT_PROCESSING'})).data
+        await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/status`, {projectStatus: 'PROJECT_PROCESSING'})
     }
 
 

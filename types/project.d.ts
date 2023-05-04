@@ -1,4 +1,4 @@
-import type {ProjectDocument} from '#/documents'
+import type {DocumentUpload} from '#/documents'
 
 export interface Project {
     id: number,
@@ -6,10 +6,14 @@ export interface Project {
     plannedStartDate: string,
     plannedEndDate: string,
     location: string,
+    otherFirstName: string | null,
+    otherLastName: string | null,
+    otherEmail: string | null,
+    otherPhone: string | null,
     user: number | null,
     association: number | null,
-    categories: ProjectCategoryName[],
-    commissionDates: CommissionDate[],
+    categories?: ProjectCategoryName[],
+    commissionDates?: CommissionDate[],
     budgetPreviousEdition: number,
     targetAudience: string,
     amountStudentsAudience: number,
@@ -21,6 +25,15 @@ export interface Project {
     plannedActivities: string,
     preventionSafety: string,
     marketingCampaign: string,
+    projectStatus: ProjectStatus
+}
+
+export interface ProjectList {
+    id: number,
+    name: string,
+    association: number | null,
+    user: number | null,
+    editionDate: string,
     projectStatus: ProjectStatus
 }
 
@@ -57,6 +70,10 @@ export interface ProjectBasicInfos {
     plannedStartDate: string,
     plannedEndDate: string,
     location: string,
+    otherFirstName: string | null,
+    otherLastName: string | null,
+    otherEmail: string | null,
+    otherPhone: string | null,
     user: number | null,
     association: number | null
 }
@@ -92,8 +109,9 @@ export interface ProjectCommissionDate {
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
+    projects: ProjectList[],
     projectCategories: ProjectCategory[],
     projectCommissionDates: ProjectCommissionDate[],
-    projectDocuments: ProjectDocument[],
+    projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[]
 }

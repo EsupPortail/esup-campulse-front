@@ -142,7 +142,7 @@ onBeforeRouteLeave((to, from, next) => {
             </div>
             <div class="form-container">
                 <div class="form">
-                    <section class="form-page-navigation">
+                    <section class="btn-group">
                         <QBtn
                             :label="t('back')"
                             color="secondary"
@@ -173,12 +173,6 @@ onBeforeRouteLeave((to, from, next) => {
 ul {
     margin-left: 1rem;
     list-style: none;
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
 }
 
 @media screen and (min-width: $responsiveWidth) {

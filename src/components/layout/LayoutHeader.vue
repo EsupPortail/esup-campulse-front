@@ -4,15 +4,24 @@ import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 import {useI18n} from 'vue-i18n'
 import {ref, watch} from 'vue'
 import useColorVariants from '@/composables/useColorVariants'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const route = useRoute()
 const {colorVariant} = useColorVariants()
+const {dynamicTitle} = useUtility()
 
 const title = ref<string>(route.meta.title as string)
-watch(() => route.name, () => {
-    title.value = route.meta.title as string
-})
+
+const initTitle = () => {
+    if (!route.meta.title && dynamicTitle.value) {
+        title.value = dynamicTitle.value
+    } else {
+        title.value = route.meta.title as string
+    }
+}
+watch(() => route.name, initTitle)
+watch(() => dynamicTitle.value, initTitle)
 
 const mobileMenuVisible = ref(false)
 const siteName = import.meta.env.VITE_APP_SITE_NAME

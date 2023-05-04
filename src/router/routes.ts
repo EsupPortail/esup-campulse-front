@@ -33,8 +33,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'AssociationDetail',
                         component: () => import('@/views/directory/AssociationDetailView.vue'),
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.association-detail'),
-                            title: i18n.global.t('breadcrumbs.association-detail'),
+                            breadcrumb: i18n.global.t('breadcrumbs.association-detail')
                         }
                     }
                 ]
@@ -45,7 +44,9 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/CharterView.vue'),
                 meta: {
                     requiresAuth: true,
-                    colorVariant: 'space-2'
+                    colorVariant: 'space-2',
+                    title: i18n.global.t('breadcrumbs.charter'), // ADDED
+                    breadcrumb: i18n.global.t('breadcrumbs.charter') // ADDED
                 }
             },
             {
@@ -67,18 +68,9 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'association/:associationId',
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
-                            requiresAddProjectPerm: true
+                            projectBearersOnly: true
                         },
                         children: [
-                            {
-                                path: '',
-                                name: 'CommissionAssociationDashboard',
-                                component: () => import('@/views/dashboard/projectManagement/CommissionAssociationDashboardView.vue'),
-                                meta: {
-                                    title: i18n.global.t('breadcrumbs.manage-my-projects')
-                                }
-                            },
                             {
                                 path: 'submit-project/:projectId?',
                                 name: 'SubmitProjectAssociation',
@@ -94,17 +86,9 @@ const routes: RouteRecordRaw[] = [
                         path: 'individual',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
-                            requiresAddProjectPerm: true
+                            projectBearersOnly: true
                         },
                         children: [
-                            {
-                                path: '',
-                                name: 'CommissionIndividualDashboard',
-                                component: () => import('@/views/dashboard/projectManagement/CommissionIndividualDashboardView.vue'),
-                                meta: {
-                                    title: i18n.global.t('breadcrumbs.manage-my-projects')
-                                }
-                            },
                             {
                                 path: 'submit-project/:projectId?',
                                 name: 'SubmitProjectIndividual',
@@ -123,8 +107,18 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),
                             breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
-                            requiresAddProjectPerm: true
+                            projectBearersOnly: true
                         }
+                    },
+                    {
+                        path: 'manage-projects',
+                        name: 'ManageProjects',
+                        component: () => import('@/views/dashboard/projectManagement/ProjectsManagementView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.manage-projects'),
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-projects'),
+                            staffOnly: true
+                        },
                     }
                 ]
             },
@@ -168,10 +162,7 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: '',
                                 name: 'AssociationDashboard',
-                                component: () => import('@/views/dashboard/AssociationDashboardView.vue'),
-                                meta: {
-                                    title: i18n.global.t('breadcrumbs.association-dashboard'),
-                                }
+                                component: () => import('@/views/dashboard/AssociationDashboardView.vue')
                             },
                             {
                                 path: 'edit-my-association',
@@ -303,7 +294,6 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/AssociationEditionView.vue'),
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.edit-association'),
-                                    title: i18n.global.t('breadcrumbs.edit-association'),
                                     colorVariant: 'space-1'
                                 },
                             },
@@ -379,7 +369,9 @@ const routes: RouteRecordRaw[] = [
                 name: 'PasswordReset',
                 component: () => import('@/views/PasswordResetView.vue'),
                 meta: {
-                    colorVariant: 'space-4'
+                    colorVariant: 'space-4',
+                    breadcrumb: i18n.global.t('breadcrumbs.password-reset'),
+                    title: i18n.global.t('breadcrumbs.password-reset'),
                 }
             },
             {
@@ -387,19 +379,26 @@ const routes: RouteRecordRaw[] = [
                 name: 'PasswordResetConfirm',
                 component: () => import('@/views/PasswordResetConfirmView.vue'),
                 meta: {
-                    colorVariant: 'space-4'
+                    colorVariant: 'space-4',
+                    breadcrumb: i18n.global.t('breadcrumbs.password-reset-confirm'),
+                    title: i18n.global.t('breadcrumbs.password-reset-confirm'),
                 }
             },
-            // This must be last
+            // ADDED
             {
-                path: '404-not-found',
-                name: '404',
-                component: () => import('@/views/404View.vue')
+                path: 'about-page',
+                component: () => import('@/views/AboutView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.about'),
+                    breadcrumb: i18n.global.t('breadcrumbs.about')
+                }
             },
             {
-                path: '/:catchAll(.*)',
-                redirect: {
-                    name: '404'
+                path: 'contact-page',
+                component: () => import('@/views/ContactView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.contact'),
+                    breadcrumb: i18n.global.t('breadcrumbs.contact')
                 }
             }
         ]
@@ -416,10 +415,29 @@ const routes: RouteRecordRaw[] = [
         ]
     },
     {
+        path: '/404',
+        component: () => import('@/layouts/LayoutMinimalHeader.vue'),
+        children: [
+            {
+                path: '',
+                name: '404',
+                component: () => import('@/views/404View.vue')
+            }
+        ]
+    },
+    // TO DELETE AFTER DEVELOPMENT
+    {
         path: '/design-system',
         name: 'DesignSystem',
         component: () => import('@/views/DesignSystem.vue'),
     },
+    // This must be last
+    {
+        path: '/:catchAll(.*)',
+        redirect: {
+            name: '404'
+        }
+    }
 ]
 
 export default routes

@@ -38,12 +38,17 @@ const {
     reInitSubmitProjectForm
 } = useSubmitProject()
 const {
+<<<<<<< HEAD
+=======
+    getDocuments,
+>>>>>>> develop
     initProcessProjectDocuments,
     processDocuments,
-    postProjectDocuments,
+    uploadDocuments,
     initDocumentUploads,
     documentUploads,
-    deleteDocumentUpload
+    deleteDocumentUpload,
+    getFile
 } = useProjectDocuments()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
@@ -52,7 +57,7 @@ const {
     getCommissionDates,
     commissionDatesLabels,
     commissionDates,
-    initCommissionDates
+    initCommissionDatesLabels
 } = useCommissions()
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
@@ -73,13 +78,17 @@ onMounted(async () => {
     }
 
     initApplicant()
+    // If the applicant is an association and the person trying to submit project is not a member of the association,
+    // redirect to 404
     if (applicant.value === 'association') {
         const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))
-        if (association) associationName.value = association.name
+        if (association) {
+            associationName.value = association.name
+            associationId.value = association.id
+            initIsSite()
+        }
         else await router.push({name: '404'})
     }
-
-    initIsSite()
 
     await onGetProjectCategories()
     await onGetDocumentTypes()
@@ -119,6 +128,7 @@ watch(() => step.value === 5, async () => {
 const applicant = ref<'association' | 'user' | undefined>()
 
 const associationName = ref<string | undefined>('')
+const associationId = ref<number>()
 
 const newProject = ref<boolean>(true)
 
@@ -127,7 +137,7 @@ watch(() => projectStore.projectCommissionDates.length, () => {
     if (projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
 })
 
-const isSite = ref<boolean | undefined>(undefined)
+const isSite = ref<boolean>(false)
 
 // CONST
 const MAX_FILES = 10
@@ -141,7 +151,8 @@ const initApplicant = () => {
 
 // INIT IS SITE
 const initIsSite = () => {
-    isSite.value = applicant.value === 'association' && userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))?.isSite
+    const association = userStore.user?.associations.find(obj => obj.id === associationId.value)
+    if (association && association.isSite && applicant.value === 'association') isSite.value = true
 }
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
@@ -200,8 +211,32 @@ async function onGetProjectCategories() {
 
 async function onGetDocumentTypes() {
     try {
+<<<<<<< HEAD
         await initProcessProjectDocuments('DOCUMENT_PROJECT')
+=======
+        await getDocuments('DOCUMENT_PROJECT')
+        initProcessProjectDocuments()
+>>>>>>> develop
     } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetFile(pathFile: string, fileName: string) {
+    try {
+        const file = await getFile(pathFile)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(file)
+        link.download = fileName
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    }  catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
@@ -216,10 +251,10 @@ async function onGetCommissionDates() {
     if (!projectCommissionDatesModel.value.length) {
         try {
             await getCommissions()
-            await getCommissionDates(true)
-            await initCommissionDates(isSite.value)
+            await getCommissionDates(true, false)
+            initCommissionDatesLabels(isSite.value)
             if (!newProject.value) {
-                await projectStore.getProjectCommissionDates()
+                await projectStore.getProjectCommissionDates(false, undefined)
                 initProjectCommissionDatesModel()
             }
         } catch (error) {
@@ -237,8 +272,8 @@ async function onGetCommissionDates() {
 async function onGetProjectBudget() {
     try {
         await getCommissions()
-        await getCommissionDates(true)
-        await projectStore.getProjectCommissionDates()
+        await getCommissionDates(true, false)
+        await projectStore.getProjectCommissionDates(false, undefined)
         initProjectCommissionDates()
         initProjectBudget()
     } catch (error) {
@@ -261,7 +296,12 @@ function onGetProjectGoals() {
 // GET DATA FOR STEP 5
 async function onGetProjectDocuments() {
     try {
+<<<<<<< HEAD
         await initProcessProjectDocuments('DOCUMENT_PROJECT')
+=======
+        await getDocuments('DOCUMENT_PROJECT')
+        initProcessProjectDocuments()
+>>>>>>> develop
         await projectStore.getProjectDocuments()
         initDocumentUploads()
     } catch (error) {
@@ -373,7 +413,7 @@ async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await postProjectDocuments(parseInt(route.params.associationId as string))
+            await uploadDocuments(parseInt(route.params.associationId as string))
             done5.value = true
             step.value = nextStep
         } catch (error) {
@@ -500,6 +540,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 filled
                                 lazy-rules
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedStartDate"
@@ -509,6 +550,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="date"
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedEndDate"
@@ -518,6 +560,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 type="date"
+                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.location"
@@ -526,6 +569,35 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 filled
                                 lazy-rules
+                                clearable
+                            />
+                            <QInput
+                                v-model="projectBasicInfos.otherFirstName"
+                                :label="t('project.other-first-name')"
+                                filled
+                                lazy-rules
+                                clearable
+                            />
+                            <QInput
+                                v-model="projectBasicInfos.otherLastName"
+                                :label="t('project.other-last-name')"
+                                filled
+                                lazy-rules
+                                clearable
+                            />
+                            <QInput
+                                v-model="projectBasicInfos.otherEmail"
+                                :label="t('project.other-email')"
+                                filled
+                                lazy-rules
+                                clearable
+                            />
+                            <QInput
+                                v-model="projectBasicInfos.otherPhone"
+                                :label="t('project.other-phone')"
+                                filled
+                                lazy-rules
+                                clearable
                             />
                             <QSelect
                                 v-model="projectCategories"
@@ -539,6 +611,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 multiple
                                 stack-label
                                 use-chips
+                                :hint="t('forms.multiple-choices-enabled')"
+                                clearable
                             />
                             <section class="form-page-navigation">
                                 <QBtn
@@ -903,25 +977,20 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                                                     :key="uploadedDocument.id"
                                                 >
-                                                    <p>
+                                                    <p @click="onGetFile(uploadedDocument.pathFile, uploadedDocument.name)">
                                                         <i
                                                             class="bi bi-file-earmark"
                                                             aria-hidden="true"
                                                         ></i>
-                                                        <a
-                                                            :href="uploadedDocument.pathFile"
-                                                            target="_blank"
-                                                        >
-                                                            {{ uploadedDocument.name }}
-                                                            <i
-                                                                class="bi bi-eye"
-                                                                aria-hidden="true"
-                                                            ></i>
-                                                        </a>
+                                                        {{ uploadedDocument.name }}
+                                                        <i
+                                                            class="bi bi-eye"
+                                                            aria-hidden="true"
+                                                        ></i>
                                                     </p>
                                                     <button
                                                         type="button"
-                                                        @click="onDeleteDocumentUpload(uploadedDocument.id)"
+                                                        @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
                                                     >
                                                         <i class="bi bi-x-lg"></i>
                                                     </button>
@@ -995,6 +1064,26 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             <p class="row-title">{{ t('project.location') }}</p>
                                             <p>{{ projectBasicInfos.location }}</p>
                                         </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.other-first-name') }}</p>
+                                            <p>{{ projectBasicInfos.otherFirstName }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.other-last-name') }}</p>
+                                            <p>{{ projectBasicInfos.otherLastName }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.other-email') }}</p>
+                                            <p>{{ projectBasicInfos.otherEmail }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.other-phone') }}</p>
+                                            <p>{{ projectBasicInfos.otherPhone }}</p>
+                                        </div>
                                     </section>
                                 </section>
 
@@ -1015,7 +1104,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             :key="index"
                                         >
                                             {{
-                                                commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate).label
+                                                commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate)?.label
                                             }}
                                         </QChip>
                                     </section>
@@ -1193,11 +1282,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     <li
                                                         v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                                                         :key="uploadedDocument.id"
+                                                        @click="onGetFile(uploadedDocument.pathFile, uploadedDocument.name)"
                                                     >
-                                                        <a
-                                                            :href="uploadedDocument.pathFile"
-                                                            target="_blank"
-                                                        >{{ uploadedDocument.name }}</a>
+                                                        {{ uploadedDocument.name }}
                                                     </li>
                                                 </ul>
                                             </p>

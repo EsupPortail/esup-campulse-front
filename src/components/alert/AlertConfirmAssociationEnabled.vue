@@ -75,9 +75,3 @@ async function onEnableAssociation() {
         </QCard>
     </QDialog>
 </template>
-
-<style lang="scss">
-.test:hover {
-    background-color: red;
-}
-</style>

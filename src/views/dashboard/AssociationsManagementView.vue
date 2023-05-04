@@ -10,6 +10,7 @@ import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
 import useAssociation from '@/composables/useAssociation'
+import {useRoute} from 'vue-router'
 
 const associationStore = useAssociationStore()
 const {loading, notify} = useQuasar()
@@ -17,6 +18,7 @@ const {t} = useI18n()
 const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
 const {associations} = useAssociation()
+const route = useRoute()
 
 const initValues = () => {
     associations.value = associationStore.associations
@@ -121,7 +123,10 @@ const columns: QTableProps['columns'] = [
 
     <div class="form-container">
         <div class="form">
-            <FormAssociationSearch/>
+            <FormAssociationSearch
+                v-if="route.name"
+                :route="route.name"
+            />
 
             <QTable
                 v-model:selected="selected"
@@ -238,8 +243,7 @@ const columns: QTableProps['columns'] = [
     align-items: flex-start;
 
     .q-btn {
-        padding: .5rem;
-        margin-top: .6rem;
+        margin-top: .650rem;
     }
 
     @media screen and (min-width: $responsiveWidth) {
