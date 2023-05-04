@@ -78,6 +78,11 @@ export const useProjectStore = defineStore('projectStore', {
             const {axiosAuthenticated} = useAxios()
             const url = `/projects/${id}/export`
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
+        },
+
+        async getAllProjects() {
+            const {axiosAuthenticated} = useAxios()
+            this.projects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
         }
     }
 })

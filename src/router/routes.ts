@@ -68,18 +68,9 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'association/:associationId',
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
                             projectBearersOnly: true
                         },
                         children: [
-                            {
-                                path: '',
-                                name: 'CommissionAssociationDashboard',
-                                component: () => import('@/views/dashboard/projectManagement/CommissionAssociationDashboardView.vue'),
-                                meta: {
-                                    title: i18n.global.t('breadcrumbs.manage-my-projects')
-                                }
-                            },
                             {
                                 path: 'submit-project/:projectId?',
                                 name: 'SubmitProjectAssociation',
@@ -98,14 +89,6 @@ const routes: RouteRecordRaw[] = [
                             projectBearersOnly: true
                         },
                         children: [
-                            {
-                                path: '',
-                                name: 'CommissionIndividualDashboard',
-                                component: () => import('@/views/dashboard/projectManagement/CommissionIndividualDashboardView.vue'),
-                                meta: {
-                                    title: i18n.global.t('breadcrumbs.manage-my-projects')
-                                }
-                            },
                             {
                                 path: 'submit-project/:projectId?',
                                 name: 'SubmitProjectIndividual',
