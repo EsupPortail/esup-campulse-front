@@ -489,6 +489,7 @@
     "location": "Lieu(x) du projet",
     "marketing-campaign": "Campagne de communication",
     "name": "Nom du projet",
+    "no-project-to-show": "Aucun projet à afficher.",
     "other-email": "Adresse email de la personne portant le projet (si différente de l'adresse email de la personne présidant l'association)",
     "other-first-name": "Prénom de la personne portant le projet (si différent du prénom de la personne présidant l'association)",
     "other-last-name": "Nom de la personne portant le projet (si différent du nom de la personne présidant l'association)",
