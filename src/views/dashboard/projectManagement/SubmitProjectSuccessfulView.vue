@@ -40,6 +40,25 @@ async function onGetProjectDetail() {
         }
     }
 }
+
+async function onGetProjectPdf() {
+    try {
+        const file = await projectStore.getProjectPdf(parseInt(route.params.projectId as string))
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(new Blob([file]))
+        link.download = 'test.pdf'
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    } catch(error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
 </script>
 
 <template>
@@ -53,8 +72,8 @@ async function onGetProjectDetail() {
                     <div class="flex-btn-group">
                         <QBtn
                             :label="t('project.download-recap')"
-                            disable
                             icon="mdi-tray-arrow-down"
+                            @click="onGetProjectPdf"
                         />
                         <QBtn
                             :label="t('dashboard.cape-dashboard')"

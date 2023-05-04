@@ -72,6 +72,12 @@ export const useProjectStore = defineStore('projectStore', {
             let url = `/projects/?project_statuses=${archived ? archivedStatus : unarchivedStatus}`
             if (commissionDates.length) url += `&commission_dates=${commissionDates.join(',')}`
             this.projects = (await axiosAuthenticated.get<ProjectList[]>(url)).data
+        },
+
+        async getProjectPdf(id: number) {
+            const {axiosAuthenticated} = useAxios()
+            const url = `/projects/${id}/export`
+            return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         }
     }
 })
