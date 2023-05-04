@@ -4,25 +4,34 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import type {ProjectList} from '#/project'
 import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
+import {useUserStore} from '@/stores/useUserStore'
 
-const props = defineProps<{
-    columns: QTableProps['columns'],
+const importedProps = defineProps<{
     projects: ProjectList[],
-    title: string
+    title: string,
+    associationId: number | null
 }>()
 
 const projectStore = useProjectStore()
+const userStore = useUserStore()
 const {formatDate} = useUtility()
 const {t} = useI18n()
+
+const columns: QTableProps['columns'] = [
+    {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
+    {name: 'lastModifiedDate', align: 'left', label: t('project.last-modified-date'), field: 'email', sortable: true},
+    {name: 'status', align: 'left', label: t('status'), field: 'status', sortable: true},
+    {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
+]
 </script>
 
 <template>
     <QTable
         :columns="columns"
         :loading="!projectStore.projects"
-        :rows="props.projects"
+        :rows="importedProps.projects"
         :rows-per-page-options="[10, 20, 50, 0]"
-        :title="props.title"
+        :title="importedProps.title"
         row-key="name"
     >
         <template v-slot:body="props">
@@ -44,6 +53,16 @@ const {t} = useI18n()
                     :props="props"
                     class="state-cell"
                 >
+                    <span
+                        v-if="props.row.projectStatus === 'PROJECT_DRAFT'"
+                        class="form-state"
+                    >
+                        {{ t('project.status.draft') }}
+                        <span
+                            aria-hidden="true"
+                            class="form-state-icon form-state-grey"
+                        ><i class="bi bi-dash"></i></span>
+                    </span>
                     <span
                         v-if="props.row.projectStatus === 'PROJECT_REJECTED'"
                         class="form-state"
@@ -113,7 +132,10 @@ const {t} = useI18n()
                 >
                     <div class="button-container">
                         <QBtn
+                            :disable="props.row.projectStatus !== 'PROJECT_DRAFT' || !userStore.hasPresidentStatus(importedProps.associationId)"
                             :label="t('project.project')"
+                            :to="importedProps.associationId ? {name: 'SubmitProjectAssociation', params: {associationId: importedProps.associationId, projectId: props.row.id}} :
+                                {name: 'SubmitProjectAssociation', params: {projectId: props.row.id}}"
                             icon="bi-pencil"
                         />
                         <QBtn

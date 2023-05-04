@@ -275,10 +275,6 @@ async function onGetAssociationDetail() {
                         <h3>Suivi du traitement des dossiers CAPE</h3>
                         <div class="flex-btn-group">
                             <QBtn
-                                :label="t('project.submit-new-project')"
-                                :to="{name: 'SubmitProjectAssociation', params: {associationId: association?.id}}"
-                            />
-                            <QBtn
                                 label="Gestion des dossiers CAPE"
                             />
                         </div>

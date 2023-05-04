@@ -68,7 +68,6 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'association/:associationId',
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
                             projectBearersOnly: true
                         },
                         children: [
