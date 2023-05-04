@@ -179,10 +179,7 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: '',
                                 name: 'AssociationDashboard',
-                                component: () => import('@/views/dashboard/AssociationDashboardView.vue'),
-                                meta: {
-                                    title: i18n.global.t('breadcrumbs.association-dashboard'),
-                                }
+                                component: () => import('@/views/dashboard/AssociationDashboardView.vue')
                             },
                             {
                                 path: 'edit-my-association',
