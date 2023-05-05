@@ -7,16 +7,10 @@ const documents = ref<Document[]>([])
 export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
-    //const projectStore = useProjectStore()
-    //const userStore = useUserStore()
 
     async function getLibraryDocuments() {
-        if (!documents.value?.length) {
-            //const processes = ['NO_PROCESS']
-            const processes = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_COMMISSION', 'NO_PROCESS']
-
-            documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_type=${processes.join(',')}`)).data
-        }
+        const processes = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_COMMISSION', 'NO_PROCESS']
+        documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_type=${processes.join(',')}`)).data
     }
 
     async function postNewDocument(name: string, file: Blob) {
@@ -34,10 +28,15 @@ export default function () {
         await axiosAuthenticated.patch(`/documents/${id}`, newDocument)
     }
 
+    async function deleteDocument(id: number) {
+        await axiosAuthenticated.delete(`/documents/${id}`)
+    }
+
     return {
         getLibraryDocuments,
         documents,
         postNewDocument,
-        patchDocument
+        patchDocument,
+        deleteDocument
     }
 }
