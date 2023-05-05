@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import useDocuments from '@/composables/useDocuments'
 import {onMounted, ref} from 'vue'
-import {useQuasar} from 'quasar'
+import {QForm, useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {useI18n} from 'vue-i18n'
@@ -28,7 +28,9 @@ const newDocument = ref<NewDocument>({
     file: undefined
 })
 
-interface LibraryDocuments {
+const newDocumentForm = ref(QForm)
+
+interface LibraryDocument {
     id: number,
     name: string,
     path: string | null,
@@ -39,7 +41,7 @@ interface LibraryDocuments {
     open: boolean
 }
 
-const libraryDocuments = ref<LibraryDocuments[]>([])
+const libraryDocuments = ref<LibraryDocument[]>([])
 
 const initLibraryDocuments = () => {
     const list = documents.value.map((document) => ({
@@ -81,6 +83,7 @@ async function onUploadNewDocument() {
     loading.show()
     try {
         await postNewDocument(newDocument.value.name, newDocument.value.file as Blob)
+        newDocumentForm.value.reset()
         await onGetLibraryDocuments()
         notify({
             type: 'positive',
@@ -95,6 +98,11 @@ async function onUploadNewDocument() {
         }
     }
     loading.hide()
+}
+
+const onClearValues = () => {
+    newDocument.value.name = ''
+    newDocument.value.file = undefined
 }
 
 async function onUpdateDocument(documentId: number) {
@@ -155,6 +163,8 @@ async function onDeleteDocument(documentId: number) {
         <div class="form-container">
             <div class="form">
                 <QForm
+                    ref="newDocumentForm"
+                    @reset="onClearValues"
                     @submit="onUploadNewDocument"
                 >
                     <QInput

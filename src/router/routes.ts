@@ -310,13 +310,22 @@ const routes: RouteRecordRaw[] = [
                         ]
                     },
                     {
-                        path: 'manage-template-documents-library',
-                        name: 'ManageTemplateDocumentsLibrary',
+                        path: 'manage-documents-library',
+                        name: 'ManageDocumentsLibrary',
                         component: () => import('@/views/dashboard/ManageDocumentsLibraryView.vue'),
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.template-documents-library'),
                             title: i18n.global.t('breadcrumbs.template-documents-library'),
                             staffOnly: true
+                        },
+                    },
+                    {
+                        path: 'documents-library',
+                        name: 'DocumentsLibrary',
+                        component: () => import('@/views/dashboard/DocumentsLibraryView.vue'),
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.template-documents-library'),
+                            title: i18n.global.t('breadcrumbs.template-documents-library')
                         },
                     }
                 ]

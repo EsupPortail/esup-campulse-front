@@ -4,6 +4,7 @@ import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {onMounted, ref, watch} from 'vue'
+import InfoDocumentLibrary from '@/components/infoPanel/InfoDocumentLibrary.vue'
 
 const userStore = useUserStore()
 const {t} = useI18n()
@@ -116,7 +117,7 @@ onMounted(async () => {
                     <QBtn
                         v-if="hasPerm('add_document')"
                         :label="t('dashboard.manage-template-documents')"
-                        :to="{name: 'ManageTemplateDocumentsLibrary'}"
+                        :to="{name: 'ManageDocumentsLibrary'}"
                     />
                 </div>
             </div>
@@ -184,7 +185,7 @@ onMounted(async () => {
 
     <!-- My documents, for misc students only -->
     <section
-        v-if="!isStaff"
+        v-if="!isStaff && hasPerm('add_project_user')"
         class="dashboard-section"
     >
         <h2>
@@ -193,6 +194,7 @@ onMounted(async () => {
         </h2>
         <div class="form-container">
             <div class="form">
+                <InfoDocumentLibrary/>
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
@@ -282,78 +284,6 @@ onMounted(async () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="document-input-list">
-                <div class="document-item">
-                    <p>
-                        <i class="bi bi-file-earmark"></i>
-                        <a>
-                            cert_scol_membre1.pdf
-                            <i class="bi bi-eye"></i>
-                        </a>
-                    </p>
-                    <button>
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
-                <div class="document-item">
-                    <p>
-                        <i class="bi bi-file-earmark"></i>
-                        <a>
-                            cert_scol_membre2.pdf
-                            <i class="bi bi-eye"></i>
-                        </a>
-                    </p>
-                    <button>
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
-                <div class="document-item">
-                    <p>
-                        <i class="bi bi-file-earmark"></i>
-                        <a>
-                            cert_scol_membre3.pdf
-                            <i class="bi bi-eye"></i>
-                        </a>
-                    </p>
-                    <button disabled>
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="document-input">
-                <div class="document-input-header">
-                    <h4>
-                        PV de la dernière AGO
-                    </h4>
-                    <p>
-                        <a>
-                            <i class="bi bi-info-circle"></i>
-                        </a>
-                    </p>
-                    <button>
-                        <i class="bi bi-plus"></i>
-                    </button>
-                </div>
-                <!-- <div class="document-input-list"></div> -->
-            </div>
-
-            <div class="document-input">
-                <div class="document-input-header">
-                    <h4>
-                        Certificat envoyé par le tribunal judiciaire
-                    </h4>
-                    <!-- <p>
-                        <a>
-                            <i class="bi bi-info-circle"></i>
-                        </a>
-                    </p> -->
-                    <button disabled>
-                        <i class="bi bi-plus"></i>
-                    </button>
-                </div>
-                <!-- <div class="document-input-list"></div> -->
             </div>
         </div>
     </section>

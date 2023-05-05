@@ -216,8 +216,10 @@
     "my-infos": "Mes informations",
     "my-password": "Mon mot de passe",
     "my-status": "Mon statut actuel",
+    "no-document-in-template-library": "Aucun document dans la bibliothèque.",
     "search-user-via-cas": "Rechercher un utilisateur via CAS",
-    "template-document-library": "Bibliothèque de documents types",
+    "template-document-library": "Bibliothèque de documents",
+    "template-document-library-info-message": "Pour faciliter vos démarches, retrouvez l'ensemble des documents à fournir pour vos demandes d'agréments et de subventions dans la bibliothèque de documents.",
     "update-my-status": "Pour changer de statut, merci de contacter le gestionnaire dont vous dépendez.",
     "user-add": "Ajouter un compte utilisateur",
     "user-management": "Gérer les informations des utilisateurs",
@@ -256,11 +258,14 @@
   },
   "discard-changes": "Abandonner les modifications",
   "documents": {
+    "charters": "Chartes",
     "choose-file": "Choisir un document",
     "choose-name": "Nom du document",
     "no-process-library": "Documents de la bibliothèque",
+    "other-documents": "Autres documents",
     "upload-new": "Déposer un nouveau document"
   },
+  "download": "Télécharger",
   "edit": "Éditer",
   "end": "Fin",
   "footer": {
