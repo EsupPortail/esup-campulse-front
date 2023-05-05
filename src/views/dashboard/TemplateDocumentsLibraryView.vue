@@ -7,7 +7,7 @@ import useErrors from '@/composables/useErrors'
 import {useI18n} from 'vue-i18n'
 import type {DocumentProcessType, MimeType} from '#/documents'
 
-const {getLibraryDocuments, documents, postNewDocument} = useDocuments()
+const {getLibraryDocuments, documents, postNewDocument, patchDocument} = useDocuments()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {t} = useI18n()
@@ -29,6 +29,7 @@ const newDocument = ref<NewDocument>({
 })
 
 interface LibraryDocuments {
+    id: number,
     name: string,
     file: string | null,
     processType: DocumentProcessType,
@@ -40,6 +41,7 @@ const libraryDocuments = ref<LibraryDocuments[]>([])
 
 const initLibraryDocuments = () => {
     libraryDocuments.value = documents.value.map((document) => ({
+        id: document.id,
         name: document.name,
         file: document.pathTemplate,
         processType: document.processType,
@@ -67,6 +69,24 @@ async function onUploadNewDocument() {
     try {
         await postNewDocument(newDocument.value.name, newDocument.value.file as Blob)
         await onGetLibraryDocuments()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
+
+async function onUpdateDocument(documentId: number) {
+    loading.show()
+    try {
+        const document = libraryDocuments.value.find(doc => doc.id === documentId)
+        if (document) {
+            await patchDocument(documentId, document.name, document.file)
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -119,7 +139,7 @@ async function onUploadNewDocument() {
         </div>
     </section>
 
-    <!-- View no process documents -->
+    <!-- View documents -->
     <section class="dashboard-section">
         <h2>
             <i
@@ -150,7 +170,9 @@ async function onUploadNewDocument() {
                     </div>
 
                     <div v-if="document.open">
-                        <QForm>
+                        <QForm
+                            @submit.prevent="onUpdateDocument(document.id)"
+                        >
                             <QInput
                                 v-model="document.name"
                                 :label="t('documents.choose-name')"

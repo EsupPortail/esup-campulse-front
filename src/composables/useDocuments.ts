@@ -27,9 +27,17 @@ export default function () {
 
     }
 
+    async function patchDocument(id: number, name: string, file: Blob) {
+        const newDocument = new FormData()
+        newDocument.append('name', name)
+        newDocument.append('pathTemplate', file)
+        await axiosAuthenticated.patch(`/documents/${id}`, newDocument)
+    }
+
     return {
         getLibraryDocuments,
         documents,
-        postNewDocument
+        postNewDocument,
+        patchDocument
     }
 }
