@@ -116,7 +116,7 @@ onMounted(async () => {
                     <QBtn
                         v-if="hasPerm('add_document')"
                         :label="t('dashboard.manage-template-documents')"
-                        :to="{name: 'TemplateDocumentsLibrary'}"
+                        :to="{name: 'ManageTemplateDocumentsLibrary'}"
                     />
                 </div>
             </div>
