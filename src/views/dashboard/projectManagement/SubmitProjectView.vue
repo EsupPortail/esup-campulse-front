@@ -1153,7 +1153,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             <p class="row-title">
                                                 {{
                                                     `${t('project.amount-asked')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym})`
                                                 }}
                                             </p>
                                             <p>{{ commissionDate.amountAsked + CURRENCY }}</p>
