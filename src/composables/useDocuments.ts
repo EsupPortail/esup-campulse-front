@@ -10,7 +10,7 @@ export default function () {
 
     async function getLibraryDocuments() {
         const processes = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_COMMISSION', 'NO_PROCESS']
-        documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_type=${processes.join(',')}`)).data
+        documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_types=${processes.join(',')}`)).data
     }
 
     async function postNewDocument(name: string, file: Blob) {
