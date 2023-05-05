@@ -8,9 +8,10 @@ export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
 
+    const libraryProcesses = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_COMMISSION', 'NO_PROCESS']
+
     async function getLibraryDocuments() {
-        const processes = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_COMMISSION', 'NO_PROCESS']
-        documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_types=${processes.join(',')}`)).data
+        documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_types=${libraryProcesses.join(',')}`)).data
     }
 
     async function postNewDocument(name: string, file: Blob) {
@@ -37,6 +38,7 @@ export default function () {
         documents,
         postNewDocument,
         patchDocument,
-        deleteDocument
+        deleteDocument,
+        libraryProcesses
     }
 }

@@ -11,6 +11,7 @@ import useUserAssociations from '@/composables/useUserAssociations'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 import useUtility from '@/composables/useUtility'
+import InfoDocumentLibrary from '@/components/infoPanel/InfoDocumentLibrary.vue'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -140,7 +141,7 @@ async function onGetAssociationDetail() {
     <!-- Association documents -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-pencil-box-outline"/>
+            <QIcon name="mdi-file-outline"/>
             {{ t('dashboard.association-user.association-documents') }}
         </h2>
         <div class="form-container">
@@ -245,6 +246,7 @@ async function onGetAssociationDetail() {
         </h2>
         <div class="form-container">
             <div class="form">
+                <InfoDocumentLibrary/>
                 <div class="document-input-group">
                     <div class="document-input-group-header">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
@@ -279,6 +281,7 @@ async function onGetAssociationDetail() {
                         <h3>Suivi du traitement des dossiers CAPE</h3>
                         <div class="flex-btn-group">
                             <QBtn
+                                :to="{name: 'Commission'}"
                                 label="Gestion des dossiers CAPE"
                             />
                         </div>
