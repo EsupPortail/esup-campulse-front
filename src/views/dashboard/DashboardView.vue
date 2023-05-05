@@ -101,6 +101,28 @@ onMounted(async () => {
         </div>
     </section>
 
+    <!-- Template document library management -->
+    <section
+        v-if="isStaff && (hasPerm('add_document'))"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="mdi-file-multiple-outline"/>
+            {{ t('dashboard.template-document-library') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <div class="button-group">
+                    <QBtn
+                        v-if="hasPerm('add_document')"
+                        :label="t('dashboard.manage-template-documents')"
+                        :to="{name: 'TemplateDocumentsLibrary'}"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Commission management, for staff only -->
     <section
         v-if="isStaff && (hasPerm('view_project'))"
