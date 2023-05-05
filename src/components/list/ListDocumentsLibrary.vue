@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {DocumentProcessType} from '#/documents'
+import type {DocumentProcessType} from '#/documents'
 import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
