@@ -15,6 +15,8 @@
       "title": "Demande de création de compte en cours"
     },
     "close": "Fermer",
+    "confirm-association-can-submit-projects": "Voulez-vous vraiment autoriser cette association à soumettre des projets ?",
+    "confirm-association-cannot-submit-projects": "Voulez-vous vraiment retirer le droit de soumettre des projets à cette association ?",
     "confirm-association-publish": "Voulez-vous vraiment publier cette association dans l'annuaire ? Toutes les informations la concernant présentes sur cette fiche seront visibles publiquement.",
     "confirm-association-unpublish": "Voulez-vous vraiment dépublier cette association de l'annuaire ? Toutes les informations la concernant présentes sur cette fiche ne seront plus visibles pour le public.",
     "delete-user": {
@@ -51,12 +53,14 @@
     "delete-association": "Supprimer l'association",
     "disable": "Désactiver",
     "disable-association": "Désactiver",
+    "disable-project-submission": "Désactiver la soumission de projets",
     "disabled": "Désactivée",
     "edit": "Modifier",
     "email-software": "Ouvrir le logiciel d'envoi de mail (Thunderbird, Outlook, ...)",
     "email-web": "Ouvrir la page web d'envoi de mail (Partage, Gmail, ...)",
     "enable": "Activer",
     "enable-association": "Activer l'association",
+    "enable-project-submission": "Activer la soumission de projets",
     "enabled": "Activée",
     "go-back": "Retour",
     "more-details": "Fiche détail de l'association",
@@ -412,6 +416,8 @@
     },
     "positive": {
       "account-created": "Compte créé.",
+      "association-can-submit-projects": "L'association peut désormais soumettre des projets.",
+      "association-cannot-submit-projects": "L'association ne peut plus soumettre des projets.",
       "association-logo-updated": "Le logo de l'association a été modifié avec succès.",
       "association-successfully-updated": "L'association a bien été mise à jour.",
       "association-up-to-date": "L'association est déjà à jour.",

@@ -51,7 +51,6 @@ async function onPublishAssociation() {
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"
-                    color="secondary"
                     icon="mdi-arrow-left-circle"
                 />
                 <QBtn

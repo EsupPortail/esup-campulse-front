@@ -11,6 +11,7 @@ import AlertConfirmAssociationEnabled from '@/components/alert/AlertConfirmAssoc
 import AlertConfirmAssociationPublication from '@/components/alert/AlertConfirmAssociationPublication.vue'
 import AlertConfirmAssociationUpdate from '@/components/alert/AlertConfirmAssociationUpdate.vue'
 import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
+import AlertConfirmAssociationProjectSubmission from '@/components/alert/AlertConfirmAssociationProjectSubmission.vue'
 import router from '@/router'
 import useUtility from '@/composables/useUtility'
 import type {AssociationLogo, EditedAssociation} from '#/association'
@@ -420,7 +421,10 @@ async function onChangeLogo(action: string) {
                     v-if="isStaff"
                 />
                 <AlertConfirmAssociationPublication
-                    v-if="associationStore.association?.isEnabled && associationStore.association?.isSite && isStaff"
+                    v-if="isStaff && associationStore.association?.isEnabled && associationStore.association?.isSite"
+                />
+                <AlertConfirmAssociationProjectSubmission
+                    v-if="isStaff && associationStore.association?.isEnabled"
                 />
                 <AlertConfirmAssociationDeletion
                     v-if="isStaff && !associationStore.association?.isEnabled"
