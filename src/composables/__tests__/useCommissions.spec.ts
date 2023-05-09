@@ -140,13 +140,11 @@ describe('useCommissions', () => {
                 const _test: SelectCommissionDateLabel[] = []
                 commissionDates.value.forEach((commissionDate) => {
                     const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
-                    if (commission && userStore.userCommissions?.includes(commission.id)) {
-                        _test.push({
-                            value: commissionDate.id,
-                            label: `${commission.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
-                            commission: commission.id as number
-                        })
-                    }
+                    _test.push({
+                        value: commissionDate.id,
+                        label: `${commission?.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
+                        commission: commission?.id as number
+                    })
                 })
                 expect(commissionDatesLabels.value).toEqual(_test)
             })
