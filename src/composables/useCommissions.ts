@@ -63,8 +63,7 @@ export default function () {
     }
     watch(() => userManagerStore.user, initUserCommissions)
 
-    const initCommissionDatesLabels = async (isSite: boolean | undefined) => {
-        await getCommissions()
+    const initCommissionDatesLabels = (isSite: boolean | undefined) => {
         commissionDatesLabels.value = []
         commissionDates.value.forEach((commissionDate) => {
             const commission = commissions.value.find(obj => obj.id === commissionDate.commission)

@@ -75,13 +75,17 @@ onMounted(async () => {
     }
 
     initApplicant()
+    // If the applicant is an association and the person trying to submit project is not a member of the association,
+    // redirect to 404
     if (applicant.value === 'association') {
         const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))
-        if (association) associationName.value = association.name
+        if (association) {
+            associationName.value = association.name
+            associationId.value = association.id
+            initIsSite()
+        }
         else await router.push({name: '404'})
     }
-
-    initIsSite()
 
     await onGetProjectCategories()
     await onGetDocumentTypes()
@@ -121,6 +125,7 @@ watch(() => step.value === 5, async () => {
 const applicant = ref<'association' | 'user' | undefined>()
 
 const associationName = ref<string | undefined>('')
+const associationId = ref<number>()
 
 const newProject = ref<boolean>(true)
 
@@ -129,7 +134,7 @@ watch(() => projectStore.projectCommissionDates.length, () => {
     if (projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
 })
 
-const isSite = ref<boolean | undefined>(undefined)
+const isSite = ref<boolean>(false)
 
 // CONST
 const MAX_FILES = 10
@@ -143,7 +148,8 @@ const initApplicant = () => {
 
 // INIT IS SITE
 const initIsSite = () => {
-    isSite.value = applicant.value === 'association' && userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))?.isSite
+    const association = userStore.user?.associations.find(obj => obj.id === associationId.value)
+    if (association && association.isSite && applicant.value === 'association') isSite.value = true
 }
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
@@ -239,7 +245,7 @@ async function onGetCommissionDates() {
         try {
             await getCommissions()
             await getCommissionDates(true, false)
-            await initCommissionDatesLabels(isSite.value)
+            initCommissionDatesLabels(isSite.value)
             if (!newProject.value) {
                 await projectStore.getProjectCommissionDates(false, undefined)
                 initProjectCommissionDatesModel()
@@ -1147,7 +1153,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             <p class="row-title">
                                                 {{
                                                     `${t('project.amount-asked')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym})`
                                                 }}
                                             </p>
                                             <p>{{ commissionDate.amountAsked + CURRENCY }}</p>

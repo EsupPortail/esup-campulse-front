@@ -19,7 +19,13 @@ const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
 const {formatDate} = useUtility()
-const {getCommissionDates, commissionDatesLabels, initCommissionDatesLabels, commissionDates} = useCommissions()
+const {
+    getCommissionDates,
+    commissionDatesLabels,
+    initCommissionDatesLabels,
+    commissionDates,
+    getCommissions
+} = useCommissions()
 const associationStore = useAssociationStore()
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
@@ -71,8 +77,9 @@ const applicant = (association: number | null, user: number | null) => {
 
 async function onGetCommissionDates() {
     try {
+        await getCommissions()
         await getCommissionDates(false, true)
-        await initCommissionDatesLabels(undefined)
+        initCommissionDatesLabels(undefined)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

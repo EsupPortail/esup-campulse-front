@@ -11,7 +11,7 @@ export interface Document {
     mimeTypes: MimeType[],
     processType: DocumentProcessType,
     institution: number | null,
-    commission: number | null,
+    commission: number | null
 }
 
 type MimeType =
@@ -21,6 +21,14 @@ type MimeType =
     | 'application/vnd.oasis.opendocument.spreadsheet'
     | 'application/vnd.ms-excel'
     | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    | 'application/msword'
+    | 'application/vnd.oasis.opendocument.text'
+    | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    | 'application/x-7z-compressed'
+    | 'application/x-bzip2'
+    | 'application/x-rar-compressed'
+    | 'application/x-tar'
+    | 'application/zip'
 
 type DocumentProcessType =
     'CHARTER_ASSOCIATION'
@@ -31,11 +39,13 @@ type DocumentProcessType =
     | 'DOCUMENT_PROJECT'
     | 'DOCUMENT_PROJECT_REVIEW'
     | 'DOCUMENT_PROCESSING'
+    | 'NO_PROCESS'
 
-export interface ProjectDocument {
+export interface DocumentUpload {
     id?: number,
     uploadDate?: string,
     pathFile: string,
+    size: number,
     documentUploadStatus?: DocumentUploadStatus,
     document: number,
     user?: number | null,

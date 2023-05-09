@@ -49,7 +49,7 @@ export default function () {
     // Get documents
     async function getDocuments(process: DocumentProcessType | 'all') {
         let url = '/documents/'
-        if (process !== 'all') url += `?process_type=${process}`
+        if (process !== 'all') url += `?process_types=${process}`
         documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
@@ -123,6 +123,7 @@ export default function () {
         initDocumentUploads,
         documentUploads,
         deleteDocumentUpload,
-        getFile
+        getFile,
+        DocumentUpload
     }
 }

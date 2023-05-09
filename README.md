@@ -85,7 +85,7 @@ npm run test:unit
 
 ### Déployer sur le serveur de test
 
-- Avant de déployer, tester si le build s'effectue correctement en local : `npm run build`
+- Avant de déployer, tester si le build s'effectue correctement en local : `npm run build:test`
 - Actualiser le numéro de version dans le fichier package.json : `0.1.YYYYMMDD`
 - Mettre à jour le changelog en listant les dernières mises à jour :
   soit manuellement, soit avec la

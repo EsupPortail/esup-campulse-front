@@ -1,14 +1,28 @@
-- 🩹 Optmize UX and fix buttons on FormRegisterUserAssociations
-- ✅ Update test in useAssociation
-- 🔧 Conf fixes for preprod.
-- 🎨 Add a proper 404 page
-- 📝 Added link to doc about vue-i18n optimization.
-- 🔧 Corrected Vue call in Vite config.
-- 🚧 Solution for unsafe-eval possibly found. Needs discussion.
-- 🔧 Trying to remove unsafe-eval CSP.
-- 🎨 Add toggle to view password on logIn
-- 🔧 Trying to remove unsafe-eval from CSP.
-- 🧪 Fonctionnal testing on LDAP registration #47 -> everything works fine
-- 🎨 Add loading on logIn and logOut
-- 🩹 Don't post other infos in POST /projects/ when empty
-- ♿️ Optimize UX and accessibility on association edition and registration forms
+- 📝 Update deployment process
+- 🚚 Rename TemplateDocumentsLibraryView -> ManageDocumentsLibraryView
+- ✨ Done with documents library for managers
+- 🩹 Fix getDocuments by process get request
+- 🏷️ Fix imports on types
+- ✨ Finish student projects management dashboard #63
+- ✨ #73 Added pdf download when submitting project
+- 🩹 Fix !isSite commissionDates in SubmitProject form
+- ✨ Dynamic title for AssociationDashboard
+- ✨ Implement strong password policy on PasswordResetConfirm
+- ✅ Tests for useProjectDocuments
+- 🐛 Corrected a11y issue on Home.
+- ✅ Tests for useCommissions
+- ✅ Tests for useErrors
+- ✅ Tests for useProjectStore
+- 👽️ Update navigation guards on projectBearersOnly routes
+- 👽️ Rename DocumentUpload type and add size key
+- 👽️ Update document mimeTypes type
+- ✅ Update useProjectDocuments tests
+- 👽️ Update groups and permissions mocks
+- 👽️ Update archived project statuses list
+- 👽️ Update submitProject according to new dedicated status route
+- 🎨 Optimize useProjectDocuments functions to get documents by process type via API
+- 🔧 Added robots.txt .
+- ⬆️ Upgrade minor dependencies.
+- 🍱 Added new logos.
+- 🔧 Nginx pprd conf.
+- 🚧 New view and dashboard access for template document library

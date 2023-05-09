@@ -180,6 +180,10 @@
       z-index: 2;
 
       h2 {
+        line-height: 1rem;
+      }
+
+      h2 > span:first-child {
         display: flex;
         gap: 1rem;
         font-family: $titleFont;
@@ -334,7 +338,7 @@
       .section-title {
         text-align: right;
 
-        h2 {
+        h2 > span {
           flex-direction: row-reverse;
           color: $charteColorText;
         }

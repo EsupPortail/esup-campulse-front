@@ -1558,6 +1558,19 @@ fieldset {
     }
   }
 
+  &.info-panel-dashboard {
+    border-color: $dashboardColor;
+    background-color: transparentize($dashboardColor, 0.9);
+
+    p {
+      color: $dashboardColorText;
+    }
+
+    i {
+      background-color: $dashboardColor;
+    }
+  }
+
   i {
     display: block;
     position: absolute;
