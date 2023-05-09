@@ -5,6 +5,7 @@ import type {ProjectList} from '#/project'
 import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
 import {useUserStore} from '@/stores/useUserStore'
+import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 
 const importedProps = defineProps<{
     projects: ProjectList[],
@@ -53,77 +54,10 @@ const columns: QTableProps['columns'] = [
                     :props="props"
                     class="state-cell"
                 >
-                    <span
-                        v-if="props.row.projectStatus === 'PROJECT_DRAFT'"
-                        class="form-state"
-                    >
-                        {{ t('project.status.draft') }}
-                        <span
-                            aria-hidden="true"
-                            class="form-state-icon form-state-grey"
-                        ><i class="bi bi-dash"></i></span>
-                    </span>
-                    <span
-                        v-if="props.row.projectStatus === 'PROJECT_REJECTED'"
-                        class="form-state"
-                    >
-                        {{ t('project.status.rejected') }}
-                        <span
-                            aria-hidden="true"
-                            class="form-state-icon form-state-red"
-                        ><i class="bi bi-x"></i></span>
-                    </span>
-                    <span
-                        v-if="props.row.projectStatus === 'PROJECT_PROCESSING'"
-                        class="form-state"
-                    >
-                        {{ t('project.status.processing') }}
-                        <span
-                            aria-hidden="true"
-                            class="form-state-icon form-state-orange"
-                        ><i class="bi bi-dash"></i></span>
-                    </span>
-                    <span
-                        v-if="props.row.projectStatus === 'PROJECT_VALIDATED'"
-                        class="form-state"
-                    >
-                        {{ t('project.status.validated') }}
-                        <span
-                            aria-hidden="true"
-                            class="form-state-icon form-state-green"
-                        ><i class="bi bi-check"></i></span>
-                    </span>
-                    <span
-                        v-if="props.row.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-                            props.row.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
-                        class="form-state"
-                    >
-                        {{ t('project.status.review-processing') }}
-                        <span
-                            aria-hidden="true"
-                            class="form-state-icon form-state-orange"
-                        ><i class="bi bi-dash"></i></span>
-                    </span>
-                    <span
-                        v-if="props.row.projectStatus === 'PROJECT_REVIEW_REJECTED'"
-                        class="form-state"
-                    >
-                        {{ t('project.status.review-rejected') }}
-                        <span
-                            aria-hidden="true"
-                            class="form-state-icon form-state-red"
-                        ><i class="bi bi-x"></i></span>
-                    </span>
-                    <span
-                        v-if="props.row.projectStatus === 'PROJECT_REVIEW_VALIDATED'"
-                        class="form-state"
-                    >
-                        {{ t('project.status.archived') }}
-                        <span
-                            aria-hidden="true"
-                            class="form-state-icon form-state-grey"
-                        ><i class="bi bi-check"></i></span>
-                    </span>
+                    <ProjectStatusIndicator
+                        :project-status="props.row.projectStatus"
+                        :show-draft="true"
+                    />
                 </QTd>
                 <QTd
                     key="edition"
