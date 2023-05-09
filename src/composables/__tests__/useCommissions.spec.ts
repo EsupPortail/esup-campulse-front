@@ -68,7 +68,7 @@ describe('useCommissions', () => {
         describe('if onlyNext and onlyActive set to true', () => {
             it('should call API (get) with onlyNext and onlyActive params set to true', async () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
-                await getCommissionDates(true, true)
+                await getCommissionDates(true, true, false)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 const url = '/commissions/commission_dates?only_next=true&active_projects=true'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
@@ -78,7 +78,7 @@ describe('useCommissions', () => {
         describe('if onlyNext and onlyActive set to false', () => {
             it('should call API (get)', async () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
-                await getCommissionDates(false, false)
+                await getCommissionDates(false, false, false)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/commission_dates')
                 expect(commissionDates.value).toEqual(_commissionDates)

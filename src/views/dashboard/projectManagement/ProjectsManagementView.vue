@@ -79,7 +79,7 @@ const applicant = (association: number | null, user: number | null) => {
 async function onGetCommissionDates() {
     try {
         await getCommissions()
-        await getCommissionDates(false, true)
+        await getCommissionDates(false, true, true)
         initCommissionDatesLabels(undefined)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

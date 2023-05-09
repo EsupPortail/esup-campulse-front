@@ -5,6 +5,7 @@ import type {SelectLabel} from '#/index'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {CommissionDate} from '#/project'
 import {useUserStore} from '@/stores/useUserStore'
+import type {AxiosInstance} from 'axios'
 
 // Used to store commissions from /commissions/
 const commissions = ref<Commission[]>([])
@@ -23,9 +24,8 @@ const commissionDatesLabels = ref<SelectCommissionDateLabel[]>([])
 
 export default function () {
 
-    const {axiosPublic} = useAxios()
+    const {axiosPublic, axiosAuthenticated} = useAxios()
     const userManagerStore = useUserManagerStore()
-    const userStore = useUserStore()
 
     // GET COMMISSION INFOS
     async function getCommissions() {
@@ -34,13 +34,18 @@ export default function () {
         }
     }
 
-    async function getCommissionDates(onlyNext: boolean, onlyActive: boolean) {
+    async function getCommissionDates(onlyNext: boolean, onlyActive: boolean, managedProjects: boolean) {
+        let instance = axiosPublic as AxiosInstance
         let urlString = '/commissions/commission_dates'
         const urlArray = []
         if (onlyNext) urlArray.push('only_next=true')
         if (onlyActive) urlArray.push('active_projects=true')
+        if (managedProjects) {
+            urlArray.push('managed_projects=true')
+            instance = axiosAuthenticated
+        }
         if (urlArray.length) urlString += `?${urlArray.join('&')}`
-        commissionDates.value = (await axiosPublic.get<CommissionDate[]>(urlString)).data
+        commissionDates.value = (await instance.get<CommissionDate[]>(urlString)).data
     }
 
     // INIT COMMISSION DATA
@@ -69,9 +74,8 @@ export default function () {
             const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
             if (commission) {
                 // 1st option : We simply initialize commissionDates based on isSite param
-                // 2nd option : We look at commissions in userGroups to init commissionDates
-                if (isSite || (isSite === false && !commission.isSite) ||
-                    (isSite === undefined && userStore.userCommissions?.includes(commission.id))) {
+                // 2nd option : We initialize labels based on what we got from GET request
+                if (isSite || (isSite === false && !commission.isSite) || isSite === undefined) {
                     commissionDatesLabels.value.push({
                         value: commissionDate.id,
                         label: `${commission.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
