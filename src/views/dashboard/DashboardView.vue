@@ -138,7 +138,7 @@ onMounted(async () => {
                 <div class="button-group">
                     <QBtn
                         :label="t('dashboard.manage-projects')"
-                        :to="{name: 'ManageProjects'}"
+                        :to="{name: 'Commission'}"
                     />
                 </div>
             </div>

@@ -4,7 +4,6 @@ import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {CommissionDate} from '#/project'
-import {useUserStore} from '@/stores/useUserStore'
 import type {AxiosInstance} from 'axios'
 
 // Used to store commissions from /commissions/
@@ -46,6 +45,25 @@ export default function () {
         }
         if (urlArray.length) urlString += `?${urlArray.join('&')}`
         commissionDates.value = (await instance.get<CommissionDate[]>(urlString)).data
+    }
+
+    async function postCommissionDate(commission: number, commissionDate: string, submissionDate: string) {
+        await axiosAuthenticated.post('/commissions/commission_dates', {
+            commission,
+            commissionDate,
+            submissionDate
+        })
+    }
+
+    async function patchCommissionDate(id: number, commissionDate: string, submissionDate: string) {
+        await axiosAuthenticated.patch(`/commissions/commission_dates/${id}`, {
+            commissionDate,
+            submissionDate
+        })
+    }
+
+    async function deleteCommissionDate(id: number) {
+        await axiosAuthenticated.delete(`/commissions/commission_dates/${id}`)
     }
 
     // INIT COMMISSION DATA
@@ -95,6 +113,9 @@ export default function () {
         commissionDates,
         getCommissionDates,
         commissionDatesLabels,
-        initCommissionDatesLabels
+        initCommissionDatesLabels,
+        postCommissionDate,
+        deleteCommissionDate,
+        patchCommissionDate
     }
 }
