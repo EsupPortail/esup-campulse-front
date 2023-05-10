@@ -5,7 +5,7 @@ export const _project: Project = {
     name: 'Projet associatif',
     plannedStartDate: '2023-10-26T17:30:00+02:00',
     plannedEndDate: '2023-10-26T20:00:00+02:00',
-    location: '16 rue René Descartes, 67000 Strasbourg, FRANCE',
+    plannedLocation: '16 rue René Descartes, 67000 Strasbourg, FRANCE',
     user: null,
     otherFirstName: '',
     otherLastName: '',

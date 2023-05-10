@@ -11,7 +11,7 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         name: '',
         plannedStartDate: '',
         plannedEndDate: '',
-        location: '',
+        plannedLocation: '',
         otherFirstName: '',
         otherLastName: '',
         otherEmail: '',
@@ -49,7 +49,7 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function () {
+export default function() {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -64,7 +64,7 @@ export default function () {
         projectBasicInfos.value.name = projectStore.project?.name as string
         projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
         projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
-        projectBasicInfos.value.location = projectStore.project?.location as string
+        projectBasicInfos.value.plannedLocation = projectStore.project?.plannedLocation as string
         projectBasicInfos.value.otherFirstName = projectStore.project?.otherFirstName as string
         projectBasicInfos.value.otherLastName = projectStore.project?.otherLastName as string
         projectBasicInfos.value.otherEmail = projectStore.project?.otherEmail as string
@@ -113,7 +113,7 @@ export default function () {
         projectBasicInfos.value.name = ''
         projectBasicInfos.value.plannedStartDate = ''
         projectBasicInfos.value.plannedEndDate = ''
-        projectBasicInfos.value.location = ''
+        projectBasicInfos.value.plannedLocation = ''
         projectBasicInfos.value.otherFirstName = ''
         projectBasicInfos.value.otherLastName = ''
         projectBasicInfos.value.otherEmail = ''
@@ -210,8 +210,8 @@ export default function () {
         if (projectBasicInfos.value.plannedEndDate !== projectStore.project?.plannedEndDate.slice(0, 10)) {
             dataToPatch = Object.assign(dataToPatch, {['plannedEndDate']: projectBasicInfos.value.plannedEndDate + 'T00:00:00.000Z'})
         }
-        if (projectBasicInfos.value.location !== projectStore.project?.location) {
-            dataToPatch = Object.assign(dataToPatch, {['location']: projectBasicInfos.value.location})
+        if (projectBasicInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
+            dataToPatch = Object.assign(dataToPatch, {['location']: projectBasicInfos.value.plannedLocation})
         }
         if (projectBasicInfos.value.otherFirstName !== projectStore.project?.otherFirstName) {
             dataToPatch = Object.assign(dataToPatch, {['otherFirstName']: projectBasicInfos.value.otherFirstName})

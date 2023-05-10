@@ -553,8 +553,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 clearable
                             />
                             <QInput
-                                v-model="projectBasicInfos.location"
-                                :label="t('project.location') + ' *'"
+                                v-model="projectBasicInfos.plannedLocation"
+                                :label="t('project.planned-location') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
                                 filled
@@ -1064,8 +1064,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         </div>
 
                                         <div class="display-row">
-                                            <p class="row-title">{{ t('project.location') }}</p>
-                                            <p>{{ projectBasicInfos.location }}</p>
+                                            <p class="row-title">{{ t('project.plannedLocation') }}</p>
+                                            <p>{{ projectBasicInfos.plannedLocation }}</p>
                                         </div>
 
                                         <div class="display-row">
