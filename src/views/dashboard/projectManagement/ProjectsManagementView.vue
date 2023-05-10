@@ -13,6 +13,7 @@ import type {SelectCommissionDateLabel} from '#/commissions'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
+import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -78,7 +79,7 @@ const applicant = (association: number | null, user: number | null) => {
 async function onGetCommissionDates() {
     try {
         await getCommissions()
-        await getCommissionDates(false, true)
+        await getCommissionDates(false, true, true)
         initCommissionDatesLabels(undefined)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -184,67 +185,10 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 class="state-cell"
                             >
-                                <span
-                                    v-if="props.row.projectStatus === 'PROJECT_REJECTED'"
-                                    class="form-state"
-                                >
-                                    {{ t('project.status.rejected') }}
-                                    <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-red"
-                                    ><i class="bi bi-x"></i></span>
-                                </span>
-                                <span
-                                    v-if="props.row.projectStatus === 'PROJECT_PROCESSING'"
-                                    class="form-state"
-                                >
-                                    {{ t('project.status.processing') }}
-                                    <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-orange"
-                                    ><i class="bi bi-dash"></i></span>
-                                </span>
-                                <span
-                                    v-if="props.row.projectStatus === 'PROJECT_VALIDATED'"
-                                    class="form-state"
-                                >
-                                    {{ t('project.status.validated') }}
-                                    <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-green"
-                                    ><i class="bi bi-check"></i></span>
-                                </span>
-                                <span
-                                    v-if="props.row.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-                                        props.row.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
-                                    class="form-state"
-                                >
-                                    {{ t('project.status.review-processing') }}
-                                    <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-orange"
-                                    ><i class="bi bi-dash"></i></span>
-                                </span>
-                                <span
-                                    v-if="props.row.projectStatus === 'PROJECT_REVIEW_REJECTED'"
-                                    class="form-state"
-                                >
-                                    {{ t('project.status.review-rejected') }}
-                                    <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-red"
-                                    ><i class="bi bi-x"></i></span>
-                                </span>
-                                <span
-                                    v-if="props.row.projectStatus === 'PROJECT_REVIEW_VALIDATED'"
-                                    class="form-state"
-                                >
-                                    {{ t('project.status.archived') }}
-                                    <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-grey"
-                                    ><i class="bi bi-check"></i></span>
-                                </span>
+                                <ProjectStatusIndicator
+                                    :project-status="props.row.projectStatus"
+                                    :show-draft="false"
+                                />
                             </QTd>
                             <QTd
                                 key="edition"

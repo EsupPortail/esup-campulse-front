@@ -12,6 +12,7 @@ import useCommissions from '@/composables/useCommissions'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
 import useErrors from '@/composables/useErrors'
+import type {ProcessDocument} from '#/documents'
 
 const {t} = useI18n()
 const {
@@ -220,12 +221,12 @@ async function onGetDocumentTypes() {
     }
 }
 
-async function onGetFile(pathFile: string, fileName: string) {
+async function onGetFile(uploadedDocument: ProcessDocument) {
     try {
-        const file = await getFile(pathFile)
+        const file = await getFile(uploadedDocument.pathFile as string)
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(file)
-        link.download = fileName
+        link.download = uploadedDocument.name as string
         document.body.appendChild(link)
         link.click()
         link.remove()
@@ -244,7 +245,7 @@ async function onGetCommissionDates() {
     if (!projectCommissionDatesModel.value.length) {
         try {
             await getCommissions()
-            await getCommissionDates(true, false)
+            await getCommissionDates(true, false, false)
             initCommissionDatesLabels(isSite.value)
             if (!newProject.value) {
                 await projectStore.getProjectCommissionDates(false, undefined)
@@ -265,7 +266,7 @@ async function onGetCommissionDates() {
 async function onGetProjectBudget() {
     try {
         await getCommissions()
-        await getCommissionDates(true, false)
+        await getCommissionDates(true, false, false)
         await projectStore.getProjectCommissionDates(false, undefined)
         initProjectCommissionDates()
         initProjectBudget()
@@ -689,6 +690,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             filled
                                             type="number"
                                             min="0"
+                                            :shadow-text="` ${CURRENCY}`"
+                                            inputmode="numeric"
                                         />
                                     </section>
                                 </fieldset>
@@ -705,6 +708,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             type="number"
                                             min="0"
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
+                                            :shadow-text="` ${CURRENCY}`"
+                                            inputmode="numeric"
                                         />
                                     </section>
                                 </fieldset>
@@ -718,6 +723,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     lazy-rules
                                     type="number"
                                     min="0"
+                                    inputmode="numeric"
+                                    :shadow-text="` ${CURRENCY}`"
                                 />
 
                                 <QSeparator/>
@@ -742,6 +749,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                                 type="number"
                                 min="0"
+                                inputmode="numeric"
                             />
 
                             <QInput
@@ -753,6 +761,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                                 type="number"
                                 min="0"
+                                inputmode="numeric"
                             />
 
                             <QInput
@@ -764,6 +773,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                                 type="number"
                                 min="0"
+                                inputmode="numeric"
+                                :shadow-text="` ${CURRENCY}`"
                             />
 
                             <QInput
@@ -775,6 +786,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                                 type="number"
                                 min="0"
+                                inputmode="numeric"
+                                :shadow-text="` ${CURRENCY}`"
                             />
 
                             <QSeparator/>
@@ -793,6 +806,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             min="0"
                                             inputmode="numeric"
                                             :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                            :shadow-text="` ${CURRENCY}`"
                                         />
                                     </section>
                                 </fieldset>
@@ -1271,7 +1285,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     <li
                                                         v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                                                         :key="uploadedDocument.id"
-                                                        @click="onGetFile(uploadedDocument.pathFile, uploadedDocument.name)"
+                                                        @click="onGetFile(uploadedDocument)"
                                                     >
                                                         {{ uploadedDocument.name }}
                                                     </li>

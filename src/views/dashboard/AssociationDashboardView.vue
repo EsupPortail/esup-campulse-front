@@ -12,6 +12,8 @@ import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 import useUtility from '@/composables/useUtility'
 import InfoDocumentLibrary from '@/components/infoPanel/InfoDocumentLibrary.vue'
+import {useProjectStore} from '@/stores/useProjectStore'
+import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -21,12 +23,14 @@ const userStore = useUserStore()
 const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 const {dynamicTitle} = useUtility()
+const projectStore = useProjectStore()
 
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
     initAssociationUser()
     initAssociationUserRole()
+    await onGetAssociationProjects()
     dynamicTitle.value = association.value?.name
     loading.hide()
 })
@@ -74,6 +78,19 @@ watch(() => associationUser.value, initAssociationUserRole)
 async function onGetAssociationDetail() {
     try {
         await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetAssociationProjects() {
+    try {
+        await projectStore.getAssociationProjects(association.value?.id as number)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -286,27 +303,31 @@ async function onGetAssociationDetail() {
                             />
                         </div>
                     </div>
-                    <div class="document-input variant-space-1">
-                        <div class="document-input-header">
-                            <h4>
-                                Dossier CAPE Rentrée 2022
-                            </h4>
+                    <section
+                        v-if="projectStore.projects.length"
+                        class="projects-statuses"
+                    >
+                        <div
+                            v-for="project in projectStore.projects"
+                            :key="project.id"
+                            class="document-input variant-space-1"
+                        >
+                            <div class="document-input-header">
+                                <h4>
+                                    {{ project.name }}
+                                </h4>
+                                <div class="project-status-indicator">
+                                    <ProjectStatusIndicator
+                                        :project-status="project.projectStatus"
+                                        :show-draft="true"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="document-input variant-space-1">
-                        <div class="document-input-header">
-                            <h4>
-                                Dossier CAPE Octobre 2022
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="document-input variant-space-1">
-                        <div class="document-input-header">
-                            <h4>
-                                Dossier CAPE Novembre 2022
-                            </h4>
-                        </div>
-                    </div>
+                    </section>
+                    <section v-else>
+                        <p class="paragraph">{{ t('project.no-project-to-show') }}</p>
+                    </section>
                 </div>
             </div>
         </div>
@@ -317,4 +338,13 @@ async function onGetAssociationDetail() {
 <style lang="scss">
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
+</style>
+
+<style lang="sass" scoped>
+.projects-statuses .document-input-header
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    padding-right: 1.5rem !important
+    align-items: center
 </style>

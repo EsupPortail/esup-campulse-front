@@ -229,6 +229,12 @@ export const useAssociationStore = defineStore('associationStore', {
             const {data} = patchedData
             this.association = data
         },
+        async patchCanSubmitProjects(canSubmitProjects: boolean, associationId: number | undefined) {
+            const {axiosAuthenticated} = useAxios()
+            const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {canSubmitProjects})
+            const {data} = patchedData
+            this.association = data
+        },
         async getAssociationUsers(associationId: number) {
             const {axiosAuthenticated} = useAxios()
             this.associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/?association_id=${associationId}`)).data
