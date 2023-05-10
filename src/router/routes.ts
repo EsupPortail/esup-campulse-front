@@ -111,14 +111,14 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
-                        path: 'manage-projects',
-                        name: 'ManageProjects',
-                        component: () => import('@/views/dashboard/projectManagement/ProjectsManagementView.vue'),
+                        path: 'manage-commission-dates',
+                        name: 'ManageCommissionDates',
+                        component: () => import('@/views/dashboard/projectManagement/ManageCommissionDatesView.vue'),
                         meta: {
-                            title: i18n.global.t('breadcrumbs.manage-projects'),
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-projects'),
+                            title: i18n.global.t('breadcrumbs.manage-commission-dates'),
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-commission-dates'),
                             staffOnly: true
-                        },
+                        }
                     }
                 ]
             },
