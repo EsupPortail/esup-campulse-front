@@ -12,6 +12,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
 import TableManagedProjects from '@/components/table/TableManagedProjects.vue'
+import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -27,6 +28,7 @@ const {
 const associationStore = useAssociationStore()
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
+const {hasPerm} = useSecurity()
 
 
 onMounted(async () => {
@@ -143,7 +145,10 @@ async function onGetApplicants() {
             </div>
         </div>
     </section>
-    <section class="dashboard-section">
+    <section
+        v-if="hasPerm('change_commissiondate')"
+        class="dashboard-section"
+    >
         <h2>
             <i
                 aria-hidden="true"
