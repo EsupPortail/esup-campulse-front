@@ -75,9 +75,9 @@ const initValues = () => {
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution)?.value
     association.value.institutionComponent = associationStore.institutionComponentLabels.find(({value}) => value === associationStore.association?.institutionComponent)?.value
     association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField)?.value
-    association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed.toString() as string
+    association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed ? associationStore.association.amountMembersAllowed.toString() : '0'
     association.value.isPublic = associationStore.association?.isPublic as boolean
-    association.value.studentCount = (associationStore.association?.studentCount as number).toString()
+    association.value.studentCount = associationStore.association?.studentCount ? associationStore.association.studentCount.toString() : '0'
 }
 watch(() => associationStore.association, initValues)
 
