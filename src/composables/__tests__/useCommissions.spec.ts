@@ -65,22 +65,33 @@ describe('useCommissions', () => {
             vi.restoreAllMocks()
         })
 
-        describe('if onlyNext and onlyActive set to true', () => {
+        describe('if all params are set to true', () => {
             it('should call API (get) with onlyNext and onlyActive params set to true', async () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
-                await getCommissionDates(true, true, false)
+                await getCommissionDates(true, true, true)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                const url = '/commissions/commission_dates?only_next=true&active_projects=true'
+                const url = '/commissions/commission_dates?only_next=true&active_projects=true&managed_projects=true'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
                 expect(commissionDates.value).toEqual(_commissionDates)
             })
         })
-        describe('if onlyNext and onlyActive set to false', () => {
+        describe('if all params are set to false', () => {
             it('should call API (get)', async () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
                 await getCommissionDates(false, false, false)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/commission_dates')
+                const url = '/commissions/commission_dates?only_next=false&active_projects=false&managed_projects=false'
+                expect(axiosPublic.get).toHaveBeenCalledWith(url)
+                expect(commissionDates.value).toEqual(_commissionDates)
+            })
+        })
+        describe('if all params are set to undefined', () => {
+            it('should call API (get)', async () => {
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
+                await getCommissionDates(undefined, undefined, undefined)
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                const url = '/commissions/commission_dates'
+                expect(axiosPublic.get).toHaveBeenCalledWith(url)
                 expect(commissionDates.value).toEqual(_commissionDates)
             })
         })
