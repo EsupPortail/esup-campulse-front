@@ -41,7 +41,7 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'charter',
                 name: 'Charter',
-                component: () => import('@/views/CharterView.vue'),
+                component: () => import('@/views/charter/CharterView.vue'),
                 meta: {
                     requiresAuth: true,
                     colorVariant: 'space-2',
@@ -60,9 +60,19 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: '',
                         name: 'Commission',
-                        component: () => import('@/views/CommissionView.vue'),
+                        component: () => import('@/views/commission/CommissionsView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.commission')
+                        }
+                    },
+                    {
+                        path: 'archived',
+                        name: 'ArchivedCommission',
+                        component: () => import('@/views/commission/ArchivedCommissionsView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.archived-commission'),
+                            breadcrumb: i18n.global.t('breadcrumbs.archived-commission'),
+                            staffOnly: true
                         }
                     },
                     {
@@ -74,7 +84,7 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: 'submit-project/:projectId?',
                                 name: 'SubmitProjectAssociation',
-                                component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
+                                component: () => import('@/views/project/SubmitProjectView.vue'),
                                 meta: {
                                     title: i18n.global.t('breadcrumbs.submit-project'),
                                     breadcrumb: i18n.global.t('breadcrumbs.submit-project')
@@ -92,7 +102,7 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: 'submit-project/:projectId?',
                                 name: 'SubmitProjectIndividual',
-                                component: () => import('@/views/dashboard/projectManagement/SubmitProjectView.vue'),
+                                component: () => import('@/views/project/SubmitProjectView.vue'),
                                 meta: {
                                     title: i18n.global.t('breadcrumbs.submit-project'),
                                     breadcrumb: i18n.global.t('breadcrumbs.submit-project')
@@ -103,7 +113,7 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'submit-project-successful/:projectId',
                         name: 'SubmitProjectSuccessful',
-                        component: () => import('@/views/dashboard/projectManagement/SubmitProjectSuccessfulView.vue'),
+                        component: () => import('@/views/project/SubmitProjectSuccessfulView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),
                             breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
@@ -113,7 +123,7 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'manage-commission-dates',
                         name: 'ManageCommissionDates',
-                        component: () => import('@/views/dashboard/projectManagement/ManageCommissionDatesView.vue'),
+                        component: () => import('@/views/commission/ManageCommissionDatesView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.manage-commission-dates'),
                             breadcrumb: i18n.global.t('breadcrumbs.manage-commission-dates'),

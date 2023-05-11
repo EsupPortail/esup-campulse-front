@@ -53,7 +53,10 @@ router.beforeEach(async (to) => {
         }
     }
 
-    if (to.meta.projectBearersOnly && (!hasPerm('add_project') && !hasPerm('change_project_as_bearer'))) return {name: '404'}
+    if (to.meta.projectBearersOnly && (!hasPerm('add_project')
+        && !hasPerm('change_project_as_bearer'))) return {name: '404'}
+
+    if (to.name === 'ManageCommissionDates' && !hasPerm('change_commissiondate')) return {name: '404'}
 })
 
 export default router

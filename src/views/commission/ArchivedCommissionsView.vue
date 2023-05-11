@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref, watch} from 'vue'
+import {onMounted} from 'vue'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
@@ -8,7 +8,6 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import useCommissions from '@/composables/useCommissions'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import useSecurity from '@/composables/useSecurity'
 import DashboardProjectCommissionsManagement from '@/components/dashboard/DashboardProjectCommissionsManagement.vue'
 
 
@@ -24,8 +23,6 @@ const {
 } = useCommissions()
 const associationStore = useAssociationStore()
 const userManagerStore = useUserManagerStore()
-const {hasPerm} = useSecurity()
-
 
 onMounted(async () => {
     loading.show()
@@ -48,7 +45,7 @@ const onChangeCommissionDate = async (commission: number) => {
 async function onGetCommissionDates() {
     try {
         await getCommissions()
-        await getCommissionDates(false, true, true)
+        await getCommissionDates(false, false, true)
         initCommissionDatesLabels(undefined)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -63,7 +60,7 @@ async function onGetCommissionDates() {
 async function onGetProjects(commissionsDates: number[]) {
     try {
         if (commissionsDates.length) {
-            await projectStore.getProjects(false, commissionsDates)
+            await projectStore.getProjects(undefined, commissionsDates)
         } else {
             projectStore.projects = []
         }
@@ -101,59 +98,12 @@ async function onGetApplicants() {
 
 <template>
     <section class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-folder2-open"
-            ></i>
-            {{ t('commission.on-going') }}
-        </h2>
         <div class="form-container">
             <div class="form">
                 <DashboardProjectCommissionsManagement
+                    :projects="projectStore.projects"
                     @change-commission-date="onChangeCommissionDate"
                 />
-            </div>
-        </div>
-    </section>
-    <section class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-archive"
-            ></i>
-            {{ t('commission.archived') }}
-        </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
-                    <QBtn
-                        :label="t('dashboard.manage-archived-projects')"
-                        :to="{name: 'ArchivedCommission'}"
-                    />
-                </div>
-            </div>
-        </div>
-    </section>
-    <section
-        v-if="hasPerm('change_commissiondate')"
-        class="dashboard-section"
-    >
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-calendar-check"
-            ></i>
-            {{ t('commission.dates') }}
-        </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
-                    <QBtn
-                        :label="t('dashboard.manage-commission-dates')"
-                        :to="{name: 'ManageCommissionDates'}"
-                    />
-                </div>
             </div>
         </div>
     </section>

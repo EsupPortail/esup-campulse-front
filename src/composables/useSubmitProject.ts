@@ -49,7 +49,7 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function() {
+export default function () {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -211,7 +211,7 @@ export default function() {
             dataToPatch = Object.assign(dataToPatch, {['plannedEndDate']: projectBasicInfos.value.plannedEndDate + 'T00:00:00.000Z'})
         }
         if (projectBasicInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
-            dataToPatch = Object.assign(dataToPatch, {['location']: projectBasicInfos.value.plannedLocation})
+            dataToPatch = Object.assign(dataToPatch, {['plannedLocation']: projectBasicInfos.value.plannedLocation})
         }
         if (projectBasicInfos.value.otherFirstName !== projectStore.project?.otherFirstName) {
             dataToPatch = Object.assign(dataToPatch, {['otherFirstName']: projectBasicInfos.value.otherFirstName})
