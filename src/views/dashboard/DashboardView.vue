@@ -164,7 +164,7 @@ onMounted(async () => {
                         :to="{name: 'ValidateUsers'}"
                     />
                     <QBtn
-                        v-if="hasPerm('change_user')"
+                        v-if="hasPerm('change_associationuser')"
                         :label="t('user-manager.association-validation')"
                         :to="{name: 'ValidateAssociationUsers'}"
                     />

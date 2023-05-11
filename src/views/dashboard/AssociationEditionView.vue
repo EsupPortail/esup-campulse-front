@@ -8,6 +8,8 @@ import FormAssociationEdition from '@/components/form/FormAssociationEdition.vue
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 import useUtility from '@/composables/useUtility'
+import {useUserStore} from '@/stores/useUserStore'
+import router from '@/router'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -16,8 +18,14 @@ const route = useRoute()
 const associationStore = useAssociationStore()
 const {catchHTTPError} = useErrors()
 const {dynamicTitle} = useUtility()
+const userStore = useUserStore()
 
 const isLoaded = ref(false)
+
+// Check if user has president status
+const isAuthorized = () => {
+    return userStore.hasPresidentStatus(parseInt(route.params.id as string))
+}
 
 // Get all infos on mounted
 async function onGetAssociationDetail() {
@@ -74,12 +82,16 @@ async function onGetAssociationActivityFields() {
 
 onMounted(async function () {
     loading.show()
-    await onGetAssociationDetail()
-    dynamicTitle.value = associationStore.association?.name
-    await onGetInstitutions()
-    await onGetInstitutionComponents()
-    await onGetAssociationActivityFields()
-    isLoaded.value = true
+    if (isAuthorized()) {
+        await onGetAssociationDetail()
+        dynamicTitle.value = associationStore.association?.name
+        await onGetInstitutions()
+        await onGetInstitutionComponents()
+        await onGetAssociationActivityFields()
+        isLoaded.value = true
+    } else {
+        await router.push({name: '404'})
+    }
     loading.hide()
 })
 </script>

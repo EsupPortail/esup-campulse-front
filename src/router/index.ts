@@ -19,6 +19,9 @@ router.beforeEach(async (to) => {
     const {initStaffStatus, isStaff, getGroups} = useUserGroups()
     const {newUser, hasPerm} = useSecurity()
 
+    // Set color variant
+    colorVariant.value = to.meta.colorVariant as string
+
     // Get auth user with token
     const accessToken = localStorage.getItem('JWT__access__token')
     if (!userStore.user && accessToken) {
@@ -31,32 +34,43 @@ router.beforeEach(async (to) => {
         await initStaffStatus()
     }
 
-    colorVariant.value = to.meta.colorVariant as string
-
+    // Authenticated views
     if (to.meta.requiresAuth && !userStore.isAuth) return {name: 'Login'}
 
-    if (to.name == 'PasswordResetConfirm' && !to.query.uid && !to.query.token) return {name: '404'}
-
-    if (to.name == 'RegistrationVerifyEmail' && !to.query.key) return {name: '404'}
-
-    if (to.name == 'RegistrationSuccessful' && !newUser.firstName) return {name: '404'}
-
-    if (to.meta.staffOnly && !isStaff.value) return {name: '404'}
-
-    if (to.meta.associationMembersOnly && !userStore.isAssociationMember) return {name: '404'}
-
-    if (userStore.isAuth) {
-        if (to.name == 'Registration' || to.name == 'Login') {
-            return {name: 'Dashboard'}
-        } else if (to.name == 'PasswordReset') {
-            return {name: 'ProfilePasswordEdit'}
-        }
-    }
-
+    // Restrict a certain type of member only
     if (to.meta.projectBearersOnly && (!hasPerm('add_project')
         && !hasPerm('change_project_as_bearer'))) return {name: '404'}
+    if (to.meta.staffOnly && !isStaff.value) return {name: '404'}
+    if (to.meta.associationMembersOnly && !userStore.isAssociationMember) return {name: '404'}
 
+    // Commission
+    if (to.name == 'ArchivedCommission' && !hasPerm('view_project')) return {name: '404'}
     if (to.name === 'ManageCommissionDates' && !hasPerm('change_commissiondate')) return {name: '404'}
+
+    // Dashboard
+    if ((to.name === 'ValidateUsers' || to.name === 'UserValidationDetail')
+        && !hasPerm('change_user')) return {name: '404'}
+    if ((to.name === 'ValidateAssociationUsers' || to.name === 'AssociationUserValidationDetail')
+        && !hasPerm('change_associationuser')) return {name: '404'}
+    if ((to.name === 'ManageUsers' || to.name === 'UserManagementDetail')
+        && !hasPerm('change_user')) return {name: '404'}
+    if (to.name === 'AddUser' && !hasPerm('add_user')) return {name: '404'}
+    if ((to.name === 'ManageAssociations' || to.name === 'EditAssociation')
+        && !hasPerm('change_association')) return {name: '404'}
+    if (to.name === 'CreateAssociation' && !hasPerm('add_association')) return {name: '404'}
+    if (to.name === 'ManageDocumentsLibrary'
+        && (!hasPerm('add_document' || !hasPerm('change_document')))) return {name: '404'}
+
+    // Password setting and registration
+    if (to.name == 'PasswordResetConfirm' && !to.query.uid && !to.query.token) return {name: '404'}
+    if (to.name == 'RegistrationVerifyEmail' && !to.query.key) return {name: '404'}
+    if (to.name == 'RegistrationSuccessful' && !newUser.firstName) return {name: '404'}
+
+    // If user is authenticated
+    if (userStore.isAuth) {
+        if (to.name == 'Registration' || to.name == 'Login') return {name: 'Dashboard'}
+        else if (to.name == 'PasswordReset') return {name: 'ProfilePasswordEdit'}
+    }
 })
 
 export default router

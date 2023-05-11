@@ -9,6 +9,7 @@ import useUserAssociations from '@/composables/useUserAssociations'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {useUserStore} from '@/stores/useUserStore'
+import router from '@/router'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -20,7 +21,11 @@ const userStore = useUserStore()
 onMounted(async () => {
     loading.show()
     await onGetAssociationUsers()
-    initAssociationName()
+    if (isAuthorized()) {
+        initAssociationName()
+    } else {
+        await router.push({name: '404'})
+    }
     loading.hide()
 })
 
@@ -29,6 +34,10 @@ const associationName = ref<string>('')
 const initAssociationName = () => {
     const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.id as string))
     if (association) associationName.value = association.name
+}
+
+const isAuthorized = () => {
+    return userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.id as string))?.isPresident
 }
 
 async function onGetAssociationUsers() {
