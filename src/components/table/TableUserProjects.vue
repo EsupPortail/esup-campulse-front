@@ -69,7 +69,7 @@ const columns: QTableProps['columns'] = [
                             :disable="props.row.projectStatus !== 'PROJECT_DRAFT' || !userStore.hasPresidentStatus(importedProps.associationId)"
                             :label="t('project.project')"
                             :to="importedProps.associationId ? {name: 'SubmitProjectAssociation', params: {associationId: importedProps.associationId, projectId: props.row.id}} :
-                                {name: 'SubmitProjectAssociation', params: {projectId: props.row.id}}"
+                                {name: 'SubmitProjectIndividual', params: {projectId: props.row.id}}"
                             icon="bi-pencil"
                         />
                         <QBtn
@@ -79,6 +79,8 @@ const columns: QTableProps['columns'] = [
                                 props.row.projectStatus !== 'PROJECT_REVIEW_PROCESSING' ||
                                 props.row.projectStatus !== 'PROJECT_REVIEW_VALIDATED'"
                             :label="t('project.review')"
+                            :to="importedProps.associationId ? {name: 'SubmitProjectReviewAssociation', params: {associationId: importedProps.associationId, projectId: props.row.id}} :
+                                {name: 'SubmitProjectReviewIndividual', params: {projectId: props.row.id}}"
                             icon="bi-pencil"
                         />
                     </div>

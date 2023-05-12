@@ -97,7 +97,7 @@ export default function () {
                     commissionDatesLabels.value.push({
                         value: commissionDate.id,
                         label: `${commission.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
-                        commission: commission.id as number
+                        commission: commissionDate.commission
                     })
                 }
             }

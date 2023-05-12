@@ -4,7 +4,7 @@ import type {
     ProjectCategory,
     ProjectCategoryName,
     ProjectCommissionDate,
-    ProjectList,
+    ProjectList, ProjectReview,
     ProjectStore
 } from '#/project'
 import {useAxios} from '@/composables/useAxios'
@@ -19,7 +19,8 @@ export const useProjectStore = defineStore('projectStore', {
         projectCategories: [],
         projectCommissionDates: [],
         projectDocuments: [],
-        projectCategoryNames: []
+        projectCategoryNames: [],
+        projectReview: undefined
     }),
 
     getters: {
@@ -91,6 +92,11 @@ export const useProjectStore = defineStore('projectStore', {
         async getAssociationProjects(associationId: number) {
             const {axiosAuthenticated} = useAxios()
             this.projects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
+        },
+
+        async getProjectReview(projectId: number) {
+            const {axiosAuthenticated} = useAxios()
+            this.projectReview = (await axiosAuthenticated.get<ProjectReview>(`/projects/${projectId}/review`)).data
         }
     }
 })

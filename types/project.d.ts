@@ -106,6 +106,39 @@ export interface ProjectCommissionDate {
     amountEarned?: number | string
 }
 
+export interface ProjectReview {
+    id: number | null,
+    name: string,
+    otherFirstName: string,
+    otherLastName: string,
+    otherEmail: string,
+    otherPhone: string,
+    user: number | null,
+    association: number | null,
+    outcome: number | string,
+    income: number | string,
+    realStartDate: string,
+    realEndDate: string,
+    realLocation: string,
+    organizerName: string,
+    organizerPhone: string,
+    organizerEmail: string,
+    review: string,
+    impactStudents: string,
+    description: string,
+    difficulties: string,
+    improvements: string
+}
+
+export interface ProjectReviewAssociation {
+    address: string,
+    phone: string,
+    email: string,
+    presidentNames: string,
+    presidentPhone: string,
+    presidentEmail: string
+}
+
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
@@ -113,5 +146,6 @@ export interface ProjectStore {
     projectCategories: ProjectCategory[],
     projectCommissionDates: ProjectCommissionDate[],
     projectDocuments: DocumentUpload[],
-    projectCategoryNames: ProjectCategoryName[]
+    projectCategoryNames: ProjectCategoryName[],
+    projectReview: ProjectReview | undefined
 }

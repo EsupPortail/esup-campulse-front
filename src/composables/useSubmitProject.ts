@@ -1,10 +1,18 @@
 import {ref} from 'vue'
-import type {ProjectBasicInfos, ProjectBudget, ProjectCommissionDate, ProjectGoals} from '#/project'
+import type {
+    ProjectBasicInfos,
+    ProjectBudget,
+    ProjectCommissionDate,
+    ProjectGoals,
+    ProjectReview,
+    ProjectReviewAssociation
+} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useProjectDocuments from '@/composables/useProjectDocuments'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const projectBasicInfos = ref<ProjectBasicInfos>(
     {
@@ -53,6 +61,7 @@ export default function () {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
+    const associationStore = useAssociationStore()
     const {axiosAuthenticated} = useAxios()
     const {arraysAreEqual} = useUtility()
     const {processDocuments} = useProjectDocuments()
@@ -308,6 +317,38 @@ export default function () {
         await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/status`, {projectStatus: 'PROJECT_PROCESSING'})
     }
 
+    async function patchProjectReview(projectReview: ProjectReview, association: ProjectReviewAssociation | undefined) {
+        let projectReviewDataToPatch = {}
+        const numbers = ['outcome', 'income']
+        const dates = ['realStartDate', 'realEndDate']
+        for (const [key, value] of Object.entries(projectReview)) {
+            if ((numbers.includes(key) ? parseInt(value) : value) !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
+                projectReviewDataToPatch = Object.assign(projectReviewDataToPatch,
+                    {[key]: (numbers.includes(key) ? parseInt(value) : value) + (dates.includes(key) ? 'T00:00:00.000Z' : '')})
+            }
+        }
+        // API call
+        if (Object.entries(projectReviewDataToPatch).length) {
+            projectStore.projectReview = (await axiosAuthenticated.patch(`/projects/${projectReview.id}/review`,
+                projectReviewDataToPatch)).data
+        }
+
+        if (association) {
+            let associationDataToPatch = {}
+            const keys = ['presidentNames', 'presidentPhone']
+            for (const [key, value] of Object.entries(association)) {
+                if (keys.includes(key) && value !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
+                    associationDataToPatch = Object.assign(associationDataToPatch, {[key]: value})
+                }
+            }
+            // API call
+            if (Object.entries(associationDataToPatch).length) {
+                associationStore.association = (await axiosAuthenticated.patch(`/associations/${projectReview.association}`,
+                    associationDataToPatch)).data
+            }
+        }
+    }
+
 
     return {
         projectBasicInfos,
@@ -330,6 +371,7 @@ export default function () {
         initProjectCommissionDates,
         patchProjectGoals,
         submitProject,
-        reInitSubmitProjectForm
+        reInitSubmitProjectForm,
+        patchProjectReview
     }
 }
