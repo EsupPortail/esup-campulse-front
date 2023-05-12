@@ -1,28 +1,16 @@
-- 📝 Update deployment process
-- 🚚 Rename TemplateDocumentsLibraryView -> ManageDocumentsLibraryView
-- ✨ Done with documents library for managers
-- 🩹 Fix getDocuments by process get request
-- 🏷️ Fix imports on types
-- ✨ Finish student projects management dashboard #63
-- ✨ #73 Added pdf download when submitting project
-- 🩹 Fix !isSite commissionDates in SubmitProject form
-- ✨ Dynamic title for AssociationDashboard
-- ✨ Implement strong password policy on PasswordResetConfirm
-- ✅ Tests for useProjectDocuments
-- 🐛 Corrected a11y issue on Home.
-- ✅ Tests for useCommissions
-- ✅ Tests for useErrors
-- ✅ Tests for useProjectStore
-- 👽️ Update navigation guards on projectBearersOnly routes
-- 👽️ Rename DocumentUpload type and add size key
-- 👽️ Update document mimeTypes type
-- ✅ Update useProjectDocuments tests
-- 👽️ Update groups and permissions mocks
-- 👽️ Update archived project statuses list
-- 👽️ Update submitProject according to new dedicated status route
-- 🎨 Optimize useProjectDocuments functions to get documents by process type via API
-- 🔧 Added robots.txt .
-- ⬆️ Upgrade minor dependencies.
-- 🍱 Added new logos.
-- 🔧 Nginx pprd conf.
-- 🚧 New view and dashboard access for template document library
+- 🛂 Add navigation guards based on permissions
+- 🩹 Fix typeError caused by toString() on undefined in FormAssociationEdition
+- ✅ Update tests after refactoring useCommissions functions
+- ✨ Rework on projects management & introduce archived commissions dashboard
+- 🛂 Add permission to change commission date
+- ✨ Manage commission dates (add, update and delete)
+- 🏗️ Changed Project location to planned_location.
+- ✅ Update tests for useCommissions
+- ♻️ Rework getting commission dates linked to a manager
+- ✨ Patch canSubmitProject for an association
+- ✨ Add projects statuses in AssociationDashboard
+- ✏️ Add currency to inputs in submit project form
+- 🏷️ Fix misimported type
+- ✨ Documents library for students is done
+- 🐛 #64 Fixed undefined field in form.
+- 🛂 Rename DocumentsLibrary and restrict access for managers
