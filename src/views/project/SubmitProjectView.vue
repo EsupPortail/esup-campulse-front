@@ -48,7 +48,7 @@ const {
     deleteDocumentUpload,
     getFile
 } = useProjectDocuments()
-const {fromDateIsAnterior, CURRENCY} = useUtility()
+const {fromDateIsAnterior, CURRENCY, phoneRegex} = useUtility()
 const {
     getCommissions,
     commissions,
@@ -567,6 +567,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 clearable
+                                class="no-rules"
                             />
                             <QInput
                                 v-model="projectBasicInfos.otherLastName"
@@ -574,6 +575,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 clearable
+                                class="no-rules"
                             />
                             <QInput
                                 v-model="projectBasicInfos.otherEmail"
@@ -581,6 +583,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 clearable
+                                :rules="projectBasicInfos.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
+                                class="no-rules"
                             />
                             <QInput
                                 v-model="projectBasicInfos.otherPhone"
@@ -588,6 +592,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 clearable
+                                :rules="projectBasicInfos.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                                class="no-rules"
                             />
                             <QSelect
                                 v-model="projectCategories"
@@ -1321,60 +1327,54 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 @import '@/assets/styles/forms.scss';
 </style>
 
-<style lang="scss" scoped>
-@import '@/assets/_variables.scss';
+<style lang="sass" scoped>
+@import '@/assets/_variables.scss'
 
-.project-re-edition {
-    margin-top: 1rem;
-}
+.project-re-edition
+    margin-top: 1rem
 
-.previous-budget, .asked-budget, .previous-budget-section, .asked-budget-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
+.previous-budget, .asked-budget, .previous-budget-section, .asked-budget-section
+    display: flex
+    flex-direction: column
+    gap: 1rem
 
-.q-checkbox {
-    margin: 0 0 1rem 0;
-}
+.q-checkbox
+    margin: 0 0 1rem 0
 
-section > .q-separator {
-    margin: 0 0 2rem 0;
-}
+section > .q-separator
+    margin: 0 0 2rem 0
 
-.q-separator {
-    margin: 1rem 0 2rem 0;
-}
+.q-separator
+    margin: 1rem 0 2rem 0
 
-h3 {
-    margin-bottom: 1rem;
-}
+h3
+    margin-bottom: 1rem
 
-.flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
+.flex-section
+    display: flex
+    flex-direction: column
+    gap: 1.5rem
 
-h5 {
-    margin: 1.5rem 0 0.5rem 0;
-}
+h5
+    margin: 1.5rem 0 0.5rem 0
 
-.recap-section {
-    margin-bottom: 2rem;
-}
+.recap-section
+    margin-bottom: 2rem
 
-.recap-section-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.recap-section-title
+    display: flex
+    align-items: center
+    justify-content: space-between
 
-    h4 {
-        margin: 2rem 0 1rem 0;
-    }
-}
+    h4
+        margin: 2rem 0 1rem 0
 
-.flex-section .document-input {
-    margin-bottom: 0;
-}
+.flex-section .document-input
+    margin-bottom: 0
+
+.no-rules
+    margin-bottom: 1rem
+
+.form-page-navigation
+    margin-top: 1rem
 </style>
