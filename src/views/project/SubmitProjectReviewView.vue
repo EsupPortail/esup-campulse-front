@@ -14,7 +14,7 @@ import {useRoute} from 'vue-router'
 import useUtility from '@/composables/useUtility'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useSubmitProject from '@/composables/useSubmitProject'
-import useAssociation from '@/composables/useAssociation'
+import {ProcessDocument} from '#/documents'
 
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -27,7 +27,12 @@ const {CURRENCY, formatDate, fromDateIsAnterior, phoneRegex} = useUtility()
 const {
     getDocuments,
     initProcessProjectDocuments,
-    processDocuments
+    processDocuments,
+    documentUploads,
+    initDocumentUploads,
+    uploadDocuments,
+    getFile,
+    deleteDocumentUpload
 } = useProjectDocuments()
 const {patchProjectReview} = useSubmitProject()
 const {
@@ -48,11 +53,15 @@ onMounted(async () => {
 
 const step = ref(1)
 const done1 = ref(false)
-//const done2 = ref(false)
-//const done3 = ref(false)
-//const done4 = ref(false)
-//const done5 = ref(false)
-//const done6 = ref(false)
+const done2 = ref(false)
+const done3 = ref(false)
+const done4 = ref(false)
+
+watch(() => step.value === 3, async () => {
+    loading.show()
+    await onGetProjectDocuments()
+    loading.hide()
+})
 
 const projectReview = ref<ProjectReview>(
     {
@@ -145,6 +154,10 @@ const checkIfDatesAreLegal = () => {
     datesAreLegal.value = fromDateIsAnterior(projectReview.value.realStartDate, projectReview.value.realEndDate)
 }
 
+// CONST
+const MAX_FILES = 10
+const MAX_FILE_SIZE = 8388608
+
 // Get data for info panel (required documents list)
 async function onGetDocumentTypes() {
     try {
@@ -209,9 +222,11 @@ async function onGetAssociationDetails() {
 }
 
 // Submit step 1 & 2 (basic infos about applicant and project)
-async function onSubmitProjectReviewInfos(nextStep: number, association: ProjectReviewAssociation | undefined) {
+async function onSubmitProjectReviewInfos(nextStep: number, done: 1 | 2 | null, association: ProjectReviewAssociation | undefined) {
     try {
         await patchProjectReview(projectReview.value, association)
+        if (done === 1) done1.value = true
+        else if (done === 2) done2.value = true
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -223,6 +238,82 @@ async function onSubmitProjectReviewInfos(nextStep: number, association: Project
     }
 }
 
+async function onGetProjectDocuments() {
+    try {
+        await getDocuments('DOCUMENT_PROJECT_REVIEW')
+        initProcessProjectDocuments()
+        await projectStore.getProjectDocuments()
+        initDocumentUploads()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+// Reject document if too big
+async function onDocumentRejected() {
+    notify({
+        type: 'negative',
+        message: t('notifications.negative.413-error')
+    })
+}
+
+async function onUploadDocuments(nextStep: number) {
+    loading.show()
+    if (projectStore.project) {
+        try {
+            await uploadDocuments(parseInt(route.params.associationId as string))
+            done3.value = true
+            step.value = nextStep
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
+        }
+    }
+    loading.hide()
+}
+
+async function onDeleteDocumentUpload(documentId: number) {
+    loading.show()
+    try {
+        await deleteDocumentUpload(documentId)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
+
+async function onGetFile(uploadedDocument: ProcessDocument) {
+    try {
+        const file = await getFile(uploadedDocument.pathFile as string)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(file)
+        link.download = uploadedDocument.name as string
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    }  catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
 </script>
 
 <template>
@@ -282,7 +373,7 @@ async function onSubmitProjectReviewInfos(nextStep: number, association: Project
                         icon="mdi-card-text-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitProjectReviewInfos(2, association)"
+                            @submit.prevent="onSubmitProjectReviewInfos(2, 1, association)"
                         >
                             <fieldset>
                                 <legend class="title-3">{{ t('commission.dates') }}</legend>
@@ -477,15 +568,286 @@ async function onSubmitProjectReviewInfos(nextStep: number, association: Project
                         </QForm>
                     </QStep>
 
-                    <!-- COMMISSION CHOICE -->
+                    <!-- REVIEW -->
+                    <QStep
+                        :done="done2"
+                        :name="2"
+                        :title="t('project.review')"
+                        icon="mdi-chart-box-outline"
+                    >
+                        <QForm
+                            @submit.prevent="onSubmitProjectReviewInfos(3, 2, undefined)"
+                        >
+                            <fieldset>
+                                <legend class="title-3">{{ t('project.review') }}</legend>
 
-                    <!-- BUDGET -->
-
-                    <!-- GOALS -->
+                                <QInput
+                                    v-model="projectReview.review"
+                                    :label="t('project.moral-review') + ' *'"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    aria-required="true"
+                                    filled
+                                    lazy-rules
+                                    type="textarea"
+                                    clearable
+                                    :hint="t('project.moral-review-hint')"
+                                />
+                                <QInput
+                                    v-model="projectReview.impactStudents"
+                                    :label="t('project.impact-students') + ' *'"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    aria-required="true"
+                                    filled
+                                    lazy-rules
+                                    type="textarea"
+                                    clearable
+                                />
+                                <QInput
+                                    v-model="projectReview.description"
+                                    :label="t('project.description') + ' *'"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    aria-required="true"
+                                    filled
+                                    lazy-rules
+                                    type="textarea"
+                                    clearable
+                                />
+                                <QInput
+                                    v-model="projectReview.difficulties"
+                                    :label="t('project.difficulties') + ' *'"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    aria-required="true"
+                                    filled
+                                    lazy-rules
+                                    type="textarea"
+                                    clearable
+                                />
+                                <QInput
+                                    v-model="projectReview.improvements"
+                                    :label="t('project.improvements') + ' *'"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    aria-required="true"
+                                    filled
+                                    lazy-rules
+                                    type="textarea"
+                                    clearable
+                                />
+                            </fieldset>
+                            <section class="form-page-navigation">
+                                <QBtn
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="onSubmitProjectReviewInfos(1, null,undefined)"
+                                />
+                                <QBtn
+                                    :label="t('continue')"
+                                    icon-right="bi-check2"
+                                    type="submit"
+                                />
+                            </section>
+                        </QForm>
+                    </QStep>
 
                     <!-- DOCUMENTS -->
+                    <QStep
+                        :done="done3"
+                        :name="3"
+                        :title="t('project.documents')"
+                        icon="mdi-file-document-outline"
+                    >
+                        <QForm
+                            @submit.prevent="onUploadDocuments(4)"
+                        >
+                            <h3 class="title-2">{{ t('project.documents') }}</h3>
+
+                            <section class="flex-section">
+                                <div
+                                    v-for="(document, index) in processDocuments"
+                                    :key="index"
+                                >
+                                    <QFile
+                                        v-model="document.pathFile"
+                                        :accept="document.mimeTypes?.join(', ')"
+                                        :aria-required="document.isRequiredInProcess"
+                                        :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
+                                        :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
+                                        :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
+                                            (1 - documentUploads.filter(obj => obj.document === document.document).length)"
+                                        :max-file-size="MAX_FILE_SIZE"
+                                        :multiple="document.isMultiple"
+                                        :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
+                                        append
+                                        clearable
+                                        filled
+                                        lazy-rules
+                                        use-chips
+                                        counter
+                                        :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
+                                            !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
+                                        @rejected="onDocumentRejected"
+                                    >
+                                        <template v-slot:prepend>
+                                            <QIcon name="mdi-paperclip"/>
+                                        </template>
+                                    </QFile>
+
+                                    <div
+                                        v-if="document.pathTemplate"
+                                        class="info-panel info-panel-warning"
+                                    >
+                                        <i
+                                            aria-hidden="true"
+                                            class="bi bi-exclamation-lg"
+                                        ></i>
+                                        <p>
+                                            {{ t('project.document.use-template') }} <span>
+                                                <a
+                                                    :href="document.pathTemplate"
+                                                    target="_blank"
+                                                >{{ `${t('project.document.download-template')} "${document.description}".` }}</a></span>
+                                        </p>
+                                    </div>
+
+                                    <div class="document-input-group">
+                                        <div class="document-input variant-space-3">
+                                            <div class="document-input-list">
+                                                <div
+                                                    class="document-item"
+                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                                                    :key="uploadedDocument.id"
+                                                >
+                                                    <p @click="onGetFile(uploadedDocument)">
+                                                        <i
+                                                            class="bi bi-file-earmark"
+                                                            aria-hidden="true"
+                                                        ></i>
+                                                        {{ uploadedDocument.name }}
+                                                        <i
+                                                            class="bi bi-eye"
+                                                            aria-hidden="true"
+                                                        ></i>
+                                                    </p>
+                                                    <button
+                                                        type="button"
+                                                        @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
+                                                    >
+                                                        <i class="bi bi-x-lg"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="form-page-navigation">
+                                <QBtn
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="onUploadDocuments(2)"
+                                />
+                                <QBtn
+                                    :label="t('continue')"
+                                    icon-right="bi-check2"
+                                    type="submit"
+                                />
+                            </section>
+                        </QForm>
+                    </QStep>
 
                     <!-- RECAP -->
+                    <QStep
+                        :done="done4"
+                        :name="4"
+                        :title="t('recap')"
+                        icon="mdi-check"
+                    >
+                        <QForm
+                            @submit.prevent=""
+                        >
+                            <h3 class="title-2">{{ t('recap') }}</h3>
+
+                            <section class="recap-sections">
+                                <!-- BASIC INFOS -->
+                                <section class="recap-section">
+                                    <div class="recap-section-title">
+                                        <h4 class="title-3">{{ t('project.general-infos') }}</h4>
+                                        <QBtn
+                                            :label="t('modify')"
+                                            icon="bi-pencil"
+                                            @click="() => step = 1"
+                                        />
+                                    </div>
+
+                                    <section class="flex-section">
+                                        <div
+                                            class="display-row"
+                                            v-for="projectCommissionDate in projectStore.projectCommissionDates"
+                                            :key="projectCommissionDate.id"
+                                        >
+                                            <p class="row-title">{{ commissionDatesLabels.find(obj => obj.value === projectCommissionDate.commissionDate)?.label }}</p>
+
+                                            <p class="paragraph">
+                                                <ul>
+                                                    <li>{{ t('project.amount-asked') }} : {{ projectCommissionDate.amountAsked + CURRENCY}}</li>
+                                                    <li>{{ t('project.amount-earned') }} : {{ projectCommissionDate.amountEarned + CURRENCY}}</li>
+                                                </ul>
+                                            </p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.outcome') }}</p>
+                                            <p>{{ projectReview.outcome }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.income') }}</p>
+                                            <p>{{ projectReview.income }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ projectReview.association ? t('association.labels.name') : t('project.individual-project-bearer') }}</p>
+                                            <p>{{ applicant() }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.name') }}</p>
+                                            <p>{{ projectStore.project?.name }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.planned-start-date') }}</p>
+                                            <p>{{ formatDate(projectReview.realStartDate).split('-').reverse().join('/') }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.planned-end-date') }}</p>
+                                            <p>{{ formatDate(projectReview.realEndDate).split('-').reverse().join('/') }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.planned-location') }}</p>
+                                            <p>{{ projectReview.realLocation }}</p>
+                                        </div>
+                                    </section>
+                                </section>
+                            </section>
+
+
+                            <section class="form-page-navigation">
+                                <QBtn
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="step = 3"
+                                />
+                                <QBtn
+                                    :label="t('project.submit-review')"
+                                    icon-right="bi-check2"
+                                    type="submit"
+                                />
+                            </section>
+                        </QForm>
+                    </QStep>
                 </QStepper>
             </div>
         </div>
@@ -509,4 +871,20 @@ async function onSubmitProjectReviewInfos(nextStep: number, association: Project
 
 .no-rules
     padding-bottom: 20px
+
+.recap-section
+    margin-bottom: 2rem
+
+.recap-section-title
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+    h4
+        margin: 2rem 0 1rem 0
+
+.flex-section
+    display: flex
+    flex-direction: column
+    gap: 1.5rem
 </style>
