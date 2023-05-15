@@ -156,8 +156,6 @@ export default function () {
             }
         }
         projectStore.project = (await axiosAuthenticated.post('/projects/', dataToPost)).data
-
-
     }
 
     // UPDATES = POSTS AND DELETES
@@ -349,6 +347,10 @@ export default function () {
         }
     }
 
+    async function submitProjectReview() {
+        await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/status`, {projectStatus: 'PROJECT_REVIEW_PROCESSING'})
+    }
+
 
     return {
         projectBasicInfos,
@@ -372,6 +374,7 @@ export default function () {
         patchProjectGoals,
         submitProject,
         reInitSubmitProjectForm,
-        patchProjectReview
+        patchProjectReview,
+        submitProjectReview
     }
 }

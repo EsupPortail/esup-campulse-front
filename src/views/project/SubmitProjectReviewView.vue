@@ -34,7 +34,7 @@ const {
     getFile,
     deleteDocumentUpload
 } = useProjectDocuments()
-const {patchProjectReview} = useSubmitProject()
+const {patchProjectReview, submitProjectReview} = useSubmitProject()
 const {
     getCommissions,
     getCommissionDates,
@@ -153,6 +153,8 @@ const datesAreLegal = ref<boolean>(false)
 const checkIfDatesAreLegal = () => {
     datesAreLegal.value = fromDateIsAnterior(projectReview.value.realStartDate, projectReview.value.realEndDate)
 }
+watch(() => projectReview.value.realStartDate, checkIfDatesAreLegal)
+watch(() => projectReview.value.realEndDate, checkIfDatesAreLegal)
 
 // CONST
 const MAX_FILES = 10
@@ -314,6 +316,19 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         }
     }
 }
+
+async function onSubmitProjectReview() {
+    try {
+        await submitProjectReview()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
 </script>
 
 <template>
@@ -443,11 +458,10 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                                     ]"
                                     aria-required="true"
                                     filled
-                                    lazy-rules
+                                    reactive-rules
                                     type="date"
                                     :hint="t('project.real-date-hint')"
                                     clearable
-                                    @update:model-value="checkIfDatesAreLegal"
                                 />
                                 <QInput
                                     v-model="projectReview.realEndDate"
@@ -458,10 +472,9 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                                     ]"
                                     aria-required="true"
                                     filled
-                                    lazy-rules
+                                    reactive-rules
                                     type="date"
                                     :hint="t('project.real-date-hint')"
-                                    @update:model-value="checkIfDatesAreLegal"
                                     clearable
                                 />
                                 <QInput
@@ -479,7 +492,10 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                                 <legend class="title-3">{{ t('project.contact-infos') }}</legend>
                                 <h4 class="title-4">{{ t('project.applicant') }}</h4>
                                 <div class="display-row">
-                                    <p class="row-title">{{ projectReview.association ? t('association.labels.name') : t('project.individual-project-bearer') }}</p>
+                                    <p class="row-title">
+                                        {{ projectReview.association ? t('association.labels.name') :
+                                            t('project.individual-project-bearer') }}
+                                    </p>
                                     <p>{{ applicant() }}</p>
                                 </div>
                                 <div class="display-row">
@@ -763,12 +779,12 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                         icon="mdi-check"
                     >
                         <QForm
-                            @submit.prevent=""
+                            @submit.prevent="onSubmitProjectReview"
                         >
                             <h3 class="title-2">{{ t('recap') }}</h3>
 
                             <section class="recap-sections">
-                                <!-- BASIC INFOS -->
+                                <!-- BASIC INFOS RECAP -->
                                 <section class="recap-section">
                                     <div class="recap-section-title">
                                         <h4 class="title-3">{{ t('project.general-infos') }}</h4>
@@ -797,12 +813,12 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
 
                                         <div class="display-row">
                                             <p class="row-title">{{ t('project.outcome') }}</p>
-                                            <p>{{ projectReview.outcome }}</p>
+                                            <p>{{ projectReview.outcome + CURRENCY }}</p>
                                         </div>
 
                                         <div class="display-row">
                                             <p class="row-title">{{ t('project.income') }}</p>
-                                            <p>{{ projectReview.income }}</p>
+                                            <p>{{ projectReview.income + CURRENCY }}</p>
                                         </div>
 
                                         <div class="display-row">
@@ -829,10 +845,148 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                                             <p class="row-title">{{ t('project.planned-location') }}</p>
                                             <p>{{ projectReview.realLocation }}</p>
                                         </div>
+
+                                        <div class="display-row">
+                                            TODO : adresse du porteur individuel
+                                            <p class="row-title">{{ t('association.labels.address') }}</p>
+                                            <p>{{ association.address }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ projectReview.association ? t('association.labels.mail') : t('user.mail') }}</p>
+                                            <p>{{ projectReview.association ? association.email : userStore.user?.email }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ projectReview.association ? t('association.labels.phone') : t('user.phone') }}</p>
+                                            <p>{{ projectReview.association ? association.phone : userStore.user?.phone }}</p>
+                                        </div>
+
+                                        <div
+                                            v-if="projectReview.association"
+                                            class="flex-section"
+                                        >
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('association.labels.president-name') }}</p>
+                                                <p>{{ association.presidentNames }}</p>
+                                            </div>
+
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('association.labels.president-phone') }}</p>
+                                                <p>{{ association.presidentPhone }}</p>
+                                            </div>
+
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('association.labels.president-name') }}</p>
+                                                <p>{{ association.presidentNames }}</p>
+                                            </div>
+
+
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('project.other-first-name') }}</p>
+                                                <p>{{ projectReview.otherFirstName }}</p>
+                                            </div>
+
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('project.other-last-name') }}</p>
+                                                <p>{{ projectReview.otherLastName }}</p>
+                                            </div>
+
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('project.other-email') }}</p>
+                                                <p>{{ projectReview.otherEmail }}</p>
+                                            </div>
+
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('project.other-phone') }}</p>
+                                                <p>{{ projectReview.otherPhone }}</p>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </section>
+
+                                <!-- REVIEW INFOS -->
+                                <section class="recap-section">
+                                    <div class="recap-section-title">
+                                        <h4 class="title-3">{{ t('project.review') }}</h4>
+                                        <QBtn
+                                            :label="t('modify')"
+                                            icon="bi-pencil"
+                                            @click="() => step = 2"
+                                        />
+                                    </div>
+
+                                    <section class="flex-section">
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.review') }}</p>
+                                            <p>{{ projectReview.review }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.impact-students') }}</p>
+                                            <p>{{ projectReview.impactStudents }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.description') }}</p>
+                                            <p>{{ projectReview.description }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.difficulties') }}</p>
+                                            <p>{{ projectReview.difficulties }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.improvements') }}</p>
+                                            <p>{{ projectReview.improvements }}</p>
+                                        </div>
                                     </section>
                                 </section>
                             </section>
 
+                            <!-- DOCUMENTS -->
+                            <section class="recap-section">
+                                <div class="recap-section-title">
+                                    <h4 class="title-3">{{ t('project.documents') }}</h4>
+                                    <QBtn
+                                        :label="t('modify')"
+                                        icon="bi-pencil"
+                                        @click="() => step = 3"
+                                    />
+                                </div>
+
+                                <div class="info-panel info-panel-warning">
+                                    <i
+                                        class="bi bi-exclamation-lg"
+                                        aria-hidden="true"
+                                    ></i>
+                                    <p>{{ t('project.document.verify') }}</p>
+                                </div>
+
+                                <section class="flex-section">
+                                    <div
+                                        class="display-row"
+                                        v-for="(document, index) in processDocuments"
+                                        :key="index"
+                                    >
+                                        <p class="row-title">{{ document.description }}</p>
+                                        <p class="paragraph">
+                                            <ul role="list">
+                                                <li
+                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                                                    :key="uploadedDocument.id"
+                                                >
+                                                    <a
+                                                        href=""
+                                                        @click.prevent="onGetFile(uploadedDocument)"
+                                                    >{{ uploadedDocument.name }}</a>
+                                                </li>
+                                            </ul>
+                                        </p>
+                                    </div>
+                                </section>
+                            </section>
 
                             <section class="form-page-navigation">
                                 <QBtn
