@@ -1,4 +1,5 @@
 import type {DocumentUpload} from '#/documents'
+import type {User} from '#/user'
 
 export interface Project {
     id: number,
@@ -105,6 +106,15 @@ export interface ProjectCommissionDate {
     amountAsked?: number | string,
     amountEarned?: number | string
 }
+
+export interface ProjectComment {
+    id: number,
+    project: Project | undefined,
+    user: User | undefined,
+    text: string,
+    creation_date: string,
+}
+
 
 // STORE
 export interface ProjectStore {
