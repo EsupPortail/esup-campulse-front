@@ -125,5 +125,6 @@ export interface ProjectStore {
     projectCommissionDates: ProjectCommissionDate[],
     projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[],
+    projectComment: ProjectComment | undefined
     projectComments: ProjectComment[]
 }

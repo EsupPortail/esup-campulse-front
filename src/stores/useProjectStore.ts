@@ -21,6 +21,7 @@ export const useProjectStore = defineStore('projectStore', {
         projectCommissionDates: [],
         projectDocuments: [],
         projectCategoryNames: [],
+        projectComment: undefined,
         projectComments: []
     }),
 
@@ -100,14 +101,10 @@ export const useProjectStore = defineStore('projectStore', {
             this.projectComments = (await axiosAuthenticated.get<ProjectComment[]>('/projects/comments')).data
         },
 
-        async getProjectComments(id: number) {
-            const {axiosAuthenticated} = useAxios()
-            this.projectComments = (await axiosAuthenticated.get<ProjectComment[]>(`/projects/${id}/comments`)).data
-        },
-
         async getProjectCommentId(id: number) {
             const {axiosAuthenticated} = useAxios()
-            this.projectComments = (await axiosAuthenticated.get<ProjectComment[]>(`/projects/${id}/comments/${id}`)).data
+            const url = `/projects/${this.project?.id}/comments/${id}`
+            this.projectComment = (await axiosAuthenticated.get<ProjectComment>(url)).data
         }
     }
 })
