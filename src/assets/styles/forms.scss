@@ -29,6 +29,12 @@
   @media screen and (min-width: $responsiveWidth) {
     display: flex;
     justify-content: center;
+
+    .form {
+      display: block;
+      margin: auto;
+      width: $halfSize;
+    }
   }
 }
 
@@ -66,9 +72,9 @@
     background: $annuaireColor;
   }
 
-  &.q-field--error .q-field__control::after {
-    // background: $errorPanelColor;
-  }
+  /*&.q-field--error .q-field__control::after {
+    background: $errorPanelColor;
+  }*/
 
   &.q-field--highlighted .q-field__label {
     color: $annuaireColorText;

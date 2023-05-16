@@ -97,6 +97,15 @@
   &.home-section-annuaire {
     background-image: $homeDirectoryImage;
     background-position: center center;
+
+    .card-icon {
+      text-align: center;
+
+      i {
+        font-size: $iconSize;
+        color: $annuaireColor;
+      }
+    }
   }
 
   &.home-section-charte {
@@ -105,17 +114,36 @@
 
     .section-card {
       flex-direction: row-reverse;
+
+      .card-icon {
+        text-align: center;
+
+        i {
+          font-size: $iconSize;
+          color: $charteColor;
+        }
+      }
     }
   }
 
   &.home-section-cape {
     background-image: $homeCapeImage;
     background-position: center center;
+
+    .card-icon {
+      text-align: center;
+
+      i {
+        font-size: $iconSize;
+        color: $capeColor;
+      }
+    }
   }
 
   .section-card {
     width: 95%;
     display: block;
+    border-radius: 1rem;
     position: relative;
     background-color: $backgroundColor1;
     box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.2);
@@ -195,6 +223,11 @@
           }
         }
       }
+    }
+
+    // Title on about's page (Services part)
+    .services-title {
+      flex: 0;
     }
 
     .section-info {
@@ -426,6 +459,34 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+
+/*
+  * About section
+ */
+.section-headtitle {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.services-project {
+  .services-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media screen and (min-width: $responsiveWidth) {
+      flex-direction: row;
+      justify-content: center;
+      align-items: normal;
+      gap: 1rem;
+
+      .section-card {
+        flex-direction: column;
       }
     }
   }

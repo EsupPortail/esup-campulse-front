@@ -3,6 +3,13 @@
     "description": "Le contenu que vous avez demandé est introuvable. Vous pouvez retourner sur la page d'accueil ou votre espace, si vous êtes connecté.",
     "title": "Contenu introuvable"
   },
+  "about": {
+    "presentation": "Présentation",
+    "services": "Services de l'application",
+    "contact": "Contact",
+    "intro-contact": "Un soucis, un bogue, une idée ?",
+    "contact-us": "Contactez-nous"
+  },
   "account": "Compte",
   "account-validated": "Compte validé",
   "activate": "Activer",
