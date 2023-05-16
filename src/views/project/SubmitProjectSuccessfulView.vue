@@ -46,7 +46,7 @@ async function onGetProjectPdf() {
         const file = await projectStore.getProjectPdf(parseInt(route.params.projectId as string))
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('project.pdf-name')}${encodeURI(projectStore.project.name)}.pdf`
+        link.download = `${t('project.pdf-name')}${projectStore.project ? encodeURI(projectStore.project.name) : ''}.pdf`
         document.body.appendChild(link)
         link.click()
         link.remove()
