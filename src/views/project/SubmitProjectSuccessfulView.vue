@@ -23,13 +23,13 @@ onMounted(async () => {
 async function onGetProjectDetail() {
     try {
         await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
-        if (projectStore.project?.projectStatus !== 'PROJECT_PROCESSING') {
+        /*if (projectStore.project?.projectStatus !== 'PROJECT_PROCESSING') {
             await router.push({name: '404'})
             notify({
                 type: 'negative',
                 message: t('notifications.negative.project-edition-not-enabled')
             })
-        }
+        }*/
     } catch (error) {
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
@@ -46,11 +46,11 @@ async function onGetProjectPdf() {
         const file = await projectStore.getProjectPdf(parseInt(route.params.projectId as string))
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('project.pdf-name')}${encodeURI(projectStore.project.name)}.pdf`
+        link.download = `${t('project.pdf-name')}${encodeURI(projectStore.project?.name as string)}.pdf`
         document.body.appendChild(link)
         link.click()
         link.remove()
-    } catch(error) {
+    } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
@@ -72,13 +72,13 @@ async function onGetProjectPdf() {
                     <div class="flex-btn-group">
                         <QBtn
                             :label="t('project.download-recap')"
-                            icon="mdi-tray-arrow-down"
+                            icon-right="bi-download"
                             @click="onGetProjectPdf"
                         />
                         <QBtn
                             :label="t('dashboard.cape-dashboard')"
-                            disable
-                            icon="mdi-chevron-left"
+                            :to="{name: 'Commission'}"
+                            icon-right="bi-chevron-compact-right"
                         />
                     </div>
                 </section>
