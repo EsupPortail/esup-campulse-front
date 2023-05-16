@@ -1,16 +1,2 @@
-- 🛂 Add navigation guards based on permissions
-- 🩹 Fix typeError caused by toString() on undefined in FormAssociationEdition
-- ✅ Update tests after refactoring useCommissions functions
-- ✨ Rework on projects management & introduce archived commissions dashboard
-- 🛂 Add permission to change commission date
-- ✨ Manage commission dates (add, update and delete)
-- 🏗️ Changed Project location to planned_location.
-- ✅ Update tests for useCommissions
-- ♻️ Rework getting commission dates linked to a manager
-- ✨ Patch canSubmitProject for an association
-- ✨ Add projects statuses in AssociationDashboard
-- ✏️ Add currency to inputs in submit project form
-- 🏷️ Fix misimported type
-- ✨ Documents library for students is done
-- 🐛 #64 Fixed undefined field in form.
-- 🛂 Rename DocumentsLibrary and restrict access for managers
+- 💄 Add rules on other inputs in submit project form and styling on no-rules inputs
+- 🐛 Fix authorization for staff members on associations in directory
