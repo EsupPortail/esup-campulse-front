@@ -3,7 +3,7 @@ import AboutCard from '@/components/layout/LayoutAboutCard.vue'
 import ServiceCard from '@/components/layout/LayoutAboutServiceCard.vue'
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref, watch} from 'vue'
-import {AboutStore} from '#/index'
+import type {AboutStore} from '#/index'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
@@ -117,7 +117,10 @@ watch(() => content.about.length, () => {
                 <div class="contact-content">
                     <h4>{{ t('about.intro-contact') }}</h4>
 
-                    <RouterLink :to="{name: 'Contact'}" class="contact-link">
+                    <RouterLink
+                        :to="{name: 'Contact'}"
+                        class="contact-link"
+                    >
                         {{ t('about.contact-us') }}
                     </RouterLink>
                 </div>

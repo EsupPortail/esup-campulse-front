@@ -986,7 +986,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                                                     :key="uploadedDocument.id"
                                                 >
-                                                    <p @click="onGetFile(uploadedDocument.pathFile, uploadedDocument.name)">
+                                                    <p @click="onGetFile(uploadedDocument.pathFile)">
                                                         <i
                                                             class="bi bi-file-earmark"
                                                             aria-hidden="true"

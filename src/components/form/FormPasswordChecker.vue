@@ -67,7 +67,7 @@ const resultLabels = [
         </div>
         <div>
             <p :class="`paragraph __${props.passwordChecker.score}`">
-                {{ resultLabels.find(label => label.score === props.passwordChecker.score).label }}
+                {{ resultLabels.find(label => label.score === props.passwordChecker.score)?.label }}
             </p>
         </div>
     </section>
