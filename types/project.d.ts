@@ -26,7 +26,8 @@ export interface Project {
     plannedActivities: string,
     preventionSafety: string,
     marketingCampaign: string,
-    projectStatus: ProjectStatus
+    projectStatus: ProjectStatus,
+    projectComments?: ProjectComment[]
 }
 
 export interface ProjectList {
@@ -123,5 +124,6 @@ export interface ProjectStore {
     projectCategories: ProjectCategory[],
     projectCommissionDates: ProjectCommissionDate[],
     projectDocuments: DocumentUpload[],
-    projectCategoryNames: ProjectCategoryName[]
+    projectCategoryNames: ProjectCategoryName[],
+    projectComments: ProjectComment[]
 }

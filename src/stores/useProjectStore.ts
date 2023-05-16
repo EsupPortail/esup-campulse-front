@@ -3,6 +3,7 @@ import type {
     Project,
     ProjectCategory,
     ProjectCategoryName,
+    ProjectComment,
     ProjectCommissionDate,
     ProjectList,
     ProjectStore
@@ -19,7 +20,8 @@ export const useProjectStore = defineStore('projectStore', {
         projectCategories: [],
         projectCommissionDates: [],
         projectDocuments: [],
-        projectCategoryNames: []
+        projectCategoryNames: [],
+        projectComments: []
     }),
 
     getters: {
@@ -91,6 +93,21 @@ export const useProjectStore = defineStore('projectStore', {
         async getAssociationProjects(associationId: number) {
             const {axiosAuthenticated} = useAxios()
             this.projects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
+        },
+
+        async getAllProjectsComments() {
+            const {axiosAuthenticated} = useAxios()
+            this.projectComments = (await axiosAuthenticated.get<ProjectComment[]>('/projects/comments')).data
+        },
+
+        async getProjectComments(id: number) {
+            const {axiosAuthenticated} = useAxios()
+            this.projectComments = (await axiosAuthenticated.get<ProjectComment[]>(`/projects/${id}/comments`)).data
+        },
+
+        async getProjectCommentId(id: number) {
+            const {axiosAuthenticated} = useAxios()
+            this.projectComments = (await axiosAuthenticated.get<ProjectComment[]>(`/projects/${id}/comments/${id}`)).data
         }
     }
 })
