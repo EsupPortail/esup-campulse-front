@@ -12,6 +12,10 @@ export default function () {
         comments.value = (await axiosAuthenticated.get<ProjectComment[]>('/projects/comments')).data
     }
 
+    async function getProjectComments(projectId: number) {
+        comments.value = (await axiosAuthenticated.get<ProjectComment[]>(`/projects/${projectId}/comments`)).data
+    }
+
     async function getProjectComment(projectId: number, commentId: number) {
         comment.value = (await axiosAuthenticated.get<ProjectComment>(`/projects/${projectId}/comments/${commentId}`)).data
     }
@@ -22,7 +26,7 @@ export default function () {
 
     async function patchProjectComment(text: string, projectId: number, commentId: number) {
         if (text !== comment.value?.text) {
-            await axiosAuthenticated.patch(`/projects/${projectId}/comments/${commentId}`)
+            comment.value = (await axiosAuthenticated.patch(`/projects/${projectId}/comments/${commentId}`)).data
         }
     }
 
@@ -32,6 +36,7 @@ export default function () {
 
     return {
         getAllProjectsComments,
+        getProjectComments,
         getProjectComment,
         newProjectComment,
         patchProjectComment,
