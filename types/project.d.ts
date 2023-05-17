@@ -116,7 +116,6 @@ export interface ProjectComment {
     creation_date: string,
 }
 
-
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
@@ -125,6 +124,4 @@ export interface ProjectStore {
     projectCommissionDates: ProjectCommissionDate[],
     projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[],
-    projectComment: ProjectComment | undefined
-    projectComments: ProjectComment[]
 }
