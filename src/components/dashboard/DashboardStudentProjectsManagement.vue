@@ -4,11 +4,50 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from 'vue-i18n'
 import TableUserProjects from '@/components/table/TableUserProjects.vue'
+import {onMounted, watch} from 'vue'
+import axios from 'axios'
+import {useQuasar} from 'quasar'
+import useErrors from '@/composables/useErrors'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import type {Association} from '#/association'
 
 const {hasPerm} = useSecurity()
 const {t} = useI18n()
 const userStore = useUserStore()
 const projectStore = useProjectStore()
+const associationStore = useAssociationStore()
+const {notify, loading} = useQuasar()
+const {catchHTTPError} = useErrors()
+
+
+onMounted(async () => {
+    await onGetAssociations()
+})
+
+watch(() => userStore.userAssociations, async () => {
+    await onGetAssociations()
+})
+
+async function onGetAssociations() {
+    loading.show()
+    try {
+        const associationIds = userStore.userAssociations.map(association => association.association.id)
+        associationStore.associations = []
+        for (const associationId of associationIds) {
+            await associationStore.getAssociationDetail(associationId, false)
+            associationStore.associations.push(associationStore.association as Association)
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
+
 </script>
 
 <template>
@@ -28,10 +67,23 @@ const projectStore = useProjectStore()
             <div class="form-container">
                 <div class="form">
                     <div
+                        v-if="!associationStore.associations.find(obj => obj.id === association.association.id)?.canSubmitProjects"
+                        class="info-panel info-panel-warning"
+                    >
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-exclamation-lg"
+                        ></i>
+                        <p>
+                            {{ t('project.cannot-submit-projects') }}
+                        </p>
+                    </div>
+                    <div
                         v-if="userStore.hasPresidentStatus(association.association.id)"
                         class="btn-group"
                     >
                         <QBtn
+                            :disable="!associationStore.associations.find(obj => obj.id === association.association.id)?.canSubmitProjects"
                             :label="t('project.submit-new-project')"
                             :to="{name: 'SubmitProjectAssociation', params: {associationId: association.association.id}}"
                             icon="mdi-plus-circle-outline"

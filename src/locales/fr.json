@@ -509,6 +509,7 @@
     "before-start": "Avant-propos",
     "budget": "Budget",
     "budget-previous-edition": "Budget réel du projet (dépenses) pour l'édition précédente",
+    "cannot-submit-projects": "L'association n'est pas habilitée à soumettre de nouveaux projets.",
     "categories": "Catégories",
     "commission-amount-earned": "Montant obtenu pour la commission",
     "commission-choice": "Choix des commissions",
