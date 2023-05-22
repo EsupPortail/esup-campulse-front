@@ -8,12 +8,15 @@ const {t} = useI18n()
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
+const emit = defineEmits(['hasValidated'])
+
 const confirmation = ref<boolean>(false)
 
 async function onPublishAssociation() {
     const messageKeyword = !associationStore.association?.isPublic ? 'publish' : 'unpublish'
     try {
         await associationStore.patchPublicAssociation(!associationStore.association?.isPublic, associationStore.association?.id)
+        emit('hasValidated')
         notify({
             type: 'positive',
             message: t(`notifications.positive.${messageKeyword}-association`)
