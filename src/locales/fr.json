@@ -611,7 +611,8 @@
     "is-cas": "L'utilisateur provient de CAS",
     "is-validated-by-admin": "L'utilisateur est validé par le gestionnaire",
     "last-name": "Nom de famille",
-    "phone": "Numéro de téléphone"
+    "phone": "Numéro de téléphone",
+    "search": "Rechercher un utilisateur"
   },
   "user-groups": {
     "commission": "Membre de commission",

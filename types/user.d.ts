@@ -177,3 +177,10 @@ export interface UserToUpdate {
 }
 
 export type UserNames = { value: number, label: string }[]
+
+export interface UserSearch {
+    search: string,
+    firstName: string,
+    lastName: string,
+    email: string
+}
