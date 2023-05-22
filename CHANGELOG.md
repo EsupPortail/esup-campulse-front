@@ -1,2 +1,21 @@
-- 💄 Add rules on other inputs in submit project form and styling on no-rules inputs
-- 🐛 Fix authorization for staff members on associations in directory
+- ✨ Disable "new project" button in CAPE dashboard if association cannot submit projects
+- 🐛 AxiosAuthenticated interceptors for 401 error handling when JWT changes
+- ✨ Add link to commission dashboard in SubmitProjectSuccessfulView
+- 🚨 Lint & typecheck
+- ⬆️ Upgrade minor dependencies
+- :lipstick: fix!: FormRegister btn and add association layout
+- :lipstick: fix: leaving association icon
+- :lipstick: fix: contact item padding
+- :sparkles: feat!: contact page
+- :coffin: fix: remove dead code from home.scss
+- :sparkles: feat: about page now has router link to contact
+- :coffin: removed media screen on layout about service card
+- :lipstick: fix: about services card
+- :lipstick: feat!: about services card && now all responsive
+- :lipstick: feat: update layout about service card
+- :lipstick: fix! title fonts
+- :lipstick: fix!: borders cards are now rounded
+- :sparkles: feat!: introduces services section
+- :sparkles: feat: about card
+- :sparkles: feat!: calls from backend for contact content now working
+- :sparkles: feat!: calls from back for about content now working
