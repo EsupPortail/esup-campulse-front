@@ -22,9 +22,12 @@ export interface HomeBanner {
     isDisplayed: boolean
 }
 
-interface HomeStore {
+interface ContentStore {
     cards: HomeCards,
-    banner: HomeBanner
+    banner: HomeBanner,
+    about: AboutStore[],
+    contact: ContactStore[],
+    home: HomeStore[]
 }
 
 interface SelectLabel {
@@ -44,10 +47,40 @@ interface PasswordCheckerTest {
     additionalMessage: string
 }
 
-/*
-export interface aboutStore {
+export interface AboutStore {
     id: number,
-    code: string,
+    code: contentCode,
     label: string,
-    body: string
-}*/
+    header: string,
+    body: string,
+    footer: string
+}
+
+export interface ContactStore {
+    id: number,
+    code: contentCode,
+    label: string,
+    header: string,
+    body: string,
+    footer: string
+}
+
+export interface HomeStore {
+    id: number,
+    code: contentCode,
+    label: string,
+    header: string,
+    body: string,
+    footer: string
+}
+
+type contentCode =
+    'HOME_ASSOCIATION' |
+    'HOME_CHARTER' |
+    'HOME_PROJECT' |
+    'HOME_INFO' |
+    'ABOUT_APP' |
+    'ABOUT_FUNDING' |
+    'ABOUT_PARTNERSHIP' |
+    'CONTACT_INFO' |
+    'CONTACT_LIST'

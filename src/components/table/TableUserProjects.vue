@@ -66,7 +66,7 @@ const columns: QTableProps['columns'] = [
                 >
                     <div class="button-container">
                         <QBtn
-                            :disable="props.row.projectStatus !== 'PROJECT_DRAFT' || !userStore.hasPresidentStatus(importedProps.associationId)"
+                            :disable="props.row.projectStatus !== 'PROJECT_DRAFT' || (importedProps.associationId !== null && !userStore.hasPresidentStatus(importedProps.associationId))"
                             :label="t('project.project')"
                             :to="importedProps.associationId ? {name: 'SubmitProjectAssociation', params: {associationId: importedProps.associationId, projectId: props.row.id}} :
                                 {name: 'SubmitProjectAssociation', params: {projectId: props.row.id}}"

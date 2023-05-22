@@ -1,10 +1,11 @@
 import {defineStore} from 'pinia'
 
-import type {HomeStore} from '#/index'
+import type {AboutStore, ContentStore} from '#/index'
 import i18n from '@/plugins/i18n'
+import {useAxios} from '@/composables/useAxios'
 
-export const useHomeContent = defineStore('homeContent', {
-    state: (): HomeStore => ({
+export const useContentStore = defineStore('contentStore', {
+    state: (): ContentStore => ({
         cards: [
             {
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', //i18n.global.t('home.cards.charter.description'),
@@ -41,24 +42,23 @@ export const useHomeContent = defineStore('homeContent', {
             title: i18n.global.t('home.banner.title'),
             description: i18n.global.t('home.banner.description'),
             isDisplayed: true
-        }
+        },
+        about: [],
+        contact: [],
+        home: []
     }),
-})
-
-
-/*export const useAboutContent = defineStore('aboutContent', {
-    state: (): aboutStore => ({
-        id: 0,
-        code: '',
-        label: '',
-        body: ''
-    }),
-
-    getter: {},
 
     actions: {
+        /**
+         * It gets the content data from the server
+         * Available for the public
+         */
         async getContent() {
-            const {axiosAuth}
+            if (!this.about.length) {
+                const {axiosPublic} = useAxios()
+                const url = '/contents/'
+                this.about = (await axiosPublic.get<AboutStore[]>(url)).data
+            }
         }
     }
-})*/
+})
