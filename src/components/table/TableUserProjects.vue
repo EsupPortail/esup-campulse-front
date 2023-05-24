@@ -6,6 +6,7 @@ import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
 import {useUserStore} from '@/stores/useUserStore'
 import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
+import TableUserProjectsBtn from '@/components/table/TableUserProjectsBtn.vue'
 
 const importedProps = defineProps<{
     projects: ProjectList[],
@@ -30,6 +31,7 @@ const columns: QTableProps['columns'] = [
     <QTable
         :columns="columns"
         :loading="!projectStore.projects"
+        :no-data-label="t('project.no-project-to-show')"
         :rows="importedProps.projects"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="importedProps.title"
@@ -65,21 +67,10 @@ const columns: QTableProps['columns'] = [
                     class="actions-cell-compact"
                 >
                     <div class="button-container">
-                        <QBtn
-                            :disable="props.row.projectStatus !== 'PROJECT_DRAFT' || (importedProps.associationId !== null && !userStore.hasPresidentStatus(importedProps.associationId))"
-                            :label="t('project.project')"
-                            :to="importedProps.associationId ? {name: 'SubmitProjectAssociation', params: {associationId: importedProps.associationId, projectId: props.row.id}} :
-                                {name: 'SubmitProjectAssociation', params: {projectId: props.row.id}}"
-                            icon="bi-pencil"
-                        />
-                        <QBtn
-                            :disable="props.row.projectStatus !== 'PROJECT_VALIDATED' ||
-                                props.row.projectStatus !== 'PROJECT_REVIEW_DRAFT' ||
-                                props.row.projectStatus !== 'PROJECT_REVIEW_REJECTED' ||
-                                props.row.projectStatus !== 'PROJECT_REVIEW_PROCESSING' ||
-                                props.row.projectStatus !== 'PROJECT_REVIEW_VALIDATED'"
-                            :label="t('project.review')"
-                            icon="bi-pencil"
+                        <TableUserProjectsBtn
+                            :association="importedProps.associationId"
+                            :project="props.row.id"
+                            :project-status="props.row.projectStatus"
                         />
                     </div>
                 </QTd>
