@@ -419,12 +419,15 @@ async function onChangeLogo(action: string) {
                 />
                 <AlertConfirmAssociationEnabled
                     v-if="isStaff"
+                    @has-validated="hasValidated = true"
                 />
                 <AlertConfirmAssociationPublication
                     v-if="isStaff && associationStore.association?.isEnabled && associationStore.association?.isSite"
+                    @has-validated="hasValidated = true"
                 />
                 <AlertConfirmAssociationProjectSubmission
                     v-if="isStaff && associationStore.association?.isEnabled"
+                    @has-validated="hasValidated = true"
                 />
                 <AlertConfirmAssociationDeletion
                     v-if="isStaff && !associationStore.association?.isEnabled"

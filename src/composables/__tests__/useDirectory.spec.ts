@@ -31,15 +31,6 @@ describe('useDirectory', () => {
         vi.restoreAllMocks()
     })
 
-    describe('filterizeSearch', () => {
-        it('should return a string with no spaces, lowercase, and without accents', () => {
-            const {filterizeSearch} = useDirectory()
-            const unfilterized = 'association des étudiants du site Alsace'
-            const filterized = 'associationdesetudiantsdusitealsace'
-            expect(filterizeSearch(unfilterized)).toEqual(filterized)
-        })
-    })
-
     describe('advancedSearch', () => {
         associationStore.associations = _associations
         const {advancedSearch} = useDirectory()

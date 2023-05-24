@@ -82,6 +82,15 @@ export default function () {
         return breadcrumbs
     }
 
+    /**
+     * It takes a string, removes all spaces, converts it to lowercase, removes all accents, and returns the result
+     * @param {string} stringToFilterize - The string you want to filterize.
+     * @returns A string with no spaces, lowercase, and without accents.
+     */
+    function filterizeSearch(stringToFilterize: string) {
+        return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    }
+
     return {
         formatDate,
         arraysAreEqual,
@@ -90,6 +99,7 @@ export default function () {
         fromDateIsAnterior,
         CURRENCY,
         phoneRegex,
-        dynamicTitle
+        dynamicTitle,
+        filterizeSearch
     }
 }

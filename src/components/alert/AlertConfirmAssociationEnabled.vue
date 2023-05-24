@@ -8,6 +8,8 @@ const {t} = useI18n()
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
+const emit = defineEmits(['hasValidated'])
+
 const isEnabled = ref<boolean>(false)
 watch(() => associationStore.association, () => {
     isEnabled.value = associationStore.association?.isEnabled as boolean
@@ -24,6 +26,7 @@ async function onEnableAssociation() {
     const messageKeyword = isEnabled.value ? 'disable' : 'enable'
     try {
         await associationStore.patchEnabledAssociation(!isEnabled.value as boolean, associationStore.association?.id)
+        emit('hasValidated')
         notify({
             type: 'positive',
             message: t(`notifications.positive.${messageKeyword}-association`)
