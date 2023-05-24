@@ -12,7 +12,6 @@ const router = createRouter({
 
 const colorVariant = ref<string>('')
 
-
 router.beforeEach(async (to) => {
 
     const userStore = useUserStore()
@@ -25,7 +24,11 @@ router.beforeEach(async (to) => {
     // Get auth user with token
     const accessToken = localStorage.getItem('JWT__access__token')
     if (!userStore.user && accessToken) {
-        await userStore.getUser()
+        try {
+            await userStore.getUser()
+        } catch (error) {
+            userStore.logOut()
+        }
     }
 
     // Get isStaff status if user is auth
