@@ -302,6 +302,7 @@
     "copyright": "2017-2023 - Unistra - Tous droits réservés",
     "legal-notice": "Mentions légales"
   },
+  "forbidden": "Non autorisé",
   "forms": {
     "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
@@ -502,6 +503,7 @@
     "reset-password": "Mot de passe oublié"
   },
   "project": {
+    "all-projects": "Tous les projets",
     "amount-asked": "Montant demandé",
     "amount-earned": "Montant obtenu",
     "amounts-asked": "Montants demandés pour les commissions sélectionnées",
@@ -541,6 +543,8 @@
     "last-modified-date": "Dernière modification",
     "list": "Listes des projets déposés",
     "marketing-campaign": "Campagne de communication",
+    "modify": "Modifier le projet",
+    "modify-review": "Modifier le bilan",
     "must-have-president-status": "Vous n'avez pas de droits de présidence dans cette association. Vous ne pouvez donc ni soumettre de nouveaux projets, ni modifier les existants.",
     "name": "Nom du projet",
     "no-project-to-show": "Aucun projet à afficher.",
@@ -560,16 +564,17 @@
     "project": "Projet",
     "projects-of": "Projets de",
     "re-edition": "Réédition d'un précédent projet",
+    "rejected-projects": "Projets refusés",
     "required-documents-list": "Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés",
     "review": "Bilan",
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "status": {
       "archived": "Archivé",
       "draft": "Brouillon",
-      "processing": "En attente de traitement",
-      "rejected": "Refusé",
-      "review-cancelled": "Annulé",
-      "review-processing": "En attente de bilan",
+      "processing": "Projet en cours de traitement",
+      "rejected": "Projet refusé",
+      "review-cancelled": "Projet annulé",
+      "review-processing": "Bilan en cours de traitement",
       "review-rejected": "Bilan refusé",
       "validated": "Validé, en attente de commission"
     },
@@ -580,7 +585,10 @@
     "target-students-amount": "Nombre d'étudiantes et étudiants visés",
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
-    "validate": "Valider et soumettre le projet"
+    "validate": "Valider et soumettre le projet",
+    "validated-projects": "Projets validés",
+    "view": "Voir le projet",
+    "view-review": "Voir le bilan"
   },
   "recap": "Récapitulatif",
   "register": {

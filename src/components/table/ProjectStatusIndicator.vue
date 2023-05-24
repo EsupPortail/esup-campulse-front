@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type {ProjectStatus} from '#/project'
 import {useI18n} from 'vue-i18n'
+import {onMounted, ref} from 'vue'
+import {useRoute} from 'vue-router'
 
 const props = defineProps<{
     showDraft: boolean,
@@ -8,12 +10,22 @@ const props = defineProps<{
 }>()
 
 const {t} = useI18n()
+const route = useRoute()
+
+const spanClasses = ref('')
+
+const initSpanClasses = () => {
+    spanClasses.value = 'form-state' + ' ' + (route.name === 'Commission' ? 'form-state-cape' : '')
+}
+
+onMounted(initSpanClasses)
+
 </script>
 
 <template>
     <span
         v-if="props.projectStatus === 'PROJECT_DRAFT' && showDraft"
-        class="form-state"
+        :class="spanClasses"
     >
         {{ t('project.status.draft') }}
         <span
@@ -23,7 +35,7 @@ const {t} = useI18n()
     </span>
     <span
         v-if="props.projectStatus === 'PROJECT_REJECTED'"
-        class="form-state"
+        :class="spanClasses"
     >
         {{ t('project.status.rejected') }}
         <span
@@ -33,7 +45,7 @@ const {t} = useI18n()
     </span>
     <span
         v-if="props.projectStatus === 'PROJECT_PROCESSING'"
-        class="form-state"
+        :class="spanClasses"
     >
         {{ t('project.status.processing') }}
         <span
@@ -43,7 +55,7 @@ const {t} = useI18n()
     </span>
     <span
         v-if="props.projectStatus === 'PROJECT_VALIDATED'"
-        class="form-state"
+        :class="spanClasses"
     >
         {{ t('project.status.validated') }}
         <span
@@ -54,7 +66,7 @@ const {t} = useI18n()
     <span
         v-if="props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
             props.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
-        class="form-state"
+        :class="spanClasses"
     >
         {{ t('project.status.review-processing') }}
         <span
@@ -64,7 +76,7 @@ const {t} = useI18n()
     </span>
     <span
         v-if="props.projectStatus === 'PROJECT_REVIEW_REJECTED'"
-        class="form-state"
+        :class="spanClasses"
     >
         {{ t('project.status.review-rejected') }}
         <span
@@ -74,7 +86,7 @@ const {t} = useI18n()
     </span>
     <span
         v-if="props.projectStatus === 'PROJECT_REVIEW_VALIDATED'"
-        class="form-state"
+        :class="spanClasses"
     >
         {{ t('project.status.archived') }}
         <span
@@ -83,3 +95,10 @@ const {t} = useI18n()
         ><i class="bi bi-check"></i></span>
     </span>
 </template>
+
+<style lang="sass" scoped>
+@import '@/assets/_variables.scss'
+
+.form-state-cape
+    color: $capeColorText
+</style>
