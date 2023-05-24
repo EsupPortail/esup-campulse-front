@@ -40,7 +40,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
          */
         async getUsers(status: 'all' | 'validated' | 'unvalidated' | string) {
             const {hasPerm} = useSecurity()
-            if (hasPerm('change_associationuser')) {
+            if (hasPerm('view_user')) {
                 const {axiosAuthenticated} = useAxios()
                 const userStore = useUserStore()
 
@@ -50,7 +50,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 if (userStore.userInstitutions?.length !== 0) {
                     let institutions = 'institutions='
                     institutions += userStore.userInstitutions?.join(',')
-                    if (hasPerm('change_user_misc')) institutions += ','
+                    if (hasPerm('view_user_misc')) institutions += ','
                     urlArray.push(institutions)
                 }
 
@@ -140,6 +140,29 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async deleteUser() {
             const {axiosAuthenticated} = useAxios()
             await axiosAuthenticated.delete(`/users/${this.user?.id}`)
+        },
+        async searchUsers(searchQuery: string) {
+            const {hasPerm} = useSecurity()
+            if (hasPerm('view_user')) {
+                const {axiosAuthenticated} = useAxios()
+                const userStore = useUserStore()
+
+                const urlString = '/users/?'
+                const urlArray = []
+
+                if (searchQuery) {
+                    urlArray.push(`search=${searchQuery}`)
+
+                    if (userStore.userInstitutions?.length !== 0) {
+                        let institutions = 'institutions='
+                        institutions += userStore.userInstitutions?.join(',')
+                        if (hasPerm('view_user_misc')) institutions += ','
+                        urlArray.push(institutions)
+                    }
+
+                    this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data
+                }
+            }
         }
     }
 })

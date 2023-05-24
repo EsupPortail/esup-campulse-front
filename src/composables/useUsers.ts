@@ -1,9 +1,10 @@
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {User, UserGroup, UserManagerStore, UserStore, UserToUpdate} from '#/user'
+import type {User, UserGroup, UserManagerStore, UserSearch, UserStore, UserToUpdate} from '#/user'
 import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
+import useUtility from '@/composables/useUtility'
 
 // Used to update user infos
 const userToUpdate = ref<UserToUpdate>({
@@ -28,10 +29,11 @@ interface InfosToPatch {
 const infosToPatch: InfosToPatch = {}
 
 
-export default function() {
+export default function () {
 
     const userManagerStore = useUserManagerStore()
     const {updateUserGroups} = useUserGroups()
+    const {filterizeSearch} = useUtility()
 
     /**
      * The function `validateUser` calls the function `updateUserGroups` and then calls the function `validateUser` on
@@ -100,12 +102,53 @@ export default function() {
         if (userToUpdate.value.phone !== user?.phone) infosToPatch.phone = userToUpdate.value.phone
     }
 
+    /**
+     * It filters the users in the store based on the search settings on the front end
+     * @param {UserSearch} settings - UserSearch
+     * @returns An array of users that match the search criteria
+     */
+    function advancedSearch(settings: UserSearch) {
+        console.log(settings)
+        if (userManagerStore.users.length > 0 && (settings.firstName || settings.lastName || settings.email)) {
+            let matches: User[] = []
+            if (settings.firstName) {
+                matches = userManagerStore.users.filter(user => {
+                    return filterizeSearch(user.firstName).includes(filterizeSearch(settings.firstName))
+                })
+            }
+            if (settings.lastName) {
+                // checking if a search has already been made
+                // If so, we filter on current matches, if not, we filter in store
+                if (matches.length) {
+                    const newMatches = matches.filter(user => {
+                        return filterizeSearch(user.lastName).includes(filterizeSearch(user.lastName))
+                    })
+                    matches = [...newMatches]
+                } else {
+                    matches = userManagerStore.users.filter(user => {
+                        return filterizeSearch(user.lastName).includes(filterizeSearch(settings.lastName))
+                    })
+                }
+            }
+            if (settings.email) {
+                if (matches.length) {
+                    const newMatches = matches.filter(user => user.email === settings.email)
+                    matches = [...newMatches]
+                } else {
+                    matches = userManagerStore.users.filter(user => user.email === settings.email)
+                }
+            }
+            return matches
+        }
+    }
+
     return {
         validateUser,
         canEditUser,
         userToUpdate,
         updateUserInfos,
         infosToPatch,
-        initInfosToPatch
+        initInfosToPatch,
+        advancedSearch
     }
 }

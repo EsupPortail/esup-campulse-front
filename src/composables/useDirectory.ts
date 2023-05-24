@@ -2,20 +2,13 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {Association, AssociationSearch} from '#/association'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
+import useUtility from '@/composables/useUtility'
 
 export default function () {
 
     const associationStore = useAssociationStore()
     const userStore = useUserStore()
-
-    /**
-     * It takes a string, removes all spaces, converts it to lowercase, removes all accents, and returns the result
-     * @param {string} stringToFilterize - The string you want to filterize.
-     * @returns A string with no spaces, lowercase, and without accents.
-     */
-    function filterizeSearch(stringToFilterize: string) {
-        return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    }
+    const {filterizeSearch} = useUtility()
 
     /**
      * It filters the associations in the store based on the search settings on the front end
@@ -101,7 +94,6 @@ export default function () {
 
     return {
         advancedSearch,
-        simpleAssociationSearch,
-        filterizeSearch,
+        simpleAssociationSearch
     }
 }

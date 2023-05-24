@@ -17,7 +17,7 @@ const {catchHTTPError} = useErrors()
 async function onLogOut() {
     loading.show()
     try {
-        await userStore.logOut()
+        userStore.logOut()
         await router.push({name: 'Login'})
         notify({
             type: 'positive',

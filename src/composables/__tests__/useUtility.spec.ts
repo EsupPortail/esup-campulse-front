@@ -111,4 +111,13 @@ describe('useUtility', () => {
             ])
         })
     })
+
+    describe('filterizeSearch', () => {
+        it('should return a string with no spaces, lowercase, and without accents', () => {
+            const {filterizeSearch} = useUtility()
+            const unfilterized = 'association des étudiants du site Alsace'
+            const filterized = 'associationdesetudiantsdusitealsace'
+            expect(filterizeSearch(unfilterized)).toEqual(filterized)
+        })
+    })
 })
