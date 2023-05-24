@@ -6,6 +6,7 @@
   position: relative;
   background-color: $backgroundColor2;
   padding: 1rem;
+  color: red;
 
   &::before, &::after {
     content: '';
@@ -33,7 +34,7 @@
     .form {
       display: block;
       margin: auto;
-      width: $halfSize;
+      width: 90%;
     }
   }
 }
