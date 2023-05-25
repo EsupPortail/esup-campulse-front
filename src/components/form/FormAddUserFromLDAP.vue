@@ -83,6 +83,7 @@ function onReset() {
     <div class="btn-group">
         <QBtn
             :label="t('dashboard.search-user-via-cas')"
+            icon="bi-person-plus"
             @click="open = true"
         />
         <QBtn
@@ -93,6 +94,7 @@ function onReset() {
     </div>
     <QDialog
         v-model="open"
+        class="variant-space-4"
     >
         <QCard>
             <QCardSection>
@@ -101,7 +103,7 @@ function onReset() {
                     class="q-gutter-md"
                     @submit.prevent="onGetUsersFromCAS"
                 >
-                    <h3>{{ t('dashboard.search-user-via-cas') }}</h3>
+                    <h2 class="title-2">{{ t('dashboard.search-user-via-cas') }}</h2>
                     <QInput
                         v-model="lastName"
                         :label="t('forms.last-name')"
@@ -112,12 +114,12 @@ function onReset() {
                     <div class="btn-group">
                         <QBtn
                             :label="t('cancel')"
-                            color="secondary"
+                            icon="bi-x-lg"
                             @click="onReset"
                         />
                         <QBtn
                             :label="t('search')"
-                            color="primary"
+                            icon="bi-search"
                             type="submit"
                         />
                     </div>
@@ -133,7 +135,6 @@ function onReset() {
                         <QOptionGroup
                             v-model="selectedUser"
                             :options="CASUserOptions"
-                            color="primary"
                             emit-value
                             map-options
                         />
@@ -141,11 +142,13 @@ function onReset() {
                     <div class="btn-group">
                         <QBtn
                             :label="t('cancel')"
+                            icon="bi-x-lg"
                             @click="onReset"
                         />
                         <QBtn
                             :disable="!selectedUser"
                             :label="t('add')"
+                            icon="bi-person-plus"
                             type="submit"
                         />
                     </div>
