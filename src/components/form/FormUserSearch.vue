@@ -41,7 +41,7 @@ async function onSearch() {
 
 // A function that clears the search,
 // for API search it re-gets associations, for front search it looks back in store
-async function clearSearch(apiSearch: boolean) {
+async function clearSearch() {
     loading.show()
     try {
         settings.value = {
@@ -50,11 +50,7 @@ async function clearSearch(apiSearch: boolean) {
             lastName: '',
             email: ''
         }
-        if (apiSearch) {
-            emit('getUsers')
-        } else {
-            emit('advancedSearch', userManagerStore.users)
-        }
+        emit('getUsers')
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -99,7 +95,7 @@ async function clearSearch(apiSearch: boolean) {
                     :label="t('cancel-search')"
                     color="secondary"
                     icon-right="mdi-close"
-                    @click="clearSearch(true)"
+                    @click="clearSearch"
                 />
             </fieldset>
         </QForm>
@@ -151,7 +147,7 @@ async function clearSearch(apiSearch: boolean) {
                         :label="t('cancel-search')"
                         color="secondary"
                         icon-right="mdi-close"
-                        @click="clearSearch(false)"
+                        @click="clearSearch"
                     />
                 </div>
             </QExpansionItem>

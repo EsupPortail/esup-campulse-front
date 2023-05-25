@@ -47,7 +47,7 @@ function onAdvancedSearch() {
 
 // A function that clears the search,
 // for API search it re-gets associations, for front search it looks back in store
-async function clearSearch(apiSearch: boolean) {
+async function clearSearch() {
     loading.show()
     settings.value = {
         search: '',
@@ -57,12 +57,8 @@ async function clearSearch(apiSearch: boolean) {
         institutionComponent: null,
         activityField: null
     }
-    if (apiSearch) {
-        if (props.route === 'Associations') await associationStore.getAssociations(true)
-        else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
-    } else {
-        associations.value = associationStore.associations
-    }
+    if (props.route === 'Associations') await associationStore.getAssociations(true)
+    else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
     loading.hide()
 }
 </script>
@@ -99,7 +95,7 @@ async function clearSearch(apiSearch: boolean) {
                     :label="t('cancel-search')"
                     color="secondary"
                     icon-right="mdi-close"
-                    @click="clearSearch(true)"
+                    @click="clearSearch"
                 />
             </fieldset>
         </QForm>
@@ -171,7 +167,7 @@ async function clearSearch(apiSearch: boolean) {
                         :label="t('cancel-search')"
                         color="secondary"
                         icon-right="mdi-close"
-                        @click="clearSearch(false)"
+                        @click="clearSearch"
                     />
                 </div>
             </QExpansionItem>
