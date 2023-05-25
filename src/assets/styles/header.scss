@@ -382,7 +382,7 @@
 #header-title {
   width: $fullSize;
   position: absolute;
-  font-size: 3.438rem;
+  font-size: 3rem;
   bottom: 0;
   z-index: 1;
   padding: 0 1.56rem 0 1.56rem;
@@ -392,7 +392,7 @@
     font-family: $titleFont;
     color: $textColor3;
     font-weight: $normal-weight;
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     padding: 0 0 1rem 3rem;
     line-height: 1.15;
 
@@ -405,8 +405,8 @@
 
     #header-title-icon {
       display: inline-block;
-      width: 3.375rem;
-      height: 3.375rem;
+      width: 3rem;
+      height: 3rem;
       border-radius: $radiusCircle;
       background-color: $annuaireColor;
       position: absolute;

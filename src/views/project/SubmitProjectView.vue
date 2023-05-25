@@ -647,7 +647,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     use-chips
                             />
 
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                         :label="t('back')"
                                         icon="bi-chevron-left"
@@ -818,7 +818,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 </fieldset>
                             </section>
 
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                         :label="t('back')"
                                         icon="bi-chevron-left"
@@ -895,7 +895,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     type="textarea"
                             />
 
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                         :label="t('back')"
                                         icon="bi-chevron-left"
@@ -1012,7 +1012,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 </div>
                             </section>
 
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                         :label="t('back')"
                                         icon="bi-chevron-left"
