@@ -108,7 +108,6 @@ export default function () {
      * @returns An array of users that match the search criteria
      */
     function advancedSearch(settings: UserSearch) {
-        console.log(settings)
         if (userManagerStore.users.length > 0 && (settings.firstName || settings.lastName || settings.email)) {
             let matches: User[] = []
             if (settings.firstName) {

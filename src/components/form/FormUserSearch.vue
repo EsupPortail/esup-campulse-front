@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {User, UserSearch} from '#/user'
+import type {UserSearch} from '#/user'
 import useUsers from '@/composables/useUsers'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
@@ -14,9 +14,6 @@ const {loading, notify} = useQuasar()
 const {advancedSearch} = useUsers()
 const {catchHTTPError} = useErrors()
 
-const props = defineProps<{
-    users: User[]
-}>()
 
 const emit = defineEmits(['advancedSearch', 'getUsers'])
 
@@ -110,7 +107,7 @@ async function clearSearch(apiSearch: boolean) {
         <QForm
             id="advanced-search-form"
             class="search-text-field"
-            @submit.prevent="emit('advancedSearch', advancedSearch(settings))"
+            @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
         >
             <QExpansionItem
                 :label="t('advanced-search')"

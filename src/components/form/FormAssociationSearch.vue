@@ -41,7 +41,7 @@ async function onSearch() {
 
 function onAdvancedSearch() {
     loading.show()
-    associations.value = advancedSearch(settings.value) as Association[]
+    associations.value = advancedSearch(settings.value) as Association[] ?? associationStore.associations
     loading.hide()
 }
 
