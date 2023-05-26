@@ -9,28 +9,28 @@ const {t} = useI18n()
 
 <template>
     <nav :aria-label="t('primary-nav')">
-        <RouterLink to="/">{{ t("header.home") }}</RouterLink>
+        <RouterLink :to="{name: 'Home'}">{{ t("header.home") }}</RouterLink>
         <RouterLink
+            :to="{name: 'Charter'}"
             class="space-2"
-            to="/charter"
         >
             {{ t("header.charter") }}
         </RouterLink>
         <RouterLink
+            :to="{name: 'Associations'}"
             class="space-1"
-            to="/associations"
         >
             {{ t("header.associations") }}
         </RouterLink>
         <RouterLink
+            :to="{name: 'Commission'}"
             class="space-3"
-            to="/commission"
         >
             {{ t("header.commission") }}
         </RouterLink>
         <RouterLink
             v-if="!userStore.isAuth"
-            to="/login"
+            :to="{name: 'Login'}"
         >
             {{ t("header.login") }}
         </RouterLink>
