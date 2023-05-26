@@ -5,6 +5,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useUtility from '@/composables/useUtility'
+import useSecurity from '@/composables/useSecurity'
 
 // Used to update user infos
 const userToUpdate = ref<UserToUpdate>({
@@ -14,7 +15,11 @@ const userToUpdate = ref<UserToUpdate>({
     email: '',
     newEmail: '',
     newEmailVerification: '',
-    phone: ''
+    phone: '',
+    address: '',
+    zipcode: '',
+    city: '',
+    country: ''
 })
 
 // Used to patch user
@@ -23,6 +28,10 @@ interface InfosToPatch {
     lastName?: string,
     email?: string,
     phone?: string,
+    address?: string,
+    zipcode?: string,
+    city?: string,
+    country?: string,
     username?: string
 }
 
@@ -34,6 +43,7 @@ export default function () {
     const userManagerStore = useUserManagerStore()
     const {updateUserGroups} = useUserGroups()
     const {filterizeSearch} = useUtility()
+    const {hasPerm} = useSecurity()
 
     /**
      * The function `validateUser` calls the function `updateUserGroups` and then calls the function `validateUser` on
@@ -74,7 +84,7 @@ export default function () {
      * @param editedByStaff
      */
     async function updateUserInfos(user: User | undefined, editedByStaff: boolean) {
-        if (Object.keys(infosToPatch).length !== 0) {
+        if (Object.keys(infosToPatch).length) {
             let store: UserStore | UserManagerStore = useUserStore()
             let url = '/users/auth/user/'
             if (editedByStaff) {
@@ -100,6 +110,10 @@ export default function () {
         if (userToUpdate.value.newEmail && userToUpdate.value.newEmail !== userToUpdate.value.email &&
             userToUpdate.value.newEmail === userToUpdate.value.newEmailVerification) infosToPatch.email = userToUpdate.value.newEmail
         if (userToUpdate.value.phone !== user?.phone) infosToPatch.phone = userToUpdate.value.phone
+        if (userToUpdate.value.address !== user?.address) infosToPatch.address = userToUpdate.value.address
+        if (userToUpdate.value.zipcode !== user?.zipcode) infosToPatch.zipcode = userToUpdate.value.zipcode
+        if (userToUpdate.value.city !== user?.city) infosToPatch.city = userToUpdate.value.city
+        if (userToUpdate.value.country !== user?.country) infosToPatch.country = userToUpdate.value.country
     }
 
     /**

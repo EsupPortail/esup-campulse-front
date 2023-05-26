@@ -145,7 +145,6 @@ onBeforeRouteLeave((to, from, next) => {
                     <section class="btn-group">
                         <QBtn
                             :label="t('back')"
-                            color="secondary"
                             icon="mdi-arrow-left-circle"
                             @click="openAlert = true"
                         />
@@ -167,7 +166,7 @@ onBeforeRouteLeave((to, from, next) => {
     </QForm>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 
 ul {

@@ -4,10 +4,12 @@ import useUsers from '@/composables/useUsers'
 import type {User, UserGroup} from '#/user'
 import {useI18n} from 'vue-i18n'
 import useUserGroups from '@/composables/useUserGroups'
+import useSecurity from '@/composables/useSecurity'
 
 
 const {userToUpdate} = useUsers()
 const {getGroupLiteral} = useUserGroups()
+const {hasPerm} = useSecurity()
 const {t} = useI18n()
 
 const props = defineProps<{
@@ -29,6 +31,10 @@ const initUserInfos = () => {
     userToUpdate.value.newEmail = ''
     userToUpdate.value.newEmailVerification = ''
     userToUpdate.value.phone = userRef.value.phone
+    userToUpdate.value.address = userRef.value.address
+    userToUpdate.value.zipcode = userRef.value.zipcode
+    userToUpdate.value.city = userRef.value.city
+    userToUpdate.value.country = userRef.value.country
 }
 watch(() => userRef.value, initUserInfos)
 
@@ -72,7 +78,7 @@ onMounted(() => {
             filled
             lazy-rules
         />
-        <section class="email-modification">
+        <fieldset class="email-modification">
             <QInput
                 v-model="userToUpdate.email"
                 :label="t('forms.email')"
@@ -100,17 +106,15 @@ onMounted(() => {
                     filled
                     lazy-rules
                 />
-                <QBanner class="bg-grey-3">
-                    <template v-slot:avatar>
-                        <QIcon
-                            color="secondary"
-                            name="mdi-alert-circle"
-                        />
-                    </template>
-                    <span>{{ t('alerts.modify-email') }}</span>
-                </QBanner>
+                <div class="info-panel info-panel-warning">
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-exclamation-lg"
+                    ></i>
+                    <p>{{ t('alerts.modify-email') }}</p>
+                </div>
             </QExpansionItem>
-        </section>
+        </fieldset>
         <QInput
             v-model="userToUpdate.phone"
             :label="t('forms.phone')"
@@ -120,39 +124,71 @@ onMounted(() => {
             mask="## ## ## ## ##"
             type="tel"
         />
-        <QBanner
-            v-if="!editedByStaff"
-            class="bg-grey-3 status-banner"
+        <fieldset
+            v-if="(!editedByStaff && hasPerm('add_project_user'))
+                || (editedByStaff && userRef.permissions.includes('add_project_user'))"
+            class="individual-address"
         >
-            <template v-slot:avatar>
-                <QIcon
-                    color="secondary"
-                    name="mdi-account"
+            <legend class="title-3">{{ t('address.address') }}</legend>
+            <QInput
+                v-model="userToUpdate.address"
+                :label="t('address.address')"
+                clearable
+                filled
+            />
+            <div>
+                <QInput
+                    v-model="userToUpdate.zipcode"
+                    :label="t('address.zipcode')"
+                    clearable
+                    filled
                 />
-            </template>
-            <p>{{ t('dashboard.my-status') }} <span>{{ userGroups }}</span></p>
-            <p>{{ t('dashboard.update-my-status') }}</p>
-        </QBanner>
+                <QInput
+                    v-model="userToUpdate.city"
+                    :label="t('address.city')"
+                    clearable
+                    filled
+                />
+                <QInput
+                    v-model="userToUpdate.country"
+                    :label="t('address.country')"
+                    clearable
+                    filled
+                />
+            </div>
+        </fieldset>
+
+        <div
+            v-if="!editedByStaff"
+            class="info-panel info-panel-dashboard"
+        >
+            <i
+                aria-hidden="true"
+                class="bi bi-info"
+            ></i>
+            <p class="paragraph">{{ t('dashboard.my-status') }} : <span><strong>{{ userGroups }}</strong></span></p>
+            <p class="paragraph">{{ t('dashboard.update-my-status') }}</p>
+        </div>
     </fieldset>
 </template>
 
 <style lang="scss">
-@import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
+</style>
 
-.q-expansion-item {
-    background-color: $dashboardColorBorders;
-    padding: 0.625rem;
-    margin-bottom: 0.938rem;
-}
+<style lang="sass" scoped>
+@import '@/assets/_variables.scss'
 
-.status-banner {
-    margin: 0.938rem 0 0.938rem;
-    padding-top: 1.25rem;
-}
+.q-expansion-item
+    background-color: $dashboardColorBorders
+    padding: 0.625rem
+    margin-bottom: 0.938rem
 
-fieldset {
-    border: none;
-    padding: 0;
-}
+.individual-address, .individual-address > div
+    display: flex
+    gap: 1rem
+    flex-direction: column
+
+.individual-address
+    margin-top: 1rem
 </style>
