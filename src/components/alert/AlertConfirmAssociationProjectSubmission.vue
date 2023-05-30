@@ -11,6 +11,8 @@ const associationStore = useAssociationStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 
+const emit = defineEmits(['hasValidated'])
+
 const confirmation = ref<boolean>(false)
 
 async function onManageAssociationSubmission() {
@@ -18,6 +20,7 @@ async function onManageAssociationSubmission() {
     try {
         const patchedCanSubmitProjects = !associationStore.association?.canSubmitProjects
         await associationStore.patchCanSubmitProjects(patchedCanSubmitProjects, associationStore.association?.id)
+        emit('hasValidated')
         notify({
             type: 'positive',
             message: t(`notifications.positive.association-${patchedCanSubmitProjects ? 'can' : 'cannot'}-submit-projects`)

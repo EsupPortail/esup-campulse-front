@@ -104,7 +104,6 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'individual',
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
                             projectBearersOnly: true
                         },
                         children: [
@@ -136,6 +135,15 @@ const routes: RouteRecordRaw[] = [
                             title: i18n.global.t('breadcrumbs.project-recap'),
                             breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
                             projectBearersOnly: true
+                        }
+                    },
+                    {
+                        path: 'project-detail/:projectId',
+                        name: 'ProjectDetail',
+                        component: () => import('@/views/project/ProjectDetailView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-recap')
                         }
                     },
                     {
@@ -422,21 +430,24 @@ const routes: RouteRecordRaw[] = [
                     title: i18n.global.t('breadcrumbs.password-reset-confirm'),
                 }
             },
-            // ADDED
             {
                 path: 'about-page',
+                name: 'About',
                 component: () => import('@/views/AboutView.vue'),
                 meta: {
                     title: i18n.global.t('breadcrumbs.about'),
-                    breadcrumb: i18n.global.t('breadcrumbs.about')
+                    breadcrumb: i18n.global.t('breadcrumbs.about'),
+                    colorVariant: 'space-1',
                 }
             },
             {
                 path: 'contact-page',
+                name: 'Contact',
                 component: () => import('@/views/ContactView.vue'),
                 meta: {
                     title: i18n.global.t('breadcrumbs.contact'),
-                    breadcrumb: i18n.global.t('breadcrumbs.contact')
+                    breadcrumb: i18n.global.t('breadcrumbs.contact'),
+                    colorVariant: 'space-1',
                 }
             }
         ]

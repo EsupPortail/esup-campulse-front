@@ -10,6 +10,7 @@ import axios from 'axios'
 import useUtility from '@/composables/useUtility'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
+import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -19,12 +20,14 @@ const associationStore = useAssociationStore()
 const {catchHTTPError} = useErrors()
 const {dynamicTitle} = useUtility()
 const userStore = useUserStore()
+const {isStaff} = useUserGroups()
 
 const isLoaded = ref(false)
 
 // Check if user has president status
 const isAuthorized = () => {
-    return userStore.hasPresidentStatus(parseInt(route.params.id as string))
+    if (isStaff) return true
+    else return userStore.hasPresidentStatus(parseInt(route.params.id as string))
 }
 
 // Get all infos on mounted

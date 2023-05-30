@@ -40,7 +40,7 @@ function onDownloadDocument(documentId: number) {
                 <h4 class="library-document">
                     <span>
                         <a
-                            :href="document?.path"
+                            :href="document.path"
                             target="_blank"
                         >
                             {{ document?.name }}

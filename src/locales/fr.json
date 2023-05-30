@@ -3,10 +3,24 @@
     "description": "Le contenu que vous avez demandé est introuvable. Vous pouvez retourner sur la page d'accueil ou votre espace, si vous êtes connecté.",
     "title": "Contenu introuvable"
   },
+  "about": {
+    "presentation": "Présentation",
+    "services": "Services de l'application",
+    "contact": "Contact",
+    "intro-contact": "Un souci, un bogue, une idée ?",
+    "contact-us": "Contactez-nous"
+  },
   "account": "Compte",
   "account-validated": "Compte validé",
   "activate": "Activer",
   "add": "Ajouter",
+  "address": {
+    "address": "Adresse",
+    "city": "Ville",
+    "country": "Pays",
+    "verify": "Veuillez renseigner votre adresse postale. Si vous nous l'avez déjà communiquée, merci de la vérifier afin que nous la mettions à jour.",
+    "zipcode": "Code postal"
+  },
   "advanced-search": "Recherche avancée",
   "alerts": {
     "aborted-cas-registration": {
@@ -99,7 +113,8 @@
       "socials": "Réseaux sociaux",
       "student-count": "Nombre d'adhérentes et d'adhérents",
       "website": "Site web",
-      "website-link": "Aller au site web de l'association"
+      "website-link": "Aller au site web de l'association",
+      "zipcode": "Code postal"
     },
     "logo": {
       "alt": "Ajouter un texte alternatif décrivant le logo de l'association",
@@ -296,6 +311,7 @@
     "copyright": "2017-2023 - Unistra - Tous droits réservés",
     "legal-notice": "Mentions légales"
   },
+  "forbidden": "Non autorisé",
   "forms": {
     "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
@@ -345,9 +361,9 @@
     "repeat-email": "Répéter l'adresse mail",
     "repeat-new-password": "Répéter le nouveau mot de passe",
     "required-commission": "Veuillez sélectionner au moins une commission.",
-    "required-email": "Veuillez renseigner votre adresse mail.",
-    "required-first-name": "Veuillez renseigner votre prénom.",
-    "required-last-name": "Veuillez renseigner votre nom de famille.",
+    "required-email": "Veuillez renseigner une adresse mail valide.",
+    "required-first-name": "Veuillez renseigner un prénom.",
+    "required-last-name": "Veuillez renseigner un nom de famille.",
     "required-new-password": "Veuillez saisir votre nouveau mot de passe.",
     "required-new-email": "Veuillez saisir votre nouvelle adresse mail.",
     "required-old-password": "Veuillez saisir votre ancien mot de passe.",
@@ -495,14 +511,18 @@
     },
     "reset-password": "Mot de passe oublié"
   },
+  "primary-nav": "Menu principal",
   "project": {
+    "all-projects": "Tous les projets",
     "amount-asked": "Montant demandé",
     "amount-earned": "Montant obtenu",
     "amounts-asked": "Montants demandés pour les commissions sélectionnées",
-    "applicant": "Porteur du projet",
+    "applicant": "Demandeur",
+    "bearer-identity": "Identité du porteur de projet",
     "before-start": "Avant-propos",
     "budget": "Budget",
     "budget-previous-edition": "Budget réel du projet (dépenses) pour l'édition précédente",
+    "cannot-submit-projects": "L'association n'est pas habilitée à soumettre de nouveaux projets.",
     "categories": "Catégories",
     "commission-amount-earned": "Montant obtenu pour la commission",
     "commission-choice": "Choix des commissions",
@@ -543,6 +563,8 @@
     "marketing-campaign": "Campagne de communication",
     "moral-review": "Bilan moral",
     "moral-review-hint": "Résultat obtenu, nombre d'étudiants impactés, partenariats développés.",
+    "modify": "Modifier le projet",
+    "modify-review": "Modifier le bilan",
     "must-have-president-status": "Vous n'avez pas de droits de présidence dans cette association. Vous ne pouvez donc ni soumettre de nouveaux projets, ni modifier les existants.",
     "name": "Nom du projet",
     "no-project-to-show": "Aucun projet à afficher.",
@@ -565,16 +587,17 @@
     "real-date-hint": "Modifiez la date si elle a changé depuis la soumission du projet.",
     "real-location-hint": "Modifiez le lieu s'il a changé depuis la soumission du projet.",
     "re-edition": "Réédition d'un précédent projet",
+    "rejected-projects": "Projets refusés",
     "required-documents-list": "Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés",
     "review": "Bilan",
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "status": {
       "archived": "Archivé",
       "draft": "Brouillon",
-      "processing": "En attente de traitement",
-      "rejected": "Refusé",
-      "review-cancelled": "Annulé",
-      "review-processing": "En attente de bilan",
+      "processing": "Projet en cours de traitement",
+      "rejected": "Projet refusé",
+      "review-cancelled": "Projet annulé",
+      "review-processing": "Bilan en cours de traitement",
       "review-rejected": "Bilan refusé",
       "validated": "Validé, en attente de commission"
     },
@@ -586,7 +609,10 @@
     "target-students-amount": "Nombre d'étudiantes et étudiants visés",
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
-    "validate": "Valider et soumettre le projet"
+    "validate": "Valider et soumettre le projet",
+    "validated-projects": "Projets validés",
+    "view": "Voir le projet",
+    "view-review": "Voir le bilan"
   },
   "recap": "Récapitulatif",
   "register": {
@@ -618,7 +644,8 @@
     "is-cas": "L'utilisateur provient de CAS",
     "is-validated-by-admin": "L'utilisateur est validé par le gestionnaire",
     "last-name": "Nom de famille",
-    "phone": "Numéro de téléphone"
+    "phone": "Numéro de téléphone",
+    "search": "Rechercher un utilisateur"
   },
   "user-groups": {
     "commission": "Membre de commission",

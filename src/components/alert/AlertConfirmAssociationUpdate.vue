@@ -26,10 +26,6 @@ async function onValidateChanges() {
     try {
         await updateAssociation()
         emit('hasValidated')
-        /*await router.push(isStaff.value ? {name: 'ManageAssociations'} : {
-            name: 'AssociationDashboard',
-            params: {id: associationId.value}
-        })*/
         notify({
             message: t('notifications.positive.association-successfully-updated'),
             type: 'positive'
@@ -50,7 +46,7 @@ async function onValidateChanges() {
     <QBtn
         :label="t('association.validate-all-changes')"
         color="primary"
-        icon="mdi-check-circle"
+        icon="bi-check-lg"
         @click="confirmation = true"
     />
 
@@ -68,13 +64,13 @@ async function onValidateChanges() {
                     v-close-popup
                     :label="t('cancel')"
                     color="secondary"
-                    icon="mdi-arrow-left-circle"
+                    icon="bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :label="t('association.validate-all-changes')"
                     color="primary"
-                    icon="mdi-check-circle"
+                    icon="bi-check-lg"
                     @click="onValidateChanges"
                 />
             </QCardActions>

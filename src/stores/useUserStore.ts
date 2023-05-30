@@ -54,7 +54,7 @@ export const useUserStore = defineStore('userStore', {
                 throw new Error
             }
         },
-        async logOut() {
+        logOut() {
             const {removeTokens} = useSecurity()
             const {isStaff} = useUserGroups()
             removeTokens()

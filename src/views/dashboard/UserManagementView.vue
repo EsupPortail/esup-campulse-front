@@ -10,6 +10,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import type {User, UserGroup} from '#/user'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import FormUserSearch from '@/components/form/FormUserSearch.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -100,6 +101,10 @@ const columns: QTableProps['columns'] = [
         </h2>
         <div class="form-container">
             <div class="form">
+                <FormUserSearch
+                    @advanced-search="(result) => users = result"
+                    @get-users="onGetUsers"
+                />
                 <QTable
                     :columns="columns"
                     :loading="!users"

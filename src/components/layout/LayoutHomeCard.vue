@@ -50,3 +50,7 @@ defineProps({
         </div>
     </section>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/home.scss';
+</style>

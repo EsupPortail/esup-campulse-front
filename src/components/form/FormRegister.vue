@@ -210,7 +210,7 @@ async function onRegister() {
                     ></i>
                     {{ t('forms.gdpr-title') }}
                 </h2>
-                <div class="form-container">
+                <div :class="['form-container', 'consent-section']">
                     <div class="form">
                         <LayoutGDPRConsent
                             :has-consent="hasConsent"
@@ -222,6 +222,7 @@ async function onRegister() {
 
             <QBtn
                 :label="t('forms.send')"
+                class="btn-group"
                 color="primary"
                 type="submit"
             />
@@ -232,10 +233,4 @@ async function onRegister() {
 <style lang="scss">
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-
-.q-form {
-    .q-btn {
-        justify-content: center;
-    }
-}
 </style>

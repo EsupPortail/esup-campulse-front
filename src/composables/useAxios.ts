@@ -4,6 +4,7 @@ import {reactive} from 'vue'
 import {useCasAuthentication} from '@vue-unistra/cas-authentication'
 import router from '@/router'
 
+
 interface UseAxiosState {
     axios: () => AxiosInstance;
     axiosAuth: () => AxiosInstance;
@@ -30,6 +31,18 @@ const state = reactive<UseAxiosState>({
             ),
             error => Promise.reject(error),
         )
+
+        _axios.interceptors.response.use(response => {
+            return response
+        }, async function (error) {
+            if (401 === error.response.status) {
+                localStorage.removeItem('JWT__access__token')
+                localStorage.removeItem('JWT__refresh__token')
+                await router.push({name: 'Login'})
+            } else {
+                return Promise.reject(error)
+            }
+        })
 
         return _axios
     },

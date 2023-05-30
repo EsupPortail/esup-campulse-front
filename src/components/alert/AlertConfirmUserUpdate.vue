@@ -3,7 +3,6 @@ import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
-import router from '@/router'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import useUsers from '@/composables/useUsers'
 import useUserGroups from '@/composables/useUserGroups'
@@ -15,7 +14,7 @@ import useErrors from '@/composables/useErrors'
 const {t} = useI18n()
 const {notify} = useQuasar()
 const userManagerStore = useUserManagerStore()
-const {updateUserInfos} = useUsers()
+const {updateUserInfos, initInfosToPatch, infosToPatch} = useUsers()
 const {updateUserGroups} = useUserGroups()
 const {updateUserAssociations, userAssociations} = useUserAssociations()
 const {userAssociationsRegister} = useSecurity()
@@ -29,14 +28,16 @@ const confirmation = ref<boolean>(false)
 
 async function onValidateChanges() {
     try {
-        await updateUserInfos(userManagerStore.user, true)
+        initInfosToPatch(userManagerStore.user)
+        if (Object.entries(infosToPatch).length) {
+            await updateUserInfos(userManagerStore.user, true)
+        }
         await updateUserAssociations(true)
-        if (userAssociations.value.length > 0) {
+        if (userAssociations.value.length) {
             await userAssociationsRegister(false, userManagerStore.user?.username)
         }
         await updateUserGroups()
         emit('hasValidated')
-        await router.push({name: 'ManageUsers'})
         notify({
             type: 'positive',
             message: t('notifications.positive.validate-success')
@@ -55,7 +56,6 @@ async function onValidateChanges() {
 <template>
     <QBtn
         :label="t('dashboard.validate-changes')"
-        color="primary"
         icon="mdi-check-circle"
         @click="confirmation = true"
     />
@@ -73,13 +73,11 @@ async function onValidateChanges() {
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"
-                    color="secondary"
                     icon="mdi-arrow-left-circle"
                 />
                 <QBtn
                     v-close-popup
                     :label="t('dashboard.validate-changes')"
-                    color="primary"
                     icon="mdi-check-circle"
                     @click="onValidateChanges"
                 />
