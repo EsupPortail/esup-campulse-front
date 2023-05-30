@@ -17,7 +17,7 @@ const props = defineProps<{
 interface Option {
     icon: 'bi-eye' | 'bi-pencil',
     label: string,
-    to?: { name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual', params: { associationId?: number, projectId: number } }
+    to?: { name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail', params: { associationId?: number, projectId: number } }
 }
 
 const options = ref<Option[]>([])
@@ -40,7 +40,8 @@ const initOptions = () => {
     if (props.projectStatus !== 'PROJECT_DRAFT') {
         options.value.push({
             icon: 'bi-eye',
-            label: t('project.view')
+            label: t('project.view'),
+            to: {name: 'ProjectDetail', params: {projectId: props.project}}
         })
     }
     if (props.projectStatus === 'PROJECT_VALIDATED' || props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
