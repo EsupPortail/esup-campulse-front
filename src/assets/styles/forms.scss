@@ -26,12 +26,6 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) $fullSize);
   }
 
-  .form {
-    legend, span {
-      padding-bottom: 0.6rem;
-    }
-  }
-
   @media screen and (min-width: $responsiveWidth) {
     display: flex;
     justify-content: center;
@@ -40,10 +34,6 @@
       /*display: block;
       margin: auto;
       width: 90%;*/
-
-      legend, span {
-        padding-bottom: 0;
-      }
     }
   }
 }
@@ -370,7 +360,8 @@ label.custom-label {
   }
 
   &.small-button {
-    padding: .375rem 1.875rem;
+    padding: .375rem;
+    margin: 0 0 0 0.5rem;
     font-size: 1rem;
 
     i {
@@ -540,7 +531,7 @@ label.custom-label {
 }
 
 .btn-group {
-  width: 80%;
+  width: 90%;
   margin: 1rem auto;
   display: flex;
   flex-direction: column;

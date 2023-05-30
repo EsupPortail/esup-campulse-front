@@ -82,79 +82,116 @@ const resultLabels = [
                     <span :class="`form-state-icon form-state-${test.valid ? 'green' : 'red'}`" aria-hidden="true">
                         <i :class="`bi bi-${test.valid ? 'check' : 'x'}`"></i>
                     </span>
-                    {{
-                        (index === 0 ? (passwordMinLength + ' ') : '') + t(`password.policy.${test.message}`) + ' ' + test.additionalMessage
-                    }}
+                    <div class="test">
+                        {{
+                            (index === 0 ? (passwordMinLength + ' ') : '') + t(`password.policy.${test.message}`) + ' ' + test.additionalMessage
+                        }}
+                    </div>
                 </span>
             </li>
         </ul>
     </section>
 </template>
 
-<style lang="sass" scoped>
-@import "@/assets/styles/forms.scss"
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
 
-.password-feedback
-  display: flex
-  gap: 0.5rem
-  align-items: center
-  justify-content: center
-  margin-top: 0
+.password-feedback {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0;
+}
 
-  p
-    margin: 0
-    font-size: 14px
+p {
+  margin: 0;
+  font-size: 0.9rem;
+}
 
-.password-feedback-bar
-  display: flex
-  justify-content: space-around
-  flex-flow: row wrap
-  align-items: stretch
-  gap: 0.3rem
-  flex-grow: 1
+.form-state {
+  display: flex;
 
-.password-feedback-bar > div
-  width: 1rem
-  flex-grow: 1
-  height: 0.3rem
-  background-color: lightgrey
-  border-radius: 1rem
-  box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.1)
-  transition-duration: 0.3s
+  i {
+    width: 1.5rem;
+  }
 
-.password-feedback-bar > .__0
-  background-color: #7a2520
+  .test {
+    padding: 0 0 0 0.5rem;
+    font-size: 0.9rem;
+  }
+}
 
-.password-feedback-bar > .__1
-  background-color: #db463d
 
-.password-feedback-bar > .__2
-  background-color: #e7902a
+.password-feedback-bar {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  align-items: stretch;
+  gap: 0.3rem;
+  flex-grow: 1;
 
-.password-feedback-bar > .__3
-  background-color: #ffc64a
+}
 
-.password-feedback-bar > .__4
-  background-color: #5cc887
+.password-feedback-bar > div {
+  width: 1rem;
+  flex-grow: 1;
+  height: 0.3rem;
+  background-color: lightgrey;
+  border-radius: 1rem;
+  box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition-duration: 0.3s;
+}
 
-.paragraph.__0
-  color: #7a2520
+.password-feedback-bar > .__0 {
+  background-color: #7a2520;
+}
 
-.paragraph.__1
-  color: #db463d
+.password-feedback-bar > .__1 {
+  background-color: #db463d;
+}
 
-.paragraph.__2
-  color: #e7902a
+.password-feedback-bar > .__2 {
+  background-color: #e7902a;
+}
 
-.paragraph.__3
-  color: #ffc64a
+.password-feedback-bar > .__3 {
+  background-color: #ffc64a;
+}
 
-.paragraph.__4
-  color: #5cc887
+.password-feedback-bar > .__4 {
+  background-color: #5cc887;
+}
 
-.password-rules
-  padding: 0 0 1rem 0
+.paragraph.__0 {
+  color: #7a2520;
+}
 
-.password-rules p.paragraph
-  margin-bottom: 0.5rem
+.paragraph.__1 {
+  color: #db463d;
+}
+
+.paragraph.__2 {
+  color: #e7902a;
+}
+
+.paragraph.__3 {
+  color: #ffc64a;
+}
+
+.paragraph.__4 {
+  color: #5cc887;
+}
+
+.password-rules {
+  padding: 0 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.password-rules p.paragraph {
+  margin-bottom: 0.5rem;
+}
+
 </style>
