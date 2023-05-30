@@ -17,7 +17,7 @@ const props = defineProps<{
 interface Option {
     icon: 'bi-eye' | 'bi-pencil',
     label: string,
-    to?: { name: string, params: { associationId?: number, projectId: number } }
+    to?: { name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual', params: { associationId?: number, projectId: number } }
 }
 
 const options = ref<Option[]>([])
@@ -28,7 +28,12 @@ const initOptions = () => {
         if (props.association && userStore.hasPresidentStatus(props.association) || !props.association) {
             options.value.push({
                 icon: 'bi-pencil',
-                label: t('project.modify')
+                label: t('project.modify'),
+                to: props.association ? {
+                    name: 'SubmitProjectAssociation',
+                    params: {associationId: props.association, projectId: props.project}
+                } :
+                    {name: 'SubmitProjectIndividual', params: {projectId: props.project}}
             })
         }
     }

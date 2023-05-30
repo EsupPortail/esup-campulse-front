@@ -5,6 +5,7 @@ import type {User, UserGroup} from '#/user'
 import {useI18n} from 'vue-i18n'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
+import FormUserAddress from '@/components/form/FormUserAddress.vue'
 
 
 const {userToUpdate} = useUsers()
@@ -40,7 +41,7 @@ watch(() => userRef.value, initUserInfos)
 
 const initUserGroups = () => {
     let groups: (string | undefined)[] = []
-    props.user?.groups.forEach((group: UserGroup) => {
+    props.user?.groups?.forEach((group: UserGroup) => {
         groups.push(getGroupLiteral(group.groupId))
     })
     groups = groups.filter((element, index) => {
@@ -126,38 +127,11 @@ onMounted(() => {
         />
         <fieldset
             v-if="(!editedByStaff && hasPerm('add_project_user'))
-                || (editedByStaff && userRef.permissions.includes('add_project_user'))"
-            class="individual-address"
+                || (editedByStaff && userRef.permissions?.includes('add_project_user'))"
         >
             <legend class="title-3">{{ t('address.address') }}</legend>
-            <QInput
-                v-model="userToUpdate.address"
-                :label="t('address.address')"
-                clearable
-                filled
-            />
-            <div>
-                <QInput
-                    v-model="userToUpdate.zipcode"
-                    :label="t('address.zipcode')"
-                    clearable
-                    filled
-                />
-                <QInput
-                    v-model="userToUpdate.city"
-                    :label="t('address.city')"
-                    clearable
-                    filled
-                />
-                <QInput
-                    v-model="userToUpdate.country"
-                    :label="t('address.country')"
-                    clearable
-                    filled
-                />
-            </div>
+            <FormUserAddress :user="userRef"/>
         </fieldset>
-
         <div
             v-if="!editedByStaff"
             class="info-panel info-panel-dashboard"
@@ -183,12 +157,4 @@ onMounted(() => {
     background-color: $dashboardColorBorders
     padding: 0.625rem
     margin-bottom: 0.938rem
-
-.individual-address, .individual-address > div
-    display: flex
-    gap: 1rem
-    flex-direction: column
-
-.individual-address
-    margin-top: 1rem
 </style>

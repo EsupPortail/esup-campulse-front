@@ -18,6 +18,7 @@
     "address": "Adresse",
     "city": "Ville",
     "country": "Pays",
+    "verify": "Veuillez renseigner votre adresse postale. Si vous nous l'avez déjà communiquée, merci de la vérifier afin que nous la mettions à jour.",
     "zipcode": "Code postal"
   },
   "advanced-search": "Recherche avancée",
@@ -516,6 +517,7 @@
     "amount-earned": "Montant obtenu",
     "amounts-asked": "Montants demandés pour les commissions sélectionnées",
     "applicant": "Demandeur",
+    "bearer-identity": "Identité du porteur de projet",
     "before-start": "Avant-propos",
     "budget": "Budget",
     "budget-previous-edition": "Budget réel du projet (dépenses) pour l'édition précédente",

@@ -99,7 +99,10 @@ onBeforeRouteLeave((to, from, next) => {
             </div>
         </section>
 
-        <section class="association-cards dashboard-section">
+        <section
+            v-if="groupCanJoinAssociation"
+            class="association-cards dashboard-section"
+        >
             <div class="form-title">
                 <h2>
                     <i
@@ -113,7 +116,7 @@ onBeforeRouteLeave((to, from, next) => {
             <div class="form-container">
                 <div class="form">
                     <FormUpdateUserAssociations/>
-                    <FormRegisterUserAssociations v-if="groupCanJoinAssociation"/>
+                    <FormRegisterUserAssociations/>
                 </div>
             </div>
         </section>

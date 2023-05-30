@@ -105,8 +105,8 @@ export default function () {
         for (const key of Object.keys(infosToPatch)) {
             delete infosToPatch[key as keyof typeof infosToPatch]
         }
-        if (userToUpdate.value.firstName !== user?.firstName) infosToPatch.firstName = userToUpdate.value.firstName
-        if (userToUpdate.value.lastName !== user?.lastName) infosToPatch.lastName = userToUpdate.value.lastName
+        if (userToUpdate.value.firstName && (userToUpdate.value.firstName !== user?.firstName)) infosToPatch.firstName = userToUpdate.value.firstName
+        if (userToUpdate.value.lastName && (userToUpdate.value.lastName !== user?.lastName)) infosToPatch.lastName = userToUpdate.value.lastName
         if (userToUpdate.value.newEmail && userToUpdate.value.newEmail !== userToUpdate.value.email &&
             userToUpdate.value.newEmail === userToUpdate.value.newEmailVerification) infosToPatch.email = userToUpdate.value.newEmail
         if (userToUpdate.value.phone !== user?.phone) infosToPatch.phone = userToUpdate.value.phone

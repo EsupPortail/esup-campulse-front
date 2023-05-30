@@ -95,7 +95,6 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'individual',
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
                             projectBearersOnly: true
                         },
                         children: [
