@@ -89,15 +89,6 @@ const routes: RouteRecordRaw[] = [
                                     title: i18n.global.t('breadcrumbs.submit-project'),
                                     breadcrumb: i18n.global.t('breadcrumbs.submit-project')
                                 }
-                            },
-                            {
-                                path: 'submit-project-review/:projectId',
-                                name: 'SubmitProjectReviewAssociation',
-                                component: () => import('@/views/project/SubmitProjectReviewView.vue'),
-                                meta: {
-                                    title: i18n.global.t('breadcrumbs.submit-project-review'),
-                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project-review')
-                                }
                             }
                         ]
                     },
@@ -114,15 +105,6 @@ const routes: RouteRecordRaw[] = [
                                 meta: {
                                     title: i18n.global.t('breadcrumbs.submit-project'),
                                     breadcrumb: i18n.global.t('breadcrumbs.submit-project')
-                                }
-                            },
-                            {
-                                path: 'submit-project-review/:projectId',
-                                name: 'SubmitProjectReviewIndividual',
-                                component: () => import('@/views/project/SubmitProjectReviewView.vue'),
-                                meta: {
-                                    title: i18n.global.t('breadcrumbs.submit-project-review'),
-                                    breadcrumb: i18n.global.t('breadcrumbs.submit-project-review')
                                 }
                             }
                         ]
@@ -144,6 +126,15 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),
                             breadcrumb: i18n.global.t('breadcrumbs.project-recap')
+                        }
+                    },
+                    {
+                        path: 'submit-project-review/:projectId',
+                        name: 'SubmitProjectReview',
+                        component: () => import('@/views/project/SubmitProjectReviewView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.submit-project-review'),
+                            breadcrumb: i18n.global.t('breadcrumbs.submit-project-review')
                         }
                     },
                     {

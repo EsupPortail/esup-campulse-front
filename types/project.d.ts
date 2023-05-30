@@ -132,6 +132,9 @@ export interface ProjectReview {
 
 export interface ProjectReviewAssociation {
     address: string,
+    zipcode: string,
+    city: string,
+    country: string,
     phone: string,
     email: string,
     presidentNames: string,

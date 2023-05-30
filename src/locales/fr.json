@@ -49,6 +49,7 @@
     "all-selected-disable": "Désactiver",
     "all-selected-enable": "Activer",
     "all-selected-mail": "Envoyer un email",
+    "association": "Association",
     "back-directory": "Revenir à l'annuaire",
     "before-deletion-word": "association",
     "before-deletion-word-error": "Vérification échouée, veuillez réessayer.",
@@ -79,6 +80,7 @@
     "go-back": "Retour",
     "more-details": "Fiche détail de l'association",
     "not-public": "Non Publiée",
+    "president": "Président ou présidente",
     "public": "Publiée",
     "publish-in-directory": "Publier dans l'annuaire",
     "unpublish-in-directory": "Dépublier de l'annuaire",
@@ -611,6 +613,7 @@
     "ticket-price": "Montant demandé par participant (billetterie)",
     "validate": "Valider et soumettre le projet",
     "validated-projects": "Projets validés",
+    "verify-contact-infos": "Veuillez vérifier que les infos suivantes sont correctes et modifiez-le si besoin.",
     "view": "Voir le projet",
     "view-review": "Voir le bilan"
   },

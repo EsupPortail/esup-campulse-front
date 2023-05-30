@@ -92,6 +92,9 @@ const projectReview = ref<ProjectReview>(
 const association = ref<ProjectReviewAssociation>(
     {
         address: '',
+        zipcode: '',
+        city: '',
+        country: '',
         phone: '',
         email: '',
         presidentNames: '',
@@ -129,6 +132,9 @@ const initAssociationValues = () => {
     loading.show()
     if (associationStore.association) {
         association.value.address = associationStore.association.address as string
+        association.value.zipcode = associationStore.association.zipcode as string
+        association.value.city = associationStore.association.city as string
+        association.value.country = associationStore.association.country as string
         association.value.phone = associationStore.association.phone as string
         association.value.email = associationStore.association.email as string
         association.value.presidentNames = associationStore.association.presidentNames as string
@@ -224,11 +230,9 @@ async function onGetAssociationDetails() {
 }
 
 // Submit step 1 & 2 (basic infos about applicant and project)
-async function onSubmitProjectReviewInfos(nextStep: number, done: 1 | 2 | null, association: ProjectReviewAssociation | undefined) {
+async function onSubmitProjectReviewInfos(nextStep: number, association: ProjectReviewAssociation | undefined) {
     try {
         await patchProjectReview(projectReview.value, association)
-        if (done === 1) done1.value = true
-        else if (done === 2) done2.value = true
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -388,8 +392,246 @@ async function onSubmitProjectReview() {
                         icon="mdi-card-text-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitProjectReviewInfos(2, 1, association)"
+                            @submit.prevent="onSubmitProjectReviewInfos(2, association)"
                         >
+                            <fieldset>
+                                <legend class="title-3">{{ t('project.general-infos') }}</legend>
+                                <div class="display-row">
+                                    <p class="row-title">{{ t('project.name') }}</p>
+                                    <p>{{ projectReview.name }}</p>
+                                </div>
+                                <QInput
+                                    v-model="projectReview.realStartDate"
+                                    :label="t('project.planned-start-date') + ' *'"
+                                    :rules="[
+                                        val => val && val.length > 0 || t('forms.fill-field'),
+                                        val => val && datesAreLegal || t('forms.legal-dates')
+                                    ]"
+                                    aria-required="true"
+                                    filled
+                                    reactive-rules
+                                    type="date"
+                                    :hint="t('project.real-date-hint')"
+                                    clearable
+                                />
+                                <QInput
+                                    v-model="projectReview.realEndDate"
+                                    :label="t('project.planned-end-date') + ' *'"
+                                    :rules="[
+                                        val => val && val.length > 0 || t('forms.fill-field'),
+                                        val => val && datesAreLegal || t('forms.legal-dates')
+                                    ]"
+                                    aria-required="true"
+                                    filled
+                                    reactive-rules
+                                    type="date"
+                                    :hint="t('project.real-date-hint')"
+                                    clearable
+                                />
+                                <QInput
+                                    v-model="projectReview.realLocation"
+                                    :label="t('project.planned-location') + ' *'"
+                                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                    aria-required="true"
+                                    filled
+                                    lazy-rules
+                                    :hint="t('project.real-location-hint')"
+                                    clearable
+                                />
+                            </fieldset>
+
+                            <QSeparator/>
+
+                            <fieldset>
+                                <legend class="title-3">{{ t('project.contact-infos') }}</legend>
+                                <section v-if="projectReview.association">
+                                    <div class="info-panel info-panel-warning">
+                                        <i
+                                            class="bi bi-exclamation-lg"
+                                            aria-hidden="true"
+                                        ></i>
+                                        <p>{{ t('project.verify-contact-infos') }}</p>
+                                    </div>
+                                    <fieldset>
+                                        <legend class="title-4">{{ t('association.association') }}</legend>
+                                        <div class="display-row">
+                                            <p class="row-title">
+                                                {{ projectReview.association ? t('association.labels.name') :
+                                                    t('project.individual-project-bearer') }}
+                                            </p>
+                                            <p>{{ applicant() }}</p>
+                                        </div>
+                                        <QInput
+                                            v-model="association.email"
+                                            :label="t('association.labels.mail')"
+                                            :rules="association.email ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
+                                            clearable
+                                            filled
+                                            type="email"
+                                        />
+                                        <QInput
+                                            v-model="association.phone"
+                                            :label="t('association.labels.phone')"
+                                            :rules="association.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                                            clearable
+                                            filled
+                                            type="tel"
+                                        />
+                                        <fieldset class="address-fields">
+                                            <legend class="title-5">{{ t('association.labels.address') }}</legend>
+                                            <QInput
+                                                v-model="association.address"
+                                                :label="t('address.address')"
+                                                clearable
+                                                filled
+                                            />
+                                            <div>
+                                                <QInput
+                                                    v-model="association.zipcode"
+                                                    :label="t('address.zipcode')"
+                                                    clearable
+                                                    filled
+                                                />
+                                                <QInput
+                                                    v-model="association.city"
+                                                    :label="t('address.city')"
+                                                    clearable
+                                                    filled
+                                                />
+                                                <QInput
+                                                    v-model="association.country"
+                                                    :label="t('address.country')"
+                                                    clearable
+                                                    filled
+                                                />
+                                            </div>
+                                        </fieldset>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend class="title-4">{{ t('association.president') }}</legend>
+                                        <QInput
+                                            v-model="association.presidentNames"
+                                            :label="t('association.labels.president-name')"
+                                            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                            filled
+                                            lazy-rules
+                                            clearable
+                                        />
+                                        <!--                                <QInput
+                                            v-model="association.presidentEmail"
+                                            :label="t('association.labels.president-mail')"
+                                            :rules="association.presidentEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
+                                            clearable
+                                            filled
+                                            type="email"
+                                        />-->
+                                        <QInput
+                                            v-model="association.presidentPhone"
+                                            :label="t('association.labels.president-phone')"
+                                            :rules="association.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                                            clearable
+                                            filled
+                                            type="tel"
+                                            class="no-rules"
+                                        />
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend class="title-4">{{ t('project.applicant') }}</legend>
+                                        <QInput
+                                            v-model="projectReview.otherFirstName"
+                                            :label="t('project.other-first-name')"
+                                            filled
+                                            lazy-rules
+                                            clearable
+                                            class="no-rules"
+                                        />
+                                        <QInput
+                                            v-model="projectReview.otherLastName"
+                                            :label="t('project.other-last-name')"
+                                            filled
+                                            lazy-rules
+                                            clearable
+                                            class="no-rules"
+                                        />
+                                        <QInput
+                                            v-model="projectReview.otherEmail"
+                                            :label="t('project.other-email')"
+                                            filled
+                                            lazy-rules
+                                            clearable
+                                            type="mail"
+                                            class="no-rules"
+                                            :rules="projectReview.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
+                                        />
+                                        <QInput
+                                            v-model="projectReview.otherPhone"
+                                            :label="t('project.other-phone')"
+                                            :rules="projectReview.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                                            clearable
+                                            filled
+                                            type="tel"
+                                            class="no-rules"
+                                        />
+                                    </fieldset>
+                                </section>
+                                <section v-else>
+                                    <div class="info-panel info-panel-warning">
+                                        <i
+                                            class="bi bi-exclamation-lg"
+                                            aria-hidden="true"
+                                        ></i>
+                                        <p>{{ t('project.verify-contact-infos') }}</p>
+                                    </div>
+                                    <QBtn
+                                        :label="t('dashboard.account-infos')"
+                                        icon="bi-pencil"
+                                        class="btn-alt"
+                                        :to="{name: 'ManageAccount'}"
+                                    />
+                                    <fieldset>
+                                        <div class="display-row">
+                                            <p class="row-title">
+                                                {{ t('user.first-name') }}
+                                            </p>
+                                            <p>{{ userStore.user?.firstName }}</p>
+                                        </div>
+                                        <div class="display-row">
+                                            <p class="row-title">
+                                                {{ t('user.last-name') }}
+                                            </p>
+                                            <p>{{ userStore.user?.lastName }}</p>
+                                        </div>
+                                        <div class="display-row">
+                                            <p class="row-title">
+                                                {{ t('user.email') }}
+                                            </p>
+                                            <p>{{ userStore.user?.email }}</p>
+                                        </div>
+                                        <div
+                                            class="display-row"
+                                            v-if="userStore.user?.phone"
+                                        >
+                                            <p class="row-title">
+                                                {{ t('user.phone') }}
+                                            </p>
+                                            <p>{{ userStore.user?.phone }}</p>
+                                        </div>
+                                        <div class="display-row">
+                                            <p class="row-title">
+                                                {{ t('address.address') }}
+                                            </p>
+                                            <p>
+                                                {{ userStore.user?.address }}<br />
+                                                {{ userStore.user?.zipcode + ' ' + userStore.user?.city }}<br />
+                                                {{ userStore.user?.country }}
+                                            </p>
+                                        </div>
+                                    </fieldset>
+                                </section>
+                            </fieldset>
+
+                            <QSeparator/>
+
                             <fieldset>
                                 <legend class="title-3">{{ t('commission.dates') }}</legend>
 
@@ -439,140 +681,6 @@ async function onSubmitProjectReview() {
                                     inputmode="numeric"
                                     clearable
                                 />
-                            </fieldset>
-
-                            <QSeparator/>
-
-                            <fieldset>
-                                <legend class="title-3">{{ t('project.general-infos') }}</legend>
-                                <div class="display-row">
-                                    <p class="row-title">{{ t('project.name') }}</p>
-                                    <p>{{ projectReview.name }}</p>
-                                </div>
-                                <QInput
-                                    v-model="projectReview.realStartDate"
-                                    :label="t('project.planned-start-date') + ' *'"
-                                    :rules="[
-                                        val => val && val.length > 0 || t('forms.fill-field'),
-                                        val => val && datesAreLegal || t('forms.legal-dates')
-                                    ]"
-                                    aria-required="true"
-                                    filled
-                                    reactive-rules
-                                    type="date"
-                                    :hint="t('project.real-date-hint')"
-                                    clearable
-                                />
-                                <QInput
-                                    v-model="projectReview.realEndDate"
-                                    :label="t('project.planned-end-date') + ' *'"
-                                    :rules="[
-                                        val => val && val.length > 0 || t('forms.fill-field'),
-                                        val => val && datesAreLegal || t('forms.legal-dates')
-                                    ]"
-                                    aria-required="true"
-                                    filled
-                                    reactive-rules
-                                    type="date"
-                                    :hint="t('project.real-date-hint')"
-                                    clearable
-                                />
-                                <QInput
-                                    v-model="projectReview.realLocation"
-                                    :label="t('project.planned-location') + ' *'"
-                                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    filled
-                                    lazy-rules
-                                    :hint="t('project.real-location-hint')"
-                                    clearable
-                                />
-                            </fieldset>
-                            <fieldset>
-                                <legend class="title-3">{{ t('project.contact-infos') }}</legend>
-                                <h4 class="title-4">{{ t('project.applicant') }}</h4>
-                                <div class="display-row">
-                                    <p class="row-title">
-                                        {{ projectReview.association ? t('association.labels.name') :
-                                            t('project.individual-project-bearer') }}
-                                    </p>
-                                    <p>{{ applicant() }}</p>
-                                </div>
-                                <div class="display-row">
-                                    TODO : adresse du porteur individuel
-                                    <p class="row-title">{{ t('association.labels.address') }}</p>
-                                    <p>{{ association.address }}</p>
-                                </div>
-                                <div class="display-row">
-                                    <p class="row-title">{{ projectReview.association ? t('association.labels.phone') : t('user.phone') }}</p>
-                                    <p>{{ projectReview.association ? association.phone : userStore.user?.phone }}</p>
-                                </div>
-                                <div class="display-row">
-                                    <p class="row-title">{{ projectReview.association ? t('association.labels.mail') : t('user.mail') }}</p>
-                                    <p>{{ projectReview.association ? association.email : userStore.user?.email }}</p>
-                                </div>
-                                <div v-if="projectReview.association">
-                                    <QInput
-                                        v-model="association.presidentNames"
-                                        :label="t('association.labels.president-name')"
-                                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                                        filled
-                                        lazy-rules
-                                        clearable
-                                    />
-                                    <QInput
-                                        v-model="association.presidentPhone"
-                                        :label="t('association.labels.president-phone')"
-                                        :rules="association.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                        clearable
-                                        filled
-                                        type="tel"
-                                        class="no-rules"
-                                    />
-                                    <!--                                <QInput
-                                        v-model="association.presidentEmail"
-                                        :label="t('association.labels.president-mail')"
-                                        :rules="association.presidentEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                        clearable
-                                        filled
-                                        type="email"
-                                    />-->
-                                    <QInput
-                                        v-model="projectReview.otherFirstName"
-                                        :label="t('project.other-first-name')"
-                                        filled
-                                        lazy-rules
-                                        clearable
-                                        class="no-rules"
-                                    />
-                                    <QInput
-                                        v-model="projectReview.otherLastName"
-                                        :label="t('project.other-last-name')"
-                                        filled
-                                        lazy-rules
-                                        clearable
-                                        class="no-rules"
-                                    />
-                                    <QInput
-                                        v-model="projectReview.otherEmail"
-                                        :label="t('project.other-email')"
-                                        filled
-                                        lazy-rules
-                                        clearable
-                                        type="mail"
-                                        class="no-rules"
-                                        :rules="projectReview.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                    />
-                                    <QInput
-                                        v-model="projectReview.otherPhone"
-                                        :label="t('project.other-phone')"
-                                        :rules="projectReview.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                        clearable
-                                        filled
-                                        type="tel"
-                                        class="no-rules"
-                                    />
-                                </div>
                             </fieldset>
                             <section class="form-page-navigation">
                                 <QBtn
@@ -1041,4 +1149,12 @@ async function onSubmitProjectReview() {
     display: flex
     flex-direction: column
     gap: 1.5rem
+
+.address-fields div
+    display: flex
+    gap: 1rem
+
+    *
+        width: 100%
+
 </style>
