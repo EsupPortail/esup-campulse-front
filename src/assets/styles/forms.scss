@@ -26,14 +26,24 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) $fullSize);
   }
 
+  .form {
+    legend, span {
+      padding-bottom: 0.6rem;
+    }
+  }
+
   @media screen and (min-width: $responsiveWidth) {
     display: flex;
     justify-content: center;
 
     .form {
-      display: block;
+      /*display: block;
       margin: auto;
-      width: 90%;
+      width: 90%;*/
+
+      legend, span {
+        padding-bottom: 0;
+      }
     }
   }
 }
@@ -1310,6 +1320,16 @@ fieldset {
 
   .form-state-grey {
     background-color: $stateColor4;
+  }
+}
+
+.password-rules {
+  ul {
+    width: 10px;
+  }
+
+  li {
+    list-style: none;
   }
 }
 
