@@ -3,7 +3,7 @@ import FormProfilePasswordEdit from '@/components/form/FormProfilePasswordEdit.v
 import {useI18n} from 'vue-i18n'
 import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import {useUserStore} from '@/stores/useUserStore'
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
 import axios from 'axios'
 import useUsers from '@/composables/useUsers'
@@ -16,7 +16,7 @@ import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const userStore = useUserStore()
-const {isStaff} = useUserGroups()
+const {isStaff, initGroupPermToJoinAssociation, groupCanJoinAssociation} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
 const {notify, loading} = useQuasar()
 const {userAssociationsRegister} = useSecurity()
@@ -32,10 +32,10 @@ const {
 const tab = ref<string>('infos')
 
 async function onUpdateUserInfos() {
+    loading.show()
     try {
-        loading.show()
         initInfosToPatch(userStore.user)
-        if (Object.entries(infosToPatch).length !== 0) {
+        if (Object.entries(infosToPatch).length) {
             await updateUserInfos(userStore.user, false)
             notify({
                 type: 'positive',
@@ -47,7 +47,6 @@ async function onUpdateUserInfos() {
                 message: t('notifications.warning.no-modifications-found')
             })
         }
-        loading.hide()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -56,11 +55,12 @@ async function onUpdateUserInfos() {
             })
         }
     }
+    loading.hide()
 }
 
 async function onUpdateUserAssociations() {
+    loading.show()
     try {
-        loading.show()
         await updateUserAssociations(false)
         await userAssociationsRegister(false, userStore.user?.username)
         newAssociations.value = []
@@ -70,7 +70,6 @@ async function onUpdateUserAssociations() {
             type: 'positive',
             message: t('notifications.positive.associations-successfully-updated')
         })
-        loading.hide()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -79,7 +78,13 @@ async function onUpdateUserAssociations() {
             })
         }
     }
+    loading.hide()
 }
+
+onMounted(() => {
+    const groupArray = userStore.user?.groups.map(group => group.groupId)
+    if (groupArray && groupArray.length) initGroupPermToJoinAssociation(groupArray)
+})
 
 </script>
 
@@ -136,6 +141,7 @@ async function onUpdateUserAssociations() {
                             />
                             <QBtn
                                     :label="t('validate-changes')"
+                                    icon="bi-check-lg"
                                     type="submit"
                             />
                         </QForm>
@@ -190,14 +196,6 @@ async function onUpdateUserAssociations() {
                                         class="back-btn"
                                         icon="bi-chevron-compact-left"
                                 />
-                                <!--
-                                <QBtn v-if="newAssociations.length > 0 && newAssociations[0].id"
-                                     :label="t('association.validate-new-associations')"
-                                     class="validate-button"
-                                     icon-right="bi-check2"
-                                     type="submit"
-                                />
-                                -->
                             </section>
                         </QForm>
                     </div>

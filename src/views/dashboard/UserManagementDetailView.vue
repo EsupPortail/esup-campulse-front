@@ -99,7 +99,10 @@ onBeforeRouteLeave((to, from, next) => {
             </div>
         </section>
 
-        <section class="association-cards dashboard-section">
+        <section
+            v-if="groupCanJoinAssociation"
+            class="association-cards dashboard-section"
+        >
             <div class="form-title">
                 <h2>
                     <i
@@ -113,7 +116,7 @@ onBeforeRouteLeave((to, from, next) => {
             <div class="form-container">
                 <div class="form">
                     <FormUpdateUserAssociations/>
-                    <FormRegisterUserAssociations v-if="groupCanJoinAssociation"/>
+                    <FormRegisterUserAssociations/>
                 </div>
             </div>
         </section>
@@ -145,7 +148,6 @@ onBeforeRouteLeave((to, from, next) => {
                     <section class="btn-group">
                         <QBtn
                             :label="t('back')"
-                            color="secondary"
                             icon="mdi-arrow-left-circle"
                             @click="openAlert = true"
                         />
@@ -167,7 +169,7 @@ onBeforeRouteLeave((to, from, next) => {
     </QForm>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 
 ul {

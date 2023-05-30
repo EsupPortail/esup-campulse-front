@@ -14,6 +14,13 @@
   "account-validated": "Compte validé",
   "activate": "Activer",
   "add": "Ajouter",
+  "address": {
+    "address": "Adresse",
+    "city": "Ville",
+    "country": "Pays",
+    "verify": "Veuillez renseigner votre adresse postale. Si vous nous l'avez déjà communiquée, merci de la vérifier afin que nous la mettions à jour.",
+    "zipcode": "Code postal"
+  },
   "advanced-search": "Recherche avancée",
   "alerts": {
     "aborted-cas-registration": {
@@ -81,7 +88,7 @@
       "acronym": "Acronyme",
       "activity-field": "Domaine d'activité",
       "add-social-network": "Ajouter un réseau social",
-      "address": "Adresse postale",
+      "address": "Adresse postale de l'association",
       "amount-members-allowed": "Nombre de membres pouvant s'inscrire dans l'association",
       "approval-date": "Date d'agrément",
       "charter-validity": "Charte valide jusqu'au",
@@ -91,9 +98,9 @@
       "institution": "Établissement",
       "institution-component": "Composante d'établissement",
       "last-goa": "Date de la dernière AGO",
-      "mail": "Adresse mail",
+      "mail": "Adresse mail de l'association",
       "name": "Nom de l'association",
-      "phone": "Numéro de téléphone",
+      "phone": "Numéro de téléphone de l'association",
       "president-name": "Nom du président ou de la présidente",
       "president-mail": "Adresse mail du Président",
       "president-phone": "Numéro de téléphone du président ou de la présidente",
@@ -106,7 +113,8 @@
       "socials": "Réseaux sociaux",
       "student-count": "Nombre d'adhérentes et d'adhérents",
       "website": "Site web",
-      "website-link": "Aller au site web de l'association"
+      "website-link": "Aller au site web de l'association",
+      "zipcode": "Code postal"
     },
     "logo": {
       "alt": "Ajouter un texte alternatif décrivant le logo de l'association",
@@ -353,8 +361,8 @@
     "repeat-new-password": "Répéter le nouveau mot de passe",
     "required-commission": "Veuillez sélectionner au moins une commission.",
     "required-email": "Veuillez renseigner une adresse mail valide.",
-    "required-first-name": "Veuillez renseigner votre prénom.",
-    "required-last-name": "Veuillez renseigner votre nom de famille.",
+    "required-first-name": "Veuillez renseigner un prénom.",
+    "required-last-name": "Veuillez renseigner un nom de famille.",
     "required-new-password": "Veuillez saisir votre nouveau mot de passe.",
     "required-new-email": "Veuillez saisir votre nouvelle adresse mail.",
     "required-old-password": "Veuillez saisir votre ancien mot de passe.",
@@ -502,12 +510,14 @@
     },
     "reset-password": "Mot de passe oublié"
   },
+  "primary-nav": "Menu principal",
   "project": {
     "all-projects": "Tous les projets",
     "amount-asked": "Montant demandé",
     "amount-earned": "Montant obtenu",
     "amounts-asked": "Montants demandés pour les commissions sélectionnées",
     "applicant": "Demandeur",
+    "bearer-identity": "Identité du porteur de projet",
     "before-start": "Avant-propos",
     "budget": "Budget",
     "budget-previous-edition": "Budget réel du projet (dépenses) pour l'édition précédente",

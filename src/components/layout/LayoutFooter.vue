@@ -16,13 +16,13 @@ const {colorVariant} = useColorVariants()
             <div class="wrapper">
                 <a href="https://www.crous-strasbourg.fr/">
                     <img
-                        alt="Logo du Centre régional des œuvres universitaires et scolaires"
+                        alt="Le Crous (Centre régional des œuvres universitaires et scolaires)"
                         src="@/assets/img/logos/crous.png"
                     />
                 </a>
                 <a href="https://www.unistra.fr/">
                     <img
-                        alt="Logo de l'Université de Strasbourg"
+                        alt="L'Université de Strasbourg"
                         src="@/assets/img/logos/unistra.png"
                     />
                 </a>
@@ -30,49 +30,49 @@ const {colorVariant} = useColorVariants()
                 <a href="https://www.uha.fr/">
                     <img
                         src="@/assets/img/logos/uha.png"
-                        alt="Logo de l'Université de Haute-Alsace"
+                        alt="L'Université de Haute-Alsace"
                     />
                 </a>
                 <a href="https://www.insa-strasbourg.fr/">
                     <img
                         src="@/assets/img/logos/insa.png"
-                        alt="Logo de l'Institut National des Sciences Appliquées Strasbourg"
+                        alt="L'Institut National des Sciences Appliquées Strasbourg"
                     />
                 </a>
                 <a href="https://www.hear.fr/">
                     <img
                         src="@/assets/img/logos/hear-white.png"
-                        alt="Logo de la Haute École des Arts du Rhin"
+                        alt="La Haute École des Arts du Rhin"
                     />
                 </a>
                 <a href="https://engees.unistra.fr/">
                     <img
                         src="@/assets/img/logos/engees.png"
-                        alt="Logo de l'École Nationale du Génie de l'Eau et de l'Environnement de Strasbourg"
+                        alt="L'École Nationale du Génie de l'Eau et de l'Environnement de Strasbourg"
                     />
                 </a>
                 <a href="https://www.strasbourg.archi.fr/">
                     <img
                         src="@/assets/img/logos/ensas.png"
-                        alt="Logo de l'École Nationale Supérieure d'Architecture de Strasbourg"
+                        alt="L'École Nationale Supérieure d'Architecture de Strasbourg"
                     />
                 </a>
                 -->
                 <a href="https://cvec.etudiant.gouv.fr/">
                     <img
-                        alt="Logo de la Contribution Vie Étudiante et de Campus"
+                        alt="La Contribution Vie Étudiante et de Campus"
                         src="@/assets/img/logos/cvec.png"
                     />
                 </a>
                 <a href="https://www.economie.gouv.fr/plan-de-relance">
                     <img
-                        alt="Logo de France Relance"
+                        alt="France Relance"
                         src="@/assets/img/logos/france-relance.png"
                     />
                 </a>
                 <a href="https://www.enseignementsup-recherche.gouv.fr/">
                     <img
-                        alt="Logo du Ministère de l'Enseignement Supérieur et de la Recherche"
+                        alt="Le Ministère de l'Enseignement Supérieur et de la Recherche"
                         src="@/assets/img/logos/esr.png"
                     />
                 </a>
