@@ -120,9 +120,6 @@ export interface ProjectReview {
     realStartDate: string,
     realEndDate: string,
     realLocation: string,
-    organizerName: string,
-    organizerPhone: string,
-    organizerEmail: string,
     review: string,
     impactStudents: string,
     description: string,
@@ -130,7 +127,7 @@ export interface ProjectReview {
     improvements: string
 }
 
-export interface ProjectReviewAssociation {
+export interface ProjectAssociation {
     address: string,
     zipcode: string,
     city: string,
@@ -139,7 +136,8 @@ export interface ProjectReviewAssociation {
     email: string,
     presidentNames: string,
     presidentPhone: string,
-    presidentEmail: string
+    presidentEmail: string,
+    name: string
 }
 
 // STORE

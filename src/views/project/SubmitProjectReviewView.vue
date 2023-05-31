@@ -5,8 +5,6 @@ import useProjectDocuments from '@/composables/useProjectDocuments'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref, watch} from 'vue'
-import type {ProjectReview, ProjectReviewAssociation} from '#/project'
-//import useSubmitProject from '@/composables/useSubmitProject'
 import useCommissions from '@/composables/useCommissions'
 import {useUserStore} from '@/stores/useUserStore'
 import {useProjectStore} from '@/stores/useProjectStore'
@@ -15,6 +13,8 @@ import useUtility from '@/composables/useUtility'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useSubmitProject from '@/composables/useSubmitProject'
 import {ProcessDocument} from '#/documents'
+import FormAssociationOrIndividualProjectInfos from '@/components/form/FormAssociationOrIndividualProjectInfos.vue'
+import useUsers from '@/composables/useUsers'
 
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -23,7 +23,7 @@ const userStore = useUserStore()
 const projectStore = useProjectStore()
 const associationStore = useAssociationStore()
 const route = useRoute()
-const {CURRENCY, formatDate, fromDateIsAnterior, phoneRegex} = useUtility()
+const {CURRENCY, formatDate, fromDateIsAnterior} = useUtility()
 const {
     getDocuments,
     initProcessProjectDocuments,
@@ -34,13 +34,20 @@ const {
     getFile,
     deleteDocumentUpload
 } = useProjectDocuments()
-const {patchProjectReview, submitProjectReview} = useSubmitProject()
+const {
+    patchProjectReview,
+    submitProjectReview,
+    projectReview,
+    initProjectReview,
+    projectAssociation
+} = useSubmitProject()
 const {
     getCommissions,
     getCommissionDates,
     initCommissionDatesLabels,
     commissionDatesLabels
 } = useCommissions()
+const {userToUpdate} = useUsers()
 
 onMounted(async () => {
     loading.show()
@@ -63,96 +70,15 @@ watch(() => step.value === 3, async () => {
     loading.hide()
 })
 
-const projectReview = ref<ProjectReview>(
-    {
-        id: null,
-        name: '',
-        otherFirstName: '',
-        otherLastName: '',
-        otherEmail: '',
-        otherPhone: '',
-        user: null,
-        association: null,
-        outcome: '',
-        income: '',
-        realStartDate: '',
-        realEndDate: '',
-        realLocation: '',
-        organizerName: '',
-        organizerPhone: '',
-        organizerEmail: '',
-        review: '',
-        impactStudents: '',
-        description: '',
-        difficulties: '',
-        improvements: ''
-    }
-)
-
-const association = ref<ProjectReviewAssociation>(
-    {
-        address: '',
-        zipcode: '',
-        city: '',
-        country: '',
-        phone: '',
-        email: '',
-        presidentNames: '',
-        presidentPhone: '',
-        presidentEmail: ''
-    }
-)
-
-const initProjectReviewValues = () => {
-    loading.show()
-    if (projectStore.projectReview && projectStore.project) {
-        projectReview.value.id = projectStore.projectReview.id
-        projectReview.value.name = projectStore.projectReview.name
-        projectReview.value.outcome = projectStore.projectReview.outcome ?
-            projectStore.projectReview.outcome.toString() : '0'
-        projectReview.value.income = projectStore.projectReview.income ?
-            projectStore.projectReview.income.toString() : '0'
-        projectReview.value.association = projectStore.projectReview.association
-        projectReview.value.user= projectStore.projectReview.user
-        projectReview.value.realStartDate = formatDate(projectStore.projectReview.realStartDate ??
-            projectStore.project.plannedStartDate) as string
-        projectReview.value.realEndDate = formatDate(projectStore.projectReview.realEndDate ??
-            projectStore.project.plannedEndDate) as string
-        projectReview.value.realLocation = projectStore.projectReview.realLocation ?? projectStore.project.plannedLocation
-        projectReview.value.otherFirstName = projectStore.projectReview.otherFirstName ?? projectStore.project.otherFirstName
-        projectReview.value.otherLastName = projectStore.projectReview.otherLastName ?? projectStore.project.otherLastName
-        projectReview.value.otherEmail = projectStore.projectReview.otherEmail ?? projectStore.project.otherEmail
-        projectReview.value.otherPhone = projectStore.projectReview.otherPhone ?? projectStore.project.otherPhone
-    }
-    loading.hide()
+const applicant = () => {
+    if (projectReview.value.user) return `${userStore.user?.firstName} ${userStore.user?.lastName}`
+    else return userStore.user?.associations.find(obj => obj.id === projectReview.value.association)?.name
 }
-watch(() => projectStore.projectReview, initProjectReviewValues)
-
-const initAssociationValues = () => {
-    loading.show()
-    if (associationStore.association) {
-        association.value.address = associationStore.association.address as string
-        association.value.zipcode = associationStore.association.zipcode as string
-        association.value.city = associationStore.association.city as string
-        association.value.country = associationStore.association.country as string
-        association.value.phone = associationStore.association.phone as string
-        association.value.email = associationStore.association.email as string
-        association.value.presidentNames = associationStore.association.presidentNames as string
-        association.value.presidentPhone = associationStore.association.presidentPhone as string
-    }
-    loading.hide()
-}
-watch(() => associationStore.association, initAssociationValues)
 
 const isSite = () => {
     let isSite = false
     if (userStore.user?.associations.find(obj => obj.id === projectReview.value.association)?.isSite) isSite = true
     return isSite
-}
-
-const applicant = () => {
-    if (projectReview.value.user) return `${userStore.user?.firstName} ${userStore.user?.lastName}`
-    else return userStore.user?.associations.find(obj => obj.id === projectReview.value.association)?.name
 }
 
 const datesAreLegal = ref<boolean>(false)
@@ -203,6 +129,7 @@ async function onGetProjectReview() {
         await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
         await projectStore.getProjectCommissionDates(false, undefined)
         await projectStore.getProjectReview(parseInt(route.params.projectId as string))
+        initProjectReview()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -230,9 +157,9 @@ async function onGetAssociationDetails() {
 }
 
 // Submit step 1 & 2 (basic infos about applicant and project)
-async function onSubmitProjectReviewInfos(nextStep: number, association: ProjectReviewAssociation | undefined) {
+async function onSubmitProjectReviewInfos(nextStep: number) {
     try {
-        await patchProjectReview(projectReview.value, association)
+        await patchProjectReview()
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -273,7 +200,6 @@ async function onUploadDocuments(nextStep: number) {
     if (projectStore.project) {
         try {
             await uploadDocuments(parseInt(route.params.associationId as string))
-            done3.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -392,14 +318,16 @@ async function onSubmitProjectReview() {
                         icon="mdi-card-text-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitProjectReviewInfos(2, association)"
+                            @submit.prevent="onSubmitProjectReviewInfos(2)"
                         >
                             <fieldset>
-                                <legend class="title-3">{{ t('project.general-infos') }}</legend>
-                                <div class="display-row">
-                                    <p class="row-title">{{ t('project.name') }}</p>
-                                    <p>{{ projectReview.name }}</p>
-                                </div>
+                                <legend class="title-2">{{ t('project.general-infos') }}</legend>
+                                <QInput
+                                    v-model="projectReview.name"
+                                    :label="t('project.name')"
+                                    filled
+                                    readonly
+                                />
                                 <QInput
                                     v-model="projectReview.realStartDate"
                                     :label="t('project.planned-start-date') + ' *'"
@@ -442,193 +370,7 @@ async function onSubmitProjectReview() {
 
                             <QSeparator/>
 
-                            <fieldset>
-                                <legend class="title-3">{{ t('project.contact-infos') }}</legend>
-                                <section v-if="projectReview.association">
-                                    <div class="info-panel info-panel-warning">
-                                        <i
-                                            class="bi bi-exclamation-lg"
-                                            aria-hidden="true"
-                                        ></i>
-                                        <p>{{ t('project.verify-contact-infos') }}</p>
-                                    </div>
-                                    <fieldset>
-                                        <legend class="title-4">{{ t('association.association') }}</legend>
-                                        <div class="display-row">
-                                            <p class="row-title">
-                                                {{ projectReview.association ? t('association.labels.name') :
-                                                    t('project.individual-project-bearer') }}
-                                            </p>
-                                            <p>{{ applicant() }}</p>
-                                        </div>
-                                        <QInput
-                                            v-model="association.email"
-                                            :label="t('association.labels.mail')"
-                                            :rules="association.email ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                            clearable
-                                            filled
-                                            type="email"
-                                        />
-                                        <QInput
-                                            v-model="association.phone"
-                                            :label="t('association.labels.phone')"
-                                            :rules="association.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                            clearable
-                                            filled
-                                            type="tel"
-                                        />
-                                        <fieldset class="address-fields">
-                                            <legend class="title-5">{{ t('association.labels.address') }}</legend>
-                                            <QInput
-                                                v-model="association.address"
-                                                :label="t('address.address')"
-                                                clearable
-                                                filled
-                                            />
-                                            <div>
-                                                <QInput
-                                                    v-model="association.zipcode"
-                                                    :label="t('address.zipcode')"
-                                                    clearable
-                                                    filled
-                                                />
-                                                <QInput
-                                                    v-model="association.city"
-                                                    :label="t('address.city')"
-                                                    clearable
-                                                    filled
-                                                />
-                                                <QInput
-                                                    v-model="association.country"
-                                                    :label="t('address.country')"
-                                                    clearable
-                                                    filled
-                                                />
-                                            </div>
-                                        </fieldset>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend class="title-4">{{ t('association.president') }}</legend>
-                                        <QInput
-                                            v-model="association.presidentNames"
-                                            :label="t('association.labels.president-name')"
-                                            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                                            filled
-                                            lazy-rules
-                                            clearable
-                                        />
-                                        <!--                                <QInput
-                                            v-model="association.presidentEmail"
-                                            :label="t('association.labels.president-mail')"
-                                            :rules="association.presidentEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                            clearable
-                                            filled
-                                            type="email"
-                                        />-->
-                                        <QInput
-                                            v-model="association.presidentPhone"
-                                            :label="t('association.labels.president-phone')"
-                                            :rules="association.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                            clearable
-                                            filled
-                                            type="tel"
-                                            class="no-rules"
-                                        />
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend class="title-4">{{ t('project.applicant') }}</legend>
-                                        <QInput
-                                            v-model="projectReview.otherFirstName"
-                                            :label="t('project.other-first-name')"
-                                            filled
-                                            lazy-rules
-                                            clearable
-                                            class="no-rules"
-                                        />
-                                        <QInput
-                                            v-model="projectReview.otherLastName"
-                                            :label="t('project.other-last-name')"
-                                            filled
-                                            lazy-rules
-                                            clearable
-                                            class="no-rules"
-                                        />
-                                        <QInput
-                                            v-model="projectReview.otherEmail"
-                                            :label="t('project.other-email')"
-                                            filled
-                                            lazy-rules
-                                            clearable
-                                            type="mail"
-                                            class="no-rules"
-                                            :rules="projectReview.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                        />
-                                        <QInput
-                                            v-model="projectReview.otherPhone"
-                                            :label="t('project.other-phone')"
-                                            :rules="projectReview.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                            clearable
-                                            filled
-                                            type="tel"
-                                            class="no-rules"
-                                        />
-                                    </fieldset>
-                                </section>
-                                <section v-else>
-                                    <div class="info-panel info-panel-warning">
-                                        <i
-                                            class="bi bi-exclamation-lg"
-                                            aria-hidden="true"
-                                        ></i>
-                                        <p>{{ t('project.verify-contact-infos') }}</p>
-                                    </div>
-                                    <QBtn
-                                        :label="t('dashboard.account-infos')"
-                                        icon="bi-pencil"
-                                        class="btn-alt"
-                                        :to="{name: 'ManageAccount'}"
-                                    />
-                                    <fieldset>
-                                        <div class="display-row">
-                                            <p class="row-title">
-                                                {{ t('user.first-name') }}
-                                            </p>
-                                            <p>{{ userStore.user?.firstName }}</p>
-                                        </div>
-                                        <div class="display-row">
-                                            <p class="row-title">
-                                                {{ t('user.last-name') }}
-                                            </p>
-                                            <p>{{ userStore.user?.lastName }}</p>
-                                        </div>
-                                        <div class="display-row">
-                                            <p class="row-title">
-                                                {{ t('user.email') }}
-                                            </p>
-                                            <p>{{ userStore.user?.email }}</p>
-                                        </div>
-                                        <div
-                                            class="display-row"
-                                            v-if="userStore.user?.phone"
-                                        >
-                                            <p class="row-title">
-                                                {{ t('user.phone') }}
-                                            </p>
-                                            <p>{{ userStore.user?.phone }}</p>
-                                        </div>
-                                        <div class="display-row">
-                                            <p class="row-title">
-                                                {{ t('address.address') }}
-                                            </p>
-                                            <p>
-                                                {{ userStore.user?.address }}<br />
-                                                {{ userStore.user?.zipcode + ' ' + userStore.user?.city }}<br />
-                                                {{ userStore.user?.country }}
-                                            </p>
-                                        </div>
-                                    </fieldset>
-                                </section>
-                            </fieldset>
+                            <FormAssociationOrIndividualProjectInfos :association="projectReview.association"/>
 
                             <QSeparator/>
 
@@ -700,7 +442,7 @@ async function onSubmitProjectReview() {
                         icon="mdi-chart-box-outline"
                     >
                         <QForm
-                            @submit.prevent="onSubmitProjectReviewInfos(3, 2, undefined)"
+                            @submit.prevent="onSubmitProjectReviewInfos(3)"
                         >
                             <fieldset>
                                 <legend class="title-3">{{ t('project.review') }}</legend>
@@ -735,6 +477,7 @@ async function onSubmitProjectReview() {
                                     lazy-rules
                                     type="textarea"
                                     clearable
+                                    :hint="t('project.description-hint')"
                                 />
                                 <QInput
                                     v-model="projectReview.difficulties"
@@ -761,7 +504,7 @@ async function onSubmitProjectReview() {
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="onSubmitProjectReviewInfos(1, null,undefined)"
+                                    @click="onSubmitProjectReviewInfos(1)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -904,36 +647,6 @@ async function onSubmitProjectReview() {
                                     </div>
 
                                     <section class="flex-section">
-                                        <div
-                                            class="display-row"
-                                            v-for="projectCommissionDate in projectStore.projectCommissionDates"
-                                            :key="projectCommissionDate.id"
-                                        >
-                                            <p class="row-title">{{ commissionDatesLabels.find(obj => obj.value === projectCommissionDate.commissionDate)?.label }}</p>
-
-                                            <p class="paragraph">
-                                                <ul>
-                                                    <li>{{ t('project.amount-asked') }} : {{ projectCommissionDate.amountAsked + CURRENCY}}</li>
-                                                    <li>{{ t('project.amount-earned') }} : {{ projectCommissionDate.amountEarned + CURRENCY}}</li>
-                                                </ul>
-                                            </p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.outcome') }}</p>
-                                            <p>{{ projectReview.outcome + CURRENCY }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.income') }}</p>
-                                            <p>{{ projectReview.income + CURRENCY }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ projectReview.association ? t('association.labels.name') : t('project.individual-project-bearer') }}</p>
-                                            <p>{{ applicant() }}</p>
-                                        </div>
-
                                         <div class="display-row">
                                             <p class="row-title">{{ t('project.name') }}</p>
                                             <p>{{ projectStore.project?.name }}</p>
@@ -954,61 +667,120 @@ async function onSubmitProjectReview() {
                                             <p>{{ projectReview.realLocation }}</p>
                                         </div>
 
-                                        <div class="display-row">
-                                            TODO : adresse du porteur individuel
-                                            <p class="row-title">{{ t('association.labels.address') }}</p>
-                                            <p>{{ association.address }}</p>
-                                        </div>
+                                        <h5 class="title-4">{{ t('project.contact-infos') }}</h5>
 
-                                        <div class="display-row">
-                                            <p class="row-title">{{ projectReview.association ? t('association.labels.mail') : t('user.mail') }}</p>
-                                            <p>{{ projectReview.association ? association.email : userStore.user?.email }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ projectReview.association ? t('association.labels.phone') : t('user.phone') }}</p>
-                                            <p>{{ projectReview.association ? association.phone : userStore.user?.phone }}</p>
-                                        </div>
-
-                                        <div
-                                            v-if="projectReview.association"
+                                        <section v-if="projectReview.association">
+                                            <section class="flex-section">
+                                                <h6 class="title-5">{{ t('association.association') }}</h6>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('association.labels.name') }}</p>
+                                                    <p>{{ projectAssociation.name }}</p>
+                                                </div>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('association.labels.mail') }}</p>
+                                                    <p>{{ projectAssociation.email }}</p>
+                                                </div>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('association.labels.phone') }}</p>
+                                                    <p>{{ projectAssociation.phone }}</p>
+                                                </div>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('association.labels.address') }}</p>
+                                                    <p>
+                                                        {{ projectAssociation.address }}<br />
+                                                        {{ projectAssociation.zipcode + ' ' + projectAssociation.city }}<br />
+                                                        {{ projectAssociation.country }}
+                                                    </p>
+                                                </div>
+                                            </section>
+                                            <section class="flex-section">
+                                                <h6 class="title-5">{{ t('association.president') }}</h6>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('association.labels.president-name') }}</p>
+                                                    <p>{{ projectAssociation.presidentNames }}</p>
+                                                </div>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('association.labels.president-phone') }}</p>
+                                                    <p>{{ projectAssociation.presidentPhone }}</p>
+                                                </div>
+                                            </section>
+                                            <section class="flex-section">
+                                                <h6 class="title-5">{{ t('project.applicant') }}</h6>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('project.other-first-name') }}</p>
+                                                    <p>{{ projectReview.otherFirstName }}</p>
+                                                </div>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('project.other-last-name') }}</p>
+                                                    <p>{{ projectReview.otherLastName }}</p>
+                                                </div>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('project.other-email') }}</p>
+                                                    <p>{{ projectReview.otherEmail }}</p>
+                                                </div>
+                                                <div class="display-row">
+                                                    <p class="row-title">{{ t('project.other-phone') }}</p>
+                                                    <p>{{ projectReview.otherPhone }}</p>
+                                                </div>
+                                            </section>
+                                        </section>
+                                        <section
+                                            v-else
                                             class="flex-section"
                                         >
                                             <div class="display-row">
-                                                <p class="row-title">{{ t('association.labels.president-name') }}</p>
-                                                <p>{{ association.presidentNames }}</p>
+                                                <p class="row-title">{{ t('user.first-name') }}</p>
+                                                <p>{{ userToUpdate.firstName }}</p>
                                             </div>
-
                                             <div class="display-row">
-                                                <p class="row-title">{{ t('association.labels.president-phone') }}</p>
-                                                <p>{{ association.presidentPhone }}</p>
+                                                <p class="row-title">{{ t('user.last-name') }}</p>
+                                                <p>{{ userToUpdate.lastName }}</p>
                                             </div>
-
                                             <div class="display-row">
-                                                <p class="row-title">{{ t('association.labels.president-name') }}</p>
-                                                <p>{{ association.presidentNames }}</p>
+                                                <p class="row-title">{{ t('user.email') }}</p>
+                                                <p>{{ userToUpdate.email }}</p>
                                             </div>
-
-
                                             <div class="display-row">
-                                                <p class="row-title">{{ t('project.other-first-name') }}</p>
-                                                <p>{{ projectReview.otherFirstName }}</p>
+                                                <p class="row-title">{{ t('user.phone') }}</p>
+                                                <p>{{ userToUpdate.phone }}</p>
                                             </div>
-
                                             <div class="display-row">
-                                                <p class="row-title">{{ t('project.other-last-name') }}</p>
-                                                <p>{{ projectReview.otherLastName }}</p>
+                                                <p class="row-title">{{ t('address.address') }}</p>
+                                                <p>
+                                                    {{ userToUpdate.address }}<br />
+                                                    {{ userToUpdate.zipcode + ' ' + userToUpdate.city }}<br />
+                                                    {{ userToUpdate.country }}
+                                                </p>
                                             </div>
+                                        </section>
 
-                                            <div class="display-row">
-                                                <p class="row-title">{{ t('project.other-email') }}</p>
-                                                <p>{{ projectReview.otherEmail }}</p>
-                                            </div>
+                                        <h5 class="title-4">{{ t('commission.dates') }}</h5>
 
-                                            <div class="display-row">
-                                                <p class="row-title">{{ t('project.other-phone') }}</p>
-                                                <p>{{ projectReview.otherPhone }}</p>
-                                            </div>
+                                        <div
+                                            class="display-row"
+                                            v-for="projectCommissionDate in projectStore.projectCommissionDates"
+                                            :key="projectCommissionDate.id"
+                                        >
+                                            <p class="row-title">{{ commissionDatesLabels.find(obj => obj.value === projectCommissionDate.commissionDate)?.label }}</p>
+
+                                            <p class="paragraph">
+                                                <ul>
+                                                    <li>{{ t('project.amount-asked') }} : {{ projectCommissionDate.amountAsked + CURRENCY}}</li>
+                                                    <li>{{ t('project.amount-earned') }} : {{ projectCommissionDate.amountEarned + CURRENCY}}</li>
+                                                </ul>
+                                            </p>
+                                        </div>
+
+                                        <h5 class="title-4">{{ t('project.outcome') + ' / ' + t('project.income') }}</h5>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.outcome') }}</p>
+                                            <p>{{ projectReview.outcome + CURRENCY }}</p>
+                                        </div>
+
+                                        <div class="display-row">
+                                            <p class="row-title">{{ t('project.income') }}</p>
+                                            <p>{{ projectReview.income + CURRENCY }}</p>
                                         </div>
                                     </section>
                                 </section>

@@ -13,9 +13,9 @@ import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
 import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
-import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import useUsers from '@/composables/useUsers'
 import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
+import FormAssociationOrIndividualProjectInfos from '@/components/form/FormAssociationOrIndividualProjectInfos.vue'
 
 const {t} = useI18n()
 const {
@@ -39,7 +39,7 @@ const {
     patchProjectGoals,
     initProjectGoals,
     submitProject,
-    reInitSubmitProjectForm
+    reInitSubmitProjectForm,
 } = useSubmitProject()
 const {
     getDocuments,
@@ -52,7 +52,7 @@ const {
     getFile
 } = useProjectDocuments()
 const {initInfosToPatch, updateUserInfos, infosToPatch} = useUsers()
-const {fromDateIsAnterior, CURRENCY, phoneRegex} = useUtility()
+const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
     getCommissions,
     commissions,
@@ -585,53 +585,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 stack-label
                                 use-chips
                             />
-                            <fieldset v-if="applicant === 'association'">
-                                <legend class="title-3">{{ t('project.bearer-identity') }}</legend>
-                                <QInput
-                                    v-model="projectBasicInfos.otherFirstName"
-                                    :label="t('project.other-first-name')"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherLastName"
-                                    :label="t('project.other-last-name')"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherEmail"
-                                    :label="t('project.other-email')"
-                                    :rules="projectBasicInfos.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherPhone"
-                                    :label="t('project.other-phone')"
-                                    :rules="projectBasicInfos.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                            </fieldset>
-                            <fieldset v-else>
-                                <div class="info-panel info-panel-warning">
-                                    <i
-                                        class="bi bi-info"
-                                        aria-hidden="true"
-                                    ></i>
-                                    <p>{{ t('address.verify')}}</p>
-                                </div>
-                                <FormUserAddress :user="userStore.user"/>
-                            </fieldset>
+                            <FormAssociationOrIndividualProjectInfos :association="associationId ?? null"/>
                             <section class="btn-group">
                                 <QBtn
                                     :label="t('continue')"

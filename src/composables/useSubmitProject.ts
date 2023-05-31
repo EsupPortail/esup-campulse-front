@@ -1,11 +1,11 @@
 import {ref} from 'vue'
 import type {
+    ProjectAssociation,
     ProjectBasicInfos,
     ProjectBudget,
     ProjectCommissionDate,
     ProjectGoals,
-    ProjectReview,
-    ProjectReviewAssociation
+    ProjectReview
 } from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
@@ -13,6 +13,7 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useUsers from '@/composables/useUsers'
 
 const projectBasicInfos = ref<ProjectBasicInfos>(
     {
@@ -28,6 +29,19 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         association: null
     }
 )
+
+const projectAssociation = ref<ProjectAssociation>({
+    address: '',
+    zipcode: '',
+    city: '',
+    country: '',
+    phone: '',
+    email: '',
+    presidentNames: '',
+    presidentPhone: '',
+    presidentEmail: '',
+    name: ''
+})
 
 const projectCategories = ref<number[]>([])
 
@@ -57,14 +71,38 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
+const projectReview = ref<ProjectReview>(
+    {
+        id: null,
+        name: '',
+        otherFirstName: '',
+        otherLastName: '',
+        otherEmail: '',
+        otherPhone: '',
+        user: null,
+        association: null,
+        outcome: '',
+        income: '',
+        realStartDate: '',
+        realEndDate: '',
+        realLocation: '',
+        review: '',
+        impactStudents: '',
+        description: '',
+        difficulties: '',
+        improvements: ''
+    }
+)
+
 export default function () {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const associationStore = useAssociationStore()
     const {axiosAuthenticated} = useAxios()
-    const {arraysAreEqual} = useUtility()
+    const {arraysAreEqual, formatDate} = useUtility()
     const {processDocuments} = useProjectDocuments()
+    const {initInfosToPatch, updateUserInfos} = useUsers()
 
 
     // INIT DATA
@@ -80,6 +118,20 @@ export default function () {
         projectBasicInfos.value.otherPhone = projectStore.project?.otherPhone as string
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
+    }
+
+    const initProjectAssociation = () => {
+        if (associationStore.association) {
+            projectAssociation.value.name = associationStore.association.name as string
+            projectAssociation.value.address = associationStore.association.address as string
+            projectAssociation.value.zipcode = associationStore.association.zipcode as string
+            projectAssociation.value.city = associationStore.association.city as string
+            projectAssociation.value.country = associationStore.association.country as string
+            projectAssociation.value.phone = associationStore.association.phone as string
+            projectAssociation.value.email = associationStore.association.email as string
+            projectAssociation.value.presidentNames = associationStore.association.presidentNames as string
+            projectAssociation.value.presidentPhone = associationStore.association.presidentPhone as string
+        }
     }
 
     const initProjectCategories = () => {
@@ -115,6 +167,33 @@ export default function () {
         projectGoals.value.plannedActivities = projectStore.project?.plannedActivities as string
         projectGoals.value.preventionSafety = projectStore.project?.preventionSafety as string
         projectGoals.value.marketingCampaign = projectStore.project?.marketingCampaign as string
+    }
+
+    const initProjectReview = () => {
+        if (projectStore.projectReview && projectStore.project) {
+            projectReview.value.id = projectStore.projectReview.id
+            projectReview.value.name = projectStore.projectReview.name
+            projectReview.value.outcome = projectStore.projectReview.outcome ?
+                projectStore.projectReview.outcome.toString() : '0'
+            projectReview.value.income = projectStore.projectReview.income ?
+                projectStore.projectReview.income.toString() : '0'
+            projectReview.value.association = projectStore.projectReview.association
+            projectReview.value.user = projectStore.projectReview.user
+            projectReview.value.realStartDate = formatDate(projectStore.projectReview.realStartDate ??
+                projectStore.project.plannedStartDate) as string
+            projectReview.value.realEndDate = formatDate(projectStore.projectReview.realEndDate ??
+                projectStore.project.plannedEndDate) as string
+            projectReview.value.realLocation = projectStore.projectReview.realLocation ?? projectStore.project.plannedLocation
+            projectReview.value.otherFirstName = projectStore.projectReview.otherFirstName ?? projectStore.project.otherFirstName
+            projectReview.value.otherLastName = projectStore.projectReview.otherLastName ?? projectStore.project.otherLastName
+            projectReview.value.otherEmail = projectStore.projectReview.otherEmail ?? projectStore.project.otherEmail
+            projectReview.value.otherPhone = projectStore.projectReview.otherPhone ?? projectStore.project.otherPhone
+            projectReview.value.review = projectStore.projectReview.review
+            projectReview.value.impactStudents = projectStore.projectReview.impactStudents
+            projectReview.value.description = projectStore.projectReview.description
+            projectReview.value.difficulties = projectStore.projectReview.difficulties
+            projectReview.value.improvements = projectStore.projectReview.improvements
+        }
     }
 
     // REINITIALIZE FORM
@@ -315,35 +394,44 @@ export default function () {
         await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/status`, {projectStatus: 'PROJECT_PROCESSING'})
     }
 
-    async function patchProjectReview(projectReview: ProjectReview, association: ProjectReviewAssociation | undefined) {
+    async function patchProjectReview() {
         let projectReviewDataToPatch = {}
         const numbers = ['outcome', 'income']
         const dates = ['realStartDate', 'realEndDate']
-        for (const [key, value] of Object.entries(projectReview)) {
-            if ((numbers.includes(key) ? parseInt(value) : value) !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
+        const privateFields = ['id', 'association', 'user', 'name']
+        for (const [key, value] of Object.entries(projectReview.value)) {
+            if (!privateFields.includes(key) && (numbers.includes(key) ?
+                parseInt(value as string) : value) !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
                 projectReviewDataToPatch = Object.assign(projectReviewDataToPatch,
-                    {[key]: (numbers.includes(key) ? parseInt(value) : value) + (dates.includes(key) ? 'T00:00:00.000Z' : '')})
+                    {[key]: (numbers.includes(key) ? parseInt(value as string) : value) + (dates.includes(key) ? 'T00:00:00.000Z' : '')})
             }
         }
         // API call
         if (Object.entries(projectReviewDataToPatch).length) {
-            projectStore.projectReview = (await axiosAuthenticated.patch(`/projects/${projectReview.id}/review`,
+            projectStore.projectReview = (await axiosAuthenticated.patch(`/projects/${projectReview.value.id}/review`,
                 projectReviewDataToPatch)).data
         }
 
-        if (association) {
+        // Patch association if needed and if the bearer is an association
+        if (projectReview.value.association) {
             let associationDataToPatch = {}
             const keys = ['presidentNames', 'presidentPhone']
-            for (const [key, value] of Object.entries(association)) {
+            for (const [key, value] of Object.entries(projectAssociation)) {
                 if (keys.includes(key) && value !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
                     associationDataToPatch = Object.assign(associationDataToPatch, {[key]: value})
                 }
             }
             // API call
             if (Object.entries(associationDataToPatch).length) {
-                associationStore.association = (await axiosAuthenticated.patch(`/associations/${projectReview.association}`,
+                associationStore.association = (await axiosAuthenticated.patch(`/associations/${projectReview.value.association}`,
                     associationDataToPatch)).data
             }
+        }
+
+        // Patch user if the bearer is an individual and if the address has been modified
+        else {
+            initInfosToPatch(userStore.user)
+            await updateUserInfos(userStore.user, false)
         }
     }
 
@@ -375,6 +463,10 @@ export default function () {
         submitProject,
         reInitSubmitProjectForm,
         patchProjectReview,
-        submitProjectReview
+        submitProjectReview,
+        projectAssociation,
+        initProjectAssociation,
+        projectReview,
+        initProjectReview
     }
 }

@@ -532,6 +532,7 @@
     "consult-on-dashboard": "Vous pouvez dès à présent consulter son avancement sur votre tableau de bord CAPE.",
     "contact-infos": "Informations de contact",
     "description": "Déroulement du projet",
+    "description-hint": "Description des activités réalisées, modifications par rapport au programme initial.",
     "difficulties": "Difficultés rencontrées",
     "document": {
       "bank-account-details": "Relevé d'identité bancaire (RIB)",
@@ -599,6 +600,7 @@
       "processing": "Projet en cours de traitement",
       "rejected": "Projet refusé",
       "review-cancelled": "Projet annulé",
+      "review-draft": "En attente de bilan",
       "review-processing": "Bilan en cours de traitement",
       "review-rejected": "Bilan refusé",
       "validated": "Validé, en attente de commission"
@@ -613,7 +615,7 @@
     "ticket-price": "Montant demandé par participant (billetterie)",
     "validate": "Valider et soumettre le projet",
     "validated-projects": "Projets validés",
-    "verify-contact-infos": "Veuillez vérifier que les infos suivantes sont correctes et modifiez-le si besoin.",
+    "verify-contact-infos": "Veuillez vérifier que les informations suivantes sont correctes et modifiez-les si besoin.",
     "view": "Voir le projet",
     "view-review": "Voir le bilan"
   },

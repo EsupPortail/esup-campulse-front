@@ -64,8 +64,17 @@ onMounted(initSpanClasses)
         ><i class="bi bi-check"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-            props.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
+        v-if="props.projectStatus === 'PROJECT_REVIEW_DRAFT'"
+        :class="spanClasses"
+    >
+        {{ t('project.status.review-draft') }}
+        <span
+            aria-hidden="true"
+            class="form-state-icon form-state-orange"
+        ><i class="bi bi-dash"></i></span>
+    </span>
+    <span
+        v-if="props.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
         :class="spanClasses"
     >
         {{ t('project.status.review-processing') }}
