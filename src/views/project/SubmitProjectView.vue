@@ -168,10 +168,10 @@ watch(() => projectBasicInfos.value.plannedEndDate, () => {
 // CHECKING IF PROJECT AUDIENCE AMOUNT NUMBERS ARE POSSIBLE
 const correctAudienceAmount = ref<boolean>(false)
 watch(() => projectBudget.value.amountStudentsAudience, () => {
-    correctAudienceAmount.value = Number(projectBudget.value.amountStudentsAudience) <= Number(projectBudget.value.amountAllAudience)
+    correctAudienceAmount.value = parseInt(projectBudget.value.amountStudentsAudience as string) <= parseInt(projectBudget.value.amountAllAudience as string)
 })
 watch(() => projectBudget.value.amountAllAudience, () => {
-    correctAudienceAmount.value = Number(projectBudget.value.amountStudentsAudience) <= Number(projectBudget.value.amountAllAudience)
+    correctAudienceAmount.value = parseInt(projectBudget.value.amountStudentsAudience as string) <= parseInt(projectBudget.value.amountAllAudience as string)
 })
 
 // GET DATA FOR STEP 1
@@ -518,7 +518,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     ref="stepper"
                     v-model="step"
                     animated
-                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
@@ -766,7 +765,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
                                 filled
-                                lazy-rules
+                                reactive-rules
                                 type="textarea"
                             />
 
@@ -777,7 +776,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 filled
                                 inputmode="numeric"
-                                lazy-rules
+                                reactive-rules
                                 min="0"
                                 type="number"
                             />
