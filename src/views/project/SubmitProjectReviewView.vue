@@ -15,6 +15,8 @@ import useSubmitProject from '@/composables/useSubmitProject'
 import {ProcessDocument} from '#/documents'
 import FormAssociationOrIndividualProjectInfos from '@/components/form/FormAssociationOrIndividualProjectInfos.vue'
 import useUsers from '@/composables/useUsers'
+import FormProjectDocumentUploads from '@/components/form/FormProjectDocumentUploads.vue'
+import FormProjectRecapDocuments from '@/components/form/FormProjectRecapDocuments.vue'
 
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -31,8 +33,7 @@ const {
     documentUploads,
     initDocumentUploads,
     uploadDocuments,
-    getFile,
-    deleteDocumentUpload
+    getFile
 } = useProjectDocuments()
 const {
     patchProjectReview,
@@ -88,9 +89,6 @@ const checkIfDatesAreLegal = () => {
 watch(() => projectReview.value.realStartDate, checkIfDatesAreLegal)
 watch(() => projectReview.value.realEndDate, checkIfDatesAreLegal)
 
-// CONST
-const MAX_FILES = 10
-const MAX_FILE_SIZE = 8388608
 
 // Get data for info panel (required documents list)
 async function onGetDocumentTypes() {
@@ -187,14 +185,6 @@ async function onGetProjectDocuments() {
     }
 }
 
-// Reject document if too big
-async function onDocumentRejected() {
-    notify({
-        type: 'negative',
-        message: t('notifications.negative.413-error')
-    })
-}
-
 async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
@@ -208,21 +198,6 @@ async function onUploadDocuments(nextStep: number) {
                     message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
                 })
             }
-        }
-    }
-    loading.hide()
-}
-
-async function onDeleteDocumentUpload(documentId: number) {
-    loading.show()
-    try {
-        await deleteDocumentUpload(documentId)
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
         }
     }
     loading.hide()
@@ -527,85 +502,7 @@ async function onSubmitProjectReview() {
                         >
                             <h3 class="title-2">{{ t('project.documents') }}</h3>
 
-                            <section class="flex-section">
-                                <div
-                                    v-for="(document, index) in processDocuments"
-                                    :key="index"
-                                >
-                                    <QFile
-                                        v-model="document.pathFile"
-                                        :accept="document.mimeTypes?.join(', ')"
-                                        :aria-required="document.isRequiredInProcess"
-                                        :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
-                                        :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
-                                        :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
-                                            (1 - documentUploads.filter(obj => obj.document === document.document).length)"
-                                        :max-file-size="MAX_FILE_SIZE"
-                                        :multiple="document.isMultiple"
-                                        :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
-                                        append
-                                        clearable
-                                        filled
-                                        lazy-rules
-                                        use-chips
-                                        counter
-                                        :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
-                                            !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
-                                        @rejected="onDocumentRejected"
-                                    >
-                                        <template v-slot:prepend>
-                                            <QIcon name="mdi-paperclip"/>
-                                        </template>
-                                    </QFile>
-
-                                    <div
-                                        v-if="document.pathTemplate"
-                                        class="info-panel info-panel-warning"
-                                    >
-                                        <i
-                                            aria-hidden="true"
-                                            class="bi bi-exclamation-lg"
-                                        ></i>
-                                        <p>
-                                            {{ t('project.document.use-template') }} <span>
-                                                <a
-                                                    :href="document.pathTemplate"
-                                                    target="_blank"
-                                                >{{ `${t('project.document.download-template')} "${document.description}".` }}</a></span>
-                                        </p>
-                                    </div>
-
-                                    <div class="document-input-group">
-                                        <div class="document-input variant-space-3">
-                                            <div class="document-input-list">
-                                                <div
-                                                    class="document-item"
-                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                                                    :key="uploadedDocument.id"
-                                                >
-                                                    <p @click="onGetFile(uploadedDocument)">
-                                                        <i
-                                                            class="bi bi-file-earmark"
-                                                            aria-hidden="true"
-                                                        ></i>
-                                                        {{ uploadedDocument.name }}
-                                                        <i
-                                                            class="bi bi-eye"
-                                                            aria-hidden="true"
-                                                        ></i>
-                                                    </p>
-                                                    <button
-                                                        type="button"
-                                                        @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
-                                                    >
-                                                        <i class="bi bi-x-lg"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
+                            <FormProjectDocumentUploads/>
 
                             <section class="form-page-navigation">
                                 <QBtn
@@ -843,31 +740,8 @@ async function onSubmitProjectReview() {
                                     ></i>
                                     <p>{{ t('project.document.verify') }}</p>
                                 </div>
-
-                                <section class="flex-section">
-                                    <div
-                                        class="display-row"
-                                        v-for="(document, index) in processDocuments"
-                                        :key="index"
-                                    >
-                                        <p class="row-title">{{ document.description }}</p>
-                                        <p class="paragraph">
-                                            <ul role="list">
-                                                <li
-                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                                                    :key="uploadedDocument.id"
-                                                >
-                                                    <a
-                                                        href=""
-                                                        @click.prevent="onGetFile(uploadedDocument)"
-                                                    >{{ uploadedDocument.name }}</a>
-                                                </li>
-                                            </ul>
-                                        </p>
-                                    </div>
-                                </section>
                             </section>
-
+                            <FormProjectRecapDocuments/>
                             <section class="form-page-navigation">
                                 <QBtn
                                     :label="t('back')"
