@@ -170,7 +170,8 @@ async function onGetAssociationDetail() {
         </section>
 
         <section
-            v-if="association?.address || association?.phone || association?.email || association?.website || (association?.socialNetworks && association?.socialNetworks?.length > 0)"
+            v-if="association?.address || association?.phone || association?.email || association?.website ||
+                (association?.socialNetworks && association?.socialNetworks?.length > 0)"
         >
             <h3><i class="bi bi-telephone"></i>{{ t("association.titles.contact") }}</h3>
 
@@ -180,7 +181,11 @@ async function onGetAssociationDetail() {
                     class="display-row"
                 >
                     <h4>{{ t("association.labels.address") }}</h4>
-                    <p>{{ association?.address }}</p>
+                    <p>
+                        {{ association?.address }}<br/>
+                        {{ association?.zipcode + ' ' + association?.city }}<br/>
+                        {{ association?.country }}
+                    </p>
                 </article>
 
                 <article
@@ -237,16 +242,14 @@ async function onGetAssociationDetail() {
         >
             <QBtn
                 :label="t('association.back-directory')"
-                color="secondary"
+                :to="{name: 'Associations'}"
                 icon="mdi-arrow-left-circle"
-                to="/associations"
             />
             <QBtn
                 v-if="association?.email"
                 :href="`mailto:${association?.email}`"
                 :label="t('association.contact')"
                 :title="`${t('association.contact')} ${association?.name}`"
-                color="primary"
                 icon="mdi-email"
             />
         </div>

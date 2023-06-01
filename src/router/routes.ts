@@ -95,7 +95,6 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'individual',
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-my-projects'),
                             projectBearersOnly: true
                         },
                         children: [
@@ -118,6 +117,15 @@ const routes: RouteRecordRaw[] = [
                             title: i18n.global.t('breadcrumbs.project-recap'),
                             breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
                             projectBearersOnly: true
+                        }
+                    },
+                    {
+                        path: 'project-detail/:projectId',
+                        name: 'ProjectDetail',
+                        component: () => import('@/views/project/ProjectDetailView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-recap')
                         }
                     },
                     {

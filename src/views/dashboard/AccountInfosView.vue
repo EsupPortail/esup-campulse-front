@@ -3,7 +3,7 @@ import FormProfilePasswordEdit from '@/components/form/FormProfilePasswordEdit.v
 import {useI18n} from 'vue-i18n'
 import FormUserInfosEdition from '@/components/form/FormUserInfosEdition.vue'
 import {useUserStore} from '@/stores/useUserStore'
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroups'
 import axios from 'axios'
 import useUsers from '@/composables/useUsers'
@@ -16,7 +16,7 @@ import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const userStore = useUserStore()
-const {isStaff} = useUserGroups()
+const {isStaff, initGroupPermToJoinAssociation, groupCanJoinAssociation} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
 const {notify, loading} = useQuasar()
 const {userAssociationsRegister} = useSecurity()
@@ -32,10 +32,10 @@ const {
 const tab = ref<string>('infos')
 
 async function onUpdateUserInfos() {
+    loading.show()
     try {
-        loading.show()
         initInfosToPatch(userStore.user)
-        if (Object.entries(infosToPatch).length !== 0) {
+        if (Object.entries(infosToPatch).length) {
             await updateUserInfos(userStore.user, false)
             notify({
                 type: 'positive',
@@ -47,7 +47,6 @@ async function onUpdateUserInfos() {
                 message: t('notifications.warning.no-modifications-found')
             })
         }
-        loading.hide()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -56,11 +55,12 @@ async function onUpdateUserInfos() {
             })
         }
     }
+    loading.hide()
 }
 
 async function onUpdateUserAssociations() {
+    loading.show()
     try {
-        loading.show()
         await updateUserAssociations(false)
         await userAssociationsRegister(false, userStore.user?.username)
         newAssociations.value = []
@@ -70,7 +70,6 @@ async function onUpdateUserAssociations() {
             type: 'positive',
             message: t('notifications.positive.associations-successfully-updated')
         })
-        loading.hide()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -79,45 +78,51 @@ async function onUpdateUserAssociations() {
             })
         }
     }
+    loading.hide()
 }
+
+onMounted(() => {
+    const groupArray = userStore.user?.groups.map(group => group.groupId)
+    if (groupArray && groupArray.length) initGroupPermToJoinAssociation(groupArray)
+})
 
 </script>
 
 <template>
     <QTabs
-        v-model="tab"
-        active-color="primary"
-        dense
-        indicator-color="primary"
-        narrow-indicator
+            v-model="tab"
+            active-color="primary"
+            dense
+            indicator-color="primary"
+            narrow-indicator
     >
         <QTab
-            :label="t('dashboard.my-infos')"
-            name="infos"
+                :label="t('dashboard.my-infos')"
+                name="infos"
         />
         <QTab
-            v-if="!isStaff"
-            :label="t('dashboard.my-associations')"
-            name="associations"
+                v-if="!isStaff"
+                :label="t('dashboard.my-associations')"
+                name="associations"
         />
         <QTab
-            v-if="!userStore.user?.isCas"
-            :label="t('dashboard.my-password')"
-            name="password"
+                v-if="!userStore.user?.isCas"
+                :label="t('dashboard.my-password')"
+                name="password"
         />
     </QTabs>
 
     <QTabPanels
-        v-model="tab"
-        animated
+            v-model="tab"
+            animated
     >
         <QTabPanel name="infos">
             <section class="association-cards dashboard-section">
                 <div class="form-title">
                     <h2>
                         <i
-                            aria-hidden="true"
-                            class="bi bi-pencil-square"
+                                aria-hidden="true"
+                                class="bi bi-pencil-square"
                         ></i>
                         {{ t('dashboard.my-infos') }}
                     </h2>
@@ -126,17 +131,18 @@ async function onUpdateUserAssociations() {
                 <div class="form-container">
                     <div class="form">
                         <QForm
-                            class="q-gutter-md"
-                            @submit.prevent="onUpdateUserInfos"
+                                class="q-gutter-md"
+                                @submit.prevent="onUpdateUserInfos"
                         >
                             <FormUserInfosEdition
-                                v-if="userStore.user"
-                                :edited-by-staff="false"
-                                :user="userStore.user"
+                                    v-if="userStore.user"
+                                    :edited-by-staff="false"
+                                    :user="userStore.user"
                             />
                             <QBtn
-                                :label="t('validate-changes')"
-                                type="submit"
+                                    :label="t('validate-changes')"
+                                    icon="bi-check-lg"
+                                    type="submit"
                             />
                         </QForm>
                     </div>
@@ -149,8 +155,8 @@ async function onUpdateUserAssociations() {
                 <div class="form-title">
                     <h2>
                         <i
-                            aria-hidden="true"
-                            class="bi bi-pencil-square"
+                                aria-hidden="true"
+                                class="bi bi-pencil-square"
                         ></i>
                         {{ t('dashboard.association-user.my-associations') }}
                     </h2>
@@ -164,14 +170,14 @@ async function onUpdateUserAssociations() {
             </div>
 
             <section
-                v-if="userAssociations.length < 5"
-                class="dashboard-section"
+                    v-if="userAssociations.length < 5"
+                    class="dashboard-section"
             >
                 <div class="form-title">
                     <h2>
                         <i
-                            aria-hidden="true"
-                            class="bi bi-pencil-square"
+                                aria-hidden="true"
+                                class="bi bi-pencil-square"
                         ></i>
                         {{ t('dashboard.association-user.new-associations') }}
                     </h2>
@@ -180,24 +186,16 @@ async function onUpdateUserAssociations() {
                 <div class="form-container">
                     <div class="form">
                         <QForm
-                            @submit.prevent="onUpdateUserAssociations"
+                                @submit.prevent="onUpdateUserAssociations"
                         >
                             <FormRegisterUserAssociations/>
                             <section class="btn-group">
                                 <QBtn
-                                    :label="t('back')"
-                                    :to="{ name: 'Dashboard' }"
-                                    class="back-btn"
-                                    icon="bi-chevron-compact-left"
+                                        :label="t('back')"
+                                        :to="{ name: 'Dashboard' }"
+                                        class="back-btn"
+                                        icon="bi-chevron-compact-left"
                                 />
-                                <!--
-                                <QBtn v-if="newAssociations.length > 0 && newAssociations[0].id"
-                                     :label="t('association.validate-new-associations')"
-                                     class="validate-button"
-                                     icon-right="bi-check2"
-                                     type="submit"
-                                />
-                                -->
                             </section>
                         </QForm>
                     </div>
@@ -212,7 +210,6 @@ async function onUpdateUserAssociations() {
 </template>
 
 <style lang="scss">
-@import '@/assets/_variables.scss';
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/dashboard.scss';
 </style>

@@ -4,6 +4,10 @@ export interface User {
     id: number,
     username: string,
     email: string,
+    address?: string,
+    zipcode?: string,
+    city?: string,
+    country?: string,
     firstName: string,
     lastName: string,
     phone: string,
@@ -71,10 +75,7 @@ export interface AssociationRole {
     canBePresidentFrom?: string | null,
     canBePresidentTo?: string | null,
     deleteAssociation?: boolean,
-    isValidatedByAdmin?: boolean,
-    /*
-        isVicePresident?: boolean
-    */
+    isValidatedByAdmin?: boolean
 }
 
 interface CasLogin {
@@ -107,16 +108,6 @@ export interface UserAssociation {
     name: string,
     isSite: boolean,
     institution: number
-}
-
-export interface UserAssociationPatch {
-    isPresident?: boolean,
-    canBePresidentFrom?: string | null,
-    canBePresidentTo?: string | null,
-    isVicePresident?: boolean,
-    isSecretary?: boolean,
-    isTreasurer?: boolean
-    isValidatedByAdmin?: boolean
 }
 
 // User group
@@ -167,13 +158,17 @@ export interface UserStore {
 }
 
 export interface UserToUpdate {
-    firstName: string | undefined,
-    lastName: string | undefined,
-    username: string | undefined,
-    email: string | undefined,
+    firstName: string,
+    lastName: string,
+    username: string,
+    email: string,
     newEmail: string,
     newEmailVerification: string,
-    phone: string | undefined
+    phone: string,
+    address?: string,
+    zipcode?: string,
+    city?: string,
+    country?: string,
 }
 
 export type UserNames = { value: number, label: string }[]

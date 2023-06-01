@@ -44,6 +44,9 @@ const association = ref<EditedAssociation>({
     socialObject: '',
     currentProjects: '',
     address: '',
+    zipcode: '',
+    city: '',
+    country: '',
     phone: '',
     email: '',
     siret: '',
@@ -64,6 +67,9 @@ const initValues = () => {
     association.value.socialObject = associationStore.association?.socialObject as string
     association.value.currentProjects = associationStore.association?.currentProjects as string
     association.value.address = associationStore.association?.address as string
+    association.value.zipcode = associationStore.association?.zipcode as string
+    association.value.city = associationStore.association?.city as string
+    association.value.country = associationStore.association?.country as string
     association.value.phone = associationStore.association?.phone as string
     association.value.email = associationStore.association?.email as string
     association.value.siret = associationStore.association?.siret as string
@@ -367,12 +373,36 @@ async function onChangeLogo(action: string) {
             <h3><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h3>
             <section class="form-container">
                 <div class="display-row">
-                    <QInput
-                        v-model="association.address"
-                        :label="t('association.labels.address')"
-                        clearable
-                        filled
-                    />
+                    <fieldset class="address-fields">
+                        <legend>{{ t('association.labels.address') }}</legend>
+                        <QInput
+                            v-model="association.address"
+                            :label="t('association.labels.address')"
+                            clearable
+                            filled
+                        />
+                        <div>
+                            <QInput
+                                v-model="association.zipcode"
+                                :label="t('address.zipcode')"
+                                clearable
+                                filled
+                            />
+                            <QInput
+                                v-model="association.city"
+                                :label="t('address.city')"
+                                clearable
+                                filled
+                            />
+                            <QInput
+                                v-model="association.country"
+                                :label="t('address.country')"
+                                clearable
+                                filled
+                            />
+                        </div>
+                    </fieldset>
+                    <QSeparator/>
                     <QInput
                         v-model="association.phone"
                         :label="t('association.labels.phone')"
@@ -447,4 +477,16 @@ async function onChangeLogo(action: string) {
 <style lang="scss">
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
+</style>
+
+<style lang="sass" scoped>
+.address-fields div
+    display: flex
+    gap: 1rem
+
+    *
+        width: 100%
+
+.q-separator
+    margin: 0.5rem 0 1rem 0
 </style>

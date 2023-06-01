@@ -13,6 +13,9 @@ import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
 import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
+import FormUserAddress from '@/components/form/FormUserAddress.vue'
+import useUsers from '@/composables/useUsers'
+import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
 
 const {t} = useI18n()
 const {
@@ -48,6 +51,7 @@ const {
     deleteDocumentUpload,
     getFile
 } = useProjectDocuments()
+const {initInfosToPatch, updateUserInfos, infosToPatch} = useUsers()
 const {fromDateIsAnterior, CURRENCY, phoneRegex} = useUtility()
 const {
     getCommissions,
@@ -84,8 +88,7 @@ onMounted(async () => {
             associationName.value = association.name
             associationId.value = association.id
             initIsSite()
-        }
-        else await router.push({name: '404'})
+        } else await router.push({name: '404'})
     }
 
     await onGetProjectCategories()
@@ -177,8 +180,7 @@ async function onGetProjectDetail() {
         try {
             await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
             initProjectBasicInfos()
-        }
-        catch (error) {
+        } catch (error) {
             await router.push({name: '404'})
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -230,7 +232,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         document.body.appendChild(link)
         link.click()
         link.remove()
-    }  catch (error) {
+    } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
@@ -320,6 +322,10 @@ async function onSubmitBasicInfos(nextStep: number) {
             await postNewProject(parseInt(route.params.associationId as string))
         } else {
             await patchProjectBasicInfos()
+        }
+        initInfosToPatch(userStore.user)
+        if (Object.entries(infosToPatch).length) {
+            await updateUserInfos(userStore.user, false)
         }
         if (projectStore.project) {
             await updateProjectCategories()
@@ -476,12 +482,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                 <div class="info-panel">
                     <i
                         aria-hidden="true"
-                        class="bi bi-exclamation-lg"
+                        class="bi bi-info"
                     ></i>
                     <p>{{ t('project.form-help') }}</p>
                     <p>
                         {{ t('project.info-panel-status') }}
-                        {{ applicant === 'association' ? t('project.info-panel-status-association') : t('project.info-panel-status-individual') + '.' }}
+                        {{
+                            applicant === 'association' ? t('project.info-panel-status-association') : t('project.info-panel-status-individual') + '.'
+                        }}
                         <span v-if="applicant === 'association'"><strong>{{ associationName }}</strong>.</span>
                     </p>
                     <p>
@@ -496,8 +504,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <span v-if="document.pathTemplate">
                                     <a
                                         :href="document.pathTemplate"
-                                        target="_blank"
                                         :title="t('project.document.download-template')"
+                                        target="_blank"
                                     >{{ document.description }}</a>
                                 </span>
                                 <span v-else>{{ document.description }}</span>
@@ -510,6 +518,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     ref="stepper"
                     v-model="step"
                     animated
+                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
@@ -528,78 +537,46 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :label="t('project.name') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
+                                clearable
                                 filled
                                 lazy-rules
-                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedStartDate"
                                 :label="t('project.planned-start-date') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && datesAreLegal || t('forms.legal-dates')]"
                                 aria-required="true"
+                                clearable
                                 filled
                                 lazy-rules
                                 type="date"
-                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedEndDate"
                                 :label="t('project.planned-end-date') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && datesAreLegal || t('forms.legal-dates')]"
                                 aria-required="true"
+                                clearable
                                 filled
                                 lazy-rules
                                 type="date"
-                                clearable
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedLocation"
                                 :label="t('project.planned-location') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
+                                clearable
                                 filled
                                 lazy-rules
-                                clearable
-                            />
-                            <QInput
-                                v-model="projectBasicInfos.otherFirstName"
-                                :label="t('project.other-first-name')"
-                                filled
-                                lazy-rules
-                                clearable
-                                class="no-rules"
-                            />
-                            <QInput
-                                v-model="projectBasicInfos.otherLastName"
-                                :label="t('project.other-last-name')"
-                                filled
-                                lazy-rules
-                                clearable
-                                class="no-rules"
-                            />
-                            <QInput
-                                v-model="projectBasicInfos.otherEmail"
-                                :label="t('project.other-email')"
-                                filled
-                                lazy-rules
-                                clearable
-                                :rules="projectBasicInfos.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                class="no-rules"
-                            />
-                            <QInput
-                                v-model="projectBasicInfos.otherPhone"
-                                :label="t('project.other-phone')"
-                                filled
-                                lazy-rules
-                                clearable
-                                :rules="projectBasicInfos.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                class="no-rules"
                             />
                             <QSelect
                                 v-model="projectCategories"
+                                :hint="t('forms.multiple-choices-enabled')"
                                 :label="t('project.categories') + ' *'"
                                 :options="projectStore.projectCategoriesLabels"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                clearable
                                 emit-value
                                 filled
                                 lazy-rules
@@ -607,10 +584,55 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 multiple
                                 stack-label
                                 use-chips
-                                :hint="t('forms.multiple-choices-enabled')"
-                                clearable
                             />
-                            <section class="form-page-navigation">
+                            <fieldset v-if="applicant === 'association'">
+                                <legend class="title-3">{{ t('project.bearer-identity') }}</legend>
+                                <QInput
+                                    v-model="projectBasicInfos.otherFirstName"
+                                    :label="t('project.other-first-name')"
+                                    class="no-rules"
+                                    clearable
+                                    filled
+                                    lazy-rules
+                                />
+                                <QInput
+                                    v-model="projectBasicInfos.otherLastName"
+                                    :label="t('project.other-last-name')"
+                                    class="no-rules"
+                                    clearable
+                                    filled
+                                    lazy-rules
+                                />
+                                <QInput
+                                    v-model="projectBasicInfos.otherEmail"
+                                    :label="t('project.other-email')"
+                                    :rules="projectBasicInfos.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
+                                    class="no-rules"
+                                    clearable
+                                    filled
+                                    lazy-rules
+                                />
+                                <QInput
+                                    v-model="projectBasicInfos.otherPhone"
+                                    :label="t('project.other-phone')"
+                                    :rules="projectBasicInfos.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                                    class="no-rules"
+                                    clearable
+                                    filled
+                                    lazy-rules
+                                />
+                            </fieldset>
+                            <fieldset v-else>
+                                <div class="info-panel info-panel-warning">
+                                    <i
+                                        class="bi bi-info"
+                                        aria-hidden="true"
+                                    ></i>
+                                    <p>{{ t('address.verify')}}</p>
+                                </div>
+                                <FormUserAddress :user="userStore.user"/>
+                            </fieldset>
+                            <section class="btn-group">
                                 <QBtn
                                     :label="t('continue')"
                                     icon-right="bi-check2"
@@ -647,7 +669,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 use-chips
                             />
 
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
@@ -691,13 +713,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
                                             v-model="commissionDate.amountAskedPreviousEdition"
-                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
+                                            :label="commissions.find(obj => obj.id === commissionDates
+                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
-                                            filled
-                                            type="number"
-                                            min="0"
                                             :shadow-text="` ${CURRENCY}`"
+                                            filled
                                             inputmode="numeric"
+                                            min="0"
+                                            type="number"
                                         />
                                     </section>
                                 </fieldset>
@@ -709,13 +732,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
                                             v-model="commissionDate.amountEarnedPreviousEdition"
-                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
-                                            filled
-                                            type="number"
-                                            min="0"
+                                            :label="commissions.find(obj => obj.id === commissionDates
+                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                             :shadow-text="` ${CURRENCY}`"
+                                            filled
                                             inputmode="numeric"
+                                            min="0"
+                                            type="number"
                                         />
                                     </section>
                                 </fieldset>
@@ -724,13 +748,13 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     v-model="projectBudget.budgetPreviousEdition"
                                     :label="t('project.budget-previous-edition') + ' *'"
                                     :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     filled
-                                    lazy-rules
-                                    type="number"
-                                    min="0"
                                     inputmode="numeric"
-                                    :shadow-text="` ${CURRENCY}`"
+                                    lazy-rules
+                                    min="0"
+                                    type="number"
                                 />
 
                                 <QSeparator/>
@@ -752,10 +776,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 filled
-                                lazy-rules
-                                type="number"
-                                min="0"
                                 inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
                             />
 
                             <QInput
@@ -764,36 +788,36 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 filled
-                                lazy-rules
-                                type="number"
-                                min="0"
                                 inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
                             />
 
                             <QInput
                                 v-model="projectBudget.ticketPrice"
                                 :label="t('project.ticket-price') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 filled
-                                lazy-rules
-                                type="number"
-                                min="0"
                                 inputmode="numeric"
-                                :shadow-text="` ${CURRENCY}`"
+                                lazy-rules
+                                min="0"
+                                type="number"
                             />
 
                             <QInput
                                 v-model="projectBudget.individualCost"
                                 :label="t('project.individual-cost') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 filled
-                                lazy-rules
-                                type="number"
-                                min="0"
                                 inputmode="numeric"
-                                :shadow-text="` ${CURRENCY}`"
+                                lazy-rules
+                                min="0"
+                                type="number"
                             />
 
                             <QSeparator/>
@@ -806,19 +830,20 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                             v-for="(commissionDate, index) in projectCommissionDates"
                                             :key="index"
                                             v-model="commissionDate.amountAsked"
-                                            :label="commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
-                                            filled
-                                            type="number"
-                                            min="0"
-                                            inputmode="numeric"
+                                            :label="commissions.find(obj => obj.id === commissionDates
+                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
                                             :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                             :shadow-text="` ${CURRENCY}`"
+                                            filled
+                                            inputmode="numeric"
+                                            min="0"
+                                            type="number"
                                         />
                                     </section>
                                 </fieldset>
                             </section>
 
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
@@ -895,7 +920,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 type="textarea"
                             />
 
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
@@ -939,21 +964,21 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         v-model="document.pathFile"
                                         :accept="document.mimeTypes?.join(', ')"
                                         :aria-required="document.isRequiredInProcess"
+                                        :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
+                                            !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
                                         :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
                                         :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
+                                        :max-file-size="MAX_FILE_SIZE"
                                         :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                                             (1 - documentUploads.filter(obj => obj.document === document.document).length)"
-                                        :max-file-size="MAX_FILE_SIZE"
                                         :multiple="document.isMultiple"
                                         :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
                                         append
                                         clearable
+                                        counter
                                         filled
                                         lazy-rules
                                         use-chips
-                                        counter
-                                        :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
-                                            !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
                                         @rejected="onDocumentRejected"
                                     >
                                         <template v-slot:prepend>
@@ -974,7 +999,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                 <a
                                                     :href="document.pathTemplate"
                                                     target="_blank"
-                                                >{{ `${t('project.document.download-template')} "${document.description}".` }}</a></span>
+                                                >{{
+                                                    `${t('project.document.download-template')} "${document.description}".`
+                                                }}</a></span>
                                         </p>
                                     </div>
 
@@ -982,19 +1009,19 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         <div class="document-input variant-space-3">
                                             <div class="document-input-list">
                                                 <div
-                                                    class="document-item"
                                                     v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                                                     :key="uploadedDocument.id"
+                                                    class="document-item"
                                                 >
                                                     <p @click="onGetFile(uploadedDocument.pathFile)">
                                                         <i
-                                                            class="bi bi-file-earmark"
                                                             aria-hidden="true"
+                                                            class="bi bi-file-earmark"
                                                         ></i>
                                                         {{ uploadedDocument.name }}
                                                         <i
-                                                            class="bi bi-eye"
                                                             aria-hidden="true"
+                                                            class="bi bi-eye"
                                                         ></i>
                                                     </p>
                                                     <button
@@ -1010,7 +1037,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 </div>
                             </section>
 
-                            <section class="form-page-navigation">
+                            <section class="btn-group">
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
@@ -1032,290 +1059,12 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         :title="t('recap')"
                         icon="mdi-check"
                     >
-                        <QForm
-                            @submit.prevent="onSubmitProject"
-                        >
-                            <h3 class="title-2">{{ t('recap') }}</h3>
-
-                            <section class="recap-sections">
-                                <!-- BASIC INFOS -->
-                                <section class="recap-section">
-                                    <div class="recap-section-title">
-                                        <h4 class="title-3">{{ t('project.general-infos') }}</h4>
-                                        <QBtn
-                                            :label="t('modify')"
-                                            icon="bi-pencil"
-                                            @click="() => step = 1"
-                                        />
-                                    </div>
-
-                                    <section class="flex-section">
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.name') }}</p>
-                                            <p>{{ projectBasicInfos.name }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.planned-start-date') }}</p>
-                                            <p>
-                                                {{
-                                                    projectBasicInfos.plannedStartDate.split('-').reverse().join('/')
-                                                }}
-                                            </p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.planned-end-date') }}</p>
-                                            <p>{{ projectBasicInfos.plannedEndDate.split('-').reverse().join('/') }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.plannedLocation') }}</p>
-                                            <p>{{ projectBasicInfos.plannedLocation }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.other-first-name') }}</p>
-                                            <p>{{ projectBasicInfos.otherFirstName }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.other-last-name') }}</p>
-                                            <p>{{ projectBasicInfos.otherLastName }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.other-email') }}</p>
-                                            <p>{{ projectBasicInfos.otherEmail }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.other-phone') }}</p>
-                                            <p>{{ projectBasicInfos.otherPhone }}</p>
-                                        </div>
-                                    </section>
-                                </section>
-
-                                <!-- COMMISSION CHOICE -->
-                                <section class="recap-section">
-                                    <div class="recap-section-title">
-                                        <h4 class="title-3">{{ t('project.commission-choice') }}</h4>
-                                        <QBtn
-                                            :label="t('modify')"
-                                            icon="bi-pencil"
-                                            @click="() => step = 2"
-                                        />
-                                    </div>
-
-                                    <section class="recap-chips">
-                                        <QChip
-                                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                                            :key="index"
-                                        >
-                                            {{
-                                                commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate)?.label
-                                            }}
-                                        </QChip>
-                                    </section>
-                                </section>
-
-                                <!-- BUDGET -->
-                                <section class="recap-section">
-                                    <div class="recap-section-title">
-                                        <h4 class="title-3">{{ t('project.budget') }}</h4>
-                                        <QBtn
-                                            :label="t('modify')"
-                                            icon="bi-pencil"
-                                            @click="() => step = 3"
-                                        />
-                                    </div>
-
-                                    <section class="flex-section">
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.re-edition') }}</p>
-                                            <p>
-                                                {{
-                                                    projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false) ? t('yes') : t('no')
-                                                }}
-                                            </p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-audience') }}</p>
-                                            <p>{{ projectBudget.targetAudience }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-students-amount') }}</p>
-                                            <p>{{ projectBudget.amountStudentsAudience }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.target-all-amount') }}</p>
-                                            <p>{{ projectBudget.amountAllAudience }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.ticket-price') }}</p>
-                                            <p>{{ projectBudget.ticketPrice + CURRENCY }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.individual-cost') }}</p>
-                                            <p>{{ projectBudget.individualCost + CURRENCY }}</p>
-                                        </div>
-
-                                        <div
-                                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                                            :key="index"
-                                            class="display-row"
-                                        >
-                                            <p class="row-title">
-                                                {{
-                                                    `${t('project.amount-asked')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym})`
-                                                }}
-                                            </p>
-                                            <p>{{ commissionDate.amountAsked + CURRENCY }}</p>
-                                        </div>
-
-                                        <section
-                                            v-if="projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)"
-                                            class="flex-section"
-                                        >
-                                            <h5 class="title-4">{{ t('project.previous-edition') }}</h5>
-
-                                            <div
-                                                v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                                                :key="index"
-                                                class="display-row"
-                                            >
-                                                <p class="row-title">
-                                                    {{
-                                                        `${t('project.previous-asked')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
-                                                    }}
-                                                </p>
-                                                <p>{{ commissionDate.amountAskedPreviousEdition + CURRENCY }}</p>
-                                            </div>
-
-                                            <div
-                                                v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                                                :key="index"
-                                                class="display-row"
-                                            >
-                                                <p class="row-title">
-                                                    {{
-                                                        `${t('project.previous-earned')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
-                                                    }}
-                                                </p>
-                                                <p>{{ commissionDate.amountEarnedPreviousEdition + CURRENCY }}</p>
-                                            </div>
-
-                                            <div class="display-row">
-                                                <p class="row-title">{{ t('project.budget-previous-edition') }}</p>
-                                                <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
-                                            </div>
-                                        </section>
-                                    </section>
-                                </section>
-
-                                <!-- GOALS -->
-                                <section class="recap-section">
-                                    <div class="recap-section-title">
-                                        <h4 class="title-3">{{ t('project.goals') }}</h4>
-                                        <QBtn
-                                            :label="t('modify')"
-                                            icon="bi-pencil"
-                                            @click="() => step = 4"
-                                        />
-                                    </div>
-
-                                    <section class="flex-section">
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.goals-title') }}</p>
-                                            <p>{{ projectGoals.goals }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.summary') }}</p>
-                                            <p>{{ projectGoals.summary }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.planned-activities') }}</p>
-                                            <p>{{ projectGoals.plannedActivities }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.prevention-safety') }}</p>
-                                            <p>{{ projectGoals.preventionSafety }}</p>
-                                        </div>
-
-                                        <div class="display-row">
-                                            <p class="row-title">{{ t('project.marketing-campaign') }}</p>
-                                            <p>{{ projectGoals.marketingCampaign }}</p>
-                                        </div>
-                                    </section>
-                                </section>
-
-                                <!-- DOCUMENTS -->
-                                <section class="recap-section">
-                                    <div class="recap-section-title">
-                                        <h4 class="title-3">{{ t('project.documents') }}</h4>
-                                        <QBtn
-                                            :label="t('modify')"
-                                            icon="bi-pencil"
-                                            @click="() => step = 5"
-                                        />
-                                    </div>
-
-                                    <div class="info-panel info-panel-warning">
-                                        <i
-                                            class="bi bi-exclamation-lg"
-                                            aria-hidden="true"
-                                        ></i>
-                                        <p>{{ t('project.document.verify') }}</p>
-                                    </div>
-
-                                    <section class="flex-section">
-                                        <div
-                                            class="display-row"
-                                            v-for="(document, index) in processDocuments"
-                                            :key="index"
-                                        >
-                                            <p class="row-title">{{ document.description }}</p>
-                                            <p class="paragraph">
-                                                <ul role="list">
-                                                    <li
-                                                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                                                        :key="uploadedDocument.id"
-                                                        @click="onGetFile(uploadedDocument)"
-                                                    >
-                                                        {{ uploadedDocument.name }}
-                                                    </li>
-                                                </ul>
-                                            </p>
-                                        </div>
-                                    </section>
-                                </section>
-                            </section>
-
-
-                            <section class="form-page-navigation">
-                                <QBtn
-                                    :label="t('back')"
-                                    icon="bi-chevron-left"
-                                    @click="step = 5"
-                                />
-                                <QBtn
-                                    :label="t('project.validate')"
-                                    icon-right="bi-check2"
-                                    type="submit"
-                                />
-                            </section>
-                        </QForm>
+                        <FormProjectRecap
+                            @submit-project="onSubmitProject"
+                            @change-step="newStep => step = newStep"
+                            @get-file="uploadDocument => onGetFile(uploadDocument)"
+                            view="submitProject"
+                        />
                     </QStep>
                 </QStepper>
             </div>
@@ -1330,51 +1079,12 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 <style lang="sass" scoped>
 @import '@/assets/_variables.scss'
 
-.project-re-edition
-    margin-top: 1rem
+.q-input, .q-select
+  padding: 1rem
 
-.previous-budget, .asked-budget, .previous-budget-section, .asked-budget-section
-    display: flex
-    flex-direction: column
-    gap: 1rem
-
-.q-checkbox
-    margin: 0 0 1rem 0
-
-section > .q-separator
-    margin: 0 0 2rem 0
-
-.q-separator
-    margin: 1rem 0 2rem 0
-
-h3
-    margin-bottom: 1rem
-
-.flex-section
-    display: flex
-    flex-direction: column
-    gap: 1.5rem
-
-h5
-    margin: 1.5rem 0 0.5rem 0
-
-.recap-section
-    margin-bottom: 2rem
-
-.recap-section-title
-    display: flex
-    align-items: center
-    justify-content: space-between
-
-    h4
-        margin: 2rem 0 1rem 0
-
-.flex-section .document-input
-    margin-bottom: 0
-
-.no-rules
-    margin-bottom: 1rem
-
-.form-page-navigation
-    margin-top: 1rem
+.display-row
+    width: 100%
+    margin: 0 1rem
 </style>
+
+

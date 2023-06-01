@@ -80,7 +80,7 @@ export default function () {
 
     const initUserCommissions = () => {
         userCommissions.value = []
-        userManagerStore.user?.groups.forEach((group) => {
+        userManagerStore.user?.groups?.forEach((group) => {
             if (group.commissionId) userCommissions.value.push(group.commissionId)
         })
     }

@@ -219,6 +219,15 @@
               color: $annuaireColorText;
               top: $iconHomeCardTopMobilePosition;
               left: $iconHomeCardLeftMobilePosition;
+
+              ::before {
+                display: inline-block;
+                font-style: normal;
+                font-weight: normal;
+                font-variant: normal;
+                line-height: 0;
+                vertical-align: -0.125rem;
+              }
             }
           }
         }
@@ -357,7 +366,6 @@
             i {
               background-color: $charteColor;
               color: $charteColorText;
-
             }
 
           }

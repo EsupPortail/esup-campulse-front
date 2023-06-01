@@ -102,7 +102,6 @@ const columns: QTableProps['columns'] = [
         <div class="form-container">
             <div class="form">
                 <FormUserSearch
-                    :users="users"
                     @advanced-search="(result) => users = result"
                     @get-users="onGetUsers"
                 />
