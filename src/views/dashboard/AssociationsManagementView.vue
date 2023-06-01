@@ -235,5 +235,4 @@ const columns: QTableProps['columns'] = [
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
-@import '@/assets/_variables';
 </style>

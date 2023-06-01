@@ -31,9 +31,9 @@
     justify-content: center;
 
     .form {
-      display: block;
+      /*display: block;
       margin: auto;
-      width: 90%;
+      width: 90%;*/
     }
   }
 }
@@ -360,7 +360,8 @@ label.custom-label {
   }
 
   &.small-button {
-    padding: .375rem 1.875rem;
+    padding: .375rem;
+    margin: 0 0 0 0.5rem;
     font-size: 1rem;
 
     i {
@@ -530,7 +531,7 @@ label.custom-label {
 }
 
 .btn-group {
-  width: 80%;
+  width: 90%;
   margin: 1rem auto;
   display: flex;
   flex-direction: column;
@@ -1310,6 +1311,16 @@ fieldset {
 
   .form-state-grey {
     background-color: $stateColor4;
+  }
+}
+
+.password-rules {
+  ul {
+    width: 10px;
+  }
+
+  li {
+    list-style: none;
   }
 }
 

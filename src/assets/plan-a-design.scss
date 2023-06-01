@@ -235,14 +235,14 @@ body {
       display: block;
 
       .intro-image {
-        width: 100%;
+        width: $fullSize;
         flex: unset;
         margin-bottom: 0.938rem;
         height: 9.375rem;
         overflow: hidden;
 
         img {
-          width: 100%;
+          width: $fullSize;
           position: relative;
           top: -30%;
         }
@@ -279,27 +279,22 @@ body {
 
 .title-1 {
   font-size: 2.25rem;
-  //margin-bottom: 0.9rem;
 }
 
 .title-2 {
   font-size: 1.75rem;
-  //margin-bottom: 0.7rem;
 }
 
 .title-3 {
   font-size: 1.5rem;
-  //margin-bottom: 0.5rem;
 }
 
 .title-4 {
   font-size: 1.2rem;
-  //margin-bottom: 0.25rem;
 }
 
 .title-5 {
   font-size: 1rem;
-  //margin-bottom: 0.18rem;
 }
 
 // Paragraphs
