@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUsers'
-import {User} from '#/user'
+import type {User} from '#/user'
 import {onMounted, toRefs} from 'vue'
 
 const {t} = useI18n()

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
-import {ProcessDocument} from '#/documents'
+import type {ProcessDocument} from '#/documents'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
