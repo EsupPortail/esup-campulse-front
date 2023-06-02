@@ -52,11 +52,11 @@
     }
   }
 
-  .form {
+  /*.form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
+  }*/
 
   @media screen and (min-width: $responsiveWidth) {
     display: flex;
