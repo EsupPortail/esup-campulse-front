@@ -38,8 +38,8 @@ onMounted(async () => {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        :label="t('dashboard.account-infos')"
-                        :to="{name: 'ManageAccount'}"
+                            :label="t('dashboard.account-infos')"
+                            :to="{name: 'ManageAccount'}"
                     />
                 </div>
             </div>
@@ -48,8 +48,8 @@ onMounted(async () => {
 
     <!-- My associations, for association members only -->
     <section
-        v-if="associationCounter > 0"
-        class="dashboard-section"
+            v-if="associationCounter > 0"
+            class="dashboard-section"
     >
         <h2>
             <QIcon name="mdi-card-account-details-outline"/>
@@ -59,13 +59,13 @@ onMounted(async () => {
             <div class="form">
                 <div class="button-group">
                     <div
-                        v-for="association in userStore.userAssociations"
-                        :key="association.association.id"
+                            v-for="association in userStore.userAssociations"
+                            :key="association.association.id"
                     >
                         <QBtn
-                            v-if="association.isValidatedByAdmin"
-                            :label="t('manage') + ' ' + association.association.name"
-                            :to="{name: 'AssociationDashboard', params: {id: association.association.id}}"
+                                v-if="association.isValidatedByAdmin"
+                                :label="t('manage') + ' ' + association.association.name"
+                                :to="{name: 'AssociationDashboard', params: {id: association.association.id}}"
                         />
                     </div>
                 </div>
@@ -75,10 +75,10 @@ onMounted(async () => {
 
     <!-- Association management, for staff only -->
     <section
-        v-if="isStaff &&
+            v-if="isStaff &&
             (hasPerm('change_association') ||
                 hasPerm('add_association'))"
-        class="dashboard-section"
+            class="dashboard-section"
     >
         <h2>
             <QIcon name="mdi-format-list-bulleted-square"/>
@@ -88,14 +88,14 @@ onMounted(async () => {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        v-if="hasPerm('add_association')"
-                        :label="t('dashboard.create-association')"
-                        :to="{name: 'CreateAssociation'}"
+                            v-if="hasPerm('add_association')"
+                            :label="t('dashboard.create-association')"
+                            :to="{name: 'CreateAssociation'}"
                     />
                     <QBtn
-                        v-if="hasPerm('change_association')"
-                        :label="t('dashboard.edit-or-delete-association')"
-                        :to="{name: 'ManageAssociations'}"
+                            v-if="hasPerm('change_association')"
+                            :label="t('dashboard.edit-or-delete-association')"
+                            :to="{name: 'ManageAssociations'}"
                     />
                 </div>
             </div>
@@ -104,8 +104,8 @@ onMounted(async () => {
 
     <!-- Template document library management -->
     <section
-        v-if="isStaff && (hasPerm('add_document'))"
-        class="dashboard-section"
+            v-if="isStaff && (hasPerm('add_document'))"
+            class="dashboard-section"
     >
         <h2>
             <QIcon name="mdi-file-multiple-outline"/>
@@ -115,9 +115,9 @@ onMounted(async () => {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        v-if="hasPerm('add_document')"
-                        :label="t('dashboard.manage-template-documents')"
-                        :to="{name: 'ManageDocumentsLibrary'}"
+                            v-if="hasPerm('add_document')"
+                            :label="t('dashboard.manage-template-documents')"
+                            :to="{name: 'ManageDocumentsLibrary'}"
                     />
                 </div>
             </div>
@@ -126,8 +126,8 @@ onMounted(async () => {
 
     <!-- Commission management, for staff only -->
     <section
-        v-if="isStaff && (hasPerm('view_project'))"
-        class="dashboard-section"
+            v-if="isStaff && (hasPerm('view_project'))"
+            class="dashboard-section"
     >
         <h2>
             <QIcon name="mdi-folder-edit-outline"/>
@@ -137,8 +137,8 @@ onMounted(async () => {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        :label="t('dashboard.manage-projects')"
-                        :to="{name: 'Commission'}"
+                            :label="t('dashboard.manage-projects')"
+                            :to="{name: 'Commission'}"
                     />
                 </div>
             </div>
@@ -147,9 +147,9 @@ onMounted(async () => {
 
     <!-- User management, for staff only -->
     <section
-        v-if="isStaff && (hasPerm('change_user') ||
+            v-if="isStaff && (hasPerm('change_user') ||
             hasPerm('add_user'))"
-        class="dashboard-section"
+            class="dashboard-section"
     >
         <h2>
             <QIcon name="mdi-account-group"/>
@@ -159,24 +159,24 @@ onMounted(async () => {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        v-if="hasPerm('change_user')"
-                        :label="t('dashboard.user-validation')"
-                        :to="{name: 'ValidateUsers'}"
+                            v-if="hasPerm('change_user')"
+                            :label="t('dashboard.user-validation')"
+                            :to="{name: 'ValidateUsers'}"
                     />
                     <QBtn
-                        v-if="hasPerm('change_associationuser')"
-                        :label="t('user-manager.association-validation')"
-                        :to="{name: 'ValidateAssociationUsers'}"
+                            v-if="hasPerm('change_associationuser')"
+                            :label="t('user-manager.association-validation')"
+                            :to="{name: 'ValidateAssociationUsers'}"
                     />
                     <QBtn
-                        v-if="hasPerm('change_user')"
-                        :label="t('dashboard.user-management')"
-                        :to="{name: 'ManageUsers'}"
+                            v-if="hasPerm('change_user')"
+                            :label="t('dashboard.user-management')"
+                            :to="{name: 'ManageUsers'}"
                     />
                     <QBtn
-                        v-if="hasPerm('add_user')"
-                        :label="t('dashboard.create-user')"
-                        :to="{name: 'AddUser'}"
+                            v-if="hasPerm('add_user')"
+                            :label="t('dashboard.create-user')"
+                            :to="{name: 'AddUser'}"
                     />
                 </div>
             </div>
@@ -185,8 +185,8 @@ onMounted(async () => {
 
     <!-- My documents, for misc students only -->
     <section
-        v-if="!isStaff && hasPerm('add_project_user')"
-        class="dashboard-section"
+            v-if="!isStaff && hasPerm('add_project_user')"
+            class="dashboard-section"
     >
         <h2>
             <QIcon name="mdi-pencil-box-outline"/>
@@ -289,7 +289,7 @@ onMounted(async () => {
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 </style>
