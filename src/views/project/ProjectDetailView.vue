@@ -93,6 +93,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
             Commentaires
         </h2>
         <ProjectCommentForm/>
+
+        Commentaire
     </section>
 </template>
 
