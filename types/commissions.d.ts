@@ -1,4 +1,4 @@
-export interface Commission {
+export interface CommissionFund {
     id: number,
     name: string,
     acronym: string,

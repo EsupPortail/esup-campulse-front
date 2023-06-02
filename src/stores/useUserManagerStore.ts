@@ -24,11 +24,10 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         userGroups: (state: UserManagerStore): number[] => {
             return [...new Set(state.user?.groups?.map<number>(group => group.groupId))]
         },
-        // To test
-        userCommissions: (state: UserManagerStore): number[] => {
+        userCommissionFunds: (state: UserManagerStore): number[] => {
             const temp: number[] = []
             state.user?.groups?.forEach((group) => {
-                if (group.commissionId) temp.push(group.commissionId)
+                if (group.fundId) temp.push(group.fundId)
             })
             return temp
         }
@@ -115,14 +114,15 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async deleteUserGroups(groupsToDelete: number[], commissionsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
             const {commissionGroup} = useUserGroups()
-            const {userCommissions} = useCommissions()
+            const {userCommissionFunds} = useCommissions()
             if (groupsToDelete.length) {
                 for (let i = 0; i < groupsToDelete.length; i++) {
                     if (groupsToDelete[i] !== commissionGroup.value?.id) {
                         await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${groupsToDelete[i]}`)
                     } else {
-                        for (let i = 0; i < userCommissions.value.length; i++) {
-                            await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${commissionGroup.value?.id}/commissions/${userCommissions.value[i]}`)
+                        for (let i = 0; i < userCommissionFunds.value.length; i++) {
+                            const url = `/users/${this.user?.id}/groups/${commissionGroup.value?.id}/commissions/${userCommissionFunds.value[i]}`
+                            await axiosAuthenticated.delete(url)
                         }
                     }
                 }

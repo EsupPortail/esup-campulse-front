@@ -23,11 +23,11 @@ export const useUserStore = defineStore('userStore', {
             })
             return institutionsArray
         },
-        userCommissions: (state: UserStore): (number | null | undefined)[] | undefined => {
+        userCommissionFunds: (state: UserStore): (number | null | undefined)[] | undefined => {
             const commissionsArray: number[] = []
             state.user?.groups?.forEach((group) => {
-                if (group.commissionId) {
-                    commissionsArray.push(group.commissionId)
+                if (group.fundId) {
+                    commissionsArray.push(group.fundId)
                 }
             })
             return commissionsArray

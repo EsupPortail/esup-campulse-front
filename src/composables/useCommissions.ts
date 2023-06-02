@@ -1,19 +1,19 @@
 import {ref, watch} from 'vue'
-import type {Commission, SelectCommissionDateLabel} from '#/commissions'
+import type {CommissionFund, SelectCommissionDateLabel} from '#/commissions'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {CommissionDate} from '#/project'
 import type {AxiosInstance} from 'axios'
 
-// Used to store commissions from /commissions/
-const commissions = ref<Commission[]>([])
+// Used to store commissionFunds from /commissions/funds/
+const commissionFunds = ref<CommissionFund[]>([])
 
-// Used to create labels to register user commissions
-const commissionOptions = ref<SelectLabel[]>([])
+// Used to create labels to register user commissionsFunds
+const commissionFundsLabels = ref<SelectLabel[]>([])
 
-// Used to store the commissions of the user
-const userCommissions = ref<number[]>([])
+// Used to store the commissionFunds of a user
+const userCommissionFunds = ref<number[]>([])
 
 // Used to store commission dates
 const commissionDates = ref<CommissionDate[]>([])
@@ -28,8 +28,8 @@ export default function () {
 
     // GET COMMISSION INFOS
     async function getCommissions() {
-        if (commissions.value.length === 0) {
-            commissions.value = (await axiosPublic.get<Commission[]>('/commissions/')).data
+        if (commissionFunds.value.length === 0) {
+            commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/funds/')).data
         }
     }
 
@@ -66,38 +66,38 @@ export default function () {
         await axiosAuthenticated.delete(`/commissions/commission_dates/${id}`)
     }
 
-    // INIT COMMISSION DATA
-    const initCommissionLabels = () => {
-        commissionOptions.value = []
-        commissions.value.forEach(function (commission) {
-            commissionOptions.value.push({
+    // INIT COMMISSION FUNDS DATA
+    const initCommissionFundsLabels = () => {
+        commissionFundsLabels.value = []
+        commissionFunds.value.forEach(function (commission) {
+            commissionFundsLabels.value.push({
                 value: commission.id,
                 label: commission.acronym
             })
         })
     }
-    watch(() => commissions.value.length, initCommissionLabels)
+    watch(() => commissionFunds.value.length, initCommissionFundsLabels)
 
-    const initUserCommissions = () => {
-        userCommissions.value = []
+    const initManagedUserCommissionFunds = () => {
+        userCommissionFunds.value = []
         userManagerStore.user?.groups?.forEach((group) => {
-            if (group.commissionId) userCommissions.value.push(group.commissionId)
+            if (group.fundId) userCommissionFunds.value.push(group.fundId)
         })
     }
-    watch(() => userManagerStore.user, initUserCommissions)
+    watch(() => userManagerStore.user, initManagedUserCommissionFunds)
 
     const initCommissionDatesLabels = (isSite: boolean | undefined) => {
         commissionDatesLabels.value = []
         commissionDates.value.forEach((commissionDate) => {
-            const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
-            if (commission) {
+            const fund = commissionFunds.value.find(obj => obj.id === commissionDate.commission)
+            if (fund) {
                 // 1st option : We simply initialize commissionDates based on isSite param
                 // 2nd option : We initialize labels based on what we got from GET request
-                if (isSite || (isSite === false && !commission.isSite) || isSite === undefined) {
+                if (isSite || (isSite === false && !fund.isSite) || isSite === undefined) {
                     commissionDatesLabels.value.push({
                         value: commissionDate.id,
-                        label: `${commission.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
-                        commission: commission.id as number
+                        label: `${fund.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
+                        commission: fund.id as number
                     })
                 }
             }
@@ -106,10 +106,10 @@ export default function () {
 
     return {
         getCommissions,
-        commissions,
-        commissionOptions,
-        userCommissions,
-        initUserCommissions,
+        commissionFunds,
+        commissionFundsLabels,
+        userCommissionFunds,
+        initManagedUserCommissionFunds,
         commissionDates,
         getCommissionDates,
         commissionDatesLabels,

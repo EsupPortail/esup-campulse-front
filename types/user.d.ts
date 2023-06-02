@@ -116,7 +116,7 @@ export interface UserGroup {
     userId: number,
     groupId: number
     institutionId?: number | null,
-    commissionId?: number | null
+    fundId?: number | null
 }
 
 export interface UserGroupRegister {

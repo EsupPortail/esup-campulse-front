@@ -133,7 +133,7 @@ export default function () {
     async function userGroupsRegister(publicRequest: boolean) {
         const groupsToRegister: UserGroupRegister[] = []
         const {newGroups, commissionGroup} = useUserGroups()
-        const {userCommissions} = useCommissions()
+        const {userCommissionFunds} = useCommissions()
         const {axiosPublic, axiosAuthenticated} = useAxios()
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
@@ -141,7 +141,7 @@ export default function () {
             newGroups.value.forEach(function (group) {
                 // Register commission groups
                 if (group === commissionGroup.value?.id) {
-                    userCommissions.value.forEach(function (commission) {
+                    userCommissionFunds.value.forEach(function (commission) {
                         groupsToRegister.push({
                             username: newUser.username,
                             group,
@@ -163,7 +163,7 @@ export default function () {
             for (let i = 0; i < groupsToRegister.length; i++) {
                 await instance.post('/users/groups/', groupsToRegister[i])
             }
-            userCommissions.value = []
+            userCommissionFunds.value = []
         }
     }
 
