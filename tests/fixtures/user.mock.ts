@@ -29,19 +29,19 @@ export const _userGroups: UserGroup[] = [
         userId: 1,
         groupId: 1,
         institutionId: 1,
-        commissionId: null
+        fundId: null
     },
     {
         userId: 1,
         groupId: 2,
         institutionId: 2,
-        commissionId: null
+        fundId: null
     },
     {
         userId: 1,
         groupId: 3,
         institutionId: 3,
-        commissionId: null
+        fundId: null
     },
     // Student
     {
@@ -52,7 +52,7 @@ export const _userGroups: UserGroup[] = [
     {
         userId: 3,
         groupId: 4,
-        commissionId: 1
+        fundId: 1
     }
 ]
 

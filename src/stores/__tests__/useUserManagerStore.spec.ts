@@ -3,10 +3,10 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {_commission, _institutionManager, _institutionStudent, _users, _usersNames} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {useUserStore} from '../useUserStore'
-import {useAxios} from '../../composables/useAxios'
-import useUserGroups from '../../composables/useUserGroups'
-import {_groups} from '../../../tests/fixtures/group.mock'
+import {useUserStore} from '@/stores/useUserStore'
+import {useAxios} from '@/composables/useAxios'
+import useUserGroups from '@/composables/useUserGroups'
+import {_groups} from '~/fixtures/group.mock'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -49,7 +49,7 @@ describe('User manager store', () => {
     describe('userCommissions', () => {
         it('should return an array of commission IDs if the user is a commission member', () => {
             userManagerStore.user = _commission
-            expect(userManagerStore.userCommissions).toEqual([1])
+            expect(userManagerStore.userCommissionFunds).toEqual([1])
         })
     })
     describe('getUsers', () => {
@@ -182,7 +182,7 @@ describe('User manager store', () => {
             it('should delete groups on /users/userId/groups/groupId', async () => {
                 await userManagerStore.deleteUserGroups([4], [])
                 expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(1)
-                const url = `/users/${userManagerStore.user?.id}/groups/4/commissions/${userManagerStore.userCommissions[0]}`
+                const url = `/users/${userManagerStore.user?.id}/groups/4/commissions/${userManagerStore.userCommissionFunds[0]}`
                 expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
             })
         })

@@ -23,8 +23,12 @@ const {
 } = useUserGroups()
 const {notify, loading} = useQuasar()
 const route = useRoute()
-const {getCommissions, commissionOptions, userCommissions} = useCommissions()
-const {initUserCommissions} = useCommissions()
+const {
+    getCommissionFunds,
+    commissionFundsLabels,
+    userCommissionFunds,
+    initManagedUserCommissionFunds
+} = useCommissions()
 const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
@@ -33,7 +37,7 @@ onMounted(async () => {
     onInitGroupLabels()
     await onGetCommissions()
     initCommissionMemberSelection()
-    initUserCommissions()
+    initManagedUserCommissionFunds()
     loading.hide()
 })
 
@@ -57,7 +61,7 @@ async function onGetGroups() {
 
 async function onGetCommissions() {
     try {
-        await getCommissions()
+        await getCommissionFunds()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -107,9 +111,9 @@ function onInitGroupLabels() {
         </QField>
         <QSelect
             v-if="commissionMemberIsSelected"
-            v-model="userCommissions"
+            v-model="userCommissionFunds"
             :label="t('commissions')"
-            :options="commissionOptions"
+            :options="commissionFundsLabels"
             :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
             emit-value
             filled

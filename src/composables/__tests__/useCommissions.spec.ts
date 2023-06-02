@@ -6,7 +6,7 @@ import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import {useAxios} from '@/composables/useAxios'
-import {_commissionDates, _commissions} from '~/fixtures/commissions.mock'
+import {_commissionDates, _commissionFunds} from '~/fixtures/commissions.mock'
 import type {SelectCommissionDateLabel} from '#/commissions'
 import {_generalManager} from '~/fixtures/user.mock'
 
@@ -34,14 +34,14 @@ describe('useCommissions', () => {
 
     afterEach(() => {
         vi.restoreAllMocks()
-        commissions.value = []
+        commissionFunds.value = []
         commissionDates.value = []
         commissionDatesLabels.value = []
     })
 
     const {
-        getCommissions,
-        commissions,
+        getCommissionFunds,
+        commissionFunds,
         getCommissionDates,
         commissionDates,
         initCommissionDatesLabels,
@@ -50,13 +50,13 @@ describe('useCommissions', () => {
     const {axiosPublic} = useAxios()
     const mockedPublicAxios = vi.mocked(axiosPublic, true)
 
-    describe('getCommissions', () => {
+    describe('getCommissionFunds', () => {
         it('should call API (get) and store data in ref commissions', async () => {
-            mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
-            await getCommissions()
+            mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionFunds})
+            await getCommissionFunds()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
-            expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/')
-            expect(commissions.value).toEqual(_commissions)
+            expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/funds/')
+            expect(commissionFunds.value).toEqual(_commissionFunds)
         })
     })
 
@@ -99,12 +99,12 @@ describe('useCommissions', () => {
 
     describe('initCommissionDatesLabels', () => {
         beforeEach(() => {
-            commissions.value = _commissions
+            commissionFunds.value = _commissionFunds
             commissionDates.value = _commissionDates
         })
 
         afterEach(() => {
-            commissions.value = []
+            commissionFunds.value = []
             commissionDates.value = []
         })
 
@@ -113,7 +113,7 @@ describe('useCommissions', () => {
                 initCommissionDatesLabels(true)
                 const _test: SelectCommissionDateLabel[] = []
                 commissionDates.value.forEach((commissionDate) => {
-                    const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
+                    const commission = commissionFunds.value.find(obj => obj.id === commissionDate.commission)
                     if (commission) {
                         _test.push({
                             value: commissionDate.id,
@@ -131,7 +131,7 @@ describe('useCommissions', () => {
                 initCommissionDatesLabels(false)
                 const _test: SelectCommissionDateLabel[] = []
                 commissionDates.value.forEach((commissionDate) => {
-                    const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
+                    const commission = commissionFunds.value.find(obj => obj.id === commissionDate.commission)
                     if (commission && !commission.isSite) {
                         _test.push({
                             value: commissionDate.id,
@@ -150,7 +150,7 @@ describe('useCommissions', () => {
                 initCommissionDatesLabels(undefined)
                 const _test: SelectCommissionDateLabel[] = []
                 commissionDates.value.forEach((commissionDate) => {
-                    const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
+                    const commission = commissionFunds.value.find(obj => obj.id === commissionDate.commission)
                     _test.push({
                         value: commissionDate.id,
                         label: `${commission?.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,

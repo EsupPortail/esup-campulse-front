@@ -65,7 +65,10 @@ async function onGetUserAssociations() {
                     </li>
                     <li>
                         {{ t('dashboard.association-user.presidency-status') }} : <span>{{
-                            (association.role === 'isPresident' || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <= today)) ? t('yes') : t('no')
+                            (association.role === 'isPresident'
+                                || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null
+                                    && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo
+                                    && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <= today)) ? t('yes') : t('no')
                         }}</span>
                     </li>
                     <li>

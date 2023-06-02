@@ -4,7 +4,6 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import type {ProjectList} from '#/project'
 import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
-import {useUserStore} from '@/stores/useUserStore'
 import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 import TableUserProjectsBtn from '@/components/table/TableUserProjectsBtn.vue'
 
@@ -15,7 +14,6 @@ const importedProps = defineProps<{
 }>()
 
 const projectStore = useProjectStore()
-const userStore = useUserStore()
 const {formatDate} = useUtility()
 const {t} = useI18n()
 

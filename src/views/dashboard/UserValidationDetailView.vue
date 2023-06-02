@@ -147,9 +147,9 @@ async function onDeleteUser() {
                 <div v-if="userManagerStore.userAssociations.length">
                     <div class="rows-container">
                         <article
-                                v-for="(association, index) in userManagerStore.userAssociations"
-                                :key="index"
-                                class="display-row"
+                            v-for="(association, index) in userManagerStore.userAssociations"
+                            :key="index"
+                            class="display-row"
                         >
                             <h3 class="row-title">{{ association.association.name }}</h3>
                             <ul>
@@ -192,22 +192,22 @@ async function onDeleteUser() {
     </section>
     <section class="btn-group">
         <QBtn
-                :label="t('back')"
-                :to="{ name: 'ValidateUsers' }"
-                color="secondary"
-                icon="bi-chevron-compact-left"
+            :label="t('back')"
+            :to="{ name: 'ValidateUsers' }"
+            color="secondary"
+            icon="bi-chevron-compact-left"
         />
         <QBtn
-                :label="t('user-manager.delete-account-application')"
-                color="red"
-                icon="bi-file-earmark-x"
-                @click="onDeleteUser"
+            :label="t('user-manager.delete-account-application')"
+            color="red"
+            icon="bi-file-earmark-x"
+            @click="onDeleteUser"
         />
         <QBtn
-                :label="t('user-manager.validate-account')"
-                color="primary"
-                icon-right="bi-check2"
-                @click="onValidateUser"
+            :label="t('user-manager.validate-account')"
+            color="primary"
+            icon-right="bi-check2"
+            @click="onValidateUser"
         />
     </section>
 </template>
@@ -218,10 +218,10 @@ async function onDeleteUser() {
 @import "@/assets/_variables.scss";
 
 @media screen and (min-width: $responsiveWidth) {
-  .form {
-    margin: auto;
-    width: 50%;
-  }
+    .form {
+        margin: auto;
+        width: 50%;
+    }
 }
 </style>
 

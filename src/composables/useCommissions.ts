@@ -27,7 +27,7 @@ export default function () {
     const userManagerStore = useUserManagerStore()
 
     // GET COMMISSION INFOS
-    async function getCommissions() {
+    async function getCommissionFunds() {
         if (commissionFunds.value.length === 0) {
             commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/funds/')).data
         }
@@ -105,7 +105,7 @@ export default function () {
     }
 
     return {
-        getCommissions,
+        getCommissionFunds,
         commissionFunds,
         commissionFundsLabels,
         userCommissionFunds,
