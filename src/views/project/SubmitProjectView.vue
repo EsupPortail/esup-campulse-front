@@ -634,7 +634,11 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     />
                                 </fieldset>
                             </fieldset>
-                            <fieldset v-else>
+                            <fieldset
+                                v-else
+                                class="individual-bearer"
+                            >
+                                <legend class="title-3">{{ t('address.address') }}</legend>
                                 <div class="info-panel info-panel-warning">
                                     <i
                                         class="bi bi-info"
@@ -1079,32 +1083,44 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
-</style>
+@import '@/assets/_variables.scss';
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+.q-input, .q-select {
+    padding: 1rem;
+}
 
-.q-input, .q-select
-  padding: 1rem
+.display-row {
+    width: 100%;
+    margin: 0 1rem;
+}
 
-.display-row
-    width: 100%
-    margin: 0 1rem
+legend, p, h3 {
+    padding: 0 1rem;
+}
 
-legend, p, h3
+legend {
+    margin-top: 1.5rem;
+}
+
+.radio-btn {
+    padding-left: 0.5rem;
+}
+
+.paragraph {
+    margin-bottom: 0.5rem;
+}
+
+.self-bearer {
+    font-size: 1rem;
+}
+
+.form {
+    width: 75% !important;
+}
+
+.individual-bearer {
     padding: 0 1rem
-
-legend
-    margin-top: 1.5rem
-
-.radio-btn
-    padding-left: 0.5rem
-
-.paragraph
-    margin-bottom: 0.5rem
-
-.self-bearer
-    font-size: 1rem
+}
 </style>

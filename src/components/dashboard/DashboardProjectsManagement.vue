@@ -159,7 +159,7 @@ async function onGetApplicants() {
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 </style>

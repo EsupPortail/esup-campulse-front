@@ -249,24 +249,30 @@ async function onGetAssociations() {
     </section>
 </template>
 
-<style lang="sass" scoped>
-@import "@/assets/_variables.scss"
+<style lang="scss" scoped>
+@import "@/assets/_variables.scss";
 
-.text-cape-color
-    color: $capeColor !important
+.text-cape-color {
+    color: $capeColor !important;
+}
 
-.bg-cape-color
-    background: $capeColorBackground !important
+.bg-cape-color {
+    background: $capeColorBackground !important;
+}
 
-.cape-color
-    color: $capeColor
+.cape-color {
+    color: $capeColor;
+}
 
-.form
-    width: 75% !important
+.form {
+    width: 75% !important;
+}
 
-.q-tab-panel
-    padding: 0 1rem
+.q-tab-panel {
+    padding: 0 1rem;
+}
 
-.info-panel
-    margin: 0.5rem
+.info-panel {
+    margin: 0.5rem;
+}
 </style>
