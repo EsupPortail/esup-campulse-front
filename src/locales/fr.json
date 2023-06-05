@@ -547,6 +547,7 @@
     "document-hint-multiple": "Vous pouvez sélectionner plusieurs documents.",
     "documents": "Documents",
     "download-recap": "Télécharger le ré'CAPE au format PDF",
+    "enter-bearer-infos": "Saisir les informations de la personne référente à contacter",
     "form-help": "Si vous rencontrez des difficultés pour remplir ce formulaire, n'hésitez pas à prendre contact avec le responsable de votre commission.",
     "general-infos": "Informations générales",
     "goals": "Objectifs visés par le projet",
@@ -594,6 +595,7 @@
     "rejected-projects": "Projets refusés",
     "required-documents-list": "Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés",
     "review": "Bilan",
+    "review-bearer-info-panel": "Merci de vérifier que les informations de contact ci-dessous sont correctes. En cas de changement, merci de les modifier.",
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "status": {
       "archived": "Archivé",

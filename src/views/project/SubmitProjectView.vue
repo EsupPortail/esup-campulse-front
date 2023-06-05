@@ -16,7 +16,7 @@ import type {ProcessDocument} from '#/documents'
 import useUsers from '@/composables/useUsers'
 import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
 import FormProjectDocumentUploads from '@/components/form/FormProjectDocumentUploads.vue'
-import FormUserAddress from '@/components/form/FormUserAddress.vue'
+import FormProjectBearerInfos from '@/components/form/FormProjectBearerInfos.vue'
 
 const {t} = useI18n()
 const {
@@ -89,9 +89,6 @@ onMounted(async () => {
             initIsSite()
         } else await router.push({name: '404'})
     }
-
-    initSelfBearer()
-
     await onGetProjectCategories()
     await onGetDocumentTypes()
     loading.hide()
@@ -134,14 +131,6 @@ watch(() => projectStore.projectCommissionDates.length, () => {
 })
 
 const isSite = ref<boolean>(false)
-
-const selfBearer = ref<'yes' | 'no'>('yes')
-
-const initSelfBearer = () => {
-    if (!newProject.value && projectBasicInfos.value.otherFirstName) {
-        selfBearer.value = 'no'
-    }
-}
 
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
@@ -310,15 +299,9 @@ async function onSubmitBasicInfos(nextStep: number) {
     loading.show()
     try {
         if (newProject.value) {
-            await postNewProject(parseInt(route.params.associationId as string))
-        } else {
-            if (selfBearer.value === 'yes' && projectBasicInfos.value.otherFirstName) {
-                projectBasicInfos.value.otherFirstName = ''
-                projectBasicInfos.value.otherLastName = ''
-                projectBasicInfos.value.otherEmail = ''
-            }
-            await patchProjectBasicInfos()
+            await postNewProject(associationId.value)
         }
+        await patchProjectBasicInfos()
         // For individual project bearer
         initInfosToPatch(userStore.user)
         if (Object.entries(infosToPatch).length) {
@@ -559,67 +542,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 use-chips
                             />
 
-                            <fieldset v-if="applicant === 'association'">
-                                <legend class="title-3">{{ t('project.bearer-identity') }}</legend>
-                                <p class="paragraph">{{ t('project.i-am-bearer') }} <strong>{{ associationName }}</strong> :</p>
-                                <div class="q-gutter-sm radio-btn">
-                                    <QRadio
-                                        v-model="selfBearer"
-                                        val="yes"
-                                        :label="t('yes')"
-                                    />
-                                    <QRadio
-                                        v-model="selfBearer"
-                                        val="no"
-                                        :label="t('no')"
-                                    />
-                                </div>
-                                <fieldset v-if="selfBearer === 'no'">
-                                    <legend class="self-bearer">Saisir les informations de la personne référente à contacter :</legend>
-                                    <QInput
-                                        v-model="projectBasicInfos.otherFirstName"
-                                        :label="t('project.other-first-name') + ' *'"
-                                        clearable
-                                        filled
-                                        lazy-rules
-                                        aria-required="true"
-                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    />
-                                    <QInput
-                                        v-model="projectBasicInfos.otherLastName"
-                                        :label="t('project.other-last-name') + ' *'"
-                                        clearable
-                                        filled
-                                        lazy-rules
-                                        aria-required="true"
-                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    />
-                                    <QInput
-                                        v-model="projectBasicInfos.otherEmail"
-                                        :label="t('project.other-email') + ' *'"
-                                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                                        class="no-rules"
-                                        clearable
-                                        filled
-                                        lazy-rules
-                                        aria-required="true"
-                                    />
-                                </fieldset>
-                            </fieldset>
-                            <fieldset
-                                v-else
-                                class="individual-bearer"
-                            >
-                                <legend class="title-3">{{ t('address.address') }}</legend>
-                                <div class="info-panel info-panel-warning">
-                                    <i
-                                        class="bi bi-info"
-                                        aria-hidden="true"
-                                    ></i>
-                                    <p>{{ t('address.verify')}}</p>
-                                </div>
-                                <FormUserAddress :user="userStore.user"/>
-                            </fieldset>
+                            <FormProjectBearerInfos
+                                :applicant="applicant"
+                                process="project"
+                            />
 
                             <section class="btn-group">
                                 <QBtn

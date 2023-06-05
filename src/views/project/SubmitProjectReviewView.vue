@@ -12,11 +12,10 @@ import {useRoute} from 'vue-router'
 import useUtility from '@/composables/useUtility'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useSubmitProject from '@/composables/useSubmitProject'
-import {ProcessDocument} from '#/documents'
-import FormAssociationOrIndividualProjectInfos from '@/components/form/FormAssociationOrIndividualProjectInfos.vue'
 import useUsers from '@/composables/useUsers'
 import FormProjectDocumentUploads from '@/components/form/FormProjectDocumentUploads.vue'
 import FormProjectRecapDocuments from '@/components/form/FormProjectRecapDocuments.vue'
+import FormProjectBearerInfos from '@/components/form/FormProjectBearerInfos.vue'
 
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -30,10 +29,8 @@ const {
     getDocuments,
     initProcessProjectDocuments,
     processDocuments,
-    documentUploads,
     initDocumentUploads,
-    uploadDocuments,
-    getFile
+    uploadDocuments
 } = useProjectDocuments()
 const {
     patchProjectReview,
@@ -56,14 +53,11 @@ onMounted(async () => {
     await onGetProjectReview()
     await onGetCommissionDates()
     await onGetAssociationDetails()
+    initAssociationName()
     loading.hide()
 })
 
 const step = ref(1)
-const done1 = ref(false)
-const done2 = ref(false)
-const done3 = ref(false)
-const done4 = ref(false)
 
 watch(() => step.value === 3, async () => {
     loading.show()
@@ -71,9 +65,16 @@ watch(() => step.value === 3, async () => {
     loading.hide()
 })
 
-const applicant = () => {
+/*const applicant = () => {
     if (projectReview.value.user) return `${userStore.user?.firstName} ${userStore.user?.lastName}`
     else return userStore.user?.associations.find(obj => obj.id === projectReview.value.association)?.name
+}*/
+
+const associationName = ref('')
+
+const initAssociationName = () => {
+    const association = userStore.user?.associations.find(obj => obj.id === projectReview.value.association)
+    if (association) associationName.value = association.name
 }
 
 const isSite = () => {
@@ -81,6 +82,8 @@ const isSite = () => {
     if (userStore.user?.associations.find(obj => obj.id === projectReview.value.association)?.isSite) isSite = true
     return isSite
 }
+
+const selfBearer = ref<'yes' | 'no'>('yes')
 
 const datesAreLegal = ref<boolean>(false)
 const checkIfDatesAreLegal = () => {
@@ -203,7 +206,7 @@ async function onUploadDocuments(nextStep: number) {
     loading.hide()
 }
 
-async function onGetFile(uploadedDocument: ProcessDocument) {
+/*async function onGetFile(uploadedDocument: ProcessDocument) {
     try {
         const file = await getFile(uploadedDocument.pathFile as string)
         const link = document.createElement('a')
@@ -220,7 +223,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
             })
         }
     }
-}
+}*/
 
 async function onSubmitProjectReview() {
     try {
@@ -287,7 +290,6 @@ async function onSubmitProjectReview() {
                 >
                     <!-- BASIC INFOS -->
                     <QStep
-                        :done="done1"
                         :name="1"
                         :title="t('project.general-infos')"
                         icon="mdi-card-text-outline"
@@ -345,7 +347,10 @@ async function onSubmitProjectReview() {
 
                             <QSeparator/>
 
-                            <FormAssociationOrIndividualProjectInfos :association="projectReview.association"/>
+                            <FormProjectBearerInfos
+                                :applicant="projectReview.association ? 'association' : 'user'"
+                                process="review"
+                            />
 
                             <QSeparator/>
 
@@ -411,7 +416,6 @@ async function onSubmitProjectReview() {
 
                     <!-- REVIEW -->
                     <QStep
-                        :done="done2"
                         :name="2"
                         :title="t('project.review')"
                         icon="mdi-chart-box-outline"
@@ -492,7 +496,6 @@ async function onSubmitProjectReview() {
 
                     <!-- DOCUMENTS -->
                     <QStep
-                        :done="done3"
                         :name="3"
                         :title="t('project.documents')"
                         icon="mdi-file-document-outline"
@@ -521,7 +524,6 @@ async function onSubmitProjectReview() {
 
                     <!-- RECAP -->
                     <QStep
-                        :done="done4"
                         :name="4"
                         :title="t('recap')"
                         icon="mdi-check"
@@ -566,60 +568,22 @@ async function onSubmitProjectReview() {
 
                                         <h5 class="title-4">{{ t('project.contact-infos') }}</h5>
 
-                                        <section v-if="projectReview.association">
-                                            <section class="flex-section">
-                                                <h6 class="title-5">{{ t('association.association') }}</h6>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('association.labels.name') }}</p>
-                                                    <p>{{ projectAssociation.name }}</p>
-                                                </div>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('association.labels.mail') }}</p>
-                                                    <p>{{ projectAssociation.email }}</p>
-                                                </div>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('association.labels.phone') }}</p>
-                                                    <p>{{ projectAssociation.phone }}</p>
-                                                </div>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('association.labels.address') }}</p>
-                                                    <p>
-                                                        {{ projectAssociation.address }}<br />
-                                                        {{ projectAssociation.zipcode + ' ' + projectAssociation.city }}<br />
-                                                        {{ projectAssociation.country }}
-                                                    </p>
-                                                </div>
-                                            </section>
-                                            <section class="flex-section">
-                                                <h6 class="title-5">{{ t('association.president') }}</h6>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('association.labels.president-name') }}</p>
-                                                    <p>{{ projectAssociation.presidentNames }}</p>
-                                                </div>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('association.labels.president-phone') }}</p>
-                                                    <p>{{ projectAssociation.presidentPhone }}</p>
-                                                </div>
-                                            </section>
-                                            <section class="flex-section">
-                                                <h6 class="title-5">{{ t('project.applicant') }}</h6>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('project.other-first-name') }}</p>
-                                                    <p>{{ projectReview.otherFirstName }}</p>
-                                                </div>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('project.other-last-name') }}</p>
-                                                    <p>{{ projectReview.otherLastName }}</p>
-                                                </div>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('project.other-email') }}</p>
-                                                    <p>{{ projectReview.otherEmail }}</p>
-                                                </div>
-                                                <div class="display-row">
-                                                    <p class="row-title">{{ t('project.other-phone') }}</p>
-                                                    <p>{{ projectReview.otherPhone }}</p>
-                                                </div>
-                                            </section>
+                                        <section
+                                            v-if="projectReview.association"
+                                            class="flex-section"
+                                        >
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('project.other-first-name') }}</p>
+                                                <p>{{ projectReview.otherFirstName }}</p>
+                                            </div>
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('project.other-last-name') }}</p>
+                                                <p>{{ projectReview.otherLastName }}</p>
+                                            </div>
+                                            <div class="display-row">
+                                                <p class="row-title">{{ t('project.other-email') }}</p>
+                                                <p>{{ projectReview.otherEmail }}</p>
+                                            </div>
                                         </section>
                                         <section
                                             v-else
@@ -762,45 +726,57 @@ async function onSubmitProjectReview() {
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
+@import '@/assets/styles/dashboard.scss';
+
+.q-form, fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.display-row {
+    width: 100%;
+}
+
+.no-rules {
+    padding-bottom: 20px;
+}
+
+.recap-section {
+    margin-bottom: 2rem;
+}
+
+.recap-section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h4 {
+    margin: 2rem 0 1rem 0;
+}
+
+.flex-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.address-fields div {
+    display: flex;
+    gap: 1rem;
+}
+
+.address-fields div * {
+    width: 100%;
+}
+
+.form {
+    width: 75% !important;
+}
+
 </style>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
-
-.q-form, fieldset
-    display: flex
-    flex-direction: column
-    gap: 1rem
-
-.display-row
-    width: 100%
-
-.no-rules
-    padding-bottom: 20px
-
-.recap-section
-    margin-bottom: 2rem
-
-.recap-section-title
-    display: flex
-    align-items: center
-    justify-content: space-between
-
-    h4
-        margin: 2rem 0 1rem 0
-
-.flex-section
-    display: flex
-    flex-direction: column
-    gap: 1.5rem
-
-.address-fields div
-    display: flex
-    gap: 1rem
-
-    *
-        width: 100%
-
-</style>
