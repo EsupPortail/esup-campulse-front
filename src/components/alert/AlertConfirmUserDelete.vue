@@ -39,7 +39,7 @@ async function onDeleteUser() {
     <QBtn
         :label="t('user-manager.delete-user')"
         color="delete"
-        icon="bi bi-trash"
+        icon="bi-trash"
         @click="confirm = true"
     />
 
@@ -57,13 +57,13 @@ async function onDeleteUser() {
                     v-close-popup
                     :label="t('cancel')"
                     color="secondary"
-                    icon="bi bi-x-lg"
+                    icon="bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :label="t('user-manager.delete-user')"
                     color="delete"
-                    icon="bi bi-trash"
+                    icon="bi-trash"
                     @click="onDeleteUser"
                 />
             </QCardActions>

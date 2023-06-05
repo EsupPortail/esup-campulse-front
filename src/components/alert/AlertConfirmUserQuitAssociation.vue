@@ -49,7 +49,7 @@ async function onDeleteUserAssociation() {
     <QBtn
         :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
         color="delete"
-        icon="bi bi-trash"
+        icon="bi-trash"
         @click="confirmation = true"
     />
 
@@ -73,13 +73,13 @@ async function onDeleteUserAssociation() {
                     v-close-popup
                     :label="t('cancel')"
                     color="primary"
-                    icon="bi bi-x-lg"
+                    icon="bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
                     color="delete"
-                    icon="bi bi-trash"
+                    icon="bi-trash"
                     @click="onDeleteUserAssociation"
                 />
             </QCardActions>

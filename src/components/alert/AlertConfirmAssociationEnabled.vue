@@ -65,7 +65,7 @@ async function onEnableAssociation() {
                     v-close-popup
                     :label="t('cancel')"
                     color="secondary"
-                    icon="bi bi-x-lg"
+                    icon="bi-x-lg"
                 />
                 <QBtn
                     v-close-popup

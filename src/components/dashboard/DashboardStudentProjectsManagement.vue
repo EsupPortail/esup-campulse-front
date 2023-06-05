@@ -135,7 +135,7 @@ async function onGetAssociations() {
                                                     :disable="!associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
                                                     :label="t('project.submit-new-project')"
                                                     :to="{name: 'SubmitProjectAssociation', params: {associationId: tab.association}}"
-                                                    icon="bi bi-plus-circle"
+                                                    icon="bi-plus-circle"
                                                 />
                                             </div>
                                             <div
@@ -169,7 +169,7 @@ async function onGetAssociations() {
                                             <QBtn
                                                 :label="t('project.submit-new-project')"
                                                 :to="{name: 'SubmitProjectIndividual'}"
-                                                icon="bi bi-plus-circle"
+                                                icon="bi-plus-circle"
                                             />
                                         </div>
                                     </div>

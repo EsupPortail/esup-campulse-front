@@ -602,7 +602,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             />
                             <fieldset v-if="applicant === 'association'">
                                 <legend class="title-3">{{ t('project.bearer-identity') }}</legend>
-                                <p class="paragraph">Je suis le porteur du projet au sein de <strong>{{ associationName }}</strong> :</p>
+                                <p class="paragraph">{{ t('project.i-am-bearer') }} <strong>{{ associationName }}</strong> :</p>
                                 <div class="q-gutter-sm radio-btn">
                                     <QRadio
                                         v-model="selfBearer"

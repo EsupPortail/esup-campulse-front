@@ -24,14 +24,14 @@ const props = defineProps({
                     v-close-popup
                     :label="t('cancel')"
                     color="secondary"
-                    icon="bi bi-x-lg"
+                    icon="bi-x-lg"
                     @click="$emit('closeAlert')"
                 />
                 <QBtn
                     v-close-popup
                     :label="t('discard-changes')"
                     color="delete"
-                    icon="bi bi-box-arrow-left"
+                    icon="bi-box-arrow-left"
                     @click="$emit('leaveEdition')"
                 />
             </QCardActions>

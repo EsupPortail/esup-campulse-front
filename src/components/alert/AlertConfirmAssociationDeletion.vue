@@ -44,7 +44,7 @@ async function onDeleteAssociation() {
     <QBtn
         :label="t('association.delete-association')"
         color="delete"
-        icon="bi bi-trash"
+        icon="bi-trash"
         @click="confirmation = true"
     />
 
@@ -69,13 +69,13 @@ async function onDeleteAssociation() {
                     v-close-popup
                     :label="t('cancel')"
                     color="secondary"
-                    icon="bi bi-x-lg"
+                    icon="bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :label="t('association.delete-association')"
                     color="delete"
-                    icon="bi bi-trash"
+                    icon="bi-trash"
                     @click="onDeleteAssociation"
                 />
             </QCardActions>
