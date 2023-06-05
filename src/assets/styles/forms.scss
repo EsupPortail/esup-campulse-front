@@ -48,6 +48,10 @@
   }
 }
 
+.q-card__section {
+  padding: 0;
+}
+
 ::v-deep(.q-tab-panel) {
   padding: 0;
 }
@@ -890,12 +894,13 @@ fieldset {
   border-radius: 0;
   background-color: transparent;
   box-shadow: none;
+  width: 100%;
 
-  .q-table__top {
+  ::v-deep(.q-table__top) {
     display: none;
   }
 
-  &.q-table--horizontal-separator thead th, &.q-table--horizontal-separator tbody td {
+  ::v-deep(&.q-table--horizontal-separator thead th), ::v-deep(&.q-table--horizontal-separator tbody td) {
     border: none;
   }
 
@@ -1213,14 +1218,14 @@ fieldset {
   }
 }
 
-::v-deep(.variant-space-4) {
-  .q-table__container {
-    .q-table__bottom {
+.variant-space-4 {
+  ::v-deep(.q-table__container) {
+    ::v-deep(.q-table__bottom) {
       color: $dashboardColorText;
     }
 
-    .q-table {
-      thead tr {
+    ::v-deep(.q-table) {
+      ::v-deep(thead tr) {
         background-color: $dashboardColor;
 
         th {
@@ -1238,7 +1243,7 @@ fieldset {
         }
       }
 
-      tbody tr td {
+      ::v-deep(tbody tr td) {
         color: $dashboardColorText;
 
         &:first-child {

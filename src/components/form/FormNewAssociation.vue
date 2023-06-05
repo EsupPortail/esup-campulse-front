@@ -89,10 +89,10 @@ const clearValues = () => {
 
 <template>
     <QForm
-        ref="newAssociationForm"
-        class="q-gutter-md"
-        @reset="clearValues"
-        @submit.prevent="onCreate"
+            ref="newAssociationForm"
+            class="q-gutter-md"
+            @reset="clearValues"
+            @submit.prevent="onCreate"
     >
         <div class="form-title">
             <h2>
@@ -103,39 +103,39 @@ const clearValues = () => {
         <div class="form-container">
             <div class="form">
                 <QInput
-                    v-model="newAssociation.name"
-                    :label="t('forms.association-name')"
-                    :rules="[val => val.length > 0 || t('forms.fill-field')]"
-                    filled
-                    lazy-rules
+                        v-model="newAssociation.name"
+                        :label="t('forms.association-name')"
+                        :rules="[val => val.length > 0 || t('forms.fill-field')]"
+                        filled
+                        lazy-rules
                 />
                 <QSelect
-                    v-model="newAssociation.institution"
-                    :label="t('forms.association-institution')"
-                    :options="institutions"
-                    :rules="[val => val !== undefined || t('forms.select-option')]"
-                    emit-value
-                    filled
-                    lazy-rules
-                    map-options
+                        v-model="newAssociation.institution"
+                        :label="t('forms.association-institution')"
+                        :options="institutions"
+                        :rules="[val => val !== undefined || t('forms.select-option')]"
+                        emit-value
+                        filled
+                        lazy-rules
+                        map-options
                 />
                 <QCheckbox
-                    v-if="hasPerm('add_association_all_fields')"
-                    v-model="newAssociation.isSite"
-                    :label="t('forms.association-is-site')"
+                        v-if="hasPerm('add_association_all_fields')"
+                        v-model="newAssociation.isSite"
+                        :label="t('forms.association-is-site')"
                 />
                 <section class="btn-group">
                     <QBtn
-                        :label="t('home.back-dashboard')"
-                        :to="{ name: 'Dashboard' }"
-                        color="secondary"
-                        icon="mdi-arrow-left-circle"
+                            :label="t('home.back-dashboard')"
+                            :to="{ name: 'Dashboard' }"
+                            color="secondary"
+                            icon="mdi-arrow-left-circle"
                     />
                     <QBtn
-                        :label="t('user-manager.create-association')"
-                        color="primary"
-                        icon="mdi-check-circle"
-                        type="submit"
+                            :label="t('user-manager.create-association')"
+                            color="primary"
+                            icon="mdi-check-circle"
+                            type="submit"
                     />
                 </section>
             </div>
@@ -143,26 +143,6 @@ const clearValues = () => {
     </QForm>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
-
-.q-card__section {
-    padding: 1rem 0 0 0;
-}
-
-h2 {
-    padding-left: 1rem;
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    .form {
-        width: $halfSize;
-        margin: auto;
-    }
-
-    .btn-group {
-        justify-content: flex-start;
-        margin: 1rem 0 0 0;
-    }
-}
 </style>

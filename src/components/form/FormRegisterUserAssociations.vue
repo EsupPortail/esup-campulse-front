@@ -148,5 +148,10 @@ function clearOptions() {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
+@import '@/assets/styles/associations.scss';
+
+.q-card__section {
+  padding: 1rem;
+}
 </style>
 

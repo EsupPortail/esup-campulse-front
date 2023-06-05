@@ -24,81 +24,82 @@ onMounted(initSpanClasses)
 
 <template>
     <span
-        v-if="props.projectStatus === 'PROJECT_DRAFT' && showDraft"
-        :class="spanClasses"
+            v-if="props.projectStatus === 'PROJECT_DRAFT' && showDraft"
+            :class="spanClasses"
     >
         {{ t('project.status.draft') }}
         <span
-            aria-hidden="true"
-            class="form-state-icon form-state-grey"
+                aria-hidden="true"
+                class="form-state-icon form-state-grey"
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_REJECTED'"
-        :class="spanClasses"
+            v-if="props.projectStatus === 'PROJECT_REJECTED'"
+            :class="spanClasses"
     >
         {{ t('project.status.rejected') }}
         <span
-            aria-hidden="true"
-            class="form-state-icon form-state-red"
+                aria-hidden="true"
+                class="form-state-icon form-state-red"
         ><i class="bi bi-x"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_PROCESSING'"
-        :class="spanClasses"
+            v-if="props.projectStatus === 'PROJECT_PROCESSING'"
+            :class="spanClasses"
     >
         {{ t('project.status.processing') }}
         <span
-            aria-hidden="true"
-            class="form-state-icon form-state-orange"
+                aria-hidden="true"
+                class="form-state-icon form-state-orange"
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_VALIDATED'"
-        :class="spanClasses"
+            v-if="props.projectStatus === 'PROJECT_VALIDATED'"
+            :class="spanClasses"
     >
         {{ t('project.status.validated') }}
         <span
-            aria-hidden="true"
-            class="form-state-icon form-state-green"
+                aria-hidden="true"
+                class="form-state-icon form-state-green"
         ><i class="bi bi-check"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
+            v-if="props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
             props.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
-        :class="spanClasses"
+            :class="spanClasses"
     >
         {{ t('project.status.review-processing') }}
         <span
-            aria-hidden="true"
-            class="form-state-icon form-state-orange"
+                aria-hidden="true"
+                class="form-state-icon form-state-orange"
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_REVIEW_REJECTED'"
-        :class="spanClasses"
+            v-if="props.projectStatus === 'PROJECT_REVIEW_REJECTED'"
+            :class="spanClasses"
     >
         {{ t('project.status.review-rejected') }}
         <span
-            aria-hidden="true"
-            class="form-state-icon form-state-red"
+                aria-hidden="true"
+                class="form-state-icon form-state-red"
         ><i class="bi bi-x"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_REVIEW_VALIDATED'"
-        :class="spanClasses"
+            v-if="props.projectStatus === 'PROJECT_REVIEW_VALIDATED'"
+            :class="spanClasses"
     >
         {{ t('project.status.archived') }}
         <span
-            aria-hidden="true"
-            class="form-state-icon form-state-grey"
+                aria-hidden="true"
+                class="form-state-icon form-state-grey"
         ><i class="bi bi-check"></i></span>
     </span>
 </template>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 
-.form-state-cape
-    color: $capeColorText
+.form-state-cape {
+  color: $capeColorText;
+}
 </style>
