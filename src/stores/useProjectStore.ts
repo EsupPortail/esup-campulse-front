@@ -77,6 +77,16 @@ export const useProjectStore = defineStore('projectStore', {
             this.projects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
         },
 
+        async getAllProjects() {
+            const {axiosAuthenticated} = useAxios()
+            this.projects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
+        },
+
+        async getAssociationProjects(associationId: number) {
+            const {axiosAuthenticated} = useAxios()
+            this.projects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
+        },
+
         async getProjectPdf(id: number) {
             const {axiosAuthenticated} = useAxios()
             const url = `/projects/${id}/export`
