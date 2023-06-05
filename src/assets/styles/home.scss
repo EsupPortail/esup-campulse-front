@@ -357,7 +357,6 @@
             i {
               background-color: $charteColor;
               color: $charteColorText;
-
             }
 
           }
@@ -427,7 +426,8 @@
 
             i {
               background-color: $capeColor;
-              left: 0;
+              color: $capeColorText;
+              left: -0.150rem;
             }
           }
         }

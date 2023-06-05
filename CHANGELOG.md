@@ -1,21 +1,27 @@
-- ✨ Disable "new project" button in CAPE dashboard if association cannot submit projects
-- 🐛 AxiosAuthenticated interceptors for 401 error handling when JWT changes
-- ✨ Add link to commission dashboard in SubmitProjectSuccessfulView
-- 🚨 Lint & typecheck
-- ⬆️ Upgrade minor dependencies
-- :lipstick: fix!: FormRegister btn and add association layout
-- :lipstick: fix: leaving association icon
-- :lipstick: fix: contact item padding
-- :sparkles: feat!: contact page
-- :coffin: fix: remove dead code from home.scss
-- :sparkles: feat: about page now has router link to contact
-- :coffin: removed media screen on layout about service card
-- :lipstick: fix: about services card
-- :lipstick: feat!: about services card && now all responsive
-- :lipstick: feat: update layout about service card
-- :lipstick: fix! title fonts
-- :lipstick: fix!: borders cards are now rounded
-- :sparkles: feat!: introduces services section
-- :sparkles: feat: about card
-- :sparkles: feat!: calls from backend for contact content now working
-- :sparkles: feat!: calls from back for about content now working
+- 🐛 Fix type imports
+- 🐛 Fix submitProject targetAudience and amountsStudentsAudience fields
+- :construction: icons on home screen
+- :lipstick: update UI
+- :lipstick: fix: btns padding now fixed
+- 🚧 Start working on project detail view after submission
+- 🎨 Add address fields to userInfos management
+- 🎨 Update nav links to be dynamic
+- ♿️ Fix aria-label for primary nav
+- ♿️ Update alt on partners' logos
+- ✨ Add address fields on individual project bearer
+- 🔧 Removed XSS header from Nginx conf.
+- ✨ Add zipcode, city and country to associations
+- 💄 Update button icons and space colorVariant on LDAP search
+- 🎨 Allow cross search between API and local searches for users and associations management
+- :lipstick: fix: project submission btns
+- 🐛 Fix bug on advancedSearch for associations and users
+- :lipstick: fix: project submission
+- :lipstick: fix: h3 sizes
+- 🩹 Quick fixes on form style and logOut
+- ✅ Fix tests after moving filterizeSearch to useUtility
+- ✨ New CAPE dashboard for students with several tabs #79
+- :lipstick: fix: AssociationManagement table size
+- ✨ Search form for users in manager dashboard #149
+- :art: fix: better SCSS import structure to homeview
+- :adhesive_bandage: fix: about page with the modifications asked
+- 🩹 Fix pop-up opening without changes in AssociationEdition

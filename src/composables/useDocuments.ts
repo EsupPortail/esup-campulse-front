@@ -19,7 +19,6 @@ export default function () {
         newDocument.append('name', name)
         newDocument.append('pathTemplate', file)
         await axiosAuthenticated.post('/documents/', newDocument)
-
     }
 
     async function patchDocument(id: number, name: string, file: Blob) {

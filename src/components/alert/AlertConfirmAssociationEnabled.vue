@@ -43,7 +43,7 @@ async function onEnableAssociation() {
 <template>
     <QBtn
         :color="isEnabled ? 'orange' : 'green'"
-        :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
+        :icon="isEnabled ? 'bi bi-unlock' : 'bi bi-lock'"
         :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
         class="test"
         @click="openAlert = true"
@@ -56,7 +56,7 @@ async function onEnableAssociation() {
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{
-                    isEnabled ? t("association.confirm-disable") : t("association.confirm-enable")
+                    isEnabled ? t('association.confirm-disable') : t('association.confirm-enable')
                 }}</span>
             </QCardSection>
 
@@ -65,12 +65,12 @@ async function onEnableAssociation() {
                     v-close-popup
                     :label="t('cancel')"
                     color="secondary"
-                    icon="mdi-arrow-left-circle"
+                    icon="bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :color="isEnabled ? 'orange' : 'green'"
-                    :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
+                    :icon="isEnabled ? 'bi bi-unlock' : 'bi bi-lock'"
                     :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
                     @click="onEnableAssociation"
                 />

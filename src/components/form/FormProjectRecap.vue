@@ -83,11 +83,6 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                         <p class="row-title">{{ t('project.other-email') }}</p>
                         <p>{{ projectBasicInfos.otherEmail }}</p>
                     </div>
-
-                    <div class="display-row">
-                        <p class="row-title">{{ t('project.other-phone') }}</p>
-                        <p>{{ projectBasicInfos.otherPhone }}</p>
-                    </div>
                 </section>
             </section>
 
@@ -170,7 +165,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                         <p class="row-title">
                             {{
                                 `${t('project.amount-asked')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym})`
+                                    (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym})`
                             }}
                         </p>
                         <p>{{ commissionDate.amountAsked + CURRENCY }}</p>
@@ -190,7 +185,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                             <p class="row-title">
                                 {{
                                     `${t('project.previous-asked')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
                                 }}
                             </p>
                             <p>{{ commissionDate.amountAskedPreviousEdition + CURRENCY }}</p>
@@ -204,7 +199,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                             <p class="row-title">
                                 {{
                                     `${t('project.previous-earned')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
                                 }}
                             </p>
                             <p>{{ commissionDate.amountEarnedPreviousEdition + CURRENCY }}</p>

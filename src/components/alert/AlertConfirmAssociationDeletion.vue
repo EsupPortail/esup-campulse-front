@@ -44,7 +44,7 @@ async function onDeleteAssociation() {
     <QBtn
         :label="t('association.delete-association')"
         color="delete"
-        icon="mdi-delete"
+        icon="bi-trash"
         @click="confirmation = true"
     />
 
@@ -54,7 +54,7 @@ async function onDeleteAssociation() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t("association.confirm-delete") }}</span>
+                <span class="q-ml-sm">{{ t('association.confirm-delete') }}</span>
             </QCardSection>
             <QCardSection>
                 <QInput
@@ -69,13 +69,13 @@ async function onDeleteAssociation() {
                     v-close-popup
                     :label="t('cancel')"
                     color="secondary"
-                    icon="mdi-arrow-left-circle"
+                    icon="bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :label="t('association.delete-association')"
                     color="delete"
-                    icon="mdi-delete"
+                    icon="bi-trash"
                     @click="onDeleteAssociation"
                 />
             </QCardActions>

@@ -26,84 +26,84 @@ onMounted(initValues)
         <h3><i class="bi bi-megaphone"></i>{{ t('association.labels.socials') }}</h3>
         <section class="form-container">
             <div
-                v-for="(socialNetwork, index) in associationSocialNetworks"
-                id="network-section"
-                :key="index"
-                class="display-row"
+                    v-for="(socialNetwork, index) in associationSocialNetworks"
+                    id="network-section"
+                    :key="index"
+                    class="display-row"
             >
                 <QInput
-                    v-model="socialNetwork.type"
-                    :hint="t('forms.social-network-type-hint')"
-                    :label="t('association.labels.social-network-type') + ' *'"
-                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                    aria-required="true"
-                    clearable
-                    filled
-                    lazy-rules
+                        v-model="socialNetwork.type"
+                        :hint="t('forms.social-network-type-hint')"
+                        :label="t('association.labels.social-network-type') + ' *'"
+                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                        aria-required="true"
+                        clearable
+                        filled
+                        lazy-rules
                 />
                 <QInput
-                    v-model="socialNetwork.location"
-                    :hint="t('forms.social-network-location-hint')"
-                    :label="t('association.labels.social-network-location') + ' *'"
-                    :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
-                    aria-required="true"
-                    clearable
-                    filled
-                    lazy-rules
-                    type="url"
+                        v-model="socialNetwork.location"
+                        :hint="t('forms.social-network-location-hint')"
+                        :label="t('association.labels.social-network-location') + ' *'"
+                        :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
+                        aria-required="true"
+                        clearable
+                        filled
+                        lazy-rules
+                        type="url"
                 />
                 <QBtn
-                    :aria-label="t('delete')"
-                    class="delete-network-btn"
-                    color="delete"
-                    icon="mdi-delete"
-                    @click="removeNetwork(index)"
+                        :aria-label="t('delete')"
+                        class="delete-network-btn"
+                        color="delete"
+                        icon="mdi-delete"
+                        @click="removeNetwork(index)"
                 />
             </div>
             <div class="display-row">
                 <QBtn
-                    :label="t('association.labels.add-social-network')"
-                    class="add-network-btn"
-                    icon="mdi-plus-circle-outline"
-                    @click="addNetwork"
+                        :label="t('association.labels.add-social-network')"
+                        class="add-network-btn"
+                        icon="mdi-plus-circle-outline"
+                        @click="addNetwork"
                 />
             </div>
         </section>
     </fieldset>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
 
 // Mobile version
 .delete-network-btn {
-    margin-top: .625rem;
+  margin-top: .625rem;
 }
 
 @media screen and (min-width: $responsiveWidth) {
-    .form-container {
-        display: flex;
-        flex-direction: column;
+  .form-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #network-section {
+    flex-direction: row;
+    gap: .625rem;
+
+    .q-input {
+      flex-grow: 2;
+      margin-bottom: .625rem;
     }
 
-    #network-section {
-        flex-direction: row;
-        gap: .625rem;
-
-        .q-input {
-            flex-grow: 2;
-            margin-bottom: .625rem;
-        }
-
-        .delete-network-btn {
-            margin-top: -.001rem;
-            height: 3.5rem;
-        }
+    .delete-network-btn {
+      margin-top: -.001rem;
+      height: 3.5rem;
     }
+  }
 
-    .add-network-btn {
-        width: 35%;
-    }
+  .add-network-btn {
+    width: 35%;
+  }
 }
 </style>
