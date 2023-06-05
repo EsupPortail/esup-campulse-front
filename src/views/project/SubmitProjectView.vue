@@ -99,12 +99,6 @@ onMounted(async () => {
 })
 
 const step = ref(1)
-const done1 = ref(false)
-const done2 = ref(false)
-const done3 = ref(false)
-const done4 = ref(false)
-const done5 = ref(false)
-const done6 = ref(false)
 
 watch(() => step.value === 2, async () => {
     loading.show()
@@ -345,7 +339,6 @@ async function onSubmitBasicInfos(nextStep: number) {
         }
         if (projectStore.project) {
             await updateProjectCategories()
-            done1.value = true
             step.value = nextStep
         }
     } catch (error) {
@@ -365,7 +358,6 @@ async function onSubmitCommissionDates(nextStep: number) {
     if (projectStore.project) {
         try {
             await updateProjectCommissionDates()
-            done2.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -386,7 +378,6 @@ async function onSubmitBudget(nextStep: number) {
         try {
             await patchProjectBudget(!projectReEdition.value)
             await patchProjectCommissionDates(!projectReEdition.value)
-            done3.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -406,7 +397,6 @@ async function onSubmitGoals(nextStep: number) {
     if (projectStore.project) {
         try {
             await patchProjectGoals()
-            done4.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -426,7 +416,6 @@ async function onUploadDocuments(nextStep: number) {
     if (projectStore.project) {
         try {
             await uploadDocuments(parseInt(route.params.associationId as string))
-            done5.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -462,7 +451,6 @@ async function onSubmitProject() {
     if (projectStore.project) {
         try {
             await submitProject()
-            done6.value = true
             await router.push({name: 'SubmitProjectSuccessful', params: {projectId: projectStore.project?.id}})
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -537,7 +525,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                 >
                     <!-- BASIC INFOS -->
                     <QStep
-                        :done="done1"
                         :name="1"
                         :title="t('project.general-infos')"
                         icon="mdi-card-text-outline"
@@ -669,7 +656,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- COMMISSION CHOICE -->
                     <QStep
-                        :done="done2"
                         :name="2"
                         :title="t('project.commission-choice')"
                         icon="mdi-calendar-blank"
@@ -711,7 +697,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- BUDGET -->
                     <QStep
-                        :done="done3"
                         :name="3"
                         :title="t('project.budget')"
                         icon="mdi-hand-coin-outline"
@@ -885,7 +870,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- GOALS -->
                     <QStep
-                        :done="done4"
                         :name="4"
                         :title="t('project.goals-title')"
                         icon="mdi-flag-checkered"
@@ -962,7 +946,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- DOCUMENTS -->
                     <QStep
-                        :done="done5"
                         :name="5"
                         :title="t('project.documents')"
                         icon="mdi-file-document-outline"
@@ -1079,7 +1062,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- RECAP -->
                     <QStep
-                        :done="done6"
                         :name="6"
                         :title="t('recap')"
                         icon="mdi-check"
@@ -1126,5 +1108,3 @@ legend
 .self-bearer
     font-size: 1rem
 </style>
-
-
