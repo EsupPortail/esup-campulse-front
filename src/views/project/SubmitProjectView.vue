@@ -52,7 +52,7 @@ const {
     getFile
 } = useProjectDocuments()
 const {initInfosToPatch, updateUserInfos, infosToPatch} = useUsers()
-const {fromDateIsAnterior, CURRENCY, phoneRegex} = useUtility()
+const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
     getCommissions,
     commissions,
@@ -90,6 +90,8 @@ onMounted(async () => {
             initIsSite()
         } else await router.push({name: '404'})
     }
+
+    initSelfBearer()
 
     await onGetProjectCategories()
     await onGetDocumentTypes()
@@ -139,6 +141,14 @@ watch(() => projectStore.projectCommissionDates.length, () => {
 })
 
 const isSite = ref<boolean>(false)
+
+const selfBearer = ref<'yes' | 'no'>('yes')
+
+const initSelfBearer = () => {
+    if (!newProject.value && projectBasicInfos.value.otherFirstName) {
+        selfBearer.value = 'no'
+    }
+}
 
 // CONST
 const MAX_FILES = 10
@@ -321,8 +331,14 @@ async function onSubmitBasicInfos(nextStep: number) {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
         } else {
+            if (selfBearer.value === 'yes' && projectBasicInfos.value.otherFirstName) {
+                projectBasicInfos.value.otherFirstName = ''
+                projectBasicInfos.value.otherLastName = ''
+                projectBasicInfos.value.otherEmail = ''
+            }
             await patchProjectBasicInfos()
         }
+        // For individual project bearer
         initInfosToPatch(userStore.user)
         if (Object.entries(infosToPatch).length) {
             await updateUserInfos(userStore.user, false)
@@ -586,40 +602,50 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             />
                             <fieldset v-if="applicant === 'association'">
                                 <legend class="title-3">{{ t('project.bearer-identity') }}</legend>
-                                <QInput
-                                    v-model="projectBasicInfos.otherFirstName"
-                                    :label="t('project.other-first-name')"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherLastName"
-                                    :label="t('project.other-last-name')"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherEmail"
-                                    :label="t('project.other-email')"
-                                    :rules="projectBasicInfos.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherPhone"
-                                    :label="t('project.other-phone')"
-                                    :rules="projectBasicInfos.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
+                                <p class="paragraph">Je suis le porteur du projet au sein de <strong>{{ associationName }}</strong> :</p>
+                                <div class="q-gutter-sm radio-btn">
+                                    <QRadio
+                                        v-model="selfBearer"
+                                        val="yes"
+                                        :label="t('yes')"
+                                    />
+                                    <QRadio
+                                        v-model="selfBearer"
+                                        val="no"
+                                        :label="t('no')"
+                                    />
+                                </div>
+                                <fieldset v-if="selfBearer === 'no'">
+                                    <legend class="self-bearer">Saisir les informations de la personne référente à contacter :</legend>
+                                    <QInput
+                                        v-model="projectBasicInfos.otherFirstName"
+                                        :label="t('project.other-first-name') + ' *'"
+                                        clearable
+                                        filled
+                                        lazy-rules
+                                        aria-required="true"
+                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    />
+                                    <QInput
+                                        v-model="projectBasicInfos.otherLastName"
+                                        :label="t('project.other-last-name') + ' *'"
+                                        clearable
+                                        filled
+                                        lazy-rules
+                                        aria-required="true"
+                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    />
+                                    <QInput
+                                        v-model="projectBasicInfos.otherEmail"
+                                        :label="t('project.other-email') + ' *'"
+                                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                                        class="no-rules"
+                                        clearable
+                                        filled
+                                        lazy-rules
+                                        aria-required="true"
+                                    />
+                                </fieldset>
                             </fieldset>
                             <fieldset v-else>
                                 <div class="info-panel info-panel-warning">
@@ -1012,7 +1038,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     :key="uploadedDocument.id"
                                                     class="document-item"
                                                 >
-                                                    <p @click="onGetFile(uploadedDocument.pathFile)">
+                                                    <p @click="onGetFile(uploadedDocument)">
                                                         <i
                                                             aria-hidden="true"
                                                             class="bi bi-file-earmark"
@@ -1084,6 +1110,21 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 .display-row
     width: 100%
     margin: 0 1rem
+
+legend, p, h3
+    padding: 0 1rem
+
+legend
+    margin-top: 1.5rem
+
+.radio-btn
+    padding-left: 0.5rem
+
+.paragraph
+    margin-bottom: 0.5rem
+
+.self-bearer
+    font-size: 1rem
 </style>
 
 

@@ -73,7 +73,6 @@ export interface ProjectBasicInfos {
     otherFirstName: string | null,
     otherLastName: string | null,
     otherEmail: string | null,
-    otherPhone: string | null,
     user: number | null,
     association: number | null
 }
