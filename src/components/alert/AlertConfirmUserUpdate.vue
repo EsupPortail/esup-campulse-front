@@ -56,7 +56,7 @@ async function onValidateChanges() {
 <template>
     <QBtn
         :label="t('dashboard.validate-changes')"
-        icon="mdi-check-circle"
+        icon="bi bi-check-lg"
         @click="confirmation = true"
     />
 
@@ -73,12 +73,12 @@ async function onValidateChanges() {
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"
-                    icon="mdi-arrow-left-circle"
+                    icon="bi bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :label="t('dashboard.validate-changes')"
-                    icon="mdi-check-circle"
+                    icon="bi bi-check-lg"
                     @click="onValidateChanges"
                 />
             </QCardActions>

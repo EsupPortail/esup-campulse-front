@@ -133,7 +133,7 @@ async function onConfirmChanges(emailType: string) {
         <QBtn
             :label="t('association.confirm-all-changes')"
             color="primary"
-            icon="mdi-pencil"
+            icon="bi bi-check-lg"
             @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"
         />
     </div>
@@ -177,14 +177,14 @@ async function onConfirmChanges(emailType: string) {
                     v-close-popup
                     :label="t('cancel')"
                     color="secondary"
-                    icon="mdi-arrow-left-circle"
+                    icon="bi bi-x-lg"
                 />
                 <QBtn
                     v-if="switches === 'email'"
                     v-close-popup
                     :label="t('association.email-software')"
                     color="secondary"
-                    icon="mdi-email"
+                    icon="bi bi-enveloppe"
                     @click="onConfirmChanges('software')"
                 />
                 <QBtn
@@ -192,7 +192,7 @@ async function onConfirmChanges(emailType: string) {
                     v-close-popup
                     :label="t('association.email-web')"
                     color="secondary"
-                    icon="mdi-email"
+                    icon="bi bi-enveloppe"
                     @click="onConfirmChanges('web')"
                 />
                 <QBtn
@@ -200,7 +200,7 @@ async function onConfirmChanges(emailType: string) {
                     v-close-popup
                     :label="t('association.enable')"
                     color="green"
-                    icon="mdi-eye-check"
+                    icon="bi bi-unlock"
                     @click="onConfirmChanges('')"
                 />
                 <QBtn
@@ -208,7 +208,7 @@ async function onConfirmChanges(emailType: string) {
                     v-close-popup
                     :label="t('association.disable')"
                     color="orange"
-                    icon="mdi-eye-remove"
+                    icon="bi bi-lock"
                     @click="onConfirmChanges('')"
                 />
                 <QBtn
@@ -216,7 +216,7 @@ async function onConfirmChanges(emailType: string) {
                     v-close-popup
                     :label="t('association.delete')"
                     color="delete"
-                    icon="mdi-delete"
+                    icon="bi bi-trash"
                     @click="onConfirmChanges('')"
                 />
             </QCardActions>

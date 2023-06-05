@@ -225,20 +225,20 @@ async function onChangeLogo(action: string) {
             <div class="btn-group">
                 <QBtn
                     :label="t('association.logo.update')"
-                    icon="mdi-check-circle"
+                    icon="bi-check-lg"
                     type="submit"
                 />
                 <QBtn
                     :label="t('association.logo.remove')"
                     color="delete"
-                    icon="mdi-delete"
+                    icon="bi-trash"
                     @click="onChangeLogo('delete')"
                 />
             </div>
         </section>
 
         <fieldset>
-            <h3><i class="bi bi-book"></i>{{ t("association.titles.info") }}</h3>
+            <h3><i class="bi bi-book"></i>{{ t('association.titles.info') }}</h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -441,7 +441,7 @@ async function onChangeLogo(action: string) {
                     :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
                     :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
                     color="secondary"
-                    icon="mdi-arrow-left-circle"
+                    icon="bi-box-arrow-left"
                 />
                 <AlertConfirmAssociationUpdate
                     v-if="Object.keys(checkChanges(association)).length > 0"

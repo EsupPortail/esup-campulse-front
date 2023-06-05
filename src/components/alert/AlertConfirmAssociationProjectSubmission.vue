@@ -41,7 +41,7 @@ async function onManageAssociationSubmission() {
 <template>
     <QBtn
         :color="!associationStore.association?.canSubmitProjects ? 'green' : 'orange'"
-        :icon="!associationStore.association?.canSubmitProjects ? 'mdi-file-lock-open-outline' : 'mdi-file-lock-outline'"
+        :icon="!associationStore.association?.canSubmitProjects ? 'bi bi-clipboard-check' : 'bi bi-clipboard-x'"
         :label="!associationStore.association?.canSubmitProjects ? t('association.enable-project-submission') : t('association.disable-project-submission')"
         @click="confirmation = true"
     />
@@ -61,12 +61,12 @@ async function onManageAssociationSubmission() {
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"
-                    icon="mdi-arrow-left-circle"
+                    icon="bi bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :color="!associationStore.association?.canSubmitProjects ? 'green' : 'orange'"
-                    :icon="!associationStore.association?.canSubmitProjects ? 'mdi-file-lock-open-outline' : 'mdi-file-lock-outline'"
+                    :icon="!associationStore.association?.canSubmitProjects ? 'bi bi-clipboard-check' : 'bi bi-clipboard-x'"
                     :label="!associationStore.association?.canSubmitProjects ? t('association.enable-project-submission') : t('association.disable-project-submission')"
                     @click="onManageAssociationSubmission"
                 />

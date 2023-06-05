@@ -41,7 +41,7 @@ async function onOpenDeleteAlert() {
         <QBtn
             :disable="!props.datesAreLegal"
             :label="t('update')"
-            icon="mdi-autorenew"
+            icon="bi bi-arrow-repeat"
             @click="confirmUpdate = true"
         />
         <QDialog
@@ -57,12 +57,12 @@ async function onOpenDeleteAlert() {
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
-                        icon="mdi-arrow-left-circle"
+                        icon="bi bi-x-lg"
                     />
                     <QBtn
                         v-close-popup
                         :label="t('update')"
-                        icon="mdi-autorenew"
+                        icon="bi bi-arrow-repeat"
                         @click="$emit('updateCommissionDate')"
                     />
                 </QCardActions>
@@ -70,7 +70,7 @@ async function onOpenDeleteAlert() {
         </QDialog>
         <QBtn
             :label="t('delete')"
-            icon="mdi-delete-outline"
+            icon="bi bi-trash"
             @click="onOpenDeleteAlert"
         />
         <QDialog
@@ -106,12 +106,12 @@ async function onOpenDeleteAlert() {
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
-                        icon="mdi-arrow-left-circle"
+                        icon="bi bi-x-lg"
                     />
                     <QBtn
                         v-close-popup
                         :label="t('delete')"
-                        icon="mdi-delete-outline"
+                        icon="bi bi-trash"
                         @click="$emit('deleteCommissionDate')"
                     />
                 </QCardActions>
