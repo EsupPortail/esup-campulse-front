@@ -54,14 +54,14 @@ const resultLabels = [
 </script>
 <template>
     <section
-            v-if="password"
-            class="password-feedback"
+        v-if="password"
+        class="password-feedback"
     >
         <div class="password-feedback-bar">
             <div
-                    v-for="(item, index) in resultClasses"
-                    :key="index"
-                    :class="item"
+                v-for="(item, index) in resultClasses"
+                :key="index"
+                :class="item"
             >
             </div>
         </div>
@@ -75,11 +75,14 @@ const resultLabels = [
         <p class="paragraph">{{ t('password.policy.must-contain') }}</p>
         <ul>
             <li
-                    v-for="(test, index) in props.passwordChecker.tests"
-                    :key="index"
+                v-for="(test, index) in props.passwordChecker.tests"
+                :key="index"
             >
                 <span class="form-state">
-                    <span :class="`form-state-icon form-state-${test.valid ? 'green' : 'red'}`" aria-hidden="true">
+                    <span
+                        :class="`form-state-icon form-state-${test.valid ? 'green' : 'red'}`"
+                        aria-hidden="true"
+                    >
                         <i :class="`bi bi-${test.valid ? 'check' : 'x'}`"></i>
                     </span>
                     <div class="test">

@@ -139,7 +139,7 @@ const isSite = ref<boolean>(false)
 const selfBearer = ref<'yes' | 'no'>('yes')
 
 const initSelfBearer = () => {
-    if (!newProject.value && projectBasicInfos.value.otherFirstName) {
+    if (!newProject.value && projectBasicInfos.value.contactFirstName) {
         selfBearer.value = 'no'
     }
 }
@@ -325,10 +325,10 @@ async function onSubmitBasicInfos(nextStep: number) {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
         } else {
-            if (selfBearer.value === 'yes' && projectBasicInfos.value.otherFirstName) {
-                projectBasicInfos.value.otherFirstName = ''
-                projectBasicInfos.value.otherLastName = ''
-                projectBasicInfos.value.otherEmail = ''
+            if (selfBearer.value === 'yes' && projectBasicInfos.value.contactFirstName) {
+                projectBasicInfos.value.contactFirstName = ''
+                projectBasicInfos.value.contactLastName = ''
+                projectBasicInfos.value.contactEmail = ''
             }
             await patchProjectBasicInfos()
         }
@@ -605,8 +605,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <fieldset v-if="selfBearer === 'no'">
                                     <legend class="self-bearer">Saisir les informations de la personne référente à contacter :</legend>
                                     <QInput
-                                        v-model="projectBasicInfos.otherFirstName"
-                                        :label="t('project.other-first-name') + ' *'"
+                                        v-model="projectBasicInfos.contactFirstName"
+                                        :label="t('project.contact-first-name') + ' *'"
                                         clearable
                                         filled
                                         lazy-rules
@@ -614,8 +614,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                     />
                                     <QInput
-                                        v-model="projectBasicInfos.otherLastName"
-                                        :label="t('project.other-last-name') + ' *'"
+                                        v-model="projectBasicInfos.contactLastName"
+                                        :label="t('project.contact-last-name') + ' *'"
                                         clearable
                                         filled
                                         lazy-rules
@@ -623,8 +623,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                     />
                                     <QInput
-                                        v-model="projectBasicInfos.otherEmail"
-                                        :label="t('project.other-email') + ' *'"
+                                        v-model="projectBasicInfos.contactEmail"
+                                        :label="t('project.contact-email') + ' *'"
                                         :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
                                         class="no-rules"
                                         clearable
