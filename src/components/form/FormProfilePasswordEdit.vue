@@ -129,11 +129,12 @@ const clearValues = () => {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+@import "@/assets/styles/forms.scss";
 
 @media screen and (min-width: $responsiveWidth) {
   .form {
     margin: auto;
-    width: 50%;
+    width: $halfSize;
   }
 }
 </style>

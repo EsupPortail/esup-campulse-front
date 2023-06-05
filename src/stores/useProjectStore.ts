@@ -19,7 +19,7 @@ export const useProjectStore = defineStore('projectStore', {
         projectCategories: [],
         projectCommissionDates: [],
         projectDocuments: [],
-        projectCategoryNames: []
+        projectCategoryNames: [],
     }),
 
     getters: {
@@ -82,15 +82,5 @@ export const useProjectStore = defineStore('projectStore', {
             const url = `/projects/${id}/export`
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         },
-
-        async getAllProjects() {
-            const {axiosAuthenticated} = useAxios()
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
-        },
-
-        async getAssociationProjects(associationId: number) {
-            const {axiosAuthenticated} = useAxios()
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
-        }
     }
 })

@@ -440,6 +440,7 @@ async function onChangeLogo(action: string) {
                 <QBtn
                     :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
                     :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
+                    HEAD
                     color="secondary"
                     icon="bi-box-arrow-left"
                 />
@@ -474,19 +475,20 @@ async function onChangeLogo(action: string) {
     </QForm>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
-</style>
 
-<style lang="sass" scoped>
-.address-fields div
-    display: flex
-    gap: 1rem
+.address-fields div {
+    display: flex;
+    gap: 1rem;
 
-    *
-        width: 100%
+    * {
+        width: 100%;
+    }
+}
 
-.q-separator
-    margin: 0.5rem 0 1rem 0
+.q-separator {
+    margin: 0.5rem 0 1rem 0;
+}
 </style>

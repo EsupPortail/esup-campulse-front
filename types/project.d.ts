@@ -1,4 +1,5 @@
 import type {DocumentUpload} from '#/documents'
+import type {User} from '#/user'
 
 export interface Project {
     id: number,
@@ -25,7 +26,8 @@ export interface Project {
     plannedActivities: string,
     preventionSafety: string,
     marketingCampaign: string,
-    projectStatus: ProjectStatus
+    projectStatus: ProjectStatus,
+    projectComments?: ProjectComment[]
 }
 
 export interface ProjectList {
@@ -105,6 +107,14 @@ export interface ProjectCommissionDate {
     amountEarned?: number | string
 }
 
+export interface ProjectComment {
+    id: number,
+    project: Project | undefined,
+    user: User | undefined,
+    text: string,
+    creation_date: string,
+}
+
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
@@ -112,5 +122,5 @@ export interface ProjectStore {
     projectCategories: ProjectCategory[],
     projectCommissionDates: ProjectCommissionDate[],
     projectDocuments: DocumentUpload[],
-    projectCategoryNames: ProjectCategoryName[]
+    projectCategoryNames: ProjectCategoryName[],
 }
