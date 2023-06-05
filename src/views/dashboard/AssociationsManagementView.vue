@@ -117,7 +117,7 @@ const columns: QTableProps['columns'] = [
             :to="{name: 'CreateAssociation'}"
             class="small-button"
             color="secondary"
-            icon="mdi-plus-box"
+            icon="bi-plus-circle"
         />
     </div>
 
@@ -218,7 +218,7 @@ const columns: QTableProps['columns'] = [
                                 :label="t('association.edit')"
                                 :to="{name: 'EditAssociation', params: {id: props.row.id}}"
                                 color="primary"
-                                icon="mdi-pencil"
+                                icon="bi-pencil"
                             />
                         </QTd>
                     </QTr>

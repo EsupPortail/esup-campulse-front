@@ -129,12 +129,12 @@ const clearValues = () => {
                         :label="t('home.back-dashboard')"
                         :to="{ name: 'Dashboard' }"
                         color="secondary"
-                        icon="mdi-arrow-left-circle"
+                        icon="bi-box-arrow-right"
                     />
                     <QBtn
                         :label="t('user-manager.create-association')"
                         color="primary"
-                        icon="mdi-check-circle"
+                        icon="bi-check-lg"
                         type="submit"
                     />
                 </section>

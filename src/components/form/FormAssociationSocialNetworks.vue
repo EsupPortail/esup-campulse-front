@@ -56,7 +56,7 @@ onMounted(initValues)
                     :aria-label="t('delete')"
                     class="delete-network-btn"
                     color="delete"
-                    icon="mdi-delete"
+                    icon="bi-trash"
                     @click="removeNetwork(index)"
                 />
             </div>
@@ -64,7 +64,7 @@ onMounted(initValues)
                 <QBtn
                     :label="t('association.labels.add-social-network')"
                     class="add-network-btn"
-                    icon="mdi-plus-circle-outline"
+                    icon="bi-plus-circle"
                     @click="addNetwork"
                 />
             </div>
@@ -78,32 +78,32 @@ onMounted(initValues)
 
 // Mobile version
 .delete-network-btn {
-  margin-top: .625rem;
+    margin-top: .625rem;
 }
 
 @media screen and (min-width: $responsiveWidth) {
-  .form-container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #network-section {
-    flex-direction: row;
-    gap: .625rem;
-
-    .q-input {
-      flex-grow: 2;
-      margin-bottom: .625rem;
+    .form-container {
+        display: flex;
+        flex-direction: column;
     }
 
-    .delete-network-btn {
-      margin-top: -.001rem;
-      height: 3.5rem;
-    }
-  }
+    #network-section {
+        flex-direction: row;
+        gap: .625rem;
 
-  .add-network-btn {
-    width: 35%;
-  }
+        .q-input {
+            flex-grow: 2;
+            margin-bottom: .625rem;
+        }
+
+        .delete-network-btn {
+            margin-top: -.001rem;
+            height: 3.5rem;
+        }
+    }
+
+    .add-network-btn {
+        width: 35%;
+    }
 }
 </style>

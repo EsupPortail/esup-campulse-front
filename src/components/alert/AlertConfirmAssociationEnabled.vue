@@ -43,7 +43,7 @@ async function onEnableAssociation() {
 <template>
     <QBtn
         :color="isEnabled ? 'orange' : 'green'"
-        :icon="isEnabled ? 'bi bi-unlock' : 'bi bi-lock'"
+        :icon="isEnabled ? 'bi-unlock' : 'bi-lock'"
         :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
         class="test"
         @click="openAlert = true"
@@ -70,7 +70,7 @@ async function onEnableAssociation() {
                 <QBtn
                     v-close-popup
                     :color="isEnabled ? 'orange' : 'green'"
-                    :icon="isEnabled ? 'bi bi-unlock' : 'bi bi-lock'"
+                    :icon="isEnabled ? 'bi-unlock' : 'bi-lock'"
                     :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
                     @click="onEnableAssociation"
                 />

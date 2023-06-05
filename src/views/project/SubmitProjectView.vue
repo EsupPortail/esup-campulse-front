@@ -527,7 +527,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="1"
                         :title="t('project.general-infos')"
-                        icon="mdi-card-text-outline"
+                        icon="bi-card-text"
                     >
                         <QForm
                             @submit.prevent="onSubmitBasicInfos(2)"
@@ -662,7 +662,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="2"
                         :title="t('project.commission-choice')"
-                        icon="mdi-calendar-blank"
+                        icon="bi-calendar"
                     >
                         <QForm
                             @submit.prevent="onSubmitCommissionDates(3)"
@@ -703,7 +703,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="3"
                         :title="t('project.budget')"
-                        icon="mdi-hand-coin-outline"
+                        icon="bi-piggy-bank"
                     >
                         <QForm
                             @submit.prevent="onSubmitBudget(4)"
@@ -876,7 +876,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="4"
                         :title="t('project.goals-title')"
-                        icon="mdi-flag-checkered"
+                        icon="bi-flag"
                     >
                         <QForm
                             @submit.prevent="onSubmitGoals(5)"
@@ -952,7 +952,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="5"
                         :title="t('project.documents')"
-                        icon="mdi-file-document-outline"
+                        icon="bi-file-earmark"
                     >
                         <QForm
                             @submit.prevent="onUploadDocuments(6)"
@@ -1068,7 +1068,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="6"
                         :title="t('recap')"
-                        icon="mdi-check"
+                        icon="bi-check-lg"
                     >
                         <FormProjectRecap
                             @submit-project="onSubmitProject"

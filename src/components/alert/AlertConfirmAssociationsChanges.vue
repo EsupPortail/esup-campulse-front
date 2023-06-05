@@ -198,9 +198,9 @@ async function onConfirmChanges(emailType: string) {
                 <QBtn
                     v-if="switches === 'enable'"
                     v-close-popup
+                    :icon="t('icons.association.is-enabled')"
                     :label="t('association.enable')"
                     color="green"
-                    icon="bi-unlock"
                     @click="onConfirmChanges('')"
                 />
                 <QBtn

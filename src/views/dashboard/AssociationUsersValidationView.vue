@@ -136,7 +136,7 @@ const columns: QTableProps['columns'] = [
                                     :label="t('manage')"
                                     :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
                                     color="secondary"
-                                    icon="mdi-check-circle"
+                                    icon="bi-check-lg"
                                 />
                             </QTd>
                         </QTr>
