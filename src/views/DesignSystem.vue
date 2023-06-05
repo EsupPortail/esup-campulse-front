@@ -238,7 +238,7 @@ const columns: QTableProps['columns'] = [
             >
                 <h1>
                     <span id="header-title-icon">
-                        <i class="bi bi-geo-alt space-1-icon"></i>
+                        <i class="bi bi bi-geo-alt space-1-icon"></i>
                         <i class="bi bi-book space-2-icon"></i>
                         <i class="bi bi-send space-3-icon"></i>
                         <i class="bi bi-person space-4-icon"></i>

@@ -288,7 +288,7 @@ const onClearValues = () => {
                         <QBtn
                             :disable="!newCommissionDate.datesAreLegal"
                             :label="t('add')"
-                            icon="mdi-plus-circle-outline"
+                            icon="bi-plus-circle"
                             type="submit"
                         />
                     </div>

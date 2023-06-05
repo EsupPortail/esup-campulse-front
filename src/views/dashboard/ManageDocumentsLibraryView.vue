@@ -184,7 +184,7 @@ async function onDeleteDocument(documentId: number) {
                     />
                     <QBtn
                         :label="t('add')"
-                        icon="mdi-upload-outline"
+                        icon="bi-upload"
                         type="submit"
                     />
                 </QForm>
@@ -261,7 +261,7 @@ async function onDeleteDocument(documentId: number) {
                                 <QBtn
                                     :disable="document.processType !== 'NO_PROCESS'"
                                     :label="t('delete')"
-                                    icon="mdi-delete-outline"
+                                    icon="bi-trash"
                                     @click="onDeleteDocument(document.id)"
                                 />
                             </div>

@@ -137,7 +137,7 @@ onBeforeRouteLeave((to, from, next) => {
                             {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
                         </li>
                         <li>
-                            <strong>{{ t("user.is-validated-by-admin") }}</strong>
+                            <strong>{{ t('user.is-validated-by-admin') }}</strong>
                             {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
                         </li>
                     </ul>
@@ -148,7 +148,7 @@ onBeforeRouteLeave((to, from, next) => {
                     <section class="btn-group">
                         <QBtn
                             :label="t('back')"
-                            icon="mdi-arrow-left-circle"
+                            icon="bi-box-arrow-right"
                             @click="openAlert = true"
                         />
                         <AlertLeaveEdition
