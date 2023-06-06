@@ -14,13 +14,13 @@ const userStore = useUserStore()
             <QBtn
                     :label="t('back-to-home')"
                     :to="{name: 'Home'}"
-                    icon="mdi-home-outline"
+                    icon="bi-house"
             />
             <QBtn
                     v-if="userStore.isAuth"
                     :label="t('back-to-dashboard')"
                     :to="{name: 'Dashboard'}"
-                    icon="mdi-account"
+                    icon="bi-person-circle"
             />
         </div>
     </section>

@@ -97,7 +97,7 @@ const columns: QTableProps['columns'] = [
                     aria-hidden="true"
                     class="bi bi-pencil-square"
             ></i>
-            {{ route.name === 'ValidateUsers' ? t("user-manager.validation") : t("user-manager.management") }}
+            {{ route.name === 'ValidateUsers' ? t('user-manager.validation') : t('user-manager.management') }}
         </h2>
         <div class="form-container">
             <div class="form form-width">
@@ -197,7 +197,7 @@ const columns: QTableProps['columns'] = [
                                             :label="t('consult')"
                                             :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
                                             color="secondary"
-                                            icon="mdi-check-circle"
+                                            icon="bi-check-lg"
                                     />
                                 </div>
                             </QTd>

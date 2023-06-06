@@ -44,12 +44,11 @@ async function onGetProjects() {
     <DashboardStudentProjectsManagement v-else/>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-</style>
 
-<style lang="sass" scoped>
-p.paragraph
-    text-align: center
+p.paragraph {
+    text-align: center;
+}
 </style>

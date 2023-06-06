@@ -52,7 +52,7 @@ const {
     getFile
 } = useProjectDocuments()
 const {initInfosToPatch, updateUserInfos, infosToPatch} = useUsers()
-const {fromDateIsAnterior, CURRENCY, phoneRegex} = useUtility()
+const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
     getCommissions,
     commissions,
@@ -91,18 +91,14 @@ onMounted(async () => {
         } else await router.push({name: '404'})
     }
 
+    initSelfBearer()
+
     await onGetProjectCategories()
     await onGetDocumentTypes()
     loading.hide()
 })
 
 const step = ref(1)
-const done1 = ref(false)
-const done2 = ref(false)
-const done3 = ref(false)
-const done4 = ref(false)
-const done5 = ref(false)
-const done6 = ref(false)
 
 watch(() => step.value === 2, async () => {
     loading.show()
@@ -139,6 +135,14 @@ watch(() => projectStore.projectCommissionDates.length, () => {
 })
 
 const isSite = ref<boolean>(false)
+
+const selfBearer = ref<'yes' | 'no'>('yes')
+
+const initSelfBearer = () => {
+    if (!newProject.value && projectBasicInfos.value.otherFirstName) {
+        selfBearer.value = 'no'
+    }
+}
 
 // CONST
 const MAX_FILES = 10
@@ -321,15 +325,20 @@ async function onSubmitBasicInfos(nextStep: number) {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
         } else {
+            if (selfBearer.value === 'yes' && projectBasicInfos.value.otherFirstName) {
+                projectBasicInfos.value.otherFirstName = ''
+                projectBasicInfos.value.otherLastName = ''
+                projectBasicInfos.value.otherEmail = ''
+            }
             await patchProjectBasicInfos()
         }
+        // For individual project bearer
         initInfosToPatch(userStore.user)
         if (Object.entries(infosToPatch).length) {
             await updateUserInfos(userStore.user, false)
         }
         if (projectStore.project) {
             await updateProjectCategories()
-            done1.value = true
             step.value = nextStep
         }
     } catch (error) {
@@ -349,7 +358,6 @@ async function onSubmitCommissionDates(nextStep: number) {
     if (projectStore.project) {
         try {
             await updateProjectCommissionDates()
-            done2.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -370,7 +378,6 @@ async function onSubmitBudget(nextStep: number) {
         try {
             await patchProjectBudget(!projectReEdition.value)
             await patchProjectCommissionDates(!projectReEdition.value)
-            done3.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -390,7 +397,6 @@ async function onSubmitGoals(nextStep: number) {
     if (projectStore.project) {
         try {
             await patchProjectGoals()
-            done4.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -410,7 +416,6 @@ async function onUploadDocuments(nextStep: number) {
     if (projectStore.project) {
         try {
             await uploadDocuments(parseInt(route.params.associationId as string))
-            done5.value = true
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -446,7 +451,6 @@ async function onSubmitProject() {
     if (projectStore.project) {
         try {
             await submitProject()
-            done6.value = true
             await router.push({name: 'SubmitProjectSuccessful', params: {projectId: projectStore.project?.id}})
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -521,10 +525,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                 >
                     <!-- BASIC INFOS -->
                     <QStep
-                        :done="done1"
                         :name="1"
                         :title="t('project.general-infos')"
-                        icon="mdi-card-text-outline"
+                        icon="bi-card-text"
                     >
                         <QForm
                             @submit.prevent="onSubmitBasicInfos(2)"
@@ -586,42 +589,56 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             />
                             <fieldset v-if="applicant === 'association'">
                                 <legend class="title-3">{{ t('project.bearer-identity') }}</legend>
-                                <QInput
-                                    v-model="projectBasicInfos.otherFirstName"
-                                    :label="t('project.other-first-name')"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherLastName"
-                                    :label="t('project.other-last-name')"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherEmail"
-                                    :label="t('project.other-email')"
-                                    :rules="projectBasicInfos.otherEmail ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
-                                <QInput
-                                    v-model="projectBasicInfos.otherPhone"
-                                    :label="t('project.other-phone')"
-                                    :rules="projectBasicInfos.otherPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                                    class="no-rules"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                />
+                                <p class="paragraph">{{ t('project.i-am-bearer') }} <strong>{{ associationName }}</strong> :</p>
+                                <div class="q-gutter-sm radio-btn">
+                                    <QRadio
+                                        v-model="selfBearer"
+                                        val="yes"
+                                        :label="t('yes')"
+                                    />
+                                    <QRadio
+                                        v-model="selfBearer"
+                                        val="no"
+                                        :label="t('no')"
+                                    />
+                                </div>
+                                <fieldset v-if="selfBearer === 'no'">
+                                    <legend class="self-bearer">Saisir les informations de la personne référente à contacter :</legend>
+                                    <QInput
+                                        v-model="projectBasicInfos.otherFirstName"
+                                        :label="t('project.other-first-name') + ' *'"
+                                        clearable
+                                        filled
+                                        lazy-rules
+                                        aria-required="true"
+                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    />
+                                    <QInput
+                                        v-model="projectBasicInfos.otherLastName"
+                                        :label="t('project.other-last-name') + ' *'"
+                                        clearable
+                                        filled
+                                        lazy-rules
+                                        aria-required="true"
+                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    />
+                                    <QInput
+                                        v-model="projectBasicInfos.otherEmail"
+                                        :label="t('project.other-email') + ' *'"
+                                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                                        class="no-rules"
+                                        clearable
+                                        filled
+                                        lazy-rules
+                                        aria-required="true"
+                                    />
+                                </fieldset>
                             </fieldset>
-                            <fieldset v-else>
+                            <fieldset
+                                v-else
+                                class="individual-bearer"
+                            >
+                                <legend class="title-3">{{ t('address.address') }}</legend>
                                 <div class="info-panel info-panel-warning">
                                     <i
                                         class="bi bi-info"
@@ -643,10 +660,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- COMMISSION CHOICE -->
                     <QStep
-                        :done="done2"
                         :name="2"
                         :title="t('project.commission-choice')"
-                        icon="mdi-calendar-blank"
+                        icon="bi-calendar"
                     >
                         <QForm
                             @submit.prevent="onSubmitCommissionDates(3)"
@@ -685,10 +701,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- BUDGET -->
                     <QStep
-                        :done="done3"
                         :name="3"
                         :title="t('project.budget')"
-                        icon="mdi-hand-coin-outline"
+                        icon="bi-piggy-bank"
                     >
                         <QForm
                             @submit.prevent="onSubmitBudget(4)"
@@ -859,10 +874,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- GOALS -->
                     <QStep
-                        :done="done4"
                         :name="4"
                         :title="t('project.goals-title')"
-                        icon="mdi-flag-checkered"
+                        icon="bi-flag"
                     >
                         <QForm
                             @submit.prevent="onSubmitGoals(5)"
@@ -936,10 +950,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- DOCUMENTS -->
                     <QStep
-                        :done="done5"
                         :name="5"
                         :title="t('project.documents')"
-                        icon="mdi-file-document-outline"
+                        icon="bi-file-earmark"
                     >
                         <QForm
                             @submit.prevent="onUploadDocuments(6)"
@@ -1012,7 +1025,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                     :key="uploadedDocument.id"
                                                     class="document-item"
                                                 >
-                                                    <p @click="onGetFile(uploadedDocument.pathFile)">
+                                                    <p @click="onGetFile(uploadedDocument)">
                                                         <i
                                                             aria-hidden="true"
                                                             class="bi bi-file-earmark"
@@ -1053,10 +1066,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- RECAP -->
                     <QStep
-                        :done="done6"
                         :name="6"
                         :title="t('recap')"
-                        icon="mdi-check"
+                        icon="bi-check-lg"
                     >
                         <FormProjectRecap
                             @submit-project="onSubmitProject"
@@ -1071,19 +1083,44 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
+
+.q-input, .q-select {
+    padding: 1rem;
+}
+
+.display-row {
+    width: 100%;
+    margin: 0 1rem;
+}
+
+legend, p, h3 {
+    padding: 0 1rem;
+}
+
+legend {
+    margin-top: 1.5rem;
+}
+
+.radio-btn {
+    padding-left: 0.5rem;
+}
+
+.paragraph {
+    margin-bottom: 0.5rem;
+}
+
+.self-bearer {
+    font-size: 1rem;
+}
+
+.form {
+    width: 75% !important;
+}
+
+.individual-bearer {
+    padding: 0 1rem
+}
 </style>
-
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
-
-.q-input, .q-select
-  padding: 1rem
-
-.display-row
-    width: 100%
-    margin: 0 1rem
-</style>
-
-

@@ -15,7 +15,6 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         otherFirstName: '',
         otherLastName: '',
         otherEmail: '',
-        otherPhone: '',
         user: null,
         association: null
     }
@@ -68,7 +67,6 @@ export default function () {
         projectBasicInfos.value.otherFirstName = projectStore.project?.otherFirstName as string
         projectBasicInfos.value.otherLastName = projectStore.project?.otherLastName as string
         projectBasicInfos.value.otherEmail = projectStore.project?.otherEmail as string
-        projectBasicInfos.value.otherPhone = projectStore.project?.otherPhone as string
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
     }
@@ -117,7 +115,6 @@ export default function () {
         projectBasicInfos.value.otherFirstName = ''
         projectBasicInfos.value.otherLastName = ''
         projectBasicInfos.value.otherEmail = ''
-        projectBasicInfos.value.otherPhone = ''
         projectBasicInfos.value.user = null
         projectBasicInfos.value.association = null
         projectCategories.value = []
@@ -221,9 +218,6 @@ export default function () {
         }
         if (projectBasicInfos.value.otherEmail !== projectStore.project?.otherEmail) {
             dataToPatch = Object.assign(dataToPatch, {['otherEmail']: projectBasicInfos.value.otherEmail})
-        }
-        if (projectBasicInfos.value.otherPhone !== projectStore.project?.otherPhone) {
-            dataToPatch = Object.assign(dataToPatch, {['otherPhone']: projectBasicInfos.value.otherPhone})
         }
 
         if (Object.entries(dataToPatch).length) {

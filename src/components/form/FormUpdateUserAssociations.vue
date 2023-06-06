@@ -64,14 +64,14 @@ async function onGetUserAssociations() {
                             v-if="!association.deleteAssociation"
                             :label="t('dashboard.association-user.delete-association')"
                             color="delete"
-                            icon="mdi-delete"
+                            icon="bi-trash"
                             @click="association.deleteAssociation = true"
                         />
                         <div v-else>
                             <div class="cancel-delete">
                                 <QBtn
                                     :label="t('cancel-delete')"
-                                    icon="mdi-cancel"
+                                    icon="bi-x-lg"
                                     @click="association.deleteAssociation = false"
                                 />
                                 <span class="delete-message">
