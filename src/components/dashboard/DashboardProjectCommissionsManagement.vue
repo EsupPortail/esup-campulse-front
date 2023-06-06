@@ -3,7 +3,6 @@ import TableManagedProjects from '@/components/table/TableManagedProjects.vue'
 import useCommissions from '@/composables/useCommissions'
 import {useI18n} from 'vue-i18n'
 import {onMounted, ref, watch} from 'vue'
-import {useProjectStore} from '@/stores/useProjectStore'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
@@ -42,7 +41,7 @@ const initTabs = () => {
         name: obj.label,
         commissionDate: obj.value
     }))
-    tab.value = tabs.value[0].name
+    if (tabs.value.length) tab.value = tabs.value[0].name
 }
 
 onMounted(async () => {
@@ -71,7 +70,7 @@ async function onGetCommissionDates() {
 </script>
 
 <template>
-    <QCard>
+    <QCard v-if="tabs.length">
         <QTabs
             v-model="tab"
             active-color="cape-color"
@@ -149,6 +148,12 @@ async function onGetCommissionDates() {
             </QTabPanel>
         </QTabPanels>
     </QCard>
+    <p
+        v-else
+        class="paragraph"
+    >
+        {{ t('project.no-project-to-show') }}
+    </p>
 </template>
 
 <style lang="scss" scoped>

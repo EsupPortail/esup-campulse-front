@@ -317,3 +317,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
         </section>
     </QForm>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
+
+.display-row {
+    width: 75% !important;
+}
+</style>

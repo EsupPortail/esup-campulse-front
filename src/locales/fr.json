@@ -473,6 +473,7 @@
       "logout-success": "Déconnexion réussie.",
       "new-commission-date": "La date de commission a été créée.",
       "new-document-uploaded": "Nouveau document ajouté.",
+      "new-project-comment": "Le commentaire a été ajouté.",
       "password-changed": "Votre mot de passe a bien été modifié.",
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
       "publish-association": "L'association a bien été publiée dans l'annuaire",
@@ -523,6 +524,13 @@
     "budget-previous-edition": "Budget réel du projet (dépenses) pour l'édition précédente",
     "cannot-submit-projects": "L'association n'est pas habilitée à soumettre de nouveaux projets.",
     "categories": "Catégories",
+    "comments": {
+      "title": "Commentaires",
+      "comment-from": "Commentaire de",
+      "new-comment": "Nouveau commentaire",
+      "no-comment-to-show": "Aucun commentaire pour le moment.",
+      "on-date": "le"
+    },
     "commission-amount-earned": "Montant obtenu pour la commission",
     "commission-choice": "Choix des commissions",
     "commission-choice-hint": "Veuillez choisir les commissions auxquelles vous souhaitez participer. Plusieurs choix possibles.",

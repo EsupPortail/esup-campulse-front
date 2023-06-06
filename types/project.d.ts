@@ -112,7 +112,7 @@ export interface ProjectComment {
     project: Project | undefined,
     user: User | undefined,
     text: string,
-    creation_date: string,
+    creationDate: string,
 }
 
 // STORE
