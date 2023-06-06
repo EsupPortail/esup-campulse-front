@@ -10,6 +10,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {Association} from '#/association'
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const {hasPerm} = useSecurity()
 const {t} = useI18n()
@@ -18,6 +19,7 @@ const projectStore = useProjectStore()
 const associationStore = useAssociationStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const {initUserAssociations} = useUserAssociations()
 
 interface Tabs {
     label: string,
@@ -56,6 +58,7 @@ const splitterModel = ref(20)
 onMounted(async () => {
     loading.show()
     await onGetAssociations()
+    initUserAssociations(false)
     initTabs()
     loading.hide()
 })

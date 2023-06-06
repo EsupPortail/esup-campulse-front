@@ -582,13 +582,15 @@
     "status": {
       "archived": "Archivé",
       "draft": "Brouillon",
-      "processing": "Projet en cours de traitement",
+      "processing": "Projet en attente de validation",
       "rejected": "Projet refusé",
       "review-cancelled": "Projet annulé",
-      "review-processing": "Bilan en cours de traitement",
+      "review-draft": "En attente de bilan",
+      "review-processing": "Bilan en attente de validation",
       "review-rejected": "Bilan refusé",
       "validated": "Validé, en attente de commission"
     },
+    "submit": "Valider et soumettre le projet",
     "submit-new-project": "Nouveau projet",
     "summary": "Résumé du projet",
     "target-all-amount": "Nombre de personnes visées au total",
@@ -596,7 +598,8 @@
     "target-students-amount": "Nombre d'étudiantes et étudiants visés",
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
-    "validate": "Valider et soumettre le projet",
+    "validate": "Valider le projet",
+    "validate-review": "Valider le bilan",
     "validated-projects": "Projets validés",
     "view": "Voir le projet",
     "view-review": "Voir le bilan"
