@@ -68,18 +68,18 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
+                aria-hidden="true"
+                class="bi bi-pencil-square"
             ></i>
             {{ t('recap') }}
         </h2>
         <div class="form-container">
             <div class="form">
                 <FormProjectRecap
-                        view="projectDetail"
-                        @submit-project="0"
-                        @change-step="0"
-                        @get-file="uploadDocument => onGetFile(uploadDocument)"
+                    view="projectDetail"
+                    @submit-project="0"
+                    @change-step="0"
+                    @get-file="uploadDocument => onGetFile(uploadDocument)"
                 />
             </div>
         </div>
@@ -87,8 +87,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
+                aria-hidden="true"
+                class="bi bi-pencil-square"
             ></i>
             Commentaires
         </h2>

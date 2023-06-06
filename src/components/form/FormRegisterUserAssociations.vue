@@ -154,4 +154,3 @@ function clearOptions() {
   padding: 1rem;
 }
 </style>
-
