@@ -209,7 +209,8 @@ const columns: QTableProps['columns'] = [
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/styles/associations.scss';
 </style>

@@ -160,13 +160,4 @@ function onReset() {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
-
-.btn-group {
-  display: flex;
-  gap: 5px;
-}
-
-fieldset {
-  border: none;
-}
 </style>

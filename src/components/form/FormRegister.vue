@@ -220,12 +220,14 @@ async function onRegister() {
                 </div>
             </section>
 
-            <QBtn
-                    :label="t('forms.send')"
-                    class="btn-group"
-                    color="primary"
-                    type="submit"
-            />
+            <div class="btn-group">
+                <QBtn
+                        :label="t('forms.send')"
+                        class="btn-group"
+                        color="primary"
+                        type="submit"
+                />
+            </div>
         </QForm>
     </section>
 </template>

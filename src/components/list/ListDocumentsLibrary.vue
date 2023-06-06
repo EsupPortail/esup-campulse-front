@@ -31,25 +31,25 @@ function onDownloadDocument(documentId: number) {
 
 <template>
     <div
-        v-for="(document, index) in props.documents"
-        :key="index"
-        class="document-input-group"
+            v-for="(document, index) in props.documents"
+            :key="index"
+            class="document-input-group"
     >
         <div class="document-input variant-space-1">
             <div class="document-input-header">
                 <h4 class="library-document">
                     <span>
                         <a
-                            :href="document.path"
-                            target="_blank"
+                                :href="document.path"
+                                target="_blank"
                         >
                             {{ document?.name }}
                         </a>
                     </span>
                 </h4>
                 <button
-                    :aria-label="t('download') + ' ' + document?.name"
-                    @click.prevent="onDownloadDocument(document?.id)"
+                        :aria-label="t('download') + ' ' + document?.name"
+                        @click.prevent="onDownloadDocument(document?.id)"
                 >
                     <i class="bi bi-arrow-bar-down"></i>
                 </button>
@@ -58,31 +58,6 @@ function onDownloadDocument(documentId: number) {
     </div>
 </template>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
-
-.library-document
-    span
-        display: flex !important
-        gap: 0.3rem
-
-        a
-            color: inherit
-            text-decoration: none
-
-        i
-            display: none
-            color: $dashboardColor
-
-    .active-link
-        a
-            color: $dashboardColor
-
-            &:hover
-                text-decoration: underline
-
-        &:hover
-
-            i
-                display: inline
+<style lang="scss" scoped>
+@import '@/assets/styles/documents.scss';
 </style>

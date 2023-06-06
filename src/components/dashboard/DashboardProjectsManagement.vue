@@ -103,15 +103,15 @@ async function onGetApplicants() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-folder2-open"
+                    aria-hidden="true"
+                    class="bi bi-folder2-open"
             ></i>
             {{ t('commission.on-going') }}
         </h2>
         <div class="form-container">
-            <div class="form">
+            <div class="form form-width">
                 <DashboardProjectCommissionsManagement
-                    @change-commission-date="onChangeCommissionDate"
+                        @change-commission-date="onChangeCommissionDate"
                 />
             </div>
         </div>
@@ -119,8 +119,8 @@ async function onGetApplicants() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-archive"
+                    aria-hidden="true"
+                    class="bi bi-archive"
             ></i>
             {{ t('commission.archived') }}
         </h2>
@@ -128,21 +128,21 @@ async function onGetApplicants() {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        :label="t('dashboard.manage-archived-projects')"
-                        :to="{name: 'ArchivedCommission'}"
+                            :label="t('dashboard.manage-archived-projects')"
+                            :to="{name: 'ArchivedCommission'}"
                     />
                 </div>
             </div>
         </div>
     </section>
     <section
-        v-if="hasPerm('change_commissiondate')"
-        class="dashboard-section"
+            v-if="hasPerm('change_commissiondate')"
+            class="dashboard-section"
     >
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-calendar-check"
+                    aria-hidden="true"
+                    class="bi bi-calendar-check"
             ></i>
             {{ t('commission.dates') }}
         </h2>
@@ -150,8 +150,8 @@ async function onGetApplicants() {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        :label="t('dashboard.manage-commission-dates')"
-                        :to="{name: 'ManageCommissionDates'}"
+                            :label="t('dashboard.manage-commission-dates')"
+                            :to="{name: 'ManageCommissionDates'}"
                     />
                 </div>
             </div>

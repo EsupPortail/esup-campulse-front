@@ -155,37 +155,37 @@ async function onDeleteDocument(documentId: number) {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-file-earmark"
+                    aria-hidden="true"
+                    class="bi bi-file-earmark"
             ></i>
             {{ t('documents.upload-new') }}
         </h2>
         <div class="form-container">
             <div class="form">
                 <QForm
-                    ref="newDocumentForm"
-                    @reset="onClearValues"
-                    @submit="onUploadNewDocument"
+                        ref="newDocumentForm"
+                        @reset="onClearValues"
+                        @submit="onUploadNewDocument"
                 >
                     <QInput
-                        v-model="newDocument.name"
-                        :label="t('documents.choose-name')"
-                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                        clearable
-                        filled
+                            v-model="newDocument.name"
+                            :label="t('documents.choose-name')"
+                            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                            clearable
+                            filled
                     />
 
                     <QFile
-                        v-model="newDocument.file"
-                        :label="t('documents.choose-file')"
-                        :rules="[val => val || t('forms.fill-field')]"
-                        clearable
-                        filled
+                            v-model="newDocument.file"
+                            :label="t('documents.choose-file')"
+                            :rules="[val => val || t('forms.fill-field')]"
+                            clearable
+                            filled
                     />
                     <QBtn
-                        :label="t('add')"
-                        icon="bi-upload"
-                        type="submit"
+                            :label="t('add')"
+                            icon="bi-upload"
+                            type="submit"
                     />
                 </QForm>
             </div>
@@ -196,32 +196,32 @@ async function onDeleteDocument(documentId: number) {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-folder2-open"
+                    aria-hidden="true"
+                    class="bi bi-folder2-open"
             ></i>
             {{ t('documents.no-process-library') }}
         </h2>
         <div class="form-container">
             <div class="form">
                 <div
-                    v-for="(document, index) in libraryDocuments"
-                    :key="index"
-                    class="document-input-group"
+                        v-for="(document, index) in libraryDocuments"
+                        :key="index"
+                        class="document-input-group"
                 >
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
                             <h4 class="library-document">
                                 <span :class="document.path ? 'active-link' : ''">
                                     <a
-                                        :href="document.path"
-                                        target="_blank"
+                                            :href="document.path"
+                                            target="_blank"
                                     >
                                         {{ document.name }}
                                     </a>
                                     <i
-                                        v-if="document.path"
-                                        aria-hidden="true"
-                                        class="bi bi-eye"
+                                            v-if="document.path"
+                                            aria-hidden="true"
+                                            class="bi bi-eye"
                                     ></i>
                                 </span>
                             </h4>
@@ -234,35 +234,35 @@ async function onDeleteDocument(documentId: number) {
 
                     <div v-if="document.open">
                         <QForm
-                            @submit.prevent="onUpdateDocument(document.id)"
+                                @submit.prevent="onUpdateDocument(document.id)"
                         >
                             <QInput
-                                v-model="document.newName"
-                                :label="t('documents.choose-name')"
-                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                                clearable
-                                filled
+                                    v-model="document.newName"
+                                    :label="t('documents.choose-name')"
+                                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                    clearable
+                                    filled
                             />
 
                             <QFile
-                                v-model="document.file"
-                                :accept="document.mimeTypes.join(',')"
-                                :label="t('documents.choose-file')"
-                                :rules="[val => val || t('forms.fill-field')]"
-                                clearable
-                                filled
+                                    v-model="document.file"
+                                    :accept="document.mimeTypes.join(',')"
+                                    :label="t('documents.choose-file')"
+                                    :rules="[val => val || t('forms.fill-field')]"
+                                    clearable
+                                    filled
                             />
                             <div class="flex-btn">
                                 <QBtn
-                                    :icon="document.path ? 'mdi-autorenew' : 'mdi-upload-outline'"
-                                    :label="document.path ? t('update') : t('add')"
-                                    type="submit"
+                                        :icon="document.path ? 'mdi-autorenew' : 'mdi-upload-outline'"
+                                        :label="document.path ? t('update') : t('add')"
+                                        type="submit"
                                 />
                                 <QBtn
-                                    :disable="document.processType !== 'NO_PROCESS'"
-                                    :label="t('delete')"
-                                    icon="bi-trash"
-                                    @click="onDeleteDocument(document.id)"
+                                        :disable="document.processType !== 'NO_PROCESS'"
+                                        :label="t('delete')"
+                                        icon="bi-trash"
+                                        @click="onDeleteDocument(document.id)"
                                 />
                             </div>
                         </QForm>
@@ -273,44 +273,8 @@ async function onDeleteDocument(documentId: number) {
     </section>
 </template>
 
-
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-</style>
-
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
-
-.document-input-header > p > i
-    margin-right: 1rem
-
-.flex-btn
-    display: flex
-    gap: 1rem
-
-.library-document
-    span
-        display: flex !important
-        gap: 0.3rem
-
-        a
-            color: inherit
-            text-decoration: none
-
-        i
-            display: none
-            color: $dashboardColor
-
-    .active-link
-        a
-            color: $dashboardColor
-
-            &:hover
-                text-decoration: underline
-
-        &:hover
-
-            i
-                display: inline
+@import '@/assets/styles/documents.scss';
 </style>

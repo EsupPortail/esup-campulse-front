@@ -79,67 +79,67 @@ function clearOptions() {
                 <span>{{ t('dashboard.association-user.add-my-associations-note') }}</span>
 
                 <div
-                    v-for="(association, index) in newAssociations"
-                    :key="index"
+                        v-for="(association, index) in newAssociations"
+                        :key="index"
                 >
                     <div class="flex-group">
                         <div>
                             <QSelect
-                                v-model="association.id"
-                                :label="t('forms.select-association')"
-                                :options="options"
-                                clearable
-                                emit-value
-                                fill-input
-                                filled
-                                hide-selected
-                                input-debounce="0"
-                                map-options
-                                use-input
-                                @filter="filterAssociations"
-                                @input="clearOptions"
-                                @update:model-value="checkHasPresident(association)"
+                                    v-model="association.id"
+                                    :label="t('forms.select-association')"
+                                    :options="options"
+                                    clearable
+                                    emit-value
+                                    fill-input
+                                    filled
+                                    hide-selected
+                                    input-debounce="0"
+                                    map-options
+                                    use-input
+                                    @filter="filterAssociations"
+                                    @input="clearOptions"
+                                    @update:model-value="checkHasPresident(association)"
                             />
                             <QOptionGroup
-                                v-model="association.role"
-                                :options="association.options"
-                                color="teal"
-                                inline
-                                @update:model-value="updateRegisterRoleInAssociation"
+                                    v-model="association.role"
+                                    :options="association.options"
+                                    color="teal"
+                                    inline
+                                    @update:model-value="updateRegisterRoleInAssociation"
                             />
                         </div>
                         <QSeparator
-                            inset
-                            vertical
+                                inset
+                                vertical
                         />
                         <div>
                             <QBtn
-                                :aria-label="t('forms.delete-association')"
-                                class="bg-delete"
-                                icon="bi-trash"
-                                @click="removeAssociation(index)"
+                                    :aria-label="t('forms.delete-association')"
+                                    class="bg-delete"
+                                    icon="bi-trash"
+                                    @click="removeAssociation(index)"
                             />
                         </div>
                     </div>
                     <QSeparator
-                        v-if="routeName !== 'ManageAccount'"
+                            v-if="routeName !== 'ManageAccount'"
                     />
                     <QBtn
-                        v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
+                            v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
                             routeName === 'ManageAccount'"
-                        :label="t('validate')"
-                        class="validate-button"
-                        icon-right="bi-check2"
-                        type="submit"
+                            :label="t('validate')"
+                            class="validate-button"
+                            icon-right="bi-check2"
+                            type="submit"
                     />
                 </div>
                 <QBtn
-                    v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                        v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
                         (routeName === 'ManageAccount' && newAssociations.length === 0)"
-                    :label="t('forms.add-association')"
-                    class="add-association"
-                    icon="bi-plus-circle"
-                    @click="addAssociation"
+                        :label="t('forms.add-association')"
+                        class="add-association"
+                        icon="bi-plus-circle"
+                        @click="addAssociation"
                 />
             </section>
         </QCardSection>
@@ -151,6 +151,6 @@ function clearOptions() {
 @import '@/assets/styles/associations.scss';
 
 .q-card__section {
-  padding: 1rem;
+  margin: 1rem;
 }
 </style>

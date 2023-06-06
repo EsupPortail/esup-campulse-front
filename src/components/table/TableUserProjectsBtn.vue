@@ -17,7 +17,10 @@ const props = defineProps<{
 interface Option {
     icon: 'bi-eye' | 'bi-pencil',
     label: string,
-    to?: { name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail', params: { associationId?: number, projectId: number } }
+    to?: {
+        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail',
+        params: { associationId?: number, projectId: number }
+    }
 }
 
 const options = ref<Option[]>([])
@@ -30,9 +33,9 @@ const initOptions = () => {
                 icon: 'bi-pencil',
                 label: t('project.modify'),
                 to: props.association ? {
-                    name: 'SubmitProjectAssociation',
-                    params: {associationId: props.association, projectId: props.project}
-                } :
+                        name: 'SubmitProjectAssociation',
+                        params: {associationId: props.association, projectId: props.project}
+                    } :
                     {name: 'SubmitProjectIndividual', params: {projectId: props.project}}
             })
         }
@@ -66,20 +69,20 @@ onMounted(initOptions)
 <template>
     <div class="q-pa-md">
         <QBtnDropdown
-            v-if="options.length"
-            :label="t('manage')"
+                v-if="options.length"
+                :label="t('manage')"
         >
             <QList>
                 <QItem
-                    v-for="(option, index) in options"
-                    :key="index"
-                    v-close-popup
-                    clickable
-                    @click="() => router.push(option.to)"
+                        v-for="(option, index) in options"
+                        :key="index"
+                        v-close-popup
+                        clickable
+                        @click="() => router.push(option.to)"
                 >
                     <QItemSection avatar>
                         <QAvatar
-                            :icon="option.icon"
+                                :icon="option.icon"
                         />
                     </QItemSection>
                     <QItemSection>
@@ -89,18 +92,20 @@ onMounted(initOptions)
             </QList>
         </QBtnDropdown>
         <span
-            v-else
-            class="no-presidency"
+                v-else
+                class="no-presidency"
         >{{ t('forbidden') }}</span>
     </div>
 </template>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 
-.q-item
-    color: $capeColorText
+.q-item {
+  color: $capeColorText;
+}
 
-.no-presidency
-    color: $textColor2
+.no-presidency {
+  color: $textColor2;
+}
 </style>
