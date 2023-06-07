@@ -48,7 +48,9 @@ router.beforeEach(async (to) => {
 
     // Commission
     if (to.name == 'ArchivedCommission' && !hasPerm('view_project')) return {name: '404'}
-    if (to.name === 'ManageCommissionDates' && !hasPerm('change_commissiondate')) return {name: '404'}
+    if (to.name === 'ManageCommissionDates'
+        && (!hasPerm('add_commission') || !hasPerm('change_commission') || !hasPerm('delete_commission')))
+        return {name: '404'}
 
     // Dashboard
     if ((to.name === 'ValidateUsers' || to.name === 'UserValidationDetail')

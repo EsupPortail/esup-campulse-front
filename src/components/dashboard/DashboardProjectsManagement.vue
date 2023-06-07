@@ -43,7 +43,7 @@ const {hasPerm} = useSecurity()
         </div>
     </section>
     <section
-        v-if="hasPerm('change_commissiondate')"
+        v-if="hasPerm('add_commission') || hasPerm('change_commission') || hasPerm('delete_commission')"
         class="dashboard-section"
     >
         <h2>

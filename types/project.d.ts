@@ -60,12 +60,6 @@ export interface ProjectCategoryName {
     name: string
 }
 
-interface CommissionDate {
-    id: number,
-    submissionDate: string,
-    commissionDate: string,
-    commission: number
-}
 
 export interface ProjectBasicInfos {
     name: string,

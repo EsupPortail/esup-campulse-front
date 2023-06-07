@@ -1,95 +1,128 @@
-import {ref, watch} from 'vue'
-import type {CommissionFund, SelectCommissionDateLabel} from '#/commissions'
+import {ref} from 'vue'
+import type {Commission, CommissionFund, Fund} from '#/commissions'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {CommissionDate} from '#/project'
-import type {AxiosInstance} from 'axios'
+import useUtility from '@/composables/useUtility'
 
-// Used to store commissionFunds from /commissions/funds/
+// Funds
+const funds = ref<Fund[]>([])
+const fundsLabels = ref<SelectLabel[]>([])
+const userFunds = ref<number[]>([])
+
+// Commissions
+const commissions = ref<Commission[]>([])
 const commissionFunds = ref<CommissionFund[]>([])
-
-// Used to create labels to register user commissionsFunds
-const commissionFundsLabels = ref<SelectLabel[]>([])
-
-// Used to store the commissionFunds of a user
-const userCommissionFunds = ref<number[]>([])
-
-// Used to store commission dates
-const commissionDates = ref<CommissionDate[]>([])
-
-// Used to store commission dates labels for project submission
-const commissionDatesLabels = ref<SelectCommissionDateLabel[]>([])
+const commissionLabels = ref<SelectLabel[]>([])
 
 export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const userManagerStore = useUserManagerStore()
+    const {arraysAreEqual} = useUtility()
 
-    // GET COMMISSION INFOS
-    async function getCommissionFunds() {
-        if (commissionFunds.value.length === 0) {
-            commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/funds/')).data
+    // Funds
+    async function getFunds() {
+        if (funds.value.length === 0) {
+            funds.value = (await axiosPublic.get<Fund[]>('/commissions/funds/')).data
         }
     }
 
-    async function getCommissionDates(onlyNext: boolean | undefined, onlyActive: boolean | undefined, managedCommissions: boolean | undefined) {
-        let instance = axiosPublic as AxiosInstance
-        let urlString = '/commissions/commission_dates'
-        const urlArray = []
-        if (onlyNext !== undefined) urlArray.push(`only_next=${onlyNext}`)
-        if (onlyActive !== undefined) urlArray.push(`active_projects=${onlyActive}`)
-        if (managedCommissions !== undefined) {
-            urlArray.push(`managed_commissions=${managedCommissions}`)
-            if (managedCommissions) instance = axiosAuthenticated
-        }
-        if (urlArray.length) urlString += `?${urlArray.join('&')}`
-        commissionDates.value = (await instance.get<CommissionDate[]>(urlString)).data
+    const initFundsLabels = () => {
+        fundsLabels.value = funds.value.map(fund => ({
+            value: fund.id,
+            label: fund.acronym
+        }))
     }
 
-    async function postCommissionDate(commission: number, commissionDate: string, submissionDate: string) {
-        await axiosAuthenticated.post('/commissions/commission_dates', {
-            commission,
-            commissionDate,
-            submissionDate
-        })
-    }
-
-    async function patchCommissionDate(id: number, commissionDate: string, submissionDate: string) {
-        await axiosAuthenticated.patch(`/commissions/commission_dates/${id}`, {
-            commissionDate,
-            submissionDate
-        })
-    }
-
-    async function deleteCommissionDate(id: number) {
-        await axiosAuthenticated.delete(`/commissions/commission_dates/${id}`)
-    }
-
-    // INIT COMMISSION FUNDS DATA
-    const initCommissionFundsLabels = () => {
-        commissionFundsLabels.value = []
-        commissionFunds.value.forEach(function (commission) {
-            commissionFundsLabels.value.push({
-                value: commission.id,
-                label: commission.acronym
-            })
-        })
-    }
-    watch(() => commissionFunds.value.length, initCommissionFundsLabels)
-
-    const initManagedUserCommissionFunds = () => {
-        userCommissionFunds.value = []
+    const initUserFunds = () => {
+        userFunds.value = []
         userManagerStore.user?.groups?.forEach((group) => {
-            if (group.fundId) userCommissionFunds.value.push(group.fundId)
+            if (group.fundId) userFunds.value.push(group.fundId)
         })
     }
-    watch(() => userManagerStore.user, initManagedUserCommissionFunds)
 
-    const initCommissionDatesLabels = (isSite: boolean | undefined) => {
+    // Commissions
+    async function getCommissionsForManagers(
+        activeProjects: boolean | undefined,
+        isOpenToProjects: boolean | undefined,
+        isSite: boolean | undefined,
+        managedCommissions: boolean | undefined,
+        managedProjects: boolean | undefined) {
+
+        let urlString = '/commissions/'
+        const urlArray = []
+
+        if (activeProjects !== undefined) urlArray.push(`active_projects=${activeProjects}`)
+        if (isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${isOpenToProjects}`)
+        if (isSite !== undefined) urlArray.push(`is_site=${isSite}`)
+        if (managedCommissions !== undefined) urlArray.push(`managed_commissions=${managedCommissions}`)
+        if (managedProjects !== undefined) urlArray.push(`managed_projects=${managedProjects}`)
+
+        if (urlArray.length) urlString += `?${urlArray.join('&')}`
+        commissions.value = (await axiosPublic.get<Commission[]>(urlString)).data
+    }
+
+    async function getCommissionsForStudents(isOpenToProjects: boolean | undefined, isSite: boolean | undefined) {
+        let urlString = '/commissions/'
+        const urlArray = []
+
+        if (isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${isOpenToProjects}`)
+        if (isSite !== undefined) urlArray.push(`is_site=${isSite}`)
+
+        if (urlArray.length) urlString += `?${urlArray.join('&')}`
+        commissions.value = (await axiosPublic.get<Commission[]>(urlString)).data
+    }
+
+    async function getCommissionFunds() {
+        commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/commission_funds/')).data
+    }
+
+    async function postNewCommission(commissionDate: string, submissionDate: string, isOpenToProjects: boolean, funds: number[]) {
+        const newCommission: Commission = (await axiosAuthenticated.post('/commissions/', {
+            commissionDate,
+            submissionDate,
+            isOpenToProjects
+        })).data
+        for (const fund of funds) {
+            await axiosAuthenticated.post('/commissions/commission_funds/', {
+                commission: newCommission.id,
+                fund
+            })
+        }
+    }
+
+    async function updateCommission(id: number, commissionDate: string, submissionDate: string, oldFunds: number[], newFunds: number[]) {
+        await axiosAuthenticated.patch(`/commissions/${id}`, {
+            commissionDate,
+            submissionDate
+        })
+        if (!arraysAreEqual(oldFunds, newFunds)) {
+            const newFundsToPost = newFunds.filter(x => oldFunds.indexOf(x) === -1)
+            const oldFundsToDelete = oldFunds.filter(x => newFunds.indexOf(x) === -1)
+
+            for (let i = 0; i < newFundsToPost.length; i++) {
+                await axiosAuthenticated.post('/commissions/commission_funds/', {
+                    commission: id,
+                    fund: newFundsToPost[i]
+                })
+            }
+            for (let i = 0; i < oldFundsToDelete.length; i++) {
+                await axiosAuthenticated.delete(`/commissions/commission_funds/${id}`)
+            }
+        }
+
+    }
+
+    async function deleteCommission(id: number) {
+        await axiosAuthenticated.delete(`/commissions/${id}`)
+    }
+
+
+    /*const initCommissionFundsLabels = (isSite: boolean | undefined) => {
         commissionDatesLabels.value = []
         commissionDates.value.forEach((commissionDate) => {
-            const fund = commissionFunds.value.find(obj => obj.id === commissionDate.commission)
+            const fund = funds.value.find(obj => obj.id === commissionDate.commission)
             if (fund) {
                 // 1st option : We simply initialize commissionDates based on isSite param
                 // 2nd option : We initialize labels based on what we got from GET request
@@ -102,20 +135,23 @@ export default function () {
                 }
             }
         })
-    }
+    }*/
 
     return {
-        getCommissionFunds,
+        funds,
+        fundsLabels,
+        userFunds,
+        deleteCommission,
+        updateCommission,
+        initFundsLabels,
+        getFunds,
+        commissions,
+        commissionLabels,
         commissionFunds,
-        commissionFundsLabels,
-        userCommissionFunds,
-        initManagedUserCommissionFunds,
-        commissionDates,
-        getCommissionDates,
-        commissionDatesLabels,
-        initCommissionDatesLabels,
-        postCommissionDate,
-        deleteCommissionDate,
-        patchCommissionDate
+        initUserFunds,
+        getCommissionsForManagers,
+        getCommissionsForStudents,
+        postNewCommission,
+        getCommissionFunds
     }
 }
