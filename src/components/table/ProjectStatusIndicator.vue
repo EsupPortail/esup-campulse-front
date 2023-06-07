@@ -105,9 +105,10 @@ onMounted(initSpanClasses)
     </span>
 </template>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 
-.form-state-cape
-    color: $capeColorText
+.form-state-cape {
+    color: $capeColorText;
+}
 </style>

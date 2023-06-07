@@ -46,7 +46,7 @@ watch(() => contentStore.about.length, () => {
 
 <template>
     <section
-        :class="['form-container', 'contact-section']"
+            :class="['form-container', 'contact-section']"
     >
         <div class="contact-title">
             <h4>{{ contactInfo?.header }}</h4>
@@ -63,7 +63,7 @@ watch(() => contentStore.about.length, () => {
 </template>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/contact.scss';
 </style>

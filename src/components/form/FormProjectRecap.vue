@@ -71,18 +71,18 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                     </div>
 
                     <div class="display-row">
-                        <p class="row-title">{{ t('project.other-first-name') }}</p>
-                        <p>{{ projectBasicInfos.otherFirstName }}</p>
+                        <p class="row-title">{{ t('project.contact-first-name') }}</p>
+                        <p>{{ projectBasicInfos.contactFirstName }}</p>
                     </div>
 
                     <div class="display-row">
-                        <p class="row-title">{{ t('project.other-last-name') }}</p>
-                        <p>{{ projectBasicInfos.otherLastName }}</p>
+                        <p class="row-title">{{ t('project.contact-last-name') }}</p>
+                        <p>{{ projectBasicInfos.contactLastName }}</p>
                     </div>
 
                     <div class="display-row">
-                        <p class="row-title">{{ t('project.other-email') }}</p>
-                        <p>{{ projectBasicInfos.otherEmail }}</p>
+                        <p class="row-title">{{ t('project.contact-email') }}</p>
+                        <p>{{ projectBasicInfos.contactEmail }}</p>
                     </div>
                 </section>
             </section>

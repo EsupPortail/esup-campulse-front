@@ -12,9 +12,9 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         plannedStartDate: '',
         plannedEndDate: '',
         plannedLocation: '',
-        otherFirstName: '',
-        otherLastName: '',
-        otherEmail: '',
+        contactFirstName: '',
+        contactLastName: '',
+        contactEmail: '',
         user: null,
         association: null
     }
@@ -48,7 +48,7 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function () {
+export default function() {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -64,9 +64,9 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
         projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
         projectBasicInfos.value.plannedLocation = projectStore.project?.plannedLocation as string
-        projectBasicInfos.value.otherFirstName = projectStore.project?.otherFirstName as string
-        projectBasicInfos.value.otherLastName = projectStore.project?.otherLastName as string
-        projectBasicInfos.value.otherEmail = projectStore.project?.otherEmail as string
+        projectBasicInfos.value.contactFirstName = projectStore.project?.contactFirstName as string
+        projectBasicInfos.value.contactLastName = projectStore.project?.contactLastName as string
+        projectBasicInfos.value.contactEmail = projectStore.project?.contactEmail as string
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
     }
@@ -112,9 +112,9 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = ''
         projectBasicInfos.value.plannedEndDate = ''
         projectBasicInfos.value.plannedLocation = ''
-        projectBasicInfos.value.otherFirstName = ''
-        projectBasicInfos.value.otherLastName = ''
-        projectBasicInfos.value.otherEmail = ''
+        projectBasicInfos.value.contactFirstName = ''
+        projectBasicInfos.value.contactLastName = ''
+        projectBasicInfos.value.contactEmail = ''
         projectBasicInfos.value.user = null
         projectBasicInfos.value.association = null
         projectCategories.value = []
@@ -210,14 +210,14 @@ export default function () {
         if (projectBasicInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
             dataToPatch = Object.assign(dataToPatch, {['plannedLocation']: projectBasicInfos.value.plannedLocation})
         }
-        if (projectBasicInfos.value.otherFirstName !== projectStore.project?.otherFirstName) {
-            dataToPatch = Object.assign(dataToPatch, {['otherFirstName']: projectBasicInfos.value.otherFirstName})
+        if (projectBasicInfos.value.contactFirstName !== projectStore.project?.contactFirstName) {
+            dataToPatch = Object.assign(dataToPatch, {['contactFirstName']: projectBasicInfos.value.contactFirstName})
         }
-        if (projectBasicInfos.value.otherLastName !== projectStore.project?.otherLastName) {
-            dataToPatch = Object.assign(dataToPatch, {['otherLastName']: projectBasicInfos.value.otherLastName})
+        if (projectBasicInfos.value.contactLastName !== projectStore.project?.contactLastName) {
+            dataToPatch = Object.assign(dataToPatch, {['contactLastName']: projectBasicInfos.value.contactLastName})
         }
-        if (projectBasicInfos.value.otherEmail !== projectStore.project?.otherEmail) {
-            dataToPatch = Object.assign(dataToPatch, {['otherEmail']: projectBasicInfos.value.otherEmail})
+        if (projectBasicInfos.value.contactEmail !== projectStore.project?.contactEmail) {
+            dataToPatch = Object.assign(dataToPatch, {['contactEmail']: projectBasicInfos.value.contactEmail})
         }
 
         if (Object.entries(dataToPatch).length) {

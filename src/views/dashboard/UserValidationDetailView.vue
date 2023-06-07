@@ -216,12 +216,5 @@ async function onDeleteUser() {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 @import "@/assets/_variables.scss";
-
-@media screen and (min-width: $responsiveWidth) {
-  .form {
-    margin: auto;
-    width: 50%;
-  }
-}
 </style>
 

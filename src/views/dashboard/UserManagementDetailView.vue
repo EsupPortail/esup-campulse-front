@@ -74,47 +74,47 @@ onBeforeRouteLeave((to, from, next) => {
 
 <template>
     <QForm
-        v-if="userManagerStore.user"
-        class="q-gutter-md"
-        @submit.prevent="openAlert = true"
+            v-if="userManagerStore.user"
+            class="q-gutter-md"
+            @submit.prevent="openAlert = true"
     >
         <section class="association-cards dashboard-section">
             <div class="form-title">
                 <h2>
                     <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                     ></i>
                     {{ t('user-manager.user-infos') }}
                 </h2>
             </div>
 
             <div class="form-container">
-                <div class="form">
+                <div class="form form-width">
                     <FormUserInfosEdition
-                        :edited-by-staff="true"
-                        :user="userManagerStore.user"
+                            :edited-by-staff="true"
+                            :user="userManagerStore.user"
                     />
                 </div>
             </div>
         </section>
 
         <section
-            v-if="groupCanJoinAssociation"
-            class="association-cards dashboard-section"
+                v-if="groupCanJoinAssociation"
+                class="association-cards dashboard-section"
         >
             <div class="form-title">
                 <h2>
                     <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                     ></i>
                     {{ t('user-manager.user-associations') }}
                 </h2>
             </div>
 
             <div class="form-container">
-                <div class="form">
+                <div class="form form-width">
                     <FormUpdateUserAssociations/>
                     <FormRegisterUserAssociations/>
                 </div>
@@ -129,7 +129,7 @@ onBeforeRouteLeave((to, from, next) => {
                 </h2>
             </div>
             <div class="form-container">
-                <div class="form">
+                <div class="form form-width">
                     <FormUserGroups/>
                     <ul>
                         <li>
@@ -144,22 +144,22 @@ onBeforeRouteLeave((to, from, next) => {
                 </div>
             </div>
             <div class="form-container">
-                <div class="form">
+                <div class="form form-width">
                     <section class="btn-group">
                         <QBtn
-                            :label="t('back')"
-                            icon="bi-box-arrow-right"
-                            @click="openAlert = true"
+                                :label="t('back')"
+                                icon="bi-box-arrow-right"
+                                @click="openAlert = true"
                         />
                         <AlertLeaveEdition
-                            :open-alert="openAlert"
-                            :text="t('alerts.leave-user-edition')"
-                            @closeAlert="openAlert = !openAlert"
-                            @leaveEdition="onLeaveEdition"
+                                :open-alert="openAlert"
+                                :text="t('alerts.leave-user-edition')"
+                                @closeAlert="openAlert = !openAlert"
+                                @leaveEdition="onLeaveEdition"
                         />
                         <AlertConfirmUserUpdate
-                            v-if="groupChoiceIsValid"
-                            @has-validated="hasValidated = true"
+                                v-if="groupChoiceIsValid"
+                                @has-validated="hasValidated = true"
                         />
                         <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
                     </section>
@@ -171,20 +171,12 @@ onBeforeRouteLeave((to, from, next) => {
 
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
+@import '@/assets/styles/forms.scss';
 
 ul {
-    margin-left: 1rem;
-    list-style: none;
+  margin-left: 1rem;
+  list-style: none;
 }
 
-@media screen and (min-width: $responsiveWidth) {
-    .form, .form-title {
-        width: $halfSize;
-        margin: auto;
-    }
 
-    .btn-group {
-        justify-content: center;
-    }
-}
 </style>

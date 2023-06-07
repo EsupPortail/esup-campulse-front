@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
 import type {ProcessDocument} from '#/documents'
 import ProjectCommentForm from '@/components/project/ProjectCommentForm.vue'
 import axios from 'axios'
