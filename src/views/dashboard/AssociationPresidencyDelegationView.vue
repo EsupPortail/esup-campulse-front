@@ -127,7 +127,7 @@ const columns: QTableProps['columns'] = [
             {{ t('dashboard.association-user.delegate') + ' ' + associationName }}
         </h2>
         <div class="form-container">
-            <div class="form">
+            <div class="form form-width">
                 <QTable
                     :columns="columns"
                     :loading="!associationMembers"
@@ -197,7 +197,7 @@ const columns: QTableProps['columns'] = [
                         </QTr>
                     </template>
                 </QTable>
-                <section class="form-page-navigation">
+                <section class="btn-group">
                     <QBtn
                         :label="t('back')"
                         :to="{name: 'AssociationDashboard', params: {id: route.params.id}}"
@@ -209,7 +209,7 @@ const columns: QTableProps['columns'] = [
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 </style>

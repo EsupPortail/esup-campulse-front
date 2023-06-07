@@ -46,33 +46,33 @@ async function onGetUserAssociations() {
         }}
     </p>
     <QCard
-        v-for="association in userAssociations"
-        :key="association.id ? association.id : 0"
-        class="association-card"
+            v-for="association in userAssociations"
+            :key="association.id ? association.id : 0"
+            class="association-card"
     >
         <QCardSection>
             <section id="association-user-update">
                 <h4 class="title-4">{{ association.name }}</h4>
                 <QOptionGroup
-                    v-model="association.role"
-                    :options="association.options"
-                    color="teal"
+                        v-model="association.role"
+                        :options="association.options"
+                        color="teal"
                 />
                 <div class="btn-group btn-delete">
                     <div>
                         <QBtn
-                            v-if="!association.deleteAssociation"
-                            :label="t('dashboard.association-user.delete-association')"
-                            color="delete"
-                            icon="mdi-delete"
-                            @click="association.deleteAssociation = true"
+                                v-if="!association.deleteAssociation"
+                                :label="t('dashboard.association-user.delete-association')"
+                                color="delete"
+                                icon="bi-trash"
+                                @click="association.deleteAssociation = true"
                         />
                         <div v-else>
                             <div class="cancel-delete">
                                 <QBtn
-                                    :label="t('cancel-delete')"
-                                    icon="mdi-cancel"
-                                    @click="association.deleteAssociation = false"
+                                        :label="t('cancel-delete')"
+                                        icon="bi-x-lg"
+                                        @click="association.deleteAssociation = false"
                                 />
                                 <span class="delete-message">
                                     {{ t('user.delete-association-role') }}
@@ -86,7 +86,7 @@ async function onGetUserAssociations() {
     </QCard>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
 </style>

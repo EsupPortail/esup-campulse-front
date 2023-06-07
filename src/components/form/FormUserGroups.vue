@@ -115,6 +115,7 @@ function onInitGroupLabels() {
             :label="t('commissions')"
             :options="commissionFundsLabels"
             :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
+            HEAD
             emit-value
             filled
             map-options
@@ -125,7 +126,7 @@ function onInitGroupLabels() {
     </fieldset>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 
 .q-option-group {

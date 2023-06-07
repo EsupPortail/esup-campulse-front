@@ -165,17 +165,17 @@ const onClearValues = () => {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-calendar-check"
+                    aria-hidden="true"
+                    class="bi bi-calendar-check"
             ></i>
             {{ t('commission.ongoing-or-to-come') }}
         </h2>
         <div class="form-container">
             <div class="form">
                 <div
-                    v-for="commissionDate in manageCommissionDates"
-                    :key="commissionDate.id"
-                    class="document-input-group"
+                        v-for="commissionDate in manageCommissionDates"
+                        :key="commissionDate.id"
+                        class="document-input-group"
                 >
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
@@ -192,38 +192,38 @@ const onClearValues = () => {
                     <div v-if="commissionDate.open">
                         <QForm>
                             <QInput
-                                v-model="commissionDate.commissionDate"
-                                :label="t('commission.date')"
-                                :rules="[
+                                    v-model="commissionDate.commissionDate"
+                                    :label="t('commission.date')"
+                                    :rules="[
                                     val => val && val.length > 0 || t('forms.fill-field'),
                                     val => val && commissionDate.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
-                                clearable
-                                filled
-                                reactive-rules
-                                type="date"
-                                @update:model-value="() => commissionDate.datesAreLegal =
+                                    clearable
+                                    filled
+                                    reactive-rules
+                                    type="date"
+                                    @update:model-value="() => commissionDate.datesAreLegal =
                                     fromDateIsAnterior(commissionDate.submissionDate, commissionDate.commissionDate)"
                             />
                             <QInput
-                                v-model="commissionDate.submissionDate"
-                                :label="t('commission.submission')"
-                                :rules="[
+                                    v-model="commissionDate.submissionDate"
+                                    :label="t('commission.submission')"
+                                    :rules="[
                                     val => val && val.length > 0 || t('forms.fill-field'),
                                     val => val && commissionDate.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
-                                clearable
-                                filled
-                                reactive-rules
-                                type="date"
-                                @update:model-value="() => commissionDate.datesAreLegal =
+                                    clearable
+                                    filled
+                                    reactive-rules
+                                    type="date"
+                                    @update:model-value="() => commissionDate.datesAreLegal =
                                     fromDateIsAnterior(commissionDate.submissionDate, commissionDate.commissionDate)"
                             />
                             <AlertConfirmCommissionDateUpdateOrDelete
-                                :commission-date="commissionDate.id"
-                                :dates-are-legal="commissionDate.datesAreLegal"
-                                @update-commission-date="onUpdateCommissionDate(commissionDate)"
-                                @delete-commission-date="onDeleteCommissionDate(commissionDate.id)"
+                                    :commission-date="commissionDate.id"
+                                    :dates-are-legal="commissionDate.datesAreLegal"
+                                    @update-commission-date="onUpdateCommissionDate(commissionDate)"
+                                    @delete-commission-date="onDeleteCommissionDate(commissionDate.id)"
                             />
                         </QForm>
                     </div>
@@ -234,62 +234,62 @@ const onClearValues = () => {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-calendar-plus"
+                    aria-hidden="true"
+                    class="bi bi-calendar-plus"
             ></i>
             {{ t('commission.add-new-date') }}
         </h2>
         <div class="form-container">
             <div class="form">
                 <QForm
-                    ref="newCommissionDateForm"
-                    @reset="onClearValues"
-                    @submit.prevent="onAddNewCommissionDate"
+                        ref="newCommissionDateForm"
+                        @reset="onClearValues"
+                        @submit.prevent="onAddNewCommissionDate"
                 >
                     <QSelect
-                        v-model="newCommissionDate.commissionId"
-                        :label="t('commission.choice')"
-                        :options="commissionOptions"
-                        :rules="[val => val || t('forms.fill-field')]"
-                        clearable
-                        emit-value
-                        filled
-                        map-options
+                            v-model="newCommissionDate.commissionId"
+                            :label="t('commission.choice')"
+                            :options="commissionOptions"
+                            :rules="[val => val || t('forms.fill-field')]"
+                            clearable
+                            emit-value
+                            filled
+                            map-options
                     />
                     <QInput
-                        v-model="newCommissionDate.commissionDate"
-                        :label="t('commission.date')"
-                        :rules="[
+                            v-model="newCommissionDate.commissionDate"
+                            :label="t('commission.date')"
+                            :rules="[
                             val => val && val.length > 0 || t('forms.fill-field'),
                             val => val && newCommissionDate.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                         ]"
-                        clearable
-                        filled
-                        reactive-rules
-                        type="date"
-                        @update:model-value="() => newCommissionDate.datesAreLegal =
+                            clearable
+                            filled
+                            reactive-rules
+                            type="date"
+                            @update:model-value="() => newCommissionDate.datesAreLegal =
                             fromDateIsAnterior(newCommissionDate.submissionDate, newCommissionDate.commissionDate)"
                     />
                     <QInput
-                        v-model="newCommissionDate.submissionDate"
-                        :label="t('commission.submission')"
-                        :rules="[
+                            v-model="newCommissionDate.submissionDate"
+                            :label="t('commission.submission')"
+                            :rules="[
                             val => val && val.length > 0 || t('forms.fill-field'),
                             val => val && newCommissionDate.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                         ]"
-                        clearable
-                        filled
-                        reactive-rules
-                        type="date"
-                        @update:model-value="() => newCommissionDate.datesAreLegal =
+                            clearable
+                            filled
+                            reactive-rules
+                            type="date"
+                            @update:model-value="() => newCommissionDate.datesAreLegal =
                             fromDateIsAnterior(newCommissionDate.submissionDate, newCommissionDate.commissionDate)"
                     />
                     <div class="flex-btn">
                         <QBtn
-                            :disable="!newCommissionDate.datesAreLegal"
-                            :label="t('add')"
-                            icon="mdi-plus-circle-outline"
-                            type="submit"
+                                :disable="!newCommissionDate.datesAreLegal"
+                                :label="t('add')"
+                                icon="bi-plus-circle"
+                                type="submit"
                         />
                     </div>
                 </QForm>
@@ -298,19 +298,19 @@ const onClearValues = () => {
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/styles/forms.scss";
-</style>
 
-<style lang="sass" scoped>
-.flex-btn
-    display: flex
-    gap: 1rem
-    margin: -0.5rem 0 0.5rem 0
+.flex-btn {
+  display: flex;
+  gap: 1rem;
+  margin: -0.5rem 0 0.5rem 0;
+}
 
-.q-form
-    display: flex
-    flex-direction: column
-    gap: 1rem
+.q-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 </style>

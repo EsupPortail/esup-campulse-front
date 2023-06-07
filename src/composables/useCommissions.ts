@@ -33,15 +33,15 @@ export default function () {
         }
     }
 
-    async function getCommissionDates(onlyNext: boolean | undefined, onlyActive: boolean | undefined, managedProjects: boolean | undefined) {
+    async function getCommissionDates(onlyNext: boolean | undefined, onlyActive: boolean | undefined, managedCommissions: boolean | undefined) {
         let instance = axiosPublic as AxiosInstance
         let urlString = '/commissions/commission_dates'
         const urlArray = []
         if (onlyNext !== undefined) urlArray.push(`only_next=${onlyNext}`)
         if (onlyActive !== undefined) urlArray.push(`active_projects=${onlyActive}`)
-        if (managedProjects !== undefined) {
-            urlArray.push(`managed_projects=${managedProjects}`)
-            if (managedProjects) instance = axiosAuthenticated
+        if (managedCommissions !== undefined) {
+            urlArray.push(`managed_commissions=${managedCommissions}`)
+            if (managedCommissions) instance = axiosAuthenticated
         }
         if (urlArray.length) urlString += `?${urlArray.join('&')}`
         commissionDates.value = (await instance.get<CommissionDate[]>(urlString)).data

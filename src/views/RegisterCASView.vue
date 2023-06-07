@@ -5,13 +5,11 @@ import FormRegister from '@/components/form/FormRegister.vue'
 <template>
     <QCard class="card">
         <QCardSection>
-            <FormRegister />
+            <FormRegister/>
         </QCardSection>
     </QCard>
 </template>
 
 <style lang="scss" scoped>
-.card {
-  margin-bottom: 30px;
-}
+@import "@/assets/styles/forms.scss";
 </style>

@@ -87,7 +87,7 @@ async function onGetUserAssociations() {
                         v-if="association.isValidatedByAdmin && association.id !== null && userStore.hasPresidentStatus(association.id)"
                         :label="t('dashboard.association-user.manage-association')"
                         :to="{name: 'AssociationDashboard', params: {id: association.id}}"
-                        icon="mdi-pencil"
+                        icon="bi-pencil"
                     />
                 </div>
             </section>
@@ -95,7 +95,7 @@ async function onGetUserAssociations() {
     </QCard>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
 </style>

@@ -67,7 +67,7 @@ async function onGetAssociationDetail() {
                 >
                     {{ association?.acronym }}
                 </p>
-                <p><i>{{ t("association.labels.charter-validity") }}</i></p>
+                <p><i>{{ t('association.labels.charter-validity') }}</i></p>
             </div>
 
             <div
@@ -79,14 +79,14 @@ async function onGetAssociationDetail() {
         </section>
 
         <section>
-            <h3><i class="bi bi-book"></i>{{ t("association.titles.info") }}</h3>
+            <h3><i class="bi bi-book"></i>{{ t('association.titles.info') }}</h3>
 
             <div class="form-container">
                 <article
                     v-if="association?.currentProjects"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.current-projects") }}</h4>
+                    <h4>{{ t('association.labels.current-projects') }}</h4>
                     <p>{{ association?.currentProjects }}</p>
                 </article>
 
@@ -94,7 +94,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.institution"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.institution") }}</h4>
+                    <h4>{{ t('association.labels.institution') }}</h4>
                     <p>{{ associationStore.institutions.find(obj => obj.id === association?.institution)?.name }}</p>
                 </article>
 
@@ -102,7 +102,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.institutionComponent"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.institution-component") }}</h4>
+                    <h4>{{ t('association.labels.institution-component') }}</h4>
                     <p>
                         {{
                             associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
@@ -114,7 +114,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.activityField"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.activity-field") }}</h4>
+                    <h4>{{ t('association.labels.activity-field') }}</h4>
                     <p>
                         {{
                             associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
@@ -127,14 +127,14 @@ async function onGetAssociationDetail() {
         <section
             v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret"
         >
-            <h3><i class="bi bi-clipboard-check"></i>{{ t("association.titles.admin") }}</h3>
+            <h3><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h3>
 
             <div class="form-container">
                 <article
                     v-if="association?.presidentNames"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.president-name") }}</h4>
+                    <h4>{{ t('association.labels.president-name') }}</h4>
                     <p>{{ association?.presidentNames }}</p>
                 </article>
 
@@ -142,12 +142,12 @@ async function onGetAssociationDetail() {
                     v-if="association?.presidentPhone"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.president-phone") }}</h4>
+                    <h4>{{ t('association.labels.president-phone') }}</h4>
                     <p>{{ association?.presidentPhone }}</p>
                 </article>
 
                 <article class="display-row">
-                    <h4>{{ t("association.labels.charter-date") }}</h4>
+                    <h4>{{ t('association.labels.charter-date') }}</h4>
                     <p>TODO</p>
                 </article>
 
@@ -155,7 +155,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.lastGoaDate"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.last-goa") }}</h4>
+                    <h4>{{ t('association.labels.last-goa') }}</h4>
                     <p>{{ formatDate(association?.lastGoaDate) }}</p>
                 </article>
 
@@ -163,7 +163,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.siret"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.siret") }}</h4>
+                    <h4>{{ t('association.labels.siret') }}</h4>
                     <p>{{ association?.siret }}</p>
                 </article>
             </div>
@@ -173,14 +173,14 @@ async function onGetAssociationDetail() {
             v-if="association?.address || association?.phone || association?.email || association?.website ||
                 (association?.socialNetworks && association?.socialNetworks?.length > 0)"
         >
-            <h3><i class="bi bi-telephone"></i>{{ t("association.titles.contact") }}</h3>
+            <h3><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h3>
 
             <div class="form-container">
                 <article
                     v-if="association?.address"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.address") }}</h4>
+                    <h4>{{ t('association.labels.address') }}</h4>
                     <p>
                         {{ association?.address }}<br/>
                         {{ association?.zipcode + ' ' + association?.city }}<br/>
@@ -192,7 +192,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.phone"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.phone") }}</h4>
+                    <h4>{{ t('association.labels.phone') }}</h4>
                     <p>{{ association?.phone }}</p>
                 </article>
 
@@ -200,7 +200,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.email"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.mail") }}</h4>
+                    <h4>{{ t('association.labels.mail') }}</h4>
                     <p>{{ association?.email }}</p>
                 </article>
 
@@ -208,7 +208,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.website"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.website") }}</h4>
+                    <h4>{{ t('association.labels.website') }}</h4>
                     <a
                         :href="association?.website"
                         :title="`${t('association.labels.website-link')} ${association?.name}`"
@@ -221,7 +221,7 @@ async function onGetAssociationDetail() {
                     v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
                     class="display-row"
                 >
-                    <h4>{{ t("association.labels.socials") }}</h4>
+                    <h4>{{ t('association.labels.socials') }}</h4>
                     <ul>
                         <li
                             v-for="(socialNetwork, index) in association?.socialNetworks"
@@ -243,20 +243,20 @@ async function onGetAssociationDetail() {
             <QBtn
                 :label="t('association.back-directory')"
                 :to="{name: 'Associations'}"
-                icon="mdi-arrow-left-circle"
+                icon="bi-box-arrow-right"
             />
             <QBtn
                 v-if="association?.email"
                 :href="`mailto:${association?.email}`"
                 :label="t('association.contact')"
                 :title="`${t('association.contact')} ${association?.name}`"
-                icon="mdi-email"
+                icon="bi-enveloppe"
             />
         </div>
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
 </style>

@@ -34,7 +34,7 @@ async function onPublishAssociation() {
 <template>
     <QBtn
         :color="!associationStore.association?.isPublic ? 'green' : 'orange'"
-        :icon="!associationStore.association?.isPublic ? 'mdi-notebook-check' : 'mdi-notebook-remove'"
+        :icon="!associationStore.association?.isPublic ? 'bi-eye' : 'bi-eye-slash'"
         :label="!associationStore.association?.isPublic ? t('association.publish-in-directory') : t('association.unpublish-in-directory')"
         @click="confirmation = true"
     />
@@ -54,12 +54,12 @@ async function onPublishAssociation() {
                 <QBtn
                     v-close-popup
                     :label="t('cancel')"
-                    icon="mdi-arrow-left-circle"
+                    icon="bi-x-lg"
                 />
                 <QBtn
                     v-close-popup
                     :color="!associationStore.association?.isPublic ? 'green' : 'orange'"
-                    :icon="!associationStore.association?.isPublic ? 'mdi-notebook-check' : 'mdi-notebook-remove'"
+                    :icon="!associationStore.association?.isPublic ? 'bi-eye' : 'bi-eye-slash'"
                     :label="!associationStore.association?.isPublic ? t('association.publish-in-directory') : t('association.unpublish-in-directory')"
                     @click="onPublishAssociation"
                 />

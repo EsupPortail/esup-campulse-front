@@ -116,7 +116,7 @@ function clearOptions() {
                             <QBtn
                                     :aria-label="t('forms.delete-association')"
                                     class="bg-delete"
-                                    icon="mdi-delete"
+                                    icon="bi-trash"
                                     @click="removeAssociation(index)"
                             />
                         </div>
@@ -138,7 +138,7 @@ function clearOptions() {
                         (routeName === 'ManageAccount' && newAssociations.length === 0)"
                         :label="t('forms.add-association')"
                         class="add-association"
-                        icon="mdi-plus-circle-outline"
+                        icon="bi-plus-circle"
                         @click="addAssociation"
                 />
             </section>
@@ -146,7 +146,11 @@ function clearOptions() {
     </QCard>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
-</style>
+@import '@/assets/styles/associations.scss';
 
+.q-card__section {
+  margin: 1rem;
+}
+</style>

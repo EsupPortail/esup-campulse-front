@@ -56,7 +56,7 @@ onMounted(initValues)
                     :aria-label="t('delete')"
                     class="delete-network-btn"
                     color="delete"
-                    icon="mdi-delete"
+                    icon="bi-trash"
                     @click="removeNetwork(index)"
                 />
             </div>
@@ -64,7 +64,7 @@ onMounted(initValues)
                 <QBtn
                     :label="t('association.labels.add-social-network')"
                     class="add-network-btn"
-                    icon="mdi-plus-circle-outline"
+                    icon="bi-plus-circle"
                     @click="addNetwork"
                 />
             </div>
@@ -72,7 +72,7 @@ onMounted(initValues)
     </fieldset>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
 

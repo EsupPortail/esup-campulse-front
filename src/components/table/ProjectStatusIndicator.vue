@@ -64,8 +64,17 @@ onMounted(initSpanClasses)
         ><i class="bi bi-check"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-            props.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
+        v-if="props.projectStatus === 'PROJECT_REVIEW_DRAFT'"
+        :class="spanClasses"
+    >
+        {{ t('project.status.review-draft') }}
+        <span
+            aria-hidden="true"
+            class="form-state-icon form-state-grey"
+        ><i class="bi bi-dash"></i></span>
+    </span>
+    <span
+        v-if="props.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
         :class="spanClasses"
     >
         {{ t('project.status.review-processing') }}
@@ -96,9 +105,10 @@ onMounted(initSpanClasses)
     </span>
 </template>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 
-.form-state-cape
-    color: $capeColorText
+.form-state-cape {
+    color: $capeColorText;
+}
 </style>

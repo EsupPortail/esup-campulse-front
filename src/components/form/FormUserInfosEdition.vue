@@ -146,15 +146,14 @@ onMounted(() => {
     </fieldset>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
-</style>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+.q-expansion-item {
+  background-color: $dashboardColorBorders;
+  padding: 0.625rem;
+  margin-bottom: 0.938rem;
+}
 
-.q-expansion-item
-    background-color: $dashboardColorBorders
-    padding: 0.625rem
-    margin-bottom: 0.938rem
 </style>

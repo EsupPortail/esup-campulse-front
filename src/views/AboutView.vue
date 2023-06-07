@@ -43,7 +43,7 @@ function findContentObject(code: string) {
     return content.about.find(obj => obj.code === code)
 }
 
-watch(() => content.about.length, () => {
+watch(() => content.about, () => {
     aboutApp.value = findContentObject('ABOUT_APP')
     aboutFunding.value = findContentObject('ABOUT_FUNDING')
     aboutPartnership.value = findContentObject('ABOUT_PARTNERSHIP')
@@ -128,7 +128,7 @@ watch(() => content.about.length, () => {
         </div>
     </section>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/home.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/contact.scss';

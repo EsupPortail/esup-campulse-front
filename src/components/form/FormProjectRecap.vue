@@ -71,23 +71,18 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                     </div>
 
                     <div class="display-row">
-                        <p class="row-title">{{ t('project.other-first-name') }}</p>
-                        <p>{{ projectBasicInfos.otherFirstName }}</p>
+                        <p class="row-title">{{ t('project.contact-first-name') }}</p>
+                        <p>{{ projectBasicInfos.contactFirstName }}</p>
                     </div>
 
                     <div class="display-row">
-                        <p class="row-title">{{ t('project.other-last-name') }}</p>
-                        <p>{{ projectBasicInfos.otherLastName }}</p>
+                        <p class="row-title">{{ t('project.contact-last-name') }}</p>
+                        <p>{{ projectBasicInfos.contactLastName }}</p>
                     </div>
 
                     <div class="display-row">
-                        <p class="row-title">{{ t('project.other-email') }}</p>
-                        <p>{{ projectBasicInfos.otherEmail }}</p>
-                    </div>
-
-                    <div class="display-row">
-                        <p class="row-title">{{ t('project.other-phone') }}</p>
-                        <p>{{ projectBasicInfos.otherPhone }}</p>
+                        <p class="row-title">{{ t('project.contact-email') }}</p>
+                        <p>{{ projectBasicInfos.contactEmail }}</p>
                     </div>
                 </section>
             </section>
@@ -171,7 +166,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                         <p class="row-title">
                             {{
                                 `${t('project.amount-asked')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym})`
+                                    (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym})`
                             }}
                         </p>
                         <p>{{ commissionDate.amountAsked + CURRENCY }}</p>
@@ -191,7 +186,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                             <p class="row-title">
                                 {{
                                     `${t('project.previous-asked')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
                                 }}
                             </p>
                             <p>{{ commissionDate.amountAskedPreviousEdition + CURRENCY }}</p>
@@ -205,7 +200,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                             <p class="row-title">
                                 {{
                                     `${t('project.previous-earned')}
-                                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
                                 }}
                             </p>
                             <p>{{ commissionDate.amountEarnedPreviousEdition + CURRENCY }}</p>
@@ -315,10 +310,19 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 @click="emit('changeStep', 5)"
             />
             <QBtn
-                :label="t('project.validate')"
+                :label="t('project.submit')"
                 icon-right="bi-check2"
                 type="submit"
             />
         </section>
     </QForm>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
+
+.display-row {
+    width: 75% !important;
+}
+</style>

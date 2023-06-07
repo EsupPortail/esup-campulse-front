@@ -1,4 +1,5 @@
 import type {DocumentUpload} from '#/documents'
+import type {User} from '#/user'
 
 export interface Project {
     id: number,
@@ -6,10 +7,10 @@ export interface Project {
     plannedStartDate: string,
     plannedEndDate: string,
     plannedLocation: string,
-    otherFirstName: string | null,
-    otherLastName: string | null,
-    otherEmail: string | null,
-    otherPhone: string | null,
+    contactFirstName: string | null,
+    contactLastName: string | null,
+    contactEmail: string | null,
+    contactPhone: string | null,
     user: number | null,
     association: number | null,
     categories?: ProjectCategoryName[],
@@ -25,7 +26,8 @@ export interface Project {
     plannedActivities: string,
     preventionSafety: string,
     marketingCampaign: string,
-    projectStatus: ProjectStatus
+    projectStatus: ProjectStatus,
+    projectComments?: ProjectComment[]
 }
 
 export interface ProjectList {
@@ -70,10 +72,9 @@ export interface ProjectBasicInfos {
     plannedStartDate: string,
     plannedEndDate: string,
     plannedLocation: string,
-    otherFirstName: string | null,
-    otherLastName: string | null,
-    otherEmail: string | null,
-    otherPhone: string | null,
+    contactFirstName: string | null,
+    contactLastName: string | null,
+    contactEmail: string | null,
     user: number | null,
     association: number | null
 }
@@ -106,6 +107,14 @@ export interface ProjectCommissionDate {
     amountEarned?: number | string
 }
 
+export interface ProjectComment {
+    id: number,
+    project: Project | undefined,
+    user: User | undefined,
+    text: string,
+    creationDate: string,
+}
+
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
@@ -113,5 +122,5 @@ export interface ProjectStore {
     projectCategories: ProjectCategory[],
     projectCommissionDates: ProjectCommissionDate[],
     projectDocuments: DocumentUpload[],
-    projectCategoryNames: ProjectCategoryName[]
+    projectCategoryNames: ProjectCategoryName[],
 }

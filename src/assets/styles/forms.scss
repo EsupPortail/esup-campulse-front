@@ -2,10 +2,12 @@
 
 // A generic form wrapper.
 // Most forms on the site must be contained in both a "form" and "form-container" element.
-.form-container {
+
+::v-deep(.form-container) {
   position: relative;
   background-color: $backgroundColor2;
   padding: 1rem;
+  align-items: center;
 
   &::before, &::after {
     content: '';
@@ -26,24 +28,40 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.04) $fullSize);
   }
 
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    li {
+      list-style: none;
+    }
+  }
+
   @media screen and (min-width: $responsiveWidth) {
     display: flex;
     justify-content: center;
 
     .form {
-      /*display: block;
-      margin: auto;
-      width: 90%;*/
+      width: $halfSize;
+    }
+
+    .form-width {
+      width: 90%;
     }
   }
 }
 
-.q-tab-panel {
+::v-deep(.q-card__section) {
+  padding: 0;
+}
+
+::v-deep(.q-tab-panel) {
   padding: 0;
 }
 
 // Quasar input fields
-.q-field {
+::v-deep(.q-field) {
   .q-field__control {
     background-color: $backgroundColor1;
     border-radius: 0;
@@ -308,9 +326,10 @@ label.custom-label {
 
 // Quasar buttons
 // MARK: DO NOT DELETE
-.q-btn {
+::v-deep(.q-btn) {
   background-color: $annuaireColor;
   border-radius: .3rem;
+  margin: 0;
   padding: .9rem;
   font-size: 1.125rem;
   font-weight: $light-weight;
@@ -551,8 +570,7 @@ label.custom-label {
 
 fieldset {
   border: none;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 1rem 0 0 0;
   margin: 0;
 }
 
@@ -876,66 +894,67 @@ fieldset {
 }
 
 // Generic Quasar tables, as found mainly in the admin section of the site
-.q-table__container {
+::v-deep(.q-table__container) {
   border-radius: 0;
   background-color: transparent;
   box-shadow: none;
+  width: 100%;
 
-  .q-table__top {
+  ::v-deep(.q-table__top) {
     display: none;
   }
 
-  &.q-table--horizontal-separator thead th, &.q-table--horizontal-separator tbody td {
+  ::v-deep(&.q-table--horizontal-separator thead th), ::v-deep(&.q-table--horizontal-separator tbody td) {
     border: none;
   }
 
-  .q-table__middle {
+  ::v-deep(.q-table__middle) {
     overflow: auto;
     width: $fullSize;
   }
 
-  .q-table__bottom {
+  ::v-deep(.q-table__bottom) {
     border-top: none;
     font-size: 1.0625rem;
     color: $annuaireColorText;
     padding: 1rem 0;
 
-    .q-btn.q-btn-item {
+    ::v-deep(.q-btn.q-btn-item) {
       margin-right: 0.25rem;
 
-      &:last-child {
+      ::v-deep(&:last-child) {
         margin-right: 0;
       }
     }
   }
 
-  .q-table {
+  ::v-deep(.q-table) {
     border-collapse: separate;
     border-spacing: 0 .625rem;
     width: $fullSize;
 
-    thead tr {
+    ::v-deep(thead tr) {
       background-color: $annuaireColor;
       box-shadow: $fieldsBoxShadow;
 
-      th {
+      ::v-deep(th) {
         font-size: 1.125rem;
         font-weight: $medium-weight;
         color: $textColor3;
         text-transform: uppercase;
         padding: .3125rem .625rem;
 
-        &:first-child {
+        ::v-deep(&:first-child) {
           padding-left: .875rem;
         }
 
-        .q-checkbox__inner {
+        ::v-deep(.q-checkbox__inner) {
           color: $textColor3;
 
-          &.text-grey-8 {
-            color: $textColor3 !important;
+          ::v-deep(&.text-grey-8) {
+            color: $textColor3;
 
-            .q-checkbox__svg {
+            ::v-deep(.q-checkbox__svg) {
               color: $annuaireColor;
             }
           }
@@ -943,13 +962,13 @@ fieldset {
       }
     }
 
-    tbody {
-      tr {
+    ::v-deep(tbody) {
+      ::v-deep(tr) {
         background-color: $backgroundColor1;
         box-shadow: $fieldsBoxShadow;
         height: 1px;
 
-        td {
+        ::v-deep(td) {
           height: unset;
           font-size: 1.125rem;
           font-weight: $medium-weight;
@@ -957,16 +976,16 @@ fieldset {
           white-space: normal;
           padding: .4375rem .625rem;
 
-          &:first-child {
+          ::v-deep(&:first-child) {
             border-left: .25rem solid $annuaireColor;
           }
 
-          &.actions-cell, &.actions-cell-compact {
+          ::v-deep(&.actions-cell), ::v-deep(&.actions-cell-compact) {
             padding: 0;
             height: $fullSize;
             width: 0;
 
-            .button-container {
+            ::v-deep(.button-container) {
               display: flex;
               height: $fullSize;
               gap: 0;
@@ -974,7 +993,7 @@ fieldset {
               justify-content: center;
             }
 
-            .q-btn {
+            ::v-deep(.q-btn) {
               display: flex;
               font-size: 1rem;
               width: $fullSize;
@@ -982,20 +1001,20 @@ fieldset {
             }
           }
 
-          &.actions-cell {
+          ::v-deep(&.actions-cell) {
             padding-left: 1rem;
 
-            .button-container {
+            ::v-deep(.button-container) {
               gap: .125rem;
             }
 
-            .q-btn {
+            ::v-deep(.q-btn) {
               padding: .625rem 1.2rem;
 
-              .q-btn__content {
+              ::v-deep(.q-btn__content) {
                 flex-wrap: nowrap;
 
-                i {
+                ::v-deep(i) {
                   font-size: 1.25rem;
                 }
               }
@@ -1044,6 +1063,10 @@ fieldset {
         }
       }
     }
+  }
+
+  @media screen and (min-width: $responsiveWidth) {
+    width: $fullSize;
   }
 }
 
@@ -1129,18 +1152,18 @@ fieldset {
   }
 }
 
-.variant-space-3 {
-  .q-table__container {
-    .q-table__bottom {
+::v-deep(.variant-space-3) {
+  ::v-deep(.q-table__container) {
+    ::v-deep(.q-table__bottom) {
       color: $capeColorText;
     }
 
     .q-table {
-      thead tr {
+      ::v-deep(thead tr) {
         background-color: $capeColor;
 
-        th {
-          .q-table__sort-icon svg {
+        ::v-deep(th) {
+          ::v-deep(.q-table__sort-icon svg) {
             color: $capeColorText;
           }
 
@@ -1154,14 +1177,14 @@ fieldset {
         }
       }
 
-      tbody tr td {
+      ::v-deep(tbody tr td) {
         color: $capeColorText;
 
-        &:first-child {
+        ::v-deep(&:first-child) {
           border-color: $capeColor;
         }
 
-        &.actions-cell-compact {
+        ::v-deep(&.actions-cell-compact) {
           .q-btn {
             &:hover {
               box-shadow: 0 -0.25rem 0 0 $capeColor inset;
@@ -1199,14 +1222,14 @@ fieldset {
   }
 }
 
-.variant-space-4 {
-  .q-table__container {
-    .q-table__bottom {
+::v-deep(.variant-space-4) {
+  ::v-deep(.q-table__container) {
+    ::v-deep(.q-table__bottom) {
       color: $dashboardColorText;
     }
 
-    .q-table {
-      thead tr {
+    ::v-deep(.q-table) {
+      ::v-deep(thead tr) {
         background-color: $dashboardColor;
 
         th {
@@ -1224,7 +1247,7 @@ fieldset {
         }
       }
 
-      tbody tr td {
+      ::v-deep(tbody tr td) {
         color: $dashboardColorText;
 
         &:first-child {

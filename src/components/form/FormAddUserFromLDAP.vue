@@ -82,74 +82,74 @@ function onReset() {
 <template>
     <div class="btn-group">
         <QBtn
-            :label="t('dashboard.search-user-via-cas')"
-            icon="bi-person-plus"
-            @click="open = true"
+                :label="t('dashboard.search-user-via-cas')"
+                icon="bi-person-plus"
+                @click="open = true"
         />
         <QBtn
-            v-if="displayResetButton"
-            :label="t('cancel')"
-            @click="onReset"
+                v-if="displayResetButton"
+                :label="t('cancel')"
+                @click="onReset"
         />
     </div>
     <QDialog
-        v-model="open"
-        class="variant-space-4"
+            v-model="open"
+            class="variant-space-4"
     >
         <QCard>
             <QCardSection>
                 <QForm
-                    v-if="CASUsers.length === 0"
-                    class="q-gutter-md"
-                    @submit.prevent="onGetUsersFromCAS"
+                        v-if="CASUsers.length === 0"
+                        class="q-gutter-md"
+                        @submit.prevent="onGetUsersFromCAS"
                 >
                     <h2 class="title-2">{{ t('dashboard.search-user-via-cas') }}</h2>
                     <QInput
-                        v-model="lastName"
-                        :label="t('forms.last-name')"
-                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                        filled
-                        lazy-rules
+                            v-model="lastName"
+                            :label="t('forms.last-name')"
+                            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                            filled
+                            lazy-rules
                     />
                     <div class="btn-group">
                         <QBtn
-                            :label="t('cancel')"
-                            icon="bi-x-lg"
-                            @click="onReset"
+                                :label="t('cancel')"
+                                icon="bi-x-lg"
+                                @click="onReset"
                         />
                         <QBtn
-                            :label="t('search')"
-                            icon="bi-search"
-                            type="submit"
+                                :label="t('search')"
+                                icon="bi-search"
+                                type="submit"
                         />
                     </div>
                 </QForm>
                 <QForm
-                    v-else
-                    class="q-gutter-md"
-                    @submit.prevent="onImportUser"
+                        v-else
+                        class="q-gutter-md"
+                        @submit.prevent="onImportUser"
                 >
                     <h3>{{ t('user-manager.users-found') }}</h3>
                     <p>{{ t('user-manager.choose-user-to-add') }}</p>
                     <div class="q-pa-lg">
                         <QOptionGroup
-                            v-model="selectedUser"
-                            :options="CASUserOptions"
-                            emit-value
-                            map-options
+                                v-model="selectedUser"
+                                :options="CASUserOptions"
+                                emit-value
+                                map-options
                         />
                     </div>
                     <div class="btn-group">
                         <QBtn
-                            :label="t('cancel')"
-                            icon="bi-x-lg"
-                            @click="onReset"
+                                :label="t('cancel')"
+                                icon="bi-x-lg"
+                                @click="onReset"
                         />
                         <QBtn
-                            :disable="!selectedUser"
-                            :label="t('add')"
-                            icon="bi-person-plus"
-                            type="submit"
+                                :disable="!selectedUser"
+                                :label="t('add')"
+                                icon="bi-person-plus"
+                                type="submit"
                         />
                     </div>
                 </QForm>
@@ -158,17 +158,6 @@ function onReset() {
     </QDialog>
 </template>
 
-<style lang="scss">
-@import '@/assets/styles/forms.scss';
-</style>
-
 <style lang="scss" scoped>
-.btn-group {
-    display: flex;
-    gap: 5px;
-}
-
-fieldset {
-    border: none;
-}
+@import '@/assets/styles/forms.scss';
 </style>

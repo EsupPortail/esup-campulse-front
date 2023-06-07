@@ -123,6 +123,7 @@ async function onGetAssociationProjects() {
             </div>
         </div>
     </section>
+
     <section
         v-if="hasPresidentStatus || association?.isPublic || userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
         class="dashboard-section"
@@ -155,6 +156,7 @@ async function onGetAssociationProjects() {
             </div>
         </div>
     </section>
+
     <!-- Association documents -->
     <section class="dashboard-section">
         <h2>
@@ -335,16 +337,15 @@ async function onGetAssociationProjects() {
 </template>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
-</style>
 
-<style lang="sass" scoped>
-.projects-statuses .document-input-header
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-    padding-right: 1.5rem !important
-    align-items: center
+.projects-statuses .document-input-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 1.5rem !important;
+  align-items: center;
+}
 </style>
