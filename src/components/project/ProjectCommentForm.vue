@@ -3,10 +3,12 @@ import useProjectComments from '@/composables/useProjectComments'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
 import {onMounted, ref} from 'vue'
-import {useQuasar} from 'quasar'
+import {QForm, useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {useRoute} from 'vue-router'
 import useUtility from '@/composables/useUtility'
+import {useUserStore} from '@/stores/useUserStore'
+import FormEditDeleteProjectComment from '@/components/form/FormEditDeleteProjectComment.vue'
 
 
 const {t} = useI18n()
@@ -15,6 +17,7 @@ const {comments, getProjectComments, postNewProjectComment} = useProjectComments
 const {catchHTTPError} = useErrors()
 const route = useRoute()
 const {formatDate} = useUtility()
+const userStore = useUserStore()
 
 onMounted(async () => {
     loading.show()
@@ -26,6 +29,8 @@ onMounted(async () => {
 const project = ref<number>()
 
 const newComment = ref<string>('')
+
+const form = ref(QForm)
 
 async function onGetProjectComments() {
     try {
@@ -45,6 +50,7 @@ async function onPostNewComment() {
     try {
         await postNewProjectComment(project.value as number, newComment.value)
         await onGetProjectComments()
+        form.value.reset()
         notify({
             type: 'positive',
             message: t('notifications.positive.new-project-comment')
@@ -59,7 +65,6 @@ async function onPostNewComment() {
     }
     loading.hide()
 }
-
 </script>
 
 <template>
@@ -69,14 +74,22 @@ async function onPostNewComment() {
         class="comment-row"
     >
         <p class="comment-head">
-            <i
-                aria-hidden="true"
-                class="bi bi-chat"
-            ></i>
-            {{ t('project.comments.comment-from') }} <span class="value">{{ comment.user }}</span>
-            {{ t('project.comments.on-date') }} <span class="value">{{
-                formatDate(comment.creationDate).split('-').reverse().join('/')
-            }}</span>
+            <span>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-chat"
+                ></i>
+                {{ t('project.comments.comment-from') }} <span class="value">{{ comment.user }}</span>
+                {{ t('project.comments.on-date') }} <span class="value">{{
+                    formatDate(comment.creationDate).split('-').reverse().join('/')
+                }}</span>
+            </span>
+            <FormEditDeleteProjectComment
+                v-if="comment.user === userStore.user?.id"
+                :comment-id="comment.id"
+                :comment-text="comment.text"
+                :project-id="project"
+            />
         </p>
         <p>
             {{ comment.text }}
@@ -85,42 +98,61 @@ async function onPostNewComment() {
     <div v-if="!comments.length">
         <p class="paragraph">{{ t('project.comments.no-comment-to-show') }}</p>
     </div>
-    <QForm
-        @reset="onReset"
-        @submit.prevent="onPostNewComment"
-    >
-        <QInput
-            v-model="newComment"
-            :label="t('project.comments.new-comment') + ' *'"
-            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-            filled
-            lazy-rules
-            type="textarea"
-        />
-        <div>
-            <QBtn
-                :label="t('validate')"
-                icon="bi-check-lg"
-                type="submit"
+    <section>
+        <h3 class="section-title">
+            <i
+                aria-hidden="true"
+                class="bi bi-plus"
+            ></i>
+            {{ t('forms.add-new-comment') }}
+        </h3>
+        <QForm
+            ref="form"
+            @reset="newComment = ''"
+            @submit.prevent="onPostNewComment"
+        >
+            <QInput
+                v-model="newComment"
+                :label="t('project.comments.new-comment') + ' *'"
+                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                filled
+                lazy-rules
+                type="textarea"
             />
-        </div>
-    </QForm>
+            <div>
+                <QBtn
+                    :label="t('validate')"
+                    icon="bi-check-lg"
+                    type="submit"
+                />
+            </div>
+        </QForm>
+    </section>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+@import "@/assets/_variables.scss";
 
-.comment-row, .q-form {
+.comment-row {
     width: 80% !important;
+}
+
+.comment-head {
+    display: flex;
+    justify-content: space-between;
 }
 
 .q-form {
     margin: auto;
-    padding: 1rem 0;
 }
 
-.paragraph {
+h3.section-title {
+    margin: 1rem 0 0.5rem 0;
+}
+
+.paragraph, section {
     margin: auto;
     width: 80%;
 }
@@ -130,4 +162,5 @@ async function onPostNewComment() {
     flex-direction: column;
     gap: 1rem
 }
+
 </style>
