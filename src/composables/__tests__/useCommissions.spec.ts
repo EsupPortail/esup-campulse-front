@@ -70,7 +70,7 @@ describe('useCommissions', () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
                 await getCommissionDates(true, true, true)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                const url = '/commissions/commission_dates?only_next=true&active_projects=true&managed_projects=true'
+                const url = '/commissions/commission_dates?only_next=true&active_projects=true&managed_commissions=true'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
                 expect(commissionDates.value).toEqual(_commissionDates)
             })
@@ -80,7 +80,7 @@ describe('useCommissions', () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
                 await getCommissionDates(false, false, false)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                const url = '/commissions/commission_dates?only_next=false&active_projects=false&managed_projects=false'
+                const url = '/commissions/commission_dates?only_next=false&active_projects=false&managed_commissions=false'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
                 expect(commissionDates.value).toEqual(_commissionDates)
             })

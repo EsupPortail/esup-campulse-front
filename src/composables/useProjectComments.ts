@@ -8,7 +8,7 @@ const comment = ref<ProjectComment>()
 export default function () {
     const {axiosAuthenticated} = useAxios()
 
-    async function getAllProjectsComments() {
+    async function getAllProjectComments() {
         comments.value = (await axiosAuthenticated.get<ProjectComment[]>('/projects/comments')).data
     }
 
@@ -16,18 +16,16 @@ export default function () {
         comments.value = (await axiosAuthenticated.get<ProjectComment[]>(`/projects/${projectId}/comments`)).data
     }
 
-    async function getProjectComment(projectId: number, commentId: number) {
+    /*async function getProjectComment(projectId: number, commentId: number) {
         comment.value = (await axiosAuthenticated.get<ProjectComment>(`/projects/${projectId}/comments/${commentId}`)).data
-    }
+    }*/
 
-    async function newProjectComment(text: string) {
-        await axiosAuthenticated.post('/projects/comments', {text})
+    async function postNewProjectComment(project: number, text: string) {
+        await axiosAuthenticated.post('/projects/comments', {project, text})
     }
 
     async function patchProjectComment(text: string, projectId: number, commentId: number) {
-        if (text !== comment.value?.text) {
-            comment.value = (await axiosAuthenticated.patch(`/projects/${projectId}/comments/${commentId}`)).data
-        }
+        comment.value = (await axiosAuthenticated.patch(`/projects/${projectId}/comments/${commentId}`, {text})).data
     }
 
     async function deleteProjectComment(projectId: number, commentId: number) {
@@ -35,12 +33,13 @@ export default function () {
     }
 
     return {
-        getAllProjectsComments,
+        getAllProjectComments,
         getProjectComments,
-        getProjectComment,
-        newProjectComment,
+        postNewProjectComment,
         patchProjectComment,
-        deleteProjectComment
+        deleteProjectComment,
+        comment,
+        comments
     }
 }
 
