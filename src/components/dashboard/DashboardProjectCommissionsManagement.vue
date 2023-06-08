@@ -9,10 +9,10 @@ import axios from 'axios'
 
 const {catchHTTPError} = useErrors()
 const {
-    getCommissionDates,
-    initCommissionDatesLabels,
-    commissionDatesLabels,
-    getCommissions
+    getFunds,
+    getCommissionFunds,
+    getCommissionsForManagers,
+    commissions
 } = useCommissions()
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -27,36 +27,38 @@ const innerTab = ref('allProjects')
 const splitterModel = ref(20)
 
 interface Tabs {
-    label: string,
     name: string,
-    commissionDate: number
+    commission: number
 }
 
 const tabs = ref<Tabs[]>([])
 
 const initTabs = () => {
     tabs.value = []
-    tabs.value = commissionDatesLabels.value.map(obj => ({
-        label: obj.label,
-        name: obj.label,
-        commissionDate: obj.value
+    tabs.value = commissions.value.map(obj => ({
+        name: obj.name,
+        commission: obj.id
     }))
     if (tabs.value.length) tab.value = tabs.value[0].name
 }
 
 onMounted(async () => {
     loading.show()
-    await onGetCommissionDates()
-    initCommissionDatesLabels(undefined)
+    await onGetCommissions()
     initTabs()
     loading.hide()
 })
 
-async function onGetCommissionDates() {
+async function onGetCommissions() {
     try {
-        await getCommissions()
-        await getCommissionDates(false, true, true)
-        initCommissionDatesLabels(undefined)
+        await getCommissionsForManagers(
+            true,
+            undefined,
+            undefined,
+            true,
+            undefined)
+        await getFunds()
+        await getCommissionFunds()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -82,7 +84,7 @@ async function onGetCommissionDates() {
             <QTab
                 v-for="(tab, index) in tabs"
                 :key="index"
-                :label="tab.label"
+                :label="tab.name"
                 :name="tab.name"
             />
         </QTabs>
@@ -131,14 +133,14 @@ async function onGetCommissionDates() {
                             <QTabPanel name="allProjects">
                                 <h3 class="title-3">{{ t('project.all-projects') }}</h3>
                                 <TableManagedProjects
-                                    :commission-date="tab.commissionDate"
+                                    :commission="tab.commission"
                                     project-status="all"
                                 />
                             </QTabPanel>
                             <QTabPanel name="validatedProjects">
                                 <h3 class="title-3">{{ t('project.validated-projects') }}</h3>
                                 <TableManagedProjects
-                                    :commission-date="tab.commissionDate"
+                                    :commission="tab.commission"
                                     project-status="validated"
                                 />
                             </QTabPanel>

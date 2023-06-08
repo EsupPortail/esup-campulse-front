@@ -3,10 +3,8 @@ import {useI18n} from 'vue-i18n'
 import {onMounted, ref} from 'vue'
 import type {ProjectStatus} from '#/project'
 import router from '@/router'
-import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
-const userStore = useUserStore()
 
 const props = defineProps<{
     project: number,
@@ -75,12 +73,16 @@ onMounted(initOptions)
     </div>
 </template>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
-.q-item
-    color: $capeColorText
+.q-item {
+    color: $capeColorText;
+}
 
-.no-presidency
-    color: $textColor2
+.no-presidency {
+    color: $textColor2;
+}
 </style>

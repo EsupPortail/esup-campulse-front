@@ -12,6 +12,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref} from 'vue'
 import TableManageProjectsBtn from '@/components/table/TableManageProjectsBtn.vue'
+import useCommissions from '@/composables/useCommissions'
 
 const {t} = useI18n()
 const {formatDate} = useUtility()
@@ -20,9 +21,10 @@ const userManagerStore = useUserManagerStore()
 const projectStore = useProjectStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const {commissionFunds} = useCommissions()
 
 const props = defineProps<{
-    commissionDate: number,
+    commission: number,
     projectStatus: 'all' | 'validated'
 }>()
 
@@ -47,7 +49,8 @@ const initProjects = () => {
 
 onMounted(async () => {
     loading.show()
-    await onGetProjects([props.commissionDate])
+    const commissionFundsArray = commissionFunds.value.filter(obj => obj.commission === props.commission).map(x => x.id)
+    await onGetProjects(commissionFundsArray)
     await onGetApplicants()
     initProjects()
     loading.hide()
