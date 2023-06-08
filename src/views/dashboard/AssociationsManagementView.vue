@@ -122,7 +122,7 @@ const columns: QTableProps['columns'] = [
     </div>
 
     <div class="form-container">
-        <div class="form">
+        <div class="form form-width">
             <FormAssociationSearch
                     v-if="route.name"
                     :route="route.name"
@@ -235,4 +235,6 @@ const columns: QTableProps['columns'] = [
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+
 </style>
