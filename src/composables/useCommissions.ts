@@ -1,5 +1,5 @@
 import {ref} from 'vue'
-import type {Commission, CommissionFund, Fund} from '#/commissions'
+import type {Commission, CommissionFund, Fund, NewCommission, UpdateCommission} from '#/commissions'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
@@ -78,13 +78,14 @@ export default function () {
         commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/commission_funds/')).data
     }
 
-    async function postNewCommission(commissionDate: string, submissionDate: string, isOpenToProjects: boolean, funds: number[]) {
+    async function postNewCommission(commission: NewCommission) {
         const newCommission: Commission = (await axiosAuthenticated.post('/commissions/', {
-            commissionDate,
-            submissionDate,
-            isOpenToProjects
+            commissionDate: commission.commissionDate,
+            submissionDate: commission.submissionDate,
+            isOpenToProjects: commission.isOpenToProjects,
+            name: commission.name
         })).data
-        for (const fund of funds) {
+        for (const fund of commission.funds) {
             await axiosAuthenticated.post('/commissions/commission_funds/', {
                 commission: newCommission.id,
                 fund
@@ -92,23 +93,28 @@ export default function () {
         }
     }
 
-    async function updateCommission(id: number, commissionDate: string, submissionDate: string, oldFunds: number[], newFunds: number[]) {
-        await axiosAuthenticated.patch(`/commissions/${id}`, {
-            commissionDate,
-            submissionDate
+    async function updateCommission(commission: UpdateCommission) {
+        await axiosAuthenticated.patch(`/commissions/${commission.id}`, {
+            commissionDate: commission.newCommissionDate,
+            submissionDate: commission.newSubmissionDate,
+            isOpenToProjects: commission.newIsOpenToProjects,
+            name: commission.newName
         })
-        if (!arraysAreEqual(oldFunds, newFunds)) {
-            const newFundsToPost = newFunds.filter(x => oldFunds.indexOf(x) === -1)
-            const oldFundsToDelete = oldFunds.filter(x => newFunds.indexOf(x) === -1)
+        if (!arraysAreEqual(commission.oldFunds, commission.newFunds)) {
+            const newFundsToPost = commission.newFunds.filter(x => commission.oldFunds.indexOf(x) === -1)
+            const oldFundsToDelete = commission.oldFunds.filter(x => commission.newFunds.indexOf(x) === -1)
 
             for (let i = 0; i < newFundsToPost.length; i++) {
                 await axiosAuthenticated.post('/commissions/commission_funds/', {
-                    commission: id,
+                    commission: commission.id,
                     fund: newFundsToPost[i]
                 })
             }
             for (let i = 0; i < oldFundsToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/commissions/commission_funds/${id}`)
+                const commissionFund = commissionFunds.value
+                    .filter(obj => obj.commission === commission.id)
+                    .find(obj => obj.fund === oldFundsToDelete[i])?.id
+                if (commissionFund) await axiosAuthenticated.delete(`/commissions/commission_funds/${commissionFund}`)
             }
         }
 
@@ -117,7 +123,6 @@ export default function () {
     async function deleteCommission(id: number) {
         await axiosAuthenticated.delete(`/commissions/${id}`)
     }
-
 
     /*const initCommissionFundsLabels = (isSite: boolean | undefined) => {
         commissionDatesLabels.value = []

@@ -5,16 +5,20 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {useProjectStore} from '@/stores/useProjectStore'
+import type {UpdateCommission} from '#/commissions'
+import useUtility from '@/composables/useUtility'
+import useCommissions from '@/composables/useCommissions'
 
 const props = defineProps<{
-    commissionDate: number,
-    datesAreLegal: boolean | undefined
+    commission: UpdateCommission
 }>()
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
+const {arraysAreEqual} = useUtility()
+const {commissionFunds} = useCommissions()
 
 const confirmUpdate = ref<boolean>(false)
 const confirmDelete = ref<boolean>(false)
@@ -22,7 +26,8 @@ const confirmDelete = ref<boolean>(false)
 async function onOpenDeleteAlert() {
     loading.show()
     try {
-        await projectStore.getProjects(false, [props.commissionDate])
+        const commissionFundsArray = commissionFunds.value.filter(obj => obj.commission === props.commission.id).map(x => x.id)
+        await projectStore.getProjects(false, commissionFundsArray)
         confirmDelete.value = true
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -37,9 +42,13 @@ async function onOpenDeleteAlert() {
 </script>
 
 <template>
-    <div class="flex-btn">
+    <div class="flex-btn variant-space-3">
         <QBtn
-            :disable="!props.datesAreLegal"
+            :disable="!commission.datesAreLegal && commission.newName === commission.oldName
+                && commission.newCommissionDate === commission.oldCommissionDate
+                && commission.newSubmissionDate === commission.oldSubmissionDate
+                && commission.newIsOpenToProjects === commission.oldIsOpenToProjects
+                && arraysAreEqual(commission.oldFunds, commission.newFunds)"
             :label="t('update')"
             icon="bi-arrow-repeat"
             @click="confirmUpdate = true"
@@ -50,7 +59,7 @@ async function onOpenDeleteAlert() {
         >
             <QCard>
                 <QCardSection class="row items-center">
-                    <span class="q-ml-sm">{{ t('commission.alerts.confirm-update') }}</span>
+                    <p class="paragraph">{{ t('commission.alerts.confirm-update') }}</p>
                 </QCardSection>
 
                 <QCardActions align="right">
@@ -119,3 +128,11 @@ async function onOpenDeleteAlert() {
         </QDialog>
     </div>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+
+.q-card {
+    padding: 1rem
+}
+</style>

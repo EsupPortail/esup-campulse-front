@@ -179,9 +179,11 @@
       "delete-warning-projects-submitted": "Attention, des projects ont été soumis et sont en cours de traitement pour cette date de commission :"
     },
     "archived": "Commissions archivées",
-    "choice": "Choix de la commission",
     "date": "Date de commission",
     "dates": "Dates de commission",
+    "funds": "Financeurs",
+    "is-open-to-projects": "Ouverte à la soumission de nouveaux projets",
+    "name": "Nom de la commission",
     "on-going": "Commissions en cours",
     "ongoing-or-to-come": "Commissions en cours ou à venir",
     "select-date": "Sélectionner une date de commission",
