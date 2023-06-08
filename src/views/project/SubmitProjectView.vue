@@ -22,24 +22,23 @@ const {
     projectBasicInfos,
     postNewProject,
     projectCategories,
-    projectCommissionDatesModel,
-    projectCommissionDates,
+    projectCommission,
     projectBudget,
-    updateProjectCommissionDates,
+    updateProjectCommissionFunds,
     projectGoals,
     updateProjectCategories,
     initProjectBasicInfos,
     patchProjectBasicInfos,
     initProjectCategories,
-    initProjectCommissionDatesModel,
+    projectCommissionFunds,
     initProjectBudget,
     patchProjectBudget,
-    patchProjectCommissionDates,
-    initProjectCommissionDates,
+    patchProjectCommissionFunds,
     patchProjectGoals,
     initProjectGoals,
     submitProject,
-    reInitSubmitProjectForm
+    reInitSubmitProjectForm,
+    projectCommissionFundsDetail
 } = useSubmitProject()
 const {
     getDocuments,
@@ -54,12 +53,16 @@ const {
 const {initInfosToPatch, updateUserInfos, infosToPatch} = useUsers()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
-    getCommissions,
+    getCommissionsForStudents,
+    initCommissionLabels,
+    commissionLabels,
+    getFunds,
+    fundsLabels,
+    funds,
     commissions,
-    getCommissionDates,
-    commissionDatesLabels,
-    commissionDates,
-    initCommissionDatesLabels
+    commissionFunds,
+    initChosenCommissionFundsLabels,
+    getCommissionFunds
 } = useCommissions()
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
@@ -70,7 +73,9 @@ const route = useRoute()
 onMounted(async () => {
     loading.show()
 
-    if (route.params.projectId) newProject.value = false
+    projectId.value = parseInt(route.params.projectId as string)
+
+    if (projectId.value) newProject.value = false
 
     await onGetProjectDetail()
 
@@ -126,12 +131,13 @@ const applicant = ref<'association' | 'user' | undefined>()
 
 const associationName = ref<string | undefined>('')
 const associationId = ref<number>()
+const projectId = ref<number>()
 
 const newProject = ref<boolean>(true)
 
 const projectReEdition = ref<boolean>(false)
-watch(() => projectStore.projectCommissionDates.length, () => {
-    if (projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
+watch(() => projectStore.projectCommissionFunds.length, () => {
+    if (projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
 })
 
 const isSite = ref<boolean>(false)
@@ -182,7 +188,7 @@ watch(() => projectBudget.value.amountAllAudience, () => {
 async function onGetProjectDetail() {
     if (!newProject.value) {
         try {
-            await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
+            await projectStore.getProjectDetail(projectId.value as number)
             initProjectBasicInfos()
         } catch (error) {
             await router.push({name: '404'})
@@ -248,34 +254,22 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
 
 // GET DATA FOR STEP 2
 async function onGetCommissionDates() {
-    if (!projectCommissionDatesModel.value.length) {
-        try {
-            await getCommissions()
-            await getCommissionDates(true, undefined, undefined)
-            initCommissionDatesLabels(isSite.value)
-            if (!newProject.value) {
-                await projectStore.getProjectCommissionDates(false, undefined)
-                initProjectCommissionDatesModel()
-            }
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                notify({
-                    type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-                })
+    try {
+        await getCommissionsForStudents(undefined, isSite.value)
+        initCommissionLabels()
+        await getFunds()
+        await getCommissionFunds()
+        if (!newProject.value) {
+            await projectStore.getProjectCommissionFunds(false, undefined)
+            projectCommission.value = commissionFunds.value
+                .find(obj => obj.id === projectStore.projectCommissionFunds[0].commissionFund)?.commission
+            if (projectCommission.value) {
+                initChosenCommissionFundsLabels(projectCommission.value as number)
+                projectCommissionFunds.value = projectStore.projectCommissionFunds
+                    .map(x => funds.value.find((z => z.id === (commissionFunds.value
+                        .find(y => y.id === x.commissionFund))?.fund))?.id as number)
             }
         }
-    }
-}
-
-// GET DATA FOR STEP 3
-async function onGetProjectBudget() {
-    try {
-        await getCommissions()
-        await getCommissionDates(true, undefined, undefined)
-        await projectStore.getProjectCommissionDates(false, undefined)
-        initProjectCommissionDates()
-        initProjectBudget()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -286,11 +280,14 @@ async function onGetProjectBudget() {
     }
 }
 
+// GET DATA FOR STEP 3
+function onGetProjectBudget() {
+    initProjectBudget()
+}
+
 // GET DATA FOR STEP 4
 function onGetProjectGoals() {
-    if (projectStore.project) {
-        initProjectGoals()
-    }
+    initProjectGoals()
 }
 
 // GET DATA FOR STEP 5
@@ -355,17 +352,15 @@ async function onSubmitBasicInfos(nextStep: number) {
 // SUBMIT STEP 2
 async function onSubmitCommissionDates(nextStep: number) {
     loading.show()
-    if (projectStore.project) {
-        try {
-            await updateProjectCommissionDates()
-            step.value = nextStep
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                notify({
-                    type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-                })
-            }
+    try {
+        await updateProjectCommissionFunds()
+        step.value = nextStep
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
         }
     }
     loading.hide()
@@ -377,7 +372,7 @@ async function onSubmitBudget(nextStep: number) {
     if (projectStore.project) {
         try {
             await patchProjectBudget(!projectReEdition.value)
-            await patchProjectCommissionDates(!projectReEdition.value)
+            await patchProjectCommissionFunds(!projectReEdition.value)
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -522,6 +517,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     ref="stepper"
                     v-model="step"
                     animated
+                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
@@ -670,18 +666,34 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <h3 class="title-2">{{ t('project.commission-choice') }}</h3>
 
                             <QSelect
-                                v-model="projectCommissionDatesModel"
+                                v-model="projectCommission"
                                 :hint="t('project.commission-choice-hint')"
                                 :label="t('project.commission-choice') + ' *'"
-                                :options="commissionDatesLabels"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :options="commissionLabels"
+                                :rules="[ val => val || t('forms.fill-field')]"
                                 emit-value
                                 filled
                                 lazy-rules
+                                clearable
+                                map-options
+                                @update:model-value="initChosenCommissionFundsLabels(projectCommission)"
+                            />
+
+                            <QSelect
+                                :readonly="!projectCommission"
+                                v-model="projectCommissionFunds"
+                                :hint="t('project.commission-funds-choice-hint')"
+                                :label="t('project.commission-funds-choice') + ' *'"
+                                :options="fundsLabels"
+                                :rules="[ val => val || t('forms.fill-field')]"
+                                emit-value
+                                filled
+                                lazy-rules
+                                clearable
                                 map-options
                                 multiple
-                                stack-label
                                 use-chips
+                                stack-label
                             />
 
                             <section class="btn-group">
@@ -717,18 +729,18 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                             <!-- Previous amounts -->
                             <section
-                                v-if="projectCommissionDates.length && projectReEdition"
+                                v-if="projectReEdition"
                                 class="previous-budget"
                             >
                                 <fieldset class="previous-budget-fieldset">
                                     <legend class="title-5">{{ t('project.previous-asked') }} :</legend>
                                     <section class="previous-budget-section">
                                         <QInput
-                                            v-for="(commissionDate, index) in projectCommissionDates"
-                                            :key="index"
-                                            v-model="commissionDate.amountAskedPreviousEdition"
-                                            :label="commissions.find(obj => obj.id === commissionDates
-                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
+                                            v-for="commissionFund in projectCommissionFundsDetail"
+                                            :key="commissionFund.id"
+                                            v-model="commissionFund.amountAskedPreviousEdition"
+                                            :label="funds.find(obj => obj.id === (commissionFunds
+                                                .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                             :shadow-text="` ${CURRENCY}`"
                                             filled
@@ -743,11 +755,11 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     <legend class="title-5">{{ t('project.previous-earned') }} :</legend>
                                     <section class="previous-budget-section">
                                         <QInput
-                                            v-for="(commissionDate, index) in projectCommissionDates"
-                                            :key="index"
-                                            v-model="commissionDate.amountEarnedPreviousEdition"
-                                            :label="commissions.find(obj => obj.id === commissionDates
-                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
+                                            v-for="commissionFund in projectCommissionFundsDetail"
+                                            :key="commissionFund.id"
+                                            v-model="commissionFund.amountEarnedPreviousEdition"
+                                            :label="funds.find(obj => obj.id === (commissionFunds
+                                                .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
                                             :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                                             :shadow-text="` ${CURRENCY}`"
                                             filled
@@ -787,7 +799,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountStudentsAudience"
                                 :label="t('project.target-students-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
+                                          val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 filled
                                 inputmode="numeric"
@@ -799,7 +812,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
+                                          val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 filled
                                 inputmode="numeric"
@@ -841,11 +855,11 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     <legend class="title-5">{{ t('project.amounts-asked') }} :</legend>
                                     <section class="asked-budget-section">
                                         <QInput
-                                            v-for="(commissionDate, index) in projectCommissionDates"
-                                            :key="index"
-                                            v-model="commissionDate.amountAsked"
-                                            :label="commissions.find(obj => obj.id === commissionDates
-                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
+                                            v-for="commissionFund in projectCommissionFundsDetail"
+                                            :key="commissionFund.id"
+                                            v-model="commissionFund.amountAsked"
+                                            :label="funds.find(obj => obj.id === (commissionFunds
+                                                .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
                                             :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                             :shadow-text="` ${CURRENCY}`"
                                             filled

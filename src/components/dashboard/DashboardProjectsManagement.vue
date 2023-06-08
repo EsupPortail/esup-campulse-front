@@ -13,7 +13,7 @@ const {hasPerm} = useSecurity()
         <h2>
             <i
                 aria-hidden="true"
-                class="bi bi-folder2-open"
+                class="bi bi-folder"
             ></i>
             {{ t('commission.on-going') }}
         </h2>
@@ -49,7 +49,7 @@ const {hasPerm} = useSecurity()
         <h2>
             <i
                 aria-hidden="true"
-                class="bi bi-calendar-check"
+                class="bi bi-calendar"
             ></i>
             {{ t('commission.dates') }}
         </h2>

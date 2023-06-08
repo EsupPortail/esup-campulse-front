@@ -1,5 +1,10 @@
 import {ref} from 'vue'
-import type {ProjectBasicInfos, ProjectBudget, ProjectCommissionDate, ProjectGoals} from '#/project'
+import type {
+    ProjectBasicInfos,
+    ProjectBudget,
+    ProjectCommissionFund,
+    ProjectGoals
+} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
@@ -33,10 +38,14 @@ const projectBudget = ref<ProjectBudget>(
     }
 )
 
-// Used to store values of commission dates v-model in SubmitProjectView
-const projectCommissionDatesModel = ref<number[]>([])
+// Used to store the chosen commission (v-model in SubmitProjectView)
+const projectCommission = ref<number | null>()
 
-const projectCommissionDates = ref<ProjectCommissionDate[]>([])
+// Used to store the chosen commission funds (v-model in SubmitProjectView)
+const projectCommissionFunds = ref<number[]>()
+
+// Used to copy projectCommissionFunds from the store and check changes
+const projectCommissionFundsDetail = ref<ProjectCommissionFund[]>([])
 
 const projectGoals = ref<ProjectGoals>(
     {
@@ -48,7 +57,7 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function() {
+export default function () {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -75,21 +84,8 @@ export default function() {
         projectCategories.value = projectStore.projectCategories.map(category => category.category) as number[]
     }
 
-    // Used to init commission dates in select (submit project step 2)
-    const initProjectCommissionDatesModel = () => {
-        projectCommissionDatesModel.value = projectStore.projectCommissionDates.map(commissionDate => commissionDate.commissionDate)
-    }
-
-    const initProjectCommissionDates = () => {
-        projectCommissionDates.value = JSON.parse(JSON.stringify(projectStore.projectCommissionDates))
-        projectCommissionDates.value.forEach((commissionDate) => {
-            commissionDate.amountAskedPreviousEdition = commissionDate.amountAskedPreviousEdition?.toString()
-            commissionDate.amountEarnedPreviousEdition = commissionDate.amountEarnedPreviousEdition?.toString()
-            commissionDate.amountAsked = commissionDate.amountAsked?.toString()
-        })
-    }
-
     const initProjectBudget = () => {
+        projectCommissionFundsDetail.value = JSON.parse(JSON.stringify(projectStore.projectCommissionFunds))
         projectBudget.value.targetAudience = projectStore.project?.targetAudience as string
         projectBudget.value.amountStudentsAudience = projectStore.project?.amountStudentsAudience.toString() as string
         projectBudget.value.amountAllAudience = projectStore.project?.amountAllAudience.toString() as string
@@ -118,7 +114,8 @@ export default function() {
         projectBasicInfos.value.user = null
         projectBasicInfos.value.association = null
         projectCategories.value = []
-        projectCommissionDates.value = []
+        projectCommission.value = null
+        projectCommissionFunds.value = []
         projectBudget.value.targetAudience = ''
         projectBudget.value.amountStudentsAudience = 0
         projectBudget.value.amountAllAudience = 0
@@ -144,30 +141,25 @@ export default function() {
             }
         }
         projectStore.project = (await axiosAuthenticated.post('/projects/', dataToPost)).data
-
-
     }
 
     // UPDATES = POSTS AND DELETES
-    async function updateProjectCommissionDates() {
-        const oldCommissionDates = projectStore.projectCommissionDates.map(commissionDate => commissionDate.commissionDate)
-        const newCommissionDates = projectCommissionDatesModel.value
-        if (!arraysAreEqual(oldCommissionDates, newCommissionDates)) {
-            let commissionDatesToPost = newCommissionDates.filter(x => oldCommissionDates.indexOf(x) === -1)
-            commissionDatesToPost = commissionDatesToPost.filter((element, index) => {
-                return commissionDatesToPost.indexOf(element) === index
-            })
-            for (let i = 0; i < commissionDatesToPost.length; i++) {
-                await axiosAuthenticated.post('/projects/commission_dates',
+    async function updateProjectCommissionFunds() {
+        const oldCommissionFunds: number[] = projectStore.projectCommissionFunds.map(x => x.commissionFund)
+        const newCommissionFunds: number[] = projectCommissionFunds.value as number[]
+        if (!arraysAreEqual(oldCommissionFunds, newCommissionFunds)) {
+            const commissionFundsToPost = newCommissionFunds.filter(x => oldCommissionFunds.indexOf(x) === -1)
+            for (let i = 0; i < commissionFundsToPost.length; i++) {
+                await axiosAuthenticated.post('/projects/commission_funds',
                     {
                         project: projectStore.project?.id,
-                        commissionDate: commissionDatesToPost[i]
+                        commissionFund: commissionFundsToPost[i]
                     }
                 )
             }
-            const commissionDatesToDelete = oldCommissionDates.filter(x => newCommissionDates.indexOf(x) === -1)
-            for (let i = 0; i < commissionDatesToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/projects/${projectStore.project?.id}/commission_dates/${commissionDatesToDelete[i]}`)
+            const commissionFundsToDelete = oldCommissionFunds.filter(x => newCommissionFunds.indexOf(x) === -1)
+            for (let i = 0; i < commissionFundsToDelete.length; i++) {
+                await axiosAuthenticated.delete(`/projects/${projectStore.project?.id}/commission_funds/${commissionFundsToDelete[i]}`)
             }
         }
     }
@@ -252,28 +244,29 @@ export default function() {
         }
     }
 
-    async function patchProjectCommissionDates(isFirstEdition: boolean) {
-        for (let i = 0; i < projectCommissionDates.value.length; i++) {
+    async function patchProjectCommissionFunds(isFirstEdition: boolean) {
+        for (let i = 0; i < projectCommissionFundsDetail.value.length; i++) {
             let dataToPatch = {}
-            const oldCommission = projectStore.projectCommissionDates.find(obj => obj.commissionDate === projectCommissionDatesModel.value[i])
-            const newCommission = projectCommissionDates.value[i]
-            newCommission.isFirstEdition = isFirstEdition
+            const oldCommissionFund = projectStore.projectCommissionFunds
+                .find(obj => obj.id === projectCommissionFundsDetail.value[i].id)
+            const newCommissionFund = projectCommissionFundsDetail.value[i]
+            newCommissionFund.isFirstEdition = isFirstEdition
 
             const numbers = ['amountAskedPreviousEdition', 'amountEarnedPreviousEdition', 'amountAsked']
 
-            for (const [key, value] of Object.entries(newCommission)) {
-                if (key === 'isFirstEdition' && value === true && value !== oldCommission?.[key as keyof typeof oldCommission]) {
+            for (const [key, value] of Object.entries(newCommissionFund)) {
+                if (key === 'isFirstEdition' && value === true && value !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
                     dataToPatch = Object.assign(dataToPatch, {[key]: value})
                     dataToPatch = Object.assign(dataToPatch, {amountAskedPreviousEdition: 0})
                     dataToPatch = Object.assign(dataToPatch, {amountEarnedPreviousEdition: 0})
-                    dataToPatch = Object.assign(dataToPatch, {amountAsked: newCommission.amountAsked})
+                    dataToPatch = Object.assign(dataToPatch, {amountAsked: newCommissionFund.amountAsked})
                 } else {
                     if (numbers.includes(key)) {
-                        if (parseInt(value as string) !== oldCommission?.[key as keyof typeof oldCommission]) {
+                        if (parseInt(value as string) !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
                             dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
                         }
                     } else {
-                        if (value !== oldCommission?.[key as keyof typeof oldCommission]) {
+                        if (value !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
                             dataToPatch = Object.assign(dataToPatch, {[key]: value})
 
                         }
@@ -281,7 +274,7 @@ export default function() {
                 }
             }
             if (Object.entries(dataToPatch).length) {
-                await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/commission_dates/${projectCommissionDatesModel.value[i]}`, dataToPatch)
+                await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFunds.value?.[i]}`, dataToPatch)
             }
         }
     }
@@ -306,24 +299,23 @@ export default function() {
     return {
         projectBasicInfos,
         projectBudget,
-        projectCommissionDates,
+        projectCommission,
         initProjectBasicInfos,
         postNewProject,
         projectCategories,
         initProjectCategories,
-        projectCommissionDatesModel,
-        updateProjectCommissionDates,
+        updateProjectCommissionFunds,
         initProjectGoals,
         projectGoals,
         updateProjectCategories,
         patchProjectBasicInfos,
-        initProjectCommissionDatesModel,
         initProjectBudget,
         patchProjectBudget,
-        patchProjectCommissionDates,
-        initProjectCommissionDates,
+        patchProjectCommissionFunds,
         patchProjectGoals,
         submitProject,
-        reInitSubmitProjectForm
+        reInitSubmitProjectForm,
+        projectCommissionFunds,
+        projectCommissionFundsDetail
     }
 }

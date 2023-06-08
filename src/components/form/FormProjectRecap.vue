@@ -9,7 +9,7 @@ import useProjectDocuments from '@/composables/useProjectDocuments'
 const {t} = useI18n()
 const {projectBasicInfos, projectBudget, projectGoals} = useSubmitProject()
 const projectStore = useProjectStore()
-const {commissionDatesLabels, commissions, commissionDates} = useCommissions()
+const {fundsLabels, commissionFunds} = useCommissions()
 const {processDocuments, documentUploads} = useProjectDocuments()
 const {CURRENCY} = useUtility()
 
@@ -101,11 +101,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 
                 <section class="recap-chips">
                     <QChip
-                        v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                        :key="index"
+                        v-for="commissionFund in projectStore.projectCommissionFunds"
+                        :key="commissionFund.id"
                     >
                         {{
-                            commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate)?.label
+                            fundsLabels.find(obj => obj.value === (commissionFunds
+                                .find(obj => obj.id === commissionFund.commissionFund).fund))?.label
                         }}
                     </QChip>
                 </section>
@@ -128,7 +129,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                         <p class="row-title">{{ t('project.re-edition') }}</p>
                         <p>
                             {{
-                                projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false) ? t('yes') : t('no')
+                                projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false) ? t('yes') : t('no')
                             }}
                         </p>
                     </div>
@@ -159,51 +160,54 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                     </div>
 
                     <div
-                        v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                        :key="index"
+                        v-for="commissionFund in projectStore.projectCommissionFunds"
+                        :key="commissionFund.id"
                         class="display-row"
                     >
                         <p class="row-title">
                             {{
                                 `${t('project.amount-asked')}
-                                    (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym})`
+                                    (${fundsLabels.find(obj => obj.value === (commissionFunds
+                                .find(obj => obj.id === commissionFund.commissionFund).fund))?.label})`
                             }}
                         </p>
-                        <p>{{ commissionDate.amountAsked + CURRENCY }}</p>
+                        <p>{{ commissionFund.amountAsked + CURRENCY }}</p>
                     </div>
 
                     <section
-                        v-if="projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)"
+                        v-if="projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)"
                         class="flex-section"
                     >
                         <h5 class="title-4">{{ t('project.previous-edition') }}</h5>
 
                         <div
-                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                            :key="index"
+                            v-for="commissionFund in projectStore.projectCommissionFunds"
+                            :key="commissionFund.id"
                             class="display-row"
                         >
                             <p class="row-title">
                                 {{
                                     `${t('project.previous-asked')}
-                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                        (${fundsLabels.find(obj => obj.value === (commissionFunds
+                                    .find(obj => obj.id === commissionFund.commissionFund).fund))?.label})`
                                 }}
                             </p>
-                            <p>{{ commissionDate.amountAskedPreviousEdition + CURRENCY }}</p>
+                            <p>{{ commissionFund.amountAskedPreviousEdition + CURRENCY }}</p>
                         </div>
 
                         <div
-                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                            :key="index"
+                            v-for="commissionFund in projectStore.projectCommissionFunds"
+                            :key="commissionFund.id"
                             class="display-row"
                         >
                             <p class="row-title">
                                 {{
                                     `${t('project.previous-earned')}
-                                        (${commissions.find(obj => obj.id === commissionDates.find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                        (${fundsLabels.find(obj => obj.value === (commissionFunds
+                                    .find(obj => obj.id === commissionFund.commissionFund).fund))?.label})`
                                 }}
                             </p>
-                            <p>{{ commissionDate.amountEarnedPreviousEdition + CURRENCY }}</p>
+                            <p>{{ commissionFund.amountEarnedPreviousEdition + CURRENCY }}</p>
                         </div>
 
                         <div class="display-row">

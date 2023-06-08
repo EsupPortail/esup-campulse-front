@@ -3,7 +3,7 @@ import type {
     Project,
     ProjectCategory,
     ProjectCategoryName,
-    ProjectCommissionDate,
+    ProjectCommissionFund,
     ProjectList,
     ProjectStore
 } from '#/project'
@@ -17,7 +17,7 @@ export const useProjectStore = defineStore('projectStore', {
         project: undefined,
         projects: [],
         projectCategories: [],
-        projectCommissionDates: [],
+        projectCommissionFunds: [],
         projectDocuments: [],
         projectCategoryNames: [],
     }),
@@ -48,16 +48,16 @@ export const useProjectStore = defineStore('projectStore', {
             this.project = (await axiosAuthenticated.get<Project>(`/projects/${id}`)).data
         },
 
-        async getProjectCommissionDates(asManager: boolean, commission: number | undefined) {
+        async getProjectCommissionFunds(asManager: boolean, commission: number | undefined) {
             const {axiosAuthenticated} = useAxios()
             let url = ''
             if (asManager) {
-                url = '/projects/commission_dates'
+                url = '/projects/commission_funds'
                 if (commission) url += `?commission_id=${commission}`
             } else {
-                url = `/projects/${this.project?.id}/commission_dates`
+                url = `/projects/${this.project?.id}/commission_funds`
             }
-            this.projectCommissionDates = (await axiosAuthenticated.get<ProjectCommissionDate[]>(url)).data
+            this.projectCommissionFunds = (await axiosAuthenticated.get<ProjectCommissionFund[]>(url)).data
         },
 
         async getProjectDocuments() {

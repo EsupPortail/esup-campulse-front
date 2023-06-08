@@ -12,15 +12,15 @@ const userStore = useUserStore()
         <p class="paragraph">{{ t('404.description') }}</p>
         <div class="btn-group">
             <QBtn
-                    :label="t('back-to-home')"
-                    :to="{name: 'Home'}"
-                    icon="bi-house"
+                :label="t('back-to-home')"
+                :to="{name: 'Home'}"
+                icon="bi-house"
             />
             <QBtn
-                    v-if="userStore.isAuth"
-                    :label="t('back-to-dashboard')"
-                    :to="{name: 'Dashboard'}"
-                    icon="bi-person-circle"
+                v-if="userStore.isAuth"
+                :label="t('back-to-dashboard')"
+                :to="{name: 'Dashboard'}"
+                icon="bi-person-circle"
             />
         </div>
     </section>
@@ -30,14 +30,14 @@ const userStore = useUserStore()
 @import '@/assets/styles/forms.scss';
 
 .page-section, .page-section * {
-  text-align: center;
+    text-align: center;
 }
 
 .page-section {
-  margin-top: 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 </style>
 

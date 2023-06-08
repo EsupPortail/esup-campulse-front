@@ -90,15 +90,16 @@ export interface ProjectGoals {
     marketingCampaign: string,
 }
 
-export interface ProjectCommissionDate {
+export interface ProjectCommissionFund {
     id?: number,
     project?: number,
-    commissionDate: number,
+    commissionFund: number,
     isFirstEdition?: boolean,
     amountAskedPreviousEdition?: number | string,
     amountEarnedPreviousEdition?: number | string,
     amountAsked?: number | string,
-    amountEarned?: number | string
+    amountEarned?: number | string,
+    isValidatedByAdmin: boolean
 }
 
 export interface ProjectComment {
@@ -114,7 +115,7 @@ export interface ProjectStore {
     project: Project | undefined,
     projects: ProjectList[],
     projectCategories: ProjectCategory[],
-    projectCommissionDates: ProjectCommissionDate[],
+    projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[],
 }

@@ -35,6 +35,14 @@ export default function () {
         }))
     }
 
+    const initChosenCommissionFundsLabels = (commission: number) => {
+        fundsLabels.value = commissionFunds.value.filter(obj => obj.commission === commission).map(x => ({
+            value: x.fund,
+            label: funds.value.find(obj => obj.id === x.fund)?.acronym as string
+        }))
+
+    }
+
     const initUserFunds = () => {
         userFunds.value = []
         userManagerStore.user?.groups?.forEach((group) => {
@@ -72,6 +80,14 @@ export default function () {
 
         if (urlArray.length) urlString += `?${urlArray.join('&')}`
         commissions.value = (await axiosPublic.get<Commission[]>(urlString)).data
+    }
+
+    const initCommissionLabels = () => {
+        commissionLabels.value = commissions.value.map(commission => ({
+            value: commission.id,
+            label: commission.name + ' '
+                + commission.commissionDate.split('-').reverse().join('/')
+        }))
     }
 
     async function getCommissionFunds() {
@@ -157,6 +173,8 @@ export default function () {
         getCommissionsForManagers,
         getCommissionsForStudents,
         postNewCommission,
-        getCommissionFunds
+        getCommissionFunds,
+        initCommissionLabels,
+        initChosenCommissionFundsLabels
     }
 }
