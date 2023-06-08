@@ -23,11 +23,11 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 
 <template>
     <QForm
-        @submit.prevent="emit('submitProject')"
+            @submit.prevent="emit('submitProject')"
     >
         <h3
-            v-if="props.view === 'submitProject'"
-            class="title-2"
+                v-if="props.view === 'submitProject'"
+                class="title-2"
         >
             {{ t('recap') }}
         </h3>
@@ -38,10 +38,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 <div class="recap-section-title">
                     <h4 class="title-3">{{ t('project.general-infos') }}</h4>
                     <QBtn
-                        :label="t('modify')"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 1)"
-                        v-if="props.view === 'submitProject'"
+                            v-if="props.view === 'submitProject'"
+                            :label="t('modify')"
+                            icon="bi-pencil"
+                            @click="emit('changeStep', 1)"
                     />
                 </div>
 
@@ -92,17 +92,17 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 <div class="recap-section-title">
                     <h4 class="title-3">{{ t('project.commission-choice') }}</h4>
                     <QBtn
-                        :label="t('modify')"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 2)"
-                        v-if="props.view === 'submitProject'"
+                            v-if="props.view === 'submitProject'"
+                            :label="t('modify')"
+                            icon="bi-pencil"
+                            @click="emit('changeStep', 2)"
                     />
                 </div>
 
                 <section class="recap-chips">
                     <QChip
-                        v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                        :key="index"
+                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                            :key="index"
                     >
                         {{
                             commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate)?.label
@@ -116,10 +116,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 <div class="recap-section-title">
                     <h4 class="title-3">{{ t('project.budget') }}</h4>
                     <QBtn
-                        :label="t('modify')"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 3)"
-                        v-if="props.view === 'submitProject'"
+                            v-if="props.view === 'submitProject'"
+                            :label="t('modify')"
+                            icon="bi-pencil"
+                            @click="emit('changeStep', 3)"
                     />
                 </div>
 
@@ -159,9 +159,9 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                     </div>
 
                     <div
-                        v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                        :key="index"
-                        class="display-row"
+                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                            :key="index"
+                            class="display-row"
                     >
                         <p class="row-title">
                             {{
@@ -173,15 +173,15 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                     </div>
 
                     <section
-                        v-if="projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)"
-                        class="flex-section"
+                            v-if="projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)"
+                            class="flex-section"
                     >
                         <h5 class="title-4">{{ t('project.previous-edition') }}</h5>
 
                         <div
-                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                            :key="index"
-                            class="display-row"
+                                v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                                :key="index"
+                                class="display-row"
                         >
                             <p class="row-title">
                                 {{
@@ -193,9 +193,9 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                         </div>
 
                         <div
-                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                            :key="index"
-                            class="display-row"
+                                v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                                :key="index"
+                                class="display-row"
                         >
                             <p class="row-title">
                                 {{
@@ -219,10 +219,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 <div class="recap-section-title">
                     <h4 class="title-3">{{ t('project.goals') }}</h4>
                     <QBtn
-                        :label="t('modify')"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 4)"
-                        v-if="props.view === 'submitProject'"
+                            v-if="props.view === 'submitProject'"
+                            :label="t('modify')"
+                            icon="bi-pencil"
+                            @click="emit('changeStep', 4)"
                     />
                 </div>
 
@@ -259,37 +259,37 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 <div class="recap-section-title">
                     <h4 class="title-3">{{ t('project.documents') }}</h4>
                     <QBtn
-                        :label="t('modify')"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 5)"
-                        v-if="props.view === 'submitProject'"
+                            v-if="props.view === 'submitProject'"
+                            :label="t('modify')"
+                            icon="bi-pencil"
+                            @click="emit('changeStep', 5)"
                     />
                 </div>
 
                 <div
-                    class="info-panel info-panel-warning"
-                    v-if="props.view === 'submitProject'"
+                        v-if="props.view === 'submitProject'"
+                        class="info-panel info-panel-warning"
                 >
                     <i
-                        aria-hidden="true"
-                        class="bi bi-exclamation-lg"
+                            aria-hidden="true"
+                            class="bi bi-exclamation-lg"
                     ></i>
                     <p>{{ t('project.document.verify') }}</p>
                 </div>
 
                 <section class="flex-section">
                     <div
-                        v-for="(document, index) in processDocuments"
-                        :key="index"
-                        class="display-row"
+                            v-for="(document, index) in processDocuments"
+                            :key="index"
+                            class="display-row"
                     >
                         <p class="row-title">{{ document.description }}</p>
                         <p class="paragraph">
                             <ul role="list">
                                 <li
-                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                                    :key="uploadedDocument.id"
-                                    @click="emit('getFile', uploadedDocument)"
+                                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                                        :key="uploadedDocument.id"
+                                        @click="emit('getFile', uploadedDocument)"
                                 >
                                     {{ uploadedDocument.name }}
                                 </li>
@@ -301,18 +301,18 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
         </section>
 
         <section
-            class="form-page-navigation"
-            v-if="props.view === 'submitProject'"
+                v-if="props.view === 'submitProject'"
+                class="form-page-navigation"
         >
             <QBtn
-                :label="t('back')"
-                icon="bi-chevron-left"
-                @click="emit('changeStep', 5)"
+                    :label="t('back')"
+                    icon="bi-chevron-left"
+                    @click="emit('changeStep', 5)"
             />
             <QBtn
-                :label="t('project.submit')"
-                icon-right="bi-check2"
-                type="submit"
+                    :label="t('project.submit')"
+                    icon-right="bi-check2"
+                    type="submit"
             />
         </section>
     </QForm>
@@ -323,6 +323,6 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 @import "@/assets/styles/dashboard.scss";
 
 .display-row {
-    width: 75% !important;
+  width: 75%;
 }
 </style>

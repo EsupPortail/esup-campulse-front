@@ -132,7 +132,7 @@ async function onConfirmChanges(emailType: string) {
         />
         <QBtn
                 :label="t('association.confirm-all-changes')"
-                color="primary"
+                color="secondary"
                 icon="bi-check-lg"
                 @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"
         />

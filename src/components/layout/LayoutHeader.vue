@@ -33,16 +33,16 @@ function ToggleMenu() {
 
 <template>
     <QHeader
-        id="layout-header"
-        :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
-        elevated
-        height-hint="98"
+            id="layout-header"
+            :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
+            elevated
+            height-hint="98"
     >
         <QToolbar>
             <QToolbarTitle>
                 <RouterLink
-                    :to="{name: 'Home'}"
-                    class="home-link"
+                        :to="{name: 'Home'}"
+                        class="home-link"
                 >
                     {{ siteName }}
                 </RouterLink>
@@ -50,15 +50,15 @@ function ToggleMenu() {
 
             <div id="menu-items">
                 <button
-                    id="mobile-menu-button"
-                    @click="ToggleMenu"
+                        id="mobile-menu-button"
+                        @click="ToggleMenu"
                 >
                     <i class="bi bi-list"></i>
                 </button>
                 <span
-                    id="mobile-menu-background"
-                    :class="{ 'visible': mobileMenuVisible }"
-                    aria-hidden="true"
+                        id="mobile-menu-background"
+                        :class="{ 'visible': mobileMenuVisible }"
+                        aria-hidden="true"
                 ></span>
 
                 <LayoutHeaderNav :class="{ 'visible': mobileMenuVisible }"/>
@@ -67,8 +67,8 @@ function ToggleMenu() {
 
         <div v-if="route.name !== 'Login'">
             <div
-                v-if="route.name === 'Home'"
-                id="header-home-title"
+                    v-if="route.name === 'Home'"
+                    id="header-home-title"
             >
                 <h1>Bienvenue sur <strong>{{ siteName }}</strong></h1>
                 <h2>{{ t("header.subtitle") }}</h2>

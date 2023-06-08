@@ -217,7 +217,7 @@ const columns: QTableProps['columns'] = [
                             <QBtn
                                     :label="t('association.edit')"
                                     :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                                    color="primary"
+                                    color="secondary"
                                     icon="bi-pencil"
                             />
                         </QTd>

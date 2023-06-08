@@ -78,56 +78,56 @@ async function onDeleteComment() {
 <template>
     <div class="comment-edition-btn">
         <QBtn
-            :aria-label="t('modify')"
-            icon="bi-pencil"
-            @click="open = true; action = 'modify'"
+                :aria-label="t('modify')"
+                icon="bi-pencil"
+                @click="open = true; action = 'modify'"
         />
         <QBtn
-            :aria-label="t('delete')"
-            icon="bi-trash"
-            @click="open = true; action = 'delete'"
+                :aria-label="t('delete')"
+                icon="bi-trash"
+                @click="open = true; action = 'delete'"
         />
     </div>
     <QDialog
-        v-model="open"
-        class="variant-space-3"
+            v-model="open"
+            class="variant-space-3"
     >
         <QCard>
             <QCardSection>
                 <QForm
-                    v-if="action === 'modify'"
-                    ref="form"
-                    class="q-gutter-md"
-                    @reset="modifiedComment = ''"
-                    @submit="onModifyComment"
+                        v-if="action === 'modify'"
+                        ref="form"
+                        class="q-gutter-md"
+                        @reset="modifiedComment = ''"
+                        @submit="onModifyComment"
                 >
                     <h2 class="title-2">{{ t('forms.modify-comment') }}</h2>
                     <QInput
-                        v-model="modifiedComment"
-                        :label="t('forms.comment')"
-                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                        filled
-                        lazy-rules
-                        type="textarea"
+                            v-model="modifiedComment"
+                            :label="t('forms.comment')"
+                            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                            filled
+                            lazy-rules
+                            type="textarea"
                     />
                     <div class="btn-group">
                         <QBtn
-                            :label="t('cancel')"
-                            icon="bi-x-lg"
-                            @click="open = false"
+                                :label="t('cancel')"
+                                icon="bi-x-lg"
+                                @click="open = false"
                         />
                         <QBtn
-                            :disable="modifiedComment === commentText"
-                            :label="t('validate')"
-                            icon="bi-check-lg"
-                            type="submit"
+                                :disable="modifiedComment === commentText"
+                                :label="t('validate')"
+                                icon="bi-check-lg"
+                                type="submit"
                         />
                     </div>
                 </QForm>
                 <QForm
-                    v-if="action === 'delete'"
-                    class="q-gutter-md"
-                    @submit="onDeleteComment"
+                        v-if="action === 'delete'"
+                        class="q-gutter-md"
+                        @submit="onDeleteComment"
                 >
                     <h2 class="title-2">{{ t('forms.delete-comment') }}</h2>
 
@@ -137,14 +137,14 @@ async function onDeleteComment() {
 
                     <div class="btn-group">
                         <QBtn
-                            :label="t('cancel')"
-                            icon="bi-x-lg"
-                            @click="open = false"
+                                :label="t('cancel')"
+                                icon="bi-x-lg"
+                                @click="open = false"
                         />
                         <QBtn
-                            :label="t('delete')"
-                            icon="bi-trash"
-                            type="submit"
+                                :label="t('delete')"
+                                icon="bi-trash"
+                                type="submit"
                         />
                     </div>
                 </QForm>
@@ -159,29 +159,29 @@ async function onDeleteComment() {
 @import "@/assets/_variables.scss";
 
 .comment-edition-btn {
-    display: flex;
-    gap: 0.2rem;
+  display: flex;
+  gap: 0.2rem;
 
-    ::v-deep(.q-btn) {
-        background-color: transparent !important;
-        box-shadow: none;
+  ::v-deep(.q-btn) {
+    background-color: transparent;
+    box-shadow: none;
 
-        .q-btn__content > * {
-            color: $textColor2;
-        }
-
-        &:hover {
-            box-shadow: 0 -0.25rem 0 0 $capeColor inset;
-            background-color: transparent !important;
-
-            .q-btn__content * {
-                color: $textColor1;
-            }
-        }
+    .q-btn__content > * {
+      color: $textColor2;
     }
+
+    &:hover {
+      box-shadow: 0 -0.25rem 0 0 $capeColor inset;
+      background-color: transparent;
+
+      .q-btn__content * {
+        color: $textColor1;
+      }
+    }
+  }
 }
 
 .comment-text {
-    color: $textColor2
+  color: $textColor2
 }
 </style>

@@ -93,7 +93,8 @@ async function clearSearch() {
                 />
                 <QBtn
                         :label="t('cancel-search')"
-                        color="secondary"
+                        class="cancel-button"
+                        color="primary"
                         icon-right="mdi-close"
                         @click="clearSearch"
                 />
@@ -178,4 +179,5 @@ async function clearSearch() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
+
 </style>

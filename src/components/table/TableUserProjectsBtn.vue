@@ -100,6 +100,12 @@ onMounted(initOptions)
 
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
+@import '@/assets/styles/documents.scss';
+
+.q-btn-dropdown {
+  background-color: red;
+}
+
 
 .q-item {
   color: $capeColorText;

@@ -72,74 +72,74 @@ async function onGetCommissionDates() {
 <template>
     <QCard v-if="tabs.length">
         <QTabs
-            v-model="tab"
-            active-color="cape-color"
-            align="justify"
-            class="text-grey"
-            dense
-            indicator-color="cape-color"
+                v-model="tab"
+                active-color="cape-color"
+                align="justify"
+                class="text-grey"
+                dense
+                indicator-color="cape-color"
         >
             <QTab
-                v-for="(tab, index) in tabs"
-                :key="index"
-                :label="tab.label"
-                :name="tab.name"
+                    v-for="(tab, index) in tabs"
+                    :key="index"
+                    :label="tab.label"
+                    :name="tab.name"
             />
         </QTabs>
 
         <QSeparator/>
 
         <QTabPanels
-            v-model="tab"
-            animated
+                v-model="tab"
+                animated
         >
             <QTabPanel
-                v-for="(tab, index) in tabs"
-                :key="index"
-                :name="tab.name"
-                class="q-pa-none"
+                    v-for="(tab, index) in tabs"
+                    :key="index"
+                    :name="tab.name"
+                    class="q-pa-none"
             >
                 <QSplitter
-                    v-model="splitterModel"
+                        v-model="splitterModel"
                 >
                     <template v-slot:before>
                         <QTabs
-                            v-model="innerTab"
-                            class="cape-color"
-                            vertical
+                                v-model="innerTab"
+                                class="cape-color"
+                                vertical
                         >
                             <QTab
-                                :label="t('project.all-projects')"
-                                icon="bi-folder"
-                                name="allProjects"
+                                    :label="t('project.all-projects')"
+                                    icon="bi-folder"
+                                    name="allProjects"
                             />
                             <QTab
-                                :label="t('project.validated-projects')"
-                                icon="bi-folder-check"
-                                name="validatedProjects"
+                                    :label="t('project.validated-projects')"
+                                    icon="bi-folder-check"
+                                    name="validatedProjects"
                             />
                         </QTabs>
                     </template>
 
                     <template v-slot:after>
                         <QTabPanels
-                            v-model="innerTab"
-                            animated
-                            transition-next="slide-up"
-                            transition-prev="slide-down"
+                                v-model="innerTab"
+                                animated
+                                transition-next="slide-up"
+                                transition-prev="slide-down"
                         >
                             <QTabPanel name="allProjects">
                                 <h3 class="title-3">{{ t('project.all-projects') }}</h3>
                                 <TableManagedProjects
-                                    :commission-date="tab.commissionDate"
-                                    project-status="all"
+                                        :commission-date="tab.commissionDate"
+                                        project-status="all"
                                 />
                             </QTabPanel>
                             <QTabPanel name="validatedProjects">
                                 <h3 class="title-3">{{ t('project.validated-projects') }}</h3>
                                 <TableManagedProjects
-                                    :commission-date="tab.commissionDate"
-                                    project-status="validated"
+                                        :commission-date="tab.commissionDate"
+                                        project-status="validated"
                                 />
                             </QTabPanel>
                         </QTabPanels>
@@ -149,8 +149,8 @@ async function onGetCommissionDates() {
         </QTabPanels>
     </QCard>
     <p
-        v-else
-        class="paragraph"
+            v-else
+            class="paragraph"
     >
         {{ t('project.no-project-to-show') }}
     </p>
@@ -160,26 +160,26 @@ async function onGetCommissionDates() {
 @import "@/assets/_variables.scss";
 
 .text-cape-color {
-    color: $capeColor !important;
+  color: $capeColor;
 }
 
 .bg-cape-color {
-    background: $capeColorBackground !important;
+  background: $capeColorBackground;
 }
 
 .cape-color {
-    color: $capeColor;
+  color: $capeColor;
 }
 
 .q-tab-panel {
-    padding: 0 1rem;
+  padding: 0 1rem;
 }
 
 .info-panel {
-    margin: 0.5rem;
+  margin: 0.5rem;
 }
 
 h3 {
-    padding: 1rem
+  padding: 1rem
 }
 </style>

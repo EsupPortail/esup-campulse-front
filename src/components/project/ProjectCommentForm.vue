@@ -69,15 +69,15 @@ async function onPostNewComment() {
 
 <template>
     <div
-        v-for="comment in comments"
-        :key="comment.id"
-        class="comment-row"
+            v-for="comment in comments"
+            :key="comment.id"
+            class="comment-row"
     >
         <p class="comment-head">
             <span>
                 <i
-                    aria-hidden="true"
-                    class="bi bi-chat"
+                        aria-hidden="true"
+                        class="bi bi-chat"
                 ></i>
                 {{ t('project.comments.comment-from') }} <span class="value">{{ comment.user }}</span>
                 {{ t('project.comments.on-date') }} <span class="value">{{
@@ -85,10 +85,10 @@ async function onPostNewComment() {
                 }}</span>
             </span>
             <FormEditDeleteProjectComment
-                v-if="comment.user === userStore.user?.id"
-                :comment-id="comment.id"
-                :comment-text="comment.text"
-                :project-id="project"
+                    v-if="comment.user === userStore.user?.id"
+                    :comment-id="comment.id"
+                    :comment-text="comment.text"
+                    :project-id="project"
             />
         </p>
         <p>
@@ -101,29 +101,29 @@ async function onPostNewComment() {
     <section>
         <h3 class="section-title">
             <i
-                aria-hidden="true"
-                class="bi bi-plus"
+                    aria-hidden="true"
+                    class="bi bi-plus"
             ></i>
             {{ t('forms.add-new-comment') }}
         </h3>
         <QForm
-            ref="form"
-            @reset="newComment = ''"
-            @submit.prevent="onPostNewComment"
+                ref="form"
+                @reset="newComment = ''"
+                @submit.prevent="onPostNewComment"
         >
             <QInput
-                v-model="newComment"
-                :label="t('project.comments.new-comment') + ' *'"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                filled
-                lazy-rules
-                type="textarea"
+                    v-model="newComment"
+                    :label="t('project.comments.new-comment') + ' *'"
+                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                    filled
+                    lazy-rules
+                    type="textarea"
             />
             <div>
                 <QBtn
-                    :label="t('validate')"
-                    icon="bi-check-lg"
-                    type="submit"
+                        :label="t('validate')"
+                        icon="bi-check-lg"
+                        type="submit"
                 />
             </div>
         </QForm>
@@ -136,31 +136,31 @@ async function onPostNewComment() {
 @import "@/assets/_variables.scss";
 
 .comment-row {
-    width: 80% !important;
+  width: 80%;
 }
 
 .comment-head {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .q-form {
-    margin: auto;
+  margin: auto;
 }
 
 h3.section-title {
-    margin: 1rem 0 0.5rem 0;
+  margin: 1rem 0 0.5rem 0;
 }
 
 .paragraph, section {
-    margin: auto;
-    width: 80%;
+  margin: auto;
+  width: 80%;
 }
 
 .flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem
+  display: flex;
+  flex-direction: column;
+  gap: 1rem
 }
 
 </style>

@@ -50,20 +50,20 @@ onMounted(initOptions)
 <template>
     <div class="q-pa-md">
         <QBtnDropdown
-            v-if="options.length"
-            :label="t('manage')"
+                v-if="options.length"
+                :label="t('manage')"
         >
             <QList>
                 <QItem
-                    v-for="(option, index) in options"
-                    :key="index"
-                    v-close-popup
-                    clickable
-                    @click="() => router.push(option.to)"
+                        v-for="(option, index) in options"
+                        :key="index"
+                        v-close-popup
+                        clickable
+                        @click="() => router.push(option.to)"
                 >
                     <QItemSection avatar>
                         <QAvatar
-                            :icon="option.icon"
+                                :icon="option.icon"
                         />
                     </QItemSection>
                     <QItemSection>
@@ -75,12 +75,18 @@ onMounted(initOptions)
     </div>
 </template>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
 
-.q-item
-    color: $capeColorText
+.q-btn {
+  background-color: orange;
+}
 
-.no-presidency
-    color: $textColor2
+::v-deep(.q-item) {
+  color: $capeColorText;
+}
+
+::v-deep(.no-presidency) {
+  color: $textColor2;
+}
 </style>

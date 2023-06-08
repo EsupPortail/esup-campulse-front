@@ -93,8 +93,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-info-circle"
+                    aria-hidden="true"
+                    class="bi bi-info-circle"
             ></i>
             {{ t('project.general-infos') }}
         </h2>
@@ -146,8 +146,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-calendar"
+                    aria-hidden="true"
+                    class="bi bi-calendar"
             ></i>
             {{ t('project.commission-choice') }}
         </h2>
@@ -155,8 +155,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
             <div class="form">
                 <section class="recap-chips">
                     <QChip
-                        v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                        :key="index"
+                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                            :key="index"
                     >
                         {{
                             commissionDatesLabels.find(obj => obj.value === commissionDate.commissionDate)?.label
@@ -169,8 +169,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-piggy-bank"
+                    aria-hidden="true"
+                    class="bi bi-piggy-bank"
             ></i>
             {{ t('project.budget') }}
         </h2>
@@ -212,9 +212,9 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                     </div>
 
                     <div
-                        v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                        :key="index"
-                        class="display-row"
+                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                            :key="index"
+                            class="display-row"
                     >
                         <p class="row-title">
                             {{
@@ -226,36 +226,36 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                     </div>
 
                     <section
-                        v-if="projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)"
-                        class="flex-section"
+                            v-if="projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)"
+                            class="flex-section"
                     >
                         <h5 class="title-4">{{ t('project.previous-edition') }}</h5>
 
                         <div
-                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                            :key="index"
-                            class="display-row"
+                                v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                                :key="index"
+                                class="display-row"
                         >
                             <p class="row-title">
                                 {{
                                     `${t('project.previous-asked')}
                                         (${commissions.find(obj => obj.id === commissionDates
-                                    .find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                        .find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
                                 }}
                             </p>
                             <p>{{ commissionDate.amountAskedPreviousEdition + CURRENCY }}</p>
                         </div>
 
                         <div
-                            v-for="(commissionDate, index) in projectStore.projectCommissionDates"
-                            :key="index"
-                            class="display-row"
+                                v-for="(commissionDate, index) in projectStore.projectCommissionDates"
+                                :key="index"
+                                class="display-row"
                         >
                             <p class="row-title">
                                 {{
                                     `${t('project.previous-earned')}
                                         (${commissions.find(obj => obj.id === commissionDates
-                                    .find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
+                                        .find(obj => obj.commission === commissionDate.commissionDate)?.commission)?.acronym})`
                                 }}
                             </p>
                             <p>{{ commissionDate.amountEarnedPreviousEdition + CURRENCY }}</p>
@@ -273,8 +273,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-flag"
+                    aria-hidden="true"
+                    class="bi bi-flag"
             ></i>
             {{ t('project.goals') }}
         </h2>
@@ -312,8 +312,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-file-earmark"
+                    aria-hidden="true"
+                    class="bi bi-file-earmark"
             ></i>
             {{ t('project.documents') }}
         </h2>
@@ -321,17 +321,17 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
             <div class="form">
                 <section class="flex-section">
                     <div
-                        v-for="(document, index) in processDocuments"
-                        :key="index"
-                        class="display-row"
+                            v-for="(document, index) in processDocuments"
+                            :key="index"
+                            class="display-row"
                     >
                         <p class="row-title">{{ document.description }}</p>
                         <p class="paragraph">
                             <ul role="list">
                                 <li
-                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                                    :key="uploadedDocument.id"
-                                    @click="onGetFile"
+                                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                                        :key="uploadedDocument.id"
+                                        @click="onGetFile"
                                 >
                                     {{ uploadedDocument.name }}
                                 </li>
@@ -345,8 +345,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-chat"
+                    aria-hidden="true"
+                    class="bi bi-chat"
             ></i>
             {{ t('project.comments.title') }}
         </h2>
@@ -363,12 +363,12 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
 @import "@/assets/styles/dashboard.scss";
 
 .form, .display-row {
-    width: 80% !important;
+  width: 80%;
 }
 
 .flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem
+  display: flex;
+  flex-direction: column;
+  gap: 1rem
 }
 </style>
