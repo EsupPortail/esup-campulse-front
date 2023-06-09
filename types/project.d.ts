@@ -7,14 +7,11 @@ export interface Project {
     plannedStartDate: string,
     plannedEndDate: string,
     plannedLocation: string,
-    contactFirstName: string | null,
-    contactLastName: string | null,
-    contactEmail: string | null,
-    contactPhone: string | null,
     user: number | null,
     association: number | null,
+    associationUser: number | null,
     categories?: ProjectCategoryName[],
-    commissionDates?: CommissionDate[],
+    commissions?: ProjectCommissionFund[],
     budgetPreviousEdition: number,
     targetAudience: string,
     amountStudentsAudience: number,
@@ -27,7 +24,8 @@ export interface Project {
     preventionSafety: string,
     marketingCampaign: string,
     projectStatus: ProjectStatus,
-    projectComments?: ProjectComment[]
+    creationDate: string,
+    editionDate: string
 }
 
 export interface ProjectList {
@@ -66,11 +64,9 @@ export interface ProjectBasicInfos {
     plannedStartDate: string,
     plannedEndDate: string,
     plannedLocation: string,
-    contactFirstName: string | null,
-    contactLastName: string | null,
-    contactEmail: string | null,
     user: number | null,
-    association: number | null
+    association: number | null,
+    associationUser: number | null
 }
 
 export interface ProjectBudget {

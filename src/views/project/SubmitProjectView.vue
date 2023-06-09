@@ -14,8 +14,8 @@ import router from '@/router'
 import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
-import useUsers from '@/composables/useUsers'
 import FormProjectRecap from '@/components/project/ProjectRecap.vue'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const {t} = useI18n()
 const {
@@ -39,7 +39,9 @@ const {
     submitProject,
     reInitSubmitProjectForm,
     projectCommissionFundsDetail,
-    reInitProjectCommissionFunds
+    reInitProjectCommissionFunds,
+    initProjectAssociationUsersLabels,
+    projectAssociationUsersLabels
 } = useSubmitProject()
 const {
     getDocuments,
@@ -51,7 +53,6 @@ const {
     deleteDocumentUpload,
     createFileLink
 } = useProjectDocuments()
-const {initInfosToPatch, updateUserInfos, infosToPatch} = useUsers()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
     getCommissionsForStudents,
@@ -72,18 +73,13 @@ const route = useRoute()
 
 onMounted(async () => {
     loading.show()
-
     projectId.value = parseInt(route.params.projectId as string)
-
     if (projectId.value) newProject.value = false
-
     await onGetProjectDetail()
-
     // If project is not a draft, then push to 404
     if (projectStore.project && projectStore.project?.projectStatus !== 'PROJECT_DRAFT') {
         await router.push({name: '404'})
     }
-
     initApplicant()
     // If the applicant is an association and the person trying to submit project is not a member of the association,
     // redirect to 404
@@ -95,11 +91,9 @@ onMounted(async () => {
             initIsSite()
         } else await router.push({name: '404'})
     }
-
-    initSelfBearer()
-
     await onGetProjectCategories()
     await onGetDocumentTypes()
+    await onGetAssociationUsers()
     loading.hide()
 })
 
@@ -141,14 +135,6 @@ watch(() => projectStore.projectCommissionFunds.length, () => {
 })
 
 const isSite = ref<boolean>(false)
-
-const selfBearer = ref<'yes' | 'no'>('yes')
-
-const initSelfBearer = () => {
-    if (!newProject.value && projectBasicInfos.value.contactFirstName) {
-        selfBearer.value = 'no'
-    }
-}
 
 // CONST
 const MAX_FILES = 10
@@ -246,6 +232,21 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     }
 }
 
+async function onGetAssociationUsers() {
+    try {
+        if (applicant.value === 'association' && associationId.value) {
+            await initProjectAssociationUsersLabels(associationId.value)
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
 // GET DATA FOR STEP 2
 async function onGetCommissionDates() {
     try {
@@ -315,22 +316,10 @@ async function onSubmitBasicInfos(nextStep: number) {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
         } else {
-            if (selfBearer.value === 'yes' && projectBasicInfos.value.contactFirstName) {
-                projectBasicInfos.value.contactFirstName = ''
-                projectBasicInfos.value.contactLastName = ''
-                projectBasicInfos.value.contactEmail = ''
-            }
             await patchProjectBasicInfos()
         }
-        // For individual project bearer
-        initInfosToPatch(userStore.user)
-        if (Object.entries(infosToPatch).length) {
-            await updateUserInfos(userStore.user, false)
-        }
-        if (projectStore.project) {
-            await updateProjectCategories()
-            step.value = nextStep
-        }
+        await updateProjectCategories()
+        step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -573,56 +562,21 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                                 map-options
                                 multiple
-                                stack-label
                                 use-chips
                             />
-                            <fieldset v-if="applicant === 'association'">
-                                <legend class="title-3">{{ t('project.bearer-identity') }}</legend>
-                                <p class="paragraph">{{ t('project.i-am-bearer') }} <strong>{{ associationName }}</strong> :</p>
-                                <div class="q-gutter-sm radio-btn">
-                                    <QRadio
-                                        v-model="selfBearer"
-                                        val="yes"
-                                        :label="t('yes')"
-                                    />
-                                    <QRadio
-                                        v-model="selfBearer"
-                                        val="no"
-                                        :label="t('no')"
-                                    />
-                                </div>
-                                <fieldset v-if="selfBearer === 'no'">
-                                    <legend class="self-bearer">Saisir les informations de la personne référente à contacter :</legend>
-                                    <QInput
-                                        v-model="projectBasicInfos.contactFirstName"
-                                        :label="t('project.contact-first-name') + ' *'"
-                                        clearable
-                                        filled
-                                        lazy-rules
-                                        aria-required="true"
-                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    />
-                                    <QInput
-                                        v-model="projectBasicInfos.contactLastName"
-                                        :label="t('project.contact-last-name') + ' *'"
-                                        clearable
-                                        filled
-                                        lazy-rules
-                                        aria-required="true"
-                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    />
-                                    <QInput
-                                        v-model="projectBasicInfos.contactEmail"
-                                        :label="t('project.contact-email') + ' *'"
-                                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                                        class="no-rules"
-                                        clearable
-                                        filled
-                                        lazy-rules
-                                        aria-required="true"
-                                    />
-                                </fieldset>
-                            </fieldset>
+                            <div v-if="applicant === 'association'">
+                                <QSelect
+                                    v-model="projectBasicInfos.associationUser"
+                                    :label="t('project.association-user') + ' *'"
+                                    :options="projectAssociationUsersLabels"
+                                    :rules="[ val => val || t('forms.fill-field')]"
+                                    clearable
+                                    emit-value
+                                    filled
+                                    lazy-rules
+                                    map-options
+                                />
+                            </div>
                             <fieldset
                                 v-else
                                 class="individual-bearer"

@@ -159,6 +159,9 @@ async function onGetCommissions() {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/forms.scss';
+
 
 .text-cape-color {
     color: $capeColor !important;

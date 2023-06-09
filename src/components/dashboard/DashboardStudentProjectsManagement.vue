@@ -57,6 +57,7 @@ const splitterModel = ref(20)
 
 onMounted(async () => {
     loading.show()
+    await onGetProjects()
     await onGetAssociations()
     initUserAssociations(false)
     initTabs()
@@ -82,6 +83,21 @@ async function onGetAssociations() {
                 message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
             })
         }
+    }
+}
+
+
+async function onGetProjects() {
+    try {
+        await projectStore.getAllProjects()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+
     }
 }
 

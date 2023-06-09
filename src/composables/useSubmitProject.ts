@@ -11,6 +11,10 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import useCommissions from '@/composables/useCommissions'
+import type {SelectLabel} from '#/index'
+import type {User} from '#/user'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const projectBasicInfos = ref<ProjectBasicInfos>(
     {
@@ -18,13 +22,13 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         plannedStartDate: '',
         plannedEndDate: '',
         plannedLocation: '',
-        contactFirstName: '',
-        contactLastName: '',
-        contactEmail: '',
         user: null,
-        association: null
+        association: null,
+        associationUser: null
     }
 )
+
+const projectAssociationUsersLabels = ref<SelectLabel[]>([])
 
 const projectCategories = ref<number[]>([])
 
@@ -66,6 +70,8 @@ export default function () {
     const {arraysAreEqual} = useUtility()
     const {processDocuments} = useProjectDocuments()
     const {initChosenCommissionFundsLabels} = useCommissions()
+    const associationStore = useAssociationStore()
+    const {getAssociationUsersNames} = useUserAssociations()
 
 
     // INIT DATA
@@ -75,11 +81,24 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
         projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
         projectBasicInfos.value.plannedLocation = projectStore.project?.plannedLocation as string
-        projectBasicInfos.value.contactFirstName = projectStore.project?.contactFirstName as string
-        projectBasicInfos.value.contactLastName = projectStore.project?.contactLastName as string
-        projectBasicInfos.value.contactEmail = projectStore.project?.contactEmail as string
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
+        projectBasicInfos.value.associationUser = projectStore.project?.associationUser as number | null
+    }
+
+    const initProjectAssociationUsersLabels = async (associationId: number) => {
+        projectAssociationUsersLabels.value = []
+        const userNames: User[] = await getAssociationUsersNames(associationId)
+        await associationStore.getAssociationUsers(associationId)
+        associationStore.associationUsers.forEach(function (associationUser) {
+            const member = userNames.find(obj => obj.id === associationUser.user)
+            if (member && associationUser.id) {
+                projectAssociationUsersLabels.value.push({
+                    value: associationUser.id,
+                    label: member.firstName + ' ' + member.lastName
+                })
+            }
+        })
     }
 
     const initProjectCategories = () => {
@@ -117,11 +136,9 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = ''
         projectBasicInfos.value.plannedEndDate = ''
         projectBasicInfos.value.plannedLocation = ''
-        projectBasicInfos.value.contactFirstName = ''
-        projectBasicInfos.value.contactLastName = ''
-        projectBasicInfos.value.contactEmail = ''
         projectBasicInfos.value.user = null
         projectBasicInfos.value.association = null
+        projectBasicInfos.value.associationUser = null
         projectCategories.value = []
         projectCommission.value = null
         projectCommissionFunds.value = []
@@ -211,14 +228,8 @@ export default function () {
         if (projectBasicInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
             dataToPatch = Object.assign(dataToPatch, {['plannedLocation']: projectBasicInfos.value.plannedLocation})
         }
-        if (projectBasicInfos.value.contactFirstName !== projectStore.project?.contactFirstName) {
-            dataToPatch = Object.assign(dataToPatch, {['contactFirstName']: projectBasicInfos.value.contactFirstName})
-        }
-        if (projectBasicInfos.value.contactLastName !== projectStore.project?.contactLastName) {
-            dataToPatch = Object.assign(dataToPatch, {['contactLastName']: projectBasicInfos.value.contactLastName})
-        }
-        if (projectBasicInfos.value.contactEmail !== projectStore.project?.contactEmail) {
-            dataToPatch = Object.assign(dataToPatch, {['contactEmail']: projectBasicInfos.value.contactEmail})
+        if (projectBasicInfos.value.associationUser !== projectStore.project?.associationUser) {
+            dataToPatch = Object.assign(dataToPatch, {['associationUser']: projectBasicInfos.value.associationUser})
         }
 
         if (Object.entries(dataToPatch).length) {
@@ -326,6 +337,8 @@ export default function () {
         reInitSubmitProjectForm,
         projectCommissionFunds,
         projectCommissionFundsDetail,
-        reInitProjectCommissionFunds
+        reInitProjectCommissionFunds,
+        initProjectAssociationUsersLabels,
+        projectAssociationUsersLabels
     }
 }

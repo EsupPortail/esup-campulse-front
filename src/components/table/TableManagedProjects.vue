@@ -164,7 +164,6 @@ const columns: QTableProps['columns'] = [
 <style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
-@import "@/assets/_variables.scss";
 
 section {
     padding: 0 1rem
