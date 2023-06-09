@@ -61,7 +61,7 @@ async function onGetProjectCommissions() {
 <template>
     <section class="flex-section">
         <div class="display-row">
-            <p class="row-title">{{ t('commission.funds') }}</p>
+            <p class="row-title">{{ t('commission.name') }}</p>
             <p>{{ projectCommissionLabel }}</p>
         </div>
         <div class="display-row">
