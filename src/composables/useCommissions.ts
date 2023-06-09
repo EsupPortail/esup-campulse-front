@@ -37,7 +37,7 @@ export default function () {
 
     const initChosenCommissionFundsLabels = (commission: number) => {
         fundsLabels.value = commissionFunds.value.filter(obj => obj.commission === commission).map(x => ({
-            value: x.fund,
+            value: x.id,
             label: funds.value.find(obj => obj.id === x.fund)?.acronym as string
         }))
 
@@ -85,9 +85,13 @@ export default function () {
     const initCommissionLabels = () => {
         commissionLabels.value = commissions.value.map(commission => ({
             value: commission.id,
-            label: commission.name + ' '
-                + commission.commissionDate.split('-').reverse().join('/')
+            label: commission.name + ' ('
+                + commission.commissionDate.split('-').reverse().join('/') + ')'
         }))
+    }
+
+    async function getAllCommissions() {
+        commissions.value = (await axiosPublic.get<Commission[]>('/commissions/')).data
     }
 
     async function getCommissionFunds() {
@@ -175,6 +179,7 @@ export default function () {
         postNewCommission,
         getCommissionFunds,
         initCommissionLabels,
-        initChosenCommissionFundsLabels
+        initChosenCommissionFundsLabels,
+        getAllCommissions
     }
 }

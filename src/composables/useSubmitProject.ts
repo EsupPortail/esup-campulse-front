@@ -10,6 +10,7 @@ import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useProjectDocuments from '@/composables/useProjectDocuments'
+import useCommissions from '@/composables/useCommissions'
 
 const projectBasicInfos = ref<ProjectBasicInfos>(
     {
@@ -39,10 +40,10 @@ const projectBudget = ref<ProjectBudget>(
 )
 
 // Used to store the chosen commission (v-model in SubmitProjectView)
-const projectCommission = ref<number | null>()
+const projectCommission = ref<number | null>(null)
 
 // Used to store the chosen commission funds (v-model in SubmitProjectView)
-const projectCommissionFunds = ref<number[]>()
+const projectCommissionFunds = ref<number[]>([])
 
 // Used to copy projectCommissionFunds from the store and check changes
 const projectCommissionFundsDetail = ref<ProjectCommissionFund[]>([])
@@ -64,6 +65,7 @@ export default function () {
     const {axiosAuthenticated} = useAxios()
     const {arraysAreEqual} = useUtility()
     const {processDocuments} = useProjectDocuments()
+    const {initChosenCommissionFundsLabels} = useCommissions()
 
 
     // INIT DATA
@@ -82,6 +84,13 @@ export default function () {
 
     const initProjectCategories = () => {
         projectCategories.value = projectStore.projectCategories.map(category => category.category) as number[]
+    }
+
+    const reInitProjectCommissionFunds = () => {
+        if (projectCommission.value) {
+            projectCommissionFunds.value = []
+            initChosenCommissionFundsLabels(projectCommission.value)
+        }
     }
 
     const initProjectBudget = () => {
@@ -144,10 +153,14 @@ export default function () {
     }
 
     // UPDATES = POSTS AND DELETES
-    async function updateProjectCommissionFunds() {
+    async function updateProjectCommission() {
         const oldCommissionFunds: number[] = projectStore.projectCommissionFunds.map(x => x.commissionFund)
         const newCommissionFunds: number[] = projectCommissionFunds.value as number[]
         if (!arraysAreEqual(oldCommissionFunds, newCommissionFunds)) {
+            const commissionFundsToDelete = oldCommissionFunds.filter(x => newCommissionFunds.indexOf(x) === -1)
+            for (let i = 0; i < commissionFundsToDelete.length; i++) {
+                await axiosAuthenticated.delete(`/projects/${projectStore.project?.id}/commission_funds/${commissionFundsToDelete[i]}`)
+            }
             const commissionFundsToPost = newCommissionFunds.filter(x => oldCommissionFunds.indexOf(x) === -1)
             for (let i = 0; i < commissionFundsToPost.length; i++) {
                 await axiosAuthenticated.post('/projects/commission_funds',
@@ -156,10 +169,6 @@ export default function () {
                         commissionFund: commissionFundsToPost[i]
                     }
                 )
-            }
-            const commissionFundsToDelete = oldCommissionFunds.filter(x => newCommissionFunds.indexOf(x) === -1)
-            for (let i = 0; i < commissionFundsToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/projects/${projectStore.project?.id}/commission_funds/${commissionFundsToDelete[i]}`)
             }
         }
     }
@@ -304,7 +313,7 @@ export default function () {
         postNewProject,
         projectCategories,
         initProjectCategories,
-        updateProjectCommissionFunds,
+        updateProjectCommission,
         initProjectGoals,
         projectGoals,
         updateProjectCategories,
@@ -316,6 +325,7 @@ export default function () {
         submitProject,
         reInitSubmitProjectForm,
         projectCommissionFunds,
-        projectCommissionFundsDetail
+        projectCommissionFundsDetail,
+        reInitProjectCommissionFunds
     }
 }

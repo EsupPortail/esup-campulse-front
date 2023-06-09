@@ -1,12 +1,15 @@
 import {ref} from 'vue'
 import type {Document} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
+import type {ProcessDocument} from '#/documents'
+import useProjectDocuments from '@/composables/useProjectDocuments'
 
 const documents = ref<Document[]>([])
 
 export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
+    const {getFile} = useProjectDocuments()
 
     const libraryProcesses = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_COMMISSION', 'NO_PROCESS']
 

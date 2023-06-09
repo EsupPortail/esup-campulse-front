@@ -15,7 +15,7 @@ import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import useUsers from '@/composables/useUsers'
-import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
+import FormProjectRecap from '@/components/project/ProjectRecap.vue'
 
 const {t} = useI18n()
 const {
@@ -24,7 +24,7 @@ const {
     projectCategories,
     projectCommission,
     projectBudget,
-    updateProjectCommissionFunds,
+    updateProjectCommission,
     projectGoals,
     updateProjectCategories,
     initProjectBasicInfos,
@@ -38,7 +38,8 @@ const {
     initProjectGoals,
     submitProject,
     reInitSubmitProjectForm,
-    projectCommissionFundsDetail
+    projectCommissionFundsDetail,
+    reInitProjectCommissionFunds
 } = useSubmitProject()
 const {
     getDocuments,
@@ -48,7 +49,7 @@ const {
     initDocumentUploads,
     documentUploads,
     deleteDocumentUpload,
-    getFile
+    createFileLink
 } = useProjectDocuments()
 const {initInfosToPatch, updateUserInfos, infosToPatch} = useUsers()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
@@ -59,7 +60,6 @@ const {
     getFunds,
     fundsLabels,
     funds,
-    commissions,
     commissionFunds,
     initChosenCommissionFundsLabels,
     getCommissionFunds
@@ -235,13 +235,7 @@ async function onGetDocumentTypes() {
 
 async function onGetFile(uploadedDocument: ProcessDocument) {
     try {
-        const file = await getFile(uploadedDocument.pathFile as string)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(file)
-        link.download = uploadedDocument.name as string
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        await createFileLink(uploadedDocument)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -262,12 +256,11 @@ async function onGetCommissionDates() {
         if (!newProject.value) {
             await projectStore.getProjectCommissionFunds(false, undefined)
             projectCommission.value = commissionFunds.value
-                .find(obj => obj.id === projectStore.projectCommissionFunds[0].commissionFund)?.commission
+                .find(obj => obj.id === projectStore.projectCommissionFunds[0].commissionFund)?.commission as number
             if (projectCommission.value) {
                 initChosenCommissionFundsLabels(projectCommission.value as number)
                 projectCommissionFunds.value = projectStore.projectCommissionFunds
-                    .map(x => funds.value.find((z => z.id === (commissionFunds.value
-                        .find(y => y.id === x.commissionFund))?.fund))?.id as number)
+                    .map(x => x.commissionFund)
             }
         }
     } catch (error) {
@@ -350,10 +343,10 @@ async function onSubmitBasicInfos(nextStep: number) {
 }
 
 // SUBMIT STEP 2
-async function onSubmitCommissionDates(nextStep: number) {
+async function onSubmitCommission(nextStep: number) {
     loading.show()
     try {
-        await updateProjectCommissionFunds()
+        await updateProjectCommission()
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -661,7 +654,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="bi-calendar"
                     >
                         <QForm
-                            @submit.prevent="onSubmitCommissionDates(3)"
+                            @submit.prevent="onSubmitCommission(3)"
                         >
                             <h3 class="title-2">{{ t('project.commission-choice') }}</h3>
 
@@ -676,7 +669,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                                 clearable
                                 map-options
-                                @update:model-value="initChosenCommissionFundsLabels(projectCommission)"
+                                @update:model-value="reInitProjectCommissionFunds"
                             />
 
                             <QSelect
@@ -700,7 +693,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QBtn
                                     :label="t('back')"
                                     icon="bi-chevron-left"
-                                    @click="onSubmitCommissionDates(1)"
+                                    @click="onSubmitCommission(1)"
                                 />
                                 <QBtn
                                     :label="t('continue')"

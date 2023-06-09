@@ -10,6 +10,7 @@ import type {
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import type {DocumentUpload} from '#/documents'
+import useCommissions from '@/composables/useCommissions'
 
 
 export const useProjectStore = defineStore('projectStore', {
@@ -28,6 +29,12 @@ export const useProjectStore = defineStore('projectStore', {
                 value: category.id,
                 label: category.name
             }))
+        },
+        projectCommission: (state: ProjectStore): number | undefined => {
+            const {commissionFunds, commissions} = useCommissions()
+            return commissions.value
+                .find(y => y.id === (commissionFunds.value
+                    .find(x => x.id === (state.projectCommissionFunds[0].commissionFund))?.commission))?.id
         }
     },
     actions: {
