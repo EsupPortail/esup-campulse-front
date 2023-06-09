@@ -42,7 +42,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                         <QBtn
                                 :href="CASUrlRegister"
                                 :label="t('login.create-account')"
-                                color="secondary"
+                                color="primary"
                         />
                     </div>
                 </QCardSection>

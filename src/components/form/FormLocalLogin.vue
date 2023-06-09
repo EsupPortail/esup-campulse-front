@@ -65,7 +65,7 @@ async function onLogIn() {
             <QBtn
                     :label="t('forms.create-account')"
                     :to="{name: 'Registration'}"
-                    color="secondary"
+                    color="primary"
             />
         </div>
         <!-- <QBtn :label="t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
