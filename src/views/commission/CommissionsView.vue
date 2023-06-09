@@ -15,7 +15,7 @@ const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {isStaff} = useUserGroups()
 
-onMounted(async () => {
+/*onMounted(async () => {
     loading.show()
     await onGetProjects()
     loading.hide()
@@ -33,7 +33,7 @@ async function onGetProjects() {
         }
 
     }
-}
+}*/
 </script>
 
 <template>

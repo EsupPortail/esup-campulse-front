@@ -55,8 +55,7 @@ async function onGetCommissions() {
             true,
             undefined,
             undefined,
-            true,
-            undefined)
+            true)
         await getFunds()
         await getCommissionFunds()
     } catch (error) {

@@ -56,7 +56,6 @@ async function onGetCommissions() {
             true,
             undefined,
             undefined,
-            undefined,
             undefined)
         await getCommissionFunds()
         initDates()

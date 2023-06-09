@@ -24,7 +24,7 @@ export default function () {
     // Funds
     async function getFunds() {
         if (funds.value.length === 0) {
-            funds.value = (await axiosPublic.get<Fund[]>('/commissions/funds/')).data
+            funds.value = (await axiosPublic.get<Fund[]>('/commissions/funds/names')).data
         }
     }
 
@@ -55,7 +55,6 @@ export default function () {
         activeProjects: boolean | undefined,
         isOpenToProjects: boolean | undefined,
         isSite: boolean | undefined,
-        managedCommissions: boolean | undefined,
         managedProjects: boolean | undefined) {
 
         let urlString = '/commissions/'
@@ -64,7 +63,6 @@ export default function () {
         if (activeProjects !== undefined) urlArray.push(`active_projects=${activeProjects}`)
         if (isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${isOpenToProjects}`)
         if (isSite !== undefined) urlArray.push(`is_site=${isSite}`)
-        if (managedCommissions !== undefined) urlArray.push(`managed_commissions=${managedCommissions}`)
         if (managedProjects !== undefined) urlArray.push(`managed_projects=${managedProjects}`)
 
         if (urlArray.length) urlString += `?${urlArray.join('&')}`
@@ -95,7 +93,7 @@ export default function () {
     }
 
     async function getCommissionFunds() {
-        commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/commission_funds/')).data
+        commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/funds')).data
     }
 
     async function postNewCommission(commission: NewCommission) {
@@ -106,7 +104,7 @@ export default function () {
             name: commission.name
         })).data
         for (const fund of commission.funds) {
-            await axiosAuthenticated.post('/commissions/commission_funds/', {
+            await axiosAuthenticated.post('/commissions/funds', {
                 commission: newCommission.id,
                 fund
             })
@@ -125,7 +123,7 @@ export default function () {
             const oldFundsToDelete = commission.oldFunds.filter(x => commission.newFunds.indexOf(x) === -1)
 
             for (let i = 0; i < newFundsToPost.length; i++) {
-                await axiosAuthenticated.post('/commissions/commission_funds/', {
+                await axiosAuthenticated.post('/commissions/funds', {
                     commission: commission.id,
                     fund: newFundsToPost[i]
                 })
@@ -134,7 +132,7 @@ export default function () {
                 const commissionFund = commissionFunds.value
                     .filter(obj => obj.commission === commission.id)
                     .find(obj => obj.fund === oldFundsToDelete[i])?.id
-                if (commissionFund) await axiosAuthenticated.delete(`/commissions/commission_funds/${commissionFund}`)
+                if (commissionFund) await axiosAuthenticated.delete(`/commissions/${commission.id}/funds/${commissionFund}`)
             }
         }
 

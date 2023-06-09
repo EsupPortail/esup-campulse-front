@@ -49,18 +49,17 @@ const initProjects = () => {
 
 onMounted(async () => {
     loading.show()
-    const commissionFundsArray = commissionFunds.value.filter(obj => obj.commission === props.commission).map(x => x.id)
-    await onGetProjects(commissionFundsArray)
+    await onGetProjects([props.commission])
     await onGetApplicants()
     initProjects()
     loading.hide()
 })
 
 
-async function onGetProjects(commissionsDates: number[]) {
+async function onGetProjects(commissions: number[]) {
     try {
-        if (commissionsDates.length) {
-            await projectStore.getProjects(false, commissionsDates)
+        if (commissions.length) {
+            await projectStore.getProjects(false, commissions)
         } else {
             projectStore.projects = []
         }
