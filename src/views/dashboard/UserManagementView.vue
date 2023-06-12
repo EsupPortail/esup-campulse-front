@@ -92,13 +92,16 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <h2>
-            <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
-            ></i>
-            {{ route.name === 'ValidateUsers' ? t('user-manager.validation') : t('user-manager.management') }}
-        </h2>
+        <div class="form-title">
+            <h2>
+                <i
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
+                ></i>
+                {{ route.name === 'ValidateUsers' ? t('user-manager.validation') : t('user-manager.management') }}
+            </h2>
+        </div>
+
         <div class="form-container">
             <div class="form">
                 <FormUserSearch
@@ -191,12 +194,14 @@ const columns: QTableProps['columns'] = [
                                     <QBtn
                                             v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"
                                             :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
+                                            aria-label="Modifier"
                                             icon="bi-pencil"
                                     />
                                     <QBtn
                                             v-if="route.name === 'ValidateUsers'"
                                             :label="t('consult')"
                                             :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
+                                            aria-label="Consulter"
                                             color="secondary"
                                             icon="bi-check-lg"
                                     />
@@ -213,4 +218,13 @@ const columns: QTableProps['columns'] = [
 <style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/variables.scss';
+
+::v-deep(.q-table__container) {
+  .q-table {
+    thead tr {
+      background-color: $dashboardColor;
+    }
+  }
+}
 </style>

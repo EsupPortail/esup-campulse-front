@@ -235,14 +235,4 @@ async function onRegister() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-
-.form {
-  width: 50% !important;
-}
-
-.btn-group {
-  .q-btn {
-    width: 20%;
-  }
-}
 </style>

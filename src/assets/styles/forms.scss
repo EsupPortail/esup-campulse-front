@@ -32,6 +32,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
 
     li {
       list-style: none;
@@ -42,9 +43,6 @@
     display: flex;
     justify-content: center;
 
-    .form {
-      width: 80%;
-    }
   }
 }
 
@@ -374,7 +372,7 @@ label.custom-label {
     }
   }
 
-  &.small-button {
+  &.create-asso-btn {
     padding: .375rem;
     margin: 0 0 0 0.5rem;
     font-size: 1rem;
@@ -546,7 +544,7 @@ label.custom-label {
 }
 
 .btn-group {
-  width: 90%;
+  width: auto;
   margin: 1rem auto;
   display: flex;
   flex-direction: column;
@@ -899,7 +897,7 @@ fieldset {
     display: none;
   }
 
-  ::v-deep(&.q-table--horizontal-separator thead th), ::v-deep(&.q-table--horizontal-separator tbody td) {
+  &.q-table--horizontal-separator thead th, &.q-table--horizontal-separator tbody td {
     border: none;
   }
 
@@ -914,8 +912,9 @@ fieldset {
     font-size: 1.0625rem;
     color: $annuaireColorText;
     padding: 1rem 0;
+    width: 90%;
 
-    ::v-deep(.q-btn.q-btn-item) {
+    .q-btn.q-btn-item {
       margin-right: 0.25rem;
 
       ::v-deep(&:last-child) {
@@ -927,10 +926,10 @@ fieldset {
   ::v-deep(.q-table) {
     border-collapse: separate;
     border-spacing: 0 .625rem;
-    width: 60%;
+    width: 80%;
 
     thead tr {
-      background-color: $dashboardColor;
+      background-color: $annuaireColor;
       box-shadow: $fieldsBoxShadow;
 
       th {
@@ -1147,7 +1146,7 @@ fieldset {
   }
 }
 
-.variant-space-3 {
+::v-deep(.variant-space-3) {
   .q-table__container {
     .q-table__bottom {
       color: $capeColorText;
@@ -1176,7 +1175,7 @@ fieldset {
         color: $capeColorText;
 
         &:first-child {
-          border-color: $capeColor;
+          border-left-color: $capeColor;
         }
 
         &.actions-cell-compact {
@@ -1343,13 +1342,14 @@ fieldset {
 }
 
 // Select elements used to choose an action to perform on selected table rows.
-.table-actions-select {
+::v-deep(.table-actions-select) {
   display: flex;
   flex-direction: row;
   padding: 1rem;
   gap: 1rem;
-  justify-content: space-between;
-  margin: 1.875rem 0 .9375rem;
+  justify-content: center;
+  margin: auto;
+  width: 80%;
 
   label {
     width: $fullSize;

@@ -115,7 +115,7 @@ function clearOptions() {
                         <div>
                             <QBtn
                                     :aria-label="t('forms.delete-association')"
-                                    class="bg-delete"
+                                    class="bg-delete test"
                                     icon="bi-trash"
                                     @click="removeAssociation(index)"
                             />
@@ -149,8 +149,4 @@ function clearOptions() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
-
-.q-card__section {
-  margin: 1rem;
-}
 </style>

@@ -71,6 +71,7 @@ onMounted(initOptions)
         <QBtnDropdown
                 v-if="options.length"
                 :label="t('manage')"
+                class="cape-color"
         >
             <QList>
                 <QItem
@@ -101,17 +102,5 @@ onMounted(initOptions)
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/documents.scss';
-
-.q-btn-dropdown {
-  background-color: red;
-}
-
-
-.q-item {
-  color: $capeColorText;
-}
-
-.no-presidency {
-  color: $textColor2;
-}
+@import '@/assets/styles/forms.scss';
 </style>

@@ -139,7 +139,7 @@ async function clearSearch() {
                     <QBtn
                             :label="t('advanced-search')"
                             class="search-button"
-                            color="primary"
+                            color="secondary"
                             icon-right="mdi-chevron-right"
                             type="submit"
                     />

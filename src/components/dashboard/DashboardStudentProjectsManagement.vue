@@ -89,7 +89,7 @@ async function onGetAssociations() {
 
 <template>
     <section class="dashboard-section">
-        <div class="form-container">
+        <div class="form-container variant-space-3">
             <div class="form form-width">
                 <QCard>
                     <QTabs
@@ -124,12 +124,8 @@ async function onGetAssociations() {
                                     v-model="splitterModel"
                             >
                                 <template v-slot:before>
-                                    <div
-                                            v-if="tab.association"
-                                    >
-                                        <div
-                                                v-if="associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
-                                        >
+                                    <div v-if="tab.association">
+                                        <div v-if="associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects">
                                             <div
                                                     v-if="userStore.hasPresidentStatus(tab.association)"
                                                     class="btn-group"

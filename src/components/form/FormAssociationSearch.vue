@@ -64,7 +64,9 @@ async function clearSearch() {
 </script>
 <template>
     <section class="directory-search">
-        <h3 class="title-3">{{ t('association.labels.search') }}</h3>
+        <div class="form-title">
+            <h3 class="title-3">{{ t('association.labels.search') }}</h3>
+        </div>
         <QForm
                 id="search-form"
                 class="search-text-field"

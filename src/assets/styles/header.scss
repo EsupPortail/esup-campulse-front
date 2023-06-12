@@ -380,7 +380,7 @@
 
 // Page title in the header - appears in all pages not using the home or minimal variant of the header.
 #header-title {
-  width: $fullSize;
+  width: auto;
   position: absolute;
   font-size: 3rem;
   bottom: 0;

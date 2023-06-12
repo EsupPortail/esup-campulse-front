@@ -35,6 +35,7 @@ const columns: QTableProps['columns'] = [
             :rows="importedProps.projects"
             :rows-per-page-options="[10, 20, 50, 0]"
             :title="importedProps.title"
+            class="variant-space-3"
             row-key="name"
     >
         <template v-slot:body="props">
@@ -78,3 +79,8 @@ const columns: QTableProps['columns'] = [
         </template>
     </QTable>
 </template>
+
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+</style>
