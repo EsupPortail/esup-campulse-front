@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ProjectCommentForm from '@/components/project/ProjectCommentForm.vue'
+import ProjectComments from '@/components/project/ProjectComments.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
@@ -15,6 +15,8 @@ import ProjectRecapCommissions from '@/components/project/ProjectRecapCommission
 import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
 import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
 import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
+import ProjectValidation from '@/components/project/ProjectValidation.vue'
+import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
@@ -142,23 +144,51 @@ async function onGetProjectDocuments() {
         <h2>
             <i
                 aria-hidden="true"
+                class="bi bi-check-lg"
+            ></i>
+            {{ t('project.status.title') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <div class="display-row">
+                    <p class="row-title">{{ t('status') }}</p>
+                    <ProjectStatusIndicator
+                        :project-status="projectStore.project?.projectStatus"
+                        :show-draft="false"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
                 class="bi bi-chat"
             ></i>
             {{ t('project.comments.title') }}
         </h2>
         <div class="form-container">
             <div class="form">
-                <ProjectCommentForm/>
+                <ProjectComments
+                    v-if="projectStore.project"
+                    :project="projectStore.project?.id"
+                />
             </div>
         </div>
     </section>
+    <ProjectValidation/>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 
-.form, .display-row {
+.form {
     width: 80% !important;
+}
+
+.display-row {
+    width: 100% !important;
 }
 </style>

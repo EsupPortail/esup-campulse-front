@@ -4,7 +4,7 @@ import type {
     ProjectCategory,
     ProjectCategoryName,
     ProjectCommissionFund,
-    ProjectList,
+    ProjectList, ProjectStatus,
     ProjectStore
 } from '#/project'
 import {useAxios} from '@/composables/useAxios'
@@ -34,7 +34,7 @@ export const useProjectStore = defineStore('projectStore', {
             const {commissionFunds, commissions} = useCommissions()
             return commissions.value
                 .find(y => y.id === (commissionFunds.value
-                    .find(x => x.id === (state.projectCommissionFunds[0].commissionFund))?.commission))?.id
+                    .find(x => x.id === (state.projectCommissionFunds[0]?.commissionFund))?.commission))?.id
         }
     },
     actions: {
@@ -99,5 +99,13 @@ export const useProjectStore = defineStore('projectStore', {
             const url = `/projects/${id}/export`
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         },
+
+        async patchProjectStatus(projectStatus: ProjectStatus) {
+            const {axiosAuthenticated} = useAxios()
+            if (this.project) {
+                await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
+                this.project.projectStatus = projectStatus
+            }
+        }
     }
 })

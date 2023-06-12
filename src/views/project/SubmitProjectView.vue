@@ -15,7 +15,8 @@ import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import FormProjectRecap from '@/components/project/ProjectRecap.vue'
-import {useAssociationStore} from '@/stores/useAssociationStore'
+import ProjectComments from '@/components/project/ProjectComments.vue'
+import useProjectComments from '@/composables/useProjectComments'
 
 const {t} = useI18n()
 const {
@@ -70,6 +71,7 @@ const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
 const route = useRoute()
+const {comments} = useProjectComments()
 
 onMounted(async () => {
     loading.show()
@@ -1039,6 +1041,28 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         />
                     </QStep>
                 </QStepper>
+            </div>
+        </div>
+    </section>
+    <section
+        class="dashboard-section"
+        v-if="comments"
+    >
+        <div class="form-title">
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-chat"
+                ></i>
+                {{ t('project.comments.title') }}
+            </h2>
+        </div>
+        <div class="form-container">
+            <div class="form">
+                <ProjectComments
+                    v-if="projectStore.project"
+                    :project="projectStore.project?.id"
+                />
             </div>
         </div>
     </section>

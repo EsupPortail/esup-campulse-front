@@ -101,7 +101,11 @@ export interface ProjectCommissionFund {
 export interface ProjectComment {
     id: number,
     project: Project | undefined,
-    user: User | undefined,
+    user: {
+        id: number,
+        firstName: string,
+        lastName: string
+    },
     text: string,
     creationDate: string,
 }

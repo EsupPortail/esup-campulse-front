@@ -316,7 +316,8 @@
   "forms": {
     "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
-    "add-new-comment": "Publier un nouveau commentaire",
+    "add-new-comment": "Ajouter un commentaire",
+    "add-new-comment-hint": "Si le projet est refusé ou retourné au porteur de projet, précisez la raison (documents manquants, projet inapproprié...)",
     "add-selected-associations": "Ajouter les associations sélectionnées",
     "amount-members-allowed-must-be-superior-to-members": "Veuillez choisir un nombre supérieur ou égal au nombre de membres actuels.",
     "amount-student-allowed-cannot-be-inferior-to-members": "Ne peut pas être inférieur au nombre de membres inscrits sur la plateforme actuellement",
@@ -482,25 +483,27 @@
       "logout-success": "Déconnexion réussie.",
       "new-commission-date": "La date de commission a été créée.",
       "new-document-uploaded": "Nouveau document ajouté.",
-      "new-project-comment": "Le commentaire a été ajouté.",
       "password-changed": "Votre mot de passe a bien été modifié.",
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
       "project-dates-updated": "Les dates du projet ont été mises à jour.",
       "publish-association": "L'association a bien été publiée dans l'annuaire",
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administration.",
+      "reject-project": "Le projet a été refusé.",
+      "return-project": "Le projet a été retourné au porteur.",
       "unpublish-association": "L'association a bien été dépubliée de l'annuaire",
       "update-user-infos": "Les informations du compte ont bien été mises à jour.",
-      "validate-asso": "L'association a été créée avec succès.",
       "validate-association": "L'association a été créée avec succès.",
       "validate-delete-user": "Le compte a bien été supprimé.",
       "validate-delete-user-association": "Le rôle de l'utilisateur dans l'association a bien été supprimé.",
-      "validate-user-association": "Le rôle dans l'utilisateur dans l'association a bien été validé.",
-      "validate-success": "Le compte a bien été modifié."
+      "validate-project": "Le projet a été validé.",
+      "validate-success": "Le compte a été modifié.",
+      "validate-user-association": "Le rôle dans l'utilisateur dans l'association a bien été validé."
     },
     "warning": {
       "no-modifications-found": "Aucun changement n'a été effectué."
     }
   },
+  "optional": "optionnel",
   "password": {
     "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
@@ -537,7 +540,6 @@
     "categories": "Catégories",
     "comments": {
       "comment-from": "Commentaire de",
-      "new-comment": "Nouveau commentaire",
       "no-comment-to-show": "Aucun commentaire pour le moment.",
       "on-date": "le",
       "title": "Commentaires"
@@ -597,8 +599,10 @@
     "project": "Projet",
     "projects-of": "Projets de",
     "re-edition": "Réédition d'un précédent projet",
+    "reject": "Refuser le projet",
     "rejected-projects": "Projets refusés",
     "required-documents-list": "Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés",
+    "return": "Demander des modifications",
     "review": "Bilan",
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "status": {
@@ -610,6 +614,7 @@
       "review-draft": "En attente de bilan",
       "review-processing": "Bilan en attente de validation",
       "review-rejected": "Bilan refusé",
+      "title": "Statut du projet",
       "validated": "Validé, en attente de commission"
     },
     "submit": "Valider et soumettre le projet",
@@ -640,6 +645,7 @@
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail.",
     "registration-ok-cas": "Votre demande d'inscription a bien été prise en compte. Vous pouvez dès à présent vous connecter avec vos identifiants CAS."
   },
+  "required": "obligatoire",
   "search": "Rechercher",
   "start": "Début",
   "status": "statut",
