@@ -92,7 +92,7 @@ const initDates = () => {
     })
 }
 
-async function onUpdateCommissionDate(commission: UpdateCommission) {
+async function onUpdateCommission(commission: UpdateCommission) {
     loading.show()
     try {
         if (commission.newName !== commission.oldName
@@ -118,7 +118,7 @@ async function onUpdateCommissionDate(commission: UpdateCommission) {
     loading.hide()
 }
 
-async function onDeleteCommissionDate(commission: number) {
+async function onDeleteCommission(commission: number) {
     loading.show()
     try {
         await deleteCommission(commission)
@@ -254,8 +254,8 @@ const onClearValues = () => {
                             />
                             <AlertConfirmCommissionDateUpdateOrDelete
                                 :commission="commission"
-                                @update-commission-date="onUpdateCommissionDate(commission)"
-                                @delete-commission-date="onDeleteCommissionDate(commission.id)"
+                                @update-commission-date="onUpdateCommission(commission)"
+                                @delete-commission-date="onDeleteCommission(commission.id)"
                             />
                         </QForm>
                     </div>

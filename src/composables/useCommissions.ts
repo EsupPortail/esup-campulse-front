@@ -112,12 +112,19 @@ export default function () {
     }
 
     async function updateCommission(commission: UpdateCommission) {
-        await axiosAuthenticated.patch(`/commissions/${commission.id}`, {
-            commissionDate: commission.newCommissionDate,
-            submissionDate: commission.newSubmissionDate,
-            isOpenToProjects: commission.newIsOpenToProjects,
-            name: commission.newName
-        })
+        let dataToPatch = {}
+        if (commission.newName !== commission.oldName) dataToPatch = Object.assign(dataToPatch, {name: commission.newName})
+        if (commission.newCommissionDate !== commission.oldCommissionDate) dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.newCommissionDate})
+        if (commission.newSubmissionDate !== commission.oldSubmissionDate) dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.newSubmissionDate})
+        if (commission.newIsOpenToProjects !== commission.oldIsOpenToProjects) dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.newIsOpenToProjects})
+        if (Object.entries(dataToPatch).length) {
+            await axiosAuthenticated.patch(`/commissions/${commission.id}`, {
+                commissionDate: commission.newCommissionDate,
+                submissionDate: commission.newSubmissionDate,
+                isOpenToProjects: commission.newIsOpenToProjects,
+                name: commission.newName
+            })
+        }
         if (!arraysAreEqual(commission.oldFunds, commission.newFunds)) {
             const newFundsToPost = commission.newFunds.filter(x => commission.oldFunds.indexOf(x) === -1)
             const oldFundsToDelete = commission.oldFunds.filter(x => commission.newFunds.indexOf(x) === -1)

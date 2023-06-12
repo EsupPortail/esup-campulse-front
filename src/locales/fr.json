@@ -176,7 +176,7 @@
     "alerts": {
       "confirm-update": "Êtes-vous sûr de vouloir modifier cette date de commission ?",
       "confirm-delete": "Êtes-vous sûr de vouloir supprimer cette date de commission ?",
-      "delete-warning-projects-submitted": "Attention, des projects ont été soumis et sont en cours de traitement pour cette date de commission :"
+      "delete-warning-projects-submitted": "Impossible de supprimer cette commission car des projets ont été soumis et sont en cours de traitement."
     },
     "archived": "Commissions archivées",
     "date": "Date de commission",
