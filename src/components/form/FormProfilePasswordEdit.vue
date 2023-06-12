@@ -133,8 +133,7 @@ const clearValues = () => {
 
 @media screen and (min-width: $responsiveWidth) {
   .form {
-    margin: auto;
-    width: $halfSize;
+    width: 50% !important;
   }
 }
 </style>

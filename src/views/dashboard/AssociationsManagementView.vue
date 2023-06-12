@@ -25,6 +25,12 @@ const initValues = () => {
 }
 watch(() => associationStore.associations, initValues)
 
+enum Variant {
+    Space4 = 'space-4'
+}
+
+const variant = ref(Variant.Space4)
+
 onMounted(async function () {
     loading.show()
     await onGetManagedAssociations()
@@ -122,7 +128,7 @@ const columns: QTableProps['columns'] = [
     </div>
 
     <div class="form-container">
-        <div class="form form-width">
+        <div class="form">
             <FormAssociationSearch
                     v-if="route.name"
                     :route="route.name"
@@ -217,6 +223,7 @@ const columns: QTableProps['columns'] = [
                             <QBtn
                                     :label="t('association.edit')"
                                     :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                                    class="test"
                                     color="secondary"
                                     icon="bi-pencil"
                             />
@@ -234,7 +241,7 @@ const columns: QTableProps['columns'] = [
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/forms.scss';
 
 </style>

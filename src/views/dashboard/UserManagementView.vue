@@ -100,11 +100,12 @@ const columns: QTableProps['columns'] = [
             {{ route.name === 'ValidateUsers' ? t('user-manager.validation') : t('user-manager.management') }}
         </h2>
         <div class="form-container">
-            <div class="form form-width">
+            <div class="form">
                 <FormUserSearch
                         @advanced-search="(result) => users = result"
                         @get-users="onGetUsers"
                 />
+
                 <QTable
                         :columns="columns"
                         :loading="!users"
@@ -212,5 +213,4 @@ const columns: QTableProps['columns'] = [
 <style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
-@import '@/assets/styles/associations.scss';
 </style>

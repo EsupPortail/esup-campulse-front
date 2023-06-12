@@ -126,16 +126,16 @@ const clearValues = () => {
                 />
                 <section class="btn-group">
                     <QBtn
+                            :label="t('user-manager.create-association')"
+                            color="secondary"
+                            icon="bi-check-lg"
+                            type="submit"
+                    />
+                    <QBtn
                             :label="t('home.back-dashboard')"
                             :to="{ name: 'Dashboard' }"
                             color="secondary"
                             icon="bi-box-arrow-right"
-                    />
-                    <QBtn
-                            :label="t('user-manager.create-association')"
-                            color="primary"
-                            icon="bi-check-lg"
-                            type="submit"
                     />
                 </section>
             </div>

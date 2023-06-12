@@ -69,6 +69,7 @@ async function clearSearch() {
                 id="search-form"
                 class="search-text-field"
                 @submit.prevent="onSearch"
+
         >
             <fieldset>
                 <QInput
@@ -166,7 +167,7 @@ async function clearSearch() {
                     />
                     <QBtn
                             :label="t('cancel-search')"
-                            color="secondary"
+                            color="primary"
                             icon-right="mdi-close"
                             @click="clearSearch"
                     />
@@ -177,7 +178,10 @@ async function clearSearch() {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
+@import '@/assets/styles/forms.scss';
 
+.directory-search {
+  padding: 1rem;
+}
 </style>
