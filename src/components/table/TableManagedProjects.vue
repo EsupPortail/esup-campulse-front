@@ -12,7 +12,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref} from 'vue'
 import TableManageProjectsBtn from '@/components/table/TableManageProjectsBtn.vue'
-import useCommissions from '@/composables/useCommissions'
+
 
 const {t} = useI18n()
 const {formatDate} = useUtility()
@@ -21,7 +21,6 @@ const userManagerStore = useUserManagerStore()
 const projectStore = useProjectStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {commissionFunds} = useCommissions()
 
 const props = defineProps<{
     commission: number,
@@ -59,7 +58,7 @@ onMounted(async () => {
 async function onGetProjects(commissions: number[]) {
     try {
         if (commissions.length) {
-            await projectStore.getProjects(false, commissions)
+            await projectStore.getManagedProjects(false, commissions)
         } else {
             projectStore.projects = []
         }

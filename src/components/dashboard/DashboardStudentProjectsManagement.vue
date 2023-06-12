@@ -224,17 +224,15 @@ async function onGetProjects() {
                                         transition-prev="slide-down"
                                     >
                                         <QTabPanel name="allProjects">
-                                            <h2 class="title-3">{{ t('project.all-projects') }}</h2>
                                             <TableUserProjects
                                                 :association-id="tab.association"
                                                 :projects="tab.association ?
                                                     projectStore.projects.filter(project => project.association === tab.association) :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id)"
-                                                :title="tab.label"
+                                                :title="t('project.all-projects')"
                                             />
                                         </QTabPanel>
                                         <QTabPanel name="validatedProjects">
-                                            <h2 class="title-3">{{ t('project.validated-projects') }}</h2>
                                             <TableUserProjects
                                                 :association-id="tab.association"
                                                 :projects="tab.association ?
@@ -242,11 +240,10 @@ async function onGetProjects() {
                                                         && project.projectStatus === 'PROJECT_REVIEW_VALIDATED') :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id
                                                         && project.projectStatus === 'PROJECT_REVIEW_VALIDATED')"
-                                                :title="tab.label"
+                                                :title="t('project.validated-projects')"
                                             />
                                         </QTabPanel>
                                         <QTabPanel name="rejectedProjects">
-                                            <h2 class="title-3">{{ t('project.rejected-projects') }}</h2>
                                             <TableUserProjects
                                                 :association-id="tab.association"
                                                 :projects="tab.association ?
@@ -254,7 +251,7 @@ async function onGetProjects() {
                                                         (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED')) :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id &&
                                                         (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED'))"
-                                                :title="tab.label"
+                                                :title="t('project.rejected-projects')"
                                             />
                                         </QTabPanel>
                                     </QTabPanels>
@@ -270,6 +267,8 @@ async function onGetProjects() {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
 
 .text-cape-color {
     color: $capeColor !important;

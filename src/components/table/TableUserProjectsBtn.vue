@@ -18,7 +18,7 @@ interface Option {
     icon: 'bi-eye' | 'bi-pencil',
     label: string,
     to?: {
-        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail',
+        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail' | 'SubmitProjectReview',
         params: { associationId?: number, projectId: number }
     }
 }
@@ -33,9 +33,9 @@ const initOptions = () => {
                 icon: 'bi-pencil',
                 label: t('project.modify'),
                 to: props.association ? {
-                        name: 'SubmitProjectAssociation',
-                        params: {associationId: props.association, projectId: props.project}
-                    } :
+                    name: 'SubmitProjectAssociation',
+                    params: {associationId: props.association, projectId: props.project}
+                } :
                     {name: 'SubmitProjectIndividual', params: {projectId: props.project}}
             })
         }
@@ -47,10 +47,11 @@ const initOptions = () => {
             to: {name: 'ProjectDetail', params: {projectId: props.project}}
         })
     }
-    if (props.projectStatus === 'PROJECT_VALIDATED' || props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
+    if (props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
         options.value.push({
             icon: 'bi-pencil',
-            label: t('project.modify-review')
+            label: t('project.modify-review'),
+            to: {name: 'SubmitProjectReview', params: {projectId: props.project}}
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
@@ -69,20 +70,20 @@ onMounted(initOptions)
 <template>
     <div class="q-pa-md">
         <QBtnDropdown
-                v-if="options.length"
-                :label="t('manage')"
+            v-if="options.length"
+            :label="t('manage')"
         >
             <QList>
                 <QItem
-                        v-for="(option, index) in options"
-                        :key="index"
-                        v-close-popup
-                        clickable
-                        @click="() => router.push(option.to)"
+                    v-for="(option, index) in options"
+                    :key="index"
+                    v-close-popup
+                    clickable
+                    @click="() => router.push(option.to)"
                 >
                     <QItemSection avatar>
                         <QAvatar
-                                :icon="option.icon"
+                            :icon="option.icon"
                         />
                     </QItemSection>
                     <QItemSection>
@@ -92,20 +93,22 @@ onMounted(initOptions)
             </QList>
         </QBtnDropdown>
         <span
-                v-else
-                class="no-presidency"
+            v-else
+            class="no-presidency"
         >{{ t('forbidden') }}</span>
     </div>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
 
 .q-item {
-  color: $capeColorText;
+    color: $capeColorText;
 }
 
 .no-presidency {
-  color: $textColor2;
+    color: $textColor2;
 }
 </style>

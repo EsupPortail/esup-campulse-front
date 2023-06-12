@@ -72,7 +72,7 @@ export const useProjectStore = defineStore('projectStore', {
             this.projectDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?project_id=${this.project?.id}`)).data
         },
 
-        async getProjects(archived: boolean | undefined, commissions: number[]) {
+        async getManagedProjects(archived: boolean | undefined, commissions: number[]) {
             const {axiosAuthenticated} = useAxios()
             const unarchivedStatus = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_PROCESSING'].join(',')
             const archivedStatus = ['PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED'].join(',')

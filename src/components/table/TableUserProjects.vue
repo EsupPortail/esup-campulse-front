@@ -76,3 +76,8 @@ const columns: QTableProps['columns'] = [
         </template>
     </QTable>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
+</style>
