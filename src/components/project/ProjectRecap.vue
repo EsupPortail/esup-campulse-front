@@ -5,10 +5,8 @@ import ProjectRecapCommissions from '@/components/project/ProjectRecapCommission
 import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
 import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
 import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
-import {useProjectStore} from '@/stores/useProjectStore'
 
 const {t} = useI18n()
-const projectStore = useProjectStore()
 
 const props = defineProps<{
     view: 'submitProject' | 'projectDetail'

@@ -24,7 +24,7 @@ const confirmDelete = ref<boolean>(false)
 async function onOpenDeleteAlert() {
     loading.show()
     try {
-        await projectStore.getManagedProjects(false, props.commission.id)
+        await projectStore.getManagedProjects(props.commission.id)
         confirmDelete.value = true
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

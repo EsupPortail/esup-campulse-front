@@ -21,52 +21,52 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
             {{ t('login.introduction-login') }}
         </p>
         <div
-                v-if="!newUser && !isCas"
-                class="form-container"
+            v-if="!newUser && !isCas"
+            class="form-container"
         >
             <QCard
-                    id="cas-login"
-                    class="card"
+                id="cas-login"
+                class="card"
             >
                 <QCardSection>
                     <div class="card-content">
-                        <span class="card-title">{{ t("login.im-cas-user") }}</span>
-                        {{ t("login.login-with-cas") }}
+                        <span class="card-title">{{ t('login.im-cas-user') }}</span>
+                        {{ t('login.login-with-cas') }}
                     </div>
                     <div class="btn-group">
                         <QBtn
-                                :href="CASUrlLogin"
-                                :label="t('login.login')"
-                                color="primary"
+                            :href="CASUrlLogin"
+                            :label="t('login.login')"
+                            color="primary"
                         />
                         <QBtn
-                                :href="CASUrlRegister"
-                                :label="t('login.create-account')"
-                                color="secondary"
+                            :href="CASUrlRegister"
+                            :label="t('login.create-account')"
+                            color="secondary"
                         />
                     </div>
                 </QCardSection>
             </QCard>
             <QCard
-                    id="local-login"
-                    class="card"
+                id="local-login"
+                class="card"
             >
                 <QCardSection>
                     <div class="card-content">
-                        <span class="card-title">{{ t("login.im-not-cas-user") }}</span>
-                        {{ t("login.login-without-cas") }}
+                        <span class="card-title">{{ t('login.im-not-cas-user') }}</span>
+                        {{ t('login.login-without-cas') }}
                     </div>
                     <FormLocalLogin/>
                 </QCardSection>
             </QCard>
         </div>
         <div
-                v-else
-                class="form-container"
+            v-else
+            class="form-container"
         >
             <QCard
-                    id="aborted-cas-registration"
-                    class="card"
+                id="aborted-cas-registration"
+                class="card"
             >
                 <QCardSection>
                     <div class="card-content">
@@ -76,9 +76,9 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                         {{ t('alerts.aborted-cas-registration.message') }}
                         <div>
                             <QBtn
-                                    :label="t('alerts.aborted-cas-registration.button')"
-                                    :to="{name: 'Registration'}"
-                                    color="warning"
+                                :label="t('alerts.aborted-cas-registration.button')"
+                                :to="{name: 'Registration'}"
+                                color="warning"
                             />
                         </div>
                     </div>

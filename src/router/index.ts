@@ -32,7 +32,7 @@ router.beforeEach(async (to) => {
     }
 
     // Get isStaff status if user is auth
-    if (userStore.isAuth && isStaff.value === undefined) {
+    if (userStore.isAuth) {
         await getGroups()
         await initStaffStatus()
     }

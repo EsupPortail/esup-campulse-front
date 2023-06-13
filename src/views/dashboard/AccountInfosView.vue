@@ -16,7 +16,7 @@ import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const userStore = useUserStore()
-const {isStaff, initGroupPermToJoinAssociation, groupCanJoinAssociation} = useUserGroups()
+const {isStaff, initGroupPermToJoinAssociation} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
 const {notify, loading} = useQuasar()
 const {userAssociationsRegister} = useSecurity()

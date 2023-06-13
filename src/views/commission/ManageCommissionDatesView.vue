@@ -11,14 +11,13 @@ import type {NewCommission, UpdateCommission} from '#/commissions'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {formatDate, fromDateIsAnterior, arraysAreEqual} = useUtility()
+const {fromDateIsAnterior, arraysAreEqual} = useUtility()
 const {
     getFunds,
     getCommissionsForManagers,
     getCommissionFunds,
     commissions,
     commissionFunds,
-    funds,
     updateCommission,
     deleteCommission,
     initFundsLabels,

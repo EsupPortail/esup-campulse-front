@@ -93,6 +93,11 @@ export default function () {
         }))
     }
 
+    async function getNextCommission() {
+        const openCommissions = (await axiosPublic.get<Commission[]>('/commissions/?is_open_to_projects=true')).data
+        commission.value = openCommissions[0]
+    }
+
     async function getAllCommissions() {
         commissions.value = (await axiosPublic.get<Commission[]>('/commissions/')).data
     }
@@ -192,6 +197,7 @@ export default function () {
         initChosenCommissionFundsLabels,
         getAllCommissions,
         getCommission,
-        commission
+        commission,
+        getNextCommission
     }
 }
