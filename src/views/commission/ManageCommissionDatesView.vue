@@ -7,60 +7,58 @@ import useUtility from '@/composables/useUtility'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import AlertConfirmCommissionDateUpdateOrDelete from '@/components/alert/AlertConfirmCommissionDateUpdateOrDelete.vue'
+import type {NewCommission, UpdateCommission} from '#/commissions'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {formatDate, fromDateIsAnterior} = useUtility()
+const {fromDateIsAnterior, arraysAreEqual} = useUtility()
 const {
-    getCommissionDates,
-    commissionDates,
-    getCommissions,
+    getFunds,
+    getCommissionsForManagers,
+    getCommissionFunds,
     commissions,
-    commissionOptions,
-    postCommissionDate,
-    deleteCommissionDate,
-    patchCommissionDate
+    commissionFunds,
+    updateCommission,
+    deleteCommission,
+    initFundsLabels,
+    fundsLabels,
+    postNewCommission
 } = useCommissions()
 const {catchHTTPError} = useErrors()
 
-interface ManageCommissionDate {
-    id: number,
-    label: string,
-    commissionDate: string,
-    submissionDate: string,
-    datesAreLegal: boolean | undefined,
-    open: boolean
-}
 
-const manageCommissionDates = ref<ManageCommissionDate[]>([])
+const updateCommissions = ref<UpdateCommission[]>([])
 
-interface NewCommissionDate {
-    commissionDate: string,
-    submissionDate: string,
-    datesAreLegal: boolean | undefined,
-    commissionId: number | null
-}
 
-const newCommissionDate = ref<NewCommissionDate>({
+const newCommission = ref<NewCommission>({
     commissionDate: '',
     submissionDate: '',
     datesAreLegal: undefined,
-    commissionId: null
+    commission: null,
+    funds: [],
+    isOpenToProjects: false,
+    name: ''
 })
 
-const newCommissionDateForm = ref(QForm)
+const newCommissionForm = ref(QForm)
 
 onMounted(async () => {
     loading.show()
-    await onGetCommissionDates()
+    await onGetCommissions()
     loading.hide()
 })
 
-async function onGetCommissionDates() {
+async function onGetCommissions() {
     try {
-        await getCommissions()
-        await getCommissionDates(false, false, false)
+        await getFunds()
+        await getCommissionsForManagers(
+            true,
+            undefined,
+            undefined,
+            undefined)
+        await getCommissionFunds()
         initDates()
+        initFundsLabels()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -73,32 +71,41 @@ async function onGetCommissionDates() {
 }
 
 const initDates = () => {
-    manageCommissionDates.value = []
-    commissionDates.value.forEach((commissionDate) => {
-        const commission = commissions.value.find(obj => obj.id === commissionDate.commission)
-        if (commission) {
-            const label = `${commission.acronym} (${formatDate(commissionDate.commissionDate)?.split('-').reverse().join('/')})`
-            manageCommissionDates.value.push({
-                id: commissionDate.id,
-                label,
-                commissionDate: formatDate(commissionDate.commissionDate) as string,
-                submissionDate: formatDate(commissionDate.submissionDate) as string,
-                datesAreLegal: undefined,
-                open: false
-            })
-        }
+    updateCommissions.value = []
+    commissions.value.forEach((commission) => {
+        updateCommissions.value.push({
+            id: commission.id,
+            oldName: commission.name,
+            newName: commission.name,
+            oldCommissionDate: commission.commissionDate,
+            newCommissionDate: commission.commissionDate,
+            oldSubmissionDate: commission.submissionDate,
+            newSubmissionDate: commission.submissionDate,
+            datesAreLegal: undefined,
+            oldFunds: commissionFunds.value.filter(obj => obj.commission === commission.id).map(fund => fund.fund),
+            newFunds: commissionFunds.value.filter(obj => obj.commission === commission.id).map(fund => fund.fund),
+            oldIsOpenToProjects: commission.isOpenToProjects,
+            newIsOpenToProjects: commission.isOpenToProjects,
+            open: false
+        })
     })
 }
 
-async function onUpdateCommissionDate(commissionDate: ManageCommissionDate) {
+async function onUpdateCommission(commission: UpdateCommission) {
     loading.show()
     try {
-        await patchCommissionDate(commissionDate.id, commissionDate.commissionDate, commissionDate.submissionDate)
-        await onGetCommissionDates()
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.commission-date-modified')
-        })
+        if (commission.newName !== commission.oldName
+            || commission.newCommissionDate !== commission.oldCommissionDate
+            || commission.newSubmissionDate !== commission.oldSubmissionDate
+            || commission.newIsOpenToProjects !== commission.oldIsOpenToProjects
+            || !arraysAreEqual(commission.newFunds, commission.oldFunds)) {
+            await updateCommission(commission)
+            await onGetCommissions()
+            notify({
+                type: 'positive',
+                message: t('notifications.positive.commission-date-modified')
+            })
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -110,12 +117,12 @@ async function onUpdateCommissionDate(commissionDate: ManageCommissionDate) {
     loading.hide()
 }
 
-async function onDeleteCommissionDate(commissionDateId: number) {
+async function onDeleteCommission(commission: number) {
     loading.show()
     try {
-        await deleteCommissionDate(commissionDateId)
-        const index = manageCommissionDates.value.findIndex(obj => obj.id === commissionDateId)
-        manageCommissionDates.value.splice(index, 1)
+        await deleteCommission(commission)
+        const index = updateCommissions.value.findIndex(obj => obj.id === commission)
+        updateCommissions.value.splice(index, 1)
         notify({
             type: 'positive',
             message: t('notifications.positive.commission-date-deleted')
@@ -131,13 +138,12 @@ async function onDeleteCommissionDate(commissionDateId: number) {
     loading.hide()
 }
 
-async function onAddNewCommissionDate() {
+async function onAddNewCommission() {
     loading.show()
     try {
-        await postCommissionDate(newCommissionDate.value.commissionId as number,
-            newCommissionDate.value.commissionDate, newCommissionDate.value.submissionDate)
-        newCommissionDateForm.value.reset()
-        await onGetCommissionDates()
+        await postNewCommission(newCommission.value)
+        newCommissionForm.value.reset()
+        await onGetCommissions()
         notify({
             type: 'positive',
             message: t('notifications.positive.new-commission-date')
@@ -154,10 +160,12 @@ async function onAddNewCommissionDate() {
 }
 
 const onClearValues = () => {
-    newCommissionDate.value.commissionId = null
-    newCommissionDate.value.commissionDate = ''
-    newCommissionDate.value.submissionDate = ''
-    newCommissionDate.value.datesAreLegal = undefined
+    newCommission.value.commission = null
+    newCommission.value.commissionDate = ''
+    newCommission.value.submissionDate = ''
+    newCommission.value.datesAreLegal = undefined
+    newCommission.value.name = ''
+    newCommission.value.funds = []
 }
 </script>
 
@@ -165,65 +173,88 @@ const onClearValues = () => {
     <section class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-calendar-check"
+                aria-hidden="true"
+                class="bi bi-calendar-check"
             ></i>
             {{ t('commission.ongoing-or-to-come') }}
         </h2>
         <div class="form-container">
             <div class="form">
                 <div
-                        v-for="commissionDate in manageCommissionDates"
-                        :key="commissionDate.id"
-                        class="document-input-group"
+                    v-for="commission in updateCommissions"
+                    :key="commission.id"
+                    class="document-input-group"
                 >
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
                             <h4>
-                                {{ commissionDate.label }}
+                                {{ commission.oldName }}
                             </h4>
 
-                            <button @click.prevent="commissionDate.open = !commissionDate.open">
-                                <i :class="`bi bi-${commissionDate.open ? 'x' : 'pencil'}`"></i>
+                            <button @click.prevent="commission.open = !commission.open">
+                                <i :class="`bi bi-${commission.open ? 'x' : 'pencil'}`"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div v-if="commissionDate.open">
+                    <div v-if="commission.open">
                         <QForm>
                             <QInput
-                                    v-model="commissionDate.commissionDate"
-                                    :label="t('commission.date')"
-                                    :rules="[
-                                    val => val && val.length > 0 || t('forms.fill-field'),
-                                    val => val && commissionDate.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
-                                ]"
-                                    clearable
-                                    filled
-                                    reactive-rules
-                                    type="date"
-                                    @update:model-value="() => commissionDate.datesAreLegal =
-                                    fromDateIsAnterior(commissionDate.submissionDate, commissionDate.commissionDate)"
+                                v-model="commission.newName"
+                                :label="t('commission.name')"
+                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                clearable
+                                filled
+                                lazy-rules
                             />
                             <QInput
-                                    v-model="commissionDate.submissionDate"
-                                    :label="t('commission.submission')"
-                                    :rules="[
+                                v-model="commission.newCommissionDate"
+                                :label="t('commission.date')"
+                                :rules="[
                                     val => val && val.length > 0 || t('forms.fill-field'),
-                                    val => val && commissionDate.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
+                                    val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
-                                    clearable
-                                    filled
-                                    reactive-rules
-                                    type="date"
-                                    @update:model-value="() => commissionDate.datesAreLegal =
-                                    fromDateIsAnterior(commissionDate.submissionDate, commissionDate.commissionDate)"
+                                clearable
+                                filled
+                                reactive-rules
+                                type="date"
+                                @update:model-value="() => commission.datesAreLegal =
+                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate)"
+                            />
+                            <QInput
+                                v-model="commission.newSubmissionDate"
+                                :label="t('commission.submission')"
+                                :rules="[
+                                    val => val && val.length > 0 || t('forms.fill-field'),
+                                    val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
+                                ]"
+                                clearable
+                                filled
+                                reactive-rules
+                                type="date"
+                                @update:model-value="() => commission.datesAreLegal =
+                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate)"
+                            />
+                            <QSelect
+                                v-model="commission.newFunds"
+                                :label="t('commission.funds')"
+                                :options="fundsLabels"
+                                :rules="[val => val || t('forms.fill-field')]"
+                                clearable
+                                emit-value
+                                filled
+                                map-options
+                                multiple
+                                use-chips
+                            />
+                            <QToggle
+                                v-model="commission.newIsOpenToProjects"
+                                :label="t('commission.is-open-to-projects')"
                             />
                             <AlertConfirmCommissionDateUpdateOrDelete
-                                    :commission-date="commissionDate.id"
-                                    :dates-are-legal="commissionDate.datesAreLegal"
-                                    @update-commission-date="onUpdateCommissionDate(commissionDate)"
-                                    @delete-commission-date="onDeleteCommissionDate(commissionDate.id)"
+                                :commission="commission"
+                                @update-commission-date="onUpdateCommission(commission)"
+                                @delete-commission-date="onDeleteCommission(commission.id)"
                             />
                         </QForm>
                     </div>
@@ -234,62 +265,76 @@ const onClearValues = () => {
     <section class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-calendar-plus"
+                aria-hidden="true"
+                class="bi bi-calendar-plus"
             ></i>
             {{ t('commission.add-new-date') }}
         </h2>
         <div class="form-container">
             <div class="form">
                 <QForm
-                        ref="newCommissionDateForm"
-                        @reset="onClearValues"
-                        @submit.prevent="onAddNewCommissionDate"
+                    ref="newCommissionForm"
+                    @reset="onClearValues"
+                    @submit.prevent="onAddNewCommission"
                 >
+                    <QInput
+                        v-model="newCommission.name"
+                        :label="t('commission.name')"
+                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                        clearable
+                        filled
+                        lazy-rules
+                    />
+                    <QInput
+                        v-model="newCommission.commissionDate"
+                        :label="t('commission.date')"
+                        :rules="[
+                            val => val && val.length > 0 || t('forms.fill-field'),
+                            val => val && newCommission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
+                        ]"
+                        clearable
+                        filled
+                        reactive-rules
+                        type="date"
+                        @update:model-value="() => newCommission.datesAreLegal =
+                            fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate)"
+                    />
+                    <QInput
+                        v-model="newCommission.submissionDate"
+                        :label="t('commission.submission')"
+                        :rules="[
+                            val => val && val.length > 0 || t('forms.fill-field'),
+                            val => val && newCommission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
+                        ]"
+                        clearable
+                        filled
+                        reactive-rules
+                        type="date"
+                        @update:model-value="() => newCommission.datesAreLegal =
+                            fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate)"
+                    />
                     <QSelect
-                            v-model="newCommissionDate.commissionId"
-                            :label="t('commission.choice')"
-                            :options="commissionOptions"
-                            :rules="[val => val || t('forms.fill-field')]"
-                            clearable
-                            emit-value
-                            filled
-                            map-options
+                        v-model="newCommission.funds"
+                        :label="t('commission.funds')"
+                        :options="fundsLabels"
+                        :rules="[val => val || t('forms.fill-field')]"
+                        clearable
+                        emit-value
+                        filled
+                        map-options
+                        multiple
+                        use-chips
                     />
-                    <QInput
-                            v-model="newCommissionDate.commissionDate"
-                            :label="t('commission.date')"
-                            :rules="[
-                            val => val && val.length > 0 || t('forms.fill-field'),
-                            val => val && newCommissionDate.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
-                        ]"
-                            clearable
-                            filled
-                            reactive-rules
-                            type="date"
-                            @update:model-value="() => newCommissionDate.datesAreLegal =
-                            fromDateIsAnterior(newCommissionDate.submissionDate, newCommissionDate.commissionDate)"
-                    />
-                    <QInput
-                            v-model="newCommissionDate.submissionDate"
-                            :label="t('commission.submission')"
-                            :rules="[
-                            val => val && val.length > 0 || t('forms.fill-field'),
-                            val => val && newCommissionDate.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
-                        ]"
-                            clearable
-                            filled
-                            reactive-rules
-                            type="date"
-                            @update:model-value="() => newCommissionDate.datesAreLegal =
-                            fromDateIsAnterior(newCommissionDate.submissionDate, newCommissionDate.commissionDate)"
+                    <QToggle
+                        v-model="newCommission.isOpenToProjects"
+                        :label="t('commission.is-open-to-projects')"
                     />
                     <div class="flex-btn">
                         <QBtn
-                                :disable="!newCommissionDate.datesAreLegal"
-                                :label="t('add')"
-                                icon="bi-plus-circle"
-                                type="submit"
+                            :disable="!newCommission.datesAreLegal || !newCommission.funds.length || !newCommission.name"
+                            :label="t('add')"
+                            icon="bi-plus-circle"
+                            type="submit"
                         />
                     </div>
                 </QForm>
@@ -303,14 +348,14 @@ const onClearValues = () => {
 @import "@/assets/styles/forms.scss";
 
 .flex-btn {
-  display: flex;
-  gap: 1rem;
-  margin: -0.5rem 0 0.5rem 0;
+    display: flex;
+    gap: 1rem;
+    margin: -0.5rem 0 0.5rem 0;
 }
 
 .q-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 </style>

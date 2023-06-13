@@ -66,88 +66,87 @@ async function clearSearch() {
     <section class="directory-search">
         <h3 class="title-3">{{ t('user.search') }}</h3>
         <QForm
-                id="search-form"
-                class="search-text-field"
-                @submit.prevent="onSearch"
+            id="search-form"
+            class="search-text-field"
+            @submit.prevent="onSearch"
         >
             <fieldset>
                 <QInput
-                        v-model="settings.search"
-                        :label="t('search')"
-                        :placeholder="t('search')"
-                        clearable
-                        filled
-                        inputmode="search"
-                        lazy-rules
+                    v-model="settings.search"
+                    :label="t('search')"
+                    :placeholder="t('search')"
+                    clearable
+                    filled
+                    inputmode="search"
+                    lazy-rules
                 >
                     <template v-slot:prepend>
                         <QIcon name="mdi-magnify"/>
                     </template>
                 </QInput>
                 <QBtn
-                        :label="t('search')"
-                        class="search-button"
-                        color="secondary"
-                        icon-right="mdi-chevron-right"
-                        type="submit"
+                    :label="t('search')"
+                    HEAD
+                    class="search-button"
+                    color="secondary"
+                    icon-right="mdi-chevron-right"
+                    type="submit"
                 />
                 <QBtn
-                        :label="t('cancel-search')"
-                        color="secondary"
-                        icon-right="mdi-close"
-                        @click="clearSearch"
+                    :label="t('cancel-search')"
+                    icon-right="mdi-close"
+                    @click="clearSearch"
                 />
             </fieldset>
         </QForm>
 
         <QForm
-                id="advanced-search-form"
-                class="search-text-field"
-                @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
+            id="advanced-search-form"
+            class="search-text-field"
+            @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
         >
             <QExpansionItem
-                    :label="t('advanced-search')"
-                    expand-separator
-                    icon="bi-chevron-compact-right"
+                :label="t('advanced-search')"
+                expand-separator
+                icon="bi-chevron-compact-right"
             >
                 <fieldset>
                     <QInput
-                            v-model="settings.firstName"
-                            :label="t('user.first-name')"
-                            clearable
-                            filled
-                            lazy-rules
+                        v-model="settings.firstName"
+                        :label="t('user.first-name')"
+                        clearable
+                        filled
+                        lazy-rules
                     />
                     <QInput
-                            v-model="settings.lastName"
-                            :label="t('user.last-name')"
-                            clearable
-                            filled
-                            lazy-rules
+                        v-model="settings.lastName"
+                        :label="t('user.last-name')"
+                        clearable
+                        filled
+                        lazy-rules
                     />
                     <QInput
-                            v-model="settings.email"
-                            :label="t('user.email')"
-                            class="full-size"
-                            clearable
-                            filled
-                            lazy-rules
+                        v-model="settings.email"
+                        :label="t('user.email')"
+                        class="full-size"
+                        clearable
+                        filled
+                        lazy-rules
                     />
                 </fieldset>
 
                 <div class="btn-group">
                     <QBtn
-                            :label="t('advanced-search')"
-                            class="search-button"
-                            color="secondary"
-                            icon-right="mdi-chevron-right"
-                            type="submit"
+                        :label="t('advanced-search')"
+                        class="search-button"
+                        color="secondary"
+                        icon-right="mdi-chevron-right"
+                        type="submit"
                     />
                     <QBtn
-                            :label="t('cancel-search')"
-                            color="secondary"
-                            icon-right="mdi-close"
-                            @click="clearSearch"
+                        :label="t('cancel-search')"
+                        icon-right="mdi-close"
+                        @click="clearSearch"
                     />
                 </div>
             </QExpansionItem>

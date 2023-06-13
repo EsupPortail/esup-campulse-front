@@ -4,7 +4,6 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import type {ProjectList} from '#/project'
 import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
-import {useUserStore} from '@/stores/useUserStore'
 import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 import TableUserProjectsBtn from '@/components/table/TableUserProjectsBtn.vue'
 
@@ -15,7 +14,6 @@ const importedProps = defineProps<{
 }>()
 
 const projectStore = useProjectStore()
-const userStore = useUserStore()
 const {formatDate} = useUtility()
 const {t} = useI18n()
 
@@ -29,49 +27,49 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <QTable
-            :columns="columns"
-            :loading="!projectStore.projects"
-            :no-data-label="t('project.no-project-to-show')"
-            :rows="importedProps.projects"
-            :rows-per-page-options="[10, 20, 50, 0]"
-            :title="importedProps.title"
-            class="variant-space-3"
-            row-key="name"
+        :columns="columns"
+        :loading="!projectStore.projects"
+        :no-data-label="t('project.no-project-to-show')"
+        :rows="importedProps.projects"
+        :rows-per-page-options="[10, 20, 50, 0]"
+        :title="importedProps.title"
+        class="variant-space-3"
+        row-key="name"
     >
         <template v-slot:body="props">
             <QTr :props="props">
                 <QTd
-                        key="name"
-                        :props="props"
+                    key="name"
+                    :props="props"
                 >
                     {{ props.row.name }}
                 </QTd>
                 <QTd
-                        key="lastModifiedDate"
-                        :props="props"
+                    key="lastModifiedDate"
+                    :props="props"
                 >
                     {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
-                        key="status"
-                        :props="props"
-                        class="state-cell"
+                    key="status"
+                    :props="props"
+                    class="state-cell"
                 >
                     <ProjectStatusIndicator
-                            :project-status="props.row.projectStatus"
-                            :show-draft="true"
+                        :project-status="props.row.projectStatus"
+                        :show-draft="true"
                     />
                 </QTd>
                 <QTd
-                        key="edition"
-                        :props="props"
-                        class="actions-cell-compact"
+                    key="edition"
+                    :props="props"
+                    class="actions-cell-compact"
                 >
                     <div class="btn-group">
                         <TableUserProjectsBtn
-                                :association="importedProps.associationId"
-                                :project="props.row.id"
-                                :project-status="props.row.projectStatus"
+                            :association="importedProps.associationId"
+                            :project="props.row.id"
+                            :project-status="props.row.projectStatus"
                         />
                     </div>
                 </QTd>
@@ -83,4 +81,5 @@ const columns: QTableProps['columns'] = [
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
 </style>

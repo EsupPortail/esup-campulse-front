@@ -138,7 +138,8 @@
     "about": "A propos",
     "account-infos": "Modifier les informations de mon compte",
     "add-user": "Ajouter un compte",
-    "archived-commission": "Archives CAPE",
+    "archived-commission": "CAPE archivées",
+    "archived-projects": "Projets archivés",
     "association-dashboard": "Gérer mon association",
     "association-detail": "Fiche association",
     "charter": "Charte des associations",
@@ -176,12 +177,14 @@
     "alerts": {
       "confirm-update": "Êtes-vous sûr de vouloir modifier cette date de commission ?",
       "confirm-delete": "Êtes-vous sûr de vouloir supprimer cette date de commission ?",
-      "delete-warning-projects-submitted": "Attention, des projects ont été soumis et sont en cours de traitement pour cette date de commission :"
+      "delete-warning-projects-submitted": "Impossible de supprimer cette commission car des projets ont été soumis et sont en cours de traitement."
     },
     "archived": "Commissions archivées",
-    "choice": "Choix de la commission",
     "date": "Date de commission",
     "dates": "Dates de commission",
+    "funds": "Financeurs",
+    "is-open-to-projects": "Ouverte à la soumission de nouveaux projets",
+    "name": "Nom de la commission",
     "on-going": "Commissions en cours",
     "ongoing-or-to-come": "Commissions en cours ou à venir",
     "select-date": "Sélectionner une date de commission",
@@ -239,7 +242,7 @@
     "create-association": "Créer une association",
     "create-user": "Créer un nouvel utilisateur",
     "edit-or-delete-association": "Gérer les associations",
-    "manage-archived-projects": "Voir les projets archivés",
+    "manage-archived-commissions": "Voir les commissions archivées",
     "manage-association-directory": "Gérer l'annuaire des associations",
     "manage-commission-dates": "Gérer les dates de commission",
     "manage-commissions": "Gérer les dossiers CAPE",
@@ -314,7 +317,8 @@
   "forms": {
     "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
-    "add-new-comment": "Publier un nouveau commentaire",
+    "add-new-comment": "Ajouter un commentaire",
+    "add-new-comment-hint": "Si le projet est refusé ou retourné au porteur de projet, précisez la raison (documents manquants, projet inapproprié...)",
     "add-selected-associations": "Ajouter les associations sélectionnées",
     "amount-members-allowed-must-be-superior-to-members": "Veuillez choisir un nombre supérieur ou égal au nombre de membres actuels.",
     "amount-student-allowed-cannot-be-inferior-to-members": "Ne peut pas être inférieur au nombre de membres inscrits sur la plateforme actuellement",
@@ -480,24 +484,27 @@
       "logout-success": "Déconnexion réussie.",
       "new-commission-date": "La date de commission a été créée.",
       "new-document-uploaded": "Nouveau document ajouté.",
-      "new-project-comment": "Le commentaire a été ajouté.",
       "password-changed": "Votre mot de passe a bien été modifié.",
       "password-reseted": "Votre mot de passe a bien été réinitialisé. Vous pouvez tenter de vous connecter.",
+      "project-dates-updated": "Les dates du projet ont été mises à jour.",
       "publish-association": "L'association a bien été publiée dans l'annuaire",
       "registration-ok": "Votre adresse email est confirmée. Votre compte sera bientôt vérifié par l'équipe d'administration.",
+      "reject-project": "Le projet a été refusé.",
+      "return-project": "Le projet a été retourné au porteur.",
       "unpublish-association": "L'association a bien été dépubliée de l'annuaire",
       "update-user-infos": "Les informations du compte ont bien été mises à jour.",
-      "validate-asso": "L'association a été créée avec succès.",
       "validate-association": "L'association a été créée avec succès.",
       "validate-delete-user": "Le compte a bien été supprimé.",
       "validate-delete-user-association": "Le rôle de l'utilisateur dans l'association a bien été supprimé.",
-      "validate-user-association": "Le rôle dans l'utilisateur dans l'association a bien été validé.",
-      "validate-success": "Le compte a bien été modifié."
+      "validate-project": "Le projet a été validé.",
+      "validate-success": "Le compte a été modifié.",
+      "validate-user-association": "Le rôle dans l'utilisateur dans l'association a bien été validé."
     },
     "warning": {
       "no-modifications-found": "Aucun changement n'a été effectué."
     }
   },
+  "optional": "optionnel",
   "password": {
     "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
@@ -525,6 +532,8 @@
     "amount-earned": "Montant obtenu",
     "amounts-asked": "Montants demandés pour les commissions sélectionnées",
     "applicant": "Demandeur",
+    "archived-projects": "Projets archivés",
+    "association-user": "Responsable du projet dans l'association",
     "bearer-identity": "Identité du porteur de projet",
     "before-start": "Avant-propos",
     "budget": "Budget",
@@ -533,16 +542,17 @@
     "categories": "Catégories",
     "comments": {
       "comment-from": "Commentaire de",
-      "new-comment": "Nouveau commentaire",
       "no-comment-to-show": "Aucun commentaire pour le moment.",
       "on-date": "le",
       "title": "Commentaires"
     },
     "commission-amount-earned": "Montant obtenu pour la commission",
-    "commission-choice": "Choix des commissions",
-    "commission-choice-hint": "Veuillez choisir les commissions auxquelles vous souhaitez participer. Plusieurs choix possibles.",
+    "commission-choice": "Choix de la commission",
+    "commission-choice-hint": "Veuillez choisir la commission à laquelle vous souhaitez participer.",
+    "commission-funds-choice": "Choix des financements",
+    "commission-funds-choice-hint": "Veuillez choisir les financements auxquels vous souhaitez soumettre votre projet. Plusieurs choix possibles.",
     "consult-on-dashboard": "Vous pouvez dès à présent consulter son avancement sur votre tableau de bord CAPE.",
-    "contact-email": "Adresse email de la personneréférente du projet (si différente de l'adresse email de la personne présidant l'association)",
+    "contact-email": "Adresse email de la personne référente du projet (si différente de l'adresse email de la personne présidant l'association)",
     "contact-first-name": "Prénom de la personne référente du projet",
     "contact-last-name": "Nom de la personne référente du projet",
     "contact-phone": "Numéro de téléphone de la personne référente du projet",
@@ -553,12 +563,13 @@
       "project-presentation": "Dossier détaillé présentant le projet",
       "download-template": "Télécharger le document type",
       "use-template": "Merci de télécharger et de remplir impérativement le document type mis à disposition. Tout document non conforme entrainera le rejet du projet.",
-      "verify": "Merci de vérifier que tous les documents téléchargés soient conformes avant de valider."
+      "verify": "Merci de vérifier que tous les documents transmis sont conformes avant de valider."
     },
     "document-hint": "Cliquez sur le champ pour ajouter un document.",
     "document-hint-multiple": "Vous pouvez sélectionner plusieurs documents.",
     "documents": "Documents",
     "download-recap": "Télécharger le ré'CAPE au format PDF",
+    "edit-dates": "Reporter le projet",
     "form-help": "Si vous rencontrez des difficultés pour remplir ce formulaire, n'hésitez pas à prendre contact avec le responsable de votre commission.",
     "general-infos": "Informations générales",
     "goals": "Objectifs visés par le projet",
@@ -575,7 +586,7 @@
     "marketing-campaign": "Campagne de communication",
     "modify": "Modifier le projet",
     "modify-review": "Modifier le bilan",
-    "must-have-president-status": "Vous n'avez pas de droits de présidence dans cette association. Vous ne pouvez donc ni soumettre de nouveaux projets, ni modifier les existants.",
+    "must-have-president-status": "Vous n'avez pas de droits de présidence dans cette association. Vous ne pouvez donc pas soumettre de nouveaux projets.",
     "name": "Nom du projet",
     "no-project-to-show": "Aucun projet à afficher.",
     "pdf-name": "Récapitulatif-Demande-Subvention-",
@@ -590,8 +601,10 @@
     "project": "Projet",
     "projects-of": "Projets de",
     "re-edition": "Réédition d'un précédent projet",
+    "reject": "Refuser le projet",
     "rejected-projects": "Projets refusés",
     "required-documents-list": "Avant de débuter la procédure, assurez-vous de disposer des documents suivants numérisés",
+    "return": "Demander des modifications",
     "review": "Bilan",
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des commissions liées à votre demande afin que votre dossier soit complet.",
     "status": {
@@ -603,6 +616,7 @@
       "review-draft": "En attente de bilan",
       "review-processing": "Bilan en attente de validation",
       "review-rejected": "Bilan refusé",
+      "title": "Statut du projet",
       "validated": "Validé, en attente de commission"
     },
     "submit": "Valider et soumettre le projet",
@@ -613,6 +627,7 @@
     "target-students-amount": "Nombre d'étudiantes et étudiants visés",
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
+    "update-dates": "Choisir de nouvelles dates pour le projet",
     "validate": "Valider le projet",
     "validate-review": "Valider le bilan",
     "validated-projects": "Projets validés",
@@ -632,9 +647,10 @@
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail.",
     "registration-ok-cas": "Votre demande d'inscription a bien été prise en compte. Vous pouvez dès à présent vous connecter avec vos identifiants CAS."
   },
+  "required": "obligatoire",
   "search": "Rechercher",
   "start": "Début",
-  "status": "statut",
+  "status": "Statut",
   "to": "Jusqu'au",
   "update": "Mettre à jour",
   "user": {
@@ -652,10 +668,10 @@
     "search": "Rechercher un utilisateur"
   },
   "user-groups": {
-    "commission": "Membre de commission",
     "manager-general": "Gestionnaire général",
     "manager-institution": "Gestionnaire établissement",
     "manager-misc": "Gestionnaire Crous",
+    "member-fund": "Membre de commission",
     "student-institution": "Étudiant membre d'association",
     "student-misc": "Étudiant porteur de projet individuel"
   },
@@ -693,6 +709,9 @@
   "validate-changes": "Valider les changements",
   "validated": "Validé",
   "validated-non": "Non validé",
+  "view": {
+    "projects": "Voir les projets"
+  },
   "with": "avec",
   "without": "sans",
   "yes": "Oui"

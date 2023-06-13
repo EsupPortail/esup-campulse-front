@@ -40,6 +40,6 @@ defineProps({
 @import '@/assets/styles/home.scss';
 
 .text-h6 {
-  font-weight: $xbold-weight;
+    font-weight: $xbold-weight;
 }
 </style>

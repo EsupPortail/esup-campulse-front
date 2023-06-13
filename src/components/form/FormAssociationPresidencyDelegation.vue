@@ -76,20 +76,20 @@ async function onDelegatePresidency(activate: boolean) {
 
 <template>
     <QBtn
-            :label="t('delegate')"
-            color="secondary"
-            icon="bi-pencil"
-            @click="openDelegationPanel = true"
+        :label="t('delegate')"
+        color="secondary"
+        icon="bi-pencil"
+        @click="openDelegationPanel = true"
     />
     <QDialog
-            v-model="openDelegationPanel"
-            persistent
+        v-model="openDelegationPanel"
+        persistent
     >
         <QCard>
             <QCardSection class="row items-center">
                 <QForm
-                        class="q-gutter-md"
-                        @submit.prevent="onDelegatePresidency(true)"
+                    class="q-gutter-md"
+                    @submit.prevent="onDelegatePresidency(true)"
                 >
                     <h3 class="section-title">
                         <i class="bi bi-card-text"></i>
@@ -103,36 +103,36 @@ async function onDelegatePresidency(activate: boolean) {
                     </p>
 
                     <QInput
-                            v-model="delegation.from"
-                            :label="t('from')"
-                            filled
-                            type="date"
+                        v-model="delegation.from"
+                        :label="t('from')"
+                        filled
+                        type="date"
                     />
                     <QInput
-                            v-model="delegation.to"
-                            :hint="t('forms.hint-delegation-to')"
-                            :label="t('to')"
-                            filled
-                            type="date"
+                        v-model="delegation.to"
+                        :hint="t('forms.hint-delegation-to')"
+                        :label="t('to')"
+                        filled
+                        type="date"
                     />
                     <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            color="secondary"
+                        v-close-popup
+                        :label="t('cancel')"
+                        color="secondary"
                     />
                     <QBtn
-                            v-close-popup
-                            :disable="!dateIsLegal"
-                            :label="t('activate')"
-                            color="secondary"
-                            type="submit"
+                        v-close-popup
+                        :disable="!dateIsLegal"
+                        :label="t('activate')"
+                        color="secondary"
+                        type="submit"
                     />
                     <QBtn
-                            v-if="props.member.canBePresidentFrom || props.member.canBePresidentTo"
-                            v-close-popup
-                            :label="t('deactivate')"
-                            color="red"
-                            @click="onDelegatePresidency(false)"
+                        v-if="props.member.canBePresidentFrom || props.member.canBePresidentTo"
+                        v-close-popup
+                        :label="t('deactivate')"
+                        color="red"
+                        @click="onDelegatePresidency(false)"
                     />
                 </QForm>
             </QCardSection>

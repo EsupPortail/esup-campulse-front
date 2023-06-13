@@ -74,16 +74,16 @@ onBeforeRouteLeave((to, from, next) => {
 
 <template>
     <QForm
-            v-if="userManagerStore.user"
-            class="q-gutter-md"
-            @submit.prevent="openAlert = true"
+        v-if="userManagerStore.user"
+        class="q-gutter-md"
+        @submit.prevent="openAlert = true"
     >
         <section class="association-cards dashboard-section">
             <div class="form-title">
                 <h2>
                     <i
-                            aria-hidden="true"
-                            class="bi bi-pencil-square"
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
                     ></i>
                     {{ t('user-manager.user-infos') }}
                 </h2>
@@ -92,22 +92,22 @@ onBeforeRouteLeave((to, from, next) => {
             <div class="form-container">
                 <div class="form form-width">
                     <FormUserInfosEdition
-                            :edited-by-staff="true"
-                            :user="userManagerStore.user"
+                        :edited-by-staff="true"
+                        :user="userManagerStore.user"
                     />
                 </div>
             </div>
         </section>
 
         <section
-                v-if="groupCanJoinAssociation"
-                class="association-cards dashboard-section"
+            v-if="groupCanJoinAssociation"
+            class="association-cards dashboard-section"
         >
             <div class="form-title">
                 <h2>
                     <i
-                            aria-hidden="true"
-                            class="bi bi-pencil-square"
+                        aria-hidden="true"
+                        class="bi bi-pencil-square"
                     ></i>
                     {{ t('user-manager.user-associations') }}
                 </h2>
@@ -131,40 +131,39 @@ onBeforeRouteLeave((to, from, next) => {
             <div class="form-container">
                 <div class="form form-width">
                     <FormUserGroups/>
-                    <ul>
-                        <li>
-                            <strong>{{ t('user.is-cas') }}</strong> :
-                            {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
-                        </li>
-                        <li>
-                            <strong>{{ t('user.is-validated-by-admin') }}</strong>
-                            {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
-                        </li>
-                    </ul>
+                    <p class="paragraph">
+                        <ul>
+                            <li>
+                                <strong>{{ t('user.is-cas') }}</strong> :
+                                {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
+                            </li>
+                            <li>
+                                <strong>{{ t('user.is-validated-by-admin') }}</strong>
+                                {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
+                            </li>
+                        </ul>
+                    </p>
                 </div>
             </div>
-            <div class="form-container">
-                <div class="form form-width">
-                    <section class="btn-group">
-                        <QBtn
-                                :label="t('back')"
-                                icon="bi-box-arrow-right"
-                                @click="openAlert = true"
-                        />
-                        <AlertLeaveEdition
-                                :open-alert="openAlert"
-                                :text="t('alerts.leave-user-edition')"
-                                @closeAlert="openAlert = !openAlert"
-                                @leaveEdition="onLeaveEdition"
-                        />
-                        <AlertConfirmUserUpdate
-                                v-if="groupChoiceIsValid"
-                                @has-validated="hasValidated = true"
-                        />
-                        <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
-                    </section>
-                </div>
-            </div>
+
+            <section class="btn-group">
+                <QBtn
+                    :label="t('back')"
+                    icon="bi-box-arrow-left"
+                    @click="openAlert = true"
+                />
+                <AlertLeaveEdition
+                    :open-alert="openAlert"
+                    :text="t('alerts.leave-user-edition')"
+                    @closeAlert="openAlert = !openAlert"
+                    @leaveEdition="onLeaveEdition"
+                />
+                <AlertConfirmUserUpdate
+                    v-if="groupChoiceIsValid"
+                    @has-validated="hasValidated = true"
+                />
+                <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
+            </section>
         </section>
     </QForm>
 </template>
@@ -172,11 +171,4 @@ onBeforeRouteLeave((to, from, next) => {
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
-
-ul {
-  margin-left: 1rem;
-  list-style: none;
-}
-
-
 </style>

@@ -89,10 +89,10 @@ const clearValues = () => {
 
 <template>
     <QForm
-            ref="newAssociationForm"
-            class="q-gutter-md"
-            @reset="clearValues"
-            @submit.prevent="onCreate"
+        ref="newAssociationForm"
+        class="q-gutter-md"
+        @reset="clearValues"
+        @submit.prevent="onCreate"
     >
         <div class="form-title">
             <h2>
@@ -103,39 +103,39 @@ const clearValues = () => {
         <div class="form-container">
             <div class="form">
                 <QInput
-                        v-model="newAssociation.name"
-                        :label="t('forms.association-name')"
-                        :rules="[val => val.length > 0 || t('forms.fill-field')]"
-                        filled
-                        lazy-rules
+                    v-model="newAssociation.name"
+                    :label="t('forms.association-name')"
+                    :rules="[val => val.length > 0 || t('forms.fill-field')]"
+                    filled
+                    lazy-rules
                 />
                 <QSelect
-                        v-model="newAssociation.institution"
-                        :label="t('forms.association-institution')"
-                        :options="institutions"
-                        :rules="[val => val !== undefined || t('forms.select-option')]"
-                        emit-value
-                        filled
-                        lazy-rules
-                        map-options
+                    v-model="newAssociation.institution"
+                    :label="t('forms.association-institution')"
+                    :options="institutions"
+                    :rules="[val => val !== undefined || t('forms.select-option')]"
+                    emit-value
+                    filled
+                    lazy-rules
+                    map-options
                 />
                 <QCheckbox
-                        v-if="hasPerm('add_association_all_fields')"
-                        v-model="newAssociation.isSite"
-                        :label="t('forms.association-is-site')"
+                    v-if="hasPerm('add_association_all_fields')"
+                    v-model="newAssociation.isSite"
+                    :label="t('forms.association-is-site')"
                 />
                 <section class="btn-group">
                     <QBtn
-                            :label="t('user-manager.create-association')"
-                            color="secondary"
-                            icon="bi-check-lg"
-                            type="submit"
+                        :label="t('user-manager.create-association')"
+                        color="secondary"
+                        icon="bi-check-lg"
+                        type="submit"
                     />
                     <QBtn
-                            :label="t('home.back-dashboard')"
-                            :to="{ name: 'Dashboard' }"
-                            color="secondary"
-                            icon="bi-box-arrow-right"
+                        :label="t('home.back-dashboard')"
+                        :to="{ name: 'Dashboard' }"
+                        color="secondary"
+                        icon="bi-box-arrow-right"
                     />
                 </section>
             </div>

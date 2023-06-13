@@ -134,27 +134,27 @@ watch(() => content.about, () => {
 @import '@/assets/styles/contact.scss';
 
 .home-section {
-  padding: 2rem 0;
+    padding: 2rem 0;
 
-  &.home-section-cape, &.home-section-annuaire, &.home-section-charte {
-    background-image: none;
-  }
+    &.home-section-cape, &.home-section-annuaire, &.home-section-charte {
+        background-image: none;
+    }
 
 }
 
 .form-container {
-  padding: 2rem 0;
+    padding: 2rem 0;
 
-  &:nth-child(1), &:nth-child(2), &:nth-child(3) {
-    &::before, &::after {
-      background: none;
+    &:nth-child(1), &:nth-child(2), &:nth-child(3) {
+        &::before, &::after {
+            background: none;
+        }
     }
-  }
 
-  &:nth-child(4) {
-    &::before {
-      background: none;
+    &:nth-child(4) {
+        &::before {
+            background: none;
+        }
     }
-  }
 }
 </style>

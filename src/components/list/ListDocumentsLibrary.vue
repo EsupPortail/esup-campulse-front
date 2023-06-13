@@ -31,25 +31,25 @@ function onDownloadDocument(documentId: number) {
 
 <template>
     <div
-            v-for="(document, index) in props.documents"
-            :key="index"
-            class="document-input-group"
+        v-for="(document, index) in props.documents"
+        :key="index"
+        class="document-input-group"
     >
         <div class="document-input variant-space-1">
             <div class="document-input-header">
                 <h4 class="library-document">
                     <span>
                         <a
-                                :href="document.path"
-                                target="_blank"
+                            :href="document.path"
+                            target="_blank"
                         >
                             {{ document?.name }}
                         </a>
                     </span>
                 </h4>
                 <button
-                        :aria-label="t('download') + ' ' + document?.name"
-                        @click.prevent="onDownloadDocument(document?.id)"
+                    :aria-label="t('download') + ' ' + document?.name"
+                    @click.prevent="onDownloadDocument(document?.id)"
                 >
                     <i class="bi bi-arrow-bar-down"></i>
                 </button>

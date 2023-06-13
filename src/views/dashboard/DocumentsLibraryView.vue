@@ -89,8 +89,8 @@ async function onGetLibraryDocuments() {
         <section class="dashboard-section">
             <h2>
                 <i
-                        aria-hidden="true"
-                        class="bi bi-file-earmark"
+                    aria-hidden="true"
+                    class="bi bi-file-earmark"
                 ></i>
                 {{ t('documents.charters') }}
             </h2>
@@ -103,8 +103,8 @@ async function onGetLibraryDocuments() {
         <section class="dashboard-section">
             <h2>
                 <i
-                        aria-hidden="true"
-                        class="bi bi-file-earmark"
+                    aria-hidden="true"
+                    class="bi bi-file-earmark"
                 ></i>
                 {{ t('documents.other-documents') }}
             </h2>
@@ -123,17 +123,17 @@ async function onGetLibraryDocuments() {
 @import '@/assets/_variables.scss';
 
 .flex {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
-  section:first-child {
-    width: $fullSize;
-    margin: auto;
-  }
+    section:first-child {
+        width: $fullSize;
+        margin: auto;
+    }
 
-  section + section > p {
-    text-align: center;
-  }
+    section + section > p {
+        text-align: center;
+    }
 }
 </style>

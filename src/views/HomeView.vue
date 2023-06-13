@@ -12,7 +12,7 @@ import useErrors from '@/composables/useErrors'
 
 const home = useContentStore()
 const associationStore = useAssociationStore()
-const {getCommissionDates, commissionDates} = useCommissions()
+const {getNextCommission, commission} = useCommissions()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -33,8 +33,8 @@ const nextCommissionDate = ref<string>()
 async function onGetContents() {
     try {
         await associationStore.getAssociationNames(true, false)
-        await getCommissionDates(true, false, false)
-        nextCommissionDate.value = (new Date(commissionDates.value[0].commissionDate)).toLocaleDateString('fr-FR')
+        await getNextCommission()
+        nextCommissionDate.value = commission.value?.commissionDate.split('-').reverse().join('/')
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

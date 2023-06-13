@@ -9,10 +9,10 @@ import axios from 'axios'
 
 const {catchHTTPError} = useErrors()
 const {
-    getCommissionDates,
-    initCommissionDatesLabels,
-    commissionDatesLabels,
-    getCommissions
+    getFunds,
+    getCommissionFunds,
+    getCommissionsForManagers,
+    commissions
 } = useCommissions()
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -27,36 +27,37 @@ const innerTab = ref('allProjects')
 const splitterModel = ref(20)
 
 interface Tabs {
-    label: string,
     name: string,
-    commissionDate: number
+    commission: number
 }
 
 const tabs = ref<Tabs[]>([])
 
 const initTabs = () => {
     tabs.value = []
-    tabs.value = commissionDatesLabels.value.map(obj => ({
-        label: obj.label,
-        name: obj.label,
-        commissionDate: obj.value
+    tabs.value = commissions.value.map(obj => ({
+        name: obj.name,
+        commission: obj.id
     }))
     if (tabs.value.length) tab.value = tabs.value[0].name
 }
 
 onMounted(async () => {
     loading.show()
-    await onGetCommissionDates()
-    initCommissionDatesLabels(undefined)
+    await onGetCommissions()
     initTabs()
     loading.hide()
 })
 
-async function onGetCommissionDates() {
+async function onGetCommissions() {
     try {
-        await getCommissions()
-        await getCommissionDates(false, true, true)
-        initCommissionDatesLabels(undefined)
+        await getCommissionsForManagers(
+            true,
+            undefined,
+            undefined,
+            true)
+        await getFunds()
+        await getCommissionFunds()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -72,74 +73,86 @@ async function onGetCommissionDates() {
 <template>
     <QCard v-if="tabs.length">
         <QTabs
-                v-model="tab"
-                active-color="cape-color"
-                align="justify"
-                class="text-grey"
-                dense
-                indicator-color="cape-color"
+            v-model="tab"
+            active-color="cape-color"
+            align="justify"
+            class="text-grey"
+            dense
+            indicator-color="cape-color"
         >
             <QTab
-                    v-for="(tab, index) in tabs"
-                    :key="index"
-                    :label="tab.label"
-                    :name="tab.name"
+                v-for="(tab, index) in tabs"
+                :key="index"
+                :label="tab.name"
+                :name="tab.name"
             />
         </QTabs>
 
         <QSeparator/>
 
         <QTabPanels
-                v-model="tab"
-                animated
+            v-model="tab"
+            animated
         >
             <QTabPanel
-                    v-for="(tab, index) in tabs"
-                    :key="index"
-                    :name="tab.name"
-                    class="q-pa-none"
+                v-for="(tab, index) in tabs"
+                :key="index"
+                :name="tab.name"
+                class="q-pa-none"
             >
                 <QSplitter
-                        v-model="splitterModel"
+                    v-model="splitterModel"
                 >
                     <template v-slot:before>
                         <QTabs
-                                v-model="innerTab"
-                                class="cape-color"
-                                vertical
+                            v-model="innerTab"
+                            class="cape-color"
+                            vertical
                         >
                             <QTab
-                                    :label="t('project.all-projects')"
-                                    icon="bi-folder"
-                                    name="allProjects"
+                                :label="t('project.all-projects')"
+                                icon="bi-folder"
+                                name="allProjects"
                             />
                             <QTab
-                                    :label="t('project.validated-projects')"
-                                    icon="bi-folder-check"
-                                    name="validatedProjects"
+                                :label="t('project.validated-projects')"
+                                icon="bi-folder-check"
+                                name="validatedProjects"
+                            />
+                            <QTab
+                                :label="t('project.archived-projects')"
+                                icon="bi-archive"
+                                name="archivedProjects"
                             />
                         </QTabs>
                     </template>
 
                     <template v-slot:after>
                         <QTabPanels
-                                v-model="innerTab"
-                                animated
-                                transition-next="slide-up"
-                                transition-prev="slide-down"
+                            v-model="innerTab"
+                            animated
+                            transition-next="slide-up"
+                            transition-prev="slide-down"
                         >
                             <QTabPanel name="allProjects">
-                                <h3 class="title-3">{{ t('project.all-projects') }}</h3>
                                 <TableManagedProjects
-                                        :commission-date="tab.commissionDate"
-                                        project-status="all"
+                                    :commission="tab.commission"
+                                    :title="t('project.all-projects')"
+                                    project-status="all"
                                 />
                             </QTabPanel>
                             <QTabPanel name="validatedProjects">
-                                <h3 class="title-3">{{ t('project.validated-projects') }}</h3>
                                 <TableManagedProjects
-                                        :commission-date="tab.commissionDate"
-                                        project-status="validated"
+                                    :commission="tab.commission"
+                                    :title="t('project.validated-projects')"
+                                    project-status="validated"
+                                />
+                            </QTabPanel>
+                            <QTabPanel name="archivedProjects">
+                                <TableManagedProjects
+                                    :commission="tab.commission"
+                                    :title="t('project.archived-projects')"
+                                    project-status="archived"
                                 />
                             </QTabPanel>
                         </QTabPanels>
@@ -149,8 +162,8 @@ async function onGetCommissionDates() {
         </QTabPanels>
     </QCard>
     <p
-            v-else
-            class="paragraph"
+        v-else
+        class="paragraph"
     >
         {{ t('project.no-project-to-show') }}
     </p>
@@ -158,28 +171,31 @@ async function onGetCommissionDates() {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/forms.scss';
+
 
 .text-cape-color {
-  color: $capeColor;
+    color: $capeColor;
 }
 
 .bg-cape-color {
-  background: $capeColorBackground;
+    background: $capeColorBackground;
 }
 
 .cape-color {
-  color: $capeColor;
+    color: $capeColor;
 }
 
 .q-tab-panel {
-  padding: 0 1rem;
+    padding: 0 1rem;
 }
 
 .info-panel {
-  margin: 0.5rem;
+    margin: 0.5rem;
 }
 
 h3 {
-  padding: 1rem
+    padding: 1rem
 }
 </style>

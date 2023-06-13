@@ -67,13 +67,29 @@ const routes: RouteRecordRaw[] = [
                     },
                     {
                         path: 'archived',
-                        name: 'ArchivedCommission',
-                        component: () => import('@/views/commission/ArchivedCommissionsView.vue'),
                         meta: {
-                            title: i18n.global.t('breadcrumbs.archived-commission'),
                             breadcrumb: i18n.global.t('breadcrumbs.archived-commission'),
                             staffOnly: true
-                        }
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'ArchivedCommission',
+                                component: () => import('@/views/commission/ArchivedCommissionsView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.archived-commission'),
+                                }
+                            },
+                            {
+                                path: ':id',
+                                name: 'ArchivedCommissionDetail',
+                                component: () => import('@/views/commission/ArchivedCommissionDetailView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.archived-projects'),
+                                    staffOnly: true
+                                }
+                            },
+                        ]
                     },
                     {
                         path: 'association/:associationId',

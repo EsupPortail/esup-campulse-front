@@ -1,4 +1,4 @@
-export const _commissions = [
+export const _commissionFunds = [
     {
         id: 1,
         name: 'Fonds de Solidarité et de Développement des Initiatives Étudiantes',

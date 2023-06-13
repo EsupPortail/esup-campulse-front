@@ -14,32 +14,35 @@ import router from '@/router'
 import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
-import useUsers from '@/composables/useUsers'
-import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
+import FormProjectRecap from '@/components/project/ProjectRecap.vue'
+import ProjectComments from '@/components/project/ProjectComments.vue'
+import useProjectComments from '@/composables/useProjectComments'
 
 const {t} = useI18n()
 const {
     projectBasicInfos,
     postNewProject,
     projectCategories,
-    projectCommissionDatesModel,
-    projectCommissionDates,
+    projectCommission,
     projectBudget,
-    updateProjectCommissionDates,
+    updateProjectCommission,
     projectGoals,
     updateProjectCategories,
     initProjectBasicInfos,
     patchProjectBasicInfos,
     initProjectCategories,
-    initProjectCommissionDatesModel,
+    projectCommissionFunds,
     initProjectBudget,
     patchProjectBudget,
-    patchProjectCommissionDates,
-    initProjectCommissionDates,
+    patchProjectCommissionFunds,
     patchProjectGoals,
     initProjectGoals,
     submitProject,
-    reInitSubmitProjectForm
+    reInitSubmitProjectForm,
+    projectCommissionFundsDetail,
+    reInitProjectCommissionFunds,
+    initProjectAssociationUsersLabels,
+    projectAssociationUsersLabels
 } = useSubmitProject()
 const {
     getDocuments,
@@ -49,52 +52,60 @@ const {
     initDocumentUploads,
     documentUploads,
     deleteDocumentUpload,
-    getFile
+    createFileLink
 } = useProjectDocuments()
-const {initInfosToPatch, updateUserInfos, infosToPatch} = useUsers()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
-    getCommissions,
-    commissions,
-    getCommissionDates,
-    commissionDatesLabels,
-    commissionDates,
-    initCommissionDatesLabels
+    getCommissionsForStudents,
+    initCommissionLabels,
+    commissionLabels,
+    getFunds,
+    fundsLabels,
+    funds,
+    commissionFunds,
+    initChosenCommissionFundsLabels,
+    getCommissionFunds
 } = useCommissions()
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
 const route = useRoute()
+const {comments} = useProjectComments()
 
 onMounted(async () => {
     loading.show()
-
-    if (route.params.projectId) newProject.value = false
-
+    projectId.value = parseInt(route.params.projectId as string)
+    if (projectId.value) newProject.value = false
     await onGetProjectDetail()
-
     // If project is not a draft, then push to 404
     if (projectStore.project && projectStore.project?.projectStatus !== 'PROJECT_DRAFT') {
         await router.push({name: '404'})
     }
-
     initApplicant()
-    // If the applicant is an association and the person trying to submit project is not a member of the association,
-    // redirect to 404
+    // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
     if (applicant.value === 'association') {
-        const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.associationId as string))
+        const association = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.associationId as string))
         if (association) {
-            associationName.value = association.name
-            associationId.value = association.id
+            associationId.value = association.association.id
+            const associationUserId = association.id
+            // If new project and user has no president status, redirect to 404
+            if (newProject.value) {
+                if (!userStore.hasPresidentStatus(associationId.value)) await router.push({name: '404'})
+            }
+            // If existing project and user has no president status nor project delegate status; redirect to 404
+            else {
+                if (!userStore.hasPresidentStatus(associationId.value) && projectStore.project?.associationUser !== associationUserId) {
+                    await router.push({name: '404'})
+                }
+            }
+            associationName.value = association.association.name
             initIsSite()
         } else await router.push({name: '404'})
     }
-
-    initSelfBearer()
-
     await onGetProjectCategories()
     await onGetDocumentTypes()
+    await onGetAssociationUsers()
     loading.hide()
 })
 
@@ -126,23 +137,16 @@ const applicant = ref<'association' | 'user' | undefined>()
 
 const associationName = ref<string | undefined>('')
 const associationId = ref<number>()
+const projectId = ref<number>()
 
 const newProject = ref<boolean>(true)
 
 const projectReEdition = ref<boolean>(false)
-watch(() => projectStore.projectCommissionDates.length, () => {
-    if (projectStore.projectCommissionDates.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
+watch(() => projectStore.projectCommissionFunds.length, () => {
+    if (projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
 })
 
 const isSite = ref<boolean>(false)
-
-const selfBearer = ref<'yes' | 'no'>('yes')
-
-const initSelfBearer = () => {
-    if (!newProject.value && projectBasicInfos.value.contactFirstName) {
-        selfBearer.value = 'no'
-    }
-}
 
 // CONST
 const MAX_FILES = 10
@@ -182,7 +186,7 @@ watch(() => projectBudget.value.amountAllAudience, () => {
 async function onGetProjectDetail() {
     if (!newProject.value) {
         try {
-            await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
+            await projectStore.getProjectDetail(projectId.value as number)
             initProjectBasicInfos()
         } catch (error) {
             await router.push({name: '404'})
@@ -229,13 +233,22 @@ async function onGetDocumentTypes() {
 
 async function onGetFile(uploadedDocument: ProcessDocument) {
     try {
-        const file = await getFile(uploadedDocument.pathFile as string)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(file)
-        link.download = uploadedDocument.name as string
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        await createFileLink(uploadedDocument)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetAssociationUsers() {
+    try {
+        if (applicant.value === 'association' && associationId.value) {
+            await initProjectAssociationUsersLabels(associationId.value)
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -248,34 +261,21 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
 
 // GET DATA FOR STEP 2
 async function onGetCommissionDates() {
-    if (!projectCommissionDatesModel.value.length) {
-        try {
-            await getCommissions()
-            await getCommissionDates(true, undefined, undefined)
-            initCommissionDatesLabels(isSite.value)
-            if (!newProject.value) {
-                await projectStore.getProjectCommissionDates(false, undefined)
-                initProjectCommissionDatesModel()
-            }
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                notify({
-                    type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-                })
+    try {
+        await getCommissionsForStudents(undefined, isSite.value)
+        initCommissionLabels()
+        await getFunds()
+        await getCommissionFunds()
+        if (!newProject.value) {
+            await projectStore.getProjectCommissionFunds(false, undefined)
+            projectCommission.value = commissionFunds.value
+                .find(obj => obj.id === projectStore.projectCommissionFunds[0].commissionFund)?.commission as number
+            if (projectCommission.value) {
+                initChosenCommissionFundsLabels(projectCommission.value as number)
+                projectCommissionFunds.value = projectStore.projectCommissionFunds
+                    .map(x => x.commissionFund)
             }
         }
-    }
-}
-
-// GET DATA FOR STEP 3
-async function onGetProjectBudget() {
-    try {
-        await getCommissions()
-        await getCommissionDates(true, undefined, undefined)
-        await projectStore.getProjectCommissionDates(false, undefined)
-        initProjectCommissionDates()
-        initProjectBudget()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -286,11 +286,14 @@ async function onGetProjectBudget() {
     }
 }
 
+// GET DATA FOR STEP 3
+function onGetProjectBudget() {
+    initProjectBudget()
+}
+
 // GET DATA FOR STEP 4
 function onGetProjectGoals() {
-    if (projectStore.project) {
-        initProjectGoals()
-    }
+    initProjectGoals()
 }
 
 // GET DATA FOR STEP 5
@@ -325,22 +328,10 @@ async function onSubmitBasicInfos(nextStep: number) {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
         } else {
-            if (selfBearer.value === 'yes' && projectBasicInfos.value.contactFirstName) {
-                projectBasicInfos.value.contactFirstName = ''
-                projectBasicInfos.value.contactLastName = ''
-                projectBasicInfos.value.contactEmail = ''
-            }
             await patchProjectBasicInfos()
         }
-        // For individual project bearer
-        initInfosToPatch(userStore.user)
-        if (Object.entries(infosToPatch).length) {
-            await updateUserInfos(userStore.user, false)
-        }
-        if (projectStore.project) {
-            await updateProjectCategories()
-            step.value = nextStep
-        }
+        await updateProjectCategories()
+        step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -353,19 +344,17 @@ async function onSubmitBasicInfos(nextStep: number) {
 }
 
 // SUBMIT STEP 2
-async function onSubmitCommissionDates(nextStep: number) {
+async function onSubmitCommission(nextStep: number) {
     loading.show()
-    if (projectStore.project) {
-        try {
-            await updateProjectCommissionDates()
-            step.value = nextStep
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                notify({
-                    type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-                })
-            }
+    try {
+        await updateProjectCommission()
+        step.value = nextStep
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
         }
     }
     loading.hide()
@@ -377,7 +366,7 @@ async function onSubmitBudget(nextStep: number) {
     if (projectStore.project) {
         try {
             await patchProjectBudget(!projectReEdition.value)
-            await patchProjectCommissionDates(!projectReEdition.value)
+            await patchProjectCommissionFunds(!projectReEdition.value)
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -474,8 +463,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
         <div class="form-title">
             <h2>
                 <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
                 ></i>
                 {{ t('project.submit-new-project') }}
             </h2>
@@ -485,8 +474,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
             <div class="form">
                 <div class="info-panel">
                     <i
-                            aria-hidden="true"
-                            class="bi bi-info"
+                        aria-hidden="true"
+                        class="bi bi-info"
                     ></i>
                     <p>{{ t('project.form-help') }}</p>
                     <p>
@@ -502,14 +491,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <p class="paragraph">
                         <ul role="list">
                             <li
-                                    v-for="(document, index) in processDocuments"
-                                    :key="index"
+                                v-for="(document, index) in processDocuments"
+                                :key="index"
                             >
                                 <span v-if="document.pathTemplate">
                                     <a
-                                            :href="document.pathTemplate"
-                                            :title="t('project.document.download-template')"
-                                            target="_blank"
+                                        :href="document.pathTemplate"
+                                        :title="t('project.document.download-template')"
+                                        target="_blank"
                                     >{{ document.description }}</a>
                                 </span>
                                 <span v-else>{{ document.description }}</span>
@@ -519,134 +508,95 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                 </div>
 
                 <QStepper
-                        ref="stepper"
-                        v-model="step"
-                        animated
+                    ref="stepper"
+                    v-model="step"
+                    animated
                 >
                     <!-- BASIC INFOS -->
                     <QStep
-                            :name="1"
-                            :title="t('project.general-infos')"
-                            icon="bi-card-text"
+                        :name="1"
+                        :title="t('project.general-infos')"
+                        icon="bi-card-text"
                     >
                         <QForm
-                                @submit.prevent="onSubmitBasicInfos(2)"
+                            @submit.prevent="onSubmitBasicInfos(2)"
                         >
                             <h3 class="title-2">{{ t('project.general-infos') }}</h3>
 
                             <QInput
-                                    v-model="projectBasicInfos.name"
-                                    :label="t('project.name') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
+                                v-model="projectBasicInfos.name"
+                                :label="t('project.name') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                clearable
+                                filled
+                                lazy-rules
                             />
                             <QInput
-                                    v-model="projectBasicInfos.plannedStartDate"
-                                    :label="t('project.planned-start-date') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && datesAreLegal || t('forms.legal-dates')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                    type="date"
+                                v-model="projectBasicInfos.plannedStartDate"
+                                :label="t('project.planned-start-date') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                aria-required="true"
+                                clearable
+                                filled
+                                lazy-rules
+                                type="date"
                             />
                             <QInput
-                                    v-model="projectBasicInfos.plannedEndDate"
-                                    :label="t('project.planned-end-date') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && datesAreLegal || t('forms.legal-dates')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                    type="date"
+                                v-model="projectBasicInfos.plannedEndDate"
+                                :label="t('project.planned-end-date') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                aria-required="true"
+                                clearable
+                                filled
+                                lazy-rules
+                                type="date"
                             />
                             <QInput
-                                    v-model="projectBasicInfos.plannedLocation"
-                                    :label="t('project.planned-location') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
+                                v-model="projectBasicInfos.plannedLocation"
+                                :label="t('project.planned-location') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                clearable
+                                filled
+                                lazy-rules
                             />
                             <QSelect
-                                    v-model="projectCategories"
-                                    :hint="t('forms.multiple-choices-enabled')"
-                                    :label="t('project.categories') + ' *'"
-                                    :options="projectStore.projectCategoriesLabels"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                v-model="projectCategories"
+                                :hint="t('forms.multiple-choices-enabled')"
+                                :label="t('project.categories') + ' *'"
+                                :options="projectStore.projectCategoriesLabels"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                clearable
+                                emit-value
+                                filled
+                                lazy-rules
+                                map-options
+                                multiple
+                                use-chips
+                            />
+                            <div v-if="applicant === 'association'">
+                                <QSelect
+                                    v-model="projectBasicInfos.associationUser"
+                                    :label="t('project.association-user') + ' *'"
+                                    :options="projectAssociationUsersLabels"
+                                    :rules="[ val => val || t('forms.fill-field')]"
                                     clearable
                                     emit-value
                                     filled
                                     lazy-rules
                                     map-options
-                                    multiple
-                                    stack-label
-                                    use-chips
-                            />
-                            <fieldset v-if="applicant === 'association'">
-                                <legend class="title-3">{{ t('project.bearer-identity') }}</legend>
-                                <p class="paragraph">{{ t('project.i-am-bearer') }} <strong>{{
-                                        associationName
-                                    }}</strong> :</p>
-                                <div class="q-gutter-sm radio-btn">
-                                    <QRadio
-                                            v-model="selfBearer"
-                                            :label="t('yes')"
-                                            val="yes"
-                                    />
-                                    <QRadio
-                                            v-model="selfBearer"
-                                            :label="t('no')"
-                                            val="no"
-                                    />
-                                </div>
-                                <fieldset v-if="selfBearer === 'no'">
-                                    <legend class="self-bearer">Saisir les informations de la personne référente à
-                                        contacter :
-                                    </legend>
-                                    <QInput
-                                            v-model="projectBasicInfos.contactFirstName"
-                                            :label="t('project.contact-first-name') + ' *'"
-                                            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                            aria-required="true"
-                                            clearable
-                                            filled
-                                            lazy-rules
-                                    />
-                                    <QInput
-                                            v-model="projectBasicInfos.contactLastName"
-                                            :label="t('project.contact-last-name') + ' *'"
-                                            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                            aria-required="true"
-                                            clearable
-                                            filled
-                                            lazy-rules
-                                    />
-                                    <QInput
-                                            v-model="projectBasicInfos.contactEmail"
-                                            :label="t('project.contact-email') + ' *'"
-                                            :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                                            aria-required="true"
-                                            class="no-rules"
-                                            clearable
-                                            filled
-                                            lazy-rules
-                                    />
-                                </fieldset>
-                            </fieldset>
+                                />
+                            </div>
                             <fieldset
-                                    v-else
-                                    class="individual-bearer"
+                                v-else
+                                class="individual-bearer"
                             >
                                 <legend class="title-3">{{ t('address.address') }}</legend>
                                 <div class="info-panel info-panel-warning">
                                     <i
-                                            aria-hidden="true"
-                                            class="bi bi-info"
+                                        aria-hidden="true"
+                                        class="bi bi-info"
                                     ></i>
                                     <p>{{ t('address.verify') }}</p>
                                 </div>
@@ -654,9 +604,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             </fieldset>
                             <section class="btn-group">
                                 <QBtn
-                                        :label="t('continue')"
-                                        icon-right="bi-check2"
-                                        type="submit"
+                                    :label="t('continue')"
+                                    icon-right="bi-check2"
+                                    type="submit"
                                 />
                             </section>
                         </QForm>
@@ -664,40 +614,56 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- COMMISSION CHOICE -->
                     <QStep
-                            :name="2"
-                            :title="t('project.commission-choice')"
-                            icon="bi-calendar"
+                        :name="2"
+                        :title="t('project.commission-choice')"
+                        icon="bi-calendar"
                     >
                         <QForm
-                                @submit.prevent="onSubmitCommissionDates(3)"
+                            @submit.prevent="onSubmitCommission(3)"
                         >
                             <h3 class="title-2">{{ t('project.commission-choice') }}</h3>
 
                             <QSelect
-                                    v-model="projectCommissionDatesModel"
-                                    :hint="t('project.commission-choice-hint')"
-                                    :label="t('project.commission-choice') + ' *'"
-                                    :options="commissionDatesLabels"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    emit-value
-                                    filled
-                                    lazy-rules
-                                    map-options
-                                    multiple
-                                    stack-label
-                                    use-chips
+                                v-model="projectCommission"
+                                :hint="t('project.commission-choice-hint')"
+                                :label="t('project.commission-choice') + ' *'"
+                                :options="commissionLabels"
+                                :rules="[ val => val || t('forms.fill-field')]"
+                                emit-value
+                                filled
+                                lazy-rules
+                                clearable
+                                map-options
+                                @update:model-value="reInitProjectCommissionFunds"
+                            />
+
+                            <QSelect
+                                :readonly="!projectCommission"
+                                v-model="projectCommissionFunds"
+                                :hint="t('project.commission-funds-choice-hint')"
+                                :label="t('project.commission-funds-choice') + ' *'"
+                                :options="fundsLabels"
+                                :rules="[ val => val || t('forms.fill-field')]"
+                                emit-value
+                                filled
+                                lazy-rules
+                                clearable
+                                map-options
+                                multiple
+                                use-chips
+                                stack-label
                             />
 
                             <section class="btn-group">
                                 <QBtn
-                                        :label="t('back')"
-                                        icon="bi-chevron-left"
-                                        @click="onSubmitCommissionDates(1)"
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="onSubmitCommission(1)"
                                 />
                                 <QBtn
-                                        :label="t('continue')"
-                                        icon-right="bi-check2"
-                                        type="submit"
+                                    :label="t('continue')"
+                                    icon-right="bi-check2"
+                                    type="submit"
                                 />
                             </section>
                         </QForm>
@@ -705,40 +671,40 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- BUDGET -->
                     <QStep
-                            :name="3"
-                            :title="t('project.budget')"
-                            icon="bi-piggy-bank"
+                        :name="3"
+                        :title="t('project.budget')"
+                        icon="bi-piggy-bank"
                     >
                         <QForm
-                                @submit.prevent="onSubmitBudget(4)"
+                            @submit.prevent="onSubmitBudget(4)"
                         >
                             <h3 class="title-2">{{ t('project.budget') }}</h3>
 
                             <QCheckbox
-                                    v-model="projectReEdition"
-                                    :label="t('project.re-edition')"
+                                v-model="projectReEdition"
+                                :label="t('project.re-edition')"
                             />
 
                             <!-- Previous amounts -->
                             <section
-                                    v-if="projectCommissionDates.length && projectReEdition"
-                                    class="previous-budget"
+                                v-if="projectReEdition"
+                                class="previous-budget"
                             >
                                 <fieldset class="previous-budget-fieldset">
                                     <legend class="title-5">{{ t('project.previous-asked') }} :</legend>
                                     <section class="previous-budget-section">
                                         <QInput
-                                                v-for="(commissionDate, index) in projectCommissionDates"
-                                                :key="index"
-                                                v-model="commissionDate.amountAskedPreviousEdition"
-                                                :label="commissions.find(obj => obj.id === commissionDates
-                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
-                                                :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
-                                                :shadow-text="` ${CURRENCY}`"
-                                                filled
-                                                inputmode="numeric"
-                                                min="0"
-                                                type="number"
+                                            v-for="commissionFund in projectCommissionFundsDetail"
+                                            :key="commissionFund.id"
+                                            v-model="commissionFund.amountAskedPreviousEdition"
+                                            :label="funds.find(obj => obj.id === (commissionFunds
+                                                .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
+                                            :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
+                                            :shadow-text="` ${CURRENCY}`"
+                                            filled
+                                            inputmode="numeric"
+                                            min="0"
+                                            type="number"
                                         />
                                     </section>
                                 </fieldset>
@@ -747,95 +713,134 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     <legend class="title-5">{{ t('project.previous-earned') }} :</legend>
                                     <section class="previous-budget-section">
                                         <QInput
-                                                v-for="(commissionDate, index) in projectCommissionDates"
-                                                :key="index"
-                                                v-model="commissionDate.amountEarnedPreviousEdition"
-                                                :label="commissions.find(obj => obj.id === commissionDates
-                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
-                                                :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
-                                                :shadow-text="` ${CURRENCY}`"
-                                                filled
-                                                inputmode="numeric"
-                                                min="0"
-                                                type="number"
+                                            v-for="commissionFund in projectCommissionFundsDetail"
+                                            :key="commissionFund.id"
+                                            v-model="commissionFund.amountEarnedPreviousEdition"
+                                            :label="funds.find(obj => obj.id === (commissionFunds
+                                                .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
+                                            :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
+                                            :shadow-text="` ${CURRENCY}`"
+                                            filled
+                                            inputmode="numeric"
+                                            min="0"
+                                            type="number"
                                         />
                                     </section>
                                 </fieldset>
 
                                 <QInput
-                                        v-model="projectBudget.budgetPreviousEdition"
-                                        :label="t('project.budget-previous-edition') + ' *'"
-                                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                        :shadow-text="` ${CURRENCY}`"
-                                        aria-required="true"
-                                        filled
-                                        inputmode="numeric"
-                                        lazy-rules
-                                        min="0"
-                                        type="number"
+                                    v-model="projectBudget.budgetPreviousEdition"
+                                    :label="t('project.budget-previous-edition') + ' *'"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    :shadow-text="` ${CURRENCY}`"
+                                    aria-required="true"
+                                    filled
+                                    inputmode="numeric"
+                                    lazy-rules
+                                    min="0"
+                                    type="number"
                                 />
 
                                 <QSeparator/>
                             </section>
 
                             <QInput
-                                    v-model="projectBudget.targetAudience"
-                                    :label="t('project.target-audience') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    filled
-                                    reactive-rules
-                                    type="textarea"
+                                v-model="projectBudget.targetAudience"
+                                :label="t('project.target-audience') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                filled
+                                reactive-rules
+                                type="textarea"
                             />
 
                             <QInput
-                                    v-model="projectBudget.amountStudentsAudience"
-                                    :label="t('project.target-students-amount') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
-                                    aria-required="true"
-                                    filled
-                                    inputmode="numeric"
-                                    min="0"
-                                    reactive-rules
-                                    type="number"
+                                v-model="projectBudget.amountStudentsAudience"
+                                :label="t('project.target-students-amount') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                aria-required="true"
+                                filled
+                                inputmode="numeric"
+                                min="0"
+                                reactive-rules
+                                type="number"
                             />
 
                             <QInput
-                                    v-model="projectBudget.amountAllAudience"
-                                    :label="t('project.target-all-amount') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
-                                    aria-required="true"
-                                    filled
-                                    inputmode="numeric"
-                                    lazy-rules
-                                    min="0"
-                                    type="number"
+                                v-model="projectBudget.amountAllAudience"
+                                :label="t('project.target-all-amount') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                aria-required="true"
+                                filled
+                                inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
                             />
 
                             <QInput
-                                    v-model="projectBudget.ticketPrice"
-                                    :label="t('project.ticket-price') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    :shadow-text="` ${CURRENCY}`"
-                                    aria-required="true"
-                                    filled
-                                    inputmode="numeric"
-                                    lazy-rules
-                                    min="0"
-                                    type="number"
+                                v-model="projectBudget.ticketPrice"
+                                :label="t('project.ticket-price') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :shadow-text="` ${CURRENCY}`"
+                                aria-required="true"
+                                filled
+                                inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
                             />
 
                             <QInput
-                                    v-model="projectBudget.individualCost"
-                                    :label="t('project.individual-cost') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    :shadow-text="` ${CURRENCY}`"
-                                    aria-required="true"
-                                    filled
-                                    inputmode="numeric"
-                                    lazy-rules
-                                    min="0"
-                                    type="number"
+                                v-model="projectBudget.amountStudentsAudience"
+                                :label="t('project.target-students-amount') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
+                                          val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                aria-required="true"
+                                filled
+                                inputmode="numeric"
+                                reactive-rules
+                                min="0"
+                                type="number"
+                            />
+
+                            <QInput
+                                v-model="projectBudget.amountAllAudience"
+                                :label="t('project.target-all-amount') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
+                                          val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                aria-required="true"
+                                filled
+                                inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
+                            />
+
+                            <QInput
+                                v-model="projectBudget.ticketPrice"
+                                :label="t('project.ticket-price') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :shadow-text="` ${CURRENCY}`"
+                                aria-required="true"
+                                filled
+                                inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
+                            />
+
+                            <QInput
+                                v-model="projectBudget.individualCost"
+                                :label="t('project.individual-cost') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :shadow-text="` ${CURRENCY}`"
+                                aria-required="true"
+                                filled
+                                inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
                             />
 
                             <QSeparator/>
@@ -845,17 +850,17 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     <legend class="title-5">{{ t('project.amounts-asked') }} :</legend>
                                     <section class="asked-budget-section">
                                         <QInput
-                                                v-for="(commissionDate, index) in projectCommissionDates"
-                                                :key="index"
-                                                v-model="commissionDate.amountAsked"
-                                                :label="commissions.find(obj => obj.id === commissionDates
-                                                .find(obj => obj.id === commissionDate.commissionDate)?.commission)?.acronym + ' *'"
-                                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                                :shadow-text="` ${CURRENCY}`"
-                                                filled
-                                                inputmode="numeric"
-                                                min="0"
-                                                type="number"
+                                            v-for="commissionFund in projectCommissionFundsDetail"
+                                            :key="commissionFund.id"
+                                            v-model="commissionFund.amountAsked"
+                                            :label="funds.find(obj => obj.id === (commissionFunds
+                                                .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
+                                            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                            :shadow-text="` ${CURRENCY}`"
+                                            filled
+                                            inputmode="numeric"
+                                            min="0"
+                                            type="number"
                                         />
                                     </section>
                                 </fieldset>
@@ -863,14 +868,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                             <section class="btn-group">
                                 <QBtn
-                                        :label="t('back')"
-                                        icon="bi-chevron-left"
-                                        @click="onSubmitBudget(2)"
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="onSubmitBudget(2)"
                                 />
                                 <QBtn
-                                        :label="t('continue')"
-                                        icon-right="bi-check2"
-                                        type="submit"
+                                    :label="t('continue')"
+                                    icon-right="bi-check2"
+                                    type="submit"
                                 />
                             </section>
                         </QForm>
@@ -878,75 +883,75 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- GOALS -->
                     <QStep
-                            :name="4"
-                            :title="t('project.goals-title')"
-                            icon="bi-flag"
+                        :name="4"
+                        :title="t('project.goals-title')"
+                        icon="bi-flag"
                     >
                         <QForm
-                                @submit.prevent="onSubmitGoals(5)"
+                            @submit.prevent="onSubmitGoals(5)"
                         >
                             <h3 class="title-2">{{ t('project.goals-title') }}</h3>
 
                             <QInput
-                                    v-model="projectGoals.goals"
-                                    :label="t('project.goals') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
+                                v-model="projectGoals.goals"
+                                :label="t('project.goals') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                filled
+                                lazy-rules
+                                type="textarea"
                             />
 
                             <QInput
-                                    v-model="projectGoals.summary"
-                                    :label="t('project.summary') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
+                                v-model="projectGoals.summary"
+                                :label="t('project.summary') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                filled
+                                lazy-rules
+                                type="textarea"
                             />
 
                             <QInput
-                                    v-model="projectGoals.plannedActivities"
-                                    :label="t('project.planned-activities') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
+                                v-model="projectGoals.plannedActivities"
+                                :label="t('project.planned-activities') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                filled
+                                lazy-rules
+                                type="textarea"
                             />
 
                             <QInput
-                                    v-model="projectGoals.preventionSafety"
-                                    :label="t('project.prevention-safety') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
+                                v-model="projectGoals.preventionSafety"
+                                :label="t('project.prevention-safety') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                filled
+                                lazy-rules
+                                type="textarea"
                             />
 
                             <QInput
-                                    v-model="projectGoals.marketingCampaign"
-                                    :label="t('project.marketing-campaign') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
+                                v-model="projectGoals.marketingCampaign"
+                                :label="t('project.marketing-campaign') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                filled
+                                lazy-rules
+                                type="textarea"
                             />
 
                             <section class="btn-group">
                                 <QBtn
-                                        :label="t('back')"
-                                        icon="bi-chevron-left"
-                                        @click="onSubmitGoals(3)"
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="onSubmitGoals(3)"
                                 />
                                 <QBtn
-                                        :label="t('continue')"
-                                        icon-right="bi-check2"
-                                        type="submit"
+                                    :label="t('continue')"
+                                    icon-right="bi-check2"
+                                    type="submit"
                                 />
                             </section>
                         </QForm>
@@ -954,48 +959,48 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- DOCUMENTS -->
                     <QStep
-                            :name="5"
-                            :title="t('project.documents')"
-                            icon="bi-file-earmark"
+                        :name="5"
+                        :title="t('project.documents')"
+                        icon="bi-file-earmark"
                     >
                         <QForm
-                                @submit.prevent="onUploadDocuments(6)"
+                            @submit.prevent="onUploadDocuments(6)"
                         >
                             <h3 class="title-2">{{ t('project.documents') }}</h3>
 
                             <div class="info-panel info-panel-warning">
                                 <i
-                                        aria-hidden="true"
-                                        class="bi bi-exclamation-lg"
+                                    aria-hidden="true"
+                                    class="bi bi-exclamation-lg"
                                 ></i>
                                 <p>{{ t('project.sign-charter') }}</p>
                             </div>
 
                             <section class="flex-section">
                                 <div
-                                        v-for="(document, index) in processDocuments"
-                                        :key="index"
+                                    v-for="(document, index) in processDocuments"
+                                    :key="index"
                                 >
                                     <QFile
-                                            v-model="document.pathFile"
-                                            :accept="document.mimeTypes?.join(', ')"
-                                            :aria-required="document.isRequiredInProcess"
-                                            :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
+                                        v-model="document.pathFile"
+                                        :accept="document.mimeTypes?.join(', ')"
+                                        :aria-required="document.isRequiredInProcess"
+                                        :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                                             !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
-                                            :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
-                                            :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
-                                            :max-file-size="MAX_FILE_SIZE"
-                                            :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
+                                        :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
+                                        :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
+                                        :max-file-size="MAX_FILE_SIZE"
+                                        :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                                             (1 - documentUploads.filter(obj => obj.document === document.document).length)"
-                                            :multiple="document.isMultiple"
-                                            :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
-                                            append
-                                            clearable
-                                            counter
-                                            filled
-                                            lazy-rules
-                                            use-chips
-                                            @rejected="onDocumentRejected"
+                                        :multiple="document.isMultiple"
+                                        :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
+                                        append
+                                        clearable
+                                        counter
+                                        filled
+                                        lazy-rules
+                                        use-chips
+                                        @rejected="onDocumentRejected"
                                     >
                                         <template v-slot:prepend>
                                             <QIcon name="mdi-paperclip"/>
@@ -1003,21 +1008,21 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     </QFile>
 
                                     <div
-                                            v-if="document.pathTemplate"
-                                            class="info-panel info-panel-warning"
+                                        v-if="document.pathTemplate"
+                                        class="info-panel info-panel-warning"
                                     >
                                         <i
-                                                aria-hidden="true"
-                                                class="bi bi-exclamation-lg"
+                                            aria-hidden="true"
+                                            class="bi bi-exclamation-lg"
                                         ></i>
                                         <p>
                                             {{ t('project.document.use-template') }} <span>
                                                 <a
-                                                        :href="document.pathTemplate"
-                                                        target="_blank"
+                                                    :href="document.pathTemplate"
+                                                    target="_blank"
                                                 >{{
-                                                        `${t('project.document.download-template')} "${document.description}".`
-                                                    }}</a></span>
+                                                    `${t('project.document.download-template')} "${document.description}".`
+                                                }}</a></span>
                                         </p>
                                     </div>
 
@@ -1025,24 +1030,24 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         <div class="document-input variant-space-3">
                                             <div class="document-input-list">
                                                 <div
-                                                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                                                        :key="uploadedDocument.id"
-                                                        class="document-item"
+                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                                                    :key="uploadedDocument.id"
+                                                    class="document-item"
                                                 >
                                                     <p @click="onGetFile(uploadedDocument)">
                                                         <i
-                                                                aria-hidden="true"
-                                                                class="bi bi-file-earmark"
+                                                            aria-hidden="true"
+                                                            class="bi bi-file-earmark"
                                                         ></i>
                                                         {{ uploadedDocument.name }}
                                                         <i
-                                                                aria-hidden="true"
-                                                                class="bi bi-eye"
+                                                            aria-hidden="true"
+                                                            class="bi bi-eye"
                                                         ></i>
                                                     </p>
                                                     <button
-                                                            type="button"
-                                                            @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
+                                                        type="button"
+                                                        @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
                                                     >
                                                         <i class="bi bi-x-lg"></i>
                                                     </button>
@@ -1055,14 +1060,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                             <section class="btn-group">
                                 <QBtn
-                                        :label="t('back')"
-                                        icon="bi-chevron-left"
-                                        @click="onUploadDocuments(4)"
+                                    :label="t('back')"
+                                    icon="bi-chevron-left"
+                                    @click="onUploadDocuments(4)"
                                 />
                                 <QBtn
-                                        :label="t('continue')"
-                                        icon-right="bi-check2"
-                                        type="submit"
+                                    :label="t('continue')"
+                                    icon-right="bi-check2"
+                                    type="submit"
                                 />
                             </section>
                         </QForm>
@@ -1070,18 +1075,40 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                     <!-- RECAP -->
                     <QStep
-                            :name="6"
-                            :title="t('recap')"
-                            icon="bi-check-lg"
+                        :name="6"
+                        :title="t('recap')"
+                        icon="bi-check-lg"
                     >
                         <FormProjectRecap
-                                view="submitProject"
-                                @submit-project="onSubmitProject"
-                                @change-step="newStep => step = newStep"
-                                @get-file="uploadDocument => onGetFile(uploadDocument)"
+                            view="submitProject"
+                            @submit-project="onSubmitProject"
+                            @change-step="newStep => step = newStep"
+                            @get-file="uploadDocument => onGetFile(uploadDocument)"
                         />
                     </QStep>
                 </QStepper>
+            </div>
+        </div>
+    </section>
+    <section
+        class="dashboard-section"
+        v-if="comments"
+    >
+        <div class="form-title">
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-chat"
+                ></i>
+                {{ t('project.comments.title') }}
+            </h2>
+        </div>
+        <div class="form-container">
+            <div class="form">
+                <ProjectComments
+                    v-if="projectStore.project"
+                    :project="projectStore.project?.id"
+                />
             </div>
         </div>
     </section>
