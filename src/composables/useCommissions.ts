@@ -12,6 +12,7 @@ const userFunds = ref<number[]>([])
 
 // Commissions
 const commissions = ref<Commission[]>([])
+const commission = ref<Commission | undefined>(undefined)
 const commissionFunds = ref<CommissionFund[]>([])
 const commissionLabels = ref<SelectLabel[]>([])
 
@@ -78,6 +79,10 @@ export default function () {
 
         if (urlArray.length) urlString += `?${urlArray.join('&')}`
         commissions.value = (await axiosPublic.get<Commission[]>(urlString)).data
+    }
+
+    async function getCommission(id: number) {
+        commission.value = (await axiosPublic.get<Commission>(`/commissions/${id}`)).data
     }
 
     const initCommissionLabels = () => {
@@ -185,6 +190,8 @@ export default function () {
         getCommissionFunds,
         initCommissionLabels,
         initChosenCommissionFundsLabels,
-        getAllCommissions
+        getAllCommissions,
+        getCommission,
+        commission
     }
 }

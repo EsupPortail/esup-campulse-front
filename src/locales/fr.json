@@ -138,7 +138,8 @@
     "about": "A propos",
     "account-infos": "Modifier les informations de mon compte",
     "add-user": "Ajouter un compte",
-    "archived-commission": "Archives CAPE",
+    "archived-commission": "CAPE archivées",
+    "archived-projects": "Projets archivés",
     "association-dashboard": "Gérer mon association",
     "association-detail": "Fiche association",
     "charter": "Charte des associations",
@@ -241,7 +242,7 @@
     "create-association": "Créer une association",
     "create-user": "Créer un nouvel utilisateur",
     "edit-or-delete-association": "Gérer les associations",
-    "manage-archived-projects": "Voir les projets archivés",
+    "manage-archived-commissions": "Voir les commissions archivées",
     "manage-association-directory": "Gérer l'annuaire des associations",
     "manage-commission-dates": "Gérer les dates de commission",
     "manage-commissions": "Gérer les dossiers CAPE",
@@ -531,6 +532,7 @@
     "amount-earned": "Montant obtenu",
     "amounts-asked": "Montants demandés pour les commissions sélectionnées",
     "applicant": "Demandeur",
+    "archived-projects": "Projets archivés",
     "association-user": "Responsable du projet dans l'association",
     "bearer-identity": "Identité du porteur de projet",
     "before-start": "Avant-propos",
@@ -648,7 +650,7 @@
   "required": "obligatoire",
   "search": "Rechercher",
   "start": "Début",
-  "status": "statut",
+  "status": "Statut",
   "to": "Jusqu'au",
   "update": "Mettre à jour",
   "user": {
@@ -707,6 +709,9 @@
   "validate-changes": "Valider les changements",
   "validated": "Validé",
   "validated-non": "Non validé",
+  "view": {
+    "projects": "Voir les projets"
+  },
   "with": "avec",
   "without": "sans",
   "yes": "Oui"

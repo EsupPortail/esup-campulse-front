@@ -119,6 +119,11 @@ async function onGetCommissions() {
                                 icon="bi-folder-check"
                                 name="validatedProjects"
                             />
+                            <QTab
+                                :label="t('project.archived-projects')"
+                                icon="bi-archive"
+                                name="archivedProjects"
+                            />
                         </QTabs>
                     </template>
 
@@ -130,17 +135,24 @@ async function onGetCommissions() {
                             transition-prev="slide-down"
                         >
                             <QTabPanel name="allProjects">
-                                <h3 class="title-3">{{ t('project.all-projects') }}</h3>
                                 <TableManagedProjects
                                     :commission="tab.commission"
+                                    :title="t('project.all-projects')"
                                     project-status="all"
                                 />
                             </QTabPanel>
                             <QTabPanel name="validatedProjects">
-                                <h3 class="title-3">{{ t('project.validated-projects') }}</h3>
                                 <TableManagedProjects
                                     :commission="tab.commission"
+                                    :title="t('project.validated-projects')"
                                     project-status="validated"
+                                />
+                            </QTabPanel>
+                            <QTabPanel name="archivedProjects">
+                                <TableManagedProjects
+                                    :commission="tab.commission"
+                                    :title="t('project.archived-projects')"
+                                    project-status="archived"
                                 />
                             </QTabPanel>
                         </QTabPanels>

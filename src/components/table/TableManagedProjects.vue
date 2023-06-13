@@ -24,7 +24,8 @@ const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
     commission: number,
-    projectStatus: 'all' | 'validated'
+    projectStatus: 'all' | 'validated' | 'archived',
+    title: string
 }>()
 
 const projects = ref<ProjectList[]>([])
@@ -41,6 +42,9 @@ const applicant = (association: number | null, user: number | null) => {
 const initProjects = () => {
     if (props.projectStatus === 'validated') {
         projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_VALIDATED')
+    } else if (props.projectStatus === 'archived') {
+        projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
+            || obj.projectStatus === 'PROJECT_REVIEW_REJECTED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else {
         projects.value = projectStore.projects
     }
@@ -48,20 +52,16 @@ const initProjects = () => {
 
 onMounted(async () => {
     loading.show()
-    await onGetProjects([props.commission])
+    await onGetProjects(props.commission)
     await onGetApplicants()
     initProjects()
     loading.hide()
 })
 
 
-async function onGetProjects(commissions: number[]) {
+async function onGetProjects(commission: number) {
     try {
-        if (commissions.length) {
-            await projectStore.getManagedProjects(false, commissions)
-        } else {
-            projectStore.projects = []
-        }
+        await projectStore.getManagedProjects(commission)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -109,7 +109,7 @@ const columns: QTableProps['columns'] = [
             :loading="!projects"
             :rows="projects"
             :rows-per-page-options="[10, 20, 50, 0]"
-            :title="t('project.list')"
+            :title="props.title"
             row-key="name"
         >
             <template v-slot:body="props">

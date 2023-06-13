@@ -35,7 +35,7 @@ const {hasPerm} = useSecurity()
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                        :label="t('dashboard.manage-archived-projects')"
+                        :label="t('dashboard.manage-archived-commissions')"
                         :to="{name: 'ArchivedCommission'}"
                     />
                 </div>
