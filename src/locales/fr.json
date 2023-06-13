@@ -586,7 +586,7 @@
     "marketing-campaign": "Campagne de communication",
     "modify": "Modifier le projet",
     "modify-review": "Modifier le bilan",
-    "must-have-president-status": "Vous n'avez pas de droits de présidence dans cette association. Vous ne pouvez donc ni soumettre de nouveaux projets, ni modifier les existants.",
+    "must-have-president-status": "Vous n'avez pas de droits de présidence dans cette association. Vous ne pouvez donc pas soumettre de nouveaux projets.",
     "name": "Nom du projet",
     "no-project-to-show": "Aucun projet à afficher.",
     "pdf-name": "Récapitulatif-Demande-Subvention-",

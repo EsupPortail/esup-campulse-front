@@ -4,15 +4,33 @@ import {onMounted, ref} from 'vue'
 import type {ProjectStatus} from '#/project'
 import router from '@/router'
 import {useUserStore} from '@/stores/useUserStore'
+import {useProjectStore} from '@/stores/useProjectStore'
 
 const {t} = useI18n()
 const userStore = useUserStore()
+const projectStore = useProjectStore()
 
 const props = defineProps<{
     project: number,
     projectStatus: ProjectStatus,
-    association: number | null
+    association: number | null,
 }>()
+
+const canModifyProjectAndReview = ref<boolean>(false)
+
+const initCanModifyProjectAndReview = () => {
+    let perm = false
+    if (props.association) {
+        const projectAssociationUserId = projectStore.projects.find(x => x.id === props.project)?.associationUser
+        const associationUserId = userStore.userAssociations.find(x => x.association.id === props.association)?.id
+        if (userStore.hasPresidentStatus(props.association) || projectAssociationUserId === associationUserId) {
+            perm = true
+        }
+    } else {
+        perm = true
+    }
+    canModifyProjectAndReview.value = perm
+}
 
 interface Option {
     icon: 'bi-eye' | 'bi-pencil',
@@ -27,8 +45,10 @@ const options = ref<Option[]>([])
 
 const initOptions = () => {
     options.value = []
+    initCanModifyProjectAndReview()
+    console.log(canModifyProjectAndReview.value)
     if (props.projectStatus === 'PROJECT_DRAFT') {
-        if (props.association && userStore.hasPresidentStatus(props.association) || !props.association) {
+        if (canModifyProjectAndReview.value) {
             options.value.push({
                 icon: 'bi-pencil',
                 label: t('project.modify'),
@@ -48,11 +68,13 @@ const initOptions = () => {
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
-        options.value.push({
-            icon: 'bi-pencil',
-            label: t('project.modify-review'),
-            to: {name: 'SubmitProjectReview', params: {projectId: props.project}}
-        })
+        if (canModifyProjectAndReview.value) {
+            options.value.push({
+                icon: 'bi-pencil',
+                label: t('project.modify-review'),
+                to: {name: 'SubmitProjectReview', params: {projectId: props.project}}
+            })
+        }
     }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
         || props.projectStatus === 'PROJECT_REVIEW_REJECTED') {

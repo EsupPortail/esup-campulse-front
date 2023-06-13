@@ -33,6 +33,7 @@ export interface ProjectList {
     name: string,
     association: number | null,
     user: number | null,
+    associationUser: number | null,
     editionDate: string,
     projectStatus: ProjectStatus
 }
