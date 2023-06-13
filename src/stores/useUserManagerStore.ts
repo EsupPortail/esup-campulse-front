@@ -78,7 +78,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
 
             // Initialize object to post
             const data: UserGroupRegister = {
-                username: this.user?.username as string,
+                user: this.user?.username as string,
                 group: null,
                 institution: null,
                 fund: null

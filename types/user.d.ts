@@ -120,7 +120,7 @@ export interface UserGroup {
 }
 
 export interface UserGroupRegister {
-    username: string,
+    user: string,
     group: number | null,
     institution: number | null,
     fund: number | null
