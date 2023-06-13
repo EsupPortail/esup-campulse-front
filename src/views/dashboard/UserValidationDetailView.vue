@@ -138,7 +138,7 @@ async function onDeleteUser() {
     </section>
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-person-lines-fill"/>
+            <QIcon name="bi-building"/>
             {{ t('directory.title') }}
         </h2>
 
@@ -205,7 +205,7 @@ async function onDeleteUser() {
         />
         <QBtn
                 :label="t('user-manager.validate-account')"
-                color="primary"
+                color="secondary"
                 icon-right="bi-check2"
                 @click="onValidateUser"
         />
@@ -215,6 +215,5 @@ async function onDeleteUser() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-@import "@/assets/_variables.scss";
 </style>
 

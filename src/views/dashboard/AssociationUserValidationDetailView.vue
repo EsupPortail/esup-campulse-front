@@ -98,7 +98,7 @@ async function onDeleteAssociationUser() {
 
 <template>
     <QForm
-        @submit.prevent="onValidateAssociationUser"
+            @submit.prevent="onValidateAssociationUser"
     >
         <section class="dashboard-section">
             <h2>
@@ -165,45 +165,45 @@ async function onDeleteAssociationUser() {
 
         <section class="btn-group">
             <QBtn
-                :label="t('back')"
-                :to="{ name: 'ValidateAssociationUsers' }"
-                color="secondary"
-                icon="bi-chevron-compact-left"
+                    :label="t('back')"
+                    :to="{ name: 'ValidateAssociationUsers' }"
+                    color="secondary"
+                    icon="bi-chevron-compact-left"
             />
             <QBtn
-                :label="t('user-manager.delete-association-user')"
-                color="red"
-                icon="bi-file-earmark-x"
-                @click="onDeleteAssociationUser"
+                    :label="t('user-manager.delete-association-user')"
+                    color="red"
+                    icon="bi-file-earmark-x"
+                    @click="onDeleteAssociationUser"
             />
             <QBtn
-                :label="t('user-manager.validate-association-user')"
-                color="primary"
-                icon-right="bi-check2"
-                type="submit"
+                    :label="t('user-manager.validate-association-user')"
+                    color="primary"
+                    icon-right="bi-check2"
+                    type="submit"
             />
         </section>
     </QForm>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/_variables.scss';
 
 .rows-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 @media screen and (min-width: $responsiveWidth) {
-    .q-btn {
-        width: 20%;
-    }
+  .q-btn {
+    width: 20%;
+  }
 
-    .display-row {
-        width: 62.5rem;
-    }
+  .display-row {
+    width: 62.5rem;
+  }
 }
 </style>

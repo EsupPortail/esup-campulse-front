@@ -82,7 +82,7 @@ const columns: QTableProps['columns'] = [
     {
         name: 'edition',
         align: 'left',
-        label: t('edit'),
+        label: t('consult'),
         field: 'edition',
         sortable: false
     }
@@ -199,11 +199,9 @@ const columns: QTableProps['columns'] = [
                                     />
                                     <QBtn
                                             v-if="route.name === 'ValidateUsers'"
-                                            :label="t('consult')"
                                             :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
                                             aria-label="Consulter"
-                                            color="secondary"
-                                            icon="bi-check-lg"
+                                            icon="bi-eye"
                                     />
                                 </div>
                             </QTd>
