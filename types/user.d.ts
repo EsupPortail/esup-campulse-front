@@ -121,9 +121,9 @@ export interface UserGroup {
 
 export interface UserGroupRegister {
     username: string,
-    group: number,
+    group: number | null,
     institution: number | null,
-    commission: number | null
+    fund: number | null
 }
 
 // User manager store

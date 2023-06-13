@@ -668,10 +668,10 @@
     "search": "Rechercher un utilisateur"
   },
   "user-groups": {
-    "commission": "Membre de commission",
     "manager-general": "Gestionnaire général",
     "manager-institution": "Gestionnaire établissement",
     "manager-misc": "Gestionnaire Crous",
+    "member-fund": "Membre de commission",
     "student-institution": "Étudiant membre d'association",
     "student-misc": "Étudiant porteur de projet individuel"
   },

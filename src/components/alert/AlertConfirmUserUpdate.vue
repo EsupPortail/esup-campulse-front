@@ -64,9 +64,9 @@ async function onValidateChanges() {
         v-model="confirmation"
         persistent
     >
-        <QCard>
+        <QCard class="variant-space-4">
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t('user-manager.alert-confirm-update') }}</span>
+                <p class="paragraph">{{ t('user-manager.alert-confirm-update') }}</p>
             </QCardSection>
 
             <QCardActions align="right">
@@ -85,3 +85,12 @@ async function onValidateChanges() {
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+
+.q-card {
+    padding: 1rem
+}
+</style>

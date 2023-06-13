@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {User, UserManagerStore, UserNames} from '#/user'
+import type {User, UserGroupRegister, UserManagerStore, UserNames} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
@@ -70,38 +70,38 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         /**
          * It takes an array of group IDs, and adds the user to each group
          * @param {number[]} groupsToAdd - number[] - An array of group IDs to add to the user.
-         * @param commissionsToUpdate
+         * @param fundsToUpdate
          */
-        async updateUserGroups(groupsToAdd: number[], commissionsToUpdate: number[]) {
+        async updateUserGroups(groupsToAdd: number[], fundsToUpdate: number[]) {
             const {commissionGroup} = useUserGroups()
             const {axiosAuthenticated} = useAxios()
 
             // Initialize object to post
-            const data: { username: string | undefined, group: number | null, institution: null, commission: number | null } = {
-                username: this.user?.username,
+            const data: UserGroupRegister = {
+                username: this.user?.username as string,
                 group: null,
                 institution: null,
-                commission: null
+                fund: null
             }
 
             for (let i = 0; i < groupsToAdd.length; i++) {
                 data.group = groupsToAdd[i]
                 // if groupsToAdd includes commissionGroup
                 if (groupsToAdd[i] === commissionGroup.value?.id) {
-                    for (let j = 0; j < commissionsToUpdate.length; j++) {
-                        data.commission = commissionsToUpdate[j]
+                    for (let j = 0; j < fundsToUpdate.length; j++) {
+                        data.fund = fundsToUpdate[j]
                         await axiosAuthenticated.post('/users/groups/', data)
                     }
                 } else {
-                    data.commission = null
+                    data.fund = null
                     await axiosAuthenticated.post('/users/groups/', data)
                 }
             }
 
-            if (!groupsToAdd.includes(commissionGroup.value?.id as number) && commissionsToUpdate.length !== 0) {
+            if (!groupsToAdd.includes(commissionGroup.value?.id as number) && fundsToUpdate.length !== 0) {
                 data.group = commissionGroup.value?.id as number
-                for (let i = 0; i < commissionsToUpdate.length; i++) {
-                    data.commission = commissionsToUpdate[i]
+                for (let i = 0; i < fundsToUpdate.length; i++) {
+                    data.fund = fundsToUpdate[i]
                     await axiosAuthenticated.post('/users/groups/', data)
                 }
             }
@@ -109,27 +109,27 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         /**
          * It deletes all the groups in the array `groupsToDelete` from the user with the id `this.user?.id`
          * @param {number[]} groupsToDelete - number[] - An array of group IDs to delete
-         * @param commissionsToDelete
+         * @param fundsToDelete
          */
-        async deleteUserGroups(groupsToDelete: number[], commissionsToDelete: number[]) {
+        async deleteUserGroups(groupsToDelete: number[], fundsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
             const {commissionGroup} = useUserGroups()
-            const {userCommissionFunds} = useCommissions()
+            const {userFunds} = useCommissions()
             if (groupsToDelete.length) {
                 for (let i = 0; i < groupsToDelete.length; i++) {
                     if (groupsToDelete[i] !== commissionGroup.value?.id) {
                         await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${groupsToDelete[i]}`)
                     } else {
-                        for (let i = 0; i < userCommissionFunds.value.length; i++) {
-                            const url = `/users/${this.user?.id}/groups/${commissionGroup.value?.id}/commissions/${userCommissionFunds.value[i]}`
+                        for (let i = 0; i < userFunds.value.length; i++) {
+                            const url = `/users/${this.user?.id}/groups/${commissionGroup.value?.id}/funds/${userFunds.value[i]}`
                             await axiosAuthenticated.delete(url)
                         }
                     }
                 }
             }
-            if (commissionsToDelete.length) {
-                for (let i = 0; i < commissionsToDelete.length; i++) {
-                    await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${commissionGroup.value?.id}/commissions/${commissionsToDelete[i]}`)
+            if (fundsToDelete.length) {
+                for (let i = 0; i < fundsToDelete.length; i++) {
+                    await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${commissionGroup.value?.id}/funds/${fundsToDelete[i]}`)
                 }
             }
         },
