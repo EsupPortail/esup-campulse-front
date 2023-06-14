@@ -1050,7 +1050,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                         type="button"
                                                         @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
                                                     >
-                                                        <i class="bi bi-x-lg"></i>
+                                                        <i
+                                                            aria-hidden="true"
+                                                            class="bi bi-x-lg"
+                                                        ></i>
                                                     </button>
                                                 </div>
                                             </div>

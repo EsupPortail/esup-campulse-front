@@ -96,7 +96,10 @@ const clearValues = () => {
     >
         <div class="form-title">
             <h2>
-                <i class="bi bi-plus-square"></i>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-plus-square"
+                ></i>
                 {{ t('dashboard.create-association') }}
             </h2>
         </div>

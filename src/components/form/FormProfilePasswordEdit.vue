@@ -69,7 +69,10 @@ const clearValues = () => {
     <fieldset>
         <div class="form-title">
             <h2>
-                <i class="bi bi-key"></i>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-key"
+                ></i>
                 {{ t('dashboard.my-password') }}
             </h2>
         </div>

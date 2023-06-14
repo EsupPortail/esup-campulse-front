@@ -66,7 +66,10 @@ async function onGetProjectPdf() {
         <div class="form-container">
             <div class="form">
                 <section class="project-recap">
-                    <i class="bi bi-check-circle"></i>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-check-circle"
+                    ></i>
                     <h2 class="title-3">{{ t('project.has-been-submitted') }}</h2>
                     <p>{{ t('project.consult-on-dashboard') }}</p>
                     <div class="flex-btn-group">

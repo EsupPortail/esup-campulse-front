@@ -54,7 +54,10 @@ onMounted(async () => {
         >
             <template v-slot:label>
                 <div class="row items-center no-wrap">
-                    <div class="avatar">
+                    <div
+                        aria-hidden="true"
+                        class="avatar"
+                    >
                         <i class="bi bi-person-circle"></i>
                     </div>
 
