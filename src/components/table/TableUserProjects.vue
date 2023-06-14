@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import type {QTableProps} from 'quasar'
+import {useQuasar} from 'quasar'
 import {useProjectStore} from '@/stores/useProjectStore'
 import type {ProjectList} from '#/project'
 import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
 import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 import TableUserProjectsBtn from '@/components/table/TableUserProjectsBtn.vue'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
+import {onMounted, ref} from 'vue'
+import useSubmitProject from '@/composables/useSubmitProject'
 
 const importedProps = defineProps<{
     projects: ProjectList[],
@@ -16,9 +21,47 @@ const importedProps = defineProps<{
 const projectStore = useProjectStore()
 const {formatDate} = useUtility()
 const {t} = useI18n()
+const {notify, loading} = useQuasar()
+const {catchHTTPError} = useErrors()
+const {initProjectAssociationUsersLabels, projectAssociationUsersLabels} = useSubmitProject()
 
-const columns: QTableProps['columns'] = [
+onMounted(async () => {
+    loading.show()
+    await onGetAssociationUsers()
+    loading.hide()
+})
+
+async function onGetAssociationUsers() {
+    if (importedProps.associationId) {
+        try {
+            await initProjectAssociationUsersLabels(importedProps.associationId)
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
+        }
+    } else {
+        columns.value?.splice(1, 1)
+    }
+}
+
+const projectAssociationUser = (associationUserId: number) => {
+    const member = projectAssociationUsersLabels.value.find(x => x.value === associationUserId)
+    if (member) return member.label
+}
+
+const columns = ref<QTableProps['columns']>([
     {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
+    {
+        name: 'projectAssociationUser',
+        align: 'left',
+        label: t('project.contact'),
+        field: 'projectAssociationUser',
+        sortable: true
+    },
     {
         name: 'plannedStartDate',
         align: 'left',
@@ -33,9 +76,16 @@ const columns: QTableProps['columns'] = [
         field: 'plannedEndDate',
         sortable: true
     },
+    {
+        name: 'commissionDate',
+        align: 'left',
+        label: t('commission.date'),
+        field: 'commissionDate',
+        sortable: true
+    },
     {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
     {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
-]
+])
 </script>
 
 <template>
@@ -58,6 +108,12 @@ const columns: QTableProps['columns'] = [
                     {{ props.row.name }}
                 </QTd>
                 <QTd
+                    key="projectAssociationUser"
+                    :props="props"
+                >
+                    {{ projectAssociationUser(props.row.associationUser) }}
+                </QTd>
+                <QTd
                     key="plannedStartDate"
                     :props="props"
                 >
@@ -68,6 +124,12 @@ const columns: QTableProps['columns'] = [
                     :props="props"
                 >
                     {{ formatDate(props.row.plannedEndDate)?.split('-').reverse().join('/') }}
+                </QTd>
+                <QTd
+                    key="commissionDate"
+                    :props="props"
+                >
+                    {{ formatDate(props.row.commissions?.[0].commissionDate)?.split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
                     key="status"

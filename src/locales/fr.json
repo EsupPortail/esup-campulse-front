@@ -559,10 +559,7 @@
     "commission-funds-choice": "Choix des financements",
     "commission-funds-choice-hint": "Veuillez choisir les financements auxquels vous souhaitez soumettre votre projet. Plusieurs choix possibles.",
     "consult-on-dashboard": "Vous pouvez dès à présent consulter son avancement sur votre tableau de bord CAPE.",
-    "contact-email": "Adresse email de la personne référente du projet (si différente de l'adresse email de la personne présidant l'association)",
-    "contact-first-name": "Prénom de la personne référente du projet",
-    "contact-last-name": "Nom de la personne référente du projet",
-    "contact-phone": "Numéro de téléphone de la personne référente du projet",
+    "contact": "Responsable",
     "document": {
       "bank-account-details": "Relevé d'identité bancaire (RIB)",
       "edited": "Documents édités pour le projet (affiches, tracts, guides, livrets, journaux...)",
