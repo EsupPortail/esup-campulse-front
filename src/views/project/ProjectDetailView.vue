@@ -73,8 +73,8 @@ async function onGetProjectDocuments() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-info-circle"
+                    aria-hidden="true"
+                    class="bi bi-info-circle"
             ></i>
             {{ t('project.general-infos') }}
         </h2>
@@ -87,8 +87,8 @@ async function onGetProjectDocuments() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-calendar"
+                    aria-hidden="true"
+                    class="bi bi-calendar"
             ></i>
             {{ t('project.commission-choice') }}
         </h2>
@@ -101,8 +101,8 @@ async function onGetProjectDocuments() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-piggy-bank"
+                    aria-hidden="true"
+                    class="bi bi-piggy-bank"
             ></i>
             {{ t('project.budget') }}
         </h2>
@@ -115,8 +115,8 @@ async function onGetProjectDocuments() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-flag"
+                    aria-hidden="true"
+                    class="bi bi-flag"
             ></i>
             {{ t('project.goals') }}
         </h2>
@@ -129,8 +129,8 @@ async function onGetProjectDocuments() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-file-earmark"
+                    aria-hidden="true"
+                    class="bi bi-file-earmark"
             ></i>
             {{ t('project.documents') }}
         </h2>
@@ -143,8 +143,8 @@ async function onGetProjectDocuments() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-check-lg"
+                    aria-hidden="true"
+                    class="bi bi-check-lg"
             ></i>
             {{ t('project.status.title') }}
         </h2>
@@ -153,8 +153,8 @@ async function onGetProjectDocuments() {
                 <div class="display-row">
                     <p class="row-title">{{ t('status') }}</p>
                     <ProjectStatusIndicator
-                        :project-status="projectStore.project?.projectStatus"
-                        :show-draft="false"
+                            :project-status="projectStore.project?.projectStatus"
+                            :show-draft="false"
                     />
                 </div>
             </div>
@@ -163,16 +163,16 @@ async function onGetProjectDocuments() {
     <section class="dashboard-section">
         <h2>
             <i
-                aria-hidden="true"
-                class="bi bi-chat"
+                    aria-hidden="true"
+                    class="bi bi-chat"
             ></i>
             {{ t('project.comments.title') }}
         </h2>
         <div class="form-container">
             <div class="form">
                 <ProjectComments
-                    v-if="projectStore.project"
-                    :project="projectStore.project?.id"
+                        v-if="projectStore.project"
+                        :project="projectStore.project?.id"
                 />
             </div>
         </div>
@@ -185,16 +185,8 @@ async function onGetProjectDocuments() {
 @import "@/assets/styles/dashboard.scss";
 
 .flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.form {
-    width: 80% !important;
-}
-
-.display-row {
-    width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 </style>
