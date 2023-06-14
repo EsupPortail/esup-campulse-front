@@ -742,7 +742,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     type="number"
                                 />
 
-                                <QSeparator/>
+                                <QSeparator
+                                    aria-hidden="true"
+                                    role="presentation"
+                                />
                             </section>
 
                             <QInput
@@ -844,7 +847,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 type="number"
                             />
 
-                            <QSeparator/>
+                            <QSeparator
+                                aria-hidden="true"
+                                role="presentation"
+                            />
 
                             <section class="asked-budget">
                                 <fieldset class="asked-budget-fieldset">

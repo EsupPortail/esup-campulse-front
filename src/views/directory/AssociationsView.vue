@@ -216,6 +216,7 @@ async function loadAssociationsActivityFields() {
                     v-model="currentPage"
                     :max="pages"
                     @update:model-value="scrollToTop"
+                    :aria-label="t('pagination')"
                 />
             </div>
         </div>

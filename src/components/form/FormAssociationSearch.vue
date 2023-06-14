@@ -71,6 +71,8 @@ async function clearSearch() {
             id="search-form"
             class="search-text-field"
             @submit.prevent="onSearch"
+            role="search"
+            aria-label="t('directory.directory')"
         >
             <fieldset>
                 <QInput
@@ -106,10 +108,11 @@ async function clearSearch() {
             id="advanced-search-form"
             class="search-text-field"
             @submit.prevent="onAdvancedSearch"
+            role="search"
+            aria-label="t('directory.directory-advanced')"
         >
             <QExpansionItem
                 :label="t('advanced-search')"
-                expand-separator
                 icon="mdi-menu-right"
             >
                 <fieldset>

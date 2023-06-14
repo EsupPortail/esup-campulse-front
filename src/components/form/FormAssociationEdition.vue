@@ -418,7 +418,10 @@ async function onChangeLogo(action: string) {
                             />
                         </div>
                     </fieldset>
-                    <QSeparator/>
+                    <QSeparator
+                        aria-hidden="true"
+                        role="presentation"
+                    />
                     <QInput
                         v-model="association.phone"
                         :label="t('association.labels.phone')"

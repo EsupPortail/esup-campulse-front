@@ -274,6 +274,8 @@
   "directory": {
     "associations-on-page-plural": "associations sur la page",
     "associations-on-page-singular": "association sur la page",
+    "directory": "Annuaire des associations",
+    "directory-advanced": "Annuaire des associations avancé",
     "found-associations-plural": "associations trouvées",
     "found-associations-singular": "association trouvée",
     "image-alt": "",
@@ -505,6 +507,8 @@
     }
   },
   "optional": "facultatif",
+  "page-top": "Haut de page",
+  "pagination": "Pagination",
   "password": {
     "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
@@ -655,6 +659,7 @@
   "user": {
     "associations": "Associations",
     "delete-association-role": "Note : Le rôle dans l'association sera supprimé après validation des changements.",
+    "directory": "Annuaire des utilisateurs avancé",
     "email": "E-mail",
     "first-name": "Prénom",
     "groups": "Statut",
