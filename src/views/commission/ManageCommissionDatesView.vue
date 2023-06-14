@@ -192,7 +192,10 @@ const onClearValues = () => {
                             </h4>
 
                             <button @click.prevent="commission.open = !commission.open">
-                                <i :class="`bi bi-${commission.open ? 'x' : 'pencil'}`"></i>
+                                <i
+                                    aria-hidden="true"
+                                    :class="`bi bi-${commission.open ? 'x' : 'pencil'}`"
+                                ></i>
                             </button>
                         </div>
                     </div>

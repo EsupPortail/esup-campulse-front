@@ -178,6 +178,7 @@ const columns: QTableProps['columns'] = [
                                     }}
 
                                     <span
+                                        aria-hidden="true" 
                                         :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
                                     >
                                         <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>

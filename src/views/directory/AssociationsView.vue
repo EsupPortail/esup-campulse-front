@@ -140,7 +140,10 @@ async function loadAssociationsActivityFields() {
                     class="my-card"
                 >
                     <div class="card-background"></div>
-                    <i class="card-chevron bi bi-chevron-compact-right"></i>
+                    <i
+                        aria-hidden="true"
+                        class="card-chevron bi bi-chevron-compact-right"
+                    ></i>
                     <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
                     <QCardSection>
                         <div class="list-logo">
@@ -159,14 +162,20 @@ async function loadAssociationsActivityFields() {
                             <ul>
                                 <li v-if="association.acronym">
                                     <span class="label">
-                                        <i class="bi bi-tag"></i>
+                                        <i
+                                            aria-hidden="true"
+                                            class="bi bi-tag"
+                                        ></i>
                                         {{ t('directory.labels.association-acronym') + ' : ' }}
                                     </span>
                                     <span class="value">{{ association.acronym }}</span>
                                 </li>
                                 <li v-if="association.institution">
                                     <span class="label">
-                                        <i class="bi bi-bank2"></i>
+                                        <i
+                                            aria-hidden="true"
+                                            class="bi bi-bank2"
+                                        ></i>
                                         {{ t('directory.labels.association-institution') + ' : ' }}
                                     </span>
                                     <span class="value">{{
@@ -175,7 +184,10 @@ async function loadAssociationsActivityFields() {
                                 </li>
                                 <li v-if="association.activityField">
                                     <span class="label">
-                                        <i class="bi bi-globe"></i>
+                                        <i
+                                            aria-hidden="true"
+                                            class="bi bi-globe"
+                                        ></i>
                                         {{ t('directory.labels.association-activity-field') + ' : ' }}
                                     </span>
                                     <span class="value">{{
@@ -184,7 +196,10 @@ async function loadAssociationsActivityFields() {
                                 </li>
                                 <li v-if="association.institutionComponent">
                                     <span class="label">
-                                        <i class="bi bi-mortarboard"></i>
+                                        <i
+                                            aria-hidden="true"
+                                            class="bi bi-mortarboard"
+                                        ></i>
                                         {{ t('directory.labels.association-institution-component') + ' : ' }}
                                     </span>
                                     <span class="value">{{

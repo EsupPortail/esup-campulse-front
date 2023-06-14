@@ -29,7 +29,10 @@ const buttonVisible = ref(false)
         :class="{ 'visible': buttonVisible }"
     >
         <button @click="scrollToTop">
-            <i class="bi bi-arrow-up-short"></i>
+            <i
+                aria-hidden="true"
+                class="bi bi-arrow-up-short"
+            ></i>
         </button>
     </div>
 </template>

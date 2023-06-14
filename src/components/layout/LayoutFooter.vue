@@ -84,19 +84,28 @@ const {colorVariant} = useColorVariants()
                     class="li-footer"
                     to="about-page"
                 >
-                    <i class="bi bi-card-text"></i>{{ t("footer.about") }}
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-card-text"
+                    ></i>{{ t("footer.about") }}
                 </RouterLink>
                 <RouterLink
                     class="li-footer"
                     to="/"
                 >
-                    <i class="bi bi-envelope"></i>{{ t("footer.legal-notice") }}
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-envelope"
+                    ></i>{{ t("footer.legal-notice") }}
                 </RouterLink>
                 <RouterLink
                     class="li-footer"
                     to="contact-page"
                 >
-                    <i class="bi bi-envelope"></i>{{ t("footer.contact") }}
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-envelope"
+                    ></i>{{ t("footer.contact") }}
                 </RouterLink>
                 <!-- <QToolbarTitle>{{ t("footer.copyright") }}</QToolbarTitle> -->
             </div>
