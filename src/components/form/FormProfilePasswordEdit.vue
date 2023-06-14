@@ -91,6 +91,7 @@ const clearValues = () => {
                         filled
                         lazy-rules
                         type="password"
+                        autocomplete="current-password"
                     />
                     <QInput
                         v-model="editPassword.newPassword1"
@@ -102,6 +103,7 @@ const clearValues = () => {
                         filled
                         lazy-rules
                         type="password"
+                        autocomplete="new-password"
                     />
                     <QInput
                         v-model="editPassword.newPassword2"
@@ -113,6 +115,7 @@ const clearValues = () => {
                         filled
                         lazy-rules
                         type="password"
+                        autocomplete="new-password"
                     />
                     <FormPasswordChecker
                         :password="editPassword.newPassword1"

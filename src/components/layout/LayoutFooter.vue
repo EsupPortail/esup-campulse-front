@@ -11,6 +11,7 @@ const {colorVariant} = useColorVariants()
         id="layout-footer"
         :class="'variant-' + colorVariant"
         elevated
+        role="contentinfo"
     >
         <div id="footer-logos">
             <div class="wrapper">

@@ -60,6 +60,7 @@ async function resend() {
                 :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
                 filled
                 lazy-rules
+                autocomplete="email"
             />
             <QBtn
                 :label="t('forms.send')"

@@ -8,7 +8,10 @@ const {t} = useI18n()
 </script>
 
 <template>
-    <nav :aria-label="t('primary-nav')">
+    <nav
+        :aria-label="t('primary-nav')"
+        role="navigation"
+    >
         <RouterLink :to="{name: 'Home'}">{{ t("header.home") }}</RouterLink>
         <RouterLink
             :to="{name: 'Charter'}"

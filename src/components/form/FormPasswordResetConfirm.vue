@@ -69,6 +69,7 @@ async function resetConfirm() {
                     filled
                     lazy-rules
                     type="password"
+                    autocomplete="new-password"
                 />
                 <QInput
                     v-model="newPassword.newPassword2"
@@ -81,6 +82,7 @@ async function resetConfirm() {
                     filled
                     lazy-rules
                     type="password"
+                    autocomplete="new-password"
                 />
                 <FormPasswordChecker
                     :password="newPassword.newPassword1"

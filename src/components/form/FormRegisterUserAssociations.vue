@@ -105,6 +105,7 @@ function clearOptions() {
                                 :options="association.options"
                                 inline
                                 @update:model-value="updateRegisterRoleInAssociation"
+                                aria-label="t('forms.association-role')"
                             />
                         </div>
                         <QSeparator
