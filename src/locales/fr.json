@@ -318,7 +318,6 @@
     "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
     "add-new-comment": "Ajouter un commentaire",
-    "add-new-comment-hint": "Si le projet est refusé ou retourné au porteur de projet, précisez la raison (documents manquants, projet inapproprié...)",
     "add-selected-associations": "Ajouter les associations sélectionnées",
     "amount-members-allowed-must-be-superior-to-members": "Veuillez choisir un nombre supérieur ou égal au nombre de membres actuels.",
     "amount-student-allowed-cannot-be-inferior-to-members": "Ne peut pas être inférieur au nombre de membres inscrits sur la plateforme actuellement",
@@ -329,6 +328,7 @@
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "correct-amount-audience": "Le nombre d'étudiants doit être inférieur ou égal au nombre total de personnes visées.",
     "comment": "Votre commentaire",
+    "comment-hint": "Si le projet est refusé ou retourné au porteur de projet, précisez la raison (documents manquants, projet inapproprié...)",
     "commission-date-must-be-posterior-to-submission-date": "La date de commission doit être postérieure à la date limite de soumission. Les dates ne doivent pas être passées.",
     "create-account": "Créer un compte",
     "delete-association": "Supprimer",
@@ -504,7 +504,7 @@
       "no-modifications-found": "Aucun changement n'a été effectué."
     }
   },
-  "optional": "optionnel",
+  "optional": "facultatif",
   "password": {
     "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
@@ -598,6 +598,8 @@
     "previous-asked": "Subvention(s) demandée(s) pour l'édition précédente",
     "previous-edition": "Edition précédente",
     "previous-earned": "Montant(s) obtenu(s) pour l'édition précédente",
+    "process": "Traiter le projet",
+    "process-review": "Traiter le bilan",
     "project": "Projet",
     "projects-of": "Projets de",
     "re-edition": "Réédition d'un précédent projet",
@@ -628,8 +630,8 @@
     "target-audience-type": "Type de public visé (étudiantes ou étudiants, personnel...)",
     "ticket-price": "Montant demandé par participant (billetterie)",
     "update-dates": "Choisir de nouvelles dates pour le projet",
-    "validate": "Traiter le projet",
-    "validate-review": "Traiter le bilan",
+    "validate": "Valider le projet",
+    "validate-review": "Valider le bilan",
     "validated-projects": "Projets validés",
     "view": "Voir le projet",
     "view-review": "Voir le bilan"

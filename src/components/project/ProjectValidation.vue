@@ -44,8 +44,8 @@ async function onUpdateProjectStatus() {
             if (selectedAction.value === 'validate') projectStatus = 'PROJECT_VALIDATED'
             else if (selectedAction.value === 'return') projectStatus = 'PROJECT_DRAFT'
             else if (selectedAction.value === 'reject') projectStatus = 'PROJECT_REJECTED'
-            await projectStore.patchProjectStatus(projectStatus)
             await postNewProjectComment(projectStore.project.id, newComment.value)
+            await projectStore.patchProjectStatus(projectStatus)
             await getProjectComments(projectStore.project.id)
             open.value = false
             notify({
@@ -93,11 +93,12 @@ async function onUpdateProjectStatus() {
                 <QForm
                     @submit.prevent="onUpdateProjectStatus"
                 >
+                    <h3 class="title-3">{{ t('forms.add-new-comment') }}</h3>
                     <QInput
                         v-model="newComment"
                         :aria-required="selectedAction !== 'validate'"
-                        :hint="t('forms.add-new-comment-hint')"
-                        :label="t('forms.add-new-comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
+                        :hint="t('forms.comment-hint')"
+                        :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
                         :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                         filled
                         lazy-rules
