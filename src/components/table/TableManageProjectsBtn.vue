@@ -84,7 +84,6 @@ function onOptionClick(option: Option) {
                     clickable
                     @click="onOptionClick(option)"
                 >
-                    >
                     <QItemSection avatar>
                         <QAvatar
                             :icon="option.icon"

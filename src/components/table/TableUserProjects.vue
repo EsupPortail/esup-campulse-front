@@ -19,8 +19,21 @@ const {t} = useI18n()
 
 const columns: QTableProps['columns'] = [
     {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
-    {name: 'lastModifiedDate', align: 'left', label: t('project.last-modified-date'), field: 'email', sortable: true},
-    {name: 'status', align: 'left', label: t('status'), field: 'status', sortable: true},
+    {
+        name: 'plannedStartDate',
+        align: 'left',
+        label: t('project.planned-start-date'),
+        field: 'plannedStartDate',
+        sortable: true
+    },
+    {
+        name: 'plannedEndDate',
+        align: 'left',
+        label: t('project.planned-end-date'),
+        field: 'plannedEndDate',
+        sortable: true
+    },
+    {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
     {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
 ]
 </script>
@@ -45,10 +58,16 @@ const columns: QTableProps['columns'] = [
                     {{ props.row.name }}
                 </QTd>
                 <QTd
-                    key="lastModifiedDate"
+                    key="plannedStartDate"
                     :props="props"
                 >
-                    {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
+                    {{ formatDate(props.row.plannedStartDate)?.split('-').reverse().join('/') }}
+                </QTd>
+                <QTd
+                    key="plannedEndDate"
+                    :props="props"
+                >
+                    {{ formatDate(props.row.plannedEndDate)?.split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
                     key="status"

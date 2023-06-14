@@ -34,6 +34,8 @@ export interface ProjectList {
     user: number | null,
     associationUser: number | null,
     editionDate: string,
+    plannedEndDate: string,
+    plannedLocation: string,
     projectStatus: ProjectStatus
 }
 
