@@ -191,10 +191,17 @@ const onClearValues = () => {
                                 {{ commission.oldName }}
                             </h4>
 
+                            <p class="form-state form-state-cape">
+                                <span
+                                    :aria-label="t(`commission.is-${commission.oldIsOpenToProjects ? 'open' : 'closed'}-to-projects`)"
+                                    :class="`form-state-icon form-state-${commission.oldIsOpenToProjects ? 'green' : 'red'}`"
+                                ><i :class="`bi bi-${commission.oldIsOpenToProjects ? 'check' : 'x'}`"></i></span>
+                            </p>
+
                             <button @click.prevent="commission.open = !commission.open">
                                 <i
-                                    aria-hidden="true"
                                     :class="`bi bi-${commission.open ? 'x' : 'pencil'}`"
+                                    aria-hidden="true"
                                 ></i>
                             </button>
                         </div>

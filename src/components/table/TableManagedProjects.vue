@@ -103,7 +103,7 @@ const columns: QTableProps['columns'] = [
 </script>
 
 <template>
-    <section>
+    <section class="variant-space-3">
         <QTable
             :columns="columns"
             :loading="!projects"

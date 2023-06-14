@@ -128,12 +128,7 @@ export default function () {
         if (commission.newSubmissionDate !== commission.oldSubmissionDate) dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.newSubmissionDate})
         if (commission.newIsOpenToProjects !== commission.oldIsOpenToProjects) dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.newIsOpenToProjects})
         if (Object.entries(dataToPatch).length) {
-            await axiosAuthenticated.patch(`/commissions/${commission.id}`, {
-                commissionDate: commission.newCommissionDate,
-                submissionDate: commission.newSubmissionDate,
-                isOpenToProjects: commission.newIsOpenToProjects,
-                name: commission.newName
-            })
+            await axiosAuthenticated.patch(`/commissions/${commission.id}`, dataToPatch)
         }
         if (!arraysAreEqual(commission.oldFunds, commission.newFunds)) {
             const newFundsToPost = commission.newFunds.filter(x => commission.oldFunds.indexOf(x) === -1)
@@ -146,10 +141,7 @@ export default function () {
                 })
             }
             for (let i = 0; i < oldFundsToDelete.length; i++) {
-                const commissionFund = commissionFunds.value
-                    .filter(obj => obj.commission === commission.id)
-                    .find(obj => obj.fund === oldFundsToDelete[i])?.id
-                if (commissionFund) await axiosAuthenticated.delete(`/commissions/${commission.id}/funds/${commissionFund}`)
+                await axiosAuthenticated.delete(`/commissions/${commission.id}/funds/${oldFundsToDelete[i]}`)
             }
         }
 
