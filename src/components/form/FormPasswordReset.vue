@@ -74,6 +74,7 @@ async function reset() {
                         filled
                         lazy-rules
                         type="email"
+                        autocomplete="email"
                     />
                     <QBtn
                         :label="t('forms.send')"

@@ -122,6 +122,7 @@ async function onRegister() {
                             clearable
                             filled
                             lazy-rules
+                            autocomplete="given-name"
                         />
                         <QInput
                             v-model="newUser.lastName"
@@ -132,6 +133,7 @@ async function onRegister() {
                             clearable
                             filled
                             lazy-rules
+                            autocomplete="family-name"
                         />
                         <QInput
                             v-model="newUser.email"
@@ -144,6 +146,7 @@ async function onRegister() {
                             filled
                             lazy-rules
                             type="email"
+                            autocomplete="email"
                         >
                         </QInput>
                         <QInput
@@ -156,6 +159,7 @@ async function onRegister() {
                             filled
                             lazy-rules
                             type="email"
+                            autocomplete="email"
                         />
                         <QInput
                             v-model="newUser.phone"
@@ -166,6 +170,7 @@ async function onRegister() {
                             filled
                             lazy-rules
                             type="tel"
+                            autocomplete="tel"
                         />
                     </div>
                 </div>

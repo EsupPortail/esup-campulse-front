@@ -43,6 +43,7 @@ async function onLogIn() {
             :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
             filled
             lazy-rules
+            autocomplete="email"
         />
         <QInput
             v-model="user.password"
@@ -51,6 +52,7 @@ async function onLogIn() {
             :type="passwordVisibility ? 'text' : 'password'"
             filled
             lazy-rules
+            autocomplete="current-password"
         />
         <QCheckbox
             v-model="passwordVisibility"

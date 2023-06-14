@@ -70,6 +70,7 @@ onMounted(() => {
             :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
             filled
             lazy-rules
+            autocomplete="given-name"
         />
         <QInput
             v-model="userToUpdate.lastName"
@@ -78,6 +79,7 @@ onMounted(() => {
             :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
             filled
             lazy-rules
+            autocomplete="family-name"
         />
         <fieldset class="email-modification">
             <QInput
@@ -87,6 +89,7 @@ onMounted(() => {
                 disable
                 filled
                 lazy-rules
+                autocomplete="email"
             />
             <QExpansionItem
                 v-if="!props.user?.isCas"
@@ -99,6 +102,7 @@ onMounted(() => {
                     :rules="changeEmail ? [(val, rules) => rules.email(val) || t('forms.required-new-email')] : []"
                     filled
                     lazy-rules
+                    autocomplete="email"
                 />
                 <QInput
                     v-model="userToUpdate.newEmailVerification"
@@ -106,6 +110,7 @@ onMounted(() => {
                     :rules="changeEmail ? [(val, rules) => (rules.email(val) && val === userToUpdate.newEmail) || t('forms.required-repeat-email')] : []"
                     filled
                     lazy-rules
+                    autocomplete="email"
                 />
                 <div class="info-panel info-panel-warning">
                     <i
@@ -124,6 +129,7 @@ onMounted(() => {
             lazy-rules
             mask="## ## ## ## ##"
             type="tel"
+            autocomplete="tel"
         />
         <fieldset
             v-if="(!editedByStaff && hasPerm('add_project_user'))
