@@ -1157,4 +1157,8 @@ legend {
 .individual-bearer {
   padding: 0 1rem
 }
+
+.document-item > p {
+    cursor: pointer;
+}
 </style>
