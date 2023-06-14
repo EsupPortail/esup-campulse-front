@@ -326,6 +326,7 @@
     "association-institution": "Établissement de rattachement",
     "association-is-site": "Association chartée (rend l'association visible sur l'annuaire)",
     "association-name": "Nom de l'association",
+    "association-role": "Ma fonction dans l'association",
     "association-student-count": "Nombre de membres dans l'association",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",
     "correct-amount-audience": "Le nombre d'étudiants doit être inférieur ou égal au nombre total de personnes visées.",
@@ -342,6 +343,7 @@
     "first-name": "Prénom",
     "gdpr": "Lorem Elsass ipsum in, Chulien leo picon bière adipiscing leverwurscht condimentum elit bissame Pfourtz ! schneck nüdle ac Oberschaeffolsheim porta Chulia Roberstau semper eget tchao bissame schpeck libero, Yo dû. senectus sed non aliquam so Christkindelsmärik mänele gewurztraminer sed flammekueche gravida rhoncus mamsell Morbi tellus  sit hopla Gal ! Hans sagittis jetz gehts los dignissim hoplageiss id hopla s'guelt vulputate consectetur schnaps non suspendisse vielmols, geïz Spätzle dolor turpis ac tellus purus blottkopf, libero, elementum bredele pellentesque risus, ullamcorper commodo Gal. messti de Bischheim réchime météor lacus amet geht's kougelhopf",
     "gdpr-title": "Gestion des données personnelles",
+    "group-role": "Mon statut (étudiant, membre de commission, ...)",
     "hint-delegation-to": "Laisser le champ vide pour une date indéterminée.",
     "hint-phone": "Format : 0102030405 ou +(identifiant)102030405",
     "i-can-be-president": "Président délégué ou présidente déléguée",
@@ -398,6 +400,7 @@
     "social-object-hint": "Objet figurant sur les statuts de l'association",
     "status": "Mon statut",
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
+    "user-to-add": "Utilisateur à ajouter",
     "validate-association": "Valider cet ajout",
     "validated-account": "Compte validé",
     "view-password": "Afficher le mot de passe"

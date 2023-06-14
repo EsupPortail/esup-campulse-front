@@ -106,6 +106,7 @@ function onInitGroupLabels() {
                 :options="groupLabels"
                 type="checkbox"
                 @update:model-value="initGroupPermToJoinAssociation(newGroups)"
+                aria-label="t('forms.group-role')"
             />
         </QField>
         <QSelect

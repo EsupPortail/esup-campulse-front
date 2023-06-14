@@ -57,6 +57,7 @@ async function onGetUserAssociations() {
                     v-model="association.role"
                     :options="association.options"
                     color="teal"
+                    aria-label="t('forms.association-role')"
                 />
                 <div class="btn-group btn-delete">
                     <div>

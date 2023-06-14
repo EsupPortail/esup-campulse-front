@@ -137,6 +137,7 @@ function onReset() {
                             :options="CASUserOptions"
                             emit-value
                             map-options
+                            aria-label="t('forms.user-to-add')"
                         />
                     </div>
                     <div class="btn-group">
