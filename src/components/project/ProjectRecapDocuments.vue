@@ -54,6 +54,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+@import "@/assets/_variables.scss";
+
 
 .display-row {
     width: 100% !important;
@@ -64,5 +66,16 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem 0;
+}
+
+ul > li {
+    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer;
+    color: $capeColor;
+}
+
+ul, li {
+    padding-left: 0 !important;
 }
 </style>

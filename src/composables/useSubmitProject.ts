@@ -1,4 +1,4 @@
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import type {
     ProjectBasicInfos,
     ProjectBudget,
@@ -121,6 +121,15 @@ export default function () {
         projectBudget.value.individualCost = projectStore.project?.individualCost.toString() as string
         projectBudget.value.budgetPreviousEdition = projectStore.project?.budgetPreviousEdition.toString() as string
     }
+
+    const initProjectCommissionFundsDetail = () => {
+        projectCommissionFundsDetail.value.forEach(projectCommissionFund => {
+            projectCommissionFund.amountAskedPreviousEdition = (projectCommissionFund.amountAskedPreviousEdition as number).toString()
+            projectCommissionFund.amountEarnedPreviousEdition = (projectCommissionFund.amountEarnedPreviousEdition as number).toString()
+            projectCommissionFund.amountAsked = (projectCommissionFund.amountAsked as number).toString()
+        })
+    }
+    watch(() => projectCommissionFundsDetail.value, initProjectCommissionFundsDetail)
 
     const initProjectGoals = () => {
         projectGoals.value.goals = projectStore.project?.goals as string
@@ -339,6 +348,7 @@ export default function () {
         projectCommissionFundsDetail,
         reInitProjectCommissionFunds,
         initProjectAssociationUsersLabels,
-        projectAssociationUsersLabels
+        projectAssociationUsersLabels,
+        initProjectCommissionFundsDetail
     }
 }
