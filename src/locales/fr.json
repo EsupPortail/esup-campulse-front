@@ -505,6 +505,8 @@
     }
   },
   "optional": "facultatif",
+  "page-top": "Haut de page",
+  "pagination": "Pagination",
   "password": {
     "edit-password": "Modifier mon mot de passe",
     "new-password": "Nouveau mot de passe",
