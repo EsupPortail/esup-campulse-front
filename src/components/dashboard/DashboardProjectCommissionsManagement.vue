@@ -88,7 +88,10 @@ async function onGetCommissions() {
             />
         </QTabs>
 
-        <QSeparator/>
+        <QSeparator
+            aria-hidden="true"
+            role="presentation"
+        />
 
         <QTabPanels
             v-model="tab"

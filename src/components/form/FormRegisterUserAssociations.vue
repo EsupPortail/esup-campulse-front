@@ -110,6 +110,8 @@ function clearOptions() {
                         <QSeparator
                             inset
                             vertical
+                            aria-hidden="true"
+                            role="presentation"
                         />
                         <div>
                             <QBtn
@@ -122,6 +124,8 @@ function clearOptions() {
                     </div>
                     <QSeparator
                         v-if="routeName !== 'ManageAccount'"
+                        aria-hidden="true"
+                        role="presentation"
                     />
                     <QBtn
                         v-if="(newAssociations.length > 0 && newAssociations[0].id) &&

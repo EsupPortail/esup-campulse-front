@@ -107,7 +107,6 @@ async function clearSearch() {
         >
             <QExpansionItem
                 :label="t('advanced-search')"
-                expand-separator
                 icon="bi-chevron-compact-right"
             >
                 <fieldset>
