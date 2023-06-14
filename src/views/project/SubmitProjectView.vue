@@ -16,7 +16,6 @@ import type {ProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import FormProjectRecap from '@/components/project/ProjectRecap.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
-import useProjectComments from '@/composables/useProjectComments'
 
 const {t} = useI18n()
 const {
@@ -71,7 +70,6 @@ const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
 const route = useRoute()
-const {comments} = useProjectComments()
 
 onMounted(async () => {
     loading.show()
@@ -106,6 +104,7 @@ onMounted(async () => {
     await onGetProjectCategories()
     await onGetDocumentTypes()
     await onGetAssociationUsers()
+    isLoaded.value = true
     loading.hide()
 })
 
@@ -147,6 +146,8 @@ watch(() => projectStore.projectCommissionFunds.length, () => {
 })
 
 const isSite = ref<boolean>(false)
+
+const isLoaded = ref<boolean>(false)
 
 // CONST
 const MAX_FILES = 10
@@ -1095,7 +1096,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
     </section>
     <section
         class="dashboard-section"
-        v-if="comments.length"
     >
         <div class="form-title">
             <h2>
@@ -1109,8 +1109,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
         <div class="form-container">
             <div class="form">
                 <ProjectComments
-                    v-if="projectStore.project"
-                    :project="projectStore.project?.id"
+                    v-if="isLoaded"
+                    :project="projectId"
                 />
             </div>
         </div>
