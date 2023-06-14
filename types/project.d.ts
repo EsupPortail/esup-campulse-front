@@ -1,4 +1,5 @@
 import type {DocumentUpload} from '#/documents'
+import type {Commission} from '#/commissions'
 
 export interface Project {
     id: number,
@@ -10,7 +11,7 @@ export interface Project {
     association: number | null,
     associationUser: number | null,
     categories?: ProjectCategoryName[],
-    commissions?: ProjectCommissionFund[],
+    commissions?: Commission[],
     budgetPreviousEdition: number,
     targetAudience: string,
     amountStudentsAudience: number,
@@ -36,7 +37,8 @@ export interface ProjectList {
     editionDate: string,
     plannedEndDate: string,
     plannedLocation: string,
-    projectStatus: ProjectStatus
+    projectStatus: ProjectStatus,
+    commissions: Commission[]
 }
 
 type ProjectStatus =

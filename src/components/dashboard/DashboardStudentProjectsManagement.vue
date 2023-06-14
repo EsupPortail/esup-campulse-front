@@ -281,7 +281,7 @@ async function onGetProjects() {
 }
 
 .form {
-    width: 75% !important;
+    width: 100% !important;
 }
 
 .q-tab-panel {
