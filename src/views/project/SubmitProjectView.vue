@@ -1092,7 +1092,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
     </section>
     <section
         class="dashboard-section"
-        v-if="comments"
+        v-if="comments.length"
     >
         <div class="form-title">
             <h2>
