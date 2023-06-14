@@ -6,7 +6,7 @@ import {useUserStore} from '@/stores/useUserStore'
 const comments = ref<ProjectComment[]>([])
 const comment = ref<ProjectComment>()
 
-export default function () {
+export default function() {
     const {axiosAuthenticated} = useAxios()
     const userStore = useUserStore()
 
@@ -23,7 +23,6 @@ export default function () {
     }*/
 
     async function postNewProjectComment(project: number, text: string) {
-        console.log(project)
         await axiosAuthenticated.post('/projects/comments', {project, text, user: userStore.user?.id})
     }
 
@@ -45,4 +44,3 @@ export default function () {
         comments
     }
 }
-

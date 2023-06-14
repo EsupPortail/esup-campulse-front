@@ -8,11 +8,11 @@ defineProps({
 
 <template>
     <QBanner
-            v-if="isDisplayed"
+        v-if="isDisplayed"
     >
         <div
-                id="home-banner-icon"
-                class="variant-default"
+            id="home-banner-icon"
+            class="variant-default"
         >
             <i class="bi bi-info-circle"></i>
         </div>

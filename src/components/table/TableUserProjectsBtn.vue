@@ -46,7 +46,6 @@ const options = ref<Option[]>([])
 const initOptions = () => {
     options.value = []
     initCanModifyProjectAndReview()
-    console.log(canModifyProjectAndReview.value)
     if (props.projectStatus === 'PROJECT_DRAFT') {
         if (canModifyProjectAndReview.value) {
             options.value.push({

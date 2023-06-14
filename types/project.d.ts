@@ -1,5 +1,4 @@
 import type {DocumentUpload} from '#/documents'
-import type {User} from '#/user'
 
 export interface Project {
     id: number,
