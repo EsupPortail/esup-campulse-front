@@ -31,7 +31,7 @@ const initOptions = () => {
     options.value = []
     options.value.push({
         icon: props.projectStatus === 'PROJECT_PROCESSING' ? 'bi-check-lg' : 'bi-eye',
-        label: props.projectStatus === 'PROJECT_PROCESSING' ? t('project.validate') : t('project.view'),
+        label: props.projectStatus === 'PROJECT_PROCESSING' ? t('project.process') : t('project.view'),
         to: {name: 'ProjectDetail', params: {projectId: props.project}}
     })
     if (isStaff.value && hasPerm('change_project')) {
@@ -44,7 +44,7 @@ const initOptions = () => {
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING') {
         options.value.push({
             icon: 'bi-check-lg',
-            label: t('project.validate-review'),
+            label: t('project.process-review'),
             to: {name: 'ProjectReviewDetail', params: {projectId: props.project}}
         })
     }
@@ -84,7 +84,6 @@ function onOptionClick(option: Option) {
                     clickable
                     @click="onOptionClick(option)"
                 >
-                    >
                     <QItemSection avatar>
                         <QAvatar
                             :icon="option.icon"

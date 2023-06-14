@@ -28,8 +28,13 @@ defineProps({
                 <h2 :aria-label="titleLine1 + ' ' + titleLine2">
                     <span>
                         {{ titleLine1 }}
-                        <span class="section-icon">
-                            <span><i :class="[ iconClass ]"></i></span>
+                        <span
+                            aria-hidden="true"
+                            class="section-icon"
+                        >
+                            <span><i
+                                :class="[ iconClass ]"
+                            ></i></span>
                             <span></span>
                             <span></span>
                             <span></span>
@@ -44,7 +49,12 @@ defineProps({
             <div class="section-content">
                 <p>{{ description }}</p>
                 <div class="section-buttons">
-                    <RouterLink :to="link">{{ buttonLabel }} <i class="bi bi-chevron-compact-right"></i></RouterLink>
+                    <RouterLink :to="link">
+                        {{ buttonLabel }} <i
+                            aria-hidden="true"
+                            class="bi bi-chevron-compact-right"
+                        ></i>
+                    </RouterLink>
                 </div>
             </div>
         </div>

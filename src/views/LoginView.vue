@@ -15,7 +15,10 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
 <template>
     <div id="login-page">
         <p class="login-intro-text">
-            <span class="icon">
+            <span
+                aria-hidden="true"
+                class="icon"
+            >
                 <i class="bi bi-person-circle"></i>
             </span>
             {{ t('login.introduction-login') }}

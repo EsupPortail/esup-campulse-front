@@ -92,7 +92,10 @@ async function onDelegatePresidency(activate: boolean) {
                     @submit.prevent="onDelegatePresidency(true)"
                 >
                     <h3 class="section-title">
-                        <i class="bi bi-card-text"></i>
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-card-text"
+                        ></i>
                         {{ t('dashboard.association-user.delegate-presidency') }}
                     </h3>
 

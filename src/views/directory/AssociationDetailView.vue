@@ -67,7 +67,7 @@ async function onGetAssociationDetail() {
                 >
                     {{ association?.acronym }}
                 </p>
-                <p><i>{{ t('association.labels.charter-validity') }}</i></p>
+                <p>{{ t('association.labels.charter-validity') }}</p>
             </div>
 
             <div
@@ -79,7 +79,12 @@ async function onGetAssociationDetail() {
         </section>
 
         <section>
-            <h3><i class="bi bi-book"></i>{{ t('association.titles.info') }}</h3>
+            <h3>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-book"
+                ></i>{{ t('association.titles.info') }}
+            </h3>
 
             <div class="form-container">
                 <article
@@ -127,7 +132,12 @@ async function onGetAssociationDetail() {
         <section
             v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret"
         >
-            <h3><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h3>
+            <h3>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-clipboard-check"
+                ></i>{{ t('association.titles.admin') }}
+            </h3>
 
             <div class="form-container">
                 <article
@@ -173,7 +183,12 @@ async function onGetAssociationDetail() {
             v-if="association?.address || association?.phone || association?.email || association?.website ||
                 (association?.socialNetworks && association?.socialNetworks?.length > 0)"
         >
-            <h3><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h3>
+            <h3>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-telephone"
+                ></i>{{ t('association.titles.contact') }}
+            </h3>
 
             <div class="form-container">
                 <article

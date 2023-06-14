@@ -7,12 +7,14 @@ import useProjectComments from '@/composables/useProjectComments'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
 import type {ProjectStatus} from '#/project'
+import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {postNewProjectComment, getProjectComments} = useProjectComments()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
+const {hasPerm} = useSecurity()
 
 type Action = 'validate' | 'reject' | 'return' | ''
 type Icon = 'bi-check-lg' | 'bi-x-octagon' | 'bi-exclamation-triangle' | ''
@@ -42,8 +44,8 @@ async function onUpdateProjectStatus() {
             if (selectedAction.value === 'validate') projectStatus = 'PROJECT_VALIDATED'
             else if (selectedAction.value === 'return') projectStatus = 'PROJECT_DRAFT'
             else if (selectedAction.value === 'reject') projectStatus = 'PROJECT_REJECTED'
-            await projectStore.patchProjectStatus(projectStatus)
             await postNewProjectComment(projectStore.project.id, newComment.value)
+            await projectStore.patchProjectStatus(projectStatus)
             await getProjectComments(projectStore.project.id)
             open.value = false
             notify({
@@ -65,7 +67,8 @@ async function onUpdateProjectStatus() {
 
 <template>
     <section
-        v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'"
+        v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
+            && hasPerm('change_project_as_validator')"
         class="btn-group"
     >
         <QBtn
@@ -90,11 +93,12 @@ async function onUpdateProjectStatus() {
                 <QForm
                     @submit.prevent="onUpdateProjectStatus"
                 >
+                    <h3 class="title-3">{{ t('forms.add-new-comment') }}</h3>
                     <QInput
                         v-model="newComment"
                         :aria-required="selectedAction !== 'validate'"
-                        :hint="t('forms.add-new-comment-hint')"
-                        :label="t('forms.add-new-comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
+                        :hint="t('forms.comment-hint')"
+                        :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
                         :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
                         filled
                         lazy-rules

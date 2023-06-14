@@ -30,6 +30,7 @@ onMounted(initUserInfos)
             :label="t('address.address')"
             clearable
             filled
+            autocomplete="street-address"
         />
         <div>
             <QInput
@@ -37,18 +38,21 @@ onMounted(initUserInfos)
                 :label="t('address.zipcode')"
                 clearable
                 filled
+                autocomplete="postal-code"
             />
             <QInput
                 v-model="userToUpdate.city"
                 :label="t('address.city')"
                 clearable
                 filled
+                autocomplete="address-level2"
             />
             <QInput
                 v-model="userToUpdate.country"
                 :label="t('address.country')"
                 clearable
                 filled
+                autocomplete="country-name"
             />
         </div>
     </section>

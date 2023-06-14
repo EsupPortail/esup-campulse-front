@@ -188,6 +188,7 @@ async function onChangeLogo(action: string) {
             <div class="association-logo">
                 <QImg
                         :alt="altLogoText(association)"
+                        :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? false : true) : true"
                         :ratio="1"
                         :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : noLogoSquare.default) : noLogoSquare.default"
                 />
@@ -238,7 +239,12 @@ async function onChangeLogo(action: string) {
         </section>
 
         <fieldset>
-            <h3><i class="bi bi-book"></i>{{ t('association.titles.info') }}</h3>
+            <h3>
+                <i
+                        aria-hidden="true"
+                        class="bi bi-book"
+                ></i>{{ t('association.titles.info') }}
+            </h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -308,7 +314,12 @@ async function onChangeLogo(action: string) {
         </fieldset>
 
         <fieldset>
-            <h3><i class="bi bi-clipboard-check"></i>{{ t('association.titles.admin') }}</h3>
+            <h3>
+                <i
+                        aria-hidden="true"
+                        class="bi bi-clipboard-check"
+                ></i>{{ t('association.titles.admin') }}
+            </h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
@@ -370,7 +381,12 @@ async function onChangeLogo(action: string) {
         </fieldset>
 
         <fieldset>
-            <h3><i class="bi bi-telephone"></i>{{ t('association.titles.contact') }}</h3>
+            <h3>
+                <i
+                        aria-hidden="true"
+                        class="bi bi-telephone"
+                ></i>{{ t('association.titles.contact') }}
+            </h3>
             <section class="form-container">
                 <div class="display-row">
                     <fieldset class="address-fields">
@@ -402,7 +418,10 @@ async function onChangeLogo(action: string) {
                             />
                         </div>
                     </fieldset>
-                    <QSeparator/>
+                    <QSeparator
+                            aria-hidden="true"
+                            role="presentation"
+                    />
                     <QInput
                             v-model="association.phone"
                             :label="t('association.labels.phone')"

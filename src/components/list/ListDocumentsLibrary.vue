@@ -51,7 +51,10 @@ function onDownloadDocument(documentId: number) {
                     :aria-label="t('download') + ' ' + document?.name"
                     @click.prevent="onDownloadDocument(document?.id)"
                 >
-                    <i class="bi bi-arrow-bar-down"></i>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-arrow-bar-down"
+                    ></i>
                 </button>
             </div>
         </div>

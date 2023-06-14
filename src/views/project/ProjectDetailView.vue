@@ -6,7 +6,7 @@ import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useSubmitProject from '@/composables/useSubmitProject'
 import {useRoute} from 'vue-router'
@@ -30,6 +30,8 @@ const {
 } = useSubmitProject()
 const route = useRoute()
 
+const isLoaded = ref<boolean>(false)
+
 onMounted(async () => {
     loading.show()
     await onGetProjectDetail()
@@ -43,6 +45,7 @@ async function onGetProjectDetail() {
         initProjectBasicInfos()
         initProjectBudget()
         initProjectGoals()
+        isLoaded.value = true
     } catch (error) {
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
@@ -171,7 +174,7 @@ async function onGetProjectDocuments() {
         <div class="form-container">
             <div class="form">
                 <ProjectComments
-                        v-if="projectStore.project"
+                        v-if="isLoaded"
                         :project="projectStore.project?.id"
                 />
             </div>

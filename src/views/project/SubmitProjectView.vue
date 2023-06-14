@@ -16,7 +16,6 @@ import type {ProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import FormProjectRecap from '@/components/project/ProjectRecap.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
-import useProjectComments from '@/composables/useProjectComments'
 
 const {t} = useI18n()
 const {
@@ -71,7 +70,6 @@ const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
 const route = useRoute()
-const {comments} = useProjectComments()
 
 onMounted(async () => {
     loading.show()
@@ -106,6 +104,7 @@ onMounted(async () => {
     await onGetProjectCategories()
     await onGetDocumentTypes()
     await onGetAssociationUsers()
+    isLoaded.value = true
     loading.hide()
 })
 
@@ -147,6 +146,8 @@ watch(() => projectStore.projectCommissionFunds.length, () => {
 })
 
 const isSite = ref<boolean>(false)
+
+const isLoaded = ref<boolean>(false)
 
 // CONST
 const MAX_FILES = 10
@@ -741,7 +742,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     type="number"
                                 />
 
-                                <QSeparator/>
+                                <QSeparator
+                                    aria-hidden="true"
+                                    role="presentation"
+                                />
                             </section>
 
                             <QInput
@@ -843,7 +847,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 type="number"
                             />
 
-                            <QSeparator/>
+                            <QSeparator
+                                aria-hidden="true"
+                                role="presentation"
+                            />
 
                             <section class="asked-budget">
                                 <fieldset class="asked-budget-fieldset">
@@ -1049,7 +1056,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                                         type="button"
                                                         @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
                                                     >
-                                                        <i class="bi bi-x-lg"></i>
+                                                        <i
+                                                            aria-hidden="true"
+                                                            class="bi bi-x-lg"
+                                                        ></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -1092,7 +1102,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
     </section>
     <section
         class="dashboard-section"
-        v-if="comments"
     >
         <div class="form-title">
             <h2>
@@ -1106,8 +1115,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
         <div class="form-container">
             <div class="form">
                 <ProjectComments
-                    v-if="projectStore.project"
-                    :project="projectStore.project?.id"
+                    v-if="isLoaded"
+                    :project="projectId"
                 />
             </div>
         </div>
@@ -1153,5 +1162,9 @@ legend {
 
 .individual-bearer {
   padding: 0 1rem
+}
+
+.document-item > p {
+    cursor: pointer;
 }
 </style>

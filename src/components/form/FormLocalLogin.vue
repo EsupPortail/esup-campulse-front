@@ -41,6 +41,7 @@ async function onLogIn() {
                 v-model="user.username"
                 :label="t('forms.email')"
                 :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
+                autocomplete="email"
                 filled
                 lazy-rules
         />
@@ -49,6 +50,7 @@ async function onLogIn() {
                 :label="t('forms.password')"
                 :rules="[ val => val && val.length > 0 || t('forms.required-password')]"
                 :type="passwordVisibility ? 'text' : 'password'"
+                autocomplete="current-password"
                 filled
                 lazy-rules
         />

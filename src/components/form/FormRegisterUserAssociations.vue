@@ -100,15 +100,17 @@ function clearOptions() {
                                     @input="clearOptions"
                                     @update:model-value="checkHasPresident(association)"
                             />
-                            <QOptionGroup
-                                    v-model="association.role"
-                                    :options="association.options"
-                                    inline
-                                    @update:model-value="updateRegisterRoleInAssociation"
+                            <QOptionGroup v-model="association.role"
+                                          :options="association.options"
+                                          aria-label="t('forms.association-role')"
+                                          inline
+                                          @update:model-value="updateRegisterRoleInAssociation"
                             />
                         </div>
                         <QSeparator
+                                aria-hidden="true"
                                 inset
+                                role="presentation"
                                 vertical
                         />
                         <div>
@@ -123,6 +125,8 @@ function clearOptions() {
                     </div>
                     <QSeparator
                             v-if="routeName !== 'ManageAccount'"
+                            aria-hidden="true"
+                            role="presentation"
                     />
                     <QBtn
                             v-if="(newAssociations.length > 0 && newAssociations[0].id) &&

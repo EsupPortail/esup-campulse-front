@@ -12,6 +12,7 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
         class="variant-space-1"
         elevated
         height-hint="98"
+        role="banner"
     >
         <QToolbar>
             <QToolbarTitle>

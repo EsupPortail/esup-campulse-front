@@ -23,7 +23,12 @@ onMounted(initValues)
 </script>
 <template>
     <fieldset>
-        <h3><i class="bi bi-megaphone"></i>{{ t('association.labels.socials') }}</h3>
+        <h3>
+            <i
+                aria-hidden="true"
+                class="bi bi-megaphone"
+            ></i>{{ t('association.labels.socials') }}
+        </h3>
         <section class="form-container">
             <div
                     v-for="(socialNetwork, index) in associationSocialNetworks"

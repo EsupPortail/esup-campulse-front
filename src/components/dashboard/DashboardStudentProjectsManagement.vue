@@ -124,7 +124,10 @@ async function onGetProjects() {
                         />
                     </QTabs>
 
-                    <QSeparator/>
+                    <QSeparator
+                        aria-hidden="true"
+                        role="presentation"
+                    />
 
                     <QTabPanels
                         v-model="tab"
@@ -281,7 +284,7 @@ async function onGetProjects() {
 }
 
 .form {
-    width: 75% !important;
+    width: 100% !important;
 }
 
 .q-tab-panel {

@@ -180,14 +180,20 @@ const columns: QTableProps['columns'] = [
                                         class="form-state"
                                 >
                                     {{ t('association.disabled') }}
-                                    <span class="form-state-icon form-state-red"><i class="bi bi-x-lg"></i></span>
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
+                                    ><i class="bi bi-x-lg"></i></span>
                                 </span>
                                 <span
                                         v-else
                                         class="form-state"
                                 >
                                     {{ t('association.enabled') }}
-                                    <span class="form-state-icon form-state-green"><i class="bi bi-check-lg"></i></span>
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-green"
+                                    ><i class="bi bi-check-lg"></i></span>
                                 </span>
                             </QTd>
                             <QTd
@@ -200,14 +206,20 @@ const columns: QTableProps['columns'] = [
                                         class="form-state"
                                 >
                                     {{ t('association.not-public') }}
-                                    <span class="form-state-icon form-state-red"><i class="bi bi-x-lg"></i></span>
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
+                                    ><i class="bi bi-x-lg"></i></span>
                                 </span>
                                 <span
                                         v-else
                                         class="form-state"
                                 >
                                     {{ t('association.public') }}
-                                    <span class="form-state-icon form-state-green"><i class="bi bi-check-lg"></i></span>
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-green"
+                                    ><i class="bi bi-check-lg"></i></span>
                                 </span>
                             </QTd>
                             <QTd

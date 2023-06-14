@@ -13,6 +13,7 @@ defineProps({
         <div
             id="home-banner-icon"
             class="variant-default"
+            aria-hidden="true"
         >
             <i class="bi bi-info-circle"></i>
         </div>

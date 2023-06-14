@@ -227,7 +227,10 @@ async function onDeleteDocument(documentId: number) {
                             </h4>
 
                             <button @click.prevent="document.open = !document.open">
-                                <i :class="`bi bi-${document.open ? 'x' : 'pencil'}`"></i>
+                                <i
+                                    aria-hidden="true"
+                                    :class="`bi bi-${document.open ? 'x' : 'pencil'}`"
+                                ></i>
                             </button>
                         </div>
                     </div>
