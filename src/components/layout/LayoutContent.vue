@@ -14,7 +14,7 @@ const {colorVariant} = useColorVariants()
         id="layout-content"
         :class="'variant-' + colorVariant"
     >
-        <main>
+        <main role="main">
             <!--<LayoutBreadcrumbs/>-->
             <NavigateTopButton/>
             <Suspense>
