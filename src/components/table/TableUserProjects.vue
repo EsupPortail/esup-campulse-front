@@ -129,7 +129,7 @@ const columns = ref<QTableProps['columns']>([
                     key="commissionDate"
                     :props="props"
                 >
-                    {{ formatDate(props.row.commission.commissionDate)?.split('-').reverse().join('/') }}
+                    {{ formatDate(props.row.commission?.commissionDate)?.split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
                     key="status"
