@@ -151,24 +151,6 @@ export default function () {
         await axiosAuthenticated.delete(`/commissions/${id}`)
     }
 
-    /*const initCommissionFundsLabels = (isSite: boolean | undefined) => {
-        commissionDatesLabels.value = []
-        commissionDates.value.forEach((commissionDate) => {
-            const fund = funds.value.find(obj => obj.id === commissionDate.commission)
-            if (fund) {
-                // 1st option : We simply initialize commissionDates based on isSite param
-                // 2nd option : We initialize labels based on what we got from GET request
-                if (isSite || (isSite === false && !fund.isSite) || isSite === undefined) {
-                    commissionDatesLabels.value.push({
-                        value: commissionDate.id,
-                        label: `${fund.acronym} (${commissionDate.commissionDate.split('-').reverse().join('/')})`,
-                        commission: fund.id as number
-                    })
-                }
-            }
-        })
-    }*/
-
     return {
         funds,
         fundsLabels,

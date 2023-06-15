@@ -6,9 +6,7 @@ import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import {useAxios} from '@/composables/useAxios'
-import {_commissionDates, _commissionFunds} from '~/fixtures/commissions.mock'
-import type {SelectCommissionDateLabel} from '#/commissions'
-import {_generalManager} from '~/fixtures/user.mock'
+import {_commissions, _funds} from '~/fixtures/commissions.mock'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -34,70 +32,67 @@ describe('useCommissions', () => {
 
     afterEach(() => {
         vi.restoreAllMocks()
-        commissionFunds.value = []
-        commissionDates.value = []
-        commissionDatesLabels.value = []
+        funds.value = []
+        commissions.value = []
     })
 
     const {
-        getCommissionFunds,
-        commissionFunds,
-        getCommissionDates,
-        commissionDates,
-        initCommissionDatesLabels,
-        commissionDatesLabels
+        getFunds,
+        funds,
+        getCommissionsForManagers,
+        commissions
     } = useCommissions()
     const {axiosPublic} = useAxios()
     const mockedPublicAxios = vi.mocked(axiosPublic, true)
 
-    describe('getCommissionFunds', () => {
+    describe('getFunds', () => {
         it('should call API (get) and store data in ref commissions', async () => {
-            mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionFunds})
-            await getCommissionFunds()
+            mockedPublicAxios.get.mockResolvedValueOnce({data: _funds})
+            await getFunds()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
-            expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/funds/')
-            expect(commissionFunds.value).toEqual(_commissionFunds)
+            expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/funds/names')
+            expect(funds.value).toEqual(_funds)
         })
     })
 
-    describe('getCommissionDates', () => {
+    describe('getCommissionsForManagers', () => {
         afterEach(() => {
             vi.restoreAllMocks()
         })
 
         describe('if all params are set to true', () => {
-            it('should call API (get) with onlyNext and onlyActive params set to true', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
-                await getCommissionDates(true, true, true)
+            it('should call API (get) with params params set to true', async () => {
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
+                await getCommissionsForManagers(true, true, true, true)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                const url = '/commissions/commission_dates?only_next=true&active_projects=true&managed_commissions=true'
+                const url = '/commissions/?active_projects=true&is_open_to_projects=true&is_site=true&managed_projects=true'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
-                expect(commissionDates.value).toEqual(_commissionDates)
+                expect(commissions.value).toEqual(_commissions)
             })
         })
         describe('if all params are set to false', () => {
             it('should call API (get)', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
-                await getCommissionDates(false, false, false)
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
+                await getCommissionsForManagers(false, false, false, false)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                const url = '/commissions/commission_dates?only_next=false&active_projects=false&managed_commissions=false'
+                const url = '/commissions/?active_projects=false&is_open_to_projects=false&is_site=false&managed_projects=false'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
-                expect(commissionDates.value).toEqual(_commissionDates)
+                expect(commissions.value).toEqual(_commissions)
             })
         })
         describe('if all params are set to undefined', () => {
             it('should call API (get)', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionDates})
-                await getCommissionDates(undefined, undefined, undefined)
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
+                await getCommissionsForManagers(undefined, undefined, undefined, undefined)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                const url = '/commissions/commission_dates'
+                const url = '/commissions/'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
-                expect(commissionDates.value).toEqual(_commissionDates)
+                expect(commissions.value).toEqual(_commissions)
             })
         })
     })
 
-    describe('initCommissionDatesLabels', () => {
+    /*describe('initCommissionDatesLabels', () => {
         beforeEach(() => {
             commissionFunds.value = _commissionFunds
             commissionDates.value = _commissionDates
@@ -160,5 +155,5 @@ describe('useCommissions', () => {
                 expect(commissionDatesLabels.value).toEqual(_test)
             })
         })
-    })
+    })*/
 })

@@ -8,7 +8,7 @@ import {
     _project,
     _projectCategories,
     _projectCategoryNames,
-    _projectCommissionDates,
+    _projectCommissionFunds,
     _projects
 } from '~/fixtures/project.mock'
 
@@ -36,7 +36,7 @@ describe('Project store', () => {
         projectStore.project = undefined
         projectStore.projectCategoryNames = []
         projectStore.projectCategories = []
-        projectStore.projectCommissionDates = []
+        projectStore.projectCommissionFunds = []
     })
 
     describe('getProjectCategoryNames', () => {
@@ -70,25 +70,25 @@ describe('Project store', () => {
         })
     })
 
-    describe('getProjectCommissionDates', () => {
+    describe('getProjectCommissionFunds', () => {
         describe('as manager', () => {
-            it('should make an API call (get) to get all project commission dates and if needed get the dates of a specific commission', async () => {
-                mockedAuthAxios.get.mockResolvedValueOnce({data: _projectCommissionDates})
-                await projectStore.getProjectCommissionDates(true, 1)
+            it('should get all project commission funds and if needed get the dates of a specific commission', async () => {
+                mockedAuthAxios.get.mockResolvedValueOnce({data: _projectCommissionFunds})
+                await projectStore.getProjectCommissionFunds(true, 1)
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/commission_dates?commission_id=1')
-                expect(projectStore.projectCommissionDates).toEqual(_projectCommissionDates)
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/commission_funds?commission_id=1')
+                expect(projectStore.projectCommissionFunds).toEqual(_projectCommissionFunds)
             })
         })
 
-        describe('not as manager', () => {
-            it('should make an API call (get) on another route to get project commission dates linked to a user / association', async () => {
+        describe('as student', () => {
+            it('should get project commission funds linked to a user/association', async () => {
                 projectStore.project = _project
-                mockedAuthAxios.get.mockResolvedValueOnce({data: _projectCommissionDates})
-                await projectStore.getProjectCommissionDates(false, undefined)
+                mockedAuthAxios.get.mockResolvedValueOnce({data: _projectCommissionFunds})
+                await projectStore.getProjectCommissionFunds(false, undefined)
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/commission_dates')
-                expect(projectStore.projectCommissionDates).toEqual(_projectCommissionDates)
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/commission_funds')
+                expect(projectStore.projectCommissionFunds).toEqual(_projectCommissionFunds)
             })
         })
     })
@@ -104,24 +104,27 @@ describe('Project store', () => {
         })
     })
 
-    describe('getProjects', () => {
-        describe('if archived projects and commission dates are selected', () => {
-            it('should make an API call specifying archived statuses and commissionDates', async () => {
+    describe('getManagedProjects', () => {
+        const statuses = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT',
+            'PROJECT_REVIEW_PROCESSING', 'PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED'].join(',')
+
+        describe('of a specific commission', () => {
+            it('should make an API call specifying chosen commission', async () => {
                 mockedAuthAxios.get.mockResolvedValueOnce({data: _projects})
-                await projectStore.getProjects(true, [1, 2, 3])
+                await projectStore.getManagedProjects(1)
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                const url = '/projects/?project_statuses=PROJECT_REJECTED,PROJECT_REVIEW_REJECTED,PROJECT_REVIEW_VALIDATED&commission_dates=1,2,3'
+                const url = `/projects/?project_statuses=${statuses}&commission_id=1`
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
                 expect(projectStore.projects).toEqual(_projects)
             })
         })
 
-        describe('if unarchived projects and no commission are selected', () => {
-            it('should make an API call specifying unarchived statuses', async () => {
+        describe('all managed projects', () => {
+            it('should make an API call', async () => {
                 mockedAuthAxios.get.mockResolvedValueOnce({data: _projects})
-                await projectStore.getProjects(false, [])
+                await projectStore.getManagedProjects(undefined)
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                const url = '/projects/?project_statuses=PROJECT_PROCESSING,PROJECT_VALIDATED,PROJECT_REVIEW_DRAFT,PROJECT_REVIEW_PROCESSING'
+                const url = `/projects/?project_statuses=${statuses}`
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
                 expect(projectStore.projects).toEqual(_projects)
             })

@@ -7,11 +7,8 @@ export const _project: Project = {
     plannedEndDate: '2023-10-26T20:00:00+02:00',
     plannedLocation: '16 rue René Descartes, 67000 Strasbourg, FRANCE',
     user: null,
-    contactFirstName: '',
-    contactLastName: '',
-    contactEmail: '',
-    contactPhone: '',
     association: 1,
+    associationUser: 1,
     budgetPreviousEdition: 0,
     targetAudience: 'Une centaine d\'étudiants.',
     amountStudentsAudience: 90,
@@ -23,7 +20,9 @@ export const _project: Project = {
     plannedActivities: 'Conférence autour du thème des associations, petit déjeuner, échange avec les participants sur le sujet.',
     preventionSafety: 'Actions de sécurité et de préventions comme filtrage de l\'entrée selon les tickets par exemple.',
     marketingCampaign: 'Des messages sur les réseaux sociaux, des affiches et quelques tracts.',
-    projectStatus: 'PROJECT_DRAFT'
+    projectStatus: 'PROJECT_DRAFT',
+    creationDate: '2023-06-01',
+    editionDate: '2023-06-02'
 }
 
 export const _projects = [
@@ -166,7 +165,7 @@ export const _projectCategories = [
     }
 ]
 
-export const _projectCommissionDates = [
+export const _projectCommissionFunds = [
     {
         id: 1,
         project: 1,

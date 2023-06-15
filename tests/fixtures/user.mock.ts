@@ -101,7 +101,7 @@ export const _institutionStudent: User = {
     permissions: getUserGroupsPermissions([_userGroups[3]])
 }
 
-export const _commission: User = {
+export const _memberFund: User = {
     id: 6,
     username: 'commission@unistra.fr',
     firstName: 'Commission',

@@ -1,4 +1,4 @@
-export const _commissionFunds = [
+export const _funds = [
     {
         id: 1,
         name: 'Fonds de Solidarité et de Développement des Initiatives Étudiantes',
@@ -22,7 +22,7 @@ export const _commissionFunds = [
     }
 ]
 
-export const _commissionDates = [
+export const _commissions = [
     {
         id: 4,
         submissionDate: '2099-05-18',

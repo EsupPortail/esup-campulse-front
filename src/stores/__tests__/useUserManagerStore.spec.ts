@@ -1,12 +1,19 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {_commission, _institutionManager, _institutionStudent, _users, _usersNames} from '~/fixtures/user.mock'
+import {
+    _institutionManager,
+    _institutionStudent,
+    _memberFund,
+    _users,
+    _usersNames
+} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
+import useCommissions from '../../composables/useCommissions'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -21,7 +28,7 @@ setActivePinia(createPinia())
 let userManagerStore = useUserManagerStore()
 let userStore = useUserStore()
 
-describe('User manager store', () => {
+describe('UserManagerStore', () => {
     beforeEach(() => {
         userManagerStore = useUserManagerStore()
         userStore = useUserStore()
@@ -48,7 +55,7 @@ describe('User manager store', () => {
 
     describe('userCommissions', () => {
         it('should return an array of commission IDs if the user is a commission member', () => {
-            userManagerStore.user = _commission
+            userManagerStore.user = _memberFund
             expect(userManagerStore.userCommissionFunds).toEqual([1])
         })
     })
@@ -117,33 +124,33 @@ describe('User manager store', () => {
         const {groups} = useUserGroups()
         const {axiosAuthenticated} = useAxios()
         groups.value = _groups
-        userManagerStore.user = _commission
+        userManagerStore.user = _memberFund
 
-        describe('if COMMISSION is a new group to post', () => {
+        describe('if MEMBER_FUND is a new group to post', () => {
             it('should post every new group and commission on /users/groups/', async () => {
                 await userManagerStore.updateUserGroups([4, 5], [1, 2])
                 expect(axiosAuthenticated.post).toHaveBeenCalledTimes(3)
                 expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/',
                     {
-                        username: userManagerStore.user?.username,
+                        user: userManagerStore.user?.username,
                         group: 5,
                         institution: null,
-                        commission: null
+                        fund: null
                     }
                 )
             })
         })
 
-        describe('if COMMISSION is an old group and we new to update commissions', () => {
+        describe('if MEMBER_FUND is an old group and we new to update commissions', () => {
             it('should post every new commission on /users/groups/', async () => {
                 await userManagerStore.updateUserGroups([], [1, 2])
                 expect(axiosAuthenticated.post).toHaveBeenCalledTimes(2)
                 expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/',
                     {
-                        username: userManagerStore.user?.username,
+                        user: userManagerStore.user?.username,
                         group: 4,
                         institution: null,
-                        commission: 2
+                        fund: 2
                     }
                 )
             })
@@ -151,7 +158,10 @@ describe('User manager store', () => {
     })
 
     describe('deleteUserGroups', () => {
+        const {groups} = useUserGroups()
         const {axiosAuthenticated} = useAxios()
+        groups.value = _groups
+        userManagerStore.user = _memberFund
 
         describe('if we delete groups (not COMMISSION)', () => {
             beforeEach(() => {
@@ -170,9 +180,12 @@ describe('User manager store', () => {
             })
         })
 
-        describe('if we delete groups (including COMMISSION)', () => {
+        describe('if we delete groups (including MEMBER_FUND)', () => {
+            const {userFunds} = useCommissions()
+
             beforeEach(() => {
-                userManagerStore.user = _commission
+                userManagerStore.user = _memberFund
+                userFunds.value = [1]
             })
 
             afterEach(() => {
@@ -181,15 +194,15 @@ describe('User manager store', () => {
 
             it('should delete groups on /users/userId/groups/groupId', async () => {
                 await userManagerStore.deleteUserGroups([4], [])
-                expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(1)
-                const url = `/users/${userManagerStore.user?.id}/groups/4/commissions/${userManagerStore.userCommissionFunds[0]}`
+                expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
+                const url = `/users/${userManagerStore.user?.id}/groups/4/funds/1`
                 expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
             })
         })
 
-        describe('if we delete commissions while not deleting COMMISSION group', () => {
+        describe('if we delete commissions while not deleting MEMBER_FUND group', () => {
             beforeEach(() => {
-                userManagerStore.user = _commission
+                userManagerStore.user = _memberFund
             })
 
             afterEach(() => {
@@ -199,7 +212,7 @@ describe('User manager store', () => {
             it('should delete each commission in the array', async () => {
                 await userManagerStore.deleteUserGroups([], [1, 2])
                 expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(2)
-                const url = `/users/${userManagerStore.user?.id}/groups/4/commissions/2`
+                const url = `/users/${userManagerStore.user?.id}/groups/4/funds/2`
                 expect(axiosAuthenticated.delete).toHaveBeenLastCalledWith(url)
             })
         })
