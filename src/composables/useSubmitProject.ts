@@ -102,7 +102,8 @@ export default function () {
     }
 
     const initProjectCategories = () => {
-        projectCategories.value = projectStore.projectCategories.map(category => category.category) as number[]
+        projectCategories.value = projectStore.projectCategories
+            .map(category => category.category) as number[]
     }
 
     const reInitProjectCommissionFunds = (isSite: boolean) => {
@@ -303,7 +304,7 @@ export default function () {
                 }
             }
             if (Object.entries(dataToPatch).length) {
-                await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFunds.value?.[i]}`, dataToPatch)
+                await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFundsDetail.value[i].commissionFund}`, dataToPatch)
             }
         }
     }
