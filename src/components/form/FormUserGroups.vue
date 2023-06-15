@@ -96,31 +96,32 @@ function onInitGroupLabels() {
 <template>
     <fieldset>
         <QField
-            v-if="groups"
-            :error="!groupChoiceIsValid"
-            :error-message="t('forms.required-status')"
-            borderless
+                v-if="groups"
+                :error="!groupChoiceIsValid"
+                :error-message="t('forms.required-status')"
+                borderless
         >
             <QOptionGroup
-                v-model="newGroups"
-                :options="groupLabels"
-                type="checkbox"
-                @update:model-value="initGroupPermToJoinAssociation(newGroups)"
-                aria-label="t('forms.group-role')"
+                    v-model="newGroups"
+                    :options="groupLabels"
+                    aria-label="t('forms.group-role')"
+                    color="secondary"
+                    type="checkbox"
+                    @update:model-value="initGroupPermToJoinAssociation(newGroups)"
             />
         </QField>
         <QSelect
-            v-if="commissionMemberIsSelected"
-            v-model="userFunds"
-            :label="t('commissions')"
-            :options="fundsLabels"
-            :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
-            emit-value
-            filled
-            map-options
-            multiple
-            style="width: 250px"
-            use-chips
+                v-if="commissionMemberIsSelected"
+                v-model="userFunds"
+                :label="t('commissions')"
+                :options="fundsLabels"
+                :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
+                emit-value
+                filled
+                map-options
+                multiple
+                style="width: 250px"
+                use-chips
         />
     </fieldset>
 </template>
@@ -129,7 +130,7 @@ function onInitGroupLabels() {
 @import '@/assets/_variables.scss';
 
 .q-option-group {
-    color: $dashboardColor;
-    padding: 1rem;
+  color: $dashboardColor;
+  padding: 1rem;
 }
 </style>

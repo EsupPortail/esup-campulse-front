@@ -15,6 +15,7 @@ const props = defineProps({
                     :label="t('forms.gdpr')"
                     :model-value="props.hasConsent"
                     aria-label="t('forms.gdpr')"
+                    color="secondary"
                     @click="$emit('updateConsent')"
             />
         </div>

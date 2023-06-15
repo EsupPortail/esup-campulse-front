@@ -3,7 +3,7 @@
 // A generic form wrapper.
 // Most forms on the site must be contained in both a "form" and "form-container" element.
 
-::v-deep(.form-container) {
+.form-container {
   position: relative;
   background-color: $backgroundColor2;
   padding: 1rem;
@@ -37,6 +37,10 @@
     li {
       list-style: none;
     }
+  }
+
+  .instructions {
+    font-size: 1.2em;
   }
 
   @media screen and (min-width: $responsiveWidth) {

@@ -75,7 +75,7 @@ function clearOptions() {
     <QCard v-if="title">
         <QCardSection>
             <fieldset>
-                <legend class="title-3">{{ title }}</legend>
+                <h3 class="title-3">{{ title }}</h3>
                 <p class="paragraph">{{ t('dashboard.association-user.add-my-associations-note') }}</p>
 
                 <div
@@ -103,7 +103,9 @@ function clearOptions() {
                             <QOptionGroup v-model="association.role"
                                           :options="association.options"
                                           aria-label="t('forms.association-role')"
+                                          color="secondary"
                                           inline
+                                          role="radiogroup"
                                           @update:model-value="updateRegisterRoleInAssociation"
                             />
                         </div>
@@ -155,6 +157,10 @@ function clearOptions() {
 @import '@/assets/styles/associations.scss';
 @import '@/assets/_variables.scss';
 
+fieldset {
+  padding: 0;
+}
+
 .title-3 {
   font-weight: $semibold-weight;
 }
@@ -164,10 +170,6 @@ function clearOptions() {
 }
 
 @media screen and (min-width: $responsiveWidth) {
-  .q-card {
-    width: $halfSize;
-  }
-
   .flex-group {
     display: flex;
     flex-direction: row;

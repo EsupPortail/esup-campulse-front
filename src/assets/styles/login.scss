@@ -2,12 +2,11 @@
 
 #login-page {
   .login-intro-text {
-    width: $fullSize;
+    width: auto;
+    max-width: $fullSize;
     margin: 1rem;
-    font-size: 1.375rem;
-    font-weight: $normal-weight;
     color: $textColor1;
-    padding-left: 5rem;
+    padding-left: 4rem;
     position: relative;
 
     .icon {
@@ -16,14 +15,19 @@
       border-radius: $radiusCircle;
       background-color: $annuaireColor;
       position: absolute;
-      top: calc(50% - 1.875rem);
+      top: calc(50% - 1.4rem);
       left: 0;
       text-align: center;
 
       i {
         color: $textColor3;
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      line-height: 1.5rem;
     }
   }
 
@@ -33,6 +37,12 @@
     width: $fullSize;
     max-width: 37rem;
     margin: auto;
+
+    h2 {
+      line-height: 2.2rem;
+      font-size: 1.1rem;
+      font-weight: $normal-weight;
+    }
   }
 
   .login-links {

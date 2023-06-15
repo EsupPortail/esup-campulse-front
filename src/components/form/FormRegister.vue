@@ -103,21 +103,30 @@ async function onRegister() {
         >
             <section>
                 <h2>
-                    <i
-                            aria-hidden="true"
-                            class="bi bi-pencil-square"
-                    ></i>
+                    <i aria-hidden="true" class="bi bi-pencil-square"></i>
                     {{ t('user.infos') }}
                 </h2>
                 <div class="form-container">
                     <div class="form">
                         <FormAddUserFromLDAP v-if="isStaff"/>
 
+                        <QBanner class="bg-grey-3">
+                            <template v-slot:avatar>
+                                <QIcon color="secondary" name="mdi-information-outline" size="md"/>
+                            </template>
+
+                            <p>{{ t('forms.required-fields') }}</p>
+                            <template v-slot:action>
+                            </template>
+                        </QBanner>
+
+
                         <QInput
                                 v-model="newUser.firstName"
                                 :disable="!!userStore.isCas || newUser.isCas"
                                 :label="t('forms.first-name') + ' *'"
                                 :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+                                aria-invalid="true"
                                 aria-required="true"
                                 autocomplete="given-name"
                                 clearable
@@ -129,6 +138,7 @@ async function onRegister() {
                                 :disable="!!userStore.isCas || newUser.isCas"
                                 :label="t('forms.last-name') + ' *'"
                                 :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+                                aria-invalid="true"
                                 aria-required="true"
                                 autocomplete="family-name"
                                 clearable
@@ -141,6 +151,7 @@ async function onRegister() {
                                 :label="t('forms.email') + ' *'"
                                 :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
                                      val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
+                                aria-invalid="true"
                                 aria-required="true"
                                 autocomplete="email"
                                 clearable
@@ -154,6 +165,7 @@ async function onRegister() {
                                 :disable="!!userStore.isCas || newUser.isCas"
                                 :label="t('forms.repeat-email') + ' *'"
                                 :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
+                                aria-invalid="true"
                                 aria-required="true"
                                 autocomplete="email"
                                 clearable
@@ -166,6 +178,7 @@ async function onRegister() {
                                 :hint="t('forms.hint-phone')"
                                 :label="t('forms.phone')"
                                 :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                                aria-invalid="true"
                                 autocomplete="tel"
                                 clearable
                                 filled
@@ -244,17 +257,15 @@ section {
   margin: 0;
 }
 
+.q-banner {
+  padding-bottom: .8rem;
+  margin-bottom: 1rem;
 
-@media screen and (min-width: $responsiveWidth) {
-
-  .form {
-    display: flex;
-    align-items: center;
-
-    .q-input {
-      width: 50%;
-    }
+  p {
+    font-weight: bold;
+    margin: 0;
   }
 }
+
 
 </style>
