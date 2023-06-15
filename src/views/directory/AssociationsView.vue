@@ -140,10 +140,7 @@ async function loadAssociationsActivityFields() {
                         class="my-card"
                 >
                     <div class="card-background"></div>
-                    <i
-                            aria-hidden="true"
-                            class="card-chevron bi bi-chevron-compact-right"
-                    ></i>
+                    <i aria-hidden="true" class="card-chevron bi bi-chevron-compact-right"></i>
                     <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
                     <QCardSection>
                         <div class="list-logo">

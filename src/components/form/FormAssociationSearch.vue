@@ -74,7 +74,7 @@ async function clearSearch() {
                 role="search"
                 @submit.prevent="onSearch"
         >
-            <fieldset>
+            <div>
                 <QInput
                         v-model="settings.search"
                         :label="t('search')"
@@ -103,7 +103,7 @@ async function clearSearch() {
                         icon-right="mdi-close"
                         @click="clearSearch"
                 />
-            </fieldset>
+            </div>
         </QForm>
 
         <QForm
@@ -117,7 +117,7 @@ async function clearSearch() {
                     :label="t('advanced-search')"
                     icon="mdi-menu-right"
             >
-                <fieldset>
+                <div>
                     <QInput
                             v-model="settings.name"
                             :label="t('directory.labels.association-name')"
@@ -160,7 +160,7 @@ async function clearSearch() {
                             filled
                             map-options
                     />
-                </fieldset>
+                </div>
 
                 <div class="buttons-group">
                     <QBtn
