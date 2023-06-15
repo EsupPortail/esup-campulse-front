@@ -229,7 +229,7 @@ const onClearValues = () => {
                                 reactive-rules
                                 type="date"
                                 @update:model-value="() => commission.datesAreLegal =
-                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate)"
+                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
                             <QInput
                                 v-model="commission.newSubmissionDate"
@@ -243,7 +243,7 @@ const onClearValues = () => {
                                 reactive-rules
                                 type="date"
                                 @update:model-value="() => commission.datesAreLegal =
-                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate)"
+                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
                             <QSelect
                                 v-model="commission.newFunds"
@@ -307,7 +307,7 @@ const onClearValues = () => {
                         reactive-rules
                         type="date"
                         @update:model-value="() => newCommission.datesAreLegal =
-                            fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate)"
+                            fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />
                     <QInput
                         v-model="newCommission.submissionDate"
@@ -321,7 +321,7 @@ const onClearValues = () => {
                         reactive-rules
                         type="date"
                         @update:model-value="() => newCommission.datesAreLegal =
-                            fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate)"
+                            fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />
                     <QSelect
                         v-model="newCommission.funds"

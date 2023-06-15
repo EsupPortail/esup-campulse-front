@@ -71,6 +71,6 @@ const {hasPerm} = useSecurity()
 @import '@/assets/styles/forms.scss';
 
 .form {
-    width: 75%;
+    width: 100% !important;
 }
 </style>

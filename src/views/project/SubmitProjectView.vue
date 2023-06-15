@@ -168,10 +168,10 @@ const initIsSite = () => {
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
 const datesAreLegal = ref<boolean>(false)
 watch(() => projectBasicInfos.value.plannedStartDate, () => {
-    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate)
+    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate, true)
 })
 watch(() => projectBasicInfos.value.plannedEndDate, () => {
-    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate)
+    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate, true)
 })
 
 // CHECKING IF PROJECT AUDIENCE AMOUNT NUMBERS ARE POSSIBLE

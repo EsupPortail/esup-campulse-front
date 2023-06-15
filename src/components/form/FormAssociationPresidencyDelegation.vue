@@ -40,7 +40,7 @@ onMounted(initDelegationParams)
 const dateIsLegal = ref<boolean>(false)
 
 const initDateIsLegal = () => {
-    dateIsLegal.value = fromDateIsAnterior(delegation.from, delegation.to)
+    dateIsLegal.value = fromDateIsAnterior(delegation.from, delegation.to, false)
 }
 watch(() => delegation.from, initDateIsLegal)
 watch(() => delegation.to, initDateIsLegal)

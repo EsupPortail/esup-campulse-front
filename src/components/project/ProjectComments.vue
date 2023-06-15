@@ -26,14 +26,16 @@ onMounted(async () => {
 
 
 async function onGetProjectComments() {
-    try {
-        await getProjectComments(props.project)
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
+    if (props.project) {
+        try {
+            await getProjectComments(props.project)
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
     }
 }
