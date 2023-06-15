@@ -1157,7 +1157,7 @@ legend {
 }
 
 .form {
-  width: 75%;
+    width: 75%;
 }
 
 .individual-bearer {
@@ -1166,5 +1166,9 @@ legend {
 
 .document-item > p {
     cursor: pointer;
+}
+
+.form {
+    width: 80% !important;
 }
 </style>
