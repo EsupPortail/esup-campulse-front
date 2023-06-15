@@ -11,7 +11,6 @@ export interface Project {
     association: number | null,
     associationUser: number | null,
     categories?: ProjectCategoryName[],
-    commissions?: Commission[],
     budgetPreviousEdition: number,
     targetAudience: string,
     amountStudentsAudience: number,
@@ -38,7 +37,7 @@ export interface ProjectList {
     plannedEndDate: string,
     plannedLocation: string,
     projectStatus: ProjectStatus,
-    commissions: Commission[]
+    commission: Commission
 }
 
 type ProjectStatus =

@@ -121,7 +121,6 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                         await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${groupsToDelete[i]}`)
                     } else {
                         for (let i = 0; i < userFunds.value.length; i++) {
-                            console.log('ici')
                             const url = `/users/${this.user?.id}/groups/${commissionGroup.value?.id}/funds/${userFunds.value[i]}`
                             await axiosAuthenticated.delete(url)
                         }
