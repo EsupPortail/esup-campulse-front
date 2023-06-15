@@ -48,6 +48,10 @@ export const _userGroups: UserGroup[] = [
         userId: 2,
         groupId: 6,
     },
+    {
+        userId: 7,
+        groupId: 7,
+    },
     // Commission
     {
         userId: 3,
@@ -108,6 +112,21 @@ export const _memberFund: User = {
     lastName: 'Member',
     phone: '',
     email: 'commission@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[5]],
+    permissions: getUserGroupsPermissions([_userGroups[4]])
+}
+
+export const _miscStudent: User = {
+    id: 7,
+    username: 'misc-student@unistra.fr',
+    firstName: 'Student',
+    lastName: 'Misc',
+    phone: '',
+    email: 'misc-student@unistra.fr',
     isCas: false,
     hasValidatedEmail: true,
     isValidatedByAdmin: true,

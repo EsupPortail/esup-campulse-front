@@ -1,4 +1,11 @@
-import type {Project} from '#/project'
+import type {
+    Project,
+    ProjectBasicInfos,
+    ProjectBudget,
+    ProjectCategory,
+    ProjectCommissionFund,
+    ProjectGoals
+} from '#/project'
 
 export const _project: Project = {
     id: 1,
@@ -9,7 +16,7 @@ export const _project: Project = {
     user: null,
     association: 1,
     associationUser: 1,
-    budgetPreviousEdition: 0,
+    budgetPreviousEdition: 1000,
     targetAudience: 'Une centaine d\'étudiants.',
     amountStudentsAudience: 90,
     amountAllAudience: 100,
@@ -127,49 +134,29 @@ export const _projectCategoryNames = [
     }
 ]
 
-export const _projectCategories = [
+export const _projectCategories: ProjectCategory[] = [
     {
         id: 1,
         project: 1,
-        category: 5
-    },
-    {
-        id: 2,
-        project: 2,
         category: 1
     },
     {
+        id: 2,
+        project: 1,
+        category: 2
+    },
+    {
         id: 3,
-        project: 2,
-        category: 11
-    },
-    {
-        id: 4,
-        project: 3,
-        category: 8
-    },
-    {
-        id: 5,
-        project: 4,
-        category: 8
-    },
-    {
-        id: 6,
-        project: 5,
-        category: 9
-    },
-    {
-        id: 7,
-        project: 6,
-        category: 8
+        project: 1,
+        category: 3
     }
 ]
 
-export const _projectCommissionFunds = [
+export const _projectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 1,
         project: 1,
-        commissionDate: 3,
+        commissionFund: 3,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
@@ -180,7 +167,7 @@ export const _projectCommissionFunds = [
     {
         id: 2,
         project: 2,
-        commissionDate: 4,
+        commissionFund: 4,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
@@ -191,33 +178,47 @@ export const _projectCommissionFunds = [
     {
         id: 3,
         project: 2,
-        commissionDate: 2,
+        commissionFund: 2,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
         amountAsked: 1000,
         amountEarned: 0,
         isValidatedByAdmin: false
-    },
+    }
+]
+
+export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     {
-        id: 4,
-        project: 5,
-        commissionDate: 4,
+        id: 1,
+        project: 1,
+        commissionFund: 3,
         isFirstEdition: true,
-        amountAskedPreviousEdition: 0,
-        amountEarnedPreviousEdition: 0,
-        amountAsked: 0,
+        amountAskedPreviousEdition: 100,
+        amountEarnedPreviousEdition: 100,
+        amountAsked: 200,
         amountEarned: 0,
         isValidatedByAdmin: false
     },
     {
-        id: 5,
-        project: 5,
-        commissionDate: 3,
+        id: 2,
+        project: 2,
+        commissionFund: 4,
         isFirstEdition: true,
-        amountAskedPreviousEdition: 0,
-        amountEarnedPreviousEdition: 0,
-        amountAsked: 0,
+        amountAskedPreviousEdition: 300,
+        amountEarnedPreviousEdition: 300,
+        amountAsked: 500,
+        amountEarned: 0,
+        isValidatedByAdmin: false
+    },
+    {
+        id: 3,
+        project: 2,
+        commissionFund: 2,
+        isFirstEdition: true,
+        amountAskedPreviousEdition: 500,
+        amountEarnedPreviousEdition: 500,
+        amountAsked: 1500,
         amountEarned: 0,
         isValidatedByAdmin: false
     }
@@ -237,3 +238,30 @@ export const _documentUploads = [
         project: 1
     }
 ]
+
+export const _projectBasicInfos: ProjectBasicInfos = {
+    name: 'Projet test',
+    plannedStartDate: '2023-06-15',
+    plannedEndDate: '2023-06-15',
+    plannedLocation: 'Strasbourg',
+    user: null,
+    association: null,
+    associationUser: null
+}
+
+export const _projectBudget: ProjectBudget = {
+    budgetPreviousEdition: 100,
+    targetAudience: 'Tout le monde',
+    amountStudentsAudience: 50,
+    amountAllAudience: 60,
+    ticketPrice: 2,
+    individualCost: 5
+}
+
+export const _projectGoals: ProjectGoals = {
+    goals: 'Objectifs',
+    summary: 'Résumé',
+    plannedActivities: 'Activités',
+    preventionSafety: 'Sécurité',
+    marketingCampaign: 'Communication',
+}
