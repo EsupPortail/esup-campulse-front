@@ -79,71 +79,71 @@ function clearOptions() {
                 <p class="paragraph">{{ t('dashboard.association-user.add-my-associations-note') }}</p>
 
                 <div
-                    v-for="(association, index) in newAssociations"
-                    :key="index"
+                        v-for="(association, index) in newAssociations"
+                        :key="index"
                 >
                     <div class="flex-group">
                         <div>
                             <QSelect
-                                v-model="association.id"
-                                :label="t('forms.select-association')"
-                                :options="options"
-                                clearable
-                                emit-value
-                                fill-input
-                                filled
-                                hide-selected
-                                input-debounce="0"
-                                map-options
-                                use-input
-                                @filter="filterAssociations"
-                                @input="clearOptions"
-                                @update:model-value="checkHasPresident(association)"
+                                    v-model="association.id"
+                                    :label="t('forms.select-association')"
+                                    :options="options"
+                                    clearable
+                                    emit-value
+                                    fill-input
+                                    filled
+                                    hide-selected
+                                    input-debounce="0"
+                                    map-options
+                                    use-input
+                                    @filter="filterAssociations"
+                                    @input="clearOptions"
+                                    @update:model-value="checkHasPresident(association)"
                             />
-                            <QOptionGroup
-                                v-model="association.role"
-                                :options="association.options"
-                                inline
-                                @update:model-value="updateRegisterRoleInAssociation"
-                                aria-label="t('forms.association-role')"
+                            <QOptionGroup v-model="association.role"
+                                          :options="association.options"
+                                          aria-label="t('forms.association-role')"
+                                          inline
+                                          @update:model-value="updateRegisterRoleInAssociation"
                             />
                         </div>
                         <QSeparator
-                            inset
-                            vertical
-                            aria-hidden="true"
-                            role="presentation"
+                                aria-hidden="true"
+                                inset
+                                role="presentation"
+                                vertical
                         />
                         <div>
                             <QBtn
-                                :aria-label="t('forms.delete-association')"
-                                class="bg-delete"
-                                icon="bi-trash"
-                                @click="removeAssociation(index)"
+                                    :label="t('forms.delete-association')"
+                                    aria-label="t('forms.delete-association')"
+                                    class="bg-delete"
+                                    icon="bi-trash"
+                                    @click="removeAssociation(index)"
                             />
                         </div>
                     </div>
                     <QSeparator
-                        v-if="routeName !== 'ManageAccount'"
-                        aria-hidden="true"
-                        role="presentation"
+                            v-if="routeName !== 'ManageAccount'"
+                            aria-hidden="true"
+                            role="presentation"
                     />
                     <QBtn
-                        v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
+                            v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
                             routeName === 'ManageAccount'"
-                        :label="t('validate')"
-                        class="validate-button"
-                        icon-right="bi-check2"
-                        type="submit"
+                            :label="t('validate')"
+                            class="validate-button"
+                            icon-right="bi-check2"
+                            type="submit"
                     />
                 </div>
                 <QBtn
-                    v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                        v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
                         (routeName === 'ManageAccount' && newAssociations.length === 0)"
-                    :label="t('forms.add-association')"
-                    class="add-association"
-                    icon="bi-plus-circle"
-                    @click="addAssociation"
+                        :label="t('forms.add-association')"
+                        class="add-association"
+                        icon="bi-plus-circle"
+                        @click="addAssociation"
                 />
             </fieldset>
         </QCardSection>
@@ -153,24 +153,32 @@ function clearOptions() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
+@import '@/assets/_variables.scss';
 
-.q-card__section {
-    margin: 1rem;
+.title-3 {
+  font-weight: $semibold-weight;
 }
 
-.flex-group {
+.flex-group, .q-separator {
+  margin: 1rem 0 1rem 0;
+}
+
+@media screen and (min-width: $responsiveWidth) {
+  .q-card {
+    width: $halfSize;
+  }
+
+  .flex-group {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     align-items: center;
 
     .q-separator {
-        padding: 0;
-        margin: 0;
+      padding: 0;
+      margin: 0;
     }
+  }
 }
 
-.flex-group + .q-separator {
-    margin: 1rem 0 1rem 0;
-}
 </style>

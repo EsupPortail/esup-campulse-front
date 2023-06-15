@@ -98,14 +98,14 @@ async function onRegister() {
 <template>
     <section class="dashboard-section">
         <QForm
-            class="q-gutter-md"
-            @submit.prevent="onRegister"
+                class="q-gutter-md"
+                @submit.prevent="onRegister"
         >
             <section>
                 <h2>
                     <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                     ></i>
                     {{ t('user.infos') }}
                 </h2>
@@ -114,63 +114,63 @@ async function onRegister() {
                         <FormAddUserFromLDAP v-if="isStaff"/>
 
                         <QInput
-                            v-model="newUser.firstName"
-                            :disable="!!userStore.isCas || newUser.isCas"
-                            :label="t('forms.first-name') + ' *'"
-                            :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-                            aria-required="true"
-                            clearable
-                            filled
-                            lazy-rules
-                            autocomplete="given-name"
+                                v-model="newUser.firstName"
+                                :disable="!!userStore.isCas || newUser.isCas"
+                                :label="t('forms.first-name') + ' *'"
+                                :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+                                aria-required="true"
+                                autocomplete="given-name"
+                                clearable
+                                filled
+                                lazy-rules
                         />
                         <QInput
-                            v-model="newUser.lastName"
-                            :disable="!!userStore.isCas || newUser.isCas"
-                            :label="t('forms.last-name') + ' *'"
-                            :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
-                            aria-required="true"
-                            clearable
-                            filled
-                            lazy-rules
-                            autocomplete="family-name"
+                                v-model="newUser.lastName"
+                                :disable="!!userStore.isCas || newUser.isCas"
+                                :label="t('forms.last-name') + ' *'"
+                                :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+                                aria-required="true"
+                                autocomplete="family-name"
+                                clearable
+                                filled
+                                lazy-rules
                         />
                         <QInput
-                            v-model="newUser.email"
-                            :disable="!!userStore.isCas || newUser.isCas"
-                            :label="t('forms.email') + ' *'"
-                            :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
+                                v-model="newUser.email"
+                                :disable="!!userStore.isCas || newUser.isCas"
+                                :label="t('forms.email') + ' *'"
+                                :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
                                      val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
-                            aria-required="true"
-                            clearable
-                            filled
-                            lazy-rules
-                            type="email"
-                            autocomplete="email"
+                                aria-required="true"
+                                autocomplete="email"
+                                clearable
+                                filled
+                                lazy-rules
+                                type="email"
                         >
                         </QInput>
                         <QInput
-                            v-model="emailVerification"
-                            :disable="!!userStore.isCas || newUser.isCas"
-                            :label="t('forms.repeat-email') + ' *'"
-                            :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
-                            aria-required="true"
-                            clearable
-                            filled
-                            lazy-rules
-                            type="email"
-                            autocomplete="email"
+                                v-model="emailVerification"
+                                :disable="!!userStore.isCas || newUser.isCas"
+                                :label="t('forms.repeat-email') + ' *'"
+                                :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
+                                aria-required="true"
+                                autocomplete="email"
+                                clearable
+                                filled
+                                lazy-rules
+                                type="email"
                         />
                         <QInput
-                            v-model="newUser.phone"
-                            :hint="t('forms.hint-phone')"
-                            :label="t('forms.phone')"
-                            :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                            clearable
-                            filled
-                            lazy-rules
-                            type="tel"
-                            autocomplete="tel"
+                                v-model="newUser.phone"
+                                :hint="t('forms.hint-phone')"
+                                :label="t('forms.phone')"
+                                :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                                autocomplete="tel"
+                                clearable
+                                filled
+                                lazy-rules
+                                type="tel"
                         />
                     </div>
                 </div>
@@ -179,8 +179,8 @@ async function onRegister() {
             <section>
                 <h2>
                     <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                     ></i>
                     {{ t('user.groups') }}
                 </h2>
@@ -194,8 +194,8 @@ async function onRegister() {
             <section v-if="groupCanJoinAssociation">
                 <h2>
                     <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                     ></i>
                     {{ t('user.associations') }}
                 </h2>
@@ -210,16 +210,16 @@ async function onRegister() {
             <section v-if="!isStaff">
                 <h2>
                     <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                     ></i>
                     {{ t('forms.gdpr-title') }}
                 </h2>
                 <div :class="['form-container', 'consent-section']">
                     <div class="form">
                         <LayoutGDPRConsent
-                            :has-consent="hasConsent"
-                            @update-consent="hasConsent = !hasConsent"
+                                :has-consent="hasConsent"
+                                @update-consent="hasConsent = !hasConsent"
                         />
                     </div>
                 </div>
@@ -227,9 +227,9 @@ async function onRegister() {
 
             <div class="btn-group">
                 <QBtn
-                    :label="t('forms.send')"
-                    icon="bi-check-lg"
-                    type="submit"
+                        :label="t('forms.send')"
+                        icon="bi-check-lg"
+                        type="submit"
                 />
             </div>
         </QForm>
@@ -239,4 +239,22 @@ async function onRegister() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
+
+section {
+  margin: 0;
+}
+
+
+@media screen and (min-width: $responsiveWidth) {
+
+  .form {
+    display: flex;
+    align-items: center;
+
+    .q-input {
+      width: 50%;
+    }
+  }
+}
+
 </style>

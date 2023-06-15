@@ -181,59 +181,59 @@ async function onChangeLogo(action: string) {
 
 <template>
     <QForm
-        id="association-edition"
-        @submit.prevent="onChangeLogo('update')"
+            id="association-edition"
+            @submit.prevent="onChangeLogo('update')"
     >
         <section id="association-logo-title">
             <div class="association-logo">
                 <QImg
-                    :alt="altLogoText(association)"
-                    :ratio="1"
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : noLogoSquare.default) : noLogoSquare.default"
-                    :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? false : true) : true" 
+                        :alt="altLogoText(association)"
+                        :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? false : true) : true"
+                        :ratio="1"
+                        :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : noLogoSquare.default) : noLogoSquare.default"
                 />
             </div>
 
             <div class="association-name">
                 <!--<h2>{{ association?.name }}</h2>-->
                 <p
-                    v-if="association?.acronym"
-                    class="acronym"
+                        v-if="association?.acronym"
+                        class="acronym"
                 >
                     {{ association?.acronym }}
                 </p>
             </div>
 
             <QFile
-                v-model="newLogo"
-                :label="t('association.logo.pickup')"
-                :max-file-size="MAX_FILE_SIZE"
-                accept="image/png, image/jpeg"
-                clearable
-                filled
-                @rejected="onLogoRejected"
+                    v-model="newLogo"
+                    :label="t('association.logo.pickup')"
+                    :max-file-size="MAX_FILE_SIZE"
+                    accept="image/png, image/jpeg"
+                    clearable
+                    filled
+                    @rejected="onLogoRejected"
             />
             <QInput
-                v-model="altLogo"
-                :label="t('association.logo.alt') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                aria-required="true"
-                class="logo-input"
-                clearable
-                filled
+                    v-model="altLogo"
+                    :label="t('association.logo.alt') + ' *'"
+                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                    aria-required="true"
+                    class="logo-input"
+                    clearable
+                    filled
             />
 
             <div class="btn-group">
                 <QBtn
-                    :label="t('association.logo.update')"
-                    icon="bi-check-lg"
-                    type="submit"
+                        :label="t('association.logo.update')"
+                        icon="bi-check-lg"
+                        type="submit"
                 />
                 <QBtn
-                    :label="t('association.logo.remove')"
-                    color="delete"
-                    icon="bi-trash"
-                    @click="onChangeLogo('delete')"
+                        :label="t('association.logo.remove')"
+                        class="bg-delete"
+                        icon="bi-trash"
+                        @click="onChangeLogo('delete')"
                 />
             </div>
         </section>
@@ -241,73 +241,73 @@ async function onChangeLogo(action: string) {
         <fieldset>
             <h3>
                 <i
-                    aria-hidden="true"
-                    class="bi bi-book"
+                        aria-hidden="true"
+                        class="bi bi-book"
                 ></i>{{ t('association.titles.info') }}
             </h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
-                        v-model="association.name"
-                        :disable=!isStaff
-                        :label="t('association.labels.name') + ' *'"
-                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                        aria-required="true"
-                        clearable
-                        filled
-                        lazy-rules
+                            v-model="association.name"
+                            :disable=!isStaff
+                            :label="t('association.labels.name') + ' *'"
+                            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                            aria-required="true"
+                            clearable
+                            filled
+                            lazy-rules
                     />
                     <QInput
-                        v-model="association.acronym"
-                        :label="t('association.labels.acronym')"
-                        clearable
-                        filled
+                            v-model="association.acronym"
+                            :label="t('association.labels.acronym')"
+                            clearable
+                            filled
                     />
                     <QInput
-                        v-model="association.socialObject"
-                        :hint="t('forms.social-object-hint')"
-                        :label="t('association.labels.social-object')"
-                        clearable
-                        filled
-                        type="textarea"
+                            v-model="association.socialObject"
+                            :hint="t('forms.social-object-hint')"
+                            :label="t('association.labels.social-object')"
+                            clearable
+                            filled
+                            type="textarea"
                     />
                     <QInput
-                        v-model="association.currentProjects"
-                        :label="t('association.labels.current-projects')"
-                        clearable
-                        filled
-                        type="textarea"
+                            v-model="association.currentProjects"
+                            :label="t('association.labels.current-projects')"
+                            clearable
+                            filled
+                            type="textarea"
                     />
                     <QSelect
-                        v-model="association.institution"
-                        :label="t('association.labels.institution') + ' *'"
-                        :options="associationStore.institutionLabels"
-                        :rules="[val => val || t('forms.fill-field')]"
-                        aria-required="true"
-                        clearable
-                        emit-value
-                        filled
-                        map-options
+                            v-model="association.institution"
+                            :label="t('association.labels.institution') + ' *'"
+                            :options="associationStore.institutionLabels"
+                            :rules="[val => val || t('forms.fill-field')]"
+                            aria-required="true"
+                            clearable
+                            emit-value
+                            filled
+                            map-options
                     />
                     <QSelect
-                        v-model="association.institutionComponent"
-                        :label="t('association.labels.institution-component')"
-                        :options="associationStore.institutionComponentLabels"
-                        clearable
-                        emit-value
-                        filled
-                        map-options
+                            v-model="association.institutionComponent"
+                            :label="t('association.labels.institution-component')"
+                            :options="associationStore.institutionComponentLabels"
+                            clearable
+                            emit-value
+                            filled
+                            map-options
                     />
                     <QSelect
-                        v-model="association.activityField"
-                        :label="t('association.labels.activity-field') + ' *'"
-                        :options="associationStore.activityFieldLabels"
-                        :rules="[val => val || t('forms.fill-field')]"
-                        aria-required="true"
-                        clearable
-                        emit-value
-                        filled
-                        map-options
+                            v-model="association.activityField"
+                            :label="t('association.labels.activity-field') + ' *'"
+                            :options="associationStore.activityFieldLabels"
+                            :rules="[val => val || t('forms.fill-field')]"
+                            aria-required="true"
+                            clearable
+                            emit-value
+                            filled
+                            map-options
                     />
                 </div>
             </section>
@@ -316,65 +316,65 @@ async function onChangeLogo(action: string) {
         <fieldset>
             <h3>
                 <i
-                    aria-hidden="true"
-                    class="bi bi-clipboard-check"
+                        aria-hidden="true"
+                        class="bi bi-clipboard-check"
                 ></i>{{ t('association.titles.admin') }}
             </h3>
             <section class="form-container">
                 <div class="display-row">
                     <QInput
-                        v-model="association.presidentNames"
-                        :label="t('association.labels.president-name')"
-                        clearable
-                        filled
+                            v-model="association.presidentNames"
+                            :label="t('association.labels.president-name')"
+                            clearable
+                            filled
                     />
                     <QInput
-                        v-model="association.presidentPhone"
-                        :label="t('association.labels.president-phone')"
-                        :rules="association.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                        clearable
-                        filled
-                        type="tel"
+                            v-model="association.presidentPhone"
+                            :label="t('association.labels.president-phone')"
+                            :rules="association.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                            clearable
+                            filled
+                            type="tel"
                     />
                     <QInput
-                        v-model="association.lastGoaDate"
-                        :label="t('association.labels.last-goa')"
-                        clearable
-                        filled
-                        type="date"
+                            v-model="association.lastGoaDate"
+                            :label="t('association.labels.last-goa')"
+                            clearable
+                            filled
+                            type="date"
                     >
                         <template v-slot:prepend>
                             <QIcon name="mdi-calendar"/>
                         </template>
                     </QInput>
                     <QInput
-                        v-model="association.siret"
-                        :label="t('association.labels.siret')"
-                        clearable
-                        filled
-                        inputmode="numeric"
+                            v-model="association.siret"
+                            :label="t('association.labels.siret')"
+                            clearable
+                            filled
+                            inputmode="numeric"
                     />
                     <QInput
-                        v-if="hasPerm('change_association_all_fields')"
-                        v-model="association.amountMembersAllowed"
-                        :hint="`${t('forms.amount-student-allowed-cannot-be-inferior-to-members')} : ${membersCount}`"
-                        :label="t('association.labels.amount-members-allowed')"
-                        :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
-                        clearable
-                        filled
-                        inputmode="numeric"
-                        lazy-rules
-                        min="0"
-                        type="number"
+                            v-if="hasPerm('change_association_all_fields')"
+                            v-model="association.amountMembersAllowed"
+                            :hint="`${t('forms.amount-student-allowed-cannot-be-inferior-to-members')} : ${membersCount}`"
+                            :label="t('association.labels.amount-members-allowed')"
+                            :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
+                            clearable
+                            filled
+                            inputmode="numeric"
+                            lazy-rules
+                            min="0"
+                            type="number"
                     />
                     <QInput
-                        v-model="association.studentCount"
-                        :label="t('forms.association-student-count')"
-                        clearable
-                        filled
-                        inputmode="numeric"
-                        min="0"
-                        type="number"
+                            v-model="association.studentCount"
+                            :label="t('forms.association-student-count')"
+                            clearable
+                            filled
+                            inputmode="numeric"
+                            min="0"
+                            type="number"
                     />
                 </div>
             </section>
@@ -383,8 +383,8 @@ async function onChangeLogo(action: string) {
         <fieldset>
             <h3>
                 <i
-                    aria-hidden="true"
-                    class="bi bi-telephone"
+                        aria-hidden="true"
+                        class="bi bi-telephone"
                 ></i>{{ t('association.titles.contact') }}
             </h3>
             <section class="form-container">
@@ -392,59 +392,59 @@ async function onChangeLogo(action: string) {
                     <fieldset class="address-fields">
                         <legend>{{ t('association.labels.address') }}</legend>
                         <QInput
-                            v-model="association.address"
-                            :label="t('association.labels.address')"
-                            clearable
-                            filled
+                                v-model="association.address"
+                                :label="t('association.labels.address')"
+                                clearable
+                                filled
                         />
                         <div>
                             <QInput
-                                v-model="association.zipcode"
-                                :label="t('address.zipcode')"
-                                clearable
-                                filled
+                                    v-model="association.zipcode"
+                                    :label="t('address.zipcode')"
+                                    clearable
+                                    filled
                             />
                             <QInput
-                                v-model="association.city"
-                                :label="t('address.city')"
-                                clearable
-                                filled
+                                    v-model="association.city"
+                                    :label="t('address.city')"
+                                    clearable
+                                    filled
                             />
                             <QInput
-                                v-model="association.country"
-                                :label="t('address.country')"
-                                clearable
-                                filled
+                                    v-model="association.country"
+                                    :label="t('address.country')"
+                                    clearable
+                                    filled
                             />
                         </div>
                     </fieldset>
                     <QSeparator
-                        aria-hidden="true"
-                        role="presentation"
+                            aria-hidden="true"
+                            role="presentation"
                     />
                     <QInput
-                        v-model="association.phone"
-                        :label="t('association.labels.phone')"
-                        :rules="association.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                        clearable
-                        filled
-                        type="tel"
+                            v-model="association.phone"
+                            :label="t('association.labels.phone')"
+                            :rules="association.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                            clearable
+                            filled
+                            type="tel"
                     />
                     <QInput
-                        v-model="association.email"
-                        :label="t('association.labels.mail')"
-                        :rules="association.email ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
-                        clearable
-                        filled
-                        type="email"
+                            v-model="association.email"
+                            :label="t('association.labels.mail')"
+                            :rules="association.email ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
+                            clearable
+                            filled
+                            type="email"
                     />
                     <QInput
-                        v-model="association.website"
-                        :label="t('association.labels.website')"
-                        :rules="association.website ? [val => urlRegex.test(val) || t('forms.required-valid-url')] : []"
-                        clearable
-                        filled
-                        type="url"
+                            v-model="association.website"
+                            :label="t('association.labels.website')"
+                            :rules="association.website ? [val => urlRegex.test(val) || t('forms.required-valid-url')] : []"
+                            clearable
+                            filled
+                            type="url"
                     />
                 </div>
             </section>
@@ -454,42 +454,41 @@ async function onChangeLogo(action: string) {
 
         <fieldset>
             <div
-                class="btn-group"
+                    class="btn-group"
             >
                 <QBtn
-                    :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
-                    :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
-                    HEAD
-                    color="secondary"
-                    icon="bi-box-arrow-left"
+                        :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
+                        :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
+                        HEAD
+                        icon="bi-box-arrow-left"
                 />
                 <AlertConfirmAssociationUpdate
-                    v-if="Object.keys(checkChanges(association)).length > 0"
-                    @has-validated="hasValidated = true"
+                        v-if="Object.keys(checkChanges(association)).length > 0"
+                        @has-validated="hasValidated = true"
                 />
                 <AlertConfirmAssociationEnabled
-                    v-if="isStaff"
-                    @has-validated="hasValidated = true"
+                        v-if="isStaff"
+                        @has-validated="hasValidated = true"
                 />
                 <AlertConfirmAssociationPublication
-                    v-if="isStaff && associationStore.association?.isEnabled && associationStore.association?.isSite"
-                    @has-validated="hasValidated = true"
+                        v-if="isStaff && associationStore.association?.isEnabled && associationStore.association?.isSite"
+                        @has-validated="hasValidated = true"
                 />
                 <AlertConfirmAssociationProjectSubmission
-                    v-if="isStaff && associationStore.association?.isEnabled"
-                    @has-validated="hasValidated = true"
+                        v-if="isStaff && associationStore.association?.isEnabled"
+                        @has-validated="hasValidated = true"
                 />
                 <AlertConfirmAssociationDeletion
-                    v-if="isStaff && !associationStore.association?.isEnabled"
+                        v-if="isStaff && !associationStore.association?.isEnabled"
                 />
             </div>
         </fieldset>
 
         <AlertLeaveEdition
-            :open-alert="openAlert"
-            :text="t('alerts.leave-association-edition')"
-            @closeAlert="openAlert = !openAlert"
-            @leaveEdition="onLeaveEdition"
+                :open-alert="openAlert"
+                :text="t('alerts.leave-association-edition')"
+                @closeAlert="openAlert = !openAlert"
+                @leaveEdition="onLeaveEdition"
         />
     </QForm>
 </template>
@@ -499,15 +498,15 @@ async function onChangeLogo(action: string) {
 @import '@/assets/styles/forms.scss';
 
 .address-fields div {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 
-    * {
-        width: 100%;
-    }
+  * {
+    width: 100%;
+  }
 }
 
 .q-separator {
-    margin: 0.5rem 0 1rem 0;
+  margin: 0.5rem 0 1rem 0;
 }
 </style>
