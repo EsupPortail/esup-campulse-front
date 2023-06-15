@@ -263,7 +263,7 @@ async function onGetAssociationUsers() {
 // GET DATA FOR STEP 2
 async function onGetCommissionDates() {
     try {
-        await getCommissionsForStudents(undefined, isSite.value)
+        await getCommissionsForStudents(true, isSite.value)
         initCommissionLabels()
         await getFunds()
         await getCommissionFunds()
@@ -272,7 +272,7 @@ async function onGetCommissionDates() {
             projectCommission.value = commissionFunds.value
                 .find(obj => obj.id === projectStore.projectCommissionFunds[0].commissionFund)?.commission as number
             if (projectCommission.value) {
-                initChosenCommissionFundsLabels(projectCommission.value as number)
+                initChosenCommissionFundsLabels(projectCommission.value as number, isSite.value)
                 projectCommissionFunds.value = projectStore.projectCommissionFunds
                     .map(x => x.commissionFund)
             }
@@ -635,7 +635,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                                 clearable
                                 map-options
-                                @update:model-value="reInitProjectCommissionFunds"
+                                @update:model-value="reInitProjectCommissionFunds(isSite)"
                             />
 
                             <QSelect

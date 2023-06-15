@@ -105,10 +105,10 @@ export default function () {
         projectCategories.value = projectStore.projectCategories.map(category => category.category) as number[]
     }
 
-    const reInitProjectCommissionFunds = () => {
+    const reInitProjectCommissionFunds = (isSite: boolean) => {
         if (projectCommission.value) {
             projectCommissionFunds.value = []
-            initChosenCommissionFundsLabels(projectCommission.value)
+            initChosenCommissionFundsLabels(projectCommission.value, isSite)
         }
     }
 

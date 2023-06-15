@@ -49,7 +49,7 @@ async function onGetProjectCommissions() {
         await projectStore.getProjectCommissionFunds(false, undefined)
         await getFunds()
         initCommissionLabels()
-        initChosenCommissionFundsLabels(projectStore.projectCommission as number)
+        initChosenCommissionFundsLabels(projectStore.projectCommission as number, true)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

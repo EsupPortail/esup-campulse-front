@@ -36,12 +36,16 @@ export default function () {
         }))
     }
 
-    const initChosenCommissionFundsLabels = (commission: number) => {
-        fundsLabels.value = commissionFunds.value.filter(obj => obj.commission === commission).map(x => ({
-            value: x.id,
-            label: funds.value.find(obj => obj.id === x.fund)?.acronym as string
-        }))
-
+    const initChosenCommissionFundsLabels = (commission: number, isSite: boolean) => {
+        fundsLabels.value = []
+        commissionFunds.value.filter(obj => obj.commission === commission).forEach(x => {
+            const fund = funds.value.find(obj => obj.id === x.fund)
+            if (isSite || (!isSite && !fund?.isSite))
+                fundsLabels.value.push({
+                    value: x.id,
+                    label: funds.value.find(obj => obj.id === x.fund)?.acronym as string
+                })
+        })
     }
 
     const initUserFunds = () => {
