@@ -1,4 +1,6 @@
-export const _funds = [
+import type {Commission, Fund} from '#/commissions'
+
+export const _funds: Fund[] = [
     {
         id: 1,
         name: 'Fonds de Solidarité et de Développement des Initiatives Étudiantes',
@@ -22,35 +24,66 @@ export const _funds = [
     }
 ]
 
-export const _commissions = [
+export const _commissions: Commission[] = [
     {
         id: 4,
-        submissionDate: '2099-05-18',
-        commissionDate: '2099-06-01',
-        commission: 1
+        submissionDate: '1990-01-01',
+        commissionDate: '1990-01-30',
+        isOpenToProjects: false,
+        name: 'Commission du passé'
     },
     {
         id: 1,
         submissionDate: '2099-10-06',
         commissionDate: '2099-10-20',
-        commission: 1
-    },
-    {
-        id: 2,
-        submissionDate: '2099-10-06',
-        commissionDate: '2099-10-20',
-        commission: 2
+        isOpenToProjects: true,
+        name: 'Commission numéro 1'
     },
     {
         id: 3,
-        submissionDate: '2099-10-06',
-        commissionDate: '2099-10-20',
-        commission: 3
+        submissionDate: '2099-10-07',
+        commissionDate: '2099-10-21',
+        isOpenToProjects: true,
+        name: 'Commission de rentrée d\'octobre 2099'
+    },
+    {
+        id: 2,
+        submissionDate: '2099-10-08',
+        commissionDate: '2099-10-22',
+        isOpenToProjects: true,
+        name: 'Une autre commission de rentrée d\'octobre 2099'
+    }
+]
+
+export const _commissionFunds = [
+    {
+        id: 1,
+        commission: 1,
+        fund: 1
+    },
+    {
+        id: 2,
+        commission: 1,
+        fund: 2
+    },
+    {
+        id: 3,
+        commission: 1,
+        fund: 3
+    },
+    {
+        id: 4,
+        commission: 2,
+        fund: 1
     },
     {
         id: 5,
-        submissionDate: '2099-10-07',
-        commissionDate: '2099-10-21',
-        commission: 3
+        commission: 3,
+        fund: 3
+    },
+    {
+        id: 6,
+        commission: 4,
+        fund: 3
     }
 ]

@@ -23,6 +23,7 @@ export default function () {
     const {arraysAreEqual} = useUtility()
 
     // Funds
+    // tested
     async function getFunds() {
         if (funds.value.length === 0) {
             funds.value = (await axiosPublic.get<Fund[]>('/commissions/funds/names')).data
@@ -56,6 +57,7 @@ export default function () {
     }
 
     // Commissions
+    // tested
     async function getCommissionsForManagers(
         activeProjects: boolean | undefined,
         isOpenToProjects: boolean | undefined,
@@ -148,7 +150,6 @@ export default function () {
                 await axiosAuthenticated.delete(`/commissions/${commission.id}/funds/${oldFundsToDelete[i]}`)
             }
         }
-
     }
 
     async function deleteCommission(id: number) {
