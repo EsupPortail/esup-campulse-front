@@ -5,7 +5,7 @@ import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import {useAxios} from '@/composables/useAxios'
-import {_documents, _processDocuments} from '~/fixtures/document.mock'
+import {_documents, _processDocument, _processDocuments} from '~/fixtures/document.mock'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {_project} from '~/fixtures/project.mock'
 import type {ProcessDocument} from '#/documents'
@@ -54,7 +54,9 @@ describe('useProjectDocuments', () => {
         processDocuments,
         uploadDocuments,
         deleteDocumentUpload,
-        documentUploads
+        documentUploads,
+        getFile,
+        createFileLink
     } = useProjectDocuments()
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const mockedAxios = vi.mocked(axiosPublic, true)
@@ -132,6 +134,12 @@ describe('useProjectDocuments', () => {
     })
 
     describe('getFile', () => {
-
+        it('should get file', async () => {
+            mockedAxios.get.mockResolvedValueOnce({data: {}})
+            const file = await getFile('path')
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('path', {responseType: 'blob'})
+            expect(file).toEqual({})
+        })
     })
 })
