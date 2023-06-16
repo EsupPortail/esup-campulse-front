@@ -42,6 +42,7 @@ describe('useProjectComments', () => {
 
     afterEach(() => {
         vi.restoreAllMocks()
+        userStore.user = undefined
     })
 
     const {getProjectComments, comments, postNewProjectComment} = useProjectComments()

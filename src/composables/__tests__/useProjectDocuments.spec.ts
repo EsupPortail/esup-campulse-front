@@ -57,15 +57,26 @@ describe('useProjectDocuments', () => {
         documentUploads
     } = useProjectDocuments()
     const {axiosPublic, axiosAuthenticated} = useAxios()
+    const mockedAxios = vi.mocked(axiosPublic, true)
 
-    describe('getDocumentTypes', () => {
-        it('should get documents on /documents/', async () => {
-            const mockedAxios = vi.mocked(axiosPublic, true)
-            mockedAxios.get.mockResolvedValueOnce({data: _documents})
-            await getDocuments('all')
-            expect(axiosPublic.get).toHaveBeenCalledOnce()
-            expect(axiosPublic.get).toHaveBeenCalledWith('/documents/')
-            expect(documents.value).toEqual(_documents)
+    describe('getDocuments', () => {
+        describe('if all process documents are required', () => {
+            it('should get all documents', async () => {
+                mockedAxios.get.mockResolvedValueOnce({data: _documents})
+                await getDocuments('all')
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/documents/')
+                expect(documents.value).toEqual(_documents)
+            })
+        })
+        describe('if all process documents are required', () => {
+            it('should get specified document process type', async () => {
+                mockedAxios.get.mockResolvedValueOnce({data: _documents})
+                await getDocuments('DOCUMENT_PROJECT')
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/documents/?process_types=DOCUMENT_PROJECT')
+                expect(documents.value).toEqual(_documents)
+            })
         })
     })
 
@@ -118,5 +129,9 @@ describe('useProjectDocuments', () => {
             expect(documentUploads.value.length).toEqual(1)
             expect(documentUploads.value[0].id).toEqual(2)
         })
+    })
+
+    describe('getFile', () => {
+
     })
 })

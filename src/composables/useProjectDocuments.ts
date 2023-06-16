@@ -47,12 +47,14 @@ export default function () {
     }
 
     // Get documents
+    // tested
     async function getDocuments(process: DocumentProcessType | 'all') {
         let url = '/documents/'
         if (process !== 'all') url += `?process_types=${process}`
         documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
+    // tested
     class DocumentUpload {
         file: Blob
         association: string
@@ -80,6 +82,7 @@ export default function () {
     }
 
     // Post document uploads
+    // tested
     async function uploadDocuments(associationId: number | undefined) {
         for (let i = 0; i < processDocuments.value.length; i++) {
 
@@ -104,6 +107,7 @@ export default function () {
     }
 
     // Delete document
+    // tested
     async function deleteDocumentUpload(documentId: number) {
         await axiosAuthenticated.delete(`/documents/uploads/${documentId}`)
         const documentIndex = documentUploads.value.findIndex(obj => obj.id === documentId)
