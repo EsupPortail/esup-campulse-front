@@ -44,9 +44,7 @@ async function onUpdateProjectStatus() {
             if (selectedAction.value === 'validate') projectStatus = 'PROJECT_VALIDATED'
             else if (selectedAction.value === 'return') projectStatus = 'PROJECT_DRAFT'
             else if (selectedAction.value === 'reject') projectStatus = 'PROJECT_REJECTED'
-            if (newComment.value) {
-                await postNewProjectComment(projectStore.project.id, newComment.value)
-            }
+            await postNewProjectComment(projectStore.project.id, newComment.value)
             await projectStore.patchProjectStatus(projectStatus)
             await getProjectComments(projectStore.project.id)
             open.value = false

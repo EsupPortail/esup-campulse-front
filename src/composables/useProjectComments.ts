@@ -16,7 +16,7 @@ export default function () {
     }
 
     async function postNewProjectComment(project: number, text: string) {
-        await axiosAuthenticated.post('/projects/comments', {project, text, user: userStore.user?.id})
+        if (text) await axiosAuthenticated.post('/projects/comments', {project, text, user: userStore.user?.id})
     }
 
     /*    async function patchProjectComment(text: string, projectId: number, commentId: number) {
