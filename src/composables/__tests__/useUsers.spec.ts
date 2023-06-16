@@ -8,7 +8,7 @@ import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
-import {_institutionStudent} from '~/fixtures/user.mock'
+import {_institutionStudent, _miscStudent, _users} from '~/fixtures/user.mock'
 import {useAxios} from '@/composables/useAxios'
 
 vi.mock('@/composables/useAxios', () => ({
@@ -121,6 +121,100 @@ describe('useUsers', () => {
 
             await updateUserInfos(userManagerStore.user, true)
             expect(axiosAuthenticated.patch).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('initInfosToPatch', () => {
+        describe('if first and last names are updated', () => {
+            it('should clean infosToPatch object fields and assign new fields if updated', () => {
+                const {initInfosToPatch, infosToPatch, userToUpdate} = useUsers()
+                userToUpdate.value = {
+                    firstName: 'Prénom',
+                    lastName: 'Nom',
+                    username: 'nom-prenom@mail.tld',
+                    email: 'nom-prenom@mail.tld',
+                    newEmail: 'new-nom-prenom@mail.tld',
+                    newEmailVerification: 'new-nom-prenom@mail.tld',
+                    phone: '0102030405',
+                    address: '10 rue du campus',
+                    zipcode: '67000',
+                    city: 'strasbourg',
+                    country: 'france'
+                }
+                initInfosToPatch(_institutionStudent)
+                expect(infosToPatch).toEqual({
+                    firstName: 'Prénom',
+                    lastName: 'Nom',
+                    email: 'new-nom-prenom@mail.tld',
+                    phone: '0102030405',
+                    address: '10 rue du campus',
+                    zipcode: '67000',
+                    city: 'strasbourg',
+                    country: 'france'
+                })
+            })
+        })
+        describe('if first and last names are not updated', () => {
+            it('should clean infosToPatch object fields and assign new fields if updated', () => {
+                const {initInfosToPatch, infosToPatch, userToUpdate} = useUsers()
+                userToUpdate.value = {
+                    firstName: 'Student',
+                    lastName: 'Institution',
+                    username: 'nom-prenom@mail.tld',
+                    email: 'nom-prenom@mail.tld',
+                    newEmail: 'new-nom-prenom@mail.tld',
+                    newEmailVerification: 'new-nom-prenom@mail.tld',
+                    phone: '0102030405',
+                    address: '10 rue du campus',
+                    zipcode: '67000',
+                    city: 'strasbourg',
+                    country: 'france'
+                }
+                initInfosToPatch(_institutionStudent)
+                expect(infosToPatch).toEqual({
+                    email: 'new-nom-prenom@mail.tld',
+                    phone: '0102030405',
+                    address: '10 rue du campus',
+                    zipcode: '67000',
+                    city: 'strasbourg',
+                    country: 'france'
+                })
+            })
+        })
+    })
+    describe('advancedSearch', () => {
+        const {advancedSearch} = useUsers()
+        userManagerStore.users = _users
+        describe('if at least one search field is filled', () => {
+            it('should return matching users if matches are found', () => {
+                const matches = advancedSearch({
+                    search: '',
+                    firstName: 'Student',
+                    lastName: 'Misc',
+                    email: 'misc-student@unistra.fr'
+                })
+                expect(matches).toEqual([_miscStudent])
+            })
+            it('should return an empty array if no matching users are found', () => {
+                const matches = advancedSearch({
+                    search: '',
+                    firstName: 'Chantal',
+                    lastName: '',
+                    email: ''
+                })
+                expect(matches).toEqual([])
+            })
+        })
+        describe('if at no field is filled', () => {
+            it('should return undefined', () => {
+                const matches = advancedSearch({
+                    search: '',
+                    firstName: '',
+                    lastName: '',
+                    email: ''
+                })
+                expect(matches).toEqual(undefined)
+            })
         })
     })
 })

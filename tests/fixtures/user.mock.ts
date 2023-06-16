@@ -144,7 +144,7 @@ export const _newUser: UserRegister = {
     email: 'john.lennon@bbc.com'
 }
 
-export const _users = [_institutionStudent, _institutionManager]
+export const _users = [_institutionStudent, _institutionManager, _generalManager, _memberFund, _miscStudent]
 
 export const _usersNames = _users.map(
     user => ({
