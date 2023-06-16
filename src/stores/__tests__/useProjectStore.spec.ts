@@ -129,5 +129,47 @@ describe('Project store', () => {
                 expect(projectStore.projects).toEqual(_projects)
             })
         })
+
+        describe('getAllProjects', () => {
+            it('should get all projects with no params', async () => {
+                mockedAuthAxios.get.mockResolvedValueOnce({data: _projects})
+                await projectStore.getAllProjects()
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/')
+                expect(projectStore.projects).toEqual(_projects)
+            })
+        })
+
+        describe('getAssociationProjects', () => {
+            it('should get projects linked to an association', async () => {
+                mockedAuthAxios.get.mockResolvedValueOnce({data: _projects})
+                await projectStore.getAssociationProjects(1)
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/?association_id=1')
+                expect(projectStore.projects).toEqual(_projects)
+            })
+        })
+
+        describe('getProjectPdf', () => {
+            it('should get a pdf recap document of the project', async () => {
+                const file = new Blob
+                mockedAuthAxios.get.mockResolvedValueOnce({data: file})
+                const response = await projectStore.getProjectPdf(1)
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/export', {responseType: 'blob'})
+                expect(response).toEqual(file)
+            })
+        })
+
+        describe('patchProjectStatus', () => {
+            it('should patch the status of the project', async () => {
+                projectStore.project = _project
+                await projectStore.patchProjectStatus('PROJECT_PROCESSING')
+                expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/projects/1/status', {
+                    projectStatus: 'PROJECT_PROCESSING'
+                })
+            })
+        })
     })
 })

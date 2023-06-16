@@ -102,7 +102,7 @@ export const useProjectStore = defineStore('projectStore', {
 
         async patchProjectStatus(projectStatus: ProjectStatus) {
             const {axiosAuthenticated} = useAxios()
-            if (this.project) {
+            if (this.project && this.project.projectStatus !== projectStatus) {
                 await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
                 this.project.projectStatus = projectStatus
             }
