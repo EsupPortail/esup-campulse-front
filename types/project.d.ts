@@ -103,7 +103,7 @@ export interface ProjectCommissionFund {
 
 export interface ProjectComment {
     id: number,
-    project: Project | undefined,
+    project: number,
     user: {
         id: number,
         firstName: string,
