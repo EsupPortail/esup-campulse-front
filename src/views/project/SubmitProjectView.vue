@@ -288,8 +288,20 @@ async function onGetCommissionDates() {
 }
 
 // GET DATA FOR STEP 3
-function onGetProjectBudget() {
-    initProjectBudget()
+async function onGetProjectBudget() {
+    loading.show()
+    try {
+        await projectStore.getProjectCommissionFunds(false, undefined)
+        initProjectBudget()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
 }
 
 // GET DATA FOR STEP 4
@@ -774,45 +786,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
-                                aria-required="true"
-                                filled
-                                inputmode="numeric"
-                                lazy-rules
-                                min="0"
-                                type="number"
-                            />
-
-                            <QInput
-                                v-model="projectBudget.ticketPrice"
-                                :label="t('project.ticket-price') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                :shadow-text="` ${CURRENCY}`"
-                                aria-required="true"
-                                filled
-                                inputmode="numeric"
-                                lazy-rules
-                                min="0"
-                                type="number"
-                            />
-
-                            <QInput
-                                v-model="projectBudget.amountStudentsAudience"
-                                :label="t('project.target-students-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
-                                          val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
-                                aria-required="true"
-                                filled
-                                inputmode="numeric"
-                                reactive-rules
-                                min="0"
-                                type="number"
-                            />
-
-                            <QInput
-                                v-model="projectBudget.amountAllAudience"
-                                :label="t('project.target-all-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
-                                          val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 filled
                                 inputmode="numeric"
