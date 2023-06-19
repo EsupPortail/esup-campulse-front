@@ -115,29 +115,29 @@ const columns: QTableProps['columns'] = [
                 {{ t('dashboard.association-list') }}
             </h2>
             <QBtn
-                    v-if="hasPerm('add_association')"
-                    :label="t('dashboard.create-association')"
-                    :to="{name: 'CreateAssociation'}"
-                    class="create-asso-btn"
-                    color="secondary"
-                    icon="bi-plus-circle"
+                v-if="hasPerm('add_association')"
+                :label="t('dashboard.create-association')"
+                :to="{name: 'CreateAssociation'}"
+                class="create-asso-btn"
+                color="secondary"
+                icon="bi-plus-circle"
             />
         </div>
         <div class="form-container">
             <div class="form">
                 <FormAssociationSearch
-                        v-if="route.name"
-                        :route="route.name"
+                    v-if="route.name"
+                    :route="route.name"
                 />
                 <QTable
-                        v-model:selected="selected"
-                        :columns="columns"
-                        :loading="!associations"
-                        :rows="associations"
-                        :rows-per-page-options="[10, 20, 50, 0]"
-                        :title="t('directory.title')"
-                        row-key="name"
-                        selection="multiple"
+                    v-model:selected="selected"
+                    :columns="columns"
+                    :loading="!associations"
+                    :rows="associations"
+                    :rows-per-page-options="[10, 20, 50, 0]"
+                    :title="t('directory.title')"
+                    row-key="name"
+                    selection="multiple"
                 >
                     <template v-slot:body="props">
                         <QTr :props="props">
@@ -145,39 +145,39 @@ const columns: QTableProps['columns'] = [
                                 <QCheckbox v-model="props.selected"/>
                             </QTd>
                             <QTd
-                                    key="name"
-                                    :props="props"
+                                key="name"
+                                :props="props"
                             >
                                 {{ props.row.name }}
                             </QTd>
                             <QTd
-                                    key="acronym"
-                                    :props="props"
+                                key="acronym"
+                                :props="props"
                             >
                                 {{ props.row.acronym }}
                             </QTd>
                             <QTd
-                                    key="institution"
-                                    :props="props"
+                                key="institution"
+                                :props="props"
                             >
                                 {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
                             </QTd>
                             <QTd
-                                    key="activityField"
-                                    :props="props"
+                                key="activityField"
+                                :props="props"
                             >
                                 {{
                                     associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name
                                 }}
                             </QTd>
                             <QTd
-                                    key="status"
-                                    :props="props"
-                                    class="state-cell"
+                                key="status"
+                                :props="props"
+                                class="state-cell"
                             >
                                 <span
-                                        v-if="!props.row.isEnabled"
-                                        class="form-state"
+                                    v-if="!props.row.isEnabled"
+                                    class="form-state"
                                 >
                                     {{ t('association.disabled') }}
                                     <span
@@ -186,8 +186,8 @@ const columns: QTableProps['columns'] = [
                                     ><i class="bi bi-x-lg"></i></span>
                                 </span>
                                 <span
-                                        v-else
-                                        class="form-state"
+                                    v-else
+                                    class="form-state"
                                 >
                                     {{ t('association.enabled') }}
                                     <span
@@ -197,13 +197,13 @@ const columns: QTableProps['columns'] = [
                                 </span>
                             </QTd>
                             <QTd
-                                    key="public"
-                                    :props="props"
-                                    class="state-cell"
+                                key="public"
+                                :props="props"
+                                class="state-cell"
                             >
                                 <span
-                                        v-if="!props.row.isPublic"
-                                        class="form-state"
+                                    v-if="!props.row.isPublic"
+                                    class="form-state"
                                 >
                                     {{ t('association.not-public') }}
                                     <span
@@ -212,8 +212,8 @@ const columns: QTableProps['columns'] = [
                                     ><i class="bi bi-x-lg"></i></span>
                                 </span>
                                 <span
-                                        v-else
-                                        class="form-state"
+                                    v-else
+                                    class="form-state"
                                 >
                                     {{ t('association.public') }}
                                     <span
@@ -223,15 +223,15 @@ const columns: QTableProps['columns'] = [
                                 </span>
                             </QTd>
                             <QTd
-                                    key="edition"
-                                    :props="props"
-                                    class="actions-cell-compact"
+                                key="edition"
+                                :props="props"
+                                class="actions-cell-compact"
                             >
                                 <div class="button-container">
                                     <QBtn
-                                            :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                                            aria-label="Editer"
-                                            icon="bi-pencil"
+                                        :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                                        aria-label="Editer"
+                                        icon="bi-pencil"
                                     />
                                 </div>
                             </QTd>
@@ -239,8 +239,8 @@ const columns: QTableProps['columns'] = [
                     </template>
                 </QTable>
                 <AlertConfirmAssociationsChanges
-                        :selectedAssociations="selected"
-                        @update-selected-associations="selected = []"
+                    :selectedAssociations="selected"
+                    @update-selected-associations="selected = []"
                 />
             </div>
         </div>

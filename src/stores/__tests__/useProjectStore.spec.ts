@@ -156,7 +156,7 @@ describe('Project store', () => {
                 mockedAuthAxios.get.mockResolvedValueOnce({data: file})
                 const response = await projectStore.getProjectPdf(1)
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/export', {responseType: 'blob'})
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/pdf_export', {responseType: 'blob'})
                 expect(response).toEqual(file)
             })
         })

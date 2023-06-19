@@ -112,8 +112,8 @@ async function onGetAssociationProjects() {
         <div class="form-container">
             <div class="form">
                 <p
-                        v-if="associationUserRole.literalName"
-                        class="paragraph"
+                    v-if="associationUserRole.literalName"
+                    class="paragraph"
                 >
                     {{
                         associationUserRole.literalName + (associationUserRole.codeName !== 'isPresident' ?
@@ -125,8 +125,8 @@ async function onGetAssociationProjects() {
     </section>
 
     <section
-            v-if="hasPresidentStatus || association?.isPublic || userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
-            class="dashboard-section"
+        v-if="hasPresidentStatus || association?.isPublic || userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
+        class="dashboard-section"
     >
         <h2>
             <QIcon name="mdi-format-list-bulleted-square"/>
@@ -136,19 +136,19 @@ async function onGetAssociationProjects() {
             <div class="form">
                 <div class="button-group">
                     <QBtn
-                            v-if="hasPresidentStatus"
-                            :label="t('dashboard.association-user.edit-my-association')"
-                            :to="{ name: 'EditMyAssociation', params: {id: association?.id} }"
+                        v-if="hasPresidentStatus"
+                        :label="t('dashboard.association-user.edit-my-association')"
+                        :to="{ name: 'EditMyAssociation', params: {id: association?.id} }"
                     />
                     <QBtn
-                            v-if="association?.isPublic"
-                            :label="t('association.more-details')"
-                            :to="{ name: 'AssociationDetail', params: { id: association?.id } }"
+                        v-if="association?.isPublic"
+                        :label="t('association.more-details')"
+                        :to="{ name: 'AssociationDetail', params: { id: association?.id } }"
                     />
                     <QBtn
-                            v-if="userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
-                            :label="t('dashboard.association-user.delegate-presidency')"
-                            :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
+                        v-if="userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
+                        :label="t('dashboard.association-user.delegate-presidency')"
+                        :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
                     />
                 </div>
             </div>
@@ -268,7 +268,7 @@ async function onGetAssociationProjects() {
                     <div class="document-input-group-header">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
                         <QBtn
-                                :label="t('dashboard.association-user.charter-status-processing')"
+                            :label="t('dashboard.association-user.charter-status-processing')"
                         />
                     </div>
                     <div class="document-input variant-space-1">
@@ -298,19 +298,19 @@ async function onGetAssociationProjects() {
                         <h3>Suivi du traitement des dossiers CAPE</h3>
                         <div class="flex-btn-group">
                             <QBtn
-                                    :to="{name: 'Commission'}"
-                                    label="Gestion des dossiers CAPE"
+                                :to="{name: 'Commission'}"
+                                label="Gestion des dossiers CAPE"
                             />
                         </div>
                     </div>
                     <section
-                            v-if="projectStore.projects.length"
-                            class="projects-statuses"
+                        v-if="projectStore.projects.length"
+                        class="projects-statuses"
                     >
                         <div
-                                v-for="project in projectStore.projects"
-                                :key="project.id"
-                                class="document-input variant-space-1"
+                            v-for="project in projectStore.projects"
+                            :key="project.id"
+                            class="document-input variant-space-1"
                         >
                             <div class="document-input-header">
                                 <h4>
@@ -318,8 +318,8 @@ async function onGetAssociationProjects() {
                                 </h4>
                                 <div class="project-status-indicator">
                                     <ProjectStatusIndicator
-                                            :project-status="project.projectStatus"
-                                            :show-draft="true"
+                                        :project-status="project.projectStatus"
+                                        :show-draft="true"
                                     />
                                 </div>
                             </div>

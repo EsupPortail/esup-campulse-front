@@ -16,20 +16,20 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
     <div id="login-page">
         <p class="login-intro-text">
             <span
-                    aria-hidden="true"
-                    class="icon"
+                aria-hidden="true"
+                class="icon"
             >
                 <i class="bi bi-person-circle"></i>
             </span>
-            <h1>{{ t('login.introduction-login') }}</h1>
+        <h1>{{ t('login.introduction-login') }}</h1>
         </p>
         <div
-                v-if="!newUser && !isCas"
-                class="form-container"
+            v-if="!newUser && !isCas"
+            class="form-container"
         >
             <QCard
-                    id="cas-login"
-                    class="card"
+                id="cas-login"
+                class="card"
             >
                 <QCardSection>
                     <div class="card-content">
@@ -38,19 +38,19 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                     </div>
                     <div class="btn-group">
                         <QBtn
-                                :href="CASUrlLogin"
-                                :label="t('login.login')"
+                            :href="CASUrlLogin"
+                            :label="t('login.login')"
                         />
                         <QBtn
-                                :href="CASUrlRegister"
-                                :label="t('login.create-account')"
+                            :href="CASUrlRegister"
+                            :label="t('login.create-account')"
                         />
                     </div>
                 </QCardSection>
             </QCard>
             <QCard
-                    id="local-login"
-                    class="card"
+                id="local-login"
+                class="card"
             >
                 <QCardSection>
                     <div class="card-content">
@@ -62,16 +62,19 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
             </QCard>
         </div>
         <div
-                v-else
-                class="form-container"
+            v-else
+            class="form-container"
         >
             <QCard
-                    id="aborted-cas-registration"
-                    class="card"
+                id="aborted-cas-registration"
+                class="card"
             >
                 <QCardSection>
                     <div class="card-content">
-                        <p class="card-title" role="alert">
+                        <p
+                            class="card-title"
+                            role="alert"
+                        >
                             {{ t('alerts.aborted-cas-registration.title') }}
                         </p>
 
@@ -80,9 +83,9 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                         </p>
                         <div>
                             <QBtn
-                                    :label="t('alerts.aborted-cas-registration.button')"
-                                    :to="{name: 'Registration'}"
-                                    color="warning"
+                                :label="t('alerts.aborted-cas-registration.button')"
+                                :to="{name: 'Registration'}"
+                                color="warning"
                             />
                         </div>
                     </div>
