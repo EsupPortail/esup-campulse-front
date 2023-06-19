@@ -27,6 +27,7 @@ export const _project: Project = {
     plannedActivities: 'Conférence autour du thème des associations, petit déjeuner, échange avec les participants sur le sujet.',
     preventionSafety: 'Actions de sécurité et de préventions comme filtrage de l\'entrée selon les tickets par exemple.',
     marketingCampaign: 'Des messages sur les réseaux sociaux, des affiches et quelques tracts.',
+    sustainableDevelopment: 'Actions en rapport avec la DDRS (Développement Durable et Responsabilité Sociétale)',
     projectStatus: 'PROJECT_DRAFT',
     creationDate: '2023-06-01',
     editionDate: '2023-06-02'
@@ -264,4 +265,5 @@ export const _projectGoals: ProjectGoals = {
     plannedActivities: 'Activités',
     preventionSafety: 'Sécurité',
     marketingCampaign: 'Communication',
+    sustainableDevelopment: 'Développement durable',
 }

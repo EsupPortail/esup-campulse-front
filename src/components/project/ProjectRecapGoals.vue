@@ -32,6 +32,11 @@ const {t} = useI18n()
             <p class="row-title">{{ t('project.marketing-campaign') }}</p>
             <p>{{ projectGoals.marketingCampaign }}</p>
         </div>
+
+        <div class="display-row">
+            <p class="row-title">{{ t('project.sustainable-development') }}</p>
+            <p>{{ projectGoals.sustainableDevelopment }}</p>
+        </div>
     </section>
 </template>
 

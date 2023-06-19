@@ -922,6 +922,16 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 type="textarea"
                             />
 
+                            <QInput
+                                v-model="projectGoals.sustainableDevelopment"
+                                :label="t('project.sustainable-development') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                filled
+                                lazy-rules
+                                type="textarea"
+                            />
+
                             <section class="btn-group">
                                 <QBtn
                                     :label="t('back')"
