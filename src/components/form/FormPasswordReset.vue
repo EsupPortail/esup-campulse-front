@@ -20,15 +20,15 @@ async function reset() {
         if (axios.isAxiosError(error)) {
             let errorMessage = null
             switch (error.response?.status) {
-                case 404:
-                    errorMessage = t('notifications.negative.unknown-email')
-                    break
-                case 403:
-                    errorMessage = t('notifications.negative.restricted-email')
-                    break
-                default:
-                    errorMessage = t('notifications.negative.error')
-                    break
+            case 404:
+                errorMessage = t('notifications.negative.unknown-email')
+                break
+            case 403:
+                errorMessage = t('notifications.negative.restricted-email')
+                break
+            default:
+                errorMessage = t('notifications.negative.error')
+                break
             }
             notify({
                 type: 'negative',
@@ -44,14 +44,14 @@ async function reset() {
         <div class="form">
             <div class="instructions">
                 <QBanner
-                        v-if="!isReset"
-                        class="bg-grey-3"
+                    v-if="!isReset"
+                    class="bg-grey-3"
                 >
                     <template v-slot:avatar>
                         <QIcon
-                                color="secondary"
-                                name="mdi-information-outline"
-                                size="md"
+                            color="secondary"
+                            name="mdi-information-outline"
+                            size="md"
                         />
                     </template>
                     <strong>{{ t('forms.password-reset-cas') }}</strong>
@@ -61,24 +61,24 @@ async function reset() {
                 <p v-if="isReset">{{ t('forms.password-reset-ok') }}</p>
             </div>
             <QForm
-                    v-if="!isReset"
-                    class="q-gutter-md"
-                    @submit="reset"
+                v-if="!isReset"
+                class="q-gutter-md"
+                @submit="reset"
             >
                 <fieldset>
                     <legend class="instructions">{{ t('forms.password-reset-instructions') }}</legend>
                     <QInput
-                            v-model="email"
-                            :label="t('forms.email')"
-                            :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                            autocomplete="email"
-                            filled
-                            lazy-rules
-                            type="email"
+                        v-model="email"
+                        :label="t('forms.email')"
+                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                        autocomplete="email"
+                        filled
+                        lazy-rules
+                        type="email"
                     />
                     <QBtn
-                            :label="t('forms.send')"
-                            type="submit"
+                        :label="t('forms.send')"
+                        type="submit"
                     />
                 </fieldset>
             </QForm>

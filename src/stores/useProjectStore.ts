@@ -96,7 +96,7 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getProjectPdf(id: number) {
             const {axiosAuthenticated} = useAxios()
-            const url = `/projects/${id}/export`
+            const url = `/projects/${id}/pdf_export`
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         },
 
