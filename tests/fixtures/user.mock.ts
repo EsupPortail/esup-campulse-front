@@ -368,3 +368,18 @@ export const _associationMembers: AssociationMember[] = [
         isValidatedByAdmin: _userAssociations[4].isValidatedByAdmin as boolean
     }
 ]
+
+export const _CASUsers = [
+    {
+        username: 'lskywalker',
+        firstName: 'Luke',
+        lastName: 'Skywalker',
+        mail: 'lskywalker@unistra.fr'
+    },
+    {
+        username: 'hsolo',
+        firstName: 'Han',
+        lastName: 'Solo',
+        mail: 'hsolo@unistra.fr'
+    }
+]

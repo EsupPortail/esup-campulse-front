@@ -5,10 +5,17 @@ import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {_tokens} from '~/fixtures/tokens.mock'
-import {_institutionManager, _institutionStudent, _newUser} from '~/fixtures/user.mock'
+import {
+    _associationRole, _CASUsers,
+    _institutionManager,
+    _institutionStudent,
+    _newUser,
+} from '~/fixtures/user.mock'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
+import useUserAssociations from '../useUserAssociations'
+import useCommissions from '../useCommissions'
 
 
 config.global.plugins = [
@@ -22,18 +29,33 @@ vi.mock('@/composables/useAxios', () => ({
     })
 }))
 
-/*vi.mock('@/composables/useSecurity', () => {
-    const composable = vi.importActual('@/composables/useSecurity')
-    return {
-        ...composable,
-        userLocalRegisterAsManager: vi.fn()
-    }
-})*/
-
 describe('useSecurity', () => {
     let userStore = useUserStore()
-    const {newUser} = useSecurity()
+    const {
+        newUser,
+        CASUsers,
+        setTokens,
+        removeTokens,
+        logIn,
+        user,
+        hasPerm,
+        userLocalRegister,
+        userCASRegister,
+        userAssociationsRegister,
+        userGroupsRegister,
+        getUsersFromCAS,
+        verifyEmail,
+        resendEmail,
+        passwordReset,
+        passwordResetConfirm,
+        userLocalRegisterAsManager,
+        CASUserOptions,
+        initCASUserOptions,
+        checkPasswordStrength
+    } = useSecurity()
+    const {axiosAuthenticated, axiosPublic} = useAxios()
     const {groups, newGroups} = useUserGroups()
+    const {userFunds} = useCommissions()
 
     beforeEach(() => {
         userStore = useUserStore()
@@ -44,11 +66,11 @@ describe('useSecurity', () => {
         vi.restoreAllMocks()
         groups.value = []
         newGroups.value = []
+        CASUsers.value = []
     })
 
     describe('setTokens', () => {
         it('should set access and refresh tokens', () => {
-            const {setTokens} = useSecurity()
             setTokens(_tokens.access, _tokens.refresh)
             expect(localStorage.getItem('JWT__access__token')).toBe(_tokens.access)
             expect(localStorage.getItem('JWT__refresh__token')).toBe(_tokens.refresh)
@@ -57,7 +79,6 @@ describe('useSecurity', () => {
 
     describe('removeTokens', () => {
         it('should unset access and refresh tokens', () => {
-            const {removeTokens} = useSecurity()
             removeTokens()
             expect(localStorage.getItem('JWT__access__token')).toBeNull()
             expect(localStorage.getItem('JWT__refresh__token')).toBeNull()
@@ -66,7 +87,6 @@ describe('useSecurity', () => {
 
     describe('logIn', () => {
         it('should call logIn function in userStore with API route and user infos as payload', async () => {
-            const {logIn, user} = useSecurity()
             user.value = {
                 username: 'john',
                 password: 'password'
@@ -81,7 +101,6 @@ describe('useSecurity', () => {
     describe('hasPerm', () => {
         it('should return true if userPermission is in userStore', () => {
             userStore.user = _institutionManager
-            const {hasPerm} = useSecurity()
             expect(hasPerm('add_association')).toBeTruthy()
             expect(hasPerm('can_burn_application')).toBeFalsy()
         })
@@ -89,8 +108,6 @@ describe('useSecurity', () => {
 
     describe('userLocalRegister', () => {
         it('should call API once on /users/auth/registration/ with newUser as data', async () => {
-            const {userLocalRegister, newUser} = useSecurity()
-            const {axiosPublic} = useAxios()
             await userLocalRegister()
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/auth/registration/', newUser)
@@ -99,81 +116,146 @@ describe('useSecurity', () => {
 
     describe('userCASRegister', () => {
         it('should call API once on /users/auth/user/ with new info to patch', async () => {
-            const {axiosAuthenticated} = useAxios()
-            const {userCASRegister} = useSecurity()
             await userCASRegister('new info to patch')
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/users/auth/user/', {phone: 'new info to patch'})
         })
     })
 
-    /*describe('userAssociationRegister', () => {
-        const {axiosPublic, axiosAuthenticated} = useAxios()
-        const {userAssociationsRegister} = useSecurity()
-        const lastAssociation = _userAssociations[_userAssociations.length - 1]
+    describe('userAssociationRegister', () => {
+        const {newAssociations} = useUserAssociations()
+        newAssociations.value = [_associationRole]
         const data = {
             user: 'user',
-            association: lastAssociation.association,
-            isPresident: lastAssociation.isPresident,
-            isVicePresident: lastAssociation.isVicePresident,
-            isSecretary: lastAssociation.isSecretary,
-            isTreasurer: lastAssociation.isTreasurer
+            association: _associationRole.id,
+            isPresident: _associationRole.role === 'isPresident',
+            isVicePresident: _associationRole.role === 'isVicePresident',
+            isSecretary: _associationRole.role === 'isSecretary',
+            isTreasurer: _associationRole.role === 'isTreasurer'
         }
-
-        describe('userAssociationRegister', () => {
+        describe('if request is public', () => {
             it('should post every new association with public instance when registering', async () => {
-            await userAssociationsRegister(true, 'user', _userAssociations)
-            expect(axiosPublic.post).toHaveBeenCalledTimes(_userAssociations.length)
-            expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/associations/', data)
+                await userAssociationsRegister(true, 'user')
+                expect(axiosPublic.post).toHaveBeenCalledOnce()
+                expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/associations/', data)
+            })
         })
 
-        it('should post every new association with auth instance when registered by manager', async () => {
-            await userAssociationsRegister(false, 'user', _userAssociations)
-            expect(axiosAuthenticated.post).toHaveBeenCalledTimes(_userAssociations.length)
-            expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/associations/', data)
+        describe('if request is private', () => {
+            it('should post every new association with auth instance when registered by manager', async () => {
+                await userAssociationsRegister(false, 'user')
+                expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/associations/', data)
+            })
         })
-    })*/
+    })
 
     describe('userGroupsRegister', () => {
-        const {axiosPublic, axiosAuthenticated} = useAxios()
-        const {userGroupsRegister} = useSecurity()
         const {newGroups} = useUserGroups()
 
-        it('should new groups with public instance when registering', async () => {
-            newGroups.value = [1, 2]
-
-            const data = {
-                user: newUser.username,
-                group: 2,
-                institution: null,
-                fund: null
-            }
-
-            await userGroupsRegister(true)
-            expect(axiosPublic.post).toHaveBeenCalledTimes(newGroups.value.length)
-            expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/groups/', data)
+        afterEach(() => {
+            newGroups.value = []
         })
 
-        it('should new groups with auth instance when registered by manager', async () => {
-            newGroups.value = [1, 2]
+        describe('if student groups', () => {
+            let data = {}
 
-            const data = {
-                user: newUser.username,
-                group: 2,
-                institution: null,
-                fund: null
-            }
+            beforeEach(() => {
+                newGroups.value = [1, 2]
+                data = {
+                    user: newUser.username,
+                    group: 2,
+                    institution: null,
+                    fund: null
+                }
+            })
 
-            await userGroupsRegister(false)
-            expect(axiosAuthenticated.post).toHaveBeenCalledTimes(newGroups.value.length)
-            expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/', data)
+            afterEach(() => {
+                newGroups.value = []
+            })
+
+            describe('if public request (register)', () => {
+                it('should post new groups with public instance when registering', async () => {
+                    await userGroupsRegister(true)
+                    expect(axiosPublic.post).toHaveBeenCalledTimes(newGroups.value.length)
+                    expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/groups/', data)
+                })
+            })
+            describe('if private request (registered by manager)', () => {
+                it('should post new groups with auth instance when registered by manager', async () => {
+                    await userGroupsRegister(false)
+                    expect(axiosAuthenticated.post).toHaveBeenCalledTimes(newGroups.value.length)
+                    expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/', data)
+                })
+            })
+        })
+
+        describe('if commission group', () => {
+            let data = {}
+
+            beforeEach(() => {
+                newGroups.value = [4]
+                data = {
+                    user: newUser.username,
+                    group: 4,
+                    institution: null,
+                    fund: 3
+                }
+                userFunds.value = [1, 2, 3]
+            })
+
+            afterEach(() => {
+                newGroups.value = []
+                userFunds.value = []
+            })
+
+            describe('if public request (register)', () => {
+                it('should post new groups with public instance when registering', async () => {
+                    await userGroupsRegister(true)
+                    expect(axiosPublic.post).toHaveBeenCalledTimes(3)
+                    expect(axiosPublic.post).toHaveBeenCalledWith('/users/groups/', data)
+                })
+            })
+            describe('if private request (registered by manager)', () => {
+                it('should post new groups with auth instance when registered by manager', async () => {
+                    await userGroupsRegister(false)
+                    expect(axiosAuthenticated.post).toHaveBeenCalledTimes(3)
+                    expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/', data)
+                })
+            })
+        })
+    })
+
+    describe('getUsersFromCAS', () => {
+        it('should get users from CAS via the API', async () => {
+            const mockedAuthAxios = vi.mocked(axiosAuthenticated, true)
+            mockedAuthAxios.get.mockResolvedValueOnce({data: _CASUsers})
+            await getUsersFromCAS('lastName')
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/external/?last_name=lastName')
+            expect(CASUsers.value).toEqual(_CASUsers)
+        })
+    })
+
+    describe('initCASUserOptions', () => {
+        it('should init values and labels for CAS users', () => {
+            CASUsers.value = _CASUsers
+            initCASUserOptions()
+            expect(CASUserOptions.value).toEqual([
+                {
+                    value: 'lskywalker',
+                    label: 'Luke Skywalker (lskywalker@unistra.fr)'
+                },
+                {
+                    value: 'hsolo',
+                    label: 'Han Solo (hsolo@unistra.fr)'
+                }
+            ])
         })
     })
 
     describe('userLocalRegisterAsManager', () => {
         it('should post once on /users/ with newUser as data', async () => {
-            const {axiosAuthenticated} = useAxios()
-            const {userLocalRegisterAsManager} = useSecurity()
             await userLocalRegisterAsManager(_newUser)
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/', _newUser)
@@ -182,8 +264,6 @@ describe('useSecurity', () => {
 
     describe('verifyEmail', () => {
         it('should post once on /users/auth/registration/verify-email/ with key as data', async () => {
-            const {axiosAuthenticated} = useAxios()
-            const {verifyEmail} = useSecurity()
             await verifyEmail('key')
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/auth/registration/verify-email/', {key: 'key'})
@@ -192,8 +272,6 @@ describe('useSecurity', () => {
 
     describe('resendEmail', () => {
         it('should post once on /users/auth/registration/resend-email/ with email as payload', async () => {
-            const {axiosPublic} = useAxios()
-            const {resendEmail} = useSecurity()
             await resendEmail('test@email.com')
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/registration/resend-email/', {email: 'test@email.com'})
@@ -202,8 +280,6 @@ describe('useSecurity', () => {
 
     describe('passwordReset', () => {
         it('should post once on /users/auth/password/reset with user email as data', () => {
-            const {axiosPublic} = useAxios()
-            const {passwordReset} = useSecurity()
             passwordReset(_institutionStudent.email)
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/password/reset/', {email: _institutionStudent.email})
@@ -212,8 +288,6 @@ describe('useSecurity', () => {
 
     describe('passwordResetConfirm', () => {
         it('should post once on /users/auth/password/reset/confirm/ with uid, token, and new password as data', async () => {
-            const {axiosPublic} = useAxios()
-            const {passwordResetConfirm} = useSecurity()
             await passwordResetConfirm('uid', 'token', 'newPassword', 'newPassword')
             expect(axiosPublic.post).toHaveBeenCalledOnce()
             expect(axiosPublic.post).toHaveBeenCalledWith('/users/auth/password/reset/confirm/',
@@ -227,61 +301,72 @@ describe('useSecurity', () => {
         })
     })
 
-    /*describe('register', () => {
-        const {
-            register,
-            newUser,
-            userCASRegister
-        } = useSecurity()
-        const {newAssociations} = useUserAssociations()
-        const {newGroups} = useUserGroups()
-        //const {axiosPublic} = useAxios()
-        //const mockedAxios = vi.mocked(axiosPublic, true)
-
-        describe('if newUser isCas', () => {
-            it('should execute CASUser, groups and associations registration, then unLoad newUser', async () => {
-                userStore.newUser = _newUser
-                userStore.newUser.isCas = true
-                newUser.phone = '00 00 00 00 00'
-                newAssociations.value = [_associationRole]
-                newGroups.value = [6]
-                const composable = useSecurity()
-                const userCASRegister = vi.spyOn(composable, 'userCASRegister')
-                const unLoadNewUser = vi.spyOn(userStore, 'unLoadNewUser')
-
-                await composable.register()
-
-                //expect(userCASRegister).toHaveBeenCalledOnce()
-                //expect(spies.userAssociationsRegister).toHaveBeenCalledOnce()
-                //expect(spies.userGroupsRegister).toHaveBeenCalledOnce()
-                expect(userCASRegister).toHaveBeenCalledOnce()
-                expect(unLoadNewUser).toHaveBeenCalledOnce()
+    describe('checkPasswordStrength', () => {
+        it('should test password strength through regex and plugin ZXCVB', () => {
+            const valid = checkPasswordStrength('ghtRf6è!*tgr5DJn')
+            expect(valid).toEqual({
+                score: 4,
+                tests: [
+                    {
+                        additionalMessage: '',
+                        message: 'min-length',
+                        valid: true,
+                    },
+                    {
+                        additionalMessage: '',
+                        message: 'must-contain-lowercase-char',
+                        valid: true,
+                    },
+                    {
+                        additionalMessage: '',
+                        message: 'must-contain-uppercase-char',
+                        valid: true,
+                    },
+                    {
+                        additionalMessage: '',
+                        message: 'must-contain-digit',
+                        valid: true,
+                    },
+                    {
+                        additionalMessage: '(/ * - + = . , ; : ! ? & " \' ( ) _ [ ] { } @ % # $ < >)',
+                        message: 'must-contain-special-char',
+                        valid: true,
+                    },
+                ],
+                valid: true
             })
-        })*/
-    /*describe('if newUser is not Cas', () => {
-        beforeEach(() => {
-            newUser.value.isCas = false
-            userStore.newUser = newUser.value
-        })
-        it('should execute localUser, association and groups register', async () => {
-            newAssociations.value = _userAssociations
-            newGroups.value = _userGroupList
-            await register()
-            expect(spies.userLocalRegister).toHaveBeenCalledOnce()
-            expect(spies.userAssociationsRegister).toHaveBeenCalledOnce()
-            expect(spies.userGroupsRegister).toHaveBeenCalledOnce()
+            const invalid = checkPasswordStrength('coucou')
+            expect(invalid).toEqual({
+                score: 1,
+                tests: [
+                    {
+                        additionalMessage: '',
+                        message: 'min-length',
+                        valid: false,
+                    },
+                    {
+                        additionalMessage: '',
+                        message: 'must-contain-lowercase-char',
+                        valid: true,
+                    },
+                    {
+                        additionalMessage: '',
+                        message: 'must-contain-uppercase-char',
+                        valid: false,
+                    },
+                    {
+                        additionalMessage: '',
+                        message: 'must-contain-digit',
+                        valid: false,
+                    },
+                    {
+                        additionalMessage: '(/ * - + = . , ; : ! ? & " \' ( ) _ [ ] { } @ % # $ < >)',
+                        message: 'must-contain-special-char',
+                        valid: false,
+                    },
+                ],
+                valid: false
+            })
         })
     })
-})
-
-/*describe('addUserAsManager', () => {
-    const {newAssociationsUser} = useAssociation()
-    const {addUserAsManager, userLocalRegisterAsManager} = useSecurity()
-
-    it('should register a new user with associations if any', async () => {
-        expect(userLocalRegisterAsManager).toHaveBeenCalledOnce()
-    })
-})*/
-
-
 })
