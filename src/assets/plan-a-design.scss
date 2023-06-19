@@ -22,6 +22,8 @@ html {
 body {
   height: $fullSize;
   width: $fullSize;
+  background-color: $backgroundColor1;
+  color: $textColor1
 }
 
 // Displaying the layout as a table (and the different layout parts as table-rows) is a common trick to make sure the footer stays 
@@ -100,6 +102,7 @@ body {
       transform: none;
     }
   }
+
 }
 
 .variant-space-2 .navigate-top-button {

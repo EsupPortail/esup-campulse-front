@@ -1,0 +1,81 @@
+<script lang="ts" setup>
+import useProjectDocuments from '@/composables/useProjectDocuments'
+import type {ProcessDocument} from '#/documents'
+import axios from 'axios'
+import {useQuasar} from 'quasar'
+import {useI18n} from 'vue-i18n'
+import useErrors from '@/composables/useErrors'
+
+const {processDocuments, documentUploads} = useProjectDocuments()
+const {createFileLink} = useProjectDocuments()
+const {notify, loading} = useQuasar()
+const {t} = useI18n()
+const {catchHTTPError} = useErrors()
+
+async function onGetFile(uploadedDocument: ProcessDocument) {
+    loading.show()
+    try {
+        await createFileLink(uploadedDocument)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
+</script>
+
+<template>
+    <section class="flex-section">
+        <div
+            v-for="(document, index) in processDocuments"
+            :key="index"
+            class="display-row"
+        >
+            <p class="row-title">{{ document.description }}</p>
+            <p class="paragraph">
+                <ul role="list">
+                    <li
+                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                        :key="uploadedDocument.id"
+                        @click="onGetFile(uploadedDocument)"
+                    >
+                        {{ uploadedDocument.name }}
+                    </li>
+                </ul>
+            </p>
+        </div>
+    </section>
+</template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
+@import "@/assets/_variables.scss";
+
+
+.display-row {
+    width: 100% !important;
+}
+
+.flex-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+ul > li {
+    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer;
+    color: $capeColor;
+}
+
+ul, li {
+    padding-left: 0 !important;
+}
+</style>

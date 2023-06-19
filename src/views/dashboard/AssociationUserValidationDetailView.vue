@@ -186,24 +186,24 @@ async function onDeleteAssociationUser() {
     </QForm>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/_variables.scss';
 
 .rows-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 @media screen and (min-width: $responsiveWidth) {
-    .q-btn {
-        width: 20%;
-    }
+  .q-btn {
+    width: 20%;
+  }
 
-    .display-row {
-        width: 62.5rem;
-    }
+  .display-row {
+    width: 62.5rem;
+  }
 }
 </style>

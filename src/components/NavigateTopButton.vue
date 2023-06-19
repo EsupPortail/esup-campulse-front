@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import {onMounted, onUnmounted, ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+
+const {t} = useI18n()
 
 onMounted(async function () {
     window.addEventListener('scroll', handleScroll)
@@ -28,8 +31,14 @@ const buttonVisible = ref(false)
         class="navigate-top-button"
         :class="{ 'visible': buttonVisible }"
     >
-        <button @click="scrollToTop">
-            <i class="bi bi-arrow-up-short"></i>
+        <button
+            :title="t('page-top')"
+            @click="scrollToTop"
+        >
+            <i
+                aria-hidden="true"
+                class="bi bi-arrow-up-short"
+            ></i>
         </button>
     </div>
 </template>

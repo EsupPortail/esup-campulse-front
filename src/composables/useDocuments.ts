@@ -4,7 +4,7 @@ import {useAxios} from '@/composables/useAxios'
 
 const documents = ref<Document[]>([])
 
-export default function () {
+export default function() {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
 

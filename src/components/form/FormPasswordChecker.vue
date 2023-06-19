@@ -54,14 +54,14 @@ const resultLabels = [
 </script>
 <template>
     <section
-            v-if="password"
-            class="password-feedback"
+        v-if="password"
+        class="password-feedback"
     >
         <div class="password-feedback-bar">
             <div
-                    v-for="(item, index) in resultClasses"
-                    :key="index"
-                    :class="item"
+                v-for="(item, index) in resultClasses"
+                :key="index"
+                :class="item"
             >
             </div>
         </div>
@@ -75,18 +75,19 @@ const resultLabels = [
         <p class="paragraph">{{ t('password.policy.must-contain') }}</p>
         <ul>
             <li
-                    v-for="(test, index) in props.passwordChecker.tests"
-                    :key="index"
+                v-for="(test, index) in props.passwordChecker.tests"
+                :key="index"
             >
                 <span class="form-state">
-                    <span :class="`form-state-icon form-state-${test.valid ? 'green' : 'red'}`" aria-hidden="true">
+                    <span
+                        :class="`form-state-icon form-state-${test.valid ? 'green' : 'red'}`"
+                        aria-hidden="true"
+                    >
                         <i :class="`bi bi-${test.valid ? 'check' : 'x'}`"></i>
                     </span>
-                    <div class="test">
-                        {{
-                            (index === 0 ? (passwordMinLength + ' ') : '') + t(`password.policy.${test.message}`) + ' ' + test.additionalMessage
-                        }}
-                    </div>
+                    {{
+                        (index === 0 ? (passwordMinLength + ' ') : '') + t(`password.policy.${test.message}`) + ' ' + test.additionalMessage
+                    }}
                 </span>
             </li>
         </ul>
@@ -96,32 +97,14 @@ const resultLabels = [
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 
-.password-feedback {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0;
-}
-
-p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
 .form-state {
   display: flex;
+  flex-direction: row;
 
   i {
     width: 1.5rem;
   }
-
-  .test {
-    padding: 0 0 0 0.5rem;
-    font-size: 0.9rem;
-  }
 }
-
 
 .password-feedback-bar {
   display: flex;
@@ -144,15 +127,15 @@ p {
 }
 
 .password-feedback-bar > .__0 {
-  background-color: #7a2520;
+  background-color: $stateColor3;
 }
 
 .password-feedback-bar > .__1 {
-  background-color: #db463d;
+  background-color: $stateColor5;
 }
 
 .password-feedback-bar > .__2 {
-  background-color: #e7902a;
+  background-color: $stateColor2;
 }
 
 .password-feedback-bar > .__3 {
@@ -160,19 +143,19 @@ p {
 }
 
 .password-feedback-bar > .__4 {
-  background-color: #5cc887;
+  background-color: $stateColor1;
 }
 
 .paragraph.__0 {
-  color: #7a2520;
+  color: $stateColor3;
 }
 
 .paragraph.__1 {
-  color: #db463d;
+  color: $stateColor5;
 }
 
 .paragraph.__2 {
-  color: #e7902a;
+  color: $stateColor2;
 }
 
 .paragraph.__3 {
@@ -180,7 +163,7 @@ p {
 }
 
 .paragraph.__4 {
-  color: #5cc887;
+  color: $stateColor1;
 }
 
 .password-rules {

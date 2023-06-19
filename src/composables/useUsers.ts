@@ -5,7 +5,6 @@ import useUserGroups from '@/composables/useUserGroups'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useUtility from '@/composables/useUtility'
-import useSecurity from '@/composables/useSecurity'
 
 // Used to update user infos
 const userToUpdate = ref<UserToUpdate>({
@@ -43,8 +42,6 @@ export default function () {
     const userManagerStore = useUserManagerStore()
     const {updateUserGroups} = useUserGroups()
     const {filterizeSearch} = useUtility()
-
-    //const {hasPerm} = useSecurity()
 
     /**
      * The function `validateUser` calls the function `updateUserGroups` and then calls the function `validateUser` on

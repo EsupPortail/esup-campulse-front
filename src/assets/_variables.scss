@@ -3,7 +3,7 @@ $responsiveMargin: 1.56rem;
 $fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
 // ---------------- Responsive----------------
-$responsiveWidth: 56rem;
+$responsiveWidth: 56.25rem;
 
 // ---------------- Images ----------------
 $headerBackground: url('./img/resized/header-background2.jpg');
@@ -27,7 +27,6 @@ $homeSubTitleSize: 2.5rem;
 $titleSize: 2.3rem;
 $textSize: 1.1rem;
 
-
 // ---------------- Paddings ----------------
 // Home Banner
 $qBannerDotsMobilePadding: .30rem;
@@ -44,7 +43,7 @@ $halfSize: 50%;
 // Logos
 $associationLogoSize: 9rem;
 $iconSize: 1.7rem;
-$logoSize: 3rem;
+$logoSize: 2.8rem;
 
 // Home Banner q: quasar
 $qBannerInfoIconSize: 1.25rem;
@@ -73,10 +72,10 @@ $backgroundColor2: #f5f5f5;
 $footerBackgroundColor: #2c2c2c;
 $footerTextColor: #e7e7e7;
 $textColor1: #272727;
-$textColor2: #85909c;
+$textColor2: #67727D;
 $textColor3: #ffffff;
 
-$annuaireColor: #3976cf;
+$annuaireColor: #3971BE;
 $annuaireColorBackground: #e7efff;
 $annuaireColorText: #152639;
 $annuaireColorBorders: #aeb8c4;
@@ -90,24 +89,25 @@ $charteColorBorders: #c4b8ae;
 $charteColorHover: #fab83e;
 $charteColorActive: #f1ad2d;
 
-$capeColor: #f46b34;
+$capeColor: #DF3603;
 $capeColorBackground: #ffefe9;
 $capeColorText: #4d271b;
 $capeColorBorders: #c4b3ae;
 $capeColorHover: #e25c27;
 $capeColorActive: #c74f20;
 
-$dashboardColor: #34968e;
+$dashboardColor: #257875;
 $dashboardColorBackground: #e7f3f2;
 $dashboardColorText: #10312e;
 $dashboardColorBorders: #a2b9b7;
 $dashboardColorHover: #2e857d;
 $dashboardColorActive: #27746d;
 
-$stateColor1: #5cc887;
-$stateColor2: #fba04c;
-$stateColor3: #e85b63;
-$stateColor4: #a2a2a2;
+$stateColor1: #088241;
+$stateColor2: #C74501;
+$stateColor3: #E82026;
+$stateColor4: #797676;
+$stateColor5: #DB2508;
 
 $errorPanelColor: #db463d;
 $errorTextColor: #7a2520;

@@ -26,19 +26,19 @@ const userStore = useUserStore()
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
-</style>
 
-<style lang="sass" scoped>
-.page-section, .page-section *
-    text-align: center
+.page-section, .page-section * {
+    text-align: center;
+}
 
-.page-section
-    margin-top: 3rem
-    display: flex
-    flex-direction: column
-    gap: 1rem
+.page-section {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 </style>
 
 

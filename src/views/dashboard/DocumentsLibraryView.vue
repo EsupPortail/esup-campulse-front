@@ -120,20 +120,20 @@ async function onGetLibraryDocuments() {
 <style lang="scss">
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-</style>
+@import '@/assets/_variables.scss';
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
-.flex
-    display: flex
-    flex-direction: column
-    gap: 1rem
+.flex {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
-    section:first-child
-        max-width: 1280px
-        width: 100%
-        margin: auto
+    section:first-child {
+        width: $fullSize;
+        margin: auto;
+    }
 
-    section + section > p
-        text-align: center
+    section + section > p {
+        text-align: center;
+    }
+}
 </style>

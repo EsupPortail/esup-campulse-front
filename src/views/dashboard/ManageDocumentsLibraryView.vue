@@ -184,7 +184,7 @@ async function onDeleteDocument(documentId: number) {
                     />
                     <QBtn
                         :label="t('add')"
-                        icon="mdi-upload-outline"
+                        icon="bi-upload"
                         type="submit"
                     />
                 </QForm>
@@ -227,7 +227,10 @@ async function onDeleteDocument(documentId: number) {
                             </h4>
 
                             <button @click.prevent="document.open = !document.open">
-                                <i :class="`bi bi-${document.open ? 'x' : 'pencil'}`"></i>
+                                <i
+                                    aria-hidden="true"
+                                    :class="`bi bi-${document.open ? 'x' : 'pencil'}`"
+                                ></i>
                             </button>
                         </div>
                     </div>
@@ -261,7 +264,7 @@ async function onDeleteDocument(documentId: number) {
                                 <QBtn
                                     :disable="document.processType !== 'NO_PROCESS'"
                                     :label="t('delete')"
-                                    icon="mdi-delete-outline"
+                                    icon="bi-trash"
                                     @click="onDeleteDocument(document.id)"
                                 />
                             </div>
@@ -273,44 +276,8 @@ async function onDeleteDocument(documentId: number) {
     </section>
 </template>
 
-
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-</style>
-
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
-
-.document-input-header > p > i
-    margin-right: 1rem
-
-.flex-btn
-    display: flex
-    gap: 1rem
-
-.library-document
-    span
-        display: flex !important
-        gap: 0.3rem
-
-        a
-            color: inherit
-            text-decoration: none
-
-        i
-            display: none
-            color: $dashboardColor
-
-    .active-link
-        a
-            color: $dashboardColor
-
-            &:hover
-                text-decoration: underline
-
-        &:hover
-
-            i
-                display: inline
+@import '@/assets/styles/documents.scss';
 </style>

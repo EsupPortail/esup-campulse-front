@@ -64,17 +64,22 @@ async function clearSearch() {
 </script>
 <template>
     <section class="directory-search">
-        <h3 class="title-3">{{ t('association.labels.search') }}</h3>
+        <div class="form-title">
+            <h3 class="title-3">{{ t('association.labels.search') }}</h3>
+        </div>
         <QForm
             id="search-form"
+            aria-label="t('directory.directory')"
             class="search-text-field"
+            role="search"
             @submit.prevent="onSearch"
         >
-            <fieldset>
+            <div>
                 <QInput
                     v-model="settings.search"
                     :label="t('search')"
                     :placeholder="t('search')"
+                    aria-label="t('search')"
                     clearable
                     filled
                     inputmode="search"
@@ -86,31 +91,33 @@ async function clearSearch() {
                 </QInput>
                 <QBtn
                     :label="t('search')"
+                    aria-label="t('search')"
                     class="search-button"
-                    color="primary"
                     icon-right="mdi-chevron-right"
                     type="submit"
                 />
                 <QBtn
                     :label="t('cancel-search')"
-                    color="secondary"
+                    aria-label="t('cancel-search')"
+                    class="cancel-button"
                     icon-right="mdi-close"
                     @click="clearSearch"
                 />
-            </fieldset>
+            </div>
         </QForm>
 
         <QForm
             id="advanced-search-form"
+            aria-label="t('directory.directory-advanced')"
             class="search-text-field"
+            role="search"
             @submit.prevent="onAdvancedSearch"
         >
             <QExpansionItem
                 :label="t('advanced-search')"
-                expand-separator
                 icon="mdi-menu-right"
             >
-                <fieldset>
+                <div>
                     <QInput
                         v-model="settings.name"
                         :label="t('directory.labels.association-name')"
@@ -153,19 +160,18 @@ async function clearSearch() {
                         filled
                         map-options
                     />
-                </fieldset>
+                </div>
 
                 <div class="buttons-group">
                     <QBtn
                         :label="t('advanced-search')"
                         class="search-button"
-                        color="primary"
                         icon-right="mdi-chevron-right"
                         type="submit"
                     />
                     <QBtn
                         :label="t('cancel-search')"
-                        color="secondary"
+                        color="primary"
                         icon-right="mdi-close"
                         @click="clearSearch"
                     />
@@ -175,7 +181,11 @@ async function clearSearch() {
     </section>
 </template>
 
-<style lang="scss">
-@import '@/assets/styles/forms.scss';
+<style lang="scss" scoped>
 @import '@/assets/styles/associations.scss';
+@import '@/assets/styles/forms.scss';
+
+.directory-search {
+  padding: 1rem;
+}
 </style>

@@ -5,16 +5,18 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {useProjectStore} from '@/stores/useProjectStore'
+import type {UpdateCommission} from '#/commissions'
+import useUtility from '@/composables/useUtility'
 
 const props = defineProps<{
-    commissionDate: number,
-    datesAreLegal: boolean | undefined
+    commission: UpdateCommission
 }>()
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
+const {arraysAreEqual} = useUtility()
 
 const confirmUpdate = ref<boolean>(false)
 const confirmDelete = ref<boolean>(false)
@@ -22,7 +24,7 @@ const confirmDelete = ref<boolean>(false)
 async function onOpenDeleteAlert() {
     loading.show()
     try {
-        await projectStore.getProjects(false, [props.commissionDate])
+        await projectStore.getManagedProjects(props.commission.id)
         confirmDelete.value = true
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -39,7 +41,11 @@ async function onOpenDeleteAlert() {
 <template>
     <div class="flex-btn">
         <QBtn
-            :disable="!props.datesAreLegal"
+            :disable="!commission.datesAreLegal && commission.newName === commission.oldName
+                && commission.newCommissionDate === commission.oldCommissionDate
+                && commission.newSubmissionDate === commission.oldSubmissionDate
+                && commission.newIsOpenToProjects === commission.oldIsOpenToProjects
+                && arraysAreEqual(commission.oldFunds, commission.newFunds)"
             :label="t('update')"
             icon="bi-arrow-repeat"
             @click="confirmUpdate = true"
@@ -48,9 +54,9 @@ async function onOpenDeleteAlert() {
             v-model="confirmUpdate"
             persistent
         >
-            <QCard>
+            <QCard class="variant-space-3">
                 <QCardSection class="row items-center">
-                    <span class="q-ml-sm">{{ t('commission.alerts.confirm-update') }}</span>
+                    <p class="paragraph">{{ t('commission.alerts.confirm-update') }}</p>
                 </QCardSection>
 
                 <QCardActions align="right">
@@ -77,11 +83,16 @@ async function onOpenDeleteAlert() {
             v-model="confirmDelete"
             persistent
         >
-            <QCard>
+            <QCard class="variant-space-3">
                 <QCardSection class="row items-center">
-                    <p class="paragraph">{{ t('commission.alerts.confirm-delete') }}</p>
+                    <p
+                        v-if="!projectStore.projects.length"
+                        class="paragraph"
+                    >
+                        {{ t('commission.alerts.confirm-delete') }}
+                    </p>
                     <div
-                        v-if="projectStore.projects.length"
+                        v-else
                         class="info-panel info-panel-error"
                     >
                         <i
@@ -90,14 +101,6 @@ async function onOpenDeleteAlert() {
                         ></i>
                         <p class="paragraph">
                             {{ t('commission.alerts.delete-warning-projects-submitted') }}
-                            <ul>
-                                <li
-                                    v-for="project in projectStore.projects"
-                                    :key="project.id"
-                                >
-                                    {{ project.name }}
-                                </li>
-                            </ul>
                         </p>
                     </div>
                 </QCardSection>
@@ -109,6 +112,7 @@ async function onOpenDeleteAlert() {
                         icon="bi-x-lg"
                     />
                     <QBtn
+                        v-if="!projectStore.projects.length"
                         v-close-popup
                         :label="t('delete')"
                         icon="bi-trash"
@@ -119,3 +123,11 @@ async function onOpenDeleteAlert() {
         </QDialog>
     </div>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+
+.q-card {
+    padding: 1rem
+}
+</style>

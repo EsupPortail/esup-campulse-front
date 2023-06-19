@@ -29,30 +29,34 @@ export const _userGroups: UserGroup[] = [
         userId: 1,
         groupId: 1,
         institutionId: 1,
-        commissionId: null
+        fundId: null
     },
     {
         userId: 1,
         groupId: 2,
         institutionId: 2,
-        commissionId: null
+        fundId: null
     },
     {
         userId: 1,
         groupId: 3,
         institutionId: 3,
-        commissionId: null
+        fundId: null
     },
     // Student
     {
         userId: 2,
         groupId: 6,
     },
+    {
+        userId: 7,
+        groupId: 7,
+    },
     // Commission
     {
         userId: 3,
         groupId: 4,
-        commissionId: 1
+        fundId: 1
     }
 ]
 
@@ -101,13 +105,28 @@ export const _institutionStudent: User = {
     permissions: getUserGroupsPermissions([_userGroups[3]])
 }
 
-export const _commission: User = {
+export const _memberFund: User = {
     id: 6,
     username: 'commission@unistra.fr',
     firstName: 'Commission',
     lastName: 'Member',
     phone: '',
     email: 'commission@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[5]],
+    permissions: getUserGroupsPermissions([_userGroups[4]])
+}
+
+export const _miscStudent: User = {
+    id: 7,
+    username: 'misc-student@unistra.fr',
+    firstName: 'Student',
+    lastName: 'Misc',
+    phone: '',
+    email: 'misc-student@unistra.fr',
     isCas: false,
     hasValidatedEmail: true,
     isValidatedByAdmin: true,
@@ -125,7 +144,7 @@ export const _newUser: UserRegister = {
     email: 'john.lennon@bbc.com'
 }
 
-export const _users = [_institutionStudent, _institutionManager]
+export const _users = [_institutionStudent, _institutionManager, _memberFund, _miscStudent]
 
 export const _usersNames = _users.map(
     user => ({
@@ -347,5 +366,20 @@ export const _associationMembers: AssociationMember[] = [
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: _userAssociations[4].isValidatedByAdmin as boolean
+    }
+]
+
+export const _CASUsers = [
+    {
+        username: 'lskywalker',
+        firstName: 'Luke',
+        lastName: 'Skywalker',
+        mail: 'lskywalker@unistra.fr'
+    },
+    {
+        username: 'hsolo',
+        firstName: 'Han',
+        lastName: 'Solo',
+        mail: 'hsolo@unistra.fr'
     }
 ]

@@ -70,7 +70,7 @@ onMounted(initSpanClasses)
         {{ t('project.status.review-draft') }}
         <span
             aria-hidden="true"
-            class="form-state-icon form-state-orange"
+            class="form-state-icon form-state-grey"
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
@@ -105,9 +105,12 @@ onMounted(initSpanClasses)
     </span>
 </template>
 
-<style lang="sass" scoped>
-@import '@/assets/_variables.scss'
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
 
-.form-state-cape
-    color: $capeColorText
+.form-state-cape {
+    color: $capeColorText;
+}
 </style>

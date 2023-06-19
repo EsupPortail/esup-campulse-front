@@ -1,25 +1,43 @@
 <script lang="ts" setup>
-import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
-import type {ProcessDocument} from '#/documents'
-import ProjectCommentForm from '@/components/project/ProjectCommentForm.vue'
+import ProjectComments from '@/components/project/ProjectComments.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useSubmitProject from '@/composables/useSubmitProject'
 import {useRoute} from 'vue-router'
+import ProjectRecapBasicInfos from '@/components/project/ProjectRecapBasicInfos.vue'
+import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
+import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
+import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
+import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
+import ProjectValidation from '@/components/project/ProjectValidation.vue'
+import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {getFile} = useProjectDocuments()
+const {getDocuments, initProcessProjectDocuments} = useProjectDocuments()
 const projectStore = useProjectStore()
-const {initProjectBasicInfos, initProjectGoals, initProjectBudget} = useSubmitProject()
+const {
+    initProjectBasicInfos,
+    initProjectGoals,
+    initProjectBudget
+} = useSubmitProject()
 const route = useRoute()
+
+const isLoaded = ref<boolean>(false)
+
+onMounted(async () => {
+    loading.show()
+    await onGetProjectDetail()
+    await onGetProjectDocuments()
+    loading.hide()
+})
 
 async function onGetProjectDetail() {
     try {
@@ -27,6 +45,7 @@ async function onGetProjectDetail() {
         initProjectBasicInfos()
         initProjectBudget()
         initProjectGoals()
+        isLoaded.value = true
     } catch (error) {
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
@@ -38,21 +57,10 @@ async function onGetProjectDetail() {
     }
 }
 
-onMounted(async () => {
-    loading.show()
-    await onGetProjectDetail()
-    loading.hide()
-})
-
-async function onGetFile(uploadedDocument: ProcessDocument) {
+async function onGetProjectDocuments() {
     try {
-        const file = await getFile(uploadedDocument.pathFile as string)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(file)
-        link.download = uploadedDocument.name as string
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        await getDocuments('DOCUMENT_PROJECT')
+        initProcessProjectDocuments()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -68,37 +76,120 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     <section class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
+                aria-hidden="true"
+                class="bi bi-info-circle"
             ></i>
-            {{ t('recap') }}
+            {{ t('project.general-infos') }}
         </h2>
         <div class="form-container">
             <div class="form">
-                <FormProjectRecap
-                        view="projectDetail"
-                        @submit-project="0"
-                        @change-step="0"
-                        @get-file="uploadDocument => onGetFile(uploadDocument)"
-                />
+                <ProjectRecapBasicInfos/>
             </div>
         </div>
     </section>
     <section class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
+                aria-hidden="true"
+                class="bi bi-calendar"
             ></i>
-            Commentaires
+            {{ t('project.commission-choice') }}
         </h2>
-        <ProjectCommentForm/>
-
-        Commentaire
+        <div class="form-container">
+            <div class="form">
+                <ProjectRecapCommissions/>
+            </div>
+        </div>
     </section>
+    <section class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-piggy-bank"
+            ></i>
+            {{ t('project.budget') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <ProjectRecapBudget :load-data="false"/>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-flag"
+            ></i>
+            {{ t('project.goals') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <ProjectRecapGoals/>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-file-earmark"
+            ></i>
+            {{ t('project.documents') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <ProjectRecapDocuments/>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-check-lg"
+            ></i>
+            {{ t('project.status.title') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <div class="display-row">
+                    <p class="row-title">{{ t('status') }}</p>
+                    <ProjectStatusIndicator
+                        :project-status="projectStore.project?.projectStatus"
+                        :show-draft="false"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-chat"
+            ></i>
+            {{ t('project.comments.title') }}
+        </h2>
+        <div class="form-container">
+            <div class="form">
+                <ProjectComments
+                    v-if="isLoaded"
+                    :project="projectStore.project?.id"
+                />
+            </div>
+        </div>
+    </section>
+    <ProjectValidation/>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+
+.flex-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 </style>

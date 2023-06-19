@@ -14,14 +14,12 @@ const props = defineProps({
             <QCheckbox
                 :label="t('forms.gdpr')"
                 :model-value="props.hasConsent"
+                aria-label="t('forms.gdpr')"
+                color="secondary"
                 @click="$emit('updateConsent')"
             />
         </div>
     </fieldset>
 </template>
 
-<style lang="scss" scoped>
-legend {
-    font-size: 1.5em;
-}
-</style>
+

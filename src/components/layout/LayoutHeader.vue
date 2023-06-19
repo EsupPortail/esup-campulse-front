@@ -37,6 +37,7 @@ function ToggleMenu() {
         :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
         elevated
         height-hint="98"
+        role="banner"
     >
         <QToolbar>
             <QToolbarTitle>
@@ -53,7 +54,10 @@ function ToggleMenu() {
                     id="mobile-menu-button"
                     @click="ToggleMenu"
                 >
-                    <i class="bi bi-list"></i>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-list"
+                    ></i>
                 </button>
                 <span
                     id="mobile-menu-background"
@@ -76,7 +80,10 @@ function ToggleMenu() {
 
             <div id="header-title">
                 <h1 v-if="title">
-                    <span id="header-title-icon">
+                    <span
+                        aria-hidden="true"
+                        id="header-title-icon"
+                    >
                         <i class="bi bi-geo-alt space-1-icon"></i>
                         <i class="bi bi-book space-2-icon"></i>
                         <i class="bi bi-send space-3-icon"></i>

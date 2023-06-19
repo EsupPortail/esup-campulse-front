@@ -5,10 +5,10 @@ import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import useProjectDocuments from '@/composables/useProjectDocuments'
 import {useAxios} from '@/composables/useAxios'
-import {_documents, _processDocuments} from '~/fixtures/document.mock'
+import {_documents, _processDocument, _processDocuments, _projectDocuments} from '~/fixtures/document.mock'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {_project} from '~/fixtures/project.mock'
-import type {ProcessDocument} from '#/documents'
+import type {DocumentUpload, ProcessDocument} from '#/documents'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -45,6 +45,9 @@ describe('useProjectDocuments', () => {
         vi.restoreAllMocks()
         projectStore.project = undefined
         documentUploads.value = []
+        documents.value = []
+        processDocuments.value = []
+        projectStore.projectDocuments = []
     })
 
     const {
@@ -54,18 +57,66 @@ describe('useProjectDocuments', () => {
         processDocuments,
         uploadDocuments,
         deleteDocumentUpload,
-        documentUploads
+        documentUploads,
+        getFile,
+        initProcessProjectDocuments
     } = useProjectDocuments()
     const {axiosPublic, axiosAuthenticated} = useAxios()
+    const mockedAxios = vi.mocked(axiosPublic, true)
 
-    describe('getDocumentTypes', () => {
-        it('should get documents on /documents/', async () => {
-            const mockedAxios = vi.mocked(axiosPublic, true)
-            mockedAxios.get.mockResolvedValueOnce({data: _documents})
-            await getDocuments('all')
-            expect(axiosPublic.get).toHaveBeenCalledOnce()
-            expect(axiosPublic.get).toHaveBeenCalledWith('/documents/')
-            expect(documents.value).toEqual(_documents)
+    describe('initProcessProjectDocuments', () => {
+        it('should initialize documents and pathFiles', () => {
+            documents.value = _documents
+            initProcessProjectDocuments()
+            expect(processDocuments.value).toEqual(_documents.map(doc => ({
+                document: doc.id,
+                isMultiple: doc.isMultiple,
+                description: doc.description,
+                pathFile: doc.isMultiple ? [] : undefined,
+                isRequiredInProcess: doc.isRequiredInProcess,
+                mimeTypes: doc.mimeTypes
+            })))
+        })
+    })
+
+    describe('initDocumentUploads', () => {
+        it('should initialize documents and pathFiles', () => {
+            projectStore.projectDocuments = _projectDocuments
+            processDocuments.value = _processDocuments as ProcessDocument[]
+            const test: ProcessDocument[] = []
+            const documentIds = processDocuments.value.map((document) => (document.document))
+            projectStore.projectDocuments.forEach((document) => {
+                if (documentIds.includes(document.document)) {
+                    test.push({
+                        id: document.id,
+                        document: document.document,
+                        pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                        name: document.name as string
+                    })
+                }
+            })
+            expect(documentUploads.value).toEqual(test)
+        })
+    })
+
+    describe('getDocuments', () => {
+        describe('if all process documents are required', () => {
+            it('should get all documents', async () => {
+                mockedAxios.get.mockResolvedValueOnce({data: _documents})
+                await getDocuments('all')
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/documents/')
+                expect(documents.value).toEqual(_documents)
+            })
+        })
+        describe('if all process documents are required', () => {
+            it('should get specified document process type', async () => {
+                mockedAxios.get.mockResolvedValueOnce({data: _documents})
+                await getDocuments('DOCUMENT_PROJECT')
+                expect(axiosPublic.get).toHaveBeenCalledOnce()
+                expect(axiosPublic.get).toHaveBeenCalledWith('/documents/?process_types=DOCUMENT_PROJECT')
+                expect(documents.value).toEqual(_documents)
+            })
         })
     })
 
@@ -99,9 +150,8 @@ describe('useProjectDocuments', () => {
     })
 
     describe('uploadDocuments', () => {
-        processDocuments.value = _processDocuments as ProcessDocument[]
-
         it('should post all documents required in the ongoing process', async () => {
+            processDocuments.value = _processDocuments as ProcessDocument[]
             await uploadDocuments(1)
             expect(axiosAuthenticated.post).toHaveBeenCalledTimes(3)
             const documentUpload = new DocumentUpload(processDocuments.value[1].pathFile as Blob, 1, processDocuments.value[1].document as number)
@@ -117,6 +167,16 @@ describe('useProjectDocuments', () => {
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
             expect(documentUploads.value.length).toEqual(1)
             expect(documentUploads.value[0].id).toEqual(2)
+        })
+    })
+
+    describe('getFile', () => {
+        it('should get file', async () => {
+            mockedAxios.get.mockResolvedValueOnce({data: {}})
+            const file = await getFile('path')
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('path', {responseType: 'blob'})
+            expect(file).toEqual({})
         })
     })
 })

@@ -8,12 +8,12 @@ defineProps({
 
 <template>
     <QBanner
-            v-if="isDisplayed"
-            class="bg-primary text-white"
+        v-if="isDisplayed"
     >
         <div
-                id="home-banner-icon"
-                class="variant-default"
+            id="home-banner-icon"
+            class="variant-default"
+            aria-hidden="true"
         >
             <i class="bi bi-info-circle"></i>
         </div>
@@ -41,6 +41,6 @@ defineProps({
 @import '@/assets/styles/home.scss';
 
 .text-h6 {
-  font-weight: $xbold-weight;
+    font-weight: $xbold-weight;
 }
 </style>

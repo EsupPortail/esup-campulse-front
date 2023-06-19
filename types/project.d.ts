@@ -1,5 +1,5 @@
 import type {DocumentUpload} from '#/documents'
-import type {User} from '#/user'
+import type {Commission} from '#/commissions'
 
 export interface Project {
     id: number,
@@ -7,14 +7,10 @@ export interface Project {
     plannedStartDate: string,
     plannedEndDate: string,
     plannedLocation: string,
-    otherFirstName: string | null,
-    otherLastName: string | null,
-    otherEmail: string | null,
-    otherPhone: string | null,
     user: number | null,
     association: number | null,
+    associationUser: number | null,
     categories?: ProjectCategoryName[],
-    commissionDates?: CommissionDate[],
     budgetPreviousEdition: number,
     targetAudience: string,
     amountStudentsAudience: number,
@@ -27,7 +23,8 @@ export interface Project {
     preventionSafety: string,
     marketingCampaign: string,
     projectStatus: ProjectStatus,
-    projectComments?: ProjectComment[]
+    creationDate: string,
+    editionDate: string
 }
 
 export interface ProjectList {
@@ -35,8 +32,12 @@ export interface ProjectList {
     name: string,
     association: number | null,
     user: number | null,
+    associationUser: number | null,
     editionDate: string,
-    projectStatus: ProjectStatus
+    plannedEndDate: string,
+    plannedLocation: string,
+    projectStatus: ProjectStatus,
+    commission: Commission
 }
 
 type ProjectStatus =
@@ -60,23 +61,15 @@ export interface ProjectCategoryName {
     name: string
 }
 
-interface CommissionDate {
-    id: number,
-    submissionDate: string,
-    commissionDate: string,
-    commission: number
-}
 
 export interface ProjectBasicInfos {
     name: string,
     plannedStartDate: string,
     plannedEndDate: string,
     plannedLocation: string,
-    otherFirstName: string | null,
-    otherLastName: string | null,
-    otherEmail: string | null,
     user: number | null,
-    association: number | null
+    association: number | null,
+    associationUser: number | null
 }
 
 export interface ProjectBudget {
@@ -96,15 +89,16 @@ export interface ProjectGoals {
     marketingCampaign: string,
 }
 
-export interface ProjectCommissionDate {
+export interface ProjectCommissionFund {
     id?: number,
     project?: number,
-    commissionDate: number,
+    commissionFund: number,
     isFirstEdition?: boolean,
     amountAskedPreviousEdition?: number | string,
     amountEarnedPreviousEdition?: number | string,
     amountAsked?: number | string,
-    amountEarned?: number | string
+    amountEarned?: number | string,
+    isValidatedByAdmin: boolean
 }
 
 export interface ProjectReview {
@@ -143,10 +137,18 @@ export interface ProjectAssociation {
 
 export interface ProjectComment {
     id: number,
-    project: Project | undefined,
-    user: User | undefined,
+    project: number,
+    user: {
+        id: number,
+        firstName: string,
+        lastName: string
+    },
     text: string,
+<<<<<<< HEAD
     creation_date: string
+=======
+    creationDate: string,
+>>>>>>> develop
 }
 
 // STORE
@@ -154,8 +156,11 @@ export interface ProjectStore {
     project: Project | undefined,
     projects: ProjectList[],
     projectCategories: ProjectCategory[],
-    projectCommissionDates: ProjectCommissionDate[],
+    projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[],
+<<<<<<< HEAD
     projectReview: ProjectReview | undefined
+=======
+>>>>>>> develop
 }

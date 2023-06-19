@@ -90,7 +90,7 @@ onBeforeRouteLeave((to, from, next) => {
             </div>
 
             <div class="form-container">
-                <div class="form">
+                <div class="form form-width">
                     <FormUserInfosEdition
                         :edited-by-staff="true"
                         :user="userManagerStore.user"
@@ -114,7 +114,7 @@ onBeforeRouteLeave((to, from, next) => {
             </div>
 
             <div class="form-container">
-                <div class="form">
+                <div class="form form-width">
                     <FormUpdateUserAssociations/>
                     <FormRegisterUserAssociations/>
                 </div>
@@ -129,62 +129,46 @@ onBeforeRouteLeave((to, from, next) => {
                 </h2>
             </div>
             <div class="form-container">
-                <div class="form">
+                <div class="form form-width">
                     <FormUserGroups/>
-                    <ul>
-                        <li>
-                            <strong>{{ t('user.is-cas') }}</strong> :
-                            {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
-                        </li>
-                        <li>
-                            <strong>{{ t("user.is-validated-by-admin") }}</strong>
-                            {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
-                        </li>
-                    </ul>
+                    <p class="paragraph">
+                        <ul>
+                            <li>
+                                <strong>{{ t('user.is-cas') }}</strong> :
+                                {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
+                            </li>
+                            <li>
+                                <strong>{{ t('user.is-validated-by-admin') }}</strong>
+                                {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
+                            </li>
+                        </ul>
+                    </p>
                 </div>
             </div>
-            <div class="form-container">
-                <div class="form">
-                    <section class="btn-group">
-                        <QBtn
-                            :label="t('back')"
-                            icon="mdi-arrow-left-circle"
-                            @click="openAlert = true"
-                        />
-                        <AlertLeaveEdition
-                            :open-alert="openAlert"
-                            :text="t('alerts.leave-user-edition')"
-                            @closeAlert="openAlert = !openAlert"
-                            @leaveEdition="onLeaveEdition"
-                        />
-                        <AlertConfirmUserUpdate
-                            v-if="groupChoiceIsValid"
-                            @has-validated="hasValidated = true"
-                        />
-                        <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
-                    </section>
-                </div>
-            </div>
+
+            <section class="btn-group">
+                <QBtn
+                    :label="t('back')"
+                    icon="bi-box-arrow-left"
+                    @click="openAlert = true"
+                />
+                <AlertLeaveEdition
+                    :open-alert="openAlert"
+                    :text="t('alerts.leave-user-edition')"
+                    @closeAlert="openAlert = !openAlert"
+                    @leaveEdition="onLeaveEdition"
+                />
+                <AlertConfirmUserUpdate
+                    v-if="groupChoiceIsValid"
+                    @has-validated="hasValidated = true"
+                />
+                <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
+            </section>
         </section>
     </QForm>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
-
-ul {
-    margin-left: 1rem;
-    list-style: none;
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    .form, .form-title {
-        width: $halfSize;
-        margin: auto;
-    }
-
-    .btn-group {
-        justify-content: center;
-    }
-}
+@import '@/assets/styles/forms.scss';
 </style>

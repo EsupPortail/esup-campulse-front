@@ -1,4 +1,4 @@
-import type {Document} from '#/documents'
+import type {Document, DocumentUpload, DocumentUploadStatus, MimeType, ProcessDocument} from '#/documents'
 
 export const _document: Document = {
     id: 1,
@@ -96,5 +96,46 @@ export const _processDocuments = [
         mimeTypes: [
             'application/pdf'
         ]
+    }
+]
+
+export const _processDocument: ProcessDocument = {
+    id: 1,
+    uploadDate: '2301-06-20',
+    pathFile: 'pathFile',
+    documentUploadStatus: 'DOCUMENT_VALIDATED',
+    document: 1,
+    description: 'description',
+    isMultiple: false,
+    isRequiredInProcess: true,
+    mimeTypes: ['application/pdf'],
+    name: 'nom du document',
+    pathTemplate: 'pathTemplate'
+}
+
+export const _projectDocuments: DocumentUpload[] = [
+    {
+        id: 1,
+        uploadDate: '2023-06-19',
+        pathFile: 'pathFile',
+        size: 1000,
+        documentUploadStatus: 'DOCUMENT_VALIDATED',
+        document: 1,
+        user: null,
+        association: 1,
+        project: 1,
+        name: 'documentName'
+    },
+    {
+        id: 2,
+        uploadDate: '2023-06-21',
+        pathFile: 'pathFile',
+        size: 1000,
+        documentUploadStatus: 'DOCUMENT_VALIDATED',
+        document: 2,
+        user: 1,
+        association: null,
+        project: 2,
+        name: 'documentName'
     }
 ]

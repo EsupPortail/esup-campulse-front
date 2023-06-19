@@ -16,7 +16,7 @@ import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const userStore = useUserStore()
-const {isStaff, initGroupPermToJoinAssociation, groupCanJoinAssociation} = useUserGroups()
+const {isStaff, initGroupPermToJoinAssociation} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
 const {notify, loading} = useQuasar()
 const {userAssociationsRegister} = useSecurity()
@@ -90,39 +90,39 @@ onMounted(() => {
 
 <template>
     <QTabs
-            v-model="tab"
-            active-color="primary"
-            dense
-            indicator-color="primary"
-            narrow-indicator
+        v-model="tab"
+        active-color="primary"
+        dense
+        indicator-color="primary"
+        narrow-indicator
     >
         <QTab
-                :label="t('dashboard.my-infos')"
-                name="infos"
+            :label="t('dashboard.my-infos')"
+            name="infos"
         />
         <QTab
-                v-if="!isStaff"
-                :label="t('dashboard.my-associations')"
-                name="associations"
+            v-if="!isStaff"
+            :label="t('dashboard.my-associations')"
+            name="associations"
         />
         <QTab
-                v-if="!userStore.user?.isCas"
-                :label="t('dashboard.my-password')"
-                name="password"
+            v-if="!userStore.user?.isCas"
+            :label="t('dashboard.my-password')"
+            name="password"
         />
     </QTabs>
 
     <QTabPanels
-            v-model="tab"
-            animated
+        v-model="tab"
+        animated
     >
         <QTabPanel name="infos">
             <section class="association-cards dashboard-section">
                 <div class="form-title">
                     <h2>
                         <i
-                                aria-hidden="true"
-                                class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                         ></i>
                         {{ t('dashboard.my-infos') }}
                     </h2>
@@ -131,18 +131,19 @@ onMounted(() => {
                 <div class="form-container">
                     <div class="form">
                         <QForm
-                                class="q-gutter-md"
-                                @submit.prevent="onUpdateUserInfos"
+                            class="q-gutter-md"
+                            @submit.prevent="onUpdateUserInfos"
                         >
                             <FormUserInfosEdition
-                                    v-if="userStore.user"
-                                    :edited-by-staff="false"
-                                    :user="userStore.user"
+                                v-if="userStore.user"
+                                :edited-by-staff="false"
+                                :user="userStore.user"
                             />
                             <QBtn
-                                    :label="t('validate-changes')"
-                                    icon="bi-check-lg"
-                                    type="submit"
+                                :label="t('validate-changes')"
+                                class="validate-btn"
+                                icon="bi-check-lg"
+                                type="submit"
                             />
                         </QForm>
                     </div>
@@ -155,8 +156,8 @@ onMounted(() => {
                 <div class="form-title">
                     <h2>
                         <i
-                                aria-hidden="true"
-                                class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                         ></i>
                         {{ t('dashboard.association-user.my-associations') }}
                     </h2>
@@ -170,14 +171,14 @@ onMounted(() => {
             </div>
 
             <section
-                    v-if="userAssociations.length < 5"
-                    class="dashboard-section"
+                v-if="userAssociations.length < 5"
+                class="dashboard-section"
             >
                 <div class="form-title">
                     <h2>
                         <i
-                                aria-hidden="true"
-                                class="bi bi-pencil-square"
+                            aria-hidden="true"
+                            class="bi bi-pencil-square"
                         ></i>
                         {{ t('dashboard.association-user.new-associations') }}
                     </h2>
@@ -186,15 +187,15 @@ onMounted(() => {
                 <div class="form-container">
                     <div class="form">
                         <QForm
-                                @submit.prevent="onUpdateUserAssociations"
+                            @submit.prevent="onUpdateUserAssociations"
                         >
                             <FormRegisterUserAssociations/>
                             <section class="btn-group">
                                 <QBtn
-                                        :label="t('back')"
-                                        :to="{ name: 'Dashboard' }"
-                                        class="back-btn"
-                                        icon="bi-chevron-compact-left"
+                                    :label="t('back')"
+                                    :to="{ name: 'Dashboard' }"
+                                    class="back-btn"
+                                    icon="bi-chevron-compact-left"
                                 />
                             </section>
                         </QForm>
@@ -212,4 +213,5 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
+
 </style>

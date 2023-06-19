@@ -40,7 +40,7 @@ onMounted(initDelegationParams)
 const dateIsLegal = ref<boolean>(false)
 
 const initDateIsLegal = () => {
-    dateIsLegal.value = fromDateIsAnterior(delegation.from, delegation.to)
+    dateIsLegal.value = fromDateIsAnterior(delegation.from, delegation.to, false)
 }
 watch(() => delegation.from, initDateIsLegal)
 watch(() => delegation.to, initDateIsLegal)
@@ -77,7 +77,7 @@ async function onDelegatePresidency(activate: boolean) {
 <template>
     <QBtn
         :label="t('delegate')"
-        color="primary"
+        color="secondary"
         icon="bi-pencil"
         @click="openDelegationPanel = true"
     />
@@ -92,7 +92,10 @@ async function onDelegatePresidency(activate: boolean) {
                     @submit.prevent="onDelegatePresidency(true)"
                 >
                     <h3 class="section-title">
-                        <i class="bi bi-card-text"></i>
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-card-text"
+                        ></i>
                         {{ t('dashboard.association-user.delegate-presidency') }}
                     </h3>
 
@@ -118,11 +121,13 @@ async function onDelegatePresidency(activate: boolean) {
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
+                        color="secondary"
                     />
                     <QBtn
                         v-close-popup
                         :disable="!dateIsLegal"
                         :label="t('activate')"
+                        color="secondary"
                         type="submit"
                     />
                     <QBtn

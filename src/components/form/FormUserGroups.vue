@@ -19,12 +19,16 @@ const {
     preSelectGroup,
     initGroupPermToJoinAssociation,
     commissionMemberIsSelected,
-    initCommissionMemberSelection
 } = useUserGroups()
 const {notify, loading} = useQuasar()
 const route = useRoute()
-const {getCommissions, commissionOptions, userCommissions} = useCommissions()
-const {initUserCommissions} = useCommissions()
+const {
+    getFunds,
+    fundsLabels,
+    initFundsLabels,
+    userFunds,
+    initUserFunds
+} = useCommissions()
 const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
@@ -32,8 +36,6 @@ onMounted(async () => {
     await onGetGroups()
     onInitGroupLabels()
     await onGetCommissions()
-    initCommissionMemberSelection()
-    initUserCommissions()
     loading.hide()
 })
 
@@ -57,7 +59,9 @@ async function onGetGroups() {
 
 async function onGetCommissions() {
     try {
-        await getCommissions()
+        await getFunds()
+        initFundsLabels()
+        initUserFunds()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -100,16 +104,17 @@ function onInitGroupLabels() {
             <QOptionGroup
                 v-model="newGroups"
                 :options="groupLabels"
-                color="teal"
+                aria-label="t('forms.group-role')"
+                color="secondary"
                 type="checkbox"
                 @update:model-value="initGroupPermToJoinAssociation(newGroups)"
             />
         </QField>
         <QSelect
             v-if="commissionMemberIsSelected"
-            v-model="userCommissions"
+            v-model="userFunds"
             :label="t('commissions')"
-            :options="commissionOptions"
+            :options="fundsLabels"
             :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
             emit-value
             filled
@@ -121,11 +126,11 @@ function onInitGroupLabels() {
     </fieldset>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 
 .q-option-group {
-    color: $dashboardColor;
-    padding: 1rem;
+  color: $dashboardColor;
+  padding: 1rem;
 }
 </style>

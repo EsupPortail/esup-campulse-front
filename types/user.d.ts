@@ -116,14 +116,14 @@ export interface UserGroup {
     userId: number,
     groupId: number
     institutionId?: number | null,
-    commissionId?: number | null
+    fundId?: number | null
 }
 
 export interface UserGroupRegister {
-    username: string,
-    group: number,
+    user: string,
+    group: number | null,
     institution: number | null,
-    commission: number | null
+    fund: number | null
 }
 
 // User manager store

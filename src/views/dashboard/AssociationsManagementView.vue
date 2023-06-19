@@ -71,7 +71,8 @@ const columns: QTableProps['columns'] = [
         label: t('directory.labels.association-institution'),
         field: 'institution',
         sortable: true,
-        sort: (a, b) => (associationStore.institutions.find(obj => obj.id === a)?.name as string).localeCompare(associationStore.institutions.find(obj => obj.id === b)?.name as string)
+        sort: (a, b) => (associationStore.institutions.find(obj => obj.id === a)?.name as string)
+            .localeCompare(associationStore.institutions.find(obj => obj.id === b)?.name as string)
     },
     {
         name: 'activityField',
@@ -79,7 +80,8 @@ const columns: QTableProps['columns'] = [
         label: t('directory.labels.association-activity-field'),
         field: 'activityField',
         sortable: true,
-        sort: (a, b) => (associationStore.activityFields.find(obj => obj.id === a)?.name as string).localeCompare(associationStore.activityFields.find(obj => obj.id === b)?.name as string)
+        sort: (a, b) => (associationStore.activityFields.find(obj => obj.id === a)?.name as string)
+            .localeCompare(associationStore.activityFields.find(obj => obj.id === b)?.name as string)
     },
     {
         name: 'status',
@@ -96,39 +98,38 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {
-        name: 'actions',
+        name: 'edition',
         align: 'center',
-        label: t('directory.labels.association-actions'),
-        field: 'actions',
+        label: t('directory.labels.association-edition'),
+        field: 'edition',
         sortable: false
     },
 ]
 </script>
 
 <template>
-    <div class="form-title">
-        <h2>
-            <QIcon name="mdi-pencil-box-outline"/>
-            {{ t('dashboard.association-list') }}
-        </h2>
-        <QBtn
+    <section class="dashboard-section">
+        <div class="form-title">
+            <h2>
+                <QIcon name="mdi-pencil-box-outline"/>
+                {{ t('dashboard.association-list') }}
+            </h2>
+            <QBtn
                 v-if="hasPerm('add_association')"
                 :label="t('dashboard.create-association')"
                 :to="{name: 'CreateAssociation'}"
-                class="small-button"
+                class="create-asso-btn"
                 color="secondary"
-                icon="mdi-plus-box"
-        />
-    </div>
-
-    <div class="form-container">
-        <div class="form">
-            <FormAssociationSearch
+                icon="bi-plus-circle"
+            />
+        </div>
+        <div class="form-container">
+            <div class="form">
+                <FormAssociationSearch
                     v-if="route.name"
                     :route="route.name"
-            />
-
-            <QTable
+                />
+                <QTable
                     v-model:selected="selected"
                     :columns="columns"
                     :loading="!associations"
@@ -137,102 +138,126 @@ const columns: QTableProps['columns'] = [
                     :title="t('directory.title')"
                     row-key="name"
                     selection="multiple"
-            >
-                <template v-slot:body="props">
-                    <QTr :props="props">
-                        <QTd>
-                            <QCheckbox v-model="props.selected"/>
-                        </QTd>
-                        <QTd
+                >
+                    <template v-slot:body="props">
+                        <QTr :props="props">
+                            <QTd>
+                                <QCheckbox v-model="props.selected"/>
+                            </QTd>
+                            <QTd
                                 key="name"
                                 :props="props"
-                        >
-                            {{ props.row.name }}
-                        </QTd>
-                        <QTd
+                            >
+                                {{ props.row.name }}
+                            </QTd>
+                            <QTd
                                 key="acronym"
                                 :props="props"
-                        >
-                            {{ props.row.acronym }}
-                        </QTd>
-                        <QTd
+                            >
+                                {{ props.row.acronym }}
+                            </QTd>
+                            <QTd
                                 key="institution"
                                 :props="props"
-                        >
-                            {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
-                        </QTd>
-                        <QTd
+                            >
+                                {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
+                            </QTd>
+                            <QTd
                                 key="activityField"
                                 :props="props"
-                        >
-                            {{ associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name }}
-                        </QTd>
-                        <QTd
+                            >
+                                {{
+                                    associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name
+                                }}
+                            </QTd>
+                            <QTd
                                 key="status"
                                 :props="props"
                                 class="state-cell"
-                        >
-                            <span
+                            >
+                                <span
                                     v-if="!props.row.isEnabled"
                                     class="form-state"
-                            >
-                                {{ t('association.disabled') }}
-                                <span class="form-state-icon form-state-red"><i class="bi bi-x-lg"></i></span>
-                            </span>
-
-                            <span
+                                >
+                                    {{ t('association.disabled') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
+                                    ><i class="bi bi-x-lg"></i></span>
+                                </span>
+                                <span
                                     v-else
                                     class="form-state"
-                            >
-                                {{ t('association.enabled') }}
-                                <span class="form-state-icon form-state-green"><i class="bi bi-check-lg"></i></span>
-                            </span>
-                        </QTd>
-                        <QTd
+                                >
+                                    {{ t('association.enabled') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-green"
+                                    ><i class="bi bi-check-lg"></i></span>
+                                </span>
+                            </QTd>
+                            <QTd
                                 key="public"
                                 :props="props"
                                 class="state-cell"
-                        >
-                            <span
+                            >
+                                <span
                                     v-if="!props.row.isPublic"
                                     class="form-state"
-                            >
-                                {{ t('association.not-public') }}
-                                <span class="form-state-icon form-state-red"><i class="bi bi-x-lg"></i></span>
-                            </span>
-
-                            <span
+                                >
+                                    {{ t('association.not-public') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
+                                    ><i class="bi bi-x-lg"></i></span>
+                                </span>
+                                <span
                                     v-else
                                     class="form-state"
-                            >
-                                {{ t('association.public') }}
-                                <span class="form-state-icon form-state-green"><i class="bi bi-check-lg"></i></span>
-                            </span>
-                        </QTd>
-                        <QTd
-                                key="actions"
+                                >
+                                    {{ t('association.public') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-green"
+                                    ><i class="bi bi-check-lg"></i></span>
+                                </span>
+                            </QTd>
+                            <QTd
+                                key="edition"
                                 :props="props"
                                 class="actions-cell-compact"
-                        >
-                            <QBtn
-                                    :label="t('association.edit')"
-                                    :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                                    color="primary"
-                                    icon="mdi-pencil"
-                            />
-                        </QTd>
-                    </QTr>
-                </template>
-            </QTable>
-
-            <AlertConfirmAssociationsChanges
+                            >
+                                <div class="button-container">
+                                    <QBtn
+                                        :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                                        aria-label="Editer"
+                                        icon="bi-pencil"
+                                    />
+                                </div>
+                            </QTd>
+                        </QTr>
+                    </template>
+                </QTable>
+                <AlertConfirmAssociationsChanges
                     :selectedAssociations="selected"
                     @update-selected-associations="selected = []"
-            />
+                />
+            </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/variables.scss';
+
+::v-deep(.q-table__container) {
+  .q-table {
+    thead tr {
+      background-color: $dashboardColor;
+    }
+  }
+}
+
 </style>

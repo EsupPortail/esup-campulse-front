@@ -22,7 +22,7 @@ export default function () {
     }
 
     // To test
-    function fromDateIsAnterior(from: string, to: string) {
+    function fromDateIsAnterior(from: string, to: string, enablePastDate: boolean) {
         let dateFrom: string | Date = from
         let dateTo: string | Date = to
         if (from !== '') {
@@ -34,7 +34,7 @@ export default function () {
         const dateToday = new Date()
         dateToday.setHours(0, 0, 0, 0)
         let result = true
-        if ((dateFrom < dateToday) || (dateTo !== '' && dateTo < dateToday)) result = false
+        if ((dateFrom < dateToday && !enablePastDate) || (dateTo !== '' && dateTo < dateToday && !enablePastDate)) result = false
         else if (dateTo !== '' && dateFrom > dateTo) result = false
         return result
     }

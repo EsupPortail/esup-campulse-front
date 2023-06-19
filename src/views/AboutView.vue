@@ -43,7 +43,7 @@ function findContentObject(code: string) {
     return content.about.find(obj => obj.code === code)
 }
 
-watch(() => content.about.length, () => {
+watch(() => content.about, () => {
     aboutApp.value = findContentObject('ABOUT_APP')
     aboutFunding.value = findContentObject('ABOUT_FUNDING')
     aboutPartnership.value = findContentObject('ABOUT_PARTNERSHIP')
@@ -61,21 +61,21 @@ watch(() => content.about.length, () => {
             </div>
 
             <AboutCard
-                    :body="aboutApp?.body"
-                    :cssClass="content.cards[0].cssClass"
-                    :header="aboutApp?.header"
+                :body="aboutApp?.body"
+                :cssClass="content.cards[0].cssClass"
+                :header="aboutApp?.header"
             />
             <AboutCard
-                    :body="aboutPartnership?.body"
-                    :cssClass="content.cards[1].cssClass"
-                    :header="aboutPartnership?.header"
-                    :label="aboutPartnership?.label"
+                :body="aboutPartnership?.body"
+                :cssClass="content.cards[1].cssClass"
+                :header="aboutPartnership?.header"
+                :label="aboutPartnership?.label"
             />
             <AboutCard
-                    :body="aboutFunding?.body"
-                    :cssClass="content.cards[2].cssClass"
-                    :header="aboutFunding?.header"
-                    :label="aboutFunding?.label"
+                :body="aboutFunding?.body"
+                :cssClass="content.cards[2].cssClass"
+                :header="aboutFunding?.header"
+                :label="aboutFunding?.label"
             />
         </div>
 
@@ -86,24 +86,24 @@ watch(() => content.about.length, () => {
 
             <div class="services-section">
                 <ServiceCard
-                        :body="homeAssociation?.body"
-                        :cssClass="content.cards[0].cssClass"
-                        :footer="homeAssociation?.header"
-                        :header="homeAssociation?.header"
+                    :body="homeAssociation?.body"
+                    :cssClass="content.cards[0].cssClass"
+                    :footer="homeAssociation?.header"
+                    :header="homeAssociation?.header"
                 />
 
                 <ServiceCard
-                        :body="homeCharter?.body"
-                        :cssClass="content.cards[1].cssClass"
-                        :footer="homeCharter?.header"
-                        :header="homeCharter?.header"
+                    :body="homeCharter?.body"
+                    :cssClass="content.cards[1].cssClass"
+                    :footer="homeCharter?.header"
+                    :header="homeCharter?.header"
                 />
 
                 <ServiceCard
-                        :body="homeProject?.body"
-                        :cssClass="content.cards[2].cssClass"
-                        :footer="homeProject?.footer"
-                        :header="homeProject?.header"
+                    :body="homeProject?.body"
+                    :cssClass="content.cards[2].cssClass"
+                    :footer="homeProject?.footer"
+                    :header="homeProject?.header"
                 />
             </div>
         </div>
@@ -118,8 +118,8 @@ watch(() => content.about.length, () => {
                     <h4>{{ t('about.intro-contact') }}</h4>
 
                     <RouterLink
-                            :to="{name: 'Contact'}"
-                            class="contact-link"
+                        :to="{name: 'Contact'}"
+                        class="contact-link"
                     >
                         {{ t('about.contact-us') }}
                     </RouterLink>
@@ -128,33 +128,33 @@ watch(() => content.about.length, () => {
         </div>
     </section>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/home.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/contact.scss';
 
 .home-section {
-  padding: 2rem 0;
+    padding: 2rem 0;
 
-  &.home-section-cape, &.home-section-annuaire, &.home-section-charte {
-    background-image: none;
-  }
+    &.home-section-cape, &.home-section-annuaire, &.home-section-charte {
+        background-image: none;
+    }
 
 }
 
 .form-container {
-  padding: 2rem 0;
+    padding: 2rem 0;
 
-  &:nth-child(1), &:nth-child(2), &:nth-child(3) {
-    &::before, &::after {
-      background: none;
+    &:nth-child(1), &:nth-child(2), &:nth-child(3) {
+        &::before, &::after {
+            background: none;
+        }
     }
-  }
 
-  &:nth-child(4) {
-    &::before {
-      background: none;
+    &:nth-child(4) {
+        &::before {
+            background: none;
+        }
     }
-  }
 }
 </style>

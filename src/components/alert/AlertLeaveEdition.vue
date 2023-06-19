@@ -14,9 +14,9 @@ const props = defineProps({
         :model-value="props.openAlert"
         persistent
     >
-        <QCard>
+        <QCard class="variant-space-4">
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ props.text }}</span>
+                <p class="paragraph">{{ props.text }}</p>
             </QCardSection>
 
             <QCardActions align="right">
@@ -38,3 +38,12 @@ const props = defineProps({
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+
+.q-card {
+    padding: 1rem
+}
+</style>

@@ -21,3 +21,8 @@ const {t} = useI18n()
         </div>
     </div>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/dashboard.scss";
+@import "@/assets/styles/forms.scss";
+</style>

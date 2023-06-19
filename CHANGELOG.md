@@ -1,27 +1,5 @@
-- 🐛 Fix type imports
-- 🐛 Fix submitProject targetAudience and amountsStudentsAudience fields
-- :construction: icons on home screen
-- :lipstick: update UI
-- :lipstick: fix: btns padding now fixed
-- 🚧 Start working on project detail view after submission
-- 🎨 Add address fields to userInfos management
-- 🎨 Update nav links to be dynamic
-- ♿️ Fix aria-label for primary nav
-- ♿️ Update alt on partners' logos
-- ✨ Add address fields on individual project bearer
-- 🔧 Removed XSS header from Nginx conf.
-- ✨ Add zipcode, city and country to associations
-- 💄 Update button icons and space colorVariant on LDAP search
-- 🎨 Allow cross search between API and local searches for users and associations management
-- :lipstick: fix: project submission btns
-- 🐛 Fix bug on advancedSearch for associations and users
-- :lipstick: fix: project submission
-- :lipstick: fix: h3 sizes
-- 🩹 Quick fixes on form style and logOut
-- ✅ Fix tests after moving filterizeSearch to useUtility
-- ✨ New CAPE dashboard for students with several tabs #79
-- :lipstick: fix: AssociationManagement table size
-- ✨ Search form for users in manager dashboard #149
-- :art: fix: better SCSS import structure to homeview
-- :adhesive_bandage: fix: about page with the modifications asked
-- 🩹 Fix pop-up opening without changes in AssociationEdition
+- ✅ Add and update unit tests
+- 🐛 Fix bugs after functional tests
+- 💄 Quick style fixes for review
+- ♿️ Improve accessibility
+- 👷 Restart CI

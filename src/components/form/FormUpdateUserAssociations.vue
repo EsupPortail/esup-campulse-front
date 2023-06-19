@@ -52,11 +52,12 @@ async function onGetUserAssociations() {
     >
         <QCardSection>
             <section id="association-user-update">
-                <h4 class="title-4">{{ association.name }}</h4>
+                <h4 class="title-3">{{ association.name }}</h4>
                 <QOptionGroup
                     v-model="association.role"
                     :options="association.options"
                     color="teal"
+                    aria-label="t('forms.association-role')"
                 />
                 <div class="btn-group btn-delete">
                     <div>
@@ -64,14 +65,14 @@ async function onGetUserAssociations() {
                             v-if="!association.deleteAssociation"
                             :label="t('dashboard.association-user.delete-association')"
                             color="delete"
-                            icon="mdi-delete"
+                            icon="bi-trash"
                             @click="association.deleteAssociation = true"
                         />
                         <div v-else>
                             <div class="cancel-delete">
                                 <QBtn
                                     :label="t('cancel-delete')"
-                                    icon="mdi-cancel"
+                                    icon="bi-x-lg"
                                     @click="association.deleteAssociation = false"
                                 />
                                 <span class="delete-message">
@@ -86,7 +87,11 @@ async function onGetUserAssociations() {
     </QCard>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
+
+.q-card {
+    padding: 1rem;
+}
 </style>

@@ -28,16 +28,16 @@ defineProps({
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/home.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/_variables.scss';
 
 .section-title {
-    p {
-        font-size: 2.5rem;
-        font-weight: $semibold-weight;
-        line-height: 3rem;
-    }
+  p {
+    font-size: 2.5rem;
+    font-weight: $semibold-weight;
+    line-height: 3rem;
+  }
 }
 </style>

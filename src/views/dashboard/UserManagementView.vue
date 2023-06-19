@@ -82,7 +82,7 @@ const columns: QTableProps['columns'] = [
     {
         name: 'edition',
         align: 'left',
-        label: t('edit'),
+        label: t('consult'),
         field: 'edition',
         sortable: false
     }
@@ -92,19 +92,22 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-pencil-square"
-            ></i>
-            {{ route.name === 'ValidateUsers' ? t("user-manager.validation") : t("user-manager.management") }}
-        </h2>
+        <div class="form-title">
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
+                {{ route.name === 'ValidateUsers' ? t('user-manager.validation') : t('user-manager.management') }}
+            </h2>
+        </div>
         <div class="form-container">
             <div class="form">
                 <FormUserSearch
                     @advanced-search="(result) => users = result"
                     @get-users="onGetUsers"
                 />
+
                 <QTable
                     :columns="columns"
                     :loading="!users"
@@ -175,6 +178,7 @@ const columns: QTableProps['columns'] = [
                                     }}
 
                                     <span
+                                        aria-hidden="true" 
                                         :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
                                     >
                                         <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>
@@ -189,15 +193,15 @@ const columns: QTableProps['columns'] = [
                                 <div class="button-container">
                                     <QBtn
                                         v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"
+                                        :aria-label="t('modify')"
                                         :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
                                         icon="bi-pencil"
                                     />
                                     <QBtn
                                         v-if="route.name === 'ValidateUsers'"
-                                        :label="t('consult')"
+                                        :aria-label="t('consult')"
                                         :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
-                                        color="secondary"
-                                        icon="mdi-check-circle"
+                                        icon="bi-eye"
                                     />
                                 </div>
                             </QTd>
@@ -209,19 +213,16 @@ const columns: QTableProps['columns'] = [
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/variables.scss';
 
-li {
-    list-style: none;
-}
-
-.q-table {
-    width: $fullSize;
-}
-
-.form {
-    width: auto;
+::v-deep(.q-table__container) {
+    .q-table {
+        thead tr {
+            background-color: $dashboardColor;
+        }
+    }
 }
 </style>

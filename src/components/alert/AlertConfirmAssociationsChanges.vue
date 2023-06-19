@@ -132,7 +132,7 @@ async function onConfirmChanges(emailType: string) {
         />
         <QBtn
             :label="t('association.confirm-all-changes')"
-            color="primary"
+            color="secondary"
             icon="bi-check-lg"
             @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"
         />
@@ -198,9 +198,9 @@ async function onConfirmChanges(emailType: string) {
                 <QBtn
                     v-if="switches === 'enable'"
                     v-close-popup
+                    :icon="t('icons.association.is-enabled')"
                     :label="t('association.enable')"
                     color="green"
-                    icon="bi-unlock"
                     @click="onConfirmChanges('')"
                 />
                 <QBtn
@@ -223,3 +223,7 @@ async function onConfirmChanges(emailType: string) {
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+</style>

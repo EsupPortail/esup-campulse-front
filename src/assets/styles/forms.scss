@@ -3,7 +3,7 @@
 // A generic form wrapper.
 // Most forms on the site must be contained in both a "form" and "form-container" element.
 
-::v-deep(.form-container) {
+.form-container {
   position: relative;
   background-color: $backgroundColor2;
   padding: 1rem;
@@ -32,6 +32,15 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: $fullSize;
+
+    li {
+      list-style: none;
+    }
+  }
+
+  .instructions {
+    font-size: 1.2em;
   }
 
   @media screen and (min-width: $responsiveWidth) {
@@ -41,11 +50,11 @@
     .form {
       width: $halfSize;
     }
-
-    .form-width {
-      width: 90%;
-    }
   }
+}
+
+::v-deep(.q-card__section) {
+  padding: 1rem;
 }
 
 ::v-deep(.q-tab-panel) {
@@ -316,8 +325,6 @@ label.custom-label {
   margin-bottom: 0.3rem;
 }
 
-// Quasar buttons
-// MARK: DO NOT DELETE
 ::v-deep(.q-btn) {
   background-color: $annuaireColor;
   border-radius: .3rem;
@@ -333,7 +340,7 @@ label.custom-label {
   }
 
   &:focus-visible {
-    outline: 2px solid $outlineColor2 !important;
+    outline: 2px solid $outlineColor2;
     outline-offset: -2px;
   }
 
@@ -346,19 +353,19 @@ label.custom-label {
   }
 
   &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-    background-color: $annuaireColorHover !important;
+    background-color: $annuaireColorHover;
   }
 
   &:active, &.bg-primary:active, &.bg-secondary:active {
-    background-color: $annuaireColorActive !important;
+    background-color: $annuaireColorActive;
   }
 
   &.bg-primary {
-    background: $annuaireColor !important;
+    background: $annuaireColor;
   }
 
   &.bg-secondary {
-    background: $annuaireColor !important;
+    background: $annuaireColor;
   }
 
   .q-btn__content {
@@ -370,7 +377,7 @@ label.custom-label {
     }
   }
 
-  &.small-button {
+  &.create-asso-btn {
     padding: .375rem;
     margin: 0 0 0 0.5rem;
     font-size: 1rem;
@@ -382,7 +389,7 @@ label.custom-label {
 
   &.btn-alt {
     box-shadow: none;
-    background-color: $backgroundColor1 !important;
+    background-color: $backgroundColor1;
     border: 1px solid $annuaireColorText;
 
     .q-btn__content > * {
@@ -390,18 +397,18 @@ label.custom-label {
     }
 
     &:hover {
-      background-color: $annuaireColorText !important;
+      background-color: $annuaireColorText;
 
       .q-btn__content > * {
-        color: white !important;
+        color: white;
       }
     }
 
     &:active {
-      background-color: mix(white, $annuaireColorText, 15%) !important;
+      background-color: mix(white, $annuaireColorText, 15%);
 
       .q-btn__content > * {
-        color: white !important;
+        color: white;
       }
     }
   }
@@ -410,7 +417,7 @@ label.custom-label {
     background: $stateColor3;
 
     &:hover {
-      background: $errorPanelColor !important;
+      background: $errorPanelColor;
     }
   }
 }
@@ -420,19 +427,19 @@ label.custom-label {
     background-color: $charteColor;
 
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $charteColorHover !important;
+      background-color: $charteColorHover;
     }
 
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $charteColorActive !important;
+      background-color: $charteColorActive;
     }
 
     &.bg-primary {
-      background: $charteColor !important;
+      background: $charteColor;
     }
 
     &.bg-secondary {
-      background: $charteColor !important;
+      background: $charteColor;
     }
 
     .q-btn__content > * {
@@ -447,11 +454,11 @@ label.custom-label {
       }
 
       &:hover {
-        background-color: $charteColorText !important;
+        background-color: $charteColorText;
       }
 
       &:active {
-        background-color: mix(white, $charteColorText, 15%) !important;
+        background-color: mix(white, $charteColorText, 15%);
       }
     }
   }
@@ -462,19 +469,19 @@ label.custom-label {
     background-color: $capeColor;
 
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $capeColorHover !important;
+      background-color: $capeColorHover;
     }
 
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $capeColorActive !important;
+      background-color: $capeColorActive;
     }
 
     &.bg-primary {
-      background: $capeColor !important;
+      background: $capeColor;
     }
 
     &.bg-secondary {
-      background: $capeColor !important;
+      background: $capeColor;
     }
 
     &.btn-alt {
@@ -485,11 +492,11 @@ label.custom-label {
       }
 
       &:hover {
-        background-color: $capeColorText !important;
+        background-color: $capeColorText;
       }
 
       &:active {
-        background-color: mix(white, $capeColorText, 15%) !important;
+        background-color: mix(white, $capeColorText, 15%);
       }
     }
   }
@@ -500,19 +507,19 @@ label.custom-label {
     background-color: $dashboardColor;
 
     &:hover, &.bg-primary:hover, &.bg-secondary:hover {
-      background-color: $dashboardColorHover !important;
+      background-color: $dashboardColorHover;
     }
 
     &:active, &.bg-primary:active, &.bg-secondary:active {
-      background-color: $dashboardColorActive !important;
+      background-color: $dashboardColorActive;
     }
 
     &.bg-primary {
-      background: $dashboardColor !important;
+      background: $dashboardColor;
     }
 
     &.bg-secondary {
-      background: $dashboardColor !important;
+      background: $dashboardColor;
     }
 
     &.bg-alt {
@@ -523,11 +530,11 @@ label.custom-label {
       }
 
       &:hover {
-        background-color: $dashboardColorText !important;
+        background-color: $dashboardColorText;
       }
 
       &:active {
-        background-color: mix(white, $dashboardColorText, 15%) !important;
+        background-color: mix(white, $dashboardColorText, 15%);
       }
     }
 
@@ -535,14 +542,14 @@ label.custom-label {
       background: $stateColor3;
 
       &:hover {
-        background: $errorPanelColor !important;
+        background: $errorPanelColor;
       }
     }
   }
 }
 
 .btn-group {
-  width: 90%;
+  width: 80%;
   margin: 1rem auto;
   display: flex;
   flex-direction: column;
@@ -551,6 +558,7 @@ label.custom-label {
   @media screen and (min-width: $responsiveWidth) {
     flex-direction: row;
     justify-content: center;
+    width: auto;
   }
 }
 
@@ -651,7 +659,7 @@ fieldset {
         }
 
         &:disabled {
-          opacity: 0.4 !important;
+          opacity: 0.4;
 
           &:hover {
             background-color: transparent;
@@ -868,7 +876,7 @@ fieldset {
     i {
       color: $annuaireColorText;
       font-size: $headTitleMobileSize;
-      margin-right: .875rem;
+      margin: 0 .800rem 0;
       position: relative;
       top: -0.1rem;
     }
@@ -886,12 +894,12 @@ fieldset {
 }
 
 // Generic Quasar tables, as found mainly in the admin section of the site
-::v-deep(.q-table__container) {
+.q-table__container {
   border-radius: 0;
   background-color: transparent;
   box-shadow: none;
 
-  .q-table__top {
+  ::v-deep(.q-table__top) {
     display: none;
   }
 
@@ -899,30 +907,32 @@ fieldset {
     border: none;
   }
 
-  .q-table__middle {
+  ::v-deep(.q-table__middle) {
     overflow: auto;
-    width: $fullSize;
+    display: flex;
+    justify-content: center;
   }
 
-  .q-table__bottom {
+  ::v-deep(.q-table__bottom) {
     border-top: none;
     font-size: 1.0625rem;
     color: $annuaireColorText;
     padding: 1rem 0;
+    width: 90%;
 
     .q-btn.q-btn-item {
       margin-right: 0.25rem;
 
-      &:last-child {
+      ::v-deep(&:last-child) {
         margin-right: 0;
       }
     }
   }
 
-  .q-table {
+  ::v-deep(.q-table) {
     border-collapse: separate;
     border-spacing: 0 .625rem;
-    width: $fullSize;
+    width: 80%;
 
     thead tr {
       background-color: $annuaireColor;
@@ -943,7 +953,7 @@ fieldset {
           color: $textColor3;
 
           &.text-grey-8 {
-            color: $textColor3 !important;
+            color: $textColor3;
 
             .q-checkbox__svg {
               color: $annuaireColor;
@@ -957,7 +967,6 @@ fieldset {
       tr {
         background-color: $backgroundColor1;
         box-shadow: $fieldsBoxShadow;
-        height: 1px;
 
         td {
           height: unset;
@@ -1017,7 +1026,7 @@ fieldset {
 
             .q-btn {
               padding: .625rem .65rem;
-              background: transparent !important;
+              background: transparent;
               box-shadow: none;
               transition: box-shadow 0.08s linear, background-color 0.08s linear;
 
@@ -1039,7 +1048,7 @@ fieldset {
               }
 
               &:active {
-                background: transparentize($annuaireColor, 0.9) !important;
+                background: transparentize($annuaireColor, 0.9);
               }
             }
           }
@@ -1057,7 +1066,7 @@ fieldset {
   }
 
   @media screen and (min-width: $responsiveWidth) {
-    width: 100%;
+    width: $fullSize;
   }
 }
 
@@ -1112,7 +1121,7 @@ fieldset {
             }
 
             &:active {
-              background: transparentize($charteColor, 0.9) !important;
+              background: transparentize($charteColor, 0.9);
             }
           }
         }
@@ -1143,7 +1152,7 @@ fieldset {
   }
 }
 
-.variant-space-3 {
+::v-deep(.variant-space-3) {
   .q-table__container {
     .q-table__bottom {
       color: $capeColorText;
@@ -1172,7 +1181,7 @@ fieldset {
         color: $capeColorText;
 
         &:first-child {
-          border-color: $capeColor;
+          border-left-color: $capeColor;
         }
 
         &.actions-cell-compact {
@@ -1182,7 +1191,7 @@ fieldset {
             }
 
             &:active {
-              background: transparentize($capeColor, 0.9) !important;
+              background: transparentize($capeColor, 0.9);
             }
           }
         }
@@ -1213,7 +1222,7 @@ fieldset {
   }
 }
 
-::v-deep(.variant-space-4) {
+.variant-space-4 {
   .q-table__container {
     .q-table__bottom {
       color: $dashboardColorText;
@@ -1242,7 +1251,7 @@ fieldset {
         color: $dashboardColorText;
 
         &:first-child {
-          border-color: $dashboardColor;
+          border-left-color: $dashboardColor;
         }
 
         &.actions-cell-compact {
@@ -1252,7 +1261,7 @@ fieldset {
             }
 
             &:active {
-              background: transparentize($dashboardColor, 0.9) !important;
+              background: transparentize($dashboardColor, 0.9);
             }
           }
         }
@@ -1285,7 +1294,7 @@ fieldset {
 
 // State badges that can be used in forms.
 // Icons aren't defined here, only colors.
-.form-state {
+::v-deep(.form-state) {
   display: inline-block;
   white-space: nowrap;
   vertical-align: middle;
@@ -1339,11 +1348,14 @@ fieldset {
 }
 
 // Select elements used to choose an action to perform on selected table rows.
-.table-actions-select {
+::v-deep(.table-actions-select) {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  margin: 1.875rem 0 .9375rem;
+  padding: 1rem;
+  gap: 1rem;
+  justify-content: center;
+  margin: auto;
+  width: 80%;
 
   label {
     width: $fullSize;
@@ -1406,11 +1418,11 @@ fieldset {
       gap: 0.2rem;
 
       button {
-        padding: 0.7rem 1.4rem !important;
+        padding: 0.7rem 1.4rem;
         font-size: 1.3rem;
 
         &.q-btn--standard {
-          background: $backgroundColor1 !important;
+          background: $backgroundColor1;
           pointer-events: none;
 
           .q-btn__content * {
@@ -1464,7 +1476,7 @@ fieldset {
 
       &:hover, &:active {
         .q-btn__content i {
-          color: $textColor3 !important;
+          color: $textColor3;
         }
       }
 
@@ -1480,10 +1492,10 @@ fieldset {
         }
 
         &:hover, &:active {
-          color: $textColor3 !important;
+          color: $textColor3;
 
           strong {
-            color: $textColor3 !important;
+            color: $textColor3;
           }
         }
       }
@@ -1495,7 +1507,7 @@ fieldset {
   .pagination .wrapper .q-btn {
     &:hover, &:active {
       .q-btn__content i {
-        color: $charteColorText !important;
+        color: $charteColorText;
       }
     }
 
@@ -1509,10 +1521,10 @@ fieldset {
 
     &.counter-button {
       &:hover, &:active {
-        color: $charteColorText !important;
+        color: $charteColorText;
 
         strong {
-          color: $charteColorText !important;
+          color: $charteColorText;
         }
       }
     }

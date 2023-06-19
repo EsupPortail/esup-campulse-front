@@ -2,7 +2,7 @@ import {computed, ref, watch} from 'vue'
 import useUtility from '@/composables/useUtility'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useAxios} from '@/composables/useAxios'
-import type {Group, SelectGroupLabel} from '#/groups'
+import type {Group, GroupCodeLiteralName, SelectGroupLabel} from '#/groups'
 import i18n from '@/plugins/i18n'
 import type {UserGroup} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
@@ -31,13 +31,13 @@ const isStaff = ref<boolean | undefined>(undefined)
 // Used to display or not the select for commissions
 const commissionMemberIsSelected = ref<boolean>(false)
 
-export default function() {
+export default function () {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
-    const {userCommissions} = useCommissions()
+    const {userFunds} = useCommissions()
 
 
-    const groupNames = [
+    const groupNames: GroupCodeLiteralName[] = [
         {
             codeName: 'MANAGER_GENERAL',
             literalName: i18n.global.t('user-groups.manager-general'),
@@ -51,8 +51,8 @@ export default function() {
             literalName: i18n.global.t('user-groups.manager-misc')
         },
         {
-            codeName: 'COMMISSION',
-            literalName: i18n.global.t('user-groups.commission')
+            codeName: 'MEMBER_FUND',
+            literalName: i18n.global.t('user-groups.member-fund')
         },
         {
             codeName: 'STUDENT_INSTITUTION',
@@ -102,7 +102,7 @@ export default function() {
     async function initGroupLabels(onlyPublicGroups: boolean) {
         const {hasPerm} = useSecurity()
         const labels: SelectGroupLabel[] = []
-        groups.value?.map(function(group) {
+        groups.value?.map(function (group) {
             if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
                 const label: string | undefined = getGroupLiteral(group.id)
                 if (label) {
@@ -119,7 +119,7 @@ export default function() {
             }
         })
         // Sort by alphabetical order
-        labels.sort(function(a, b) {
+        labels.sort(function (a, b) {
             const labelA = a.label.toLowerCase().normalize('NFD'), labelB = b.label.toLowerCase().normalize('NFD')
             if (labelA < labelB)
                 return -1
@@ -230,17 +230,17 @@ export default function() {
         const oldGroups = userManagerStore.userGroups
         const {arraysAreEqual} = useUtility()
 
-        if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userCommissions.value, userManagerStore.userCommissions)) {
+        if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userFunds.value, userManagerStore.userCommissionFunds)) {
             await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups),
-                commissionsToUpdate(userCommissions.value, userManagerStore.userCommissions))
+                commissionsToUpdate(userFunds.value, userManagerStore.userCommissionFunds))
             await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups),
-                commissionsToDelete(userCommissions.value, userManagerStore.userCommissions))
+                commissionsToDelete(userFunds.value, userManagerStore.userCommissionFunds))
         }
     }
 
-    const commissionGroup = ref<Group | undefined>(groups.value.find(obj => obj.name === 'COMMISSION'))
+    const commissionGroup = ref<Group | undefined>(groups.value.find(obj => obj.name === 'MEMBER_FUND'))
     watch(() => groups.value, () => {
-        commissionGroup.value = groups.value.find(obj => obj.name === 'COMMISSION')
+        commissionGroup.value = groups.value.find(obj => obj.name === 'MEMBER_FUND')
     })
 
     // To test

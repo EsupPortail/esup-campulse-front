@@ -41,6 +41,7 @@ async function onLogIn() {
             v-model="user.username"
             :label="t('forms.email')"
             :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
+            autocomplete="email"
             filled
             lazy-rules
         />
@@ -49,6 +50,7 @@ async function onLogIn() {
             :label="t('forms.password')"
             :rules="[ val => val && val.length > 0 || t('forms.required-password')]"
             :type="passwordVisibility ? 'text' : 'password'"
+            autocomplete="current-password"
             filled
             lazy-rules
         />
@@ -59,13 +61,11 @@ async function onLogIn() {
         <div class="btn-group">
             <QBtn
                 :label="t('forms.login')"
-                color="primary"
                 type="submit"
             />
             <QBtn
                 :label="t('forms.create-account')"
                 :to="{name: 'Registration'}"
-                color="secondary"
             />
         </div>
         <!-- <QBtn :label="t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
@@ -76,24 +76,19 @@ async function onLogIn() {
                 class="login-link"
                 to="/password-reset"
             >
-                <span
-                    class="icon icon-mentions"
-                ></span>{{ t('forms.reset-password') }}
+                <span class="icon icon-mentions"></span>{{ t('forms.reset-password') }}
             </RouterLink>
             <br/>
             <RouterLink
                 class="login-link"
                 to="/register-resend-email"
             >
-                <span
-                    class="icon icon-mentions"
-                ></span>{{ t('forms.resend-email') }}
+                <span class="icon icon-mentions"></span>{{ t('forms.resend-email') }}
             </RouterLink>
         </div>
     </QForm>
 </template>
 
-<style lang="sass" scoped>
-.q-checkbox
-    margin-top: -0.5rem
+<style lang="scss" scoped>
+@import "@/assets/styles/login.scss";
 </style>

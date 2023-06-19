@@ -3,13 +3,19 @@ import type {
     Project,
     ProjectCategory,
     ProjectCategoryName,
+<<<<<<< HEAD
     ProjectCommissionDate,
     ProjectList, ProjectReview,
+=======
+    ProjectCommissionFund,
+    ProjectList, ProjectStatus,
+>>>>>>> develop
     ProjectStore
 } from '#/project'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import type {DocumentUpload} from '#/documents'
+import useCommissions from '@/composables/useCommissions'
 
 
 export const useProjectStore = defineStore('projectStore', {
@@ -17,7 +23,7 @@ export const useProjectStore = defineStore('projectStore', {
         project: undefined,
         projects: [],
         projectCategories: [],
-        projectCommissionDates: [],
+        projectCommissionFunds: [],
         projectDocuments: [],
         projectCategoryNames: [],
         projectReview: undefined
@@ -29,6 +35,12 @@ export const useProjectStore = defineStore('projectStore', {
                 value: category.id,
                 label: category.name
             }))
+        },
+        projectCommission: (state: ProjectStore): number | undefined => {
+            const {commissionFunds, commissions} = useCommissions()
+            return commissions.value
+                .find(y => y.id === (commissionFunds.value
+                    .find(x => x.id === (state.projectCommissionFunds[0]?.commissionFund))?.commission))?.id
         }
     },
     actions: {
@@ -49,16 +61,16 @@ export const useProjectStore = defineStore('projectStore', {
             this.project = (await axiosAuthenticated.get<Project>(`/projects/${id}`)).data
         },
 
-        async getProjectCommissionDates(asManager: boolean, commission: number | undefined) {
+        async getProjectCommissionFunds(asManager: boolean, commission: number | undefined) {
             const {axiosAuthenticated} = useAxios()
             let url = ''
             if (asManager) {
-                url = '/projects/commission_dates'
+                url = '/projects/commission_funds'
                 if (commission) url += `?commission_id=${commission}`
             } else {
-                url = `/projects/${this.project?.id}/commission_dates`
+                url = `/projects/${this.project?.id}/commission_funds`
             }
-            this.projectCommissionDates = (await axiosAuthenticated.get<ProjectCommissionDate[]>(url)).data
+            this.projectCommissionFunds = (await axiosAuthenticated.get<ProjectCommissionFund[]>(url)).data
         },
 
         async getProjectDocuments() {
@@ -66,14 +78,14 @@ export const useProjectStore = defineStore('projectStore', {
             this.projectDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?project_id=${this.project?.id}`)).data
         },
 
-        async getProjects(archived: boolean | undefined, commissionDates: number[]) {
+        async getManagedProjects(commission: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const unarchivedStatus = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_PROCESSING'].join(',')
-            const archivedStatus = ['PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED'].join(',')
+            const statuses = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT',
+                'PROJECT_REVIEW_PROCESSING', 'PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED'].join(',')
             let urlString = '/projects/'
             const urlArray = []
-            if (archived !== undefined) urlArray.push(`project_statuses=${archived ? archivedStatus : unarchivedStatus}`)
-            if (commissionDates.length) urlArray.push(`commission_dates=${commissionDates.join(',')}`)
+            urlArray.push(`project_statuses=${statuses}`)
+            if (commission) urlArray.push(`commission_id=${commission}`)
             if (urlArray.length) urlString += '?' + urlArray.join('&')
             this.projects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
         },
@@ -95,8 +107,19 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getProjectPdf(id: number) {
             const {axiosAuthenticated} = useAxios()
-            const url = `/projects/${id}/export`
+            const url = `/projects/${id}/pdf_export`
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
+<<<<<<< HEAD
+=======
+        },
+
+        async patchProjectStatus(projectStatus: ProjectStatus) {
+            const {axiosAuthenticated} = useAxios()
+            if (this.project && this.project.projectStatus !== projectStatus) {
+                await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
+                this.project.projectStatus = projectStatus
+            }
+>>>>>>> develop
         }
     }
 })

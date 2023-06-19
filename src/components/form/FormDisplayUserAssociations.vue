@@ -50,9 +50,9 @@ async function onGetUserAssociations() {
         }}
     </p>
     <QCard
-            v-for="association in userAssociations"
-            :key="association.id ? association.id : 0"
-            class="association-card"
+        v-for="association in userAssociations"
+        :key="association.id ? association.id : 0"
+        class="association-card"
     >
         <QCardSection>
             <section id="association-card">
@@ -65,7 +65,10 @@ async function onGetUserAssociations() {
                     </li>
                     <li>
                         {{ t('dashboard.association-user.presidency-status') }} : <span>{{
-                            (association.role === 'isPresident' || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <= today)) ? t('yes') : t('no')
+                            (association.role === 'isPresident'
+                                || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null
+                                    && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo
+                                    && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <= today)) ? t('yes') : t('no')
                         }}</span>
                     </li>
                     <li>
@@ -75,16 +78,16 @@ async function onGetUserAssociations() {
                 </ul>
                 <div class="btn-group">
                     <AlertConfirmUserQuitAssociation
-                            :association-id="association.id ? association.id : 0"
-                            :edited-by-staff="false"
-                            :user-id="userStore.user?.id ? userStore.user?.id : 0"
-                            @user-association-deleted="onGetUserAssociations"
+                        :association-id="association.id ? association.id : 0"
+                        :edited-by-staff="false"
+                        :user-id="userStore.user?.id ? userStore.user?.id : 0"
+                        @user-association-deleted="onGetUserAssociations"
                     />
                     <QBtn
-                            v-if="association.isValidatedByAdmin && association.id !== null && userStore.hasPresidentStatus(association.id)"
-                            :label="t('dashboard.association-user.manage-association')"
-                            :to="{name: 'AssociationDashboard', params: {id: association.id}}"
-                            icon="mdi-pencil"
+                        v-if="association.isValidatedByAdmin && association.id !== null && userStore.hasPresidentStatus(association.id)"
+                        :label="t('dashboard.association-user.manage-association')"
+                        :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                        icon="bi-pencil"
                     />
                 </div>
             </section>

@@ -69,6 +69,8 @@ async function clearSearch() {
             id="search-form"
             class="search-text-field"
             @submit.prevent="onSearch"
+            role="search"
+            aria-label="t('user.directory')"
         >
             <fieldset>
                 <QInput
@@ -86,14 +88,14 @@ async function clearSearch() {
                 </QInput>
                 <QBtn
                     :label="t('search')"
+                    HEAD
                     class="search-button"
-                    color="primary"
+                    color="secondary"
                     icon-right="mdi-chevron-right"
                     type="submit"
                 />
                 <QBtn
                     :label="t('cancel-search')"
-                    color="secondary"
                     icon-right="mdi-close"
                     @click="clearSearch"
                 />
@@ -104,11 +106,12 @@ async function clearSearch() {
             id="advanced-search-form"
             class="search-text-field"
             @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
+            role="search"
+            aria-label="t('user.directory-advanced')"
         >
             <QExpansionItem
                 :label="t('advanced-search')"
-                expand-separator
-                icon="mdi-menu-right"
+                icon="bi-chevron-compact-right"
             >
                 <fieldset>
                     <QInput
@@ -135,17 +138,16 @@ async function clearSearch() {
                     />
                 </fieldset>
 
-                <div class="buttons-group">
+                <div class="btn-group">
                     <QBtn
                         :label="t('advanced-search')"
                         class="search-button"
-                        color="primary"
+                        color="secondary"
                         icon-right="mdi-chevron-right"
                         type="submit"
                     />
                     <QBtn
                         :label="t('cancel-search')"
-                        color="secondary"
                         icon-right="mdi-close"
                         @click="clearSearch"
                     />
@@ -155,7 +157,8 @@ async function clearSearch() {
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
+
 </style>

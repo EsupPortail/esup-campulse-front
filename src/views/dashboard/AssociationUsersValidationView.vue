@@ -77,7 +77,7 @@ const columns: QTableProps['columns'] = [
 <template>
     <section class="dashboard-section">
         <div class="form-container">
-            <div class="form">
+            <div class="form form-width">
                 <QTable
                     :columns="columns"
                     :loading="!isLoaded"
@@ -121,6 +121,7 @@ const columns: QTableProps['columns'] = [
                                         props.row.isValidatedByAdmin ? t('validated') : t('validated-non')
                                     }}
                                     <span
+                                        aria-hidden="true"
                                         :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
                                     >
                                         <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>
@@ -136,13 +137,13 @@ const columns: QTableProps['columns'] = [
                                     :label="t('manage')"
                                     :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
                                     color="secondary"
-                                    icon="mdi-check-circle"
+                                    icon="bi-check-lg"
                                 />
                             </QTd>
                         </QTr>
                     </template>
                 </QTable>
-                <section class="form-page-navigation">
+                <section class="btn-group">
                     <QBtn
                         :label="t('back')"
                         :to="{ name: 'Dashboard' }"
@@ -154,12 +155,7 @@ const columns: QTableProps['columns'] = [
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/_variables.scss';
-
-.form-page-navigation {
-    width: $buttonSize;
-    padding: 0;
-}
 </style>

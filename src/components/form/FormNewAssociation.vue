@@ -96,7 +96,10 @@ const clearValues = () => {
     >
         <div class="form-title">
             <h2>
-                <i class="bi bi-plus-square"></i>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-plus-square"
+                ></i>
                 {{ t('dashboard.create-association') }}
             </h2>
         </div>
@@ -126,16 +129,16 @@ const clearValues = () => {
                 />
                 <section class="btn-group">
                     <QBtn
+                        :label="t('user-manager.create-association')"
+                        color="secondary"
+                        icon="bi-check-lg"
+                        type="submit"
+                    />
+                    <QBtn
                         :label="t('home.back-dashboard')"
                         :to="{ name: 'Dashboard' }"
                         color="secondary"
-                        icon="mdi-arrow-left-circle"
-                    />
-                    <QBtn
-                        :label="t('user-manager.create-association')"
-                        color="primary"
-                        icon="mdi-check-circle"
-                        type="submit"
+                        icon="bi-box-arrow-right"
                     />
                 </section>
             </div>
@@ -143,26 +146,6 @@ const clearValues = () => {
     </QForm>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
-
-.q-card__section {
-    padding: 1rem 0 0 0;
-}
-
-h2 {
-    padding-left: 1rem;
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    .form {
-        width: $halfSize;
-        margin: auto;
-    }
-
-    .btn-group {
-        justify-content: flex-start;
-        margin: 1rem 0 0 0;
-    }
-}
 </style>

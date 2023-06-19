@@ -137,6 +137,7 @@ function onReset() {
                             :options="CASUserOptions"
                             emit-value
                             map-options
+                            aria-label="t('forms.user-to-add')"
                         />
                     </div>
                     <div class="btn-group">
@@ -158,17 +159,6 @@ function onReset() {
     </QDialog>
 </template>
 
-<style lang="scss">
-@import '@/assets/styles/forms.scss';
-</style>
-
 <style lang="scss" scoped>
-.btn-group {
-    display: flex;
-    gap: 5px;
-}
-
-fieldset {
-    border: none;
-}
+@import '@/assets/styles/forms.scss';
 </style>

@@ -91,10 +91,10 @@
       }
     }
 
-    .buttons-group {
+    /*.buttons-group {
       margin: 1rem 0;
       gap: 1.5rem;
-    }
+    }*/
   }
 
 
@@ -106,6 +106,7 @@
     }
   }
 
+  /*
   @media only screen and (max-width: $responsiveWidth) {
     #search-form {
       fieldset {
@@ -132,7 +133,7 @@
         width: $fullSize;
       }
     }
-  }
+  }*/
 }
 
 // Elements displayed on top of the list

@@ -10,6 +10,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {Association} from '#/association'
+import useUserAssociations from '@/composables/useUserAssociations'
 
 const {hasPerm} = useSecurity()
 const {t} = useI18n()
@@ -18,6 +19,7 @@ const projectStore = useProjectStore()
 const associationStore = useAssociationStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const {initUserAssociations} = useUserAssociations()
 
 interface Tabs {
     label: string,
@@ -55,7 +57,9 @@ const splitterModel = ref(20)
 
 onMounted(async () => {
     loading.show()
+    await onGetProjects()
     await onGetAssociations()
+    initUserAssociations(false)
     initTabs()
     loading.hide()
 })
@@ -82,12 +86,27 @@ async function onGetAssociations() {
     }
 }
 
+
+async function onGetProjects() {
+    try {
+        await projectStore.getAllProjects()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+
+    }
+}
+
 </script>
 
 <template>
     <section class="dashboard-section">
-        <div class="form-container">
-            <div class="form">
+        <div class="form-container variant-space-3">
+            <div class="form form-width">
                 <QCard>
                     <QTabs
                         v-model="tab"
@@ -105,7 +124,10 @@ async function onGetAssociations() {
                         />
                     </QTabs>
 
-                    <QSeparator/>
+                    <QSeparator
+                        aria-hidden="true"
+                        role="presentation"
+                    />
 
                     <QTabPanels
                         v-model="tab"
@@ -121,9 +143,7 @@ async function onGetAssociations() {
                                 v-model="splitterModel"
                             >
                                 <template v-slot:before>
-                                    <div
-                                        v-if="tab.association"
-                                    >
+                                    <div v-if="tab.association">
                                         <div
                                             v-if="associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
                                         >
@@ -205,17 +225,15 @@ async function onGetAssociations() {
                                         transition-prev="slide-down"
                                     >
                                         <QTabPanel name="allProjects">
-                                            <h2 class="title-3">{{ t('project.all-projects') }}</h2>
                                             <TableUserProjects
                                                 :association-id="tab.association"
                                                 :projects="tab.association ?
                                                     projectStore.projects.filter(project => project.association === tab.association) :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id)"
-                                                :title="tab.label"
+                                                :title="t('project.all-projects')"
                                             />
                                         </QTabPanel>
                                         <QTabPanel name="validatedProjects">
-                                            <h2 class="title-3">{{ t('project.validated-projects') }}</h2>
                                             <TableUserProjects
                                                 :association-id="tab.association"
                                                 :projects="tab.association ?
@@ -223,11 +241,10 @@ async function onGetAssociations() {
                                                         && project.projectStatus === 'PROJECT_REVIEW_VALIDATED') :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id
                                                         && project.projectStatus === 'PROJECT_REVIEW_VALIDATED')"
-                                                :title="tab.label"
+                                                :title="t('project.validated-projects')"
                                             />
                                         </QTabPanel>
                                         <QTabPanel name="rejectedProjects">
-                                            <h2 class="title-3">{{ t('project.rejected-projects') }}</h2>
                                             <TableUserProjects
                                                 :association-id="tab.association"
                                                 :projects="tab.association ?
@@ -235,7 +252,7 @@ async function onGetAssociations() {
                                                         (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED')) :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id &&
                                                         (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED'))"
-                                                :title="tab.label"
+                                                :title="t('project.rejected-projects')"
                                             />
                                         </QTabPanel>
                                     </QTabPanels>
@@ -251,6 +268,8 @@ async function onGetAssociations() {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
 
 .text-cape-color {
     color: $capeColor !important;
@@ -265,7 +284,7 @@ async function onGetAssociations() {
 }
 
 .form {
-    width: 75% !important;
+    width: 100% !important;
 }
 
 .q-tab-panel {
