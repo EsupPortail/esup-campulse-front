@@ -1,5 +1,5 @@
-- ♿️ Accessibility fixes
-- ⬆️ Upgrade dependencies through npm
-- 📄 Add GPLv3 license
-- 💄 CSS fixes
-- ♻️ Refactor commissions
+- ✅ Add and update unit tests
+- 🐛 Fix bugs after functional tests
+- 💄 Quick style fixes for review
+- ♿️ Improve accessibility
+- 👷 Restart CI
