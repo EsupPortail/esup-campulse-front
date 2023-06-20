@@ -108,6 +108,12 @@ export const useProjectStore = defineStore('projectStore', {
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         },
 
+        async getProjectReviewPdf(id: number) {
+            const {axiosAuthenticated} = useAxios()
+            const url = `/projects/${id}/review/pdf_export`
+            return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
+        },
+
         async patchProjectStatus(projectStatus: ProjectStatus) {
             const {axiosAuthenticated} = useAxios()
             if (this.project && this.project.projectStatus !== projectStatus) {

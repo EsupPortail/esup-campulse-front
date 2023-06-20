@@ -23,13 +23,6 @@ onMounted(async () => {
 async function onGetProjectDetail() {
     try {
         await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
-        /*if (projectStore.project?.projectStatus !== 'PROJECT_PROCESSING') {
-            await router.push({name: '404'})
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.project-edition-not-enabled')
-            })
-        }*/
     } catch (error) {
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
@@ -42,6 +35,7 @@ async function onGetProjectDetail() {
 }
 
 async function onGetProjectPdf() {
+    loading.show()
     try {
         const file = await projectStore.getProjectPdf(parseInt(route.params.projectId as string))
         const link = document.createElement('a')
@@ -58,6 +52,7 @@ async function onGetProjectPdf() {
             })
         }
     }
+    loading.hide()
 }
 </script>
 

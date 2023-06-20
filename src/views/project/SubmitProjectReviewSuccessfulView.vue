@@ -23,13 +23,6 @@ onMounted(async () => {
 async function onGetProjectReview() {
     try {
         await projectStore.getProjectReview(parseInt(route.params.projectId as string))
-        /*if (projectStore.project?.projectStatus !== 'PROJECT_PROCESSING') {
-            await router.push({name: '404'})
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.project-edition-not-enabled')
-            })
-        }*/
     } catch (error) {
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
@@ -41,9 +34,10 @@ async function onGetProjectReview() {
     }
 }
 
-/*async function onGetProjectPdf() {
+async function onGetProjectReviewPdf() {
+    loading.show()
     try {
-        const file = await projectStore.getProjectPdf(parseInt(route.params.projectId as string))
+        const file = await projectStore.getProjectReviewPdf(parseInt(route.params.projectId as string))
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
         link.download = `${t('project.pdf-name')}${encodeURI(projectStore.project?.name as string)}.pdf`
@@ -58,7 +52,8 @@ async function onGetProjectReview() {
             })
         }
     }
-}*/
+    loading.hide()
+}
 </script>
 
 <template>
@@ -77,6 +72,7 @@ async function onGetProjectReview() {
                             :label="t('project.download-recap')"
                             disable
                             icon-right="bi-download"
+                            @click="onGetProjectReviewPdf"
                         />
                         <QBtn
                             :label="t('dashboard.cape-dashboard')"
