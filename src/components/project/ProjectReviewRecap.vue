@@ -8,6 +8,7 @@ import ProjectReviewRecapReview from '@/components/project/ProjectReviewRecapRev
 import InfoVerifyDocuments from '@/components/infoPanel/InfoVerifyDocuments.vue'
 import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
 import useSubmitReview from '@/composables/useSubmitReview'
+import router from '@/router'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -24,6 +25,7 @@ async function onSubmitProjectReview() {
     loading.show()
     try {
         await submitProjectReview()
+        await router.push({name: 'SubmitProjectReviewSuccessful'})
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -87,7 +89,10 @@ async function onSubmitProjectReview() {
             <InfoVerifyDocuments v-if="props.view === 'submitProjectReview'"/>
             <ProjectRecapDocuments/>
         </section>
-        <div class="btn-group">
+        <div
+            v-if="props.view === 'submitProjectReview'"
+            class="btn-group"
+        >
             <QBtn
                 :label="t('back')"
                 icon="bi-chevron-left"

@@ -631,6 +631,7 @@
     "return": "Demander des modifications",
     "review": "Bilan",
     "review-bearer-info-panel": "Merci de vérifier que les informations de contact ci-dessous sont correctes. En cas de changement, merci de les modifier.",
+    "review-has-been-submitted": "Votre bilan a été soumis",
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des financeurs liées à votre demande afin que votre dossier soit complet.",
     "status": {
       "archived": "Archivé",
