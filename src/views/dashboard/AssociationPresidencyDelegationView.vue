@@ -10,6 +10,7 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
+import InfoPresidencyDelegation from '@/components/infoPanel/InfoPresidencyDelegation.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -128,6 +129,7 @@ const columns: QTableProps['columns'] = [
         </h2>
         <div class="form-container">
             <div class="form">
+                <InfoPresidencyDelegation/>
                 <QTable
                     :columns="columns"
                     :loading="!associationMembers"
@@ -164,8 +166,8 @@ const columns: QTableProps['columns'] = [
                                 <span class="form-state">
                                     {{ props.row.isValidatedByAdmin ? t('yes') : t('no') }}
                                     <span
-                                        aria-hidden="true" 
                                         :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
+                                        aria-hidden="true"
                                     >
                                         <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>
                                     </span>
