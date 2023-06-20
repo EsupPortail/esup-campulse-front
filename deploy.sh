@@ -94,7 +94,7 @@ echo "📦 Packaging stuff"
 . "${SOURCE_ENV_FILE}"
 
 npm run build:$ENVIRONMENT
-PROJECT_VERSION=$(git describe --always)
+PROJECT_VERSION=$(git describe --always --tags)
 # Create info file for app
 echo $(printf "$TEMPLATE" "$HOST" "$DISTANT_REPO" "$(whoami)" "$1" "$PROJECT_VERSION") > "dist/${PROJECT}_info.json"
 echo "🚀 Deploying files"
@@ -110,7 +110,7 @@ if [ "$USE_SENTRY" == true ]; then
   echo "🚧 Manipulating git distant repositories"
   git remote remove origin
   git remote add origin "$DISTANT_REPO"
-  PROJECT_VERSION=$(git describe --always)
+  PROJECT_VERSION=$(git describe --always --tags)
   # Create a release
   echo "📌 Telling about $PROJECT_VERSION to Sentry"
   sentry-cli releases new -p "$PROJECT" "$PROJECT_VERSION"
