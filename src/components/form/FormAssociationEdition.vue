@@ -423,20 +423,20 @@ async function onChangeLogo(action: string) {
                         role="presentation"
                     />
                     <QInput
-                        v-model="association.phone"
-                        :label="t('association.labels.phone')"
-                        :rules="association.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                        clearable
-                        filled
-                        type="tel"
-                    />
-                    <QInput
                         v-model="association.email"
                         :label="t('association.labels.mail')"
                         :rules="association.email ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
                         clearable
                         filled
                         type="email"
+                    />
+                    <QInput
+                        v-model="association.phone"
+                        :label="t('association.labels.phone')"
+                        :rules="association.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                        clearable
+                        filled
+                        type="tel"
                     />
                     <QInput
                         v-model="association.website"

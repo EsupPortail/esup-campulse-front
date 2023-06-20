@@ -5,6 +5,7 @@ import ProjectRecapCommissions from '@/components/project/ProjectRecapCommission
 import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
 import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
 import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
+import InfoVerifyDocuments from '@/components/infoPanel/InfoVerifyDocuments.vue'
 
 const {t} = useI18n()
 
@@ -53,7 +54,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                         @click="emit('changeStep', 2)"
                     />
                 </div>
-                <ProjectRecapCommissions/>
+                <ProjectRecapCommissions view="projectRecap"/>
             </section>
 
             <!-- BUDGET -->
@@ -96,16 +97,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                     />
                 </div>
 
-                <div
-                    v-if="props.view === 'submitProject'"
-                    class="info-panel info-panel-warning"
-                >
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-exclamation-lg"
-                    ></i>
-                    <p>{{ t('project.document.verify') }}</p>
-                </div>
+                <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
                 <ProjectRecapDocuments/>
             </section>
         </section>

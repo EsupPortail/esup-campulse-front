@@ -145,6 +145,25 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
+                        path: 'submit-project-review/:projectId',
+                        name: 'SubmitProjectReview',
+                        component: () => import('@/views/project/SubmitProjectReviewView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.submit-project-review'),
+                            breadcrumb: i18n.global.t('breadcrumbs.submit-project-review')
+                        }
+                    },
+                    {
+                        path: 'submit-project-review-successful/:projectId',
+                        name: 'SubmitProjectReviewSuccessful',
+                        component: () => import('@/views/project/SubmitProjectSuccessfulView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
+                            projectBearersOnly: true
+                        }
+                    },
+                    {
                         path: 'manage-commission-dates',
                         name: 'ManageCommissionDates',
                         component: () => import('@/views/commission/ManageCommissionDatesView.vue'),

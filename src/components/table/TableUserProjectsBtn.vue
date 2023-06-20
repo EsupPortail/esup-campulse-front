@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import type {ProjectStatus} from '#/project'
 import router from '@/router'
 import {useUserStore} from '@/stores/useUserStore'
@@ -84,6 +84,8 @@ const initOptions = () => {
     }
 }
 
+watch(() => userStore.user, initOptions)
+
 onMounted(initOptions)
 
 </script>
@@ -101,7 +103,7 @@ onMounted(initOptions)
                     :key="index"
                     v-close-popup
                     clickable
-                    @click="() => router.push(option.to)"
+                    @click="router.push(option.to)"
                 >
                     <QItemSection avatar>
                         <QAvatar

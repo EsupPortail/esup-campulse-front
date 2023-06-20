@@ -103,6 +103,36 @@ export interface ProjectCommissionFund {
     isValidatedByAdmin: boolean
 }
 
+export interface ProjectReview {
+    id: number | null,
+    name: string,
+    user: number | null,
+    association: number | null,
+    outcome: number | string,
+    income: number | string,
+    realStartDate: string,
+    realEndDate: string,
+    realLocation: string,
+    review: string,
+    impactStudents: string,
+    description: string,
+    difficulties: string,
+    improvements: string
+}
+
+export interface ProjectAssociation {
+    address: string,
+    zipcode: string,
+    city: string,
+    country: string,
+    phone: string,
+    email: string,
+    presidentNames: string,
+    presidentPhone: string,
+    presidentEmail: string,
+    name: string
+}
+
 export interface ProjectComment {
     id: number,
     project: number,
@@ -112,7 +142,7 @@ export interface ProjectComment {
         lastName: string
     },
     text: string,
-    creationDate: string,
+    creationDate: string
 }
 
 // STORE
@@ -123,4 +153,5 @@ export interface ProjectStore {
     projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[],
+    projectReview: ProjectReview | undefined
 }

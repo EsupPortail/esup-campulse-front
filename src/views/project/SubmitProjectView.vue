@@ -14,8 +14,9 @@ import router from '@/router'
 import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
-import FormProjectRecap from '@/components/project/ProjectRecap.vue'
+import ProjectRecap from '@/components/project/ProjectRecap.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
+import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vue'
 
 const {t} = useI18n()
 const {
@@ -102,7 +103,6 @@ onMounted(async () => {
         } else await router.push({name: '404'})
     }
     await onGetProjectCategories()
-    await onGetDocumentTypes()
     await onGetAssociationUsers()
     isLoaded.value = true
     loading.hide()
@@ -208,20 +208,6 @@ async function onGetProjectCategories() {
             await projectStore.getProjectCategories()
             initProjectCategories()
         }
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-}
-
-async function onGetDocumentTypes() {
-    try {
-        await getDocuments('DOCUMENT_PROJECT')
-        initProcessProjectDocuments()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -485,40 +471,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
         <div class="form-container">
             <div class="form">
-                <div class="info-panel">
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-info"
-                    ></i>
-                    <p>{{ t('project.form-help') }}</p>
-                    <p>
-                        {{ t('project.info-panel-status') }}
-                        {{
-                            applicant === 'association' ? t('project.info-panel-status-association') : t('project.info-panel-status-individual') + '.'
-                        }}
-                        <span v-if="applicant === 'association'"><strong>{{ associationName }}</strong>.</span>
-                    </p>
-                    <p>
-                        {{ t('project.required-documents-list') + ' :' }}
-                    </p>
-                    <p class="paragraph">
-                        <ul role="list">
-                            <li
-                                v-for="(document, index) in processDocuments"
-                                :key="index"
-                            >
-                                <span v-if="document.pathTemplate">
-                                    <a
-                                        :href="document.pathTemplate"
-                                        :title="t('project.document.download-template')"
-                                        target="_blank"
-                                    >{{ document.description }}</a>
-                                </span>
-                                <span v-else>{{ document.description }}</span>
-                            </li>
-                        </ul>
-                    </p>
-                </div>
+                <InfoProcessDocuments :process="'DOCUMENT_PROJECT'"/>
 
                 <QStepper
                     ref="stepper"
@@ -642,29 +595,29 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :label="t('project.commission-choice') + ' *'"
                                 :options="commissionLabels"
                                 :rules="[ val => val || t('forms.fill-field')]"
+                                clearable
                                 emit-value
                                 filled
                                 lazy-rules
-                                clearable
                                 map-options
                                 @update:model-value="reInitProjectCommissionFunds(isSite)"
                             />
 
                             <QSelect
-                                :readonly="!projectCommission"
                                 v-model="projectCommissionFunds"
                                 :hint="t('project.commission-funds-choice-hint')"
                                 :label="t('project.commission-funds-choice') + ' *'"
                                 :options="fundsLabels"
+                                :readonly="!projectCommission"
                                 :rules="[ val => val || t('forms.fill-field')]"
+                                clearable
                                 emit-value
                                 filled
                                 lazy-rules
-                                clearable
                                 map-options
                                 multiple
-                                use-chips
                                 stack-label
+                                use-chips
                             />
 
                             <section class="btn-group">
@@ -1072,7 +1025,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         :title="t('recap')"
                         icon="bi-check-lg"
                     >
-                        <FormProjectRecap
+                        <ProjectRecap
                             view="submitProject"
                             @submit-project="onSubmitProject"
                             @change-step="newStep => step = newStep"
@@ -1111,32 +1064,32 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 @import '@/assets/_variables.scss';
 
 .q-input, .q-select {
-  padding: 1rem;
+    padding: 1rem;
 }
 
 .display-row {
-  width: 100%;
-  margin: 0 1rem;
+    width: 100%;
+    margin: 0 1rem;
 }
 
 legend, p, h3 {
-  padding: 0 1rem;
+    padding: 0 1rem;
 }
 
 legend {
-  margin-top: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .radio-btn {
-  padding-left: 0.5rem;
+    padding-left: 0.5rem;
 }
 
 .paragraph {
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .self-bearer {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 .form {
@@ -1144,7 +1097,7 @@ legend {
 }
 
 .individual-bearer {
-  padding: 0 1rem
+    padding: 0 1rem
 }
 
 .document-item > p {
