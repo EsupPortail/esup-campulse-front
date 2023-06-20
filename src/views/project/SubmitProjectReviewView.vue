@@ -22,7 +22,7 @@ const {loading, notify} = useQuasar()
 const userStore = useUserStore()
 const projectStore = useProjectStore()
 const route = useRoute()
-const {CURRENCY, formatDate, fromDateIsAnterior} = useUtility()
+const {CURRENCY, fromDateIsAnterior} = useUtility()
 const {
     uploadDocuments
 } = useProjectDocuments()
@@ -129,7 +129,6 @@ async function onUploadDocuments(nextStep: number) {
                     ref="stepper"
                     v-model="step"
                     animated
-                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
@@ -140,8 +139,8 @@ async function onUploadDocuments(nextStep: number) {
                         <QForm
                             @submit.prevent="onSubmitProjectReviewInfos(2)"
                         >
-                            <fieldset>
-                                <legend class="title-2">{{ t('project.general-infos') }}</legend>
+                            <div class="fieldset">
+                                <h3 class="title-2">{{ t('project.general-infos') }}</h3>
                                 <QInput
                                     v-model="applicant"
                                     :label="t('project.applicant')"
@@ -192,12 +191,12 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     lazy-rules
                                 />
-                            </fieldset>
+                            </div>
 
                             <div v-if="projectReview.user">
                                 <QSeparator/>
-                                <fieldset class="individual-bearer">
-                                    <legend class="title-3">{{ t('address.address') }}</legend>
+                                <div class="fieldset individual-bearer">
+                                    <h4 class="title-3">{{ t('address.address') }}</h4>
                                     <div class="info-panel info-panel-warning">
                                         <i
                                             aria-hidden="true"
@@ -206,19 +205,20 @@ async function onUploadDocuments(nextStep: number) {
                                         <p>{{ t('address.verify') }}</p>
                                     </div>
                                     <FormUserAddress :user="userStore.user"/>
-                                </fieldset>
+                                </div>
                             </div>
 
                             <QSeparator/>
 
+                            <h4 class="title-3">{{ t('commissions') }}</h4>
                             <ProjectRecapCommissions :view="'submitProjectReview'"/>
 
                             <QSeparator/>
 
-                            <fieldset>
-                                <legend class="title-3">
+                            <div class="fieldset">
+                                <h4 class="title-3">
                                     {{ t('project.outcome') + ' / ' + t('project.income') }}
-                                </legend>
+                                </h4>
 
                                 <QInput
                                     v-model="projectReview.outcome"
@@ -247,7 +247,7 @@ async function onUploadDocuments(nextStep: number) {
                                     min="0"
                                     type="number"
                                 />
-                            </fieldset>
+                            </div>
                             <div class="btn-group">
                                 <QBtn
                                     :label="t('continue')"
@@ -267,8 +267,8 @@ async function onUploadDocuments(nextStep: number) {
                         <QForm
                             @submit.prevent="onSubmitProjectReviewInfos(3)"
                         >
-                            <fieldset>
-                                <legend class="title-3">{{ t('project.review') }}</legend>
+                            <div>
+                                <h4 class="title-3">{{ t('project.review') }}</h4>
 
                                 <QInput
                                     v-model="projectReview.review"
@@ -322,7 +322,7 @@ async function onUploadDocuments(nextStep: number) {
                                     lazy-rules
                                     type="textarea"
                                 />
-                            </fieldset>
+                            </div>
                             <div class="btn-group">
                                 <QBtn
                                     :label="t('back')"
@@ -388,7 +388,7 @@ async function onUploadDocuments(nextStep: number) {
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/dashboard.scss';
 
-.q-form, fieldset {
+.q-form, .fieldset {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -413,7 +413,7 @@ async function onUploadDocuments(nextStep: number) {
 }
 
 h4 {
-    margin: 2rem 0 1rem 0;
+    margin: 0;
 }
 
 .flex-section {
