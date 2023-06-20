@@ -59,10 +59,11 @@ const projectGoals = ref<ProjectGoals>(
         plannedActivities: '',
         preventionSafety: '',
         marketingCampaign: '',
+        sustainableDevelopment: '',
     }
 )
 
-export default function () {
+export default function() {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -90,7 +91,7 @@ export default function () {
         projectAssociationUsersLabels.value = []
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function (associationUser) {
+        associationStore.associationUsers.forEach(function(associationUser) {
             const member = userNames.find(obj => obj.id === associationUser.user)
             if (member && associationUser.id) {
                 projectAssociationUsersLabels.value.push({
@@ -138,6 +139,7 @@ export default function () {
         projectGoals.value.plannedActivities = projectStore.project?.plannedActivities as string
         projectGoals.value.preventionSafety = projectStore.project?.preventionSafety as string
         projectGoals.value.marketingCampaign = projectStore.project?.marketingCampaign as string
+        projectGoals.value.sustainableDevelopment = projectStore.project?.sustainableDevelopment as string
     }
 
     // REINITIALIZE FORM
@@ -163,6 +165,7 @@ export default function () {
         projectGoals.value.plannedActivities = ''
         projectGoals.value.preventionSafety = ''
         projectGoals.value.marketingCampaign = ''
+        projectGoals.value.sustainableDevelopment = ''
         processDocuments.value = []
     }
 

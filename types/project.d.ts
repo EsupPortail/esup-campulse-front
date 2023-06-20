@@ -22,6 +22,7 @@ export interface Project {
     plannedActivities: string,
     preventionSafety: string,
     marketingCampaign: string,
+    sustainableDevelopment: string,
     projectStatus: ProjectStatus,
     creationDate: string,
     editionDate: string
@@ -87,6 +88,7 @@ export interface ProjectGoals {
     plannedActivities: string,
     preventionSafety: string,
     marketingCampaign: string,
+    sustainableDevelopment: string
 }
 
 export interface ProjectCommissionFund {

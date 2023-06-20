@@ -243,6 +243,7 @@ describe('useSubmitProject', () => {
                 marketingCampaign: 'Communication',
                 plannedActivities: 'Activités',
                 preventionSafety: 'Sécurité',
+                sustainableDevelopment: 'Développement durable',
                 summary: 'Résumé'
             })
         })
