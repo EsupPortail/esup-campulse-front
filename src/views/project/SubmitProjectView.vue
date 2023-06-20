@@ -13,16 +13,10 @@ import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
 import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
-<<<<<<< HEAD
-import useUsers from '@/composables/useUsers'
-import FormProjectRecap from '@/components/form/FormProjectRecap.vue'
-import FormProjectDocumentUploads from '@/components/form/FormProjectDocumentUploads.vue'
-import FormProjectBearerInfos from '@/components/form/FormProjectBearerInfos.vue'
-=======
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
-import FormProjectRecap from '@/components/project/ProjectRecap.vue'
+import ProjectRecap from '@/components/project/ProjectRecap.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
->>>>>>> develop
+import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vue'
 
 const {t} = useI18n()
 const {
@@ -45,13 +39,10 @@ const {
     initProjectGoals,
     submitProject,
     reInitSubmitProjectForm,
-<<<<<<< HEAD
-=======
     projectCommissionFundsDetail,
     reInitProjectCommissionFunds,
     initProjectAssociationUsersLabels,
     projectAssociationUsersLabels
->>>>>>> develop
 } = useSubmitProject()
 const {
     getDocuments,
@@ -59,13 +50,9 @@ const {
     processDocuments,
     uploadDocuments,
     initDocumentUploads,
-<<<<<<< HEAD
-    getFile
-=======
     documentUploads,
     deleteDocumentUpload,
     createFileLink
->>>>>>> develop
 } = useProjectDocuments()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
@@ -116,7 +103,6 @@ onMounted(async () => {
         } else await router.push({name: '404'})
     }
     await onGetProjectCategories()
-    await onGetDocumentTypes()
     await onGetAssociationUsers()
     isLoaded.value = true
     loading.hide()
@@ -161,15 +147,12 @@ watch(() => projectStore.projectCommissionFunds.length, () => {
 
 const isSite = ref<boolean>(false)
 
-<<<<<<< HEAD
-=======
 const isLoaded = ref<boolean>(false)
 
 // CONST
 const MAX_FILES = 10
 const MAX_FILE_SIZE = 8388608
 
->>>>>>> develop
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
     if (route.name === 'SubmitProjectAssociation') applicant.value = 'association'
@@ -225,20 +208,6 @@ async function onGetProjectCategories() {
             await projectStore.getProjectCategories()
             initProjectCategories()
         }
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-}
-
-async function onGetDocumentTypes() {
-    try {
-        await getDocuments('DOCUMENT_PROJECT')
-        initProcessProjectDocuments()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -343,32 +312,25 @@ async function onGetProjectDocuments() {
     }
 }
 
+// FILE TOO LARGE ON STEP 5
+async function onDocumentRejected() {
+    notify({
+        type: 'negative',
+        message: t('notifications.negative.413-error')
+    })
+}
+
 // SUBMIT STEP 1
 async function onSubmitBasicInfos(nextStep: number) {
     loading.show()
     try {
         if (newProject.value) {
-<<<<<<< HEAD
-            await postNewProject(associationId.value)
-        }
-        await patchProjectBasicInfos()
-        // For individual project bearer
-        initInfosToPatch(userStore.user)
-        if (Object.entries(infosToPatch).length) {
-            await updateUserInfos(userStore.user, false)
-        }
-        if (projectStore.project) {
-            await updateProjectCategories()
-            step.value = nextStep
-        }
-=======
             await postNewProject(parseInt(route.params.associationId as string))
         } else {
             await patchProjectBasicInfos()
         }
         await updateProjectCategories()
         step.value = nextStep
->>>>>>> develop
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -455,6 +417,22 @@ async function onUploadDocuments(nextStep: number) {
     loading.hide()
 }
 
+// DELETE DOCS ON STEP 5
+async function onDeleteDocumentUpload(documentId: number) {
+    loading.show()
+    try {
+        await deleteDocumentUpload(documentId)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
+
 // SUBMIT STEP 6
 async function onSubmitProject() {
     loading.show()
@@ -493,40 +471,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
         <div class="form-container">
             <div class="form">
-                <div class="info-panel">
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-info"
-                    ></i>
-                    <p>{{ t('project.form-help') }}</p>
-                    <p>
-                        {{ t('project.info-panel-status') }}
-                        {{
-                            applicant === 'association' ? t('project.info-panel-status-association') : t('project.info-panel-status-individual') + '.'
-                        }}
-                        <span v-if="applicant === 'association'"><strong>{{ associationName }}</strong>.</span>
-                    </p>
-                    <p>
-                        {{ t('project.required-documents-list') + ' :' }}
-                    </p>
-                    <p class="paragraph">
-                        <ul role="list">
-                            <li
-                                v-for="(document, index) in processDocuments"
-                                :key="index"
-                            >
-                                <span v-if="document.pathTemplate">
-                                    <a
-                                        :href="document.pathTemplate"
-                                        :title="t('project.document.download-template')"
-                                        target="_blank"
-                                    >{{ document.description }}</a>
-                                </span>
-                                <span v-else>{{ document.description }}</span>
-                            </li>
-                        </ul>
-                    </p>
-                </div>
+                <InfoProcessDocuments :process="'DOCUMENT_PROJECT'"/>
 
                 <QStepper
                     ref="stepper"
@@ -596,14 +541,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 multiple
                                 use-chips
                             />
-<<<<<<< HEAD
-
-                            <FormProjectBearerInfos
-                                :applicant="applicant"
-                                process="project"
-                            />
-
-=======
                             <div v-if="applicant === 'association'">
                                 <QSelect
                                     v-model="projectBasicInfos.associationUser"
@@ -631,7 +568,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 </div>
                                 <FormUserAddress :user="userStore.user"/>
                             </fieldset>
->>>>>>> develop
                             <section class="btn-group">
                                 <QBtn
                                     :label="t('continue')"
@@ -659,29 +595,29 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :label="t('project.commission-choice') + ' *'"
                                 :options="commissionLabels"
                                 :rules="[ val => val || t('forms.fill-field')]"
+                                clearable
                                 emit-value
                                 filled
                                 lazy-rules
-                                clearable
                                 map-options
                                 @update:model-value="reInitProjectCommissionFunds(isSite)"
                             />
 
                             <QSelect
-                                :readonly="!projectCommission"
                                 v-model="projectCommissionFunds"
                                 :hint="t('project.commission-funds-choice-hint')"
                                 :label="t('project.commission-funds-choice') + ' *'"
                                 :options="fundsLabels"
+                                :readonly="!projectCommission"
                                 :rules="[ val => val || t('forms.fill-field')]"
+                                clearable
                                 emit-value
                                 filled
                                 lazy-rules
-                                clearable
                                 map-options
                                 multiple
-                                use-chips
                                 stack-label
+                                use-chips
                             />
 
                             <section class="btn-group">
@@ -973,9 +909,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <p>{{ t('project.sign-charter') }}</p>
                             </div>
 
-<<<<<<< HEAD
-                            <FormProjectDocumentUploads/>
-=======
                             <section class="flex-section">
                                 <div
                                     v-for="(document, index) in processDocuments"
@@ -1060,7 +993,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     </div>
                                 </div>
                             </section>
->>>>>>> develop
 
                             <section class="btn-group">
                                 <QBtn
@@ -1083,7 +1015,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         :title="t('recap')"
                         icon="bi-check-lg"
                     >
-                        <FormProjectRecap
+                        <ProjectRecap
                             view="submitProject"
                             @submit-project="onSubmitProject"
                             @change-step="newStep => step = newStep"
@@ -1122,32 +1054,32 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 @import '@/assets/_variables.scss';
 
 .q-input, .q-select {
-  padding: 1rem;
+    padding: 1rem;
 }
 
 .display-row {
-  width: 100%;
-  margin: 0 1rem;
+    width: 100%;
+    margin: 0 1rem;
 }
 
 legend, p, h3 {
-  padding: 0 1rem;
+    padding: 0 1rem;
 }
 
 legend {
-  margin-top: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .radio-btn {
-  padding-left: 0.5rem;
+    padding-left: 0.5rem;
 }
 
 .paragraph {
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .self-bearer {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 .form {
@@ -1155,7 +1087,7 @@ legend {
 }
 
 .individual-bearer {
-  padding: 0 1rem
+    padding: 0 1rem
 }
 
 .document-item > p {

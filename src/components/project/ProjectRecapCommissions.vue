@@ -6,6 +6,8 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref, watch} from 'vue'
+import {useRoute} from 'vue-router'
+import useUtility from '@/composables/useUtility'
 
 const projectStore = useProjectStore()
 const {
@@ -20,6 +22,8 @@ const {
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const route = useRoute()
+const {CURRENCY} = useUtility()
 
 const projectCommissionLabel = ref<string | undefined>(undefined)
 
@@ -59,25 +63,63 @@ async function onGetProjectCommissions() {
 </script>
 
 <template>
-    <section class="flex-section">
+    <section
+        v-if="route.name !== 'SubmitProjectReview'"
+        class="flex-section"
+    >
         <div class="display-row">
             <p class="row-title">{{ t('commission.name') }}</p>
             <p>{{ projectCommissionLabel }}</p>
         </div>
-        <div class="display-row">
+        <div
+            class="display-row"
+        >
             <p class="row-title">{{ t('commission.funds') }}</p>
             <p>
                 <QChip
-                    v-for="commissionFund in projectStore.projectCommissionFunds"
-                    :key="commissionFund.id"
+                    v-for="projectCommissionFund in projectStore.projectCommissionFunds"
+                    :key="projectCommissionFund.id"
                 >
                     {{
-                        fundsLabels.find(x => x.value === commissionFund.commissionFund)?.label
+                        fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label
                     }}
                 </QChip>
             </p>
         </div>
     </section>
+    <div v-else>
+        <QInput
+            v-model="projectCommissionLabel"
+            :label="t('project.commission')"
+            filled
+            readonly
+        />
+        <div
+            v-for="projectCommissionFund in projectStore.projectCommissionFunds"
+            :key="projectCommissionFund.id"
+            class="flex-section"
+        >
+            <h4 class="title-5">
+                {{
+                    fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label
+                }}
+            </h4>
+            <QInput
+                v-model="projectCommissionFund.amountAsked"
+                :label="t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'"
+                :shadow-text="` ${CURRENCY}`"
+                filled
+                readonly
+            />
+            <QInput
+                v-model="projectCommissionFund.amountEarned"
+                :label="t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'"
+                :shadow-text="` ${CURRENCY}`"
+                filled
+                readonly
+            />
+        </div>
+    </div>
 </template>
 
 <style lang="scss" scoped>

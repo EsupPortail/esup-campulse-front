@@ -3,13 +3,10 @@ import type {
     Project,
     ProjectCategory,
     ProjectCategoryName,
-<<<<<<< HEAD
-    ProjectCommissionDate,
-    ProjectList, ProjectReview,
-=======
+    ProjectList,
+    ProjectReview,
     ProjectCommissionFund,
-    ProjectList, ProjectStatus,
->>>>>>> develop
+    ProjectStatus,
     ProjectStore
 } from '#/project'
 import {useAxios} from '@/composables/useAxios'
@@ -109,8 +106,6 @@ export const useProjectStore = defineStore('projectStore', {
             const {axiosAuthenticated} = useAxios()
             const url = `/projects/${id}/pdf_export`
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
-<<<<<<< HEAD
-=======
         },
 
         async patchProjectStatus(projectStatus: ProjectStatus) {
@@ -119,7 +114,6 @@ export const useProjectStore = defineStore('projectStore', {
                 await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
                 this.project.projectStatus = projectStatus
             }
->>>>>>> develop
         }
     }
 })

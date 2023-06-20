@@ -5,15 +5,39 @@ import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {ProcessDocument} from '#/documents'
+import {useProjectStore} from '@/stores/useProjectStore'
+import {onMounted} from 'vue'
 
-const {processDocuments, documentUploads, deleteDocumentUpload, getFile} = useProjectDocuments()
+const {processDocuments, documentUploads, deleteDocumentUpload, getFile, initDocumentUploads} = useProjectDocuments()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const projectStore = useProjectStore()
 
 // CONST
 const MAX_FILES = 10
 const MAX_FILE_SIZE = 8388608
+
+onMounted(async () => {
+    await onGetProjectDocuments()
+})
+
+// GET DOCUMENTS
+async function onGetProjectDocuments() {
+    loading.show()
+    try {
+        await projectStore.getProjectDocuments()
+        initDocumentUploads()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
 
 // FILE TOO LARGE
 async function onDocumentRejected() {
@@ -39,6 +63,7 @@ async function onDeleteDocumentUpload(documentId: number) {
     loading.hide()
 }
 
+// CREATE LINK TO VIEW FILE
 async function onGetFile(uploadedDocument: ProcessDocument) {
     try {
         const file = await getFile(uploadedDocument.pathFile as string)

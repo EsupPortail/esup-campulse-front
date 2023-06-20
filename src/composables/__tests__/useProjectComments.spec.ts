@@ -6,8 +6,8 @@ import {createPinia, setActivePinia} from 'pinia'
 import {useAxios} from '@/composables/useAxios'
 import useProjectComments from '@/composables/useProjectComments'
 import {_comments} from '~/fixtures/comments.mock'
-import {useUserStore} from '../../stores/useUserStore'
-import {_generalManager, _institutionManager} from '../../../tests/fixtures/user.mock'
+import {useUserStore} from '@/stores/useUserStore'
+import {_institutionManager} from '~/fixtures/user.mock'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({

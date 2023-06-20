@@ -104,10 +104,6 @@ export interface ProjectCommissionFund {
 export interface ProjectReview {
     id: number | null,
     name: string,
-    otherFirstName: string,
-    otherLastName: string,
-    otherEmail: string,
-    otherPhone: string,
     user: number | null,
     association: number | null,
     outcome: number | string,
@@ -144,11 +140,7 @@ export interface ProjectComment {
         lastName: string
     },
     text: string,
-<<<<<<< HEAD
-    creation_date: string
-=======
-    creationDate: string,
->>>>>>> develop
+    creationDate: string
 }
 
 // STORE
@@ -159,8 +151,5 @@ export interface ProjectStore {
     projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[],
-<<<<<<< HEAD
     projectReview: ProjectReview | undefined
-=======
->>>>>>> develop
 }
