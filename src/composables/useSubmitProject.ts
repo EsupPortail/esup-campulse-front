@@ -63,7 +63,7 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function() {
+export default function () {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -91,7 +91,7 @@ export default function() {
         projectAssociationUsersLabels.value = []
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function(associationUser) {
+        associationStore.associationUsers.forEach(function (associationUser) {
             const member = userNames.find(obj => obj.id === associationUser.user)
             if (member && associationUser.id) {
                 projectAssociationUsersLabels.value.push({
@@ -328,6 +328,10 @@ export default function() {
         await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/status`, {projectStatus: 'PROJECT_PROCESSING'})
     }
 
+    async function deleteProject(id: number) {
+        await axiosAuthenticated.delete(`/projects/${id}`)
+    }
+
 
     return {
         projectBasicInfos,
@@ -353,6 +357,7 @@ export default function() {
         reInitProjectCommissionFunds,
         initProjectAssociationUsersLabels,
         projectAssociationUsersLabels,
-        initProjectCommissionFundsDetail
+        initProjectCommissionFundsDetail,
+        deleteProject
     }
 }
