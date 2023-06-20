@@ -5,6 +5,7 @@ import type {ProjectStatus} from '#/project'
 import router from '@/router'
 import {useUserStore} from '@/stores/useUserStore'
 import {useProjectStore} from '@/stores/useProjectStore'
+import ProjectDelete from '@/components/project/ProjectDelete.vue'
 
 const {t} = useI18n()
 const userStore = useUserStore()
@@ -33,12 +34,13 @@ const initCanModifyProjectAndReview = () => {
 }
 
 interface Option {
-    icon: 'bi-eye' | 'bi-pencil',
+    icon: 'bi-eye' | 'bi-pencil' | 'bi-trash',
     label: string,
     to?: {
         name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail' | 'SubmitProjectReview',
         params: { associationId?: number, projectId: number }
-    }
+    },
+    action?: 'delete'
 }
 
 const options = ref<Option[]>([])
@@ -56,6 +58,11 @@ const initOptions = () => {
                     params: {associationId: props.association, projectId: props.project}
                 } :
                     {name: 'SubmitProjectIndividual', params: {projectId: props.project}}
+            })
+            options.value.push({
+                icon: 'bi-trash',
+                label: t('project.delete'),
+                action: 'delete'
             })
         }
     }
@@ -88,6 +95,17 @@ watch(() => userStore.user, initOptions)
 
 onMounted(initOptions)
 
+const openDelete = ref<boolean>(false)
+
+function onOptionClick(option: Option) {
+    if (option.to) router.push(option.to)
+    else if (option.action) {
+        if (option.action === 'delete') {
+            openDelete.value = true
+        }
+    }
+}
+
 </script>
 
 <template>
@@ -103,7 +121,7 @@ onMounted(initOptions)
                     :key="index"
                     v-close-popup
                     clickable
-                    @click="router.push(option.to)"
+                    @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
                         <QAvatar
@@ -121,6 +139,11 @@ onMounted(initOptions)
             class="no-presidency"
         >{{ t('forbidden') }}</span>
     </div>
+    <ProjectDelete
+        :open-dialog="openDelete"
+        :project="props.project"
+        @close-dialog="openDelete = false"
+    />
 </template>
 
 <style lang="scss" scoped>

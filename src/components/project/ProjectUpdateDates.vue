@@ -28,6 +28,9 @@ const open = ref<boolean>(false)
 
 watch(() => openRef.value, () => {
     open.value = openRef.value
+})
+
+watch(() => open.value, () => {
     if (!open.value) {
         emit('closeDialog')
     }
