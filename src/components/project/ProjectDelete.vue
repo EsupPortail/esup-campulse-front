@@ -5,11 +5,13 @@ import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import useSubmitProject from '@/composables/useSubmitProject'
+import {useProjectStore} from '@/stores/useProjectStore'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {deleteProject} = useSubmitProject()
+const projectStore = useProjectStore()
 
 const emit = defineEmits(['closeDialog'])
 
@@ -36,6 +38,12 @@ async function onDeleteProject() {
     loading.show()
     try {
         await deleteProject(props.project)
+        const index = projectStore.projects.findIndex(obj => obj.id === props.project)
+        projectStore.projects.splice(index, 1)
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.project-deleted')
+        })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -55,7 +63,7 @@ async function onDeleteProject() {
                 <QForm
                     @submit="onDeleteProject"
                 >
-                    <p class="paragraph">test</p>
+                    <p class="paragraph">{{ t('project.confirm-project-delete') }}</p>
                     <QCardActions align="right">
                         <QBtn
                             v-close-popup
