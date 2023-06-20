@@ -31,7 +31,8 @@ export interface Association {
     institutionComponent?: number,
     activityField?: number,
     canSubmitProjects: boolean,
-    charterStatus: string
+    charterStatus: string,
+    charterDate: string,
     amountMembersAllowed: number
 }
 

@@ -130,7 +130,7 @@ async function onGetAssociationDetail() {
         </section>
 
         <section
-            v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret"
+            v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret || association?.charterDate"
         >
             <h3>
                 <i
@@ -156,9 +156,12 @@ async function onGetAssociationDetail() {
                     <p>{{ association?.presidentPhone }}</p>
                 </article>
 
-                <article class="display-row">
+                <article
+                    v-if="association?.charterDate"
+                    class="display-row"
+                >
                     <h4>{{ t('association.labels.charter-date') }}</h4>
-                    <p>TODO</p>
+                    <p>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</p>
                 </article>
 
                 <article
@@ -258,14 +261,14 @@ async function onGetAssociationDetail() {
             <QBtn
                 :label="t('association.back-directory')"
                 :to="{name: 'Associations'}"
-                icon="bi-box-arrow-right"
+                icon="bi-box-arrow-left"
             />
             <QBtn
                 v-if="association?.email"
                 :href="`mailto:${association?.email}`"
                 :label="t('association.contact')"
                 :title="`${t('association.contact')} ${association?.name}`"
-                icon="bi-enveloppe"
+                icon="bi-envelope"
             />
         </div>
     </div>
