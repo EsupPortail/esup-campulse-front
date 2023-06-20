@@ -91,10 +91,15 @@ export default function () {
         }
     }
 
+    async function submitProjectReview() {
+        await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/status`, {projectStatus: 'PROJECT_REVIEW_PROCESSING'})
+    }
+
 
     return {
         projectReview,
         initProjectReview,
-        patchProjectReview
+        patchProjectReview,
+        submitProjectReview
     }
 }

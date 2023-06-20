@@ -1,14 +1,39 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import ProjectReviewRecapBasicInfos from '@/components/project/ProjectReviewRecapBasicInfos.vue'
+import axios from 'axios'
+import {useQuasar} from 'quasar'
+import useErrors from '@/composables/useErrors'
+import ProjectReviewRecapReview from '@/components/project/ProjectReviewRecapReview.vue'
+import InfoVerifyDocuments from '@/components/infoPanel/InfoVerifyDocuments.vue'
+import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
+import useSubmitReview from '@/composables/useSubmitReview'
 
 const {t} = useI18n()
+const {loading, notify} = useQuasar()
+const {catchHTTPError} = useErrors()
+const {submitProjectReview} = useSubmitReview()
 
 const props = defineProps<{
     view: 'submitProjectReview' | 'projectReviewDetail'
 }>()
 
-const emit = defineEmits(['submitProjectReview', 'changeStep', 'getFile'])
+const emit = defineEmits(['changeStep'])
+
+async function onSubmitProjectReview() {
+    loading.show()
+    try {
+        await submitProjectReview()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
 </script>
 
 <template>
@@ -21,11 +46,12 @@ const emit = defineEmits(['submitProjectReview', 'changeStep', 'getFile'])
             <!-- BASIC INFOS -->
             <section class="recap-section">
                 <div class="recap-section-title">
-                    <h4 class="title-3">{{ t('project.review') }}</h4>
+                    <h4 class="title-3">{{ t('project.general-infos') }}</h4>
                     <QBtn
+                        v-if="props.view === 'submitProjectReview'"
                         :label="t('modify')"
                         icon="bi-pencil"
-                        @click="() => step = 2"
+                        @click="emit('changeStep', 1)"
                     />
                 </div>
                 <ProjectReviewRecapBasicInfos/>
@@ -36,38 +62,13 @@ const emit = defineEmits(['submitProjectReview', 'changeStep', 'getFile'])
                 <div class="recap-section-title">
                     <h4 class="title-3">{{ t('project.review') }}</h4>
                     <QBtn
+                        v-if="props.view === 'submitProjectReview'"
                         :label="t('modify')"
                         icon="bi-pencil"
-                        @click="() => step = 2"
+                        @click="emit('changeStep', 2)"
                     />
                 </div>
-
-                <section class="flex-section">
-                    <div class="display-row">
-                        <p class="row-title">{{ t('project.review') }}</p>
-                        <p>{{ projectReview.review }}</p>
-                    </div>
-
-                    <div class="display-row">
-                        <p class="row-title">{{ t('project.impact-students') }}</p>
-                        <p>{{ projectReview.impactStudents }}</p>
-                    </div>
-
-                    <div class="display-row">
-                        <p class="row-title">{{ t('project.description') }}</p>
-                        <p>{{ projectReview.description }}</p>
-                    </div>
-
-                    <div class="display-row">
-                        <p class="row-title">{{ t('project.difficulties') }}</p>
-                        <p>{{ projectReview.difficulties }}</p>
-                    </div>
-
-                    <div class="display-row">
-                        <p class="row-title">{{ t('project.improvements') }}</p>
-                        <p>{{ projectReview.improvements }}</p>
-                    </div>
-                </section>
+                <ProjectReviewRecapReview/>
             </section>
         </section>
 
@@ -76,32 +77,32 @@ const emit = defineEmits(['submitProjectReview', 'changeStep', 'getFile'])
             <div class="recap-section-title">
                 <h4 class="title-3">{{ t('project.documents') }}</h4>
                 <QBtn
+                    v-if="props.view === 'submitProjectReview'"
                     :label="t('modify')"
                     icon="bi-pencil"
-                    @click="() => step = 3"
+                    @click="emit('changeStep', 3)"
                 />
             </div>
 
-            <div class="info-panel info-panel-warning">
-                <i
-                    aria-hidden="true"
-                    class="bi bi-exclamation-lg"
-                ></i>
-                <p>{{ t('project.document.verify') }}</p>
-            </div>
+            <InfoVerifyDocuments v-if="props.view === 'submitProjectReview'"/>
+            <ProjectRecapDocuments/>
         </section>
-        <FormProjectRecapDocuments/>
-        <section class="form-page-navigation">
+        <div class="btn-group">
             <QBtn
                 :label="t('back')"
                 icon="bi-chevron-left"
-                @click="step = 3"
+                @click="emit('changeStep', 3)"
             />
             <QBtn
                 :label="t('project.submit-review')"
-                icon-right="bi-check2"
+                icon-right="bi-check-lg"
                 type="submit"
             />
-        </section>
+        </div>
     </QForm>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+</style>

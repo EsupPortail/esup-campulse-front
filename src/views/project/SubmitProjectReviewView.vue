@@ -9,9 +9,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useRoute} from 'vue-router'
 import useUtility from '@/composables/useUtility'
-import useUsers from '@/composables/useUsers'
 import FormProjectDocumentUploads from '@/components/form/FormProjectDocumentUploads.vue'
-import FormProjectRecapDocuments from '@/components/form/FormProjectRecapDocuments.vue'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import useSubmitReview from '@/composables/useSubmitReview'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
@@ -33,7 +31,6 @@ const {
     initProjectReview,
     patchProjectReview
 } = useSubmitReview()
-const {userToUpdate} = useUsers()
 
 onMounted(async () => {
     loading.show()
@@ -108,19 +105,6 @@ async function onUploadDocuments(nextStep: number) {
         }
     }
     loading.hide()
-}
-
-async function onSubmitProjectReview() {
-    try {
-        await submitProjectReview()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
 }
 </script>
 
@@ -227,7 +211,7 @@ async function onSubmitProjectReview() {
 
                             <QSeparator/>
 
-                            <ProjectRecapCommissions/>
+                            <ProjectRecapCommissions :view="'submitProjectReview'"/>
 
                             <QSeparator/>
 
@@ -388,7 +372,10 @@ async function onSubmitProjectReview() {
                         :title="t('recap')"
                         icon="mdi-check"
                     >
-                        <ProjectReviewRecap/>
+                        <ProjectReviewRecap
+                            :view="'submitProjectReview'"
+                            @change-step="newStep => step = newStep"
+                        />
                     </QStep>
                 </QStepper>
             </div>

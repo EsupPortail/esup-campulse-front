@@ -1,8 +1,40 @@
+<script lang="ts" setup>
+import {useProjectStore} from '@/stores/useProjectStore'
+import useUtility from '@/composables/useUtility'
+import useSubmitReview from '@/composables/useSubmitReview'
+import {useI18n} from 'vue-i18n'
+import useUsers from '@/composables/useUsers'
+import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
+import {onMounted, ref} from 'vue'
+import {useUserStore} from '@/stores/useUserStore'
+
+const {t} = useI18n()
+const projectStore = useProjectStore()
+const {formatDate, CURRENCY} = useUtility()
+const {projectReview} = useSubmitReview()
+const {userToUpdate} = useUsers()
+const userStore = useUserStore()
+
+const applicant = ref<string | undefined>('')
+
+const initApplicant = () => {
+    if (projectReview.value.user) applicant.value = `${userStore.user?.firstName} ${userStore.user?.lastName}`
+    else applicant.value = userStore.user?.associations.find(obj => obj.id === projectReview.value.association)?.name
+}
+
+onMounted(initApplicant)
+</script>
+
 <template>
     <section class="flex-section">
         <div class="display-row">
+            <p class="row-title">{{ t('project.applicant') }}</p>
+            <p>{{ applicant }}</p>
+        </div>
+
+        <div class="display-row">
             <p class="row-title">{{ t('project.name') }}</p>
-            <p>{{ projectStore.project?.name }}</p>
+            <p>{{ projectReview.name }}</p>
         </div>
 
         <div class="display-row">
@@ -28,45 +60,17 @@
             <p>{{ projectReview.realLocation }}</p>
         </div>
 
-        <h5 class="title-4">{{ t('project.contact-infos') }}</h5>
+        <h5
+            v-if="projectReview.user"
+            class="title-4"
+        >
+            {{ t('project.contact-infos') }}
+        </h5>
 
         <section
-            v-if="projectReview.association"
+            v-if="projectReview.user"
             class="flex-section"
         >
-            <div class="display-row">
-                <p class="row-title">{{ t('project.other-first-name') }}</p>
-                <p>{{ projectReview.otherFirstName }}</p>
-            </div>
-            <div class="display-row">
-                <p class="row-title">{{ t('project.other-last-name') }}</p>
-                <p>{{ projectReview.otherLastName }}</p>
-            </div>
-            <div class="display-row">
-                <p class="row-title">{{ t('project.other-email') }}</p>
-                <p>{{ projectReview.otherEmail }}</p>
-            </div>
-        </section>
-        <section
-            v-else
-            class="flex-section"
-        >
-            <div class="display-row">
-                <p class="row-title">{{ t('user.first-name') }}</p>
-                <p>{{ userToUpdate.firstName }}</p>
-            </div>
-            <div class="display-row">
-                <p class="row-title">{{ t('user.last-name') }}</p>
-                <p>{{ userToUpdate.lastName }}</p>
-            </div>
-            <div class="display-row">
-                <p class="row-title">{{ t('user.email') }}</p>
-                <p>{{ userToUpdate.email }}</p>
-            </div>
-            <div class="display-row">
-                <p class="row-title">{{ t('user.phone') }}</p>
-                <p>{{ userToUpdate.phone }}</p>
-            </div>
             <div class="display-row">
                 <p class="row-title">{{ t('address.address') }}</p>
                 <p>
@@ -79,7 +83,7 @@
 
         <h5 class="title-4">{{ t('commission.dates') }}</h5>
 
-        <ProjectRecapCommissions/>
+        <ProjectRecapCommissions :view="'projectReviewRecap'"/>
 
         <h5 class="title-4">
             {{
@@ -98,3 +102,19 @@
         </div>
     </section>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+
+.display-row {
+    width: 100% !important;
+}
+
+.flex-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+</style>
