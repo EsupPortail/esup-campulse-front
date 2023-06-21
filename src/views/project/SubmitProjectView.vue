@@ -9,7 +9,7 @@ import {useQuasar} from 'quasar'
 import {onBeforeRouteLeave, useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
-import useProjectDocuments from '@/composables/useProjectDocuments'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 import router from '@/router'
 import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
@@ -46,14 +46,14 @@ const {
 } = useSubmitProject()
 const {
     getDocuments,
-    initProcessProjectDocuments,
+    initProcessDocuments,
     processDocuments,
     uploadDocuments,
-    initDocumentUploads,
+    initProjectDocumentUploads,
     documentUploads,
     deleteDocumentUpload,
     createFileLink
-} = useProjectDocuments()
+} = useDocumentUploads()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
     getCommissionsForStudents,
@@ -298,10 +298,10 @@ function onGetProjectGoals() {
 // GET DATA FOR STEP 5
 async function onGetProjectDocuments() {
     try {
-        await getDocuments('DOCUMENT_PROJECT')
-        initProcessProjectDocuments()
+        await getDocuments(['DOCUMENT_PROJECT'])
+        initProcessDocuments()
         await projectStore.getProjectDocuments()
-        initDocumentUploads()
+        initProjectDocumentUploads()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

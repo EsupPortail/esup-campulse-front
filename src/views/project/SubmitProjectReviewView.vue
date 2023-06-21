@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
-import useProjectDocuments from '@/composables/useProjectDocuments'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref, watch} from 'vue'
@@ -9,7 +9,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useRoute} from 'vue-router'
 import useUtility from '@/composables/useUtility'
-import FormProjectDocumentUploads from '@/components/form/FormProjectDocumentUploads.vue'
+import FormProjectDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import useSubmitReview from '@/composables/useSubmitReview'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
@@ -25,7 +25,7 @@ const route = useRoute()
 const {CURRENCY, fromDateIsAnterior} = useUtility()
 const {
     uploadDocuments
-} = useProjectDocuments()
+} = useDocumentUploads()
 const {
     projectReview,
     initProjectReview,
@@ -349,7 +349,7 @@ async function onUploadDocuments(nextStep: number) {
                         >
                             <h3 class="title-2">{{ t('project.documents') }}</h3>
 
-                            <FormProjectDocumentUploads/>
+                            <FormProjectDocumentUploads process="project"/>
 
                             <div class="btn-group">
                                 <QBtn

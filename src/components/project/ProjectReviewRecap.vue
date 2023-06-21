@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import ProjectReviewRecapReview from '@/components/project/ProjectReviewRecapReview.vue'
 import InfoVerifyDocuments from '@/components/infoPanel/InfoVerifyDocuments.vue'
-import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
+import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import useSubmitReview from '@/composables/useSubmitReview'
 import router from '@/router'
 
