@@ -5,12 +5,14 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {onMounted} from 'vue'
 import useErrors from '@/composables/useErrors'
+import ProjectRecapCategories from '@/components/project/ProjectRecapCategories.vue'
+import {useProjectStore} from '@/stores/useProjectStore'
 
 const {projectBasicInfos, initProjectAssociationUsersLabels, projectAssociationUsersLabels} = useSubmitProject()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-
+const projectStore = useProjectStore()
 
 onMounted(async () => {
     loading.show()
@@ -67,6 +69,8 @@ async function onGetAssociationUsers() {
             <p class="row-title">{{ t('project.association-user') }}</p>
             <p>{{ projectAssociationUsersLabels.find(x => x.value === projectBasicInfos.associationUser)?.label }}</p>
         </div>
+
+        <ProjectRecapCategories/>
     </section>
 </template>
 

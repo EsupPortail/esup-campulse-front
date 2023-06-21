@@ -16,6 +16,8 @@ const props = defineProps<{
     projectStatus: ProjectStatus
 }>()
 
+const emit = defineEmits(['refreshProjects'])
+
 const updateProjectDates = ref<boolean>(false)
 
 interface Option {
@@ -100,6 +102,7 @@ function onOptionClick(option: Option) {
         :open-dialog="updateProjectDates"
         :project="props.project"
         @close-dialog="updateProjectDates = false"
+        @refresh-projects="emit('refreshProjects')"
     />
 </template>
 

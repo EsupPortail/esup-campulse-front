@@ -10,7 +10,7 @@ import axios from 'axios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import TableManageProjectsBtn from '@/components/table/TableManageProjectsBtn.vue'
 
 
@@ -41,7 +41,8 @@ const applicant = (association: number | null, user: number | null) => {
 
 const initProjects = () => {
     if (props.projectStatus === 'validated') {
-        projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_VALIDATED')
+        projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_VALIDATED'
+            || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else if (props.projectStatus === 'archived') {
         projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
             || obj.projectStatus === 'PROJECT_REVIEW_REJECTED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
@@ -49,6 +50,8 @@ const initProjects = () => {
         projects.value = projectStore.projects
     }
 }
+
+watch(() => projectStore.projects, initProjects)
 
 onMounted(async () => {
     loading.show()
@@ -151,6 +154,7 @@ const columns: QTableProps['columns'] = [
                             <TableManageProjectsBtn
                                 :project="props.row.id"
                                 :project-status="props.row.projectStatus"
+                                @refresh-projects="onGetProjects"
                             />
                         </div>
                     </QTd>

@@ -15,7 +15,7 @@ const projectStore = useProjectStore()
 const {projectBasicInfos, initProjectBasicInfos, reInitSubmitProjectForm, patchProjectBasicInfos} = useSubmitProject()
 const {fromDateIsAnterior} = useUtility()
 
-const emit = defineEmits(['closeDialog'])
+const emit = defineEmits(['closeDialog', 'refreshProjects'])
 
 const props = defineProps<{
     openDialog: boolean,
@@ -60,6 +60,7 @@ async function onUpdateProjectDates() {
         await patchProjectBasicInfos()
         reInitSubmitProjectForm()
         emit('closeDialog')
+        emit('refreshProjects')
         notify({
             type: 'positive',
             message: t('notifications.positive.project-dates-updated')

@@ -97,7 +97,7 @@ async function onGetProjectDocuments() {
         </h2>
         <div class="form-container">
             <div class="form">
-                <ProjectRecapCommissions/>
+                <ProjectRecapCommissions view="projectRecap"/>
             </div>
         </div>
     </section>
@@ -188,8 +188,12 @@ async function onGetProjectDocuments() {
 @import "@/assets/styles/dashboard.scss";
 
 .flex-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.display-row {
+    width: 100%;
 }
 </style>

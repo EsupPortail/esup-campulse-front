@@ -34,32 +34,34 @@ const initProjectCommissionLabel = () => {
         .find(x => x.value === projectStore.projectCommission)?.label
 }
 
-onMounted(() => {
-    if (projectStore.project) onGetProjectCommissions()
+onMounted(async () => {
+    await onGetProjectCommissions()
 })
 
 watch(() => projectStore.project, async () => {
-    loading.show()
     await onGetProjectCommissions()
-    loading.hide()
 })
 
 async function onGetProjectCommissions() {
-    try {
-        await getAllCommissions()
-        await getCommissionFunds()
-        await projectStore.getProjectCommissionFunds(false, undefined)
-        await getFunds()
-        initCommissionLabels()
-        initChosenCommissionFundsLabels(projectStore.projectCommission as number, true)
-        initProjectCommissionLabel()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
+    if (projectStore.project) {
+        loading.show()
+        try {
+            await getAllCommissions()
+            await getCommissionFunds()
+            await projectStore.getProjectCommissionFunds(false, undefined)
+            await getFunds()
+            initCommissionLabels()
+            initChosenCommissionFundsLabels(projectStore.projectCommission as number, true)
+            initProjectCommissionLabel()
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
         }
+        loading.hide()
     }
 }
 </script>

@@ -166,6 +166,7 @@ const onClearValues = () => {
     newCommission.value.datesAreLegal = undefined
     newCommission.value.name = ''
     newCommission.value.funds = []
+    newCommission.value.isOpenToProjects = false
 }
 </script>
 

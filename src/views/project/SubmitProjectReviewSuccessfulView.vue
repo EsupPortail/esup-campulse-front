@@ -86,12 +86,9 @@ async function onGetProjectReviewPdf() {
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
-</style>
-
-<style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 
 i {
