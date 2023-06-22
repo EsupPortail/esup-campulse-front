@@ -4,7 +4,6 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
-import useProjectDocuments from '@/composables/useProjectDocuments'
 import router from '@/router'
 import {onMounted, ref} from 'vue'
 import {useProjectStore} from '@/stores/useProjectStore'
@@ -14,14 +13,13 @@ import ProjectRecapBasicInfos from '@/components/project/ProjectRecapBasicInfos.
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
 import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
 import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
-import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
+import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import ProjectValidation from '@/components/project/ProjectValidation.vue'
 import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {getDocuments, initProcessProjectDocuments} = useProjectDocuments()
 const projectStore = useProjectStore()
 const {
     initProjectBasicInfos,
@@ -35,7 +33,6 @@ const isLoaded = ref<boolean>(false)
 onMounted(async () => {
     loading.show()
     await onGetProjectDetail()
-    await onGetProjectDocuments()
     loading.hide()
 })
 
@@ -48,20 +45,6 @@ async function onGetProjectDetail() {
         isLoaded.value = true
     } catch (error) {
         await router.push({name: '404'})
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-}
-
-async function onGetProjectDocuments() {
-    try {
-        await getDocuments('DOCUMENT_PROJECT')
-        initProcessProjectDocuments()
-    } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
@@ -139,7 +122,11 @@ async function onGetProjectDocuments() {
         </h2>
         <div class="form-container">
             <div class="form">
-                <ProjectRecapDocuments/>
+                <ProjectRecapDocuments
+                    v-if="isLoaded"
+                    :association-id="null"
+                    process="project"
+                />
             </div>
         </div>
     </section>

@@ -70,7 +70,6 @@ async function onGetProjectReviewPdf() {
                     <div class="flex-btn-group">
                         <QBtn
                             :label="t('project.download-recap')"
-                            disable
                             icon-right="bi-download"
                             @click="onGetProjectReviewPdf"
                         />

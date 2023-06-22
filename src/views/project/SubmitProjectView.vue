@@ -9,7 +9,7 @@ import {useQuasar} from 'quasar'
 import {onBeforeRouteLeave, useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
-import useProjectDocuments from '@/composables/useProjectDocuments'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 import router from '@/router'
 import useErrors from '@/composables/useErrors'
 import type {ProcessDocument} from '#/documents'
@@ -17,6 +17,7 @@ import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import ProjectRecap from '@/components/project/ProjectRecap.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
 import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vue'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 
 const {t} = useI18n()
 const {
@@ -46,14 +47,11 @@ const {
 } = useSubmitProject()
 const {
     getDocuments,
-    initProcessProjectDocuments,
-    processDocuments,
+    initProcessDocuments,
     uploadDocuments,
-    initDocumentUploads,
-    documentUploads,
-    deleteDocumentUpload,
+    initProjectDocumentUploads,
     createFileLink
-} = useProjectDocuments()
+} = useDocumentUploads()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
     getCommissionsForStudents,
@@ -148,10 +146,6 @@ watch(() => projectStore.projectCommissionFunds.length, () => {
 const isSite = ref<boolean>(false)
 
 const isLoaded = ref<boolean>(false)
-
-// CONST
-const MAX_FILES = 10
-const MAX_FILE_SIZE = 8388608
 
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
@@ -298,10 +292,10 @@ function onGetProjectGoals() {
 // GET DATA FOR STEP 5
 async function onGetProjectDocuments() {
     try {
-        await getDocuments('DOCUMENT_PROJECT')
-        initProcessProjectDocuments()
+        await getDocuments(['DOCUMENT_PROJECT'])
+        initProcessDocuments()
         await projectStore.getProjectDocuments()
-        initDocumentUploads()
+        initProjectDocumentUploads()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -310,14 +304,6 @@ async function onGetProjectDocuments() {
             })
         }
     }
-}
-
-// FILE TOO LARGE ON STEP 5
-async function onDocumentRejected() {
-    notify({
-        type: 'negative',
-        message: t('notifications.negative.413-error')
-    })
 }
 
 // SUBMIT STEP 1
@@ -417,22 +403,6 @@ async function onUploadDocuments(nextStep: number) {
     loading.hide()
 }
 
-// DELETE DOCS ON STEP 5
-async function onDeleteDocumentUpload(documentId: number) {
-    loading.show()
-    try {
-        await deleteDocumentUpload(documentId)
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-    loading.hide()
-}
-
 // SUBMIT STEP 6
 async function onSubmitProject() {
     loading.show()
@@ -471,7 +441,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
         <div class="form-container">
             <div class="form">
-                <InfoProcessDocuments :process="'DOCUMENT_PROJECT'"/>
+                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']"/>
 
                 <QStepper
                     ref="stepper"
@@ -919,90 +889,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <p>{{ t('project.sign-charter') }}</p>
                             </div>
 
-                            <section class="flex-section">
-                                <div
-                                    v-for="(document, index) in processDocuments"
-                                    :key="index"
-                                >
-                                    <QFile
-                                        v-model="document.pathFile"
-                                        :accept="document.mimeTypes?.join(', ')"
-                                        :aria-required="document.isRequiredInProcess"
-                                        :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
-                                            !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
-                                        :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
-                                        :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
-                                        :max-file-size="MAX_FILE_SIZE"
-                                        :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
-                                            (1 - documentUploads.filter(obj => obj.document === document.document).length)"
-                                        :multiple="document.isMultiple"
-                                        :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
-                                        append
-                                        clearable
-                                        counter
-                                        filled
-                                        lazy-rules
-                                        use-chips
-                                        @rejected="onDocumentRejected"
-                                    >
-                                        <template v-slot:prepend>
-                                            <QIcon name="mdi-paperclip"/>
-                                        </template>
-                                    </QFile>
-
-                                    <div
-                                        v-if="document.pathTemplate"
-                                        class="info-panel info-panel-warning"
-                                    >
-                                        <i
-                                            aria-hidden="true"
-                                            class="bi bi-exclamation-lg"
-                                        ></i>
-                                        <p>
-                                            {{ t('project.document.use-template') }} <span>
-                                                <a
-                                                    :href="document.pathTemplate"
-                                                    target="_blank"
-                                                >{{
-                                                    `${t('project.document.download-template')} "${document.description}".`
-                                                }}</a></span>
-                                        </p>
-                                    </div>
-
-                                    <div class="document-input-group">
-                                        <div class="document-input variant-space-3">
-                                            <div class="document-input-list">
-                                                <div
-                                                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                                                    :key="uploadedDocument.id"
-                                                    class="document-item"
-                                                >
-                                                    <p @click="onGetFile(uploadedDocument)">
-                                                        <i
-                                                            aria-hidden="true"
-                                                            class="bi bi-file-earmark"
-                                                        ></i>
-                                                        {{ uploadedDocument.name }}
-                                                        <i
-                                                            aria-hidden="true"
-                                                            class="bi bi-eye"
-                                                        ></i>
-                                                    </p>
-                                                    <button
-                                                        type="button"
-                                                        @click="onDeleteDocumentUpload(uploadedDocument.id ? uploadedDocument.id : 0)"
-                                                    >
-                                                        <i
-                                                            aria-hidden="true"
-                                                            class="bi bi-x-lg"
-                                                        ></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
+                            <FormDocumentUploads
+                                :association-id="associationId"
+                                process="project"
+                            />
 
                             <section class="btn-group">
                                 <QBtn

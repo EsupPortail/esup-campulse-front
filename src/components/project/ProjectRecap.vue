@@ -4,7 +4,7 @@ import ProjectRecapBasicInfos from '@/components/project/ProjectRecapBasicInfos.
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
 import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
 import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
-import ProjectRecapDocuments from '@/components/project/ProjectRecapDocuments.vue'
+import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import InfoVerifyDocuments from '@/components/infoPanel/InfoVerifyDocuments.vue'
 
 const {t} = useI18n()
@@ -98,7 +98,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 </div>
 
                 <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
-                <ProjectRecapDocuments/>
+                <ProjectRecapDocuments
+                    :association-id="null"
+                    process="project"
+                />
             </section>
         </section>
 

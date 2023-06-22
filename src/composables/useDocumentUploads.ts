@@ -3,6 +3,7 @@ import type {Document, DocumentProcessType, ProcessDocument} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useUserStore} from '@/stores/useUserStore'
+import useCharters from '@/composables/useCharters'
 
 const documents = ref<Document[]>([])
 
@@ -13,11 +14,12 @@ const documentUploads = ref<ProcessDocument[]>([])
 export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
+    const {charterDocuments} = useCharters()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
 
     // Init documents to work on
-    const initProcessProjectDocuments = () => {
+    const initProcessDocuments = () => {
         processDocuments.value = []
         documents.value.forEach((document) => {
             processDocuments.value.push({
@@ -31,7 +33,7 @@ export default function () {
         })
     }
 
-    const initDocumentUploads = () => {
+    const initProjectDocumentUploads = () => {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         projectStore.projectDocuments.forEach((document) => {
@@ -46,10 +48,25 @@ export default function () {
         })
     }
 
+    const initCharterDocumentUploads = () => {
+        documentUploads.value = []
+        const documentIds = processDocuments.value.map((document) => (document.document))
+        charterDocuments.value.forEach((document) => {
+            if (documentIds.includes(document.document)) {
+                documentUploads.value.push({
+                    id: document.id,
+                    document: document.document,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                    name: document.name as string
+                })
+            }
+        })
+    }
+
     // Get documents
-    async function getDocuments(process: DocumentProcessType | 'all') {
+    async function getDocuments(processes: DocumentProcessType[] | 'all') {
         let url = '/documents/'
-        if (process !== 'all') url += `?process_types=${process}`
+        if (processes !== 'all') url += `?process_types=${processes.join(',')}`
         documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
@@ -129,13 +146,14 @@ export default function () {
         getDocuments,
         documents,
         processDocuments,
-        initProcessProjectDocuments,
+        initProcessDocuments,
         uploadDocuments,
-        initDocumentUploads,
+        initProjectDocumentUploads,
         documentUploads,
         deleteDocumentUpload,
         getFile,
         DocumentUpload,
-        createFileLink
+        createFileLink,
+        initCharterDocumentUploads
     }
 }

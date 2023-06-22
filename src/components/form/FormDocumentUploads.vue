@@ -1,33 +1,62 @@
 <script lang="ts" setup>
-import useProjectDocuments from '@/composables/useProjectDocuments'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import {ProcessDocument} from '#/documents'
+import type {DocumentProcessType, ProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted} from 'vue'
+import useCharters from '@/composables/useCharters'
 
-const {processDocuments, documentUploads, deleteDocumentUpload, getFile, initDocumentUploads} = useProjectDocuments()
+const {
+    processDocuments,
+    documentUploads,
+    deleteDocumentUpload,
+    getFile,
+    initProjectDocumentUploads,
+    initProcessDocuments,
+    getDocuments,
+    initCharterDocumentUploads
+} = useDocumentUploads()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const {getCharterDocuments} = useCharters()
 const projectStore = useProjectStore()
+
+const props = defineProps<{
+    process: 'project' | 'review' | 'charter',
+    associationId: number | null
+}>()
 
 // CONST
 const MAX_FILES = 10
 const MAX_FILE_SIZE = 8388608
 
 onMounted(async () => {
-    await onGetProjectDocuments()
+    await onGetDocuments()
 })
 
-// GET DOCUMENTS
-async function onGetProjectDocuments() {
+// GET PROJECT DOCUMENTS
+async function onGetDocuments() {
     loading.show()
     try {
-        await projectStore.getProjectDocuments()
-        initDocumentUploads()
+        let processes: DocumentProcessType[] = []
+        if (props.process === 'project') processes = ['DOCUMENT_PROJECT']
+        else if (props.process === 'review') processes = ['DOCUMENT_PROJECT_REVIEW']
+        else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
+        await getDocuments(processes)
+        initProcessDocuments()
+        if (props.process === 'project' || props.process === 'review') {
+            await projectStore.getProjectDocuments()
+            initProjectDocumentUploads()
+        } else if (props.process === 'charter') {
+            if (props.associationId) {
+                await getCharterDocuments(props.associationId)
+                initCharterDocumentUploads()
+            }
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

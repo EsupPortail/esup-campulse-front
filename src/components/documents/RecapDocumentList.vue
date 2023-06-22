@@ -1,16 +1,34 @@
 <script lang="ts" setup>
-import useProjectDocuments from '@/composables/useProjectDocuments'
 import type {ProcessDocument} from '#/documents'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
-
-const {processDocuments, documentUploads} = useProjectDocuments()
-const {createFileLink} = useProjectDocuments()
+import {DocumentProcessType} from '#/documents'
+import {useProjectStore} from '@/stores/useProjectStore'
+import useCharters from '@/composables/useCharters'
+import useDocumentUploads from '@/composables/useDocumentUploads'
+import {onMounted} from 'vue'
+const {createFileLink} = useDocumentUploads()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
+const {
+    processDocuments,
+    documentUploads,
+    initProjectDocumentUploads,
+    initProcessDocuments,
+    getDocuments,
+    initCharterDocumentUploads
+} = useDocumentUploads()
+const {getCharterDocuments} = useCharters()
+const projectStore = useProjectStore()
+
+const props = defineProps<{
+    process: 'project' | 'review' | 'charter',
+    associationId: number | null
+}>()
+
 
 async function onGetFile(uploadedDocument: ProcessDocument) {
     loading.show()
@@ -26,6 +44,38 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
     }
     loading.hide()
 }
+
+// GET PROJECT DOCUMENTS
+async function onGetDocuments() {
+    loading.show()
+    try {
+        let processes: DocumentProcessType[] = []
+        if (props.process === 'project') processes = ['DOCUMENT_PROJECT']
+        else if (props.process === 'review') processes = ['DOCUMENT_PROJECT_REVIEW']
+        else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
+        await getDocuments(processes)
+        initProcessDocuments()
+        if (props.process === 'project' || props.process === 'review') {
+            await projectStore.getProjectDocuments()
+            initProjectDocumentUploads()
+        } else if (props.process === 'charter') {
+            if (props.associationId) {
+                await getCharterDocuments(props.associationId)
+                initCharterDocumentUploads()
+            }
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
+
+onMounted(async () => await onGetDocuments())
 </script>
 
 <template>

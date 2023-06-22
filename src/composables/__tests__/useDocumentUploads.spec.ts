@@ -3,12 +3,12 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
-import useProjectDocuments from '@/composables/useProjectDocuments'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useAxios} from '@/composables/useAxios'
-import {_documents, _processDocument, _processDocuments, _projectDocuments} from '~/fixtures/document.mock'
+import {_documents, _processDocuments, _projectDocuments} from '~/fixtures/document.mock'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {_project} from '~/fixtures/project.mock'
-import type {DocumentUpload, ProcessDocument} from '#/documents'
+import type {ProcessDocument} from '#/documents'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -36,7 +36,7 @@ config.global.plugins = [
     })
 ]
 
-describe('useProjectDocuments', () => {
+describe('useDocumentUploads', () => {
     beforeEach(() => {
         projectStore = useProjectStore()
     })
@@ -59,15 +59,15 @@ describe('useProjectDocuments', () => {
         deleteDocumentUpload,
         documentUploads,
         getFile,
-        initProcessProjectDocuments
-    } = useProjectDocuments()
+        initProcessDocuments
+    } = useDocumentUploads()
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const mockedAxios = vi.mocked(axiosPublic, true)
 
-    describe('initProcessProjectDocuments', () => {
+    describe('initProcessDocuments', () => {
         it('should initialize documents and pathFiles', () => {
             documents.value = _documents
-            initProcessProjectDocuments()
+            initProcessDocuments()
             expect(processDocuments.value).toEqual(_documents.map(doc => ({
                 document: doc.id,
                 isMultiple: doc.isMultiple,
@@ -79,7 +79,7 @@ describe('useProjectDocuments', () => {
         })
     })
 
-    describe('initDocumentUploads', () => {
+    describe('initProjectDocumentUploads', () => {
         it('should initialize documents and pathFiles', () => {
             projectStore.projectDocuments = _projectDocuments
             processDocuments.value = _processDocuments as ProcessDocument[]
@@ -112,9 +112,9 @@ describe('useProjectDocuments', () => {
         describe('if all process documents are required', () => {
             it('should get specified document process type', async () => {
                 mockedAxios.get.mockResolvedValueOnce({data: _documents})
-                await getDocuments('DOCUMENT_PROJECT')
+                await getDocuments(['DOCUMENT_PROJECT', 'DOCUMENT_PROJECT_REVIEW'])
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                expect(axiosPublic.get).toHaveBeenCalledWith('/documents/?process_types=DOCUMENT_PROJECT')
+                expect(axiosPublic.get).toHaveBeenCalledWith('/documents/?process_types=DOCUMENT_PROJECT,DOCUMENT_PROJECT_REVIEW')
                 expect(documents.value).toEqual(_documents)
             })
         })

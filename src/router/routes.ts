@@ -40,14 +40,42 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: 'charter',
-                name: 'Charter',
-                component: () => import('@/views/charter/CharterView.vue'),
                 meta: {
                     requiresAuth: true,
                     colorVariant: 'space-2',
-                    title: i18n.global.t('breadcrumbs.charter'), // ADDED
-                    breadcrumb: i18n.global.t('breadcrumbs.charter') // ADDED
-                }
+                    breadcrumb: i18n.global.t('breadcrumbs.charter')
+
+                },
+                children: [
+                    {
+                        path: '',
+                        name: 'Charter',
+                        component: () => import('@/views/charter/CharterView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.charter')
+                        },
+                    },
+                    {
+                        path: 'sign/:associationId',
+                        name: 'SignCharter',
+                        component: () => import('@/views/charter/SignCharterView.vue'),
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.sign-charter'),
+                            title: i18n.global.t('breadcrumbs.sign-charter'),
+                            associationMembersOnly: true
+                        }
+                    },
+                    {
+                        path: 'sign-successful/:associationId',
+                        name: 'SignCharterSuccessful',
+                        component: () => import('@/views/charter/SignCharterSuccessfulView.vue'),
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.sign-charter-recap'),
+                            title: i18n.global.t('breadcrumbs.sign-charter-recap'),
+                            associationMembersOnly: true
+                        }
+                    }
+                ]
             },
             {
                 path: 'commission',

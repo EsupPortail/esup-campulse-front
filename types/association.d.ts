@@ -121,7 +121,7 @@ export interface EditedAssociation {
     institutionComponent?: number | null | undefined,
     activityField?: number | null | undefined,
     altLogo?: string,
-    amountMembersAllowed: string
+    amountMembersAllowed?: string
 }
 
 export interface NewAssociation {

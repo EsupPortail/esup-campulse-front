@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import axios from 'axios'
 import {useI18n} from 'vue-i18n'
-import useProjectDocuments from '@/composables/useProjectDocuments'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted} from 'vue'
@@ -9,17 +9,17 @@ import type {DocumentProcessType} from '#/documents'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {getDocuments, initProcessProjectDocuments, processDocuments} = useProjectDocuments()
+const {getDocuments, initProcessDocuments, processDocuments} = useDocumentUploads()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    process: DocumentProcessType
+    processes: DocumentProcessType[]
 }>()
 
 async function onGetDocumentTypes() {
     try {
-        await getDocuments(props.process)
-        initProcessProjectDocuments()
+        await getDocuments(props.processes)
+        initProcessDocuments()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

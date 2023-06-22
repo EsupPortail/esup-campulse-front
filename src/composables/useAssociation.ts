@@ -199,6 +199,11 @@ export default function () {
         }
     }
 
+    async function getAssociationPdfExport(id: number) {
+        const {axiosAuthenticated} = useAxios()
+        return (await axiosAuthenticated.get(`/associations/${id}/pdf_export`)).data
+    }
+
 
     return {
         createAssociation,
@@ -212,6 +217,7 @@ export default function () {
         altLogoText,
         checkHasPresident,
         changeAssociationLogo,
-        associations
+        associations,
+        getAssociationPdfExport
     }
 }

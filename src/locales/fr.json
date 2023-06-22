@@ -144,7 +144,9 @@
     "archived-projects": "Projets archivés",
     "association-dashboard": "Gérer mon association",
     "association-detail": "Fiche association",
-    "charter": "Charte des associations",
+    "charter": "Chartes",
+    "sign-charter": "Signer la charte des associations",
+    "sign-charter-recap": "Récapitulatif de signature de la charte",
     "commission": "Gestion des dossiers CAPE",
     "contact": "Contact",
     "create-association": "Créer une association",
@@ -175,6 +177,21 @@
   "cancel": "Annuler",
   "cancel-delete": "Annuler la suppression",
   "cancel-search": "Annuler la recherche",
+  "charter": {
+    "pdf-name": "Récapitulatif-Signature-Charte-",
+    "sign": "Signer la charte",
+    "site": {
+      "title": "Charte des association du site Alsace",
+      "sign-form": {
+        "association-infos-update": "Mise à jour de la fiche de l'association",
+        "documents-upload": "Dépôt de documents",
+        "recap": {
+          "title": "Votre charte a été signée",
+          "description": "Votre charte a été signée. Elle sera validée prochainement par un gestionnaire. Vous pouvez dès à présent suivre son avancement sur votre tableau de bord."
+        }
+      }
+    }
+  },
   "commission": {
     "add-new-date": "Ajouter une date de commission",
     "alerts": {
@@ -249,6 +266,7 @@
       "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
     },
     "cape-dashboard": "Tableau de bord CAPE",
+    "charter-dashboard": "Tableau de bord chartes",
     "create-association": "Créer une association",
     "create-user": "Créer un nouvel utilisateur",
     "edit-or-delete-association": "Gérer les associations",
