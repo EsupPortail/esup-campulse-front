@@ -2,7 +2,7 @@
 import type {QTableProps} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
-import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
+import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {ProjectList} from '#/project'
@@ -11,7 +11,7 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref, watch} from 'vue'
-import TableManageProjectsBtn from '@/components/table/TableManageProjectsBtn.vue'
+import TableManageProjectsBtn from '@/components/project/TableManageProjectsBtn.vue'
 
 
 const {t} = useI18n()

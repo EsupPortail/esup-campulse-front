@@ -190,7 +190,8 @@
           "description": "Votre charte a été signée. Elle sera validée prochainement par un gestionnaire. Vous pouvez dès à présent suivre son avancement sur votre tableau de bord."
         }
       }
-    }
+    },
+    "table-title": "Chartes"
   },
   "commission": {
     "add-new-date": "Ajouter une date de commission",
@@ -706,7 +707,7 @@
   "required": "obligatoire",
   "search": "Rechercher",
   "start": "Début",
-  "status": "statut",
+  "status": "Statut",
   "submit-review": "Soumettre le bilan",
   "to": "Jusqu'au",
   "update": "Mettre à jour",

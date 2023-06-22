@@ -1,3 +1,10 @@
+<script lang="ts" setup>
+import DashboardCharterStudent from '@/components/charter/DashboardCharterStudent.vue'
+import useUserGroups from '@/composables/useUserGroups'
+
+const {isStaff} = useUserGroups()
+</script>
+
 <template>
-    <h1>{{ $t("home.charter") }}</h1>
+    <DashboardCharterStudent v-if="!isStaff"/>
 </template>

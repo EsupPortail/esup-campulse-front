@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useRoute} from 'vue-router'
-import TableManagedProjects from '@/components/table/TableManagedProjects.vue'
+import TableManagedProjects from '@/components/project/TableManagedProjects.vue'
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'

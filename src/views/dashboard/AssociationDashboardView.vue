@@ -13,7 +13,7 @@ import axios from 'axios'
 import useUtility from '@/composables/useUtility'
 import InfoDocumentLibrary from '@/components/infoPanel/InfoDocumentLibrary.vue'
 import {useProjectStore} from '@/stores/useProjectStore'
-import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
+import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -340,10 +340,10 @@ async function onGetAssociationProjects() {
 @import '@/assets/styles/forms.scss';
 
 .projects-statuses .document-input-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-right: 1.5rem;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 1.5rem;
+    align-items: center;
 }
 </style>
