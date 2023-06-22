@@ -22,10 +22,13 @@
       i {
         color: $textColor3;
         font-size: 1.8rem;
+        position: absolute;
+        bottom: calc(50% - 3rem);
+        right: 20%;
       }
     }
 
-    h1 {
+    p {
       font-size: 1.3rem;
       line-height: 1.5rem;
     }

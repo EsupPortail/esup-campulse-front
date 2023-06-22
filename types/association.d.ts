@@ -126,6 +126,7 @@ export interface EditedAssociation {
 
 export interface NewAssociation {
     name: string,
+    email: string,
     isSite: boolean,
     institution: number | undefined,
 }

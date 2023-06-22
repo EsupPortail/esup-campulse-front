@@ -21,6 +21,7 @@ const {catchHTTPError} = useErrors()
 
 const newAssociation = reactive<NewAssociation>({
     name: '',
+    email: '',
     institution: undefined,
     isSite: false
 })
@@ -81,6 +82,7 @@ async function onCreate() {
 
 const clearValues = () => {
     newAssociation.name = ''
+    newAssociation.email = ''
     newAssociation.institution = undefined
     newAssociation.isSite = false
 }
@@ -111,6 +113,14 @@ const clearValues = () => {
                     :rules="[val => val.length > 0 || t('forms.fill-field')]"
                     filled
                     lazy-rules
+                />
+                <QInput
+                    v-model="newAssociation.email"
+                    :label="t('association.labels.mail')"
+                    :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                    clearable
+                    filled
+                    type="email"
                 />
                 <QSelect
                     v-model="newAssociation.institution"

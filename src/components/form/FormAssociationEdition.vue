@@ -425,10 +425,12 @@ async function onChangeLogo(action: string) {
                     <QInput
                         v-model="association.email"
                         :label="t('association.labels.mail')"
-                        :rules="association.email ? [(val, rules) => rules.email(val) || t('forms.required-email')] : []"
+                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                        aria-required="true"
                         clearable
                         filled
                         type="email"
+                        lazy-rules
                     />
                     <QInput
                         v-model="association.phone"
