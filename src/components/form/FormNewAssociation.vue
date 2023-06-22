@@ -121,6 +121,7 @@ const clearValues = () => {
                     clearable
                     filled
                     type="email"
+                    lazy-rules
                 />
                 <QSelect
                     v-model="newAssociation.institution"
