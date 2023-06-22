@@ -5,7 +5,7 @@ import {useI18n} from 'vue-i18n'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import useAssociation from '@/composables/useAssociation'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useUserStore} from '@/stores/useUserStore'
 
 const {getAssociationPdfExport} = useAssociation()

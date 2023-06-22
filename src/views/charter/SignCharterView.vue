@@ -156,7 +156,7 @@ loading.hide()
         <div class="form-container">
             <div class="form">
                 <InfoProcessDocuments
-                    :process-documents="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"
+                    :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"
                 />
                 <QStepper
                     ref="stepper"
@@ -190,6 +190,7 @@ loading.hide()
                             <QInput
                                 v-model="editedAssociation.lastGoaDate"
                                 :label="t('association.labels.last-goa')"
+                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                 clearable
                                 filled
                                 type="date"
@@ -197,13 +198,14 @@ loading.hide()
                             <QInput
                                 v-model="editedAssociation.presidentNames"
                                 :label="t('association.labels.president-name')"
+                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                 clearable
                                 filled
                             />
                             <QInput
                                 v-model="editedAssociation.presidentPhone"
                                 :label="t('association.labels.president-phone')"
-                                :rules="editedAssociation.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                                :rules="[val => phoneRegex.test(val) || t('forms.required-phone')]"
                                 clearable
                                 filled
                                 type="tel"
@@ -212,6 +214,7 @@ loading.hide()
                                 v-model="editedAssociation.institutionComponent"
                                 :label="t('association.labels.institution-component')"
                                 :options="associationStore.institutionComponentLabels"
+                                :rules="[val => val || t('forms.fill-field')]"
                                 clearable
                                 emit-value
                                 filled
@@ -233,6 +236,7 @@ loading.hide()
                                 <QInput
                                     v-model="editedAssociation.address"
                                     :label="t('address.address')"
+                                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                     clearable
                                     filled
                                 />
@@ -240,18 +244,21 @@ loading.hide()
                                     <QInput
                                         v-model="editedAssociation.zipcode"
                                         :label="t('address.zipcode')"
+                                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                         clearable
                                         filled
                                     />
                                     <QInput
                                         v-model="editedAssociation.city"
                                         :label="t('address.city')"
+                                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                         clearable
                                         filled
                                     />
                                     <QInput
                                         v-model="editedAssociation.country"
                                         :label="t('address.country')"
+                                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                         clearable
                                         filled
                                     />
@@ -261,6 +268,7 @@ loading.hide()
                             <QInput
                                 v-model="editedAssociation.siret"
                                 :label="t('association.labels.siret')"
+                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                 clearable
                                 filled
                                 inputmode="numeric"

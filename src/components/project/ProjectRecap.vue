@@ -98,7 +98,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 </div>
 
                 <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
-                <ProjectRecapDocuments/>
+                <ProjectRecapDocuments
+                    :association-id="null"
+                    process="project"
+                />
             </section>
         </section>
 

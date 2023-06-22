@@ -87,7 +87,10 @@ async function onSubmitProjectReview() {
             </div>
 
             <InfoVerifyDocuments v-if="props.view === 'submitProjectReview'"/>
-            <ProjectRecapDocuments/>
+            <ProjectRecapDocuments
+                :association-id="null"
+                process="review"
+            />
         </section>
         <div
             v-if="props.view === 'submitProjectReview'"

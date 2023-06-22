@@ -123,7 +123,7 @@ async function onUploadDocuments(nextStep: number) {
         <div class="form-container">
             <div class="form">
                 <!-- Info panel -->
-                <InfoProcessDocuments :process="'DOCUMENT_PROJECT_REVIEW'"/>
+                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT_REVIEW']"/>
 
                 <QStepper
                     ref="stepper"
@@ -349,7 +349,10 @@ async function onUploadDocuments(nextStep: number) {
                         >
                             <h3 class="title-2">{{ t('project.documents') }}</h3>
 
-                            <FormProjectDocumentUploads process="project"/>
+                            <FormProjectDocumentUploads
+                                :association-id="projectReview.association"
+                                process="review"
+                            />
 
                             <div class="btn-group">
                                 <QBtn

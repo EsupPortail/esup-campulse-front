@@ -9,7 +9,7 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
-import useProjectDocuments from '@/composables/useDocumentUploads'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 import useCommissions from '@/composables/useCommissions'
 import type {SelectLabel} from '#/index'
 import type {User} from '#/user'
@@ -69,7 +69,7 @@ export default function () {
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
     const {arraysAreEqual} = useUtility()
-    const {processDocuments} = useProjectDocuments()
+    const {processDocuments} = useDocumentUploads()
     const {initChosenCommissionFundsLabels} = useCommissions()
     const associationStore = useAssociationStore()
     const {getAssociationUsersNames} = useUserAssociations()
