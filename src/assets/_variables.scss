@@ -1,4 +1,4 @@
-$pageWidth: 80rem;
+$pageWidth: 120rem;
 $responsiveMargin: 1.56rem;
 $fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
@@ -18,6 +18,7 @@ $baseFont: 'Titillium Web', sans-serif;
 $titleFont: 'Open Sans', sans-serif;
 
 // Font-size
+$fontSize: 1.6rem;
 $headTitleMobileSize: 1.5rem;
 $headTitleComputerSize: 2rem;
 
@@ -25,7 +26,6 @@ $homeTitleSize: 3.1rem;
 $homeSubTitleSize: 2.5rem;
 
 $titleSize: 2.3rem;
-$textSize: 1.1rem;
 
 // ---------------- Paddings ----------------
 // Home Banner
@@ -42,8 +42,8 @@ $halfSize: 50%;
 
 // Logos
 $associationLogoSize: 9rem;
-$iconSize: 1.7rem;
-$logoSize: 2.8rem;
+$iconSize: 2rem;
+$logoSize: 3rem;
 
 // Home Banner q: quasar
 $qBannerInfoIconSize: 1.25rem;
@@ -117,6 +117,45 @@ $warningTextColor: #7a4120;
 $outlineColor1: rgba(255, 255, 255, 0.8);
 $outlineColor2: rgba(0, 0, 0, 0.8);
 $formSeparatorColor: #d4d4d4;
+
+// ---------------- Colors for Quasar ----------------
+// Useful for example for buttons, whom style is tricky to configure
+// Simply use it as QBtn attribute 'color'
+.text-base {
+  color: $textColor1;
+}
+
+.bg-dashboard {
+  background: $dashboardColor;
+}
+
+.text-dashboard {
+  color: $dashboardColor;
+}
+
+.bg-association {
+  background: $annuaireColor;
+}
+
+.text-association {
+  color: $annuaireColor;
+}
+
+.bg-commission {
+  background: $capeColor;
+}
+
+.text-commission {
+  color: $capeColor;
+}
+
+.bg-charter {
+  background: $charteColor;
+}
+
+.text-charter {
+  color: $charteColorText;
+}
 
 // Les couleurs du site ont été changées pour des couleurs plus contrastées.
 // Les couleurs ci-dessous sont les originales, qui correspondent aux maquettes.

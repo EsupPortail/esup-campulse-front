@@ -79,7 +79,7 @@ onMounted(async () => await onGetDocuments())
 </script>
 
 <template>
-    <section class="flex-section">
+    <section class="flex-column padding-top padding-bottom">
         <div
             v-for="(document, index) in processDocuments"
             :key="index"
@@ -105,18 +105,6 @@ onMounted(async () => await onGetDocuments())
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
-
-
-.display-row {
-    width: 100% !important;
-}
-
-.flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-}
 
 ul > li {
     text-decoration: underline;

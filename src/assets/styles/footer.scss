@@ -10,9 +10,8 @@
   }
 
   #footer-logos {
-    background-color: $annuaireColorBackground;
-    border-bottom: 0.625rem solid $annuaireColor;
-    padding: 1.875rem 0;
+    border-bottom: 0.6rem solid;
+    padding: 2rem 0;
 
     .wrapper {
       width: 100%;
@@ -25,7 +24,7 @@
 
         img {
           width: auto;
-          max-height: 3.125rem;
+          max-height: 4rem;
         }
 
         &:first-child {
@@ -50,19 +49,17 @@
   }
 
   .q-toolbar {
-    margin: 1.25rem 0 0.625rem;
+    margin: 1.25rem 0 0.6rem;
   }
 
   // Footer links
   .footer-text {
-    width: 100%;
-    max-width: $pageWidth;
     margin: 0 auto;
     text-align: center;
 
     a {
-      margin: 0 1.125rem;
-      font-size: 0.938rem;
+      margin: 0 1rem;
+      font-size: 1.4rem;
       font-weight: 600;
       color: $textColor3;
       text-decoration: none;
@@ -71,9 +68,9 @@
       border-bottom: 1px solid transparent;
 
       i {
-        font-size: 1.22em;
+        font-size: 1.2em;
         opacity: 0.8;
-        margin-right: 0.625rem;
+        margin-right: 0.7rem;
         position: relative;
         bottom: -1px;
       }
@@ -105,10 +102,10 @@
   // Footer text
   & > p {
     width: 100%;
-    max-width: 55rem;
-    margin: 0 auto 1.25rem;
+    max-width: 80rem;
+    margin: 0 auto 1.5rem;
     text-align: center;
-    font-size: 1.063rem;
+    font-size: 1.3rem;
     font-weight: 300;
     color: $footerTextColor;
 

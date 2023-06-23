@@ -63,8 +63,4 @@ watch(() => projectStore.project, async () => {
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
-
-.display-row {
-    width: 100% !important;
-}
 </style>

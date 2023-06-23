@@ -105,8 +105,8 @@ async function onGetProjects() {
 
 <template>
     <section class="dashboard-section">
-        <div class="form-container variant-space-3">
-            <div class="form form-width">
+        <div class="dashboard-section-container">
+            <div class="container-lg">
                 <QCard>
                     <QTabs
                         v-model="tab"
@@ -155,6 +155,8 @@ async function onGetProjects() {
                                                     :disable="!associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
                                                     :label="t('project.submit-new-project')"
                                                     :to="{name: 'SubmitProjectAssociation', params: {associationId: tab.association}}"
+                                                    class="btn-lg"
+                                                    color="commission"
                                                     icon="bi-plus-circle"
                                                 />
                                             </div>
@@ -283,15 +285,12 @@ async function onGetProjects() {
     color: $capeColor;
 }
 
-.form {
-    width: 100% !important;
-}
-
-.q-tab-panel {
-    padding: 0 1rem;
-}
 
 .info-panel {
     margin: 0.5rem;
+}
+
+.q-tab {
+    font-size: inherit;
 }
 </style>

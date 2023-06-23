@@ -24,46 +24,46 @@ onMounted(initUserInfos)
 </script>
 
 <template>
-    <section class="individual-address">
+    <div class="flex-column">
         <QInput
             v-model="userToUpdate.address"
             :label="t('address.address')"
-            clearable
-            filled
             autocomplete="street-address"
+            clearable
+            color="commission"
+            filled
         />
-        <div>
+        <div class="flex-row-center full-width">
             <QInput
                 v-model="userToUpdate.zipcode"
                 :label="t('address.zipcode')"
-                clearable
-                filled
                 autocomplete="postal-code"
+                clearable
+                color="commission"
+                filled
             />
             <QInput
                 v-model="userToUpdate.city"
                 :label="t('address.city')"
-                clearable
-                filled
                 autocomplete="address-level2"
+                clearable
+                color="commission"
+                filled
             />
             <QInput
                 v-model="userToUpdate.country"
                 :label="t('address.country')"
-                clearable
-                filled
                 autocomplete="country-name"
+                clearable
+                color="commission"
+                filled
             />
         </div>
-    </section>
+    </div>
 </template>
 
-<style lang="sass" scoped>
-.individual-address, .individual-address > div
-    display: flex
-    gap: 1rem
-    flex-direction: column
-
-.individual-address
-    margin-top: 1rem
+<style lang="scss" scoped>
+.full-width > * {
+    width: 100%;
+}
 </style>

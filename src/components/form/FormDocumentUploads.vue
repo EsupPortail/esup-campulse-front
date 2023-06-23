@@ -123,6 +123,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 v-model="document.pathFile"
                 :accept="document.mimeTypes?.join(', ')"
                 :aria-required="document.isRequiredInProcess"
+                :color="props.process === 'charter' ? 'charter' : 'commission'"
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
                 :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
@@ -199,6 +200,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
 ul.document-input-list {
     list-style: none;

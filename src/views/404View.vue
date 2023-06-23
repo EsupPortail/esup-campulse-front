@@ -8,18 +8,22 @@ const userStore = useUserStore()
 
 <template>
     <section class="page-section">
-        <h1 class="title-1">{{ t('404.title') }}</h1>
-        <p class="paragraph">{{ t('404.description') }}</p>
-        <div class="btn-group">
+        <h1>{{ t('404.title') }}</h1>
+        <p>{{ t('404.description') }}</p>
+        <div class="flex-row-center padding-top padding-bottom">
             <QBtn
                 :label="t('back-to-home')"
                 :to="{name: 'Home'}"
+                class="btn-lg"
+                color="association"
                 icon="bi-house"
             />
             <QBtn
                 v-if="userStore.isAuth"
                 :label="t('back-to-dashboard')"
                 :to="{name: 'Dashboard'}"
+                class="btn-lg"
+                color="association"
                 icon="bi-person-circle"
             />
         </div>
@@ -28,6 +32,7 @@ const userStore = useUserStore()
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 
 .page-section, .page-section * {
     text-align: center;

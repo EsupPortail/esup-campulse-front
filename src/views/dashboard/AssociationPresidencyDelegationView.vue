@@ -88,7 +88,7 @@ const columns: QTableProps['columns'] = [
     },
     {
         name: 'isValidatedByAdmin',
-        align: 'left',
+        align: 'right',
         label: t('account-validated'),
         field: 'isValidatedByAdmin',
         sortable: true
@@ -109,7 +109,7 @@ const columns: QTableProps['columns'] = [
     },
     {
         name: 'delegation',
-        align: 'right',
+        align: 'center',
         label: t('delegate'),
         field: 'delegation',
         sortable: false
@@ -127,8 +127,8 @@ const columns: QTableProps['columns'] = [
             ></i>
             {{ t('dashboard.association-user.delegate') + ' ' + associationName }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <InfoPresidencyDelegation/>
                 <QTable
                     :columns="columns"
@@ -136,7 +136,6 @@ const columns: QTableProps['columns'] = [
                     :no-data-label="t('dashboard.association-user.no-member')"
                     :rows="associationMembers"
                     :rows-per-page-options="[10, 20, 50, 0]"
-                    :title="t('user-manager.users')"
                     row-key="id"
                 >
                     <template v-slot:body="props">
@@ -200,13 +199,15 @@ const columns: QTableProps['columns'] = [
                         </QTr>
                     </template>
                 </QTable>
-                <section class="btn-group">
+                <div class="flex-row-center padding-top">
                     <QBtn
                         :label="t('back')"
                         :to="{name: 'AssociationDashboard', params: {id: route.params.id}}"
+                        class="btn-lg"
+                        color="dashboard"
                         icon="bi-chevron-compact-left"
                     />
-                </section>
+                </div>
             </div>
         </div>
     </section>
@@ -215,4 +216,5 @@ const columns: QTableProps['columns'] = [
 <style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/_variables.scss';
 </style>

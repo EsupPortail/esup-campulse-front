@@ -19,23 +19,26 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 
 <template>
     <QForm
+        class="flex-column"
         @submit.prevent="emit('submitProject')"
     >
-        <h3
-            v-if="props.view === 'submitProject'"
-            class="title-2"
-        >
-            {{ t('recap') }}
-        </h3>
+        <!--        <h3
+                    v-if="props.view === 'submitProject'"
+                    class="title-2"
+                >
+                    {{ t('recap') }}
+                </h3>-->
 
-        <section class="recap-sections">
+        <div class="flex-column">
             <!-- BASIC INFOS -->
-            <section class="recap-section">
-                <div class="recap-section-title">
-                    <h4 class="title-3">{{ t('project.general-infos') }}</h4>
+            <section class="flex-column">
+                <div class="flex-row-space-between">
+                    <h3>{{ t('project.general-infos') }}</h3>
                     <QBtn
                         v-if="props.view === 'submitProject'"
                         :label="t('modify')"
+                        class="btn-lg"
+                        color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 1)"
                     />
@@ -44,12 +47,14 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             </section>
 
             <!-- COMMISSION CHOICE -->
-            <section class="recap-section">
-                <div class="recap-section-title">
-                    <h4 class="title-3">{{ t('project.commission-choice') }}</h4>
+            <section class="flex-column">
+                <div class="flex-row-space-between padding-top padding-bottom">
+                    <h3>{{ t('project.commission-choice') }}</h3>
                     <QBtn
                         v-if="props.view === 'submitProject'"
                         :label="t('modify')"
+                        class="btn-lg"
+                        color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 2)"
                     />
@@ -103,7 +108,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                     process="project"
                 />
             </section>
-        </section>
+        </div>
 
         <div
             v-if="props.view === 'submitProject'"
@@ -126,8 +131,5 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
-
-.display-row {
-    width: 75% !important;
-}
+@import '@/assets/_variables.scss';
 </style>

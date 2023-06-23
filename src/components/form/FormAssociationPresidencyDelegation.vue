@@ -77,8 +77,9 @@ async function onDelegatePresidency(activate: boolean) {
 <template>
     <QBtn
         :label="t('delegate')"
-        color="secondary"
+        color="dashboard"
         icon="bi-pencil"
+        outline
         @click="openDelegationPanel = true"
     />
     <QDialog
@@ -142,3 +143,7 @@ async function onDelegatePresidency(activate: boolean) {
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/_variables.scss";
+</style>

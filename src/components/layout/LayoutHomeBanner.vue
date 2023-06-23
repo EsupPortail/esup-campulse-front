@@ -7,40 +7,35 @@ defineProps({
 </script>
 
 <template>
-    <QBanner
-        v-if="isDisplayed"
-    >
-        <div
-            id="home-banner-icon"
-            class="variant-default"
-            aria-hidden="true"
+    <div class="container">
+        <section
+            v-if="isDisplayed"
         >
-            <i class="bi bi-info-circle"></i>
-        </div>
-
-        <QCardSection>
-            <div class="text-h6">{{ title }}</div>
-        </QCardSection>
-
-        <QCardSection class="q-pt-none">
-            {{ description }}
-        </QCardSection>
-
-        <QCardSection class="q-pt-none">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo
-            consequat.
-        </QCardSection>
-    </QBanner>
+            <div
+                id="home-banner-icon"
+                aria-hidden="true"
+                class="variant-default"
+            >
+                <i class="bi bi-info-circle"></i>
+            </div>
+            <div>
+                <h3 class="title-3"><strong>{{ title }}</strong></h3>
+                <p class="paragraph">{{ description }}</p>
+            </div>
+        </section>
+    </div>
 </template>
 
-<style lang="scss">
-@import '@/assets/_variables.scss';
-@import '@/assets/styles/home.scss';
+<style lang="scss" scoped>
+@import "@/assets/styles/home.scss";
+@import "@/assets/_variables.scss";
 
-.text-h6 {
-    font-weight: $xbold-weight;
+section {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+    max-width: $pageWidth;
+    width: $fullSize;
+    margin: auto;
 }
 </style>

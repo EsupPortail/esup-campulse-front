@@ -42,6 +42,7 @@ async function onLogIn() {
             :label="t('forms.email')"
             :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
             autocomplete="email"
+            color="association"
             filled
             lazy-rules
         />
@@ -51,21 +52,27 @@ async function onLogIn() {
             :rules="[ val => val && val.length > 0 || t('forms.required-password')]"
             :type="passwordVisibility ? 'text' : 'password'"
             autocomplete="current-password"
+            color="association"
             filled
             lazy-rules
         />
         <QCheckbox
             v-model="passwordVisibility"
             :label="t('forms.view-password')"
+            color="association"
         />
         <div class="btn-group">
             <QBtn
                 :label="t('forms.login')"
+                class="btn-lg"
+                color="association"
                 type="submit"
             />
             <QBtn
                 :label="t('forms.create-account')"
                 :to="{name: 'Registration'}"
+                class="btn-lg"
+                color="association"
             />
         </div>
         <!-- <QBtn :label="t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
@@ -91,4 +98,5 @@ async function onLogIn() {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/login.scss";
+@import "@/assets/_variables.scss";
 </style>

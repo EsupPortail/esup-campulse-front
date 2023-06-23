@@ -109,11 +109,10 @@ async function onGetAssociationProjects() {
             <QIcon name="mdi-account"/>
             {{ t('dashboard.association-user.my-role') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <p
                     v-if="associationUserRole.literalName"
-                    class="paragraph"
                 >
                     {{
                         associationUserRole.literalName + (associationUserRole.codeName !== 'isPresident' ?
@@ -132,23 +131,29 @@ async function onGetAssociationProjects() {
             <QIcon name="mdi-format-list-bulleted-square"/>
             {{ t('dashboard.association-user.manage-association') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         v-if="hasPresidentStatus"
                         :label="t('dashboard.association-user.edit-my-association')"
                         :to="{ name: 'EditMyAssociation', params: {id: association?.id} }"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="association?.isPublic"
                         :label="t('association.more-details')"
                         :to="{ name: 'AssociationDetail', params: { id: association?.id } }"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="userStore.userAssociations.find(obj => obj.association.id === association?.id)?.isPresident"
                         :label="t('dashboard.association-user.delegate-presidency')"
                         :to="{ name: 'AssociationPresidencyDelegation', params: { id: association?.id } }"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -161,19 +166,21 @@ async function onGetAssociationProjects() {
             <QIcon name="mdi-file-outline"/>
             {{ t('dashboard.association-user.association-documents') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
-                            <h4>
-                                Certificat de scolarité des membres élus
-                            </h4>
-                            <p>
-                                <a>
-                                    <i class="bi bi-info-circle"></i>
-                                </a>
-                            </p>
+                            <div class="flex-row">
+                                <h4>
+                                    Certificat de scolarité des membres élus
+                                </h4>
+                                <p>
+                                    <a>
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </p>
+                            </div>
                             <button>
                                 <i class="bi bi-plus"></i>
                             </button>
@@ -219,14 +226,16 @@ async function onGetAssociationProjects() {
 
                         <div class="document-input">
                             <div class="document-input-header">
-                                <h4>
-                                    PV de la dernière AGO
-                                </h4>
-                                <p>
-                                    <a>
-                                        <i class="bi bi-info-circle"></i>
-                                    </a>
-                                </p>
+                                <div class="flex-row">
+                                    <h4>
+                                        PV de la dernière AGO
+                                    </h4>
+                                    <p>
+                                        <a>
+                                            <i class="bi bi-info-circle"></i>
+                                        </a>
+                                    </p>
+                                </div>
                                 <button>
                                     <i class="bi bi-plus"></i>
                                 </button>
@@ -236,14 +245,11 @@ async function onGetAssociationProjects() {
 
                         <div class="document-input">
                             <div class="document-input-header">
-                                <h4>
-                                    Certificat envoyé par le tribunal judiciaire
-                                </h4>
-                                <!-- <p>
-                                    <a>
-                                        <i class="bi bi-info-circle"></i>
-                                    </a>
-                                </p> -->
+                                <div class="flex-row">
+                                    <h4>
+                                        Certificat envoyé par le tribunal judiciaire
+                                    </h4>
+                                </div>
                                 <button disabled>
                                     <i class="bi bi-plus"></i>
                                 </button>
@@ -261,14 +267,16 @@ async function onGetAssociationProjects() {
             <QIcon name="mdi-pencil-box-outline"/>
             {{ t('dashboard.association-user.association-procedures') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <InfoDocumentLibrary/>
                 <div class="document-input-group">
-                    <div class="document-input-group-header">
+                    <div class="flex-row-space-between padding-top padding-bottom">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
                         <QBtn
                             :label="t('dashboard.association-user.charter-status-processing')"
+                            class="btn-lg"
+                            color="dashboard"
                         />
                     </div>
                     <div class="document-input variant-space-1">
@@ -294,14 +302,14 @@ async function onGetAssociationProjects() {
                     </div>
                 </div>
                 <div class="document-input-group">
-                    <div class="document-input-group-header">
+                    <div class="flex-row-space-between padding-top padding-bottom">
                         <h3>Suivi du traitement des dossiers CAPE</h3>
-                        <div class="flex-btn-group">
-                            <QBtn
-                                :to="{name: 'Commission'}"
-                                label="Gestion des dossiers CAPE"
-                            />
-                        </div>
+                        <QBtn
+                            :to="{name: 'Commission'}"
+                            class="btn-lg"
+                            color="dashboard"
+                            label="Gestion des dossiers CAPE"
+                        />
                     </div>
                     <section
                         v-if="projectStore.projects.length"
@@ -313,14 +321,16 @@ async function onGetAssociationProjects() {
                             class="document-input variant-space-1"
                         >
                             <div class="document-input-header">
-                                <h4>
-                                    {{ project.name }}
-                                </h4>
-                                <div class="project-status-indicator">
-                                    <ProjectStatusIndicator
-                                        :project-status="project.projectStatus"
-                                        :show-draft="true"
-                                    />
+                                <div class="flex-row-space-between">
+                                    <h4>
+                                        {{ project.name }}
+                                    </h4>
+                                    <div class="project-status-indicator">
+                                        <ProjectStatusIndicator
+                                            :project-status="project.projectStatus"
+                                            :show-draft="true"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -338,12 +348,4 @@ async function onGetAssociationProjects() {
 <style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
-
-.projects-statuses .document-input-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-right: 1.5rem;
-  align-items: center;
-}
 </style>

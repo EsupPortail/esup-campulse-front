@@ -14,83 +14,91 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
 
 <template>
     <div id="login-page">
-        <h1 class="login-intro-text">
-            <span
-                aria-hidden="true"
-                class="icon"
+        <div class="dashboard-section">
+            <div class="login-intro-text flex-row-center">
+                <div class="login-intro-text-icon">
+                    <QIcon
+                        color="association"
+                        name="bi-person-circle"
+                    />
+                </div>
+                <h1>
+                    {{ t('login.introduction-login') }}
+                </h1>
+            </div>
+            <div
+                v-if="!newUser && !isCas"
+                class="dashboard-section-container"
             >
-                <i class="bi bi-person-circle"></i>
-            </span>
-            <p>{{ t('login.introduction-login') }}</p>
-        </h1>
-        <div
-            v-if="!newUser && !isCas"
-            class="form-container"
-        >
-            <QCard
-                id="cas-login"
-                class="card"
-            >
-                <QCardSection>
-                    <div class="card-content">
-                        <span class="card-title">{{ t('login.im-cas-user') }}</span>
-                        <h2>{{ t('login.login-with-cas') }}</h2>
-                    </div>
-                    <div class="btn-group">
-                        <QBtn
-                            :href="CASUrlLogin"
-                            :label="t('login.login')"
-                        />
-                        <QBtn
-                            :href="CASUrlRegister"
-                            :label="t('login.create-account')"
-                        />
-                    </div>
-                </QCardSection>
-            </QCard>
-            <QCard
-                id="local-login"
-                class="card"
-            >
-                <QCardSection>
-                    <div class="card-content">
-                        <span class="card-title">{{ t('login.im-not-cas-user') }}</span>
-                        <h2>{{ t('login.login-without-cas') }}</h2>
-                    </div>
-                    <FormLocalLogin/>
-                </QCardSection>
-            </QCard>
-        </div>
-        <div
-            v-else
-            class="form-container"
-        >
-            <QCard
-                id="aborted-cas-registration"
-                class="card"
-            >
-                <QCardSection>
-                    <div class="card-content">
-                        <p
-                            class="card-title"
-                            role="alert"
-                        >
-                            {{ t('alerts.aborted-cas-registration.title') }}
-                        </p>
-
-                        <p role="alert">
-                            {{ t('alerts.aborted-cas-registration.message') }}
-                        </p>
-                        <div>
+                <QCard
+                    id="cas-login"
+                    class="card"
+                >
+                    <QCardSection>
+                        <div class="card-content">
+                            <span class="card-title">{{ t('login.im-cas-user') }}</span>
+                            <h2>{{ t('login.login-with-cas') }}</h2>
+                        </div>
+                        <div class="btn-group">
                             <QBtn
-                                :label="t('alerts.aborted-cas-registration.button')"
-                                :to="{name: 'Registration'}"
-                                color="warning"
+                                :href="CASUrlLogin"
+                                :label="t('login.login')"
+                                class="btn-lg"
+                                color="association"
+                            />
+                            <QBtn
+                                :href="CASUrlRegister"
+                                :label="t('login.create-account')"
+                                class="btn-lg"
+                                color="association"
                             />
                         </div>
-                    </div>
-                </QCardSection>
-            </QCard>
+                    </QCardSection>
+                </QCard>
+                <QCard
+                    id="local-login"
+                    class="card"
+                >
+                    <QCardSection>
+                        <div class="card-content">
+                            <span class="card-title">{{ t('login.im-not-cas-user') }}</span>
+                            <h2>{{ t('login.login-without-cas') }}</h2>
+                        </div>
+                        <FormLocalLogin/>
+                    </QCardSection>
+                </QCard>
+            </div>
+            <div
+                v-else
+                class="form-container"
+            >
+                <QCard
+                    id="aborted-cas-registration"
+                    class="card"
+                >
+                    <QCardSection>
+                        <div class="card-content">
+                            <p
+                                class="card-title"
+                                role="alert"
+                            >
+                                {{ t('alerts.aborted-cas-registration.title') }}
+                            </p>
+
+                            <p role="alert">
+                                {{ t('alerts.aborted-cas-registration.message') }}
+                            </p>
+                            <div>
+                                <QBtn
+                                    :label="t('alerts.aborted-cas-registration.button')"
+                                    :to="{name: 'Registration'}"
+                                    color="warning"
+                                />
+                            </div>
+                        </div>
+                    </QCardSection>
+                </QCard>
+            </div>
         </div>
     </div>
 </template>
@@ -98,4 +106,6 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
 <style lang="scss" scoped>
 @import '@/assets/styles/login.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/_variables.scss';
 </style>

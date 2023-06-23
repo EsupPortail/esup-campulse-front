@@ -35,7 +35,7 @@ async function onGetAssociationUsers() {
 </script>
 
 <template>
-    <section class="flex-section">
+    <div class="flex-column">
         <div class="display-row">
             <p class="row-title">{{ t('project.name') }}</p>
             <p>{{ projectBasicInfos.name }}</p>
@@ -69,21 +69,10 @@ async function onGetAssociationUsers() {
         </div>
 
         <ProjectRecapCategories/>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
-
-.display-row {
-    width: 100% !important;
-}
-
-.flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-}
 </style>

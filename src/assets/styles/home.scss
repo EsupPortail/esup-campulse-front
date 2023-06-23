@@ -2,27 +2,8 @@
 
 // Intro element on the home page
 #home-info-panel {
-  width: $fullSize;
-  background: none;
   margin: 0 auto;
   padding: 1.5rem;
-
-  .q-banner__content {
-    width: $fullSize;
-    max-width: 62rem;
-    margin: 0 auto;
-    color: $textColor1;
-    font-size: 1.2rem;
-    font-weight: $normal-weight;
-    position: relative;
-    padding-left: 3rem;
-
-    .q-card__section {
-      padding: 0;
-      line-height: normal;
-      text-align: justify;
-    }
-  }
 
   #home-banner-icon {
     display: inline-block;
@@ -31,16 +12,14 @@
     border-radius: $radiusCircle;
     border: solid $annuaireColor; //.188rem
     background-color: transparent;
-    position: absolute;
     top: calc(50% - 54px);
+    position: relative;
     left: 0;
 
     i {
-      font-size: $qBannerInfoIconSize;
       color: $annuaireColor;
       position: absolute;
-      top: .320rem;
-      left: .320rem;
+      top: -0.4rem;
     }
 
     &::before, &::after {
@@ -147,8 +126,8 @@
     position: relative;
     background-color: $backgroundColor1;
     box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.2);
-    padding: 2rem;
-    gap: 6rem;
+    padding: 3rem;
+    gap: 18rem;
     align-items: center;
     overflow: hidden;
 
@@ -231,7 +210,6 @@
     }
 
     .section-info {
-      font-size: $textSize;
       font-weight: $normal-weight;
       line-height: 1.75rem;
       color: $annuaireColorText;
@@ -243,7 +221,6 @@
         margin: 0;
 
         strong {
-          font-size: $textSize;
           font-weight: $bold-weight;
         }
       }
@@ -254,7 +231,6 @@
       z-index: 1;
 
       p {
-        font-size: $textSize;
         font-weight: $normal-weight;
         color: $annuaireColorText;
       }
@@ -266,7 +242,6 @@
         a {
           display: inline-block;
           padding: 1rem;
-          font-size: 1.2rem;
           font-weight: $normal-weight;
           color: $annuaireColorText;
           border-radius: 0;
@@ -299,7 +274,7 @@
       display: flex;
 
       .section-background {
-        width: 26rem;
+        width: 36rem;
         opacity: 1;
       }
 

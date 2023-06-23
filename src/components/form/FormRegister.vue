@@ -13,6 +13,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 import useUtility from '@/composables/useUtility'
 import useErrors from '@/composables/useErrors'
+import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -96,7 +97,7 @@ async function onRegister() {
 </script>
 
 <template>
-    <section class="dashboard-section">
+    <div class="dashboard-section">
         <QForm
             class="q-gutter-md"
             @submit.prevent="onRegister"
@@ -109,24 +110,11 @@ async function onRegister() {
                     ></i>
                     {{ t('user.infos') }}
                 </h2>
-                <div class="form-container">
-                    <div class="form">
+                <div class="dashboard-section-container">
+                    <div class="container">
                         <FormAddUserFromLDAP v-if="isStaff"/>
 
-                        <QBanner class="bg-grey-3">
-                            <template v-slot:avatar>
-                                <QIcon
-                                    color="secondary"
-                                    name="mdi-information-outline"
-                                    size="md"
-                                />
-                            </template>
-
-                            <p>{{ t('forms.required-fields') }}</p>
-                            <template v-slot:action>
-                            </template>
-                        </QBanner>
-
+                        <InfoFormRequiredFields/>
 
                         <QInput
                             v-model="newUser.firstName"
@@ -137,6 +125,7 @@ async function onRegister() {
                             aria-required="true"
                             autocomplete="given-name"
                             clearable
+                            color="dashboard"
                             filled
                             lazy-rules
                         />
@@ -149,6 +138,7 @@ async function onRegister() {
                             aria-required="true"
                             autocomplete="family-name"
                             clearable
+                            color="dashboard"
                             filled
                             lazy-rules
                         />
@@ -162,11 +152,11 @@ async function onRegister() {
                             aria-required="true"
                             autocomplete="email"
                             clearable
+                            color="dashboard"
                             filled
                             lazy-rules
                             type="email"
-                        >
-                        </QInput>
+                        />
                         <QInput
                             v-model="emailVerification"
                             :disable="!!userStore.isCas || newUser.isCas"
@@ -176,6 +166,7 @@ async function onRegister() {
                             aria-required="true"
                             autocomplete="email"
                             clearable
+                            color="dashboard"
                             filled
                             lazy-rules
                             type="email"
@@ -188,6 +179,7 @@ async function onRegister() {
                             aria-invalid="true"
                             autocomplete="tel"
                             clearable
+                            color="dashboard"
                             filled
                             lazy-rules
                             type="tel"
@@ -195,7 +187,6 @@ async function onRegister() {
                     </div>
                 </div>
             </section>
-
             <section>
                 <h2>
                     <i
@@ -204,8 +195,8 @@ async function onRegister() {
                     ></i>
                     {{ t('user.groups') }}
                 </h2>
-                <div class="form-container">
-                    <div class="form">
+                <div class="dashboard-section-container">
+                    <div class="container">
                         <FormUserGroups/>
                     </div>
                 </div>
@@ -219,8 +210,8 @@ async function onRegister() {
                     ></i>
                     {{ t('user.associations') }}
                 </h2>
-                <div class="form-container">
-                    <div class="form">
+                <div class="dashboard-section-container">
+                    <div class="container">
                         <FormRegisterUserAssociations/>
                     </div>
                 </div>
@@ -235,8 +226,8 @@ async function onRegister() {
                     ></i>
                     {{ t('forms.gdpr-title') }}
                 </h2>
-                <div :class="['form-container', 'consent-section']">
-                    <div class="form">
+                <div :class="['dashboard-section-container', 'consent-section']">
+                    <div class="container">
                         <LayoutGDPRConsent
                             :has-consent="hasConsent"
                             @update-consent="hasConsent = !hasConsent"
@@ -245,34 +236,35 @@ async function onRegister() {
                 </div>
             </section>
 
-            <div class="btn-group">
+            <div class="flex-row-center padding-top padding-bottom">
                 <QBtn
                     :label="t('forms.send')"
+                    class="btn-lg"
+                    color="dashboard"
                     icon="bi-check-lg"
                     type="submit"
                 />
             </div>
         </QForm>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
+@import '@/assets/_variables.scss';
 
 section {
-  margin: 0;
+    margin: 0;
 }
 
 .q-banner {
-  padding-bottom: .8rem;
-  margin-bottom: 1rem;
+    padding-bottom: .8rem;
+    margin-bottom: 1rem;
 
-  p {
-    font-weight: bold;
-    margin: 0;
-  }
+    p {
+        font-weight: bold;
+        margin: 0;
+    }
 }
-
-
 </style>

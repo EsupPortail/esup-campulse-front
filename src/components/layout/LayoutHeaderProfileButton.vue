@@ -47,7 +47,6 @@ onMounted(async () => {
         <QBtnDropdown
             :menu-offset="[0, 8]"
             align="between"
-            color="secondary"
             content-class="profile-menu"
             no-caps
             padding="0"
@@ -62,21 +61,23 @@ onMounted(async () => {
                     </div>
 
                     <div class="text-center">
-                        <p>{{ t("header.my-account") }}</p>
+                        <p>{{ t('header.my-account') }}</p>
                     </div>
                 </div>
             </template>
 
             <QList>
-                <QItem
-                    v-close-popup
-                    clickable
-                    @click="router.push({ name: 'Dashboard' })"
-                >
-                    <QItemSection>
-                        <QItemLabel>{{ t("header.my-profile") }}</QItemLabel>
-                    </QItemSection>
-                </QItem>
+                <div>
+                    <QItem
+                        v-close-popup
+                        clickable
+                        @click="router.push({ name: 'Dashboard' })"
+                    >
+                        <QItemSection>
+                            <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
+                        </QItemSection>
+                    </QItem>
+                </div>
 
                 <div
                     v-for="(item) in userStore.userAssociations"
@@ -107,9 +108,3 @@ onMounted(async () => {
         </QBtnDropdown>
     </div>
 </template>
-
-<style lang="scss" scoped>
-.q-list {
-    color: white;
-}
-</style>

@@ -26,8 +26,6 @@
   }
 
   .q-toolbar {
-    width: $fullSize;
-    max-width: $pageWidth;
     margin: auto;
     padding: 0.625rem 0;
 
@@ -39,7 +37,6 @@
         color: $textColor3;
         text-transform: uppercase;
         font-weight: 800;
-        font-size: 2.5rem;
         text-decoration: none;
         position: relative;
         z-index: 2;
@@ -73,7 +70,6 @@
     z-index: 2;
 
     a {
-      font-size: 1.063rem;
       font-weight: 400;
       text-decoration: none;
       padding: 0 1.063rem;
@@ -182,7 +178,6 @@
       }
 
       .q-btn__content {
-        font-size: 1.063rem;
         font-weight: 400;
         text-transform: uppercase;
 
@@ -202,10 +197,6 @@
 
       .avatar {
         margin-right: 0.625rem;
-
-        i {
-          font-size: 1.125rem;
-        }
       }
     }
 
@@ -336,18 +327,13 @@
 
 // Site title in the header - appears only on the home page
 #header-home-title {
-  width: $fullSize;
-  max-width: $pageWidth;
-  margin: auto;
-  position: relative;
-  z-index: 1;
   text-align: center;
 
   h1 {
     font-family: $titleFont;
     color: $textColor3;
     font-weight: $normal-weight;
-    font-size: 3.125rem;
+    font-size: 3.2rem;
     margin-bottom: 0.5rem;
     line-height: 4rem;
 
@@ -382,7 +368,6 @@
 #header-title {
   width: auto;
   position: absolute;
-  font-size: 3rem;
   bottom: 0;
   z-index: 1;
   padding: 0 1.56rem 0 1.56rem;
@@ -392,29 +377,28 @@
     font-family: $titleFont;
     color: $textColor3;
     font-weight: $normal-weight;
-    font-size: 2.3rem;
-    padding: 0 0 1rem 3rem;
+    padding: 0 0 1rem 4rem;
     line-height: 1.15;
+    text-transform: none;
 
     strong {
       font-family: $titleFont;
-      font-size: 4.375rem;
       text-transform: uppercase;
       font-weight: $normal-weight;
     }
 
     #header-title-icon {
       display: inline-block;
-      width: 3rem;
-      height: 3rem;
+      width: 4rem;
+      height: 4rem;
       border-radius: $radiusCircle;
       background-color: $annuaireColor;
       position: absolute;
-      left: .5rem;
+      left: 0;
       text-align: center;
 
       i {
-        font-size: 1.75rem;
+        font-size: 2.2rem;
         color: $textColor3;
         display: none;
         vertical-align: middle;
@@ -469,7 +453,6 @@
       }
 
       .q-item__label {
-        font-size: 1.063rem;
         font-weight: 400;
         text-decoration: none;
         color: $textColor3;

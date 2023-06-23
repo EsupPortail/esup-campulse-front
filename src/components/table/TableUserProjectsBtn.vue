@@ -113,7 +113,8 @@ function onOptionClick(option: Option) {
         <QBtnDropdown
             v-if="options.length"
             :label="t('manage')"
-            class="cape-color"
+            color="commission"
+            outline
         >
             <QList>
                 <QItem

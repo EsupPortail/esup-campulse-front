@@ -15,11 +15,13 @@ const props = defineProps({
                 :label="t('forms.gdpr')"
                 :model-value="props.hasConsent"
                 aria-label="t('forms.gdpr')"
-                color="secondary"
+                color="dashboard"
                 @click="$emit('updateConsent')"
             />
         </div>
     </fieldset>
 </template>
 
-
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
+</style>

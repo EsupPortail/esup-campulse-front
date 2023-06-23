@@ -31,17 +31,21 @@ onMounted(async () => {
     <!-- Account management -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-card-account-details-outline"/>
+            <i
+                aria-hidden="true"
+                class="bi bi-person"
+            ></i>
             {{ t('dashboard.manage-my-account') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
-                    <QBtn
-                        :label="t('dashboard.account-infos')"
-                        :to="{name: 'ManageAccount'}"
-                    />
-                </div>
+        <div class="dashboard-section-container">
+            <div class="dashboard-btn-group">
+                <QBtn
+                    :label="t('dashboard.account-infos')"
+                    :to="{name: 'ManageAccount'}"
+                    class="btn-lg"
+                    color="dashboard"
+                    size="md"
+                />
             </div>
         </div>
     </section>
@@ -55,19 +59,19 @@ onMounted(async () => {
             <QIcon name="mdi-card-account-details-outline"/>
             {{ t('dashboard.association-user.my-associations') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
-                    <div
-                        v-for="association in userStore.userAssociations"
-                        :key="association.association.id"
-                    >
-                        <QBtn
-                            v-if="association.isValidatedByAdmin"
-                            :label="t('manage') + ' ' + association.association.name"
-                            :to="{name: 'AssociationDashboard', params: {id: association.association.id}}"
-                        />
-                    </div>
+        <div class="dashboard-section-container">
+            <div class="dashboard-btn-group">
+                <div
+                    v-for="association in userStore.userAssociations"
+                    :key="association.association.id"
+                >
+                    <QBtn
+                        v-if="association.isValidatedByAdmin"
+                        :label="t('manage') + ' ' + association.association.name"
+                        :to="{name: 'AssociationDashboard', params: {id: association.association.id}}"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
                 </div>
             </div>
         </div>

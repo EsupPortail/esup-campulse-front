@@ -14,7 +14,6 @@
         margin: 1rem auto;
         text-decoration: none;
         color: $textColor3;
-        font-size: $textSize;
         background: $annuaireColor;
         border-radius: 1rem;
         padding: 1rem;
@@ -40,7 +39,6 @@
 
     span {
       font-weight: $semibold-weight;
-      font-size: $textSize;
       margin: .2rem auto;
     }
   }

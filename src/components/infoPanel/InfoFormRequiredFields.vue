@@ -11,16 +11,8 @@ const {t} = useI18n()
             class="bi bi-info"
         ></i>
         <p>
-            {{ t('dashboard.template-document-library-info-message') }}
+            {{ t('forms.required-fields') }}
         </p>
-        <div class="btn-group">
-            <QBtn
-                :label="t('dashboard.template-document-library')"
-                :to="{name: 'DocumentsLibrary'}"
-                class="btn-lg"
-                color="dashboard"
-            />
-        </div>
     </div>
 </template>
 
