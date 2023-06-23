@@ -23,6 +23,8 @@ Documentation technique accessible à l'adresse [https://di.pages.unistra.fr/pla
 ## Technologies de développement
 
 - [Vite](https://vitejs.dev/) (bundler)
+- [Sass](https://sass-lang.com/) (styles)
+- [TypeScript](https://www.typescriptlang.org/) (scripts)
 - [vue-tsc](https://www.npmjs.com/package/vue-tsc) (typecheck)
 - [ESLint](https://eslint.org/) (linter)
 - [Vitest](https://vitest.dev/) (tests unitaires)
