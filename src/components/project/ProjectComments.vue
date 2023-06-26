@@ -2,21 +2,28 @@
 import useProjectComments from '@/composables/useProjectComments'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import useUtility from '@/composables/useUtility'
+import useSecurity from '@/composables/useSecurity'
+import {useProjectStore} from '@/stores/useProjectStore'
+import FormAddComment from '@/components/form/FormAddComment.vue'
 
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {comments, getProjectComments} = useProjectComments()
+const {comments, getProjectComments, newComment, postNewProjectComment} = useProjectComments()
 const {catchHTTPError} = useErrors()
 const {formatDate} = useUtility()
+const {hasPerm} = useSecurity()
+const projectStore = useProjectStore()
 
 const props = defineProps<{
     project: number
 }>()
+
+const open = ref<boolean>(false)
 
 onMounted(async () => {
     loading.show()
@@ -37,6 +44,27 @@ async function onGetProjectComments() {
                 })
             }
         }
+    }
+}
+
+async function onPostNewComment() {
+    if (projectStore.project && newComment.value) {
+        loading.show()
+        const projectId = projectStore.project.id
+        try {
+            await postNewProjectComment(projectId, newComment.value)
+            await getProjectComments(projectId)
+            open.value = false
+            newComment.value = ''
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
+        }
+        loading.hide()
     }
 }
 </script>
@@ -66,6 +94,24 @@ async function onGetProjectComments() {
     <div v-if="!comments.length">
         <p class="paragraph">{{ t('project.comments.no-comment-to-show') }}</p>
     </div>
+    <QBtn
+        v-if="hasPerm('add_projectcomment') && projectStore.project?.projectStatus !== 'PROJECT_PROCESSING'"
+        :label="t('project.new-comment')"
+        icon="bi-plus-circle"
+        @click="open = true"
+    />
+    <QDialog v-model="open">
+        <QCard class="variant-space-3">
+            <QCardSection class="q-pt-none">
+                <FormAddComment
+                    selected-action="new-comment"
+                    selected-icon="bi-chat"
+                    @submit="onPostNewComment"
+                    @close-dialog="open = false"
+                />
+            </QCardSection>
+        </QCard>
+    </QDialog>
 </template>
 
 <style lang="scss" scoped>

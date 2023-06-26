@@ -16,10 +16,12 @@ import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
 import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import ProjectValidation from '@/components/project/ProjectValidation.vue'
 import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
+import useSecurity from '@/composables/useSecurity'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
+const {hasPerm} = useSecurity()
 const projectStore = useProjectStore()
 const {
     initProjectBasicInfos,
@@ -144,7 +146,7 @@ async function onGetProjectDetail() {
                     <p class="row-title">{{ t('status') }}</p>
                     <ProjectStatusIndicator
                         :project-status="projectStore.project?.projectStatus"
-                        :show-draft="false"
+                        :show-draft="true"
                     />
                 </div>
             </div>
@@ -167,7 +169,10 @@ async function onGetProjectDetail() {
             </div>
         </div>
     </section>
-    <ProjectValidation/>
+    <ProjectValidation
+        v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
+            && hasPerm('change_project_as_validator')"
+    />
 </template>
 
 <style lang="scss" scoped>

@@ -347,7 +347,6 @@
   "forms": {
     "add-association": "Ajouter une association",
     "add-my-associations": "Ajouter les associations liées",
-    "add-new-comment": "Ajouter un commentaire",
     "add-selected-associations": "Ajouter les associations sélectionnées",
     "amount-members-allowed-must-be-superior-to-members": "Veuillez choisir un nombre supérieur ou égal au nombre de membres actuels.",
     "amount-student-allowed-cannot-be-inferior-to-members": "Ne peut pas être inférieur au nombre de membres inscrits sur la plateforme actuellement",
@@ -634,6 +633,7 @@
     "modify-review": "Modifier le bilan",
     "must-have-president-status": "Vous n'avez pas de droits de présidence dans cette association. Vous ne pouvez donc pas soumettre de nouveaux projets.",
     "name": "Nom du projet",
+    "new-comment": "Ajouter un commentaire",
     "outcome": "Dépenses",
     "no-project-to-show": "Aucun projet à afficher.",
     "pdf-name": "Récapitulatif-Demande-Subvention-",
