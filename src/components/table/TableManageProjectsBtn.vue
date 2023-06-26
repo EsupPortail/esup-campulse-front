@@ -75,20 +75,22 @@ function onOptionClick(option: Option) {
 <template>
     <div class="q-pa-md">
         <QBtnDropdown
-            v-if="options.length"
-            :label="t('manage')"
+                v-if="options.length"
+                :label="t('manage')"
+                color="commission"
+                outline
         >
             <QList>
                 <QItem
-                    v-for="(option, index) in options"
-                    :key="index"
-                    v-close-popup
-                    clickable
-                    @click="onOptionClick(option)"
+                        v-for="(option, index) in options"
+                        :key="index"
+                        v-close-popup
+                        clickable
+                        @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
                         <QAvatar
-                            :icon="option.icon"
+                                :icon="option.icon"
                         />
                     </QItemSection>
                     <QItemSection>
@@ -99,25 +101,25 @@ function onOptionClick(option: Option) {
         </QBtnDropdown>
     </div>
     <ProjectUpdateDates
-        :open-dialog="updateProjectDates"
-        :project="props.project"
-        @close-dialog="updateProjectDates = false"
-        @refresh-projects="emit('refreshProjects')"
+            :open-dialog="updateProjectDates"
+            :project="props.project"
+            @close-dialog="updateProjectDates = false"
+            @refresh-projects="emit('refreshProjects')"
     />
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/_variables.scss';
+/*@import '@/assets/_variables.scss';
 
 .q-btn {
-    background-color: orange;
+  background-color: orange;
 }
 
 ::v-deep(.q-item) {
-    color: $capeColorText;
+  color: $capeColorText;
 }
 
 ::v-deep(.no-presidency) {
-    color: $textColor2;
-}
+  color: $textColor2;
+}*/
 </style>
