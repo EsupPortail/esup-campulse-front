@@ -10,7 +10,7 @@
 ## Description
 
 Création d'une application web pour la gestion des associations étudiantes et de leurs projets.
-Documentation technique accessible à l'adresse [https://di.pages.unistra.fr/plana/](https://di.pages.unistra.fr/plana/)
+Documentation technique accessible à l'adresse [https://di.pages.unistra.fr/plan_a/plana/](https://di.pages.unistra.fr/plan_a/plana/)
 
 ## Technologies requises
 
