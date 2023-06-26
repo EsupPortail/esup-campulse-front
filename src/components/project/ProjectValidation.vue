@@ -7,24 +7,21 @@ import useProjectComments from '@/composables/useProjectComments'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
 import type {ProjectStatus} from '#/project'
-import useSecurity from '@/composables/useSecurity'
+import FormAddComment from '@/components/form/FormAddComment.vue'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {postNewProjectComment, getProjectComments} = useProjectComments()
+const {postNewProjectComment, getProjectComments, newComment} = useProjectComments()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
-const {hasPerm} = useSecurity()
 
-type Action = 'validate' | 'reject' | 'return' | ''
-type Icon = 'bi-check-lg' | 'bi-x-octagon' | 'bi-exclamation-triangle' | ''
+type Action = 'validate' | 'reject' | 'return' | 'new-comment' | ''
+type Icon = 'bi-check-lg' | 'bi-x-octagon' | 'bi-exclamation-triangle' | 'bi-chat' | ''
 
 const open = ref<boolean>(false)
 
 const selectedAction = ref<Action>('')
 const selectedIcon = ref<Icon>('')
-
-const newComment = ref<string>('')
 
 const onOpenDialog = (action: Action, icon: Icon) => {
     selectedAction.value = action
@@ -48,6 +45,7 @@ async function onUpdateProjectStatus() {
             await projectStore.patchProjectStatus(projectStatus)
             await getProjectComments(projectStore.project.id)
             open.value = false
+            newComment.value = ''
             notify({
                 type: 'positive',
                 message: t(`notifications.positive.${selectedAction.value}-project`)
@@ -66,11 +64,7 @@ async function onUpdateProjectStatus() {
 </script>
 
 <template>
-    <section
-        v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
-            && hasPerm('change_project_as_validator')"
-        class="btn-group"
-    >
+    <section class="btn-group">
         <QBtn
             :label="t('project.validate')"
             icon="bi-check-lg"
@@ -90,35 +84,12 @@ async function onUpdateProjectStatus() {
     <QDialog v-model="open">
         <QCard class="variant-space-3">
             <QCardSection class="q-pt-none">
-                <QForm
-                    @submit.prevent="onUpdateProjectStatus"
-                >
-                    <h3 class="title-3">{{ t('forms.add-new-comment') }}</h3>
-                    <QInput
-                        v-model="newComment"
-                        :aria-required="selectedAction !== 'validate'"
-                        :hint="t('forms.comment-hint')"
-                        :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
-                        filled
-                        lazy-rules
-                        type="textarea"
-                    />
-                    <QCardActions align="right">
-                        <div class="btn-group">
-                            <QBtn
-                                :label="t('back')"
-                                icon="bi-box-arrow-left"
-                                @click="open = false"
-                            />
-                            <QBtn
-                                :icon="selectedIcon"
-                                :label="t(`project.${selectedAction}`)"
-                                type="submit"
-                            />
-                        </div>
-                    </QCardActions>
-                </QForm>
+                <FormAddComment
+                    :selected-action="selectedAction"
+                    :selected-icon="selectedIcon"
+                    @submit="onUpdateProjectStatus"
+                    @close-dialog="open = false"
+                />
             </QCardSection>
         </QCard>
     </QDialog>

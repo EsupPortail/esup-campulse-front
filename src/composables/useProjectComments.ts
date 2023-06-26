@@ -4,7 +4,7 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 
 const comments = ref<ProjectComment[]>([])
-const comment = ref<ProjectComment>()
+const newComment = ref<string>('')
 
 export default function () {
     const {axiosAuthenticated} = useAxios()
@@ -32,7 +32,7 @@ export default function () {
         postNewProjectComment,
         /*        patchProjectComment,
                 deleteProjectComment,*/
-        comment,
+        newComment,
         comments
     }
 }
