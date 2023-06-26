@@ -40,56 +40,55 @@ async function reset() {
 </script>
 
 <template>
-    <div class="form-container">
-        <div class="form">
-            <div class="instructions">
-                <QBanner
-                    v-if="!isReset"
-                    class="bg-grey-3"
-                >
-                    <template v-slot:avatar>
-                        <QIcon
-                            color="secondary"
-                            name="mdi-information-outline"
-                            size="md"
-                        />
-                    </template>
-                    <strong>{{ t('forms.password-reset-cas') }}</strong>
-                    <template v-slot:action>
-                    </template>
-                </QBanner>
-                <p v-if="isReset">{{ t('forms.password-reset-ok') }}</p>
-            </div>
-            <QForm
-                v-if="!isReset"
-                class="q-gutter-md"
-                @submit="reset"
-            >
-                <fieldset>
-                    <legend class="instructions">{{ t('forms.password-reset-instructions') }}</legend>
-                    <QInput
-                        v-model="email"
-                        :label="t('forms.email')"
-                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                        autocomplete="email"
-                        filled
-                        lazy-rules
-                        type="email"
-                    />
-                    <QBtn
-                        :label="t('forms.send')"
-                        type="submit"
-                    />
-                </fieldset>
-            </QForm>
+    <div class="flex-column">
+        <div
+            v-if="!isReset"
+            class="info-panel info-panel-dashboard"
+        >
+            <i
+                aria-hidden="true"
+                class="bi bi-info"
+            ></i>
+            <p>
+                {{ t('forms.password-reset-cas') }}
+            </p>
         </div>
+        <p
+            v-if="isReset"
+            class="padding-top"
+        >
+            {{ t('forms.password-reset-ok') }}
+        </p>
+        <QForm
+            v-if="!isReset"
+            class="q-gutter-md"
+            @submit="reset"
+        >
+            <QInput
+                v-model="email"
+                :hint="t('forms.password-reset-instructions')"
+                :label="t('forms.email')"
+                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                autocomplete="email"
+                color="dashboard"
+                filled
+                lazy-rules
+                type="email"
+            />
+            <div class="padding-bottom">
+                <QBtn
+                    :label="t('forms.send')"
+                    class="btn-lg"
+                    color="dashboard"
+                    icon="bi-check-lg"
+                    type="submit"
+                />
+            </div>
+        </QForm>
     </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
-
-.q-form, .instructions {
-  margin: auto;
-}
+@import "@/assets/styles/dashboard.scss";
 </style>

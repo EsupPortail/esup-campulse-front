@@ -80,15 +80,20 @@ function onReset() {
 </script>
 
 <template>
-    <div class="btn-group">
+    <div class="flex-row-center">
         <QBtn
             :label="t('dashboard.search-user-via-cas')"
+            class="btn-lg"
+            color="dashboard"
             icon="bi-person-plus"
             @click="open = true"
         />
         <QBtn
             v-if="displayResetButton"
             :label="t('cancel')"
+            class="btn-lg"
+            color="dashboard"
+            icon="bi-x-lg"
             @click="onReset"
         />
     </div>
@@ -103,22 +108,27 @@ function onReset() {
                     class="q-gutter-md"
                     @submit.prevent="onGetUsersFromCAS"
                 >
-                    <h2 class="title-2">{{ t('dashboard.search-user-via-cas') }}</h2>
+                    <h3>{{ t('dashboard.search-user-via-cas') }}</h3>
                     <QInput
                         v-model="lastName"
                         :label="t('forms.last-name')"
                         :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                        color="dashboard"
                         filled
                         lazy-rules
                     />
-                    <div class="btn-group">
+                    <div class="flex-row">
                         <QBtn
                             :label="t('cancel')"
+                            class="btn-lg"
+                            color="dashboard"
                             icon="bi-x-lg"
                             @click="onReset"
                         />
                         <QBtn
                             :label="t('search')"
+                            class="btn-lg"
+                            color="dashboard"
                             icon="bi-search"
                             type="submit"
                         />
@@ -131,24 +141,27 @@ function onReset() {
                 >
                     <h3>{{ t('user-manager.users-found') }}</h3>
                     <p>{{ t('user-manager.choose-user-to-add') }}</p>
-                    <div class="q-pa-lg">
-                        <QOptionGroup
-                            v-model="selectedUser"
-                            :options="CASUserOptions"
-                            emit-value
-                            map-options
-                            aria-label="t('forms.user-to-add')"
-                        />
-                    </div>
-                    <div class="btn-group">
+                    <QOptionGroup
+                        v-model="selectedUser"
+                        :options="CASUserOptions"
+                        aria-label="t('forms.user-to-add')"
+                        color="dashboard"
+                        emit-value
+                        map-options
+                    />
+                    <div class="flex-row padding-top">
                         <QBtn
                             :label="t('cancel')"
+                            class="btn-lg"
+                            color="dashboard"
                             icon="bi-x-lg"
                             @click="onReset"
                         />
                         <QBtn
                             :disable="!selectedUser"
                             :label="t('add')"
+                            class="btn-lg"
+                            color="dashboard"
                             icon="bi-person-plus"
                             type="submit"
                         />

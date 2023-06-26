@@ -38,7 +38,8 @@ async function onDeleteUser() {
 <template>
     <QBtn
         :label="t('user-manager.delete-user')"
-        color="delete"
+        class="btn-lg"
+        color="red"
         icon="bi-trash"
         @click="confirm = true"
     />
@@ -49,24 +50,25 @@ async function onDeleteUser() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t('user-manager.confirm-delete') }}</span>
+                <p>{{ t('user-manager.confirm-delete') }}</p>
+                <div class="flex-row">
+                    <QBtn
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
+                    />
+                    <QBtn
+                        v-close-popup
+                        :label="t('user-manager.delete-user')"
+                        class="btn-lg"
+                        color="red"
+                        icon="bi-trash"
+                        @click="onDeleteUser"
+                    />
+                </div>
             </QCardSection>
-
-            <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="bi-x-lg"
-                />
-                <QBtn
-                    v-close-popup
-                    :label="t('user-manager.delete-user')"
-                    color="delete"
-                    icon="bi-trash"
-                    @click="onDeleteUser"
-                />
-            </QCardActions>
         </QCard>
     </QDialog>
 </template>

@@ -805,7 +805,7 @@ fieldset {
 }
 
 // A title that can be located on top of a form wrapper.
-.form-title {
+/*.form-title {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -840,7 +840,7 @@ fieldset {
     }
 
   }
-}
+}*/
 
 // Generic Quasar tables, as found mainly in the admin section of the site
 /*.q-table__container {
@@ -1295,30 +1295,21 @@ fieldset {
 }
 
 // Select elements used to choose an action to perform on selected table rows.
-::v-deep(.table-actions-select) {
+.table-actions-select {
   display: flex;
   flex-direction: row;
-  padding: 1rem;
   gap: 1rem;
   justify-content: center;
   margin: auto;
-  width: 80%;
+  flex-wrap: wrap;
 
-  label {
-    width: $fullSize;
+  .q-select {
+    max-width: 130rem;
+    width: 100%;
   }
 
   .q-btn {
-    padding: .875rem 1.875rem;
-
-    .q-btn__content {
-      flex-wrap: nowrap;
-
-      & > * {
-        color: $textColor3;
-        white-space: nowrap;
-      }
-    }
+    width: 29rem;
   }
 }
 

@@ -62,82 +62,88 @@ onMounted(() => {
 </script>
 
 <template>
-    <fieldset>
+    <div class="flex-column">
         <QInput
             v-model="userToUpdate.firstName"
             :disable="!!props.user?.isCas"
             :label="t('forms.first-name')"
             :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+            autocomplete="given-name"
+            color="dashboard"
             filled
             lazy-rules
-            autocomplete="given-name"
         />
         <QInput
             v-model="userToUpdate.lastName"
             :disable="!!props.user?.isCas"
             :label="t('forms.last-name')"
             :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+            autocomplete="family-name"
+            color="dashboard"
             filled
             lazy-rules
-            autocomplete="family-name"
         />
-        <fieldset class="email-modification">
+        <QInput
+            v-model="userToUpdate.email"
+            :label="t('forms.email')"
+            :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+            autocomplete="email"
+            color="dashboard"
+            disable
+            filled
+            lazy-rules
+        />
+        <QExpansionItem
+            v-if="!props.user?.isCas"
+            v-model="changeEmail"
+            :label="t('forms.modify-email')"
+            header-class="text-dashboard"
+        >
             <QInput
-                v-model="userToUpdate.email"
-                :label="t('forms.email')"
-                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                disable
+                v-model="userToUpdate.newEmail"
+                :label="t('forms.new-email')"
+                :rules="changeEmail ? [(val, rules) => rules.email(val) || t('forms.required-new-email')] : []"
+                autocomplete="email"
+                class="padding-top"
+                color="dashboard"
                 filled
                 lazy-rules
-                autocomplete="email"
             />
-            <QExpansionItem
-                v-if="!props.user?.isCas"
-                v-model="changeEmail"
-                :label="t('forms.modify-email')"
-            >
-                <QInput
-                    v-model="userToUpdate.newEmail"
-                    :label="t('forms.new-email')"
-                    :rules="changeEmail ? [(val, rules) => rules.email(val) || t('forms.required-new-email')] : []"
-                    filled
-                    lazy-rules
-                    autocomplete="email"
-                />
-                <QInput
-                    v-model="userToUpdate.newEmailVerification"
-                    :label="t('forms.repeat-email')"
-                    :rules="changeEmail ? [(val, rules) => (rules.email(val) && val === userToUpdate.newEmail) || t('forms.required-repeat-email')] : []"
-                    filled
-                    lazy-rules
-                    autocomplete="email"
-                />
-                <div class="info-panel info-panel-warning">
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-exclamation-lg"
-                    ></i>
-                    <p>{{ t('alerts.modify-email') }}</p>
-                </div>
-            </QExpansionItem>
-        </fieldset>
+            <QInput
+                v-model="userToUpdate.newEmailVerification"
+                :label="t('forms.repeat-email')"
+                :rules="changeEmail ? [(val, rules) => (rules.email(val) && val === userToUpdate.newEmail) || t('forms.required-repeat-email')] : []"
+                autocomplete="email"
+                color="dashboard"
+                filled
+                lazy-rules
+            />
+            <div class="info-panel info-panel-warning">
+                <i
+                    aria-hidden="true"
+                    class="bi bi-exclamation-lg"
+                ></i>
+                <p>{{ t('alerts.modify-email') }}</p>
+            </div>
+        </QExpansionItem>
         <QInput
             v-model="userToUpdate.phone"
             :label="t('forms.phone')"
+            autocomplete="tel"
+            color="dashboard"
             filled
             hint="Format : 06 00 00 00 00"
             lazy-rules
             mask="## ## ## ## ##"
             type="tel"
-            autocomplete="tel"
         />
-        <fieldset
+        <div
             v-if="(!editedByStaff && hasPerm('add_project_user'))
                 || (editedByStaff && userRef.permissions?.includes('add_project_user'))"
         >
-            <legend class="title-3">{{ t('address.address') }}</legend>
+            <h3>{{ t('address.address') }}</h3>
             <FormUserAddress :user="userRef"/>
-        </fieldset>
+        </div>
         <div
             v-if="!editedByStaff"
             class="info-panel info-panel-dashboard"
@@ -146,20 +152,14 @@ onMounted(() => {
                 aria-hidden="true"
                 class="bi bi-info"
             ></i>
-            <p class="paragraph">{{ t('dashboard.my-status') }} : <span><strong>{{ userGroups }}</strong></span></p>
-            <p class="paragraph">{{ t('dashboard.update-my-status') }}</p>
+            <p>{{ t('dashboard.my-status') }} : <span><strong>{{ userGroups }}</strong></span></p>
+            <p>{{ t('dashboard.update-my-status') }}</p>
         </div>
-    </fieldset>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
-
-.q-expansion-item {
-  background-color: $dashboardColorBorders;
-  padding: 0.625rem;
-  margin-bottom: 0.938rem;
-}
-
+@import '@/assets/_variables.scss';
 </style>

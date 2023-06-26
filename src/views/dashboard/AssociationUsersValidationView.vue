@@ -76,8 +76,8 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <div class="form-container">
-            <div class="form form-width">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <QTable
                     :columns="columns"
                     :loading="!isLoaded"
@@ -121,8 +121,8 @@ const columns: QTableProps['columns'] = [
                                         props.row.isValidatedByAdmin ? t('validated') : t('validated-non')
                                     }}
                                     <span
-                                        aria-hidden="true"
                                         :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
+                                        aria-hidden="true"
                                     >
                                         <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>
                                     </span>
@@ -134,22 +134,25 @@ const columns: QTableProps['columns'] = [
                                 class="actions-cell-compact"
                             >
                                 <QBtn
-                                    :label="t('manage')"
+                                    :aria-label="t('manage')"
                                     :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
-                                    color="secondary"
-                                    icon="bi-check-lg"
+                                    color="dashboard"
+                                    icon="bi-pencil"
+                                    ouline
                                 />
                             </QTd>
                         </QTr>
                     </template>
                 </QTable>
-                <section class="btn-group">
+                <div class="flex-row-center padding-top">
                     <QBtn
                         :label="t('back')"
                         :to="{ name: 'Dashboard' }"
+                        class="btn-lg"
+                        color="dashboard"
                         icon="bi-chevron-compact-left"
                     />
-                </section>
+                </div>
             </div>
         </div>
     </section>
@@ -157,5 +160,6 @@ const columns: QTableProps['columns'] = [
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
 @import '@/assets/_variables.scss';
 </style>

@@ -160,8 +160,8 @@ async function onDeleteDocument(documentId: number) {
             ></i>
             {{ t('documents.upload-new') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <QForm
                     ref="newDocumentForm"
                     @reset="onClearValues"
@@ -172,6 +172,7 @@ async function onDeleteDocument(documentId: number) {
                         :label="t('documents.choose-name')"
                         :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                         clearable
+                        color="dashboard"
                         filled
                     />
 
@@ -180,10 +181,13 @@ async function onDeleteDocument(documentId: number) {
                         :label="t('documents.choose-file')"
                         :rules="[val => val || t('forms.fill-field')]"
                         clearable
+                        color="dashboard"
                         filled
                     />
                     <QBtn
                         :label="t('add')"
+                        class="btn-lg"
+                        color="dashboard"
                         icon="bi-upload"
                         type="submit"
                     />
@@ -201,14 +205,14 @@ async function onDeleteDocument(documentId: number) {
             ></i>
             {{ t('documents.no-process-library') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <div
                     v-for="(document, index) in libraryDocuments"
                     :key="index"
                     class="document-input-group"
                 >
-                    <div class="document-input variant-space-1">
+                    <div class="document-input">
                         <div class="document-input-header">
                             <h4 class="library-document">
                                 <span :class="document.path ? 'active-link' : ''">
@@ -228,8 +232,8 @@ async function onDeleteDocument(documentId: number) {
 
                             <button @click.prevent="document.open = !document.open">
                                 <i
-                                    aria-hidden="true"
                                     :class="`bi bi-${document.open ? 'x' : 'pencil'}`"
+                                    aria-hidden="true"
                                 ></i>
                             </button>
                         </div>
@@ -244,6 +248,7 @@ async function onDeleteDocument(documentId: number) {
                                 :label="t('documents.choose-name')"
                                 :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                 clearable
+                                color="dashboard"
                                 filled
                             />
 
@@ -253,17 +258,22 @@ async function onDeleteDocument(documentId: number) {
                                 :label="t('documents.choose-file')"
                                 :rules="[val => val || t('forms.fill-field')]"
                                 clearable
+                                color="dashboard"
                                 filled
                             />
-                            <div class="flex-btn">
+                            <div class="flex-row padding-top padding-bottom">
                                 <QBtn
-                                    :icon="document.path ? 'mdi-autorenew' : 'mdi-upload-outline'"
+                                    :icon="document.path ? 'bi-arrow-repeat' : 'bi-upload'"
                                     :label="document.path ? t('update') : t('add')"
+                                    class="btn-lg"
+                                    color="dashboard"
                                     type="submit"
                                 />
                                 <QBtn
                                     :disable="document.processType !== 'NO_PROCESS'"
                                     :label="t('delete')"
+                                    class="btn-lg"
+                                    color="red"
                                     icon="bi-trash"
                                     @click="onDeleteDocument(document.id)"
                                 />

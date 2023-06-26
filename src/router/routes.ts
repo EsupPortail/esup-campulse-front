@@ -452,7 +452,9 @@ const routes: RouteRecordRaw[] = [
                 name: 'RegistrationResendEmail',
                 component: () => import('@/views/RegisterResendEmailView.vue'),
                 meta: {
-                    colorVariant: 'space-4'
+                    colorVariant: 'space-4',
+                    breadcrumb: i18n.global.t('breadcrumbs.register-resend-email'),
+                    title: i18n.global.t('breadcrumbs.register-resend-email'),
                 }
             },
             {

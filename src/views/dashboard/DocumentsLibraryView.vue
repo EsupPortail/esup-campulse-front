@@ -73,7 +73,7 @@ async function onGetLibraryDocuments() {
 <template>
     <!-- Text -->
     <section class="dashboard-section">
-        <div class="form-container flex">
+        <div class="dashboard-section-container">
             <section>
                 <p class="paragraph">Lorem ipsum</p>
             </section>
@@ -121,19 +121,4 @@ async function onGetLibraryDocuments() {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/_variables.scss';
-
-.flex {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    section:first-child {
-        width: $fullSize;
-        margin: auto;
-    }
-
-    section + section > p {
-        text-align: center;
-    }
-}
 </style>

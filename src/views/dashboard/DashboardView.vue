@@ -88,18 +88,22 @@ onMounted(async () => {
             <QIcon name="mdi-format-list-bulleted-square"/>
             {{ t('dashboard.manage-association-directory') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         v-if="hasPerm('add_association')"
                         :label="t('dashboard.create-association')"
                         :to="{name: 'CreateAssociation'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="hasPerm('change_association')"
                         :label="t('dashboard.edit-or-delete-association')"
                         :to="{name: 'ManageAssociations'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -115,13 +119,15 @@ onMounted(async () => {
             <QIcon name="mdi-file-multiple-outline"/>
             {{ t('dashboard.template-document-library') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         v-if="hasPerm('add_document')"
                         :label="t('dashboard.manage-template-documents')"
                         :to="{name: 'ManageDocumentsLibrary'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -137,12 +143,14 @@ onMounted(async () => {
             <QIcon name="mdi-folder-edit-outline"/>
             {{ t('dashboard.manage-commissions') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         :label="t('dashboard.manage-projects')"
                         :to="{name: 'Commission'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -159,28 +167,36 @@ onMounted(async () => {
             <QIcon name="mdi-account-group"/>
             {{ t('dashboard.manage-users') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-validation')"
                         :to="{name: 'ValidateUsers'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="hasPerm('change_associationuser')"
                         :label="t('user-manager.association-validation')"
                         :to="{name: 'ValidateAssociationUsers'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-management')"
                         :to="{name: 'ManageUsers'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="hasPerm('add_user')"
                         :label="t('dashboard.create-user')"
                         :to="{name: 'AddUser'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -196,8 +212,8 @@ onMounted(async () => {
             <QIcon name="mdi-pencil-box-outline"/>
             {{ t('dashboard.my-documents') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <InfoDocumentLibrary/>
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">

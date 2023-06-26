@@ -75,22 +75,20 @@ onBeforeRouteLeave((to, from, next) => {
 <template>
     <QForm
         v-if="userManagerStore.user"
-        class="q-gutter-md"
+        class="dashboard-section"
         @submit.prevent="openAlert = true"
     >
-        <section class="association-cards dashboard-section">
-            <div class="form-title">
-                <h2>
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
-                    ></i>
-                    {{ t('user-manager.user-infos') }}
-                </h2>
-            </div>
+        <section>
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
+                {{ t('user-manager.user-infos') }}
+            </h2>
 
-            <div class="form-container">
-                <div class="form form-width">
+            <div class="dashboard-section-container">
+                <div class="container">
                     <FormUserInfosEdition
                         :edited-by-staff="true"
                         :user="userManagerStore.user"
@@ -103,18 +101,16 @@ onBeforeRouteLeave((to, from, next) => {
             v-if="groupCanJoinAssociation"
             class="association-cards dashboard-section"
         >
-            <div class="form-title">
-                <h2>
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
-                    ></i>
-                    {{ t('user-manager.user-associations') }}
-                </h2>
-            </div>
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
+                {{ t('user-manager.user-associations') }}
+            </h2>
 
-            <div class="form-container">
-                <div class="form form-width">
+            <div class="dashboard-section-container">
+                <div class="container flex-column">
                     <FormUpdateUserAssociations/>
                     <FormRegisterUserAssociations/>
                 </div>
@@ -122,33 +118,31 @@ onBeforeRouteLeave((to, from, next) => {
         </section>
 
         <section class="dashboard-section">
-            <div class="form-title">
-                <h2>
-                    <QIcon name="bi-person-lines-fill"/>
-                    {{ t('user-manager.user-status') }}
-                </h2>
-            </div>
-            <div class="form-container">
-                <div class="form form-width">
+            <h2>
+                <QIcon name="bi-person-lines-fill"/>
+                {{ t('user-manager.user-status') }}
+            </h2>
+            <div class="dashboard-section-container">
+                <div class="container">
                     <FormUserGroups/>
-                    <p class="paragraph">
-                        <ul>
-                            <li>
-                                <strong>{{ t('user.is-cas') }}</strong> :
-                                {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
-                            </li>
-                            <li>
-                                <strong>{{ t('user.is-validated-by-admin') }}</strong>
-                                {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
-                            </li>
-                        </ul>
-                    </p>
+                    <ul>
+                        <li>
+                            <strong>{{ t('user.is-cas') }}</strong> :
+                            {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
+                        </li>
+                        <li>
+                            <strong>{{ t('user.is-validated-by-admin') }}</strong>
+                            {{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <section class="btn-group">
+            <div class="flex-row-center padding-top padding-bottom">
                 <QBtn
                     :label="t('back')"
+                    class="btn-lg"
+                    color="dashboard"
                     icon="bi-box-arrow-left"
                     @click="openAlert = true"
                 />
@@ -163,7 +157,7 @@ onBeforeRouteLeave((to, from, next) => {
                     @has-validated="hasValidated = true"
                 />
                 <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
-            </section>
+            </div>
         </section>
     </QForm>
 </template>
@@ -171,4 +165,6 @@ onBeforeRouteLeave((to, from, next) => {
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+
 </style>

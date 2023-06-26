@@ -109,7 +109,7 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <div class="form-title">
+        <div class="container-lg flex-row-space-between">
             <h2>
                 <QIcon name="mdi-pencil-box-outline"/>
                 {{ t('dashboard.association-list') }}
@@ -118,13 +118,12 @@ const columns: QTableProps['columns'] = [
                 v-if="hasPerm('add_association')"
                 :label="t('dashboard.create-association')"
                 :to="{name: 'CreateAssociation'}"
-                class="create-asso-btn"
-                color="secondary"
+                color="dashboard"
                 icon="bi-plus-circle"
             />
         </div>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container-lg">
                 <FormAssociationSearch
                     v-if="route.name"
                     :route="route.name"
@@ -142,7 +141,10 @@ const columns: QTableProps['columns'] = [
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd>
-                                <QCheckbox v-model="props.selected"/>
+                                <QCheckbox
+                                    v-model="props.selected"
+                                    color="dashboard"
+                                />
                             </QTd>
                             <QTd
                                 key="name"
@@ -229,9 +231,11 @@ const columns: QTableProps['columns'] = [
                             >
                                 <div class="button-container">
                                     <QBtn
+                                        :aria-label="t('edit')"
                                         :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                                        aria-label="Editer"
+                                        color="dashboard"
                                         icon="bi-pencil"
+                                        outline
                                     />
                                 </div>
                             </QTd>
@@ -251,13 +255,4 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/variables.scss';
-
-::v-deep(.q-table__container) {
-  .q-table {
-    thead tr {
-      background-color: $dashboardColor;
-    }
-  }
-}
-
 </style>

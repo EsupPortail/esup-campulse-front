@@ -56,6 +56,8 @@ async function onValidateChanges() {
 <template>
     <QBtn
         :label="t('dashboard.validate-changes')"
+        class="btn-lg"
+        color="dashboard"
         icon="bi-check-lg"
         @click="confirmation = true"
     />
@@ -64,24 +66,27 @@ async function onValidateChanges() {
         v-model="confirmation"
         persistent
     >
-        <QCard class="variant-space-4">
+        <QCard>
             <QCardSection class="row items-center">
-                <p class="paragraph">{{ t('user-manager.alert-confirm-update') }}</p>
+                <p>{{ t('user-manager.alert-confirm-update') }}</p>
+                <div class="flex-row">
+                    <QBtn
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
+                    />
+                    <QBtn
+                        v-close-popup
+                        :label="t('dashboard.validate-changes')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-check-lg"
+                        @click="onValidateChanges"
+                    />
+                </div>
             </QCardSection>
-
-            <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    icon="bi-x-lg"
-                />
-                <QBtn
-                    v-close-popup
-                    :label="t('dashboard.validate-changes')"
-                    icon="bi-check-lg"
-                    @click="onValidateChanges"
-                />
-            </QCardActions>
         </QCard>
     </QDialog>
 </template>
@@ -89,8 +94,4 @@ async function onValidateChanges() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-
-.q-card {
-    padding: 1rem
-}
 </style>

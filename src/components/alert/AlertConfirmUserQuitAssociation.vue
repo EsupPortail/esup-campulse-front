@@ -47,9 +47,11 @@ async function onDeleteUserAssociation() {
 
 <template>
     <QBtn
-        :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
-        color="delete"
+        :aria-label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+        class="btn-lg"
+        color="red"
         icon="bi-trash"
+        outline
         @click="confirmation = true"
     />
 

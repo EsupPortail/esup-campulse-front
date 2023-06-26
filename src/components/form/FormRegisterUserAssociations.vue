@@ -136,8 +136,10 @@ function clearOptions() {
                     v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
                         routeName === 'ManageAccount'"
                     :label="t('validate')"
-                    class="validate-button"
+                    class="btn-lg"
+                    color="dashboard"
                     icon-right="bi-check2"
+                    outline
                     type="submit"
                 />
             </div>
@@ -160,10 +162,6 @@ function clearOptions() {
 @import '@/assets/styles/associations.scss';
 @import '@/assets/_variables.scss';
 
-h3 {
-    font-weight: $thin-weight;
-    text-transform: none;
-}
 
 .flex-group, .q-separator {
     margin: 1rem 0 1rem 0;

@@ -119,11 +119,12 @@ async function onConfirmChanges(emailType: string) {
 </script>
 
 <template>
-    <div class="table-actions-select">
+    <div class="table-actions-select padding-top">
         <QSelect
             v-model="switches"
             :label="t('association.all-selected')"
             :options="actionsOptions"
+            color="dashboard"
             emit-value
             filled
             map-options
@@ -132,7 +133,8 @@ async function onConfirmChanges(emailType: string) {
         />
         <QBtn
             :label="t('association.confirm-all-changes')"
-            color="secondary"
+            class="btn-lg"
+            color="dashboard"
             icon="bi-check-lg"
             @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"
         />
