@@ -54,73 +54,73 @@ watch(() => content.about, () => {
 </script>
 
 <template>
-    <section id="home-section">
-        <div class="presentation-project">
-            <div :class="['section-headtitle', 'form-container']">
-                <h3>{{ t('about.presentation') }}</h3>
-            </div>
-
-            <AboutCard
-                :body="aboutApp?.body"
-                :cssClass="content.cards[0].cssClass"
-                :header="aboutApp?.header"
-            />
-            <AboutCard
-                :body="aboutPartnership?.body"
-                :cssClass="content.cards[1].cssClass"
-                :header="aboutPartnership?.header"
-                :label="aboutPartnership?.label"
-            />
-            <AboutCard
-                :body="aboutFunding?.body"
-                :cssClass="content.cards[2].cssClass"
-                :header="aboutFunding?.header"
-                :label="aboutFunding?.label"
-            />
+    <section id="home-section" class="dashboard-section">
+        <div class="section-headtitle">
+            <h3>{{ t('about.presentation') }}</h3>
         </div>
 
-        <div class="services-project">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <AboutCard
+                        :body="aboutApp?.body"
+                        :cssClass="content.cards[0].cssClass"
+                        :header="aboutApp?.header"
+                />
+                <AboutCard
+                        :body="aboutPartnership?.body"
+                        :cssClass="content.cards[1].cssClass"
+                        :header="aboutPartnership?.header"
+                        :label="aboutPartnership?.label"
+                />
+                <AboutCard
+                        :body="aboutFunding?.body"
+                        :cssClass="content.cards[2].cssClass"
+                        :header="aboutFunding?.header"
+                        :label="aboutFunding?.label"
+                />
+            </div>
+
+        </div>
+
+        <div class="services-features dashboard-section">
             <div class="section-headtitle">
                 <h3>{{ t('about.services') }}</h3>
             </div>
 
-            <div class="services-section">
+            <div class="services-section dashboard-section-container">
                 <ServiceCard
-                    :body="homeAssociation?.body"
-                    :cssClass="content.cards[0].cssClass"
-                    :footer="homeAssociation?.header"
-                    :header="homeAssociation?.header"
+                        :body="homeAssociation?.body"
+                        :cssClass="content.cards[0].cssClass"
+                        :footer="homeAssociation?.header"
+                        :header="homeAssociation?.header"
                 />
 
                 <ServiceCard
-                    :body="homeCharter?.body"
-                    :cssClass="content.cards[1].cssClass"
-                    :footer="homeCharter?.header"
-                    :header="homeCharter?.header"
+                        :body="homeCharter?.body"
+                        :cssClass="content.cards[1].cssClass"
+                        :footer="homeCharter?.header"
+                        :header="homeCharter?.header"
                 />
 
                 <ServiceCard
-                    :body="homeProject?.body"
-                    :cssClass="content.cards[2].cssClass"
-                    :footer="homeProject?.footer"
-                    :header="homeProject?.header"
+                        :body="homeProject?.body"
+                        :cssClass="content.cards[2].cssClass"
+                        :footer="homeProject?.footer"
+                        :header="homeProject?.header"
                 />
             </div>
         </div>
 
-        <div class="contact-project">
-            <div class="form-container">
-                <div class="section-headtitle">
-                    <h3>{{ t('about.contact') }}</h3>
-                </div>
+        <div class="contact-project dashboard-section">
+            <div class="section-headtitle">
+                <h3>{{ t('about.contact') }}</h3>
+            </div>
 
-                <div class="contact-content">
+            <div class="dashboard-section-container">
+                <div class="flex-column">
                     <h4>{{ t('about.intro-contact') }}</h4>
 
-                    <RouterLink
-                        :to="{name: 'Contact'}"
-                        class="contact-link"
-                    >
+                    <RouterLink :to="{name: 'Contact'}">
                         {{ t('about.contact-us') }}
                     </RouterLink>
                 </div>
@@ -130,31 +130,13 @@ watch(() => content.about, () => {
 </template>
 <style lang="scss" scoped>
 @import '@/assets/styles/home.scss';
-@import '@/assets/styles/forms.scss';
+//@import '@/assets/styles/forms.scss';
 @import '@/assets/styles/contact.scss';
+@import '@/assets/styles/dashboard.scss';
 
 .home-section {
-    padding: 2rem 0;
-
-    &.home-section-cape, &.home-section-annuaire, &.home-section-charte {
-        background-image: none;
-    }
-
-}
-
-.form-container {
-    padding: 2rem 0;
-
-    &:nth-child(1), &:nth-child(2), &:nth-child(3) {
-        &::before, &::after {
-            background: none;
-        }
-    }
-
-    &:nth-child(4) {
-        &::before {
-            background: none;
-        }
-    }
+  &.home-section-cape, &.home-section-annuaire, &.home-section-charte {
+    background-image: none;
+  }
 }
 </style>

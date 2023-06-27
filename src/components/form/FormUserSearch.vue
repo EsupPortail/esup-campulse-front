@@ -63,93 +63,100 @@ async function clearSearch() {
 }
 </script>
 <template>
-    <section class="directory-search">
-        <h3 class="title-3">{{ t('user.search') }}</h3>
+    <section class="container flex-column padding-bottom">
+        <h3>{{ t('user.search') }}</h3>
         <QForm
-            id="search-form"
-            class="search-text-field"
-            @submit.prevent="onSearch"
-            role="search"
-            aria-label="t('user.directory')"
+                id="search-form"
+                :aria-label="t('user.directory')"
+                class="search-text-field"
+                role="search"
+                @submit.prevent="onSearch"
         >
-            <fieldset>
+            <div>
                 <QInput
-                    v-model="settings.search"
-                    :label="t('search')"
-                    :placeholder="t('search')"
-                    clearable
-                    filled
-                    inputmode="search"
-                    lazy-rules
+                        v-model="settings.search"
+                        :label="t('search')"
+                        :placeholder="t('search')"
+                        clearable
+                        color="dashboard"
+                        filled
+                        inputmode="search"
+                        lazy-rules
                 >
                     <template v-slot:prepend>
                         <QIcon name="mdi-magnify"/>
                     </template>
                 </QInput>
-                <QBtn
-                    :label="t('search')"
-                    HEAD
-                    class="search-button"
-                    color="secondary"
-                    icon-right="mdi-chevron-right"
-                    type="submit"
-                />
-                <QBtn
-                    :label="t('cancel-search')"
-                    icon-right="mdi-close"
-                    @click="clearSearch"
-                />
-            </fieldset>
+                <div class="flex-row padding-top">
+                    <QBtn
+                            :label="t('search')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon-right="mdi-chevron-right"
+                            type="submit"
+                    />
+                    <QBtn
+                            :label="t('cancel-search')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon-right="mdi-close"
+                            @click="clearSearch"
+                    />
+                </div>
+            </div>
         </QForm>
 
         <QForm
-            id="advanced-search-form"
-            class="search-text-field"
-            @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
-            role="search"
-            aria-label="t('user.directory-advanced')"
+                id="advanced-search-form"
+                aria-label="t('user.directory-advanced')"
+                role="search"
+                @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
         >
             <QExpansionItem
-                :label="t('advanced-search')"
-                icon="bi-chevron-compact-right"
+                    :label="t('advanced-search')"
+                    header-class="text-dashboard"
             >
-                <fieldset>
+                <div class="flex-column">
                     <QInput
-                        v-model="settings.firstName"
-                        :label="t('user.first-name')"
-                        clearable
-                        filled
-                        lazy-rules
+                            v-model="settings.firstName"
+                            :label="t('user.first-name')"
+                            clearable
+                            color="dashboard"
+                            filled
+                            lazy-rules
                     />
                     <QInput
-                        v-model="settings.lastName"
-                        :label="t('user.last-name')"
-                        clearable
-                        filled
-                        lazy-rules
+                            v-model="settings.lastName"
+                            :label="t('user.last-name')"
+                            clearable
+                            color="dashboard"
+                            filled
+                            lazy-rules
                     />
                     <QInput
-                        v-model="settings.email"
-                        :label="t('user.email')"
-                        class="full-size"
-                        clearable
-                        filled
-                        lazy-rules
+                            v-model="settings.email"
+                            :label="t('user.email')"
+                            clearable
+                            color="dashboard"
+                            filled
+                            lazy-rules
                     />
-                </fieldset>
+                </div>
 
-                <div class="btn-group">
+                <div class="flex-row padding-top padding-bottom">
                     <QBtn
-                        :label="t('advanced-search')"
-                        class="search-button"
-                        color="secondary"
-                        icon-right="mdi-chevron-right"
-                        type="submit"
+                            :label="t('advanced-search')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon-right="mdi-chevron-right"
+                            type="submit"
                     />
                     <QBtn
-                        :label="t('cancel-search')"
-                        icon-right="mdi-close"
-                        @click="clearSearch"
+                            :label="t('cancel-search')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon-right="mdi-close"
+                            @click="clearSearch"
                     />
                 </div>
             </QExpansionItem>
@@ -160,5 +167,4 @@ async function clearSearch() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
-
 </style>

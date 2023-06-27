@@ -9,18 +9,18 @@ defineProps({
 <template>
     <div class="container">
         <section
-            v-if="isDisplayed"
+                v-if="isDisplayed"
+                class=" flex-row"
         >
             <div
-                id="home-banner-icon"
-                aria-hidden="true"
-                class="variant-default"
+                    aria-hidden="true"
+                    class="home-banner-icon"
             >
                 <i class="bi bi-info-circle"></i>
             </div>
             <div>
-                <h3 class="title-3"><strong>{{ title }}</strong></h3>
-                <p class="paragraph">{{ description }}</p>
+                <h3><strong>{{ title }}</strong></h3>
+                <p>{{ description }}</p>
             </div>
         </section>
     </div>
@@ -29,13 +29,4 @@ defineProps({
 <style lang="scss" scoped>
 @import "@/assets/styles/home.scss";
 @import "@/assets/_variables.scss";
-
-section {
-    display: flex;
-    gap: 1rem;
-    padding-top: 1rem;
-    max-width: $pageWidth;
-    width: $fullSize;
-    margin: auto;
-}
 </style>

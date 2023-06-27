@@ -396,46 +396,48 @@
 }
 
 // Association detail and edition views
-#association-detail, #association-edition {
+.association-detail, .association-edition {
+  /*
   fieldset {
     padding: 0;
   }
+  */
 
-  section, fieldset {
-    border: none;
+  /*  section, fieldset {
+      border: none;
 
-    h3 {
-      font-size: 1.7rem;
-      text-transform: uppercase;
-      color: $annuaireColorText;
+      !*    h3 {
+            font-size: 1.7rem;
+            text-transform: uppercase;
+            color: $annuaireColorText;
 
-      i {
-        color: $annuaireColorText;
-        font-size: 1.5rem;
-        margin: auto 0.300rem auto 1rem;
-        top: -0.01rem;
-      }
-    }
+            i {
+              color: $annuaireColorText;
+              font-size: 1.5rem;
+              margin: auto 0.300rem auto 1rem;
+              top: -0.01rem;
+            }
+          }*!
 
-    p {
-      margin: .625rem;
-      text-align: center;
-    }
+      !*    p {
+            margin: .625rem;
+            text-align: center;
+          }*!
 
-    .display-row {
-      h4 {
-        font-size: 1.5rem;
-        font-weight: $semibold-weight;
-        line-height: 2.3rem;
-        margin-bottom: .6rem;
-      }
+  !*    .display-row {
+        h4 {
+          font-size: 1.5rem;
+          font-weight: $semibold-weight;
+          line-height: 2.3rem;
+          margin-bottom: .6rem;
+        }
 
-      p {
-        font-size: 1rem;
-        text-align: justify;
-      }
-    }
-  }
+        p {
+          font-size: 1rem;
+          text-align: justify;
+        }
+      }*!
+    }*/
 
   #association-logo-title {
     padding: .5rem;
@@ -463,21 +465,23 @@
       margin-bottom: .6rem;
     }
 
-    .btn-group {
-      width: $fullSize;
+    /*    .btn-group {
+          width: $fullSize;
 
-      span {
-        font-size: 1.090rem;
-      }
-    }
+          span {
+            font-size: 1.090rem;
+          }
+        }*/
   }
 
+  /*
   .btn-group {
     display: flex;
     flex-direction: column;
     gap: .6rem;
     margin: .625rem auto;
   }
+  */
 
   @media screen and (min-width: $responsiveWidth) {
     section, fieldset {
@@ -508,7 +512,7 @@
   }
 }
 
-#association-detail {
+.association-detail {
 
   a:link, a:visited {
     font-size: 1.125rem;
@@ -528,11 +532,11 @@
     gap: 1rem;
   }
 
-  .form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+  /*  .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }*/
 }
 
 // User's association update view
@@ -540,12 +544,14 @@
   display: flex;
   flex-direction: column;
 
+  /*
   .btn-group {
     justify-content: flex-start;
     padding: 0;
     margin: 0;
     width: $fullSize;
   }
+  */
 
   .cancel-delete {
     display: flex;

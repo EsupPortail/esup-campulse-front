@@ -2,24 +2,25 @@
 
 // Intro element on the home page
 #home-info-panel {
-  margin: 0 auto;
   padding: 1.5rem;
 
-  #home-banner-icon {
+  .home-banner-icon {
     display: inline-block;
-    width: 2.2rem;
+    width: 3.5rem;
     height: 2.2rem;
     border-radius: $radiusCircle;
-    border: solid $annuaireColor; //.188rem
-    background-color: transparent;
-    top: calc(50% - 54px);
+    border: solid $annuaireColor 0.200rem;
+    //background-color: transparent;
+    //top: calc(50% - 54px);
     position: relative;
-    left: 0;
+    //left: 0;
 
     i {
       color: $annuaireColor;
       position: absolute;
-      top: -0.4rem;
+      top: -0.1rem;
+      left: 0.25rem;
+      font-size: 1.3rem;
     }
 
     &::before, &::after {
@@ -46,14 +47,19 @@
       bottom: -3rem;
     }
 
-    &.variant-minimal {
-      top: calc(50% - 1.688rem);
-
-      &::before, &::after {
-        display: none;
-      }
+    @media screen and (min-width: $responsiveWidth) {
+      width: 2.2rem;
     }
+    /*
+        &.variant-minimal {
+          top: calc(50% - 1.688rem);
+
+          &::before, &::after {
+            display: none;
+          }
+        }*/
   }
+
 }
 
 // Sections for each space on the site
@@ -120,7 +126,6 @@
   }
 
   .section-card {
-    width: 95%;
     display: block;
     border-radius: 1rem;
     position: relative;
@@ -133,13 +138,12 @@
 
     .section-background {
       background-color: $annuaireColorBackground;
-      width: 3rem;
       height: 50rem;
+      width: 20rem;
       position: absolute;
       top: calc(50% - 25rem);
       left: 0;
-      z-index: 0;
-      opacity: 0.8;
+      //z-index: 0;
 
       span {
         width: 0;
@@ -149,7 +153,7 @@
         border-color: transparent transparent transparent $annuaireColorBackground;
         position: absolute;
         right: -6rem;
-        top: 0;
+        //top: 0;
       }
     }
 
@@ -158,19 +162,19 @@
       position: relative;
       z-index: 2;
 
-      h2 {
-        line-height: 1rem;
-      }
+      /*      h2 {
+              line-height: 1rem;
+            }*/
 
       h2 > span:first-child {
         display: flex;
         gap: 1rem;
         font-family: $titleFont;
-        font-size: $homeTitleSize;
+        font-size: 3.1rem;
         font-weight: $semibold-weight;
         color: $annuaireColorText;
         text-transform: uppercase;
-        line-height: 3.875rem;
+        //line-height: 3.875rem;
       }
 
       .section-icon {
@@ -196,18 +200,18 @@
               position: relative;
               font-size: $iconSize;
               color: $annuaireColorText;
-              top: $iconHomeCardTopMobilePosition;
-              left: $iconHomeCardLeftMobilePosition;
+              top: -.6rem;
+              left: .04rem;
             }
           }
         }
       }
     }
 
-    // Title on about's page (Services part)
-    .services-title {
-      flex: 0;
-    }
+    /*    // Title on about's page (Services part)
+        .services-title {
+          flex: 0;
+        }*/
 
     .section-info {
       font-weight: $normal-weight;
@@ -244,7 +248,7 @@
           padding: 1rem;
           font-weight: $normal-weight;
           color: $annuaireColorText;
-          border-radius: 0;
+          //border-radius: 0;
           border: .0625rem solid $annuaireColorText;
           background-color: transparent;
           text-decoration: none;
@@ -448,20 +452,25 @@
   padding: 2rem 0;
 }
 
-.services-project {
+.services-features {
   .services-section {
     display: flex;
     flex-direction: column;
     align-items: center;
 
+    h4 {
+      text-align: center;
+      font-weight: $semibold-weight;
+    }
+
     @media screen and (min-width: $responsiveWidth) {
       flex-direction: row;
-      justify-content: center;
-      align-items: normal;
+      //justify-content: center;
+      //align-items: normal;
       gap: 1rem;
 
-      .section-card {
-        flex-direction: column;
+      .service-card {
+        height: 25rem;
       }
     }
   }
