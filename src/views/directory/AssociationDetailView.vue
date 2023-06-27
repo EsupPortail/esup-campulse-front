@@ -232,7 +232,7 @@ async function onGetAssociationDetail() {
                                 class="display-row"
                         >
                             <h3>{{ t('association.labels.socials') }}</h3>
-                            <ul>
+                            <ul class="flex-row">
                                 <li
                                         v-for="(socialNetwork, index) in association?.socialNetworks"
                                         :key="index"

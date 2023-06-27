@@ -27,7 +27,7 @@
 
   .q-toolbar {
     margin: auto;
-    padding: 0.625rem 0;
+    padding-left: 0 $responsiveMargin auto;
 
     .q-toolbar__title {
       overflow: visible;
@@ -48,16 +48,11 @@
       }
     }
 
-    @media only screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
-
-    @media only screen and (max-width: $responsiveWidth) {
-      align-items: flex-start;
-      min-height: 8rem;
-      position: static;
-    }
+    /*    @media only screen and (max-width: $responsiveWidth) {
+          align-items: flex-start;
+          min-height: 8rem;
+          position: static;
+        }*/
   }
 
   .q-layout__shadow {
@@ -67,7 +62,7 @@
   nav {
     display: flex;
     align-items: center;
-    z-index: 2;
+    z-index: 4;
 
     a {
       font-weight: 400;

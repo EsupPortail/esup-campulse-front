@@ -366,6 +366,7 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/AssociationsManagementView.vue'),
                                 meta: {
                                     title: i18n.global.t('breadcrumbs.manage-associations'),
+                                    colorVariant: 'space-1',
                                     staffOnly: true
                                 }
                             },

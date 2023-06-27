@@ -78,7 +78,7 @@ async function clearSearch() {
                         :label="t('search')"
                         :placeholder="t('search')"
                         clearable
-                        color="dashboard"
+                        color="association"
                         filled
                         inputmode="search"
                         lazy-rules
@@ -91,14 +91,14 @@ async function clearSearch() {
                     <QBtn
                             :label="t('search')"
                             class="btn-lg"
-                            color="dashboard"
+                            color="association"
                             icon-right="mdi-chevron-right"
                             type="submit"
                     />
                     <QBtn
                             :label="t('cancel-search')"
                             class="btn-lg"
-                            color="dashboard"
+                            color="association"
                             icon-right="mdi-close"
                             @click="clearSearch"
                     />
@@ -114,7 +114,7 @@ async function clearSearch() {
         >
             <QExpansionItem
                     :label="t('advanced-search')"
-                    header-class="text-dashboard"
+                    header-class="text-association"
             >
                 <div class="flex-column">
                     <QInput
@@ -122,7 +122,7 @@ async function clearSearch() {
                             :label="t('directory.labels.association-name')"
                             class="full-size"
                             clearable
-                            color="dashboard"
+                            color="association"
                             filled
                             lazy-rules
                     />
@@ -130,7 +130,7 @@ async function clearSearch() {
                             v-model="settings.acronym"
                             :label="t('directory.labels.association-acronym')"
                             clearable
-                            color="dashboard"
+                            color="association"
                             filled
                             lazy-rules
                     />
@@ -139,7 +139,7 @@ async function clearSearch() {
                             :label="t('directory.labels.association-institution')"
                             :options="associationStore.institutionLabels"
                             clearable
-                            color="dashboard"
+                            color="association"
                             emit-value
                             filled
                             map-options
@@ -149,7 +149,7 @@ async function clearSearch() {
                             :label="t('directory.labels.association-institution-component')"
                             :options="associationStore.institutionComponentLabels"
                             clearable
-                            color="dashboard"
+                            color="association"
                             emit-value
                             filled
                             map-options
@@ -159,7 +159,7 @@ async function clearSearch() {
                             :label="t('directory.labels.association-activity-field')"
                             :options="associationStore.activityFieldLabels"
                             clearable
-                            color="dashboard"
+                            color="association"
                             emit-value
                             filled
                             map-options
@@ -170,14 +170,14 @@ async function clearSearch() {
                     <QBtn
                             :label="t('advanced-search')"
                             class="btn-lg"
-                            color="dashboard"
+                            color="association"
                             icon-right="mdi-chevron-right"
                             type="submit"
                     />
                     <QBtn
                             :label="t('cancel-search')"
                             class="btn-lg"
-                            color="dashboard"
+                            color="association"
                             icon-right="mdi-close"
                             @click="clearSearch"
                     />

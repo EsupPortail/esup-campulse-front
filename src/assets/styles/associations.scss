@@ -440,14 +440,12 @@
     }*/
 
   #association-logo-title {
-    padding: .5rem;
-
     .association-name {
-      h2 {
-        font-size: $titleSize;
-        font-weight: $semibold-weight;
-        text-align: center;
-      }
+      /*      h2 {
+              font-size: $titleSize;
+              font-weight: $semibold-weight;
+              text-align: center;
+            }*/
 
       .acronym {
         text-align: center;
@@ -455,10 +453,10 @@
     }
 
     .association-logo {
-      width: $associationLogoSize;
-      height: $associationLogoSize;
+      width: 12rem;
+      height: 12rem;
       display: block;
-      margin: auto;
+      margin: 1rem auto;
     }
 
     .q-file, .q-input {
@@ -484,38 +482,15 @@
   */
 
   @media screen and (min-width: $responsiveWidth) {
-    section, fieldset {
-      h3 {
-        width: $halfSize;
-        margin: auto;
-      }
-    }
-
     #association-logo-title {
       width: $halfSize;
       margin: auto;
-
-      .association-logo {
-        margin-top: 1rem;
-      }
     }
-
-    .btn-group {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .q-btn {
-      line-height: 1.3rem;
-    }
-
   }
 }
 
 .association-detail {
-
   a:link, a:visited {
-    font-size: 1.125rem;
     text-decoration: none;
     color: $annuaireColor;
   }
@@ -527,9 +502,9 @@
   ul {
     margin: 0;
     list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    /*    display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;*/
   }
 
   /*  .form-container {
@@ -539,19 +514,19 @@
     }*/
 }
 
-// User's association update view
+/*// User's association update view
 #association-user-update {
   display: flex;
   flex-direction: column;
 
-  /*
+  !*
   .btn-group {
     justify-content: flex-start;
     padding: 0;
     margin: 0;
     width: $fullSize;
   }
-  */
+  *!
 
   .cancel-delete {
     display: flex;
@@ -568,10 +543,10 @@
     width: $fullSize;
     font-size: 1rem;
   }
-}
+}*/
 
 // Add new association btn on AccountInfosView
-#association-user-add {
+/*#association-user-add {
   display: flex;
   flex-direction: column;
 
@@ -595,7 +570,7 @@
       margin: 1rem 0;
     }
   }
-}
+}*/
 
 #association-card {
   ul {
