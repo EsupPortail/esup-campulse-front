@@ -344,7 +344,7 @@ async function onChangeLogo(action: string) {
                         type="date"
                     >
                         <template v-slot:prepend>
-                            <QIcon name="mdi-calendar"/>
+                            <QIcon name="bi-calendar"/>
                         </template>
                     </QInput>
                     <QInput
@@ -429,8 +429,8 @@ async function onChangeLogo(action: string) {
                         aria-required="true"
                         clearable
                         filled
-                        type="email"
                         lazy-rules
+                        type="email"
                     />
                     <QInput
                         v-model="association.phone"
@@ -500,15 +500,15 @@ async function onChangeLogo(action: string) {
 @import '@/assets/styles/forms.scss';
 
 .address-fields div {
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: 1rem;
 
-  * {
-    width: 100%;
-  }
+    * {
+        width: 100%;
+    }
 }
 
 .q-separator {
-  margin: 0.5rem 0 1rem 0;
+    margin: 0.5rem 0 1rem 0;
 }
 </style>

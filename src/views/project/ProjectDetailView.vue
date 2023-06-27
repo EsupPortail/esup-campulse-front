@@ -15,7 +15,7 @@ import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
 import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
 import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import ProjectValidation from '@/components/project/ProjectValidation.vue'
-import ProjectStatusIndicator from '@/components/table/ProjectStatusIndicator.vue'
+import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import useSecurity from '@/composables/useSecurity'
 
 const {notify, loading} = useQuasar()

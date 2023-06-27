@@ -141,7 +141,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 @rejected="onDocumentRejected"
             >
                 <template v-slot:prepend>
-                    <QIcon name="mdi-paperclip"/>
+                    <QIcon name="bi-paperclip"/>
                 </template>
             </QFile>
 

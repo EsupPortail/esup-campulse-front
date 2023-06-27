@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import useSecurity from '@/composables/useSecurity'
-import DashboardProjectCommissionsManagement from '@/components/dashboard/DashboardProjectCommissionsManagement.vue'
+import DashboardProjectCommissionsManagement from '@/components/project/DashboardProjectCommissionsManagement.vue'
 
 const {t} = useI18n()
 const {hasPerm} = useSecurity()

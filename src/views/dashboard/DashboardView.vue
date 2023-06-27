@@ -194,7 +194,7 @@ onMounted(async () => {
         </h2>
         <div class="form-container">
             <div class="form">
-                <InfoDocumentLibrary/>
+                <InfoDocumentLibrary color="dashboard"/>
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">

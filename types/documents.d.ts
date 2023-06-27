@@ -7,6 +7,7 @@ export interface Document {
     isMultiple: boolean,
     isRequiredInProcess: boolean,
     daysBeforeExpiration: string,
+    expirationDay: string,
     pathTemplate: string | null,
     mimeTypes: MimeType[],
     processType: DocumentProcessType,
@@ -32,13 +33,11 @@ type MimeType =
 
 type DocumentProcessType =
     'CHARTER_ASSOCIATION'
-    | 'CHARTER_ASSOCIATION_INSTITUTION'
-    | 'CHARTER_PROJECT_COMMISSION'
+    | 'CHARTER_PROJECT_FUND'
     | 'DOCUMENT_ASSOCIATION'
     | 'DOCUMENT_USER'
     | 'DOCUMENT_PROJECT'
     | 'DOCUMENT_PROJECT_REVIEW'
-    | 'DOCUMENT_PROCESSING'
     | 'NO_PROCESS'
 
 export interface DocumentUpload {
@@ -46,7 +45,7 @@ export interface DocumentUpload {
     uploadDate?: string,
     pathFile: string,
     size: number,
-    documentUploadStatus?: DocumentUploadStatus,
+    validatedDate: string,
     document: number,
     user?: number | null,
     association?: number | null,
@@ -58,7 +57,6 @@ export interface ProcessDocument {
     id?: number,
     uploadDate?: string,
     pathFile: Blob | Blob[] | undefined | [] | string,
-    documentUploadStatus?: DocumentUploadStatus,
     document?: number,
     description?: string,
     isMultiple?: boolean,

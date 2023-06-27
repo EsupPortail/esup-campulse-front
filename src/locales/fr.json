@@ -158,6 +158,7 @@
     "home": "Accueil",
     "login": "Connexion",
     "manage-associations": "Gérer les associations",
+    "manage-charters": "Gérer les chartes",
     "manage-commission-dates": "Gérer les dates de commission",
     "manage-my-projects": "Gérer mes projets",
     "manage-projects": "Gérer les demandes de subventionnement",
@@ -178,8 +179,16 @@
   "cancel-delete": "Annuler la suppression",
   "cancel-search": "Annuler la recherche",
   "charter": {
+    "expiration-date": "Date d'expiration",
+    "options": {
+      "download": "Télécharger la charte",
+      "sign": "Signer la charte",
+      "re-sign": "Renouveler la signature de la charte",
+      "view": "Voir la charte"
+    },
     "pdf-name": "Récapitulatif-Signature-Charte-",
     "sign": "Signer la charte",
+    "signed-charter": "Charte signée",
     "site": {
       "title": "Charte des association du site Alsace",
       "sign-form": {
@@ -190,7 +199,15 @@
           "description": "Votre charte a été signée. Elle sera validée prochainement par un gestionnaire. Vous pouvez dès à présent suivre son avancement sur votre tableau de bord."
         }
       }
-    }
+    },
+    "status": {
+      "expired": "Charte à renouveler",
+      "no-charter": "Charte à signer",
+      "processing": "Charte en cours de validation",
+      "validated": "Charte signée et validée"
+    },
+    "table-title": "Chartes",
+    "validated-date": "Date de validation"
   },
   "commission": {
     "add-new-date": "Ajouter une date de commission",
@@ -498,6 +515,7 @@
       "association-successfully-updated": "L'association a bien été mise à jour.",
       "association-up-to-date": "L'association est déjà à jour.",
       "associations-successfully-updated": "Les associations ont bien été mises à jour.",
+      "charter-signed": "La charte a été signée.",
       "comment-deleted": "Le commentaire a été supprimé.",
       "comment-modified": "Le commentaire a été modifié.",
       "commission-date-deleted": "La date de commission a été supprimée.",
@@ -706,7 +724,7 @@
   "required": "obligatoire",
   "search": "Rechercher",
   "start": "Début",
-  "status": "statut",
+  "status": "Statut",
   "submit-review": "Soumettre le bilan",
   "to": "Jusqu'au",
   "update": "Mettre à jour",

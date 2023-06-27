@@ -86,7 +86,7 @@ async function clearSearch() {
                     lazy-rules
                 >
                     <template v-slot:prepend>
-                        <QIcon name="mdi-magnify"/>
+                        <QIcon name="bi-search"/>
                     </template>
                 </QInput>
                 <QBtn
@@ -186,6 +186,6 @@ async function clearSearch() {
 @import '@/assets/styles/forms.scss';
 
 .directory-search {
-  padding: 1rem;
+    padding: 1rem;
 }
 </style>
