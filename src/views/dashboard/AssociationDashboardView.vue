@@ -263,7 +263,7 @@ async function onGetAssociationProjects() {
         </h2>
         <div class="form-container">
             <div class="form">
-                <InfoDocumentLibrary/>
+                <InfoDocumentLibrary color="dashboard"/>
                 <div class="document-input-group">
                     <div class="document-input-group-header">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>

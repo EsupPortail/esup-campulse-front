@@ -56,6 +56,15 @@ const routes: RouteRecordRaw[] = [
                         },
                     },
                     {
+                        path: 'manage',
+                        name: 'ManagerCharters',
+                        component: () => import('@/views/charter/CharterDashboardView.vue'),
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-charters'),
+                            title: i18n.global.t('breadcrumbs.manage-charters'),
+                        }
+                    },
+                    {
                         path: 'sign/:associationId',
                         name: 'SignCharter',
                         component: () => import('@/views/charter/SignCharterView.vue'),

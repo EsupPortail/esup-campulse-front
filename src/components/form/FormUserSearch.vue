@@ -67,10 +67,10 @@ async function clearSearch() {
         <h3 class="title-3">{{ t('user.search') }}</h3>
         <QForm
             id="search-form"
-            class="search-text-field"
-            @submit.prevent="onSearch"
-            role="search"
             aria-label="t('user.directory')"
+            class="search-text-field"
+            role="search"
+            @submit.prevent="onSearch"
         >
             <fieldset>
                 <QInput
@@ -83,7 +83,7 @@ async function clearSearch() {
                     lazy-rules
                 >
                     <template v-slot:prepend>
-                        <QIcon name="mdi-magnify"/>
+                        <QIcon name="bi-search"/>
                     </template>
                 </QInput>
                 <QBtn
@@ -104,10 +104,10 @@ async function clearSearch() {
 
         <QForm
             id="advanced-search-form"
-            class="search-text-field"
-            @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
-            role="search"
             aria-label="t('user.directory-advanced')"
+            class="search-text-field"
+            role="search"
+            @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
         >
             <QExpansionItem
                 :label="t('advanced-search')"
