@@ -9,6 +9,7 @@ export const _document: Document = {
     isMultiple: false,
     isRequiredInProcess: false,
     daysBeforeExpiration: '365 00:00:00',
+    expirationDay: '',
     pathTemplate: null,
     mimeTypes: [
         'application/pdf'
@@ -28,6 +29,7 @@ export const _documents: Document[] = [
         isMultiple: false,
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
+        expirationDay: '',
         pathTemplate: null,
         mimeTypes: [
             'application/pdf'
@@ -45,6 +47,7 @@ export const _documents: Document[] = [
         isMultiple: false,
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
+        expirationDay: '',
         pathTemplate: null,
         mimeTypes: [
             'application/pdf',
@@ -64,11 +67,12 @@ export const _documents: Document[] = [
         isMultiple: false,
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
+        expirationDay: '',
         pathTemplate: null,
         mimeTypes: [
             'application/pdf'
         ],
-        processType: 'CHARTER_PROJECT_COMMISSION',
+        processType: 'CHARTER_PROJECT_FUND',
         institution: null,
         commission: 1
     }
@@ -103,7 +107,6 @@ export const _processDocument: ProcessDocument = {
     id: 1,
     uploadDate: '2301-06-20',
     pathFile: 'pathFile',
-    documentUploadStatus: 'DOCUMENT_VALIDATED',
     document: 1,
     description: 'description',
     isMultiple: false,
@@ -117,9 +120,9 @@ export const _projectDocuments: DocumentUpload[] = [
     {
         id: 1,
         uploadDate: '2023-06-19',
+        validatedDate: '',
         pathFile: 'pathFile',
         size: 1000,
-        documentUploadStatus: 'DOCUMENT_VALIDATED',
         document: 1,
         user: null,
         association: 1,
@@ -131,7 +134,7 @@ export const _projectDocuments: DocumentUpload[] = [
         uploadDate: '2023-06-21',
         pathFile: 'pathFile',
         size: 1000,
-        documentUploadStatus: 'DOCUMENT_VALIDATED',
+        validatedDate: '',
         document: 2,
         user: 1,
         association: null,

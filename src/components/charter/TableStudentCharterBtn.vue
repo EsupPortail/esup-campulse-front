@@ -5,9 +5,11 @@ import router from '@/router'
 import type {ManageCharter} from '#/charters'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import FormSignCharters from '@/components/charter/FormSignCharters.vue'
+import useCharters from '@/composables/useCharters'
 
 const {t} = useI18n()
 const {getFile, documents} = useDocumentUploads()
+const {downloadCharter} = useCharters()
 
 const props = defineProps<{
     charter: ManageCharter,
@@ -64,13 +66,17 @@ onMounted(initOptions)
 
 const openSign = ref<boolean>(false)
 
-function onOptionClick(option: Option) {
-    if (option.to) router.push(option.to)
+async function onOptionClick(option: Option) {
+    if (option.to) await router.push(option.to)
     else if (option.action) {
         if (option.action === 'download') {
-            if (props.charter.pathTemplate) getFile(props.charter.pathTemplate)
+            if (props.charter.pathTemplate) {
+                await downloadCharter(props.charter.pathTemplate, props.charter.documentName)
+            }
         } else if (option.action === 'view') {
-            if (props.charter.pathFile) getFile(props.charter.pathFile)
+            if (props.charter.pathFile) {
+                await downloadCharter(props.charter.pathFile, props.charter.documentName)
+            }
         } else if (option.action === 'sign') {
             openSign.value = true
         }
