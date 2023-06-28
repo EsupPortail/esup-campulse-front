@@ -277,6 +277,9 @@
   &.variant-space-1 #header-title-icon {
     i.space-1-icon {
       display: inline;
+      position: relative;
+      top: -0.30rem;
+      left: -0.063rem;
     }
   }
 
@@ -285,7 +288,9 @@
 
     i.space-2-icon {
       display: inline;
-      color: $charteColorText;
+      position: relative;
+      top: -0.30rem;
+      left: -0.063rem;
     }
   }
 
@@ -295,6 +300,7 @@
     i.space-3-icon {
       display: inline;
       position: relative;
+      top: -0.30rem;
       left: -0.063rem;
     }
   }
@@ -304,6 +310,9 @@
 
     i.space-4-icon {
       display: inline;
+      position: relative;
+      top: -0.30rem;
+      left: -0.063rem;
     }
   }
 

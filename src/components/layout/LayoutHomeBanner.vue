@@ -8,7 +8,7 @@ defineProps({
 
 <template>
     <div class="container">
-        <section
+        <div
                 v-if="isDisplayed"
                 class=" flex-row"
         >
@@ -22,7 +22,7 @@ defineProps({
                 <h3><strong>{{ title }}</strong></h3>
                 <p>{{ description }}</p>
             </div>
-        </section>
+        </div>
     </div>
 </template>
 

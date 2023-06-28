@@ -35,7 +35,7 @@ async function onGetAssociationUsers() {
 </script>
 
 <template>
-    <div class="flex-column">
+    <section class="flex-column">
         <div class="display-row">
             <p class="row-title">{{ t('project.name') }}</p>
             <p>{{ projectBasicInfos.name }}</p>
@@ -61,15 +61,15 @@ async function onGetAssociationUsers() {
         </div>
 
         <div
-            v-if="projectBasicInfos.associationUser"
-            class="display-row"
+                v-if="projectBasicInfos.associationUser"
+                class="display-row"
         >
             <p class="row-title">{{ t('project.association-user') }}</p>
             <p>{{ projectAssociationUsersLabels.find(x => x.value === projectBasicInfos.associationUser)?.label }}</p>
         </div>
 
         <ProjectRecapCategories/>
-    </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>

@@ -56,6 +56,7 @@ async function onGetProjectDetail() {
 </script>
 
 <template>
+    <!-- General Section -->
     <div class="dashboard-section">
         <h2>
             <i
@@ -71,6 +72,7 @@ async function onGetProjectDetail() {
         </div>
     </div>
 
+    <!-- Commission Section -->
     <div class="dashboard-section">
         <h2>
             <i
@@ -85,6 +87,8 @@ async function onGetProjectDetail() {
             </div>
         </div>
     </div>
+
+    <!-- Budget Section -->
     <div class="dashboard-section">
         <h2>
             <i
@@ -99,6 +103,8 @@ async function onGetProjectDetail() {
             </div>
         </div>
     </div>
+
+    <!-- Goals Section -->
     <div class="dashboard-section">
         <h2>
             <i
@@ -113,6 +119,8 @@ async function onGetProjectDetail() {
             </div>
         </div>
     </div>
+
+    <!-- Documents Section -->
     <div class="dashboard-section">
         <h2>
             <i
@@ -131,6 +139,8 @@ async function onGetProjectDetail() {
             </div>
         </div>
     </div>
+
+    <!-- Status Section -->
     <div class="dashboard-section">
         <h2>
             <i
@@ -151,6 +161,8 @@ async function onGetProjectDetail() {
             </div>
         </div>
     </div>
+
+    <!-- Comment Section -->
     <div class="dashboard-section">
         <h2>
             <i
@@ -175,7 +187,7 @@ async function onGetProjectDetail() {
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 
-.flex-section {
+/*.flex-section {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -183,5 +195,5 @@ async function onGetProjectDetail() {
 
 .display-row {
   width: 100%;
-}
+}*/
 </style>

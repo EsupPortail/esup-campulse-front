@@ -72,49 +72,54 @@ async function onGetLibraryDocuments() {
 
 <template>
     <!-- Text -->
-    <section class="dashboard-section">
+    <div class="dashboard-section">
+        <h2>
+            <i class="bi bi-file-earmark"></i>
+            Documents
+        </h2>
         <div class="dashboard-section-container">
-            <section>
-                <p class="paragraph">Lorem ipsum</p>
-            </section>
-            <section v-if="!libraryDocuments.length">
-                <p class="paragraph">
-                    {{ isLoaded ? t('dashboard.no-document-in-template-library') : '' }}
-                </p>
-            </section>
+            <div class="container">
+                <div v-if="!libraryDocuments.length">
+                    <p class="paragraph">
+                        {{ isLoaded ? t('dashboard.no-document-in-template-library') : '' }}
+                    </p>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+
     <!-- Docs library -->
-    <section v-if="libraryDocuments.length">
-        <section class="dashboard-section">
+    <div v-if="libraryDocuments.length">
+        <div class="dashboard-section">
             <h2>
                 <i
-                    aria-hidden="true"
-                    class="bi bi-file-earmark"
+                        aria-hidden="true"
+                        class="bi bi-file-earmark"
                 ></i>
                 {{ t('documents.charters') }}
             </h2>
-            <div class="form-container">
-                <div class="form">
+            <div class="dashboard-section-container">
+                <div class="container">
                     <ListDocumentsLibrary :documents="libraryDocuments.filter(doc => doc.process !== 'NO_PROCESS')"/>
                 </div>
             </div>
-        </section>
-        <section class="dashboard-section">
+        </div>
+
+        <div class="dashboard-section">
             <h2>
                 <i
-                    aria-hidden="true"
-                    class="bi bi-file-earmark"
+                        aria-hidden="true"
+                        class="bi bi-file-earmark"
                 ></i>
                 {{ t('documents.other-documents') }}
             </h2>
-            <div class="form-container">
-                <div class="form">
+            <div class="dashboard-section-container">
+                <div class="container">
                     <ListDocumentsLibrary :documents="libraryDocuments.filter(doc => doc.process === 'NO_PROCESS')"/>
                 </div>
             </div>
-        </section>
-    </section>
+        </div>
+    </div>
 </template>
 
 <style lang="scss">

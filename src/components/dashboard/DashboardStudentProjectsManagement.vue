@@ -109,64 +109,64 @@ async function onGetProjects() {
             <div class="container-lg">
                 <QCard>
                     <QTabs
-                        v-model="tab"
-                        active-color="cape-color"
-                        align="justify"
-                        class="text-grey"
-                        dense
-                        indicator-color="cape-color"
+                            v-model="tab"
+                            active-color="cape-color"
+                            align="justify"
+                            class="text-grey"
+                            dense
+                            indicator-color="cape-color"
                     >
                         <QTab
-                            v-for="(tab, index) in tabs"
-                            :key="index"
-                            :label="tab.label"
-                            :name="tab.name"
+                                v-for="(tab, index) in tabs"
+                                :key="index"
+                                :label="tab.label"
+                                :name="tab.name"
                         />
                     </QTabs>
 
                     <QSeparator
-                        aria-hidden="true"
-                        role="presentation"
+                            aria-hidden="true"
+                            role="presentation"
                     />
 
                     <QTabPanels
-                        v-model="tab"
-                        animated
+                            v-model="tab"
+                            animated
                     >
                         <QTabPanel
-                            v-for="(tab, index) in tabs"
-                            :key="index"
-                            :name="tab.name"
-                            class="q-pa-none"
+                                v-for="(tab, index) in tabs"
+                                :key="index"
+                                :name="tab.name"
+                                class="q-pa-none"
                         >
                             <QSplitter
-                                v-model="splitterModel"
+                                    v-model="splitterModel"
                             >
                                 <template v-slot:before>
                                     <div v-if="tab.association">
                                         <div
-                                            v-if="associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
+                                                v-if="associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
                                         >
                                             <div
-                                                v-if="userStore.hasPresidentStatus(tab.association)"
-                                                class="btn-group"
+                                                    v-if="userStore.hasPresidentStatus(tab.association)"
+                                                    class="flex-row-center padding-top"
                                             >
                                                 <QBtn
-                                                    :disable="!associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
-                                                    :label="t('project.submit-new-project')"
-                                                    :to="{name: 'SubmitProjectAssociation', params: {associationId: tab.association}}"
-                                                    class="btn-lg"
-                                                    color="commission"
-                                                    icon="bi-plus-circle"
+                                                        :disable="!associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
+                                                        :label="t('project.submit-new-project')"
+                                                        :to="{name: 'SubmitProjectAssociation', params: {associationId: tab.association}}"
+                                                        class="btn-lg"
+                                                        color="commission"
+                                                        icon="bi-plus-circle"
                                                 />
                                             </div>
                                             <div
-                                                v-else
-                                                class="info-panel info-panel-warning"
+                                                    v-else
+                                                    class="info-panel info-panel-warning"
                                             >
                                                 <i
-                                                    aria-hidden="true"
-                                                    class="bi bi-exclamation-lg"
+                                                        aria-hidden="true"
+                                                        class="bi bi-exclamation-lg"
                                                 ></i>
                                                 <p>
                                                     {{ t('project.must-have-president-status') }}
@@ -174,12 +174,12 @@ async function onGetProjects() {
                                             </div>
                                         </div>
                                         <div
-                                            v-else
-                                            class="info-panel info-panel-warning"
+                                                v-else
+                                                class="info-panel info-panel-warning"
                                         >
                                             <i
-                                                aria-hidden="true"
-                                                class="bi bi-exclamation-lg"
+                                                    aria-hidden="true"
+                                                    class="bi bi-exclamation-lg"
                                             ></i>
                                             <p>
                                                 {{ t('project.cannot-submit-projects') }}
@@ -189,72 +189,72 @@ async function onGetProjects() {
                                     <div v-else>
                                         <div class="btn-group">
                                             <QBtn
-                                                :label="t('project.submit-new-project')"
-                                                :to="{name: 'SubmitProjectIndividual'}"
-                                                icon="bi-plus-circle"
+                                                    :label="t('project.submit-new-project')"
+                                                    :to="{name: 'SubmitProjectIndividual'}"
+                                                    icon="bi-plus-circle"
                                             />
                                         </div>
                                     </div>
 
                                     <QTabs
-                                        v-model="innerTab"
-                                        class="cape-color"
-                                        vertical
+                                            v-model="innerTab"
+                                            class="cape-color"
+                                            vertical
                                     >
                                         <QTab
-                                            :label="t('project.all-projects')"
-                                            icon="bi-folder"
-                                            name="allProjects"
+                                                :label="t('project.all-projects')"
+                                                icon="bi-folder"
+                                                name="allProjects"
                                         />
                                         <QTab
-                                            :label="t('project.validated-projects')"
-                                            icon="bi-folder-check"
-                                            name="validatedProjects"
+                                                :label="t('project.validated-projects')"
+                                                icon="bi-folder-check"
+                                                name="validatedProjects"
                                         />
                                         <QTab
-                                            :label="t('project.rejected-projects')"
-                                            icon="bi-folder-x"
-                                            name="rejectedProjects"
+                                                :label="t('project.rejected-projects')"
+                                                icon="bi-folder-x"
+                                                name="rejectedProjects"
                                         />
                                     </QTabs>
                                 </template>
 
                                 <template v-slot:after>
                                     <QTabPanels
-                                        v-model="innerTab"
-                                        animated
-                                        transition-next="slide-up"
-                                        transition-prev="slide-down"
+                                            v-model="innerTab"
+                                            animated
+                                            transition-next="slide-up"
+                                            transition-prev="slide-down"
                                     >
                                         <QTabPanel name="allProjects">
                                             <TableUserProjects
-                                                :association-id="tab.association"
-                                                :projects="tab.association ?
+                                                    :association-id="tab.association"
+                                                    :projects="tab.association ?
                                                     projectStore.projects.filter(project => project.association === tab.association) :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id)"
-                                                :title="t('project.all-projects')"
+                                                    :title="t('project.all-projects')"
                                             />
                                         </QTabPanel>
                                         <QTabPanel name="validatedProjects">
                                             <TableUserProjects
-                                                :association-id="tab.association"
-                                                :projects="tab.association ?
+                                                    :association-id="tab.association"
+                                                    :projects="tab.association ?
                                                     projectStore.projects.filter(project => project.association === tab.association
                                                         && project.projectStatus === 'PROJECT_REVIEW_VALIDATED') :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id
                                                         && project.projectStatus === 'PROJECT_REVIEW_VALIDATED')"
-                                                :title="t('project.validated-projects')"
+                                                    :title="t('project.validated-projects')"
                                             />
                                         </QTabPanel>
                                         <QTabPanel name="rejectedProjects">
                                             <TableUserProjects
-                                                :association-id="tab.association"
-                                                :projects="tab.association ?
+                                                    :association-id="tab.association"
+                                                    :projects="tab.association ?
                                                     projectStore.projects.filter(project => project.association === tab.association &&
                                                         (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED')) :
                                                     projectStore.projects.filter(project => project.user === userStore.user?.id &&
                                                         (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED'))"
-                                                :title="t('project.rejected-projects')"
+                                                    :title="t('project.rejected-projects')"
                                             />
                                         </QTabPanel>
                                     </QTabPanels>
@@ -274,23 +274,23 @@ async function onGetProjects() {
 @import "@/assets/styles/dashboard.scss";
 
 .text-cape-color {
-    color: $capeColor !important;
+  color: $capeColor !important;
 }
 
 .bg-cape-color {
-    background: $capeColorBackground !important;
+  background: $capeColorBackground !important;
 }
 
 .cape-color {
-    color: $capeColor;
+  color: $capeColor;
 }
 
 
 .info-panel {
-    margin: 0.5rem;
+  margin: 0.5rem;
 }
 
 .q-tab {
-    font-size: inherit;
+  font-size: inherit;
 }
 </style>

@@ -19,8 +19,8 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 
 <template>
     <QForm
-        class="flex-column"
-        @submit.prevent="emit('submitProject')"
+            class="flex-column"
+            @submit.prevent="emit('submitProject')"
     >
         <!--        <h3
                     v-if="props.view === 'submitProject'"
@@ -31,98 +31,98 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 
         <div class="flex-column">
             <!-- BASIC INFOS -->
-            <section class="flex-column">
-                <div class="flex-row-space-between">
-                    <h3>{{ t('project.general-infos') }}</h3>
-                    <QBtn
+            <div class="flex-row-space-between">
+                <h3>{{ t('project.general-infos') }}</h3>
+                <QBtn
                         v-if="props.view === 'submitProject'"
                         :label="t('modify')"
                         class="btn-lg"
                         color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 1)"
-                    />
-                </div>
-                <ProjectRecapBasicInfos/>
-            </section>
+                />
+            </div>
+            <ProjectRecapBasicInfos/>
 
             <!-- COMMISSION CHOICE -->
-            <section class="flex-column">
-                <div class="flex-row-space-between padding-top padding-bottom">
-                    <h3>{{ t('project.commission-choice') }}</h3>
-                    <QBtn
+            <div class="flex-row-space-between padding-top padding-bottom">
+                <h3>{{ t('project.commission-choice') }}</h3>
+                <QBtn
                         v-if="props.view === 'submitProject'"
                         :label="t('modify')"
                         class="btn-lg"
                         color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 2)"
-                    />
-                </div>
-                <ProjectRecapCommissions view="projectRecap"/>
-            </section>
+                />
+            </div>
+            <ProjectRecapCommissions view="projectRecap"/>
 
             <!-- BUDGET -->
-            <section class="recap-section">
-                <div class="recap-section-title">
-                    <h4 class="title-3">{{ t('project.budget') }}</h4>
-                    <QBtn
+            <div class="flex-row-space-between padding-top padding-bottom">
+                <h3>{{ t('project.budget') }}</h3>
+                <QBtn
                         v-if="props.view === 'submitProject'"
                         :label="t('modify')"
+                        class="btn-lg"
+                        color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 3)"
-                    />
-                </div>
-                <ProjectRecapBudget :load-data="false"/>
-            </section>
+                />
+            </div>
+            <ProjectRecapBudget :load-data="false"/>
 
             <!-- GOALS -->
-            <section class="recap-section">
-                <div class="recap-section-title">
-                    <h4 class="title-3">{{ t('project.goals') }}</h4>
-                    <QBtn
+            <div class="flex-row-space-between padding-top padding-bottom">
+                <h3>{{ t('project.goals') }}</h3>
+                <QBtn
                         v-if="props.view === 'submitProject'"
                         :label="t('modify')"
+                        class="btn-lg"
+                        color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 4)"
-                    />
-                </div>
-                <ProjectRecapGoals/>
-            </section>
+                />
+            </div>
+            <ProjectRecapGoals/>
 
             <!-- DOCUMENTS -->
-            <section class="recap-section">
-                <div class="recap-section-title">
-                    <h4 class="title-3">{{ t('project.documents') }}</h4>
-                    <QBtn
+            <div class="flex-row-space-between padding-top padding-bottom">
+                <h3>{{ t('project.documents') }}</h3>
+                <QBtn
                         v-if="props.view === 'submitProject'"
                         :label="t('modify')"
+                        class="btn-lg"
+                        color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 5)"
-                    />
-                </div>
+                />
+            </div>
 
-                <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
-                <ProjectRecapDocuments
+            <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
+            <ProjectRecapDocuments
                     :association-id="null"
                     process="project"
-                />
-            </section>
+            />
         </div>
 
         <div
-            v-if="props.view === 'submitProject'"
-            class="btn-group"
+                v-if="props.view === 'submitProject'"
+                class="dashboard-btn-group"
         >
             <QBtn
-                :label="t('back')"
-                icon="bi-chevron-left"
-                @click="emit('changeStep', 5)"
+                    :label="t('back')"
+                    class="btn-lg"
+                    color="commission"
+                    icon="bi-chevron-left"
+                    @click="emit('changeStep', 5)"
             />
             <QBtn
-                :label="t('project.submit')"
-                icon-right="bi-check2"
-                type="submit"
+                    :label="t('project.submit')"
+                    class="btn-lg"
+                    color="commission"
+                    icon-right="bi-check2"
+                    type="submit"
             />
         </div>
     </QForm>

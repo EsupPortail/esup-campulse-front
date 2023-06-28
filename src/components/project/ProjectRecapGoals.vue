@@ -7,34 +7,34 @@ const {t} = useI18n()
 </script>
 
 <template>
-    <section class="flex-section">
+    <section class="flex-column">
         <div class="display-row">
-            <p class="row-title">{{ t('project.goals-title') }}</p>
+            <h4>{{ t('project.goals-title') }}</h4>
             <p>{{ projectGoals.goals }}</p>
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.summary') }}</p>
+            <h4>{{ t('project.summary') }}</h4>
             <p>{{ projectGoals.summary }}</p>
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.planned-activities') }}</p>
+            <h4>{{ t('project.planned-activities') }}</h4>
             <p>{{ projectGoals.plannedActivities }}</p>
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.prevention-safety') }}</p>
+            <h4>{{ t('project.prevention-safety') }}</h4>
             <p>{{ projectGoals.preventionSafety }}</p>
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.marketing-campaign') }}</p>
+            <h4>{{ t('project.marketing-campaign') }}</h4>
             <p>{{ projectGoals.marketingCampaign }}</p>
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.sustainable-development') }}</p>
+            <h4>{{ t('project.sustainable-development') }}</h4>
             <p>{{ projectGoals.sustainableDevelopment }}</p>
         </div>
     </section>
@@ -44,14 +44,14 @@ const {t} = useI18n()
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 
-.display-row {
-    width: 100% !important;
+/*.display-row {
+  width: 100% !important;
 }
 
 .flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-}
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+}*/
 </style>

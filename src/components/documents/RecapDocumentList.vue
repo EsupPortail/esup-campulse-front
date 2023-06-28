@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import type {ProcessDocument} from '#/documents'
+import {DocumentProcessType} from '#/documents'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
-import {DocumentProcessType} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharters'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import {onMounted} from 'vue'
+
 const {createFileLink} = useDocumentUploads()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
@@ -81,17 +82,17 @@ onMounted(async () => await onGetDocuments())
 <template>
     <section class="flex-column padding-top padding-bottom">
         <div
-            v-for="(document, index) in processDocuments"
-            :key="index"
-            class="display-row"
+                v-for="(document, index) in processDocuments"
+                :key="index"
+                class="display-row"
         >
-            <p class="row-title">{{ document.description }}</p>
+            <h4>{{ document.description }}</h4>
             <p class="paragraph">
                 <ul role="list">
                     <li
-                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                        :key="uploadedDocument.id"
-                        @click="onGetFile(uploadedDocument)"
+                            v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                            :key="uploadedDocument.id"
+                            @click="onGetFile(uploadedDocument)"
                     >
                         {{ uploadedDocument.name }}
                     </li>
@@ -107,13 +108,13 @@ onMounted(async () => await onGetDocuments())
 @import "@/assets/_variables.scss";
 
 ul > li {
-    text-decoration: underline;
-    font-weight: 600;
-    cursor: pointer;
-    color: $capeColor;
+  text-decoration: underline;
+  font-weight: $semibold-weight;
+  cursor: pointer;
+  color: $capeColor;
 }
 
 ul, li {
-    padding-left: 0 !important;
+  padding-left: 0 !important;
 }
 </style>
