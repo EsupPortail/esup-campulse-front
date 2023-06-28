@@ -35,6 +35,8 @@ const {catchHTTPError} = useErrors()
 
 const associationStore = useAssociationStore()
 
+const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 const association = ref<EditedAssociation>({
     institution: null,
     institutionComponent: null,
@@ -190,7 +192,7 @@ async function onChangeLogo(action: string) {
                     :alt="altLogoText(association)"
                     :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? false : true) : true"
                     :ratio="1"
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? pathLogo.detail : noLogoSquare.default) : noLogoSquare.default"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (pathLogo.detail.indexOf('http') === -1 ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
                 />
             </div>
 
