@@ -79,6 +79,8 @@ onMounted(async () => {
     if (projectStore.project && projectStore.project?.projectStatus !== 'PROJECT_DRAFT') {
         await router.push({name: '404'})
     }
+    await onGetProjectCategories()
+    await onGetAssociationUsers()
     initApplicant()
     // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
     if (applicant.value === 'association') {
@@ -100,8 +102,6 @@ onMounted(async () => {
             initIsSite()
         } else await router.push({name: '404'})
     }
-    await onGetProjectCategories()
-    await onGetAssociationUsers()
     isLoaded.value = true
     loading.hide()
 })
