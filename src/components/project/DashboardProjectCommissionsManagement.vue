@@ -6,6 +6,7 @@ import {onMounted, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import CommissionExportCSV from '@/components/commissions/CommissionExportCSV.vue'
 
 const {catchHTTPError} = useErrors()
 const {
@@ -13,7 +14,6 @@ const {
     getCommissionFunds,
     getCommissionsForManagers,
     commissions,
-    getCommissionCSVExport
 } = useCommissions()
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -69,27 +69,6 @@ async function onGetCommissions() {
     }
 }
 
-async function onExportCSV(commission: Tab) {
-    loading.show()
-    try {
-        const file = await getCommissionCSVExport(commission.commission)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('commission.csv-name')}${encodeURI(commission.name)}.csv`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-    loading.hide()
-}
-
 </script>
 
 <template>
@@ -129,13 +108,10 @@ async function onExportCSV(commission: Tab) {
                     v-model="splitterModel"
                 >
                     <template v-slot:before>
-                        <div class="flex-row-center">
-                            <QBtn
-                                :label="t('commission.export-csv')"
-                                icon="bi-filetype-csv"
-                                @click="onExportCSV(tab)"
-                            />
-                        </div>
+                        <CommissionExportCSV
+                            :commission-id="tab.commission"
+                            :commission-name="tab.name"
+                        />
                         <QTabs
                             v-model="innerTab"
                             class="cape-color"

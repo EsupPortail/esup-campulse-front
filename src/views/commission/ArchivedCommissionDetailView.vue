@@ -8,6 +8,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import useCommissions from '@/composables/useCommissions'
 import useUtility from '@/composables/useUtility'
+import CommissionExportCSV from '@/components/commissions/CommissionExportCSV.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -17,6 +18,7 @@ const {dynamicTitle} = useUtility()
 const route = useRoute()
 
 const commissionId = ref<number>(parseInt(route.params.id as string))
+const commissionName = ref<string>('')
 
 onMounted(async () => {
     loading.show()
@@ -37,22 +39,27 @@ async function onGetCommission() {
     }
 }
 
-const initDynamicTitle = () => {
+const initCommissionName = () => {
     dynamicTitle.value = commission.value?.name
+    commissionName.value = commission.value?.name ?? ''
 }
-watch(() => commission.value, initDynamicTitle)
+watch(() => commission.value, initCommissionName)
 
 </script>
 
 
 <template>
     <section class="dashboard-section">
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <TableManagedProjects
                     :commission="commissionId"
                     :title="t('project.archived-projects')"
                     project-status="all"
+                />
+                <CommissionExportCSV
+                    :commission-id="commissionId"
+                    :commission-name="commissionName"
                 />
             </div>
         </div>
