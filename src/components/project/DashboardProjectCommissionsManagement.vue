@@ -6,13 +6,14 @@ import {onMounted, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import CommissionExportCSV from '@/components/commissions/CommissionExportCSV.vue'
 
 const {catchHTTPError} = useErrors()
 const {
     getFunds,
     getCommissionFunds,
     getCommissionsForManagers,
-    commissions
+    commissions,
 } = useCommissions()
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -26,12 +27,12 @@ watch(() => tab.value, () => {
 const innerTab = ref('allProjects')
 const splitterModel = ref(20)
 
-interface Tabs {
+interface Tab {
     name: string,
     commission: number
 }
 
-const tabs = ref<Tabs[]>([])
+const tabs = ref<Tab[]>([])
 
 const initTabs = () => {
     tabs.value = []
@@ -107,6 +108,10 @@ async function onGetCommissions() {
                     v-model="splitterModel"
                 >
                     <template v-slot:before>
+                        <CommissionExportCSV
+                            :commission-id="tab.commission"
+                            :commission-name="tab.name"
+                        />
                         <QTabs
                             v-model="innerTab"
                             class="cape-color"
