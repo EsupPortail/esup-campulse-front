@@ -12,7 +12,8 @@ const {
     getFunds,
     getCommissionFunds,
     getCommissionsForManagers,
-    commissions
+    commissions,
+    getCommissionCSVExport
 } = useCommissions()
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -26,12 +27,12 @@ watch(() => tab.value, () => {
 const innerTab = ref('allProjects')
 const splitterModel = ref(20)
 
-interface Tabs {
+interface Tab {
     name: string,
     commission: number
 }
 
-const tabs = ref<Tabs[]>([])
+const tabs = ref<Tab[]>([])
 
 const initTabs = () => {
     tabs.value = []
@@ -66,6 +67,27 @@ async function onGetCommissions() {
             })
         }
     }
+}
+
+async function onExportCSV(commission: Tab) {
+    loading.show()
+    try {
+        const file = await getCommissionCSVExport(commission.commission)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(new Blob([file]))
+        link.download = `${t('commission.csv-name')}${encodeURI(commission.name)}.csv`
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
 }
 
 </script>
@@ -107,6 +129,13 @@ async function onGetCommissions() {
                     v-model="splitterModel"
                 >
                     <template v-slot:before>
+                        <div class="flex-row-center">
+                            <QBtn
+                                :label="t('commission.export-csv')"
+                                icon="bi-filetype-csv"
+                                @click="onExportCSV(tab)"
+                            />
+                        </div>
                         <QTabs
                             v-model="innerTab"
                             class="cape-color"

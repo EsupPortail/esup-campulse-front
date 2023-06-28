@@ -127,10 +127,14 @@ export default function () {
 
     async function updateCommission(commission: UpdateCommission) {
         let dataToPatch = {}
-        if (commission.newName !== commission.oldName) dataToPatch = Object.assign(dataToPatch, {name: commission.newName})
-        if (commission.newCommissionDate !== commission.oldCommissionDate) dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.newCommissionDate})
-        if (commission.newSubmissionDate !== commission.oldSubmissionDate) dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.newSubmissionDate})
-        if (commission.newIsOpenToProjects !== commission.oldIsOpenToProjects) dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.newIsOpenToProjects})
+        if (commission.newName !== commission.oldName)
+            dataToPatch = Object.assign(dataToPatch, {name: commission.newName})
+        if (commission.newCommissionDate !== commission.oldCommissionDate)
+            dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.newCommissionDate})
+        if (commission.newSubmissionDate !== commission.oldSubmissionDate)
+            dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.newSubmissionDate})
+        if (commission.newIsOpenToProjects !== commission.oldIsOpenToProjects)
+            dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.newIsOpenToProjects})
         if (Object.entries(dataToPatch).length) {
             await axiosAuthenticated.patch(`/commissions/${commission.id}`, dataToPatch)
         }
@@ -154,6 +158,11 @@ export default function () {
         await axiosAuthenticated.delete(`/commissions/${id}`)
     }
 
+    async function getCommissionCSVExport(id: number) {
+        const url = `/commissions/${id}/csv_export`
+        return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
+    }
+
     return {
         funds,
         fundsLabels,
@@ -175,6 +184,7 @@ export default function () {
         getAllCommissions,
         getCommission,
         commission,
-        getNextCommission
+        getNextCommission,
+        getCommissionCSVExport
     }
 }
