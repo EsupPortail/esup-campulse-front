@@ -465,7 +465,7 @@ async function onChangeLogo(action: string) {
 
         <!-- Btns -->
         <div class="dashboard-btn-group">
-            <div class="flex-column padding-bottom">
+            <div class="flex-column padding-top padding-bottom">
                 <QBtn
                         :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
                         :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"

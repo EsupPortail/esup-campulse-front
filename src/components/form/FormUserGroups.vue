@@ -94,24 +94,23 @@ function onInitGroupLabels() {
 </script>
 
 <template>
-    <fieldset>
-        <QField
+    <QField
             v-if="groups"
             :error="!groupChoiceIsValid"
             :error-message="t('forms.required-status')"
             borderless
             color="base"
-        >
-            <QOptionGroup
+    >
+        <QOptionGroup
                 v-model="newGroups"
                 :aria-label="t('forms.group-role')"
                 :options="groupLabels"
                 color="dashboard"
                 type="checkbox"
                 @update:model-value="initGroupPermToJoinAssociation(newGroups)"
-            />
-        </QField>
-        <QSelect
+        />
+    </QField>
+    <QSelect
             v-if="commissionMemberIsSelected"
             v-model="userFunds"
             :label="t('commissions')"
@@ -124,8 +123,7 @@ function onInitGroupLabels() {
             multiple
             style="width: 250px"
             use-chips
-        />
-    </fieldset>
+    />
 </template>
 
 <style lang="scss" scoped>

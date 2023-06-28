@@ -9,7 +9,6 @@
     h1 {
       text-transform: none;
       font-size: 2rem;
-      font-weight: $thin-weight;
     }
 
     .q-icon {
@@ -33,68 +32,47 @@
 
   .login-links {
     text-align: center;
-    margin-top: 2.5rem;
 
     a {
       display: inline-block;
       margin-bottom: 0.625rem;
-      font-weight: $normal-weight;
       color: $annuaireColor;
     }
   }
 
   .card-content {
-    font-weight: 400;
     color: $textColor2;
     margin-bottom: 1.563rem;
 
     .card-title {
       font-size: 2rem;
       display: block;
-      font-weight: 400;
       color: $annuaireColor;
     }
   }
 
-  @media screen and (min-width: $responsiveWidth) {
-    .form-container {
-      display: block;
-    }
+  /*  @media screen and (min-width: $responsiveWidth) {
+      .login-intro-text {
+        max-width: 50rem;
+        margin: 2rem auto;
+      }
 
-    .login-intro-text {
-      max-width: 50rem;
-      margin: 2rem auto;
-    }
-
-  }
+    }*/
 
   .q-checkbox {
-    margin: -0.5rem;
+    margin: 0 0.5rem 0;
   }
 
-  .btn-group {
-    width: 90%;
-    margin: 1rem auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
 
-    @media screen and (min-width: $responsiveWidth) {
-      flex-direction: row;
+  /*  .q-form {
+      margin-left: 0.09rem;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
-    }
-  }
 
-
-  .q-form {
-    margin-left: 0.09rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .q-field {
-      margin-left: 0;
-    }
-  }
+      .q-field {
+        margin-left: 0;
+      }
+    }*/
 }
 
