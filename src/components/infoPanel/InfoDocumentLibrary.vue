@@ -3,9 +3,6 @@ import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
 
-const props = defineProps<{
-    color: 'dashboard' | 'charter'
-}>()
 </script>
 
 <template>
@@ -17,12 +14,12 @@ const props = defineProps<{
         <p>
             {{ t('dashboard.template-document-library-info-message') }}
         </p>
-        <div class="btn-group">
+        <div class="flex-row-center">
             <QBtn
-                :color="props.color"
                 :label="t('dashboard.template-document-library')"
                 :to="{name: 'DocumentsLibrary'}"
                 class="btn-lg"
+                color="base"
                 outline
             />
         </div>

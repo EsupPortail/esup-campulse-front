@@ -90,13 +90,15 @@ async function onOptionClick(option: Option) {
         <QBtnDropdown
             v-if="options.length"
             :label="t('manage')"
-            class="cape-color"
+            class="text-charter"
+            outline
         >
             <QList>
                 <QItem
                     v-for="(option, index) in options"
                     :key="index"
                     v-close-popup
+                    class="text-charter"
                     clickable
                     @click="onOptionClick(option)"
                 >
