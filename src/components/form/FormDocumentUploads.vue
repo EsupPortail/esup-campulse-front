@@ -6,7 +6,7 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import type {DocumentProcessType, ProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
 
 const {
@@ -35,8 +35,21 @@ const props = defineProps<{
 const MAX_FILES = 10
 const MAX_FILE_SIZE = 8388608
 
+// COLOR
+const fieldColor = ref<string>('')
+
+// INIT FIELD COLOR
+const initFieldColor = () => {
+    let color = ''
+    if (props.process === 'project' || props.process === 'review') color = 'commission'
+    else if (props.process === 'charter') color = 'charter'
+    else color = 'dashboard'
+    fieldColor.value = color
+}
+
 onMounted(async () => {
     await onGetDocuments()
+    initFieldColor()
 })
 
 // GET PROJECT DOCUMENTS
@@ -135,7 +148,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 v-model="document.pathFile"
                 :accept="document.mimeTypes?.join(', ')"
                 :aria-required="document.isRequiredInProcess"
-                :color="props.process === 'charter' ? 'charter' : 'commission'"
+                :color="fieldColor"
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
                 :hint="props.process === 'registration' ? t('forms.student-certificate-hint')

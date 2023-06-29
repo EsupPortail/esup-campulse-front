@@ -10,7 +10,8 @@
   }
 
   #footer-logos {
-    border-bottom: 0.6rem solid;
+    background-color: $annuaireColorBackground;
+    border-bottom: 0.6rem solid $annuaireColor;
     padding: 2rem 0;
 
     .wrapper {

@@ -95,34 +95,34 @@ function onInitGroupLabels() {
 
 <template>
     <QField
-            v-if="groups"
-            :error="!groupChoiceIsValid"
-            :error-message="t('forms.required-status')"
-            borderless
-            color="base"
+        v-if="groups"
+        :error="!groupChoiceIsValid"
+        :error-message="t('forms.required-status')"
+        borderless
+        color="base"
     >
         <QOptionGroup
-                v-model="newGroups"
-                :aria-label="t('forms.group-role')"
-                :options="groupLabels"
-                color="dashboard"
-                type="checkbox"
-                @update:model-value="initGroupPermToJoinAssociation(newGroups)"
+            v-model="newGroups"
+            :aria-label="t('forms.group-role')"
+            :options="groupLabels"
+            color="dashboard"
+            type="checkbox"
+            @update:model-value="initGroupPermToJoinAssociation(newGroups)"
         />
     </QField>
     <QSelect
-            v-if="commissionMemberIsSelected"
-            v-model="userFunds"
-            :label="t('commissions')"
-            :options="fundsLabels"
-            :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
-            color="dashboard"
-            emit-value
-            filled
-            map-options
-            multiple
-            style="width: 250px"
-            use-chips
+        v-if="commissionMemberIsSelected"
+        v-model="userFunds"
+        :label="t('commissions')"
+        :options="fundsLabels"
+        :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
+        color="dashboard"
+        emit-value
+        filled
+        map-options
+        multiple
+        style="width: 250px"
+        use-chips
     />
 </template>
 
