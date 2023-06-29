@@ -65,7 +65,6 @@ watch(() => contentStore.about.length, () => {
                 </div>
             </div>
         </div>
-
     </section>
 </template>
 

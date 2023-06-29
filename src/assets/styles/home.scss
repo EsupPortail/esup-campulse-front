@@ -10,10 +10,7 @@
     height: 2.2rem;
     border-radius: $radiusCircle;
     border: solid $annuaireColor 0.200rem;
-    //background-color: transparent;
-    //top: calc(50% - 54px);
     position: relative;
-    //left: 0;
 
     i {
       color: $annuaireColor;
@@ -50,14 +47,6 @@
     @media screen and (min-width: $responsiveWidth) {
       width: 2.2rem;
     }
-    /*
-        &.variant-minimal {
-          top: calc(50% - 1.688rem);
-
-          &::before, &::after {
-            display: none;
-          }
-        }*/
   }
 
 }
@@ -143,7 +132,6 @@
       position: absolute;
       top: calc(50% - 25rem);
       left: 0;
-      //z-index: 0;
 
       span {
         width: 0;
@@ -153,7 +141,6 @@
         border-color: transparent transparent transparent $annuaireColorBackground;
         position: absolute;
         right: -6rem;
-        //top: 0;
       }
     }
 
@@ -161,10 +148,6 @@
       flex: 0 0 26.25rem;
       position: relative;
       z-index: 2;
-
-      /*      h2 {
-              line-height: 1rem;
-            }*/
 
       h2 > span:first-child {
         display: flex;
@@ -174,7 +157,6 @@
         font-weight: $semibold-weight;
         color: $annuaireColorText;
         text-transform: uppercase;
-        //line-height: 3.875rem;
       }
 
       .section-icon {
@@ -207,11 +189,6 @@
         }
       }
     }
-
-    /*    // Title on about's page (Services part)
-        .services-title {
-          flex: 0;
-        }*/
 
     .section-info {
       font-weight: $normal-weight;
@@ -248,7 +225,6 @@
           padding: 1rem;
           font-weight: $normal-weight;
           color: $annuaireColorText;
-          //border-radius: 0;
           border: .0625rem solid $annuaireColorText;
           background-color: transparent;
           text-decoration: none;
@@ -465,8 +441,6 @@
 
     @media screen and (min-width: $responsiveWidth) {
       flex-direction: row;
-      //justify-content: center;
-      //align-items: normal;
       gap: 1rem;
 
       .service-card {

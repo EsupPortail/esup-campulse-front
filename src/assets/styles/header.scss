@@ -20,15 +20,10 @@
     width: $fullSize;
     height: $fullSize;
     position: absolute;
-    //top: 0;
-    //left: 0;
     background: linear-gradient(180deg, rgba(9, 22, 40, 0.25) 0%, rgba(0, 0, 0, 0.3)); //$fullSize
   }
 
   .q-toolbar {
-    /*    margin: auto;
-        padding-left: 0 $responsiveMargin auto;*/
-
     h1 {
       overflow: visible;
 
@@ -41,19 +36,8 @@
         position: relative;
         z-index: 2;
         font-size: 3rem;
-
-        /*        &:focus-visible {
-                  outline: 2px solid $outlineColor1;
-                  outline-offset: 2px;
-                }*/
       }
     }
-
-    /*    @media only screen and (max-width: $responsiveWidth) {
-          align-items: flex-start;
-          min-height: 8rem;
-          position: static;
-        }*/
   }
 
   .q-layout__shadow {
@@ -114,16 +98,6 @@
       &.space-3::after {
         border-color: $capeColor;
       }
-
-      /*      @media only screen and (max-width: $responsiveWidth) {
-              padding-right: 0.625rem;
-              padding-left: 0.625rem;
-
-              &::after {
-                width: calc($fullSize - 1.25rem);
-                left: 0.625rem;
-              }
-            }*/
     }
 
     @media only screen and (max-width: $responsiveWidth) {
@@ -428,8 +402,6 @@
       text-align: center;
       padding: 0.300rem;
       display: block;
-      //min-height: unset;
-      //line-height: normal;
 
       .q-item__section {
         display: block;

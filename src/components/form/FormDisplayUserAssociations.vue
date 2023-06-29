@@ -50,9 +50,9 @@ async function onGetUserAssociations() {
         }}
     </p>
     <QCard
-            v-for="association in userAssociations"
-            :key="association.id ? association.id : 0"
-            class="association-card"
+        v-for="association in userAssociations"
+        :key="association.id ? association.id : 0"
+        class="association-card"
     >
         <QCardSection>
             <div id="association-card">
@@ -78,19 +78,19 @@ async function onGetUserAssociations() {
                 </ul>
                 <div class="flex-row padding-top padding-bottom">
                     <AlertConfirmUserQuitAssociation
-                            :association-id="association.id ? association.id : 0"
-                            :edited-by-staff="false"
-                            :user-id="userStore.user?.id ? userStore.user?.id : 0"
-                            @user-association-deleted="onGetUserAssociations"
+                        :association-id="association.id ? association.id : 0"
+                        :edited-by-staff="false"
+                        :user-id="userStore.user?.id ? userStore.user?.id : 0"
+                        @user-association-deleted="onGetUserAssociations"
                     />
                     <QBtn
-                            v-if="association.isValidatedByAdmin && association.id !== null && userStore.hasPresidentStatus(association.id)"
-                            :label="t('dashboard.association-user.manage-association')"
-                            :to="{name: 'AssociationDashboard', params: {id: association.id}}"
-                            class="btn-lg"
-                            color="dashboard"
-                            icon="bi-pencil"
-                            outline
+                        v-if="association.isValidatedByAdmin && association.id !== null && userStore.hasPresidentStatus(association.id)"
+                        :label="t('dashboard.association-user.manage-association')"
+                        :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-pencil"
+                        outline
                     />
                 </div>
             </div>

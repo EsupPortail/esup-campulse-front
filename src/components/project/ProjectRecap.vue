@@ -19,8 +19,8 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 
 <template>
     <QForm
-            class="flex-column"
-            @submit.prevent="emit('submitProject')"
+        class="flex-column"
+        @submit.prevent="emit('submitProject')"
     >
         <!--        <h3
                     v-if="props.view === 'submitProject'"
@@ -34,12 +34,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <div class="flex-row-space-between">
                 <h3>{{ t('project.general-infos') }}</h3>
                 <QBtn
-                        v-if="props.view === 'submitProject'"
-                        :label="t('modify')"
-                        class="btn-lg"
-                        color="commission"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 1)"
+                    v-if="props.view === 'submitProject'"
+                    :label="t('modify')"
+                    class="btn-lg"
+                    color="commission"
+                    icon="bi-pencil"
+                    @click="emit('changeStep', 1)"
                 />
             </div>
             <ProjectRecapBasicInfos/>
@@ -48,12 +48,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <div class="flex-row-space-between padding-top padding-bottom">
                 <h3>{{ t('project.commission-choice') }}</h3>
                 <QBtn
-                        v-if="props.view === 'submitProject'"
-                        :label="t('modify')"
-                        class="btn-lg"
-                        color="commission"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 2)"
+                    v-if="props.view === 'submitProject'"
+                    :label="t('modify')"
+                    class="btn-lg"
+                    color="commission"
+                    icon="bi-pencil"
+                    @click="emit('changeStep', 2)"
                 />
             </div>
             <ProjectRecapCommissions view="projectRecap"/>
@@ -62,12 +62,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <div class="flex-row-space-between padding-top padding-bottom">
                 <h3>{{ t('project.budget') }}</h3>
                 <QBtn
-                        v-if="props.view === 'submitProject'"
-                        :label="t('modify')"
-                        class="btn-lg"
-                        color="commission"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 3)"
+                    v-if="props.view === 'submitProject'"
+                    :label="t('modify')"
+                    class="btn-lg"
+                    color="commission"
+                    icon="bi-pencil"
+                    @click="emit('changeStep', 3)"
                 />
             </div>
             <ProjectRecapBudget :load-data="false"/>
@@ -76,12 +76,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <div class="flex-row-space-between padding-top padding-bottom">
                 <h3>{{ t('project.goals') }}</h3>
                 <QBtn
-                        v-if="props.view === 'submitProject'"
-                        :label="t('modify')"
-                        class="btn-lg"
-                        color="commission"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 4)"
+                    v-if="props.view === 'submitProject'"
+                    :label="t('modify')"
+                    class="btn-lg"
+                    color="commission"
+                    icon="bi-pencil"
+                    @click="emit('changeStep', 4)"
                 />
             </div>
             <ProjectRecapGoals/>
@@ -90,39 +90,39 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <div class="flex-row-space-between padding-top padding-bottom">
                 <h3>{{ t('project.documents') }}</h3>
                 <QBtn
-                        v-if="props.view === 'submitProject'"
-                        :label="t('modify')"
-                        class="btn-lg"
-                        color="commission"
-                        icon="bi-pencil"
-                        @click="emit('changeStep', 5)"
+                    v-if="props.view === 'submitProject'"
+                    :label="t('modify')"
+                    class="btn-lg"
+                    color="commission"
+                    icon="bi-pencil"
+                    @click="emit('changeStep', 5)"
                 />
             </div>
 
             <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
             <ProjectRecapDocuments
-                    :association-id="null"
-                    process="project"
+                :association-id="null"
+                process="project"
             />
         </div>
 
         <div
-                v-if="props.view === 'submitProject'"
-                class="dashboard-btn-group"
+            v-if="props.view === 'submitProject'"
+            class="dashboard-btn-group"
         >
             <QBtn
-                    :label="t('back')"
-                    class="btn-lg"
-                    color="commission"
-                    icon="bi-chevron-left"
-                    @click="emit('changeStep', 5)"
+                :label="t('back')"
+                class="btn-lg"
+                color="commission"
+                icon="bi-chevron-left"
+                @click="emit('changeStep', 5)"
             />
             <QBtn
-                    :label="t('project.submit')"
-                    class="btn-lg"
-                    color="commission"
-                    icon-right="bi-check2"
-                    type="submit"
+                :label="t('project.submit')"
+                class="btn-lg"
+                color="commission"
+                icon-right="bi-check2"
+                type="submit"
             />
         </div>
     </QForm>

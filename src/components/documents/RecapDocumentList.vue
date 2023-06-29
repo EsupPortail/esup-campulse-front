@@ -82,17 +82,17 @@ onMounted(async () => await onGetDocuments())
 <template>
     <section class="flex-column padding-top padding-bottom">
         <div
-                v-for="(document, index) in processDocuments"
-                :key="index"
-                class="display-row"
+            v-for="(document, index) in processDocuments"
+            :key="index"
+            class="display-row"
         >
             <h4>{{ document.description }}</h4>
             <p class="paragraph">
                 <ul role="list">
                     <li
-                            v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                            :key="uploadedDocument.id"
-                            @click="onGetFile(uploadedDocument)"
+                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                        :key="uploadedDocument.id"
+                        @click="onGetFile(uploadedDocument)"
                     >
                         {{ uploadedDocument.name }}
                     </li>

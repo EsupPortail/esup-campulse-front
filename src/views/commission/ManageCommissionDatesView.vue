@@ -174,17 +174,17 @@ const onClearValues = () => {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-calendar-check"
+                aria-hidden="true"
+                class="bi bi-calendar-check"
             ></i>
             {{ t('commission.ongoing-or-to-come') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
                 <div
-                        v-for="commission in updateCommissions"
-                        :key="commission.id"
-                        class="document-input-group"
+                    v-for="commission in updateCommissions"
+                    :key="commission.id"
+                    class="document-input-group"
                 >
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
@@ -194,15 +194,15 @@ const onClearValues = () => {
 
                             <p class="form-state form-state-cape">
                                 <span
-                                        :aria-label="t(`commission.is-${commission.oldIsOpenToProjects ? 'open' : 'closed'}-to-projects`)"
-                                        :class="`form-state-icon form-state-${commission.oldIsOpenToProjects ? 'green' : 'red'}`"
+                                    :aria-label="t(`commission.is-${commission.oldIsOpenToProjects ? 'open' : 'closed'}-to-projects`)"
+                                    :class="`form-state-icon form-state-${commission.oldIsOpenToProjects ? 'green' : 'red'}`"
                                 ><i :class="`bi bi-${commission.oldIsOpenToProjects ? 'check' : 'x'}`"></i></span>
                             </p>
 
                             <button @click.prevent="commission.open = !commission.open">
                                 <i
-                                        :class="`bi bi-${commission.open ? 'x' : 'pencil'}`"
-                                        aria-hidden="true"
+                                    :class="`bi bi-${commission.open ? 'x' : 'pencil'}`"
+                                    aria-hidden="true"
                                 ></i>
                             </button>
                         </div>
@@ -211,70 +211,66 @@ const onClearValues = () => {
                     <div v-if="commission.open">
                         <QForm>
                             <QInput
-                                    v-model="commission.newName"
-                                    :label="t('commission.name')"
-                                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                                    clearable
-                                    color="commission"
-                                    filled
-                                    lazy-rules
+                                v-model="commission.newName"
+                                :label="t('commission.name')"
+                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                clearable
+                                color="commission"
+                                filled
+                                lazy-rules
                             />
                             <QInput
-                                    v-model="commission.newCommissionDate"
-                                    :label="t('commission.date')"
-                                    :rules="[
+                                v-model="commission.newCommissionDate"
+                                :label="t('commission.date')"
+                                :rules="[
                                     val => val && val.length > 0 || t('forms.fill-field'),
                                     val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
-                                    clearable
-                                    color="commission"
-                                    filled
-                                    reactive-rules
-                                    type="date"
-                                    @update:model-value="() => commission.datesAreLegal =
+                                clearable
+                                color="commission"
+                                filled
+                                reactive-rules
+                                type="date"
+                                @update:model-value="() => commission.datesAreLegal =
                                     fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
                             <QInput
-                                    v-model="commission.newSubmissionDate"
-                                    :label="t('commission.submission')"
-                                    :rules="[
+                                v-model="commission.newSubmissionDate"
+                                :label="t('commission.submission')"
+                                :rules="[
                                     val => val && val.length > 0 || t('forms.fill-field'),
                                     val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
-                                    clearable
-                                    color="commission"
-                                    filled
-                                    reactive-rules
-                                    type="date"
-                                    @update:model-value="() => commission.datesAreLegal =
+                                clearable
+                                color="commission"
+                                filled
+                                reactive-rules
+                                type="date"
+                                @update:model-value="() => commission.datesAreLegal =
                                     fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
-
                             />
                             <QSelect
-                                    v-model="commission.newFunds"
-                                    :label="t('commission.funds')"
-                                    :options="fundsLabels"
-                                    :rules="[val => val || t('forms.fill-field')]"
-                                    clearable
-                                    color="commission"
-                                    emit-value
-                                    filled
-                                    map-options
-                                    multiple
-                                    use-chips
-
+                                v-model="commission.newFunds"
+                                :label="t('commission.funds')"
+                                :options="fundsLabels"
+                                :rules="[val => val || t('forms.fill-field')]"
+                                clearable
+                                color="commission"
+                                emit-value
+                                filled
+                                map-options
+                                multiple
+                                use-chips
                             />
                             <QToggle
-                                    v-model="commission.newIsOpenToProjects"
-                                    :label="t('commission.is-open-to-projects')"
-                                    color="commission"
-
+                                v-model="commission.newIsOpenToProjects"
+                                :label="t('commission.is-open-to-projects')"
+                                color="commission"
                             />
                             <AlertConfirmCommissionDateUpdateOrDelete
-                                    :commission="commission"
-                                    @update-commission-date="onUpdateCommission(commission)"
-                                    @delete-commission-date="onDeleteCommission(commission.id)"
-
+                                :commission="commission"
+                                @update-commission-date="onUpdateCommission(commission)"
+                                @delete-commission-date="onDeleteCommission(commission.id)"
                             />
                         </QForm>
                     </div>
@@ -286,83 +282,83 @@ const onClearValues = () => {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-calendar-plus"
+                aria-hidden="true"
+                class="bi bi-calendar-plus"
             ></i>
             {{ t('commission.add-new-date') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
                 <QForm
-                        ref="newCommissionForm"
-                        @reset="onClearValues"
-                        @submit.prevent="onAddNewCommission"
+                    ref="newCommissionForm"
+                    @reset="onClearValues"
+                    @submit.prevent="onAddNewCommission"
                 >
                     <QInput
-                            v-model="newCommission.name"
-                            :label="t('commission.name')"
-                            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                            clearable
-                            color="commission"
-                            filled
-                            lazy-rules
+                        v-model="newCommission.name"
+                        :label="t('commission.name')"
+                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                        clearable
+                        color="commission"
+                        filled
+                        lazy-rules
                     />
                     <QInput
-                            v-model="newCommission.commissionDate"
-                            :label="t('commission.date')"
-                            :rules="[
+                        v-model="newCommission.commissionDate"
+                        :label="t('commission.date')"
+                        :rules="[
                             val => val && val.length > 0 || t('forms.fill-field'),
                             val => val && newCommission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                         ]"
-                            clearable
-                            color="commission"
-                            filled
-                            reactive-rules
-                            type="date"
-                            @update:model-value="() => newCommission.datesAreLegal =
+                        clearable
+                        color="commission"
+                        filled
+                        reactive-rules
+                        type="date"
+                        @update:model-value="() => newCommission.datesAreLegal =
                             fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />
                     <QInput
-                            v-model="newCommission.submissionDate"
-                            :label="t('commission.submission')"
-                            :rules="[
+                        v-model="newCommission.submissionDate"
+                        :label="t('commission.submission')"
+                        :rules="[
                             val => val && val.length > 0 || t('forms.fill-field'),
                             val => val && newCommission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                         ]"
-                            clearable
-                            color="commission"
-                            filled
-                            reactive-rules
-                            type="date"
-                            @update:model-value="() => newCommission.datesAreLegal =
+                        clearable
+                        color="commission"
+                        filled
+                        reactive-rules
+                        type="date"
+                        @update:model-value="() => newCommission.datesAreLegal =
                             fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />
                     <QSelect
-                            v-model="newCommission.funds"
-                            :label="t('commission.funds')"
-                            :options="fundsLabels"
-                            :rules="[val => val || t('forms.fill-field')]"
-                            clearable
-                            color="commission"
-                            emit-value
-                            filled
-                            map-options
-                            multiple
-                            use-chips
+                        v-model="newCommission.funds"
+                        :label="t('commission.funds')"
+                        :options="fundsLabels"
+                        :rules="[val => val || t('forms.fill-field')]"
+                        clearable
+                        color="commission"
+                        emit-value
+                        filled
+                        map-options
+                        multiple
+                        use-chips
                     />
                     <QToggle
-                            v-model="newCommission.isOpenToProjects"
-                            :label="t('commission.is-open-to-projects')"
-                            color="commission"
+                        v-model="newCommission.isOpenToProjects"
+                        :label="t('commission.is-open-to-projects')"
+                        color="commission"
                     />
                     <div class="flex-btn">
                         <QBtn
-                                :disable="!newCommission.datesAreLegal || !newCommission.funds.length || !newCommission.name"
-                                :label="t('add')"
-                                class="btn-lg"
-                                color="commission"
-                                icon="bi-plus-circle"
-                                type="submit"
+                            :disable="!newCommission.datesAreLegal || !newCommission.funds.length || !newCommission.name"
+                            :label="t('add')"
+                            class="btn-lg"
+                            color="commission"
+                            icon="bi-plus-circle"
+                            type="submit"
                         />
                     </div>
                 </QForm>

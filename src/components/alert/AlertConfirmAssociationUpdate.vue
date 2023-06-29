@@ -44,16 +44,16 @@ async function onValidateChanges() {
 
 <template>
     <QBtn
-            :label="t('association.validate-all-changes')"
-            class="btn-lg"
-            color="dashboard"
-            icon="bi-check-lg"
-            @click="confirmation = true"
+        :label="t('association.validate-all-changes')"
+        class="btn-lg"
+        color="dashboard"
+        icon="bi-check-lg"
+        @click="confirmation = true"
     />
 
     <QDialog
-            v-model="confirmation"
-            persistent
+        v-model="confirmation"
+        persistent
     >
         <QCard>
             <QCardSection class="row items-center">
@@ -63,19 +63,19 @@ async function onValidateChanges() {
             <QCardActions align="right">
                 <div class="flex-row">
                     <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            class="btn-lg"
-                            color="dashboard"
-                            icon="bi-x-lg"
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
                     />
                     <QBtn
-                            v-close-popup
-                            :label="t('association.validate-all-changes')"
-                            class="btn-lg"
-                            color="dashboard"
-                            icon="bi-check-lg"
-                            @click="onValidateChanges"
+                        v-close-popup
+                        :label="t('association.validate-all-changes')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-check-lg"
+                        @click="onValidateChanges"
                     />
                 </div>
             </QCardActions>

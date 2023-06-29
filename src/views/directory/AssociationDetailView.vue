@@ -61,10 +61,9 @@ async function onGetAssociationDetail() {
                     />
                 </div>
                 <div class="association-name">
-                    <!--<h2>{{ association?.name }}</h2>-->
                     <p
                         v-if="association?.acronym"
-                        class="acronym"
+                        class="flex-row-center"
                     >
                         {{ association?.acronym }}
                     </p>
@@ -209,7 +208,6 @@ async function onGetAssociationDetail() {
                     <div class="container flex-column">
                         <div
                             v-if="association?.address"
-                            class="display-row"
                         >
                             <h3>{{ t('association.labels.address') }}</h3>
                             <p>

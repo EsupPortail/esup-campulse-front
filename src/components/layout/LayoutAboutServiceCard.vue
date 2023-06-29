@@ -14,7 +14,10 @@ defineProps({
     <section :class="['services-section', 'home-section', cssClass]">
         <div :class="['section-card', 'service-card']">
             <div>
-                <div aria-hidden="true" class="card-icon">
+                <div
+                    aria-hidden="true"
+                    class="card-icon"
+                >
                     <i class="bi bi-filter-circle"></i>
                 </div>
 

@@ -19,19 +19,19 @@ const userStore = useUserStore()
 
                 <div class="flex-row-center padding-top padding-bottom">
                     <QBtn
-                            :label="t('back-to-home')"
-                            :to="{name: 'Home'}"
-                            class="btn-lg"
-                            color="association"
-                            icon="bi-house"
+                        :label="t('back-to-home')"
+                        :to="{name: 'Home'}"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-house"
                     />
                     <QBtn
-                            v-if="userStore.isAuth"
-                            :label="t('back-to-dashboard')"
-                            :to="{name: 'Dashboard'}"
-                            class="btn-lg"
-                            color="association"
-                            icon="bi-person-circle"
+                        v-if="userStore.isAuth"
+                        :label="t('back-to-dashboard')"
+                        :to="{name: 'Dashboard'}"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-person-circle"
                     />
                 </div>
             </div>
