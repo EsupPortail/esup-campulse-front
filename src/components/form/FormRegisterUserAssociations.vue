@@ -119,7 +119,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                             v-model="association.role"
                             :options="association.options"
                             aria-label="t('forms.association-role')"
-                            color="secondary"
+                            color="dashboard"
                             inline
                             role="radiogroup"
                             @update:model-value="updateRegisterRoleInAssociation"
