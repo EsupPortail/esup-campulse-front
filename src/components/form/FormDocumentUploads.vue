@@ -17,7 +17,8 @@ const {
     initProjectDocumentUploads,
     initProcessDocuments,
     getDocuments,
-    initCharterDocumentUploads
+    initCharterDocumentUploads,
+    getStudentCertificate
 } = useDocumentUploads()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -26,7 +27,7 @@ const {getCharterDocuments} = useCharters()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
-    process: 'project' | 'review' | 'charter',
+    process: 'project' | 'review' | 'charter' | 'registration',
     associationId: number | null
 }>()
 
@@ -42,12 +43,23 @@ onMounted(async () => {
 async function onGetDocuments() {
     loading.show()
     try {
+        // Get documents for project, review and charter processes
         let processes: DocumentProcessType[] = []
+
         if (props.process === 'project') processes = ['DOCUMENT_PROJECT']
         else if (props.process === 'review') processes = ['DOCUMENT_PROJECT_REVIEW']
         else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
-        await getDocuments(processes)
+
+        // Get documents by processes
+        if (processes.length) await getDocuments(processes)
+
+        // Get only one specific document for registration
+        if (props.process === 'registration') await getStudentCertificate()
+
+        // Init documents for form
         initProcessDocuments()
+
+        // Get uploaded documents for projet, review, charter
         if (props.process === 'project' || props.process === 'review') {
             await projectStore.getProjectDocuments()
             initProjectDocumentUploads()
@@ -125,8 +137,10 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 :aria-required="document.isRequiredInProcess"
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
-                :hint="t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')"
-                :label="document.description + (document.isRequiredInProcess ? ' *' : '')"
+                :hint="props.process === 'registration' ? t('forms.student-certificate-hint')
+                    : (t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : ''))"
+                :label="props.process === 'registration' ? t('forms.student-certificate')
+                    : (document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"

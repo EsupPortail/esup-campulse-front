@@ -70,6 +70,12 @@ export default function () {
         documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
+    // Get student certificate for registration
+    async function getStudentCertificate() {
+        const url = '/documents/?acronym=CERTIFICAT_SCOLARITE_USER'
+        documents.value = (await axiosPublic.get<Document[]>(url)).data
+    }
+
     class DocumentUpload {
         file: Blob
         association: string
@@ -154,6 +160,7 @@ export default function () {
         getFile,
         DocumentUpload,
         createFileLink,
-        initCharterDocumentUploads
+        initCharterDocumentUploads,
+        getStudentCertificate
     }
 }

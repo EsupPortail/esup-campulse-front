@@ -69,6 +69,7 @@ export interface AssociationName {
 export interface AssociationOptions {
     label: string,
     value: string,
+    isInOffice?: boolean,
     disable?: boolean
 }
 

@@ -447,6 +447,8 @@
     "social-object-hint": "Objet figurant sur les statuts de l'association",
     "status": "Mon statut",
     "status-hint": "Les étudiants ou étudiantes membres d'une association, et porteurs ou porteuses de projets individuels doivent choisir le statut \"Étudiant ou Étudiante\".",
+    "student-certificate": "Certificat de scolarité pour l'année universitaire en cours",
+    "student-certificate-hint": "Obligatoire pour s'inscrire dans le bureau d'une association ou déposer des demandes de subventions.",
     "user-to-add": "Utilisateur à ajouter",
     "validate-association": "Valider cet ajout",
     "validated-account": "Compte validé",

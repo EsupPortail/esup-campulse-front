@@ -6,6 +6,7 @@ import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUserAssociations from '@/composables/useUserAssociations'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 
 // Needed to modify the social networks of an association
@@ -20,8 +21,8 @@ let changedData = {}
 export default function () {
 
     const associationStore = useAssociationStore()
-    const {updateRegisterRoleInAssociation} = useUserAssociations()
     const {newAssociations} = useUserAssociations()
+    const {processDocuments} = useDocumentUploads()
 
     /** Setup altLogo default value if association does not have one
      *
@@ -46,7 +47,6 @@ export default function () {
      * @param {AssociationRole} association - AssociationRole - this is the association that is being checked
      */
     function checkHasPresident(association: AssociationRole) {
-        updateRegisterRoleInAssociation()
         if (association.options) {
             const a = associationStore.associationNames.find(obj => obj.id === association.id)
             if (a) {
@@ -55,6 +55,23 @@ export default function () {
                     const model = newAssociations.value.find(obj => obj.id === association.id)
                     if (model) model.role = 'isMember'
                 }
+            }
+        }
+    }
+
+    // TODO test
+    function checkHasStudentCertificate(association: AssociationRole) {
+        if (association.options) {
+            // If new user has not uploaded a student certificate
+            // he/she can not join an association as an office member
+            if (!processDocuments.value[0].pathFile) {
+                association.options.forEach(association => {
+                    if (association.isInOffice) association.disable = true
+                })
+            } else {
+                association.options.forEach(association => {
+                    if (association.isInOffice) association.disable = false
+                })
             }
         }
     }
@@ -218,6 +235,7 @@ export default function () {
         checkHasPresident,
         changeAssociationLogo,
         associations,
-        getAssociationPdfExport
+        getAssociationPdfExport,
+        checkHasStudentCertificate
     }
 }

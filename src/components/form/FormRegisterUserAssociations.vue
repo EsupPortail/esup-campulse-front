@@ -8,6 +8,8 @@ import {useRoute} from 'vue-router'
 import useUserAssociations from '@/composables/useUserAssociations'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import {AssociationRole} from '#/user'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const associationStore = useAssociationStore()
 const route = useRoute()
@@ -16,7 +18,9 @@ const {
 } = useUserAssociations()
 const {
     checkHasPresident,
+    checkHasStudentCertificate
 } = useAssociation()
+const {processDocuments} = useDocumentUploads()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -69,6 +73,18 @@ function clearOptions() {
     options.value = []
 }
 
+function checkAssociationAuthorization(association: AssociationRole) {
+    updateRegisterRoleInAssociation()
+    checkHasPresident(association)
+    checkHasStudentCertificate(association)
+}
+
+watch(() => processDocuments.value[0]?.pathFile, () => {
+    newAssociations.value.forEach(association => {
+        checkAssociationAuthorization(association)
+    })
+})
+
 </script>
 
 <template>
@@ -98,7 +114,7 @@ function clearOptions() {
                                 use-input
                                 @filter="filterAssociations"
                                 @input="clearOptions"
-                                @update:model-value="checkHasPresident(association)"
+                                @update:model-value="checkAssociationAuthorization(association)"
                             />
                             <QOptionGroup
                                 v-model="association.role"
@@ -159,29 +175,29 @@ function clearOptions() {
 @import '@/assets/_variables.scss';
 
 fieldset {
-  padding: 0;
+    padding: 0;
 }
 
 .title-3 {
-  font-weight: $semibold-weight;
+    font-weight: $semibold-weight;
 }
 
 .flex-group, .q-separator {
-  margin: 1rem 0 1rem 0;
+    margin: 1rem 0 1rem 0;
 }
 
 @media screen and (min-width: $responsiveWidth) {
-  .flex-group {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
+    .flex-group {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        align-items: center;
 
-    .q-separator {
-      padding: 0;
-      margin: 0;
+        .q-separator {
+            padding: 0;
+            margin: 0;
+        }
     }
-  }
 }
 
 </style>

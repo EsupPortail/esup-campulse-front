@@ -14,7 +14,7 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import i18n from '@/plugins/i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useSecurity from '@/composables/useSecurity'
-import type {AssociationName} from '#/association'
+import type {AssociationName, AssociationOptions} from '#/association'
 
 
 // Used to store a user's associations, while it is modified by a manager or during registration
@@ -30,33 +30,38 @@ const newAssociationsUser = ref<AssociationUser[]>([])
 const associationMembers = ref<AssociationMember[]>([])
 
 
-export default function() {
+export default function () {
 
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const associationStore = useAssociationStore()
 
     /* Used to create the options for the select in the form to create an association. */
-    const associationRoleOptions = [
+    const associationRoleOptions: AssociationOptions[] = [
         {
             label: i18n.global.t('forms.im-association-president'),
             value: 'isPresident',
+            isInOffice: true
         },
         {
             label: i18n.global.t('forms.im-association-secretary'),
-            value: 'isSecretary'
+            value: 'isSecretary',
+            isInOffice: true
         },
         {
             label: i18n.global.t('forms.im-association-treasurer'),
-            value: 'isTreasurer'
+            value: 'isTreasurer',
+            isInOffice: true
         },
         {
             label: i18n.global.t('forms.im-association-vice-president'),
-            value: 'isVicePresident'
+            value: 'isVicePresident',
+            isInOffice: true
         },
         {
             label: i18n.global.t('forms.im-association-member'),
-            value: 'isMember'
+            value: 'isMember',
+            isInOffice: false
         }
     ]
 
@@ -67,7 +72,7 @@ export default function() {
         const instance = editedByStaff ? userManagerStore : userStore
         const userId = instance.user?.id
 
-        userAssociations.value.forEach(async function(association) {
+        userAssociations.value.forEach(async function (association) {
             // If we need to delete the association
             if (association.id && association.deleteAssociation) {
                 await deleteUserAssociation(userId, association.id)
@@ -212,7 +217,7 @@ export default function() {
         associationMembers.value = []
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function(user) {
+        associationStore.associationUsers.forEach(function (user) {
             if (!withPresident && user.user === userStore.user?.id) { // TODO: test condition
                 return
             } else {
@@ -237,7 +242,7 @@ export default function() {
         userAssociations.value = []
         let associations: AssociationUserDetail[] = userStore.userAssociations
         if (editedByStaff) associations = userManagerStore.userAssociations
-        associations.forEach(function(association) {
+        associations.forEach(function (association) {
             const role = getAssociationUserRole(association)
             userAssociations.value.push({
                 id: association.association.id,

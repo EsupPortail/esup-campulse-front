@@ -37,11 +37,9 @@ async function onGetUsersFromCAS() {
 }
 
 function onImportUser() {
-    loading.show()
-
     const extendedCASUser = CASUsers.value.find(obj => obj.username === selectedUser.value)
-
     if (selectedUser.value && extendedCASUser) {
+        loading.show()
         newUser.isCas = true
         newUser.username = extendedCASUser.username
         newUser.firstName = extendedCASUser.firstName
@@ -52,9 +50,7 @@ function onImportUser() {
         CASUsers.value = []
         displayResetButton.value = true
         lastName.value = ''
-
         loading.hide()
-
         notify({
             type: 'positive',
             message: t('notifications.positive.get-cas-user-success')
@@ -135,9 +131,9 @@ function onReset() {
                         <QOptionGroup
                             v-model="selectedUser"
                             :options="CASUserOptions"
+                            aria-label="t('forms.user-to-add')"
                             emit-value
                             map-options
-                            aria-label="t('forms.user-to-add')"
                         />
                     </div>
                     <div class="btn-group">

@@ -13,6 +13,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 import useUtility from '@/composables/useUtility'
 import useErrors from '@/composables/useErrors'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -192,6 +193,11 @@ async function onRegister() {
                             lazy-rules
                             type="tel"
                         />
+                        <FormDocumentUploads
+                            v-if="!newUser.isCas"
+                            :association-id="null"
+                            process="registration"
+                        />
                     </div>
                 </div>
             </section>
@@ -261,17 +267,17 @@ async function onRegister() {
 @import '@/assets/styles/dashboard.scss';
 
 section {
-  margin: 0;
+    margin: 0;
 }
 
 .q-banner {
-  padding-bottom: .8rem;
-  margin-bottom: 1rem;
+    padding-bottom: .8rem;
+    margin-bottom: 1rem;
 
-  p {
-    font-weight: bold;
-    margin: 0;
-  }
+    p {
+        font-weight: bold;
+        margin: 0;
+    }
 }
 
 

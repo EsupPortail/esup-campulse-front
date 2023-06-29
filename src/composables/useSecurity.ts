@@ -43,7 +43,6 @@ export default function () {
      * @param {string} access - The access token that is used to authenticate the user.
      * @param {string} refresh - The refresh token that was returned from the server.
      */
-    // tested
     function setTokens(access: string, refresh: string) {
         localStorage.setItem('JWT__access__token', access)
         localStorage.setItem('JWT__refresh__token', refresh)
@@ -52,7 +51,6 @@ export default function () {
     /**
      * It removes the tokens from local storage.
      */
-    // tested
     function removeTokens() {
         localStorage.removeItem('JWT__access__token')
         localStorage.removeItem('JWT__refresh__token')
@@ -61,7 +59,6 @@ export default function () {
     /**
      * It logs in a user.
      */
-    // tested
     async function logIn() {
         await userStore.logIn('/users/auth/login/', {
             username: user.value.username,
@@ -74,7 +71,6 @@ export default function () {
      * @param {string} permission - The permission you want to check for.
      * @returns A boolean value.
      */
-    // tested
     function hasPerm(permission: string): boolean | undefined {
         return userStore.user?.permissions.includes(permission)
     }
@@ -91,13 +87,12 @@ export default function () {
 
     watch(() => userStore.newUser, initNewUserData)
 
-    // tested
+    // TODO test
     async function userLocalRegister() {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/', newUser)
     }
 
-    // tested
     async function userCASRegister(newUserInfo: string | null) {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo})
@@ -108,7 +103,6 @@ export default function () {
      * @param {boolean} publicRequest - boolean - If the request is public or not
      * @param {string} username - the username of the user you want to associate with the associations
      */
-    // tested
     async function userAssociationsRegister(publicRequest: boolean, username: string | undefined) {
         const idsAssociations = []
         const {axiosPublic, axiosAuthenticated} = useAxios()
@@ -135,7 +129,6 @@ export default function () {
      * @param {boolean} publicRequest - boolean - if true, the request will be made to the public API, otherwise it will be
      * made to the authenticated API.
      */
-    // tested
     async function userGroupsRegister(publicRequest: boolean) {
         const groupsToRegister: UserGroupRegister[] = []
         const {newGroups, commissionGroup} = useUserGroups()
@@ -246,31 +239,26 @@ export default function () {
         }
     }
 
-    // tested
     async function userLocalRegisterAsManager(newUser: UserRegister) {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.post('/users/', newUser)
     }
 
-    // tested
     async function verifyEmail(key: string) {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/verify-email/', {key: key})
     }
 
-    // tested
     async function resendEmail(email: string) {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/resend-email/', {email})
     }
 
-    // tested
     async function passwordReset(email: string) {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/password/reset/', {email})
     }
 
-    // tested
     async function passwordResetConfirm(uid: string, token: string, newPassword1: string, newPassword2: string) {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
