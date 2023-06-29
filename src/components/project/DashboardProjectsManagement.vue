@@ -12,8 +12,8 @@ const {hasPerm} = useSecurity()
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-folder"
+                aria-hidden="true"
+                class="bi bi-folder"
             ></i>
             {{ t('commission.on-going') }}
         </h2>
@@ -27,8 +27,8 @@ const {hasPerm} = useSecurity()
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-archive"
+                aria-hidden="true"
+                class="bi bi-archive"
             ></i>
             {{ t('commission.archived') }}
         </h2>
@@ -36,10 +36,10 @@ const {hasPerm} = useSecurity()
             <div class="container">
                 <div class="dashboard-btn-group">
                     <QBtn
-                            :label="t('dashboard.manage-archived-commissions')"
-                            :to="{name: 'ArchivedCommission'}"
-                            class="btn-lg"
-                            color="commission"
+                        :label="t('dashboard.manage-archived-commissions')"
+                        :to="{name: 'ArchivedCommission'}"
+                        class="btn-lg"
+                        color="commission"
                     />
                 </div>
             </div>
@@ -47,13 +47,13 @@ const {hasPerm} = useSecurity()
     </div>
 
     <div
-            v-if="hasPerm('add_commission') || hasPerm('change_commission') || hasPerm('delete_commission')"
-            class="dashboard-section"
+        v-if="hasPerm('add_commission') || hasPerm('change_commission') || hasPerm('delete_commission')"
+        class="dashboard-section"
     >
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-calendar"
+                aria-hidden="true"
+                class="bi bi-calendar"
             ></i>
             {{ t('commission.dates') }}
         </h2>
@@ -62,10 +62,10 @@ const {hasPerm} = useSecurity()
             <div class="container">
                 <div class="dashboard-btn-group">
                     <QBtn
-                            :label="t('dashboard.manage-commission-dates')"
-                            :to="{name: 'ManageCommissionDates'}"
-                            class="btn-lg"
-                            color="commission"
+                        :label="t('dashboard.manage-commission-dates')"
+                        :to="{name: 'ManageCommissionDates'}"
+                        class="btn-lg"
+                        color="commission"
                     />
                 </div>
             </div>
@@ -78,6 +78,6 @@ const {hasPerm} = useSecurity()
 @import '@/assets/styles/forms.scss';
 
 .form {
-  width: 100% !important;
+    width: 100% !important;
 }
 </style>

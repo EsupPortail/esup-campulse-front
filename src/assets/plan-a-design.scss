@@ -73,6 +73,11 @@ body {
 #layout-page {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+
+main {
+  flex-grow: 3;
 }
 
 // Goto top button

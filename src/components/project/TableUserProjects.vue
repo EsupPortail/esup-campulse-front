@@ -96,7 +96,6 @@ const columns = ref<QTableProps['columns']>([
         :rows="importedProps.projects"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="importedProps.title"
-        class="variant-space-3"
         row-key="name"
     >
         <template v-slot:body="props">

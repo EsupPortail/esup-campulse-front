@@ -38,9 +38,10 @@ async function onExportCSV() {
 </script>
 
 <template>
-    <div class="flex-row-center">
+    <div class="flex-row-center padding-top">
         <QBtn
             :label="t('commission.export-csv')"
+            class="btn-lg"
             color="commission"
             icon="bi-filetype-csv"
             @click="onExportCSV"

@@ -98,7 +98,6 @@ async function onOptionClick(option: Option) {
                     v-for="(option, index) in options"
                     :key="index"
                     v-close-popup
-                    class="text-charter"
                     clickable
                     @click="onOptionClick(option)"
                 >

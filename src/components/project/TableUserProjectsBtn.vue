@@ -153,10 +153,6 @@ function onOptionClick(option: Option) {
 @import "@/assets/styles/dashboard.scss";
 @import '@/assets/styles/documents.scss';
 
-.q-item {
-    color: $capeColorText;
-}
-
 .no-presidency {
     color: $textColor2;
 }
