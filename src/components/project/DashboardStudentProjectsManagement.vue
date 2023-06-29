@@ -110,11 +110,11 @@ async function onGetProjects() {
                 <QCard>
                     <QTabs
                         v-model="tab"
-                        active-color="cape-color"
+                        active-color="commission"
                         align="justify"
                         class="text-grey"
                         dense
-                        indicator-color="cape-color"
+                        indicator-color="commission"
                     >
                         <QTab
                             v-for="(tab, index) in tabs"
@@ -198,7 +198,7 @@ async function onGetProjects() {
 
                                     <QTabs
                                         v-model="innerTab"
-                                        class="cape-color"
+                                        class="text-commission"
                                         vertical
                                     >
                                         <QTab
@@ -273,24 +273,11 @@ async function onGetProjects() {
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 
-.text-cape-color {
-  color: $capeColor !important;
-}
-
-.bg-cape-color {
-  background: $capeColorBackground !important;
-}
-
-.cape-color {
-  color: $capeColor;
-}
-
-
 .info-panel {
-  margin: 0.5rem;
+    margin: 0.5rem;
 }
 
 .q-tab {
-  font-size: inherit;
+    font-size: inherit;
 }
 </style>

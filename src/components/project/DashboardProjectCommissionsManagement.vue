@@ -183,26 +183,26 @@ async function onGetCommissions() {
 @import '@/assets/styles/forms.scss';
 
 .text-cape-color {
-  color: $capeColor;
+    color: $capeColor;
 }
 
 .bg-cape-color {
-  background: $capeColorBackground;
+    background: $capeColorBackground;
 }
 
 .cape-color {
-  color: $capeColor;
+    color: $capeColor;
 }
 
 .q-tab-panel {
-  padding: 0 1rem;
+    padding: 0 1rem;
 }
 
 .info-panel {
-  margin: 0.5rem;
+    margin: 0.5rem;
 }
 
 h3 {
-  padding: 1rem
+    padding: 1rem
 }
 </style>

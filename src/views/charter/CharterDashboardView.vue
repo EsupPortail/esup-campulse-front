@@ -33,7 +33,6 @@ onMounted(initTab)
                     v-model="tab"
                     active-color="charter"
                     align="justify"
-                    class="text-charter"
                     dense
                     indicator-color="charter"
                     narrow-indicator
@@ -60,3 +59,9 @@ onMounted(initTab)
         </div>
     </section>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
+
+</style>
