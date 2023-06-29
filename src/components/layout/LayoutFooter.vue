@@ -8,23 +8,23 @@ const {colorVariant} = useColorVariants()
 
 <template>
     <QFooter
-        id="layout-footer"
-        :class="'variant-' + colorVariant"
-        elevated
-        role="contentinfo"
+            id="layout-footer"
+            :class="'variant-' + colorVariant"
+            elevated
+            role="contentinfo"
     >
         <div id="footer-logos">
             <div class="wrapper">
                 <a href="https://www.crous-strasbourg.fr/">
                     <img
-                        alt="Le Crous (Centre régional des œuvres universitaires et scolaires)"
-                        src="@/assets/img/logos/crous.png"
+                            alt="Le Crous (Centre régional des œuvres universitaires et scolaires)"
+                            src="@/assets/img/logos/crous.png"
                     />
                 </a>
                 <a href="https://www.unistra.fr/">
                     <img
-                        alt="L'Université de Strasbourg"
-                        src="@/assets/img/logos/unistra.png"
+                            alt="L'Université de Strasbourg"
+                            src="@/assets/img/logos/unistra.png"
                     />
                 </a>
                 <!--
@@ -61,20 +61,20 @@ const {colorVariant} = useColorVariants()
                 -->
                 <a href="https://cvec.etudiant.gouv.fr/">
                     <img
-                        alt="La Contribution Vie Étudiante et de Campus"
-                        src="@/assets/img/logos/cvec.png"
+                            alt="La Contribution Vie Étudiante et de Campus"
+                            src="@/assets/img/logos/cvec.png"
                     />
                 </a>
                 <a href="https://www.economie.gouv.fr/plan-de-relance">
                     <img
-                        alt="France Relance"
-                        src="@/assets/img/logos/france-relance.png"
+                            alt="France Relance"
+                            src="@/assets/img/logos/france-relance.png"
                     />
                 </a>
                 <a href="https://www.enseignementsup-recherche.gouv.fr/">
                     <img
-                        alt="Le Ministère de l'Enseignement Supérieur et de la Recherche"
-                        src="@/assets/img/logos/esr.png"
+                            alt="Le Ministère de l'Enseignement Supérieur et de la Recherche"
+                            src="@/assets/img/logos/esr.png"
                     />
                 </a>
             </div>
@@ -82,42 +82,36 @@ const {colorVariant} = useColorVariants()
         <QToolbar>
             <div class="footer-text">
                 <RouterLink
-                    class="li-footer"
-                    to="about-page"
+                        class="li-footer"
+                        to="about-page"
                 >
                     <i
-                        aria-hidden="true"
-                        class="bi bi-card-text"
+                            aria-hidden="true"
+                            class="bi bi-card-text"
                     ></i>{{ t("footer.about") }}
                 </RouterLink>
                 <RouterLink
-                    class="li-footer"
-                    to="/"
+                        class="li-footer"
+                        to="/"
                 >
                     <i
-                        aria-hidden="true"
-                        class="bi bi-envelope"
+                            aria-hidden="true"
+                            class="bi bi-envelope"
                     ></i>{{ t("footer.legal-notice") }}
                 </RouterLink>
                 <RouterLink
-                    class="li-footer"
-                    to="contact-page"
+                        class="li-footer"
+                        to="contact-page"
                 >
                     <i
-                        aria-hidden="true"
-                        class="bi bi-envelope"
+                            aria-hidden="true"
+                            class="bi bi-envelope"
                     ></i>{{ t("footer.contact") }}
                 </RouterLink>
                 <!-- <QToolbarTitle>{{ t("footer.copyright") }}</QToolbarTitle> -->
             </div>
         </QToolbar>
-        <p>
-            La Base de Données des Associations Etudiantes d’Alsace est un annuaire regroupant les associations
-            étudiantes d’Alsace.
-            Ce projet est réalisé dans le cadre du Schéma Directeur de la Vie Etudiante – Alsace, qui lie les
-            établissements d’enseignement supérieur
-            (Unistra, UHA, INSA, ENGEES, ENSAS, HEAR) et la BNU, en partenariat avec le Crous.
-        </p>
+        <p>{{ t("footer.database") }}</p>
         <p>{{ t("footer.copyright") }}</p>
     </QFooter>
 </template>

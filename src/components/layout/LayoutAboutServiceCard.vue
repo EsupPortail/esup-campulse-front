@@ -14,12 +14,10 @@ defineProps({
     <section :class="['services-section', 'home-section', cssClass]">
         <div :class="['section-card', 'service-card']">
             <div>
-                <div
-                    aria-hidden="true"
-                    class="card-icon"
-                >
+                <div aria-hidden="true" class="card-icon">
                     <i class="bi bi-filter-circle"></i>
                 </div>
+
                 <div :class="['section-title', 'services-title']">
                     <h4 v-html="header"></h4>
                 </div>
@@ -34,15 +32,4 @@ defineProps({
 
 <style lang="scss" scoped>
 @import '@/assets/styles/home.scss';
-@import '@/assets/_variables.scss';
-
-.home-section {
-  .section-title {
-    h4 {
-      text-align: center;
-      font-weight: $semibold-weight;
-    }
-  }
-}
-
 </style>

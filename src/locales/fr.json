@@ -167,6 +167,7 @@
     "password-reset-confirm": "Modifier mon mot de passe",
     "project-recap": "Ré'CAPE du projet",
     "register": "Créer un compte",
+    "register-resend-email": "Reconfirmer l'adresse mail",
     "submit-project": "Demande de subventionnement",
     "submit-project-review": "CAPE - Formulaire de bilan moral et financier",
     "template-documents-library": "Bibliothèque de documents",
@@ -233,6 +234,10 @@
   "commissions": "Commissions",
   "consult": "Consulter",
   "continue": "Continuer",
+  "contact": {
+    "contact": "Contact",
+    "gestionnaires": "Gestionnaires"
+  },
   "dashboard": {
     "account-infos": "Modifier mes informations personnelles",
     "association-list": "Liste des associations",
@@ -360,6 +365,7 @@
     "about": "À propos",
     "contact": "Contact",
     "copyright": "2017-2023 - Unistra - Tous droits réservés",
+    "database": "La Base de Données des Associations Etudiantes d’Alsace est un annuaire regroupant les associations étudiantes d’Alsace. Ce projet est réalisé dans le cadre du Schéma Directeur de la Vie Etudiante – Alsace, qui lie les établissements d’enseignement supérieur (Unistra, UHA, INSA, ENGEES, ENSAS, HEAR) et la BNU, en partenariat avec le Crous.",
     "legal-notice": "Mentions légales"
   },
   "forbidden": "Non autorisé",

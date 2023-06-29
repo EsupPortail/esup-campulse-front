@@ -153,14 +153,15 @@ loading.hide()
 
 <template>
     <section class="dashboard-section">
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <InfoProcessDocuments
                     :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"
                 />
                 <QStepper
                     ref="stepper"
                     v-model="step"
+                    active-color="charter"
                     animated
                     header-nav
                 >
@@ -178,6 +179,7 @@ loading.hide()
                                 :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
                                 clearable
+                                color="charter"
                                 filled
                                 lazy-rules
                             />
@@ -185,6 +187,7 @@ loading.hide()
                                 v-model="editedAssociation.acronym"
                                 :label="t('association.labels.acronym')"
                                 clearable
+                                color="charter"
                                 filled
                             />
                             <QInput
@@ -192,6 +195,7 @@ loading.hide()
                                 :label="t('association.labels.last-goa')"
                                 :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                 clearable
+                                color="charter"
                                 filled
                                 type="date"
                             />
@@ -200,6 +204,7 @@ loading.hide()
                                 :label="t('association.labels.president-name')"
                                 :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                 clearable
+                                color="charter"
                                 filled
                             />
                             <QInput
@@ -207,6 +212,7 @@ loading.hide()
                                 :label="t('association.labels.president-phone')"
                                 :rules="[val => phoneRegex.test(val) || t('forms.required-phone')]"
                                 clearable
+                                color="charter"
                                 filled
                                 type="tel"
                             />
@@ -216,6 +222,7 @@ loading.hide()
                                 :options="associationStore.institutionComponentLabels"
                                 :rules="[val => val || t('forms.fill-field')]"
                                 clearable
+                                color="charter"
                                 emit-value
                                 filled
                                 map-options
@@ -227,17 +234,19 @@ loading.hide()
                                 :rules="[val => val || t('forms.fill-field')]"
                                 aria-required="true"
                                 clearable
+                                color="charter"
                                 emit-value
                                 filled
                                 map-options
                             />
                             <fieldset>
-                                <legend>{{ t('association.labels.address') }}</legend>
+                                <legend class="title-4">{{ t('association.labels.address') }}</legend>
                                 <QInput
                                     v-model="editedAssociation.address"
                                     :label="t('address.address')"
                                     :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                     clearable
+                                    color="charter"
                                     filled
                                 />
                                 <div class="flex-group">
@@ -246,6 +255,7 @@ loading.hide()
                                         :label="t('address.zipcode')"
                                         :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                         clearable
+                                        color="charter"
                                         filled
                                     />
                                     <QInput
@@ -253,6 +263,7 @@ loading.hide()
                                         :label="t('address.city')"
                                         :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                         clearable
+                                        color="charter"
                                         filled
                                     />
                                     <QInput
@@ -260,6 +271,7 @@ loading.hide()
                                         :label="t('address.country')"
                                         :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                         clearable
+                                        color="charter"
                                         filled
                                     />
                                 </div>
@@ -270,13 +282,17 @@ loading.hide()
                                 :label="t('association.labels.siret')"
                                 :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                 clearable
+                                color="charter"
                                 filled
                                 inputmode="numeric"
                             />
                             <div class="btn-group">
                                 <QBtn
                                     :label="t('continue')"
+                                    class="btn-lg"
+                                    color="charter"
                                     icon="bi-check-lg"
+                                    text-color="charter"
                                     type="submit"
                                 />
                             </div>
@@ -298,12 +314,18 @@ loading.hide()
                             <div class="btn-group">
                                 <QBtn
                                     :label="t('back')"
+                                    class="btn-lg"
+                                    color="charter"
                                     icon="bi-chevron-left"
+                                    text-color="charter"
                                     @click="step = step - 1"
                                 />
                                 <QBtn
                                     :label="t('continue')"
+                                    class="btn-lg"
+                                    color="charter"
                                     icon="bi-check-lg"
+                                    text-color="charter"
                                     type="submit"
                                 />
                             </div>
@@ -326,12 +348,18 @@ loading.hide()
                             <div class="btn-group">
                                 <QBtn
                                     :label="t('back')"
+                                    class="btn-lg"
+                                    color="charter"
                                     icon="bi-chevron-left"
+                                    text-color="charter"
                                     @click="step = step - 1"
                                 />
                                 <QBtn
                                     :label="t('charter.sign')"
+                                    class="btn-lg"
+                                    color="charter"
                                     icon="bi-check-lg"
+                                    text-color="charter"
                                     type="submit"
                                 />
                             </div>
@@ -346,6 +374,7 @@ loading.hide()
 <style lang="scss" scoped>
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/styles/forms.scss";
+@import '@/assets/_variables.scss';
 
 .form {
     width: 80% !important;

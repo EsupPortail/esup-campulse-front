@@ -99,59 +99,60 @@ async function onDeleteUser() {
 </script>
 
 <template>
-    <section class="dashboard-section">
+    <div class="dashboard-section">
         <h2>
             <QIcon name="bi-person"/>
             {{ t('user.infos') }}
         </h2>
 
-        <div class="form-container">
-            <div class="form">
-                <div class="rows-container">
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.first-name') }}</h3>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="flex-column">
+                    <div class="display-row">
+                        <h3>{{ t('user.first-name') }}</h3>
                         <p>{{ userManagerStore.user?.firstName }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.last-name') }}</h3>
+                    </div>
+                    <div class="display-row">
+                        <h3>{{ t('user.last-name') }}</h3>
                         <p>{{ userManagerStore.user?.lastName }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.email') }}</h3>
+                    </div>
+                    <div class="display-row">
+                        <h3>{{ t('user.email') }}</h3>
                         <p>{{ userManagerStore.user?.email }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.phone') }}</h3>
+                    </div>
+                    <div class="display-row">
+                        <h3>{{ t('user.phone') }}</h3>
                         <p>{{ userManagerStore.user?.phone }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.is-cas') }}</h3>
+                    </div>
+                    <div class="display-row">
+                        <h3>{{ t('user.is-cas') }}</h3>
                         <p>{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}</p>
-                    </article>
-                    <article class="display-row">
-                        <h3 class="row-title">{{ t('user.is-validated-by-admin') }}</h3>
+                    </div>
+                    <div class="display-row">
+                        <h3>{{ t('user.is-validated-by-admin') }}</h3>
                         <p>{{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}</p>
-                    </article>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
+    </div>
+
+    <div class="dashboard-section">
         <h2>
             <QIcon name="bi-building"/>
             {{ t('directory.title') }}
         </h2>
 
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <div v-if="userManagerStore.userAssociations.length">
-                    <div class="rows-container">
-                        <article
-                            v-for="(association, index) in userManagerStore.userAssociations"
-                            :key="index"
-                            class="display-row"
+                    <div class="flex-column">
+                        <div
+                                v-for="(association, index) in userManagerStore.userAssociations"
+                                :key="index"
+                                class="display-row"
                         >
-                            <h3 class="row-title">{{ association.association.name }}</h3>
+                            <h3>{{ association.association.name }}</h3>
                             <ul>
                                 <li>
                                     {{ t('dashboard.association-user.is-president') }} :
@@ -170,7 +171,7 @@ async function onDeleteUser() {
                                     {{ association.isTreasurer ? t('yes') : t('no') }}
                                 </li>
                             </ul>
-                        </article>
+                        </div>
                     </div>
                 </div>
                 <div v-else>
@@ -178,51 +179,48 @@ async function onDeleteUser() {
                 </div>
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
+    </div>
+
+    <div class="dashboard-section">
         <h2>
             <QIcon name="bi-person-lines-fill"/>
             {{ t('user.groups') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <FormUserGroups/>
             </div>
         </div>
-    </section>
-    <section class="btn-group">
+    </div>
+
+    <div class="dashboard-btn-group padding-top padding-bottom">
         <QBtn
-            :label="t('back')"
-            :to="{ name: 'ValidateUsers' }"
-            color="secondary"
-            icon="bi-chevron-compact-left"
+                :label="t('back')"
+                :to="{ name: 'ValidateUsers' }"
+                class="btn-lg"
+                color="dashboard"
+                icon="bi-chevron-compact-left"
         />
         <QBtn
-            :label="t('user-manager.delete-account-application')"
-            color="red"
-            icon="bi-file-earmark-x"
-            @click="onDeleteUser"
+                :label="t('user-manager.delete-account-application')"
+                class="btn-lg"
+                color="red"
+                icon="bi-file-earmark-x"
+                @click="onDeleteUser"
         />
         <QBtn
-            :label="t('user-manager.validate-account')"
-            color="secondary"
-            icon="bi-check-lg"
-            @click="onValidateUser"
+                :label="t('user-manager.validate-account')"
+                class="btn-lg"
+                color="dashboard"
+                icon="bi-check-lg"
+                @click="onValidateUser"
         />
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 @import "@/assets/_variables.scss";
-
-@media screen and (min-width: $responsiveWidth) {
-    .form {
-        margin: auto;
-        width: 50%;
-    }
-}
-
 </style>
 

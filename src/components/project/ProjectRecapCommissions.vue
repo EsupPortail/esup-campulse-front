@@ -68,89 +68,84 @@ async function onGetProjectCommissions() {
 
 <template>
     <section
-        v-if="props.view === 'projectRecap' || props.view === 'projectReviewRecap'"
-        class="flex-section"
+            v-if="props.view === 'projectRecap' || props.view === 'projectReviewRecap'"
+            class="flex-column"
     >
         <div class="display-row">
-            <p class="row-title">{{ t('project.commission-choice') }}</p>
+            <h4>{{ t('project.commission-choice') }}</h4>
             <p>{{ projectCommissionLabel }}</p>
         </div>
-        <div
-            class="display-row"
-        >
-            <p class="row-title">{{ t('commission.funds') }}</p>
+
+        <div class="display-row">
+            <h4>{{ t('commission.funds') }}</h4>
             <p>
                 <QChip
-                    v-for="projectCommissionFund in projectStore.projectCommissionFunds"
-                    :key="projectCommissionFund.id"
+                        v-for="projectCommissionFund in projectStore.projectCommissionFunds"
+                        :key="projectCommissionFund.id"
+                        color="commission"
+                        outline
                 >
-                    {{
-                        fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label
-                    }}
+                    {{ fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label }}
                 </QChip>
             </p>
         </div>
-        <div
-            v-if="props.view === 'projectReviewRecap'"
-        >
+
+        <div v-if="props.view === 'projectReviewRecap'">
             <div
-                v-for="projectCommissionFund in projectStore.projectCommissionFunds"
-                :key="projectCommissionFund.id"
-                class="flex-section"
+                    v-for="projectCommissionFund in projectStore.projectCommissionFunds"
+                    key="projectCommissionFund.id"
             >
-                <div
-                    class="display-row"
-                >
-                    <p class="row-title">
+                <div class="display-row">
+                    <h4>
                         {{
                             t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'
                         }}
-                    </p>
+                    </h4>
                     <p>{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
                 </div>
-                <div
-                    class="display-row"
-                >
-                    <p class="row-title">
+
+                <div class="display-row">
+                    <h4>
                         {{
                             t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'
                         }}
-                    </p>
+                    </h4>
                     <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
                 </div>
             </div>
         </div>
     </section>
+
     <div v-if="props.view === 'submitProjectReview'">
         <QInput
-            v-model="projectCommissionLabel"
-            :label="t('project.commission-choice')"
-            filled
-            readonly
+                v-model="projectCommissionLabel"
+                :label="t('project.commission-choice')"
+                filled
+                readonly
         />
         <div
-            v-for="projectCommissionFund in projectStore.projectCommissionFunds"
-            :key="projectCommissionFund.id"
-            class="flex-section"
+                v-for="projectCommissionFund in projectStore.projectCommissionFunds"
+                :key="projectCommissionFund.id"
+                class="flex-section"
         >
-            <h4 class="title-5">
+            <h4>
                 {{
                     fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label
                 }}
             </h4>
             <QInput
-                v-model="projectCommissionFund.amountAsked"
-                :label="t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'"
-                :shadow-text="` ${CURRENCY}`"
-                filled
-                readonly
+                    v-model="projectCommissionFund.amountAsked"
+                    :label="t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'"
+                    :shadow-text="` ${CURRENCY}`"
+                    filled
+                    readonly
             />
             <QInput
-                v-model="projectCommissionFund.amountEarned"
-                :label="t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'"
-                :shadow-text="` ${CURRENCY}`"
-                filled
-                readonly
+                    v-model="projectCommissionFund.amountEarned"
+                    :label="t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'"
+                    :shadow-text="` ${CURRENCY}`"
+                    filled
+                    readonly
             />
         </div>
     </div>
@@ -160,13 +155,13 @@ async function onGetProjectCommissions() {
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 
-.display-row {
-    width: 100% !important;
+/*.display-row {
+  width: 100% !important;
 }
 
 .flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}*/
 </style>

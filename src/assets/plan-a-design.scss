@@ -1,4 +1,5 @@
 @import '@/assets/variables';
+@import '@/assets/styles/quasar.variables.scss';
 
 // Bootstrap icons
 $bootstrap-icons-font-src: url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"), url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");
@@ -10,64 +11,93 @@ $bootstrap-icons-font-src: url("../../node_modules/bootstrap-icons/font/fonts/bo
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: $baseFont;
 }
 
 html {
-  height: $fullSize;
-  width: $fullSize;
+  font-size: 62.5%;
 }
 
 body {
-  height: $fullSize;
-  width: $fullSize;
   background-color: $backgroundColor1;
-  color: $textColor1
+  color: $textColor1;
+  font-family: $baseFont;
+  font-size: $fontSize;
 }
 
-// Displaying the layout as a table (and the different layout parts as table-rows) is a common trick to make sure the footer stays 
-// at the bottom of the viewport even when the page's height is inferior to the viewport's height (without giving the footer an absolute or fixed position).
-#layout-page {
+// Containers
+.container, .container-lg {
   width: $fullSize;
-  max-width: unset;
-  display: table;
-  table-layout: fixed;
-  margin: 0 auto;
+  margin: auto;
 }
 
-#layout-header, #layout-breadcrumbs, #layout-content, #layout-footer {
-  display: table-row;
+.container {
+  max-width: 120rem;
 }
 
-#layout-content {
-  height: $fullSize;
+.container-lg {
+  max-width: 160rem;
+}
 
+// Flex utilities
+.flex-row, .flex-row-center, .flex-row-space-between, .flex-column {
+  display: flex;
+  gap: 1rem;
+}
+
+.flex-row, .flex-row-center, .flex-row-space-between {
+  align-items: baseline;
+}
+
+.flex-row-center {
+  justify-content: center;
+}
+
+.flex-row-space-between {
+  justify-content: space-between;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+// Padding utilities
+.padding-top {
+  padding-top: 1rem;
+}
+
+.padding-bottom {
+  padding-bottom: 1rem;
+}
+
+// Page layout
+#layout-page {
+  display: flex;
+  flex-direction: column;
 }
 
 // Goto top button
 .navigate-top-button {
   position: fixed;
-  top: 0rem;
+  top: 0;
   left: calc(100vw - 6.5rem);
-  z-index: 3000;
   opacity: 0;
   transition: top 0.15s ease-in-out, opacity 0.15s linear;
 
   &.visible {
     top: 2rem;
     opacity: 1;
+    z-index: 3000;
   }
 
   button {
     display: block;
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     border: none;
     background-color: $annuaireColor;
     color: $textColor3;
     border-radius: 50%;
-    font-size: 2rem;
+    font-size: 3.5rem;
     box-shadow: $fieldsBoxShadow;
     transition: background-color 0.03s linear;
     cursor: pointer;
@@ -81,7 +111,7 @@ body {
       background-color: $annuaireColorHover;
 
       i {
-        transform: scale(1.2);
+        transform: scale(1.1);
       }
     }
 
@@ -188,7 +218,6 @@ body {
     }
 
     p {
-      font-size: $textSize;
       font-weight: $normal-weight;
       color: $annuaireColorText;
     }
@@ -266,7 +295,7 @@ body {
 }
 
 // Titles
-.title-1, .title-2, .title-3, .title-4 {
+h1, .title-1, h2, .title-2, h3, .title-3, h4, .title-4, h5, .title-5, h6, .title-6 {
   color: $textColor1;
   font-weight: $normal-weight;
   line-height: normal;
@@ -279,30 +308,35 @@ body {
   }*/
 }
 
-.title-1 {
-  font-size: 2.25rem;
+h1, .title-1 {
+  font-size: 3.6rem;
 }
 
-.title-2 {
-  font-size: 1.75rem;
+h2, .title-2 {
+  font-size: 2.6rem;
+  margin-left: 1.5rem;
 }
 
-.title-3 {
-  font-size: 1.5rem;
+h3, .title-3 {
+  font-size: 2.2rem;
 }
 
-.title-4 {
+h4, .title-4 {
+  font-size: 1.8rem;
+}
+
+h5, .title-5 {
+  font-size: 1.4rem;
+}
+
+h6, .title-6 {
   font-size: 1.2rem;
-}
-
-.title-5 {
-  font-size: 1rem;
 }
 
 // Paragraphs
 p.paragraph {
   color: $textColor1;
-  font-size: 1.125rem;
+  font-size: inherit;
   font-weight: 400;
   line-height: normal;
   letter-spacing: normal;
@@ -330,16 +364,13 @@ p.paragraph {
 }
 
 // Lists
-p.paragraph {
-  ul, ol {
-    padding-left: 2rem;
-
-    li {
-      padding-left: 0.4rem;
-    }
-  }
-
-  ul {
-    list-style-type: square;
-  }
+ul {
+  list-style-type: none;
 }
+
+// Buttons
+.btn-lg {
+  padding: 1.5rem;
+}
+
+

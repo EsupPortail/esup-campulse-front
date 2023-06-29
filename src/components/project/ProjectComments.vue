@@ -92,7 +92,7 @@ async function onPostNewComment() {
         </p>
     </div>
     <div v-if="!comments.length">
-        <p class="paragraph">{{ t('project.comments.no-comment-to-show') }}</p>
+        <p>{{ t('project.comments.no-comment-to-show') }}</p>
     </div>
     <QBtn
         v-if="hasPerm('add_projectcomment') && projectStore.project?.projectStatus !== 'PROJECT_PROCESSING'"
@@ -118,18 +118,4 @@ async function onPostNewComment() {
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
-
-.comment-row {
-    width: 100% !important;
-}
-
-.comment-head {
-    display: flex;
-    justify-content: space-between;
-}
-
-.paragraph {
-    margin: auto;
-    width: 80%;
-}
 </style>

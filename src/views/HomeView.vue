@@ -89,3 +89,6 @@ async function onGetContents() {
     </div>
 </template>
 
+<style lang="scss" scoped>
+@import "@/assets/styles/home.scss";
+</style>

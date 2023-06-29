@@ -31,17 +31,21 @@ onMounted(async () => {
     <!-- Account management -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-card-account-details-outline"/>
+            <i
+                aria-hidden="true"
+                class="bi bi-person"
+            ></i>
             {{ t('dashboard.manage-my-account') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
-                    <QBtn
-                        :label="t('dashboard.account-infos')"
-                        :to="{name: 'ManageAccount'}"
-                    />
-                </div>
+        <div class="dashboard-section-container">
+            <div class="dashboard-btn-group">
+                <QBtn
+                    :label="t('dashboard.account-infos')"
+                    :to="{name: 'ManageAccount'}"
+                    class="btn-lg"
+                    color="dashboard"
+                    size="md"
+                />
             </div>
         </div>
     </section>
@@ -55,19 +59,19 @@ onMounted(async () => {
             <QIcon name="mdi-card-account-details-outline"/>
             {{ t('dashboard.association-user.my-associations') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
-                    <div
-                        v-for="association in userStore.userAssociations"
-                        :key="association.association.id"
-                    >
-                        <QBtn
-                            v-if="association.isValidatedByAdmin"
-                            :label="t('manage') + ' ' + association.association.name"
-                            :to="{name: 'AssociationDashboard', params: {id: association.association.id}}"
-                        />
-                    </div>
+        <div class="dashboard-section-container">
+            <div class="dashboard-btn-group">
+                <div
+                    v-for="association in userStore.userAssociations"
+                    :key="association.association.id"
+                >
+                    <QBtn
+                        v-if="association.isValidatedByAdmin"
+                        :label="t('manage') + ' ' + association.association.name"
+                        :to="{name: 'AssociationDashboard', params: {id: association.association.id}}"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
                 </div>
             </div>
         </div>
@@ -84,18 +88,22 @@ onMounted(async () => {
             <QIcon name="mdi-format-list-bulleted-square"/>
             {{ t('dashboard.manage-association-directory') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         v-if="hasPerm('add_association')"
                         :label="t('dashboard.create-association')"
                         :to="{name: 'CreateAssociation'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="hasPerm('change_association')"
                         :label="t('dashboard.edit-or-delete-association')"
                         :to="{name: 'ManageAssociations'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -111,13 +119,15 @@ onMounted(async () => {
             <QIcon name="mdi-file-multiple-outline"/>
             {{ t('dashboard.template-document-library') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         v-if="hasPerm('add_document')"
                         :label="t('dashboard.manage-template-documents')"
                         :to="{name: 'ManageDocumentsLibrary'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -133,12 +143,14 @@ onMounted(async () => {
             <QIcon name="mdi-folder-edit-outline"/>
             {{ t('dashboard.manage-commissions') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         :label="t('dashboard.manage-projects')"
                         :to="{name: 'Commission'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -155,28 +167,36 @@ onMounted(async () => {
             <QIcon name="mdi-account-group"/>
             {{ t('dashboard.manage-users') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
-                <div class="button-group">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
                     <QBtn
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-validation')"
                         :to="{name: 'ValidateUsers'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="hasPerm('change_associationuser')"
                         :label="t('user-manager.association-validation')"
                         :to="{name: 'ValidateAssociationUsers'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="hasPerm('change_user')"
                         :label="t('dashboard.user-management')"
                         :to="{name: 'ManageUsers'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                     <QBtn
                         v-if="hasPerm('add_user')"
                         :label="t('dashboard.create-user')"
                         :to="{name: 'AddUser'}"
+                        class="btn-lg"
+                        color="dashboard"
                     />
                 </div>
             </div>
@@ -192,8 +212,8 @@ onMounted(async () => {
             <QIcon name="mdi-pencil-box-outline"/>
             {{ t('dashboard.my-documents') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <InfoDocumentLibrary color="dashboard"/>
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">
@@ -272,10 +292,10 @@ onMounted(async () => {
                                     Certificat envoyé par le tribunal judiciaire
                                 </h4>
                                 <!-- <p>
-                                    <a>
-                                        <i class="bi bi-info-circle"></i>
-                                    </a>
-                                </p> -->
+                            <a>
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </p> -->
                                 <button disabled>
                                     <i class="bi bi-plus"></i>
                                 </button>

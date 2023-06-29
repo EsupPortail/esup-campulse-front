@@ -45,20 +45,27 @@ watch(() => contentStore.about.length, () => {
 </script>
 
 <template>
-    <section
-        :class="['form-container', 'contact-section']"
-    >
-        <div class="contact-title">
-            <h4>{{ contactInfo?.header }}</h4>
-            <span>{{ contactInfo?.body }}</span>
-        </div>
+    <section class="dashboard-section">
+        <h2>
+            <i class="bi bi-envelope"></i>
+            {{ t("contact.contact") }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <h3>{{ contactInfo?.header }}</h3>
+                <h4>{{ contactInfo?.body }}</h4>
 
-        <div class="contact-list">
-            <h5 class="display-row">Gestionnaires</h5>
-            <div class="contact-item">
-                {{ contactInfo?.label }}
+                <div class="contact-list">
+                    <h5 class="display-row">
+                        {{ t("contact.gestionnaires") }}
+                    </h5>
+                    <div class="contact-item">
+                        {{ contactInfo?.label }}
+                    </div>
+                </div>
             </div>
         </div>
+
     </section>
 </template>
 
@@ -66,4 +73,5 @@ watch(() => contentStore.about.length, () => {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/contact.scss';
+@import '@/assets/styles/dashboard.scss';
 </style>

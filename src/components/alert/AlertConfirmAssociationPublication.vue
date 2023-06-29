@@ -33,37 +33,47 @@ async function onPublishAssociation() {
 
 <template>
     <QBtn
-        :color="!associationStore.association?.isPublic ? 'green' : 'orange'"
-        :icon="!associationStore.association?.isPublic ? 'bi-eye' : 'bi-eye-slash'"
-        :label="!associationStore.association?.isPublic ? t('association.publish-in-directory') : t('association.unpublish-in-directory')"
-        @click="confirmation = true"
+            :color="!associationStore.association?.isPublic ? 'dashboard' : 'red'"
+            :icon="!associationStore.association?.isPublic ? 'bi-eye' : 'bi-eye-slash'"
+            :label="!associationStore.association?.isPublic ? t('association.publish-in-directory') : t('association.unpublish-in-directory')"
+            class="btn-lg"
+            @click="confirmation = true"
     />
 
     <QDialog
-        v-model="confirmation"
-        persistent
+            v-model="confirmation"
+            persistent
     >
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{
-                    !associationStore.association?.isPublic ? t('alerts.confirm-association-publish') : t('alerts.confirm-association-unpublish')
-                }}</span>
+                        !associationStore.association?.isPublic ? t('alerts.confirm-association-publish') : t('alerts.confirm-association-unpublish')
+                    }}</span>
             </QCardSection>
 
             <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    icon="bi-x-lg"
-                />
-                <QBtn
-                    v-close-popup
-                    :color="!associationStore.association?.isPublic ? 'green' : 'orange'"
-                    :icon="!associationStore.association?.isPublic ? 'bi-eye' : 'bi-eye-slash'"
-                    :label="!associationStore.association?.isPublic ? t('association.publish-in-directory') : t('association.unpublish-in-directory')"
-                    @click="onPublishAssociation"
-                />
+                <div class="flex-row">
+                    <QBtn
+                            v-close-popup
+                            :label="t('cancel')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-x-lg"
+                    />
+                    <QBtn
+                            v-close-popup
+                            :color="!associationStore.association?.isPublic ? 'dashboard' : 'red'"
+                            :icon="!associationStore.association?.isPublic ? 'bi-eye' : 'bi-eye-slash'"
+                            :label="!associationStore.association?.isPublic ? t('association.publish-in-directory') : t('association.unpublish-in-directory')"
+                            class="btn-lg"
+                            @click="onPublishAssociation"
+                    />
+                </div>
             </QCardActions>
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/variables.scss';
+</style>

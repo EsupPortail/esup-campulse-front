@@ -77,8 +77,9 @@ async function onDelegatePresidency(activate: boolean) {
 <template>
     <QBtn
         :label="t('delegate')"
-        color="secondary"
+        color="dashboard"
         icon="bi-pencil"
+        outline
         @click="openDelegationPanel = true"
     />
     <QDialog
@@ -108,6 +109,7 @@ async function onDelegatePresidency(activate: boolean) {
                     <QInput
                         v-model="delegation.from"
                         :label="t('from')"
+                        color="dashboard"
                         filled
                         type="date"
                     />
@@ -115,19 +117,24 @@ async function onDelegatePresidency(activate: boolean) {
                         v-model="delegation.to"
                         :hint="t('forms.hint-delegation-to')"
                         :label="t('to')"
+                        color="dashboard"
                         filled
                         type="date"
                     />
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
-                        color="secondary"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-chevron-left"
                     />
                     <QBtn
                         v-close-popup
                         :disable="!dateIsLegal"
                         :label="t('activate')"
-                        color="secondary"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-check-lg"
                         type="submit"
                     />
                     <QBtn
@@ -142,3 +149,7 @@ async function onDelegatePresidency(activate: boolean) {
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/_variables.scss";
+</style>

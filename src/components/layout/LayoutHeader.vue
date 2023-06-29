@@ -33,64 +33,65 @@ function ToggleMenu() {
 
 <template>
     <QHeader
-        id="layout-header"
-        :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
-        elevated
-        height-hint="98"
-        role="banner"
+            id="layout-header"
+            :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
+            elevated
+            height-hint="98"
+            role="banner"
     >
-        <QToolbar>
-            <QToolbarTitle>
-                <RouterLink
-                    :to="{name: 'Home'}"
-                    class="home-link"
-                >
-                    {{ siteName }}
-                </RouterLink>
-            </QToolbarTitle>
+        <div class="container">
+            <QToolbar>
+                <QToolbarTitle>
+                    <h1>
+                        <RouterLink
+                                :to="{name: 'Home'}"
+                                class="home-link"
+                        >
+                            {{ siteName }}
+                        </RouterLink>
+                    </h1>
+                </QToolbarTitle>
 
-            <div id="menu-items">
-                <button
-                    id="mobile-menu-button"
-                    @click="ToggleMenu"
-                >
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-list"
-                    ></i>
-                </button>
-                <span
-                    id="mobile-menu-background"
-                    :class="{ 'visible': mobileMenuVisible }"
-                    aria-hidden="true"
-                ></span>
+                <div id="menu-items">
+                    <button class="btn-menu" @click="ToggleMenu">
+                        <i aria-hidden="true" class="bi bi-list"></i>
+                    </button>
 
-                <LayoutHeaderNav :class="{ 'visible': mobileMenuVisible }"/>
-            </div>
-        </QToolbar>
-
-        <div v-if="route.name !== 'Login'">
-            <div
-                v-if="route.name === 'Home'"
-                id="header-home-title"
-            >
-                <h1>Bienvenue sur <strong>{{ siteName }}</strong></h1>
-                <h2>{{ t("header.subtitle") }}</h2>
-            </div>
-
-            <div id="header-title">
-                <h1 v-if="title">
                     <span
-                        aria-hidden="true"
-                        id="header-title-icon"
-                    >
-                        <i class="bi bi-geo-alt space-1-icon"></i>
-                        <i class="bi bi-book space-2-icon"></i>
-                        <i class="bi bi-send space-3-icon"></i>
-                        <i class="bi bi-send space-4-icon"></i>
-                    </span>
-                    {{ title }}
-                </h1>
+                            id="mobile-menu-background"
+                            :class="{'visible': mobileMenuVisible}"
+                            aria-hidden="true"
+                    ></span>
+
+                    <LayoutHeaderNav :class="{'visible': mobileMenuVisible}"/>
+                </div>
+            </QToolbar>
+
+            <div v-if="route.name !== 'Login'">
+                <div
+                        v-if="route.name === 'Home'"
+                        id="header-home-title"
+                >
+                    <div class="flex-column flex-center">
+                        <h1>Bienvenue sur <strong>{{ siteName }}</strong></h1>
+                        <h2>{{ t('header.subtitle') }}</h2>
+                    </div>
+                </div>
+
+                <div id="header-title">
+                    <h1 v-if="title">
+                        <span
+                                id="header-title-icon"
+                                aria-hidden="true"
+                        >
+                            <i class="bi bi-geo-alt space-1-icon"></i>
+                            <i class="bi bi-book space-2-icon"></i>
+                            <i class="bi bi-send space-3-icon"></i>
+                            <i class="bi bi-send space-4-icon"></i>
+                        </span>
+                        {{ title }}
+                    </h1>
+                </div>
             </div>
         </div>
     </QHeader>

@@ -44,15 +44,16 @@ async function onValidateChanges() {
 
 <template>
     <QBtn
-        :label="t('association.validate-all-changes')"
-        color="primary"
-        icon="bi-check-lg"
-        @click="confirmation = true"
+            :label="t('association.validate-all-changes')"
+            class="btn-lg"
+            color="dashboard"
+            icon="bi-check-lg"
+            @click="confirmation = true"
     />
 
     <QDialog
-        v-model="confirmation"
-        persistent
+            v-model="confirmation"
+            persistent
     >
         <QCard>
             <QCardSection class="row items-center">
@@ -60,20 +61,28 @@ async function onValidateChanges() {
             </QCardSection>
 
             <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="bi-x-lg"
-                />
-                <QBtn
-                    v-close-popup
-                    :label="t('association.validate-all-changes')"
-                    color="primary"
-                    icon="bi-check-lg"
-                    @click="onValidateChanges"
-                />
+                <div class="flex-row">
+                    <QBtn
+                            v-close-popup
+                            :label="t('cancel')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-x-lg"
+                    />
+                    <QBtn
+                            v-close-popup
+                            :label="t('association.validate-all-changes')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-check-lg"
+                            @click="onValidateChanges"
+                    />
+                </div>
             </QCardActions>
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/variables.scss';
+</style>

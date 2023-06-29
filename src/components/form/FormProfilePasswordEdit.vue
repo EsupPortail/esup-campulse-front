@@ -66,19 +66,17 @@ const clearValues = () => {
 </script>
 
 <template>
-    <fieldset>
-        <div class="form-title">
-            <h2>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-key"
-                ></i>
-                {{ t('dashboard.my-password') }}
-            </h2>
-        </div>
+    <section class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-key"
+            ></i>
+            {{ t('dashboard.my-password') }}
+        </h2>
 
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <QForm
                     ref="form"
                     @reset="clearValues"
@@ -88,10 +86,11 @@ const clearValues = () => {
                         v-model="editPassword.oldPassword"
                         :label="t('forms.old-password')"
                         :rules="[val => val && val.length > 0 || t('forms.required-old-password')]"
+                        autocomplete="current-password"
+                        color="dashboard"
                         filled
                         lazy-rules
                         type="password"
-                        autocomplete="current-password"
                     />
                     <QInput
                         v-model="editPassword.newPassword1"
@@ -100,10 +99,11 @@ const clearValues = () => {
                             val => val && val.length > 0 || t('forms.required-new-password'),
                             val => val && passwordChecker.valid || t('forms.required-strong-password')
                         ]"
+                        autocomplete="new-password"
+                        color="dashboard"
                         filled
                         lazy-rules
                         type="password"
-                        autocomplete="new-password"
                     />
                     <QInput
                         v-model="editPassword.newPassword2"
@@ -112,10 +112,11 @@ const clearValues = () => {
                             val => val && val.length > 0 || t('forms.required-repeat-new-password'),
                             val => val === editPassword.newPassword1 || t('forms.passwords-are-not-equal')
                         ]"
+                        autocomplete="new-password"
+                        color="dashboard"
                         filled
                         lazy-rules
                         type="password"
-                        autocomplete="new-password"
                     />
                     <FormPasswordChecker
                         :password="editPassword.newPassword1"
@@ -124,22 +125,19 @@ const clearValues = () => {
                     <QBtn
                         :disable="!passwordChecker.valid || editPassword.newPassword1 !== editPassword.newPassword2"
                         :label="t('password.edit-password')"
-                        class="edit-passwd"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-check-lg"
                         type="submit"
                     />
                 </QForm>
             </div>
         </div>
-    </fieldset>
+    </section>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
 @import "@/assets/styles/forms.scss";
-
-@media screen and (min-width: $responsiveWidth) {
-    .form {
-        width: 50% !important;
-    }
-}
+@import "@/assets/styles/dashboard.scss";
 </style>

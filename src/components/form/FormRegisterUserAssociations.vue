@@ -90,81 +90,90 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
 <template>
     <QCard v-if="title">
         <QCardSection>
-            <fieldset>
-                <h3 class="title-3">{{ title }}</h3>
-                <p class="paragraph">{{ t('dashboard.association-user.add-my-associations-note') }}</p>
+            <h3>{{ title }}</h3>
+            <p>{{ t('dashboard.association-user.add-my-associations-note') }}</p>
 
-                <div
-                    v-for="(association, index) in newAssociations"
-                    :key="index"
-                >
-                    <div class="flex-group">
-                        <div>
-                            <QSelect
-                                v-model="association.id"
-                                :label="t('forms.select-association')"
-                                :options="options"
-                                clearable
-                                emit-value
-                                fill-input
-                                filled
-                                hide-selected
-                                input-debounce="0"
-                                map-options
-                                use-input
-                                @filter="filterAssociations"
-                                @input="clearOptions"
-                                @update:model-value="checkAssociationAuthorization(association)"
-                            />
-                            <QOptionGroup
-                                v-model="association.role"
-                                :options="association.options"
-                                aria-label="t('forms.association-role')"
-                                color="secondary"
-                                inline
-                                role="radiogroup"
-                                @update:model-value="updateRegisterRoleInAssociation"
-                            />
-                        </div>
-                        <QSeparator
-                            aria-hidden="true"
-                            inset
-                            role="presentation"
-                            vertical
+            <div
+                v-for="(association, index) in newAssociations"
+                :key="index"
+            >
+                <div class="flex-group">
+                    <div>
+                        <QSelect
+                            v-model="association.id"
+                            :label="t('forms.select-association')"
+                            :options="options"
+                            clearable
+                            emit-value
+                            fill-input
+                            filled
+                            hide-selected
+                            input-debounce="0"
+                            map-options
+                            use-input
+                            @filter="filterAssociations"
+                            @input="clearOptions"
+                            @update:model-value="checkAssociationAuthorization(association)"
                         />
-                        <div>
-                            <QBtn
-                                :label="t('forms.delete-association')"
-                                aria-label="t('forms.delete-association')"
-                                class="bg-delete"
-                                icon="bi-trash"
-                                @click="removeAssociation(index)"
-                            />
-                        </div>
+                        <QOptionGroup
+                            v-model="association.role"
+                            :options="association.options"
+                            aria-label="t('forms.association-role')"
+                            color="secondary"
+                            inline
+                            role="radiogroup"
+                            @update:model-value="updateRegisterRoleInAssociation"
+                        />
                     </div>
                     <QSeparator
-                        v-if="routeName !== 'ManageAccount'"
                         aria-hidden="true"
+                        inset
                         role="presentation"
-                    />
-                    <QBtn
-                        v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
-                            routeName === 'ManageAccount'"
-                        :label="t('validate')"
-                        class="validate-button"
-                        icon-right="bi-check2"
-                        type="submit"
+                        vertical
                     />
                 </div>
-                <QBtn
-                    v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
-                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
-                    :label="t('forms.add-association')"
-                    class="add-association"
-                    icon="bi-plus-circle"
-                    @click="addAssociation"
+                <QSeparator
+                    aria-hidden="true"
+                    inset
+                    role="presentation"
+                    vertical
                 />
-            </fieldset>
+                <div>
+                    <QBtn
+                        :aria-label="t('forms.delete-association')"
+                        class="btn-lg"
+                        color="red"
+                        icon="bi-trash"
+                        outline
+                        @click="removeAssociation(index)"
+                    />
+                </div>
+            </div>
+            <QSeparator
+                v-if="routeName !== 'ManageAccount'"
+                aria-hidden="true"
+                role="presentation"
+            />
+            <QBtn
+                v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
+                    routeName === 'ManageAccount'"
+                :label="t('validate')"
+                class="btn-lg"
+                color="dashboard"
+                icon-right="bi-check2"
+                outline
+                type="submit"
+            />
+            <QBtn
+                v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                    (routeName === 'ManageAccount' && newAssociations.length === 0)"
+                :label="t('forms.add-association')"
+                class="btn-lg"
+                color="dashboard"
+                icon="bi-plus-circle"
+                outline
+                @click="addAssociation"
+            />
         </QCardSection>
     </QCard>
 </template>
@@ -173,14 +182,6 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
 @import '@/assets/_variables.scss';
-
-fieldset {
-    padding: 0;
-}
-
-.title-3 {
-    font-weight: $semibold-weight;
-}
 
 .flex-group, .q-separator {
     margin: 1rem 0 1rem 0;
@@ -199,5 +200,4 @@ fieldset {
         }
     }
 }
-
 </style>

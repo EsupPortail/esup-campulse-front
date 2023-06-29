@@ -14,6 +14,7 @@ import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 import useUtility from '@/composables/useUtility'
 import useErrors from '@/composables/useErrors'
 import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -97,188 +98,173 @@ async function onRegister() {
 </script>
 
 <template>
-    <section class="dashboard-section">
-        <QForm
-            class="q-gutter-md"
-            @submit.prevent="onRegister"
-        >
-            <section>
-                <h2>
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
-                    ></i>
-                    {{ t('user.infos') }}
-                </h2>
-                <div class="form-container">
-                    <div class="form">
-                        <FormAddUserFromLDAP v-if="isStaff"/>
+    <QForm
+        class="dashboard-section"
+        @submit.prevent="onRegister"
+    >
+        <section class="dashboard-section">
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
+                {{ t('user.infos') }}
+            </h2>
+            <div class="dashboard-section-container">
+                <div class="container">
+                    <FormAddUserFromLDAP v-if="isStaff"/>
 
-                        <QBanner class="bg-grey-3">
-                            <template v-slot:avatar>
-                                <QIcon
-                                    color="secondary"
-                                    name="mdi-information-outline"
-                                    size="md"
-                                />
-                            </template>
+                    <InfoFormRequiredFields/>
 
-                            <p>{{ t('forms.required-fields') }}</p>
-                            <template v-slot:action>
-                            </template>
-                        </QBanner>
-
-
-                        <QInput
-                            v-model="newUser.firstName"
-                            :disable="!!userStore.isCas || newUser.isCas"
-                            :label="t('forms.first-name') + ' *'"
-                            :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-                            aria-invalid="true"
-                            aria-required="true"
-                            autocomplete="given-name"
-                            clearable
-                            filled
-                            lazy-rules
-                        />
-                        <QInput
-                            v-model="newUser.lastName"
-                            :disable="!!userStore.isCas || newUser.isCas"
-                            :label="t('forms.last-name') + ' *'"
-                            :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
-                            aria-invalid="true"
-                            aria-required="true"
-                            autocomplete="family-name"
-                            clearable
-                            filled
-                            lazy-rules
-                        />
-                        <QInput
-                            v-model="newUser.email"
-                            :disable="!!userStore.isCas || newUser.isCas"
-                            :label="t('forms.email') + ' *'"
-                            :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
-                                     val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
-                            aria-invalid="true"
-                            aria-required="true"
-                            autocomplete="email"
-                            clearable
-                            filled
-                            lazy-rules
-                            type="email"
-                        >
-                        </QInput>
-                        <QInput
-                            v-model="emailVerification"
-                            :disable="!!userStore.isCas || newUser.isCas"
-                            :label="t('forms.repeat-email') + ' *'"
-                            :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
-                            aria-invalid="true"
-                            aria-required="true"
-                            autocomplete="email"
-                            clearable
-                            filled
-                            lazy-rules
-                            type="email"
-                        />
-                        <QInput
-                            v-model="newUser.phone"
-                            :hint="t('forms.hint-phone')"
-                            :label="t('forms.phone')"
-                            :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                            aria-invalid="true"
-                            autocomplete="tel"
-                            clearable
-                            filled
-                            lazy-rules
-                            type="tel"
-                        />
-                        <FormDocumentUploads
-                            v-if="!newUser.isCas"
-                            :association-id="null"
-                            process="registration"
-                        />
-                    </div>
+                    <QInput
+                        v-model="newUser.firstName"
+                        :disable="!!userStore.isCas || newUser.isCas"
+                        :label="t('forms.first-name') + ' *'"
+                        :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+                        aria-invalid="true"
+                        aria-required="true"
+                        autocomplete="given-name"
+                        clearable
+                        color="dashboard"
+                        filled
+                        lazy-rules
+                    />
+                    <QInput
+                        v-model="newUser.lastName"
+                        :disable="!!userStore.isCas || newUser.isCas"
+                        :label="t('forms.last-name') + ' *'"
+                        :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+                        aria-invalid="true"
+                        aria-required="true"
+                        autocomplete="family-name"
+                        clearable
+                        color="dashboard"
+                        filled
+                        lazy-rules
+                    />
+                    <QInput
+                        v-model="newUser.email"
+                        :disable="!!userStore.isCas || newUser.isCas"
+                        :label="t('forms.email') + ' *'"
+                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
+                                 val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
+                        aria-invalid="true"
+                        aria-required="true"
+                        autocomplete="email"
+                        clearable
+                        color="dashboard"
+                        filled
+                        lazy-rules
+                        type="email"
+                    />
+                    <QInput
+                        v-model="emailVerification"
+                        :disable="!!userStore.isCas || newUser.isCas"
+                        :label="t('forms.repeat-email') + ' *'"
+                        :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
+                        aria-invalid="true"
+                        aria-required="true"
+                        autocomplete="email"
+                        clearable
+                        color="dashboard"
+                        filled
+                        lazy-rules
+                        type="email"
+                    />
+                    <QInput
+                        v-model="newUser.phone"
+                        :hint="t('forms.hint-phone')"
+                        :label="t('forms.phone')"
+                        :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+                        aria-invalid="true"
+                        autocomplete="tel"
+                        clearable
+                        color="dashboard"
+                        filled
+                        lazy-rules
+                        type="tel"
+                    />
+                    <FormDocumentUploads
+                        v-if="!newUser.isCas"
+                        :association-id="null"
+                        process="registration"
+                    />
                 </div>
-            </section>
-
-            <section>
-                <h2>
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
-                    ></i>
-                    {{ t('user.groups') }}
-                </h2>
-                <div class="form-container">
-                    <div class="form">
-                        <FormUserGroups/>
-                    </div>
-                </div>
-            </section>
-
-            <section v-if="groupCanJoinAssociation">
-                <h2>
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
-                    ></i>
-                    {{ t('user.associations') }}
-                </h2>
-                <div class="form-container">
-                    <div class="form">
-                        <FormRegisterUserAssociations/>
-                    </div>
-                </div>
-            </section>
-
-
-            <section v-if="!isStaff">
-                <h2>
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-pencil-square"
-                    ></i>
-                    {{ t('forms.gdpr-title') }}
-                </h2>
-                <div :class="['form-container', 'consent-section']">
-                    <div class="form">
-                        <LayoutGDPRConsent
-                            :has-consent="hasConsent"
-                            @update-consent="hasConsent = !hasConsent"
-                        />
-                    </div>
-                </div>
-            </section>
-
-            <div class="btn-group">
-                <QBtn
-                    :label="t('forms.send')"
-                    icon="bi-check-lg"
-                    type="submit"
-                />
             </div>
-        </QForm>
-    </section>
+        </section>
+        <section>
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
+                {{ t('user.groups') }}
+            </h2>
+            <div class="dashboard-section-container">
+                <div class="container">
+                    <FormUserGroups/>
+                </div>
+            </div>
+        </section>
+
+        <section v-if="groupCanJoinAssociation">
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
+                {{ t('user.associations') }}
+            </h2>
+            <div class="dashboard-section-container">
+                <div class="container">
+                    <FormRegisterUserAssociations/>
+                </div>
+            </div>
+        </section>
+
+
+        <section v-if="!isStaff">
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
+                ></i>
+                {{ t('forms.gdpr-title') }}
+            </h2>
+            <div :class="['dashboard-section-container', 'consent-section']">
+                <div class="container">
+                    <LayoutGDPRConsent
+                        :has-consent="hasConsent"
+                        @update-consent="hasConsent = !hasConsent"
+                    />
+                </div>
+            </div>
+        </section>
+
+        <div class="flex-row-center padding-top padding-bottom">
+            <QBtn
+                :label="t('forms.send')"
+                class="btn-lg"
+                color="dashboard"
+                icon="bi-check-lg"
+                type="submit"
+            />
+        </div>
+    </QForm>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
+@import '@/assets/_variables.scss';
 
-section {
+/*.q-banner {
+  padding-bottom: .8rem;
+  margin-bottom: 1rem;
+
+  p {
+    font-weight: bold;
     margin: 0;
-}
-
-.q-banner {
-    padding-bottom: .8rem;
-    margin-bottom: 1rem;
-
-    p {
-        font-weight: bold;
-        margin: 0;
-    }
-}
-
-
+  }
+}*/
 </style>

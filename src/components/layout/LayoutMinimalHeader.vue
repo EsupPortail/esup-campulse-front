@@ -14,16 +14,22 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
         height-hint="98"
         role="banner"
     >
-        <QToolbar>
-            <QToolbarTitle>
-                <RouterLink
-                    :to="{name: 'Home'}"
-                    class="home-link"
-                >
-                    {{ siteName }}
-                </RouterLink>
-            </QToolbarTitle>
-            <LayoutHeaderNav/>
-        </QToolbar>
+        <div class="container">
+            <QToolbar>
+                <QToolbarTitle>
+                    <RouterLink
+                        :to="{name: 'Home'}"
+                        class="home-link"
+                    >
+                        {{ siteName }}
+                    </RouterLink>
+                </QToolbarTitle>
+                <LayoutHeaderNav/>
+            </QToolbar>
+        </div>
     </QHeader>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/header.scss';
+</style>

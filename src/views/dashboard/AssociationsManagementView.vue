@@ -109,129 +109,133 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <div class="form-title">
+        <div class="container-lg flex-row-space-between">
             <h2>
                 <QIcon name="mdi-pencil-box-outline"/>
                 {{ t('dashboard.association-list') }}
             </h2>
             <QBtn
-                v-if="hasPerm('add_association')"
-                :label="t('dashboard.create-association')"
-                :to="{name: 'CreateAssociation'}"
-                class="create-asso-btn"
-                color="secondary"
-                icon="bi-plus-circle"
+                    v-if="hasPerm('add_association')"
+                    :label="t('dashboard.create-association')"
+                    :to="{name: 'CreateAssociation'}"
+                    color="association"
+                    icon="bi-plus-circle"
             />
         </div>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container-lg">
                 <FormAssociationSearch
-                    v-if="route.name"
-                    :route="route.name"
+                        v-if="route.name"
+                        :route="route.name"
                 />
                 <QTable
-                    v-model:selected="selected"
-                    :columns="columns"
-                    :loading="!associations"
-                    :rows="associations"
-                    :rows-per-page-options="[10, 20, 50, 0]"
-                    :title="t('directory.title')"
-                    row-key="name"
-                    selection="multiple"
+                        v-model:selected="selected"
+                        :columns="columns"
+                        :loading="!associations"
+                        :rows="associations"
+                        :rows-per-page-options="[10, 20, 50, 0]"
+                        :title="t('directory.title')"
+                        row-key="name"
+                        selection="multiple"
                 >
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd>
-                                <QCheckbox v-model="props.selected"/>
+                                <QCheckbox
+                                        v-model="props.selected"
+                                        color="association"
+                                />
                             </QTd>
                             <QTd
-                                key="name"
-                                :props="props"
+                                    key="name"
+                                    :props="props"
                             >
                                 {{ props.row.name }}
                             </QTd>
                             <QTd
-                                key="acronym"
-                                :props="props"
+                                    key="acronym"
+                                    :props="props"
                             >
                                 {{ props.row.acronym }}
                             </QTd>
                             <QTd
-                                key="institution"
-                                :props="props"
+                                    key="institution"
+                                    :props="props"
                             >
                                 {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
                             </QTd>
                             <QTd
-                                key="activityField"
-                                :props="props"
+                                    key="activityField"
+                                    :props="props"
                             >
                                 {{
                                     associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name
                                 }}
                             </QTd>
                             <QTd
-                                key="status"
-                                :props="props"
-                                class="state-cell"
+                                    key="status"
+                                    :props="props"
+                                    class="state-cell"
                             >
                                 <span
-                                    v-if="!props.row.isEnabled"
-                                    class="form-state"
+                                        v-if="!props.row.isEnabled"
+                                        class="form-state"
                                 >
                                     {{ t('association.disabled') }}
                                     <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-red"
+                                            aria-hidden="true"
+                                            class="form-state-icon form-state-red"
                                     ><i class="bi bi-x-lg"></i></span>
                                 </span>
                                 <span
-                                    v-else
-                                    class="form-state"
+                                        v-else
+                                        class="form-state"
                                 >
                                     {{ t('association.enabled') }}
                                     <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-green"
+                                            aria-hidden="true"
+                                            class="form-state-icon form-state-green"
                                     ><i class="bi bi-check-lg"></i></span>
                                 </span>
                             </QTd>
                             <QTd
-                                key="public"
-                                :props="props"
-                                class="state-cell"
+                                    key="public"
+                                    :props="props"
+                                    class="state-cell"
                             >
                                 <span
-                                    v-if="!props.row.isPublic"
-                                    class="form-state"
+                                        v-if="!props.row.isPublic"
+                                        class="form-state"
                                 >
                                     {{ t('association.not-public') }}
                                     <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-red"
+                                            aria-hidden="true"
+                                            class="form-state-icon form-state-red"
                                     ><i class="bi bi-x-lg"></i></span>
                                 </span>
                                 <span
-                                    v-else
-                                    class="form-state"
+                                        v-else
+                                        class="form-state"
                                 >
                                     {{ t('association.public') }}
                                     <span
-                                        aria-hidden="true"
-                                        class="form-state-icon form-state-green"
+                                            aria-hidden="true"
+                                            class="form-state-icon form-state-green"
                                     ><i class="bi bi-check-lg"></i></span>
                                 </span>
                             </QTd>
                             <QTd
-                                key="edition"
-                                :props="props"
-                                class="actions-cell-compact"
+                                    key="edition"
+                                    :props="props"
+                                    class="actions-cell-compact"
                             >
                                 <div class="button-container">
                                     <QBtn
-                                        :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                                        aria-label="Editer"
-                                        icon="bi-pencil"
+                                            :aria-label="t('edit')"
+                                            :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                                            color="association"
+                                            icon="bi-pencil"
+                                            outline
                                     />
                                 </div>
                             </QTd>
@@ -239,8 +243,8 @@ const columns: QTableProps['columns'] = [
                     </template>
                 </QTable>
                 <AlertConfirmAssociationsChanges
-                    :selectedAssociations="selected"
-                    @update-selected-associations="selected = []"
+                        :selectedAssociations="selected"
+                        @update-selected-associations="selected = []"
                 />
             </div>
         </div>
@@ -251,13 +255,4 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/variables.scss';
-
-::v-deep(.q-table__container) {
-  .q-table {
-    thead tr {
-      background-color: $dashboardColor;
-    }
-  }
-}
-
 </style>

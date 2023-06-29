@@ -92,74 +92,73 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <div class="form-title">
-            <h2>
-                <i
+        <h2>
+            <i
                     aria-hidden="true"
                     class="bi bi-pencil-square"
-                ></i>
-                {{ route.name === 'ValidateUsers' ? t('user-manager.validation') : t('user-manager.management') }}
-            </h2>
-        </div>
-        <div class="form-container">
-            <div class="form">
+            ></i>
+            {{ route.name === 'ValidateUsers' ? t('user-manager.validation') : t('user-manager.management') }}
+        </h2>
+
+        <div class="dashboard-section-container">
+            <div class="container-lg">
                 <FormUserSearch
-                    @advanced-search="(result) => users = result"
-                    @get-users="onGetUsers"
+                        @advanced-search="(result) => users = result"
+                        @get-users="onGetUsers"
                 />
 
                 <QTable
-                    :columns="columns"
-                    :loading="!users"
-                    :rows="users"
-                    :rows-per-page-options="[10, 20, 50, 0]"
-                    :title="t('user-manager.users')"
-                    row-key="id"
+                        :columns="columns"
+                        :loading="!users"
+                        :rows="users"
+                        :rows-per-page-options="[10, 20, 50, 0]"
+                        :title="t('user-manager.users')"
+                        row-key="id"
                 >
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd
-                                key="firstName"
-                                :props="props"
+                                    key="firstName"
+                                    :props="props"
                             >
                                 {{ props.row.firstName }}
                             </QTd>
                             <QTd
-                                key="lastName"
-                                :props="props"
+                                    key="lastName"
+                                    :props="props"
                             >
                                 {{ props.row.lastName }}
                             </QTd>
                             <QTd
-                                key="email"
-                                :props="props"
+                                    key="email"
+                                    :props="props"
                             >
                                 {{ props.row.email }}
                             </QTd>
                             <QTd
-                                key="associations"
-                                :props="props"
+                                    key="associations"
+                                    :props="props"
                             >
                                 <ul>
                                     <li
-                                        v-for="(association, index) in props.row.associations"
-                                        :key="index"
+                                            v-for="(association, index) in props.row.associations"
+                                            :key="index"
                                     >
                                         <QChip>{{ association.name }}</QChip>
                                     </li>
                                 </ul>
                             </QTd>
                             <QTd
-                                key="groups"
-                                :props="props"
+                                    key="groups"
+                                    :props="props"
                             >
                                 <ul>
                                     <li
-                                        v-for="(group, index) in props.row.groups"
-                                        :key="index"
+                                            v-for="(group, index) in props.row.groups"
+                                            :key="index"
                                     >
                                         <QChip
-                                            v-if="props.row.groups.map((g: UserGroup) => g.groupId).indexOf(group.groupId) === index"
+                                                v-if="props.row.groups.map((g: UserGroup) => g.groupId).indexOf(group.groupId) === index"
                                         >
                                             {{
                                                 getGroupLiteral(group.groupId)
@@ -169,8 +168,8 @@ const columns: QTableProps['columns'] = [
                                 </ul>
                             </QTd>
                             <QTd
-                                key="isValidatedByAdmin"
-                                :props="props"
+                                    key="isValidatedByAdmin"
+                                    :props="props"
                             >
                                 <span class="form-state">
                                     {{
@@ -178,30 +177,34 @@ const columns: QTableProps['columns'] = [
                                     }}
 
                                     <span
-                                        aria-hidden="true" 
-                                        :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
+                                            :class="props.row.isValidatedByAdmin ? 'form-state-icon form-state-green' : 'form-state-icon form-state-red'"
+                                            aria-hidden="true"
                                     >
                                         <i :class="props.row.isValidatedByAdmin ? 'bi bi-check' : 'bi bi-x'"></i>
                                     </span>
                                 </span>
                             </QTd>
                             <QTd
-                                key="edition"
-                                :props="props"
-                                class="actions-cell-compact"
+                                    key="edition"
+                                    :props="props"
+                                    class="actions-cell-compact"
                             >
-                                <div class="button-container">
+                                <div class="dashboard-btn-group">
                                     <QBtn
-                                        v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"
-                                        :aria-label="t('modify')"
-                                        :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
-                                        icon="bi-pencil"
+                                            v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"
+                                            :aria-label="t('modify')"
+                                            :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
+                                            color="dashboard"
+                                            icon="bi-pencil"
+                                            outline
                                     />
                                     <QBtn
-                                        v-if="route.name === 'ValidateUsers'"
-                                        :aria-label="t('consult')"
-                                        :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
-                                        icon="bi-eye"
+                                            v-if="route.name === 'ValidateUsers'"
+                                            :aria-label="t('consult')"
+                                            :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
+                                            color="dashboard"
+                                            icon="bi-eye"
+                                            outline
                                     />
                                 </div>
                             </QTd>
@@ -217,12 +220,4 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/variables.scss';
-
-::v-deep(.q-table__container) {
-    .q-table {
-        thead tr {
-            background-color: $dashboardColor;
-        }
-    }
-}
 </style>

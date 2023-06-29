@@ -19,7 +19,6 @@ const associationStore = useAssociationStore()
 const {altLogoText} = useAssociation()
 const {catchHTTPError} = useErrors()
 
-const baseUrl = import.meta.env.VITE_APP_BASE_URL
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
     association.value = associationStore.association
@@ -51,217 +50,233 @@ async function onGetAssociationDetail() {
 </script>
 
 <template>
-    <div id="association-detail">
-        <section id="association-logo-title">
-            <div class="association-logo">
-                <QImg
-                    v-if="association"
-                    :alt="altLogoText(association)"
-                    :src="hasLogo ? (association?.pathLogo?.detail.indexOf('http') === -1 ? baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
-                />
-            </div>
-            <div class="association-name">
-                <!--<h2>{{ association?.name }}</h2>-->
-                <p
-                    v-if="association?.acronym"
-                    class="acronym"
+    <section class="association-detail">
+        <div class="dashboard-section-container">
+            <div id="association-logo-title">
+                <div class="association-logo">
+                    <QImg
+                        v-if="association"
+                        :alt="altLogoText(association)"
+                        :src="hasLogo ? association?.pathLogo?.detail : noLogoSquare.default"
+                    />
+                </div>
+                <div class="association-name">
+                    <!--<h2>{{ association?.name }}</h2>-->
+                    <p
+                        v-if="association?.acronym"
+                        class="acronym"
+                    >
+                        {{ association?.acronym }}
+                    </p>
+                    <p>{{ t('association.labels.charter-validity') }}</p>
+                </div>
+                <div
+                    v-if="association?.socialObject"
+                    class="socialObjectSection"
                 >
-                    {{ association?.acronym }}
-                </p>
-                <p>{{ t('association.labels.charter-validity') }}</p>
+                    <p>{{ association?.socialObject }}</p>
+                </div>
             </div>
+        </div>
 
-            <div
-                v-if="association?.socialObject"
-                class="socialObjectSection"
-            >
-                <p>{{ association?.socialObject }}</p>
-            </div>
-        </section>
-
-        <section>
-            <h3>
+        <div class="dashboard-section">
+            <h2>
                 <i
                     aria-hidden="true"
                     class="bi bi-book"
                 ></i>{{ t('association.titles.info') }}
-            </h3>
+            </h2>
 
-            <div class="form-container">
-                <div
-                    v-if="association?.currentProjects"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.current-projects') }}</h4>
-                    <p>{{ association?.currentProjects }}</p>
-                </div>
-
-                <article
-                    v-if="association?.institution"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.institution') }}</h4>
-                    <p>{{ associationStore.institutions.find(obj => obj.id === association?.institution)?.name }}</p>
-                </article>
-
-                <article
-                    v-if="association?.institutionComponent"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.institution-component') }}</h4>
-                    <p>
-                        {{
-                            associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
-                        }}
-                    </p>
-                </article>
-
-                <article
-                    v-if="association?.activityField"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.activity-field') }}</h4>
-                    <p>
-                        {{
-                            associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
-                        }}
-                    </p>
-                </article>
-            </div>
-        </section>
-
-        <section
-            v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret || association?.charterDate"
-        >
-            <h3>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-clipboard-check"
-                ></i>{{ t('association.titles.admin') }}
-            </h3>
-
-            <div class="form-container">
-                <article
-                    v-if="association?.presidentNames"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.president-name') }}</h4>
-                    <p>{{ association?.presidentNames }}</p>
-                </article>
-
-                <article
-                    v-if="association?.presidentPhone"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.president-phone') }}</h4>
-                    <p>{{ association?.presidentPhone }}</p>
-                </article>
-
-                <article
-                    v-if="association?.charterDate"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.charter-date') }}</h4>
-                    <p>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</p>
-                </article>
-
-                <article
-                    v-if="association?.lastGoaDate"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.last-goa') }}</h4>
-                    <p>{{ formatDate(association?.lastGoaDate) }}</p>
-                </article>
-
-                <article
-                    v-if="association?.siret"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.siret') }}</h4>
-                    <p>{{ association?.siret }}</p>
-                </article>
-            </div>
-        </section>
-
-        <section
-            v-if="association?.address || association?.phone || association?.email || association?.website ||
-                (association?.socialNetworks && association?.socialNetworks?.length > 0)"
-        >
-            <h3>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-telephone"
-                ></i>{{ t('association.titles.contact') }}
-            </h3>
-
-            <div class="form-container">
-                <article
-                    v-if="association?.address"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.address') }}</h4>
-                    <p>
-                        {{ association?.address }}<br/>
-                        {{ association?.zipcode + ' ' + association?.city }}<br/>
-                        {{ association?.country }}
-                    </p>
-                </article>
-
-                <article
-                    v-if="association?.phone"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.phone') }}</h4>
-                    <p>{{ association?.phone }}</p>
-                </article>
-
-                <article
-                    v-if="association?.email"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.mail') }}</h4>
-                    <p>{{ association?.email }}</p>
-                </article>
-
-                <article
-                    v-if="association?.website"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.website') }}</h4>
-                    <a
-                        :href="association?.website"
-                        :title="`${t('association.labels.website-link')} ${association?.name}`"
+            <div class="dashboard-section-container">
+                <div class="container">
+                    <div
+                        v-if="association?.currentProjects"
+                        class="display-row"
                     >
-                        {{ association?.website }}
-                    </a>
-                </article>
+                        <h3>{{ t('association.labels.current-projects') }}</h3>
+                        <p>{{ association?.currentProjects }}</p>
+                    </div>
 
-                <article
-                    v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
-                    class="display-row"
-                >
-                    <h4>{{ t('association.labels.socials') }}</h4>
-                    <ul>
-                        <li
-                            v-for="(socialNetwork, index) in association?.socialNetworks"
-                            :key="index"
-                        >
-                            <a :href="socialNetwork?.location">
-                                {{ socialNetwork?.type }}
-                            </a>
-                        </li>
-                    </ul>
-                </article>
+                    <div
+                        v-if="association?.institution"
+                        class="display-row"
+                    >
+                        <h3>{{ t('association.labels.institution') }}</h3>
+                        <p>
+                            {{
+                                associationStore.institutions.find(obj => obj.id === association?.institution)?.name
+                            }}
+                        </p>
+                    </div>
+
+                    <div
+                        v-if="association?.institutionComponent"
+                        class="display-row"
+                    >
+                        <h3>{{ t('association.labels.institution-component') }}</h3>
+                        <p>
+                            {{
+                                associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
+                            }}
+                        </p>
+                    </div>
+
+                    <div
+                        v-if="association?.activityField"
+                        class="display-row"
+                    >
+                        <h3>{{ t('association.labels.activity-field') }}</h3>
+                        <p>
+                            {{
+                                associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
+                            }}
+                        </p>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
 
         <div
-            id="bottom-btns"
-            class="btn-group"
+            v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret || association?.charterDate"
+        >
+            <div class="dashboard-section">
+                <h2>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-clipboard-check"
+                    ></i>{{ t('association.titles.admin') }}
+                </h2>
+
+                <div class="dashboard-section-container">
+                    <div class="container">
+                        <div
+                            v-if="association?.presidentNames"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.president-name') }}</h3>
+                            <p>{{ association?.presidentNames }}</p>
+                        </div>
+
+                        <div
+                            v-if="association?.presidentPhone"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.president-phone') }}</h3>
+                            <p>{{ association?.presidentPhone }}</p>
+                        </div>
+
+                        <div
+                            v-if="association?.charterDate"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.charter-date') }}</h3>
+                            <p>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</p>
+                        </div>
+
+                        <div
+                            v-if="association?.lastGoaDate"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.last-goa') }}</h3>
+                            <p>{{ formatDate(association?.lastGoaDate) }}</p>
+                        </div>
+
+                        <div
+                            v-if="association?.siret"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.siret') }}</h3>
+                            <p>{{ association?.siret }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div
+            v-if="association?.address || association?.phone || association?.email || association?.website ||(association?.socialNetworks && association?.socialNetworks?.length > 0)"
+        >
+            <div class="dashboard-section">
+                <h2>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-telephone"
+                    ></i>{{ t('association.titles.contact') }}
+                </h2>
+
+                <div class="dashboard-section-container">
+                    <div class="container">
+                        <div
+                            v-if="association?.address"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.address') }}</h3>
+                            <p>
+                                {{ association?.address }}<br/>
+                                {{ association?.zipcode + ' ' + association?.city }}<br/>
+                                {{ association?.country }}
+                            </p>
+                        </div>
+
+                        <div
+                            v-if="association?.phone"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.phone') }}</h3>
+                            <p>{{ association?.phone }}</p>
+                        </div>
+
+                        <div
+                            v-if="association?.email"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.mail') }}</h3>
+                            <p>{{ association?.email }}</p>
+                        </div>
+
+                        <div
+                            v-if="association?.website"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.website') }}</h3>
+                            <a
+                                :href="association?.website"
+                                :title="`${t('association.labels.website-link')} ${association?.name}`"
+                            >
+                                {{ association?.website }}
+                            </a>
+                        </div>
+
+                        <div
+                            v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
+                            class="display-row"
+                        >
+                            <h3>{{ t('association.labels.socials') }}</h3>
+                            <ul class="flex-row">
+                                <li
+                                    v-for="(socialNetwork, index) in association?.socialNetworks"
+                                    :key="index"
+                                >
+                                    <a :href="socialNetwork?.location">
+                                        {{ socialNetwork?.type }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="dashboard-btn-group padding-top padding-bottom"
         >
             <QBtn
                 :label="t('association.back-directory')"
                 :to="{name: 'Associations'}"
+                class="btn-lg"
+                color="association"
                 icon="bi-box-arrow-left"
             />
             <QBtn
@@ -269,13 +284,16 @@ async function onGetAssociationDetail() {
                 :href="`mailto:${association?.email}`"
                 :label="t('association.contact')"
                 :title="`${t('association.contact')} ${association?.name}`"
+                class="btn-lg"
+                color="association"
                 icon="bi-envelope"
             />
         </div>
-    </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
 </style>

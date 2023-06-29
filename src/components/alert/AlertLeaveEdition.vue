@@ -15,26 +15,27 @@ const props = defineProps({
         persistent
     >
         <QCard class="variant-space-4">
-            <QCardSection class="row items-center">
-                <p class="paragraph">{{ props.text }}</p>
+            <QCardSection>
+                <p>{{ props.text }}</p>
+                <div class="flex-row">
+                    <QBtn
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
+                        @click="$emit('closeAlert')"
+                    />
+                    <QBtn
+                        v-close-popup
+                        :label="t('discard-changes')"
+                        class="btn-lg"
+                        color="red"
+                        icon="bi-box-arrow-left"
+                        @click="$emit('leaveEdition')"
+                    />
+                </div>
             </QCardSection>
-
-            <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="bi-x-lg"
-                    @click="$emit('closeAlert')"
-                />
-                <QBtn
-                    v-close-popup
-                    :label="t('discard-changes')"
-                    color="delete"
-                    icon="bi-box-arrow-left"
-                    @click="$emit('leaveEdition')"
-                />
-            </QCardActions>
         </QCard>
     </QDialog>
 </template>

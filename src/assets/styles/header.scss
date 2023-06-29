@@ -20,47 +20,40 @@
     width: $fullSize;
     height: $fullSize;
     position: absolute;
-    top: 0;
-    left: 0;
-    background: linear-gradient(180deg, rgba(9, 22, 40, 0.55) 0%, rgba(0, 0, 0, 0.3) $fullSize);
+    //top: 0;
+    //left: 0;
+    background: linear-gradient(180deg, rgba(9, 22, 40, 0.25) 0%, rgba(0, 0, 0, 0.3)); //$fullSize
   }
 
   .q-toolbar {
-    width: $fullSize;
-    max-width: $pageWidth;
-    margin: auto;
-    padding: 0.625rem 0;
+    /*    margin: auto;
+        padding-left: 0 $responsiveMargin auto;*/
 
-    .q-toolbar__title {
+    h1 {
       overflow: visible;
 
       a {
         font-family: $titleFont;
         color: $textColor3;
         text-transform: uppercase;
-        font-weight: 800;
-        font-size: 2.5rem;
+        font-weight: $xbold-weight;
         text-decoration: none;
         position: relative;
         z-index: 2;
+        font-size: 3rem;
 
-        &:focus-visible {
-          outline: 2px solid $outlineColor1;
-          outline-offset: 2px;
-        }
+        /*        &:focus-visible {
+                  outline: 2px solid $outlineColor1;
+                  outline-offset: 2px;
+                }*/
       }
     }
 
-    @media only screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
-
-    @media only screen and (max-width: $responsiveWidth) {
-      align-items: flex-start;
-      min-height: 8rem;
-      position: static;
-    }
+    /*    @media only screen and (max-width: $responsiveWidth) {
+          align-items: flex-start;
+          min-height: 8rem;
+          position: static;
+        }*/
   }
 
   .q-layout__shadow {
@@ -68,13 +61,9 @@
   }
 
   nav {
-    display: flex;
-    align-items: center;
-    z-index: 2;
+    z-index: 4;
 
     a {
-      font-size: 1.063rem;
-      font-weight: 400;
       text-decoration: none;
       padding: 0 1.063rem;
       color: $textColor3;
@@ -126,15 +115,15 @@
         border-color: $capeColor;
       }
 
-      @media only screen and (max-width: $responsiveWidth) {
-        padding-right: 0.625rem;
-        padding-left: 0.625rem;
+      /*      @media only screen and (max-width: $responsiveWidth) {
+              padding-right: 0.625rem;
+              padding-left: 0.625rem;
 
-        &::after {
-          width: calc($fullSize - 1.25rem);
-          left: 0.625rem;
-        }
-      }
+              &::after {
+                width: calc($fullSize - 1.25rem);
+                left: 0.625rem;
+              }
+            }*/
     }
 
     @media only screen and (max-width: $responsiveWidth) {
@@ -157,7 +146,7 @@
     }
   }
 
-
+  // Profile button when connected
   .profile-button {
     display: inline-block;
     padding: 0 1.063rem;
@@ -182,7 +171,6 @@
       }
 
       .q-btn__content {
-        font-size: 1.063rem;
         font-weight: 400;
         text-transform: uppercase;
 
@@ -202,10 +190,6 @@
 
       .avatar {
         margin-right: 0.625rem;
-
-        i {
-          font-size: 1.125rem;
-        }
       }
     }
 
@@ -216,29 +200,29 @@
   }
 
   #menu-items {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     align-items: flex-end;
+
+    .btn-menu {
+      background-color: transparent;
+      border: none;
+      display: none;
+      position: relative;
+      z-index: 4;
+
+      i {
+        color: $textColor3;
+        font-size: 3rem;
+      }
+
+      @media only screen and (max-width: $responsiveWidth) {
+        display: block;
+        z-index: 10;
+      }
+    }
   }
 
-  #mobile-menu-button {
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    display: none;
-    margin-bottom: 1rem;
-    position: relative;
-    z-index: 2;
-
-    i {
-      color: $textColor3;
-      font-size: 2.4rem;
-    }
-
-    @media only screen and (max-width: $responsiveWidth) {
-      display: block;
-    }
-  }
 
   #mobile-menu-background {
     width: $fullSize;
@@ -246,7 +230,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
     background: linear-gradient(270deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) $fullSize);
     display: none;
     opacity: 0;
@@ -291,6 +274,9 @@
   &.variant-space-1 #header-title-icon {
     i.space-1-icon {
       display: inline;
+      position: relative;
+      top: -0.30rem;
+      left: -0.063rem;
     }
   }
 
@@ -299,7 +285,9 @@
 
     i.space-2-icon {
       display: inline;
-      color: $charteColorText;
+      position: relative;
+      top: -0.30rem;
+      left: -0.063rem;
     }
   }
 
@@ -309,6 +297,7 @@
     i.space-3-icon {
       display: inline;
       position: relative;
+      top: -0.30rem;
       left: -0.063rem;
     }
   }
@@ -318,6 +307,9 @@
 
     i.space-4-icon {
       display: inline;
+      position: relative;
+      top: -0.30rem;
+      left: -0.063rem;
     }
   }
 
@@ -336,53 +328,44 @@
 
 // Site title in the header - appears only on the home page
 #header-home-title {
-  width: $fullSize;
-  max-width: $pageWidth;
-  margin: auto;
-  position: relative;
-  z-index: 1;
-  text-align: center;
+
+  h1, h2 {
+    color: $textColor3;
+    font-weight: $medium-weight;
+    line-height: 3rem;
+    padding: .5rem;
+  }
 
   h1 {
     font-family: $titleFont;
-    color: $textColor3;
-    font-weight: $normal-weight;
-    font-size: 3.125rem;
+    font-size: 3.2rem;
     margin-bottom: 0.5rem;
-    line-height: 4rem;
+    z-index: 10;
 
     strong {
       text-transform: uppercase;
+    }
+
+    @media screen and (max-width: $responsiveWidth) {
+      font-size: 2.8rem
     }
   }
 
   h2 {
     display: inline-block;
-    color: $textColor3;
-    font-weight: $medium-weight;
     font-size: 1.4rem;
     border: 1px solid white;
-    padding: .5rem;
     margin: 0 2rem 2rem;
-    line-height: 3rem;
     background-color: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(0.125rem);
   }
 
-  @media screen and (min-width: $responsiveWidth) {
-    font-size: 1.625rem;
-
-    h2 {
-      padding: 1.125rem;
-    }
-  }
 }
 
 // Page title in the header - appears in all pages not using the home or minimal variant of the header.
 #header-title {
   width: auto;
   position: absolute;
-  font-size: 3rem;
   bottom: 0;
   z-index: 1;
   padding: 0 1.56rem 0 1.56rem;
@@ -392,29 +375,28 @@
     font-family: $titleFont;
     color: $textColor3;
     font-weight: $normal-weight;
-    font-size: 2.3rem;
-    padding: 0 0 1rem 3rem;
+    padding: 0 0 1rem 4rem;
     line-height: 1.15;
+    text-transform: none;
 
     strong {
       font-family: $titleFont;
-      font-size: 4.375rem;
       text-transform: uppercase;
       font-weight: $normal-weight;
     }
 
     #header-title-icon {
       display: inline-block;
-      width: 3rem;
-      height: 3rem;
+      width: 4rem;
+      height: 4rem;
       border-radius: $radiusCircle;
       background-color: $annuaireColor;
       position: absolute;
-      left: .5rem;
+      left: 1rem;
       text-align: center;
 
       i {
-        font-size: 1.75rem;
+        font-size: 2.2rem;
         color: $textColor3;
         display: none;
         vertical-align: middle;
@@ -430,7 +412,7 @@
 // Dropdown menu in the "my account" button
 .profile-menu {
   background: transparent;
-  box-shadow: none;
+  //box-shadow: none;
   border-radius: 0;
 
   .q-list {
@@ -444,10 +426,10 @@
     .q-item {
       position: relative;
       text-align: center;
-      padding: 0.313rem;
+      padding: 0.300rem;
       display: block;
-      min-height: unset;
-      line-height: normal;
+      //min-height: unset;
+      //line-height: normal;
 
       .q-item__section {
         display: block;
@@ -469,7 +451,6 @@
       }
 
       .q-item__label {
-        font-size: 1.063rem;
         font-weight: 400;
         text-decoration: none;
         color: $textColor3;

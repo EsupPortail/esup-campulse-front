@@ -151,7 +151,6 @@
     justify-content: space-between;
 
     p {
-      font-size: $textSize;
       font-weight: $normal-weight;
       color: $textColor2;
       line-height: 1.2rem;
@@ -397,123 +396,101 @@
 }
 
 // Association detail and edition views
-#association-detail, #association-edition {
+.association-detail, .association-edition {
+  /*
   fieldset {
     padding: 0;
   }
+  */
 
-  section, fieldset {
-    border: none;
+  /*  section, fieldset {
+      border: none;
 
-    h3 {
-      font-size: 1.7rem;
-      text-transform: uppercase;
-      color: $annuaireColorText;
+      !*    h3 {
+            font-size: 1.7rem;
+            text-transform: uppercase;
+            color: $annuaireColorText;
 
-      i {
-        color: $annuaireColorText;
-        font-size: 1.5rem;
-        margin: auto 0.300rem auto 1rem;
-        top: -0.01rem;
-      }
-    }
+            i {
+              color: $annuaireColorText;
+              font-size: 1.5rem;
+              margin: auto 0.300rem auto 1rem;
+              top: -0.01rem;
+            }
+          }*!
 
-    p {
-      margin: .625rem;
-      text-align: center;
-    }
+      !*    p {
+            margin: .625rem;
+            text-align: center;
+          }*!
 
-    .display-row {
-      h4 {
-        font-size: 1.5rem;
-        font-weight: $semibold-weight;
-        line-height: 2.3rem;
-        margin-bottom: .6rem;
-      }
+  !*    .display-row {
+        h4 {
+          font-size: 1.5rem;
+          font-weight: $semibold-weight;
+          line-height: 2.3rem;
+          margin-bottom: .6rem;
+        }
 
-      p {
-        font-size: 1rem;
-        text-align: justify;
-      }
-    }
-  }
+        p {
+          font-size: 1rem;
+          text-align: justify;
+        }
+      }*!
+    }*/
 
   #association-logo-title {
-    padding: .5rem;
-
     .association-name {
-      h2 {
-        font-size: $titleSize;
-        font-weight: $semibold-weight;
-        text-align: center;
-      }
+      /*      h2 {
+              font-size: $titleSize;
+              font-weight: $semibold-weight;
+              text-align: center;
+            }*/
 
       .acronym {
         text-align: center;
-        font-size: $textSize;
       }
     }
 
     .association-logo {
-      width: $associationLogoSize;
-      height: $associationLogoSize;
+      width: 12rem;
+      height: 12rem;
       display: block;
-      margin: auto;
+      margin: 1rem auto;
     }
 
     .q-file, .q-input {
       margin-bottom: .6rem;
     }
 
-    .btn-group {
-      width: $fullSize;
+    /*    .btn-group {
+          width: $fullSize;
 
-      span {
-        font-size: 1.090rem;
-      }
-    }
+          span {
+            font-size: 1.090rem;
+          }
+        }*/
   }
 
+  /*
   .btn-group {
     display: flex;
     flex-direction: column;
     gap: .6rem;
     margin: .625rem auto;
   }
+  */
 
   @media screen and (min-width: $responsiveWidth) {
-    section, fieldset {
-      h3 {
-        width: $halfSize;
-        margin: auto;
-      }
-    }
-
     #association-logo-title {
       width: $halfSize;
       margin: auto;
-
-      .association-logo {
-        margin-top: 1rem;
-      }
     }
-
-    .btn-group {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .q-btn {
-      line-height: 1.3rem;
-    }
-
   }
 }
 
-#association-detail {
-
+.association-detail {
   a:link, a:visited {
-    font-size: 1.125rem;
     text-decoration: none;
     color: $annuaireColor;
   }
@@ -525,29 +502,31 @@
   ul {
     margin: 0;
     list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    /*    display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;*/
   }
 
-  .form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+  /*  .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }*/
 }
 
-// User's association update view
+/*// User's association update view
 #association-user-update {
   display: flex;
   flex-direction: column;
 
+  !*
   .btn-group {
     justify-content: flex-start;
     padding: 0;
     margin: 0;
     width: $fullSize;
   }
+  *!
 
   .cancel-delete {
     display: flex;
@@ -564,10 +543,10 @@
     width: $fullSize;
     font-size: 1rem;
   }
-}
+}*/
 
 // Add new association btn on AccountInfosView
-#association-user-add {
+/*#association-user-add {
   display: flex;
   flex-direction: column;
 
@@ -591,7 +570,7 @@
       margin: 1rem 0;
     }
   }
-}
+}*/
 
 #association-card {
   ul {

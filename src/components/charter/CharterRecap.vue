@@ -15,11 +15,11 @@ const emit = defineEmits(['changeStep'])
 </script>
 
 <template>
-    <section class="recap-sections">
+    <div class="flex-column">
         <!-- Association infos -->
-        <section class="recap-section">
-            <div class="recap-section-title">
-                <h4 class="title-3">
+        <section>
+            <div class="flex-row-space-between">
+                <h4>
                     {{
                         t('charter.site.sign-form.association-infos-update')
                     }}
@@ -27,16 +27,19 @@ const emit = defineEmits(['changeStep'])
                 <QBtn
                     v-if="props.view === 'signCharter'"
                     :label="t('modify')"
+                    class="btn-lg"
+                    color="charter"
                     icon="bi-pencil"
+                    text-color="charter"
                     @click="emit('changeStep', 1)"
                 />
             </div>
             <CharterRecapAssociationInfos :association="props.associationId"/>
         </section>
         <!-- Documents -->
-        <section class="recap-section">
-            <div class="recap-section-title">
-                <h4 class="title-3">
+        <section>
+            <div class="flex-row-space-between">
+                <h4>
                     {{
                         t('charter.site.sign-form.documents-upload')
                     }}
@@ -44,7 +47,10 @@ const emit = defineEmits(['changeStep'])
                 <QBtn
                     v-if="props.view === 'signCharter'"
                     :label="t('modify')"
+                    class="btn-lg"
+                    color="charter"
                     icon="bi-pencil"
+                    text-color="charter"
                     @click="emit('changeStep', 2)"
                 />
             </div>
@@ -54,10 +60,11 @@ const emit = defineEmits(['changeStep'])
                 process="charter"
             />
         </section>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/styles/forms.scss";
+@import "@/assets/_variables.scss";
 </style>

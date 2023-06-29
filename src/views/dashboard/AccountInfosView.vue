@@ -90,61 +90,63 @@ onMounted(() => {
 
 <template>
     <QTabs
-        v-model="tab"
-        active-color="primary"
-        dense
-        indicator-color="primary"
-        narrow-indicator
+            v-model="tab"
+            active-color="dashboard"
+            class="padding-top"
+            dense
+            indicator-color="dashboard"
+            narrow-indicator
     >
         <QTab
-            :label="t('dashboard.my-infos')"
-            name="infos"
+                :label="t('dashboard.my-infos')"
+                name="infos"
         />
         <QTab
-            v-if="!isStaff"
-            :label="t('dashboard.my-associations')"
-            name="associations"
+                v-if="!isStaff"
+                :label="t('dashboard.my-associations')"
+                name="associations"
         />
         <QTab
-            v-if="!userStore.user?.isCas"
-            :label="t('dashboard.my-password')"
-            name="password"
+                v-if="!userStore.user?.isCas"
+                :label="t('dashboard.my-password')"
+                name="password"
         />
     </QTabs>
 
     <QTabPanels
-        v-model="tab"
-        animated
+            v-model="tab"
+            animated
     >
         <QTabPanel name="infos">
-            <section class="association-cards dashboard-section">
-                <div class="form-title">
-                    <h2>
-                        <i
+            <section class="dashboard-section">
+                <h2>
+                    <i
                             aria-hidden="true"
                             class="bi bi-pencil-square"
-                        ></i>
-                        {{ t('dashboard.my-infos') }}
-                    </h2>
-                </div>
+                    ></i>
+                    {{ t('dashboard.my-infos') }}
+                </h2>
 
-                <div class="form-container">
-                    <div class="form">
+                <div class="dashboard-section-container">
+                    <div class="container">
                         <QForm
-                            class="q-gutter-md"
-                            @submit.prevent="onUpdateUserInfos"
+                                class="q-gutter-md"
+                                @submit.prevent="onUpdateUserInfos"
                         >
                             <FormUserInfosEdition
-                                v-if="userStore.user"
-                                :edited-by-staff="false"
-                                :user="userStore.user"
+                                    v-if="userStore.user"
+                                    :edited-by-staff="false"
+                                    :user="userStore.user"
                             />
-                            <QBtn
-                                :label="t('validate-changes')"
-                                class="validate-btn"
-                                icon="bi-check-lg"
-                                type="submit"
-                            />
+                            <div class="flex-row-center">
+                                <QBtn
+                                        :label="t('validate-changes')"
+                                        class="btn-lg"
+                                        color="dashboard"
+                                        icon="bi-check-lg"
+                                        type="submit"
+                                />
+                            </div>
                         </QForm>
                     </div>
                 </div>
@@ -153,51 +155,48 @@ onMounted(() => {
 
         <QTabPanel name="associations">
             <div class="dashboard-section">
-                <div class="form-title">
-                    <h2>
-                        <i
+                <h2>
+                    <i
                             aria-hidden="true"
                             class="bi bi-pencil-square"
-                        ></i>
-                        {{ t('dashboard.association-user.my-associations') }}
-                    </h2>
-                </div>
+                    ></i>
+                    {{ t('dashboard.association-user.my-associations') }}
+                </h2>
 
-                <div class="form-container">
-                    <div class="form">
+                <div class="dashboard-section-container">
+                    <div class="container flex-column">
                         <FormDisplayUserAssociations/>
                     </div>
                 </div>
             </div>
 
             <section
-                v-if="userAssociations.length < 5"
-                class="dashboard-section"
+                    v-if="userAssociations.length < 5"
+                    class="dashboard-section"
             >
-                <div class="form-title">
-                    <h2>
-                        <i
+                <h2>
+                    <i
                             aria-hidden="true"
                             class="bi bi-pencil-square"
-                        ></i>
-                        {{ t('dashboard.association-user.new-associations') }}
-                    </h2>
-                </div>
+                    ></i>
+                    {{ t('dashboard.association-user.new-associations') }}
+                </h2>
 
-                <div class="form-container">
-                    <div class="form">
+                <div class="dashboard-section-container">
+                    <div class="container">
                         <QForm
-                            @submit.prevent="onUpdateUserAssociations"
+                                @submit.prevent="onUpdateUserAssociations"
                         >
                             <FormRegisterUserAssociations/>
-                            <section class="btn-group">
+                            <div class="flex-row-center padding-top">
                                 <QBtn
-                                    :label="t('back')"
-                                    :to="{ name: 'Dashboard' }"
-                                    class="back-btn"
-                                    icon="bi-chevron-compact-left"
+                                        :label="t('back')"
+                                        :to="{ name: 'Dashboard' }"
+                                        class="btn-lg"
+                                        color="dashboard"
+                                        icon="bi-chevron-compact-left"
                                 />
-                            </section>
+                            </div>
                         </QForm>
                     </div>
                 </div>
@@ -213,5 +212,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
-
+@import '@/assets/_variables.scss';
+@import '@/assets/styles/dashboard.scss';
 </style>

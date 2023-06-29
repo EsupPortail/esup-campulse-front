@@ -58,7 +58,8 @@ async function onGetProjectDetail() {
 </script>
 
 <template>
-    <section class="dashboard-section">
+    <!-- General Section -->
+    <div class="dashboard-section">
         <h2>
             <i
                 aria-hidden="true"
@@ -66,13 +67,15 @@ async function onGetProjectDetail() {
             ></i>
             {{ t('project.general-infos') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <ProjectRecapBasicInfos/>
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
+    </div>
+
+    <!-- Commission Section -->
+    <div class="dashboard-section">
         <h2>
             <i
                 aria-hidden="true"
@@ -80,13 +83,15 @@ async function onGetProjectDetail() {
             ></i>
             {{ t('project.commission-choice') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <ProjectRecapCommissions view="projectRecap"/>
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
+    </div>
+
+    <!-- Budget Section -->
+    <div class="dashboard-section">
         <h2>
             <i
                 aria-hidden="true"
@@ -94,13 +99,15 @@ async function onGetProjectDetail() {
             ></i>
             {{ t('project.budget') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <ProjectRecapBudget :load-data="false"/>
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
+    </div>
+
+    <!-- Goals Section -->
+    <div class="dashboard-section">
         <h2>
             <i
                 aria-hidden="true"
@@ -108,13 +115,15 @@ async function onGetProjectDetail() {
             ></i>
             {{ t('project.goals') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <ProjectRecapGoals/>
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
+    </div>
+
+    <!-- Documents Section -->
+    <div class="dashboard-section">
         <h2>
             <i
                 aria-hidden="true"
@@ -122,8 +131,8 @@ async function onGetProjectDetail() {
             ></i>
             {{ t('project.documents') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <ProjectRecapDocuments
                     v-if="isLoaded"
                     :association-id="null"
@@ -131,8 +140,10 @@ async function onGetProjectDetail() {
                 />
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
+    </div>
+
+    <!-- Status Section -->
+    <div class="dashboard-section">
         <h2>
             <i
                 aria-hidden="true"
@@ -140,8 +151,8 @@ async function onGetProjectDetail() {
             ></i>
             {{ t('project.status.title') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <div class="display-row">
                     <p class="row-title">{{ t('status') }}</p>
                     <ProjectStatusIndicator
@@ -151,8 +162,10 @@ async function onGetProjectDetail() {
                 </div>
             </div>
         </div>
-    </section>
-    <section class="dashboard-section">
+    </div>
+
+    <!-- Comment Section -->
+    <div class="dashboard-section">
         <h2>
             <i
                 aria-hidden="true"
@@ -160,32 +173,32 @@ async function onGetProjectDetail() {
             ></i>
             {{ t('project.comments.title') }}
         </h2>
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <ProjectComments
                     v-if="isLoaded"
                     :project="projectStore.project?.id"
                 />
             </div>
         </div>
-    </section>
-    <ProjectValidation
-        v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
-            && hasPerm('change_project_as_validator')"
-    />
+        <ProjectValidation
+            v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
+                && hasPerm('change_project_as_validator')"
+        />
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 
-.flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+/*.flex-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .display-row {
-    width: 100%;
-}
+  width: 100%;
+}*/
 </style>

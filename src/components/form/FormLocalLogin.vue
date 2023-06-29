@@ -34,38 +34,45 @@ async function onLogIn() {
 
 <template>
     <QForm
-        class="q-gutter-md"
-        @submit.prevent="onLogIn"
+            class="q-gutter-md"
+            @submit.prevent="onLogIn"
     >
         <QInput
-            v-model="user.username"
-            :label="t('forms.email')"
-            :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
-            autocomplete="email"
-            filled
-            lazy-rules
+                v-model="user.username"
+                :label="t('forms.email')"
+                :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
+                autocomplete="email"
+                color="association"
+                filled
+                lazy-rules
         />
         <QInput
-            v-model="user.password"
-            :label="t('forms.password')"
-            :rules="[ val => val && val.length > 0 || t('forms.required-password')]"
-            :type="passwordVisibility ? 'text' : 'password'"
-            autocomplete="current-password"
-            filled
-            lazy-rules
+                v-model="user.password"
+                :label="t('forms.password')"
+                :rules="[ val => val && val.length > 0 || t('forms.required-password')]"
+                :type="passwordVisibility ? 'text' : 'password'"
+                autocomplete="current-password"
+                color="association"
+                filled
+                lazy-rules
         />
         <QCheckbox
-            v-model="passwordVisibility"
-            :label="t('forms.view-password')"
+                v-model="passwordVisibility"
+                :label="t('forms.view-password')"
+                color="association"
         />
-        <div class="btn-group">
+        <div class="flex-row-center">
             <QBtn
-                :label="t('forms.login')"
-                type="submit"
+                    :label="t('forms.login')"
+                    class="btn-lg"
+                    color="association"
+                    type="submit"
             />
             <QBtn
-                :label="t('forms.create-account')"
-                :to="{name: 'Registration'}"
+                    :label="t('forms.create-account')"
+                    :to="{name: 'Registration'}"
+                    class="btn-lg"
+                    color="association"
             />
         </div>
         <!-- <QBtn :label="t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
@@ -73,15 +80,15 @@ async function onLogIn() {
 
         <div class="login-links">
             <RouterLink
-                class="login-link"
-                to="/password-reset"
+                    class="login-link"
+                    to="/password-reset"
             >
                 <span class="icon icon-mentions"></span>{{ t('forms.reset-password') }}
             </RouterLink>
             <br/>
             <RouterLink
-                class="login-link"
-                to="/register-resend-email"
+                    class="login-link"
+                    to="/register-resend-email"
             >
                 <span class="icon icon-mentions"></span>{{ t('forms.resend-email') }}
             </RouterLink>
@@ -91,4 +98,5 @@ async function onLogIn() {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/login.scss";
+@import "@/assets/_variables.scss";
 </style>

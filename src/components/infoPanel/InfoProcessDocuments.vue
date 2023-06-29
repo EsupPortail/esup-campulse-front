@@ -41,7 +41,7 @@ onMounted(async () => {
     <div class="info-panel">
         <i
             aria-hidden="true"
-            class="bi bi-exclamation-lg"
+            class="bi bi-info"
         ></i>
         <p>{{ t('project.form-help') }}</p>
         <p>

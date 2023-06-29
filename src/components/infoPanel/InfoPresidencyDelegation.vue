@@ -13,19 +13,17 @@ const {t} = useI18n()
         <p>
             {{ t('dashboard.association-user.delegate-presidency-info.message') }}
         </p>
-        <p class="paragraph">
-            <ul>
-                <li>
-                    {{ t('dashboard.association-user.delegate-presidency-info.perm-1') }}
-                </li>
-                <li>
-                    {{ t('dashboard.association-user.delegate-presidency-info.perm-2') }}
-                </li>
-                <li>
-                    {{ t('dashboard.association-user.delegate-presidency-info.perm-3') }}
-                </li>
-            </ul>
-        </p>
+        <ul>
+            <li>
+                {{ t('dashboard.association-user.delegate-presidency-info.perm-1') }}
+            </li>
+            <li>
+                {{ t('dashboard.association-user.delegate-presidency-info.perm-2') }}
+            </li>
+            <li>
+                {{ t('dashboard.association-user.delegate-presidency-info.perm-3') }}
+            </li>
+        </ul>
     </div>
 </template>
 

@@ -22,6 +22,7 @@ const props = defineProps<{
                 :color="props.color"
                 :label="t('dashboard.template-document-library')"
                 :to="{name: 'DocumentsLibrary'}"
+                class="btn-lg"
                 outline
             />
         </div>
@@ -31,4 +32,5 @@ const props = defineProps<{
 <style lang="scss" scoped>
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/styles/forms.scss";
+@import "@/assets/_variables.scss";
 </style>

@@ -10,17 +10,15 @@ const {colorVariant} = useColorVariants()
 
 
 <template>
-    <QPageContainer
-        id="layout-content"
+    <main
         :class="'variant-' + colorVariant"
+        role="main"
     >
-        <main role="main">
-            <!--<LayoutBreadcrumbs/>-->
-            <NavigateTopButton/>
-            <Suspense>
-                <RouterView/>
-            </Suspense>
-            <AlertAbortedCasRegistration/>
-        </main>
-    </QPageContainer>
+        <!--<LayoutBreadcrumbs/>-->
+        <NavigateTopButton/>
+        <Suspense>
+            <RouterView/>
+        </Suspense>
+        <AlertAbortedCasRegistration/>
+    </main>
 </template>

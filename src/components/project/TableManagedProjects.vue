@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type {QTableProps} from 'quasar'
+import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
@@ -8,7 +9,6 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import type {ProjectList} from '#/project'
 import axios from 'axios'
 import {useProjectStore} from '@/stores/useProjectStore'
-import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref, watch} from 'vue'
 import TableManageProjectsBtn from '@/components/project/TableManageProjectsBtn.vue'
@@ -106,62 +106,62 @@ const columns: QTableProps['columns'] = [
 </script>
 
 <template>
-    <section class="variant-space-3">
+    <div>
         <QTable
-            :columns="columns"
-            :loading="!projects"
-            :rows="projects"
-            :rows-per-page-options="[10, 20, 50, 0]"
-            :title="props.title"
-            row-key="name"
+                :columns="columns"
+                :loading="!projects"
+                :rows="projects"
+                :rows-per-page-options="[10, 20, 50, 0]"
+                :title="props.title"
+                row-key="name"
         >
             <template v-slot:body="props">
                 <QTr :props="props">
                     <QTd
-                        key="name"
-                        :props="props"
+                            key="name"
+                            :props="props"
                     >
                         {{ props.row.name }}
                     </QTd>
                     <QTd
-                        key="applicant"
-                        :props="props"
+                            key="applicant"
+                            :props="props"
                     >
                         {{ applicant(props.row.association, props.row.user) }}
                     </QTd>
                     <QTd
-                        key="lastModifiedDate"
-                        :props="props"
+                            key="lastModifiedDate"
+                            :props="props"
                     >
                         {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
                     </QTd>
                     <QTd
-                        key="status"
-                        :props="props"
-                        class="state-cell"
+                            key="status"
+                            :props="props"
+                            class="state-cell"
                     >
                         <ProjectStatusIndicator
-                            :project-status="props.row.projectStatus"
-                            :show-draft="false"
+                                :project-status="props.row.projectStatus"
+                                :show-draft="false"
                         />
                     </QTd>
                     <QTd
-                        key="edition"
-                        :props="props"
-                        class="actions-cell-compact"
+                            key="edition"
+                            :props="props"
+                            class="actions-cell-compact"
                     >
                         <div class="button-container">
                             <TableManageProjectsBtn
-                                :project="props.row.id"
-                                :project-status="props.row.projectStatus"
-                                @refresh-projects="onGetProjects"
+                                    :project="props.row.id"
+                                    :project-status="props.row.projectStatus"
+                                    @refresh-projects="onGetProjects"
                             />
                         </div>
                     </QTd>
                 </QTr>
             </template>
         </QTable>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -169,6 +169,6 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/forms.scss';
 
 section {
-    padding: 0 1rem
+  padding: 0 1rem
 }
 </style>

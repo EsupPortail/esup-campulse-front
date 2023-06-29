@@ -44,13 +44,15 @@ watch(() => projectStore.project, async () => {
 
 <template>
     <div
-        class="display-row"
+            class="display-row"
     >
         <p class="row-title">{{ t('project.categories') }}</p>
         <p>
             <QChip
-                v-for="category in projectCategories"
-                :key="category"
+                    v-for="category in projectCategories"
+                    :key="category"
+                    color="commission"
+                    outline
             >
                 {{
                     projectStore.projectCategoriesLabels.find(obj => obj.value === category)?.label
@@ -63,8 +65,4 @@ watch(() => projectStore.project, async () => {
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
-
-.display-row {
-    width: 100% !important;
-}
 </style>

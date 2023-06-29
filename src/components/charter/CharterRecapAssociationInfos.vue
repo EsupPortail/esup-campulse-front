@@ -38,7 +38,7 @@ async function onGetAssociationDetails() {
 </script>
 
 <template>
-    <section class="flex-section">
+    <section class="flex-column padding-top padding-bottom">
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.name') }}</p>
             <p>{{ associationStore.association?.name }}</p>
@@ -89,15 +89,4 @@ async function onGetAssociationDetails() {
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
-
-.display-row {
-    width: 100% !important;
-}
-
-.flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-}
 </style>

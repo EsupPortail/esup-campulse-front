@@ -4,5 +4,11 @@ import FormPassWordReset from '@/components/form/FormPasswordReset.vue'
 </script>
 
 <template>
-    <FormPassWordReset/>
+    <section class="dashboard-section">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <FormPassWordReset/>
+            </div>
+        </div>
+    </section>
 </template>
