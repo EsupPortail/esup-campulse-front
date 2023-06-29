@@ -85,12 +85,12 @@ async function loadAssociationsActivityFields() {
         <div class="content">
             <div class="intro-image">
                 <img
-                    :alt="t('directory.image-alt')"
-                    src="@/assets/img/unistra.jpg"
+                        :alt="t('directory.image-alt')"
+                        src="@/assets/img/unistra.jpg"
                 />
             </div>
             <div>
-                <h2 class="intro-title">{{ t('directory.subtitle') }}</h2>
+                <h2>{{ t('directory.subtitle') }}</h2>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et
@@ -106,125 +106,138 @@ async function loadAssociationsActivityFields() {
         </div>
     </section>
 
-    <FormAssociationSearch
-        v-if="route.name"
-        :route="route.name"
-    />
+    <div class="association-search">
+        <FormAssociationSearch
+                v-if="route.name"
+                :route="route.name"
+        />
+    </div>
 
-    <section class="directory-list">
-        <div class="dashboard-section-container">
-            <div class="container">
-                <section class="directory-sorting">
-                    <h2>{{ t('directory.list') }}</h2>
-                    <div>
-                        <p v-if="associations.length > 0">
-                            <span>{{ associations.length }}</span>
-                            {{
-                                associations.length > 1 ? t('directory.found-associations-plural') :
-                                t('directory.found-associations-singular')
-                            }} :
-                        </p>
-                        <p v-else>{{ t('directory.no-match') }}</p>
-                        <p>
-                            <span>{{ associationsOnPage.length }}</span>
-                            {{
-                                associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') :
-                                t('directory.associations-on-page-singular')
-                            }} :
-                        </p>
-                    </div>
-                </section>
-
-                <QCard
-                    v-for="association in associationsOnPage"
-                    :key="association.id"
-                    class="my-card"
-                >
-                    <div class="card-background"></div>
-                    <i
-                        aria-hidden="true"
-                        class="card-chevron bi bi-chevron-compact-right"
-                    ></i>
-                    <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
-                    <QCardSection>
-                        <div class="list-logo">
-                            <QImg
-                                :alt="altLogoText(association)"
-                                :ratio="1"
-                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : noLogoSquare.default) : noLogoSquare.default"
-                            />
+    <div class="dashboard-section">
+        <div class="directory-list">
+            <div class="dashboard-section-container">
+                <div class="container">
+                    <div class="directory-sorting">
+                        <h2>{{ t('directory.list') }}</h2>
+                        <div>
+                            <p v-if="associations.length > 0">
+                                <span>{{ associations.length }}</span>
+                                {{
+                                    associations.length > 1 ? t('directory.found-associations-plural') :
+                                        t('directory.found-associations-singular')
+                                }} :
+                            </p>
+                            <p v-else>{{ t('directory.no-match') }}</p>
+                            <p>
+                                <span>{{ associationsOnPage.length }}</span>
+                                {{
+                                    associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') :
+                                        t('directory.associations-on-page-singular')
+                                }} :
+                            </p>
                         </div>
-                        <div class="list-details">
-                            <h3>
-                                <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
-                                    {{ association.name }}
-                                </RouterLink>
-                            </h3>
-                            <ul>
-                                <li v-if="association.acronym">
+                    </div>
+
+                    <QCard
+                            v-for="association in associationsOnPage"
+                            :key="association.id"
+                            class="my-card"
+                    >
+                        <div class="card-background"></div>
+                        <i
+                                aria-hidden="true"
+                                class="card-chevron bi bi-chevron-compact-right"
+                        ></i>
+                        <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
+                        <QCardSection>
+                            <div class="list-logo">
+                                <QImg
+                                        :alt="altLogoText(association)"
+                                        :ratio="1"
+                                        :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : noLogoSquare.default) : noLogoSquare.default"
+                                />
+                            </div>
+                            <div class="list-details">
+                                <h3>
+                                    <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
+                                        {{ association.name }}
+                                    </RouterLink>
+                                </h3>
+                                <ul>
+                                    <li v-if="association.acronym">
                                     <span class="label">
                                         <i
-                                            aria-hidden="true"
-                                            class="bi bi-tag"
+                                                aria-hidden="true"
+                                                class="bi bi-tag"
                                         ></i>
                                         {{ t('directory.labels.association-acronym') + ' : ' }}
                                     </span>
-                                    <span class="value">{{ association.acronym }}</span>
-                                </li>
-                                <li v-if="association.institution">
+                                        <span class="value">{{ association.acronym }}</span>
+                                    </li>
+                                    <li v-if="association.institution">
                                     <span class="label">
                                         <i
-                                            aria-hidden="true"
-                                            class="bi bi-bank2"
+                                                aria-hidden="true"
+                                                class="bi bi-bank2"
                                         ></i>
                                         {{ t('directory.labels.association-institution') + ' : ' }}
                                     </span>
-                                    <span class="value">{{
-                                        associationStore.institutions.find(obj => obj.id === association?.institution)?.name
-                                    }}</span>
-                                </li>
-                                <li v-if="association.activityField">
+                                        <span class="value">{{
+                                                associationStore.institutions.find(obj => obj.id === association?.institution)?.name
+                                            }}</span>
+                                    </li>
+                                    <li v-if="association.activityField">
                                     <span class="label">
                                         <i
-                                            aria-hidden="true"
-                                            class="bi bi-globe"
+                                                aria-hidden="true"
+                                                class="bi bi-globe"
                                         ></i>
                                         {{ t('directory.labels.association-activity-field') + ' : ' }}
                                     </span>
-                                    <span class="value">{{
-                                        associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
-                                    }}</span>
-                                </li>
-                                <li v-if="association.institutionComponent">
+                                        <span class="value">{{
+                                                associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
+                                            }}</span>
+                                    </li>
+                                    <li v-if="association.institutionComponent">
                                     <span class="label">
                                         <i
-                                            aria-hidden="true"
-                                            class="bi bi-mortarboard"
+                                                aria-hidden="true"
+                                                class="bi bi-mortarboard"
                                         ></i>
                                         {{ t('directory.labels.association-institution-component') + ' : ' }}
                                     </span>
-                                    <span class="value">{{
-                                        associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
-                                    }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </QCardSection>
-                    <!-- </RouterLink> -->
-                </QCard>
-                <QPagination
-                    v-if="associationsOnPage && pages && pages > 1"
-                    v-model="currentPage"
-                    :aria-label="t('pagination')"
-                    :max="pages"
-                    @update:model-value="scrollToTop"
-                />
+                                        <span class="value">{{
+                                                associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
+                                            }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </QCardSection>
+                        <!-- </RouterLink> -->
+                    </QCard>
+                    <QPagination
+                            v-if="associationsOnPage && pages && pages > 1"
+                            v-model="currentPage"
+                            :aria-label="t('pagination')"
+                            :max="pages"
+                            @update:model-value="scrollToTop"
+                    />
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
+@import '@/assets/styles/dashboard.scss';
+
+h2 {
+  margin: 0;
+}
+
+.association-search {
+  padding: 1rem;
+}
 </style>
