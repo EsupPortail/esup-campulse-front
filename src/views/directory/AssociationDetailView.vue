@@ -88,7 +88,7 @@ async function onGetAssociationDetail() {
             </h2>
 
             <div class="dashboard-section-container">
-                <div class="container">
+                <div class="container flex-column">
                     <div
                         v-if="association?.currentProjects"
                         class="display-row"
@@ -148,7 +148,7 @@ async function onGetAssociationDetail() {
                 </h2>
 
                 <div class="dashboard-section-container">
-                    <div class="container">
+                    <div class="container flex-column">
                         <div
                             v-if="association?.presidentNames"
                             class="display-row"
@@ -178,7 +178,7 @@ async function onGetAssociationDetail() {
                             class="display-row"
                         >
                             <h3>{{ t('association.labels.last-goa') }}</h3>
-                            <p>{{ formatDate(association?.lastGoaDate) }}</p>
+                            <p>{{ formatDate(association?.lastGoaDate).split('-').reverse().join('/') }}</p>
                         </div>
 
                         <div
@@ -206,7 +206,7 @@ async function onGetAssociationDetail() {
                 </h2>
 
                 <div class="dashboard-section-container">
-                    <div class="container">
+                    <div class="container flex-column">
                         <div
                             v-if="association?.address"
                             class="display-row"
@@ -270,7 +270,7 @@ async function onGetAssociationDetail() {
         </div>
 
         <div
-            class="dashboard-btn-group padding-top padding-bottom"
+            class="flex-row-center padding-top padding-bottom"
         >
             <QBtn
                 :label="t('association.back-directory')"
