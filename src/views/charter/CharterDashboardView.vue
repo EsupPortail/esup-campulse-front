@@ -28,10 +28,10 @@ onMounted(initTab)
     <section class="dashboard-section">
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoDocumentLibrary color="charter"/>
+                <InfoDocumentLibrary/>
                 <QTabs
                     v-model="tab"
-                    active-color="primary"
+                    active-color="charter"
                     align="justify"
                     class="text-charter"
                     dense

@@ -53,7 +53,7 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
-    {name: 'actions', align: 'left', label: t('manage'), field: 'actions', sortable: true}
+    {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: true}
 ]
 </script>
 
@@ -65,6 +65,7 @@ const columns: QTableProps['columns'] = [
                     :columns="columns"
                     :rows="manageCharters"
                     :rows-per-page-options="[10, 20, 50, 0]"
+                    class="text-charter"
                     row-key="name"
                 >
                     <template v-slot:body="props">
@@ -109,3 +110,4 @@ const columns: QTableProps['columns'] = [
         </div>
     </section>
 </template>
+

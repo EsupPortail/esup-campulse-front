@@ -89,16 +89,17 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
 
 <template>
     <QCard v-if="title">
-        <QCardSection>
+        <QCardSection class="flex-column">
             <h3>{{ title }}</h3>
             <p>{{ t('dashboard.association-user.add-my-associations-note') }}</p>
 
             <div
                 v-for="(association, index) in newAssociations"
                 :key="index"
+                class="flex-row"
             >
-                <div class="flex-group">
-                    <div>
+                <div>
+                    <div class="flex-column">
                         <QSelect
                             v-model="association.id"
                             :label="t('forms.select-association')"
@@ -124,13 +125,12 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                             role="radiogroup"
                             @update:model-value="updateRegisterRoleInAssociation"
                         />
+                        <QSeparator
+                            v-if="routeName !== 'ManageAccount'"
+                            aria-hidden="true"
+                            role="presentation"
+                        />
                     </div>
-                    <QSeparator
-                        aria-hidden="true"
-                        inset
-                        role="presentation"
-                        vertical
-                    />
                 </div>
                 <QSeparator
                     aria-hidden="true"
@@ -149,31 +149,29 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                     />
                 </div>
             </div>
-            <QSeparator
-                v-if="routeName !== 'ManageAccount'"
-                aria-hidden="true"
-                role="presentation"
-            />
-            <QBtn
-                v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
-                    routeName === 'ManageAccount'"
-                :label="t('validate')"
-                class="btn-lg"
-                color="dashboard"
-                icon-right="bi-check2"
-                outline
-                type="submit"
-            />
-            <QBtn
-                v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
-                    (routeName === 'ManageAccount' && newAssociations.length === 0)"
-                :label="t('forms.add-association')"
-                class="btn-lg"
-                color="dashboard"
-                icon="bi-plus-circle"
-                outline
-                @click="addAssociation"
-            />
+
+            <div class="flex-row">
+                <QBtn
+                    v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
+                        routeName === 'ManageAccount'"
+                    :label="t('validate')"
+                    class="btn-lg"
+                    color="dashboard"
+                    icon-right="bi-check2"
+                    outline
+                    type="submit"
+                />
+                <QBtn
+                    v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
+                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
+                    :label="t('forms.add-association')"
+                    class="btn-lg"
+                    color="dashboard"
+                    icon="bi-plus-circle"
+                    outline
+                    @click="addAssociation"
+                />
+            </div>
         </QCardSection>
     </QCard>
 </template>
@@ -183,7 +181,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
 @import '@/assets/styles/associations.scss';
 @import '@/assets/_variables.scss';
 
-.flex-group, .q-separator {
+/*.flex-group, .q-separator {
     margin: 1rem 0 1rem 0;
 }
 
@@ -199,5 +197,5 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
             margin: 0;
         }
     }
-}
+}*/
 </style>
