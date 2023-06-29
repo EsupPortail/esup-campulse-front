@@ -1,4 +1,4 @@
-import type {Document, DocumentUpload, DocumentUploadStatus, MimeType, ProcessDocument} from '#/documents'
+import type {Document, DocumentUpload, ProcessDocument} from '#/documents'
 
 export const _document: Document = {
     id: 1,

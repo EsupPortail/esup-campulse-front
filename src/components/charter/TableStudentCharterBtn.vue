@@ -8,7 +8,7 @@ import FormSignCharters from '@/components/charter/FormSignCharters.vue'
 import useCharters from '@/composables/useCharters'
 
 const {t} = useI18n()
-const {getFile, documents} = useDocumentUploads()
+const {documents} = useDocumentUploads()
 const {downloadCharter} = useCharters()
 
 const props = defineProps<{

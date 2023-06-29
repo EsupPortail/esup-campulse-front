@@ -5,6 +5,7 @@ import type {UserAssociation} from '#/user'
 export const _association: Association = {
     canSubmitProjects: false,
     charterStatus: '',
+    charterDate: '',
     id: 1,
     name: 'PLANA',
     acronym: '',
@@ -101,6 +102,7 @@ export const _associations: Association[] = [
         activityField: 1,
         canSubmitProjects: true,
         charterStatus: 'draft',
+        charterDate: '',
         amountMembersAllowed: 4
     },
     {
@@ -118,6 +120,7 @@ export const _associations: Association[] = [
         activityField: 2,
         canSubmitProjects: true,
         charterStatus: 'draft',
+        charterDate: '',
         amountMembersAllowed: 4
     }
 ]

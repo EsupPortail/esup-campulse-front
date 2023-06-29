@@ -1,16 +1,9 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import useProjectComments from '@/composables/useProjectComments'
-import axios from 'axios'
-import {useQuasar} from 'quasar'
-import useErrors from '@/composables/useErrors'
-import {useProjectStore} from '@/stores/useProjectStore'
 
 const {t} = useI18n()
-const {loading, notify} = useQuasar()
-const {catchHTTPError} = useErrors()
-const {newComment, postNewProjectComment, getProjectComments} = useProjectComments()
-const projectStore = useProjectStore()
+const {newComment} = useProjectComments()
 
 type Action = 'validate' | 'reject' | 'return' | 'new-comment' | ''
 type Icon = 'bi-check-lg' | 'bi-x-octagon' | 'bi-exclamation-triangle' | 'bi-chat' | ''

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import useSubmitReview from '@/composables/useSubmitReview'
 import {useI18n} from 'vue-i18n'
@@ -9,7 +8,6 @@ import {onMounted, ref} from 'vue'
 import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
-const projectStore = useProjectStore()
 const {formatDate, CURRENCY} = useUtility()
 const {projectReview} = useSubmitReview()
 const {userToUpdate} = useUsers()
