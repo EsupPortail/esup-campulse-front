@@ -19,6 +19,7 @@ const associationStore = useAssociationStore()
 const {altLogoText} = useAssociation()
 const {catchHTTPError} = useErrors()
 
+const baseUrl = import.meta.env.VITE_APP_BASE_URL
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
     association.value = associationStore.association
@@ -56,7 +57,7 @@ async function onGetAssociationDetail() {
                 <QImg
                     v-if="association"
                     :alt="altLogoText(association)"
-                    :src="hasLogo ? association?.pathLogo?.detail : noLogoSquare.default"
+                    :src="hasLogo ? (association?.pathLogo?.detail.indexOf('http') === -1 ? baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
                 />
             </div>
             <div class="association-name">

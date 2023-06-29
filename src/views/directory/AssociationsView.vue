@@ -26,6 +26,7 @@ onMounted(async function () {
     loading.hide()
 })
 
+const baseUrl = import.meta.env.VITE_APP_BASE_URL
 // Used for pagination
 const associationsPerPage = 15
 const currentPage = ref(1)
@@ -150,7 +151,7 @@ async function loadAssociationsActivityFields() {
                             <QImg
                                 :alt="altLogoText(association)"
                                 :ratio="1"
-                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? association.pathLogo.list : noLogoSquare.default) : noLogoSquare.default"
+                                :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? (association.pathLogo.list.indexOf('http') === -1 ? baseUrl + association.pathLogo.list : association.pathLogo.list) : noLogoSquare.default) : noLogoSquare.default"
                             />
                         </div>
                         <div class="list-details">
