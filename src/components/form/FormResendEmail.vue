@@ -29,16 +29,16 @@ async function resend() {
 </script>
 
 <template>
-    <div class="instructions">
+    <!--<div class="instructions">
         <QBanner
-            v-if="!isResend"
-            class="bg-grey-3"
+                v-if="!isResend"
+                class="bg-grey-3"
         >
             <template v-slot:avatar>
                 <QIcon
-                    color="primary"
-                    name="mdi-information-outline"
-                    size="md"
+                        color="primary"
+                        name="mdi-information-outline"
+                        size="md"
                 />
             </template>
             <strong>{{ t("forms.resend-email-cas") }}</strong>
@@ -46,52 +46,84 @@ async function resend() {
             </template>
         </QBanner>
         <p v-if="isResend">{{ t("forms.resend-email-ok") }}</p>
-    </div>
+    </div>-->
     <QForm
-        v-if="!isResend"
-        class="q-gutter-md"
-        @submit="resend"
+            v-if="!isResend"
+            class="q-gutter-md"
+            @submit="resend"
     >
-        <fieldset>
-            <legend class="instructions">{{ t("forms.resend-email-confirmation") }}</legend>
-            <QInput
-                v-model="email"
-                :label="t('forms.email')"
-                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                filled
-                lazy-rules
-                autocomplete="email"
-            />
-            <QBtn
-                :label="t('forms.send')"
-                color="primary"
-                type="submit"
-            />
-        </fieldset>
+        <div class="dashboard-section">
+            <h2>{{ t("forms.resend-email-confirmation") }}</h2>
+
+            <div class="flex-column">
+                <div>
+                    <QBanner
+                            v-if="!isResend"
+                            class="bg-grey-3"
+                    >
+                        <template v-slot:avatar>
+                            <QIcon
+                                    color="dashboard"
+                                    name="mdi-information-outline"
+                                    size="md"
+                            />
+                        </template>
+                        <strong>{{ t("forms.resend-email-cas") }}</strong>
+
+                    </QBanner>
+                    <p v-if="isResend">{{ t("forms.resend-email-ok") }}</p>
+                </div>
+                <QInput
+                        v-model="email"
+                        :label="t('forms.email')"
+                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                        autocomplete="email"
+                        filled
+                        lazy-rules
+                />
+            </div>
+
+            <div class="flex-row-center padding-bottom">
+                <QBtn
+                        :label="t('forms.send')"
+                        class="btn-lg"
+                        color="dashboard"
+                        type="submit"
+                />
+            </div>
+        </div>
     </QForm>
 </template>
 
 <style lang="scss" scoped>
-.instructions {
-    font-size: 1.2em;
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/forms.scss';
 
-    p {
-        text-align: center;
-    }
+strong {
+  font-size: 1.2rem;
+}
+
+/*
+.instructions {
+  font-size: 1.2em;
+
+  p {
+    text-align: center;
+  }
 }
 
 .q-form, .instructions {
-    max-width: 720px;
-    width: 100%;
-    margin: auto;
+  max-width: 720px;
+  width: 100%;
+  margin: auto;
 }
 
 fieldset {
-    padding-top: 30px;
-    border: none;
+  padding-top: 30px;
+  border: none;
 }
 
 .q-btn {
-    margin-top: 10px;
-}
+  margin-top: 10px;
+}*/
 </style>

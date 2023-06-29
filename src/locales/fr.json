@@ -215,6 +215,10 @@
   "commissions": "Commissions",
   "consult": "Consulter",
   "continue": "Continuer",
+  "contact": {
+    "contact": "Contact",
+    "gestionnaires": "Gestionnaires"
+  },
   "dashboard": {
     "account-infos": "Modifier mes informations personnelles",
     "association-list": "Liste des associations",

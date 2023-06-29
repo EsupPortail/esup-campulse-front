@@ -98,50 +98,50 @@ async function onDeleteAssociationUser() {
 
 <template>
     <QForm
-        @submit.prevent="onValidateAssociationUser"
+            @submit.prevent="onValidateAssociationUser"
     >
-        <section class="dashboard-section">
+        <div class="dashboard-section">
             <h2>
                 <QIcon name="bi-person"/>
                 {{ t('user.infos') }}
             </h2>
-            <div class="form-container">
-                <div class="form">
-                    <div class="rows-container">
+            <div class="dashboard-section-container">
+                <div class="container">
+                    <div class="flex-column">
                         <div class="display-row">
-                            <h3 class="row-title">{{ t('user.first-name') }}</h3>
+                            <h3>{{ t('user.first-name') }}</h3>
                             <p>{{ userManagerStore.user?.firstName }}</p>
                         </div>
                         <div class="display-row">
-                            <h3 class="row-title">{{ t('user.last-name') }}</h3>
+                            <h3>{{ t('user.last-name') }}</h3>
                             <p>{{ userManagerStore.user?.lastName }}</p>
                         </div>
                         <div class="display-row">
-                            <h3 class="row-title">{{ t('user.email') }}</h3>
+                            <h3>{{ t('user.email') }}</h3>
                             <p>{{ userManagerStore.user?.email }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="dashboard-section">
+        <div class="dashboard-section">
             <h2>
                 <QIcon name="bi-person-lines-fill"/>
                 {{ t('dashboard.association-user.association') }}
             </h2>
 
-            <div class="form-container">
-                <div class="form">
-                    <div class="rows-container">
+            <div class="dashboard-section-container">
+                <div class="container">
+                    <div class="flex-column">
                         <div class="display-row">
-                            <h3 class="row-title">{{ t('directory.labels.association-name') }}</h3>
+                            <h3>{{ t('directory.labels.association-name') }}</h3>
                             <p>
                                 {{ associationUser?.association.name }}
                             </p>
                         </div>
                         <div class="display-row">
-                            <h3 class="row-title">{{ t('directory.labels.association-institution') }}</h3>
+                            <h3>{{ t('directory.labels.association-institution') }}</h3>
                             <p>
                                 {{
                                     associationStore.institutions.find(obj => obj.id ===
@@ -150,7 +150,7 @@ async function onDeleteAssociationUser() {
                             </p>
                         </div>
                         <div class="display-row">
-                            <h3 class="row-title">{{ t('dashboard.association-user.role') }}</h3>
+                            <h3>{{ t('dashboard.association-user.role') }}</h3>
                             <p v-if="associationUser">
                                 {{
                                     associationRoleOptions.find(obj => obj.value === (associationUser ?
@@ -161,28 +161,31 @@ async function onDeleteAssociationUser() {
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="btn-group">
+        <div class="dashboard-btn-group">
             <QBtn
-                :label="t('back')"
-                :to="{ name: 'ValidateAssociationUsers' }"
-                color="secondary"
-                icon="bi-chevron-compact-left"
+                    :label="t('back')"
+                    :to="{ name: 'ValidateAssociationUsers' }"
+                    class="btn-lg"
+                    color="dashboard"
+                    icon="bi-chevron-compact-left"
             />
             <QBtn
-                :label="t('user-manager.delete-association-user')"
-                color="red"
-                icon="bi-file-earmark-x"
-                @click="onDeleteAssociationUser"
+                    :label="t('user-manager.delete-association-user')"
+                    class="btn-lg"
+                    color="red"
+                    icon="bi-file-earmark-x"
+                    @click="onDeleteAssociationUser"
             />
             <QBtn
-                :label="t('user-manager.validate-association-user')"
-                color="primary"
-                icon-right="bi-check2"
-                type="submit"
+                    :label="t('user-manager.validate-association-user')"
+                    class="btn-lg"
+                    color="dashboard"
+                    icon-right="bi-check2"
+                    type="submit"
             />
-        </section>
+        </div>
     </QForm>
 </template>
 
@@ -191,6 +194,7 @@ async function onDeleteAssociationUser() {
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/_variables.scss';
 
+/*
 .rows-container {
   display: flex;
   flex-direction: column;
@@ -205,5 +209,5 @@ async function onDeleteAssociationUser() {
   .display-row {
     width: 62.5rem;
   }
-}
+}*/
 </style>
