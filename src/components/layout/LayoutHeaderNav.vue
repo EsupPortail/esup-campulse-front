@@ -33,6 +33,18 @@ const {t} = useI18n()
             {{ t('header.commission') }}
         </RouterLink>
         <RouterLink
+            :to="{name: 'About'}"
+            class="space-1"
+        >
+            {{ t('header.about') }}
+        </RouterLink>
+        <RouterLink
+            :to="{name: 'Contact'}"
+            class="space-1"
+        >
+            {{ t('header.contact') }}
+        </RouterLink>
+        <RouterLink
             v-if="!userStore.isAuth"
             :to="{name: 'Login'}"
         >
