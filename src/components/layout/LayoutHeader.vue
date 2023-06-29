@@ -53,7 +53,7 @@ function ToggleMenu() {
                 </QToolbarTitle>
 
                 <div id="menu-items">
-                    <button @click="ToggleMenu">
+                    <button class="btn-menu" @click="ToggleMenu">
                         <i aria-hidden="true" class="bi bi-list"></i>
                     </button>
 
