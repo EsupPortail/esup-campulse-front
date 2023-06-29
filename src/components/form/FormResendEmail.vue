@@ -48,9 +48,9 @@ async function resend() {
         <p v-if="isResend">{{ t("forms.resend-email-ok") }}</p>
     </div>-->
     <QForm
-            v-if="!isResend"
-            class="q-gutter-md"
-            @submit="resend"
+        v-if="!isResend"
+        class="q-gutter-md"
+        @submit="resend"
     >
         <div class="dashboard-section">
             <h2>{{ t("forms.resend-email-confirmation") }}</h2>
@@ -58,37 +58,36 @@ async function resend() {
             <div class="flex-column">
                 <div>
                     <QBanner
-                            v-if="!isResend"
-                            class="bg-grey-3"
+                        v-if="!isResend"
+                        class="bg-grey-3"
                     >
                         <template v-slot:avatar>
                             <QIcon
-                                    color="dashboard"
-                                    name="mdi-information-outline"
-                                    size="md"
+                                color="dashboard"
+                                name="mdi-information-outline"
+                                size="md"
                             />
                         </template>
                         <strong>{{ t("forms.resend-email-cas") }}</strong>
-
                     </QBanner>
                     <p v-if="isResend">{{ t("forms.resend-email-ok") }}</p>
                 </div>
                 <QInput
-                        v-model="email"
-                        :label="t('forms.email')"
-                        :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                        autocomplete="email"
-                        filled
-                        lazy-rules
+                    v-model="email"
+                    :label="t('forms.email')"
+                    :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                    autocomplete="email"
+                    filled
+                    lazy-rules
                 />
             </div>
 
             <div class="flex-row-center padding-bottom">
                 <QBtn
-                        :label="t('forms.send')"
-                        class="btn-lg"
-                        color="dashboard"
-                        type="submit"
+                    :label="t('forms.send')"
+                    class="btn-lg"
+                    color="dashboard"
+                    type="submit"
                 />
             </div>
         </div>

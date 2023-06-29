@@ -55,23 +55,23 @@ async function onGetAssociationDetail() {
             <div id="association-logo-title">
                 <div class="association-logo">
                     <QImg
-                            v-if="association"
-                            :alt="altLogoText(association)"
-                            :src="hasLogo ? association?.pathLogo?.detail : noLogoSquare.default"
+                        v-if="association"
+                        :alt="altLogoText(association)"
+                        :src="hasLogo ? association?.pathLogo?.detail : noLogoSquare.default"
                     />
                 </div>
                 <div class="association-name">
                     <p
-                            v-if="association?.acronym"
-                            class="flex-row-center"
+                        v-if="association?.acronym"
+                        class="flex-row-center"
                     >
                         {{ association?.acronym }}
                     </p>
                     <p>{{ t('association.labels.charter-validity') }}</p>
                 </div>
                 <div
-                        v-if="association?.socialObject"
-                        class="socialObjectSection"
+                    v-if="association?.socialObject"
+                    class="socialObjectSection"
                 >
                     <p>{{ association?.socialObject }}</p>
                 </div>
@@ -81,24 +81,24 @@ async function onGetAssociationDetail() {
         <div class="dashboard-section">
             <h2>
                 <i
-                        aria-hidden="true"
-                        class="bi bi-book"
+                    aria-hidden="true"
+                    class="bi bi-book"
                 ></i>{{ t('association.titles.info') }}
             </h2>
 
             <div class="dashboard-section-container">
                 <div class="container flex-column">
                     <div
-                            v-if="association?.currentProjects"
-                            class="display-row"
+                        v-if="association?.currentProjects"
+                        class="display-row"
                     >
                         <h3>{{ t('association.labels.current-projects') }}</h3>
                         <p>{{ association?.currentProjects }}</p>
                     </div>
 
                     <div
-                            v-if="association?.institution"
-                            class="display-row"
+                        v-if="association?.institution"
+                        class="display-row"
                     >
                         <h3>{{ t('association.labels.institution') }}</h3>
                         <p>
@@ -109,8 +109,8 @@ async function onGetAssociationDetail() {
                     </div>
 
                     <div
-                            v-if="association?.institutionComponent"
-                            class="display-row"
+                        v-if="association?.institutionComponent"
+                        class="display-row"
                     >
                         <h3>{{ t('association.labels.institution-component') }}</h3>
                         <p>
@@ -121,8 +121,8 @@ async function onGetAssociationDetail() {
                     </div>
 
                     <div
-                            v-if="association?.activityField"
-                            class="display-row"
+                        v-if="association?.activityField"
+                        class="display-row"
                     >
                         <h3>{{ t('association.labels.activity-field') }}</h3>
                         <p>
@@ -136,53 +136,53 @@ async function onGetAssociationDetail() {
         </div>
 
         <div
-                v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret || association?.charterDate"
+            v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret || association?.charterDate"
         >
             <div class="dashboard-section">
                 <h2>
                     <i
-                            aria-hidden="true"
-                            class="bi bi-clipboard-check"
+                        aria-hidden="true"
+                        class="bi bi-clipboard-check"
                     ></i>{{ t('association.titles.admin') }}
                 </h2>
 
                 <div class="dashboard-section-container">
                     <div class="container flex-column">
                         <div
-                                v-if="association?.presidentNames"
-                                class="display-row"
+                            v-if="association?.presidentNames"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.president-name') }}</h3>
                             <p>{{ association?.presidentNames }}</p>
                         </div>
 
                         <div
-                                v-if="association?.presidentPhone"
-                                class="display-row"
+                            v-if="association?.presidentPhone"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.president-phone') }}</h3>
                             <p>{{ association?.presidentPhone }}</p>
                         </div>
 
                         <div
-                                v-if="association?.charterDate"
-                                class="display-row"
+                            v-if="association?.charterDate"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.charter-date') }}</h3>
                             <p>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</p>
                         </div>
 
                         <div
-                                v-if="association?.lastGoaDate"
-                                class="display-row"
+                            v-if="association?.lastGoaDate"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.last-goa') }}</h3>
                             <p>{{ formatDate(association?.lastGoaDate).split('-').reverse().join('/') }}</p>
                         </div>
 
                         <div
-                                v-if="association?.siret"
-                                class="display-row"
+                            v-if="association?.siret"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.siret') }}</h3>
                             <p>{{ association?.siret }}</p>
@@ -194,20 +194,20 @@ async function onGetAssociationDetail() {
 
 
         <div
-                v-if="association?.address || association?.phone || association?.email || association?.website ||(association?.socialNetworks && association?.socialNetworks?.length > 0)"
+            v-if="association?.address || association?.phone || association?.email || association?.website ||(association?.socialNetworks && association?.socialNetworks?.length > 0)"
         >
             <div class="dashboard-section">
                 <h2>
                     <i
-                            aria-hidden="true"
-                            class="bi bi-telephone"
+                        aria-hidden="true"
+                        class="bi bi-telephone"
                     ></i>{{ t('association.titles.contact') }}
                 </h2>
 
                 <div class="dashboard-section-container">
                     <div class="container flex-column">
                         <div
-                                v-if="association?.address"
+                            v-if="association?.address"
                         >
                             <h3>{{ t('association.labels.address') }}</h3>
                             <p>
@@ -218,43 +218,43 @@ async function onGetAssociationDetail() {
                         </div>
 
                         <div
-                                v-if="association?.phone"
-                                class="display-row"
+                            v-if="association?.phone"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.phone') }}</h3>
                             <p>{{ association?.phone }}</p>
                         </div>
 
                         <div
-                                v-if="association?.email"
-                                class="display-row"
+                            v-if="association?.email"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.mail') }}</h3>
                             <p>{{ association?.email }}</p>
                         </div>
 
                         <div
-                                v-if="association?.website"
-                                class="display-row"
+                            v-if="association?.website"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.website') }}</h3>
                             <a
-                                    :href="association?.website"
-                                    :title="`${t('association.labels.website-link')} ${association?.name}`"
+                                :href="association?.website"
+                                :title="`${t('association.labels.website-link')} ${association?.name}`"
                             >
                                 {{ association?.website }}
                             </a>
                         </div>
 
                         <div
-                                v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
-                                class="display-row"
+                            v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.socials') }}</h3>
                             <ul class="flex-row">
                                 <li
-                                        v-for="(socialNetwork, index) in association?.socialNetworks"
-                                        :key="index"
+                                    v-for="(socialNetwork, index) in association?.socialNetworks"
+                                    :key="index"
                                 >
                                     <a :href="socialNetwork?.location">
                                         {{ socialNetwork?.type }}
@@ -268,23 +268,23 @@ async function onGetAssociationDetail() {
         </div>
 
         <div
-                class="flex-row-center padding-top padding-bottom"
+            class="flex-row-center padding-top padding-bottom"
         >
             <QBtn
-                    :label="t('association.back-directory')"
-                    :to="{name: 'Associations'}"
-                    class="btn-lg"
-                    color="association"
-                    icon="bi-box-arrow-left"
+                :label="t('association.back-directory')"
+                :to="{name: 'Associations'}"
+                class="btn-lg"
+                color="association"
+                icon="bi-box-arrow-left"
             />
             <QBtn
-                    v-if="association?.email"
-                    :href="`mailto:${association?.email}`"
-                    :label="t('association.contact')"
-                    :title="`${t('association.contact')} ${association?.name}`"
-                    class="btn-lg"
-                    color="association"
-                    icon="bi-envelope"
+                v-if="association?.email"
+                :href="`mailto:${association?.email}`"
+                :label="t('association.contact')"
+                :title="`${t('association.contact')} ${association?.name}`"
+                class="btn-lg"
+                color="association"
+                icon="bi-envelope"
             />
         </div>
     </section>

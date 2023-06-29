@@ -40,40 +40,40 @@ async function onManageAssociationSubmission() {
 
 <template>
     <QBtn
-            :color="!associationStore.association?.canSubmitProjects ? 'dashboard' : 'red'"
-            :icon="!associationStore.association?.canSubmitProjects ? 'bi-clipboard-check' : 'bi-clipboard-x'"
-            :label="!associationStore.association?.canSubmitProjects ? t('association.enable-project-submission') : t('association.disable-project-submission')"
-            class="btn-lg"
-            @click="confirmation = true"
+        :color="!associationStore.association?.canSubmitProjects ? 'dashboard' : 'red'"
+        :icon="!associationStore.association?.canSubmitProjects ? 'bi-clipboard-check' : 'bi-clipboard-x'"
+        :label="!associationStore.association?.canSubmitProjects ? t('association.enable-project-submission') : t('association.disable-project-submission')"
+        class="btn-lg"
+        @click="confirmation = true"
     />
 
     <QDialog
-            v-model="confirmation"
-            persistent
+        v-model="confirmation"
+        persistent
     >
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{
-                        !associationStore.association?.canSubmitProjects ? t('alerts.confirm-association-can-submit-projects') : t('alerts.confirm-association-cannot-submit-projects')
-                    }}</span>
+                    !associationStore.association?.canSubmitProjects ? t('alerts.confirm-association-can-submit-projects') : t('alerts.confirm-association-cannot-submit-projects')
+                }}</span>
             </QCardSection>
 
             <QCardActions align="right">
                 <div class="flex-row">
                     <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            class="btn-lg"
-                            color="dashboard"
-                            icon="bi-x-lg"
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
                     />
                     <QBtn
-                            v-close-popup
-                            :color="!associationStore.association?.canSubmitProjects ? 'dashboard' : 'red'"
-                            :icon="!associationStore.association?.canSubmitProjects ? 'bi-clipboard-check' : 'bi-clipboard-x'"
-                            :label="!associationStore.association?.canSubmitProjects ? t('association.enable-project-submission') : t('association.disable-project-submission')"
-                            class="btn-lg"
-                            @click="onManageAssociationSubmission"
+                        v-close-popup
+                        :color="!associationStore.association?.canSubmitProjects ? 'dashboard' : 'red'"
+                        :icon="!associationStore.association?.canSubmitProjects ? 'bi-clipboard-check' : 'bi-clipboard-x'"
+                        :label="!associationStore.association?.canSubmitProjects ? t('association.enable-project-submission') : t('association.disable-project-submission')"
+                        class="btn-lg"
+                        @click="onManageAssociationSubmission"
                     />
                 </div>
             </QCardActions>

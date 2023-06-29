@@ -75,22 +75,22 @@ function onOptionClick(option: Option) {
 <template>
     <div class="q-pa-md">
         <QBtnDropdown
-                v-if="options.length"
-                :label="t('manage')"
-                color="commission"
-                outline
+            v-if="options.length"
+            :label="t('manage')"
+            color="commission"
+            outline
         >
             <QList>
                 <QItem
-                        v-for="(option, index) in options"
-                        :key="index"
-                        v-close-popup
-                        clickable
-                        @click="onOptionClick(option)"
+                    v-for="(option, index) in options"
+                    :key="index"
+                    v-close-popup
+                    clickable
+                    @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
                         <QAvatar
-                                :icon="option.icon"
+                            :icon="option.icon"
                         />
                     </QItemSection>
                     <QItemSection>
@@ -101,10 +101,10 @@ function onOptionClick(option: Option) {
         </QBtnDropdown>
     </div>
     <ProjectUpdateDates
-            :open-dialog="updateProjectDates"
-            :project="props.project"
-            @close-dialog="updateProjectDates = false"
-            @refresh-projects="emit('refreshProjects')"
+        :open-dialog="updateProjectDates"
+        :project="props.project"
+        @close-dialog="updateProjectDates = false"
+        @refresh-projects="emit('refreshProjects')"
     />
 </template>
 

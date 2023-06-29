@@ -18,8 +18,8 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
             <div class="login-intro-text flex-row-center">
                 <div class="login-intro-text-icon">
                     <QIcon
-                            color="association"
-                            name="bi-person-circle"
+                        color="association"
+                        name="bi-person-circle"
                     />
                 </div>
                 <h1>
@@ -27,12 +27,12 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                 </h1>
             </div>
             <div
-                    v-if="!newUser && !isCas"
-                    class="dashboard-section-container"
+                v-if="!newUser && !isCas"
+                class="dashboard-section-container"
             >
                 <QCard
-                        id="cas-login"
-                        class="card"
+                    id="cas-login"
+                    class="card"
                 >
                     <QCardSection>
                         <div class="card-content">
@@ -41,16 +41,16 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                         </div>
                         <div class="flex-row-center">
                             <QBtn
-                                    :href="CASUrlLogin"
-                                    :label="t('login.login')"
-                                    class="btn-lg"
-                                    color="association"
+                                :href="CASUrlLogin"
+                                :label="t('login.login')"
+                                class="btn-lg"
+                                color="association"
                             />
                             <QBtn
-                                    :href="CASUrlRegister"
-                                    :label="t('login.create-account')"
-                                    class="btn-lg"
-                                    color="association"
+                                :href="CASUrlRegister"
+                                :label="t('login.create-account')"
+                                class="btn-lg"
+                                color="association"
                             />
                         </div>
                     </QCardSection>
@@ -58,7 +58,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
 
                 <!-- class="card" -->
                 <QCard
-                        id="local-login"
+                    id="local-login"
                 >
                     <QCardSection>
                         <div class="card-content">
@@ -70,18 +70,18 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                 </QCard>
             </div>
             <div
-                    v-else
-                    class="container"
+                v-else
+                class="container"
             >
                 <QCard
-                        id="aborted-cas-registration"
-                        class="card"
+                    id="aborted-cas-registration"
+                    class="card"
                 >
                     <QCardSection>
                         <div class="card-content">
                             <p
-                                    class="card-title"
-                                    role="alert"
+                                class="card-title"
+                                role="alert"
                             >
                                 {{ t('alerts.aborted-cas-registration.title') }}
                             </p>
@@ -91,10 +91,10 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                             </p>
                             <div>
                                 <QBtn
-                                        :label="t('alerts.aborted-cas-registration.button')"
-                                        :to="{name: 'Registration'}"
-                                        class="btn-lg"
-                                        color="red"
+                                    :label="t('alerts.aborted-cas-registration.button')"
+                                    :to="{name: 'Registration'}"
+                                    class="btn-lg"
+                                    color="red"
                                 />
                             </div>
                         </div>

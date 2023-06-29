@@ -33,19 +33,19 @@ function ToggleMenu() {
 
 <template>
     <QHeader
-            id="layout-header"
-            :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
-            elevated
-            height-hint="98"
-            role="banner"
+        id="layout-header"
+        :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
+        elevated
+        height-hint="98"
+        role="banner"
     >
         <div class="container">
             <QToolbar>
                 <QToolbarTitle>
                     <h1>
                         <RouterLink
-                                :to="{name: 'Home'}"
-                                class="home-link"
+                            :to="{name: 'Home'}"
+                            class="home-link"
                         >
                             {{ siteName }}
                         </RouterLink>
@@ -53,14 +53,20 @@ function ToggleMenu() {
                 </QToolbarTitle>
 
                 <div id="menu-items">
-                    <button class="btn-menu" @click="ToggleMenu">
-                        <i aria-hidden="true" class="bi bi-list"></i>
+                    <button
+                        class="btn-menu"
+                        @click="ToggleMenu"
+                    >
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-list"
+                        ></i>
                     </button>
 
                     <span
-                            id="mobile-menu-background"
-                            :class="{'visible': mobileMenuVisible}"
-                            aria-hidden="true"
+                        id="mobile-menu-background"
+                        :class="{'visible': mobileMenuVisible}"
+                        aria-hidden="true"
                     ></span>
 
                     <LayoutHeaderNav :class="{'visible': mobileMenuVisible}"/>
@@ -69,8 +75,8 @@ function ToggleMenu() {
 
             <div v-if="route.name !== 'Login'">
                 <div
-                        v-if="route.name === 'Home'"
-                        id="header-home-title"
+                    v-if="route.name === 'Home'"
+                    id="header-home-title"
                 >
                     <div class="flex-column flex-center">
                         <h1>Bienvenue sur <strong>{{ siteName }}</strong></h1>
@@ -81,8 +87,8 @@ function ToggleMenu() {
                 <div id="header-title">
                     <h1 v-if="title">
                         <span
-                                id="header-title-icon"
-                                aria-hidden="true"
+                            id="header-title-icon"
+                            aria-hidden="true"
                         >
                             <i class="bi bi-geo-alt space-1-icon"></i>
                             <i class="bi bi-book space-2-icon"></i>

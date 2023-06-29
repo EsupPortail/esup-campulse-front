@@ -148,9 +148,9 @@ async function onDeleteUser() {
                 <div v-if="userManagerStore.userAssociations.length">
                     <div class="flex-column">
                         <div
-                                v-for="(association, index) in userManagerStore.userAssociations"
-                                :key="index"
-                                class="display-row"
+                            v-for="(association, index) in userManagerStore.userAssociations"
+                            :key="index"
+                            class="display-row"
                         >
                             <h3>{{ association.association.name }}</h3>
                             <ul>
@@ -195,25 +195,25 @@ async function onDeleteUser() {
 
     <div class="dashboard-btn-group padding-top padding-bottom">
         <QBtn
-                :label="t('back')"
-                :to="{ name: 'ValidateUsers' }"
-                class="btn-lg"
-                color="dashboard"
-                icon="bi-chevron-compact-left"
+            :label="t('back')"
+            :to="{ name: 'ValidateUsers' }"
+            class="btn-lg"
+            color="dashboard"
+            icon="bi-chevron-compact-left"
         />
         <QBtn
-                :label="t('user-manager.delete-account-application')"
-                class="btn-lg"
-                color="red"
-                icon="bi-file-earmark-x"
-                @click="onDeleteUser"
+            :label="t('user-manager.delete-account-application')"
+            class="btn-lg"
+            color="red"
+            icon="bi-file-earmark-x"
+            @click="onDeleteUser"
         />
         <QBtn
-                :label="t('user-manager.validate-account')"
-                class="btn-lg"
-                color="dashboard"
-                icon="bi-check-lg"
-                @click="onValidateUser"
+            :label="t('user-manager.validate-account')"
+            class="btn-lg"
+            color="dashboard"
+            icon="bi-check-lg"
+            @click="onValidateUser"
         />
     </div>
 </template>

@@ -42,16 +42,16 @@ async function onDeleteAssociation() {
 
 <template>
     <QBtn
-            :label="t('association.delete-association')"
-            class="btn-lg"
-            color="red"
-            icon="bi-trash"
-            @click="confirmation = true"
+        :label="t('association.delete-association')"
+        class="btn-lg"
+        color="red"
+        icon="bi-trash"
+        @click="confirmation = true"
     />
 
     <QDialog
-            v-model="confirmation"
-            persistent
+        v-model="confirmation"
+        persistent
     >
         <QCard>
             <QCardSection class="row items-center">
@@ -59,28 +59,28 @@ async function onDeleteAssociation() {
             </QCardSection>
             <QCardSection>
                 <QInput
-                        v-model=deletionWord
-                        :label="t('association.before-deletion-word-instruction')"
-                        @paste.prevent
+                    v-model=deletionWord
+                    :label="t('association.before-deletion-word-instruction')"
+                    @paste.prevent
                 />
             </QCardSection>
 
             <QCardActions align="right">
                 <div class="flex-row">
                     <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            class="btn-lg"
-                            color="dashboard"
-                            icon="bi-x-lg"
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
                     />
                     <QBtn
-                            v-close-popup
-                            :label="t('association.delete-association')"
-                            class="btn-lg"
-                            color="red"
-                            icon="bi-trash"
-                            @click="onDeleteAssociation"
+                        v-close-popup
+                        :label="t('association.delete-association')"
+                        class="btn-lg"
+                        color="red"
+                        icon="bi-trash"
+                        @click="onDeleteAssociation"
                     />
                 </div>
             </QCardActions>

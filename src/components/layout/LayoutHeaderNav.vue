@@ -9,38 +9,38 @@ const {t} = useI18n()
 
 <template>
     <nav
-            :aria-label="t('primary-nav')"
-            class="flex-row-center"
-            role="navigation"
+        :aria-label="t('primary-nav')"
+        class="flex-row-center"
+        role="navigation"
     >
         <RouterLink :to="{name: 'Home'}">{{ t('header.home') }}</RouterLink>
         <RouterLink
-                :to="{name: 'Charter'}"
-                class="space-2"
+            :to="{name: 'Charter'}"
+            class="space-2"
         >
             {{ t('header.charter') }}
         </RouterLink>
         <RouterLink
-                :to="{name: 'Associations'}"
-                class="space-1"
+            :to="{name: 'Associations'}"
+            class="space-1"
         >
             {{ t('header.associations') }}
         </RouterLink>
         <RouterLink
-                :to="{name: 'Commission'}"
-                class="space-3"
+            :to="{name: 'Commission'}"
+            class="space-3"
         >
             {{ t('header.commission') }}
         </RouterLink>
         <RouterLink
-                v-if="!userStore.isAuth"
-                :to="{name: 'Login'}"
+            v-if="!userStore.isAuth"
+            :to="{name: 'Login'}"
         >
             {{ t('header.login') }}
         </RouterLink>
         <LayoutHeaderProfileButton
-                v-if="userStore.isAuth"
-                class="profile-button"
+            v-if="userStore.isAuth"
+            class="profile-button"
         />
     </nav>
 </template>

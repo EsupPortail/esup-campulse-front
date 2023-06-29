@@ -9,12 +9,12 @@ defineProps({
 <template>
     <div class="container">
         <div
-                v-if="isDisplayed"
-                class=" flex-row"
+            v-if="isDisplayed"
+            class=" flex-row"
         >
             <div
-                    aria-hidden="true"
-                    class="home-banner-icon"
+                aria-hidden="true"
+                class="home-banner-icon"
             >
                 <i class="bi bi-info-circle"></i>
             </div>

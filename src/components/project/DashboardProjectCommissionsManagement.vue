@@ -74,38 +74,38 @@ async function onGetCommissions() {
 <template>
     <QCard v-if="tabs.length">
         <QTabs
-                v-model="tab"
-                active-color="cape-color"
-                align="justify"
-                class="text-grey"
-                dense
-                indicator-color="cape-color"
+            v-model="tab"
+            active-color="cape-color"
+            align="justify"
+            class="text-grey"
+            dense
+            indicator-color="cape-color"
         >
             <QTab
-                    v-for="(tab, index) in tabs"
-                    :key="index"
-                    :label="tab.name"
-                    :name="tab.name"
+                v-for="(tab, index) in tabs"
+                :key="index"
+                :label="tab.name"
+                :name="tab.name"
             />
         </QTabs>
 
         <QSeparator
-                aria-hidden="true"
-                role="presentation"
+            aria-hidden="true"
+            role="presentation"
         />
 
         <QTabPanels
-                v-model="tab"
-                animated
+            v-model="tab"
+            animated
         >
             <QTabPanel
-                    v-for="(tab, index) in tabs"
-                    :key="index"
-                    :name="tab.name"
-                    class="q-pa-none"
+                v-for="(tab, index) in tabs"
+                :key="index"
+                :name="tab.name"
+                class="q-pa-none"
             >
                 <QSplitter
-                        v-model="splitterModel"
+                    v-model="splitterModel"
                 >
                     <template v-slot:before>
                         <CommissionExportCSV
@@ -113,54 +113,54 @@ async function onGetCommissions() {
                             :commission-name="tab.name"
                         />
                         <QTabs
-                                v-model="innerTab"
-                                class="cape-color"
-                                vertical
+                            v-model="innerTab"
+                            class="cape-color"
+                            vertical
                         >
                             <QTab
-                                    :label="t('project.all-projects')"
-                                    icon="bi-folder"
-                                    name="allProjects"
+                                :label="t('project.all-projects')"
+                                icon="bi-folder"
+                                name="allProjects"
                             />
                             <QTab
-                                    :label="t('project.validated-projects')"
-                                    icon="bi-folder-check"
-                                    name="validatedProjects"
+                                :label="t('project.validated-projects')"
+                                icon="bi-folder-check"
+                                name="validatedProjects"
                             />
                             <QTab
-                                    :label="t('project.archived-projects')"
-                                    icon="bi-archive"
-                                    name="archivedProjects"
+                                :label="t('project.archived-projects')"
+                                icon="bi-archive"
+                                name="archivedProjects"
                             />
                         </QTabs>
                     </template>
 
                     <template v-slot:after>
                         <QTabPanels
-                                v-model="innerTab"
-                                animated
-                                transition-next="slide-up"
-                                transition-prev="slide-down"
+                            v-model="innerTab"
+                            animated
+                            transition-next="slide-up"
+                            transition-prev="slide-down"
                         >
                             <QTabPanel name="allProjects">
                                 <TableManagedProjects
-                                        :commission="tab.commission"
-                                        :title="t('project.all-projects')"
-                                        project-status="all"
+                                    :commission="tab.commission"
+                                    :title="t('project.all-projects')"
+                                    project-status="all"
                                 />
                             </QTabPanel>
                             <QTabPanel name="validatedProjects">
                                 <TableManagedProjects
-                                        :commission="tab.commission"
-                                        :title="t('project.validated-projects')"
-                                        project-status="validated"
+                                    :commission="tab.commission"
+                                    :title="t('project.validated-projects')"
+                                    project-status="validated"
                                 />
                             </QTabPanel>
                             <QTabPanel name="archivedProjects">
                                 <TableManagedProjects
-                                        :commission="tab.commission"
-                                        :title="t('project.archived-projects')"
-                                        project-status="archived"
+                                    :commission="tab.commission"
+                                    :title="t('project.archived-projects')"
+                                    project-status="archived"
                                 />
                             </QTabPanel>
                         </QTabPanels>
@@ -170,8 +170,8 @@ async function onGetCommissions() {
         </QTabPanels>
     </QCard>
     <p
-            v-else
-            class="paragraph"
+        v-else
+        class="paragraph"
     >
         {{ t('project.no-project-to-show') }}
     </p>

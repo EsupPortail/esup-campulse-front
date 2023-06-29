@@ -42,40 +42,40 @@ async function onEnableAssociation() {
 
 <template>
     <QBtn
-            :color="isEnabled ? 'red' : 'dashboard'"
-            :icon="isEnabled ? 'bi-unlock' : 'bi-lock'"
-            :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
-            class="btn-lg"
-            @click="openAlert = true"
+        :color="isEnabled ? 'red' : 'dashboard'"
+        :icon="isEnabled ? 'bi-unlock' : 'bi-lock'"
+        :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+        class="btn-lg"
+        @click="openAlert = true"
     />
 
     <QDialog
-            v-model="openAlert"
-            persistent
+        v-model="openAlert"
+        persistent
     >
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{
-                        isEnabled ? t('association.confirm-disable') : t('association.confirm-enable')
-                    }}</span>
+                    isEnabled ? t('association.confirm-disable') : t('association.confirm-enable')
+                }}</span>
             </QCardSection>
 
             <QCardActions align="right">
                 <div class="flex-row">
                     <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            class="btn-lg"
-                            color="dashboard"
-                            icon="bi-x-lg"
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
                     />
                     <QBtn
-                            v-close-popup
-                            :color="isEnabled ? 'red' : 'dashboard'"
-                            :icon="isEnabled ? 'bi-unlock' : 'bi-lock'"
-                            :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
-                            class="btn-lg"
-                            @click="onEnableAssociation"
+                        v-close-popup
+                        :color="isEnabled ? 'red' : 'dashboard'"
+                        :icon="isEnabled ? 'bi-unlock' : 'bi-lock'"
+                        :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+                        class="btn-lg"
+                        @click="onEnableAssociation"
                     />
                 </div>
             </QCardActions>

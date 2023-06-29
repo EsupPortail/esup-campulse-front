@@ -41,20 +41,20 @@ async function onOpenDeleteAlert() {
 <template>
     <div class="flex-row padding-bottom">
         <QBtn
-                :disable="!commission.datesAreLegal && commission.newName === commission.oldName
+            :disable="!commission.datesAreLegal && commission.newName === commission.oldName
                 && commission.newCommissionDate === commission.oldCommissionDate
                 && commission.newSubmissionDate === commission.oldSubmissionDate
                 && commission.newIsOpenToProjects === commission.oldIsOpenToProjects
                 && arraysAreEqual(commission.oldFunds, commission.newFunds)"
-                :label="t('update')"
-                class="btn-lg"
-                color="commission"
-                icon="bi-arrow-repeat"
-                @click="confirmUpdate = true"
+            :label="t('update')"
+            class="btn-lg"
+            color="commission"
+            icon="bi-arrow-repeat"
+            @click="confirmUpdate = true"
         />
         <QDialog
-                v-model="confirmUpdate"
-                persistent
+            v-model="confirmUpdate"
+            persistent
         >
             <QCard class="variant-space-3">
                 <QCardSection class="row items-center">
@@ -63,45 +63,45 @@ async function onOpenDeleteAlert() {
 
                 <QCardActions align="right">
                     <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            icon="bi-x-lg"
+                        v-close-popup
+                        :label="t('cancel')"
+                        icon="bi-x-lg"
                     />
                     <QBtn
-                            v-close-popup
-                            :label="t('update')"
-                            icon="bi-arrow-repeat"
-                            @click="$emit('updateCommissionDate')"
+                        v-close-popup
+                        :label="t('update')"
+                        icon="bi-arrow-repeat"
+                        @click="$emit('updateCommissionDate')"
                     />
                 </QCardActions>
             </QCard>
         </QDialog>
         <QBtn
-                :label="t('delete')"
-                class="btn-lg"
-                color="red"
-                icon="bi-trash"
-                @click="onOpenDeleteAlert"
+            :label="t('delete')"
+            class="btn-lg"
+            color="red"
+            icon="bi-trash"
+            @click="onOpenDeleteAlert"
         />
         <QDialog
-                v-model="confirmDelete"
-                persistent
+            v-model="confirmDelete"
+            persistent
         >
             <QCard class="variant-space-3">
                 <QCardSection class="row items-center">
                     <p
-                            v-if="!projectStore.projects.length"
-                            class="paragraph"
+                        v-if="!projectStore.projects.length"
+                        class="paragraph"
                     >
                         {{ t('commission.alerts.confirm-delete') }}
                     </p>
                     <div
-                            v-else
-                            class="info-panel info-panel-error"
+                        v-else
+                        class="info-panel info-panel-error"
                     >
                         <i
-                                aria-hidden="true"
-                                class="bi bi-exclamation-lg"
+                            aria-hidden="true"
+                            class="bi bi-exclamation-lg"
                         ></i>
                         <p class="paragraph">
                             {{ t('commission.alerts.delete-warning-projects-submitted') }}
@@ -111,16 +111,16 @@ async function onOpenDeleteAlert() {
 
                 <QCardActions align="right">
                     <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            icon="bi-x-lg"
+                        v-close-popup
+                        :label="t('cancel')"
+                        icon="bi-x-lg"
                     />
                     <QBtn
-                            v-if="!projectStore.projects.length"
-                            v-close-popup
-                            :label="t('delete')"
-                            icon="bi-trash"
-                            @click="$emit('deleteCommissionDate')"
+                        v-if="!projectStore.projects.length"
+                        v-close-popup
+                        :label="t('delete')"
+                        icon="bi-trash"
+                        @click="$emit('deleteCommissionDate')"
                     />
                 </QCardActions>
             </QCard>

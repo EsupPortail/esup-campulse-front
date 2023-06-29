@@ -98,9 +98,9 @@ async function onGetProjectCommissions() {
         </div>
 
         <div
-                v-for="commissionFund in projectStore.projectCommissionFunds"
-                :key="commissionFund.id"
-                class="display-row"
+            v-for="commissionFund in projectStore.projectCommissionFunds"
+            :key="commissionFund.id"
+            class="display-row"
         >
             <h4>
                 {{
@@ -112,15 +112,15 @@ async function onGetProjectCommissions() {
         </div>
 
         <div
-                v-if="projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)"
-                class="flex-section"
+            v-if="projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)"
+            class="flex-section"
         >
             <h3>{{ t('project.previous-edition') }}</h3>
 
             <div
-                    v-for="commissionFund in projectStore.projectCommissionFunds"
-                    :key="commissionFund.id"
-                    class="display-row"
+                v-for="commissionFund in projectStore.projectCommissionFunds"
+                :key="commissionFund.id"
+                class="display-row"
             >
                 <h4>
                     {{
@@ -132,9 +132,9 @@ async function onGetProjectCommissions() {
             </div>
 
             <div
-                    v-for="commissionFund in projectStore.projectCommissionFunds"
-                    :key="commissionFund.id"
-                    class="display-row"
+                v-for="commissionFund in projectStore.projectCommissionFunds"
+                :key="commissionFund.id"
+                class="display-row"
             >
                 <h4>
                     {{

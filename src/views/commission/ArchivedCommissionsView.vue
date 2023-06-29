@@ -48,37 +48,37 @@ const columns: QTableProps['columns'] = [
         <div class="dashboard-section-container">
             <div class="container">
                 <QTable
-                        :columns="columns"
-                        :loading="!commissions"
-                        :rows="commissions"
-                        :rows-per-page-options="[10, 20, 50, 0]"
-                        :title="t('commission.archived')"
-                        row-key="name"
+                    :columns="columns"
+                    :loading="!commissions"
+                    :rows="commissions"
+                    :rows-per-page-options="[10, 20, 50, 0]"
+                    :title="t('commission.archived')"
+                    row-key="name"
                 >
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd
-                                    key="name"
-                                    :props="props"
+                                key="name"
+                                :props="props"
                             >
                                 {{ props.row.name }}
                             </QTd>
                             <QTd
-                                    key="commissionDate"
-                                    :props="props"
+                                key="commissionDate"
+                                :props="props"
                             >
                                 {{ props.row.commissionDate.split('-').reverse().join('/') }}
                             </QTd>
                             <QTd
-                                    key="viewProjects"
-                                    :props="props"
-                                    class="actions-cells"
+                                key="viewProjects"
+                                :props="props"
+                                class="actions-cells"
                             >
                                 <div class="button-container">
                                     <QBtn
-                                            :label="t('view.projects')"
-                                            :to="{name: 'ArchivedCommissionDetail', params: {id: props.row.id}}"
-                                            icon="bi-eye"
+                                        :label="t('view.projects')"
+                                        :to="{name: 'ArchivedCommissionDetail', params: {id: props.row.id}}"
+                                        icon="bi-eye"
                                     />
                                 </div>
                             </QTd>

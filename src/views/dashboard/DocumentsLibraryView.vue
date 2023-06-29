@@ -93,8 +93,8 @@ async function onGetLibraryDocuments() {
         <div class="dashboard-section">
             <h2>
                 <i
-                        aria-hidden="true"
-                        class="bi bi-file-earmark"
+                    aria-hidden="true"
+                    class="bi bi-file-earmark"
                 ></i>
                 {{ t('documents.charters') }}
             </h2>
@@ -108,8 +108,8 @@ async function onGetLibraryDocuments() {
         <div class="dashboard-section">
             <h2>
                 <i
-                        aria-hidden="true"
-                        class="bi bi-file-earmark"
+                    aria-hidden="true"
+                    class="bi bi-file-earmark"
                 ></i>
                 {{ t('documents.other-documents') }}
             </h2>
