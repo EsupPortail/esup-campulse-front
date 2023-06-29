@@ -3,7 +3,6 @@ import {RouterLink} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 
 const siteName = import.meta.env.VITE_APP_SITE_NAME
-
 </script>
 
 <template>
@@ -17,12 +16,14 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
         <div class="container">
             <QToolbar>
                 <QToolbarTitle>
-                    <RouterLink
-                        :to="{name: 'Home'}"
-                        class="home-link"
-                    >
-                        {{ siteName }}
-                    </RouterLink>
+                    <h1>
+                        <RouterLink
+                            :to="{name: 'Home'}"
+                            class="home-link"
+                        >
+                            {{ siteName }}
+                        </RouterLink>
+                    </h1>
                 </QToolbarTitle>
                 <LayoutHeaderNav/>
             </QToolbar>

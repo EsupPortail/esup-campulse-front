@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import LayoutMinimalHeader from '@/components/layout/LayoutMinimalHeader.vue'
 import LayoutContent from '@/components/layout/LayoutContent.vue'
-import LayoutFooter from '@/components/layout/LayoutFooter.vue'</script>
+import LayoutFooter from '@/components/layout/LayoutFooter.vue'
+</script>
 
 <template>
     <QLayout
