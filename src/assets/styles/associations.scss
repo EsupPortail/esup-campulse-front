@@ -1,141 +1,5 @@
 @import '@/assets/variables';
 
-// Search and advanced search forms
-.directory-search {
-  width: $fullSize;
-  max-width: $pageWidth;
-  padding: 0 $responsiveMargin;
-  margin: 0 auto;
-
-  h2 {
-    font-size: $titleSize;
-    font-weight: $normal-weight;
-  }
-
-  #search-form {
-    fieldset {
-      border: none;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      label {
-        flex-grow: 1;
-
-        .q-field__control {
-          border: 1px solid $annuaireColor;
-          padding-bottom: 1rem;
-        }
-      }
-    }
-  }
-
-  #advanced-search-form {
-    padding: 0.938rem 0 1.875rem;
-
-    fieldset {
-      border: none;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-
-      .q-field {
-        flex: 0 0 calc(50% - 0.75rem);
-
-        &.full-size {
-          flex: 0 0 $fullSize;
-        }
-      }
-    }
-
-    .q-btn {
-      flex: 1 1 0;
-    }
-
-    .q-expansion-item__content {
-      padding: 0.938rem 0 0;
-    }
-
-    .q-item {
-      padding-left: 0.313rem;
-
-      .q-item__section--side {
-        padding-right: 0;
-        margin-right: 0.313rem;
-        min-width: auto;
-
-        i {
-          font-size: 1.75rem;
-          color: $annuaireColor;
-        }
-      }
-
-      .q-item__section--main {
-        font-size: 1.063rem;
-        font-weight: $medium-weight;
-        color: $textColor2;
-      }
-
-      .q-expansion-item__toggle-icon {
-        display: none;
-      }
-
-      .q-focus-helper {
-        background: $annuaireColor;
-
-        &::before {
-          background: $annuaireColor;
-        }
-      }
-    }
-
-    /*.buttons-group {
-      margin: 1rem 0;
-      gap: 1.5rem;
-    }*/
-  }
-
-
-  @media screen and (min-width: $responsiveWidth) {
-    #search-form {
-      fieldset {
-        flex-direction: row;
-      }
-    }
-  }
-
-  /*
-  @media only screen and (max-width: $responsiveWidth) {
-    #search-form {
-      fieldset {
-        .q-btn {
-          width: $fullSize;
-        }
-
-        .search-button {
-          border-right: none;
-        }
-      }
-    }
-
-    #advanced-search-form {
-      fieldset {
-        display: block;
-
-        .q-field {
-          margin-bottom: 0.938rem;
-        }
-      }
-
-      .q-btn {
-        width: $fullSize;
-      }
-    }
-  }*/
-}
-
 // Elements displayed on top of the list
 .directory-sorting {
   margin-bottom: 0.625rem;
@@ -255,7 +119,6 @@
 
       li {
         display: flex;
-        //align-items: top;
         flex: 0 0 $fullSize;
         margin-bottom: 0.25rem;
 
@@ -305,26 +168,6 @@
     }
   }
 
-  /*@media (prefers-reduced-motion) {
-    .q-card {
-      .card-chevron {
-        right: 0.938rem;
-        transition: opacity 0.1s linear;
-      }
-
-      &:hover {
-        .q-card__section {
-          box-shadow: 0.313rem 0 0 0 $annuaireColor inset;
-          background-color: transparentize($annuaireColorBackground, 0.6);
-        }
-
-        .card-background {
-          left: -1.875rem;
-        }
-      }
-    }
-  }*/
-
   @media only screen and (max-width: $responsiveWidth) {
     .q-card {
       .card-background {
@@ -340,7 +183,6 @@
         display: block;
 
         .list-logo {
-          // padding-top: 0.375rem;
           width: 3.125rem;
           float: left;
 
@@ -397,61 +239,7 @@
 
 // Association detail and edition views
 .association-detail, .association-edition {
-  /*
-  fieldset {
-    padding: 0;
-  }
-  */
-
-  /*  section, fieldset {
-      border: none;
-
-      !*    h3 {
-            font-size: 1.7rem;
-            text-transform: uppercase;
-            color: $annuaireColorText;
-
-            i {
-              color: $annuaireColorText;
-              font-size: 1.5rem;
-              margin: auto 0.300rem auto 1rem;
-              top: -0.01rem;
-            }
-          }*!
-
-      !*    p {
-            margin: .625rem;
-            text-align: center;
-          }*!
-
-  !*    .display-row {
-        h4 {
-          font-size: 1.5rem;
-          font-weight: $semibold-weight;
-          line-height: 2.3rem;
-          margin-bottom: .6rem;
-        }
-
-        p {
-          font-size: 1rem;
-          text-align: justify;
-        }
-      }*!
-    }*/
-
   #association-logo-title {
-    .association-name {
-      /*      h2 {
-              font-size: $titleSize;
-              font-weight: $semibold-weight;
-              text-align: center;
-            }*/
-
-      .acronym {
-        text-align: center;
-      }
-    }
-
     .association-logo {
       width: 12rem;
       height: 12rem;
@@ -462,24 +250,7 @@
     .q-file, .q-input {
       margin-bottom: .6rem;
     }
-
-    /*    .btn-group {
-          width: $fullSize;
-
-          span {
-            font-size: 1.090rem;
-          }
-        }*/
   }
-
-  /*
-  .btn-group {
-    display: flex;
-    flex-direction: column;
-    gap: .6rem;
-    margin: .625rem auto;
-  }
-  */
 
   @media screen and (min-width: $responsiveWidth) {
     #association-logo-title {
@@ -502,75 +273,8 @@
   ul {
     margin: 0;
     list-style: none;
-    /*    display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;*/
   }
-
-  /*  .form-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }*/
 }
-
-/*// User's association update view
-#association-user-update {
-  display: flex;
-  flex-direction: column;
-
-  !*
-  .btn-group {
-    justify-content: flex-start;
-    padding: 0;
-    margin: 0;
-    width: $fullSize;
-  }
-  *!
-
-  .cancel-delete {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-
-    span {
-      text-align: center;
-      font-style: italic;
-    }
-  }
-
-  .q-btn {
-    width: $fullSize;
-    font-size: 1rem;
-  }
-}*/
-
-// Add new association btn on AccountInfosView
-/*#association-user-add {
-  display: flex;
-  flex-direction: column;
-
-  legend {
-    font-weight: $semibold-weight;
-    font-size: $headTitleMobileSize;
-    text-transform: uppercase;
-    margin: 0;
-  }
-
-  .btn-group {
-    justify-content: flex-start;
-    padding: 0;
-    margin: 0;
-    width: $fullSize;
-  }
-
-  @media screen and (min-width: $responsiveWidth) {
-    .q-btn {
-      width: 30%;
-      margin: 1rem 0;
-    }
-  }
-}*/
 
 #association-card {
   ul {
@@ -582,13 +286,8 @@
       }
     }
   }
+}
 
-  @media screen and (min-width: $responsiveWidth) {
-    width: 62rem;
-
-    .btn-group {
-      margin: 1rem 0;
-      justify-content: flex-start;
-    }
-  }
+.association-search {
+  padding: 1rem;
 }

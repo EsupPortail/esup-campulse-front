@@ -107,7 +107,6 @@ async function clearSearch() {
         </QForm>
 
         <QForm
-                id="advanced-search-form"
                 class="search-text-field"
                 role="search"
                 @submit.prevent="onAdvancedSearch"

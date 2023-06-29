@@ -80,40 +80,40 @@ async function loadAssociationsActivityFields() {
 </script>
 
 <template>
-    <!-- <h1>{{ t("home.directory") }}</h1> -->
-    <section class="introduction-section">
-        <div class="content">
-            <div class="intro-image">
-                <img
-                        :alt="t('directory.image-alt')"
-                        src="@/assets/img/unistra.jpg"
-                />
-            </div>
-            <div>
-                <h2>{{ t('directory.subtitle') }}</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                    sint
-                    occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+    <section class="dashboard-section">
+        <div class="introduction-section">
+            <div class="content">
+                <div class="intro-image">
+                    <img
+                            :alt="t('directory.image-alt')"
+                            src="@/assets/img/unistra.jpg"
+                    />
+                </div>
+                <div>
+                    <h2>{{ t('directory.subtitle') }}</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore
+                        et
+                        dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure
+                        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                        sint
+                        occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </div>
             </div>
         </div>
-    </section>
 
-    <div class="association-search">
-        <FormAssociationSearch
-                v-if="route.name"
-                :route="route.name"
-        />
-    </div>
+        <div class="association-search">
+            <FormAssociationSearch
+                    v-if="route.name"
+                    :route="route.name"
+            />
+        </div>
 
-    <div class="dashboard-section">
         <div class="directory-list">
             <div class="dashboard-section-container">
                 <div class="container">
@@ -225,19 +225,11 @@ async function loadAssociationsActivityFields() {
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/dashboard.scss';
-
-h2 {
-  margin: 0;
-}
-
-.association-search {
-  padding: 1rem;
-}
 </style>
