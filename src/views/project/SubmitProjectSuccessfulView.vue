@@ -65,7 +65,7 @@ async function onGetProjectPdf() {
                         aria-hidden="true"
                         class="bi bi-check-circle"
                     ></i>
-                    <h2 class="title-3">{{ t('project.has-been-submitted') }}</h2>
+                    <h2>{{ t('project.has-been-submitted') }}</h2>
                     <p>{{ t('project.consult-on-dashboard') }}</p>
                     <div class="flex-btn-group">
                         <QBtn

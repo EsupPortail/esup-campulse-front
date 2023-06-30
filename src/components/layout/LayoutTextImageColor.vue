@@ -5,7 +5,10 @@ const {t} = useI18n()
 
 const props = defineProps<{
     color: 'charter' | 'commission'
-
+    title: string,
+    text: string,
+    img: string,
+    imgAlt: string
 }>()
 </script>
 
@@ -15,23 +18,11 @@ const props = defineProps<{
     >
         <div class="container">
             <div>
-                <h2>{{ t('directory.subtitle') }}</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                    labore
-                    et
-                    dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                    sint
-                    occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+                <h2>{{ props.title }}</h2>
+                <p>{{ props.text }}</p>
             </div>
             <img
                 :alt="t('directory.image-alt')"
-                class="image"
                 src="@/assets/img/unistra.jpg"
             />
         </div>
@@ -43,14 +34,19 @@ const props = defineProps<{
 
 .image-text-section {
     padding: 3rem 1rem;
+    margin: 2rem 0;
 
     .container {
         display: flex;
         gap: 3rem;
-    }
 
-    img {
-        height: 15rem;
+        div {
+            flex-grow: 3;
+        }
+
+        img {
+            height: 15rem;
+        }
     }
 }
 

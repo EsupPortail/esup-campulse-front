@@ -1,10 +1,7 @@
 <script lang="ts" setup>
-import DashboardCharterStudent from '@/components/charter/DashboardCharterStudent.vue'
-import useUserGroups from '@/composables/useUserGroups'
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import LayoutTextImageColor from '@/components/layout/LayoutTextImageColor.vue'
-
-const {isStaff} = useUserGroups()
+import LayoutPageCards from '@/components/layout/LayoutPageCards.vue'
 </script>
 
 <template>
@@ -12,11 +9,16 @@ const {isStaff} = useUserGroups()
         <LayoutImageText
             img="unistra.jpg"
             img-alt=""
-            text="Lorem ipsum"
-            title="Chartes"
+            text="Pour les associations du site Alsace"
+            title="Charte du site Alsace"
         />
-        <LayoutTextImageColor color="charter"/>
+        <LayoutTextImageColor
+            color="charter"
+            img="unistra.jpg"
+            img-alt=""
+            text="Pour les demandes d'agrément"
+            title="Chartes FSDIE/IdEx"
+        />
+        <LayoutPageCards/>
     </section>
-    <!-- To clean -->
-    <DashboardCharterStudent v-if="!isStaff"/>
 </template>

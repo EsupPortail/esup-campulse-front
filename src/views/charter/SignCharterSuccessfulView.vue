@@ -59,7 +59,7 @@ async function onGetAssociationPdfExport() {
                         aria-hidden="true"
                         class="bi bi-check-circle"
                     ></i>
-                    <h2 class="title-3">{{ t('charter.site.sign-form.recap.title') }}</h2>
+                    <h2>{{ t('charter.site.sign-form.recap.title') }}</h2>
                     <p class="paragraph">{{ t('charter.site.sign-form.recap.description') }}</p>
                     <div class="flex-row-center">
                         <QBtn
