@@ -15,6 +15,7 @@ import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import CharterRecap from '@/components/charter/CharterRecap.vue'
 import useCharters from '@/composables/useCharters'
+import router from '@/router'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -138,6 +139,7 @@ async function onSignCharter() {
     if (associationId.value) {
         try {
             await signCharter(associationId.value)
+            await router.push({name: 'SignCharterSuccessful', params: {associationId: associationId.value}})
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -164,7 +166,6 @@ async function onSignCharter() {
                     v-model="step"
                     active-color="charter"
                     animated
-                    header-nav
                 >
                     <QStep
                         :name="1"
@@ -287,7 +288,7 @@ async function onSignCharter() {
                                 filled
                                 inputmode="numeric"
                             />
-                            <div class="btn-group">
+                            <div class="flex-row-center">
                                 <QBtn
                                     :label="t('continue')"
                                     class="btn-lg"
@@ -306,13 +307,13 @@ async function onSignCharter() {
                         icon="bi-file-earmark"
                     >
                         <QForm
-                            @submit="onUploadDocuments"
+                            @submit="onUploadDocuments(3)"
                         >
                             <FormDocumentUploads
                                 :association-id="associationId"
                                 process="charter"
                             />
-                            <div class="btn-group">
+                            <div class="flex-row-center">
                                 <QBtn
                                     :label="t('back')"
                                     class="btn-lg"
@@ -346,7 +347,7 @@ async function onSignCharter() {
                                 view="signCharter"
                                 @change-step="newStep => step = newStep"
                             />
-                            <div class="btn-group">
+                            <div class="flex-row-center">
                                 <QBtn
                                     :label="t('back')"
                                     class="btn-lg"
@@ -376,20 +377,6 @@ async function onSignCharter() {
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/styles/forms.scss";
 @import '@/assets/_variables.scss';
-
-.form {
-    width: 80% !important;
-}
-
-.flex-group {
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
-
-    .q-input {
-        width: 100%;
-    }
-}
 
 .q-field {
     padding-bottom: 20px;

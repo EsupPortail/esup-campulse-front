@@ -61,16 +61,22 @@ async function onGetAssociationPdfExport() {
                     ></i>
                     <h2 class="title-3">{{ t('charter.site.sign-form.recap.title') }}</h2>
                     <p class="paragraph">{{ t('charter.site.sign-form.recap.description') }}</p>
-                    <div class="flex-btn-group">
+                    <div class="flex-row-center">
                         <QBtn
                             :label="t('project.download-recap')"
-                            icon-right="bi-download"
+                            class="btn-lg"
+                            color="charter"
+                            icon-right="bi-filetype-pdf"
+                            text-color="charter"
                             @click="onGetAssociationPdfExport"
                         />
                         <QBtn
                             :label="t('dashboard.charter-dashboard')"
                             :to="{name: 'Charter'}"
+                            class="btn-lg"
+                            color="charter"
                             icon-right="bi-chevron-compact-right"
+                            text-color="charter"
                         />
                     </div>
                 </section>
@@ -95,11 +101,5 @@ i {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-
-    .flex-btn-group {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-    }
 }
 </style>

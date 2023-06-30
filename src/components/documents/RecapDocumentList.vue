@@ -111,7 +111,7 @@ ul > li {
   text-decoration: underline;
   font-weight: $semibold-weight;
   cursor: pointer;
-  color: $capeColor;
+  color: inherit;
 }
 
 ul, li {

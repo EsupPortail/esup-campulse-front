@@ -70,7 +70,7 @@ async function onGetProjectPdf() {
                     <div class="flex-btn-group">
                         <QBtn
                             :label="t('project.download-recap')"
-                            icon-right="bi-download"
+                            icon-right="bi-filetype-pdf"
                             @click="onGetProjectPdf"
                         />
                         <QBtn
