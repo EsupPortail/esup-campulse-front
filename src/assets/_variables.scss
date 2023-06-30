@@ -18,7 +18,7 @@ $baseFont: 'Titillium Web', sans-serif;
 $titleFont: 'Open Sans', sans-serif;
 
 // Font-size
-$fontSize: 1.6rem;
+$fontSize: 1.8rem;
 $headTitleMobileSize: 1.5rem;
 $headTitleComputerSize: 2rem;
 $titleSize: 2.3rem;
@@ -141,12 +141,20 @@ $formSeparatorColor: #d4d4d4;
   color: $capeColor;
 }
 
+.bg-commission-light {
+  background: $capeColorBackground;
+}
+
 .bg-charter {
   background: $charteColor;
 }
 
 .text-charter {
   color: $charteColorText;
+}
+
+.bg-charter-light {
+  background: $charteColorBackground;
 }
 
 // Les couleurs du site ont été changées pour des couleurs plus contrastées.
