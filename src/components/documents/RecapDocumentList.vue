@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type {ProcessDocument} from '#/documents'
-import {DocumentProcessType} from '#/documents'
+import type {ProcessDocument, DocumentProcessType} from '#/documents'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'

@@ -8,7 +8,7 @@ import {useRoute} from 'vue-router'
 import useUserAssociations from '@/composables/useUserAssociations'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import {AssociationRole} from '#/user'
+import type {AssociationRole} from '#/user'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const associationStore = useAssociationStore()
