@@ -154,7 +154,7 @@ async function loadAssociationsActivityFields() {
                                 <QImg
                                     :alt="altLogoText(association)"
                                     :ratio="1"
-                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? (association.pathLogo.list.indexOf('http') === -1 ? baseUrl + association.pathLogo.list : association.pathLogo.list) : noLogoSquare.default) : noLogoSquare.default"
+                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? (!association.pathLogo.list.startsWith('http') ? baseUrl + association.pathLogo.list : association.pathLogo.list) : noLogoSquare.default) : noLogoSquare.default"
                                 />
                             </div>
                             <div class="list-details">
