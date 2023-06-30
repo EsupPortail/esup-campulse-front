@@ -116,13 +116,13 @@ export default function() {
                     for (let j = 0; j < files.length; j++) {
                         const documentUpload = new DocumentUpload(files[j], associationId, processDocuments.value[i].document as number)
                         const documentData = documentUpload.formData()
-                        await axiosPublic.post('/documents/uploads', documentData)
+                        await axiosAuthenticated.post('/documents/uploads', documentData)
                     }
                 } else {
                     const file = processDocuments.value[i].pathFile as Blob
                     const documentUpload = new DocumentUpload(file, associationId, processDocuments.value[i].document as number)
                     const documentData = documentUpload.formData()
-                    await axiosPublic.post('/documents/uploads', documentData)
+                    await axiosAuthenticated.post('/documents/uploads', documentData)
                 }
             }
         }

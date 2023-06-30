@@ -10,7 +10,7 @@ const manageCharters = ref<ManageCharter[]>([])
 
 export default function() {
 
-    const {axiosPublic, axiosAuthenticated} = useAxios()
+    const {axiosAuthenticated} = useAxios()
     const {formatDate, fromDateIsAnterior} = useUtility()
 
     const charterProcesses: DocumentProcessType[] = ['CHARTER_ASSOCIATION', 'CHARTER_PROJECT_FUND']
@@ -83,7 +83,7 @@ export default function() {
         charterData.append('pathFile', charter)
         charterData.append('document', documentId.toString())
         charterData.append('association', associationId.toString())
-        await axiosPublic.post('/documents/uploads', charterData)
+        await axiosAuthenticated.post('/documents/uploads', charterData)
     }
 
     async function downloadCharter(path: string, documentName: string) {
