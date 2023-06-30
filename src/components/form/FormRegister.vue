@@ -184,11 +184,13 @@ async function onRegister() {
                         lazy-rules
                         type="tel"
                     />
+                    <!--
                     <FormDocumentUploads
                         v-if="!newUser.isCas"
                         :association-id="null"
                         process="registration"
                     />
+                    -->
                 </div>
             </div>
         </section>

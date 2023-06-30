@@ -168,6 +168,8 @@ async function onGetAssociationProjects() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
+                TODO
+                <!--
                 <div class="document-input-group">
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
@@ -240,7 +242,7 @@ async function onGetAssociationProjects() {
                                     <i class="bi bi-plus"></i>
                                 </button>
                             </div>
-                            <!-- <div class="document-input-list"></div> -->
+                            <div class="document-input-list"></div>
                         </div>
 
                         <div class="document-input">
@@ -254,10 +256,11 @@ async function onGetAssociationProjects() {
                                     <i class="bi bi-plus"></i>
                                 </button>
                             </div>
-                            <!-- <div class="document-input-list"></div> -->
+                            <div class="document-input-list"></div>
                         </div>
                     </div>
                 </div>
+                -->
             </div>
         </div>
     </section>
@@ -280,6 +283,8 @@ async function onGetAssociationProjects() {
                             color="dashboard"
                         />
                     </div>
+                    TODO
+                    <!--
                     <div class="document-input variant-space-1">
                         <div class="document-input-header">
                             <h4>
@@ -301,6 +306,7 @@ async function onGetAssociationProjects() {
                             </h4>
                         </div>
                     </div>
+                    -->
                 </div>
                 <div class="document-input-group">
                     <div class="flex-row-space-between padding-top padding-bottom">
