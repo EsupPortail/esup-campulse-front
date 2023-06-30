@@ -8,7 +8,7 @@ import useUtility from '@/composables/useUtility'
 const charterDocuments = ref<DocumentUpload[]>([])
 const manageCharters = ref<ManageCharter[]>([])
 
-export default function () {
+export default function() {
 
     const {axiosAuthenticated} = useAxios()
     const {formatDate, fromDateIsAnterior} = useUtility()

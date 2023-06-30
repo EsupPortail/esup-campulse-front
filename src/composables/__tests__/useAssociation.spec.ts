@@ -56,6 +56,7 @@ describe('useAssociation', () => {
             const {createAssociation} = useAssociation()
             const newAssociation = {
                 name: 'Association test',
+                email: 'asso-test@test.tld',
                 isSite: true,
                 institution: 1
             }

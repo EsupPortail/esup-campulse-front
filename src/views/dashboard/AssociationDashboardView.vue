@@ -274,6 +274,7 @@ async function onGetAssociationProjects() {
                     <div class="flex-row-space-between padding-top padding-bottom">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
                         <QBtn
+                            :to="{name: 'Charter'}"
                             :label="t('dashboard.association-user.charter-status-processing')"
                             class="btn-lg"
                             color="dashboard"

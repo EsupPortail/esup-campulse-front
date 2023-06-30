@@ -11,7 +11,7 @@ const processDocuments = ref<ProcessDocument[]>([])
 
 const documentUploads = ref<ProcessDocument[]>([])
 
-export default function () {
+export default function() {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const {charterDocuments} = useCharters()
@@ -95,7 +95,9 @@ export default function () {
             const newForm = new FormData()
             newForm.append('pathFile', this.file)
             newForm.append('document', this.document)
-            newForm.append('project', this.project)
+            if (this.project) {
+                newForm.append('project', this.project)
+            }
             if (this.association) newForm.append('association', this.association)
             else newForm.append('user', this.user)
             return newForm

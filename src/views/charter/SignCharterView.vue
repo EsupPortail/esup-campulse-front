@@ -129,6 +129,7 @@ async function onUploadDocuments(nextStep: number) {
             })
         }
     }
+    loading.hide()
 }
 
 // Submit step 3: patch charter status to processing
@@ -146,9 +147,9 @@ async function onSignCharter() {
             }
         }
     }
+    loading.hide()
 }
 
-loading.hide()
 </script>
 
 <template>
