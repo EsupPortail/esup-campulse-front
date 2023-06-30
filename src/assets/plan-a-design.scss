@@ -314,11 +314,11 @@ h1, .title-1, h2, .title-2, h3, .title-3, h4, .title-4, h5, .title-5, h6, .title
 }
 
 h1, .title-1 {
-  font-size: 3.6rem;
+  font-size: 4rem;
 }
 
 h2, .title-2 {
-  font-size: 2.6rem;
+  font-size: 3rem;
 }
 
 h3, .title-3 {
@@ -375,6 +375,21 @@ ul {
 // Buttons
 .btn-lg {
   padding: 1.5rem;
+}
+
+.q-btn {
+  font-size: 1.6rem;
+}
+
+// Test for tables
+
+.q-table tbody td, .q-table th {
+  font-size: 1.6rem;
+}
+
+.q-table th {
+  text-transform: uppercase;
+  font-weight: $thin-weight;
 }
 
 

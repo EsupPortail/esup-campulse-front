@@ -33,7 +33,7 @@ $fullSize: 100%;
 $halfSize: 50%;
 
 // Logos
-$iconSize: 2rem;
+$iconSize: 2.6rem;
 $logoSize: 3rem;
 
 // Home Banner q: quasar
@@ -155,6 +155,10 @@ $formSeparatorColor: #d4d4d4;
 
 .bg-charter-light {
   background: $charteColorBackground;
+}
+
+.text-table {
+  font-size: 1.6rem;
 }
 
 // Les couleurs du site ont été changées pour des couleurs plus contrastées.
