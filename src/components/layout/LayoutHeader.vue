@@ -79,8 +79,8 @@ function ToggleMenu() {
                     id="header-home-title"
                 >
                     <div class="flex-column flex-center">
-                        <h1>Bienvenue sur <strong>{{ siteName }}</strong></h1>
-                        <h2>{{ t('header.subtitle') }}</h2>
+                        <h2>Bienvenue sur <strong>{{ siteName }}</strong></h2>
+                        <h3>{{ t('header.subtitle') }}</h3>
                     </div>
                 </div>
 

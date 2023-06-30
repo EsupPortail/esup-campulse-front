@@ -22,9 +22,9 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                         name="bi-person-circle"
                     />
                 </div>
-                <h1>
+                <h2>
                     {{ t('login.introduction-login') }}
-                </h1>
+                </h2>
             </div>
             <div
                 v-if="!newUser && !isCas"
