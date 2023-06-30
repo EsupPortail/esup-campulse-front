@@ -11,7 +11,7 @@ const processDocuments = ref<ProcessDocument[]>([])
 
 const documentUploads = ref<ProcessDocument[]>([])
 
-export default function () {
+export default function() {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const {charterDocuments} = useCharters()
@@ -95,7 +95,9 @@ export default function () {
             const newForm = new FormData()
             newForm.append('pathFile', this.file)
             newForm.append('document', this.document)
-            newForm.append('project', this.project)
+            if (this.project) {
+                newForm.append('project', this.project)
+            }
             if (this.association) newForm.append('association', this.association)
             else newForm.append('user', this.user)
             return newForm
@@ -114,13 +116,13 @@ export default function () {
                     for (let j = 0; j < files.length; j++) {
                         const documentUpload = new DocumentUpload(files[j], associationId, processDocuments.value[i].document as number)
                         const documentData = documentUpload.formData()
-                        await axiosAuthenticated.post('/documents/uploads', documentData)
+                        await axiosPublic.post('/documents/uploads', documentData)
                     }
                 } else {
                     const file = processDocuments.value[i].pathFile as Blob
                     const documentUpload = new DocumentUpload(file, associationId, processDocuments.value[i].document as number)
                     const documentData = documentUpload.formData()
-                    await axiosAuthenticated.post('/documents/uploads', documentData)
+                    await axiosPublic.post('/documents/uploads', documentData)
                 }
             }
         }

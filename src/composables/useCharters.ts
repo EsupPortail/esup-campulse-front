@@ -8,9 +8,9 @@ import useUtility from '@/composables/useUtility'
 const charterDocuments = ref<DocumentUpload[]>([])
 const manageCharters = ref<ManageCharter[]>([])
 
-export default function () {
+export default function() {
 
-    const {axiosAuthenticated} = useAxios()
+    const {axiosPublic, axiosAuthenticated} = useAxios()
     const {formatDate, fromDateIsAnterior} = useUtility()
 
     const charterProcesses: DocumentProcessType[] = ['CHARTER_ASSOCIATION', 'CHARTER_PROJECT_FUND']
@@ -83,7 +83,7 @@ export default function () {
         charterData.append('pathFile', charter)
         charterData.append('document', documentId.toString())
         charterData.append('association', associationId.toString())
-        await axiosAuthenticated.post('/documents/uploads', charterData)
+        await axiosPublic.post('/documents/uploads', charterData)
     }
 
     async function downloadCharter(path: string, documentName: string) {

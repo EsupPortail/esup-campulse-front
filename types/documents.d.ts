@@ -49,7 +49,7 @@ export interface DocumentUpload {
     document: number,
     user?: number | null,
     association?: number | null,
-    project?: number,
+    project?: number | null,
     name?: string
 }
 

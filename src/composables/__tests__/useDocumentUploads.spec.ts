@@ -153,10 +153,10 @@ describe('useDocumentUploads', () => {
         it('should post all documents required in the ongoing process', async () => {
             processDocuments.value = _processDocuments as ProcessDocument[]
             await uploadDocuments(1)
-            expect(axiosAuthenticated.post).toHaveBeenCalledTimes(3)
+            expect(axiosPublic.post).toHaveBeenCalledTimes(3)
             const documentUpload = new DocumentUpload(processDocuments.value[1].pathFile as Blob, 1, processDocuments.value[1].document as number)
             const documentData = documentUpload.formData()
-            expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/documents/uploads', documentData)
+            expect(axiosPublic.post).toHaveBeenLastCalledWith('/documents/uploads', documentData)
         })
     })
 
