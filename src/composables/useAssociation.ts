@@ -18,7 +18,7 @@ const associations = ref<Association[]>([])
 // Changed data when modifying an association
 let changedData = {}
 
-export default function () {
+export default function() {
 
     const associationStore = useAssociationStore()
     const {newAssociations} = useUserAssociations()
@@ -218,7 +218,7 @@ export default function () {
 
     async function getAssociationPdfExport(id: number) {
         const {axiosAuthenticated} = useAxios()
-        return (await axiosAuthenticated.get(`/associations/${id}/pdf_export`)).data
+        return (await axiosAuthenticated.get<Blob>(`/associations/${id}/pdf_export`, {responseType: 'blob'})).data
     }
 
 

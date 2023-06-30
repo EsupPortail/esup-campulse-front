@@ -109,4 +109,3 @@ const columns: QTableProps['columns'] = [
         </div>
     </section>
 </template>
-
