@@ -20,8 +20,7 @@
 - 📝 Changed documentation URL
 - 📝 Update README
 - 🐛 Avoid 404 when refreshing submit project form
--
-    - ⬆️ Updated major dependencies
+- ⬆️ Updated major dependencies
 - ⬆️ Upgrade minor dependencies
 - 🚨 Removed unused imports
 - 🚧 Student certificate on register
