@@ -2,7 +2,7 @@
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import LayoutTextImageColor from '@/components/layout/LayoutTextImageColor.vue'
 import LayoutPageCards from '@/components/layout/LayoutPageCards.vue'
-import {PageCard} from '#/index'
+import type {PageCard} from '#/index'
 import useUserGroups from '@/composables/useUserGroups'
 
 const {isStaff} = useUserGroups()
