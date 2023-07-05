@@ -84,3 +84,10 @@ type contentCode =
     'ABOUT_PARTNERSHIP' |
     'CONTACT_INFO' |
     'CONTACT_LIST'
+
+export interface PageCard {
+    to: { name: string },
+    btnLabel: string,
+    icon: string,
+    text: string
+}

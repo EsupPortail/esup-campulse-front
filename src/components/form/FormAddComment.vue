@@ -21,28 +21,39 @@ const emit = defineEmits(['submit', 'closeDialog'])
     <QForm
         @submit.prevent="emit('submit')"
     >
-        <h3 class="title-3">{{ t('project.new-comment') }}</h3>
+        <h3>{{ t('project.new-comment') }}</h3>
         <QInput
             v-model="newComment"
             :aria-required="props.selectedAction !== 'validate'"
             :hint="props.selectedAction !== 'new-comment' ? t('forms.comment-hint') : ''"
             :label="t('forms.comment') + (props.selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
             :rules="props.selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
+            color="commission"
             filled
             lazy-rules
             type="textarea"
         />
-        <div class="btn-group">
+        <div class="flex-row-center padding-top comment-btn">
             <QBtn
                 :label="t('back')"
+                class="btn-lg"
+                color="commission"
                 icon="bi-box-arrow-left"
                 @click="emit('closeDialog')"
             />
             <QBtn
                 :icon="props.selectedIcon"
                 :label="t(`project.${props.selectedAction}`)"
+                class="btn-lg"
+                color="commission"
                 type="submit"
             />
         </div>
     </QForm>
 </template>
+
+<style lang="scss" scoped>
+.comment-btn {
+    margin-top: 1rem;
+}
+</style>

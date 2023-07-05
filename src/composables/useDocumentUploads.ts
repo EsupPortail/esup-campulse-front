@@ -4,6 +4,7 @@ import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useUserStore} from '@/stores/useUserStore'
 import useCharters from '@/composables/useCharters'
+import type {AxiosInstance} from 'axios'
 
 const documents = ref<Document[]>([])
 
@@ -11,7 +12,7 @@ const processDocuments = ref<ProcessDocument[]>([])
 
 const documentUploads = ref<ProcessDocument[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const {charterDocuments} = useCharters()
@@ -105,7 +106,9 @@ export default function() {
     }
 
     // Post document uploads
-    async function uploadDocuments(associationId: number | undefined) {
+    async function uploadDocuments(associationId: number | undefined, publicRequest?: boolean) {
+        let instance = axiosAuthenticated as AxiosInstance
+        if (publicRequest) instance = axiosPublic as AxiosInstance
         for (let i = 0; i < processDocuments.value.length; i++) {
 
             if (processDocuments.value[i].pathFile) {
@@ -116,13 +119,13 @@ export default function() {
                     for (let j = 0; j < files.length; j++) {
                         const documentUpload = new DocumentUpload(files[j], associationId, processDocuments.value[i].document as number)
                         const documentData = documentUpload.formData()
-                        await axiosAuthenticated.post('/documents/uploads', documentData)
+                        await instance.post('/documents/uploads', documentData)
                     }
                 } else {
                     const file = processDocuments.value[i].pathFile as Blob
                     const documentUpload = new DocumentUpload(file, associationId, processDocuments.value[i].document as number)
                     const documentData = documentUpload.formData()
-                    await axiosAuthenticated.post('/documents/uploads', documentData)
+                    await instance.post('/documents/uploads', documentData)
                 }
             }
         }

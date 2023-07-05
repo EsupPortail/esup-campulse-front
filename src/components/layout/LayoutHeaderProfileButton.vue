@@ -108,3 +108,9 @@ onMounted(async () => {
         </QBtnDropdown>
     </div>
 </template>
+
+<style lang="scss" scoped>
+.q-btn-dropdown {
+    font-size: 1.8rem;
+}
+</style>

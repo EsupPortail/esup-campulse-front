@@ -133,36 +133,38 @@ async function clearSearch() {
                         filled
                         lazy-rules
                     />
-                    <QSelect
-                        v-model="settings.institution"
-                        :label="t('directory.labels.association-institution')"
-                        :options="associationStore.institutionLabels"
-                        clearable
-                        color="association"
-                        emit-value
-                        filled
-                        map-options
-                    />
-                    <QSelect
-                        v-model="settings.institutionComponent"
-                        :label="t('directory.labels.association-institution-component')"
-                        :options="associationStore.institutionComponentLabels"
-                        clearable
-                        color="association"
-                        emit-value
-                        filled
-                        map-options
-                    />
-                    <QSelect
-                        v-model="settings.activityField"
-                        :label="t('directory.labels.association-activity-field')"
-                        :options="associationStore.activityFieldLabels"
-                        clearable
-                        color="association"
-                        emit-value
-                        filled
-                        map-options
-                    />
+                    <div class="flex-row-center">
+                        <QSelect
+                            v-model="settings.institution"
+                            :label="t('directory.labels.association-institution')"
+                            :options="associationStore.institutionLabels"
+                            clearable
+                            color="association"
+                            emit-value
+                            filled
+                            map-options
+                        />
+                        <QSelect
+                            v-model="settings.institutionComponent"
+                            :label="t('directory.labels.association-institution-component')"
+                            :options="associationStore.institutionComponentLabels"
+                            clearable
+                            color="association"
+                            emit-value
+                            filled
+                            map-options
+                        />
+                        <QSelect
+                            v-model="settings.activityField"
+                            :label="t('directory.labels.association-activity-field')"
+                            :options="associationStore.activityFieldLabels"
+                            clearable
+                            color="association"
+                            emit-value
+                            filled
+                            map-options
+                        />
+                    </div>
                 </div>
 
                 <div class="flex-row padding-top padding-bottom">
@@ -189,4 +191,8 @@ async function clearSearch() {
 <style lang="scss" scoped>
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
+
+.flex-row-center > * {
+    width: 100%;
+}
 </style>

@@ -215,13 +215,15 @@ async function loadAssociationsActivityFields() {
                         </QCardSection>
                         <!-- </RouterLink> -->
                     </QCard>
-                    <QPagination
-                        v-if="associationsOnPage && pages && pages > 1"
-                        v-model="currentPage"
-                        :aria-label="t('pagination')"
-                        :max="pages"
-                        @update:model-value="scrollToTop"
-                    />
+                    <div class="flex-row-center">
+                        <QPagination
+                            v-if="associationsOnPage && pages && pages > 1"
+                            v-model="currentPage"
+                            :aria-label="t('pagination')"
+                            :max="pages"
+                            @update:model-value="scrollToTop"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

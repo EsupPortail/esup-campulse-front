@@ -104,7 +104,7 @@ async function onGetProjects() {
 </script>
 
 <template>
-    <div class="container-lg">
+    <div class="container-lg padding-top padding-bottom">
         <QCard>
             <QTabs
                 v-model="tab"

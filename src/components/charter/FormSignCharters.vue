@@ -77,17 +77,21 @@ async function onSignCharter() {
                             <QIcon name="bi-paperclip"/>
                         </template>
                     </QFile>
-                    <div class="flex-row">
+                    <div class="flex-row padding-top">
                         <QBtn
                             :label="t('cancel')"
                             class="btn-lg"
+                            color="charter"
                             icon="bi-chevron-left"
+                            text-color="charter"
                             @click="open = false"
                         />
                         <QBtn
                             :label="t('charter.sign')"
                             class="btn-lg"
+                            color="charter"
                             icon="bi-check-lg"
+                            text-color="charter"
                             type="submit"
                         />
                     </div>

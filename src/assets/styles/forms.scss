@@ -350,7 +350,7 @@ label.custom-label {
 
 // State badges that can be used in forms.
 // Icons aren't defined here, only colors.
-::v-deep(.form-state) {
+.form-state {
   display: inline-block;
   white-space: nowrap;
   vertical-align: middle;
@@ -359,11 +359,11 @@ label.custom-label {
 
   .form-state-icon {
     display: inline-block;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: $radiusCircle;
     box-shadow: $fieldsBoxShadow;
-    line-height: 1.5rem;
+    line-height: 2rem;
     text-align: center;
     margin-left: .4375rem;
 

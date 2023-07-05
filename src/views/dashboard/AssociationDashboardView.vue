@@ -277,8 +277,8 @@ async function onGetAssociationProjects() {
                     <div class="flex-row-space-between padding-top padding-bottom">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
                         <QBtn
-                            :to="{name: 'Charter'}"
                             :label="t('dashboard.association-user.charter-status-processing')"
+                            :to="{name: 'ManageCharters'}"
                             class="btn-lg"
                             color="dashboard"
                         />
@@ -312,7 +312,7 @@ async function onGetAssociationProjects() {
                     <div class="flex-row-space-between padding-top padding-bottom">
                         <h3>Suivi du traitement des dossiers CAPE</h3>
                         <QBtn
-                            :to="{name: 'Commission'}"
+                            :to="{name: 'ManageProjects'}"
                             class="btn-lg"
                             color="dashboard"
                             label="Gestion des dossiers CAPE"

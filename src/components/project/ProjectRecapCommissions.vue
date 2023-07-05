@@ -93,7 +93,7 @@ async function onGetProjectCommissions() {
         <div v-if="props.view === 'projectReviewRecap'">
             <div
                 v-for="projectCommissionFund in projectStore.projectCommissionFunds"
-                key="projectCommissionFund.id"
+                :key="projectCommissionFund.id"
             >
                 <div class="display-row">
                     <h4>

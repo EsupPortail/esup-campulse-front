@@ -109,8 +109,4 @@ onMounted(initSpanClasses)
 @import '@/assets/_variables.scss';
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
-
-.form-state-cape {
-    color: $capeColorText;
-}
 </style>

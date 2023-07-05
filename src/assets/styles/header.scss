@@ -10,7 +10,7 @@
   height: 25rem;
 
   &#layout-minimal-header {
-    height: 5.5rem;
+    height: 7rem;
     border-bottom: 0.5rem solid $annuaireColor;
   }
 
@@ -249,8 +249,8 @@
     i.space-1-icon {
       display: inline;
       position: relative;
-      top: -0.30rem;
-      left: -0.063rem;
+      top: -0.6rem;
+      left: 0;
     }
   }
 
@@ -260,8 +260,8 @@
     i.space-2-icon {
       display: inline;
       position: relative;
-      top: -0.30rem;
-      left: -0.063rem;
+      top: -0.7rem;
+      left: 0;
     }
   }
 
@@ -271,8 +271,8 @@
     i.space-3-icon {
       display: inline;
       position: relative;
-      top: -0.30rem;
-      left: -0.063rem;
+      top: -0.6rem;
+      left: -0.2rem;
     }
   }
 
@@ -370,7 +370,7 @@
       text-align: center;
 
       i {
-        font-size: 2.2rem;
+        font-size: 2.8rem;
         color: $textColor3;
         display: none;
         vertical-align: middle;

@@ -64,19 +64,25 @@ async function onUpdateProjectStatus() {
 </script>
 
 <template>
-    <section class="btn-group">
+    <section class="flex-row-center padding-top padding-bottom">
         <QBtn
             :label="t('project.validate')"
+            class="btn-lg"
+            color="commission"
             icon="bi-check-lg"
             @click="onOpenDialog('validate', 'bi-check-lg')"
         />
         <QBtn
             :label="t('project.return')"
+            class="btn-lg"
+            color="red"
             icon="bi-exclamation-triangle"
             @click="onOpenDialog('return', 'bi-exclamation-triangle')"
         />
         <QBtn
             :label="t('project.reject')"
+            class="btn-lg"
+            color="red"
             icon="bi-x-octagon"
             @click="onOpenDialog('reject', 'bi-x-octagon')"
         />

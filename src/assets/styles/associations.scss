@@ -34,20 +34,20 @@
     border: none;
     border-radius: 0;
     box-shadow: $fieldsBoxShadow;
-    margin-bottom: 1.563rem;
+    margin-bottom: 2rem;
     overflow: hidden;
 
     .q-card__section {
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: 4.688rem;
-      box-shadow: 0.313rem 0 0 0 $annuaireColor inset;
+      gap: 6rem;
+      box-shadow: 0.5rem 0 0 0 $annuaireColor inset;
       transition: box-shadow 0.1s linear;
       padding: 1.25rem 3rem 1.563rem 1.875rem;
 
       .list-logo {
-        flex: 0 0 5.625rem;
+        flex: 0 0 8rem;
         border-radius: $radiusCircle;
         overflow: hidden;
 
@@ -63,7 +63,7 @@
     }
 
     .card-background {
-      width: 7.5rem;
+      width: 11rem;
       height: 25rem;
       position: absolute;
       top: calc(50% - 12.5rem);
@@ -86,10 +86,10 @@
     }
 
     .card-chevron {
-      font-size: 2.125rem;
+      font-size: 3rem;
       color: $annuaireColor;
       position: absolute;
-      top: calc(50% - 1.563rem);
+      top: calc(50% - 2rem);
       right: 1.875rem;
       z-index: 10;
       opacity: 0;
@@ -101,7 +101,7 @@
       line-height: 2.4rem;
 
       a {
-        font-size: 1.75rem;
+        font-size: 2.5rem;
         line-height: 2.4rem;
         font-weight: $semibold-weight;
         color: $annuaireColorText;
@@ -124,7 +124,7 @@
 
         & > span.value {
           text-transform: none;
-          font-size: 1.125rem;
+          font-size: 1.6rem;
           font-weight: $medium-weight;
           color: $annuaireColorText;
           padding-right: 1.25rem;
@@ -133,7 +133,7 @@
         & > span.label {
           display: inline-block;
           flex: 0 0 12.5rem;
-          font-size: 1rem;
+          font-size: 1.6rem;
           font-weight: $medium-weight;
           color: $textColor2;
           text-transform: uppercase;
@@ -154,7 +154,7 @@
 
     &:hover {
       .q-card__section {
-        box-shadow: 0.5rem 0 0 0 $annuaireColor inset;
+        box-shadow: 1rem 0 0 0 $annuaireColor inset;
       }
 
       .card-background {

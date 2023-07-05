@@ -103,6 +103,15 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
+                        path: 'manage',
+                        name: 'ManageProjects',
+                        component: () => import('@/views/commission/CommissionDashboardView.vue'),
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.commission-dashboard'),
+                            title: i18n.global.t('breadcrumbs.commission-dashboard'),
+                        }
+                    },
+                    {
                         path: 'archived',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.archived-commission'),

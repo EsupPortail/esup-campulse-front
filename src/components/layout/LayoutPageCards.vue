@@ -1,23 +1,28 @@
 <script lang="ts" setup>
 import LayoutPageCard from '@/components/layout/LayoutPageCard.vue'
+import type {PageCard} from '#/index'
+
+
+const props = defineProps<{
+    color: 'charter' | 'commission',
+    pageCards: PageCard[]
+}>()
 </script>
 
 <template>
-    <div class="page-card-container">
+    <div
+        :style="`background-image: url('src/assets/img/resized/background-${props.color === 'charter' ? 'charte' : 'cape'}.jpg');`"
+        class="page-card-container"
+    >
         <div class="container">
             <LayoutPageCard
-                :to="{name: 'ManageCharters'}"
-                btn-label="Gérer et signer vos chartes"
-                color="charter"
-                icon="bi-pencil"
-                text="Lorem ipsum"
-            />
-            <LayoutPageCard
-                :to="{name: 'DocumentsLibrary'}"
-                btn-label="Télécharger les documents"
-                color="charter"
-                icon="bi-download"
-                text="Lorem ipsum"
+                v-for="(card, index) in props.pageCards"
+                :key="index"
+                :btn-label="card.btnLabel"
+                :color="props.color"
+                :icon="card.icon"
+                :text="card.text"
+                :to="card.to"
             />
         </div>
     </div>
@@ -27,7 +32,6 @@ import LayoutPageCard from '@/components/layout/LayoutPageCard.vue'
 @import "@/assets/_variables.scss";
 
 .page-card-container {
-    background-image: url("@/assets/img/resized/background-charte.jpg");
     background-position: center center;
     padding: 3rem 0;
     margin: 5rem 0 6rem 0;

@@ -10,7 +10,7 @@ defineProps({
     <div class="container">
         <div
             v-if="isDisplayed"
-            class=" flex-row"
+            class="flex-row"
         >
             <div
                 aria-hidden="true"
@@ -29,4 +29,9 @@ defineProps({
 <style lang="scss" scoped>
 @import "@/assets/styles/home.scss";
 @import "@/assets/_variables.scss";
+
+.flex-row {
+    align-items: start;
+    gap: 2rem;
+}
 </style>

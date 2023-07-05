@@ -2,12 +2,14 @@
 
 // Intro element on the home page
 #home-info-panel {
-  padding: 1.5rem;
+  padding: 1rem;
+  margin: 3rem auto;
 
   .home-banner-icon {
     display: inline-block;
-    width: 3.5rem;
-    height: 2.2rem;
+    width: 4rem;
+    min-width: 4rem;
+    height: 4rem;
     border-radius: $radiusCircle;
     border: solid $annuaireColor 0.200rem;
     position: relative;
@@ -15,23 +17,20 @@
     i {
       color: $annuaireColor;
       position: absolute;
-      top: -0.1rem;
-      left: 0.25rem;
-      font-size: 1.3rem;
+      top: -0.38rem;
+      left: 0.3rem;
+      font-size: 3rem;
     }
 
     &::before, &::after {
       content: '';
       display: block;
-      width: $qBannerDotsMobileSize;
-      height: $qBannerDotsMobileSize;
+      width: 2rem;
+      height: 2rem;
       border-radius: $radiusCircle;
       position: absolute;
       left: $qBannerDotsMobilePadding;
-
-      @media screen and (min-width: $responsiveWidth) {
-        left: $qBannerDotsComputerPadding;
-      }
+      top: 4rem;
     }
 
     &::before {
@@ -42,10 +41,7 @@
     &::after {
       background-color: $capeColor;
       bottom: -3rem;
-    }
-
-    @media screen and (min-width: $responsiveWidth) {
-      width: 2.2rem;
+      top: 6.5rem;
     }
   }
 
@@ -177,8 +173,8 @@
           border-radius: $radiusCircle;
 
           &:first-child {
-            width: 4.2rem;
-            height: 4.2rem;
+            width: 4.5rem;
+            height: 4.5rem;
             color: $annuaireColorText;
             text-align: center;
 
@@ -186,8 +182,8 @@
               position: relative;
               font-size: $iconSize;
               color: $annuaireColorText;
-              top: -1.1rem;
-              left: 0.2rem;
+              top: -0.8rem;
+              left: 0;
             }
           }
         }

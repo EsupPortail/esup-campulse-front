@@ -381,8 +381,7 @@ ul {
   font-size: 1.6rem;
 }
 
-// Test for tables
-
+// Quasar tables
 .q-table tbody td, .q-table th {
   font-size: 1.6rem;
 }
@@ -390,6 +389,11 @@ ul {
 .q-table th {
   text-transform: uppercase;
   font-weight: $thin-weight;
+}
+
+// Quasar lists (for dropdown menus)
+.q-list {
+  font-size: 1.6rem;
 }
 
 

@@ -251,7 +251,7 @@ async function onSignCharter() {
                                     color="charter"
                                     filled
                                 />
-                                <div class="flex-group">
+                                <div class="flex-row">
                                     <QInput
                                         v-model="editedAssociation.zipcode"
                                         :label="t('address.zipcode')"
@@ -380,5 +380,9 @@ async function onSignCharter() {
 
 .q-field {
     padding-bottom: 20px;
+}
+
+.flex-row > * {
+    width: 100%;
 }
 </style>
