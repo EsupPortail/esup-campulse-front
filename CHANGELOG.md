@@ -1,26 +1,3 @@
-- ✨ CSV export on archived commissions #161
-- ✨ CSV export on ongoing commissions
-- ✨ Sign and view charters
-- ✨ Add comment on project at any time
-- ✨ Email il mandatory on NewAssociation
-- ✨ Sign charter #33, #34, #36
-- ✨ Download project review pdf export
-- ✨ Presidency delegation info panel #163
-- ✨ Charter date in AssociationDetailView
-- ✨ Students can delete projects
-- ✨ Review recap and success page #81, #82
-- ✨ Project review #80
-- ✅ Add and update tests
-- 💄 CSS refactorization part 1
-- 💄 LayoutPageCards for content pages
-- 💄 Added About and Contact pages to header
-- 🎨 Create components for project and review documents
-- 🎨 Create components for documents in project and charter views
-- 🎨 Changed way to serve logos (adapted to a local storage from the API)
-- 📝 Changed documentation URL
-- 📝 Update README
-- 🐛 Avoid 404 when refreshing submit project form
-- ⬆️ Updated major dependencies
-- ⬆️ Upgrade minor dependencies
-- 🚨 Removed unused imports
-- 🚧 Student certificate on register
+- 💄 Landing pages for charter and commission
+- 🍱 Favicon
+- 🎨 Corrected hX tags
