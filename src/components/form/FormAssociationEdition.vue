@@ -192,7 +192,7 @@ async function onChangeLogo(action: string) {
                     :alt="altLogoText(association)"
                     :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (!pathLogo.detail) : true"
                     :ratio="1"
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (pathLogo.detail.indexOf('http') === -1 ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (!pathLogo.detail.startsWith('http') ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
                 />
             </div>
 

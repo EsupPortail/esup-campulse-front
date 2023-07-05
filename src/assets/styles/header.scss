@@ -303,14 +303,14 @@
 // Site title in the header - appears only on the home page
 #header-home-title {
 
-  h1, h2 {
+  h2, h3 {
     color: $textColor3;
     font-weight: $medium-weight;
     line-height: 3rem;
     padding: .5rem;
   }
 
-  h1 {
+  h2 {
     font-family: $titleFont;
     font-size: 4rem;
     margin-bottom: 0.5rem;
@@ -325,7 +325,7 @@
     }
   }
 
-  h2 {
+  h3 {
     display: inline-block;
     font-size: 2rem;
     border: 1px solid white;
