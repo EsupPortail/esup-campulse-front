@@ -5,7 +5,7 @@ const {t} = useI18n()
 </script>
 
 <template>
-    <div class="info-panel info-panel-dashboard">
+    <div class="info-panel">
         <i
             aria-hidden="true"
             class="bi bi-info"

@@ -16,6 +16,7 @@ import useDocumentUploads from '@/composables/useDocumentUploads'
 import CharterRecap from '@/components/charter/CharterRecap.vue'
 import useCharters from '@/composables/useCharters'
 import router from '@/router'
+import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -175,6 +176,7 @@ async function onSignCharter() {
                         <QForm
                             @submit="onPatchAssociation"
                         >
+                            <InfoFormRequiredFields/>
                             <QInput
                                 v-model="editedAssociation.name"
                                 :label="t('association.labels.name') + ' *'"
@@ -309,6 +311,7 @@ async function onSignCharter() {
                         <QForm
                             @submit="onUploadDocuments(3)"
                         >
+                            <InfoFormRequiredFields/>
                             <FormDocumentUploads
                                 :association-id="associationId"
                                 process="charter"

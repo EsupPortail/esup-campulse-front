@@ -159,7 +159,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
                 :multiple="document.isMultiple"
-                :rules="document.isRequiredInProcess ? [val => val || t('forms.select-document')] : []"
+                :rules="document.isRequiredInProcess ? [val => (document.isMultiple ? val.length : val) || t('forms.select-document')] : []"
                 append
                 clearable
                 counter
