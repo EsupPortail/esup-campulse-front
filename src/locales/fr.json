@@ -261,7 +261,7 @@
       "delegate-presidency": "Déléguer la présidence",
       "delegate-presidency-info": {
         "message": "Attention, vous êtes sur le point de déléguer vos droits de présidence. Merci de noter les conséquences qui en découlent. Les membres avec délégation de présidence auront alors le droit de :",
-        "perm-1": "Modifier, supprimer et ajouter des informations sur la fiche annuaire de l'association et donc du l'annuaire.",
+        "perm-1": "Modifier, supprimer et ajouter des informations sur la fiche annuaire de l'association et donc de l'annuaire.",
         "perm-2": "Initier, traiter, supprimer une demande de subventionnement.",
         "perm-3": "Déposer un bilan de projet."
       },

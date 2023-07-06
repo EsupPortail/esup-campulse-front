@@ -5,7 +5,6 @@ import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUtility from '@/composables/useUtility'
 import {useRoute} from 'vue-router'
-import useAssociation from '@/composables/useAssociation'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
@@ -16,7 +15,6 @@ const {loading} = useQuasar()
 const {formatDate, dynamicTitle} = useUtility()
 const route = useRoute()
 const associationStore = useAssociationStore()
-const {altLogoText} = useAssociation()
 const {catchHTTPError} = useErrors()
 
 const association = ref(associationStore.association)
@@ -58,9 +56,9 @@ async function onGetAssociationDetail() {
                 <div class="association-logo">
                     <QImg
                         v-if="association"
-                        :alt="altLogoText(association)"
                         :src="hasLogo ? (!association?.pathLogo?.detail.startsWith('http') ?
                             baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
+                        alt=""
                     />
                 </div>
                 <div class="association-name">

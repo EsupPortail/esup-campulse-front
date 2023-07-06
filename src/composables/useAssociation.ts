@@ -24,14 +24,6 @@ export default function() {
     const {newAssociations} = useUserAssociations()
     const {processDocuments} = useDocumentUploads()
 
-    /** Setup altLogo default value if association does not have one
-     *
-     * @param association
-     */
-    function altLogoText(association: Association | EditedAssociation) {
-        return association?.altLogo !== '' ? association?.altLogo : i18n.global.t('association.logo.default-alt') + association?.name
-    }
-
     /**
      * It creates an association with the name provided as a parameter
      * @param newAssociation
@@ -200,16 +192,12 @@ export default function() {
     }
 
     // TODO: test
-    async function changeAssociationLogo(newLogo: undefined | Blob, altLogo: string, deleteLogoData: null | object) {
+    async function changeAssociationLogo(newLogo: undefined | Blob, deleteLogoData: null | object) {
         if (deleteLogoData === null) {
             const patchLogoData = new FormData()
             if (newLogo instanceof Blob) {
                 patchLogoData.append('pathLogo', newLogo)
-                if (altLogo === associationStore.association?.altLogo) {
-                    altLogo = ''
-                }
             }
-            patchLogoData.append('altLogo', altLogo)
             await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
         } else {
             await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
@@ -231,7 +219,6 @@ export default function() {
         updateAssociation,
         checkSocialNetworks,
         changedData,
-        altLogoText,
         checkHasPresident,
         changeAssociationLogo,
         associations,
