@@ -2,8 +2,7 @@
 const props = defineProps<{
     title: string,
     text: string,
-    img: string,
-    imgAlt: string
+    img: string
 }>()
 </script>
 
@@ -11,7 +10,7 @@ const props = defineProps<{
     <div class="image-text-section">
         <div class="container">
             <img
-                :alt="props.imageAlt"
+                alt=""
                 src="@/assets/img/unistra.jpg"
             />
             <div>

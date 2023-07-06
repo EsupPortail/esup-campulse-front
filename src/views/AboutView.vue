@@ -55,8 +55,8 @@ watch(() => content.about, () => {
 
 <template>
     <section
-            id="home-section"
-            class="dashboard-section"
+        id="home-section"
+        class="dashboard-section"
     >
         <div class="section-headtitle">
             <h3>{{ t('about.presentation') }}</h3>
@@ -65,21 +65,21 @@ watch(() => content.about, () => {
         <div class="dashboard-section-container">
             <div class="container">
                 <AboutCard
-                        :body="aboutApp?.body"
-                        :cssClass="content.cards[0].cssClass"
-                        :header="aboutApp?.header"
+                    :body="aboutApp?.body"
+                    :cssClass="content.cards[0].cssClass"
+                    :header="aboutApp?.header"
                 />
                 <AboutCard
-                        :body="aboutPartnership?.body"
-                        :cssClass="content.cards[1].cssClass"
-                        :header="aboutPartnership?.header"
-                        :label="aboutPartnership?.label"
+                    :body="aboutPartnership?.body"
+                    :cssClass="content.cards[1].cssClass"
+                    :header="aboutPartnership?.header"
+                    :label="aboutPartnership?.label"
                 />
                 <AboutCard
-                        :body="aboutFunding?.body"
-                        :cssClass="content.cards[2].cssClass"
-                        :header="aboutFunding?.header"
-                        :label="aboutFunding?.label"
+                    :body="aboutFunding?.body"
+                    :cssClass="content.cards[2].cssClass"
+                    :header="aboutFunding?.header"
+                    :label="aboutFunding?.label"
                 />
             </div>
         </div>
@@ -91,24 +91,24 @@ watch(() => content.about, () => {
 
             <div class="services-section dashboard-section-container">
                 <ServiceCard
-                        :body="homeAssociation?.body"
-                        :cssClass="content.cards[0].cssClass"
-                        :footer="homeAssociation?.header"
-                        :header="homeAssociation?.header"
+                    :body="homeAssociation?.body"
+                    :cssClass="content.cards[0].cssClass"
+                    :footer="homeAssociation?.header"
+                    :header="homeAssociation?.header"
                 />
 
                 <ServiceCard
-                        :body="homeCharter?.body"
-                        :cssClass="content.cards[1].cssClass"
-                        :footer="homeCharter?.header"
-                        :header="homeCharter?.header"
+                    :body="homeCharter?.body"
+                    :cssClass="content.cards[1].cssClass"
+                    :footer="homeCharter?.header"
+                    :header="homeCharter?.header"
                 />
 
                 <ServiceCard
-                        :body="homeProject?.body"
-                        :cssClass="content.cards[2].cssClass"
-                        :footer="homeProject?.footer"
-                        :header="homeProject?.header"
+                    :body="homeProject?.body"
+                    :cssClass="content.cards[2].cssClass"
+                    :footer="homeProject?.footer"
+                    :header="homeProject?.header"
                 />
             </div>
         </div>
