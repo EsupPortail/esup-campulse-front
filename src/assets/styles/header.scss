@@ -218,6 +218,11 @@
     }
   }
 
+
+  #header-home-icon {
+
+  }
+
   // The header has several variants (notably one for the home page and one for the login page).
   // Switch class on the header to switch variant.
 
@@ -282,8 +287,7 @@
     i.space-4-icon {
       display: inline;
       position: relative;
-      top: -0.30rem;
-      left: -0.063rem;
+      top: -0.50rem;
     }
   }
 
