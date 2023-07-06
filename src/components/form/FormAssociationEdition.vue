@@ -181,7 +181,7 @@ async function onChangeLogo(action: string) {
         <div id="association-logo-title">
             <div class="association-logo">
                 <QImg
-                    :alt=""
+                    alt=""
                     :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (!pathLogo.detail) : true"
                     :ratio="1"
                     :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (!pathLogo.detail.startsWith('http') ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
