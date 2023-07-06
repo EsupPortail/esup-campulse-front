@@ -16,7 +16,6 @@ const {loading} = useQuasar()
 const {formatDate, dynamicTitle} = useUtility()
 const route = useRoute()
 const associationStore = useAssociationStore()
-const {altLogoText} = useAssociation()
 const {catchHTTPError} = useErrors()
 
 const association = ref(associationStore.association)
@@ -56,7 +55,7 @@ async function onGetAssociationDetail() {
                 <div class="association-logo">
                     <QImg
                         v-if="association"
-                        :alt="altLogoText(association)"
+                        alt=""
                         :src="hasLogo ? (!association?.pathLogo?.detail.startsWith('http') ? baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
                     />
                 </div>

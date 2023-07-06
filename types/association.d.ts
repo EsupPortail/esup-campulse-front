@@ -5,7 +5,6 @@ export interface Association {
     name: string,
     acronym: string,
     pathLogo: AssociationLogo | null,
-    altLogo: string,
     socialObject?: string,
     currentProjects?: string,
     address?: string,
@@ -121,7 +120,6 @@ export interface EditedAssociation {
     institution?: number | null | undefined,
     institutionComponent?: number | null | undefined,
     activityField?: number | null | undefined,
-    altLogo?: string,
     amountMembersAllowed?: string
 }
 

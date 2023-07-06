@@ -11,7 +11,6 @@ import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
 import {useRoute} from 'vue-router'
 
 const associationStore = useAssociationStore()
-const {altLogoText} = useAssociation()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -152,7 +151,7 @@ async function loadAssociationsActivityFields() {
                         <QCardSection>
                             <div class="list-logo">
                                 <QImg
-                                    :alt="altLogoText(association)"
+                                    alt=""
                                     :ratio="1"
                                     :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? (!association.pathLogo.list.startsWith('http') ? baseUrl + association.pathLogo.list : association.pathLogo.list) : noLogoSquare.default) : noLogoSquare.default"
                                 />

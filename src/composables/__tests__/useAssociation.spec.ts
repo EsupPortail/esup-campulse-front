@@ -34,23 +34,6 @@ describe('useAssociation', () => {
         associationStore = useAssociationStore()
     })
 
-    describe('altLogoText', () => {
-        afterEach(() => {
-            _association.altLogo = ''
-        })
-
-        const {altLogoText} = useAssociation()
-
-        it('should return the alt of the logo if any', () => {
-            _association.altLogo = 'alt'
-            expect(altLogoText(_association)).toEqual('alt')
-        })
-
-        it('should return the default alt of the logo if no alt is given', () => {
-            expect(altLogoText(_association)).toEqual('Logo de l\'association : PLANA')
-        })
-    })
-
     describe('createAssociation', () => {
         it('should call API only once on /associations/ with name as payload', async () => {
             const {createAssociation} = useAssociation()

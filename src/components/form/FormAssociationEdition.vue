@@ -26,7 +26,6 @@ const {notify, loading} = useQuasar()
 const {formatDate, phoneRegex, urlRegex} = useUtility()
 const {
     checkChanges,
-    altLogoText,
     changeAssociationLogo
 } = useAssociation()
 const {isStaff} = useUserGroups()
@@ -59,7 +58,6 @@ const association = ref<EditedAssociation>({
     lastGoaDate: '',
     amountMembersAllowed: '',
     isPublic: false,
-    altLogo: '',
     studentCount: ''
 })
 
@@ -107,10 +105,6 @@ onMounted(async () => {
 })
 
 // Logo management
-const altLogoComputed = computed<string>(() => {
-    return associationStore.association?.altLogo === undefined ? '' : associationStore.association?.altLogo
-})
-const altLogo = ref<string>(altLogoComputed.value)
 const newLogo = ref<undefined | Blob>(undefined)
 const pathLogo = ref<AssociationLogo | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {
@@ -157,12 +151,10 @@ async function onChangeLogo(action: string) {
     loading.show()
     try {
         if (action === 'update') {
-            await changeAssociationLogo(newLogo.value, altLogo.value, null)
-            altLogo.value = altLogoComputed.value
+            await changeAssociationLogo(newLogo.value, null)
         } else if (action === 'delete') {
-            const deleteLogoData = {'altLogo': null, 'pathLogo': null}
-            await changeAssociationLogo(undefined, '', deleteLogoData)
-            altLogo.value = ''
+            const deleteLogoData = {'pathLogo': null}
+            await changeAssociationLogo(undefined, deleteLogoData)
             newLogo.value = undefined
         }
         notify({
@@ -189,7 +181,7 @@ async function onChangeLogo(action: string) {
         <div id="association-logo-title">
             <div class="association-logo">
                 <QImg
-                    :alt="altLogoText(association)"
+                    :alt=""
                     :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (!pathLogo.detail) : true"
                     :ratio="1"
                     :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (!pathLogo.detail.startsWith('http') ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
@@ -214,15 +206,6 @@ async function onChangeLogo(action: string) {
                 clearable
                 filled
                 @rejected="onLogoRejected"
-            />
-            <QInput
-                v-model="altLogo"
-                :label="t('association.logo.alt') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
-                aria-required="true"
-                class="logo-input"
-                clearable
-                filled
             />
 
             <div class="flex-row-space-between">

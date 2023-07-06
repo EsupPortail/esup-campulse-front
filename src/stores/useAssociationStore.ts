@@ -172,7 +172,6 @@ export const useAssociationStore = defineStore('associationStore', {
                 if (this.association.pathLogo) {
                     this.association.pathLogo.detail = response.pathLogo
                 }
-                this.association.altLogo = response.altLogo
             }
         },
         async getInstitutions() {
