@@ -24,6 +24,8 @@ watch(() => associationStore.association, () => {
     association.value = associationStore.association
 })
 
+const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
@@ -57,7 +59,8 @@ async function onGetAssociationDetail() {
                     <QImg
                         v-if="association"
                         :alt="altLogoText(association)"
-                        :src="hasLogo ? (!association?.pathLogo?.detail.startsWith('http') ? baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
+                        :src="hasLogo ? (!association?.pathLogo?.detail.startsWith('http') ?
+                            baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
                     />
                 </div>
                 <div class="association-name">

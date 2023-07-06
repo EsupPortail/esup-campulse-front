@@ -2,7 +2,6 @@
 import LayoutPageCard from '@/components/layout/LayoutPageCard.vue'
 import type {PageCard} from '#/index'
 
-
 const props = defineProps<{
     color: 'charter' | 'commission',
     pageCards: PageCard[]
@@ -11,7 +10,7 @@ const props = defineProps<{
 
 <template>
     <div
-        :style="`background-image: url('src/assets/img/resized/background-${props.color === 'charter' ? 'charte' : 'cape'}.jpg');`"
+        :style="`background-image: url('${props.color === 'charter' ? 'charte' : 'cape'}.jpg');`"
         class="page-card-container"
     >
         <div class="container">

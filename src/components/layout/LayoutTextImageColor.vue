@@ -1,14 +1,10 @@
 <script lang="ts" setup>
-import {useI18n} from 'vue-i18n'
-
-const {t} = useI18n()
 
 const props = defineProps<{
     color: 'charter' | 'commission'
     title: string,
     text: string,
-    img: string,
-    imgAlt: string
+    img: string
 }>()
 </script>
 
@@ -22,7 +18,7 @@ const props = defineProps<{
                 <p>{{ props.text }}</p>
             </div>
             <img
-                :alt="t('directory.image-alt')"
+                alt=""
                 src="@/assets/img/unistra.jpg"
             />
         </div>
