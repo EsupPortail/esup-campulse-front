@@ -132,7 +132,6 @@ watch(() => content.about, () => {
 </template>
 <style lang="scss" scoped>
 @import '@/assets/styles/home.scss';
-//@import '@/assets/styles/forms.scss';
 @import '@/assets/styles/contact.scss';
 @import '@/assets/styles/dashboard.scss';
 
