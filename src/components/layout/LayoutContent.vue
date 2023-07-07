@@ -11,6 +11,7 @@ const {colorVariant} = useColorVariants()
 
 <template>
     <main
+        id="main"
         :class="'variant-' + colorVariant"
         role="main"
     >
