@@ -144,6 +144,7 @@ const columns: QTableProps['columns'] = [
                                 <QCheckbox
                                     v-model="props.selected"
                                     color="association"
+                                    :aria-label="props.row.name"
                                 />
                             </QTd>
                             <QTd

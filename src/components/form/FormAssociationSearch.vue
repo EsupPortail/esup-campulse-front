@@ -107,6 +107,7 @@ async function clearSearch() {
         </QForm>
 
         <QForm
+            :aria-label="t('directory.directory-advanced')"
             class="search-text-field"
             role="search"
             @submit.prevent="onAdvancedSearch"
