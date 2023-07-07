@@ -30,13 +30,9 @@ watch(() => newUser.email, () => {
     if (!newUser.isCas) newUser.username = newUser.email
 })
 
-export default function () {
+export default function() {
 
     const userStore = useUserStore()
-
-    const passwordMinLength = 8
-
-    const passwordSpecialChars = ['/', '*', '-', '+', '=', '.', ',', ';', ':', '!', '?', '&', '"', '\'', '(', ')', '_', '[', ']', '{', '}', '@', '%', '#', '$', '<', '>']
 
     /**
      * It takes two strings as arguments, and sets them as the values of two localStorage keys
@@ -137,10 +133,10 @@ export default function () {
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
         if (newGroups.value.length) {
-            newGroups.value.forEach(function (group) {
+            newGroups.value.forEach(function(group) {
                 // Register commission groups
                 if (group === commissionGroup.value?.id) {
-                    userFunds.value.forEach(function (fund) {
+                    userFunds.value.forEach(function(fund) {
                         groupsToRegister.push({
                             user: newUser.username,
                             group,
@@ -268,35 +264,8 @@ export default function () {
         const passwordChecker = {
             valid: true,
             score: zxcvbn(password).score,
-            tests: [
-                {
-                    valid: password.length >= passwordMinLength,
-                    message: 'min-length',
-                    additionalMessage: ''
-                },
-                {
-                    valid: new RegExp('[a-z]').test(password),
-                    message: 'must-contain-lowercase-char',
-                    additionalMessage: ''
-                },
-                {
-                    valid: new RegExp('[A-Z]').test(password),
-                    message: 'must-contain-uppercase-char',
-                    additionalMessage: ''
-                },
-                {
-                    valid: new RegExp('[0-9]').test(password),
-                    message: 'must-contain-digit',
-                    additionalMessage: ''
-                },
-                {
-                    valid: new RegExp('[!-/:-@[-`{-~]').test(password),
-                    message: 'must-contain-special-char',
-                    additionalMessage: `(${passwordSpecialChars.join(' ')})`
-                }
-            ]
         }
-        if (passwordChecker.tests.find(test => !test.valid) || passwordChecker.score < 4) passwordChecker.valid = false
+        if (passwordChecker.score < 4) passwordChecker.valid = false
         return passwordChecker
     }
 
@@ -325,8 +294,6 @@ export default function () {
         CASUsers,
         CASUserOptions,
         checkPasswordStrength,
-        passwordSpecialChars,
-        passwordMinLength,
         initCASUserOptions
     }
 }

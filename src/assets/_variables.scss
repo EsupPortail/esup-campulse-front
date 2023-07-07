@@ -63,7 +63,7 @@ $textColor1: #272727;
 $textColor2: #67727D;
 $textColor3: #ffffff;
 
-$annuaireColor: #3971BE;
+$annuaireColor: #3971be;
 $annuaireColorBackground: #e7efff;
 $annuaireColorText: #152639;
 $annuaireColorBorders: #aeb8c4;
@@ -77,7 +77,7 @@ $charteColorBorders: #c4b8ae;
 $charteColorHover: #fab83e;
 $charteColorActive: #f1ad2d;
 
-$capeColor: #DF3603;
+$capeColor: #df3603;
 $capeColorBackground: #ffefe9;
 $capeColorText: #4d271b;
 $capeColorBorders: #c4b3ae;
@@ -91,11 +91,16 @@ $dashboardColorBorders: #a2b9b7;
 $dashboardColorHover: #2e857d;
 $dashboardColorActive: #27746d;
 
-$stateColor1: #088241;
-$stateColor2: #C74501;
-$stateColor3: #E82026;
-$stateColor4: #797676;
-$stateColor5: #DB2508;
+$stateColorPassword0: #000000;
+$stateColorPassword1: #7a2520;
+$stateColorPassword2: #c74501;
+$stateColorPassword3: #088241;
+$stateColorPassword4: #285496;
+
+$stateColorGreen: #088241;
+$stateColorOrange: #c74501;
+$stateColorRed: #e82026;
+$stateColorGrey: #797676;
 
 $errorPanelColor: #db463d;
 $errorTextColor: #7a2520;
@@ -106,7 +111,7 @@ $outlineColor1: rgba(255, 255, 255, 0.8);
 $outlineColor2: rgba(0, 0, 0, 0.8);
 $formSeparatorColor: #d4d4d4;
 
-$customRed: #E91B0C;
+$customRed: #e91b0c;
 
 // ---------------- Colors for Quasar ----------------
 // Useful for example for buttons, whom style is tricky to configure

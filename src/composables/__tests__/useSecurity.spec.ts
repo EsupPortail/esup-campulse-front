@@ -306,65 +306,11 @@ describe('useSecurity', () => {
             const valid = checkPasswordStrength('ghtRf6è!*tgr5DJn')
             expect(valid).toEqual({
                 score: 4,
-                tests: [
-                    {
-                        additionalMessage: '',
-                        message: 'min-length',
-                        valid: true,
-                    },
-                    {
-                        additionalMessage: '',
-                        message: 'must-contain-lowercase-char',
-                        valid: true,
-                    },
-                    {
-                        additionalMessage: '',
-                        message: 'must-contain-uppercase-char',
-                        valid: true,
-                    },
-                    {
-                        additionalMessage: '',
-                        message: 'must-contain-digit',
-                        valid: true,
-                    },
-                    {
-                        additionalMessage: '(/ * - + = . , ; : ! ? & " \' ( ) _ [ ] { } @ % # $ < >)',
-                        message: 'must-contain-special-char',
-                        valid: true,
-                    },
-                ],
                 valid: true
             })
             const invalid = checkPasswordStrength('coucou')
             expect(invalid).toEqual({
                 score: 1,
-                tests: [
-                    {
-                        additionalMessage: '',
-                        message: 'min-length',
-                        valid: false,
-                    },
-                    {
-                        additionalMessage: '',
-                        message: 'must-contain-lowercase-char',
-                        valid: true,
-                    },
-                    {
-                        additionalMessage: '',
-                        message: 'must-contain-uppercase-char',
-                        valid: false,
-                    },
-                    {
-                        additionalMessage: '',
-                        message: 'must-contain-digit',
-                        valid: false,
-                    },
-                    {
-                        additionalMessage: '(/ * - + = . , ; : ! ? & " \' ( ) _ [ ] { } @ % # $ < >)',
-                        message: 'must-contain-special-char',
-                        valid: false,
-                    },
-                ],
                 valid: false
             })
         })
