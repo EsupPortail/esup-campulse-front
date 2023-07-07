@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type {PasswordChecker} from '#/index'
 import {useI18n} from 'vue-i18n'
-import useSecurity from '@/composables/useSecurity'
 import {ref, watch} from 'vue'
 
 const props = defineProps<{
@@ -10,7 +9,6 @@ const props = defineProps<{
 }>()
 
 const {t} = useI18n()
-const {passwordMinLength} = useSecurity()
 
 const resultClasses = ref<string[]>([])
 
@@ -62,35 +60,18 @@ const resultLabels = [
                 v-for="(item, index) in resultClasses"
                 :key="index"
                 :class="item"
+                aria-hidden="true"
             >
             </div>
         </div>
-        <div>
+        <div
+            aria-live="polite"
+            aria-describedby="new-password-to-check"
+        >
             <p :class="`paragraph __${props.passwordChecker.score}`">
                 {{ resultLabels.find(label => label.score === props.passwordChecker.score)?.label }}
             </p>
         </div>
-    </section>
-    <section class="password-rules">
-        <p class="paragraph">{{ t('password.policy.must-contain') }}</p>
-        <ul>
-            <li
-                v-for="(test, index) in props.passwordChecker.tests"
-                :key="index"
-            >
-                <span class="form-state">
-                    <span
-                        :class="`form-state-icon form-state-${test.valid ? 'green' : 'red'}`"
-                        aria-hidden="true"
-                    >
-                        <i :class="`bi bi-${test.valid ? 'check' : 'x'}`"></i>
-                    </span>
-                    {{
-                        (index === 0 ? (passwordMinLength + ' ') : '') + t(`password.policy.${test.message}`) + ' ' + test.additionalMessage
-                    }}
-                </span>
-            </li>
-        </ul>
     </section>
 </template>
 
@@ -127,43 +108,43 @@ const resultLabels = [
 }
 
 .password-feedback-bar > .__0 {
-  background-color: $stateColor3;
+  background-color: $stateColorPassword0;
 }
 
 .password-feedback-bar > .__1 {
-  background-color: $stateColor5;
+  background-color: $stateColorPassword1;
 }
 
 .password-feedback-bar > .__2 {
-  background-color: $stateColor2;
+  background-color: $stateColorPassword2;
 }
 
 .password-feedback-bar > .__3 {
-  background-color: #ffc64a;
+  background-color: $stateColorPassword3;
 }
 
 .password-feedback-bar > .__4 {
-  background-color: $stateColor1;
+  background-color: $stateColorPassword4;
 }
 
 .paragraph.__0 {
-  color: $stateColor3;
+  color: $stateColorPassword0;
 }
 
 .paragraph.__1 {
-  color: $stateColor5;
+  color: $stateColorPassword1;
 }
 
 .paragraph.__2 {
-  color: $stateColor2;
+  color: $stateColorPassword2;
 }
 
 .paragraph.__3 {
-  color: #ffc64a;
+  color: $stateColorPassword3;
 }
 
 .paragraph.__4 {
-  color: $stateColor1;
+  color: $stateColorPassword4;
 }
 
 .password-rules {

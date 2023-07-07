@@ -104,6 +104,7 @@ const clearValues = () => {
                         filled
                         lazy-rules
                         type="password"
+                        for="new-password-to-check"
                     />
                     <QInput
                         v-model="editPassword.newPassword2"

@@ -578,11 +578,11 @@
     "new-password": "Nouveau mot de passe",
     "policy": {
       "labels": {
-        "low": "Faible",
-        "moderate": "Modéré",
-        "strong": "Fort",
-        "very-low": "Très faible",
-        "very-strong": "Très fort"
+        "low": "Mot de passe faible",
+        "moderate": "Mot de passe modéré",
+        "strong": "Mot de passe fort",
+        "very-low": "Mot de passe très faible",
+        "very-strong": "Mot de passe très fort"
       },
       "min-length": "caractères minimum",
       "must-contain": "Le mot de passe doit contenir :",
