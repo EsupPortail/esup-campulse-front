@@ -59,6 +59,7 @@ async function onGetAssociationDetail() {
                         :src="hasLogo ? (!association?.pathLogo?.detail.startsWith('http') ?
                             baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
                         alt=""
+                        aria-hidden="true"
                     />
                 </div>
                 <div class="association-name">
