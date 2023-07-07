@@ -7,12 +7,13 @@ import useSecurity from '@/composables/useSecurity'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes,
+    routes
 })
 
 const colorVariant = ref<string>('')
 
 router.beforeEach(async (to) => {
+    if (!to.hash.includes('#')) window.scrollTo(0, 0)
 
     const userStore = useUserStore()
     const {initStaffStatus, isStaff, getGroups} = useUserGroups()
