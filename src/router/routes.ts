@@ -41,7 +41,6 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'charter',
                 meta: {
-                    requiresAuth: true,
                     colorVariant: 'space-2',
                     breadcrumb: i18n.global.t('breadcrumbs.charter')
 
@@ -62,6 +61,7 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.manage-charters'),
                             title: i18n.global.t('breadcrumbs.manage-charters'),
+                            requiresAuth: true
                         }
                     },
                     {
@@ -71,7 +71,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.sign-charter'),
                             title: i18n.global.t('breadcrumbs.sign-charter'),
-                            associationMembersOnly: true
+                            associationMembersOnly: true,
+                            requiresAuth: true
                         }
                     },
                     {
@@ -81,7 +82,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.sign-charter-recap'),
                             title: i18n.global.t('breadcrumbs.sign-charter-recap'),
-                            associationMembersOnly: true
+                            associationMembersOnly: true,
+                            requiresAuth: true
                         }
                     }
                 ]
@@ -90,7 +92,6 @@ const routes: RouteRecordRaw[] = [
                 path: 'commission',
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.commission'),
-                    requiresAuth: true,
                     colorVariant: 'space-3'
                 },
                 children: [
@@ -109,13 +110,15 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.commission-dashboard'),
                             title: i18n.global.t('breadcrumbs.commission-dashboard'),
+                            requiresAuth: true
                         }
                     },
                     {
                         path: 'archived',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.archived-commission'),
-                            staffOnly: true
+                            staffOnly: true,
+                            requiresAuth: true
                         },
                         children: [
                             {
@@ -140,7 +143,8 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'association/:associationId',
                         meta: {
-                            projectBearersOnly: true
+                            projectBearersOnly: true,
+                            requiresAuth: true
                         },
                         children: [
                             {
@@ -157,7 +161,8 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'individual',
                         meta: {
-                            projectBearersOnly: true
+                            projectBearersOnly: true,
+                            requiresAuth: true
                         },
                         children: [
                             {
@@ -178,7 +183,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),
                             breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
-                            projectBearersOnly: true
+                            projectBearersOnly: true,
+                            requiresAuth: true
                         }
                     },
                     {
@@ -187,7 +193,8 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/project/ProjectDetailView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),
-                            breadcrumb: i18n.global.t('breadcrumbs.project-recap')
+                            breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
+                            requiresAuth: true
                         }
                     },
                     {
@@ -196,7 +203,8 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/project/SubmitProjectReviewView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.submit-project-review'),
-                            breadcrumb: i18n.global.t('breadcrumbs.submit-project-review')
+                            breadcrumb: i18n.global.t('breadcrumbs.submit-project-review'),
+                            requiresAuth: true
                         }
                     },
                     {
@@ -206,7 +214,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),
                             breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
-                            projectBearersOnly: true
+                            projectBearersOnly: true,
+                            requiresAuth: true
                         }
                     },
                     {
@@ -216,7 +225,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             title: i18n.global.t('breadcrumbs.manage-commission-dates'),
                             breadcrumb: i18n.global.t('breadcrumbs.manage-commission-dates'),
-                            staffOnly: true
+                            staffOnly: true,
+                            requiresAuth: true
                         }
                     }
                 ]

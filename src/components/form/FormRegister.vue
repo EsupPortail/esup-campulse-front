@@ -13,7 +13,6 @@ import useUserGroups from '@/composables/useUserGroups'
 import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 import useUtility from '@/composables/useUtility'
 import useErrors from '@/composables/useErrors'
-import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
