@@ -18,11 +18,11 @@ defineProps({
 
             <div class="section-title">
                 <div class="section-info">
-                    <p v-html="header"></p>
+                    <h4 v-html="header"></h4>
                 </div>
             </div>
             <div class="section-content">
-                <p>{{ body }}</p>
+                <p v-html="body"></p>
             </div>
         </div>
     </section>
