@@ -37,7 +37,7 @@ interface Option {
     icon: 'bi-eye' | 'bi-pencil' | 'bi-trash',
     label: string,
     to?: {
-        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail' | 'SubmitProjectReview',
+        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail' | 'SubmitProjectReview' | 'ProjectReviewDetail',
         params: { associationId?: number, projectId: number }
     },
     action?: 'delete'
@@ -86,7 +86,8 @@ const initOptions = () => {
         || props.projectStatus === 'PROJECT_REVIEW_REJECTED') {
         options.value.push({
             icon: 'bi-eye',
-            label: t('project.view-review')
+            label: t('project.view-review'),
+            to: {name: 'ProjectReviewDetail', params: {projectId: props.project}}
         })
     }
 }

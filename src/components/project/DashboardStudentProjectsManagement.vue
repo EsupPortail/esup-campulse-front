@@ -185,10 +185,12 @@ async function onGetProjects() {
                                 </div>
                             </div>
                             <div v-else>
-                                <div class="btn-group">
+                                <div class="flex-row-center padding-top">
                                     <QBtn
                                         :label="t('project.submit-new-project')"
                                         :to="{name: 'SubmitProjectIndividual'}"
+                                        class="btn-lg"
+                                        color="commission"
                                         icon="bi-plus-circle"
                                     />
                                 </div>

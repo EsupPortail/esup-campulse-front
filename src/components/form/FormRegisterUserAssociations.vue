@@ -142,7 +142,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                     <QBtn
                         :aria-label="t('forms.delete-association')"
                         class="btn-lg"
-                        color="red"
+                        color="custom-red"
                         icon="bi-trash"
                         outline
                         @click="removeAssociation(index)"

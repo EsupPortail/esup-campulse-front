@@ -219,6 +219,16 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
+                        path: 'project-review-detail/:projectId',
+                        name: 'ProjectReviewDetail',
+                        component: () => import('@/views/project/ProjectReviewDetailView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-review-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-review-recap'),
+                            requiresAuth: true
+                        }
+                    },
+                    {
                         path: 'manage-commission-dates',
                         name: 'ManageCommissionDates',
                         component: () => import('@/views/commission/ManageCommissionDatesView.vue'),

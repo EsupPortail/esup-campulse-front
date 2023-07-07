@@ -7,7 +7,7 @@ const {projectReview} = useSubmitReview()
 </script>
 
 <template>
-    <section class="flex-section">
+    <section class="flex-column">
         <div class="display-row">
             <p class="row-title">{{ t('project.review') }}</p>
             <p>{{ projectReview.review }}</p>
@@ -38,15 +38,4 @@ const {projectReview} = useSubmitReview()
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-
-.display-row {
-    width: 100% !important;
-}
-
-.flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-}
 </style>

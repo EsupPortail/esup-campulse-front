@@ -70,38 +70,43 @@ async function onPostNewComment() {
 </script>
 
 <template>
-    <div
-        v-for="comment in comments"
-        :key="comment.id"
-        class="comment-row"
-    >
-        <p class="comment-head">
-            <span>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-chat"
-                ></i>
-                {{ t('project.comments.comment-from') }} <span class="value">{{ comment.user.firstName + ' ' + comment.user.lastName }}</span>
-                {{ t('project.comments.on-date') }} <span class="value">{{
-                    formatDate(comment.creationDate).split('-').reverse().join('/')
-                }}</span>
-            </span>
-        </p>
-        <p>
-            {{ comment.text }}
-        </p>
+    <div class="flex-column">
+        <div
+            v-for="comment in comments"
+            :key="comment.id"
+            class="comment-row"
+        >
+            <p class="comment-head">
+                <span>
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-chat"
+                    ></i>
+                    {{ t('project.comments.comment-from') }} <span class="value">{{ comment.user.firstName + ' ' + comment.user.lastName }}</span>
+                    {{ t('project.comments.on-date') }} <span class="value">{{
+                        formatDate(comment.creationDate).split('-').reverse().join('/')
+                    }}</span>
+                </span>
+            </p>
+            <p>
+                {{ comment.text }}
+            </p>
+        </div>
+        <div v-if="!comments.length">
+            <p>{{ t('project.comments.no-comment-to-show') }}</p>
+        </div>
+        <div>
+            <QBtn
+                v-if="hasPerm('add_projectcomment') && projectStore.project?.projectStatus !== 'PROJECT_PROCESSING'"
+                :label="t('project.new-comment')"
+                class="btn-lg"
+                color="commission"
+                icon="bi-plus-circle"
+                @click="open = true"
+            />
+        </div>
     </div>
-    <div v-if="!comments.length">
-        <p>{{ t('project.comments.no-comment-to-show') }}</p>
-    </div>
-    <QBtn
-        v-if="hasPerm('add_projectcomment') && projectStore.project?.projectStatus !== 'PROJECT_PROCESSING'"
-        :label="t('project.new-comment')"
-        class="btn-lg"
-        color="commission"
-        icon="bi-plus-circle"
-        @click="open = true"
-    />
+
     <QDialog v-model="open">
         <QCard class="variant-space-3">
             <QCardSection class="q-pt-none">

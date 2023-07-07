@@ -94,7 +94,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                                     :label="t('alerts.aborted-cas-registration.button')"
                                     :to="{name: 'Registration'}"
                                     class="btn-lg"
-                                    color="red"
+                                    color="custom-red"
                                 />
                             </div>
                         </div>

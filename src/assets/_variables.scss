@@ -106,6 +106,8 @@ $outlineColor1: rgba(255, 255, 255, 0.8);
 $outlineColor2: rgba(0, 0, 0, 0.8);
 $formSeparatorColor: #d4d4d4;
 
+$customRed: #E91B0C;
+
 // ---------------- Colors for Quasar ----------------
 // Useful for example for buttons, whom style is tricky to configure
 // Simply use it as QBtn attribute 'color'
@@ -115,6 +117,10 @@ $formSeparatorColor: #d4d4d4;
 
 .bg-base {
   background: $textColor2;
+}
+
+.bg-custom-red {
+  background: $customRed;
 }
 
 .bg-dashboard {

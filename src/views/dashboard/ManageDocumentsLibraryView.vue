@@ -273,7 +273,7 @@ async function onDeleteDocument(documentId: number) {
                                     :disable="document.processType !== 'NO_PROCESS'"
                                     :label="t('delete')"
                                     class="btn-lg"
-                                    color="red"
+                                    color="custom-red"
                                     icon="bi-trash"
                                     @click="onDeleteDocument(document.id)"
                                 />

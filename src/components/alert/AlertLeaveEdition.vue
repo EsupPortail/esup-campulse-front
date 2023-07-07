@@ -30,7 +30,7 @@ const props = defineProps({
                         v-close-popup
                         :label="t('discard-changes')"
                         class="btn-lg"
-                        color="red"
+                        color="custom-red"
                         icon="bi-box-arrow-left"
                         @click="$emit('leaveEdition')"
                     />

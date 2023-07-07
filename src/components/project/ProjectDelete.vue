@@ -74,7 +74,7 @@ async function onDeleteProject() {
                         <QBtn
                             v-close-popup
                             :label="t('delete')"
-                            color="red"
+                            color="custom-red"
                             icon="bi-trash"
                             type="submit"
                         />

@@ -56,7 +56,7 @@ onMounted(initValues)
             />
             <QBtn
                 :aria-label="t('delete')"
-                color="red"
+                color="custom-red"
                 icon="bi-trash"
                 outline
                 @click="removeNetwork(index)"
@@ -82,6 +82,6 @@ onMounted(initValues)
 @import '@/assets/variables.scss';
 
 .q-input {
-  width: $fullSize;
+    width: $fullSize;
 }
 </style>

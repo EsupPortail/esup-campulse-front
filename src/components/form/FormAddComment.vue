@@ -25,7 +25,7 @@ const emit = defineEmits(['submit', 'closeDialog'])
         <QInput
             v-model="newComment"
             :aria-required="props.selectedAction !== 'validate'"
-            :hint="props.selectedAction !== 'new-comment' ? t('forms.comment-hint') : ''"
+            :hint="props.selectedAction !== 'new-comment' ? t('forms.project-comment-hint') : ''"
             :label="t('forms.comment') + (props.selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
             :rules="props.selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
             color="commission"
@@ -42,10 +42,10 @@ const emit = defineEmits(['submit', 'closeDialog'])
                 @click="emit('closeDialog')"
             />
             <QBtn
+                :color="props.selectedAction === 'reject' || props.selectedAction === 'return' ? 'custom-red' : 'commission'"
                 :icon="props.selectedIcon"
-                :label="t(`project.${props.selectedAction}`)"
+                :label="t(`project.review-${props.selectedAction}`)"
                 class="btn-lg"
-                color="commission"
                 type="submit"
             />
         </div>
@@ -54,6 +54,6 @@ const emit = defineEmits(['submit', 'closeDialog'])
 
 <style lang="scss" scoped>
 .comment-btn {
-    margin-top: 1rem;
+    margin-top: 3rem;
 }
 </style>

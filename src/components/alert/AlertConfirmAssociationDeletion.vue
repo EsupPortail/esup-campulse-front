@@ -44,7 +44,7 @@ async function onDeleteAssociation() {
     <QBtn
         :label="t('association.delete-association')"
         class="btn-lg"
-        color="red"
+        color="custom-red"
         icon="bi-trash"
         @click="confirmation = true"
     />
@@ -78,7 +78,7 @@ async function onDeleteAssociation() {
                         v-close-popup
                         :label="t('association.delete-association')"
                         class="btn-lg"
-                        color="red"
+                        color="custom-red"
                         icon="bi-trash"
                         @click="onDeleteAssociation"
                     />

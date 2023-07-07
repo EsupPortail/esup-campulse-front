@@ -50,7 +50,7 @@ const initOptions = () => {
             to: {name: 'ProjectReviewDetail', params: {projectId: props.project}}
         })
     }
-    if (props.projectStatus === 'PROJECT_REVIEW_VALIDATED' || props.projectStatus === 'PROJECT_REVIEW_REJECTED') {
+    if (props.projectStatus === 'PROJECT_REVIEW_VALIDATED' || props.projectStatus === 'PROJECT_REVIEW_CANCELLED') {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),
@@ -107,19 +107,3 @@ function onOptionClick(option: Option) {
         @refresh-projects="emit('refreshProjects')"
     />
 </template>
-
-<style lang="scss" scoped>
-/*@import '@/assets/_variables.scss';
-
-.q-btn {
-  background-color: orange;
-}
-
-::v-deep(.q-item) {
-  color: $capeColorText;
-}
-
-::v-deep(.no-presidency) {
-  color: $textColor2;
-}*/
-</style>

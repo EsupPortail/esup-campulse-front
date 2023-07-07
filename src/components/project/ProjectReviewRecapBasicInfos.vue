@@ -6,25 +6,45 @@ import useUsers from '@/composables/useUsers'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
 import {onMounted, ref} from 'vue'
 import {useUserStore} from '@/stores/useUserStore'
+import useUserGroups from '@/composables/useUserGroups'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 const {t} = useI18n()
 const {formatDate, CURRENCY} = useUtility()
 const {projectReview} = useSubmitReview()
 const {userToUpdate} = useUsers()
 const userStore = useUserStore()
+const {isStaff} = useUserGroups()
+const associationStore = useAssociationStore()
+const userManagerStore = useUserManagerStore()
 
 const applicant = ref<string | undefined>('')
 
-const initApplicant = () => {
-    if (projectReview.value.user) applicant.value = `${userStore.user?.firstName} ${userStore.user?.lastName}`
-    else applicant.value = userStore.user?.associations.find(obj => obj.id === projectReview.value.association)?.name
+const initApplicant = async () => {
+    if (isStaff.value) {
+        if (projectReview.value.association) {
+            const associationId = projectReview.value.association
+            await associationStore.getAssociationDetail(associationId, true)
+            applicant.value = associationStore.association?.name
+        } else {
+            const userId = projectReview.value.user
+            await userManagerStore.getUserDetail(userId as number)
+            applicant.value = userManagerStore.user?.firstName + ' ' + userManagerStore.user?.lastName
+        }
+    } else {
+        if (projectReview.value.user) applicant.value = `${userStore.user?.firstName} ${userStore.user?.lastName}`
+        else applicant.value = userStore.user?.associations.find(obj => obj.id === projectReview.value.association)?.name
+    }
 }
 
-onMounted(initApplicant)
+onMounted(async () => {
+    await initApplicant()
+})
 </script>
 
 <template>
-    <section class="flex-section">
+    <section class="flex-column">
         <div class="display-row">
             <p class="row-title">{{ t('project.applicant') }}</p>
             <p>{{ applicant }}</p>
@@ -104,15 +124,4 @@ onMounted(initApplicant)
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-
-.display-row {
-    width: 100% !important;
-}
-
-.flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-}
 </style>

@@ -174,7 +174,7 @@ async function onDeleteAssociationUser() {
             <QBtn
                 :label="t('user-manager.delete-association-user')"
                 class="btn-lg"
-                color="red"
+                color="custom-red"
                 icon="bi-file-earmark-x"
                 @click="onDeleteAssociationUser"
             />

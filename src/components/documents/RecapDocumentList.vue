@@ -86,17 +86,15 @@ onMounted(async () => await onGetDocuments())
             class="display-row"
         >
             <h4>{{ document.description }}</h4>
-            <p class="paragraph">
-                <ul role="list">
-                    <li
-                        v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-                        :key="uploadedDocument.id"
-                        @click="onGetFile(uploadedDocument)"
-                    >
-                        {{ uploadedDocument.name }}
-                    </li>
-                </ul>
-            </p>
+            <ul role="list">
+                <li
+                    v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+                    :key="uploadedDocument.id"
+                    @click="onGetFile(uploadedDocument)"
+                >
+                    {{ uploadedDocument.name }}
+                </li>
+            </ul>
         </div>
     </section>
 </template>
@@ -107,13 +105,13 @@ onMounted(async () => await onGetDocuments())
 @import "@/assets/_variables.scss";
 
 ul > li {
-  text-decoration: underline;
-  font-weight: $semibold-weight;
-  cursor: pointer;
-  color: inherit;
+    text-decoration: underline;
+    font-weight: $semibold-weight;
+    cursor: pointer;
+    color: inherit;
 }
 
 ul, li {
-  padding-left: 0 !important;
+    padding-left: 0 !important;
 }
 </style>

@@ -204,7 +204,7 @@ async function onDeleteUser() {
         <QBtn
             :label="t('user-manager.delete-account-application')"
             class="btn-lg"
-            color="red"
+            color="custom-red"
             icon="bi-file-earmark-x"
             @click="onDeleteUser"
         />

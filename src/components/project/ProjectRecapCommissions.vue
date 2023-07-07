@@ -94,6 +94,7 @@ async function onGetProjectCommissions() {
             <div
                 v-for="projectCommissionFund in projectStore.projectCommissionFunds"
                 :key="projectCommissionFund.id"
+                class="flex-column"
             >
                 <div class="display-row">
                     <h4>
@@ -154,14 +155,4 @@ async function onGetProjectCommissions() {
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
-
-/*.display-row {
-  width: 100% !important;
-}
-
-.flex-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}*/
 </style>

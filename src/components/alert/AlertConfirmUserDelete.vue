@@ -39,7 +39,7 @@ async function onDeleteUser() {
     <QBtn
         :label="t('user-manager.delete-user')"
         class="btn-lg"
-        color="red"
+        color="custom-red"
         icon="bi-trash"
         @click="confirm = true"
     />
@@ -63,7 +63,7 @@ async function onDeleteUser() {
                         v-close-popup
                         :label="t('user-manager.delete-user')"
                         class="btn-lg"
-                        color="red"
+                        color="custom-red"
                         icon="bi-trash"
                         @click="onDeleteUser"
                     />

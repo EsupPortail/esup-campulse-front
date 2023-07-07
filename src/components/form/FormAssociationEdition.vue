@@ -181,10 +181,10 @@ async function onChangeLogo(action: string) {
         <div id="association-logo-title">
             <div class="association-logo">
                 <QImg
-                    alt=""
                     :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (!pathLogo.detail) : true"
                     :ratio="1"
                     :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (!pathLogo.detail.startsWith('http') ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
+                    alt=""
                 />
             </div>
 
@@ -220,7 +220,7 @@ async function onChangeLogo(action: string) {
                 <QBtn
                     :label="t('association.logo.remove')"
                     class="btn-lg"
-                    color="red"
+                    color="custom-red"
                     icon="bi-trash"
                     outline
                     @click="onChangeLogo('delete')"

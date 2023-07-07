@@ -40,9 +40,9 @@ app.use(Quasar, {
         Notify,
         Loading
     },
-    config: {
+    /*config: {
         notify: {},
-    },
+    },*/
     lang: quasarLang,
     iconSet: quasarIconSet
 })

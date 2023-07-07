@@ -15,8 +15,8 @@ const {postNewProjectComment, getProjectComments, newComment} = useProjectCommen
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
 
-type Action = 'validate' | 'reject' | 'return' | 'new-comment' | ''
-type Icon = 'bi-check-lg' | 'bi-x-octagon' | 'bi-exclamation-triangle' | 'bi-chat' | ''
+type Action = 'validate' | 'return' | 'new-comment' | ''
+type Icon = 'bi-check-lg' | 'bi-exclamation-triangle' | 'bi-chat' | ''
 
 const open = ref<boolean>(false)
 
@@ -37,12 +37,11 @@ async function onUpdateProjectStatus() {
     loading.show()
     try {
         if (projectStore.project) {
-            let projectStatus: ProjectStatus | '' = 'PROJECT_VALIDATED'
-            if (selectedAction.value === 'validate') projectStatus = 'PROJECT_VALIDATED'
-            else if (selectedAction.value === 'return') projectStatus = 'PROJECT_DRAFT'
-            else if (selectedAction.value === 'reject') projectStatus = 'PROJECT_REJECTED'
+            let projectStatus: ProjectStatus | '' = ''
+            if (selectedAction.value === 'validate') projectStatus = 'PROJECT_REVIEW_VALIDATED'
+            else if (selectedAction.value === 'return') projectStatus = 'PROJECT_REVIEW_DRAFT'
             await postNewProjectComment(projectStore.project.id, newComment.value)
-            await projectStore.patchProjectStatus(projectStatus)
+            if (projectStatus) await projectStore.patchProjectStatus(projectStatus)
             await getProjectComments(projectStore.project.id)
             open.value = false
             newComment.value = ''
@@ -66,25 +65,18 @@ async function onUpdateProjectStatus() {
 <template>
     <section class="flex-row-center padding-top padding-bottom">
         <QBtn
-            :label="t('project.validate')"
+            :label="t('project.review-validate')"
             class="btn-lg"
             color="commission"
             icon="bi-check-lg"
             @click="onOpenDialog('validate', 'bi-check-lg')"
         />
         <QBtn
-            :label="t('project.return')"
+            :label="t('project.review-return')"
             class="btn-lg"
             color="custom-red"
             icon="bi-exclamation-triangle"
             @click="onOpenDialog('return', 'bi-exclamation-triangle')"
-        />
-        <QBtn
-            :label="t('project.reject')"
-            class="btn-lg"
-            color="custom-red"
-            icon="bi-x-octagon"
-            @click="onOpenDialog('reject', 'bi-x-octagon')"
         />
     </section>
     <QDialog v-model="open">

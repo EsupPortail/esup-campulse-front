@@ -141,7 +141,7 @@ async function onDelegatePresidency(activate: boolean) {
                         v-if="props.member.canBePresidentFrom || props.member.canBePresidentTo"
                         v-close-popup
                         :label="t('deactivate')"
-                        color="red"
+                        color="custom-red"
                         @click="onDelegatePresidency(false)"
                     />
                 </QForm>

@@ -79,7 +79,7 @@ async function onOpenDeleteAlert() {
         <QBtn
             :label="t('delete')"
             class="btn-lg"
-            color="red"
+            color="custom-red"
             icon="bi-trash"
             @click="onOpenDeleteAlert"
         />
@@ -132,6 +132,6 @@ async function onOpenDeleteAlert() {
 @import "@/assets/styles/forms.scss";
 
 .q-card {
-  padding: 1rem
+    padding: 1rem
 }
 </style>
