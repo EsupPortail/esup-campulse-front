@@ -18,6 +18,7 @@ import ProjectRecap from '@/components/project/ProjectRecap.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
 import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vue'
 import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
 const {
@@ -457,6 +458,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             class="flex-column"
                             @submit.prevent="onSubmitBasicInfos(2)"
                         >
+                            <InfoFormRequiredFields/>
                             <QInput
                                 v-model="projectBasicInfos.name"
                                 :label="t('project.name') + ' *'"

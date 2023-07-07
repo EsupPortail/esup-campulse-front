@@ -6,6 +6,7 @@ import {useI18n} from 'vue-i18n'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
+import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 
 const {userToUpdate} = useUsers()
@@ -63,10 +64,11 @@ onMounted(() => {
 
 <template>
     <div class="flex-column">
+        <InfoFormRequiredFields/>
         <QInput
             v-model="userToUpdate.firstName"
             :disable="!!props.user?.isCas"
-            :label="t('forms.first-name')"
+            :label="t('forms.first-name') + ' *'"
             :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
             autocomplete="given-name"
             color="dashboard"
@@ -76,7 +78,7 @@ onMounted(() => {
         <QInput
             v-model="userToUpdate.lastName"
             :disable="!!props.user?.isCas"
-            :label="t('forms.last-name')"
+            :label="t('forms.last-name') + ' *'"
             :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
             autocomplete="family-name"
             color="dashboard"
@@ -85,7 +87,7 @@ onMounted(() => {
         />
         <QInput
             v-model="userToUpdate.email"
-            :label="t('forms.email')"
+            :label="t('forms.email') + ' *'"
             :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
             autocomplete="email"
             color="dashboard"

@@ -20,6 +20,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import useErrors from '@/composables/useErrors'
+import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -227,6 +228,10 @@ async function onChangeLogo(action: string) {
             </div>
         </div>
     </QForm>
+
+    <div class="container">
+        <InfoFormRequiredFields/>
+    </div>
 
     <QForm class="association-edition">
         <!-- Informations -->
