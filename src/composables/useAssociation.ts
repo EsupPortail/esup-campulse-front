@@ -1,5 +1,4 @@
 import {ref} from 'vue'
-import i18n from '@/plugins/i18n'
 import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
 import type {AssociationRole} from '#/user'
 import useUtility from '@/composables/useUtility'
