@@ -26,7 +26,7 @@ defineProps({
                 </div>
 
                 <div class="section-content">
-                    {{ body }}
+                    <p v-html="body"></p>
                 </div>
             </div>
         </div>

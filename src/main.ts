@@ -40,9 +40,17 @@ app.use(Quasar, {
         Notify,
         Loading
     },
-    /*config: {
-        notify: {},
-    },*/
+    config: {
+        notify: {
+            timeout: 0,
+            actions: [
+                {
+                    color: 'white',
+                    label: i18n.global.t('alerts.close')
+                }
+            ]
+        },
+    },
     lang: quasarLang,
     iconSet: quasarIconSet
 })

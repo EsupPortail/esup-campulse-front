@@ -15,16 +15,16 @@ const {t} = useI18n()
     >
         <RouterLink :to="{name: 'Home'}">{{ t('header.home') }}</RouterLink>
         <RouterLink
-            :to="{name: 'Charter'}"
-            class="space-2"
-        >
-            {{ t('header.charter') }}
-        </RouterLink>
-        <RouterLink
             :to="{name: 'Associations'}"
             class="space-1"
         >
             {{ t('header.associations') }}
+        </RouterLink>
+        <RouterLink
+            :to="{name: 'Charter'}"
+            class="space-2"
+        >
+            {{ t('header.charter') }}
         </RouterLink>
         <RouterLink
             :to="{name: 'Commission'}"

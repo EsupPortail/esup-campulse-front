@@ -15,6 +15,7 @@ import useSubmitReview from '@/composables/useSubmitReview'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
 import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vue'
 import ProjectReviewRecap from '@/components/project/ProjectReviewRecap.vue'
+import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -139,6 +140,7 @@ async function onUploadDocuments(nextStep: number) {
                         <QForm
                             @submit.prevent="onSubmitProjectReviewInfos(2)"
                         >
+                            <InfoFormRequiredFields/>
                             <div class="fieldset">
                                 <h3 class="title-2">{{ t('project.general-infos') }}</h3>
                                 <QInput
@@ -439,4 +441,3 @@ h4 {
 }
 
 </style>
-

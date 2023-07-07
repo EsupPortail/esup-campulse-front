@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, onMounted, ref, watch} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {onBeforeRouteLeave} from 'vue-router'
@@ -20,6 +20,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import useErrors from '@/composables/useErrors'
+import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -181,10 +182,9 @@ async function onChangeLogo(action: string) {
         <div id="association-logo-title">
             <div class="association-logo">
                 <QImg
-                    :aria-hidden="(pathLogo && Object.keys(pathLogo).length > 0) ? (!pathLogo.detail) : true"
-                    :ratio="1"
                     :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (!pathLogo.detail.startsWith('http') ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
                     alt=""
+                    aria-hidden="true"
                 />
             </div>
 
@@ -228,6 +228,10 @@ async function onChangeLogo(action: string) {
             </div>
         </div>
     </QForm>
+
+    <div class="container">
+        <InfoFormRequiredFields/>
+    </div>
 
     <QForm class="association-edition">
         <!-- Informations -->

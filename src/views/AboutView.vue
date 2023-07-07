@@ -59,7 +59,7 @@ watch(() => content.about, () => {
         class="dashboard-section"
     >
         <div class="section-headtitle">
-            <h3>{{ t('about.presentation') }}</h3>
+            <h2>{{ t('about.presentation') }}</h2>
         </div>
 
         <div class="dashboard-section-container">
@@ -86,7 +86,7 @@ watch(() => content.about, () => {
 
         <div class="services-features dashboard-section">
             <div class="section-headtitle">
-                <h3>{{ t('about.services') }}</h3>
+                <h2>{{ t('about.services') }}</h2>
             </div>
 
             <div class="services-section dashboard-section-container">
@@ -115,7 +115,7 @@ watch(() => content.about, () => {
 
         <div class="contact-project dashboard-section">
             <div class="section-headtitle">
-                <h3>{{ t('about.contact') }}</h3>
+                <h2>{{ t('about.contact') }}</h2>
             </div>
 
             <div class="dashboard-section-container">
