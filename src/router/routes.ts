@@ -11,7 +11,10 @@ const routes: RouteRecordRaw[] = [
             {
                 path: '',
                 name: 'Home',
-                component: () => import('@/views/HomeView.vue')
+                component: () => import('@/views/HomeView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.home'),
+                }
             },
             {
                 path: 'associations',

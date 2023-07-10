@@ -2,27 +2,34 @@ import {createRouter, createWebHistory} from 'vue-router'
 import routes from '@/router/routes'
 import {useUserStore} from '@/stores/useUserStore'
 import useUserGroups from '@/composables/useUserGroups'
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import useSecurity from '@/composables/useSecurity'
+import useUtility from '@/composables/useUtility'
+import {useQuasar} from 'quasar'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes
 })
 
-router.beforeEach((to, from, next) => {
-    document.title = `${to.meta.title ? `${to.meta.title} | ` : ''}${import.meta.env.VITE_APP_SITE_NAME}`
-    next()
-})
-
 const colorVariant = ref<string>('')
 
 router.beforeEach(async (to) => {
-    if (!to.hash.includes('#')) window.scrollTo(0, 0)
-
     const userStore = useUserStore()
     const {initStaffStatus, isStaff, getGroups} = useUserGroups()
     const {newUser, hasPerm} = useSecurity()
+    const {dynamicTitle} = useUtility()
+
+    // Scroll to top when on a new page (except for anchors)
+    if (!to.hash.includes('#')) window.scrollTo(0, 0)
+
+    // Dynamically update <title>
+    const initDocumentTitle = () => {
+        document.title = `${to.meta.title ? (to.meta.title + ' | ')
+            : (dynamicTitle.value ? dynamicTitle.value + ' | ' : '')}${import.meta.env.VITE_APP_SITE_NAME}`
+    }
+    initDocumentTitle()
+    watch(() => dynamicTitle.value, initDocumentTitle)
 
     // Set color variant
     colorVariant.value = to.meta.colorVariant as string
