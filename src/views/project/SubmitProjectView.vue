@@ -445,7 +445,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                 <QStepper
                     ref="stepper"
                     v-model="step"
-                    active-color="commission"
+                    active-color="commission-bold"
                     animated
                 >
                     <!-- BASIC INFOS -->

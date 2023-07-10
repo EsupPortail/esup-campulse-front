@@ -1,4 +1,5 @@
 import type {AssociationOptions} from '#/association'
+import type {DocumentUpload} from '#/documents'
 
 export interface User {
     id: number,
@@ -154,7 +155,8 @@ export interface CASUser {
 export interface UserStore {
     user: User | undefined,
     newUser: UserRegister | undefined,
-    userAssociations: AssociationUserDetail[]
+    userAssociations: AssociationUserDetail[],
+    userDocuments: DocumentUpload[]
 }
 
 export interface UserToUpdate {

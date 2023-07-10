@@ -129,9 +129,8 @@ async function onUploadDocuments(nextStep: number) {
                 <QStepper
                     ref="stepper"
                     v-model="step"
-                    active-color="commission"
+                    active-color="commission-bold"
                     animated
-                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep

@@ -97,7 +97,7 @@ async function onPostNewComment() {
         </div>
         <div>
             <QBtn
-                v-if="hasPerm('add_projectcomment') && projectStore.project?.projectStatus !== 'PROJECT_PROCESSING'"
+                v-if="hasPerm('add_projectcomment')"
                 :label="t('project.new-comment')"
                 class="btn-lg"
                 color="commission"

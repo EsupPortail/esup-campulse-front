@@ -14,6 +14,9 @@ import useUtility from '@/composables/useUtility'
 import InfoDocumentLibrary from '@/components/infoPanel/InfoDocumentLibrary.vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
+import ListDocumentDashboard from '@/components/documents/ListDocumentDashboard.vue'
+import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
+import useCharters from '@/composables/useCharters'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -24,13 +27,16 @@ const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 const {dynamicTitle} = useUtility()
 const projectStore = useProjectStore()
+const {initCharters, manageCharters} = useCharters()
 
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
+    await onGetAssociationDocuments()
     initAssociationUser()
     initAssociationUserRole()
     await onGetAssociationProjects()
+    await onGetAssociationCharters()
     dynamicTitle.value = association.value?.name
     loading.hide()
 })
@@ -78,6 +84,32 @@ watch(() => associationUser.value, initAssociationUserRole)
 async function onGetAssociationDetail() {
     try {
         await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetAssociationDocuments() {
+    try {
+        await associationStore.getAssociationDocuments()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetAssociationCharters() {
+    try {
+        await initCharters(parseInt(route.params.id as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -168,99 +200,13 @@ async function onGetAssociationProjects() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                TODO
-                <!--
-                <div class="document-input-group">
-                    <div class="document-input variant-space-1">
-                        <div class="document-input-header">
-                            <div class="flex-row">
-                                <h4>
-                                    Certificat de scolarité des membres élus
-                                </h4>
-                                <p>
-                                    <a>
-                                        <i class="bi bi-info-circle"></i>
-                                    </a>
-                                </p>
-                            </div>
-                            <button>
-                                <i class="bi bi-plus"></i>
-                            </button>
-                        </div>
-                        <div class="document-input-list">
-                            <div class="document-item">
-                                <p>
-                                    <i class="bi bi-file-earmark"></i>
-                                    <a>
-                                        cert_scol_membre1.pdf
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </p>
-                                <button>
-                                    <i class="bi bi-x-lg"></i>
-                                </button>
-                            </div>
-                            <div class="document-item">
-                                <p>
-                                    <i class="bi bi-file-earmark"></i>
-                                    <a>
-                                        cert_scol_membre2.pdf
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </p>
-                                <button>
-                                    <i class="bi bi-x-lg"></i>
-                                </button>
-                            </div>
-                            <div class="document-item">
-                                <p>
-                                    <i class="bi bi-file-earmark"></i>
-                                    <a>
-                                        cert_scol_membre3.pdf
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </p>
-                                <button disabled>
-                                    <i class="bi bi-x-lg"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="document-input">
-                            <div class="document-input-header">
-                                <div class="flex-row">
-                                    <h4>
-                                        PV de la dernière AGO
-                                    </h4>
-                                    <p>
-                                        <a>
-                                            <i class="bi bi-info-circle"></i>
-                                        </a>
-                                    </p>
-                                </div>
-                                <button>
-                                    <i class="bi bi-plus"></i>
-                                </button>
-                            </div>
-                            <div class="document-input-list"></div>
-                        </div>
-
-                        <div class="document-input">
-                            <div class="document-input-header">
-                                <div class="flex-row">
-                                    <h4>
-                                        Certificat envoyé par le tribunal judiciaire
-                                    </h4>
-                                </div>
-                                <button disabled>
-                                    <i class="bi bi-plus"></i>
-                                </button>
-                            </div>
-                            <div class="document-input-list"></div>
-                        </div>
-                    </div>
+                <ListDocumentDashboard
+                    v-if="associationStore.associationDocuments.length"
+                    :documents="associationStore.associationDocuments"
+                />
+                <div v-else>
+                    <p>{{ t('documents.no-documents-to-show') }}</p>
                 </div>
-                -->
             </div>
         </div>
     </section>
@@ -277,53 +223,49 @@ async function onGetAssociationProjects() {
                     <div class="flex-row-space-between padding-top padding-bottom">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
                         <QBtn
-                            :label="t('dashboard.association-user.charter-status-processing')"
+                            :label="t('charter.options.manage')"
                             :to="{name: 'ManageCharters'}"
                             class="btn-lg"
                             color="dashboard"
                         />
                     </div>
-                    TODO
-                    <!--
-                    <div class="document-input variant-space-1">
-                        <div class="document-input-header">
-                            <h4>
-                                FSDIE - Charte de subventionnement
-                            </h4>
+                    <section
+                        v-if="manageCharters.length"
+                    >
+                        <div
+                            v-for="charter in manageCharters"
+                            :key="charter.documentId"
+                            class="document-input variant-space-1"
+                        >
+                            <div class="document-input-header">
+                                <div class="flex-row-space-between">
+                                    <h4>
+                                        {{ charter.documentName }}
+                                    </h4>
+                                    <CharterStatusIndicator :charter-status="charter.charterStatus"/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="document-input variant-space-1">
-                        <div class="document-input-header">
-                            <h4>
-                                IdEx - Charte de subventionnement
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="document-input variant-space-1">
-                        <div class="document-input-header">
-                            <h4>
-                                Culture-ActionS - Charte de subventionnement
-                            </h4>
-                        </div>
-                    </div>
-                    -->
+                    </section>
+                    <section v-else>
+                        <p>{{ t('charter.no-charter-to-show') }}</p>
+                    </section>
                 </div>
                 <div class="document-input-group">
                     <div class="flex-row-space-between padding-top padding-bottom">
-                        <h3>Suivi du traitement des dossiers CAPE</h3>
+                        <h3>{{ t('dashboard.association-user.project-status-processing') }}</h3>
                         <QBtn
+                            :label="t('project.manage')"
                             :to="{name: 'ManageProjects'}"
                             class="btn-lg"
                             color="dashboard"
-                            label="Gestion des dossiers CAPE"
                         />
                     </div>
                     <section
                         v-if="projectStore.projects.length"
-                        class="projects-statuses"
                     >
                         <div
-                            v-for="project in projectStore.projects"
+                            v-for="project in projectStore.projects.slice(0, 3)"
                             :key="project.id"
                             class="document-input variant-space-1"
                         >
@@ -332,25 +274,22 @@ async function onGetAssociationProjects() {
                                     <h4>
                                         {{ project.name }}
                                     </h4>
-                                    <div class="project-status-indicator">
-                                        <ProjectStatusIndicator
-                                            :project-status="project.projectStatus"
-                                            :show-draft="true"
-                                        />
-                                    </div>
+                                    <ProjectStatusIndicator
+                                        :project-status="project.projectStatus"
+                                        :show-draft="true"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </section>
                     <section v-else>
-                        <p class="paragraph">{{ t('project.no-project-to-show') }}</p>
+                        <p>{{ t('project.no-project-to-show') }}</p>
                     </section>
                 </div>
             </div>
         </div>
     </section>
 </template>
-
 
 <style lang="scss" scoped>
 @import '@/assets/styles/dashboard.scss';
