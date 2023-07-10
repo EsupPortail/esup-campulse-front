@@ -25,26 +25,32 @@ onMounted(() => {
 </script>
 
 <template>
-    <div
+    <nav
         id="layout-breadcrumbs"
         :class="'variant-' + colorVariant"
+        role="navigation"
+        :aria-label="t('you-are-here')"
     >
         <QBreadcrumbs
             gutter="none"
             separator=""
+            role="list"
         >
             <QBreadcrumbsEl
                 :label="t('breadcrumbs.home')"
                 :to="{ name: 'Home' }"
+                role="listitem"
             />
             <QBreadcrumbsEl
                 v-for="(element, index) in breadcrumbs"
                 :key="index"
                 :label="element.label"
                 :to="element.to"
+                role="listitem"
+                :aria-current="(index === breadcrumbs.length - 1) ? 'page' : 'false'"
             />
         </QBreadcrumbs>
-    </div>
+    </nav>
 </template>
 
 <style lang="scss">
