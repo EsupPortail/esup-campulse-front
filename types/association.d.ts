@@ -1,4 +1,5 @@
 import type {AssociationUser} from '#/user'
+import type {DocumentUpload} from '#/documents'
 
 export interface Association {
     id: number,
@@ -93,7 +94,8 @@ export interface AssociationStore {
     institutions: Institution[],
     institutionComponents: InstitutionComponent[],
     activityFields: AssociationActivityField[],
-    associationUsers: AssociationUser[]
+    associationUsers: AssociationUser[],
+    associationDocuments: DocumentUpload[]
 }
 
 export type CreateAssociation = Pick<Association, 'name'>

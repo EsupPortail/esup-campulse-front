@@ -131,7 +131,6 @@ async function onUploadDocuments(nextStep: number) {
                     v-model="step"
                     active-color="commission-bold"
                     animated
-                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep

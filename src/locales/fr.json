@@ -183,8 +183,10 @@
   "cancel-search": "Annuler la recherche",
   "charter": {
     "expiration-date": "Date d'expiration",
+    "no-charter-to-show": "Aucune charte à afficher.",
     "options": {
       "download": "Télécharger la charte",
+      "manage": "Signer et gérer les chartes",
       "re-sign": "Renouveler la signature de la charte",
       "sign": "Signer la charte",
       "view": "Voir la charte"
@@ -288,6 +290,7 @@
       "not-can-be-president-from": "Non renseigné",
       "not-can-be-president-to": "Non renseigné",
       "presidency-status": "Droit de présidence",
+      "project-status-processing": "Suivi du traitement des dossiers CAPE",
       "role": "Rôle",
       "you-are-not-an-association-member": "Vous n'êtes membre d'aucune association."
     },
@@ -356,6 +359,7 @@
     "charters": "Chartes",
     "choose-file": "Choisir un document",
     "choose-name": "Nom du document",
+    "no-documents-to-show": "Aucun document à afficher.",
     "no-process-library": "Documents de la bibliothèque",
     "other-documents": "Autres documents",
     "upload-new": "Déposer un nouveau document"
@@ -658,6 +662,7 @@
     "info-panel-status-individual": "porteur individuel de projet",
     "last-modified-date": "Dernière modification",
     "list": "Listes des projets déposés",
+    "manage": "Soumettre et gérer des projets",
     "marketing-campaign": "Campagne de communication",
     "modify": "Modifier le projet",
     "modify-review": "Modifier le bilan",

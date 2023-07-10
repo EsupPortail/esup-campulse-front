@@ -5,11 +5,18 @@ import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {onMounted, ref, watch} from 'vue'
 import InfoDocumentLibrary from '@/components/infoPanel/InfoDocumentLibrary.vue'
+import ListDocumentDashboard from '@/components/documents/ListDocumentDashboard.vue'
+import axios from 'axios'
+import {useQuasar} from 'quasar'
+import useErrors from '@/composables/useErrors'
+
 
 const userStore = useUserStore()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
 const {isStaff} = useUserGroups()
+const {notify, loading} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 const associationCounter = ref<number>(0)
 
@@ -21,8 +28,26 @@ const initAssociationCounter = () => {
 }
 watch(() => userStore.userAssociations.length, initAssociationCounter)
 
+async function onGetUserDocuments() {
+    if (!isStaff && hasPerm('add_project_user')) {
+        try {
+            await userStore.getUserDocuments()
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
+        }
+    }
+}
+
 onMounted(async () => {
+    loading.show()
     initAssociationCounter()
+    await onGetUserDocuments()
+    loading.hide()
 })
 
 </script>
@@ -44,7 +69,6 @@ onMounted(async () => {
                     :to="{name: 'ManageAccount'}"
                     class="btn-lg"
                     color="dashboard"
-                    size="md"
                 />
             </div>
         </div>
@@ -215,94 +239,12 @@ onMounted(async () => {
         <div class="dashboard-section-container">
             <div class="container">
                 <InfoDocumentLibrary color="dashboard"/>
-                <div class="document-input-group">
-                    <div class="document-input variant-space-1">
-                        <div class="document-input-header">
-                            <h4>
-                                Certificat de scolarité des membres élus
-                            </h4>
-                            <p>
-                                <a>
-                                    <i class="bi bi-info-circle"></i>
-                                </a>
-                            </p>
-                            <button>
-                                <i class="bi bi-plus"></i>
-                            </button>
-                        </div>
-                        <div class="document-input-list">
-                            <div class="document-item">
-                                <p>
-                                    <i class="bi bi-file-earmark"></i>
-                                    <a>
-                                        cert_scol_membre1.pdf
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </p>
-                                <button>
-                                    <i class="bi bi-x-lg"></i>
-                                </button>
-                            </div>
-                            <div class="document-item">
-                                <p>
-                                    <i class="bi bi-file-earmark"></i>
-                                    <a>
-                                        cert_scol_membre2.pdf
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </p>
-                                <button>
-                                    <i class="bi bi-x-lg"></i>
-                                </button>
-                            </div>
-                            <div class="document-item">
-                                <p>
-                                    <i class="bi bi-file-earmark"></i>
-                                    <a>
-                                        cert_scol_membre3.pdf
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </p>
-                                <button disabled>
-                                    <i class="bi bi-x-lg"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="document-input">
-                            <div class="document-input-header">
-                                <h4>
-                                    PV de la dernière AGO
-                                </h4>
-                                <p>
-                                    <a>
-                                        <i class="bi bi-info-circle"></i>
-                                    </a>
-                                </p>
-                                <button>
-                                    <i class="bi bi-plus"></i>
-                                </button>
-                            </div>
-                            <!-- <div class="document-input-list"></div> -->
-                        </div>
-
-                        <div class="document-input">
-                            <div class="document-input-header">
-                                <h4>
-                                    Certificat envoyé par le tribunal judiciaire
-                                </h4>
-                                <!-- <p>
-                            <a>
-                                <i class="bi bi-info-circle"></i>
-                            </a>
-                        </p> -->
-                                <button disabled>
-                                    <i class="bi bi-plus"></i>
-                                </button>
-                            </div>
-                            <!-- <div class="document-input-list"></div> -->
-                        </div>
-                    </div>
+                <ListDocumentDashboard
+                    v-if="userStore.userDocuments.length"
+                    :documents="userStore.userDocuments"
+                />
+                <div v-else>
+                    <p>{{ t('documents.no-documents-to-show') }}</p>
                 </div>
             </div>
         </div>

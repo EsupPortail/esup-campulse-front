@@ -3,12 +3,14 @@ import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
+import type {DocumentUpload} from '#/documents'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
         user: undefined,
         newUser: undefined,
-        userAssociations: []
+        userAssociations: [],
+        userDocuments: []
     }),
 
     getters: {
@@ -172,6 +174,11 @@ export const useUserStore = defineStore('userStore', {
                 }
             }
             return perm
+        },
+
+        async getUserDocuments() {
+            const {axiosAuthenticated} = useAxios()
+            this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?user_id=${this.user?.id}`)).data
         }
     }
 })
