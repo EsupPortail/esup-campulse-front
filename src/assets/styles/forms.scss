@@ -629,7 +629,7 @@ label.custom-label {
     border-color: $warningPanelColor;
     background-color: transparentize($warningPanelColor, 0.9);
 
-    p {
+    p, li {
       color: $warningTextColor;
     }
 

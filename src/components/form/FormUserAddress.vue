@@ -8,7 +8,8 @@ const {t} = useI18n()
 const {userToUpdate} = useUsers()
 
 const props = defineProps<{
-    user: User
+    user: User,
+    color: 'commission' | 'dashboard'
 }>()
 
 const userRef = toRefs(props).user
@@ -27,35 +28,43 @@ onMounted(initUserInfos)
     <div class="flex-column">
         <QInput
             v-model="userToUpdate.address"
-            :label="t('address.address')"
+            :color="props.color"
+            :label="t('address.address') + ' *'"
+            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+            aria-required="true"
             autocomplete="street-address"
             clearable
-            color="commission"
             filled
         />
         <div class="flex-row-center full-width">
             <QInput
                 v-model="userToUpdate.zipcode"
-                :label="t('address.zipcode')"
+                :color="props.color"
+                :label="t('address.zipcode') + ' *'"
+                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                aria-required="true"
                 autocomplete="postal-code"
                 clearable
-                color="commission"
                 filled
             />
             <QInput
                 v-model="userToUpdate.city"
-                :label="t('address.city')"
+                :color="props.color"
+                :label="t('address.city') + ' *'"
+                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                aria-required="true"
                 autocomplete="address-level2"
                 clearable
-                color="commission"
                 filled
             />
             <QInput
                 v-model="userToUpdate.country"
-                :label="t('address.country')"
+                :color="props.color"
+                :label="t('address.country') + ' *'"
+                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                aria-required="true"
                 autocomplete="country-name"
                 clearable
-                color="commission"
                 filled
             />
         </div>

@@ -497,7 +497,7 @@ const columns: QTableProps['columns'] = [
                                 label="Bouton icône gauche"
                             />
                             <QBtn
-                                icon-right="bi-chevron-compact-right"
+                                icon="bi-chevron-compact-right"
                                 label="Bouton icône droite"
                             />
                         </div>
@@ -518,7 +518,7 @@ const columns: QTableProps['columns'] = [
                             />
                             <QBtn
                                 class="btn-alt"
-                                icon-right="bi-chevron-compact-right"
+                                icon="bi-chevron-compact-right"
                                 label="Bouton icône droite"
                             />
                         </div>
@@ -538,7 +538,7 @@ const columns: QTableProps['columns'] = [
                                 />
                                 <QBtn class="counter-button">Page <strong>1</strong> / 25</QBtn>
                                 <QBtn
-                                    icon-right="bi-chevron-compact-right"
+                                    icon="bi-chevron-compact-right"
                                     label=""
                                 />
                             </div>
@@ -1208,7 +1208,7 @@ const columns: QTableProps['columns'] = [
                         étapes de formulaire. Ce texte explicatif est optionnel.
                     </p>
                     <QBtn
-                        icon-right="bi-chevron-compact-right"
+                        icon="bi-chevron-compact-right"
                         label="Étape suivante"
                     />
                 </section>

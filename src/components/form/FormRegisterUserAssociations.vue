@@ -157,7 +157,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                     :label="t('validate')"
                     class="btn-lg"
                     color="dashboard"
-                    icon-right="bi-check2"
+                    icon="bi-check2"
                     outline
                     type="submit"
                 />

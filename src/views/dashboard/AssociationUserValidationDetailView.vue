@@ -182,7 +182,7 @@ async function onDeleteAssociationUser() {
                 :label="t('user-manager.validate-association-user')"
                 class="btn-lg"
                 color="dashboard"
-                icon-right="bi-check2"
+                icon="bi-check2"
                 type="submit"
             />
         </div>

@@ -144,7 +144,10 @@ onMounted(() => {
                 || (editedByStaff && userRef.permissions?.includes('add_project_user'))"
         >
             <h3>{{ t('address.address') }}</h3>
-            <FormUserAddress :user="userRef"/>
+            <FormUserAddress
+                :user="userRef"
+                color="dashboard"
+            />
         </div>
         <div
             v-if="!editedByStaff"

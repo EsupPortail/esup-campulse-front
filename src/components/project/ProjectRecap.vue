@@ -121,7 +121,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 :label="t('project.submit')"
                 class="btn-lg"
                 color="commission"
-                icon-right="bi-check2"
+                icon="bi-check2"
                 type="submit"
             />
         </div>
