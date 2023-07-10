@@ -10,6 +10,11 @@ const router = createRouter({
     routes
 })
 
+router.beforeEach((to, from, next) => {
+    document.title = `${to.meta.title ? `${to.meta.title} | ` : ''}${import.meta.env.VITE_APP_SITE_NAME}`
+    next()
+})
+
 const colorVariant = ref<string>('')
 
 router.beforeEach(async (to) => {
