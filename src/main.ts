@@ -1,6 +1,7 @@
 import {createApp} from 'vue'
 import {createPinia} from 'pinia'
-import {Loading, Notify, Quasar} from 'quasar'
+import {Loading, Notify, Quasar, setCssVar} from 'quasar'
+import type {QuasarPluginOptions} from 'quasar'
 import quasarLang from 'quasar/lang/fr'
 import quasarIconSet from 'quasar/icon-set/svg-mdi-v6'
 import '@quasar/extras/mdi-v6/mdi-v6.css'
@@ -53,6 +54,9 @@ app.use(Quasar, {
     },
     lang: quasarLang,
     iconSet: quasarIconSet
-})
+} as Partial<QuasarPluginOptions>)
+
+// Configure Quasar positive color for accessibility
+setCssVar('positive', '#178731')
 
 app.mount('#app')
