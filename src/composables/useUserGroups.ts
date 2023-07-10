@@ -192,6 +192,8 @@ export default function () {
         isStaff.value = perm
     }
 
+    watch(() => userStore.user?.groups.length, initStaffStatus)
+
     /**
      * Return the old groups that are not in the new groups.
      * @param {number[]} newGroups - The new groups that the user is a member of.
