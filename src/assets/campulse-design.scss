@@ -193,7 +193,6 @@ main {
 // Intro element (Image, title, text) that can be used at the top of pages
 .introduction-section {
   margin: 2rem 0 4rem;
-  //padding: 0;
 
   .content {
     display: flex;
@@ -306,11 +305,6 @@ h1, .title-1, h2, .title-2, h3, .title-3, h4, .title-4, h5, .title-5, h6, .title
   line-height: normal;
   letter-spacing: normal;
   text-transform: uppercase;
-
-  /*@media only screen and (max-width: $pageWidth) {
-    margin-left: 1.5rem;
-    margin-right: 1.5rem;
-  }*/
 }
 
 h1, .title-1 {
