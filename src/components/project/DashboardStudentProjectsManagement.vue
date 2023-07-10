@@ -272,7 +272,7 @@ async function onGetProjects() {
 @import "@/assets/styles/dashboard.scss";
 
 .info-panel {
-    margin: 0.5rem;
+    margin: 1rem;
 }
 
 .q-tab {
