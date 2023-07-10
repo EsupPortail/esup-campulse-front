@@ -44,7 +44,7 @@ const emit = defineEmits(['submit', 'closeDialog'])
             <QBtn
                 :color="props.selectedAction === 'reject' || props.selectedAction === 'return' ? 'custom-red' : 'commission'"
                 :icon="props.selectedIcon"
-                :label="t(`project.review-${props.selectedAction}`)"
+                :label="t(`project.${props.selectedAction}`)"
                 class="btn-lg"
                 type="submit"
             />
