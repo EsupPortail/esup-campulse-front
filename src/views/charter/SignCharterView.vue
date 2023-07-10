@@ -165,7 +165,7 @@ async function onSignCharter() {
                 <QStepper
                     ref="stepper"
                     v-model="step"
-                    active-color="charter"
+                    active-color="charter-bold"
                     animated
                 >
                     <QStep
