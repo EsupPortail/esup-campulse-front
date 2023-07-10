@@ -540,14 +540,17 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     ></i>
                                     <p>{{ t('address.verify') }}</p>
                                 </div>
-                                <FormUserAddress :user="userStore.user"/>
+                                <FormUserAddress
+                                    :user="userStore.user"
+                                    color="commission"
+                                />
                             </div>
                             <div class="flex-row-center padding-top padding-bottom">
                                 <QBtn
                                     :label="t('continue')"
                                     class="btn-lg"
                                     color="commission"
-                                    icon-right="bi-check2"
+                                    icon="bi-check2"
                                     type="submit"
                                 />
                             </div>

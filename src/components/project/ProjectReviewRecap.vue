@@ -40,18 +40,19 @@ async function onSubmitProjectReview() {
 
 <template>
     <QForm
+        class="flex-column"
         @submit.prevent="onSubmitProjectReview"
     >
-        <h3 class="title-2">{{ t('recap') }}</h3>
-
-        <section class="recap-sections">
+        <section class="recap-sections flex-column">
             <!-- BASIC INFOS -->
-            <section class="recap-section">
-                <div class="recap-section-title">
-                    <h4 class="title-3">{{ t('project.general-infos') }}</h4>
+            <section class="recap-section flex-column">
+                <div class="recap-section-title flex-row-space-between">
+                    <h3>{{ t('project.general-infos') }}</h3>
                     <QBtn
                         v-if="props.view === 'submitProjectReview'"
                         :label="t('modify')"
+                        class="btn-lg"
+                        color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 1)"
                     />
@@ -60,12 +61,14 @@ async function onSubmitProjectReview() {
             </section>
 
             <!-- REVIEW INFOS -->
-            <section class="recap-section">
-                <div class="recap-section-title">
-                    <h4 class="title-3">{{ t('project.review') }}</h4>
+            <section class="recap-section flex-column">
+                <div class="recap-section-title flex-row-space-between">
+                    <h3>{{ t('project.review') }}</h3>
                     <QBtn
                         v-if="props.view === 'submitProjectReview'"
                         :label="t('modify')"
+                        class="btn-lg"
+                        color="commission"
                         icon="bi-pencil"
                         @click="emit('changeStep', 2)"
                     />
@@ -76,11 +79,13 @@ async function onSubmitProjectReview() {
 
         <!-- DOCUMENTS -->
         <section class="recap-section">
-            <div class="recap-section-title">
-                <h4 class="title-3">{{ t('project.documents') }}</h4>
+            <div class="recap-section-title flex-row-space-between">
+                <h3>{{ t('project.documents') }}</h3>
                 <QBtn
                     v-if="props.view === 'submitProjectReview'"
                     :label="t('modify')"
+                    class="btn-lg"
+                    color="commission"
                     icon="bi-pencil"
                     @click="emit('changeStep', 3)"
                 />
@@ -94,16 +99,20 @@ async function onSubmitProjectReview() {
         </section>
         <div
             v-if="props.view === 'submitProjectReview'"
-            class="btn-group"
+            class="flex-row-center"
         >
             <QBtn
                 :label="t('back')"
+                class="btn-lg"
+                color="commission"
                 icon="bi-chevron-left"
                 @click="emit('changeStep', 3)"
             />
             <QBtn
                 :label="t('project.submit-review')"
-                icon-right="bi-check-lg"
+                class="btn-lg"
+                color="commission"
+                icon="bi-check-lg"
                 type="submit"
             />
         </div>

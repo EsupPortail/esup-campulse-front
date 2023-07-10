@@ -121,15 +121,17 @@ async function onUploadDocuments(nextStep: number) {
             </h2>
         </div>
 
-        <div class="form-container">
-            <div class="form">
+        <div class="dashboard-section-container">
+            <div class="container">
                 <!-- Info panel -->
                 <InfoProcessDocuments :processes="['DOCUMENT_PROJECT_REVIEW']"/>
 
                 <QStepper
                     ref="stepper"
                     v-model="step"
+                    active-color="commission"
                     animated
+                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
@@ -138,11 +140,11 @@ async function onUploadDocuments(nextStep: number) {
                         icon="mdi-card-text-outline"
                     >
                         <QForm
+                            class="flex-column"
                             @submit.prevent="onSubmitProjectReviewInfos(2)"
                         >
                             <InfoFormRequiredFields/>
-                            <div class="fieldset">
-                                <h3 class="title-2">{{ t('project.general-infos') }}</h3>
+                            <div class="flex-column">
                                 <QInput
                                     v-model="applicant"
                                     :label="t('project.applicant')"
@@ -165,6 +167,7 @@ async function onUploadDocuments(nextStep: number) {
                                     ]"
                                     aria-required="true"
                                     clearable
+                                    color="commission"
                                     filled
                                     reactive-rules
                                     type="date"
@@ -179,6 +182,7 @@ async function onUploadDocuments(nextStep: number) {
                                     ]"
                                     aria-required="true"
                                     clearable
+                                    color="commission"
                                     filled
                                     reactive-rules
                                     type="date"
@@ -190,15 +194,15 @@ async function onUploadDocuments(nextStep: number) {
                                     :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                     aria-required="true"
                                     clearable
+                                    color="commission"
                                     filled
                                     lazy-rules
                                 />
                             </div>
 
                             <div v-if="projectReview.user">
-                                <QSeparator/>
-                                <div class="fieldset individual-bearer">
-                                    <h4 class="title-3">{{ t('address.address') }}</h4>
+                                <fieldset class="flex-column">
+                                    <legend class="title-4">{{ t('address.address') }}</legend>
                                     <div class="info-panel info-panel-warning">
                                         <i
                                             aria-hidden="true"
@@ -206,21 +210,20 @@ async function onUploadDocuments(nextStep: number) {
                                         ></i>
                                         <p>{{ t('address.verify') }}</p>
                                     </div>
-                                    <FormUserAddress :user="userStore.user"/>
-                                </div>
+                                    <FormUserAddress
+                                        :user="userStore.user"
+                                        color="commission"
+                                    />
+                                </fieldset>
                             </div>
 
-                            <QSeparator/>
-
-                            <h4 class="title-3">{{ t('commissions') }}</h4>
+                            <h3>{{ t('commissions') }}</h3>
                             <ProjectRecapCommissions :view="'submitProjectReview'"/>
 
-                            <QSeparator/>
-
                             <div class="fieldset">
-                                <h4 class="title-3">
+                                <h3>
                                     {{ t('project.outcome') + ' / ' + t('project.income') }}
-                                </h4>
+                                </h3>
 
                                 <QInput
                                     v-model="projectReview.outcome"
@@ -229,6 +232,7 @@ async function onUploadDocuments(nextStep: number) {
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     clearable
+                                    color="commission"
                                     filled
                                     inputmode="numeric"
                                     lazy-rules
@@ -243,6 +247,7 @@ async function onUploadDocuments(nextStep: number) {
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     clearable
+                                    color="commission"
                                     filled
                                     inputmode="numeric"
                                     lazy-rules
@@ -250,10 +255,12 @@ async function onUploadDocuments(nextStep: number) {
                                     type="number"
                                 />
                             </div>
-                            <div class="btn-group">
+                            <div class="flex-row-center">
                                 <QBtn
                                     :label="t('continue')"
-                                    icon-right="bi-check-lg"
+                                    class="btn-lg"
+                                    color="commission"
+                                    icon="bi-check-lg"
                                     type="submit"
                                 />
                             </div>
@@ -267,73 +274,79 @@ async function onUploadDocuments(nextStep: number) {
                         icon="mdi-chart-box-outline"
                     >
                         <QForm
+                            class="flex-column"
                             @submit.prevent="onSubmitProjectReviewInfos(3)"
                         >
-                            <div>
-                                <h4 class="title-3">{{ t('project.review') }}</h4>
-
-                                <QInput
-                                    v-model="projectReview.review"
-                                    :hint="t('project.moral-review-hint')"
-                                    :label="t('project.moral-review') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
-                                />
-                                <QInput
-                                    v-model="projectReview.impactStudents"
-                                    :label="t('project.impact-students') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
-                                />
-                                <QInput
-                                    v-model="projectReview.description"
-                                    :hint="t('project.description-hint')"
-                                    :label="t('project.description') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
-                                />
-                                <QInput
-                                    v-model="projectReview.difficulties"
-                                    :label="t('project.difficulties') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
-                                />
-                                <QInput
-                                    v-model="projectReview.improvements"
-                                    :label="t('project.improvements') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
-                                    aria-required="true"
-                                    clearable
-                                    filled
-                                    lazy-rules
-                                    type="textarea"
-                                />
-                            </div>
-                            <div class="btn-group">
+                            <QInput
+                                v-model="projectReview.review"
+                                :hint="t('project.moral-review-hint')"
+                                :label="t('project.moral-review') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                clearable
+                                color="commission"
+                                filled
+                                lazy-rules
+                                type="textarea"
+                            />
+                            <QInput
+                                v-model="projectReview.impactStudents"
+                                :label="t('project.impact-students') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                clearable
+                                color="commission"
+                                filled
+                                lazy-rules
+                                type="textarea"
+                            />
+                            <QInput
+                                v-model="projectReview.description"
+                                :hint="t('project.description-hint')"
+                                :label="t('project.description') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                clearable
+                                color="commission"
+                                filled
+                                lazy-rules
+                                type="textarea"
+                            />
+                            <QInput
+                                v-model="projectReview.difficulties"
+                                :label="t('project.difficulties') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                clearable
+                                color="commission"
+                                filled
+                                lazy-rules
+                                type="textarea"
+                            />
+                            <QInput
+                                v-model="projectReview.improvements"
+                                :label="t('project.improvements') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                aria-required="true"
+                                clearable
+                                color="commission"
+                                filled
+                                lazy-rules
+                                type="textarea"
+                            />
+                            <div class="flex-row-center">
                                 <QBtn
                                     :label="t('back')"
+                                    class="btn-lg"
+                                    color="commission"
                                     icon="bi-chevron-left"
                                     @click="onSubmitProjectReviewInfos(1)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
-                                    icon-right="bi-check-lg"
+                                    class="btn-lg"
+                                    color="commission"
+                                    icon="bi-check-lg"
                                     type="submit"
                                 />
                             </div>
@@ -349,22 +362,24 @@ async function onUploadDocuments(nextStep: number) {
                         <QForm
                             @submit.prevent="onUploadDocuments(4)"
                         >
-                            <h3 class="title-2">{{ t('project.documents') }}</h3>
-
                             <FormProjectDocumentUploads
                                 :association-id="projectReview.association"
                                 process="review"
                             />
 
-                            <div class="btn-group">
+                            <div class="flex-row-center">
                                 <QBtn
                                     :label="t('back')"
+                                    class="btn-lg"
+                                    color="commission"
                                     icon="bi-chevron-left"
                                     @click="onUploadDocuments(2)"
                                 />
                                 <QBtn
                                     :label="t('continue')"
-                                    icon-right="bi-check-lg"
+                                    class="btn-lg"
+                                    color="commission"
+                                    icon="bi-check-lg"
                                     type="submit"
                                 />
                             </div>
@@ -392,52 +407,4 @@ async function onUploadDocuments(nextStep: number) {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/dashboard.scss';
-
-.q-form, .fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.display-row {
-    width: 100%;
-}
-
-.no-rules {
-    padding-bottom: 20px;
-}
-
-.recap-section {
-    margin-bottom: 2rem;
-}
-
-.recap-section-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-h4 {
-    margin: 0;
-}
-
-.flex-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.address-fields div {
-    display: flex;
-    gap: 1rem;
-}
-
-.address-fields div * {
-    width: 100%;
-}
-
-.form {
-    width: 75% !important;
-}
-
 </style>

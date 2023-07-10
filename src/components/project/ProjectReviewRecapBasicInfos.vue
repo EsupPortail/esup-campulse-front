@@ -78,12 +78,11 @@ onMounted(async () => {
             <p>{{ projectReview.realLocation }}</p>
         </div>
 
-        <h5
+        <h4
             v-if="projectReview.user"
-            class="title-4"
         >
             {{ t('project.contact-infos') }}
-        </h5>
+        </h4>
 
         <section
             v-if="projectReview.user"
@@ -103,11 +102,11 @@ onMounted(async () => {
 
         <ProjectRecapCommissions :view="'projectReviewRecap'"/>
 
-        <h5 class="title-4">
+        <h4>
             {{
                 t('project.outcome') + ' / ' + t('project.income')
             }}
-        </h5>
+        </h4>
 
         <div class="display-row">
             <p class="row-title">{{ t('project.outcome') }}</p>

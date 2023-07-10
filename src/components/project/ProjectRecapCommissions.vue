@@ -117,7 +117,10 @@ async function onGetProjectCommissions() {
         </div>
     </section>
 
-    <div v-if="props.view === 'submitProjectReview'">
+    <div
+        v-if="props.view === 'submitProjectReview'"
+        class="flex-column"
+    >
         <QInput
             v-model="projectCommissionLabel"
             :label="t('project.commission-choice')"
@@ -127,7 +130,7 @@ async function onGetProjectCommissions() {
         <div
             v-for="projectCommissionFund in projectStore.projectCommissionFunds"
             :key="projectCommissionFund.id"
-            class="flex-section"
+            class="flex-column"
         >
             <h4>
                 {{

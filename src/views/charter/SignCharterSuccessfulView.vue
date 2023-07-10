@@ -66,7 +66,7 @@ async function onGetAssociationPdfExport() {
                             :label="t('project.download-recap')"
                             class="btn-lg"
                             color="charter"
-                            icon-right="bi-filetype-pdf"
+                            icon="bi-filetype-pdf"
                             text-color="charter"
                             @click="onGetAssociationPdfExport"
                         />
@@ -75,7 +75,7 @@ async function onGetAssociationPdfExport() {
                             :to="{name: 'Charter'}"
                             class="btn-lg"
                             color="charter"
-                            icon-right="bi-chevron-compact-right"
+                            icon="bi-chevron-compact-right"
                             text-color="charter"
                         />
                     </div>

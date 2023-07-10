@@ -92,11 +92,7 @@ async function onDelegatePresidency(activate: boolean) {
                     class="q-gutter-md"
                     @submit.prevent="onDelegatePresidency(true)"
                 >
-                    <h3 class="section-title">
-                        <i
-                            aria-hidden="true"
-                            class="bi bi-card-text"
-                        ></i>
+                    <h3>
                         {{ t('dashboard.association-user.delegate-presidency') }}
                     </h3>
 

@@ -47,23 +47,21 @@ onMounted(async () => {
         <p>
             {{ t('project.required-documents-list') + ' :' }}
         </p>
-        <p class="paragraph">
-            <ul role="list">
-                <li
-                    v-for="(document, index) in processDocuments"
-                    :key="index"
-                >
-                    <span v-if="document.pathTemplate">
-                        <a
-                            :href="document.pathTemplate"
-                            target="_blank"
-                            :title="t('project.document.download-template')"
-                        >{{ document.description }}</a>
-                    </span>
-                    <span v-else>{{ document.description }}</span>
-                </li>
-            </ul>
-        </p>
+        <ul role="list">
+            <li
+                v-for="(document, index) in processDocuments"
+                :key="index"
+            >
+                <span v-if="document.pathTemplate">
+                    <a
+                        :href="document.pathTemplate"
+                        :title="t('project.document.download-template')"
+                        target="_blank"
+                    >{{ document.description }}</a>
+                </span>
+                <span v-else>{{ document.description }}</span>
+            </li>
+        </ul>
     </div>
 </template>
 
