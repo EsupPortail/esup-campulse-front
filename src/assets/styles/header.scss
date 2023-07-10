@@ -197,14 +197,13 @@
 
   #mobile-menu-background {
     width: $fullSize;
-    height: 30rem;
+    height: $fullSize;
     position: absolute;
     top: 0;
     left: 0;
     background: linear-gradient(270deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) $fullSize);
     display: none;
     opacity: 0;
-    // transition: opacity 0.2s ease-in-out;
 
     &.visible {
       opacity: 1;

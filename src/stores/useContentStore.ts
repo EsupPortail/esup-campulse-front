@@ -35,7 +35,7 @@ export const useContentStore = defineStore('contentStore', {
                 infoContent: 'Prochaine commission :<br>',
                 titleLine1: 'CAPE',
                 titleLine2: 'Commission d\'Aide aux Projets Étudiants',
-                iconClass: 'bi-send'
+                iconClass: 'bi bi-send'
             }
         ],
         banner: {
