@@ -108,7 +108,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 
         <div
             v-if="props.view === 'submitProject'"
-            class="dashboard-btn-group"
+            class="flex-row-center"
         >
             <QBtn
                 :label="t('back')"

@@ -110,8 +110,4 @@ ul > li {
     cursor: pointer;
     color: inherit;
 }
-
-ul, li {
-    padding-left: 0 !important;
-}
 </style>
