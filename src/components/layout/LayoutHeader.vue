@@ -40,7 +40,7 @@ function ToggleMenu() {
         role="banner"
     >
         <div class="container">
-            <QToolbar>
+            <QToolbar role="">
                 <QToolbarTitle>
                     <h1>
                         <RouterLink

@@ -95,15 +95,17 @@ onMounted(async () => {
                     </QItem>
                 </div>
 
-                <QItem
-                    v-close-popup
-                    clickable
-                    @click="onLogOut"
-                >
-                    <QItemSection>
-                        <QItemLabel>{{ t('header.logout') }}</QItemLabel>
-                    </QItemSection>
-                </QItem>
+                <div>
+                    <QItem
+                        v-close-popup
+                        clickable
+                        @click="onLogOut"
+                    >
+                        <QItemSection>
+                            <QItemLabel>{{ t('header.logout') }}</QItemLabel>
+                        </QItemSection>
+                    </QItem>
+                </div>
             </QList>
         </QBtnDropdown>
     </div>

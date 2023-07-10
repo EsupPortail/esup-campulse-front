@@ -79,7 +79,7 @@ const {colorVariant} = useColorVariants()
                 </a>
             </div>
         </div>
-        <QToolbar>
+        <QToolbar role="">
             <div class="footer-text">
                 <RouterLink
                     class="li-footer"

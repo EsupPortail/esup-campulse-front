@@ -14,7 +14,7 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
         role="banner"
     >
         <div class="container">
-            <QToolbar>
+            <QToolbar role="">
                 <QToolbarTitle>
                     <h1>
                         <RouterLink
