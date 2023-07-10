@@ -136,7 +136,7 @@ label.custom-label {
         position: absolute;
         top: 0;
         right: 0;
-        font-size: 1.875rem;
+        font-size: 2.5rem;
         color: $textColor1;
         width: 5rem;
         height: 5rem;
@@ -171,9 +171,9 @@ label.custom-label {
       padding: 1rem;
 
       .document-item {
-        height: 4rem;
+        height: 5rem;
         position: relative;
-        padding: 1rem;
+        padding: 1.75rem 1rem 1.5rem 1rem;
 
         &:hover {
           background-color: rgba(255, 255, 255, 0.65);
@@ -191,7 +191,6 @@ label.custom-label {
         p {
           width: $fullSize;
           white-space: nowrap;
-          overflow: hidden;
           text-overflow: ellipsis;
           line-height: $fontSize;
 
@@ -236,8 +235,8 @@ label.custom-label {
         }
 
         button {
-          height: 4rem;
-          width: 4rem;
+          height: 5rem;
+          width: 5rem;
           background-color: transparent;
           border: none;
           border-radius: 0;

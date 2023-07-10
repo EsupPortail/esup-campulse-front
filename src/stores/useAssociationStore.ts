@@ -12,6 +12,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import type {AssociationUser} from '#/user'
+import type {DocumentUpload} from '#/documents'
 
 
 export const useAssociationStore = defineStore('associationStore', {
@@ -22,7 +23,8 @@ export const useAssociationStore = defineStore('associationStore', {
         institutions: [],
         institutionComponents: [],
         activityFields: [],
-        associationUsers: []
+        associationUsers: [],
+        associationDocuments: []
     }),
 
     getters: {
@@ -237,6 +239,10 @@ export const useAssociationStore = defineStore('associationStore', {
         async getAssociationUsers(associationId: number) {
             const {axiosAuthenticated} = useAxios()
             this.associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/?association_id=${associationId}`)).data
+        },
+        async getAssociationDocuments() {
+            const {axiosAuthenticated} = useAxios()
+            this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?=association_id=${this.association?.id}`)).data
         }
     }
 })

@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref} from 'vue'
 import type {DocumentProcessType} from '#/documents'
-import ListDocumentsLibrary from '@/components/documents/ListDocumentsLibrary.vue'
+import ListDocumentsLibrary from '@/components/documents/ListDocumentLibrary.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
