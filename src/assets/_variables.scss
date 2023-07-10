@@ -147,6 +147,11 @@ $customRed: #e91b0c;
   color: $capeColor;
 }
 
+.text-commission-bold {
+  color: $capeColor;
+  font-weight: $xbold-weight;
+}
+
 .bg-commission-light {
   background: $capeColorBackground;
 }
@@ -157,6 +162,11 @@ $customRed: #e91b0c;
 
 .text-charter {
   color: $charteColorText;
+}
+
+.text-charter-bold {
+  color: $charteColorText;
+  font-weight: $xbold-weight;
 }
 
 .bg-charter-light {
