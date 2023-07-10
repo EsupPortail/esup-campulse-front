@@ -6,13 +6,21 @@ import router from '@/router'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
 import ProjectUpdateDates from '@/components/project/ProjectUpdateDates.vue'
+import axios from 'axios'
+import {useQuasar} from 'quasar'
+import {useProjectStore} from '@/stores/useProjectStore'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {isStaff} = useUserGroups()
 const {hasPerm} = useSecurity()
+const {notify, loading} = useQuasar()
+const projectStore = useProjectStore()
+const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    project: number,
+    projectId: number,
+    projectName: string,
     projectStatus: ProjectStatus
 }>()
 
@@ -21,10 +29,10 @@ const emit = defineEmits(['refreshProjects'])
 const updateProjectDates = ref<boolean>(false)
 
 interface Option {
-    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar',
+    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf',
     label: string,
     to?: { name: 'ProjectDetail' | 'ProjectReviewDetail', params: { projectId: number } }
-    action?: 'updateProjectDates'
+    action?: 'updateProjectDates' | 'download-pdf'
 }
 
 const options = ref<Option[]>([])
@@ -34,7 +42,7 @@ const initOptions = () => {
     options.value.push({
         icon: props.projectStatus === 'PROJECT_PROCESSING' ? 'bi-check-lg' : 'bi-eye',
         label: props.projectStatus === 'PROJECT_PROCESSING' ? t('project.process') : t('project.view'),
-        to: {name: 'ProjectDetail', params: {projectId: props.project}}
+        to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
     })
     if (isStaff.value && hasPerm('change_project')) {
         options.value.push({
@@ -47,27 +55,55 @@ const initOptions = () => {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process-review'),
-            to: {name: 'ProjectReviewDetail', params: {projectId: props.project}}
+            to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_VALIDATED' || props.projectStatus === 'PROJECT_REVIEW_CANCELLED') {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),
-            to: {name: 'ProjectReviewDetail', params: {projectId: props.project}}
+            to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
         })
     }
+    options.value.push({
+        icon: 'bi-filetype-pdf',
+        label: t('project.download-recap'),
+        action: 'download-pdf'
+    })
 }
 
 onMounted(initOptions)
 
-function onOptionClick(option: Option) {
-    if (option.to) router.push(option.to)
+async function onOptionClick(option: Option) {
+    if (option.to) await router.push(option.to)
     else if (option.action) {
         if (option.action === 'updateProjectDates') {
             updateProjectDates.value = true
+        } else if (option.action === 'download-pdf') {
+            await onGetProjectPdf(props.projectId, props.projectName)
         }
     }
+}
+
+async function onGetProjectPdf(projectId: number, projectName: string) {
+    loading.show()
+    try {
+        const file = await projectStore.getProjectPdf(projectId)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(new Blob([file]))
+        link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
 }
 
 </script>
