@@ -6,13 +6,19 @@ import router from '@/router'
 import {useUserStore} from '@/stores/useUserStore'
 import {useProjectStore} from '@/stores/useProjectStore'
 import ProjectDelete from '@/components/project/ProjectDelete.vue'
+import axios from 'axios'
+import {useQuasar} from 'quasar'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const userStore = useUserStore()
 const projectStore = useProjectStore()
+const {loading, notify} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    project: number,
+    projectId: number,
+    projectName: string,
     projectStatus: ProjectStatus,
     association: number | null,
 }>()
@@ -22,7 +28,7 @@ const canModifyProjectAndReview = ref<boolean>(false)
 const initCanModifyProjectAndReview = () => {
     let perm = false
     if (props.association) {
-        const projectAssociationUserId = projectStore.projects.find(x => x.id === props.project)?.associationUser
+        const projectAssociationUserId = projectStore.projects.find(x => x.id === props.projectId)?.associationUser
         const associationUserId = userStore.userAssociations.find(x => x.association.id === props.association)?.id
         if (userStore.hasPresidentStatus(props.association) || projectAssociationUserId === associationUserId) {
             perm = true
@@ -34,13 +40,13 @@ const initCanModifyProjectAndReview = () => {
 }
 
 interface Option {
-    icon: 'bi-eye' | 'bi-pencil' | 'bi-trash',
+    icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf',
     label: string,
     to?: {
         name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail' | 'SubmitProjectReview' | 'ProjectReviewDetail',
         params: { associationId?: number, projectId: number }
     },
-    action?: 'delete'
+    action?: 'delete' | 'download-pdf'
 }
 
 const options = ref<Option[]>([])
@@ -55,9 +61,9 @@ const initOptions = () => {
                 label: t('project.modify'),
                 to: props.association ? {
                     name: 'SubmitProjectAssociation',
-                    params: {associationId: props.association, projectId: props.project}
+                    params: {associationId: props.association, projectId: props.projectId}
                 } :
-                    {name: 'SubmitProjectIndividual', params: {projectId: props.project}}
+                    {name: 'SubmitProjectIndividual', params: {projectId: props.projectId}}
             })
             options.value.push({
                 icon: 'bi-trash',
@@ -70,7 +76,7 @@ const initOptions = () => {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view'),
-            to: {name: 'ProjectDetail', params: {projectId: props.project}}
+            to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
@@ -78,16 +84,23 @@ const initOptions = () => {
             options.value.push({
                 icon: 'bi-pencil',
                 label: t('project.modify-review'),
-                to: {name: 'SubmitProjectReview', params: {projectId: props.project}}
+                to: {name: 'SubmitProjectReview', params: {projectId: props.projectId}}
             })
         }
     }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
-        || props.projectStatus === 'PROJECT_REVIEW_REJECTED') {
+        || props.projectStatus === 'PROJECT_REVIEW_CANCELLED') {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),
-            to: {name: 'ProjectReviewDetail', params: {projectId: props.project}}
+            to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
+        })
+    }
+    if (props.projectStatus !== 'PROJECT_DRAFT') {
+        options.value.push({
+            icon: 'bi-filetype-pdf',
+            label: t('project.download-recap'),
+            action: 'download-pdf'
         })
     }
 }
@@ -98,13 +111,36 @@ onMounted(initOptions)
 
 const openDelete = ref<boolean>(false)
 
-function onOptionClick(option: Option) {
-    if (option.to) router.push(option.to)
+async function onOptionClick(option: Option) {
+    if (option.to) await router.push(option.to)
     else if (option.action) {
         if (option.action === 'delete') {
             openDelete.value = true
+        } else if (option.action === 'download-pdf') {
+            await onGetProjectPdf(props.projectId, props.projectName)
         }
     }
+}
+
+async function onGetProjectPdf(projectId: number, projectName: string) {
+    loading.show()
+    try {
+        const file = await projectStore.getProjectPdf(projectId)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(new Blob([file]))
+        link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
 }
 
 </script>

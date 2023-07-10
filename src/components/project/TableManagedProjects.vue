@@ -45,7 +45,7 @@ const initProjects = () => {
             || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else if (props.projectStatus === 'archived') {
         projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
-            || obj.projectStatus === 'PROJECT_REVIEW_REJECTED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
+            || obj.projectStatus === 'PROJECT_REVIEW_CANCELLED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else {
         projects.value = projectStore.projects
     }
@@ -152,7 +152,8 @@ const columns: QTableProps['columns'] = [
                     >
                         <div class="button-container">
                             <TableManageProjectsBtn
-                                :project="props.row.id"
+                                :project-id="props.row.id"
+                                :project-name="props.row.name"
                                 :project-status="props.row.projectStatus"
                                 @refresh-projects="onGetProjects"
                             />
@@ -169,6 +170,6 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/forms.scss';
 
 section {
-  padding: 0 1rem
+    padding: 0 1rem
 }
 </style>

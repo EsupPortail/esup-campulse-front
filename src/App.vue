@@ -13,10 +13,10 @@ const routesNames = ['Home', 'Login', 'CASLogin', '404', 'DesignSystem']
 <template>
     <SkipToContentLink/>
     <RouterView
-        v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
+            v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
     />
 </template>
 
 <style lang="scss">
-@import '@/assets/plan-a-design.scss';
+@import '@/assets/campulse-design.scss';
 </style>

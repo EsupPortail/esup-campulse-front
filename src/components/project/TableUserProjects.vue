@@ -148,7 +148,8 @@ const columns = ref<QTableProps['columns']>([
                     <div class="btn-group">
                         <TableUserProjectsBtn
                             :association="importedProps.associationId"
-                            :project="props.row.id"
+                            :project-id="props.row.id"
+                            :project-name="props.row.name"
                             :project-status="props.row.projectStatus"
                         />
                     </div>
