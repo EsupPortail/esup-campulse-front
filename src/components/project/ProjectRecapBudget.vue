@@ -113,7 +113,7 @@ async function onGetProjectCommissions() {
 
         <div
             v-if="projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)"
-            class="flex-section"
+            class="flex-column padding-top"
         >
             <h3>{{ t('project.previous-edition') }}</h3>
 

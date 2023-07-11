@@ -105,6 +105,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                             :label="t('forms.select-association')"
                             :options="options"
                             clearable
+                            color="dashboard"
                             emit-value
                             fill-input
                             filled
@@ -180,22 +181,4 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
 @import '@/assets/_variables.scss';
-
-/*.flex-group, .q-separator {
-    margin: 1rem 0 1rem 0;
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    .flex-group {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
-        align-items: center;
-
-        .q-separator {
-            padding: 0;
-            margin: 0;
-        }
-    }
-}*/
 </style>

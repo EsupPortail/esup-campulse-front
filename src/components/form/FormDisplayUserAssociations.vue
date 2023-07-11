@@ -101,4 +101,8 @@ async function onGetUserAssociations() {
 <style lang="scss" scoped>
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
+
+ul {
+    margin-left: 1.5rem;
+}
 </style>

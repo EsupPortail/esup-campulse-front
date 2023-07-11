@@ -638,7 +638,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <!-- Previous amounts -->
                             <div v-if="projectReEdition">
                                 <div class="flex-column">
-                                    <h5>{{ t('project.previous-asked') }}</h5>
+                                    <h3>{{ t('project.previous-asked') }}</h3>
                                     <QInput
                                         v-for="commissionFund in projectCommissionFundsDetail"
                                         :key="commissionFund.id"
@@ -656,7 +656,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 </div>
 
                                 <div class="flex-column">
-                                    <h5>{{ t('project.previous-earned') }}</h5>
+                                    <h3>{{ t('project.previous-earned') }}</h3>
                                     <QInput
                                         v-for="commissionFund in projectCommissionFundsDetail"
                                         :key="commissionFund.id"
@@ -689,6 +689,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                                 <QSeparator
                                     aria-hidden="true"
+                                    class="margin-bottom"
                                     role="presentation"
                                 />
                             </div>
@@ -760,11 +761,12 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
                             <QSeparator
                                 aria-hidden="true"
+                                class="margin-bottom"
                                 role="presentation"
                             />
 
                             <section class="flex-column">
-                                <h5>{{ t('project.amounts-asked') }}</h5>
+                                <h3>{{ t('project.amounts-asked') }}</h3>
                                 <QInput
                                     v-for="commissionFund in projectCommissionFundsDetail"
                                     :key="commissionFund.id"
@@ -904,7 +906,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         <QForm
                             @submit.prevent="onUploadDocuments(6)"
                         >
-                            <h3 class="title-2">{{ t('project.documents') }}</h3>
+                            <!--
+                                                        <h3 class="title-2">{{ t('project.documents') }}</h3>
+                            -->
 
                             <div class="info-panel info-panel-warning">
                                 <i
