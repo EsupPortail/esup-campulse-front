@@ -62,7 +62,7 @@ const columns = ref<QTableProps['columns']>([
         field: 'projectAssociationUser',
         sortable: true
     },
-    {
+    /*{
         name: 'plannedStartDate',
         align: 'left',
         label: t('project.planned-start-date'),
@@ -75,7 +75,7 @@ const columns = ref<QTableProps['columns']>([
         label: t('project.planned-end-date'),
         field: 'plannedEndDate',
         sortable: true
-    },
+    },*/
     {
         name: 'commissionDate',
         align: 'left',
@@ -112,18 +112,18 @@ const columns = ref<QTableProps['columns']>([
                 >
                     {{ projectAssociationUser(props.row.associationUser) }}
                 </QTd>
-                <QTd
-                    key="plannedStartDate"
-                    :props="props"
-                >
-                    {{ formatDate(props.row.plannedStartDate)?.split('-').reverse().join('/') }}
-                </QTd>
-                <QTd
-                    key="plannedEndDate"
-                    :props="props"
-                >
-                    {{ formatDate(props.row.plannedEndDate)?.split('-').reverse().join('/') }}
-                </QTd>
+                <!--                <QTd
+                                    key="plannedStartDate"
+                                    :props="props"
+                                >
+                                    {{ formatDate(props.row.plannedStartDate)?.split('-').reverse().join('/') }}
+                                </QTd>
+                                <QTd
+                                    key="plannedEndDate"
+                                    :props="props"
+                                >
+                                    {{ formatDate(props.row.plannedEndDate)?.split('-').reverse().join('/') }}
+                                </QTd>-->
                 <QTd
                     key="commissionDate"
                     :props="props"
