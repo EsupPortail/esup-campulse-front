@@ -1,5 +1,6 @@
 export interface ManageCharter {
     documentId: number,
+    documentAcronym: string,
     documentUploadId?: number | null,
     documentName: string,
     pathTemplate: string | null,

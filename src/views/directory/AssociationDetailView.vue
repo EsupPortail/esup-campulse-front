@@ -8,6 +8,7 @@ import {useRoute} from 'vue-router'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import useCharters from '@/composables/useCharters'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -16,6 +17,7 @@ const {formatDate, dynamicTitle} = useUtility()
 const route = useRoute()
 const associationStore = useAssociationStore()
 const {catchHTTPError} = useErrors()
+const {initCharters, manageCharters} = useCharters()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
@@ -24,9 +26,12 @@ watch(() => associationStore.association, () => {
 
 const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
+const associationCharterStatus = ref<string>('')
+
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
+    await onGetAssociationCharter()
     dynamicTitle.value = associationStore.association?.name
     loading.hide()
 })
@@ -38,6 +43,37 @@ const hasLogo = computed(() => {
 async function onGetAssociationDetail() {
     try {
         await associationStore.getAssociationDetail(parseInt(route.params.id as string), true)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetAssociationCharter() {
+    try {
+        await initCharters(parseInt(route.params.id as string))
+        const charter = manageCharters.value.find(x => x.documentAcronym === 'CHARTE_SITE_ALSACE')
+        if (charter) {
+            let str = ''
+            switch (charter.charterStatus) {
+            case 'VALIDATED':
+                str = `Charte site Alsace valide jusqu'au ${charter.expirationDate}`
+                break
+            case 'EXPIRED':
+                str = `Charte site Alsace expirée depuis le ${charter.expirationDate}`
+                break
+            case 'PROCESSING':
+                str = 'Charte site Alsace en cours de validation'
+                break
+            default:
+                str = 'Charte site Alsace non signée.'
+            }
+            associationCharterStatus.value = str
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -69,7 +105,8 @@ async function onGetAssociationDetail() {
                     >
                         {{ association?.acronym }}
                     </p>
-                    <p>{{ t('association.labels.charter-validity') }}</p>
+                    <!--                    <p>{{ t('association.labels.charter-validity') }}</p>-->
+                    <p>{{ associationCharterStatus }}</p>
                 </div>
                 <div
                     v-if="association?.socialObject"
