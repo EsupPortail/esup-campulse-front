@@ -136,6 +136,7 @@ async function onGetProjects() {
                     :key="index"
                     :name="tab.name"
                     class="q-pa-none"
+                    role=""
                 >
                     <QSplitter
                         v-model="splitterModel"
@@ -226,7 +227,10 @@ async function onGetProjects() {
                                 transition-next="slide-up"
                                 transition-prev="slide-down"
                             >
-                                <QTabPanel name="allProjects">
+                                <QTabPanel
+                                    name="allProjects"
+                                    role=""
+                                >
                                     <TableUserProjects
                                         :association-id="tab.association"
                                         :projects="tab.association ?
@@ -235,7 +239,10 @@ async function onGetProjects() {
                                         :title="t('project.all-projects')"
                                     />
                                 </QTabPanel>
-                                <QTabPanel name="validatedProjects">
+                                <QTabPanel
+                                    name="validatedProjects"
+                                    role=""
+                                >
                                     <TableUserProjects
                                         :association-id="tab.association"
                                         :projects="tab.association ?
@@ -246,7 +253,10 @@ async function onGetProjects() {
                                         :title="t('project.validated-projects')"
                                     />
                                 </QTabPanel>
-                                <QTabPanel name="rejectedProjects">
+                                <QTabPanel
+                                    name="rejectedProjects"
+                                    role=""
+                                >
                                     <TableUserProjects
                                         :association-id="tab.association"
                                         :projects="tab.association ?

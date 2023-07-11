@@ -51,7 +51,10 @@ onMounted(initTab)
                     v-model="tab"
                     animated
                 >
-                    <QTabPanel :name="tab">
+                    <QTabPanel
+                        :name="tab"
+                        role=""
+                    >
                         <TableAssociationUserCharters :association-id="parseInt(tab)"/>
                     </QTabPanel>
                 </QTabPanels>

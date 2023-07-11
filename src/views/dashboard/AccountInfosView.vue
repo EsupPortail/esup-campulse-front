@@ -117,7 +117,10 @@ onMounted(() => {
         v-model="tab"
         animated
     >
-        <QTabPanel name="infos">
+        <QTabPanel
+            name="infos"
+            role=""
+        >
             <section class="dashboard-section">
                 <h2>
                     <i
@@ -153,7 +156,10 @@ onMounted(() => {
             </section>
         </QTabPanel>
 
-        <QTabPanel name="associations">
+        <QTabPanel
+            name="associations"
+            role=""
+        >
             <div class="dashboard-section">
                 <h2>
                     <i
@@ -203,7 +209,10 @@ onMounted(() => {
             </section>
         </QTabPanel>
 
-        <QTabPanel name="password">
+        <QTabPanel
+            name="password"
+            role=""
+        >
             <FormProfilePasswordEdit/>
         </QTabPanel>
     </QTabPanels>

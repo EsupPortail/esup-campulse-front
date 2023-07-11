@@ -13,7 +13,7 @@ const routesNames = ['Home', 'Login', 'CASLogin', '404', 'DesignSystem']
 <template>
     <SkipToContentLink/>
     <RouterView
-            v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
+        v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
     />
 </template>
 
