@@ -138,7 +138,7 @@ const columns: QTableProps['columns'] = [
                                     :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
                                     color="dashboard"
                                     icon="bi-pencil"
-                                    ouline
+                                    outline
                                 />
                             </QTd>
                         </QTr>
