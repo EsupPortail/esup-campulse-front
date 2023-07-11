@@ -103,6 +103,7 @@ async function onGetCommissions() {
                 :key="index"
                 :name="tab.name"
                 class="q-pa-none"
+                role=""
             >
                 <QSplitter
                     v-model="splitterModel"
@@ -142,21 +143,30 @@ async function onGetCommissions() {
                             transition-next="slide-up"
                             transition-prev="slide-down"
                         >
-                            <QTabPanel name="allProjects">
+                            <QTabPanel
+                                name="allProjects"
+                                role=""
+                            >
                                 <TableManagedProjects
                                     :commission="tab.commission"
                                     :title="t('project.all-projects')"
                                     project-status="all"
                                 />
                             </QTabPanel>
-                            <QTabPanel name="validatedProjects">
+                            <QTabPanel
+                                name="validatedProjects"
+                                role=""
+                            >
                                 <TableManagedProjects
                                     :commission="tab.commission"
                                     :title="t('project.validated-projects')"
                                     project-status="validated"
                                 />
                             </QTabPanel>
-                            <QTabPanel name="archivedProjects">
+                            <QTabPanel
+                                name="archivedProjects"
+                                role=""
+                            >
                                 <TableManagedProjects
                                     :commission="tab.commission"
                                     :title="t('project.archived-projects')"

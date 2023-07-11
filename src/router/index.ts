@@ -5,7 +5,6 @@ import useUserGroups from '@/composables/useUserGroups'
 import {ref, watch} from 'vue'
 import useSecurity from '@/composables/useSecurity'
 import useUtility from '@/composables/useUtility'
-import {useQuasar} from 'quasar'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

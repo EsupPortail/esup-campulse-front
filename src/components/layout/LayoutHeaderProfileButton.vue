@@ -72,6 +72,7 @@ onMounted(async () => {
                         v-close-popup
                         clickable
                         @click="router.push({ name: 'Dashboard' })"
+                        role=""
                     >
                         <QItemSection>
                             <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
@@ -88,6 +89,7 @@ onMounted(async () => {
                         v-close-popup
                         clickable
                         @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
+                        role=""
                     >
                         <QItemSection>
                             <QItemLabel>{{ item.association.name }}</QItemLabel>
@@ -100,6 +102,7 @@ onMounted(async () => {
                         v-close-popup
                         clickable
                         @click="onLogOut"
+                        role=""
                     >
                         <QItemSection>
                             <QItemLabel>{{ t('header.logout') }}</QItemLabel>
