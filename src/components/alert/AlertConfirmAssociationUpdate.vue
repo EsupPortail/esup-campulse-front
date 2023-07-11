@@ -46,7 +46,7 @@ async function onValidateChanges() {
     <QBtn
         :label="t('association.validate-all-changes')"
         class="btn-lg"
-        color="dashboard"
+        color="association"
         icon="bi-check-lg"
         @click="confirmation = true"
     />
@@ -58,27 +58,24 @@ async function onValidateChanges() {
         <QCard>
             <QCardSection class="row items-center">
                 <span class="q-ml-sm">{{ t('association.alert-confirm-changes') }}</span>
-            </QCardSection>
-
-            <QCardActions align="right">
-                <div class="flex-row">
+                <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
                         class="btn-lg"
-                        color="dashboard"
+                        color="association"
                         icon="bi-x-lg"
                     />
                     <QBtn
                         v-close-popup
                         :label="t('association.validate-all-changes')"
                         class="btn-lg"
-                        color="dashboard"
+                        color="association"
                         icon="bi-check-lg"
                         @click="onValidateChanges"
                     />
                 </div>
-            </QCardActions>
+            </QCardSection>
         </QCard>
     </QDialog>
 </template>

@@ -220,4 +220,12 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/variables.scss';
+
+ul {
+    padding-left: 0;
+}
+
+ul > li {
+    list-style: none;
+}
 </style>

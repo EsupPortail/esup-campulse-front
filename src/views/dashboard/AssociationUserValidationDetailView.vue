@@ -163,7 +163,7 @@ async function onDeleteAssociationUser() {
             </div>
         </div>
 
-        <div class="dashboard-btn-group">
+        <div class="flex-row-center padding-top padding-bottom">
             <QBtn
                 :label="t('back')"
                 :to="{ name: 'ValidateAssociationUsers' }"

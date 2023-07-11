@@ -61,17 +61,16 @@ async function onDeleteAssociation() {
                 <QInput
                     v-model=deletionWord
                     :label="t('association.before-deletion-word-instruction')"
+                    class="padding-bottom"
+                    color="association"
                     @paste.prevent
                 />
-            </QCardSection>
-
-            <QCardActions align="right">
-                <div class="flex-row">
+                <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
                         class="btn-lg"
-                        color="dashboard"
+                        color="association"
                         icon="bi-x-lg"
                     />
                     <QBtn
@@ -83,7 +82,7 @@ async function onDeleteAssociation() {
                         @click="onDeleteAssociation"
                     />
                 </div>
-            </QCardActions>
+            </QCardSection>
         </QCard>
     </QDialog>
 </template>

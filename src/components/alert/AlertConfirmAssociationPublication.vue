@@ -33,7 +33,7 @@ async function onPublishAssociation() {
 
 <template>
     <QBtn
-        :color="!associationStore.association?.isPublic ? 'dashboard' : 'red'"
+        :color="!associationStore.association?.isPublic ? 'association' : 'custom-red'"
         :icon="!associationStore.association?.isPublic ? 'bi-eye' : 'bi-eye-slash'"
         :label="!associationStore.association?.isPublic ? t('association.publish-in-directory') : t('association.unpublish-in-directory')"
         class="btn-lg"
@@ -49,27 +49,24 @@ async function onPublishAssociation() {
                 <span class="q-ml-sm">{{
                     !associationStore.association?.isPublic ? t('alerts.confirm-association-publish') : t('alerts.confirm-association-unpublish')
                 }}</span>
-            </QCardSection>
-
-            <QCardActions align="right">
-                <div class="flex-row">
+                <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
                         class="btn-lg"
-                        color="dashboard"
+                        color="association"
                         icon="bi-x-lg"
                     />
                     <QBtn
                         v-close-popup
-                        :color="!associationStore.association?.isPublic ? 'dashboard' : 'red'"
+                        :color="!associationStore.association?.isPublic ? 'association' : 'custom-red'"
                         :icon="!associationStore.association?.isPublic ? 'bi-eye' : 'bi-eye-slash'"
                         :label="!associationStore.association?.isPublic ? t('association.publish-in-directory') : t('association.unpublish-in-directory')"
                         class="btn-lg"
                         @click="onPublishAssociation"
                     />
                 </div>
-            </QCardActions>
+            </QCardSection>
         </QCard>
     </QDialog>
 </template>

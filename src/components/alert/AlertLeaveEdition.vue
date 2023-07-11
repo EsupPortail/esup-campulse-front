@@ -22,7 +22,7 @@ const props = defineProps({
                         v-close-popup
                         :label="t('cancel')"
                         class="btn-lg"
-                        color="dashboard"
+                        color="association"
                         icon="bi-x-lg"
                         @click="$emit('closeAlert')"
                     />

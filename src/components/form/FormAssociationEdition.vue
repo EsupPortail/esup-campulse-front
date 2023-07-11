@@ -476,35 +476,33 @@ async function onChangeLogo(action: string) {
         </div>
 
         <!-- Btns -->
-        <div class="dashboard-btn-group">
-            <div class="flex-column padding-top padding-bottom">
-                <QBtn
-                    :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
-                    :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
-                    class="btn-lg"
-                    color="association"
-                    icon="bi-chevron-left"
-                />
-                <AlertConfirmAssociationUpdate
-                    v-if="Object.keys(checkChanges(association)).length > 0"
-                    @has-validated="hasValidated = true"
-                />
-                <AlertConfirmAssociationEnabled
-                    v-if="isStaff"
-                    @has-validated="hasValidated = true"
-                />
-                <AlertConfirmAssociationPublication
-                    v-if="isStaff && associationStore.association?.isEnabled && associationStore.association?.isSite"
-                    @has-validated="hasValidated = true"
-                />
-                <AlertConfirmAssociationProjectSubmission
-                    v-if="isStaff && associationStore.association?.isEnabled"
-                    @has-validated="hasValidated = true"
-                />
-                <AlertConfirmAssociationDeletion
-                    v-if="isStaff && !associationStore.association?.isEnabled"
-                />
-            </div>
+        <div class="flex-row-center padding-top padding-bottom">
+            <QBtn
+                :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
+                :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
+                class="btn-lg"
+                color="association"
+                icon="bi-chevron-left"
+            />
+            <AlertConfirmAssociationUpdate
+                v-if="Object.keys(checkChanges(association)).length > 0"
+                @has-validated="hasValidated = true"
+            />
+            <AlertConfirmAssociationEnabled
+                v-if="isStaff"
+                @has-validated="hasValidated = true"
+            />
+            <AlertConfirmAssociationPublication
+                v-if="isStaff && associationStore.association?.isEnabled && associationStore.association?.isSite"
+                @has-validated="hasValidated = true"
+            />
+            <AlertConfirmAssociationProjectSubmission
+                v-if="isStaff && associationStore.association?.isEnabled"
+                @has-validated="hasValidated = true"
+            />
+            <AlertConfirmAssociationDeletion
+                v-if="isStaff && !associationStore.association?.isEnabled"
+            />
         </div>
 
         <AlertLeaveEdition

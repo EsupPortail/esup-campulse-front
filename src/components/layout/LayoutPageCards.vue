@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
     <div
-        :style="`background-image: url('src/assets/img/resized/background-${props.color === 'charter' ? 'charte' : 'cape'}.jpg');`"
+        :style="`background-image: url('./src/assets/img/resized/background-${props.color === 'charter' ? 'charte' : 'cape'}.jpg');`"
         class="page-card-container"
     >
         <div class="container">

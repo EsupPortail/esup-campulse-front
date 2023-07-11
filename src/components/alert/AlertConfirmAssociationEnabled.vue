@@ -42,7 +42,7 @@ async function onEnableAssociation() {
 
 <template>
     <QBtn
-        :color="isEnabled ? 'red' : 'dashboard'"
+        :color="isEnabled ? 'custom-red' : 'association'"
         :icon="isEnabled ? 'bi-unlock' : 'bi-lock'"
         :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
         class="btn-lg"
@@ -58,27 +58,24 @@ async function onEnableAssociation() {
                 <span class="q-ml-sm">{{
                     isEnabled ? t('association.confirm-disable') : t('association.confirm-enable')
                 }}</span>
-            </QCardSection>
-
-            <QCardActions align="right">
-                <div class="flex-row">
+                <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
                         class="btn-lg"
-                        color="dashboard"
+                        color="association"
                         icon="bi-x-lg"
                     />
                     <QBtn
                         v-close-popup
-                        :color="isEnabled ? 'red' : 'dashboard'"
+                        :color="isEnabled ? 'custom-red' : 'association'"
                         :icon="isEnabled ? 'bi-unlock' : 'bi-lock'"
                         :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
                         class="btn-lg"
                         @click="onEnableAssociation"
                     />
                 </div>
-            </QCardActions>
+            </QCardSection>
         </QCard>
     </QDialog>
 </template>
