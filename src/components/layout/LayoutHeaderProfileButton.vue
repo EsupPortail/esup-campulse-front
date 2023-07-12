@@ -71,8 +71,8 @@ onMounted(async () => {
                     <QItem
                         v-close-popup
                         clickable
-                        @click="router.push({ name: 'Dashboard' })"
                         role=""
+                        @click="router.push({ name: 'Dashboard' })"
                     >
                         <QItemSection>
                             <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
@@ -88,8 +88,8 @@ onMounted(async () => {
                         v-if="item.isValidatedByAdmin"
                         v-close-popup
                         clickable
-                        @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
                         role=""
+                        @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
                     >
                         <QItemSection>
                             <QItemLabel>{{ item.association.name }}</QItemLabel>
@@ -101,8 +101,8 @@ onMounted(async () => {
                     <QItem
                         v-close-popup
                         clickable
-                        @click="onLogOut"
                         role=""
+                        @click="onLogOut"
                     >
                         <QItemSection>
                             <QItemLabel>{{ t('header.logout') }}</QItemLabel>
@@ -117,5 +117,11 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .q-btn-dropdown {
     font-size: 1.8rem;
+}
+
+.q-list {
+    max-width: 30rem;
+    width: 100%;
+    background: rgba(39, 39, 39, .7) !important;
 }
 </style>
