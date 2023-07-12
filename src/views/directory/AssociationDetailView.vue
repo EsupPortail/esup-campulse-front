@@ -307,4 +307,8 @@ async function onGetAssociationDetail() {
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
+
+h2 > i {
+    padding: 0.25rem 1rem 0 0;
+}
 </style>
