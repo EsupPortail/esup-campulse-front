@@ -8,6 +8,7 @@ import {useRoute} from 'vue-router'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -15,6 +16,7 @@ const {loading} = useQuasar()
 const {formatDate, dynamicTitle} = useUtility()
 const route = useRoute()
 const associationStore = useAssociationStore()
+const userStore = useUserStore()
 const {catchHTTPError} = useErrors()
 
 const association = ref(associationStore.association)
@@ -210,6 +212,7 @@ async function onGetAssociationDetail() {
                     <div class="container flex-column">
                         <div
                             v-if="association?.address"
+                            class="display-row"
                         >
                             <h3>{{ t('association.labels.address') }}</h3>
                             <p>
@@ -278,6 +281,14 @@ async function onGetAssociationDetail() {
                 class="btn-lg"
                 color="association"
                 icon="bi-box-arrow-left"
+            />
+            <QBtn
+                v-if="userStore.user?.associations.find(x => x.id === association.id)"
+                :label="t('dashboard.association-user.manage-association')"
+                :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                class="btn-lg"
+                color="dashboard"
+                icon="bi-pencil-square"
             />
             <QBtn
                 v-if="association?.email"
