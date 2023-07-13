@@ -122,6 +122,5 @@ onMounted(async () => {
 .q-list {
     max-width: 30rem;
     width: 100%;
-    background: rgba(39, 39, 39, .7) !important;
 }
 </style>

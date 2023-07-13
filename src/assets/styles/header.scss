@@ -98,7 +98,7 @@
       }
     }
 
-    @media only screen and (max-width: $responsiveWidth) {
+    /*@media only screen and (max-width: $responsiveWidth) {
       flex-direction: column;
       align-items: flex-end;
       height: 0;
@@ -115,7 +115,7 @@
         transform: scaleY(1);
         padding-bottom: 1rem;
       }
-    }
+    }*/
   }
 
   // Profile button when connected

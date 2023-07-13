@@ -4,6 +4,8 @@ import LayoutBreadcrumbs from '@/components/layout/LayoutBreadcrumbs.vue'
 import LayoutContent from '@/components/layout/LayoutContent.vue'
 import LayoutFooter from '@/components/layout/LayoutFooter.vue'
 import {useRoute} from 'vue-router'
+import LayoutMobileMenu from '@/components/layout/LayoutMobileMenu.vue'
+
 
 const route = useRoute()
 </script>
