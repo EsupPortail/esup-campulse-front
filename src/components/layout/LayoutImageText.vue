@@ -10,8 +10,8 @@ const props = defineProps<{
     <div class="image-text-section">
         <div class="container">
             <img
-                alt=""
-                src="@/assets/img/unistra.jpg"
+                    alt=""
+                    src="@/assets/img/unistra.jpg"
             />
             <div>
                 <h2>{{ props.title }}</h2>
@@ -23,17 +23,25 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
 .image-text-section {
-    padding: 3rem 1rem;
-    margin: 2rem 0;
+  padding: 3rem 1rem;
+  margin: 2rem 0;
 
-    .container {
-        display: flex;
-        gap: 3rem;
+  .container {
+    display: flex;
+    gap: 3rem;
 
-        img {
-            height: 15rem;
-        }
+    img {
+      height: 15rem;
     }
+  }
+}
+
+// Changing the page's position to fit with the Accessibility Requirement
+@media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 </style>

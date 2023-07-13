@@ -269,6 +269,11 @@
       position: relative;
       top: -0.6rem;
       font-size: 2rem;
+
+      // Changing the size of the icon header's position to fit with the Accessibility Requirement
+      @media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+        top: .2rem;
+      }
     }
   }
 
@@ -370,6 +375,11 @@
         display: none;
         vertical-align: middle;
       }
+    }
+
+    // Changing the size of the header's font to fit with the Accessibility Requirement
+    @media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+      font-size: 2.8rem;
     }
   }
 
