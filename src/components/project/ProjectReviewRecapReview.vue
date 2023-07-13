@@ -7,7 +7,7 @@ const {projectReview} = useSubmitReview()
 </script>
 
 <template>
-    <section class="flex-column">
+    <div class="flex-column">
         <div class="display-row">
             <p class="row-title">{{ t('project.review') }}</p>
             <p>{{ projectReview.review }}</p>
@@ -32,7 +32,7 @@ const {projectReview} = useSubmitReview()
             <p class="row-title">{{ t('project.improvements') }}</p>
             <p>{{ projectReview.improvements }}</p>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>

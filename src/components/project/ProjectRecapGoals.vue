@@ -7,7 +7,7 @@ const {t} = useI18n()
 </script>
 
 <template>
-    <section class="flex-column">
+    <div class="flex-column">
         <div class="display-row">
             <h4>{{ t('project.goals-title') }}</h4>
             <p>{{ projectGoals.goals }}</p>
@@ -37,7 +37,7 @@ const {t} = useI18n()
             <h4>{{ t('project.sustainable-development') }}</h4>
             <p>{{ projectGoals.sustainableDevelopment }}</p>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>

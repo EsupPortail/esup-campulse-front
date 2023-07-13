@@ -62,7 +62,7 @@ async function onGetProjectCommissions() {
 </script>
 
 <template>
-    <section class="flex-column">
+    <div class="flex-column">
         <div class="display-row">
             <h4>{{ t('project.re-edition') }}</h4>
             <p>
@@ -150,7 +150,7 @@ async function onGetProjectCommissions() {
                 <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
