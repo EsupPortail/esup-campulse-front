@@ -66,97 +66,97 @@ onMounted(() => {
     <div class="flex-column">
         <InfoFormRequiredFields/>
         <QInput
-                v-model="userToUpdate.firstName"
-                :disable="!!props.user?.isCas"
-                :label="t('forms.first-name') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-                autocomplete="given-name"
-                color="dashboard"
-                filled
-                lazy-rules
-                @focus="() => { variant = Variant.Home }"
+            v-model="userToUpdate.firstName"
+            :disable="!!props.user?.isCas"
+            :label="t('forms.first-name') + ' *'"
+            :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
+            autocomplete="given-name"
+            color="dashboard"
+            filled
+            lazy-rules
+            @focus="() => { variant = Variant.Home }"
         />
         <QInput
-                v-model="userToUpdate.lastName"
-                :disable="!!props.user?.isCas"
-                :label="t('forms.last-name') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
-                autocomplete="family-name"
-                color="dashboard"
-                filled
-                lazy-rules
+            v-model="userToUpdate.lastName"
+            :disable="!!props.user?.isCas"
+            :label="t('forms.last-name') + ' *'"
+            :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
+            autocomplete="family-name"
+            color="dashboard"
+            filled
+            lazy-rules
         />
         <QInput
-                v-model="userToUpdate.email"
-                :label="t('forms.email') + ' *'"
-                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                autocomplete="email"
-                color="dashboard"
-                disable
-                filled
-                lazy-rules
+            v-model="userToUpdate.email"
+            :label="t('forms.email') + ' *'"
+            :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+            autocomplete="email"
+            color="dashboard"
+            disable
+            filled
+            lazy-rules
         />
         <QExpansionItem
-                v-if="!props.user?.isCas"
-                v-model="changeEmail"
-                :label="t('forms.modify-email')"
-                header-class="text-dashboard"
+            v-if="!props.user?.isCas"
+            v-model="changeEmail"
+            :label="t('forms.modify-email')"
+            header-class="text-dashboard"
         >
             <QInput
-                    v-model="userToUpdate.newEmail"
-                    :label="t('forms.new-email')"
-                    :rules="changeEmail ? [(val, rules) => rules.email(val) || t('forms.required-new-email')] : []"
-                    autocomplete="email"
-                    class="padding-top"
-                    color="dashboard"
-                    filled
-                    lazy-rules
+                v-model="userToUpdate.newEmail"
+                :label="t('forms.new-email')"
+                :rules="changeEmail ? [(val, rules) => rules.email(val) || t('forms.required-new-email')] : []"
+                autocomplete="email"
+                class="padding-top"
+                color="dashboard"
+                filled
+                lazy-rules
             />
             <QInput
-                    v-model="userToUpdate.newEmailVerification"
-                    :label="t('forms.repeat-email')"
-                    :rules="changeEmail ? [(val, rules) => (rules.email(val) && val === userToUpdate.newEmail) || t('forms.required-repeat-email')] : []"
-                    autocomplete="email"
-                    color="dashboard"
-                    filled
-                    lazy-rules
+                v-model="userToUpdate.newEmailVerification"
+                :label="t('forms.repeat-email')"
+                :rules="changeEmail ? [(val, rules) => (rules.email(val) && val === userToUpdate.newEmail) || t('forms.required-repeat-email')] : []"
+                autocomplete="email"
+                color="dashboard"
+                filled
+                lazy-rules
             />
             <div class="info-panel info-panel-warning">
                 <i
-                        aria-hidden="true"
-                        class="bi bi-exclamation-lg"
+                    aria-hidden="true"
+                    class="bi bi-exclamation-lg"
                 ></i>
                 <p>{{ t('alerts.modify-email') }}</p>
             </div>
         </QExpansionItem>
         <QInput
-                v-model="userToUpdate.phone"
-                :label="t('forms.phone')"
-                autocomplete="tel"
-                color="dashboard"
-                filled
-                hint="Format : 06 00 00 00 00"
-                lazy-rules
-                mask="## ## ## ## ##"
-                type="tel"
+            v-model="userToUpdate.phone"
+            :label="t('forms.phone')"
+            autocomplete="tel"
+            color="dashboard"
+            filled
+            hint="Format : 06 00 00 00 00"
+            lazy-rules
+            mask="## ## ## ## ##"
+            type="tel"
         />
         <div
-                v-if="(!editedByStaff && hasPerm('add_project_user'))
+            v-if="(!editedByStaff && hasPerm('add_project_user'))
                 || (editedByStaff && userRef.permissions?.includes('add_project_user'))"
         >
             <h3>{{ t('address.address') }}</h3>
             <FormUserAddress
-                    :user="userRef"
-                    color="dashboard"
+                :user="userRef"
+                color="dashboard"
             />
         </div>
         <div
-                v-if="!editedByStaff"
-                class="info-panel info-panel-dashboard"
+            v-if="!editedByStaff"
+            class="info-panel info-panel-dashboard"
         >
             <i
-                    aria-hidden="true"
-                    class="bi bi-info"
+                aria-hidden="true"
+                class="bi bi-info"
             ></i>
             <p>{{ t('dashboard.my-status') }} : <span><strong>{{ userGroups }}</strong></span></p>
             <p>{{ t('dashboard.update-my-status') }}</p>

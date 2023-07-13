@@ -49,7 +49,7 @@ const managerPageCards: PageCard[] = [
             color="charter"
             img="unistra.jpg"
             text="Pour les demandes d'agrément"
-            title="Chartes FSDIE/IdEx"
+            title="Chartes FSDIE / IdEx"
         />
         <LayoutPageCards
             :page-cards="isStaff ? managerPageCards : studentPageCards"

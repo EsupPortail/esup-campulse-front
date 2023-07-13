@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
     <div
-            :class="`image-text-section bg-${props.color}-light`"
+        :class="`image-text-section bg-${props.color}-light`"
     >
         <div class="container">
             <div>
@@ -18,8 +18,8 @@ const props = defineProps<{
                 <p>{{ props.text }}</p>
             </div>
             <img
-                    alt=""
-                    src="@/assets/img/unistra.jpg"
+                alt=""
+                src="@/assets/img/unistra.jpg"
             />
         </div>
     </div>
