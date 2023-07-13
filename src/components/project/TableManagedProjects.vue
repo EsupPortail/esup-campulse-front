@@ -32,11 +32,18 @@ const projects = ref<ProjectList[]>([])
 
 const applicant = (association: number | null, user: number | null) => {
     if (association) {
-        return associationStore.associationNames.find(obj => obj.id === association)?.name
+        const obj = associationStore.associations.find(x => x.id === association)
+        if (obj) return obj.name
     } else {
         const userObj = userManagerStore.users.find(obj => obj.id === user)
         return `${userObj?.firstName} ${userObj?.lastName}`
     }
+}
+
+const isSite = (association: number | null) => {
+    if (!association) return false
+    const obj = associationStore.associations.find(x => x.id === association)
+    if (obj) return obj.isSite
 }
 
 const initProjects = () => {
@@ -75,11 +82,12 @@ async function onGetProjects(commission: number) {
     }
 }
 
+
 async function onGetApplicants() {
     try {
         if (projectStore.projects.length) {
             if (projectStore.projects.find(obj => obj.association !== null)) {
-                await associationStore.getAssociationNames(true, false)
+                await associationStore.getAssociations(true)
             }
             if (projectStore.projects.find(obj => obj.user !== null)) {
                 await userManagerStore.getUsers('validated')
@@ -138,7 +146,6 @@ const columns: QTableProps['columns'] = [
                     <QTd
                         key="status"
                         :props="props"
-                        class="state-cell"
                     >
                         <ProjectStatusIndicator
                             :project-status="props.row.projectStatus"
@@ -152,10 +159,11 @@ const columns: QTableProps['columns'] = [
                     >
                         <div class="button-container">
                             <TableManageProjectsBtn
+                                :is-site="isSite(props.row.association)"
                                 :project-id="props.row.id"
                                 :project-name="props.row.name"
                                 :project-status="props.row.projectStatus"
-                                @refresh-projects="onGetProjects"
+                                @refresh-projects="onGetProjects(props.commission)"
                             />
                         </div>
                     </QTd>

@@ -10,6 +10,7 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
+import ProjectChangeCommission from '@/components/project/ProjectChangeCommission.vue'
 
 const {t} = useI18n()
 const {isStaff} = useUserGroups()
@@ -21,34 +22,55 @@ const {catchHTTPError} = useErrors()
 const props = defineProps<{
     projectId: number,
     projectName: string,
-    projectStatus: ProjectStatus
+    projectStatus: ProjectStatus,
+    isSite: boolean
 }>()
 
 const emit = defineEmits(['refreshProjects'])
 
 const updateProjectDates = ref<boolean>(false)
+const changeCommission = ref<boolean>(false)
+
 
 interface Option {
-    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf',
+    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-signpost',
     label: string,
     to?: { name: 'ProjectDetail' | 'ProjectReviewDetail', params: { projectId: number } }
-    action?: 'updateProjectDates' | 'download-pdf'
+    action?: 'updateProjectDates' | 'download-pdf' | 'changeCommission'
 }
 
 const options = ref<Option[]>([])
 
 const initOptions = () => {
     options.value = []
-    options.value.push({
-        icon: props.projectStatus === 'PROJECT_PROCESSING' ? 'bi-check-lg' : 'bi-eye',
-        label: props.projectStatus === 'PROJECT_PROCESSING' ? t('project.process') : t('project.view'),
-        to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
-    })
+
+    // if manager, toggle view and manage project
+    if (isStaff.value && hasPerm('change_project')) {
+        options.value.push({
+            icon: props.projectStatus === 'PROJECT_PROCESSING' ? 'bi-check-lg' : 'bi-eye',
+            label: props.projectStatus === 'PROJECT_PROCESSING' ? t('project.process') : t('project.view'),
+            to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
+        })
+    } else { // if fund member, view only
+        options.value.push({
+            icon: 'bi-eye',
+            label: t('project.view'),
+            to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
+        })
+    }
+
     if (isStaff.value && hasPerm('change_project')) {
         options.value.push({
             icon: 'bi-calendar',
             label: t('project.edit-dates'),
             action: 'updateProjectDates'
+        })
+    }
+    if (props.projectStatus === 'PROJECT_PROCESSING' || props.projectStatus === 'PROJECT_VALIDATED') {
+        options.value.push({
+            icon: 'bi-signpost',
+            label: t('project.change-commission'),
+            action: 'changeCommission'
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING') {
@@ -79,6 +101,8 @@ async function onOptionClick(option: Option) {
     else if (option.action) {
         if (option.action === 'updateProjectDates') {
             updateProjectDates.value = true
+        } else if (option.action === 'changeCommission') {
+            changeCommission.value = true
         } else if (option.action === 'download-pdf') {
             await onGetProjectPdf(props.projectId, props.projectName)
         }
@@ -138,8 +162,15 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
     </div>
     <ProjectUpdateDates
         :open-dialog="updateProjectDates"
-        :project="props.project"
+        :project="props.projectId"
         @close-dialog="updateProjectDates = false"
+        @refresh-projects="emit('refreshProjects')"
+    />
+    <ProjectChangeCommission
+        :is-site="props.isSite"
+        :open-dialog="changeCommission"
+        :project="props.projectId"
+        @close-dialog="changeCommission = false"
         @refresh-projects="emit('refreshProjects')"
     />
 </template>

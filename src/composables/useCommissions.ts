@@ -60,7 +60,8 @@ export default function () {
         activeProjects: boolean | undefined,
         isOpenToProjects: boolean | undefined,
         isSite: boolean | undefined,
-        managedProjects: boolean | undefined) {
+        managedProjects: boolean | undefined,
+        funds?: number[]) {
 
         let urlString = '/commissions/'
         const urlArray = []
@@ -69,6 +70,7 @@ export default function () {
         if (isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${isOpenToProjects}`)
         if (isSite !== undefined) urlArray.push(`is_site=${isSite}`)
         if (managedProjects !== undefined) urlArray.push(`managed_projects=${managedProjects}`)
+        if (funds?.length) urlArray.push(`funds=${funds.join(',')}`)
 
         if (urlArray.length) urlString += `?${urlArray.join('&')}`
         commissions.value = (await axiosPublic.get<Commission[]>(urlString)).data
