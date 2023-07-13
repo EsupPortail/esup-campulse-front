@@ -67,7 +67,7 @@ async function onGetProjectCommissions() {
 </script>
 
 <template>
-    <section
+    <div
         v-if="props.view === 'projectRecap' || props.view === 'projectReviewRecap'"
         class="flex-column"
     >
@@ -115,7 +115,7 @@ async function onGetProjectCommissions() {
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <div
         v-if="props.view === 'submitProjectReview'"

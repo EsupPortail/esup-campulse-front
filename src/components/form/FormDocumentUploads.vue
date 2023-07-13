@@ -139,7 +139,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
 </script>
 
 <template>
-    <section class="flex-section">
+    <div class="flex-section">
         <div
             v-for="(document, index) in processDocuments"
             :key="index"
@@ -222,7 +222,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>

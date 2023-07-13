@@ -23,7 +23,7 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
                     name="mdi-information-outline"
                     size="md"
                 />
-                <span class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</span>
+                <p class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</p>
             </QCardSection>
             <QCardActions align="right">
                 <QBtn

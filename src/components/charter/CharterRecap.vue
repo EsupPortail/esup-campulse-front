@@ -17,7 +17,7 @@ const emit = defineEmits(['changeStep'])
 <template>
     <div class="flex-column">
         <!-- Association infos -->
-        <section>
+        <div>
             <div class="flex-row-space-between">
                 <h4>
                     {{
@@ -35,9 +35,9 @@ const emit = defineEmits(['changeStep'])
                 />
             </div>
             <CharterRecapAssociationInfos :association="props.associationId"/>
-        </section>
+        </div>
         <!-- Documents -->
-        <section>
+        <div>
             <div class="flex-row-space-between">
                 <h4>
                     {{
@@ -59,7 +59,7 @@ const emit = defineEmits(['changeStep'])
                 :association-id="props.associationId"
                 process="charter"
             />
-        </section>
+        </div>
     </div>
 </template>
 

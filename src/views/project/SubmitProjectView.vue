@@ -766,7 +766,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             />
 
                             <section class="flex-column">
-                                <h3>{{ t('project.amounts-asked') }}</h3>
+                                <h4>{{ t('project.amounts-asked') }}</h4>
                                 <QInput
                                     v-for="commissionFund in projectCommissionFundsDetail"
                                     :key="commissionFund.id"
