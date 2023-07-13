@@ -55,7 +55,7 @@ async function onDeleteAssociation() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t('association.confirm-delete') }}</span>
+                <p class="q-ml-sm">{{ t('association.confirm-delete') }}</p>
             </QCardSection>
             <QCardSection>
                 <QInput

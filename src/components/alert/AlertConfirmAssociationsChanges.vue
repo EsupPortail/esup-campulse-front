@@ -146,7 +146,7 @@ async function onConfirmChanges(emailType: string) {
     >
         <QCard>
             <QCardSection class="row items-center dialog-message">
-                <span class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</span>
+                <p class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</p>
                 <template v-if="switches === 'email'">
                     <ul
                         v-for="association in selectedAssociations"
