@@ -238,7 +238,7 @@
             top: .07rem;
           }
 
-          &:hover {
+          &:hover, &:focus {
             background-color: $annuaireColorText;
             color: $textColor3;
           }
@@ -341,7 +341,7 @@
             color: $charteColorText;
             border-color: $charteColorText;
 
-            &:hover {
+            &:hover, &:focus {
               background-color: $charteColorText;
               color: $textColor3;
             }
@@ -404,7 +404,7 @@
             color: $capeColorText;
             border-color: $capeColorText;
 
-            &:hover {
+            &:hover, &:focus {
               background-color: $capeColorText;
               color: $textColor3;
             }

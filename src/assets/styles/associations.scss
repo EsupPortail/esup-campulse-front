@@ -152,7 +152,7 @@
       }
     }
 
-    &:hover {
+    &:hover, &:focus {
       .q-card__section {
         box-shadow: 1rem 0 0 0 $annuaireColor inset;
       }
@@ -228,7 +228,7 @@
         }
       }
 
-      &:hover {
+      &:hover, &:focus {
         .card-chevron {
           right: 0.625rem;
         }
@@ -266,7 +266,7 @@
     color: $annuaireColor;
   }
 
-  a:hover {
+  a:hover, a:focus {
     color: $annuaireColorHover;
   }
 

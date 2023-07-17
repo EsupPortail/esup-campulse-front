@@ -30,14 +30,14 @@
     a {
       color: $dashboardColor;
 
-      &:hover {
+      &:hover, &:focus {
         text-decoration: underline;
 
       }
     }
   }
 
-  &:hover {
+  &:hover, &:focus {
     i {
       display: inline
     }
@@ -68,12 +68,12 @@
       color: $dashboardColor,
     }
 
-    &:hover {
+    &:hover, &:focus {
       text-decoration: underline;
 
     }
 
-    &:hover {
+    &:hover, &:focus {
       i {
         display: inline;
       }

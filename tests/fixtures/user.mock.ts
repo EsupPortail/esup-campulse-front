@@ -295,7 +295,7 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
         isTreasurer: false,
         association: {
             id: 5,
-            name: 'CAMPULSE'
+            name: 'EMPRUNTE'
         }
     }
 ]

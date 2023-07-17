@@ -72,7 +72,7 @@
         transition: transform 0.1s linear;
       }
 
-      &:hover {
+      &:hover, &:focus {
         &::after {
           transform: scaleX(1);
         }
@@ -436,7 +436,7 @@
         width: $fullSize;
         transition: background 0.03s linear;
 
-        &:hover {
+        &:hover, &:focus {
           background: rgba(255, 255, 255, 0.1) !important;
         }
 
