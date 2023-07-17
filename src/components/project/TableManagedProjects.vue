@@ -62,16 +62,16 @@ watch(() => projectStore.projects, initProjects)
 
 onMounted(async () => {
     loading.show()
-    await onGetProjects(props.commission)
+    await onGetProjects()
     await onGetApplicants()
     initProjects()
     loading.hide()
 })
 
 
-async function onGetProjects(commission: number) {
+async function onGetProjects() {
     try {
-        await projectStore.getManagedProjects(commission)
+        await projectStore.getManagedProjects(props.commission)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

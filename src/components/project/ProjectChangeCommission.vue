@@ -13,11 +13,9 @@ const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
 const {
-    initProjectBasicInfos,
     projectCommission,
     projectCommissionFunds,
     reInitProjectCommissionFunds,
-    patchProjectCommissionFunds
 } = useSubmitProject()
 const {
     getCommissionsForManagers,
@@ -27,7 +25,8 @@ const {
     commissionFunds,
     initChosenCommissionFundsLabels,
     commissionLabels,
-    fundsLabels
+    fundsLabels,
+    funds
 } = useCommissions()
 
 const emit = defineEmits(['closeDialog', 'refreshProjects'])
@@ -52,7 +51,7 @@ watch(() => open.value, () => {
     }
 })
 
-watch(() => open.value, async () => {
+/*watch(() => open.value, async () => {
     loading.show()
     if (open.value) {
         try {
@@ -68,7 +67,7 @@ watch(() => open.value, async () => {
         }
     }
     loading.hide()
-})
+})*/
 
 watch(() => open.value, async () => {
     if (open.value) {
@@ -86,12 +85,18 @@ async function onGetCommissionDates() {
         await getCommissionFunds()
         projectCommission.value = commissionFunds.value
             .find(obj => obj.id === projectStore.projectCommissionFunds[0].commissionFund)?.commission as number
+        const chosenFunds: number[] = []
         if (projectCommission.value) {
             initChosenCommissionFundsLabels(projectCommission.value as number, props.isSite)
             projectCommissionFunds.value = projectStore.projectCommissionFunds
                 .map(x => x.commissionFund)
+            fundsLabels.value.forEach(x => {
+                if (projectCommissionFunds.value.includes(x.value)) {
+                    if (x.fund) chosenFunds.push(x.fund)
+                }
+            })
         }
-        await getCommissionsForManagers(undefined, true, props.isSite, true, projectCommissionFunds.value)
+        await getCommissionsForManagers(undefined, true, !props.isSite ? false : undefined, true, chosenFunds)
         initCommissionLabels()
 
     } catch (error) {
@@ -108,7 +113,14 @@ async function onChangeCommission() {
     loading.show()
     try {
         if (projectStore.projectCommissionFunds.length) {
-            await patchProjectCommissionFunds(projectStore.projectCommissionFunds[0].isFirstEdition ?? false)
+            for (const x of projectStore.projectCommissionFunds) {
+                const oldCommissionFund = commissionFunds.value.find(y => y.id === x.commissionFund)
+                const fund = funds.value.find(y => y.id === oldCommissionFund?.fund)
+                const newCommissionFund = fundsLabels.value.find(y => y.fund === fund?.id)
+                if (oldCommissionFund && newCommissionFund && projectCommissionFunds.value.includes(newCommissionFund.value)) {
+                    await projectStore.patchProjectCommissionFund(oldCommissionFund.id, newCommissionFund.value)
+                }
+            }
         }
         emit('closeDialog')
         emit('refreshProjects')
@@ -125,6 +137,20 @@ async function onChangeCommission() {
         }
     }
     loading.hide()
+}
+
+const onReInitProjectCommissionFunds = () => {
+    const oldProjectCommissionFunds = [...projectCommissionFunds.value]
+    reInitProjectCommissionFunds(props.isSite)
+    oldProjectCommissionFunds.forEach(x => {
+        const fund = commissionFunds.value.find(y => y.id === x)?.fund
+        if (fund) {
+            const fundLabel = fundsLabels.value.find(y => y.fund === fund)
+            if (fundLabel) {
+                projectCommissionFunds.value.push(fundLabel.value)
+            }
+        }
+    })
 }
 </script>
 
@@ -160,7 +186,7 @@ async function onChangeCommission() {
                         filled
                         lazy-rules
                         map-options
-                        @update:model-value="reInitProjectCommissionFunds(props.isSite)"
+                        @update:model-value="onReInitProjectCommissionFunds"
                     />
 
                     <QSelect
@@ -168,7 +194,6 @@ async function onChangeCommission() {
                         :hint="t('project.commission-funds-choice-hint')"
                         :label="t('project.commission-funds-choice') + ' *'"
                         :options="fundsLabels"
-                        :readonly="!projectCommission"
                         :rules="[ val => val || t('forms.fill-field')]"
                         clearable
                         color="commission"
@@ -177,6 +202,7 @@ async function onChangeCommission() {
                         lazy-rules
                         map-options
                         multiple
+                        readonly
                         stack-label
                         use-chips
                     />

@@ -614,11 +614,10 @@
     "cannot-submit-projects": "L'association n'est pas habilitée à soumettre de nouveaux projets.",
     "categories": "Catégories",
     "change-commission": "Déplacer le projet dans une autre commission",
-    "change-commission-info": "Le projet ne peut être déplacé car aucune commission proposant les financeurs choisis n'est ouverte pour le moment.",
+    "change-commission-info": "Le projet ne peut être déplacé car aucune autre commission proposant les financeurs choisis n'est ouverte pour le moment.",
     "comments": {
-      "comment-from": "Commentaire de",
+      "comment-metadata": "Commentaire de {user} le {date} à {hour}h{minutes}",
       "no-comment-to-show": "Aucun commentaire pour le moment.",
-      "on-date": "le",
       "title": "Commentaires"
     },
     "commission-amount-earned": "Montant obtenu de la part de ce financeur",

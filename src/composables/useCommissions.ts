@@ -1,5 +1,5 @@
 import {ref} from 'vue'
-import type {Commission, CommissionFund, Fund, NewCommission, UpdateCommission} from '#/commissions'
+import type {Commission, CommissionFund, Fund, NewCommission, SelectLabelFund, UpdateCommission} from '#/commissions'
 import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/index'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
@@ -7,7 +7,7 @@ import useUtility from '@/composables/useUtility'
 
 // Funds
 const funds = ref<Fund[]>([])
-const fundsLabels = ref<SelectLabel[]>([])
+const fundsLabels = ref<SelectLabelFund[]>([])
 const userFunds = ref<number[]>([])
 
 // Commissions
@@ -24,7 +24,7 @@ export default function () {
 
     // Funds
     async function getFunds() {
-        if (funds.value.length === 0) {
+        if (!funds.value.length) {
             funds.value = (await axiosPublic.get<Fund[]>('/commissions/funds/names')).data
         }
     }
@@ -43,7 +43,8 @@ export default function () {
             if (isSite || (!isSite && !fund?.isSite))
                 fundsLabels.value.push({
                     value: x.id,
-                    label: funds.value.find(obj => obj.id === x.fund)?.acronym as string
+                    label: fund?.acronym as string,
+                    fund: fund?.id
                 })
         })
     }

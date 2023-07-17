@@ -120,6 +120,12 @@ export const useProjectStore = defineStore('projectStore', {
                 await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
                 this.project.projectStatus = projectStatus
             }
+        },
+
+        async patchProjectCommissionFund(oldCommissionFund: number, newCommissionFund: number) {
+            const {axiosAuthenticated} = useAxios()
+            await axiosAuthenticated.patch(`/projects/${this.project?.id}/commission_funds/${oldCommissionFund}`,
+                {projectId: this.project?.id, commissionFundId: newCommissionFund})
         }
     }
 })
