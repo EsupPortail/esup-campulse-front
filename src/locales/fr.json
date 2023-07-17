@@ -747,6 +747,14 @@
   "start": "Début",
   "status": "Statut",
   "submit-review": "Soumettre le bilan",
+  "table": {
+    "first-page": "Première page",
+    "last-page": "Dernière page",
+    "next-page": "Page suivante",
+    "previous-page": "Page précédente",
+    "results-amount": "{firstResult}-{lastResult} sur {amountResults}",
+    "select-all": "Sélectionner tout"
+  },
   "to": "Jusqu'au",
   "update": "Mettre à jour",
   "user": {
