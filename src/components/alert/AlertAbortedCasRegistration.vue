@@ -26,7 +26,7 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
                 <p class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</p>
             </QCardSection>
             <QCardActions align="right">
-                <div class="flex-row">
+                <div class="flex-row padding-top">
                     <QBtn
                             v-close-popup
                             :label="t('alerts.close')"

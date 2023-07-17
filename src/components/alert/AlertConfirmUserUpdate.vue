@@ -55,35 +55,35 @@ async function onValidateChanges() {
 
 <template>
     <QBtn
-        :label="t('dashboard.validate-changes')"
-        class="btn-lg"
-        color="dashboard"
-        icon="bi-check-lg"
-        @click="confirmation = true"
+            :label="t('dashboard.validate-changes')"
+            class="btn-lg"
+            color="dashboard"
+            icon="bi-check-lg"
+            @click="confirmation = true"
     />
 
     <QDialog
-        v-model="confirmation"
-        persistent
+            v-model="confirmation"
+            persistent
     >
         <QCard>
             <QCardSection class="row items-center">
                 <p>{{ t('user-manager.alert-confirm-update') }}</p>
-                <div class="flex-row">
+                <div class="flex-row padding-top">
                     <QBtn
-                        v-close-popup
-                        :label="t('cancel')"
-                        class="btn-lg"
-                        color="dashboard"
-                        icon="bi-x-lg"
+                            v-close-popup
+                            :label="t('cancel')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-x-lg"
                     />
                     <QBtn
-                        v-close-popup
-                        :label="t('dashboard.validate-changes')"
-                        class="btn-lg"
-                        color="dashboard"
-                        icon="bi-check-lg"
-                        @click="onValidateChanges"
+                            v-close-popup
+                            :label="t('dashboard.validate-changes')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-check-lg"
+                            @click="onValidateChanges"
                     />
                 </div>
             </QCardSection>

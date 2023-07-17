@@ -71,20 +71,22 @@ async function onDeleteUserAssociation() {
             </QCardSection>
 
             <QCardActions>
-                <QBtn
-                        v-close-popup
-                        :label="t('cancel')"
-                        class="btn-lg"
-                        color="dashboard"
-                        icon="bi-x-lg"
-                />
-                <QBtn
-                        v-close-popup
-                        :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
-                        color="custom-red"
-                        icon="bi-trash"
-                        @click="onDeleteUserAssociation"
-                />
+                <div class="flex-row padding-top">
+                    <QBtn
+                            v-close-popup
+                            :label="t('cancel')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-x-lg"
+                    />
+                    <QBtn
+                            v-close-popup
+                            :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+                            color="custom-red"
+                            icon="bi-trash"
+                            @click="onDeleteUserAssociation"
+                    />
+                </div>
             </QCardActions>
         </QCard>
     </QDialog>
