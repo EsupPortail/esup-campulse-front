@@ -1,0 +1,66 @@
+<script lang="ts" setup>
+import type {ProjectCommissionFund} from '#/project'
+import useCommissions from '@/composables/useCommissions'
+import {useI18n} from 'vue-i18n'
+
+const props = defineProps<{
+    projectCommissionFunds: ProjectCommissionFund[]
+}>()
+
+const {t} = useI18n()
+const {commissionFunds, funds} = useCommissions()
+
+</script>
+
+<template>
+    <ul v-if="projectCommissionFunds.length">
+        <li
+            v-for="commissionFund in projectCommissionFunds"
+            :key="commissionFund.id"
+        >
+            {{
+                funds.find(x => x.id === (commissionFunds.find
+                    (y => y.id === commissionFund.commissionFund)?.fund))?.acronym
+            }}
+            <span
+                v-if="commissionFund.isValidatedByAdmin"
+                class="form-state form-state-cape"
+            >
+                <span
+                    class="form-state-icon form-state-green"
+                >
+                    <i
+                        :aria-label="t('validated')"
+                        class="bi bi-check"
+                    ></i>
+                </span>
+            </span>
+            <span
+                v-else
+                class="form-state form-state-cape"
+            >
+                <span
+                    class="form-state-icon form-state-grey"
+                >
+                    <i
+                        :aria-label="t('validation-pending')"
+                        class="bi bi-dash"
+                    ></i>
+                </span>
+            </span>
+        </li>
+    </ul>
+</template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
+
+ul {
+    padding-left: 0;
+}
+
+li {
+    list-style: none;
+}
+</style>

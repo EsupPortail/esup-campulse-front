@@ -86,7 +86,7 @@ async function onPostNewComment() {
                       {
                           user: comment.user.firstName + ' ' + comment.user.lastName,
                           date: formatDate(comment.creationDate).split('-').reverse().join('/'),
-                          hour: new Date(comment.creationDate).getHours() - 2, // todo
+                          hour: new Date(comment.creationDate).getHours(),
                           minutes: new Date(comment.creationDate).getMinutes() < 10 ? '0' + new Date(comment.creationDate).getMinutes() :
                               new Date(comment.creationDate).getMinutes()
                       }

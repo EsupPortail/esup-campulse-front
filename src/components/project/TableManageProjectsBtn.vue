@@ -23,7 +23,8 @@ const props = defineProps<{
     projectId: number,
     projectName: string,
     projectStatus: ProjectStatus,
-    isSite: boolean
+    isSite: boolean,
+    canChangeProject: boolean
 }>()
 
 const emit = defineEmits(['refreshProjects'])
@@ -44,17 +45,18 @@ const options = ref<Option[]>([])
 const initOptions = () => {
     options.value = []
 
-    // if manager, toggle view and manage project
-    if (isStaff.value && hasPerm('change_project')) {
+    // View project
+    options.value.push({
+        icon: 'bi-eye',
+        label: t('project.view'),
+        to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
+    })
+
+    // Manage project
+    if (isStaff.value && hasPerm('change_project') && props.canChangeProject) {
         options.value.push({
-            icon: props.projectStatus === 'PROJECT_PROCESSING' ? 'bi-check-lg' : 'bi-eye',
-            label: props.projectStatus === 'PROJECT_PROCESSING' ? t('project.process') : t('project.view'),
-            to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
-        })
-    } else { // if fund member, view only
-        options.value.push({
-            icon: 'bi-eye',
-            label: t('project.view'),
+            icon: 'bi-check-lg',
+            label: t('project.process'),
             to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
         })
     }

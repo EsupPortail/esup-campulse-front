@@ -6,12 +6,15 @@ import useUtility from '@/composables/useUtility'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {ProjectList} from '#/project'
+import type {ProjectCommissionFund, ProjectList} from '#/project'
 import axios from 'axios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref, watch} from 'vue'
 import TableManageProjectsBtn from '@/components/project/TableManageProjectsBtn.vue'
+import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
+import useCommissions from '@/composables/useCommissions'
+import {useUserStore} from '@/stores/useUserStore'
 
 
 const {t} = useI18n()
@@ -21,6 +24,8 @@ const userManagerStore = useUserManagerStore()
 const projectStore = useProjectStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const {getCommissionFunds, getFunds, commissionFunds, funds} = useCommissions()
+const userStore = useUserStore()
 
 const props = defineProps<{
     commission: number,
@@ -63,11 +68,11 @@ watch(() => projectStore.projects, initProjects)
 onMounted(async () => {
     loading.show()
     await onGetProjects()
+    await onGetProjectCommissionFunds()
     await onGetApplicants()
     initProjects()
     loading.hide()
 })
-
 
 async function onGetProjects() {
     try {
@@ -82,6 +87,20 @@ async function onGetProjects() {
     }
 }
 
+async function onGetProjectCommissionFunds() {
+    try {
+        await projectStore.getProjectCommissionFunds(true, props.commission)
+        await getCommissionFunds()
+        await getFunds()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
 
 async function onGetApplicants() {
     try {
@@ -103,10 +122,30 @@ async function onGetApplicants() {
     }
 }
 
+const filterProjectCommissionFunds = (project: number) => {
+    return projectStore.projectCommissionFunds.filter(x => x.project === project)
+}
+
+const canChangeProject = (project: number) => {
+    let perm = false
+    const filter: ProjectCommissionFund[] = filterProjectCommissionFunds(project)
+    filter.forEach(projectCommissionFund => {
+        const commissionFund = commissionFunds.value.find(obj => obj.id === projectCommissionFund.commissionFund)
+        const fund = funds.value.find(obj => obj.id === commissionFund?.fund)
+        userStore.user?.groups.forEach(group => {
+            if (group.institutionId === fund?.institution) {
+                perm = true
+            }
+        })
+    })
+    return perm
+}
+
 const columns: QTableProps['columns'] = [
     {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
     {name: 'applicant', align: 'left', label: t('project.applicant'), field: 'applicant', sortable: true},
     {name: 'lastModifiedDate', align: 'left', label: t('project.last-modified-date'), field: 'email', sortable: true},
+    {name: 'funds', align: 'right', label: t('commission.funds'), field: 'funds', sortable: true},
     {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
     {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
 ]
@@ -144,6 +183,14 @@ const columns: QTableProps['columns'] = [
                         {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
                     </QTd>
                     <QTd
+                        key="funds"
+                        :props="props"
+                    >
+                        <ProjectFundValidationIndicator
+                            :project-commission-funds="filterProjectCommissionFunds(props.row.id)"
+                        />
+                    </QTd>
+                    <QTd
                         key="status"
                         :props="props"
                     >
@@ -159,11 +206,12 @@ const columns: QTableProps['columns'] = [
                     >
                         <div class="button-container">
                             <TableManageProjectsBtn
+                                :can-change-project="canChangeProject(props.row.id)"
                                 :is-site="isSite(props.row.association)"
                                 :project-id="props.row.id"
                                 :project-name="props.row.name"
                                 :project-status="props.row.projectStatus"
-                                @refresh-projects="onGetProjects(props.commission)"
+                                @refresh-projects="onGetProjects()"
                             />
                         </div>
                     </QTd>

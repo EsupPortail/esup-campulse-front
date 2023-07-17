@@ -808,6 +808,7 @@
   "validate-changes": "Valider les changements",
   "validated": "Validé",
   "validated-non": "Non validé",
+  "validation-pending": "En attente de validation",
   "view": {
     "projects": "Voir les projets"
   },
