@@ -47,53 +47,53 @@ async function onConfirmChanges(emailType: string) {
     const promisesToExecute: Promise<void>[] = []
     let mailto = 'mailto:?bcc='
     switch (switches.value) {
-    case 'email':
-        props.selectedAssociations?.forEach((selectedAssociation) => {
-            if (selectedAssociation.email) {
-                mailto += `${selectedAssociation.email},`
-                associationsSuccess.push(selectedAssociation.name)
-            } else {
-                associationsError.push(selectedAssociation.name)
-            }
-        })
-        window.open(mailto, (emailType as string === 'web') ? '_blank' : '_self')
-        break
-    case 'enable':
-        props.selectedAssociations?.forEach((selectedAssociation) => {
-            promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
-                associationsSuccess.push(selectedAssociation.name)
-            }))
-        })
-        break
-    case 'disable':
-        props.selectedAssociations?.forEach((selectedAssociation) => {
-            promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
-                associationsSuccess.push(selectedAssociation.name)
-            }))
-        })
-        break
-    case 'delete':
-        if (deletionWord.value === t('association.before-deletion-word')) {
+        case 'email':
             props.selectedAssociations?.forEach((selectedAssociation) => {
-                promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                if (selectedAssociation.email) {
+                    mailto += `${selectedAssociation.email},`
                     associationsSuccess.push(selectedAssociation.name)
-                    if (props.selectedAssociations) {
-                        let newSelectedAssociations = props.selectedAssociations
-                        newSelectedAssociations = newSelectedAssociations?.splice(props.selectedAssociations?.indexOf(selectedAssociation), 1)
-                        emit('updateSelectedAssociations', newSelectedAssociations)
-                    }
-                }).catch(() => {
+                } else {
                     associationsError.push(selectedAssociation.name)
+                }
+            })
+            window.open(mailto, (emailType as string === 'web') ? '_blank' : '_self')
+            break
+        case 'enable':
+            props.selectedAssociations?.forEach((selectedAssociation) => {
+                promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
+                    associationsSuccess.push(selectedAssociation.name)
                 }))
             })
-            deletionWord.value = ''
-        } else {
-            notify({
-                type: 'negative',
-                message: t('association.before-deletion-word-error')
+            break
+        case 'disable':
+            props.selectedAssociations?.forEach((selectedAssociation) => {
+                promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
+                    associationsSuccess.push(selectedAssociation.name)
+                }))
             })
-        }
-        break
+            break
+        case 'delete':
+            if (deletionWord.value === t('association.before-deletion-word')) {
+                props.selectedAssociations?.forEach((selectedAssociation) => {
+                    promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+                        associationsSuccess.push(selectedAssociation.name)
+                        if (props.selectedAssociations) {
+                            let newSelectedAssociations = props.selectedAssociations
+                            newSelectedAssociations = newSelectedAssociations?.splice(props.selectedAssociations?.indexOf(selectedAssociation), 1)
+                            emit('updateSelectedAssociations', newSelectedAssociations)
+                        }
+                    }).catch(() => {
+                        associationsError.push(selectedAssociation.name)
+                    }))
+                })
+                deletionWord.value = ''
+            } else {
+                notify({
+                    type: 'negative',
+                    message: t('association.before-deletion-word-error')
+                })
+            }
+            break
     }
 
     Promise.all(promisesToExecute).then(() => {
@@ -121,44 +121,44 @@ async function onConfirmChanges(emailType: string) {
 <template>
     <div class="table-actions-select padding-top">
         <QSelect
-            v-model="switches"
-            :label="t('association.all-selected')"
-            :options="actionsOptions"
-            color="association"
-            emit-value
-            filled
-            map-options
-            option-label="label"
-            option-value="id"
+                v-model="switches"
+                :label="t('association.all-selected')"
+                :options="actionsOptions"
+                color="association"
+                emit-value
+                filled
+                map-options
+                option-label="label"
+                option-value="id"
         />
         <QBtn
-            :label="t('association.confirm-all-changes')"
-            class="btn-lg"
-            color="association"
-            icon="bi-check-lg"
-            @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"
+                :label="t('association.confirm-all-changes')"
+                class="btn-lg"
+                color="association"
+                icon="bi-check-lg"
+                @click="(switches !== undefined && selectedAssociations && selectedAssociations.length > 0) ? changes = true : changes = false"
         />
     </div>
 
     <QDialog
-        v-model="changes"
-        persistent
+            v-model="changes"
+            persistent
     >
         <QCard>
-            <QCardSection class="row items-center dialog-message">
+            <QCardSection class="flex-column items-center dialog-message">
                 <p class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</p>
                 <template v-if="switches === 'email'">
                     <ul
-                        v-for="association in selectedAssociations"
-                        :key="association.id"
+                            v-for="association in selectedAssociations"
+                            :key="association.id"
                     >
                         <li v-if="association.email !== ''">{{ association.name }}</li>
                     </ul>
                 </template>
                 <template v-else>
                     <ul
-                        v-for="association in selectedAssociations"
-                        :key="association.id"
+                            v-for="association in selectedAssociations"
+                            :key="association.id"
                     >
                         <li>{{ association.name }}</li>
                     </ul>
@@ -166,61 +166,67 @@ async function onConfirmChanges(emailType: string) {
             </QCardSection>
             <QCardSection v-if="switches === 'delete'">
                 <QInput
-                    v-model=deletionWord
-                    :label="t('association.before-deletion-word-instruction')"
-                    @paste.prevent
+                        v-model=deletionWord
+                        :label="t('association.before-deletion-word-instruction')"
+                        @paste.prevent
                 />
             </QCardSection>
             <QCardActions
-                align="center"
-                class="dialog-card-actions"
             >
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="bi-x-lg"
-                />
-                <QBtn
-                    v-if="switches === 'email'"
-                    v-close-popup
-                    :label="t('association.email-software')"
-                    color="secondary"
-                    icon="bi-enveloppe"
-                    @click="onConfirmChanges('software')"
-                />
-                <QBtn
-                    v-if="switches === 'email'"
-                    v-close-popup
-                    :label="t('association.email-web')"
-                    color="secondary"
-                    icon="bi-enveloppe"
-                    @click="onConfirmChanges('web')"
-                />
-                <QBtn
-                    v-if="switches === 'enable'"
-                    v-close-popup
-                    :icon="t('icons.association.is-enabled')"
-                    :label="t('association.enable')"
-                    color="green"
-                    @click="onConfirmChanges('')"
-                />
-                <QBtn
-                    v-if="switches === 'disable'"
-                    v-close-popup
-                    :label="t('association.disable')"
-                    color="orange"
-                    icon="bi-lock"
-                    @click="onConfirmChanges('')"
-                />
-                <QBtn
-                    v-if="switches === 'delete'"
-                    v-close-popup
-                    :label="t('association.delete')"
-                    color="delete"
-                    icon="bi-trash"
-                    @click="onConfirmChanges('')"
-                />
+                <div class="flex-row">
+                    <QBtn
+                            v-close-popup
+                            :label="t('cancel')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-x-lg"
+                    />
+                    <QBtn
+                            v-if="switches === 'email'"
+                            v-close-popup
+                            :label="t('association.email-software')"
+                            class="btn-lg"
+                            color="association"
+                            icon="bi-envelope"
+                            @click="onConfirmChanges('software')"
+                    />
+                    <QBtn
+                            v-if="switches === 'email'"
+                            v-close-popup
+                            :label="t('association.email-web')"
+                            class="btn-lg"
+                            color="association"
+                            icon="bi-envelope"
+                            @click="onConfirmChanges('web')"
+                    />
+                    <QBtn
+                            v-if="switches === 'enable'"
+                            v-close-popup
+                            :label="t('association.enable')"
+                            class="btn-lg"
+                            color="association"
+                            icon="bi-unlock"
+                            @click="onConfirmChanges('')"
+                    />
+                    <QBtn
+                            v-if="switches === 'disable'"
+                            v-close-popup
+                            :label="t('association.disable')"
+                            class="btn-lg"
+                            color="custom-red"
+                            icon="bi-lock"
+                            @click="onConfirmChanges('')"
+                    />
+                    <QBtn
+                            v-if="switches === 'delete'"
+                            v-close-popup
+                            :label="t('association.delete')"
+                            class="btn-lg"
+                            color="custom-red"
+                            icon="bi-trash"
+                            @click="onConfirmChanges('')"
+                    />
+                </div>
             </QCardActions>
         </QCard>
     </QDialog>
@@ -228,4 +234,13 @@ async function onConfirmChanges(emailType: string) {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
+@import '@/assets/variables.scss';
+
+p {
+  font-size: 1.8rem;
+}
+
+li {
+  font-size: 1.5rem;
+}
 </style>

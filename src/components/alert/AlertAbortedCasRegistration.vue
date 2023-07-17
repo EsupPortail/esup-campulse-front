@@ -13,31 +13,35 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
 
 <template>
     <QDialog
-        v-model="isCas"
-        persistent
+            v-model="isCas"
+            persistent
     >
         <QCard>
             <QCardSection class="row no-wrap">
                 <QIcon
-                    color="negative"
-                    name="mdi-information-outline"
-                    size="md"
+                        color="negative"
+                        name="mdi-information-outline"
+                        size="md"
                 />
                 <p class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</p>
             </QCardSection>
             <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('alerts.close')"
-                    color="primary"
-                    flat
-                />
-                <QBtn
-                    v-close-popup
-                    :label="t('alerts.aborted-cas-registration.button')"
-                    :to="{name: 'Registration'}"
-                    color="primary"
-                />
+                <div class="flex-row">
+                    <QBtn
+                            v-close-popup
+                            :label="t('alerts.close')"
+                            class="btn-lg"
+                            color="dashboard"
+                            flat
+                    />
+                    <QBtn
+                            v-close-popup
+                            :label="t('alerts.aborted-cas-registration.button')"
+                            :to="{name: 'Registration'}"
+                            class="btn-lg"
+                            color="custom-red"
+                    />
+                </div>
             </QCardActions>
         </QCard>
     </QDialog>

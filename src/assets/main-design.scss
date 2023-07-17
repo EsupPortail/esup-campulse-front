@@ -340,7 +340,7 @@ h6, .title-6 {
 p.paragraph {
   color: $textColor1;
   font-size: inherit;
-  font-weight: 400;
+  font-weight: $normal-weight;
   line-height: normal;
   letter-spacing: normal;
   margin-bottom: 1.8rem;

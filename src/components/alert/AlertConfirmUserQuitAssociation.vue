@@ -47,22 +47,22 @@ async function onDeleteUserAssociation() {
 
 <template>
     <QBtn
-        :aria-label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
-        class="btn-lg"
-        color="custom-red"
-        icon="bi-trash"
-        outline
-        @click="confirmation = true"
+            :aria-label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+            class="btn-lg"
+            color="custom-red"
+            icon="bi-trash"
+            outline
+            @click="confirmation = true"
     />
 
     <QDialog
-        v-model="confirmation"
-        persistent
+            v-model="confirmation"
+            persistent
     >
         <QCard>
             <QCardSection class="row items-center">
                 <p
-                    class="q-ml-sm"
+                        class="q-ml-sm"
                 >
                     {{
                         props.editedByStaff ? t('dashboard.association-user.confirm-delete') : t('dashboard.association-user.confirm-delete-self')
@@ -70,19 +70,20 @@ async function onDeleteUserAssociation() {
                 </p>
             </QCardSection>
 
-            <QCardActions align="right">
+            <QCardActions>
                 <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="primary"
-                    icon="bi-x-lg"
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
                 />
                 <QBtn
-                    v-close-popup
-                    :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
-                    color="delete"
-                    icon="bi-trash"
-                    @click="onDeleteUserAssociation"
+                        v-close-popup
+                        :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+                        color="custom-red"
+                        icon="bi-trash"
+                        @click="onDeleteUserAssociation"
                 />
             </QCardActions>
         </QCard>
