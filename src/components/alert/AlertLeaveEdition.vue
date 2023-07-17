@@ -11,28 +11,28 @@ const props = defineProps({
 
 <template>
     <QDialog
-        :model-value="props.openAlert"
-        persistent
+            :model-value="props.openAlert"
+            persistent
     >
         <QCard class="variant-space-4">
             <QCardSection>
                 <p>{{ props.text }}</p>
-                <div class="flex-row">
+                <div class="flex-row padding-top">
                     <QBtn
-                        v-close-popup
-                        :label="t('cancel')"
-                        class="btn-lg"
-                        color="association"
-                        icon="bi-x-lg"
-                        @click="$emit('closeAlert')"
+                            v-close-popup
+                            :label="t('cancel')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-x-lg"
+                            @click="$emit('closeAlert')"
                     />
                     <QBtn
-                        v-close-popup
-                        :label="t('discard-changes')"
-                        class="btn-lg"
-                        color="custom-red"
-                        icon="bi-box-arrow-left"
-                        @click="$emit('leaveEdition')"
+                            v-close-popup
+                            :label="t('discard-changes')"
+                            class="btn-lg"
+                            color="custom-red"
+                            icon="bi-box-arrow-left"
+                            @click="$emit('leaveEdition')"
                     />
                 </div>
             </QCardSection>
@@ -45,6 +45,6 @@ const props = defineProps({
 @import '@/assets/styles/dashboard.scss';
 
 .q-card {
-    padding: 1rem
+  padding: 1rem
 }
 </style>
