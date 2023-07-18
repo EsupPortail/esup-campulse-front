@@ -396,4 +396,9 @@ ul {
   font-size: 1.6rem;
 }
 
-
+// Radio and Checkbox contrasts.
+body.desktop {
+  .q-checkbox:not(.disabled) .q-checkbox__inner::before, .q-radio:not(.disabled) .q-radio__inner::before {
+    opacity: 0.33;
+  }
+}
