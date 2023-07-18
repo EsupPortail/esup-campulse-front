@@ -110,7 +110,9 @@ export default function () {
     }
 
     async function getCommissionFunds() {
-        commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/funds')).data
+        if (!commissionFunds.value.length) {
+            commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/funds')).data
+        }
     }
 
     async function postNewCommission(commission: NewCommission) {

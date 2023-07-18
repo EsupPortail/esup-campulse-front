@@ -116,8 +116,6 @@ async function onPostNewComment() {
         <QCard class="variant-space-3">
             <QCardSection class="q-pt-none">
                 <FormAddComment
-                    selected-action="new-comment"
-                    selected-icon="bi-chat"
                     @submit="onPostNewComment"
                     @close-dialog="open = false"
                 />

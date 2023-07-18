@@ -47,7 +47,6 @@ interface Option {
 const canChangeProject = () => {
     let perm = false
     const institutions: number[] = []
-    console.log(props.projectCommissionFunds)
     props.projectCommissionFunds.forEach(projectCommissionFund => {
         const commissionFund = commissionFunds.value.find(obj => obj.id === projectCommissionFund.commissionFund)
         const fund = funds.value.find(obj => obj.id === commissionFund?.fund)
@@ -99,7 +98,7 @@ const initOptions = () => {
     }
 
     // View review
-    if (props.projectStatus === 'PROJECT_REVIEW_VALIDATED' || props.projectStatus === 'PROJECT_REVIEW_CANCELLED') {
+    if (props.projectStatus === 'PROJECT_REVIEW_VALIDATED' || props.projectStatus === 'PROJECT_CANCELLED') {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),

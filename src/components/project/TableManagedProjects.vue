@@ -57,7 +57,7 @@ const initProjects = () => {
             || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else if (props.projectStatus === 'archived') {
         projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
-            || obj.projectStatus === 'PROJECT_REVIEW_CANCELLED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
+            || obj.projectStatus === 'PROJECT_CANCELLED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else {
         projects.value = projectStore.projects
     }
@@ -169,6 +169,7 @@ const columns: QTableProps['columns'] = [
                         :props="props"
                     >
                         <ProjectFundValidationIndicator
+                            v-if="isLoaded"
                             :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
                         />
                     </QTd>

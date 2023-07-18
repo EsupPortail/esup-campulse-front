@@ -42,7 +42,7 @@ onMounted(async () => {
 async function onGetProjectDetail() {
     try {
         await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
-        await projectStore.getProjectCommissionFunds(false, [])
+        await projectStore.getProjectCommissionFunds(false, undefined)
         initProjectBasicInfos()
         initProjectBudget()
         initProjectGoals()
@@ -149,7 +149,7 @@ async function onGetProjectDetail() {
         <h2>
             <i
                 aria-hidden="true"
-                class="bi bi-check-lg"
+                class="bi bi-bank"
             ></i>
             {{ t('commission.funds') }}
         </h2>

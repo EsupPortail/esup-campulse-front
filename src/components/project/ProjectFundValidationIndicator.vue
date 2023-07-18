@@ -36,7 +36,20 @@ const {commissionFunds, funds} = useCommissions()
                 </span>
             </span>
             <span
-                v-else
+                v-if="commissionFund.isValidatedByAdmin === false"
+                class="form-state form-state-cape"
+            >
+                <span
+                    class="form-state-icon form-state-red"
+                >
+                    <i
+                        :aria-label="t('rejected')"
+                        class="bi bi-x"
+                    ></i>
+                </span>
+            </span>
+            <span
+                v-if="commissionFund.isValidatedByAdmin === null"
                 class="form-state form-state-cape"
             >
                 <span
