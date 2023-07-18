@@ -39,7 +39,7 @@
             white-space: nowrap;
             cursor: pointer;
 
-            &:hover {
+            &:hover, &:focus {
                 background-color: #494968;
             }
 

@@ -137,37 +137,61 @@ const columns: QTableProps['columns'] = [
                     :title="t('directory.title')"
                     row-key="name"
                     selection="multiple"
+                    role="presentation"
                 >
+                    <template v-slot:header="props">
+                        <QTr :props="props">
+                            <QTh>
+                                <QCheckbox
+                                    v-model="props.selected"
+                                    :aria-label="t('table.select-all')"
+                                />
+                            </QTh>
+                            <QTh
+                                v-for="col in props.cols"
+                                :key="col.name"
+                                :props="props"
+                                scope="col"
+                                :id="col.name"
+                            >
+                                {{ col.label }}
+                            </QTh>
+                        </QTr>
+                    </template>
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd>
                                 <QCheckbox
                                     v-model="props.selected"
-                                    color="association"
                                     :aria-label="props.row.name"
+                                    color="association"
                                 />
                             </QTd>
                             <QTd
                                 key="name"
                                 :props="props"
+                                headers="name"
                             >
                                 {{ props.row.name }}
                             </QTd>
                             <QTd
                                 key="acronym"
                                 :props="props"
+                                headers="acronym"
                             >
                                 {{ props.row.acronym }}
                             </QTd>
                             <QTd
                                 key="institution"
                                 :props="props"
+                                headers="institution"
                             >
                                 {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
                             </QTd>
                             <QTd
                                 key="activityField"
                                 :props="props"
+                                headers="activityField"
                             >
                                 {{
                                     associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name
@@ -176,6 +200,7 @@ const columns: QTableProps['columns'] = [
                             <QTd
                                 key="status"
                                 :props="props"
+                                headers="status"
                                 class="state-cell"
                             >
                                 <span
@@ -202,6 +227,7 @@ const columns: QTableProps['columns'] = [
                             <QTd
                                 key="public"
                                 :props="props"
+                                headers="public"
                                 class="state-cell"
                             >
                                 <span
@@ -228,6 +254,7 @@ const columns: QTableProps['columns'] = [
                             <QTd
                                 key="edition"
                                 :props="props"
+                                headers="edition"
                                 class="actions-cell-compact"
                             >
                                 <div class="button-container">
@@ -241,6 +268,51 @@ const columns: QTableProps['columns'] = [
                                 </div>
                             </QTd>
                         </QTr>
+                    </template>
+                    <template v-slot:pagination="scope">
+                        {{ t('table.results-amount', {
+                            firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
+                            lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
+                            amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
+                        }) }}
+                        <QBtn
+                            v-if="scope.pagesNumber > 2"
+                            icon="bi-chevron-double-left"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isFirstPage"
+                            @click="scope.firstPage"
+                            :aria-label="t('table.first-page')"
+                        />
+                        <QBtn
+                            icon="bi-chevron-left"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isFirstPage"
+                            @click="scope.prevPage"
+                            :aria-label="t('table.previous-page')"
+                        />
+                        <QBtn
+                            icon="bi-chevron-right"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isLastPage"
+                            @click="scope.nextPage"
+                            :aria-label="t('table.next-page')"
+                        />
+                        <QBtn
+                            v-if="scope.pagesNumber > 2"
+                            icon="bi-chevron-double-right"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isLastPage"
+                            @click="scope.lastPage"
+                            :aria-label="t('table.last-page')"
+                        />
                     </template>
                 </QTable>
                 <AlertConfirmAssociationsChanges
@@ -256,4 +328,23 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/variables.scss';
+
+.q-table tr th:first-child {
+  text-align: left;
+}
+
+// Removes horizontal scrollbar from 320px to 375px (Accessibility purposes)
+@media screen and (min-width: 20rem) and (max-width: 23.438rem) {
+  .flex-row-space-between {
+    flex-direction: column;
+
+    h2 {
+      padding-bottom: 0;
+    }
+
+    .q-btn {
+      margin: 1rem;
+    }
+  }
+}
 </style>

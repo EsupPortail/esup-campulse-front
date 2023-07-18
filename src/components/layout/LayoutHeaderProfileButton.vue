@@ -124,4 +124,8 @@ onMounted(async () => {
     width: 100%;
     background: rgba(39, 39, 39, .7) !important;
 }
+
+p {
+    margin-bottom: 0 !important;
+}
 </style>

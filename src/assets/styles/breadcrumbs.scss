@@ -42,11 +42,23 @@
     display: none;
   }
 
+  &.variant-space-1 .q-breadcrumbs{
+    .q-breadcrumbs__el:focus {
+      outline: 2px solid $outlineColor1;
+      outline-offset: 2px;
+    }
+  }
+
   &.variant-space-2 .q-breadcrumbs {
     background-color: $charteColor;
 
     .q-breadcrumbs__el {
       color: $charteColorText;
+
+      &:focus {
+        outline: 2px solid $outlineColor2;
+        outline-offset: 2px;
+      }
     }
 
     .q-breadcrumbs__separator {
@@ -56,10 +68,20 @@
 
   &.variant-space-3 .q-breadcrumbs {
     background-color: $capeColor;
+
+    .q-breadcrumbs__el:focus {
+      outline: 2px solid $outlineColor1;
+      outline-offset: 2px;
+    }
   }
 
   &.variant-space-4 .q-breadcrumbs {
     background-color: $dashboardColor;
+
+    .q-breadcrumbs__el:focus {
+      outline: 2px solid $outlineColor1;
+      outline-offset: 2px;
+    }
   }
 
   &.variant-minimal .q-breadcrumbs {

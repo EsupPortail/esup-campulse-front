@@ -33,7 +33,7 @@ onMounted(initValues)
                 v-model="socialNetwork.type"
                 :hint="t('forms.social-network-type-hint')"
                 :label="t('association.labels.social-network-type') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[val => val && val.length > 0 || t('forms.fill-association-socials')]"
                 aria-required="true"
                 clearable
                 filled
@@ -82,6 +82,6 @@ onMounted(initValues)
 @import '@/assets/variables.scss';
 
 .q-input {
-    width: $fullSize;
+  width: $fullSize;
 }
 </style>

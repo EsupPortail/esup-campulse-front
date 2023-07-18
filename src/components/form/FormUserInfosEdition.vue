@@ -74,6 +74,7 @@ onMounted(() => {
             color="dashboard"
             filled
             lazy-rules
+            @focus="() => { variant = Variant.Home }"
         />
         <QInput
             v-model="userToUpdate.lastName"
@@ -167,4 +168,10 @@ onMounted(() => {
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/_variables.scss';
+
+
+q-input:focus {
+  color: red;
+  background-color: yellow;
+}
 </style>

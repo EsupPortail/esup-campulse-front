@@ -19,7 +19,7 @@
       text-align: center;
       margin: 0 auto;
 
-      a {
+      li {
         display: inline-block;
         margin: 1.25rem;
 
@@ -58,15 +58,18 @@
     margin: 0 auto;
     text-align: center;
 
-    a {
+    li {
       margin: 0 1rem;
       font-size: 1.6rem;
       font-weight: 600;
-      color: $textColor3;
-      text-decoration: none;
       text-transform: uppercase;
       display: inline-block;
       border-bottom: 1px solid transparent;
+
+      a {
+        color: $textColor3;
+        text-decoration: none;
+      }
 
       i {
         font-size: 1.2em;
@@ -89,7 +92,7 @@
         outline-offset: 2px;
       }
 
-      &:hover {
+      &:hover, &:focus {
         border-bottom: 1px solid transparentize($textColor3, 0.4);
       }
     }

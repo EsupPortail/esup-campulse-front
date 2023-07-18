@@ -142,25 +142,42 @@ const columns: QTableProps['columns'] = [
             :rows="projects"
             :rows-per-page-options="[10, 20, 50, 0]"
             :title="props.title"
+            role="presentation"
             row-key="name"
         >
+            <template v-slot:header="props">
+                <QTr :props="props">
+                    <QTh
+                        v-for="col in props.cols"
+                        :id="col.name"
+                        :key="col.name"
+                        :props="props"
+                        scope="col"
+                    >
+                        {{ col.label }}
+                    </QTh>
+                </QTr>
+            </template>
             <template v-slot:body="props">
                 <QTr :props="props">
                     <QTd
                         key="name"
                         :props="props"
+                        headers="name"
                     >
                         {{ props.row.name }}
                     </QTd>
                     <QTd
                         key="applicant"
                         :props="props"
+                        headers="applicant"
                     >
                         {{ applicant(props.row.association, props.row.user) }}
                     </QTd>
                     <QTd
                         key="lastModifiedDate"
                         :props="props"
+                        headers="lastModifiedDate"
                     >
                         {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
                     </QTd>
@@ -186,6 +203,7 @@ const columns: QTableProps['columns'] = [
                         key="edition"
                         :props="props"
                         class="actions-cell-compact"
+                        headers="edition"
                     >
                         <div class="button-container">
                             <TableManageProjectsBtn
@@ -200,6 +218,53 @@ const columns: QTableProps['columns'] = [
                         </div>
                     </QTd>
                 </QTr>
+            </template>
+            <template v-slot:pagination="scope">
+                {{
+                    t('table.results-amount', {
+                        firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
+                        lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
+                        amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
+                    })
+                }}
+                <QBtn
+                    v-if="scope.pagesNumber > 2"
+                    :aria-label="t('table.first-page')"
+                    :disable="scope.isFirstPage"
+                    color="grey-8"
+                    dense
+                    flat
+                    icon="bi-chevron-double-left"
+                    @click="scope.firstPage"
+                />
+                <QBtn
+                    :aria-label="t('table.previous-page')"
+                    :disable="scope.isFirstPage"
+                    color="grey-8"
+                    dense
+                    flat
+                    icon="bi-chevron-left"
+                    @click="scope.prevPage"
+                />
+                <QBtn
+                    :aria-label="t('table.next-page')"
+                    :disable="scope.isLastPage"
+                    color="grey-8"
+                    dense
+                    flat
+                    icon="bi-chevron-right"
+                    @click="scope.nextPage"
+                />
+                <QBtn
+                    v-if="scope.pagesNumber > 2"
+                    :aria-label="t('table.last-page')"
+                    :disable="scope.isLastPage"
+                    color="grey-8"
+                    dense
+                    flat
+                    icon="bi-chevron-double-right"
+                    @click="scope.lastPage"
+                />
             </template>
         </QTable>
     </div>

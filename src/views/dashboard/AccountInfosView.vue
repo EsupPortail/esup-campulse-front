@@ -121,7 +121,7 @@ onMounted(() => {
             name="infos"
             role=""
         >
-            <section class="dashboard-section">
+            <div class="dashboard-section">
                 <h2>
                     <i
                         aria-hidden="true"
@@ -153,7 +153,7 @@ onMounted(() => {
                         </QForm>
                     </div>
                 </div>
-            </section>
+            </div>
         </QTabPanel>
 
         <QTabPanel

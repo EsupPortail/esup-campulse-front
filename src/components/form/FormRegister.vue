@@ -101,7 +101,7 @@ async function onRegister() {
         class="dashboard-section"
         @submit.prevent="onRegister"
     >
-        <section class="dashboard-section">
+        <div class="dashboard-section">
             <h2>
                 <i
                     aria-hidden="true"
@@ -192,8 +192,8 @@ async function onRegister() {
                     -->
                 </div>
             </div>
-        </section>
-        <section>
+        </div>
+        <div>
             <h2>
                 <i
                     aria-hidden="true"
@@ -206,9 +206,9 @@ async function onRegister() {
                     <FormUserGroups/>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section v-if="groupCanJoinAssociation">
+        <div v-if="groupCanJoinAssociation">
             <h2>
                 <i
                     aria-hidden="true"
@@ -221,10 +221,10 @@ async function onRegister() {
                     <FormRegisterUserAssociations/>
                 </div>
             </div>
-        </section>
+        </div>
 
 
-        <section v-if="!isStaff">
+        <div v-if="!isStaff">
             <h2>
                 <i
                     aria-hidden="true"
@@ -240,7 +240,7 @@ async function onRegister() {
                     />
                 </div>
             </div>
-        </section>
+        </div>
 
         <div class="flex-row-center padding-top padding-bottom">
             <QBtn
@@ -258,14 +258,4 @@ async function onRegister() {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/_variables.scss';
-
-/*.q-banner {
-  padding-bottom: .8rem;
-  margin-bottom: 1rem;
-
-  p {
-    font-weight: bold;
-    margin: 0;
-  }
-}*/
 </style>

@@ -156,7 +156,7 @@ export const _associationNames = [
     },
     {
         id: 5,
-        name: 'CAMPULSE',
+        name: 'EMPRUNTE',
         hasPresident: false,
         institution: 1
     },

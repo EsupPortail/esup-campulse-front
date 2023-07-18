@@ -72,7 +72,7 @@
         transition: transform 0.1s linear;
       }
 
-      &:hover {
+      &:hover, &:focus {
         &::after {
           transform: scaleX(1);
         }
@@ -176,6 +176,10 @@
     flex-direction: column;
     align-items: flex-end;
 
+    li {
+      list-style-type: none;
+    }
+
     .btn-menu {
       background-color: transparent;
       border: none;
@@ -269,6 +273,11 @@
       position: relative;
       top: -0.6rem;
       font-size: 2rem;
+
+      // Changing the size of the icon header's position to fit with the Accessibility Requirement
+      @media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+        top: .2rem;
+      }
     }
   }
 
@@ -371,6 +380,11 @@
         vertical-align: middle;
       }
     }
+
+    // Changing the size of the header's font to fit with the Accessibility Requirement
+    @media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+      font-size: 2.8rem;
+    }
   }
 
   @media only screen and (min-width: $responsiveWidth) {
@@ -426,7 +440,7 @@
         width: $fullSize;
         transition: background 0.03s linear;
 
-        &:hover {
+        &:hover, &:focus {
           background: rgba(255, 255, 255, 0.1) !important;
         }
 

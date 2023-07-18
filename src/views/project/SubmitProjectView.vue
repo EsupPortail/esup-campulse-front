@@ -467,7 +467,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 clearable
                                 color="commission"
                                 filled
-                                lazy-rules
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedStartDate"
@@ -494,7 +493,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBasicInfos.plannedLocation"
                                 :label="t('project.planned-location') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.fill-project-location')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
