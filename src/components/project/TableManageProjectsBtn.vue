@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {onMounted, ref} from 'vue'
-import type {ProjectStatus} from '#/project'
+import type {ProjectCommissionFund, ProjectStatus} from '#/project'
 import router from '@/router'
 import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
@@ -11,6 +11,8 @@ import {useQuasar} from 'quasar'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
 import ProjectChangeCommission from '@/components/project/ProjectChangeCommission.vue'
+import useCommissions from '@/composables/useCommissions'
+import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
 const {isStaff} = useUserGroups()
@@ -18,13 +20,15 @@ const {hasPerm} = useSecurity()
 const {notify, loading} = useQuasar()
 const projectStore = useProjectStore()
 const {catchHTTPError} = useErrors()
+const {commissionFunds, funds} = useCommissions()
+const userStore = useUserStore()
 
 const props = defineProps<{
     projectId: number,
     projectName: string,
     projectStatus: ProjectStatus,
     isSite: boolean,
-    canChangeProject: boolean
+    projectCommissionFunds: ProjectCommissionFund[]
 }>()
 
 const emit = defineEmits(['refreshProjects'])
@@ -40,6 +44,21 @@ interface Option {
     action?: 'updateProjectDates' | 'download-pdf' | 'changeCommission'
 }
 
+const canChangeProject = () => {
+    let perm = false
+    const institutions: number[] = []
+    console.log(props.projectCommissionFunds)
+    props.projectCommissionFunds.forEach(projectCommissionFund => {
+        const commissionFund = commissionFunds.value.find(obj => obj.id === projectCommissionFund.commissionFund)
+        const fund = funds.value.find(obj => obj.id === commissionFund?.fund)
+        if (fund) institutions.push(fund.institution)
+    })
+    userStore.user?.groups.forEach(group => {
+        if (group && group.institutionId && institutions.includes(group.institutionId)) perm = true
+    })
+    return perm
+}
+
 const options = ref<Option[]>([])
 
 const initOptions = () => {
@@ -53,7 +72,7 @@ const initOptions = () => {
     })
 
     // Manage project
-    if (isStaff.value && hasPerm('change_project') && props.canChangeProject) {
+    if (props.projectStatus === 'PROJECT_PROCESSING' && isStaff.value && hasPerm('change_project') && canChangeProject()) {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process'),
@@ -61,6 +80,7 @@ const initOptions = () => {
         })
     }
 
+    // Update project dates
     if (isStaff.value && hasPerm('change_project')) {
         options.value.push({
             icon: 'bi-calendar',
@@ -68,6 +88,8 @@ const initOptions = () => {
             action: 'updateProjectDates'
         })
     }
+
+    // Change commission
     if (props.projectStatus === 'PROJECT_PROCESSING' || props.projectStatus === 'PROJECT_VALIDATED') {
         options.value.push({
             icon: 'bi-signpost',
@@ -75,13 +97,8 @@ const initOptions = () => {
             action: 'changeCommission'
         })
     }
-    if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING') {
-        options.value.push({
-            icon: 'bi-check-lg',
-            label: t('project.process-review'),
-            to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
-        })
-    }
+
+    // View review
     if (props.projectStatus === 'PROJECT_REVIEW_VALIDATED' || props.projectStatus === 'PROJECT_REVIEW_CANCELLED') {
         options.value.push({
             icon: 'bi-eye',
@@ -89,6 +106,17 @@ const initOptions = () => {
             to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
         })
     }
+
+    // Manage review
+    if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' && isStaff.value && hasPerm('change_project') && canChangeProject()) {
+        options.value.push({
+            icon: 'bi-check-lg',
+            label: t('project.process-review'),
+            to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
+        })
+    }
+
+    // Download PDF
     options.value.push({
         icon: 'bi-filetype-pdf',
         label: t('project.download-recap'),

@@ -13,9 +13,9 @@ const {commissionFunds, funds} = useCommissions()
 </script>
 
 <template>
-    <ul v-if="projectCommissionFunds.length">
+    <ul v-if="props.projectCommissionFunds.length">
         <li
-            v-for="commissionFund in projectCommissionFunds"
+            v-for="commissionFund in props.projectCommissionFunds"
             :key="commissionFund.id"
         >
             {{

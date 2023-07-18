@@ -6,7 +6,7 @@ import useUtility from '@/composables/useUtility'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {ProjectCommissionFund, ProjectList} from '#/project'
+import type {ProjectList} from '#/project'
 import axios from 'axios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
@@ -14,7 +14,6 @@ import {onMounted, ref, watch} from 'vue'
 import TableManageProjectsBtn from '@/components/project/TableManageProjectsBtn.vue'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
 import useCommissions from '@/composables/useCommissions'
-import {useUserStore} from '@/stores/useUserStore'
 
 
 const {t} = useI18n()
@@ -24,14 +23,15 @@ const userManagerStore = useUserManagerStore()
 const projectStore = useProjectStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {getCommissionFunds, getFunds, commissionFunds, funds} = useCommissions()
-const userStore = useUserStore()
+const {getFunds, getCommissionFunds} = useCommissions()
 
 const props = defineProps<{
     commission: number,
     projectStatus: 'all' | 'validated' | 'archived',
     title: string
 }>()
+
+const isLoaded = ref<boolean>(false)
 
 const projects = ref<ProjectList[]>([])
 
@@ -71,6 +71,7 @@ onMounted(async () => {
     await onGetProjectCommissionFunds()
     await onGetApplicants()
     initProjects()
+    isLoaded.value = true
     loading.hide()
 })
 
@@ -122,25 +123,6 @@ async function onGetApplicants() {
     }
 }
 
-const filterProjectCommissionFunds = (project: number) => {
-    return projectStore.projectCommissionFunds.filter(x => x.project === project)
-}
-
-const canChangeProject = (project: number) => {
-    let perm = false
-    const filter: ProjectCommissionFund[] = filterProjectCommissionFunds(project)
-    filter.forEach(projectCommissionFund => {
-        const commissionFund = commissionFunds.value.find(obj => obj.id === projectCommissionFund.commissionFund)
-        const fund = funds.value.find(obj => obj.id === commissionFund?.fund)
-        userStore.user?.groups.forEach(group => {
-            if (group.institutionId === fund?.institution) {
-                perm = true
-            }
-        })
-    })
-    return perm
-}
-
 const columns: QTableProps['columns'] = [
     {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
     {name: 'applicant', align: 'left', label: t('project.applicant'), field: 'applicant', sortable: true},
@@ -187,7 +169,7 @@ const columns: QTableProps['columns'] = [
                         :props="props"
                     >
                         <ProjectFundValidationIndicator
-                            :project-commission-funds="filterProjectCommissionFunds(props.row.id)"
+                            :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
                         />
                     </QTd>
                     <QTd
@@ -206,8 +188,9 @@ const columns: QTableProps['columns'] = [
                     >
                         <div class="button-container">
                             <TableManageProjectsBtn
-                                :can-change-project="canChangeProject(props.row.id)"
+                                v-if="isLoaded"
                                 :is-site="isSite(props.row.association)"
+                                :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
                                 :project-id="props.row.id"
                                 :project-name="props.row.name"
                                 :project-status="props.row.projectStatus"
