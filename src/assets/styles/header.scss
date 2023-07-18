@@ -176,6 +176,10 @@
     flex-direction: column;
     align-items: flex-end;
 
+    li {
+      list-style-type: none;
+    }
+
     .btn-menu {
       background-color: transparent;
       border: none;
