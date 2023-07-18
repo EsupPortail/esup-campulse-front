@@ -40,7 +40,7 @@ const changeCommission = ref<boolean>(false)
 interface Option {
     icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-signpost',
     label: string,
-    to?: { name: 'ProjectDetail' | 'ProjectReviewDetail', params: { projectId: number } }
+    to?: { name: 'ViewProject' | 'ManageProject' | 'ProjectReviewDetail', params: { projectId: number } }
     action?: 'updateProjectDates' | 'download-pdf' | 'changeCommission'
 }
 
@@ -68,7 +68,7 @@ const initOptions = () => {
     options.value.push({
         icon: 'bi-eye',
         label: t('project.view'),
-        to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
+        to: {name: 'ViewProject', params: {projectId: props.projectId}}
     })
 
     // Manage project
@@ -76,7 +76,7 @@ const initOptions = () => {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process'),
-            to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
+            to: {name: 'ManageProject', params: {projectId: props.projectId}}
         })
     }
 
