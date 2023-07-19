@@ -38,7 +38,7 @@ defineProps({
                             <span></span>
                         </span>
                     </span>
-                    <h3>{{ titleLine2 }}</h3>
+                    <p>{{ titleLine2 }}</p>
                 </h2>
 
                 <div class="section-info">
