@@ -23,21 +23,15 @@
     background: linear-gradient(180deg, rgba(9, 22, 40, 0.25) 0%, rgba(0, 0, 0, 0.3)); //$fullSize
   }
 
-  .q-toolbar {
-    h1 {
-      overflow: visible;
-
-      a {
-        font-family: $titleFont;
-        color: $textColor3;
-        text-transform: uppercase;
-        font-weight: $xbold-weight;
-        text-decoration: none;
-        position: relative;
-        z-index: 2;
-        font-size: 3rem;
-      }
-    }
+  .q-toolbar__title a {
+    font-family: $titleFont;
+    color: $textColor3;
+    text-transform: uppercase;
+    font-weight: $xbold-weight;
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    font-size: 3rem;
   }
 
   .q-layout__shadow {
