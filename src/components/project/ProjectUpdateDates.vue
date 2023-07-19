@@ -81,43 +81,44 @@ async function onUpdateProjectDates() {
     <QDialog v-model="open">
         <QCard class="variant-space-3">
             <QCardSection>
+                <h3>{{ t('project.edit-dates') }}</h3>
                 <QForm
                     @submit="onUpdateProjectDates"
                 >
-                    <div>
-                        <h3>{{ t('project.update-dates') }}</h3>
-                        <QInput
-                            v-model="projectBasicInfos.plannedStartDate"
-                            :label="t('project.planned-start-date') + ' *'"
-                            :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
-                                      val => val && fromDateIsAnterior(projectBasicInfos.plannedStartDate, projectBasicInfos.plannedEndDate, true) || t('forms.legal-dates')]"
-                            aria-required="true"
-                            clearable
-                            color="commission"
-                            filled
-                            reactive-rules
-                            type="date"
-                        />
-                        <QInput
-                            v-model="projectBasicInfos.plannedEndDate"
-                            :label="t('project.planned-end-date') + ' *'"
-                            :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
-                                      val => val && fromDateIsAnterior(projectBasicInfos.plannedStartDate, projectBasicInfos.plannedEndDate, true) || t('forms.legal-dates')]"
-                            aria-required="true"
-                            clearable
-                            color="commission"
-                            filled
-                            reactive-rules
-                            type="date"
-                        />
-                    </div>
+                    <p>{{ t('project.update-dates') }}</p>
+                    <QInput
+                        v-model="projectBasicInfos.plannedStartDate"
+                        :label="t('project.planned-start-date') + ' *'"
+                        :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
+                                  val => val && fromDateIsAnterior(projectBasicInfos.plannedStartDate,
+                                                                   projectBasicInfos.plannedEndDate, true) || t('forms.legal-dates')]"
+                        aria-required="true"
+                        clearable
+                        color="commission"
+                        filled
+                        reactive-rules
+                        type="date"
+                    />
+                    <QInput
+                        v-model="projectBasicInfos.plannedEndDate"
+                        :label="t('project.planned-end-date') + ' *'"
+                        :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
+                                  val => val && fromDateIsAnterior(projectBasicInfos.plannedStartDate,
+                                                                   projectBasicInfos.plannedEndDate, true) || t('forms.legal-dates')]"
+                        aria-required="true"
+                        clearable
+                        color="commission"
+                        filled
+                        reactive-rules
+                        type="date"
+                    />
                     <div class="flex-row-center">
                         <QBtn
                             v-close-popup
                             :label="t('cancel')"
                             class="btn-lg"
                             color="commission"
-                            icon="bi-box-arrow-left"
+                            icon="bi-x-lg"
                             @click="emit('closeDialog')"
                         />
                         <QBtn

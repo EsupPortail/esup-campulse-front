@@ -135,11 +135,15 @@ onMounted(() => {
             autocomplete="tel"
             color="dashboard"
             filled
-            hint="Format : 06 00 00 00 00"
             lazy-rules
             mask="## ## ## ## ##"
             type="tel"
-        />
+            for="phone"
+        >
+            <template v-slot:hint>
+                <p aria-describedby="phone">{{ t('forms.hint-phone') }}</p>
+            </template>
+        </QInput>
         <div
             v-if="(!editedByStaff && hasPerm('add_project_user'))
                 || (editedByStaff && userRef.permissions?.includes('add_project_user'))"

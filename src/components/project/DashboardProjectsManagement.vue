@@ -18,9 +18,7 @@ const {hasPerm} = useSecurity()
             {{ t('commission.on-going') }}
         </h2>
         <div class="dashboard-section-container">
-            <div class="container-lg">
-                <DashboardProjectCommissionsManagement/>
-            </div>
+            <DashboardProjectCommissionsManagement/>
         </div>
     </div>
 

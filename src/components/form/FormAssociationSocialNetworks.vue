@@ -31,17 +31,20 @@ onMounted(initValues)
         <div class="flex-row">
             <QInput
                 v-model="socialNetwork.type"
-                :hint="t('forms.social-network-type-hint')"
                 :label="t('association.labels.social-network-type') + ' *'"
                 :rules="[val => val && val.length > 0 || t('forms.fill-association-socials')]"
                 aria-required="true"
                 clearable
                 filled
                 lazy-rules
-            />
+                for="socialNetworkType"
+            >
+                <template v-slot:hint>
+                    <p aria-describedby="socialNetworkType">{{ t('forms.social-network-type-hint') }}</p>
+                </template>
+            </QInput>
             <QInput
                 v-model="socialNetwork.location"
-                :hint="t('forms.social-network-location-hint')"
                 :label="t('association.labels.social-network-location') + ' *'"
                 :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
                 aria-required="true"
@@ -49,7 +52,12 @@ onMounted(initValues)
                 filled
                 lazy-rules
                 type="url"
-            />
+                for="socialNetworkLocation"
+            >
+                <template v-slot:hint>
+                    <p aria-describedby="socialNetworkLocation">{{ t('forms.social-network-location-hint') }}</p>
+                </template>
+            </QInput>
             <QSeparator
                 aria-hidden="true"
                 role="presentation"
