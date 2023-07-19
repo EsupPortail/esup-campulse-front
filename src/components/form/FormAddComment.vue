@@ -5,15 +5,7 @@ import useProjectComments from '@/composables/useProjectComments'
 const {t} = useI18n()
 const {newComment} = useProjectComments()
 
-type Action = 'validate' | 'reject' | 'return' | 'new-comment' | ''
-type Icon = 'bi-check-lg' | 'bi-x-octagon' | 'bi-exclamation-triangle' | 'bi-chat' | ''
-
-const props = defineProps<{
-    selectedAction: Action,
-    selectedIcon: Icon
-}>()
-
-const emit = defineEmits(['submit', 'closeDialog'])
+const emit = defineEmits(['closeDialog', 'submit'])
 
 </script>
 
@@ -21,21 +13,20 @@ const emit = defineEmits(['submit', 'closeDialog'])
     <QForm
         @submit.prevent="emit('submit')"
     >
-        <h3>{{ t('project.new-comment') }}</h3>
         <QInput
             v-model="newComment"
-            :aria-required="props.selectedAction !== 'validate'"
-            :label="t('forms.comment') + (props.selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-            :rules="props.selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
+            :aria-required="true"
+            :label="t('forms.comment')"
+            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
             color="commission"
             filled
+            for="newComment"
             lazy-rules
             type="textarea"
-            for="newComment"
         >
-            <template v-slot:hint>
-                <p aria-describedby="newComment">{{ props.selectedAction !== 'new-comment' ? t('forms.project-comment-hint') : '' }}</p>
-            </template>
+            <!--            <template v-slot:hint>
+                            <p aria-describedby="newComment">{{ props.selectedAction !== 'new-comment' ? t('forms.project-comment-hint') : '' }}</p>
+                        </template>-->
         </QInput>
         <div class="flex-row-center padding-top comment-btn">
             <QBtn
@@ -46,18 +37,14 @@ const emit = defineEmits(['submit', 'closeDialog'])
                 @click="emit('closeDialog')"
             />
             <QBtn
-                :color="props.selectedAction === 'reject' || props.selectedAction === 'return' ? 'custom-red' : 'commission'"
-                :icon="props.selectedIcon"
-                :label="t(`project.${props.selectedAction}`)"
+                :label="t('project.new-comment')"
                 class="btn-lg"
+                color="commission"
+                icon="bi-chat"
                 type="submit"
             />
         </div>
     </QForm>
 </template>
 
-<style lang="scss" scoped>
-.comment-btn {
-    margin-top: 3rem;
-}
-</style>
+

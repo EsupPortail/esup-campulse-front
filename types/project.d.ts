@@ -43,13 +43,14 @@ export interface ProjectList {
 
 type ProjectStatus =
     'PROJECT_DRAFT'
+    | 'PROJECT_DRAFT_PROCESSED'
     | 'PROJECT_REJECTED'
     | 'PROJECT_PROCESSING'
     | 'PROJECT_VALIDATED'
     | 'PROJECT_REVIEW_DRAFT'
     | 'PROJECT_REVIEW_PROCESSING'
     | 'PROJECT_REVIEW_VALIDATED'
-    | 'PROJECT_REVIEW_CANCELLED'
+    | 'PROJECT_CANCELLED'
 
 interface ProjectCategory {
     id: number,
@@ -100,7 +101,7 @@ export interface ProjectCommissionFund {
     amountEarnedPreviousEdition?: number | string,
     amountAsked?: number | string,
     amountEarned?: number | string,
-    isValidatedByAdmin: boolean
+    isValidatedByAdmin: boolean | null
 }
 
 export interface ProjectReview {

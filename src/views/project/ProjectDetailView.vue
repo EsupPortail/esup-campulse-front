@@ -17,6 +17,7 @@ import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import ProjectValidation from '@/components/project/ProjectValidation.vue'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import useSecurity from '@/composables/useSecurity'
+import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
@@ -41,6 +42,7 @@ onMounted(async () => {
 async function onGetProjectDetail() {
     try {
         await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
+        await projectStore.getProjectCommissionFunds(false, undefined)
         initProjectBasicInfos()
         initProjectBudget()
         initProjectGoals()
@@ -142,6 +144,24 @@ async function onGetProjectDetail() {
         </div>
     </div>
 
+    <!-- Fund validation section -->
+    <div class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-bank"
+            ></i>
+            {{ t('commission.funds') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="display-row">
+                    <ProjectFundValidationIndicator :project-commission-funds="projectStore.projectCommissionFunds"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Status Section -->
     <div class="dashboard-section">
         <h2>
@@ -183,7 +203,8 @@ async function onGetProjectDetail() {
         </div>
         <ProjectValidation
             v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
-                && hasPerm('change_project_as_validator')"
+                && hasPerm('change_project_as_validator')
+                && route.name === 'ManageProject'"
         />
     </div>
 </template>
