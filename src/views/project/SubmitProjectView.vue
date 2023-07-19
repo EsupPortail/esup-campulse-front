@@ -502,7 +502,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             />
                             <QSelect
                                 v-model="projectCategories"
-                                :hint="t('forms.multiple-choices-enabled')"
                                 :label="t('project.categories') + ' *'"
                                 :options="projectStore.projectCategoriesLabels"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
@@ -514,7 +513,12 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 map-options
                                 multiple
                                 use-chips
-                            />
+                                for="projectCategories"
+                            >
+                                <template v-slot:hint>
+                                    <p aria-describedby="projectCategories">{{ t('forms.multiple-choices-enabled') }}</p>
+                                </template>
+                            </QSelect>
                             <div v-if="applicant === 'association'">
                                 <QSelect
                                     v-model="projectBasicInfos.associationUser"
@@ -568,7 +572,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         >
                             <QSelect
                                 v-model="projectCommission"
-                                :hint="t('project.commission-choice-hint')"
                                 :label="t('project.commission-choice') + ' *'"
                                 :options="commissionLabels"
                                 :rules="[ val => val || t('forms.fill-field')]"
@@ -579,11 +582,15 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                                 map-options
                                 @update:model-value="reInitProjectCommissionFunds(isSite)"
-                            />
+                                for="projectCommission"
+                            >
+                                <template v-slot:hint>
+                                    <p aria-describedby="projectCommission">{{ t('project.commission-choice-hint') }}</p>
+                                </template>
+                            </QSelect>
 
                             <QSelect
                                 v-model="projectCommissionFunds"
-                                :hint="t('project.commission-funds-choice-hint')"
                                 :label="t('project.commission-funds-choice') + ' *'"
                                 :options="fundsLabels"
                                 :readonly="!projectCommission"
@@ -597,7 +604,12 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 multiple
                                 stack-label
                                 use-chips
-                            />
+                                for="projectCommissionFunds"
+                            >
+                                <template v-slot:hint>
+                                    <p aria-describedby="projectCommissionFunds">{{ t('project.commission-funds-choice-hint') }}</p>
+                                </template>
+                            </QSelect>
 
                             <div class="flex-row-center padding-top padding-bottom">
                                 <QBtn

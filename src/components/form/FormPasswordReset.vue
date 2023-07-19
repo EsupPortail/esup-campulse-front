@@ -66,7 +66,6 @@ async function reset() {
         >
             <QInput
                 v-model="email"
-                :hint="t('forms.password-reset-instructions')"
                 :label="t('forms.email')"
                 :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
                 autocomplete="email"
@@ -74,7 +73,12 @@ async function reset() {
                 filled
                 lazy-rules
                 type="email"
-            />
+                for="email"
+            >
+                <template v-slot:hint>
+                    <p aria-describedby="email">{{ t('forms.password-reset-instructions') }}</p>
+                </template>
+            </QInput>
             <div class="padding-bottom">
                 <QBtn
                     :label="t('forms.send')"

@@ -120,7 +120,6 @@ async function onRegister() {
                         :disable="!!userStore.isCas || newUser.isCas"
                         :label="t('forms.first-name') + ' *'"
                         :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-                        aria-invalid="true"
                         aria-required="true"
                         autocomplete="given-name"
                         clearable
@@ -133,7 +132,6 @@ async function onRegister() {
                         :disable="!!userStore.isCas || newUser.isCas"
                         :label="t('forms.last-name') + ' *'"
                         :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
-                        aria-invalid="true"
                         aria-required="true"
                         autocomplete="family-name"
                         clearable
@@ -147,7 +145,6 @@ async function onRegister() {
                         :label="t('forms.email') + ' *'"
                         :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
                                  val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
-                        aria-invalid="true"
                         aria-required="true"
                         autocomplete="email"
                         clearable
@@ -161,7 +158,6 @@ async function onRegister() {
                         :disable="!!userStore.isCas || newUser.isCas"
                         :label="t('forms.repeat-email') + ' *'"
                         :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
-                        aria-invalid="true"
                         aria-required="true"
                         autocomplete="email"
                         clearable
@@ -172,17 +168,21 @@ async function onRegister() {
                     />
                     <QInput
                         v-model="newUser.phone"
-                        :hint="t('forms.hint-phone')"
                         :label="t('forms.phone')"
                         :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                        aria-invalid="true"
                         autocomplete="tel"
                         clearable
                         color="dashboard"
                         filled
                         lazy-rules
                         type="tel"
-                    />
+                        bottom-slots
+                        for="phone"
+                    >
+                        <template v-slot:hint>
+                            <p aria-describedby="phone">{{ t('forms.hint-phone') }}</p>
+                        </template>
+                    </QInput>
                     <!--
                     <FormDocumentUploads
                         v-if="!newUser.isCas"
