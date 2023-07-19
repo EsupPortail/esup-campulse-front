@@ -68,7 +68,6 @@ watch(() => projectStore.projects, initProjects)
 onMounted(async () => {
     loading.show()
     await onGetProjects()
-    await onGetProjectCommissionFunds()
     await onGetApplicants()
     initProjects()
     isLoaded.value = true
@@ -78,18 +77,6 @@ onMounted(async () => {
 async function onGetProjects() {
     try {
         await projectStore.getManagedProjects(props.commission)
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-}
-
-async function onGetProjectCommissionFunds() {
-    try {
         await projectStore.getProjectCommissionFunds(true, props.commission)
         await getCommissionFunds()
         await getFunds()

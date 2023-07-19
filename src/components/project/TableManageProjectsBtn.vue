@@ -9,7 +9,7 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
-import ProjectEditCommissionFundsAmounts from '@/components/project/ProjectEditCommissionFundsAmounts.vue'
+import ProjectEditCommissionFundsAmounts from '@/components/project/ProjectEditAmountsEarned.vue'
 import ProjectChangeCommission from '@/components/project/ProjectChangeCommission.vue'
 import useCommissions from '@/composables/useCommissions'
 import {useUserStore} from '@/stores/useUserStore'
@@ -215,7 +215,9 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
     />
     <ProjectEditCommissionFundsAmounts
         :open-dialog="editCommissionFundsAmounts"
-        :project="props.project"
+        :project="props.projectId"
+        :project-commission-funds="props.projectCommissionFunds"
+        :project-name="props.projectName"
         @close-dialog="editCommissionFundsAmounts = false"
         @refresh-projects="emit('refreshProjects')"
     />

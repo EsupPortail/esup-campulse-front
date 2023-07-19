@@ -2,6 +2,7 @@ import {ref} from 'vue'
 import type {ProjectCommissionFund} from '#/project'
 import useCommissions from '@/composables/useCommissions'
 import {useAxios} from '@/composables/useAxios'
+import {useUserStore} from '@/stores/useUserStore'
 
 interface ProjectCommissionFundLabel {
     value: number,
@@ -14,6 +15,7 @@ export default function () {
 
     const {getFunds, getCommissionFunds, funds, commissionFunds} = useCommissions()
     const {axiosAuthenticated} = useAxios()
+    const userStore = useUserStore()
 
     const initProjectCommissionFundLabels = async (projectCommissionFunds: ProjectCommissionFund[], action: 'validate' | 'reject') => {
         projectCommissionFundLabels.value = []
@@ -48,11 +50,36 @@ export default function () {
         })
     }
 
+    const canManageProjectCommissionFund = (commissionFund: number) => {
+        let perm = false
+        if (userStore.user?.groups.find(obj => obj.institutionId === funds.value
+            .find(obj => obj.id === commissionFunds.value
+                .find(obj => obj.id === commissionFund)?.fund)?.institution)) perm = true
+        return perm
+    }
+
+    const getFundLabel = (commissionFund: number) => {
+        return funds.value
+            .find(obj => obj.id === (commissionFunds.value
+                .find(obj => obj.id === commissionFund)?.fund))?.acronym
+    }
+
+    async function patchAmountAsked(project: number, commissionFund: number, amountEarned: number) {
+        await axiosAuthenticated.patch(`/projects/${project}/commission_funds/${commissionFund}`, {
+            projectId: project,
+            commissionFundId: commissionFund,
+            amountEarned
+        })
+    }
+
 
     return {
         projectCommissionFundLabels,
         initProjectCommissionFundLabels,
         validateProjectCommissionFund,
-        rejectProjectCommissionFund
+        rejectProjectCommissionFund,
+        canManageProjectCommissionFund,
+        getFundLabel,
+        patchAmountAsked
     }
 }
