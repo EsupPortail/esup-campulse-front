@@ -502,6 +502,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             />
                             <QSelect
                                 v-model="projectCategories"
+                                :hint="t('forms.multiple-choices-enabled')"
                                 :label="t('project.categories') + ' *'"
                                 :options="projectStore.projectCategoriesLabels"
                                 :rules="[ val => val && val.length > 0 || t('forms.required-project-categories')]"
@@ -513,13 +514,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 map-options
                                 multiple
                                 use-chips
-                                bottom-slots
-                                for="projectCategories"
-                            >
-                                <template v-slot:hint>
-                                    <p aria-describedby="projectCategories">{{ t('forms.multiple-choices-enabled') }}</p>
-                                </template>
-                            </QSelect>
+                            />
                             <div v-if="applicant === 'association'">
                                 <QSelect
                                     v-model="projectBasicInfos.associationUser"
@@ -580,14 +575,17 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 color="commission"
                                 emit-value
                                 filled
+                                for="projectCommission"
                                 lazy-rules
                                 map-options
                                 @update:model-value="reInitProjectCommissionFunds(isSite)"
-                                bottom-slots
-                                for="projectCommission"
                             >
                                 <template v-slot:hint>
-                                    <p aria-describedby="projectCommission">{{ t('project.commission-choice-hint') }}</p>
+                                    <p aria-describedby="projectCommission">
+                                        {{
+                                            t('project.commission-choice-hint')
+                                        }}
+                                    </p>
                                 </template>
                             </QSelect>
 
@@ -601,16 +599,17 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 color="commission"
                                 emit-value
                                 filled
+                                for="projectCommissionFunds"
                                 lazy-rules
                                 map-options
                                 multiple
                                 stack-label
                                 use-chips
-                                bottom-slots
-                                for="projectCommissionFunds"
                             >
                                 <template v-slot:hint>
-                                    <p aria-describedby="projectCommissionFunds">{{ t('project.commission-funds-choice-hint') }}</p>
+                                    <p aria-describedby="projectCommissionFunds">
+                                        {{ t('project.commission-funds-choice-hint') }}
+                                    </p>
                                 </template>
                             </QSelect>
 
@@ -921,7 +920,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             @submit.prevent="onUploadDocuments(6)"
                         >
                             <!--
-                            <h3 class="title-2">{{ t('project.documents') }}</h3>
+                                                        <h3 class="title-2">{{ t('project.documents') }}</h3>
                             -->
 
                             <div class="info-panel info-panel-warning">

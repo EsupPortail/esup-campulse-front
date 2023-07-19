@@ -45,6 +45,12 @@
   }
 
   nav {
+    text-align: right;
+
+    li {
+      padding-bottom: 1rem;
+    }
+
     a {
       text-decoration: none;
       padding: 0 1.063rem;
@@ -175,6 +181,8 @@
     display: inline-flex;
     flex-direction: column;
     align-items: flex-end;
+    min-size: 1rem;
+    max-width: $fullSize;
 
     li {
       list-style-type: none;
