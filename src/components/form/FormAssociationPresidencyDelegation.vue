@@ -115,6 +115,7 @@ async function onDelegatePresidency(activate: boolean) {
                         color="dashboard"
                         filled
                         type="date"
+                        bottom-slots
                         for="delegation"
                     >
                         <template v-slot:hint>

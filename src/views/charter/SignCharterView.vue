@@ -180,7 +180,7 @@ async function onSignCharter() {
                             <QInput
                                 v-model="editedAssociation.name"
                                 :label="t('association.labels.name') + ' *'"
-                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-association-name')]"
                                 aria-required="true"
                                 clearable
                                 color="charter"
@@ -197,7 +197,7 @@ async function onSignCharter() {
                             <QInput
                                 v-model="editedAssociation.lastGoaDate"
                                 :label="t('association.labels.last-goa')"
-                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-association-goa-date')]"
                                 clearable
                                 color="charter"
                                 filled
@@ -206,7 +206,7 @@ async function onSignCharter() {
                             <QInput
                                 v-model="editedAssociation.presidentNames"
                                 :label="t('association.labels.president-name')"
-                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-association-president-names')]"
                                 clearable
                                 color="charter"
                                 filled
@@ -224,7 +224,6 @@ async function onSignCharter() {
                                 v-model="editedAssociation.institutionComponent"
                                 :label="t('association.labels.institution-component')"
                                 :options="associationStore.institutionComponentLabels"
-                                :rules="[val => val || t('forms.fill-field')]"
                                 clearable
                                 color="charter"
                                 emit-value
@@ -235,7 +234,7 @@ async function onSignCharter() {
                                 v-model="editedAssociation.activityField"
                                 :label="t('association.labels.activity-field') + ' *'"
                                 :options="associationStore.activityFieldLabels"
-                                :rules="[val => val || t('forms.fill-field')]"
+                                :rules="[val => val || t('forms.required-association-activity-field')]"
                                 aria-required="true"
                                 clearable
                                 color="charter"
@@ -248,7 +247,7 @@ async function onSignCharter() {
                                 <QInput
                                     v-model="editedAssociation.address"
                                     :label="t('address.address')"
-                                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-address')]"
                                     clearable
                                     color="charter"
                                     filled
@@ -257,7 +256,7 @@ async function onSignCharter() {
                                     <QInput
                                         v-model="editedAssociation.zipcode"
                                         :label="t('address.zipcode')"
-                                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                        :rules="[val => val && val.length > 0 || t('forms.required-zipcode')]"
                                         clearable
                                         color="charter"
                                         filled
@@ -265,7 +264,7 @@ async function onSignCharter() {
                                     <QInput
                                         v-model="editedAssociation.city"
                                         :label="t('address.city')"
-                                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                        :rules="[val => val && val.length > 0 || t('forms.required-city')]"
                                         clearable
                                         color="charter"
                                         filled
@@ -273,7 +272,7 @@ async function onSignCharter() {
                                     <QInput
                                         v-model="editedAssociation.country"
                                         :label="t('address.country')"
-                                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                        :rules="[val => val && val.length > 0 || t('forms.required-country')]"
                                         clearable
                                         color="charter"
                                         filled
@@ -284,7 +283,7 @@ async function onSignCharter() {
                             <QInput
                                 v-model="editedAssociation.siret"
                                 :label="t('association.labels.siret')"
-                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-association-siret')]"
                                 clearable
                                 color="charter"
                                 filled

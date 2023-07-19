@@ -73,6 +73,7 @@ async function reset() {
                 filled
                 lazy-rules
                 type="email"
+                bottom-slots
                 for="email"
             >
                 <template v-slot:hint>

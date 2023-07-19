@@ -249,7 +249,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.name"
                             :disable=!isStaff
                             :label="t('association.labels.name') + ' *'"
-                            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                            :rules="[val => val && val.length > 0 || t('forms.required-association-name-field')]"
                             aria-required="true"
                             clearable
                             filled
@@ -267,6 +267,7 @@ async function onChangeLogo(action: string) {
                             clearable
                             filled
                             type="textarea"
+                            bottom-slots
                             for="socialObject"
                         >
                             <template v-slot:hint>
@@ -284,7 +285,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.institution"
                             :label="t('association.labels.institution') + ' *'"
                             :options="associationStore.institutionLabels"
-                            :rules="[val => val || t('forms.fill-field')]"
+                            :rules="[val => val || t('forms.required-association-institution')]"
                             aria-required="true"
                             clearable
                             emit-value
@@ -304,7 +305,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.activityField"
                             :label="t('association.labels.activity-field') + ' *'"
                             :options="associationStore.activityFieldLabels"
-                            :rules="[val => val || t('forms.fill-field')]"
+                            :rules="[val => val || t('forms.required-activity-field')]"
                             aria-required="true"
                             clearable
                             emit-value
@@ -371,6 +372,7 @@ async function onChangeLogo(action: string) {
                             lazy-rules
                             min="0"
                             type="number"
+                            bottom-slots
                             for="amountMembersAllowed"
                         >
                             <template v-slot:hint>

@@ -213,7 +213,7 @@ const onClearValues = () => {
                             <QInput
                                 v-model="commission.newName"
                                 :label="t('commission.name')"
-                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-commission-name')]"
                                 clearable
                                 color="commission"
                                 filled
@@ -223,7 +223,7 @@ const onClearValues = () => {
                                 v-model="commission.newCommissionDate"
                                 :label="t('commission.date')"
                                 :rules="[
-                                    val => val && val.length > 0 || t('forms.fill-field'),
+                                    val => val && val.length > 0 || t('forms.required-commission-date'),
                                     val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
                                 clearable
@@ -238,7 +238,7 @@ const onClearValues = () => {
                                 v-model="commission.newSubmissionDate"
                                 :label="t('commission.submission')"
                                 :rules="[
-                                    val => val && val.length > 0 || t('forms.fill-field'),
+                                    val => val && val.length > 0 || t('forms.required-commission-submission-date'),
                                     val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
                                 clearable
@@ -253,7 +253,7 @@ const onClearValues = () => {
                                 v-model="commission.newFunds"
                                 :label="t('commission.funds')"
                                 :options="fundsLabels"
-                                :rules="[val => val || t('forms.fill-field')]"
+                                :rules="[val => val || t('forms.required-commission-funds')]"
                                 clearable
                                 color="commission"
                                 emit-value
@@ -297,7 +297,7 @@ const onClearValues = () => {
                     <QInput
                         v-model="newCommission.name"
                         :label="t('commission.name')"
-                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                        :rules="[val => val && val.length > 0 || t('forms.required-commission-name')]"
                         clearable
                         color="commission"
                         filled
@@ -307,7 +307,7 @@ const onClearValues = () => {
                         v-model="newCommission.commissionDate"
                         :label="t('commission.date')"
                         :rules="[
-                            val => val && val.length > 0 || t('forms.fill-field'),
+                            val => val && val.length > 0 || t('forms.required-commission-date'),
                             val => val && newCommission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                         ]"
                         clearable
@@ -322,7 +322,7 @@ const onClearValues = () => {
                         v-model="newCommission.submissionDate"
                         :label="t('commission.submission')"
                         :rules="[
-                            val => val && val.length > 0 || t('forms.fill-field'),
+                            val => val && val.length > 0 || t('forms.required-commission-submission-date'),
                             val => val && newCommission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
                         ]"
                         clearable
@@ -337,7 +337,7 @@ const onClearValues = () => {
                         v-model="newCommission.funds"
                         :label="t('commission.funds')"
                         :options="fundsLabels"
-                        :rules="[val => val || t('forms.fill-field')]"
+                        :rules="[val => val || t('forms.required-commission-funds')]"
                         clearable
                         color="commission"
                         emit-value

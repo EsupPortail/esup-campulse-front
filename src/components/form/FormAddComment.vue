@@ -26,11 +26,12 @@ const emit = defineEmits(['submit', 'closeDialog'])
             v-model="newComment"
             :aria-required="props.selectedAction !== 'validate'"
             :label="t('forms.comment') + (props.selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-            :rules="props.selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
+            :rules="props.selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
             color="commission"
             filled
             lazy-rules
             type="textarea"
+            bottom-slots
             for="newComment"
         >
             <template v-slot:hint>

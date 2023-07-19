@@ -108,7 +108,7 @@ function onReset() {
                     <QInput
                         v-model="lastName"
                         :label="t('forms.last-name')"
-                        :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                        :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
                         color="dashboard"
                         filled
                         lazy-rules
