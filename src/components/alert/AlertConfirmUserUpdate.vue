@@ -69,7 +69,7 @@ async function onValidateChanges() {
         <QCard>
             <QCardSection class="row items-center">
                 <p>{{ t('user-manager.alert-confirm-update') }}</p>
-                <div class="flex-row">
+                <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"

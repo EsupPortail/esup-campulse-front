@@ -123,4 +123,8 @@ onMounted(async () => {
     max-width: 30rem;
     width: 100%;
 }
+
+p {
+    margin-bottom: 0 !important;
+}
 </style>

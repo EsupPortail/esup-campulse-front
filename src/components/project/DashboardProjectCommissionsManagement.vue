@@ -112,6 +112,7 @@ async function onGetCommissions() {
                         <CommissionExportCSV
                             :commission-id="tab.commission"
                             :commission-name="tab.name"
+                            class="padding-bottom"
                         />
                         <QTabs
                             v-model="innerTab"

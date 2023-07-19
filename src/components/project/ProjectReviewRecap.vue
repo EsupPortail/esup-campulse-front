@@ -43,9 +43,9 @@ async function onSubmitProjectReview() {
         class="flex-column"
         @submit.prevent="onSubmitProjectReview"
     >
-        <section class="recap-sections flex-column">
+        <div class="recap-sections flex-column">
             <!-- BASIC INFOS -->
-            <section class="recap-section flex-column">
+            <div class="recap-section flex-column">
                 <div class="recap-section-title flex-row-space-between">
                     <h3>{{ t('project.general-infos') }}</h3>
                     <QBtn
@@ -58,10 +58,10 @@ async function onSubmitProjectReview() {
                     />
                 </div>
                 <ProjectReviewRecapBasicInfos/>
-            </section>
+            </div>
 
             <!-- REVIEW INFOS -->
-            <section class="recap-section flex-column">
+            <div class="recap-section flex-column">
                 <div class="recap-section-title flex-row-space-between">
                     <h3>{{ t('project.review') }}</h3>
                     <QBtn
@@ -74,11 +74,11 @@ async function onSubmitProjectReview() {
                     />
                 </div>
                 <ProjectReviewRecapReview/>
-            </section>
-        </section>
+            </div>
+        </div>
 
         <!-- DOCUMENTS -->
-        <section class="recap-section">
+        <div class="recap-section">
             <div class="recap-section-title flex-row-space-between">
                 <h3>{{ t('project.documents') }}</h3>
                 <QBtn
@@ -96,7 +96,7 @@ async function onSubmitProjectReview() {
                 :association-id="null"
                 process="review"
             />
-        </section>
+        </div>
         <div
             v-if="props.view === 'submitProjectReview'"
             class="flex-row-center"

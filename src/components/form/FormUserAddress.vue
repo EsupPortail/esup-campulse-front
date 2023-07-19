@@ -30,7 +30,7 @@ onMounted(initUserInfos)
             v-model="userToUpdate.address"
             :color="props.color"
             :label="t('address.address') + ' *'"
-            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+            :rules="[val => val && val.length > 0 || t('forms.required-address')]"
             aria-required="true"
             autocomplete="street-address"
             clearable
@@ -41,7 +41,7 @@ onMounted(initUserInfos)
                 v-model="userToUpdate.zipcode"
                 :color="props.color"
                 :label="t('address.zipcode') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[val => val && val.length > 0 || t('forms.required-zipcode')]"
                 aria-required="true"
                 autocomplete="postal-code"
                 clearable
@@ -51,7 +51,7 @@ onMounted(initUserInfos)
                 v-model="userToUpdate.city"
                 :color="props.color"
                 :label="t('address.city') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[val => val && val.length > 0 || t('forms.required-city')]"
                 aria-required="true"
                 autocomplete="address-level2"
                 clearable
@@ -61,7 +61,7 @@ onMounted(initUserInfos)
                 v-model="userToUpdate.country"
                 :color="props.color"
                 :label="t('address.country') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[val => val && val.length > 0 || t('forms.required-country')]"
                 aria-required="true"
                 autocomplete="country-name"
                 clearable

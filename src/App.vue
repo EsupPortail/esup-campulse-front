@@ -18,5 +18,5 @@ const routesNames = ['Home', 'Login', 'CASLogin', '404', 'DesignSystem']
 </template>
 
 <style lang="scss">
-@import '@/assets/campulse-design.scss';
+@import '@/assets/main-design.scss';
 </style>

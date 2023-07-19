@@ -46,9 +46,11 @@ async function onPublishAssociation() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{
-                    !associationStore.association?.isPublic ? t('alerts.confirm-association-publish') : t('alerts.confirm-association-unpublish')
-                }}</span>
+                <p class="q-ml-sm">
+                    {{
+                        !associationStore.association?.isPublic ? t('alerts.confirm-association-publish') : t('alerts.confirm-association-unpublish')
+                    }}
+                </p>
                 <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup

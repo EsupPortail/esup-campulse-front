@@ -44,7 +44,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <section class="flex-column">
+    <div class="flex-column">
         <div class="display-row">
             <p class="row-title">{{ t('project.applicant') }}</p>
             <p>{{ applicant }}</p>
@@ -117,7 +117,7 @@ onMounted(async () => {
             <p class="row-title">{{ t('project.income') }}</p>
             <p>{{ projectReview.income + CURRENCY }}</p>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>

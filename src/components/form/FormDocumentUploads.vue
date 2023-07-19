@@ -139,7 +139,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
 </script>
 
 <template>
-    <section class="flex-section">
+    <div class="flex-section">
         <div
             v-for="(document, index) in processDocuments"
             :key="index"
@@ -151,8 +151,6 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 :color="fieldColor"
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
-                :hint="props.process === 'registration' ? t('forms.student-certificate-hint')
-                    : (t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : ''))"
                 :label="props.process === 'registration' ? t('forms.student-certificate')
                     : (document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE"
@@ -167,7 +165,14 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 lazy-rules
                 use-chips
                 @rejected="onDocumentRejected"
+                bottom-slots
+                for="pathFile"
             >
+                <template v-slot:hint>
+                    <p aria-describedby="pathFile">
+                        {{ props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')) }}
+                    </p>
+                </template>
                 <template v-slot:prepend>
                     <QIcon name="bi-paperclip"/>
                 </template>
@@ -222,7 +227,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>

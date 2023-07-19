@@ -170,7 +170,7 @@ async function onDeleteDocument(documentId: number) {
                     <QInput
                         v-model="newDocument.name"
                         :label="t('documents.choose-name')"
-                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                        :rules="[val => val && val.length > 0 || t('forms.required-document-name')]"
                         clearable
                         color="dashboard"
                         filled
@@ -179,7 +179,7 @@ async function onDeleteDocument(documentId: number) {
                     <QFile
                         v-model="newDocument.file"
                         :label="t('documents.choose-file')"
-                        :rules="[val => val || t('forms.fill-field')]"
+                        :rules="[val => val || t('forms.required-document-file')]"
                         clearable
                         color="dashboard"
                         filled
@@ -246,7 +246,7 @@ async function onDeleteDocument(documentId: number) {
                             <QInput
                                 v-model="document.newName"
                                 :label="t('documents.choose-name')"
-                                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-document-name')]"
                                 clearable
                                 color="dashboard"
                                 filled
@@ -256,7 +256,7 @@ async function onDeleteDocument(documentId: number) {
                                 v-model="document.file"
                                 :accept="document.mimeTypes.join(',')"
                                 :label="t('documents.choose-file')"
-                                :rules="[val => val || t('forms.fill-field')]"
+                                :rules="[val => val || t('forms.required-document-file')]"
                                 clearable
                                 color="dashboard"
                                 filled

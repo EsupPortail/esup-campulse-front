@@ -56,6 +56,13 @@ body {
   justify-content: right;
 }
 
+.flex-row-center-md {
+  @media screen and (min-width: $responsiveWidth) {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .flex-row-space-between {
   justify-content: space-between;
 }
@@ -121,7 +128,7 @@ main {
       transition: transform 0.03s linear;
     }
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $annuaireColorHover;
 
       i {
@@ -142,7 +149,7 @@ main {
       transition: none;
     }
 
-    button:hover i {
+    button:hover i, button:focus i {
       transform: none;
     }
   }
@@ -154,7 +161,7 @@ main {
     background-color: $charteColor;
     color: $charteColorText;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $charteColorHover;
     }
 
@@ -168,7 +175,7 @@ main {
   button {
     background-color: $capeColor;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $capeColorHover;
     }
 
@@ -182,7 +189,7 @@ main {
   button {
     background-color: $dashboardColor;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $dashboardColorHover;
     }
 
@@ -344,7 +351,7 @@ h6, .title-6 {
 p.paragraph {
   color: $textColor1;
   font-size: inherit;
-  font-weight: 400;
+  font-weight: $normal-weight;
   line-height: normal;
   letter-spacing: normal;
   margin-bottom: 1.8rem;
@@ -400,4 +407,17 @@ ul {
   font-size: 1.6rem;
 }
 
+// Contrasts
+body.desktop {
+  .q-checkbox:not(.disabled) .q-checkbox__inner::before, .q-radio:not(.disabled) .q-radio__inner::before {
+    opacity: 0.33;
+  }
+}
 
+.q-field__focusable-action {
+  opacity: 1;
+}
+
+.q-select__dropdown-icon {
+  color: #000;
+}

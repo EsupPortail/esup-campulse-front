@@ -63,3 +63,9 @@ export interface ProjectCommissionFund {
     amountEarned: number | string,
     isValidatedByAdmin: boolean
 }
+
+interface SelectLabelFund {
+    value: number,
+    label: string,
+    fund?: number
+}

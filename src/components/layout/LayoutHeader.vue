@@ -39,14 +39,12 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
         <div class="container">
             <QToolbar role="">
                 <QToolbarTitle>
-                    <h1>
-                        <RouterLink
-                            :to="{name: 'Home'}"
-                            class="home-link"
-                        >
-                            {{ siteName }}
-                        </RouterLink>
-                    </h1>
+                    <RouterLink
+                        :to="{name: 'Home'}"
+                        class="home-link"
+                    >
+                        {{ siteName }}
+                    </RouterLink>
                 </QToolbarTitle>
                 <LayoutHeaderNav
                     device="desktop"
