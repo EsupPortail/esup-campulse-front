@@ -40,8 +40,7 @@ watch(() => open.value, async () => {
     loading.show()
     if (open.value) {
         try {
-            await projectStore.getProjectDetail(props.project)
-            initProjectBasicInfos()
+            //
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -54,7 +53,7 @@ watch(() => open.value, async () => {
     loading.hide()
 })
 
-async function onUpdateProjectDates() {
+/*async function onUpdateProjectDates() {
     loading.show()
     try {
         await patchProjectBasicInfos()
@@ -74,7 +73,7 @@ async function onUpdateProjectDates() {
         }
     }
     loading.hide()
-}
+}*/
 </script>
 
 <template>
@@ -85,31 +84,6 @@ async function onUpdateProjectDates() {
                     @submit="onUpdateProjectDates"
                 >
                     <div>
-                        <h3>{{ t('project.update-dates') }}</h3>
-                        <QInput
-                            v-model="projectBasicInfos.plannedStartDate"
-                            :label="t('project.planned-start-date') + ' *'"
-                            :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
-                                      val => val && fromDateIsAnterior(projectBasicInfos.plannedStartDate, projectBasicInfos.plannedEndDate, true) || t('forms.legal-dates')]"
-                            aria-required="true"
-                            clearable
-                            color="commission"
-                            filled
-                            reactive-rules
-                            type="date"
-                        />
-                        <QInput
-                            v-model="projectBasicInfos.plannedEndDate"
-                            :label="t('project.planned-end-date') + ' *'"
-                            :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
-                                      val => val && fromDateIsAnterior(projectBasicInfos.plannedStartDate, projectBasicInfos.plannedEndDate, true) || t('forms.legal-dates')]"
-                            aria-required="true"
-                            clearable
-                            color="commission"
-                            filled
-                            reactive-rules
-                            type="date"
-                        />
                     </div>
                     <div class="flex-row-center">
                         <QBtn

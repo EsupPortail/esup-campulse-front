@@ -3,16 +3,16 @@ import {useI18n} from 'vue-i18n'
 import {onMounted, ref} from 'vue'
 import type {ProjectStatus} from '#/project'
 import router from '@/router'
-import useUserGroups from '@/composables/useUserGroups'
 import useSecurity from '@/composables/useSecurity'
 import ProjectUpdateDates from '@/components/project/ProjectUpdateDates.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
+import ProjectEditCommissionFundsAmounts from '@/components/project/ProjectEditCommissionFundsAmounts.vue'
+
 
 const {t} = useI18n()
-const {isStaff} = useUserGroups()
 const {hasPerm} = useSecurity()
 const {notify, loading} = useQuasar()
 const projectStore = useProjectStore()
@@ -27,12 +27,13 @@ const props = defineProps<{
 const emit = defineEmits(['refreshProjects'])
 
 const updateProjectDates = ref<boolean>(false)
+const editCommissionFundsAmounts = ref<boolean>(false)
 
 interface Option {
-    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf',
+    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-piggy-bank',
     label: string,
     to?: { name: 'ProjectDetail' | 'ProjectReviewDetail', params: { projectId: number } }
-    action?: 'updateProjectDates' | 'download-pdf'
+    action?: 'updateProjectDates' | 'download-pdf' | 'editCommissionFundsAmounts'
 }
 
 const options = ref<Option[]>([])
@@ -44,7 +45,14 @@ const initOptions = () => {
         label: props.projectStatus === 'PROJECT_PROCESSING' ? t('project.process') : t('project.view'),
         to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
     })
-    if (isStaff.value && hasPerm('change_project')) {
+    if (props.projectStatus === 'PROJECT_VALIDATED' && hasPerm('change_projectcommissionfund_as_validator')) {
+        options.value.push({
+            icon: 'bi-piggy-bank',
+            label: t('project.edit-commission-funds-amounts'),
+            action: 'editCommissionFundsAmounts'
+        })
+    }
+    if (hasPerm('change_project_as_validator')) {
         options.value.push({
             icon: 'bi-calendar',
             label: t('project.edit-dates'),
@@ -81,6 +89,8 @@ async function onOptionClick(option: Option) {
             updateProjectDates.value = true
         } else if (option.action === 'download-pdf') {
             await onGetProjectPdf(props.projectId, props.projectName)
+        } else {
+            editCommissionFundsAmounts.value = true
         }
     }
 }
@@ -140,6 +150,12 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
         :open-dialog="updateProjectDates"
         :project="props.project"
         @close-dialog="updateProjectDates = false"
+        @refresh-projects="emit('refreshProjects')"
+    />
+    <ProjectEditCommissionFundsAmounts
+        :open-dialog="editCommissionFundsAmounts"
+        :project="props.project"
+        @close-dialog="editCommissionFundsAmounts = false"
         @refresh-projects="emit('refreshProjects')"
     />
 </template>
