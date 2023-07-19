@@ -462,7 +462,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                     v-model="projectBasicInfos.name"
                                     :label="t('project.name') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-project-name')]"
                                     aria-required="true"
                                     clearable
                                     color="commission"
@@ -471,7 +471,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                     v-model="projectBasicInfos.plannedStartDate"
                                     :label="t('project.planned-start-date') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-project-startdate'), val => val && datesAreLegal || t('forms.legal-dates')]"
                                     aria-required="true"
                                     clearable
                                     color="commission"
@@ -482,7 +482,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                     v-model="projectBasicInfos.plannedEndDate"
                                     :label="t('project.planned-end-date') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-project-enddate'), val => val && datesAreLegal || t('forms.legal-dates')]"
                                     aria-required="true"
                                     clearable
                                     color="commission"
@@ -505,7 +505,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :hint="t('forms.multiple-choices-enabled')"
                                     :label="t('project.categories') + ' *'"
                                     :options="projectStore.projectCategoriesLabels"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    :rules="[ val => val && val.length > 0 || t('forms.fill-project-categories')]"
                                     clearable
                                     color="commission"
                                     emit-value
@@ -571,7 +571,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :hint="t('project.commission-choice-hint')"
                                     :label="t('project.commission-choice') + ' *'"
                                     :options="commissionLabels"
-                                    :rules="[ val => val || t('forms.fill-field')]"
+                                    :rules="[ val => val || t('forms.select-project-commission-date')]"
                                     clearable
                                     color="commission"
                                     emit-value
@@ -587,7 +587,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('project.commission-funds-choice') + ' *'"
                                     :options="fundsLabels"
                                     :readonly="!projectCommission"
-                                    :rules="[ val => val || t('forms.fill-field')]"
+                                    :rules="[ val => val || t('forms.select-project-commission-member')]"
                                     clearable
                                     color="commission"
                                     emit-value
