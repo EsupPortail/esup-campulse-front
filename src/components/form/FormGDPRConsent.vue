@@ -11,9 +11,9 @@ const props = defineProps({
 <template>
     <div>
         <QCheckbox
-            :label="t('forms.gdpr')"
+            :label="t('forms.gdpr-accept')"
             :model-value="props.hasConsent"
-            aria-label="t('forms.gdpr')"
+            aria-label="t('forms.gdpr-accept')"
             color="dashboard"
             @click="$emit('updateConsent')"
         />

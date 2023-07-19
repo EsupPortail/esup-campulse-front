@@ -396,4 +396,17 @@ ul {
   font-size: 1.6rem;
 }
 
+// Contrasts
+body.desktop {
+  .q-checkbox:not(.disabled) .q-checkbox__inner::before, .q-radio:not(.disabled) .q-radio__inner::before {
+    opacity: 0.33;
+  }
+}
 
+.q-field__focusable-action {
+  opacity: 1;
+}
+
+.q-select__dropdown-icon {
+  color: #000;
+}

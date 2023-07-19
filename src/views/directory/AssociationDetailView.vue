@@ -52,7 +52,11 @@ async function onGetAssociationDetail() {
 </script>
 
 <template>
-    <section class="association-detail">
+    <section
+        class="association-detail"
+        itemscope
+        itemtype="https://schema.org/Organization"
+    >
         <div class="dashboard-section-container">
             <div id="association-logo-title">
                 <div class="association-logo">
@@ -62,14 +66,16 @@ async function onGetAssociationDetail() {
                             baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
                         alt=""
                         aria-hidden="true"
+                        itemprop="logo"
                     />
                 </div>
                 <div class="association-name">
                     <p
                         v-if="association?.acronym"
                         class="flex-row-center"
+                        itemprop="name"
                     >
-                        {{ association?.acronym }}
+                        {{ association?.name }} ({{ association?.acronym }})
                     </p>
                     <p>{{ t('association.labels.charter-validity') }}</p>
                 </div>
@@ -155,9 +161,12 @@ async function onGetAssociationDetail() {
                         <div
                             v-if="association?.presidentNames"
                             class="display-row"
+                            itemprop="member"
+                            itemscope
+                            itemtype="https://schema.org/Person"
                         >
                             <h3>{{ t('association.labels.president-name') }}</h3>
-                            <p>{{ association?.presidentNames }}</p>
+                            <p itemprop="name">{{ association?.presidentNames }}</p>
                         </div>
 
                         <div
@@ -215,10 +224,14 @@ async function onGetAssociationDetail() {
                             class="display-row"
                         >
                             <h3>{{ t('association.labels.address') }}</h3>
-                            <p>
-                                {{ association?.address }}<br/>
-                                {{ association?.zipcode + ' ' + association?.city }}<br/>
-                                {{ association?.country }}
+                            <p
+                                itemprop="address"
+                                itemscope
+                                itemtype="https://schema.org/PostalAddress"
+                            >
+                                <span itemprop="streetAddress">{{ association?.address }}</span><br/>
+                                <span itemprop="postalCode">{{ association?.zipcode }}</span> <span itemprop="addressLocality">{{ association?.city }}</span><br/>
+                                <span itemprop="addressCountry">{{ association?.country }}</span>
                             </p>
                         </div>
 
@@ -227,7 +240,7 @@ async function onGetAssociationDetail() {
                             class="display-row"
                         >
                             <h3>{{ t('association.labels.phone') }}</h3>
-                            <p>{{ association?.phone }}</p>
+                            <p itemprop="telephone">{{ association?.phone }}</p>
                         </div>
 
                         <div
@@ -235,7 +248,7 @@ async function onGetAssociationDetail() {
                             class="display-row"
                         >
                             <h3>{{ t('association.labels.mail') }}</h3>
-                            <p>{{ association?.email }}</p>
+                            <p itemprop="email">{{ association?.email }}</p>
                         </div>
 
                         <div
@@ -246,6 +259,7 @@ async function onGetAssociationDetail() {
                             <a
                                 :href="association?.website"
                                 :title="`${t('association.labels.website-link')} ${association?.name}`"
+                                itemprop="url"
                             >
                                 {{ association?.website }}
                             </a>
@@ -310,5 +324,9 @@ async function onGetAssociationDetail() {
 
 h2 > i {
     padding: 0.25rem 1rem 0 0;
+}
+
+ul {
+    padding-left: 0;
 }
 </style>

@@ -54,24 +54,41 @@ const columns: QTableProps['columns'] = [
                     :rows-per-page-options="[10, 20, 50, 0]"
                     :title="t('commission.archived')"
                     row-key="name"
+                    role="presentation"
                 >
+                    <template v-slot:header="props">
+                        <QTr :props="props">
+                            <QTh
+                                v-for="col in props.cols"
+                                :key="col.name"
+                                :props="props"
+                                scope="col"
+                                :id="col.name"
+                            >
+                                {{ col.label }}
+                            </QTh>
+                        </QTr>
+                    </template>
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd
                                 key="name"
                                 :props="props"
+                                headers="name"
                             >
                                 {{ props.row.name }}
                             </QTd>
                             <QTd
                                 key="commissionDate"
                                 :props="props"
+                                headers="commissionDate"
                             >
                                 {{ props.row.commissionDate.split('-').reverse().join('/') }}
                             </QTd>
                             <QTd
                                 key="viewProjects"
                                 :props="props"
+                                headers="viewProjects"
                                 class="actions-cells"
                             >
                                 <div class="button-container">
@@ -83,6 +100,51 @@ const columns: QTableProps['columns'] = [
                                 </div>
                             </QTd>
                         </QTr>
+                    </template>
+                    <template v-slot:pagination="scope">
+                        {{ t('table.results-amount', {
+                            firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
+                            lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
+                            amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
+                        }) }}
+                        <QBtn
+                            v-if="scope.pagesNumber > 2"
+                            icon="bi-chevron-double-left"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isFirstPage"
+                            @click="scope.firstPage"
+                            :aria-label="t('table.first-page')"
+                        />
+                        <QBtn
+                            icon="bi-chevron-left"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isFirstPage"
+                            @click="scope.prevPage"
+                            :aria-label="t('table.previous-page')"
+                        />
+                        <QBtn
+                            icon="bi-chevron-right"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isLastPage"
+                            @click="scope.nextPage"
+                            :aria-label="t('table.next-page')"
+                        />
+                        <QBtn
+                            v-if="scope.pagesNumber > 2"
+                            icon="bi-chevron-double-right"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isLastPage"
+                            @click="scope.lastPage"
+                            :aria-label="t('table.last-page')"
+                        />
                     </template>
                 </QTable>
             </div>

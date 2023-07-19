@@ -91,60 +91,60 @@ const clearValues = () => {
 
 <template>
     <QForm
-            ref="newAssociationForm"
-            class="q-gutter-md"
-            @reset="clearValues"
-            @submit.prevent="onCreate"
+        ref="newAssociationForm"
+        class="q-gutter-md"
+        @reset="clearValues"
+        @submit.prevent="onCreate"
     >
         <QInput
-                v-model="newAssociation.name"
-                :label="t('forms.association-name')"
-                :rules="[val => val.length > 0 || t('forms.fill-association-name-field')]"
-                color="dashboard"
-                filled
-                lazy-rules
+            v-model="newAssociation.name"
+            :label="t('forms.association-name')"
+            :rules="[val => val.length > 0 || t('forms.fill-association-name-field')]"
+            color="dashboard"
+            filled
+            lazy-rules
         />
         <QInput
-                v-model="newAssociation.email"
-                :label="t('association.labels.mail')"
-                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
-                clearable
-                color="dashboard"
-                filled
-                lazy-rules
-                type="email"
+            v-model="newAssociation.email"
+            :label="t('association.labels.mail')"
+            :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+            clearable
+            color="dashboard"
+            filled
+            lazy-rules
+            type="email"
         />
         <QSelect
-                v-model="newAssociation.institution"
-                :label="t('forms.association-institution')"
-                :options="institutions"
-                :rules="[val => val !== undefined || t('forms.select-establishment')]"
-                color="dashboard"
-                emit-value
-                filled
-                lazy-rules
-                map-options
+            v-model="newAssociation.institution"
+            :label="t('forms.association-institution')"
+            :options="institutions"
+            :rules="[val => val !== undefined || t('forms.select-establishment')]"
+            color="dashboard"
+            emit-value
+            filled
+            lazy-rules
+            map-options
         />
         <QCheckbox
-                v-if="hasPerm('add_association_all_fields')"
-                v-model="newAssociation.isSite"
-                :label="t('forms.association-is-site')"
-                color="dashboard"
+            v-if="hasPerm('add_association_all_fields')"
+            v-model="newAssociation.isSite"
+            :label="t('forms.association-is-site')"
+            color="dashboard"
         />
         <div class="flex-row-center">
             <QBtn
-                    :label="t('home.back-dashboard')"
-                    :to="{ name: 'Dashboard' }"
-                    class="btn-lg"
-                    color="dashboard"
-                    icon="bi-chevron-left"
+                :label="t('home.back-dashboard')"
+                :to="{ name: 'Dashboard' }"
+                class="btn-lg"
+                color="dashboard"
+                icon="bi-chevron-left"
             />
             <QBtn
-                    :label="t('user-manager.create-association')"
-                    class="btn-lg"
-                    color="dashboard"
-                    icon="bi-check-lg"
-                    type="submit"
+                :label="t('user-manager.create-association')"
+                class="btn-lg"
+                color="dashboard"
+                icon="bi-check-lg"
+                type="submit"
             />
         </div>
     </QForm>
