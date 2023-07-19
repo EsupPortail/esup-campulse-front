@@ -191,8 +191,18 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
-                        path: 'project-detail/:projectId',
-                        name: 'ProjectDetail',
+                        path: 'view-project/:projectId',
+                        name: 'ViewProject',
+                        component: () => import('@/views/project/ProjectDetailView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: 'manage-project/:projectId',
+                        name: 'ManageProject',
                         component: () => import('@/views/project/ProjectDetailView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),

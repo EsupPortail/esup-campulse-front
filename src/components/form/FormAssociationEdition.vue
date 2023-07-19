@@ -90,13 +90,12 @@ watch(() => associationStore.association, initValues)
 
 const membersCount = ref<number>(0)
 
-const initMembersCount = () => {
+const initMembersCount = async () => {
     if (associationStore.association) {
-        associationStore.getAssociationUsers(associationStore.association.id)
+        await associationStore.getAssociationUsers(associationStore.association.id)
         membersCount.value = associationStore.associationUsers.length
     }
 }
-watch(() => associationStore.association, initMembersCount)
 
 onMounted(async () => {
     loading.show()
@@ -264,12 +263,16 @@ async function onChangeLogo(action: string) {
                         />
                         <QInput
                             v-model="association.socialObject"
-                            :hint="t('forms.social-object-hint')"
                             :label="t('association.labels.social-object')"
                             clearable
                             filled
                             type="textarea"
-                        />
+                            for="socialObject"
+                        >
+                            <template v-slot:hint>
+                                <p aria-describedby="socialObject">{{ t('forms.social-object-hint') }}</p>
+                            </template>
+                        </QInput>
                         <QInput
                             v-model="association.currentProjects"
                             :label="t('association.labels.current-projects')"
@@ -360,7 +363,6 @@ async function onChangeLogo(action: string) {
                         <QInput
                             v-if="hasPerm('change_association_all_fields')"
                             v-model="association.amountMembersAllowed"
-                            :hint="`${t('forms.amount-student-allowed-cannot-be-inferior-to-members')} : ${membersCount}`"
                             :label="t('association.labels.amount-members-allowed')"
                             :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
                             clearable
@@ -369,7 +371,12 @@ async function onChangeLogo(action: string) {
                             lazy-rules
                             min="0"
                             type="number"
-                        />
+                            for="amountMembersAllowed"
+                        >
+                            <template v-slot:hint>
+                                <p aria-describedby="amountMembersAllowed">{{ t('forms.amount-student-allowed-cannot-be-inferior-to-members', { amount: membersCount }) }}</p>
+                            </template>
+                        </QInput>
                         <QInput
                             v-model="association.studentCount"
                             :label="t('forms.association-student-count')"

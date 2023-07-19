@@ -158,7 +158,6 @@ async function onUploadDocuments(nextStep: number) {
                                 />
                                 <QInput
                                     v-model="projectReview.realStartDate"
-                                    :hint="t('project.real-date-hint')"
                                     :label="t('project.planned-start-date') + ' *'"
                                     :rules="[
                                         val => val && val.length > 0 || t('forms.fill-field'),
@@ -170,10 +169,14 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     reactive-rules
                                     type="date"
-                                />
+                                    for="realStartDate"
+                                >
+                                    <template v-slot:hint>
+                                        <p aria-describedby="realStartDate">{{ t('project.real-date-hint') }}</p>
+                                    </template>
+                                </QInput>
                                 <QInput
                                     v-model="projectReview.realEndDate"
-                                    :hint="t('project.real-date-hint')"
                                     :label="t('project.planned-end-date') + ' *'"
                                     :rules="[
                                         val => val && val.length > 0 || t('forms.fill-field'),
@@ -185,10 +188,14 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     reactive-rules
                                     type="date"
-                                />
+                                    for="realEndDate"
+                                >
+                                    <template v-slot:hint>
+                                        <p aria-describedby="realEndDate">{{ t('project.real-date-hint') }}</p>
+                                    </template>
+                                </QInput>
                                 <QInput
                                     v-model="projectReview.realLocation"
-                                    :hint="t('project.real-location-hint')"
                                     :label="t('project.planned-location') + ' *'"
                                     :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
                                     aria-required="true"
@@ -196,7 +203,12 @@ async function onUploadDocuments(nextStep: number) {
                                     color="commission"
                                     filled
                                     lazy-rules
-                                />
+                                    for="realLocation"
+                                >
+                                    <template v-slot:hint>
+                                        <p aria-describedby="realLocation">{{ t('project.real-location-hint') }}</p>
+                                    </template>
+                                </QInput>
                             </div>
 
                             <div v-if="projectReview.user">
@@ -278,7 +290,6 @@ async function onUploadDocuments(nextStep: number) {
                         >
                             <QInput
                                 v-model="projectReview.review"
-                                :hint="t('project.moral-review-hint')"
                                 :label="t('project.moral-review') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
@@ -287,7 +298,12 @@ async function onUploadDocuments(nextStep: number) {
                                 filled
                                 lazy-rules
                                 type="textarea"
-                            />
+                                for="moralReview"
+                            >
+                                <template v-slot:hint>
+                                    <p aria-describedby="moralReview">{{ t('project.moral-review-hint') }}</p>
+                                </template>
+                            </QInput>
                             <QInput
                                 v-model="projectReview.impactStudents"
                                 :label="t('project.impact-students') + ' *'"
@@ -301,7 +317,6 @@ async function onUploadDocuments(nextStep: number) {
                             />
                             <QInput
                                 v-model="projectReview.description"
-                                :hint="t('project.description-hint')"
                                 :label="t('project.description') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
                                 aria-required="true"
@@ -310,7 +325,12 @@ async function onUploadDocuments(nextStep: number) {
                                 filled
                                 lazy-rules
                                 type="textarea"
-                            />
+                                for="description"
+                            >
+                                <template v-slot:hint>
+                                    <p aria-describedby="description">{{ t('project.description-hint') }}</p>
+                                </template>
+                            </QInput>
                             <QInput
                                 v-model="projectReview.difficulties"
                                 :label="t('project.difficulties') + ' *'"
