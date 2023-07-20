@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
+import useUtility from '@/composables/useUtility.ts'
 
-const openMenu = ref<boolean>(false)
+const {openMenu} = useUtility()
 </script>
 
 <template>
@@ -62,8 +62,7 @@ const openMenu = ref<boolean>(false)
         color: $textColor1;
         padding: 1rem;
         transition: all 0.2s ease-out;
-        bottom: 0;
-        min-height: 50rem;
+        bottom: 5rem;
     }
 
     .close-menu {

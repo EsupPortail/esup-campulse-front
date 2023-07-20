@@ -126,8 +126,16 @@ onMounted(async () => {
     width: 100%;
 }
 
+.q-btn__content > div > * {
+    padding: 0 0.5rem;
+}
+
 p {
     margin-bottom: 0 !important;
+}
+
+ul {
+    padding-left: 0;
 }
 
 li {

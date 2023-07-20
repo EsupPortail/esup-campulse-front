@@ -10,7 +10,9 @@ const urlRegex = /^(https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%\-/]))
 
 const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
 
-export default function () {
+const openMenu = ref<boolean>(false)
+
+export default function() {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -100,6 +102,7 @@ export default function () {
         CURRENCY,
         phoneRegex,
         dynamicTitle,
-        filterizeSearch
+        filterizeSearch,
+        openMenu
     }
 }

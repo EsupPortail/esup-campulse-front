@@ -17,7 +17,11 @@ router.beforeEach(async (to) => {
     const userStore = useUserStore()
     const {initStaffStatus, isStaff, getGroups} = useUserGroups()
     const {newUser, hasPerm} = useSecurity()
-    const {dynamicTitle} = useUtility()
+    const {dynamicTitle, openMenu} = useUtility()
+
+    if (openMenu.value) {
+        openMenu.value = false
+    }
 
     // Scroll to top when on a new page (except for anchors)
     if (!to.hash.includes('#')) window.scrollTo(0, 0)
