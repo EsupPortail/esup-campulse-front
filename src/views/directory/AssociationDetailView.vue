@@ -299,7 +299,7 @@ async function onGetAssociationDetail() {
                 icon="bi-box-arrow-left"
             />
             <QBtn
-                v-if="userStore.user?.associations.find(x => x.id === association.id)"
+                v-if="userStore.user?.associations.find(x => x.id === association?.id)"
                 :label="t('dashboard.association-user.manage-association')"
                 :to="{name: 'AssociationDashboard', params: {id: association.id}}"
                 class="btn-lg"

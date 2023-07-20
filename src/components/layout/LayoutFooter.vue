@@ -114,17 +114,6 @@ const {colorVariant} = useColorVariants()
                 <li>
                     <RouterLink
                         class="li-footer"
-                        to="/"
-                    >
-                        <i
-                            aria-hidden="true"
-                            class="bi bi-envelope"
-                        ></i>{{ t('footer.legal-notice') }}
-                    </RouterLink>
-                </li>
-                <li>
-                    <RouterLink
-                        class="li-footer"
                         to="contact-page"
                     >
                         <i
