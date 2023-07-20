@@ -126,6 +126,7 @@ const columns: QTableProps['columns'] = [
         <QTable
             :columns="columns"
             :loading="!projects"
+            :no-data-label="t('project.no-project-to-show')"
             :rows="projects"
             :rows-per-page-options="[10, 20, 50, 0]"
             :title="props.title"

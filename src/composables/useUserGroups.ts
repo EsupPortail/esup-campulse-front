@@ -25,8 +25,12 @@ const groupChoiceIsValid = computed(() => {
 // Used to dynamically show or hide FormRegisterUserAssociations
 const groupCanJoinAssociation = ref<boolean>(true)
 
-// Helper to know if a user in userStore if a staff member
+// Helper to know if a user in userStore is a staff member
 const isStaff = ref<boolean | undefined>(undefined)
+
+// Helper to know if a user in userStore is a fund member
+const MEMBER_FUND = 'MEMBER_FUND'
+const isMemberFund = ref<boolean | undefined>(undefined)
 
 // Used to display or not the select for commissions
 const commissionMemberIsSelected = ref<boolean>(false)
@@ -178,7 +182,7 @@ export default function () {
     /**
      * If the user is a member of a non-public group, then they are staff
      */
-    function initStaffStatus() {
+    const initStaffStatus = () => {
         let perm = false
         const userGroups = userStore.user?.groups
 
@@ -193,6 +197,16 @@ export default function () {
     }
 
     watch(() => userStore.user?.groups.length, initStaffStatus)
+
+    const initIsMemberFund = () => {
+        let perm = false
+        const userGroups = userStore.user?.groups
+
+        if (userGroups?.find(g => g.groupId === (groups.value.find(g => g.name === MEMBER_FUND))?.id)) perm = true
+        isMemberFund.value = perm
+    }
+
+    watch(() => userStore.user?.groups.length, initIsMemberFund)
 
     /**
      * Return the old groups that are not in the new groups.
@@ -240,9 +254,9 @@ export default function () {
         }
     }
 
-    const commissionGroup = ref<Group | undefined>(groups.value.find(obj => obj.name === 'MEMBER_FUND'))
+    const commissionGroup = ref<Group | undefined>(groups.value.find(obj => obj.name === MEMBER_FUND))
     watch(() => groups.value, () => {
-        commissionGroup.value = groups.value.find(obj => obj.name === 'MEMBER_FUND')
+        commissionGroup.value = groups.value.find(obj => obj.name === MEMBER_FUND)
     })
 
     // To test
@@ -273,6 +287,8 @@ export default function () {
         groupNames,
         commissionMemberIsSelected,
         initCommissionMemberSelection,
-        commissionGroup
+        commissionGroup,
+        isMemberFund,
+        initIsMemberFund
     }
 }
