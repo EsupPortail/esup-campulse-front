@@ -71,7 +71,8 @@ const initOptions = () => {
     })
 
     // Manage project
-    if (props.projectStatus === 'PROJECT_PROCESSING' && hasPerm('change_project_as_validator') && canChangeProject()) {
+    if (props.projectStatus === 'PROJECT_PROCESSING' &&
+        hasPerm('change_project_as_validator') && canChangeProject()) {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process'),
@@ -80,7 +81,8 @@ const initOptions = () => {
     }
 
     // Give money
-    if (props.projectStatus === 'PROJECT_VALIDATED' && hasPerm('change_projectcommissionfund_as_validator')) {
+    if (props.projectStatus === 'PROJECT_VALIDATED' &&
+        hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
             icon: 'bi-piggy-bank',
             label: t('project.edit-commission-funds-amounts'),
@@ -98,7 +100,9 @@ const initOptions = () => {
     }
 
     // Change commission
-    if (props.projectStatus === 'PROJECT_PROCESSING' || props.projectStatus === 'PROJECT_VALIDATED') {
+    if (props.projectStatus === 'PROJECT_PROCESSING' ||
+        props.projectStatus === 'PROJECT_VALIDATED' &&
+        hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
             icon: 'bi-signpost',
             label: t('project.change-commission'),
@@ -107,7 +111,9 @@ const initOptions = () => {
     }
 
     // View review
-    if (props.projectStatus === 'PROJECT_REVIEW_VALIDATED' || props.projectStatus === 'PROJECT_CANCELLED') {
+    if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' ||
+        props.projectStatus === 'PROJECT_REVIEW_VALIDATED' ||
+        props.projectStatus === 'PROJECT_CANCELLED') {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),
@@ -116,7 +122,8 @@ const initOptions = () => {
     }
 
     // Manage review
-    if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' && hasPerm('change_project_as_validator') && canChangeProject()) {
+    if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' &&
+        hasPerm('change_project_as_validator') && canChangeProject()) {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process-review'),
