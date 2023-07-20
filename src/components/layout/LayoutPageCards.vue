@@ -42,7 +42,6 @@ const props = defineProps<{
         justify-content: center;
         background-color: #fff;
         border-radius: 1rem;
-        flex-wrap: wrap;
     }
 }
 </style>

@@ -4,38 +4,52 @@ import LayoutTextImageColor from '@/components/layout/LayoutTextImageColor.vue'
 import LayoutPageCards from '@/components/layout/LayoutPageCards.vue'
 import type {PageCard} from '#/index'
 import useUserGroups from '@/composables/useUserGroups'
+import {onMounted, ref} from 'vue'
+import useSecurity from '@/composables/useSecurity'
+
 
 const {isStaff} = useUserGroups()
+const {hasPerm} = useSecurity()
 
-const studentPageCards: PageCard[] = [
-    {
-        to: {name: 'ManageCharters'},
-        btnLabel: 'Signer les chartes',
-        icon: 'bi-pen',
-        text: 'Lorem ipsum'
-    },
-    {
-        to: {name: 'DocumentsLibrary'},
-        btnLabel: 'Télécharger les documents',
-        icon: 'bi-download',
-        text: 'Lorem ipsum'
-    }
-]
+const pageCards = ref<PageCard[]>([])
 
-const managerPageCards: PageCard[] = [
-    {
-        to: {name: 'ManageCharters'},
-        btnLabel: 'Valider les signatures de chartes (TODO)',
-        icon: 'bi-pen',
-        text: 'Lorem ipsum'
-    },
-    {
-        to: {name: 'ManageDocumentsLibrary'},
-        btnLabel: 'Gérer la bibliothèque de documents',
-        icon: 'bi-file-earmark',
-        text: 'Lorem ipsum'
+const initPageCards = () => {
+    if (isStaff.value) { // todo : ajouter bonne permission
+        pageCards.value.push({
+            to: {name: 'ManageCharters'},
+            btnLabel: 'Valider les signatures de chartes (TODO)',
+            icon: 'bi-pen',
+            text: 'Lorem ipsum'
+        })
     }
-]
+    if (isStaff.value && (hasPerm('add_document'))) {
+        pageCards.value.push({
+            to: {name: 'ManageDocumentsLibrary'},
+            btnLabel: 'Gérer la bibliothèque de documents',
+            icon: 'bi-file-earmark',
+            text: 'Lorem ipsum'
+        })
+    }
+    if (hasPerm('add_project_association')) {
+        pageCards.value.push({
+            to: {name: 'ManageCharters'},
+            btnLabel: 'Signer les chartes',
+            icon: 'bi-pen',
+            text: 'Lorem ipsum'
+        })
+    }
+    if (hasPerm('add_project_association') || hasPerm('add_project_user')) {
+        pageCards.value.push({
+            to: {name: 'DocumentsLibrary'},
+            btnLabel: 'Télécharger les documents',
+            icon: 'bi-download',
+            text: 'Lorem ipsum'
+        })
+    }
+}
+
+onMounted(initPageCards)
+
 </script>
 
 <template>
@@ -52,7 +66,8 @@ const managerPageCards: PageCard[] = [
             title="Chartes FSDIE / IdEx"
         />
         <LayoutPageCards
-            :page-cards="isStaff ? managerPageCards : studentPageCards"
+            v-if="pageCards.length"
+            :page-cards="pageCards"
             color="charter"
         />
     </section>

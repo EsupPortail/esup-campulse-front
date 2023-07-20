@@ -14,7 +14,7 @@ import useErrors from '@/composables/useErrors'
 const userStore = useUserStore()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
-const {isStaff} = useUserGroups()
+const {isStaff, isMemberFund} = useUserGroups()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 
@@ -160,7 +160,7 @@ onMounted(async () => {
 
     <!-- Commission management, for staff only -->
     <section
-        v-if="isStaff && (hasPerm('view_project'))"
+        v-if="(isStaff || isMemberFund) && (hasPerm('view_project'))"
         class="dashboard-section"
     >
         <h2>

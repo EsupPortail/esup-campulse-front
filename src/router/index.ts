@@ -15,7 +15,7 @@ const colorVariant = ref<string>('')
 
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
-    const {initStaffStatus, isStaff, getGroups} = useUserGroups()
+    const {initStaffStatus, isStaff, getGroups, initIsMemberFund} = useUserGroups()
     const {newUser, hasPerm} = useSecurity()
     const {dynamicTitle, openMenu} = useUtility()
 
@@ -51,6 +51,7 @@ router.beforeEach(async (to) => {
     if (userStore.isAuth) {
         await getGroups()
         await initStaffStatus()
+        await initIsMemberFund()
     }
 
     // Authenticated views
