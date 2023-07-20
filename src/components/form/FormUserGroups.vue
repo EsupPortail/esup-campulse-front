@@ -113,7 +113,7 @@ function onInitGroupLabels() {
     <QSelect
         v-if="commissionMemberIsSelected"
         v-model="userFunds"
-        :label="t('commissions')"
+        :label="t('commission.commission', 2)"
         :options="fundsLabels"
         :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
         color="dashboard"

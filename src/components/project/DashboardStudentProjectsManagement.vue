@@ -104,60 +104,81 @@ async function onGetProjects() {
 </script>
 
 <template>
-    <div class="container-lg padding-top padding-bottom">
-        <QCard>
-            <QTabs
-                v-model="tab"
-                active-color="commission"
-                align="justify"
-                class="text-grey"
-                dense
-                indicator-color="commission"
-            >
-                <QTab
-                    v-for="(tab, index) in tabs"
-                    :key="index"
-                    :label="tab.label"
-                    :name="tab.name"
-                />
-            </QTabs>
-
-            <QSeparator
+    <div class="dashboard-section">
+        <h2>
+            <i
                 aria-hidden="true"
-                role="presentation"
-            />
-
-            <QTabPanels
-                v-model="tab"
-                animated
-            >
-                <QTabPanel
-                    v-for="(tab, index) in tabs"
-                    :key="index"
-                    :name="tab.name"
-                    class="q-pa-none"
-                    role=""
+                class="bi bi-send"
+            ></i>
+            {{ t('project.project', 2) }}
+        </h2>
+        <div class="dashboard-section-container">
+            <QCard>
+                <QTabs
+                    v-model="tab"
+                    active-color="commission"
+                    align="justify"
+                    class="text-grey"
+                    dense
+                    indicator-color="commission"
                 >
-                    <QSplitter
-                        v-model="splitterModel"
+                    <QTab
+                        v-for="(tab, index) in tabs"
+                        :key="index"
+                        :label="tab.label"
+                        :name="tab.name"
+                    />
+                </QTabs>
+
+                <QSeparator
+                    aria-hidden="true"
+                    role="presentation"
+                />
+
+                <QTabPanels
+                    v-model="tab"
+                    animated
+                >
+                    <QTabPanel
+                        v-for="(tab, index) in tabs"
+                        :key="index"
+                        :name="tab.name"
+                        class="q-pa-none"
+                        role=""
                     >
-                        <template v-slot:before>
-                            <div v-if="tab.association">
-                                <div
-                                    v-if="associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
-                                >
+                        <QSplitter
+                            v-model="splitterModel"
+                        >
+                            <template v-slot:before>
+                                <div v-if="tab.association">
                                     <div
-                                        v-if="userStore.hasPresidentStatus(tab.association)"
-                                        class="flex-row-center padding-top padding-bottom"
+                                        v-if="associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
                                     >
-                                        <QBtn
-                                            :disable="!associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
-                                            :label="t('project.submit-new-project')"
-                                            :to="{name: 'SubmitProjectAssociation', params: {associationId: tab.association}}"
-                                            class="btn-lg"
-                                            color="commission"
-                                            icon="bi-plus-circle"
-                                        />
+                                        <div
+                                            v-if="userStore.hasPresidentStatus(tab.association)"
+                                            class="flex-row-center padding-top padding-bottom"
+                                        >
+                                            <QBtn
+                                                :disable="!associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
+                                                :label="t('project.submit-new-project')"
+                                                :to="{name: 'SubmitProjectAssociation', params: {associationId: tab.association}}"
+                                                class="btn-lg"
+                                                color="commission"
+                                                icon="bi-plus-circle"
+                                            />
+                                        </div>
+                                        <div
+                                            v-else
+                                            class="info-panel info-panel-warning"
+                                        >
+                                            <i
+                                                aria-hidden="true"
+                                                class="bi bi-exclamation-lg"
+                                            ></i>
+                                            <p>
+                                                {{ t('project.must-have-president-status') }}
+                                            </p>
+                                        </div>
                                     </div>
                                     <div
                                         v-else
@@ -168,111 +189,99 @@ async function onGetProjects() {
                                             class="bi bi-exclamation-lg"
                                         ></i>
                                         <p>
-                                            {{ t('project.must-have-president-status') }}
+                                            {{ t('project.cannot-submit-projects') }}
                                         </p>
                                     </div>
                                 </div>
-                                <div
-                                    v-else
-                                    class="info-panel info-panel-warning"
-                                >
-                                    <i
-                                        aria-hidden="true"
-                                        class="bi bi-exclamation-lg"
-                                    ></i>
-                                    <p>
-                                        {{ t('project.cannot-submit-projects') }}
-                                    </p>
+                                <div v-else>
+                                    <div class="flex-row-center padding-top">
+                                        <QBtn
+                                            :label="t('project.submit-new-project')"
+                                            :to="{name: 'SubmitProjectIndividual'}"
+                                            class="btn-lg"
+                                            color="commission"
+                                            icon="bi-plus-circle"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div v-else>
-                                <div class="flex-row-center padding-top">
-                                    <QBtn
-                                        :label="t('project.submit-new-project')"
-                                        :to="{name: 'SubmitProjectIndividual'}"
-                                        class="btn-lg"
-                                        color="commission"
-                                        icon="bi-plus-circle"
-                                    />
-                                </div>
-                            </div>
 
-                            <QTabs
-                                v-model="innerTab"
-                                class="text-commission"
-                                vertical
-                            >
-                                <QTab
-                                    :label="t('project.all-projects')"
-                                    icon="bi-folder"
-                                    name="allProjects"
-                                />
-                                <QTab
-                                    :label="t('project.validated-projects')"
-                                    icon="bi-folder-check"
-                                    name="validatedProjects"
-                                />
-                                <QTab
-                                    :label="t('project.rejected-projects')"
-                                    icon="bi-folder-x"
-                                    name="rejectedProjects"
-                                />
-                            </QTabs>
-                        </template>
+                                <QTabs
+                                    v-model="innerTab"
+                                    class="text-commission"
+                                    vertical
+                                >
+                                    <QTab
+                                        :label="t('project.all-projects')"
+                                        icon="bi-folder"
+                                        name="allProjects"
+                                    />
+                                    <QTab
+                                        :label="t('project.validated-projects')"
+                                        icon="bi-folder-check"
+                                        name="validatedProjects"
+                                    />
+                                    <QTab
+                                        :label="t('project.rejected-projects')"
+                                        icon="bi-folder-x"
+                                        name="rejectedProjects"
+                                    />
+                                </QTabs>
+                            </template>
 
-                        <template v-slot:after>
-                            <QTabPanels
-                                v-model="innerTab"
-                                animated
-                                transition-next="slide-up"
-                                transition-prev="slide-down"
-                            >
-                                <QTabPanel
-                                    name="allProjects"
-                                    role=""
+                            <template v-slot:after>
+                                <QTabPanels
+                                    v-model="innerTab"
+                                    animated
+                                    transition-next="slide-up"
+                                    transition-prev="slide-down"
                                 >
-                                    <TableUserProjects
-                                        :association-id="tab.association"
-                                        :projects="tab.association ?
-                                            projectStore.projects.filter(project => project.association === tab.association) :
-                                            projectStore.projects.filter(project => project.user === userStore.user?.id)"
-                                        :title="t('project.all-projects')"
-                                    />
-                                </QTabPanel>
-                                <QTabPanel
-                                    name="validatedProjects"
-                                    role=""
-                                >
-                                    <TableUserProjects
-                                        :association-id="tab.association"
-                                        :projects="tab.association ?
-                                            projectStore.projects.filter(project => project.association === tab.association
-                                                && project.projectStatus === 'PROJECT_REVIEW_VALIDATED') :
-                                            projectStore.projects.filter(project => project.user === userStore.user?.id
-                                                && project.projectStatus === 'PROJECT_REVIEW_VALIDATED')"
-                                        :title="t('project.validated-projects')"
-                                    />
-                                </QTabPanel>
-                                <QTabPanel
-                                    name="rejectedProjects"
-                                    role=""
-                                >
-                                    <TableUserProjects
-                                        :association-id="tab.association"
-                                        :projects="tab.association ?
-                                            projectStore.projects.filter(project => project.association === tab.association &&
-                                                (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED')) :
-                                            projectStore.projects.filter(project => project.user === userStore.user?.id &&
-                                                (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED'))"
-                                        :title="t('project.rejected-projects')"
-                                    />
-                                </QTabPanel>
-                            </QTabPanels>
-                        </template>
-                    </QSplitter>
-                </QTabPanel>
-            </QTabPanels>
-        </QCard>
+                                    <QTabPanel
+                                        name="allProjects"
+                                        role=""
+                                    >
+                                        <TableUserProjects
+                                            :association-id="tab.association"
+                                            :projects="tab.association ?
+                                                projectStore.projects.filter(project => project.association === tab.association) :
+                                                projectStore.projects.filter(project => project.user === userStore.user?.id)"
+                                            :title="t('project.all-projects')"
+                                        />
+                                    </QTabPanel>
+                                    <QTabPanel
+                                        name="validatedProjects"
+                                        role=""
+                                    >
+                                        <TableUserProjects
+                                            :association-id="tab.association"
+                                            :projects="tab.association ?
+                                                projectStore.projects.filter(project => project.association === tab.association
+                                                    && project.projectStatus === 'PROJECT_REVIEW_VALIDATED') :
+                                                projectStore.projects.filter(project => project.user === userStore.user?.id
+                                                    && project.projectStatus === 'PROJECT_REVIEW_VALIDATED')"
+                                            :title="t('project.validated-projects')"
+                                        />
+                                    </QTabPanel>
+                                    <QTabPanel
+                                        name="rejectedProjects"
+                                        role=""
+                                    >
+                                        <TableUserProjects
+                                            :association-id="tab.association"
+                                            :projects="tab.association ?
+                                                projectStore.projects.filter(project => project.association === tab.association &&
+                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED')) :
+                                                projectStore.projects.filter(project => project.user === userStore.user?.id &&
+                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED'))"
+                                            :title="t('project.rejected-projects')"
+                                        />
+                                    </QTabPanel>
+                                </QTabPanels>
+                            </template>
+                        </QSplitter>
+                    </QTabPanel>
+                </QTabPanels>
+            </QCard>
+        </div>
     </div>
 </template>
 
