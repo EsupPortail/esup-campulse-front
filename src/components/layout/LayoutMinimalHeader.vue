@@ -16,7 +16,6 @@ function ToggleMenu() {
     <QHeader
         id="layout-minimal-header"
         class="variant-space-1"
-        elevated
         height-hint="98"
         role="banner"
     >

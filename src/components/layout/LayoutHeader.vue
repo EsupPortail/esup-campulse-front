@@ -32,7 +32,6 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
     <QHeader
         id="layout-header"
         :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
-        elevated
         height-hint="98"
         role="banner"
     >

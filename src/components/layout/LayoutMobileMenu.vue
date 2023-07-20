@@ -72,6 +72,7 @@ const openMenu = ref<boolean>(false)
 
     .open-menu {
         visibility: visible;
+        z-index: 10;
     }
 }
 </style>

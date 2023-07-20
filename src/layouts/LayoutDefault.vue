@@ -12,7 +12,7 @@ const route = useRoute()
 <template>
     <QLayout
         id="layout-page"
-        view="hHh lpR fFf"
+        view="hhh lpr fff"
     >
         <LayoutHeader/>
         <LayoutBreadcrumbs v-if="route.name !== 'Home'"/>
