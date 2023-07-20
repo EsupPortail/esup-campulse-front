@@ -7,14 +7,14 @@ import useUserGroups from '@/composables/useUserGroups'
 import {onMounted, ref} from 'vue'
 import useSecurity from '@/composables/useSecurity'
 
-const {isStaff} = useUserGroups()
+const {isStaff, isMemberFund} = useUserGroups()
 const {hasPerm} = useSecurity()
 
 const pageCards = ref<PageCard[]>([])
 
 const initPageCards = () => {
     pageCards.value = []
-    if (isStaff.value) {
+    if (isStaff.value || isMemberFund.value) {
         pageCards.value.push({
             to: {name: 'ManageProjects'},
             btnLabel: 'Gérer les subventions',
@@ -37,7 +37,7 @@ const initPageCards = () => {
             text: 'Lorem ipsum'
         })
     }
-    if (hasPerm('change_project_as_bearer')) {
+    if (hasPerm('add_project_association') || hasPerm('add_project_user')) {
         pageCards.value.push({
             to: {name: 'ManageProjects'},
             btnLabel: 'Gérer et déposer des projets',
@@ -73,6 +73,7 @@ onMounted(initPageCards)
             title="CAPE"
         />
         <LayoutPageCards
+            v-if="pageCards.length"
             :page-cards="pageCards"
             color="commission"
         />
