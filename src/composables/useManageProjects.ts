@@ -58,12 +58,6 @@ export default function () {
         return perm
     }
 
-    const getFundLabel = (commissionFund: number) => {
-        return funds.value
-            .find(obj => obj.id === (commissionFunds.value
-                .find(obj => obj.id === commissionFund)?.fund))?.acronym
-    }
-
     async function patchAmountAsked(project: number, commissionFund: number, amountEarned: number) {
         await axiosAuthenticated.patch(`/projects/${project}/commission_funds/${commissionFund}`, {
             projectId: project,
@@ -79,7 +73,6 @@ export default function () {
         validateProjectCommissionFund,
         rejectProjectCommissionFund,
         canManageProjectCommissionFund,
-        getFundLabel,
         patchAmountAsked
     }
 }

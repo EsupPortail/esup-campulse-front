@@ -222,11 +222,13 @@
       "delete-warning-projects-submitted": "Impossible de supprimer cette commission car des projets ont été soumis et sont en cours de traitement."
     },
     "archived": "Commissions archivées",
+    "commission": "Commission | Commissions",
     "csv-name": "Export-Projets-",
     "date": "Date de commission",
     "dates": "Dates de commission",
     "export-csv": "Exporter en CSV",
     "funds": "Financeurs",
+    "funds-validation-status": "Décisions des financeurs",
     "is-closed-to-projects": "Fermée à la soumission de nouveaux projets",
     "is-open-to-projects": "Ouverte à la soumission de nouveaux projets",
     "name": "Nom de la commission",
@@ -235,7 +237,6 @@
     "select-date": "Sélectionner une date de commission",
     "submission": "Date limite de soumission"
   },
-  "commissions": "Commissions",
   "consult": "Consulter",
   "contact": {
     "contact": "Contact",
@@ -450,6 +451,7 @@
     "required-document-name": "Veuillez renseigner un nom de document public.",
     "required-email": "Veuillez renseigner une adresse mail valide.",
     "required-fields": "Les champs marqués d'un astérisque (*) sont obligatoires.",
+    "required-field": "Ce champ est obligatoire : {label}",
     "required-first-name": "Veuillez renseigner un prénom.",
     "required-fund": "Veuillez sélectionner un fonds.",
     "required-last-name": "Veuillez renseigner un nom de famille.",

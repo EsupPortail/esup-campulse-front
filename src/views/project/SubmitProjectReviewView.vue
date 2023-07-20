@@ -164,13 +164,13 @@ async function onUploadDocuments(nextStep: number) {
                                         val => val && datesAreLegal || t('forms.legal-dates')
                                     ]"
                                     aria-required="true"
+                                    bottom-slots
                                     clearable
                                     color="commission"
                                     filled
+                                    for="realStartDate"
                                     reactive-rules
                                     type="date"
-                                    bottom-slots
-                                    for="realStartDate"
                                 >
                                     <template v-slot:hint>
                                         <p aria-describedby="realStartDate">{{ t('project.real-date-hint') }}</p>
@@ -184,13 +184,13 @@ async function onUploadDocuments(nextStep: number) {
                                         val => val && datesAreLegal || t('forms.legal-dates')
                                     ]"
                                     aria-required="true"
+                                    bottom-slots
                                     clearable
                                     color="commission"
                                     filled
+                                    for="realEndDate"
                                     reactive-rules
                                     type="date"
-                                    bottom-slots
-                                    for="realEndDate"
                                 >
                                     <template v-slot:hint>
                                         <p aria-describedby="realEndDate">{{ t('project.real-date-hint') }}</p>
@@ -201,12 +201,12 @@ async function onUploadDocuments(nextStep: number) {
                                     :label="t('project.planned-location') + ' *'"
                                     :rules="[val => val && val.length > 0 || t('forms.required-project-location')]"
                                     aria-required="true"
+                                    bottom-slots
                                     clearable
                                     color="commission"
                                     filled
-                                    lazy-rules
-                                    bottom-slots
                                     for="realLocation"
+                                    lazy-rules
                                 >
                                     <template v-slot:hint>
                                         <p aria-describedby="realLocation">{{ t('project.real-location-hint') }}</p>
@@ -231,7 +231,7 @@ async function onUploadDocuments(nextStep: number) {
                                 </fieldset>
                             </div>
 
-                            <h3>{{ t('commissions') }}</h3>
+                            <h3>{{ t('commission.commission', 1) }}</h3>
                             <ProjectRecapCommissions :view="'submitProjectReview'"/>
 
                             <div class="fieldset">
@@ -296,13 +296,13 @@ async function onUploadDocuments(nextStep: number) {
                                 :label="t('project.moral-review') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.required-project-moral-review')]"
                                 aria-required="true"
+                                bottom-slots
                                 clearable
                                 color="commission"
                                 filled
+                                for="moralReview"
                                 lazy-rules
                                 type="textarea"
-                                bottom-slots
-                                for="moralReview"
                             >
                                 <template v-slot:hint>
                                     <p aria-describedby="moralReview">{{ t('project.moral-review-hint') }}</p>
@@ -324,13 +324,13 @@ async function onUploadDocuments(nextStep: number) {
                                 :label="t('project.description') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.required-project-description')]"
                                 aria-required="true"
+                                bottom-slots
                                 clearable
                                 color="commission"
                                 filled
+                                for="description"
                                 lazy-rules
                                 type="textarea"
-                                bottom-slots
-                                for="description"
                             >
                                 <template v-slot:hint>
                                     <p aria-describedby="description">{{ t('project.description-hint') }}</p>

@@ -9,13 +9,15 @@ import type {ProjectCommissionFund} from '#/project'
 import useManageProjects from '@/composables/useManageProjects'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 import useProjectComments from '@/composables/useProjectComments'
+import useCommissions from '@/composables/useCommissions'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {canManageProjectCommissionFund, getFundLabel, patchAmountAsked} = useManageProjects()
+const {canManageProjectCommissionFund, patchAmountAsked} = useManageProjects()
 const {postNewProjectComment} = useProjectComments()
 const {CURRENCY} = useUtility()
+const {getFundLabel} = useCommissions()
 
 
 const emit = defineEmits(['closeDialog', 'refreshProjects'])
@@ -141,7 +143,7 @@ async function onPatchProjectCommissionFunds() {
                                     <h4>{{ t('project.amount-asked') }}</h4>
                                     <QInput
                                         v-model="projectCommissionFund.amountAskedPreviousEdition"
-                                        :label="t('project.previous-asked')"
+                                        :label="`${t('project.previous-asked')} (${projectCommissionFund.fundLabel})`"
                                         color="commission"
                                         filled
                                         readonly
@@ -149,7 +151,7 @@ async function onPatchProjectCommissionFunds() {
                                     />
                                     <QInput
                                         v-model="projectCommissionFund.amountAsked"
-                                        :label="t('project.amount-asked')"
+                                        :label="`${t('project.amount-asked')} (${projectCommissionFund.fundLabel})`"
                                         color="commission"
                                         filled
                                         readonly
@@ -158,7 +160,7 @@ async function onPatchProjectCommissionFunds() {
                                     <h4>{{ t('project.amount-earned') }}</h4>
                                     <QInput
                                         v-model="projectCommissionFund.amountEarnedPreviousEdition"
-                                        :label="t('project.previous-earned')"
+                                        :label="`${t('project.previous-earned')} (${projectCommissionFund.fundLabel})`"
                                         color="commission"
                                         filled
                                         readonly
@@ -167,10 +169,13 @@ async function onPatchProjectCommissionFunds() {
                                     <QInput
                                         v-model="projectCommissionFund.amountEarned"
                                         :aria-required="!projectCommissionFund.amountEarnedIsValidatedByAdmin"
-                                        :label="t('project.amount-earned') +
+                                        :label="`${t('project.amount-earned')} (${projectCommissionFund.fundLabel})` +
                                             (!projectCommissionFund.amountEarnedIsValidatedByAdmin ? ' *' : '')"
                                         :readonly="projectCommissionFund.amountEarnedIsValidatedByAdmin"
-                                        :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                        :rules="[val => val && val.length > 0
+                                            || t('forms.required-field', {
+                                                label: `${t('project.amount-earned')} (${projectCommissionFund.fundLabel
+                                                })`})]"
                                         :shadow-text="` ${CURRENCY}`"
                                         clearable
                                         color="commission"
@@ -185,15 +190,16 @@ async function onPatchProjectCommissionFunds() {
                                         :hint="!projectCommissionFund.amountEarnedIsValidatedByAdmin
                                             && projectCommissionFund.amountEarned === '0' ?
                                                 t('project.no-amount-earned-comment-hint') : ''"
-                                        :label="t('project.new-comment') +
-                                            (projectCommissionFund.amountEarned === '0' ? ' *' : '')"
+                                        :label="`${t('project.new-comment')} (${projectCommissionFund.fundLabel})
+                                            ${projectCommissionFund.amountEarned === '0' ? ' *' : ''}`"
                                         :readonly="projectCommissionFund.amountEarnedIsValidatedByAdmin"
                                         :rules="projectCommissionFund.amountEarned === '0' ?
-                                            [ val => val && val.length > 0 || t('forms.fill-field')] : []"
+                                            [val => val && val.length > 0 || t('forms.required-field', {
+                                                label: `${t('project.new-comment')} (${projectCommissionFund.fundLabel})`
+                                            })] : []"
                                         clearable
                                         color="commission"
                                         filled
-                                        reactive-rules
                                         type="textarea"
                                     />
                                 </QCardSection>

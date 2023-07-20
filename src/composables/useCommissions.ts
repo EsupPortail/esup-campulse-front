@@ -56,6 +56,12 @@ export default function () {
         })
     }
 
+    const getFundLabel = (commissionFund: number) => {
+        return funds.value
+            .find(obj => obj.id === (commissionFunds.value
+                .find(obj => obj.id === commissionFund)?.fund))?.acronym
+    }
+
     // Commissions
     async function getCommissionsForManagers(
         activeProjects: boolean | undefined,
@@ -190,6 +196,7 @@ export default function () {
         getCommission,
         commission,
         getNextCommission,
-        getCommissionCSVExport
+        getCommissionCSVExport,
+        getFundLabel
     }
 }
