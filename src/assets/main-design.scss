@@ -52,6 +52,13 @@ body {
   justify-content: center;
 }
 
+.flex-row-center-md {
+  @media screen and (min-width: $responsiveWidth) {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .flex-row-space-between {
   justify-content: space-between;
 }

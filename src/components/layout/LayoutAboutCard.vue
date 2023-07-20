@@ -18,7 +18,7 @@ defineProps({
 
             <div class="section-title">
                 <div class="section-info">
-                    <h4 v-html="header"></h4>
+                    <h3 v-html="header"></h3>
                 </div>
             </div>
             <div class="section-content">

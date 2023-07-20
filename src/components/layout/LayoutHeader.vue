@@ -42,14 +42,12 @@ function ToggleMenu() {
         <div class="container">
             <QToolbar role="">
                 <QToolbarTitle>
-                    <h1>
-                        <RouterLink
-                            :to="{name: 'Home'}"
-                            class="home-link"
-                        >
-                            {{ siteName }}
-                        </RouterLink>
-                    </h1>
+                    <RouterLink
+                        :to="{name: 'Home'}"
+                        class="home-link"
+                    >
+                        {{ siteName }}
+                    </RouterLink>
                 </QToolbarTitle>
 
                 <div id="menu-items">

@@ -138,6 +138,7 @@ onMounted(() => {
             lazy-rules
             mask="## ## ## ## ##"
             type="tel"
+            bottom-slots
             for="phone"
         >
             <template v-slot:hint>

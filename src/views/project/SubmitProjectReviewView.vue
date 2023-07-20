@@ -160,7 +160,7 @@ async function onUploadDocuments(nextStep: number) {
                                     v-model="projectReview.realStartDate"
                                     :label="t('project.planned-start-date') + ' *'"
                                     :rules="[
-                                        val => val && val.length > 0 || t('forms.fill-field'),
+                                        val => val && val.length > 0 || t('forms.required-project-startdate'),
                                         val => val && datesAreLegal || t('forms.legal-dates')
                                     ]"
                                     aria-required="true"
@@ -169,6 +169,7 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     reactive-rules
                                     type="date"
+                                    bottom-slots
                                     for="realStartDate"
                                 >
                                     <template v-slot:hint>
@@ -179,7 +180,7 @@ async function onUploadDocuments(nextStep: number) {
                                     v-model="projectReview.realEndDate"
                                     :label="t('project.planned-end-date') + ' *'"
                                     :rules="[
-                                        val => val && val.length > 0 || t('forms.fill-field'),
+                                        val => val && val.length > 0 || t('forms.required-project-enddate'),
                                         val => val && datesAreLegal || t('forms.legal-dates')
                                     ]"
                                     aria-required="true"
@@ -188,6 +189,7 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     reactive-rules
                                     type="date"
+                                    bottom-slots
                                     for="realEndDate"
                                 >
                                     <template v-slot:hint>
@@ -197,12 +199,13 @@ async function onUploadDocuments(nextStep: number) {
                                 <QInput
                                     v-model="projectReview.realLocation"
                                     :label="t('project.planned-location') + ' *'"
-                                    :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-project-location')]"
                                     aria-required="true"
                                     clearable
                                     color="commission"
                                     filled
                                     lazy-rules
+                                    bottom-slots
                                     for="realLocation"
                                 >
                                     <template v-slot:hint>
@@ -239,7 +242,7 @@ async function onUploadDocuments(nextStep: number) {
                                 <QInput
                                     v-model="projectReview.outcome"
                                     :label="t('project.outcome') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    :rules="[ val => val && val.length > 0 || t('forms.required-project-outcome')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     clearable
@@ -254,7 +257,7 @@ async function onUploadDocuments(nextStep: number) {
                                 <QInput
                                     v-model="projectReview.income"
                                     :label="t('project.income') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                    :rules="[ val => val && val.length > 0 || t('forms.required-project-income')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     clearable
@@ -291,13 +294,14 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.review"
                                 :label="t('project.moral-review') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.required-project-moral-review')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
                                 filled
                                 lazy-rules
                                 type="textarea"
+                                bottom-slots
                                 for="moralReview"
                             >
                                 <template v-slot:hint>
@@ -307,7 +311,7 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.impactStudents"
                                 :label="t('project.impact-students') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.required-project-impact')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -318,13 +322,14 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.description"
                                 :label="t('project.description') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.required-project-description')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
                                 filled
                                 lazy-rules
                                 type="textarea"
+                                bottom-slots
                                 for="description"
                             >
                                 <template v-slot:hint>
@@ -334,7 +339,7 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.difficulties"
                                 :label="t('project.difficulties') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.required-project-difficulties')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -345,7 +350,7 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.improvements"
                                 :label="t('project.improvements') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                                :rules="[ val => val && val.length > 0 || t('forms.required-project-improvements')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"

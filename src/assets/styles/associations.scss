@@ -274,6 +274,10 @@
     margin: 0;
     list-style: none;
   }
+
+  dt {
+    font-weight: $semibold-weight;
+  }
 }
 
 #association-card {

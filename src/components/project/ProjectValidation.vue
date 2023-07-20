@@ -7,7 +7,6 @@ import useProjectComments from '@/composables/useProjectComments'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
 import type {ProjectStatus} from '#/project'
-import FormAddComment from '@/components/form/FormAddComment.vue'
 import useManageProjects from '@/composables/useManageProjects'
 import useCommissions from '@/composables/useCommissions'
 import {useUserStore} from '@/stores/useUserStore'
@@ -156,7 +155,7 @@ async function onUpdateProjectStatus() {
                         :label="t('project.commission-funds-validation',
                                   {action: `${selectedAction === 'validate' ? 'valider' : 'refuser'}`}) + ' (' + t('required') + ')'"
                         :options="projectCommissionFundLabels"
-                        :rules="[val => val && val.length || t('forms.fill-field')]"
+                        :rules="[val => val && val.length || t('forms.required-fund')]"
                         aria-required="true"
                         clearable
                         color="commission"
@@ -172,7 +171,7 @@ async function onUpdateProjectStatus() {
                         :aria-required="selectedAction !== 'validate'"
                         :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
                         :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.fill-field')] : []"
+                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
                         color="commission"
                         filled
                         lazy-rules

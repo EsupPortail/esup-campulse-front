@@ -179,7 +179,7 @@ const onReInitProjectCommissionFunds = () => {
                         :hint="t('project.commission-choice-hint')"
                         :label="t('project.commission-choice') + ' *'"
                         :options="commissionLabels"
-                        :rules="[ val => val || t('forms.fill-field')]"
+                        :rules="[ val => val || t('forms.required-commission')]"
                         clearable
                         color="commission"
                         emit-value
@@ -194,7 +194,7 @@ const onReInitProjectCommissionFunds = () => {
                         :hint="t('project.commission-funds-choice-hint')"
                         :label="t('project.commission-funds-choice') + ' *'"
                         :options="fundsLabels"
-                        :rules="[ val => val || t('forms.fill-field')]"
+                        :rules="[ val => val || t('forms.required-project-commission-fund')]"
                         clearable
                         color="commission"
                         emit-value

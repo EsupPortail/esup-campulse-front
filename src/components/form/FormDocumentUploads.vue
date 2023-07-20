@@ -165,6 +165,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 lazy-rules
                 use-chips
                 @rejected="onDocumentRejected"
+                bottom-slots
                 for="pathFile"
             >
                 <template v-slot:hint>

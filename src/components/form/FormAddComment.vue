@@ -17,17 +17,13 @@ const emit = defineEmits(['closeDialog', 'submit'])
             v-model="newComment"
             :aria-required="true"
             :label="t('forms.comment')"
-            :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+            :rules="[ val => val && val.length > 0 || t('forms.required-comment')]"
             color="commission"
             filled
             for="newComment"
             lazy-rules
             type="textarea"
-        >
-            <!--            <template v-slot:hint>
-                            <p aria-describedby="newComment">{{ props.selectedAction !== 'new-comment' ? t('forms.project-comment-hint') : '' }}</p>
-                        </template>-->
-        </QInput>
+        />
         <div class="flex-row-center padding-top comment-btn">
             <QBtn
                 :label="t('back')"
@@ -46,5 +42,4 @@ const emit = defineEmits(['closeDialog', 'submit'])
         </div>
     </QForm>
 </template>
-
 

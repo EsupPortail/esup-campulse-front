@@ -89,9 +89,10 @@ async function onUpdateProjectDates() {
                     <QInput
                         v-model="projectBasicInfos.plannedStartDate"
                         :label="t('project.planned-start-date') + ' *'"
-                        :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
-                                  val => val && fromDateIsAnterior(projectBasicInfos.plannedStartDate,
-                                                                   projectBasicInfos.plannedEndDate, true) || t('forms.legal-dates')]"
+                        :rules="[ val => val && val.length > 0 || t('forms.required-project-startdate'),
+                                  val => val
+                                      && fromDateIsAnterior(projectBasicInfos.plannedStartDate, projectBasicInfos.plannedEndDate, true)
+                                      || t('forms.legal-dates')]"
                         aria-required="true"
                         clearable
                         color="commission"
@@ -102,9 +103,10 @@ async function onUpdateProjectDates() {
                     <QInput
                         v-model="projectBasicInfos.plannedEndDate"
                         :label="t('project.planned-end-date') + ' *'"
-                        :rules="[ val => val && val.length > 0 || t('forms.fill-field'),
-                                  val => val && fromDateIsAnterior(projectBasicInfos.plannedStartDate,
-                                                                   projectBasicInfos.plannedEndDate, true) || t('forms.legal-dates')]"
+                        :rules="[ val => val && val.length > 0 || t('forms.required-project-enddate'),
+                                  val => val
+                                      && fromDateIsAnterior(projectBasicInfos.plannedStartDate, projectBasicInfos.plannedEndDate, true)
+                                      || t('forms.legal-dates')]"
                         aria-required="true"
                         clearable
                         color="commission"
