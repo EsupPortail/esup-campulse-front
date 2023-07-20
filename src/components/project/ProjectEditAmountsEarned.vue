@@ -59,6 +59,7 @@ interface EditProjectCommissionFund {
     amountEarnedPreviousEdition: number | string,
     isFirstEdition: boolean,
     comment: string,
+    needComment: boolean,
     amountEarnedIsValidatedByAdmin: boolean
 }
 
@@ -79,6 +80,7 @@ const initValues = () => {
                 amountEarnedPreviousEdition: projectCommissionFund.amountEarnedPreviousEdition?.toString() ?? '0',
                 isFirstEdition: projectCommissionFund.isFirstEdition as boolean,
                 comment: '',
+                needComment: false,
                 amountEarnedIsValidatedByAdmin: !!projectCommissionFund.amountEarned
             })
         }
@@ -183,23 +185,25 @@ async function onPatchProjectCommissionFunds() {
                                         lazy-rules
                                         min="0"
                                         type="number"
+
+                                        @update:model-value="projectCommissionFund.amountEarned === '0' ?
+                                            projectCommissionFund.needComment = true : projectCommissionFund.needComment = false"
                                     />
                                     <QInput
                                         v-model="projectCommissionFund.comment"
-                                        :aria-required="projectCommissionFund.amountEarned === '0'"
+                                        :aria-required="projectCommissionFund.needComment"
                                         :hint="!projectCommissionFund.amountEarnedIsValidatedByAdmin
-                                            && projectCommissionFund.amountEarned === '0' ?
+                                            && projectCommissionFund.needComment ?
                                                 t('project.no-amount-earned-comment-hint') : ''"
                                         :label="`${t('project.new-comment')} (${projectCommissionFund.fundLabel})
-                                            ${projectCommissionFund.amountEarned === '0' ? ' *' : ''}`"
+                                            ${projectCommissionFund.needComment ? ' *' : ''}`"
                                         :readonly="projectCommissionFund.amountEarnedIsValidatedByAdmin"
-                                        :rules="projectCommissionFund.amountEarned === '0' ?
-                                            [val => val && val.length > 0 || t('forms.required-field', {
-                                                label: `${t('project.new-comment')} (${projectCommissionFund.fundLabel})`
-                                            })] : []"
+                                        :rules="[val => (!projectCommissionFund.needComment || val && val.length > 0) || t('forms.required-field', {
+                                            label: `${t('project.new-comment')} (${projectCommissionFund.fundLabel})`})]"
                                         clearable
                                         color="commission"
                                         filled
+                                        reactive-rules
                                         type="textarea"
                                     />
                                 </QCardSection>
@@ -217,7 +221,8 @@ async function onPatchProjectCommissionFunds() {
                         />
                         <QBtn
                             :disable="!editProjectCommissionFunds
-                                .map(x => x.amountEarnedIsValidatedByAdmin).includes(false)"
+                                .map(x => x.amountEarnedIsValidatedByAdmin).includes(false)
+                                || editProjectCommissionFunds.map(x => x.amountEarned).includes(null)"
                             :label="t('validate')"
                             class="btn-lg"
                             color="commission"
