@@ -133,10 +133,10 @@ onMounted(() => {
             v-model="userToUpdate.phone"
             :label="t('forms.phone')"
             autocomplete="tel"
+            clearable
             color="dashboard"
             filled
             lazy-rules
-            mask="## ## ## ## ##"
             type="tel"
             bottom-slots
             for="phone"
