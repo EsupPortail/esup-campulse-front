@@ -67,48 +67,50 @@ onMounted(async () => {
             </template>
 
             <QList>
-                <div>
-                    <QItem
-                        v-close-popup
-                        clickable
-                        role=""
-                        @click="router.push({ name: 'Dashboard' })"
-                    >
-                        <QItemSection>
-                            <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
-                        </QItemSection>
-                    </QItem>
-                </div>
+                <ul>
+                    <li>
+                        <QItem
+                            v-close-popup
+                            clickable
+                            role=""
+                            @click="router.push({ name: 'Dashboard' })"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
 
-                <div
-                    v-for="(item) in userStore.userAssociations"
-                    :key="item.id"
-                >
-                    <QItem
-                        v-if="item.isValidatedByAdmin"
-                        v-close-popup
-                        clickable
-                        role=""
-                        @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
+                    <li
+                        v-for="(item) in userStore.userAssociations"
+                        :key="item.id"
                     >
-                        <QItemSection>
-                            <QItemLabel>{{ item.association.name }}</QItemLabel>
-                        </QItemSection>
-                    </QItem>
-                </div>
+                        <QItem
+                            v-if="item.isValidatedByAdmin"
+                            v-close-popup
+                            clickable
+                            role=""
+                            @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ item.association.name }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
 
-                <div>
-                    <QItem
-                        v-close-popup
-                        clickable
-                        role=""
-                        @click="onLogOut"
-                    >
-                        <QItemSection>
-                            <QItemLabel>{{ t('header.logout') }}</QItemLabel>
-                        </QItemSection>
-                    </QItem>
-                </div>
+                    <li>
+                        <QItem
+                            v-close-popup
+                            clickable
+                            role=""
+                            @click="onLogOut"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ t('header.logout') }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
+                </ul>
             </QList>
         </QBtnDropdown>
     </div>
@@ -126,5 +128,9 @@ onMounted(async () => {
 
 p {
     margin-bottom: 0 !important;
+}
+
+li {
+    list-style-type: none;
 }
 </style>

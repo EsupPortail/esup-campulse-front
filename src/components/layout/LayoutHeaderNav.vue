@@ -100,4 +100,8 @@ nav.desktop {
         display: none;
     }
 }
+
+li {
+    list-style-type: none;
+}
 </style>
