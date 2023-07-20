@@ -231,6 +231,8 @@ const onClearValues = () => {
                                 filled
                                 reactive-rules
                                 type="date"
+                                min="1970-01-01"
+                                max="2120-01-01"
                                 @update:model-value="() => commission.datesAreLegal =
                                     fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
@@ -246,6 +248,8 @@ const onClearValues = () => {
                                 filled
                                 reactive-rules
                                 type="date"
+                                min="1970-01-01"
+                                max="2120-01-01"
                                 @update:model-value="() => commission.datesAreLegal =
                                     fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
@@ -315,6 +319,8 @@ const onClearValues = () => {
                         filled
                         reactive-rules
                         type="date"
+                        min="1970-01-01"
+                        max="2120-01-01"
                         @update:model-value="() => newCommission.datesAreLegal =
                             fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />
@@ -330,6 +336,8 @@ const onClearValues = () => {
                         filled
                         reactive-rules
                         type="date"
+                        min="1970-01-01"
+                        max="2120-01-01"
                         @update:model-value="() => newCommission.datesAreLegal =
                             fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />

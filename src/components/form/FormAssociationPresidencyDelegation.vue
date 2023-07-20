@@ -108,6 +108,8 @@ async function onDelegatePresidency(activate: boolean) {
                         color="dashboard"
                         filled
                         type="date"
+                        min="1970-01-01"
+                        max="2120-01-01"
                     />
                     <QInput
                         v-model="delegation.to"
@@ -115,6 +117,8 @@ async function onDelegatePresidency(activate: boolean) {
                         color="dashboard"
                         filled
                         type="date"
+                        min="1970-01-01"
+                        max="2120-01-01"
                         bottom-slots
                         for="delegation"
                     >

@@ -97,6 +97,8 @@ async function onUpdateProjectDates() {
                         filled
                         reactive-rules
                         type="date"
+                        min="1970-01-01"
+                        max="2120-01-01"
                     />
                     <QInput
                         v-model="projectBasicInfos.plannedEndDate"
@@ -109,6 +111,8 @@ async function onUpdateProjectDates() {
                         filled
                         reactive-rules
                         type="date"
+                        min="1970-01-01"
+                        max="2120-01-01"
                     />
                     <div class="flex-row-center">
                         <QBtn

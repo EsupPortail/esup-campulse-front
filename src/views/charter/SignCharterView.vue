@@ -202,6 +202,8 @@ async function onSignCharter() {
                                 color="charter"
                                 filled
                                 type="date"
+                                min="1970-01-01"
+                                max="2120-01-01"
                             />
                             <QInput
                                 v-model="editedAssociation.presidentNames"

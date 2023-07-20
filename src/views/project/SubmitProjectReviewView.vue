@@ -169,6 +169,8 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     reactive-rules
                                     type="date"
+                                    min="1970-01-01"
+                                    max="2120-01-01"
                                     bottom-slots
                                     for="realStartDate"
                                 >
@@ -189,6 +191,8 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     reactive-rules
                                     type="date"
+                                    min="1970-01-01"
+                                    max="2120-01-01"
                                     bottom-slots
                                     for="realEndDate"
                                 >

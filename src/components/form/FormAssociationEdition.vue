@@ -349,6 +349,8 @@ async function onChangeLogo(action: string) {
                             clearable
                             filled
                             type="date"
+                            min="1970-01-01"
+                            max="2120-01-01"
                         >
                             <template v-slot:prepend>
                                 <QIcon name="mdi-calendar"/>
