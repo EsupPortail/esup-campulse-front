@@ -10,7 +10,6 @@ const {colorVariant} = useColorVariants()
     <QFooter
         id="layout-footer"
         :class="'variant-' + colorVariant"
-        elevated
         role="contentinfo"
     >
         <div id="footer-logos">

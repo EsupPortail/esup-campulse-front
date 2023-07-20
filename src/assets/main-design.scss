@@ -39,17 +39,21 @@ body {
 }
 
 // Flex utilities
-.flex-row, .flex-row-center, .flex-row-space-between, .flex-column {
+.flex-row, .flex-row-center, .flex-row-right, .flex-row-space-between, .flex-column {
   display: flex;
   gap: 1rem;
 }
 
-.flex-row, .flex-row-center, .flex-row-space-between {
+.flex-row, .flex-row-center, .flex-row-right, .flex-row-space-between {
   align-items: baseline;
 }
 
 .flex-row-center {
   justify-content: center;
+}
+
+.flex-row-right {
+  justify-content: right;
 }
 
 .flex-row-center-md {

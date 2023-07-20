@@ -573,12 +573,6 @@ const routes: RouteRecordRaw[] = [
             }
         ]
     },
-    // TO DELETE AFTER DEVELOPMENT
-    {
-        path: '/design-system',
-        name: 'DesignSystem',
-        component: () => import('@/views/DesignSystem.vue'),
-    },
     // This must be last
     {
         path: '/:catchAll(.*)',

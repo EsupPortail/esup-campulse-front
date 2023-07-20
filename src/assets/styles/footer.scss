@@ -1,5 +1,9 @@
 @import '@/assets/variables';
 
+.q-footer {
+  z-index: 1;
+}
+
 #layout-footer {
   position: relative;
   background-color: $footerBackgroundColor;

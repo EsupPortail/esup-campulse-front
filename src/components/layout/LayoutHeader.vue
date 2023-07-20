@@ -5,6 +5,7 @@ import {useI18n} from 'vue-i18n'
 import {ref, watch} from 'vue'
 import useColorVariants from '@/composables/useColorVariants'
 import useUtility from '@/composables/useUtility'
+import LayoutMobileMenu from '@/components/layout/LayoutMobileMenu.vue'
 
 const {t} = useI18n()
 const route = useRoute()
@@ -23,19 +24,14 @@ const initTitle = () => {
 watch(() => route.name, initTitle)
 watch(() => dynamicTitle.value, initTitle)
 
-const mobileMenuVisible = ref(false)
 const siteName = import.meta.env.VITE_APP_SITE_NAME
 
-function ToggleMenu() {
-    mobileMenuVisible.value = !mobileMenuVisible.value
-}
 </script>
 
 <template>
     <QHeader
         id="layout-header"
         :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
-        elevated
         height-hint="98"
         role="banner"
     >
@@ -49,26 +45,9 @@ function ToggleMenu() {
                         {{ siteName }}
                     </RouterLink>
                 </QToolbarTitle>
-
-                <div id="menu-items">
-                    <button
-                        class="btn-menu"
-                        @click="ToggleMenu"
-                    >
-                        <i
-                            aria-hidden="true"
-                            class="bi bi-list"
-                        ></i>
-                    </button>
-
-                    <span
-                        id="mobile-menu-background"
-                        :class="{'visible': mobileMenuVisible}"
-                        aria-hidden="true"
-                    ></span>
-
-                    <LayoutHeaderNav :class="{'visible': mobileMenuVisible}"/>
-                </div>
+                <LayoutHeaderNav
+                    device="desktop"
+                />
             </QToolbar>
 
             <div v-if="route.name !== 'Login'">
@@ -98,9 +77,10 @@ function ToggleMenu() {
                 </div>
             </div>
         </div>
+        <LayoutMobileMenu/>
     </QHeader>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/header.scss';
 </style>
