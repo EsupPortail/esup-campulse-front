@@ -360,6 +360,7 @@ async function onChangeLogo(action: string) {
                             clearable
                             filled
                             inputmode="numeric"
+                            maxlength="14"
                         />
                         <QInput
                             v-if="hasPerm('change_association_all_fields')"

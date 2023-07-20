@@ -288,6 +288,7 @@ async function onSignCharter() {
                                 color="charter"
                                 filled
                                 inputmode="numeric"
+                                maxlength="14"
                             />
                             <div class="flex-row-center">
                                 <QBtn
