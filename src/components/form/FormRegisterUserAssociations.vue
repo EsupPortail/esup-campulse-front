@@ -79,6 +79,11 @@ function checkAssociationAuthorization(association: AssociationRole) {
     checkHasStudentCertificate(association)
 }
 
+async function addAssociationFocus() {
+    await addAssociation()
+    document.querySelectorAll('.new-association')[document.querySelectorAll('.new-association').length - 1].querySelector('input').focus()
+}
+
 watch(() => processDocuments.value[0]?.pathFile, () => {
     newAssociations.value.forEach(association => {
         checkAssociationAuthorization(association)
@@ -96,7 +101,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
             <div
                 v-for="(association, index) in newAssociations"
                 :key="index"
-                class="flex-row"
+                class="flex-row new-association"
             >
                 <div>
                     <div class="flex-column">
@@ -168,7 +173,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                     color="dashboard"
                     icon="bi-plus-circle"
                     outline
-                    @click="addAssociation"
+                    @click="addAssociationFocus"
                 />
             </div>
         </QCardSection>
