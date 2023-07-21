@@ -24,7 +24,6 @@ onMounted(initValues)
 <template>
     <div
         v-for="(socialNetwork, index) in associationSocialNetworks"
-        id="network-section"
         :key="index"
         class="display-row"
     >
@@ -38,10 +37,10 @@ onMounted(initValues)
                 filled
                 lazy-rules
                 bottom-slots
-                for="socialNetworkType"
+                :for="'socialNetworkType-' + index"
             >
                 <template v-slot:hint>
-                    <p aria-describedby="socialNetworkType">{{ t('forms.social-network-type-hint') }}</p>
+                    <p :aria-describedby="'socialNetworkType-' + index">{{ t('forms.social-network-type-hint') }}</p>
                 </template>
             </QInput>
             <QInput
@@ -54,10 +53,10 @@ onMounted(initValues)
                 lazy-rules
                 type="url"
                 bottom-slots
-                for="socialNetworkLocation"
+                :for="'socialNetworkLocation-' + index"
             >
                 <template v-slot:hint>
-                    <p aria-describedby="socialNetworkLocation">{{ t('forms.social-network-location-hint') }}</p>
+                    <p :aria-describedby="'socialNetworkLocation-' + index">{{ t('forms.social-network-location-hint') }}</p>
                 </template>
             </QInput>
             <QSeparator

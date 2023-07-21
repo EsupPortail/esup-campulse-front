@@ -43,7 +43,7 @@ interface Option {
     icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf',
     label: string,
     to?: {
-        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail' | 'SubmitProjectReview' | 'ProjectReviewDetail',
+        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ViewProject' | 'SubmitProjectReview' | 'ProjectReviewDetail',
         params: { associationId?: number, projectId: number }
     },
     action?: 'delete' | 'download-pdf'

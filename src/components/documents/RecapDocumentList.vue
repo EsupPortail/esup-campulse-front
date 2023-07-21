@@ -86,7 +86,7 @@ onMounted(async () => await onGetDocuments())
             class="display-row"
         >
             <h4>{{ document.description }}</h4>
-            <ul role="list">
+            <ul>
                 <li
                     v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                     :key="uploadedDocument.id"

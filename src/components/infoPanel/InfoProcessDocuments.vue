@@ -47,7 +47,7 @@ onMounted(async () => {
         <p>
             {{ t('project.required-documents-list') + ' :' }}
         </p>
-        <ul role="list">
+        <ul>
             <li
                 v-for="(document, index) in processDocuments"
                 :key="index"
