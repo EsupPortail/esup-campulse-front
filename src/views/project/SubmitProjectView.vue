@@ -707,7 +707,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QSeparator
                                     aria-hidden="true"
                                     class="margin-bottom"
-                                    role="presentation"
                                 />
                             </div>
 
@@ -779,7 +778,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QSeparator
                                 aria-hidden="true"
                                 class="margin-bottom"
-                                role="presentation"
                             />
 
                             <section class="flex-column">

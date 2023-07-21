@@ -64,7 +64,6 @@ async function onGetAssociationDetail() {
                         v-if="association"
                         :src="hasLogo ? (!association?.pathLogo?.detail.startsWith('http') ?
                             baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
-                        alt=""
                         aria-hidden="true"
                         itemprop="logo"
                     />
@@ -256,12 +255,11 @@ async function onGetAssociationDetail() {
                             class="display-row"
                         >
                             <dt>{{ t('association.labels.website') }}</dt>
-                            <dd
-                                :href="association?.website"
-                                :title="`${t('association.labels.website-link')} ${association?.name}`"
-                                itemprop="url"
-                            >
-                                {{ association?.website }}
+                            <dd itemprop="url">
+                                <a
+                                    :href="association?.website"
+                                    :title="`${t('association.labels.website-link')} ${association?.name}`"
+                                >{{ association?.website }}</a>
                             </dd>
                         </div>
 

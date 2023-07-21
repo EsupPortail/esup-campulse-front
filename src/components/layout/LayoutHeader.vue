@@ -36,7 +36,7 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
         role="banner"
     >
         <div class="container">
-            <QToolbar role="">
+            <QToolbar>
                 <QToolbarTitle>
                     <RouterLink
                         :to="{name: 'Home'}"

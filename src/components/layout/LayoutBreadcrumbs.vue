@@ -34,19 +34,16 @@ onMounted(() => {
         <QBreadcrumbs
             gutter="none"
             separator=""
-            role="list"
         >
             <QBreadcrumbsEl
                 :label="t('breadcrumbs.home')"
                 :to="{ name: 'Home' }"
-                role="listitem"
             />
             <QBreadcrumbsEl
                 v-for="(element, index) in breadcrumbs"
                 :key="index"
                 :label="element.label"
                 :to="element.to"
-                role="listitem"
                 :aria-current="(index === breadcrumbs.length - 1) ? 'page' : 'false'"
             />
         </QBreadcrumbs>

@@ -132,7 +132,6 @@ async function onGetProjects() {
 
                 <QSeparator
                     aria-hidden="true"
-                    role="presentation"
                 />
 
                 <QTabPanels
@@ -144,7 +143,6 @@ async function onGetProjects() {
                         :key="index"
                         :name="tab.name"
                         class="q-pa-none"
-                        role=""
                     >
                         <QSplitter
                             v-model="splitterModel"
@@ -237,7 +235,6 @@ async function onGetProjects() {
                                 >
                                     <QTabPanel
                                         name="allProjects"
-                                        role=""
                                     >
                                         <TableUserProjects
                                             :association-id="tab.association"
@@ -249,7 +246,6 @@ async function onGetProjects() {
                                     </QTabPanel>
                                     <QTabPanel
                                         name="validatedProjects"
-                                        role=""
                                     >
                                         <TableUserProjects
                                             :association-id="tab.association"
@@ -263,7 +259,6 @@ async function onGetProjects() {
                                     </QTabPanel>
                                     <QTabPanel
                                         name="rejectedProjects"
-                                        role=""
                                     >
                                         <TableUserProjects
                                             :association-id="tab.association"

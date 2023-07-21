@@ -44,7 +44,9 @@ onMounted(initTab)
                     />
                 </QTabs>
 
-                <QSeparator/>
+                <QSeparator
+                    aria-hidden="true"
+                />
 
                 <QTabPanels
                     v-model="tab"
@@ -52,7 +54,6 @@ onMounted(initTab)
                 >
                     <QTabPanel
                         :name="tab"
-                        role=""
                     >
                         <TableAssociationUserCharters :association-id="parseInt(tab)"/>
                     </QTabPanel>

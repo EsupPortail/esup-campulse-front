@@ -182,7 +182,6 @@ async function onChangeLogo(action: string) {
             <div class="association-logo">
                 <QImg
                     :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (!pathLogo.detail.startsWith('http') ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
-                    alt=""
                     aria-hidden="true"
                 />
             </div>
@@ -439,7 +438,6 @@ async function onChangeLogo(action: string) {
                         </fieldset>
                         <QSeparator
                             aria-hidden="true"
-                            role="presentation"
                         />
                         <QInput
                             v-model="association.email"

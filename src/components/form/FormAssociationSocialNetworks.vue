@@ -62,7 +62,6 @@ onMounted(initValues)
             </QInput>
             <QSeparator
                 aria-hidden="true"
-                role="presentation"
             />
             <QBtn
                 :aria-label="t('delete')"

@@ -52,18 +52,15 @@ onMounted(async () => {
             padding="0"
         >
             <template v-slot:label>
-                <div class="row items-center no-wrap">
-                    <div
+                <span class="row items-center no-wrap">
+                    <span
                         aria-hidden="true"
                         class="avatar"
                     >
                         <i class="bi bi-person-circle"></i>
-                    </div>
-
-                    <div class="text-center">
-                        <p>{{ t('header.my-account') }}</p>
-                    </div>
-                </div>
+                    </span>
+                    <span class="text-center">{{ t('header.my-account') }}</span>
+                </span>
             </template>
 
             <QList>
@@ -72,7 +69,6 @@ onMounted(async () => {
                         <QItem
                             v-close-popup
                             clickable
-                            role=""
                             @click="router.push({ name: 'Dashboard' })"
                         >
                             <QItemSection>
@@ -89,7 +85,6 @@ onMounted(async () => {
                             v-if="item.isValidatedByAdmin"
                             v-close-popup
                             clickable
-                            role=""
                             @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
                         >
                             <QItemSection>
@@ -102,7 +97,6 @@ onMounted(async () => {
                         <QItem
                             v-close-popup
                             clickable
-                            role=""
                             @click="onLogOut"
                         >
                             <QItemSection>
@@ -126,7 +120,7 @@ onMounted(async () => {
     width: 100%;
 }
 
-.q-btn__content > div > * {
+.q-btn__content > span > * {
     padding: 0 0.5rem;
 }
 

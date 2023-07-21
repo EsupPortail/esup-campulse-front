@@ -91,7 +91,6 @@ async function onGetCommissions() {
 
         <QSeparator
             aria-hidden="true"
-            role="presentation"
         />
 
         <QTabPanels
@@ -103,7 +102,6 @@ async function onGetCommissions() {
                 :key="index"
                 :name="tab.name"
                 class="q-pa-none"
-                role=""
             >
                 <QSplitter
                     v-model="splitterModel"
@@ -146,7 +144,6 @@ async function onGetCommissions() {
                         >
                             <QTabPanel
                                 name="allProjects"
-                                role=""
                             >
                                 <TableManagedProjects
                                     :commission="tab.commission"
@@ -156,7 +153,6 @@ async function onGetCommissions() {
                             </QTabPanel>
                             <QTabPanel
                                 name="validatedProjects"
-                                role=""
                             >
                                 <TableManagedProjects
                                     :commission="tab.commission"
@@ -166,7 +162,6 @@ async function onGetCommissions() {
                             </QTabPanel>
                             <QTabPanel
                                 name="archivedProjects"
-                                role=""
                             >
                                 <TableManagedProjects
                                     :commission="tab.commission"

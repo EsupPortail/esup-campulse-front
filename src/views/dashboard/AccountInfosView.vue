@@ -119,7 +119,6 @@ onMounted(() => {
     >
         <QTabPanel
             name="infos"
-            role=""
         >
             <div class="dashboard-section">
                 <h2>
@@ -158,7 +157,6 @@ onMounted(() => {
 
         <QTabPanel
             name="associations"
-            role=""
         >
             <div class="dashboard-section">
                 <h2>
@@ -211,7 +209,6 @@ onMounted(() => {
 
         <QTabPanel
             name="password"
-            role=""
         >
             <FormProfilePasswordEdit/>
         </QTabPanel>

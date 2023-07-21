@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type {RouteRecordRaw} from 'vue-router'
 import i18n from '@/plugins/i18n'
 
 
@@ -267,11 +267,6 @@ const routes: RouteRecordRaw[] = [
                 ]
             },
             {
-                path: 'cas-login',
-                name: 'CASLogin',
-                component: () => import('@/views/CASLoginView.vue')
-            },
-            {
                 path: 'dashboard',
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.dashboard'),
@@ -491,15 +486,26 @@ const routes: RouteRecordRaw[] = [
                 ]
             },
             {
-                path: 'register',
-                name: 'Registration',
-                component: () => import('@/views/RegisterLocalView.vue'),
+                path: 'about-page',
+                name: 'About',
+                component: () => import('@/views/AboutView.vue'),
                 meta: {
-                    breadcrumb: i18n.global.t('breadcrumbs.register'),
-                    title: i18n.global.t('breadcrumbs.register'),
-                    colorVariant: 'space-4',
+                    title: i18n.global.t('breadcrumbs.about'),
+                    breadcrumb: i18n.global.t('breadcrumbs.about'),
+                    colorVariant: 'space-1',
                     siteMap: true,
-                },
+                }
+            },
+            {
+                path: 'contact-page',
+                name: 'Contact',
+                component: () => import('@/views/ContactView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.contact'),
+                    breadcrumb: i18n.global.t('breadcrumbs.contact'),
+                    colorVariant: 'space-1',
+                    siteMap: true,
+                }
             },
             {
                 path: 'cas-register',
@@ -509,6 +515,22 @@ const routes: RouteRecordRaw[] = [
                     breadcrumb: i18n.global.t('breadcrumbs.register'),
                     title: i18n.global.t('breadcrumbs.register'),
                     colorVariant: 'space-4'
+                },
+            },
+            {
+                path: 'cas-login',
+                name: 'CASLogin',
+                component: () => import('@/views/CASLoginView.vue')
+            },
+            {
+                path: 'register',
+                name: 'Registration',
+                component: () => import('@/views/RegisterLocalView.vue'),
+                meta: {
+                    breadcrumb: i18n.global.t('breadcrumbs.register'),
+                    title: i18n.global.t('breadcrumbs.register'),
+                    colorVariant: 'space-4',
+                    siteMap: true,
                 },
             },
             {
@@ -556,28 +578,6 @@ const routes: RouteRecordRaw[] = [
                     colorVariant: 'space-4',
                     breadcrumb: i18n.global.t('breadcrumbs.password-reset-confirm'),
                     title: i18n.global.t('breadcrumbs.password-reset-confirm'),
-                }
-            },
-            {
-                path: 'about-page',
-                name: 'About',
-                component: () => import('@/views/AboutView.vue'),
-                meta: {
-                    title: i18n.global.t('breadcrumbs.about'),
-                    breadcrumb: i18n.global.t('breadcrumbs.about'),
-                    colorVariant: 'space-1',
-                    siteMap: true,
-                }
-            },
-            {
-                path: 'contact-page',
-                name: 'Contact',
-                component: () => import('@/views/ContactView.vue'),
-                meta: {
-                    title: i18n.global.t('breadcrumbs.contact'),
-                    breadcrumb: i18n.global.t('breadcrumbs.contact'),
-                    colorVariant: 'space-1',
-                    siteMap: true,
                 }
             }
         ]

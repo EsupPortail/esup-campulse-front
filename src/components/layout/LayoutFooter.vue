@@ -99,7 +99,7 @@ const {colorVariant} = useColorVariants()
                 </li>
             </ul>
         </div>
-        <QToolbar role="">
+        <QToolbar>
             <ul class="footer-text">
                 <li
                     v-for="route in router.options.routes[0].children.filter((r) => r.meta?.siteMap === true)"

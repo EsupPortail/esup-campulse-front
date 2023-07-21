@@ -129,14 +129,12 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                         <QSeparator
                             v-if="routeName !== 'ManageAccount'"
                             aria-hidden="true"
-                            role="presentation"
                         />
                     </div>
                 </div>
                 <QSeparator
                     aria-hidden="true"
                     inset
-                    role="presentation"
                     vertical
                 />
                 <div>
