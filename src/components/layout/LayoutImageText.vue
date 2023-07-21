@@ -36,7 +36,7 @@ const props = defineProps<{
   }
 }
 
-// Changing the page's position to fit with the Accessibility Requirement
+/* Changing the page's position to fit with the Accessibility Requirement */
 @media screen and (min-width: 20rem) and (max-width: 26.875rem) {
   .container {
     display: flex;

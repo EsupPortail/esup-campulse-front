@@ -47,7 +47,7 @@
       }
     }
 
-    @media only screen and (max-width: $pageWidth) {
+    @media screen and (max-width: $pageWidth) {
       padding-left: $responsiveMargin;
       padding-right: $responsiveMargin;
     }
@@ -101,7 +101,7 @@
       }
     }
 
-    @media only screen and (max-width: $pageWidth) {
+    @media screen and (max-width: $pageWidth) {
       padding-left: $responsiveMargin;
       padding-right: $responsiveMargin;
     }
@@ -117,7 +117,7 @@
     font-weight: 300;
     color: $footerTextColor;
 
-    @media only screen and (max-width: $pageWidth) {
+    @media screen and (max-width: $pageWidth) {
       padding-left: $responsiveMargin;
       padding-right: $responsiveMargin;
     }

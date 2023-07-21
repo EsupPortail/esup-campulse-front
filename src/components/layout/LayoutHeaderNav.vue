@@ -94,10 +94,10 @@ nav.mobile a {
 }
 
 nav.desktop {
-    display: block;
+    display: none;
 
-    @media only screen and (max-width: 830px) {
-        display: none;
+    @media screen and (min-width: $responsiveWidth) {
+        display: block;
     }
 }
 

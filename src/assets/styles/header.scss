@@ -98,7 +98,7 @@
       }
     }
 
-    /*@media only screen and (max-width: $responsiveWidth) {
+    /*@media screen and (max-width: $responsiveWidth) {
       flex-direction: column;
       align-items: flex-end;
       height: 0;
@@ -165,7 +165,7 @@
       }
     }
 
-    @media only screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveWidth) {
       padding-right: 0;
       padding-left: 0.625rem;
     }
@@ -193,7 +193,7 @@
         font-size: 3rem;
       }
 
-      @media only screen and (max-width: $responsiveWidth) {
+      @media screen and (max-width: $responsiveWidth) {
         display: block;
         z-index: 10;
       }
@@ -214,7 +214,7 @@
       opacity: 1;
     }
 
-    @media only screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveWidth) {
       display: block;
     }
   }
@@ -225,7 +225,7 @@
   &.variant-home {
     height: 27.5rem;
 
-    @media only screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveWidth) {
       height: auto;
 
       .q-toolbar {
@@ -388,7 +388,7 @@
     }
   }
 
-  @media only screen and (min-width: $responsiveWidth) {
+  @media screen and (min-width: $responsiveWidth) {
     left: calc(50% - #{$pageWidth * 0.5});
   }
 }

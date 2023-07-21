@@ -29,7 +29,7 @@
       background-size: auto 100%;
     }
 
-    @media only screen and (max-width: $pageWidth) {
+    @media screen and (max-width: $pageWidth) {
       padding-left: $responsiveMargin;
       padding-right: $responsiveMargin;
     }
