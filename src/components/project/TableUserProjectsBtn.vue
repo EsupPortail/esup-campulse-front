@@ -76,7 +76,7 @@ const initOptions = () => {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view'),
-            to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
+            to: {name: 'ViewProject', params: {projectId: props.projectId}}
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
