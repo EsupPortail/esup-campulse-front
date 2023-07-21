@@ -27,8 +27,8 @@ async function onValidateChanges() {
         await updateAssociation()
         emit('hasValidated')
         notify({
-            message: t('notifications.positive.association-successfully-updated'),
-            type: 'positive'
+            type: 'positive',
+            message: t('notifications.positive.association-successfully-updated')
         })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

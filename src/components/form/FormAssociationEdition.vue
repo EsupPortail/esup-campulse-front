@@ -158,8 +158,8 @@ async function onChangeLogo(action: string) {
             newLogo.value = undefined
         }
         notify({
-            message: t('notifications.positive.association-logo-updated'),
-            type: 'positive'
+            type: 'positive',
+            message: t('notifications.positive.association-logo-updated')
         })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

@@ -21,18 +21,18 @@ async function reset() {
             let errorMessage = null
             switch (error.response?.status) {
             case 404:
-                errorMessage = t('notifications.negative.unknown-email')
+                errorMessage = 'unknown-email'
                 break
             case 403:
-                errorMessage = t('notifications.negative.restricted-email')
+                errorMessage = 'restricted-email'
                 break
             default:
-                errorMessage = t('notifications.negative.error')
+                errorMessage = 'error'
                 break
             }
             notify({
                 type: 'negative',
-                message: errorMessage
+                message: t(`notifications.negative.${errorMessage}`)
             })
         }
     }

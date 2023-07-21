@@ -101,8 +101,8 @@ async function onPatchAssociation() {
         if (Object.entries(checkChanges(editedAssociation.value)).length) {
             await updateAssociation()
             notify({
-                message: t('notifications.positive.association-successfully-updated'),
-                type: 'positive'
+                type: 'positive',
+                message: t('notifications.positive.association-successfully-updated')
             })
         }
         step.value = 2
