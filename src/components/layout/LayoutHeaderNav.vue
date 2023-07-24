@@ -12,7 +12,7 @@ const {t} = useI18n()
             :aria-label="t('primary-nav')"
             role="navigation"
     >
-        <ul class="flex-column-center">
+        <ul>
             <li>
                 <RouterLink :to="{name: 'Home'}">{{ t('header.home') }}</RouterLink>
             </li>

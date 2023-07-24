@@ -47,6 +47,15 @@
   nav {
     text-align: right;
 
+    ul {
+      display: flex;
+      flex-direction: column;
+
+      @media screen and (min-width: $responsiveWidth) {
+        flex-direction: row;
+      }
+    }
+
     li {
       padding-bottom: 1rem;
     }
@@ -112,7 +121,7 @@
 
       & > a {
         font-size: 1.2rem;
-        font-weight: 600;
+        font-weight: $semibold-weight;
         margin-bottom: 1rem;
       }
 
@@ -439,7 +448,7 @@
       }
 
       .q-item__label {
-        font-weight: 400;
+        font-weight: $normal-weight;
         text-decoration: none;
         color: $textColor3;
         text-transform: uppercase;
