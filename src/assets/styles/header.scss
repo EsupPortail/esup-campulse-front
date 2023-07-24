@@ -43,10 +43,10 @@
 
     ul {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
 
-      @media screen and (min-width: $responsiveWidth) {
-        flex-direction: row;
+      @media screen and (max-width: $responsiveLg) {
+        flex-direction: column;
       }
     }
 
@@ -107,7 +107,7 @@
       }
     }
 
-    /*@media screen and (max-width: $responsiveWidth) {
+    /*@media screen and (max-width: $responsiveLg) {
       flex-direction: column;
       align-items: flex-end;
       height: 0;
@@ -174,7 +174,7 @@
       }
     }
 
-    @media screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveLg) {
       padding-right: 0;
       padding-left: 0.625rem;
     }
@@ -202,7 +202,7 @@
         font-size: 3rem;
       }
 
-      @media screen and (max-width: $responsiveWidth) {
+      @media screen and (max-width: $responsiveLg) {
         display: block;
         z-index: 10;
       }
@@ -223,7 +223,7 @@
       opacity: 1;
     }
 
-    @media screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveLg) {
       display: block;
     }
   }
@@ -234,7 +234,7 @@
   &.variant-home {
     height: 27.5rem;
 
-    @media screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveLg) {
       height: auto;
 
       .q-toolbar {
@@ -334,7 +334,7 @@
       text-transform: uppercase;
     }
 
-    @media screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveLg) {
       font-size: 2.8rem
     }
   }
@@ -395,10 +395,6 @@
     @media screen and (min-width: 20rem) and (max-width: 26.875rem) {
       font-size: 2.8rem;
     }
-  }
-
-  @media screen and (min-width: $responsiveWidth) {
-    left: calc(50% - #{$pageWidth * 0.5});
   }
 }
 

@@ -690,7 +690,7 @@ label.custom-label {
     top: -3px;
   }
 
-  @media screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $responsiveLg) {
     margin-bottom: 0.8rem;
   }
 }
@@ -800,31 +800,7 @@ label.custom-label {
   }
 }
 
-// Form page navigation
-.form-page-navigation {
-  width: $fullSize;
-  display: flex;
-  flex-direction: column;
-  padding: 0 1.5rem 0;
-  gap: 1rem;
-
-
-  @media screen and (min-width: $responsiveWidth) {
-    display: flex;
-    flex-direction: row;
-
-    p {
-      margin: 0;
-      text-align: center;
-    }
-
-    .q-btn {
-      width: 40%;
-    }
-  }
-}
-
-// Multi-column form
+/*// Multi-column form
 .form-col-container {
   display: flex;
   align-items: stretch;
@@ -852,7 +828,7 @@ label.custom-label {
     }
   }
 
-  @media screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $responsiveLg) {
     flex-direction: column;
 
     .form-col {
@@ -866,7 +842,7 @@ label.custom-label {
       }
     }
   }
-}
+}*/
 
 // Display rows
 .display-row, .comment-row {

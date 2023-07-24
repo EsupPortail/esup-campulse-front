@@ -3,11 +3,11 @@
 #layout-breadcrumbs {
   .q-breadcrumbs {
     background-color: $annuaireColor;
-    padding: 0.938rem 0;
+    padding: 1rem;
 
     & > * {
       width: 100%;
-      max-width: $pageWidth;
+      max-width: 120rem;
       margin: 0 auto;
     }
 
@@ -29,10 +29,6 @@
       background-size: auto 100%;
     }
 
-    @media screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
   }
 
   // The breadcrumbs have several variants (notably one for the home page and one for the login page).
@@ -42,7 +38,7 @@
     display: none;
   }
 
-  &.variant-space-1 .q-breadcrumbs{
+  &.variant-space-1 .q-breadcrumbs {
     .q-breadcrumbs__el:focus {
       outline: 2px solid $outlineColor1;
       outline-offset: 2px;
