@@ -145,7 +145,7 @@ async function onGetProjectReviewDetail() {
             </div>
         </div>
         <ProjectReviewValidation
-            v-if="projectStore.project?.projectStatus === 'PROJECT_REVIEW_PROCESSING'
+            v-if="route.name === 'ManageProjectReview' && projectStore.project?.projectStatus === 'PROJECT_REVIEW_PROCESSING'
                 && hasPerm('change_project_as_validator')"
         />
     </div>

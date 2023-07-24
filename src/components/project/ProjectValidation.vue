@@ -118,7 +118,7 @@ async function onUpdateProjectStatus() {
 <template>
     <section class="flex-row-center padding-top padding-bottom">
         <QBtn
-            :disable="!canChangeProject()"
+            :disable="!canChangeProject"
             :label="t('project.validate')"
             class="btn-lg"
             color="commission"
@@ -126,7 +126,7 @@ async function onUpdateProjectStatus() {
             @click="onOpenDialog('validate', 'bi-check-lg')"
         />
         <QBtn
-            :disable="!canChangeProject()"
+            :disable="!canChangeProject"
             :label="t('project.return')"
             class="btn-lg"
             color="custom-red"
@@ -134,7 +134,7 @@ async function onUpdateProjectStatus() {
             @click="onOpenDialog('return', 'bi-exclamation-triangle')"
         />
         <QBtn
-            :disable="!canChangeProject()"
+            :disable="!canChangeProject"
             :label="t('project.reject')"
             class="btn-lg"
             color="custom-red"
@@ -177,7 +177,7 @@ async function onUpdateProjectStatus() {
                         lazy-rules
                         type="textarea"
                     />
-                    <div class="flex-row-center padding-top comment-btn">
+                    <div class="flex-row-center padding-top">
                         <QBtn
                             :label="t('back')"
                             class="btn-lg"
