@@ -5,13 +5,14 @@ import LayoutContent from '@/components/layout/LayoutContent.vue'
 import LayoutFooter from '@/components/layout/LayoutFooter.vue'
 import {useRoute} from 'vue-router'
 
+
 const route = useRoute()
 </script>
 
 <template>
     <QLayout
         id="layout-page"
-        view="hHh lpR fFf"
+        view="hhh lpr fff"
     >
         <LayoutHeader/>
         <LayoutBreadcrumbs v-if="route.name !== 'Home'"/>

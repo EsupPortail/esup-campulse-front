@@ -83,7 +83,7 @@ async function onGetProjectDetail() {
                 aria-hidden="true"
                 class="bi bi-calendar"
             ></i>
-            {{ t('project.commission-choice') }}
+            {{ t('commission.commission', 1) }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
@@ -151,7 +151,7 @@ async function onGetProjectDetail() {
                 aria-hidden="true"
                 class="bi bi-bank"
             ></i>
-            {{ t('commission.funds') }}
+            {{ t('commission.funds-validation-status') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">

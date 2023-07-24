@@ -26,7 +26,7 @@ async function onDeleteAssociation() {
         } else {
             notify({
                 type: 'negative',
-                message: t('association.before-deletion-word-error')
+                message: t('notifications.negative.association-before-deletion-word-error')
             })
         }
     } catch (error) {

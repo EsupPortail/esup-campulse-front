@@ -15,9 +15,13 @@ const colorVariant = ref<string>('')
 
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
-    const {initStaffStatus, isStaff, getGroups} = useUserGroups()
+    const {initStaffStatus, isStaff, getGroups, initIsMemberFund} = useUserGroups()
     const {newUser, hasPerm} = useSecurity()
-    const {dynamicTitle} = useUtility()
+    const {dynamicTitle, openMenu} = useUtility()
+
+    if (openMenu.value) {
+        openMenu.value = false
+    }
 
     // Scroll to top when on a new page (except for anchors)
     if (!to.hash.includes('#')) window.scrollTo(0, 0)
@@ -47,6 +51,7 @@ router.beforeEach(async (to) => {
     if (userStore.isAuth) {
         await getGroups()
         await initStaffStatus()
+        await initIsMemberFund()
     }
 
     // Authenticated views

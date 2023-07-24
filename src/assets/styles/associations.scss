@@ -168,7 +168,7 @@
     }
   }
 
-  @media only screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $responsiveWidth) {
     .q-card {
       .card-background {
         display: none;
@@ -273,6 +273,10 @@
   ul {
     margin: 0;
     list-style: none;
+  }
+
+  dt {
+    font-weight: $semibold-weight;
   }
 }
 

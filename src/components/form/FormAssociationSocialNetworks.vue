@@ -24,7 +24,6 @@ onMounted(initValues)
 <template>
     <div
         v-for="(socialNetwork, index) in associationSocialNetworks"
-        id="network-section"
         :key="index"
         class="display-row"
     >
@@ -32,15 +31,16 @@ onMounted(initValues)
             <QInput
                 v-model="socialNetwork.type"
                 :label="t('association.labels.social-network-type') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-association-socials')]"
+                :rules="[val => val && val.length > 0 || t('forms.required-association-socials')]"
                 aria-required="true"
                 clearable
                 filled
                 lazy-rules
-                for="socialNetworkType"
+                bottom-slots
+                :for="'socialNetworkType-' + index"
             >
                 <template v-slot:hint>
-                    <p aria-describedby="socialNetworkType">{{ t('forms.social-network-type-hint') }}</p>
+                    <p :aria-describedby="'socialNetworkType-' + index">{{ t('forms.social-network-type-hint') }}</p>
                 </template>
             </QInput>
             <QInput
@@ -52,15 +52,15 @@ onMounted(initValues)
                 filled
                 lazy-rules
                 type="url"
-                for="socialNetworkLocation"
+                bottom-slots
+                :for="'socialNetworkLocation-' + index"
             >
                 <template v-slot:hint>
-                    <p aria-describedby="socialNetworkLocation">{{ t('forms.social-network-location-hint') }}</p>
+                    <p :aria-describedby="'socialNetworkLocation-' + index">{{ t('forms.social-network-location-hint') }}</p>
                 </template>
             </QInput>
             <QSeparator
                 aria-hidden="true"
-                role="presentation"
             />
             <QBtn
                 :aria-label="t('delete')"

@@ -259,7 +259,7 @@ const columns: QTableProps['columns'] = [
                             >
                                 <div class="button-container">
                                     <QBtn
-                                        :aria-label="t('edit')"
+                                        :aria-label="t('edit') + ' ' + props.row.name"
                                         :to="{name: 'EditAssociation', params: {id: props.row.id}}"
                                         color="association"
                                         icon="bi-pencil"
@@ -333,8 +333,7 @@ const columns: QTableProps['columns'] = [
   text-align: left;
 }
 
-// Removes horizontal scrollbar from 320px to 375px (Accessibility purposes)
-@media screen and (min-width: 20rem) and (max-width: 23.438rem) {
+@media screen and (max-width: $responsiveWidth) {
   .flex-row-space-between {
     flex-direction: column;
 

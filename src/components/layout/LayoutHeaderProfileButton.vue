@@ -52,63 +52,59 @@ onMounted(async () => {
             padding="0"
         >
             <template v-slot:label>
-                <div class="row items-center no-wrap">
-                    <div
+                <span class="row items-center no-wrap">
+                    <span
                         aria-hidden="true"
                         class="avatar"
                     >
                         <i class="bi bi-person-circle"></i>
-                    </div>
-
-                    <div class="text-center">
-                        <p>{{ t('header.my-account') }}</p>
-                    </div>
-                </div>
+                    </span>
+                    <span class="text-center">{{ t('header.my-account') }}</span>
+                </span>
             </template>
 
             <QList>
-                <div>
-                    <QItem
-                        v-close-popup
-                        clickable
-                        role=""
-                        @click="router.push({ name: 'Dashboard' })"
-                    >
-                        <QItemSection>
-                            <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
-                        </QItemSection>
-                    </QItem>
-                </div>
+                <ul>
+                    <li>
+                        <QItem
+                            v-close-popup
+                            clickable
+                            @click="router.push({ name: 'Dashboard' })"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
 
-                <div
-                    v-for="(item) in userStore.userAssociations"
-                    :key="item.id"
-                >
-                    <QItem
-                        v-if="item.isValidatedByAdmin"
-                        v-close-popup
-                        clickable
-                        role=""
-                        @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
+                    <li
+                        v-for="(item) in userStore.userAssociations"
+                        :key="item.id"
                     >
-                        <QItemSection>
-                            <QItemLabel>{{ item.association.name }}</QItemLabel>
-                        </QItemSection>
-                    </QItem>
-                </div>
+                        <QItem
+                            v-if="item.isValidatedByAdmin"
+                            v-close-popup
+                            clickable
+                            @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ item.association.name }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
 
-                <div>
-                    <QItem
-                        v-close-popup
-                        clickable
-                        role=""
-                        @click="onLogOut"
-                    >
-                        <QItemSection>
-                            <QItemLabel>{{ t('header.logout') }}</QItemLabel>
-                        </QItemSection>
-                    </QItem>
-                </div>
+                    <li>
+                        <QItem
+                            v-close-popup
+                            clickable
+                            @click="onLogOut"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ t('header.logout') }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
+                </ul>
             </QList>
         </QBtnDropdown>
     </div>
@@ -122,10 +118,21 @@ onMounted(async () => {
 .q-list {
     max-width: 30rem;
     width: 100%;
-    background: rgba(39, 39, 39, .7) !important;
+}
+
+.q-btn__content > span > * {
+    padding: 0 0.5rem;
 }
 
 p {
     margin-bottom: 0 !important;
+}
+
+ul {
+    padding-left: 0;
+}
+
+li {
+    list-style-type: none;
 }
 </style>

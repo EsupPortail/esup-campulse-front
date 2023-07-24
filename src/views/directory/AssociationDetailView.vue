@@ -64,7 +64,6 @@ async function onGetAssociationDetail() {
                         v-if="association"
                         :src="hasLogo ? (!association?.pathLogo?.detail.startsWith('http') ?
                             baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
-                        alt=""
                         aria-hidden="true"
                         itemprop="logo"
                     />
@@ -97,51 +96,51 @@ async function onGetAssociationDetail() {
             </h2>
 
             <div class="dashboard-section-container">
-                <div class="container flex-column">
+                <dl class="container flex-column">
                     <div
                         v-if="association?.currentProjects"
                         class="display-row"
                     >
-                        <h3>{{ t('association.labels.current-projects') }}</h3>
-                        <p>{{ association?.currentProjects }}</p>
+                        <dt>{{ t('association.labels.current-projects') }}</dt>
+                        <dd>{{ association?.currentProjects }}</dd>
                     </div>
 
                     <div
                         v-if="association?.institution"
                         class="display-row"
                     >
-                        <h3>{{ t('association.labels.institution') }}</h3>
-                        <p>
+                        <dt>{{ t('association.labels.institution') }}</dt>
+                        <dd>
                             {{
                                 associationStore.institutions.find(obj => obj.id === association?.institution)?.name
                             }}
-                        </p>
+                        </dd>
                     </div>
 
                     <div
                         v-if="association?.institutionComponent"
                         class="display-row"
                     >
-                        <h3>{{ t('association.labels.institution-component') }}</h3>
-                        <p>
+                        <dt>{{ t('association.labels.institution-component') }}</dt>
+                        <dd>
                             {{
                                 associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
                             }}
-                        </p>
+                        </dd>
                     </div>
 
                     <div
                         v-if="association?.activityField"
                         class="display-row"
                     >
-                        <h3>{{ t('association.labels.activity-field') }}</h3>
-                        <p>
+                        <dt>{{ t('association.labels.activity-field') }}</dt>
+                        <dd>
                             {{
                                 associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
                             }}
-                        </p>
+                        </dd>
                     </div>
-                </div>
+                </dl>
             </div>
         </div>
 
@@ -157,7 +156,7 @@ async function onGetAssociationDetail() {
                 </h2>
 
                 <div class="dashboard-section-container">
-                    <div class="container flex-column">
+                    <dl class="container flex-column">
                         <div
                             v-if="association?.presidentNames"
                             class="display-row"
@@ -165,42 +164,42 @@ async function onGetAssociationDetail() {
                             itemscope
                             itemtype="https://schema.org/Person"
                         >
-                            <h3>{{ t('association.labels.president-name') }}</h3>
-                            <p itemprop="name">{{ association?.presidentNames }}</p>
+                            <dt>{{ t('association.labels.president-name') }}</dt>
+                            <dd itemprop="name">{{ association?.presidentNames }}</dd>
                         </div>
 
                         <div
                             v-if="association?.presidentPhone"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.president-phone') }}</h3>
-                            <p>{{ association?.presidentPhone }}</p>
+                            <dt>{{ t('association.labels.president-phone') }}</dt>
+                            <dd>{{ association?.presidentPhone }}</dd>
                         </div>
 
                         <div
                             v-if="association?.charterDate"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.charter-date') }}</h3>
-                            <p>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</p>
+                            <dt>{{ t('association.labels.charter-date') }}</dt>
+                            <dd>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</dd>
                         </div>
 
                         <div
                             v-if="association?.lastGoaDate"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.last-goa') }}</h3>
-                            <p>{{ formatDate(association?.lastGoaDate).split('-').reverse().join('/') }}</p>
+                            <dt>{{ t('association.labels.last-goa') }}</dt>
+                            <dd>{{ formatDate(association?.lastGoaDate).split('-').reverse().join('/') }}</dd>
                         </div>
 
                         <div
                             v-if="association?.siret"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.siret') }}</h3>
-                            <p>{{ association?.siret }}</p>
+                            <dt>{{ t('association.labels.siret') }}</dt>
+                            <dd>{{ association?.siret }}</dd>
                         </div>
-                    </div>
+                    </dl>
                 </div>
             </div>
         </div>
@@ -218,13 +217,13 @@ async function onGetAssociationDetail() {
                 </h2>
 
                 <div class="dashboard-section-container">
-                    <div class="container flex-column">
+                    <dl class="container flex-column">
                         <div
                             v-if="association?.address"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.address') }}</h3>
-                            <p
+                            <dt>{{ t('association.labels.address') }}</dt>
+                            <dd
                                 itemprop="address"
                                 itemscope
                                 itemtype="https://schema.org/PostalAddress"
@@ -232,56 +231,57 @@ async function onGetAssociationDetail() {
                                 <span itemprop="streetAddress">{{ association?.address }}</span><br/>
                                 <span itemprop="postalCode">{{ association?.zipcode }}</span> <span itemprop="addressLocality">{{ association?.city }}</span><br/>
                                 <span itemprop="addressCountry">{{ association?.country }}</span>
-                            </p>
+                            </dd>
                         </div>
 
                         <div
                             v-if="association?.phone"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.phone') }}</h3>
-                            <p itemprop="telephone">{{ association?.phone }}</p>
+                            <dt>{{ t('association.labels.phone') }}</dt>
+                            <dd itemprop="telephone">{{ association?.phone }}</dd>
                         </div>
 
                         <div
                             v-if="association?.email"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.mail') }}</h3>
-                            <p itemprop="email">{{ association?.email }}</p>
+                            <dt>{{ t('association.labels.mail') }}</dt>
+                            <dd itemprop="email">{{ association?.email }}</dd>
                         </div>
 
                         <div
                             v-if="association?.website"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.website') }}</h3>
-                            <a
-                                :href="association?.website"
-                                :title="`${t('association.labels.website-link')} ${association?.name}`"
-                                itemprop="url"
-                            >
-                                {{ association?.website }}
-                            </a>
+                            <dt>{{ t('association.labels.website') }}</dt>
+                            <dd itemprop="url">
+                                <a
+                                    :href="association?.website"
+                                    :title="`${t('association.labels.website-link')} ${association?.name}`"
+                                >{{ association?.website }}</a>
+                            </dd>
                         </div>
 
                         <div
                             v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
                             class="display-row"
                         >
-                            <h3>{{ t('association.labels.socials') }}</h3>
-                            <ul class="flex-row">
-                                <li
-                                    v-for="(socialNetwork, index) in association?.socialNetworks"
-                                    :key="index"
-                                >
-                                    <a :href="socialNetwork?.location">
-                                        {{ socialNetwork?.type }}
-                                    </a>
-                                </li>
-                            </ul>
+                            <dt>{{ t('association.labels.socials') }}</dt>
+                            <dd>
+                                <ul class="flex-row">
+                                    <li
+                                        v-for="(socialNetwork, index) in association?.socialNetworks"
+                                        :key="index"
+                                    >
+                                        <a :href="socialNetwork?.location">
+                                            {{ socialNetwork?.type }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </dd>
                         </div>
-                    </div>
+                    </dl>
                 </div>
             </div>
         </div>
@@ -297,7 +297,7 @@ async function onGetAssociationDetail() {
                 icon="bi-box-arrow-left"
             />
             <QBtn
-                v-if="userStore.user?.associations.find(x => x.id === association.id)"
+                v-if="userStore.user?.associations.find(x => x.id === association?.id)"
                 :label="t('dashboard.association-user.manage-association')"
                 :to="{name: 'AssociationDashboard', params: {id: association.id}}"
                 class="btn-lg"

@@ -690,7 +690,7 @@ label.custom-label {
     top: -3px;
   }
 
-  @media only screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $responsiveWidth) {
     margin-bottom: 0.8rem;
   }
 }
@@ -846,13 +846,13 @@ label.custom-label {
     }
   }
 
-  @media only screen and (max-width: $pageWidth) {
+  @media screen and (max-width: $pageWidth) {
     .form-col {
       padding: 0 2rem;
     }
   }
 
-  @media only screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $responsiveWidth) {
     flex-direction: column;
 
     .form-col {
@@ -941,3 +941,4 @@ fieldset {
   border: none;
   padding: 0;
 }
+

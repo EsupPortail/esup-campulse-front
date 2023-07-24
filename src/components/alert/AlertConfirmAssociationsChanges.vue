@@ -90,7 +90,7 @@ async function onConfirmChanges(emailType: string) {
         } else {
             notify({
                 type: 'negative',
-                message: t('association.before-deletion-word-error')
+                message: t('notifications.negative.association-before-deletion-word-error')
             })
         }
         break
@@ -103,7 +103,8 @@ async function onConfirmChanges(emailType: string) {
             message = t(`notifications.positive.${switches.value}-associations`)
             notify({
                 type: 'positive',
-                message: `${message}${associationsSuccess.join(', ')}`
+                message: `<p>${message}${associationsSuccess.join(', ')}</p>`,
+                html: true
             })
         }
         if (associationsError.length > 0) {
@@ -111,7 +112,8 @@ async function onConfirmChanges(emailType: string) {
             message = t(`notifications.negative.${switches.value}-associations-error`)
             notify({
                 type: 'negative',
-                message: `${message}${associationsError.join(', ')}`
+                message: `<p>${message}${associationsError.join(', ')}</p>`,
+                html: true
             })
         }
     })

@@ -39,17 +39,28 @@ body {
 }
 
 // Flex utilities
-.flex-row, .flex-row-center, .flex-row-space-between, .flex-column {
+.flex-row, .flex-row-center, .flex-row-right, .flex-row-space-between, .flex-column {
   display: flex;
   gap: 1rem;
 }
 
-.flex-row, .flex-row-center, .flex-row-space-between {
+.flex-row, .flex-row-center, .flex-row-right, .flex-row-space-between {
   align-items: baseline;
 }
 
 .flex-row-center {
   justify-content: center;
+}
+
+.flex-row-right {
+  justify-content: right;
+}
+
+.flex-row-center-md {
+  @media screen and (min-width: $responsiveWidth) {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .flex-row-space-between {
@@ -254,7 +265,7 @@ main {
     }
   }
 
-  @media only screen and (max-width: $pageWidth) {
+  @media screen and (max-width: $pageWidth) {
     .content {
       padding-left: $responsiveMargin;
       padding-right: $responsiveMargin;
@@ -270,7 +281,7 @@ main {
     }
   }
 
-  @media only screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $responsiveWidth) {
     .content {
       display: block;
 
@@ -360,7 +371,7 @@ p.paragraph {
     margin: 0 0 1rem 1.4rem;
   }
 
-  @media only screen and (max-width: $pageWidth) {
+  @media screen and (max-width: $pageWidth) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
   }
@@ -409,4 +420,14 @@ body.desktop {
 
 .q-select__dropdown-icon {
   color: #000;
+}
+
+// Expansion item
+.text-caption {
+  font-size: 1.6rem;
+}
+
+// Notify
+.q-notification p {
+  margin-bottom: 0;
 }

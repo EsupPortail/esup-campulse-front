@@ -99,7 +99,7 @@ const clearValues = () => {
         <QInput
             v-model="newAssociation.name"
             :label="t('forms.association-name')"
-            :rules="[val => val.length > 0 || t('forms.fill-association-name-field')]"
+            :rules="[val => val.length > 0 || t('forms.required-association-name')]"
             color="dashboard"
             filled
             lazy-rules

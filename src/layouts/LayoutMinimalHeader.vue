@@ -7,7 +7,7 @@ import LayoutFooter from '@/components/layout/LayoutFooter.vue'
 <template>
     <QLayout
         id="layout-page"
-        view="hHh lpR fFf"
+        view="hhh lpr fff"
     >
         <LayoutMinimalHeader/>
         <LayoutContent/>

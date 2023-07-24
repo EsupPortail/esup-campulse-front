@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import useColorVariants from '@/composables/useColorVariants'
+import router from '@/router'
 
 const {t} = useI18n()
 const {colorVariant} = useColorVariants()
@@ -10,7 +11,6 @@ const {colorVariant} = useColorVariants()
     <QFooter
         id="layout-footer"
         :class="'variant-' + colorVariant"
-        elevated
         role="contentinfo"
     >
         <div id="footer-logos">
@@ -99,42 +99,27 @@ const {colorVariant} = useColorVariants()
                 </li>
             </ul>
         </div>
-        <QToolbar role="">
+        <QToolbar>
             <ul class="footer-text">
-                <li>
+                <li
+                    v-for="route in router.options.routes[0].children.filter((r) => r.meta?.siteMap === true)"
+                    :key="route.name"
+                >
                     <RouterLink
                         class="li-footer"
-                        to="about-page"
+                        :to="route.path"
                     >
-                        <i
-                            aria-hidden="true"
-                            class="bi bi-card-text"
-                        ></i>{{ t('footer.about') }}
+                        {{ route?.meta?.title ? route?.meta?.title : route?.children[0].meta?.title }}
                     </RouterLink>
                 </li>
                 <li>
                     <RouterLink
                         class="li-footer"
-                        to="/"
+                        to="/login"
                     >
-                        <i
-                            aria-hidden="true"
-                            class="bi bi-envelope"
-                        ></i>{{ t('footer.legal-notice') }}
+                        {{ t('login.login') }}
                     </RouterLink>
                 </li>
-                <li>
-                    <RouterLink
-                        class="li-footer"
-                        to="contact-page"
-                    >
-                        <i
-                            aria-hidden="true"
-                            class="bi bi-envelope"
-                        ></i>{{ t('footer.contact') }}
-                    </RouterLink>
-                </li>
-                <!-- <QToolbarTitle>{{ t("footer.copyright") }}</QToolbarTitle> -->
             </ul>
         </QToolbar>
         <p>{{ t('footer.database') }}</p>

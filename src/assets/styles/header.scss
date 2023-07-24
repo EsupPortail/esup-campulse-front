@@ -23,21 +23,15 @@
     background: linear-gradient(180deg, rgba(9, 22, 40, 0.25) 0%, rgba(0, 0, 0, 0.3)); //$fullSize
   }
 
-  .q-toolbar {
-    h1 {
-      overflow: visible;
-
-      a {
-        font-family: $titleFont;
-        color: $textColor3;
-        text-transform: uppercase;
-        font-weight: $xbold-weight;
-        text-decoration: none;
-        position: relative;
-        z-index: 2;
-        font-size: 3rem;
-      }
-    }
+  .q-toolbar__title a {
+    font-family: $titleFont;
+    color: $textColor3;
+    text-transform: uppercase;
+    font-weight: $xbold-weight;
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    font-size: 3rem;
   }
 
   .q-layout__shadow {
@@ -113,7 +107,7 @@
       }
     }
 
-    @media only screen and (max-width: $responsiveWidth) {
+    /*@media screen and (max-width: $responsiveWidth) {
       flex-direction: column;
       align-items: flex-end;
       height: 0;
@@ -130,7 +124,7 @@
         transform: scaleY(1);
         padding-bottom: 1rem;
       }
-    }
+    }*/
   }
 
   // Profile button when connected
@@ -180,7 +174,7 @@
       }
     }
 
-    @media only screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveWidth) {
       padding-right: 0;
       padding-left: 0.625rem;
     }
@@ -190,7 +184,6 @@
     display: inline-flex;
     flex-direction: column;
     align-items: flex-end;
-    min-size: 1rem;
     max-width: $fullSize;
 
     li {
@@ -209,7 +202,7 @@
         font-size: 3rem;
       }
 
-      @media only screen and (max-width: $responsiveWidth) {
+      @media screen and (max-width: $responsiveWidth) {
         display: block;
         z-index: 10;
       }
@@ -230,7 +223,7 @@
       opacity: 1;
     }
 
-    @media only screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveWidth) {
       display: block;
     }
   }
@@ -241,7 +234,7 @@
   &.variant-home {
     height: 27.5rem;
 
-    @media only screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $responsiveWidth) {
       height: auto;
 
       .q-toolbar {
@@ -404,7 +397,7 @@
     }
   }
 
-  @media only screen and (min-width: $responsiveWidth) {
+  @media screen and (min-width: $responsiveWidth) {
     left: calc(50% - #{$pageWidth * 0.5});
   }
 }
