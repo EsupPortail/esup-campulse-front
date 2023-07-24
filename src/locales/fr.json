@@ -181,6 +181,9 @@
   "cancel-delete": "Annuler la suppression",
   "cancel-search": "Annuler la recherche",
   "charter": {
+    "association-charter": "Charte du site Alsace",
+    "association-charters": "Chartes par associations",
+    "charters-to-manage": "Chartes à traiter",
     "expiration-date": "Date d'expiration",
     "no-charter-to-show": "Aucune charte à afficher.",
     "options": {
@@ -207,6 +210,7 @@
     "status": {
       "expired": "Charte à renouveler",
       "no-charter": "Charte à signer",
+      "not-site": "Hors Site Alsace",
       "processing": "Charte en cours de validation",
       "validated": "Charte signée et validée"
     },

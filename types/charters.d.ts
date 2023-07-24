@@ -1,4 +1,5 @@
 export interface ManageCharter {
+    associationId?: number | null,
     documentId: number,
     documentUploadId?: number | null,
     documentName: string,
@@ -9,4 +10,21 @@ export interface ManageCharter {
     charterStatus: CharterStatus
 }
 
-type CharterStatus = 'VALIDATED' | 'EXPIRED' | 'PROCESSING' | 'NO_CHARTER'
+export interface AssociationCharter {
+    associationId: number,
+    associationName: string,
+    associationInstitution: string,
+    isSite: boolean,
+    charterStatus: CharterStatus
+}
+
+export interface ChartersToManage {
+    associationId: number,
+    associationName: string,
+    associationInstitution: string,
+    charterId: number,
+    charterName: string,
+    charterStatus: CharterStatus
+}
+
+type CharterStatus = 'VALIDATED' | 'EXPIRED' | 'PROCESSING' | 'NO_CHARTER' | 'NOT_SITE'

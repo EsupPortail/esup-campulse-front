@@ -13,9 +13,7 @@ const processDocuments = ref<ProcessDocument[]>([])
 const documentUploads = ref<ProcessDocument[]>([])
 
 export default function () {
-
     const {axiosPublic, axiosAuthenticated} = useAxios()
-    const {charterDocuments} = useCharters()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
 
@@ -50,6 +48,7 @@ export default function () {
     }
 
     const initCharterDocumentUploads = () => {
+        const {charterDocuments} = useCharters()
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         charterDocuments.value.forEach((document) => {
