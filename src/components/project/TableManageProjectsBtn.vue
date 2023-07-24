@@ -40,7 +40,7 @@ const changeCommission = ref<boolean>(false)
 interface Option {
     icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-signpost' | 'bi-piggy-bank',
     label: string,
-    to?: { name: 'ViewProject' | 'ManageProject' | 'ProjectReviewDetail', params: { projectId: number } }
+    to?: { name: 'ViewProject' | 'ManageProject' | 'ViewProjectReview' | 'ManageProjectReview', params: { projectId: number } }
     action?: 'updateProjectDates' | 'download-pdf' | 'changeCommission' | 'editCommissionFundsAmounts'
 }
 
@@ -91,7 +91,12 @@ const initOptions = () => {
     }
 
     // Update project dates
-    if (hasPerm('change_project_as_validator')) {
+    if (props.projectStatus === 'PROJECT_DRAFT_PROCESSED' ||
+        props.projectStatus === 'PROJECT_PROCESSING' ||
+        props.projectStatus === 'PROJECT_VALIDATED' ||
+        props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
+        props.projectStatus === 'PROJECT_REVIEW_PROCESSING' &&
+        hasPerm('change_project_as_validator')) {
         options.value.push({
             icon: 'bi-calendar',
             label: t('project.edit-dates'),
@@ -117,7 +122,7 @@ const initOptions = () => {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),
-            to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
+            to: {name: 'ViewProjectReview', params: {projectId: props.projectId}}
         })
     }
 
@@ -127,7 +132,7 @@ const initOptions = () => {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process-review'),
-            to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
+            to: {name: 'ManageProjectReview', params: {projectId: props.projectId}}
         })
     }
 

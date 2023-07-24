@@ -243,8 +243,18 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
-                        path: 'project-review-detail/:projectId',
-                        name: 'ProjectReviewDetail',
+                        path: 'view-project-review/:projectId',
+                        name: 'ViewProjectReview',
+                        component: () => import('@/views/project/ProjectReviewDetailView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-review-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-review-recap'),
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: 'manage-project-review/:projectId',
+                        name: 'ManageProjectReview',
                         component: () => import('@/views/project/ProjectReviewDetailView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-review-recap'),
