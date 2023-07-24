@@ -441,7 +441,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
         <div class="dashboard-section-container">
             <div class="container">
                 <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']"/>
-
+                
                 <QStepper
                     ref="stepper"
                     v-model="step"
