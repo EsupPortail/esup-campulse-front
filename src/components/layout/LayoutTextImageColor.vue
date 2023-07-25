@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
     <div
-        :class="`image-text-section bg-${props.color}-light`"
+            :class="`image-text-section bg-${props.color}-light`"
     >
         <div class="container">
             <div>
@@ -18,8 +18,8 @@ const props = defineProps<{
                 <p>{{ props.text }}</p>
             </div>
             <img
-                alt=""
-                src="@/assets/img/unistra.jpg"
+                    alt=""
+                    src="@/assets/img/unistra.jpg"
             />
         </div>
     </div>
@@ -47,11 +47,17 @@ const props = defineProps<{
 }
 
 /* Changing the page's position to fit with the Accessibility Requirement */
-@media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+@media screen and (min-width: $breakpoint-vsm) {
   .container {
     display: flex;
     flex-direction: column;
   }
 }
 
+@media screen and (min-width: $breakpoint-md) {
+  .container {
+    display: flex;
+    flex-direction: row;
+  }
+}
 </style>
