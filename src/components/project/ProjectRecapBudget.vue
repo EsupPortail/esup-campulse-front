@@ -77,8 +77,8 @@ const projectIsFirstEdition = () => {
         </div>
 
         <div
-            v-if="!projectIsFirstEdition"
-            class="display-row"
+                v-if="!projectIsFirstEdition"
+                class="display-row"
         >
             <h4>{{ t('project.budget-previous-edition') }}</h4>
             <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
@@ -110,15 +110,15 @@ const projectIsFirstEdition = () => {
         </div>
 
         <div
-            v-for="projectCommissionFund in projectStore.projectCommissionFunds"
-            :key="projectCommissionFund.id"
-            class="flex-column padding-top"
+                v-for="projectCommissionFund in projectStore.projectCommissionFunds"
+                :key="projectCommissionFund.id"
+                class="flex-column padding-top"
         >
             <h3>{{ getFundLabel(projectCommissionFund.commissionFund) }}</h3>
 
             <div
-                v-if="!projectIsFirstEdition"
-                class="flex-row"
+                    v-if="!projectIsFirstEdition"
+                    class="flex-row"
             >
                 <div class="display-row">
                     <h4>{{ t('project.previous-asked') }}</h4>
@@ -138,8 +138,8 @@ const projectIsFirstEdition = () => {
                 </div>
 
                 <div
-                    v-if="projectCommissionFund.amountEarned"
-                    class="display-row"
+                        v-if="projectCommissionFund.amountEarned"
+                        class="display-row"
                 >
                     <h4>{{ t('project.amount-earned') }}</h4>
                     <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
@@ -154,6 +154,6 @@ const projectIsFirstEdition = () => {
 @import "@/assets/styles/dashboard.scss";
 
 .flex-row > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

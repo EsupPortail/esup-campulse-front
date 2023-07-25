@@ -39,7 +39,7 @@ const {openMenu} = useUtility()
 
   .mobile-nav-bar {
     background-color: #fff;
-    width: 100%;
+    width: $fullSize;
     position: fixed;
     padding: 0.5rem;
     bottom: 0;

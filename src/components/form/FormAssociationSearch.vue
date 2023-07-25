@@ -66,22 +66,22 @@ async function clearSearch() {
     <section class="container flex-column padding-bottom">
         <h3>{{ t('association.labels.search') }}</h3>
         <QForm
-            id="search-form"
-            :aria-label="t('directory.directory')"
-            class="search-text-field"
-            role="search"
-            @submit.prevent="onSearch"
+                id="search-form"
+                :aria-label="t('directory.directory')"
+                class="search-text-field"
+                role="search"
+                @submit.prevent="onSearch"
         >
             <div>
                 <QInput
-                    v-model="settings.search"
-                    :label="t('search')"
-                    :placeholder="t('search')"
-                    clearable
-                    color="association"
-                    filled
-                    inputmode="search"
-                    lazy-rules
+                        v-model="settings.search"
+                        :label="t('search')"
+                        :placeholder="t('search')"
+                        clearable
+                        color="association"
+                        filled
+                        inputmode="search"
+                        lazy-rules
                 >
                     <template v-slot:prepend>
                         <QIcon name="bi-search"/>
@@ -89,99 +89,99 @@ async function clearSearch() {
                 </QInput>
                 <div class="flex-row padding-top">
                     <QBtn
-                        :label="t('search')"
-                        class="btn-lg"
-                        color="association"
-                        icon="mdi-chevron-right"
-                        type="submit"
+                            :label="t('search')"
+                            class="btn-lg"
+                            color="association"
+                            icon="mdi-chevron-right"
+                            type="submit"
                     />
                     <QBtn
-                        :label="t('cancel-search')"
-                        class="btn-lg"
-                        color="association"
-                        icon="mdi-close"
-                        @click="clearSearch"
+                            :label="t('cancel-search')"
+                            class="btn-lg"
+                            color="association"
+                            icon="mdi-close"
+                            @click="clearSearch"
                     />
                 </div>
             </div>
         </QForm>
 
         <QForm
-            :aria-label="t('directory.directory-advanced')"
-            class="search-text-field"
-            role="search"
-            @submit.prevent="onAdvancedSearch"
+                :aria-label="t('directory.directory-advanced')"
+                class="search-text-field"
+                role="search"
+                @submit.prevent="onAdvancedSearch"
         >
             <QExpansionItem
-                :label="t('advanced-search')"
-                header-class="text-association"
+                    :label="t('advanced-search')"
+                    header-class="text-association"
             >
                 <div class="flex-column">
                     <QInput
-                        v-model="settings.name"
-                        :label="t('directory.labels.association-name')"
-                        class="full-size"
-                        clearable
-                        color="association"
-                        filled
-                        lazy-rules
+                            v-model="settings.name"
+                            :label="t('directory.labels.association-name')"
+                            class="full-size"
+                            clearable
+                            color="association"
+                            filled
+                            lazy-rules
                     />
                     <QInput
-                        v-model="settings.acronym"
-                        :label="t('directory.labels.association-acronym')"
-                        clearable
-                        color="association"
-                        filled
-                        lazy-rules
+                            v-model="settings.acronym"
+                            :label="t('directory.labels.association-acronym')"
+                            clearable
+                            color="association"
+                            filled
+                            lazy-rules
                     />
                     <div class="flex-row-center">
                         <QSelect
-                            v-model="settings.institution"
-                            :label="t('directory.labels.association-institution')"
-                            :options="associationStore.institutionLabels"
-                            clearable
-                            color="association"
-                            emit-value
-                            filled
-                            map-options
+                                v-model="settings.institution"
+                                :label="t('directory.labels.association-institution')"
+                                :options="associationStore.institutionLabels"
+                                clearable
+                                color="association"
+                                emit-value
+                                filled
+                                map-options
                         />
                         <QSelect
-                            v-model="settings.institutionComponent"
-                            :label="t('directory.labels.association-institution-component')"
-                            :options="associationStore.institutionComponentLabels"
-                            clearable
-                            color="association"
-                            emit-value
-                            filled
-                            map-options
+                                v-model="settings.institutionComponent"
+                                :label="t('directory.labels.association-institution-component')"
+                                :options="associationStore.institutionComponentLabels"
+                                clearable
+                                color="association"
+                                emit-value
+                                filled
+                                map-options
                         />
                         <QSelect
-                            v-model="settings.activityField"
-                            :label="t('directory.labels.association-activity-field')"
-                            :options="associationStore.activityFieldLabels"
-                            clearable
-                            color="association"
-                            emit-value
-                            filled
-                            map-options
+                                v-model="settings.activityField"
+                                :label="t('directory.labels.association-activity-field')"
+                                :options="associationStore.activityFieldLabels"
+                                clearable
+                                color="association"
+                                emit-value
+                                filled
+                                map-options
                         />
                     </div>
                 </div>
 
                 <div class="flex-row padding-top padding-bottom">
                     <QBtn
-                        :label="t('advanced-search')"
-                        class="btn-lg"
-                        color="association"
-                        icon="mdi-chevron-right"
-                        type="submit"
+                            :label="t('advanced-search')"
+                            class="btn-lg"
+                            color="association"
+                            icon="mdi-chevron-right"
+                            type="submit"
                     />
                     <QBtn
-                        :label="t('cancel-search')"
-                        class="btn-lg"
-                        color="association"
-                        icon="mdi-close"
-                        @click="clearSearch"
+                            :label="t('cancel-search')"
+                            class="btn-lg"
+                            color="association"
+                            icon="mdi-close"
+                            @click="clearSearch"
                     />
                 </div>
             </QExpansionItem>
@@ -194,6 +194,6 @@ async function clearSearch() {
 @import '@/assets/styles/forms.scss';
 
 .flex-row-center > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

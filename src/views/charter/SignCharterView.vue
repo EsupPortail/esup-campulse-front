@@ -160,214 +160,214 @@ async function onSignCharter() {
         <div class="dashboard-section-container">
             <div class="container">
                 <InfoProcessDocuments
-                    :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"
+                        :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"
                 />
                 <QStepper
-                    ref="stepper"
-                    v-model="step"
-                    active-color="charter-bold"
-                    animated
+                        ref="stepper"
+                        v-model="step"
+                        active-color="charter-bold"
+                        animated
                 >
                     <QStep
-                        :name="1"
-                        :title="t('charter.site.sign-form.association-infos-update')"
-                        icon="bi-pencil"
+                            :name="1"
+                            :title="t('charter.site.sign-form.association-infos-update')"
+                            icon="bi-pencil"
                     >
                         <QForm
-                            @submit="onPatchAssociation"
+                                @submit="onPatchAssociation"
                         >
                             <InfoFormRequiredFields/>
                             <QInput
-                                v-model="editedAssociation.name"
-                                :label="t('association.labels.name') + ' *'"
-                                :rules="[val => val && val.length > 0 || t('forms.required-association-name')]"
-                                aria-required="true"
-                                clearable
-                                color="charter"
-                                filled
-                                lazy-rules
+                                    v-model="editedAssociation.name"
+                                    :label="t('association.labels.name') + ' *'"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-association-name')]"
+                                    aria-required="true"
+                                    clearable
+                                    color="charter"
+                                    filled
+                                    lazy-rules
                             />
                             <QInput
-                                v-model="editedAssociation.acronym"
-                                :label="t('association.labels.acronym')"
-                                clearable
-                                color="charter"
-                                filled
+                                    v-model="editedAssociation.acronym"
+                                    :label="t('association.labels.acronym')"
+                                    clearable
+                                    color="charter"
+                                    filled
                             />
                             <QInput
-                                v-model="editedAssociation.lastGoaDate"
-                                :label="t('association.labels.last-goa')"
-                                :rules="[val => val && val.length > 0 || t('forms.required-association-goa-date')]"
-                                clearable
-                                color="charter"
-                                filled
-                                type="date"
-                                min="1970-01-01"
-                                max="2120-01-01"
+                                    v-model="editedAssociation.lastGoaDate"
+                                    :label="t('association.labels.last-goa')"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-association-goa-date')]"
+                                    clearable
+                                    color="charter"
+                                    filled
+                                    max="2120-01-01"
+                                    min="1970-01-01"
+                                    type="date"
                             />
                             <QInput
-                                v-model="editedAssociation.presidentNames"
-                                :label="t('association.labels.president-name')"
-                                :rules="[val => val && val.length > 0 || t('forms.required-association-president-names')]"
-                                clearable
-                                color="charter"
-                                filled
+                                    v-model="editedAssociation.presidentNames"
+                                    :label="t('association.labels.president-name')"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-association-president-names')]"
+                                    clearable
+                                    color="charter"
+                                    filled
                             />
                             <QInput
-                                v-model="editedAssociation.presidentPhone"
-                                :label="t('association.labels.president-phone')"
-                                :rules="[val => phoneRegex.test(val) || t('forms.required-phone')]"
-                                clearable
-                                color="charter"
-                                filled
-                                type="tel"
+                                    v-model="editedAssociation.presidentPhone"
+                                    :label="t('association.labels.president-phone')"
+                                    :rules="[val => phoneRegex.test(val) || t('forms.required-phone')]"
+                                    clearable
+                                    color="charter"
+                                    filled
+                                    type="tel"
                             />
                             <QSelect
-                                v-model="editedAssociation.institutionComponent"
-                                :label="t('association.labels.institution-component')"
-                                :options="associationStore.institutionComponentLabels"
-                                clearable
-                                color="charter"
-                                emit-value
-                                filled
-                                map-options
+                                    v-model="editedAssociation.institutionComponent"
+                                    :label="t('association.labels.institution-component')"
+                                    :options="associationStore.institutionComponentLabels"
+                                    clearable
+                                    color="charter"
+                                    emit-value
+                                    filled
+                                    map-options
                             />
                             <QSelect
-                                v-model="editedAssociation.activityField"
-                                :label="t('association.labels.activity-field') + ' *'"
-                                :options="associationStore.activityFieldLabels"
-                                :rules="[val => val || t('forms.required-association-activity-field')]"
-                                aria-required="true"
-                                clearable
-                                color="charter"
-                                emit-value
-                                filled
-                                map-options
+                                    v-model="editedAssociation.activityField"
+                                    :label="t('association.labels.activity-field') + ' *'"
+                                    :options="associationStore.activityFieldLabels"
+                                    :rules="[val => val || t('forms.required-association-activity-field')]"
+                                    aria-required="true"
+                                    clearable
+                                    color="charter"
+                                    emit-value
+                                    filled
+                                    map-options
                             />
                             <fieldset>
                                 <legend class="title-4">{{ t('association.labels.address') }}</legend>
                                 <QInput
-                                    v-model="editedAssociation.address"
-                                    :label="t('address.address')"
-                                    :rules="[val => val && val.length > 0 || t('forms.required-address')]"
-                                    clearable
-                                    color="charter"
-                                    filled
+                                        v-model="editedAssociation.address"
+                                        :label="t('address.address')"
+                                        :rules="[val => val && val.length > 0 || t('forms.required-address')]"
+                                        clearable
+                                        color="charter"
+                                        filled
                                 />
                                 <div class="flex-row">
                                     <QInput
-                                        v-model="editedAssociation.zipcode"
-                                        :label="t('address.zipcode')"
-                                        :rules="[val => val && val.length > 0 || t('forms.required-zipcode')]"
-                                        clearable
-                                        color="charter"
-                                        filled
+                                            v-model="editedAssociation.zipcode"
+                                            :label="t('address.zipcode')"
+                                            :rules="[val => val && val.length > 0 || t('forms.required-zipcode')]"
+                                            clearable
+                                            color="charter"
+                                            filled
                                     />
                                     <QInput
-                                        v-model="editedAssociation.city"
-                                        :label="t('address.city')"
-                                        :rules="[val => val && val.length > 0 || t('forms.required-city')]"
-                                        clearable
-                                        color="charter"
-                                        filled
+                                            v-model="editedAssociation.city"
+                                            :label="t('address.city')"
+                                            :rules="[val => val && val.length > 0 || t('forms.required-city')]"
+                                            clearable
+                                            color="charter"
+                                            filled
                                     />
                                     <QInput
-                                        v-model="editedAssociation.country"
-                                        :label="t('address.country')"
-                                        :rules="[val => val && val.length > 0 || t('forms.required-country')]"
-                                        clearable
-                                        color="charter"
-                                        filled
+                                            v-model="editedAssociation.country"
+                                            :label="t('address.country')"
+                                            :rules="[val => val && val.length > 0 || t('forms.required-country')]"
+                                            clearable
+                                            color="charter"
+                                            filled
                                     />
                                 </div>
                             </fieldset>
 
                             <QInput
-                                v-model="editedAssociation.siret"
-                                :label="t('association.labels.siret')"
-                                :rules="[val => val && val.length > 0 || t('forms.required-association-siret')]"
-                                clearable
-                                color="charter"
-                                filled
-                                inputmode="numeric"
-                                maxlength="14"
+                                    v-model="editedAssociation.siret"
+                                    :label="t('association.labels.siret')"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-association-siret')]"
+                                    clearable
+                                    color="charter"
+                                    filled
+                                    inputmode="numeric"
+                                    maxlength="14"
                             />
                             <div class="flex-row-center">
                                 <QBtn
-                                    :label="t('continue')"
-                                    class="btn-lg"
-                                    color="charter"
-                                    icon="bi-check-lg"
-                                    text-color="charter"
-                                    type="submit"
+                                        :label="t('continue')"
+                                        class="btn-lg"
+                                        color="charter"
+                                        icon="bi-check-lg"
+                                        text-color="charter"
+                                        type="submit"
                                 />
                             </div>
                         </QForm>
                     </QStep>
 
                     <QStep
-                        :name="2"
-                        :title="t('charter.site.sign-form.documents-upload')"
-                        icon="bi-file-earmark"
+                            :name="2"
+                            :title="t('charter.site.sign-form.documents-upload')"
+                            icon="bi-file-earmark"
                     >
                         <QForm
-                            @submit="onUploadDocuments(3)"
+                                @submit="onUploadDocuments(3)"
                         >
                             <InfoFormRequiredFields/>
                             <FormDocumentUploads
-                                :association-id="associationId"
-                                process="charter"
+                                    :association-id="associationId"
+                                    process="charter"
                             />
                             <div class="flex-row-center">
                                 <QBtn
-                                    :label="t('back')"
-                                    class="btn-lg"
-                                    color="charter"
-                                    icon="bi-chevron-left"
-                                    text-color="charter"
-                                    @click="step = step - 1"
+                                        :label="t('back')"
+                                        class="btn-lg"
+                                        color="charter"
+                                        icon="bi-chevron-left"
+                                        text-color="charter"
+                                        @click="step = step - 1"
                                 />
                                 <QBtn
-                                    :label="t('continue')"
-                                    class="btn-lg"
-                                    color="charter"
-                                    icon="bi-check-lg"
-                                    text-color="charter"
-                                    type="submit"
+                                        :label="t('continue')"
+                                        class="btn-lg"
+                                        color="charter"
+                                        icon="bi-check-lg"
+                                        text-color="charter"
+                                        type="submit"
                                 />
                             </div>
                         </QForm>
                     </QStep>
 
                     <QStep
-                        :name="3"
-                        :title="t('recap')"
-                        icon="bi-check-lg"
+                            :name="3"
+                            :title="t('recap')"
+                            icon="bi-check-lg"
                     >
                         <QForm
-                            @submit="onSignCharter"
+                                @submit="onSignCharter"
                         >
                             <CharterRecap
-                                :association-id="associationId"
-                                view="signCharter"
-                                @change-step="newStep => step = newStep"
+                                    :association-id="associationId"
+                                    view="signCharter"
+                                    @change-step="newStep => step = newStep"
                             />
                             <div class="flex-row-center">
                                 <QBtn
-                                    :label="t('back')"
-                                    class="btn-lg"
-                                    color="charter"
-                                    icon="bi-chevron-left"
-                                    text-color="charter"
-                                    @click="step = step - 1"
+                                        :label="t('back')"
+                                        class="btn-lg"
+                                        color="charter"
+                                        icon="bi-chevron-left"
+                                        text-color="charter"
+                                        @click="step = step - 1"
                                 />
                                 <QBtn
-                                    :label="t('charter.sign')"
-                                    class="btn-lg"
-                                    color="charter"
-                                    icon="bi-check-lg"
-                                    text-color="charter"
-                                    type="submit"
+                                        :label="t('charter.sign')"
+                                        class="btn-lg"
+                                        color="charter"
+                                        icon="bi-check-lg"
+                                        text-color="charter"
+                                        type="submit"
                                 />
                             </div>
                         </QForm>
@@ -384,10 +384,10 @@ async function onSignCharter() {
 @import '@/assets/_variables.scss';
 
 .q-field {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 .flex-row > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

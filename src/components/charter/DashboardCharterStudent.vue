@@ -16,17 +16,17 @@ const columns = [
     <section class="dashboard-section">
         <h2 class="dashboard-section-title">
             <i
-                aria-hidden="true"
-                class="bi bi-pencil-square"
+                    aria-hidden="true"
+                    class="bi bi-pencil-square"
             ></i>
             Titre de la section
         </h2>
         <div class="dashboard-section-container">
             <div class="table">
                 <QTable
-                    :columns="columns"
-                    :rows="rows"
-                    row-key="name"
+                        :columns="columns"
+                        :rows="rows"
+                        row-key="name"
                 />
             </div>
         </div>
@@ -37,26 +37,26 @@ const columns = [
 @import "@/assets/_variables.scss";
 
 .dashboard-section-title {
-    background-color: transparent;
-    font-size: $headTitleMobileSize;
-    text-transform: uppercase;
-    color: $annuaireColorText;
-    line-height: 3rem;
-    margin-left: 1rem;
+  background-color: transparent;
+  font-size: $headTitleMobileSize;
+  text-transform: uppercase;
+  color: $annuaireColorText;
+  line-height: 3rem;
+  margin-left: 1rem;
 
-    i {
-        color: $annuaireColorText;
-        font-size: $headTitleMobileSize;
-        margin-right: 0.300rem;
-        position: relative;
-        top: -0.188rem;
-    }
+  i {
+    color: $annuaireColorText;
+    font-size: $headTitleMobileSize;
+    margin-right: 0.300rem;
+    position: relative;
+    top: -0.188rem;
+  }
 }
 
 .dashboard-section-container {
-    max-width: 1280px;
-    width: 100%;
-    margin: auto;
-    padding: 1rem 0;
+  max-width: 1280px;
+  width: $fullSize;
+  margin: auto;
+  padding: 1rem 0;
 }
 </style>

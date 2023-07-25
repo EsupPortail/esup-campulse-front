@@ -15,11 +15,11 @@ const props = defineProps<{
         </div>
         <div class="flex-row-center">
             <QBtn
-                :color="props.color"
-                :icon="props.icon"
-                :label="props.btnLabel"
-                :to="props.to"
-                outline
+                    :color="props.color"
+                    :icon="props.icon"
+                    :label="props.btnLabel"
+                    :to="props.to"
+                    outline
             />
         </div>
     </div>
@@ -29,10 +29,10 @@ const props = defineProps<{
 @import "@/assets/_variables.scss";
 
 .page-card {
-    width: 100%;
+  width: $fullSize;
 
-    .q-btn {
-        width: 100%;
-    }
+  .q-btn {
+    width: $fullSize;
+  }
 }
 </style>

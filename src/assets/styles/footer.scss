@@ -19,7 +19,7 @@
     padding: 2rem 1.56rem;
 
     .wrapper {
-      width: 100%;
+      width: $fullSize;
       text-align: center;
       margin: 0 auto;
 
@@ -100,7 +100,7 @@
 
   // Footer text
   & > p {
-    width: 100%;
+    width: $fullSize;
     max-width: 80rem;
     margin: 0 auto 1.5rem;
     text-align: center;

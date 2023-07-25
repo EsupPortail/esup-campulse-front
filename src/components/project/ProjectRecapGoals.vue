@@ -45,7 +45,7 @@ const {t} = useI18n()
 @import "@/assets/styles/dashboard.scss";
 
 /*.display-row {
-  width: 100% !important;
+  width: $fullSize !important;
 }
 
 .flex-section {

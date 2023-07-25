@@ -118,7 +118,7 @@ onMounted(async () => {
 
 .q-list {
   max-width: 30rem;
-  width: 100%;
+  width: $fullSize;
 }
 
 .q-btn__content > span > * {
