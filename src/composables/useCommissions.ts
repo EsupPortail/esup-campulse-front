@@ -1,8 +1,8 @@
-import {ref} from 'vue'
-import type {Commission, CommissionFund, Fund, NewCommission, SelectLabelFund, UpdateCommission} from '#/commissions'
-import {useAxios} from '@/composables/useAxios'
-import type {SelectLabel} from '#/index'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import { ref } from 'vue'
+import type { Commission, CommissionFund, Fund, NewCommission, SelectLabelFund, UpdateCommission } from '#/commissions'
+import { useAxios } from '@/composables/useAxios'
+import type { SelectLabel } from '#/index'
+import { useUserManagerStore } from '@/stores/useUserManagerStore'
 import useUtility from '@/composables/useUtility'
 
 // Funds
@@ -16,11 +16,11 @@ const commission = ref<Commission | undefined>(undefined)
 const commissionFunds = ref<CommissionFund[]>([])
 const commissionLabels = ref<SelectLabel[]>([])
 
-export default function () {
+export default function() {
 
-    const {axiosPublic, axiosAuthenticated} = useAxios()
+    const { axiosPublic, axiosAuthenticated } = useAxios()
     const userManagerStore = useUserManagerStore()
-    const {arraysAreEqual} = useUtility()
+    const { arraysAreEqual } = useUtility()
 
     // Funds
     async function getFunds() {
@@ -64,7 +64,8 @@ export default function () {
 
     // Commissions
     async function getCommissionsForManagers(
-        activeProjects: boolean | undefined,
+        withActiveProjects: boolean | undefined,
+        onlyWithActiveProjects: boolean | undefined,
         isOpenToProjects: boolean | undefined,
         isSite: boolean | undefined,
         managedProjects: boolean | undefined,
@@ -73,7 +74,8 @@ export default function () {
         let urlString = '/commissions/'
         const urlArray = []
 
-        if (activeProjects !== undefined) urlArray.push(`active_projects=${activeProjects}`)
+        if (withActiveProjects !== undefined) urlArray.push(`with_active_projects=${withActiveProjects}`)
+        if (onlyWithActiveProjects !== undefined) urlArray.push(`only_with_active_projects=${onlyWithActiveProjects}`)
         if (isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${isOpenToProjects}`)
         if (isSite !== undefined) urlArray.push(`is_site=${isSite}`)
         if (managedProjects !== undefined) urlArray.push(`managed_projects=${managedProjects}`)
@@ -139,13 +141,13 @@ export default function () {
     async function updateCommission(commission: UpdateCommission) {
         let dataToPatch = {}
         if (commission.newName !== commission.oldName)
-            dataToPatch = Object.assign(dataToPatch, {name: commission.newName})
+            dataToPatch = Object.assign(dataToPatch, { name: commission.newName })
         if (commission.newCommissionDate !== commission.oldCommissionDate)
-            dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.newCommissionDate})
+            dataToPatch = Object.assign(dataToPatch, { commissionDate: commission.newCommissionDate })
         if (commission.newSubmissionDate !== commission.oldSubmissionDate)
-            dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.newSubmissionDate})
+            dataToPatch = Object.assign(dataToPatch, { submissionDate: commission.newSubmissionDate })
         if (commission.newIsOpenToProjects !== commission.oldIsOpenToProjects)
-            dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.newIsOpenToProjects})
+            dataToPatch = Object.assign(dataToPatch, { isOpenToProjects: commission.newIsOpenToProjects })
         if (Object.entries(dataToPatch).length) {
             await axiosAuthenticated.patch(`/commissions/${commission.id}`, dataToPatch)
         }
@@ -171,7 +173,7 @@ export default function () {
 
     async function getCommissionCSVExport(id: number) {
         const url = `/commissions/${id}/csv_export`
-        return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
+        return (await axiosAuthenticated.get<Blob>(url, { responseType: 'blob' })).data
     }
 
     return {

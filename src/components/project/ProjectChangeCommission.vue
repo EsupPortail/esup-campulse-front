@@ -96,7 +96,7 @@ async function onGetCommissionDates() {
                 }
             })
         }
-        await getCommissionsForManagers(undefined, true, !props.isSite ? false : undefined, true, chosenFunds)
+        await getCommissionsForManagers(undefined, undefined, true, !props.isSite ? false : undefined, true, chosenFunds)
         initCommissionLabels()
 
     } catch (error) {
