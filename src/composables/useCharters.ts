@@ -1,15 +1,15 @@
 import {ref} from 'vue'
 import {useAxios} from '@/composables/useAxios'
-import type {DocumentProcessType, DocumentUpload, Document} from '#/documents'
+import type {Document, DocumentProcessType, DocumentUpload} from '#/documents'
 import useDocumentUploads from '@/composables/useDocumentUploads'
-import type {AssociationCharter, CharterStatus, ChartersToManage, ManageCharter} from '#/charters'
+import type {AssociationCharter, CharterStatus, ManageCharter, ProcessingCharter} from '#/charters'
 import useUtility from '@/composables/useUtility'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const charterDocuments = ref<DocumentUpload[]>([])
 const manageCharters = ref<ManageCharter[]>([])
 const associationCharters = ref<AssociationCharter[]>([])
-const chartersToManage = ref<ChartersToManage[]>([])
+const processingCharters = ref<ProcessingCharter[]>([])
 
 export default function () {
     const {formatDate, fromDateIsAnterior} = useUtility()
@@ -61,52 +61,57 @@ export default function () {
         })
     }
 
-    const initAssociationCharters = async () => {
-        const {getDocuments, documents} = useDocumentUploads()
+    const initAssociationCharters = async (charterType: 'CHARTER_ASSOCIATION' | 'CHARTER_PROJECT_FUND') => {
+        const {documents} = useDocumentUploads()
         associationCharters.value = []
-        await getDocuments(['CHARTER_ASSOCIATION'])
-        await getCharters()
-        const document = documents.value.find(doc => doc.acronym === 'CHARTE_SITE_ALSACE')
-        if (document) {
-            associationStore.associations.forEach(association => {
-                const uploadedCharter = charterDocuments.value.find(doc => doc.document === document.id && doc.association === association.id)
-                const charterStatus = initCharterStatus(association.isSite, document, uploadedCharter)
-                associationCharters.value.push({
+        associationStore.associations.forEach(association => {
+            if (!association.isSite && charterType === 'CHARTER_ASSOCIATION') return
+            else {
+                const data: AssociationCharter = {
                     associationId: association.id,
                     associationName: association.name,
-                    associationInstitution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                    institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
                     isSite: association.isSite,
-                    charterStatus: charterStatus.charterStatus
+                    charters: []
+                }
+                const charters = documents.value.filter(obj => obj.processType === charterType)
+                charters.forEach(charter => {
+                    const uploadedCharter = charterDocuments.value.find(obj => obj.document === charter.id && obj.association === association.id)
+                    const charterStatus = initCharterStatus(association.isSite, charter, uploadedCharter)
+                    data.charters.push({
+                        charterId: charter.id,
+                        charterName: charter.name,
+                        charterStatus: charterStatus.charterStatus
+                    })
                 })
-            })
-        }
+                associationCharters.value.push(data)
+            }
+        })
     }
 
-    const initChartersToManage = async () => {
-        const {getDocuments, documents} = useDocumentUploads()
-        chartersToManage.value = []
-        await getDocuments(charterProcesses)
-        await getCharters()
-        charterDocuments.value.forEach(charter => {
-            if (charter.association) {
-                const association = associationStore.associations.find(association => association.id === charter.association)
-                if (association && association.isSite) {
-                    const document = documents.value.find(doc => doc.id === charter.document)
-                    if (document) {
-                        const charterStatus = initCharterStatus(true, document, charter)
-                        if (charterStatus.charterStatus === 'PROCESSING') {
-                            chartersToManage.value.push({
-                                associationId: association.id,
-                                associationName: association.name,
-                                associationInstitution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
-                                charterId: charter.document,
-                                charterName: document.name as string,
-                                uploadedDate: charter.uploadDate as string,
-                                charterStatus: charterStatus.charterStatus
-                            })
-                        }
-                    }
-                }
+    const initProcessingCharters = async (charterType: 'CHARTER_ASSOCIATION' | 'CHARTER_PROJECT_FUND') => {
+        const {documents} = useDocumentUploads()
+        processingCharters.value = []
+        charterDocuments.value.forEach(uploadCharter => {
+            const document = documents.value.find(doc => doc.id === uploadCharter.document)
+            const association = associationStore.associations.find(association => association.id === uploadCharter.association)
+            if (document && association) {
+                const charterStatus = initCharterStatus(association.isSite, document, uploadCharter)
+            }
+
+        })
+        associationStore.associations.forEach(association => {
+            if (document) {
+                const charterStatus = initCharterStatus(true, document, charter)
+                chartersToManage.value.push({
+                    associationId: association.id,
+                    associationName: association.name,
+                    institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                    charterId: charter.document,
+                    uploadedDate: charter.uploadDate as string,
+                    validatedDate: charter.validatedDate,
+                    charterStatus: charterStatus.charterStatus
+                })
             }
         })
     }
@@ -176,8 +181,10 @@ export default function () {
         uploadCharter,
         downloadCharter,
         associationCharters,
+        charterProcesses,
+        getCharters,
         initAssociationCharters,
-        initChartersToManage,
-        chartersToManage
+        processingCharters,
+        initProcessingCharters
     }
 }

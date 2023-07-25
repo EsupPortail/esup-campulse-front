@@ -13,18 +13,22 @@ export interface ManageCharter {
 export interface AssociationCharter {
     associationId: number,
     associationName: string,
-    associationInstitution: string,
+    institution: string,
     isSite: boolean,
-    charterStatus: CharterStatus
+    charters: {
+        charterId: number,
+        charterName: string,
+        charterStatus: CharterStatus
+    }[]
 }
 
-export interface ChartersToManage {
+export interface ProcessingCharter {
     associationId: number,
     associationName: string,
-    associationInstitution: string,
+    institution: string,
     charterId: number,
-    charterName: string,
     uploadedDate: string,
+    validatedDate: string,
     charterStatus: CharterStatus
 }
 

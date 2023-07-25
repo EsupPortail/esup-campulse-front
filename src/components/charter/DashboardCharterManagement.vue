@@ -1,87 +1,31 @@
 <script lang="ts" setup>
 import {onMounted, ref, watch} from 'vue'
-import {QTableProps, useQuasar} from 'quasar'
-import {useI18n} from 'vue-i18n'
+import useUserGroups from '@/composables/useUserGroups'
+import TableManageCharters from '@/components/charter/TableManageCharters.vue'
+import TableManageProcessingCharters from '@/components/charter/TableManageProcessingCharters.vue'
 import axios from 'axios'
+import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import useCharters from '@/composables/useCharters'
+import useDocumentUploads from '@/composables/useDocumentUploads'
+import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
-import TableManageChartersBtn from '@/components/charter/TableManageChartersBtn.vue'
-import useUtility from '@/composables/useUtility'
 
-const {loading, notify} = useQuasar()
+
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {associationCharters, initAssociationCharters, initChartersToManage, chartersToManage} = useCharters()
+const {initAssociationCharters, getCharters, charterProcesses, initProcessingCharters} = useCharters()
+const {loading, notify} = useQuasar()
 const associationStore = useAssociationStore()
-const {formatDate} = useUtility()
+const {getDocuments} = useDocumentUploads()
+const {isManagerMisc} = useUserGroups()
 
-const tab = ref('associationCharters')
-watch(() => tab.value, () => {
-    loading.show()
-    if (tab.value === 'chartersToManage') {
-        initChartersToManage()
-    }
-    loading.hide()
-})
 
-const associationChartersColumns: QTableProps['columns'] = [
-    {name: 'association', align: 'left', label: t('association.association'), field: 'association', sortable: true},
-    {
-        name: 'institution',
-        align: 'left',
-        label: t('association.labels.institution'),
-        field: 'institution',
-        sortable: false
-    },
-    {
-        name: 'charterStatus',
-        align: 'right',
-        label: t('charter.association-charter'),
-        field: 'charterStatus',
-        sortable: true
-    },
-    {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
-]
-
-const chartersToManageColumns: QTableProps['columns'] = [
-    {name: 'association', align: 'left', label: t('association.association'), field: 'association', sortable: true},
-    {
-        name: 'institution',
-        align: 'left',
-        label: t('association.labels.institution'),
-        field: 'institution',
-        sortable: false
-    },
-    {
-        name: 'charterName',
-        align: 'left',
-        label: t('charter.charter', 1),
-        field: 'charterName',
-        sortable: true
-    },
-    {
-        name: 'uploadedDate',
-        align: 'left',
-        label: t('charter.uploaded-date', 1),
-        field: 'uploadedDate',
-        sortable: true
-    },
-    {
-        name: 'charterStatus',
-        align: 'right',
-        label: t('status',),
-        field: 'charterStatus',
-        sortable: true
-    },
-    {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
-]
-
-async function onGetAssociationCharters() {
+async function onGetCharters() {
     try {
         await associationStore.getAssociations(false)
-        await initAssociationCharters()
+        await getDocuments(charterProcesses)
+        await getCharters()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -94,266 +38,150 @@ async function onGetAssociationCharters() {
 
 onMounted(async () => {
     loading.show()
-    await onGetAssociationCharters()
+    await onGetCharters()
+    initTabs()
     loading.hide()
 })
+
+type TabOption = 'CHARTER_ASSOCIATION' | 'CHARTER_PROJECT_FUND'
+type InnerTabOption = 'allCharters' | 'processingCharters'
+
+const tab = ref<TabOption | ''>('')
+const innerTab = ref<InnerTabOption>('allCharters')
+
+watch(() => tab.value, () => {
+    if (innerTab.value === 'allCharters') {
+        initAssociationCharters(tab.value as TabOption)
+    } else {
+        initProcessingCharters(tab.value as TabOption)
+    }
+})
+
+const splitterModel = ref<number>(20)
+
+interface Tab {
+    label: string,
+    name: TabOption
+}
+
+interface InnerTab {
+    label: string,
+    name: InnerTabOption,
+    icon: string
+}
+
+const innerTabs: InnerTab[] = [
+    {
+        name: 'allCharters',
+        label: 'Toutes les chartes',
+        icon: 'bi-book'
+    },
+    {
+        name: 'processingCharters',
+        label: 'Chartes à valider',
+        icon: 'bi-bell'
+    }
+]
+
+const tabs = ref<Tab[]>([])
+
+const initTabs = () => {
+    tabs.value = []
+    if (!isManagerMisc()) {
+        tabs.value.push({
+            label: 'Charte des associations du site Alsace',
+            name: 'CHARTER_ASSOCIATION'
+        })
+    }
+    tabs.value.push({
+        label: 'Chartes de subventionnement',
+        name: 'CHARTER_PROJECT_FUND'
+    })
+    tab.value = tabs.value[0].name
+}
 
 </script>
 
 <template>
-    <QTabs
-        v-model="tab"
-        active-color="charter"
-        align="justify"
-        indicator-color="charter"
-        narrow-indicator
-    >
-        <QTab
-            :label="t('charter.association-charters')"
-            name="associationCharters"
-        />
-        <QTab
-            :label="t('charter.charters-to-manage')"
-            name="chartersToManage"
-        />
-    </QTabs>
+    <section class="dashboard-section">
+        <div class="dashboard-section-container">
+            <div class="container-lg">
+                <QCard>
+                    <QTabs
+                        v-model="tab"
+                        active-color="text-charter"
+                        align="justify"
+                        class="text-charter"
+                        dense
+                        indicator-color="bg-charter"
+                    >
+                        <QTab
+                            v-for="(tab, index) in tabs"
+                            :key="index"
+                            :label="tab.label"
+                            :name="tab.name"
+                        />
+                    </QTabs>
 
-    <QSeparator
-        aria-hidden="true"
-    />
+                    <QSeparator
+                        aria-hidden="true"
+                    />
 
-    <QTabPanels
-        v-model="tab"
-        animated
-    >
-        <QTabPanel
-            name="associationCharters"
-        >
-            <QTable
-                :columns="associationChartersColumns"
-                :rows="associationCharters"
-                :rows-per-page-options="[10, 20, 50, 0]"
-                role="presentation"
-                row-key="name"
-            >
-                <template v-slot:header="props">
-                    <QTr :props="props">
-                        <QTh
-                            v-for="col in props.cols"
-                            :id="col.name"
-                            :key="col.name"
-                            :props="props"
-                            scope="col"
+                    <QTabPanels
+                        v-model="tab"
+                        animated
+                    >
+                        <QTabPanel
+                            v-for="(tab, index) in tabs"
+                            :key="index"
+                            :name="tab.name"
+                            class="q-pa-none"
                         >
-                            {{ col.label }}
-                        </QTh>
-                    </QTr>
-                </template>
-                <template v-slot:body="props">
-                    <QTr :props="props">
-                        <QTd
-                            key="association"
-                            :props="props"
-                            headers="association"
-                        >
-                            {{ props.row.associationName }}
-                        </QTd>
-                        <QTd
-                            key="institution"
-                            :props="props"
-                            headers="institution"
-                        >
-                            {{ props.row.associationInstitution }}
-                        </QTd>
-                        <QTd
-                            key="charterStatus"
-                            :props="props"
-                            headers="charterStatus"
-                        >
-                            <CharterStatusIndicator :charter-status="props.row.charterStatus"/>
-                        </QTd>
-                        <QTd
-                            key="actions"
-                            :props="props"
-                            headers="actions"
-                        >
-                            <QBtn
-                                color="charter"
-                                label="Gérer les chartes"
-                                outline
-                            />
-                        </QTd>
-                    </QTr>
-                </template>
-                <template v-slot:pagination="scope">
-                    {{
-                        t('table.results-amount', {
-                            firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
-                            lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
-                            amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
-                        })
-                    }}
-                    <QBtn
-                        v-if="scope.pagesNumber > 2"
-                        :aria-label="t('table.first-page')"
-                        :disable="scope.isFirstPage"
-                        color="grey-8"
-                        dense
-                        flat
-                        icon="bi-chevron-double-left"
-                        @click="scope.firstPage"
-                    />
-                    <QBtn
-                        :aria-label="t('table.previous-page')"
-                        :disable="scope.isFirstPage"
-                        color="grey-8"
-                        dense
-                        flat
-                        icon="bi-chevron-left"
-                        @click="scope.prevPage"
-                    />
-                    <QBtn
-                        :aria-label="t('table.next-page')"
-                        :disable="scope.isLastPage"
-                        color="grey-8"
-                        dense
-                        flat
-                        icon="bi-chevron-right"
-                        @click="scope.nextPage"
-                    />
-                    <QBtn
-                        v-if="scope.pagesNumber > 2"
-                        :aria-label="t('table.last-page')"
-                        :disable="scope.isLastPage"
-                        color="grey-8"
-                        dense
-                        flat
-                        icon="bi-chevron-double-right"
-                        @click="scope.lastPage"
-                    />
-                </template>
-            </QTable>
-        </QTabPanel>
-        <QTabPanel
-            name="chartersToManage"
-        >
-            <QTable
-                :columns="chartersToManageColumns"
-                :rows="chartersToManage"
-                :rows-per-page-options="[10, 20, 50, 0]"
-                role="presentation"
-                row-key="name"
-            >
-                <template v-slot:header="props">
-                    <QTr :props="props">
-                        <QTh
-                            v-for="col in props.cols"
-                            :id="col.name"
-                            :key="col.name"
-                            :props="props"
-                            scope="col"
-                        >
-                            {{ col.label }}
-                        </QTh>
-                    </QTr>
-                </template>
-                <template v-slot:body="props">
-                    <QTr :props="props">
-                        <QTd
-                            key="association"
-                            :props="props"
-                            headers="association"
-                        >
-                            {{ props.row.associationName }}
-                        </QTd>
-                        <QTd
-                            key="institution"
-                            :props="props"
-                            headers="institution"
-                        >
-                            {{ props.row.associationInstitution }}
-                        </QTd>
-                        <QTd
-                            key="charterName"
-                            :props="props"
-                            headers="charterName"
-                        >
-                            {{ props.row.charterName }}
-                        </QTd>
-                        <QTd
-                            key="uploadedDate"
-                            :props="props"
-                            headers="uploadedDate"
-                        >
-                            {{ formatDate(props.row.uploadedDate).split('-').reverse().join('/') }}
-                        </QTd>
-                        <QTd
-                            key="charterStatus"
-                            :props="props"
-                            headers="charterStatus"
-                        >
-                            <CharterStatusIndicator :charter-status="props.row.charterStatus"/>
-                        </QTd>
-                        <QTd
-                            key="actions"
-                            :props="props"
-                            headers="actions"
-                        >
-                            <TableManageChartersBtn
-                                :association-id="props.row.associationId"
-                                :charter="props.row.charterId"
-                            />
-                        </QTd>
-                    </QTr>
-                </template>
-                <template v-slot:pagination="scope">
-                    {{
-                        t('table.results-amount', {
-                            firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
-                            lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
-                            amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
-                        })
-                    }}
-                    <QBtn
-                        v-if="scope.pagesNumber > 2"
-                        :aria-label="t('table.first-page')"
-                        :disable="scope.isFirstPage"
-                        color="grey-8"
-                        dense
-                        flat
-                        icon="bi-chevron-double-left"
-                        @click="scope.firstPage"
-                    />
-                    <QBtn
-                        :aria-label="t('table.previous-page')"
-                        :disable="scope.isFirstPage"
-                        color="grey-8"
-                        dense
-                        flat
-                        icon="bi-chevron-left"
-                        @click="scope.prevPage"
-                    />
-                    <QBtn
-                        :aria-label="t('table.next-page')"
-                        :disable="scope.isLastPage"
-                        color="grey-8"
-                        dense
-                        flat
-                        icon="bi-chevron-right"
-                        @click="scope.nextPage"
-                    />
-                    <QBtn
-                        v-if="scope.pagesNumber > 2"
-                        :aria-label="t('table.last-page')"
-                        :disable="scope.isLastPage"
-                        color="grey-8"
-                        dense
-                        flat
-                        icon="bi-chevron-double-right"
-                        @click="scope.lastPage"
-                    />
-                </template>
-            </QTable>
-        </QTabPanel>
-    </QTabPanels>
+                            <QSplitter
+                                v-model="splitterModel"
+                            >
+                                <template v-slot:before>
+                                    <QTabs
+                                        v-model="innerTab"
+                                        class="text-charter"
+                                        vertical
+                                    >
+                                        <QTab
+                                            v-for="(innerTab, index) in innerTabs"
+                                            :key="index"
+                                            :icon="innerTab.icon"
+                                            :label="innerTab.label"
+                                            :name="innerTab.name"
+                                        />
+                                    </QTabs>
+                                </template>
+
+                                <template v-slot:after>
+                                    <QTabPanels
+                                        v-model="innerTab"
+                                        animated
+                                        transition-next="slide-up"
+                                        transition-prev="slide-down"
+                                    >
+                                        <QTabPanel name="allCharters">
+                                            <TableManageCharters/>
+                                        </QTabPanel>
+                                        <QTabPanel name="processingCharters">
+                                            <TableManageProcessingCharters/>
+                                        </QTabPanel>
+                                    </QTabPanels>
+                                </template>
+                            </QSplitter>
+                        </QTabPanel>
+                    </QTabPanels>
+                </QCard>
+            </div>
+        </div>
+    </section>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/dashboard.scss";
+
+</style>

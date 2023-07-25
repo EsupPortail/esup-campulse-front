@@ -25,39 +25,45 @@ onMounted(initTab)
 </script>
 
 <template>
-    <InfoDocumentLibrary/>
-    <QTabs
-        v-model="tab"
-        active-color="charter"
-        align="justify"
-        indicator-color="charter"
-        narrow-indicator
-    >
-        <QTab
-            v-for="association in userStore.userAssociations"
-            :key="association.association.id"
-            :label="association.association.name"
-            :name="association.association.id.toString()"
-        />
-    </QTabs>
+    <section class="dashboard-section">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <InfoDocumentLibrary/>
+                <QTabs
+                    v-model="tab"
+                    active-color="charter"
+                    align="justify"
+                    indicator-color="charter"
+                    narrow-indicator
+                >
+                    <QTab
+                        v-for="association in userStore.userAssociations"
+                        :key="association.association.id"
+                        :label="association.association.name"
+                        :name="association.association.id.toString()"
+                    />
+                </QTabs>
 
-    <QSeparator
-        aria-hidden="true"
-    />
+                <QSeparator
+                    aria-hidden="true"
+                />
 
-    <QTabPanels
-        v-model="tab"
-        animated
-    >
-        <QTabPanel
-            :name="tab"
-        >
-            <TableAssociationUserCharters
-                :association-id="parseInt(tab)"
-                :is-site="userStore.userAssociations.find(obj => obj.association.id === parseInt(tab))?.association.isSite"
-            />
-        </QTabPanel>
-    </QTabPanels>
+                <QTabPanels
+                    v-model="tab"
+                    animated
+                >
+                    <QTabPanel
+                        :name="tab"
+                    >
+                        <TableAssociationUserCharters
+                            :association-id="parseInt(tab)"
+                            :is-site="userStore.userAssociations.find(obj => obj.association.id === parseInt(tab))?.association.isSite"
+                        />
+                    </QTabPanel>
+                </QTabPanels>
+            </div>
+        </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>

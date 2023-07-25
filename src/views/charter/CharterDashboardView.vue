@@ -7,14 +7,8 @@ const {isStaff} = useUserGroups()
 </script>
 
 <template>
-    <section class="dashboard-section">
-        <div class="dashboard-section-container">
-            <div class="container">
-                <DashboardCharterManagement v-if="isStaff"/>
-                <DashboardStudentCharterManagement v-else/>
-            </div>
-        </div>
-    </section>
+    <DashboardCharterManagement v-if="isStaff"/>
+    <DashboardStudentCharterManagement v-else/>
 </template>
 
 <style lang="scss" scoped>

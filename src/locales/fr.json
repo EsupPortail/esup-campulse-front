@@ -186,6 +186,7 @@
     "charter": "Charte | Chartes",
     "charters-to-manage": "Chartes à traiter",
     "expiration-date": "Date d'expiration",
+    "funds": "Chartes CAPE",
     "no-charter-to-show": "Aucune charte à afficher.",
     "options": {
       "download": "Télécharger la charte",
@@ -206,7 +207,7 @@
           "title": "Votre charte a été signée"
         }
       },
-      "title": "Charte des association du site Alsace"
+      "title": "Charte des associations du site Alsace"
     },
     "status": {
       "expired": "Charte à renouveler",
