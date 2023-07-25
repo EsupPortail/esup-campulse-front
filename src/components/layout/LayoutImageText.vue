@@ -10,8 +10,8 @@ const props = defineProps<{
     <div class="image-text-section">
         <div class="container">
             <img
-                    alt=""
-                    src="@/assets/img/unistra.jpg"
+                alt=""
+                src="@/assets/img/unistra.jpg"
             />
             <div>
                 <h2>{{ props.title }}</h2>

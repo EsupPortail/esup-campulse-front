@@ -1,8 +1,8 @@
-import { ref } from 'vue'
-import type { Commission, CommissionFund, Fund, NewCommission, SelectLabelFund, UpdateCommission } from '#/commissions'
-import { useAxios } from '@/composables/useAxios'
-import type { SelectLabel } from '#/index'
-import { useUserManagerStore } from '@/stores/useUserManagerStore'
+import {ref} from 'vue'
+import type {Commission, CommissionFund, Fund, NewCommission, SelectLabelFund, UpdateCommission} from '#/commissions'
+import {useAxios} from '@/composables/useAxios'
+import type {SelectLabel} from '#/index'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import useUtility from '@/composables/useUtility'
 
 // Funds
@@ -18,9 +18,9 @@ const commissionLabels = ref<SelectLabel[]>([])
 
 export default function() {
 
-    const { axiosPublic, axiosAuthenticated } = useAxios()
+    const {axiosPublic, axiosAuthenticated} = useAxios()
     const userManagerStore = useUserManagerStore()
-    const { arraysAreEqual } = useUtility()
+    const {arraysAreEqual} = useUtility()
 
     // Funds
     async function getFunds() {
@@ -141,13 +141,13 @@ export default function() {
     async function updateCommission(commission: UpdateCommission) {
         let dataToPatch = {}
         if (commission.newName !== commission.oldName)
-            dataToPatch = Object.assign(dataToPatch, { name: commission.newName })
+            dataToPatch = Object.assign(dataToPatch, {name: commission.newName})
         if (commission.newCommissionDate !== commission.oldCommissionDate)
-            dataToPatch = Object.assign(dataToPatch, { commissionDate: commission.newCommissionDate })
+            dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.newCommissionDate})
         if (commission.newSubmissionDate !== commission.oldSubmissionDate)
-            dataToPatch = Object.assign(dataToPatch, { submissionDate: commission.newSubmissionDate })
+            dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.newSubmissionDate})
         if (commission.newIsOpenToProjects !== commission.oldIsOpenToProjects)
-            dataToPatch = Object.assign(dataToPatch, { isOpenToProjects: commission.newIsOpenToProjects })
+            dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.newIsOpenToProjects})
         if (Object.entries(dataToPatch).length) {
             await axiosAuthenticated.patch(`/commissions/${commission.id}`, dataToPatch)
         }
@@ -173,7 +173,7 @@ export default function() {
 
     async function getCommissionCSVExport(id: number) {
         const url = `/commissions/${id}/csv_export`
-        return (await axiosAuthenticated.get<Blob>(url, { responseType: 'blob' })).data
+        return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
     }
 
     return {

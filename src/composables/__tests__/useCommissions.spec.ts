@@ -1,13 +1,13 @@
-import { createTestingPinia } from '@pinia/testing'
-import { _axiosFixtures } from '~/fixtures/axios.mock'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { config } from '@vue/test-utils'
-import { createPinia, setActivePinia } from 'pinia'
-import { useUserStore } from '@/stores/useUserStore'
+import {createTestingPinia} from '@pinia/testing'
+import {_axiosFixtures} from '~/fixtures/axios.mock'
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
+import {config} from '@vue/test-utils'
+import {createPinia, setActivePinia} from 'pinia'
+import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
-import { useAxios } from '@/composables/useAxios'
-import { _commissionFunds, _commissions, _funds } from '~/fixtures/commissions.mock'
-import type { Commission, NewCommission } from '#/commissions'
+import {useAxios} from '@/composables/useAxios'
+import {_commissionFunds, _commissions, _funds} from '~/fixtures/commissions.mock'
+import type {Commission, NewCommission} from '#/commissions'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -52,13 +52,13 @@ describe('useCommissions', () => {
         updateCommission,
         deleteCommission
     } = useCommissions()
-    const { axiosPublic, axiosAuthenticated } = useAxios()
+    const {axiosPublic, axiosAuthenticated} = useAxios()
     const mockedPublicAxios = vi.mocked(axiosPublic, true)
     const mockedAuthAxios = vi.mocked(axiosAuthenticated, true)
 
     describe('getFunds', () => {
         it('should call API (get) and store data in ref commissions', async () => {
-            mockedPublicAxios.get.mockResolvedValueOnce({ data: _funds })
+            mockedPublicAxios.get.mockResolvedValueOnce({data: _funds})
             await getFunds()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/funds/names')
@@ -73,7 +73,7 @@ describe('useCommissions', () => {
 
         describe('if all params are set to true', () => {
             it('should call API (get) with params params set to true', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissions })
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
                 await getCommissionsForManagers(true, true, true, true, true)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 const url = '/commissions/?with_active_projects=true&only_with_active_projects=true&is_open_to_projects=true&is_site=true&managed_projects=true'
@@ -83,7 +83,7 @@ describe('useCommissions', () => {
         })
         describe('if all params are set to false', () => {
             it('should call API (get)', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissions })
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
                 await getCommissionsForManagers(false, false, false, false, false)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 const url = '/commissions/?with_active_projects=false&only_with_active_projects=false&is_open_to_projects=false&is_site=false&managed_projects=false'
@@ -93,7 +93,7 @@ describe('useCommissions', () => {
         })
         describe('if all params are set to undefined', () => {
             it('should call API (get)', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissions })
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
                 await getCommissionsForManagers(undefined, undefined, undefined, undefined, undefined)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 const url = '/commissions/'
@@ -105,7 +105,7 @@ describe('useCommissions', () => {
     describe('getCommissionsForStudents', () => {
         describe('if all params are set to true', () => {
             it('should get commissions that are open to projects and site', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissions })
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
                 await getCommissionsForStudents(true, true)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/?is_open_to_projects=true&is_site=true')
@@ -114,7 +114,7 @@ describe('useCommissions', () => {
         })
         describe('if all params are set to false', () => {
             it('should get commissions that are closed to projects and not site', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissions })
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
                 await getCommissionsForStudents(false, false)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/?is_open_to_projects=false&is_site=false')
@@ -123,7 +123,7 @@ describe('useCommissions', () => {
         })
         describe('if all params are set to undefined', () => {
             it('should get all commissions', async () => {
-                mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissions })
+                mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
                 await getCommissionsForStudents(undefined, undefined)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/')
@@ -132,7 +132,7 @@ describe('useCommissions', () => {
     })
     describe('getNextCommission', () => {
         it('should get commissions open to projects and assign the first item to state', async () => {
-            mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissions })
+            mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
             await getNextCommission()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/?is_open_to_projects=true')
@@ -141,7 +141,7 @@ describe('useCommissions', () => {
     })
     describe('getAllCommissions', () => {
         it('should get all commissions with no params', async () => {
-            mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissions })
+            mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
             await getAllCommissions()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/')
@@ -149,7 +149,7 @@ describe('useCommissions', () => {
     })
     describe('getCommissionFunds', () => {
         it('should get all commissionFunds', async () => {
-            mockedPublicAxios.get.mockResolvedValueOnce({ data: _commissionFunds })
+            mockedPublicAxios.get.mockResolvedValueOnce({data: _commissionFunds})
             await getCommissionFunds()
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/commissions/funds')
@@ -174,7 +174,7 @@ describe('useCommissions', () => {
                 isOpenToProjects: true,
                 name: 'Nouvelle commission'
             }
-            mockedAuthAxios.post.mockResolvedValueOnce({ data: response })
+            mockedAuthAxios.post.mockResolvedValueOnce({data: response})
             await postNewCommission(newCommission)
             expect(axiosAuthenticated.post).toHaveBeenCalledTimes(4)
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/commissions/', {

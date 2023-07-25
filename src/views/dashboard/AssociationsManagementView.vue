@@ -115,44 +115,44 @@ const columns: QTableProps['columns'] = [
                 {{ t('dashboard.association-list') }}
             </h2>
             <QBtn
-                    v-if="hasPerm('add_association')"
-                    :label="t('dashboard.create-association')"
-                    :to="{name: 'CreateAssociation'}"
-                    color="association"
-                    icon="bi-plus-circle"
+                v-if="hasPerm('add_association')"
+                :label="t('dashboard.create-association')"
+                :to="{name: 'CreateAssociation'}"
+                color="association"
+                icon="bi-plus-circle"
             />
         </div>
         <div class="dashboard-section-container">
             <div class="container-lg">
                 <FormAssociationSearch
-                        v-if="route.name"
-                        :route="route.name"
+                    v-if="route.name"
+                    :route="route.name"
                 />
                 <QTable
-                        v-model:selected="selected"
-                        :columns="columns"
-                        :loading="!associations"
-                        :rows="associations"
-                        :rows-per-page-options="[10, 20, 50, 0]"
-                        :title="t('directory.title')"
-                        role="presentation"
-                        row-key="name"
-                        selection="multiple"
+                    v-model:selected="selected"
+                    :columns="columns"
+                    :loading="!associations"
+                    :rows="associations"
+                    :rows-per-page-options="[10, 20, 50, 0]"
+                    :title="t('directory.title')"
+                    role="presentation"
+                    row-key="name"
+                    selection="multiple"
                 >
                     <template v-slot:header="props">
                         <QTr :props="props">
                             <QTh>
                                 <QCheckbox
-                                        v-model="props.selected"
-                                        :aria-label="t('table.select-all')"
+                                    v-model="props.selected"
+                                    :aria-label="t('table.select-all')"
                                 />
                             </QTh>
                             <QTh
-                                    v-for="col in props.cols"
-                                    :id="col.name"
-                                    :key="col.name"
-                                    :props="props"
-                                    scope="col"
+                                v-for="col in props.cols"
+                                :id="col.name"
+                                :key="col.name"
+                                :props="props"
+                                scope="col"
                             >
                                 {{ col.label }}
                             </QTh>
@@ -162,108 +162,108 @@ const columns: QTableProps['columns'] = [
                         <QTr :props="props">
                             <QTd>
                                 <QCheckbox
-                                        v-model="props.selected"
-                                        :aria-label="props.row.name"
-                                        color="association"
+                                    v-model="props.selected"
+                                    :aria-label="props.row.name"
+                                    color="association"
                                 />
                             </QTd>
                             <QTd
-                                    key="name"
-                                    :props="props"
-                                    headers="name"
+                                key="name"
+                                :props="props"
+                                headers="name"
                             >
                                 {{ props.row.name }}
                             </QTd>
                             <QTd
-                                    key="acronym"
-                                    :props="props"
-                                    headers="acronym"
+                                key="acronym"
+                                :props="props"
+                                headers="acronym"
                             >
                                 {{ props.row.acronym }}
                             </QTd>
                             <QTd
-                                    key="institution"
-                                    :props="props"
-                                    headers="institution"
+                                key="institution"
+                                :props="props"
+                                headers="institution"
                             >
                                 {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
                             </QTd>
                             <QTd
-                                    key="activityField"
-                                    :props="props"
-                                    headers="activityField"
+                                key="activityField"
+                                :props="props"
+                                headers="activityField"
                             >
                                 {{
                                     associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name
                                 }}
                             </QTd>
                             <QTd
-                                    key="status"
-                                    :props="props"
-                                    class="state-cell"
-                                    headers="status"
+                                key="status"
+                                :props="props"
+                                class="state-cell"
+                                headers="status"
                             >
                                 <span
-                                        v-if="!props.row.isEnabled"
-                                        class="form-state"
+                                    v-if="!props.row.isEnabled"
+                                    class="form-state"
                                 >
                                     {{ t('association.disabled') }}
                                     <span
-                                            aria-hidden="true"
-                                            class="form-state-icon form-state-red"
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
                                     ><i class="bi bi-x-lg"></i></span>
                                 </span>
                                 <span
-                                        v-else
-                                        class="form-state"
+                                    v-else
+                                    class="form-state"
                                 >
                                     {{ t('association.enabled') }}
                                     <span
-                                            aria-hidden="true"
-                                            class="form-state-icon form-state-green"
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-green"
                                     ><i class="bi bi-check-lg"></i></span>
                                 </span>
                             </QTd>
                             <QTd
-                                    key="public"
-                                    :props="props"
-                                    class="state-cell"
-                                    headers="public"
+                                key="public"
+                                :props="props"
+                                class="state-cell"
+                                headers="public"
                             >
                                 <span
-                                        v-if="!props.row.isPublic"
-                                        class="form-state"
+                                    v-if="!props.row.isPublic"
+                                    class="form-state"
                                 >
                                     {{ t('association.not-public') }}
                                     <span
-                                            aria-hidden="true"
-                                            class="form-state-icon form-state-red"
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
                                     ><i class="bi bi-x-lg"></i></span>
                                 </span>
                                 <span
-                                        v-else
-                                        class="form-state"
+                                    v-else
+                                    class="form-state"
                                 >
                                     {{ t('association.public') }}
                                     <span
-                                            aria-hidden="true"
-                                            class="form-state-icon form-state-green"
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-green"
                                     ><i class="bi bi-check-lg"></i></span>
                                 </span>
                             </QTd>
                             <QTd
-                                    key="edition"
-                                    :props="props"
-                                    class="actions-cell-compact"
-                                    headers="edition"
+                                key="edition"
+                                :props="props"
+                                class="actions-cell-compact"
+                                headers="edition"
                             >
                                 <div class="button-container">
                                     <QBtn
-                                            :aria-label="t('edit') + ' ' + props.row.name"
-                                            :to="{name: 'EditAssociation', params: {id: props.row.id}}"
-                                            color="association"
-                                            icon="bi-pencil"
-                                            outline
+                                        :aria-label="t('edit') + ' ' + props.row.name"
+                                        :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                                        color="association"
+                                        icon="bi-pencil"
+                                        outline
                                     />
                                 </div>
                             </QTd>
@@ -278,48 +278,48 @@ const columns: QTableProps['columns'] = [
                             })
                         }}
                         <QBtn
-                                v-if="scope.pagesNumber > 2"
-                                :aria-label="t('table.first-page')"
-                                :disable="scope.isFirstPage"
-                                color="grey-8"
-                                dense
-                                flat
-                                icon="bi-chevron-double-left"
-                                @click="scope.firstPage"
+                            v-if="scope.pagesNumber > 2"
+                            :aria-label="t('table.first-page')"
+                            :disable="scope.isFirstPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-double-left"
+                            @click="scope.firstPage"
                         />
                         <QBtn
-                                :aria-label="t('table.previous-page')"
-                                :disable="scope.isFirstPage"
-                                color="grey-8"
-                                dense
-                                flat
-                                icon="bi-chevron-left"
-                                @click="scope.prevPage"
+                            :aria-label="t('table.previous-page')"
+                            :disable="scope.isFirstPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-left"
+                            @click="scope.prevPage"
                         />
                         <QBtn
-                                :aria-label="t('table.next-page')"
-                                :disable="scope.isLastPage"
-                                color="grey-8"
-                                dense
-                                flat
-                                icon="bi-chevron-right"
-                                @click="scope.nextPage"
+                            :aria-label="t('table.next-page')"
+                            :disable="scope.isLastPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-right"
+                            @click="scope.nextPage"
                         />
                         <QBtn
-                                v-if="scope.pagesNumber > 2"
-                                :aria-label="t('table.last-page')"
-                                :disable="scope.isLastPage"
-                                color="grey-8"
-                                dense
-                                flat
-                                icon="bi-chevron-double-right"
-                                @click="scope.lastPage"
+                            v-if="scope.pagesNumber > 2"
+                            :aria-label="t('table.last-page')"
+                            :disable="scope.isLastPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-double-right"
+                            @click="scope.lastPage"
                         />
                     </template>
                 </QTable>
                 <AlertConfirmAssociationsChanges
-                        :selectedAssociations="selected"
-                        @update-selected-associations="selected = []"
+                    :selectedAssociations="selected"
+                    @update-selected-associations="selected = []"
                 />
             </div>
         </div>

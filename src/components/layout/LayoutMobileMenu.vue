@@ -8,17 +8,17 @@ const {openMenu} = useUtility()
 <template>
     <div class="mobile-menu">
         <div
-                :class="`flex-row-right mobile-nav-bar ${openMenu ? '' : 'box-shadow'}`"
+            :class="`flex-row-right mobile-nav-bar ${openMenu ? '' : 'box-shadow'}`"
         >
             <QBtn
-                    :icon-right="openMenu ? 'bi-x' : 'bi-list'"
-                    label="Menu"
-                    outline
-                    @click="openMenu = !openMenu"
+                :icon-right="openMenu ? 'bi-x' : 'bi-list'"
+                label="Menu"
+                outline
+                @click="openMenu = !openMenu"
             />
         </div>
         <div
-                :class="openMenu ? 'open-menu box-shadow' : 'close-menu'"
+            :class="openMenu ? 'open-menu box-shadow' : 'close-menu'"
         >
             <LayoutHeaderNav device="mobile"/>
         </div>

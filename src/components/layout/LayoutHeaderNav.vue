@@ -13,9 +13,9 @@ const props = defineProps<{
 
 <template>
     <nav
-            :aria-label="t('primary-nav')"
-            :class="`${props.device === 'desktop' ? 'flex-row-right' : 'flex-column'} ${props.device}`"
-            role="navigation"
+        :aria-label="t('primary-nav')"
+        :class="`${props.device === 'desktop' ? 'flex-row-right' : 'flex-column'} ${props.device}`"
+        role="navigation"
     >
         <ul>
             <li>
@@ -23,56 +23,56 @@ const props = defineProps<{
             </li>
             <li>
                 <RouterLink
-                        :to="{name: 'Associations'}"
-                        class="space-1"
+                    :to="{name: 'Associations'}"
+                    class="space-1"
                 >
                     {{ t('header.associations') }}
                 </RouterLink>
             </li>
             <li>
                 <RouterLink
-                        :to="{name: 'Charter'}"
-                        class="space-2"
+                    :to="{name: 'Charter'}"
+                    class="space-2"
                 >
                     {{ t('header.charter') }}
                 </RouterLink>
             </li>
             <li>
                 <RouterLink
-                        :to="{name: 'Commission'}"
-                        class="space-3"
+                    :to="{name: 'Commission'}"
+                    class="space-3"
                 >
                     {{ t('header.commission') }}
                 </RouterLink>
             </li>
             <li>
                 <RouterLink
-                        :to="{name: 'About'}"
-                        class="space-1"
+                    :to="{name: 'About'}"
+                    class="space-1"
                 >
                     {{ t('header.about') }}
                 </RouterLink>
             </li>
             <li>
                 <RouterLink
-                        :to="{name: 'Contact'}"
-                        class="space-1"
+                    :to="{name: 'Contact'}"
+                    class="space-1"
                 >
                     {{ t('header.contact') }}
                 </RouterLink>
             </li>
             <li>
                 <RouterLink
-                        v-if="!userStore.isAuth"
-                        :to="{name: 'Login'}"
+                    v-if="!userStore.isAuth"
+                    :to="{name: 'Login'}"
                 >
                     {{ t('header.login') }}
                 </RouterLink>
             </li>
             <li>
                 <LayoutHeaderProfileButton
-                        v-if="userStore.isAuth"
-                        class="profile-button"
+                    v-if="userStore.isAuth"
+                    class="profile-button"
                 />
             </li>
         </ul>
