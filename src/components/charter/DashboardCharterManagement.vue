@@ -7,14 +7,24 @@ import useErrors from '@/composables/useErrors'
 import useCharters from '@/composables/useCharters'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
+import TableManageChartersBtn from '@/components/charter/TableManageChartersBtn.vue'
+import useUtility from '@/composables/useUtility'
 
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {associationCharters, initAssociationCharters} = useCharters()
+const {associationCharters, initAssociationCharters, initChartersToManage, chartersToManage} = useCharters()
 const associationStore = useAssociationStore()
+const {formatDate} = useUtility()
 
 const tab = ref('associationCharters')
+watch(() => tab.value, () => {
+    loading.show()
+    if (tab.value === 'chartersToManage') {
+        initChartersToManage()
+    }
+    loading.hide()
+})
 
 const associationChartersColumns: QTableProps['columns'] = [
     {name: 'association', align: 'left', label: t('association.association'), field: 'association', sortable: true},
@@ -27,7 +37,7 @@ const associationChartersColumns: QTableProps['columns'] = [
     },
     {
         name: 'charterStatus',
-        align: 'center',
+        align: 'right',
         label: t('charter.association-charter'),
         field: 'charterStatus',
         sortable: true
@@ -35,7 +45,7 @@ const associationChartersColumns: QTableProps['columns'] = [
     {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
 ]
 
-const chartersToManage: QTableProps['columns'] = [
+const chartersToManageColumns: QTableProps['columns'] = [
     {name: 'association', align: 'left', label: t('association.association'), field: 'association', sortable: true},
     {
         name: 'institution',
@@ -45,9 +55,23 @@ const chartersToManage: QTableProps['columns'] = [
         sortable: false
     },
     {
+        name: 'charterName',
+        align: 'left',
+        label: t('charter.charter', 1),
+        field: 'charterName',
+        sortable: true
+    },
+    {
+        name: 'uploadedDate',
+        align: 'left',
+        label: t('charter.uploaded-date', 1),
+        field: 'uploadedDate',
+        sortable: true
+    },
+    {
         name: 'charterStatus',
-        align: 'center',
-        label: t('charter.association-charter'),
+        align: 'right',
+        label: t('status',),
         field: 'charterStatus',
         sortable: true
     },
@@ -214,8 +238,8 @@ onMounted(async () => {
             name="chartersToManage"
         >
             <QTable
-                :columns="chartersToManage"
-                :rows="charterDocuments"
+                :columns="chartersToManageColumns"
+                :rows="chartersToManage"
                 :rows-per-page-options="[10, 20, 50, 0]"
                 role="presentation"
                 row-key="name"
@@ -250,6 +274,20 @@ onMounted(async () => {
                             {{ props.row.associationInstitution }}
                         </QTd>
                         <QTd
+                            key="charterName"
+                            :props="props"
+                            headers="charterName"
+                        >
+                            {{ props.row.charterName }}
+                        </QTd>
+                        <QTd
+                            key="uploadedDate"
+                            :props="props"
+                            headers="uploadedDate"
+                        >
+                            {{ formatDate(props.row.uploadedDate).split('-').reverse().join('/') }}
+                        </QTd>
+                        <QTd
                             key="charterStatus"
                             :props="props"
                             headers="charterStatus"
@@ -261,10 +299,9 @@ onMounted(async () => {
                             :props="props"
                             headers="actions"
                         >
-                            <QBtn
-                                color="charter"
-                                label="Gérer les chartes"
-                                outline
+                            <TableManageChartersBtn
+                                :association-id="props.row.associationId"
+                                :charter="props.row.charterId"
                             />
                         </QTd>
                     </QTr>

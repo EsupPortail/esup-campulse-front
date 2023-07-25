@@ -16,7 +16,8 @@ const {catchHTTPError} = useErrors()
 const props = defineProps<{
     openSign: boolean,
     charter: ManageCharter,
-    associationId: number
+    associationId: number,
+    isSite: boolean
 }>()
 
 const emit = defineEmits(['closeDialog'])
@@ -40,7 +41,7 @@ async function onSignCharter() {
         if (signedCharter.value) {
             await uploadCharter(props.charter.documentUploadId, props.associationId, props.charter.documentId, signedCharter.value)
             open.value = false
-            await initCharters(props.associationId)
+            await initCharters(props.associationId, props.isSite)
             notify({
                 type: 'positive',
                 message: t('notifications.positive.charter-signed')

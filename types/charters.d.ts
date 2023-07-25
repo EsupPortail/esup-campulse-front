@@ -24,6 +24,7 @@ export interface ChartersToManage {
     associationInstitution: string,
     charterId: number,
     charterName: string,
+    uploadedDate: string,
     charterStatus: CharterStatus
 }
 

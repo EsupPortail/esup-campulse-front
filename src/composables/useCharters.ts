@@ -94,14 +94,17 @@ export default function () {
                     const document = documents.value.find(doc => doc.id === charter.document)
                     if (document) {
                         const charterStatus = initCharterStatus(true, document, charter)
-                        chartersToManage.value.push({
-                            associationId: association.id,
-                            associationName: association.name,
-                            associationInstitution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
-                            charterId: charter.document,
-                            charterName: charter.name as string,
-                            charterStatus: charterStatus.charterStatus
-                        })
+                        if (charterStatus.charterStatus === 'PROCESSING') {
+                            chartersToManage.value.push({
+                                associationId: association.id,
+                                associationName: association.name,
+                                associationInstitution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                                charterId: charter.document,
+                                charterName: document.name as string,
+                                uploadedDate: charter.uploadDate as string,
+                                charterStatus: charterStatus.charterStatus
+                            })
+                        }
                     }
                 }
             }
@@ -174,6 +177,7 @@ export default function () {
         downloadCharter,
         associationCharters,
         initAssociationCharters,
-        getCharters
+        initChartersToManage,
+        chartersToManage
     }
 }

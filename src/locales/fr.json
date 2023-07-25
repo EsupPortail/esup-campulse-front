@@ -183,6 +183,7 @@
   "charter": {
     "association-charter": "Charte du site Alsace",
     "association-charters": "Chartes par associations",
+    "charter": "Charte | Chartes",
     "charters-to-manage": "Chartes à traiter",
     "expiration-date": "Date d'expiration",
     "no-charter-to-show": "Aucune charte à afficher.",
@@ -214,6 +215,7 @@
       "processing": "Charte en cours de validation",
       "validated": "Charte signée et validée"
     },
+    "uploaded-date": "Date de dépôt",
     "table-title": "Chartes",
     "validated-date": "Date de validation"
   },

@@ -6,7 +6,7 @@ import useCharters from '@/composables/useCharters'
 import {onMounted} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import TableStudentCharterBtn from '@/components/charter/TableStudentCharterBtn.vue'
+import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 
 
@@ -17,14 +17,15 @@ const {catchHTTPError} = useErrors()
 
 
 const importedProps = defineProps<{
-    associationId: number
+    associationId: number,
+    isSite: boolean
 }>()
 
 
 async function onGetCharters() {
     if (importedProps.associationId) {
         try {
-            await initCharters(importedProps.associationId)
+            await initCharters(importedProps.associationId, importedProps.isSite)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -116,9 +117,10 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 headers="actions"
                             >
-                                <TableStudentCharterBtn
+                                <TableStudentChartersBtn
                                     :association-id="importedProps.associationId"
                                     :charter="props.row"
+                                    :is-site="props.isSite"
                                 />
                             </QTd>
                         </QTr>
