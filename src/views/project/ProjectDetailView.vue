@@ -64,8 +64,8 @@ async function onGetProjectDetail() {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-info-circle"
+                aria-hidden="true"
+                class="bi bi-info-circle"
             ></i>
             {{ t('project.general-infos') }}
         </h2>
@@ -80,8 +80,8 @@ async function onGetProjectDetail() {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-calendar"
+                aria-hidden="true"
+                class="bi bi-calendar"
             ></i>
             {{ t('commission.commission', 1) }}
         </h2>
@@ -96,8 +96,8 @@ async function onGetProjectDetail() {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-piggy-bank"
+                aria-hidden="true"
+                class="bi bi-piggy-bank"
             ></i>
             {{ t('project.budget') }}
         </h2>
@@ -112,8 +112,8 @@ async function onGetProjectDetail() {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-flag"
+                aria-hidden="true"
+                class="bi bi-flag"
             ></i>
             {{ t('project.goals') }}
         </h2>
@@ -128,17 +128,17 @@ async function onGetProjectDetail() {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-file-earmark"
+                aria-hidden="true"
+                class="bi bi-file-earmark"
             ></i>
             {{ t('project.documents') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
                 <ProjectRecapDocuments
-                        v-if="isLoaded"
-                        :association-id="null"
-                        process="project"
+                    v-if="isLoaded"
+                    :association-id="null"
+                    process="project"
                 />
             </div>
         </div>
@@ -148,8 +148,8 @@ async function onGetProjectDetail() {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-bank"
+                aria-hidden="true"
+                class="bi bi-bank"
             ></i>
             {{ t('commission.funds-validation-status') }}
         </h2>
@@ -166,8 +166,8 @@ async function onGetProjectDetail() {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-check-lg"
+                aria-hidden="true"
+                class="bi bi-check-lg"
             ></i>
             {{ t('project.status.title') }}
         </h2>
@@ -176,8 +176,8 @@ async function onGetProjectDetail() {
                 <div class="display-row">
                     <p class="row-title">{{ t('status') }}</p>
                     <ProjectStatusIndicator
-                            :project-status="projectStore.project?.projectStatus"
-                            :show-draft="true"
+                        :project-status="projectStore.project?.projectStatus"
+                        :show-draft="true"
                     />
                 </div>
             </div>
@@ -188,21 +188,21 @@ async function onGetProjectDetail() {
     <div class="dashboard-section">
         <h2>
             <i
-                    aria-hidden="true"
-                    class="bi bi-chat"
+                aria-hidden="true"
+                class="bi bi-chat"
             ></i>
             {{ t('project.comments.title') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
                 <ProjectComments
-                        v-if="isLoaded"
-                        :project="projectStore.project?.id"
+                    v-if="isLoaded"
+                    :project="projectStore.project?.id"
                 />
             </div>
         </div>
         <ProjectValidation
-                v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
+            v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
                 && hasPerm('change_project_as_validator')
                 && route.name === 'ManageProject'"
         />

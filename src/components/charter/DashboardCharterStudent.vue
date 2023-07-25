@@ -16,17 +16,17 @@ const columns = [
     <section class="dashboard-section">
         <h2 class="dashboard-section-title">
             <i
-                    aria-hidden="true"
-                    class="bi bi-pencil-square"
+                aria-hidden="true"
+                class="bi bi-pencil-square"
             ></i>
             Titre de la section
         </h2>
         <div class="dashboard-section-container">
             <div class="table">
                 <QTable
-                        :columns="columns"
-                        :rows="rows"
-                        row-key="name"
+                    :columns="columns"
+                    :rows="rows"
+                    row-key="name"
                 />
             </div>
         </div>

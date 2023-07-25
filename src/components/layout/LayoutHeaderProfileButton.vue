@@ -45,18 +45,18 @@ onMounted(async () => {
 <template>
     <div class="q-pa-md">
         <QBtnDropdown
-                :menu-offset="[0, 8]"
-                align="between"
-                content-class="profile-menu"
-                flat
-                no-caps
-                padding="0"
+            :menu-offset="[0, 8]"
+            align="between"
+            content-class="profile-menu"
+            flat
+            no-caps
+            padding="0"
         >
             <template v-slot:label>
                 <span class="row items-center no-wrap">
                     <span
-                            aria-hidden="true"
-                            class="avatar"
+                        aria-hidden="true"
+                        class="avatar"
                     >
                         <i class="bi bi-person-circle"></i>
                     </span>
@@ -68,9 +68,9 @@ onMounted(async () => {
                 <ul>
                     <li>
                         <QItem
-                                v-close-popup
-                                clickable
-                                @click="router.push({ name: 'Dashboard' })"
+                            v-close-popup
+                            clickable
+                            @click="router.push({ name: 'Dashboard' })"
                         >
                             <QItemSection>
                                 <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
@@ -79,14 +79,14 @@ onMounted(async () => {
                     </li>
 
                     <li
-                            v-for="(item) in userStore.userAssociations"
-                            :key="item.id"
+                        v-for="(item) in userStore.userAssociations"
+                        :key="item.id"
                     >
                         <QItem
-                                v-if="item.isValidatedByAdmin"
-                                v-close-popup
-                                clickable
-                                @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
+                            v-if="item.isValidatedByAdmin"
+                            v-close-popup
+                            clickable
+                            @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
                         >
                             <QItemSection>
                                 <QItemLabel>{{ item.association.name }}</QItemLabel>
@@ -96,9 +96,9 @@ onMounted(async () => {
 
                     <li>
                         <QItem
-                                v-close-popup
-                                clickable
-                                @click="onLogOut"
+                            v-close-popup
+                            clickable
+                            @click="onLogOut"
                         >
                             <QItemSection>
                                 <QItemLabel>{{ t('header.logout') }}</QItemLabel>
@@ -112,6 +112,7 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/_variables.scss";
 .q-btn-dropdown {
   font-size: 1.8rem;
 }

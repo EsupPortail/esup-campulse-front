@@ -118,79 +118,79 @@ async function onUpdateProjectStatus() {
 <template>
     <section class="flex-row-center padding-top padding-bottom">
         <QBtn
-                :disable="!canChangeProject"
-                :label="t('project.validate')"
-                class="btn-lg"
-                color="commission"
-                icon="bi-check-lg"
-                @click="onOpenDialog('validate', 'bi-check-lg')"
+            :disable="!canChangeProject"
+            :label="t('project.validate')"
+            class="btn-lg"
+            color="commission"
+            icon="bi-check-lg"
+            @click="onOpenDialog('validate', 'bi-check-lg')"
         />
         <QBtn
-                :disable="!canChangeProject"
-                :label="t('project.return')"
-                class="btn-lg"
-                color="custom-red"
-                icon="bi-exclamation-triangle"
-                @click="onOpenDialog('return', 'bi-exclamation-triangle')"
+            :disable="!canChangeProject"
+            :label="t('project.return')"
+            class="btn-lg"
+            color="custom-red"
+            icon="bi-exclamation-triangle"
+            @click="onOpenDialog('return', 'bi-exclamation-triangle')"
         />
         <QBtn
-                :disable="!canChangeProject"
-                :label="t('project.reject')"
-                class="btn-lg"
-                color="custom-red"
-                icon="bi-x-octagon"
-                @click="onOpenDialog('reject', 'bi-x-octagon')"
+            :disable="!canChangeProject"
+            :label="t('project.reject')"
+            class="btn-lg"
+            color="custom-red"
+            icon="bi-x-octagon"
+            @click="onOpenDialog('reject', 'bi-x-octagon')"
         />
     </section>
     <QDialog v-model="open">
         <QCard class="variant-space-3">
             <QCardSection class="q-pt-none flex-column">
                 <QForm
-                        class="flex-column"
-                        @submit="onUpdateProjectStatus"
+                    class="flex-column"
+                    @submit="onUpdateProjectStatus"
                 >
                     <QSelect
-                            v-if="selectedAction !== 'return'"
-                            v-model="selectedProjectCommissionFunds"
-                            :label="t('project.commission-funds-validation',
+                        v-if="selectedAction !== 'return'"
+                        v-model="selectedProjectCommissionFunds"
+                        :label="t('project.commission-funds-validation',
                                   {action: `${selectedAction === 'validate' ? 'valider' : 'refuser'}`}) + ' (' + t('required') + ')'"
-                            :options="projectCommissionFundLabels"
-                            :rules="[val => val && val.length || t('forms.required-fund')]"
-                            aria-required="true"
-                            clearable
-                            color="commission"
-                            emit-value
-                            filled
-                            map-options
-                            multiple
-                            reactive-rules
-                            use-chips
+                        :options="projectCommissionFundLabels"
+                        :rules="[val => val && val.length || t('forms.required-fund')]"
+                        aria-required="true"
+                        clearable
+                        color="commission"
+                        emit-value
+                        filled
+                        map-options
+                        multiple
+                        reactive-rules
+                        use-chips
                     />
                     <QInput
-                            v-model="newComment"
-                            :aria-required="selectedAction !== 'validate'"
-                            :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
-                            :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-                            :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
-                            color="commission"
-                            filled
-                            lazy-rules
-                            type="textarea"
+                        v-model="newComment"
+                        :aria-required="selectedAction !== 'validate'"
+                        :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
+                        :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
+                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
+                        color="commission"
+                        filled
+                        lazy-rules
+                        type="textarea"
                     />
                     <div class="flex-row-center padding-top">
                         <QBtn
-                                :label="t('back')"
-                                class="btn-lg"
-                                color="commission"
-                                icon="bi-box-arrow-left"
-                                @click="open = false"
+                            :label="t('back')"
+                            class="btn-lg"
+                            color="commission"
+                            icon="bi-box-arrow-left"
+                            @click="open = false"
                         />
                         <QBtn
-                                :color="selectedAction === 'reject' || selectedAction === 'return' ? 'custom-red' : 'commission'"
-                                :icon="selectedIcon"
-                                :label="t(`project.${selectedAction}`)"
-                                class="btn-lg"
-                                type="submit"
+                            :color="selectedAction === 'reject' || selectedAction === 'return' ? 'custom-red' : 'commission'"
+                            :icon="selectedIcon"
+                            :label="t(`project.${selectedAction}`)"
+                            class="btn-lg"
+                            type="submit"
                         />
                     </div>
                 </QForm>

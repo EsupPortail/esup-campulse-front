@@ -15,11 +15,11 @@ const props = defineProps<{
         </div>
         <div class="flex-row-center">
             <QBtn
-                    :color="props.color"
-                    :icon="props.icon"
-                    :label="props.btnLabel"
-                    :to="props.to"
-                    outline
+                :color="props.color"
+                :icon="props.icon"
+                :label="props.btnLabel"
+                :to="props.to"
+                outline
             />
         </div>
     </div>

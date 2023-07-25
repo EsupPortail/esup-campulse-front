@@ -27,45 +27,45 @@ onMounted(initUserInfos)
 <template>
     <div class="flex-column">
         <QInput
-                v-model="userToUpdate.address"
-                :color="props.color"
-                :label="t('address.address') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.required-address')]"
-                aria-required="true"
-                autocomplete="street-address"
-                clearable
-                filled
+            v-model="userToUpdate.address"
+            :color="props.color"
+            :label="t('address.address') + ' *'"
+            :rules="[val => val && val.length > 0 || t('forms.required-address')]"
+            aria-required="true"
+            autocomplete="street-address"
+            clearable
+            filled
         />
         <div class="flex-row-center full-width">
             <QInput
-                    v-model="userToUpdate.zipcode"
-                    :color="props.color"
-                    :label="t('address.zipcode') + ' *'"
-                    :rules="[val => val && val.length > 0 || t('forms.required-zipcode')]"
-                    aria-required="true"
-                    autocomplete="postal-code"
-                    clearable
-                    filled
+                v-model="userToUpdate.zipcode"
+                :color="props.color"
+                :label="t('address.zipcode') + ' *'"
+                :rules="[val => val && val.length > 0 || t('forms.required-zipcode')]"
+                aria-required="true"
+                autocomplete="postal-code"
+                clearable
+                filled
             />
             <QInput
-                    v-model="userToUpdate.city"
-                    :color="props.color"
-                    :label="t('address.city') + ' *'"
-                    :rules="[val => val && val.length > 0 || t('forms.required-city')]"
-                    aria-required="true"
-                    autocomplete="address-level2"
-                    clearable
-                    filled
+                v-model="userToUpdate.city"
+                :color="props.color"
+                :label="t('address.city') + ' *'"
+                :rules="[val => val && val.length > 0 || t('forms.required-city')]"
+                aria-required="true"
+                autocomplete="address-level2"
+                clearable
+                filled
             />
             <QInput
-                    v-model="userToUpdate.country"
-                    :color="props.color"
-                    :label="t('address.country') + ' *'"
-                    :rules="[val => val && val.length > 0 || t('forms.required-country')]"
-                    aria-required="true"
-                    autocomplete="country-name"
-                    clearable
-                    filled
+                v-model="userToUpdate.country"
+                :color="props.color"
+                :label="t('address.country') + ' *'"
+                :rules="[val => val && val.length > 0 || t('forms.required-country')]"
+                aria-required="true"
+                autocomplete="country-name"
+                clearable
+                filled
             />
         </div>
     </div>
