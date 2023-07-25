@@ -90,7 +90,7 @@ nav.mobile a {
 nav.desktop {
   display: block;
 
-  @media screen and (max-width: $responsiveLg) {
+  @media screen and (max-width: $breakpoint-lg) {
     display: none;
   }
 }

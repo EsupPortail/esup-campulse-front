@@ -248,7 +248,7 @@ main {
     background-color: $annuaireColorBackground;
   }
 
-  @media screen and (max-width: $responsiveLg) {
+  @media screen and (max-width: $breakpoint-lg) {
     .content {
       display: block;
 

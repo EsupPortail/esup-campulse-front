@@ -690,7 +690,7 @@ label.custom-label {
     top: -3px;
   }
 
-  @media screen and (max-width: $responsiveLg) {
+  @media screen and (max-width: $breakpoint-lg) {
     margin-bottom: 0.8rem;
   }
 }
@@ -828,7 +828,7 @@ label.custom-label {
     }
   }
 
-  @media screen and (max-width: $responsiveLg) {
+  @media screen and (max-width: $breakpoint-lg) {
     flex-direction: column;
 
     .form-col {

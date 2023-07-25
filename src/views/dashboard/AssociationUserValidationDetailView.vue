@@ -201,7 +201,7 @@ async function onDeleteAssociationUser() {
   gap: 1rem;
 }
 
-@media screen and (min-width: $responsiveLg) {
+@media screen and (min-width: $breakpoint-lg) {
   .q-btn {
     width: 20%;
   }

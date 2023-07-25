@@ -253,7 +253,7 @@
       }
     }
 
-    @media screen and (max-width: $responsiveLg) {
+    @media screen and (max-width: $breakpoint-lg) {
       display: block;
 
       .section-background {
@@ -435,7 +435,7 @@
       font-weight: $semibold-weight;
     }
 
-    @media screen and (max-width: $responsiveLg) {
+    @media screen and (max-width: $breakpoint-lg) {
       flex-direction: column;
       gap: 1rem;
     }

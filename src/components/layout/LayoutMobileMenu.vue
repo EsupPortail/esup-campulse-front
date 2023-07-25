@@ -32,7 +32,7 @@ const {openMenu} = useUtility()
   display: none;
 }
 
-@media screen and (max-width: $responsiveLg) {
+@media screen and (max-width: $breakpoint-lg) {
   .mobile-menu {
     display: block;
   }

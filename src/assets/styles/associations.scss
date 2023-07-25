@@ -168,7 +168,7 @@
     }
   }
 
-  @media screen and (max-width: $responsiveLg) {
+  @media screen and (max-width: $breakpoint-lg) {
     .q-card {
       .card-background {
         display: none;

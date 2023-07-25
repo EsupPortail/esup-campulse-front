@@ -335,7 +335,7 @@ const columns: QTableProps['columns'] = [
   text-align: left;
 }
 
-@media screen and (max-width: $responsiveLg) {
+@media screen and (max-width: $breakpoint-lg) {
   .flex-row-space-between {
     flex-direction: column;
 
