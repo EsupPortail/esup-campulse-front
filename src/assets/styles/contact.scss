@@ -1,0 +1,24 @@
+@import '@/assets/_variables.scss';
+
+.contact-project {
+  justify-content: center;
+  text-align: center;
+}
+
+span {
+  font-weight: $semibold-weight;
+  margin: .2rem auto;
+}
+
+.contact-list {
+  margin: auto;
+  padding: 1rem;
+
+  h5 {
+    width: $fullSize;
+  }
+
+  .contact-item {
+    padding: 1rem;
+  }
+}

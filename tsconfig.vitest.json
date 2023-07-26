@@ -1,9 +1,21 @@
 {
   "extends": "./tsconfig.app.json",
+  "include": [
+    "src/locales/*.json",
+    "src/**/__tests__/**/*.spec.ts",
+    "src/**/*.ts",
+    "tests/**/*.spec.ts",
+    "tests/**/*.fixture.ts",
+    "tests/**/*.mock.ts"
+  ],
   "exclude": [],
   "compilerOptions": {
     "composite": true,
     "lib": [],
-    "types": ["node", "jsdom"]
+    "types": [
+      "node",
+      "jsdom",
+      "vite/client"
+    ]
   }
 }

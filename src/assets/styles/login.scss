@@ -1,0 +1,60 @@
+@import '@/assets/variables';
+
+#login-page {
+  .login-intro-text {
+    max-width: 50rem;
+    margin: 2rem auto;
+    padding: 1rem;
+
+    h1 {
+      text-transform: none;
+      font-size: 2rem;
+    }
+
+    .q-icon {
+      font-size: 3rem;
+    }
+  }
+
+  .q-card {
+    background-color: transparent;
+    box-shadow: none;
+    width: $fullSize;
+    max-width: 50rem;
+    margin: auto;
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: $thin-weight;
+      text-transform: none;
+    }
+  }
+
+  .login-links {
+    text-align: center;
+
+    a {
+      display: inline-block;
+      margin-bottom: 0.625rem;
+      color: $annuaireColor;
+    }
+  }
+
+  .card-content {
+    color: $textColor2;
+    margin-bottom: 1.563rem;
+
+    .card-title {
+      font-size: 2rem;
+      display: block;
+      color: $annuaireColor;
+      margin-bottom: 0;
+    }
+  }
+
+  .q-checkbox {
+    margin: 0 0.5rem 0;
+  }
+
+}
+

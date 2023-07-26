@@ -1,0 +1,395 @@
+@import '@/assets/variables';
+@import '@/assets/styles/quasar.variables.scss';
+
+// Bootstrap icons
+$bootstrap-icons-font-src: url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"), url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");
+@import "../../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
+
+// Fonts
+@import '@/assets/_fonts';
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background-color: $backgroundColor1;
+  color: $textColor1;
+  font-family: $baseFont;
+  font-size: $fontSize;
+}
+
+// Containers
+.container, .container-lg {
+  width: $fullSize;
+  margin: auto;
+}
+
+.container {
+  max-width: 120rem;
+}
+
+.container-lg {
+  max-width: 160rem;
+}
+
+// Flex utilities
+.flex-row, .flex-row-center, .flex-row-right, .flex-row-space-between, .flex-column {
+  display: flex;
+  gap: 1rem;
+}
+
+.flex-row, .flex-row-center, .flex-row-right, .flex-row-space-between {
+  align-items: baseline;
+}
+
+.flex-row-center {
+  justify-content: center;
+}
+
+.flex-row-right {
+  justify-content: right;
+}
+
+.flex-row-space-between {
+  justify-content: space-between;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+// Padding utilities
+.padding-top {
+  padding-top: 1rem;
+}
+
+.padding-bottom {
+  padding-bottom: 1rem;
+}
+
+// Margin utilities
+.margin-bottom {
+  margin-bottom: 1rem;
+}
+
+// Page layout
+#layout-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+main {
+  flex-grow: 3;
+}
+
+// Goto top button
+.navigate-top-button {
+  position: fixed;
+  top: 0;
+  left: calc(100vw - 6.5rem);
+  opacity: 0;
+  transition: top 0.15s ease-in-out, opacity 0.15s linear;
+
+  &.visible {
+    top: 2rem;
+    opacity: 1;
+    z-index: 3000;
+  }
+
+  button {
+    display: block;
+    width: 5rem;
+    height: 5rem;
+    border: none;
+    background-color: $annuaireColor;
+    color: $textColor3;
+    border-radius: 50%;
+    font-size: 3.5rem;
+    box-shadow: $fieldsBoxShadow;
+    transition: background-color 0.03s linear;
+    cursor: pointer;
+
+    i {
+      display: inline-block;
+      transition: transform 0.03s linear;
+    }
+
+    &:hover, &:focus {
+      background-color: $annuaireColorHover;
+
+      i {
+        transform: scale(1.1);
+      }
+    }
+
+    &:active {
+      background-color: $annuaireColorActive;
+    }
+  }
+
+  @media (prefers-reduced-motion) {
+    top: 2rem;
+    transition: opacity 0.15s linear;
+
+    button i {
+      transition: none;
+    }
+
+    button:hover i, button:focus i {
+      transform: none;
+    }
+  }
+
+}
+
+.variant-space-2 .navigate-top-button {
+  button {
+    background-color: $charteColor;
+    color: $charteColorText;
+
+    &:hover, &:focus {
+      background-color: $charteColorHover;
+    }
+
+    &:active {
+      background-color: $charteColorActive;
+    }
+  }
+}
+
+.variant-space-3 .navigate-top-button {
+  button {
+    background-color: $capeColor;
+
+    &:hover, &:focus {
+      background-color: $capeColorHover;
+    }
+
+    &:active {
+      background-color: $capeColorActive;
+    }
+  }
+}
+
+.variant-space-4 .navigate-top-button {
+  button {
+    background-color: $dashboardColor;
+
+    &:hover, &:focus {
+      background-color: $dashboardColorHover;
+    }
+
+    &:active {
+      background-color: $dashboardColorActive;
+    }
+  }
+}
+
+// Page section
+.page-section {
+  width: $fullSize;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+// Intro element (Image, title, text) that can be used at the top of pages
+.introduction-section {
+  margin: 2rem 0 4rem;
+
+  .content {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    width: $fullSize;
+    max-width: 120rem;
+    margin: 0 auto 0;
+
+    .intro-image {
+      flex: 0 0 19rem;
+      font-size: 0;
+
+      img {
+        width: 19rem;
+        height: auto;
+      }
+    }
+
+    .intro-title {
+      font-size: $titleSize;
+      line-height: 2.5rem;
+      font-weight: $normal-weight;
+      color: $annuaireColorText;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+
+    p {
+      font-weight: $normal-weight;
+      color: $annuaireColorText;
+    }
+  }
+
+  &.image-right {
+    padding: 2.5rem 0;
+
+    .content {
+      flex-direction: row-reverse;
+    }
+  }
+
+  &.color-background {
+    background-color: $annuaireColorBackground;
+  }
+
+  @media screen and (max-width: $breakpoint-lg) {
+    .content {
+      display: block;
+
+      .intro-image {
+        width: $fullSize;
+        flex: unset;
+        margin-bottom: 0.938rem;
+        height: 9.375rem;
+        overflow: hidden;
+
+        img {
+          width: $fullSize;
+          position: relative;
+          top: -30%;
+        }
+      }
+    }
+  }
+}
+
+.variant-space-2 .introduction.color-background {
+  background-color: $charteColorBackground;
+}
+
+.variant-space-3 .introduction.color-background {
+  background-color: $capeColorBackground;
+}
+
+.variant-space-4 .introduction.color-background {
+  background-color: $dashboardColorBackground;
+}
+
+// Titles
+h1, .title-1, h2, .title-2, h3, .title-3, h4, .title-4, h5, .title-5, h6, .title-6 {
+  color: $textColor1;
+  font-weight: $normal-weight;
+  line-height: normal;
+  letter-spacing: normal;
+  text-transform: uppercase;
+}
+
+h1, .title-1 {
+  font-size: 4rem;
+}
+
+h2, .title-2 {
+  font-size: 3rem;
+}
+
+h3, .title-3 {
+  font-size: 2.2rem;
+}
+
+h4, .title-4 {
+  font-size: 1.8rem;
+}
+
+h5, .title-5 {
+  font-size: 1.4rem;
+}
+
+h6, .title-6 {
+  font-size: 1.2rem;
+}
+
+// Paragraphs
+p.paragraph {
+  color: $textColor1;
+  font-size: inherit;
+  font-weight: $normal-weight;
+  line-height: normal;
+  letter-spacing: normal;
+  margin: auto 1.5rem 1.8rem;
+
+  .float-left, .float-right {
+    position: relative;
+    top: 0.4rem;
+  }
+
+  .float-left {
+    float: left;
+    margin: 0 1.4rem 1rem 0;
+  }
+
+  .float-right {
+    float: right;
+    margin: 0 0 1rem 1.4rem;
+  }
+}
+
+// Lists
+ul {
+  list-style-type: square;
+  padding-left: 3rem;
+}
+
+// Buttons
+.btn-lg {
+  padding: 1.5rem;
+}
+
+.q-btn {
+  font-size: 1.6rem;
+}
+
+// Quasar tables
+.q-table tbody td, .q-table th {
+  font-size: 1.6rem;
+}
+
+.q-table th {
+  text-transform: uppercase;
+  font-weight: $thin-weight;
+}
+
+// Quasar lists (for dropdown menus)
+.q-list {
+  font-size: 1.6rem;
+}
+
+// Contrasts
+body.desktop {
+  .q-checkbox:not(.disabled) .q-checkbox__inner::before, .q-radio:not(.disabled) .q-radio__inner::before {
+    opacity: 0.33;
+  }
+}
+
+.q-field__focusable-action {
+  opacity: 1;
+}
+
+.q-select__dropdown-icon {
+  color: #000;
+}
+
+// Expansion item
+.text-caption {
+  font-size: 1.6rem;
+}
+
+// Notify
+.q-notification p {
+  margin-bottom: 0;
+}

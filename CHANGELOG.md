@@ -1,0 +1,8 @@
+- ✨ Charter management dashboard is done #165
+- ✨ Segmented /commissions/active_projects in two parameters
+- ✨ Project review validation
+- ♿️ Improve accessibility
+- 💄 Correct responsive bugs and remove dead CSS lines
+- 🐛 Planned dates and locations in review
+- 🩹 Hide fields if not project re-edition for amounts edition
+- ⬆️ Upgrade minor dependencies

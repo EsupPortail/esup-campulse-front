@@ -1,0 +1,475 @@
+@import '@/assets/variables';
+
+#layout-header, #layout-minimal-header {
+  position: relative;
+  width: $fullSize;
+  background-image: $headerBackground;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  height: 25rem;
+
+  &#layout-minimal-header {
+    height: 7rem;
+    border-bottom: 0.5rem solid $annuaireColor;
+  }
+
+  &::before {
+    content: ' ';
+    display: block;
+    width: $fullSize;
+    height: $fullSize;
+    position: absolute;
+    background: linear-gradient(180deg, rgba(9, 22, 40, 0.25) 0%, rgba(0, 0, 0, 0.3)); //$fullSize
+  }
+
+  .q-toolbar__title a {
+    font-family: $titleFont;
+    color: $textColor3;
+    text-transform: uppercase;
+    font-weight: $xbold-weight;
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    font-size: 3rem;
+  }
+
+  .q-layout__shadow {
+    display: none;
+  }
+
+  nav {
+    text-align: right;
+
+    ul {
+      display: flex;
+      flex-direction: row;
+
+      @media screen and (max-width: $breakpoint-lg) {
+        flex-direction: column;
+      }
+    }
+
+    li {
+      padding-bottom: 1rem;
+    }
+
+    a {
+      text-decoration: none;
+      padding: 0 1.063rem;
+      color: $textColor3;
+      text-transform: uppercase;
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+
+      &:focus-visible {
+        outline: 2px solid $outlineColor1;
+        outline-offset: 2px;
+      }
+
+      &::after {
+        content: '';
+        display: block;
+        width: calc($fullSize - 2.125rem);
+        height: calc($fullSize + 0.5rem);
+        border-bottom: 2px solid $backgroundColor1;
+        position: absolute;
+        left: 1.063rem;
+        top: 0;
+        transform: scaleX(0);
+        transition: transform 0.1s linear;
+      }
+
+      &:hover, &:focus {
+        &::after {
+          transform: scaleX(1);
+        }
+      }
+
+      &:active {
+        &::after {
+          transform: scaleX(1.2);
+        }
+      }
+
+      // Links are underlined in the color of the space they point to
+      &.space-1::after {
+        border-color: $annuaireColor;
+      }
+
+      &.space-2::after {
+        border-color: $charteColor;
+      }
+
+      &.space-3::after {
+        border-color: $capeColor;
+      }
+    }
+
+    /*@media screen and (max-width: $breakpoint-lg) {
+      flex-direction: column;
+      align-items: flex-end;
+      height: 0;
+      overflow: hidden;
+
+      & > a {
+        font-size: 1.2rem;
+        font-weight: $semibold-weight;
+        margin-bottom: 1rem;
+      }
+
+      &.visible {
+        height: auto;
+        transform: scaleY(1);
+        padding-bottom: 1rem;
+      }
+    }*/
+  }
+
+  // Profile button when connected
+  .profile-button {
+    display: inline-block;
+    padding: 0 1.063rem;
+    position: relative;
+    z-index: 2;
+
+    button {
+      background: transparent !important;
+      box-shadow: none;
+
+      &::before {
+        box-shadow: none;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $outlineColor1 !important;
+        outline-offset: 2px;
+      }
+
+      .q-focus-helper, .q-ripple {
+        display: none;
+      }
+
+      .q-btn__content {
+        font-weight: 400;
+        text-transform: uppercase;
+
+        p {
+          color: $textColor3;
+          margin: 0;
+        }
+
+        .q-btn-dropdown__arrow {
+          margin-left: 0;
+        }
+
+        & > * {
+          color: $textColor3;
+        }
+      }
+
+      .avatar {
+        margin-right: 0.625rem;
+      }
+    }
+
+    @media screen and (max-width: $breakpoint-lg) {
+      padding-right: 0;
+      padding-left: 0.625rem;
+    }
+  }
+
+  #menu-items {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: $fullSize;
+
+    li {
+      list-style-type: none;
+    }
+
+    .btn-menu {
+      background-color: transparent;
+      border: none;
+      display: none;
+      position: relative;
+      z-index: 4;
+
+      i {
+        color: $textColor3;
+        font-size: 3rem;
+      }
+
+      @media screen and (max-width: $breakpoint-lg) {
+        display: block;
+        z-index: 10;
+      }
+    }
+  }
+
+  #mobile-menu-background {
+    width: $fullSize;
+    height: $fullSize;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) $fullSize);
+    display: none;
+    opacity: 0;
+
+    &.visible {
+      opacity: 1;
+    }
+
+    @media screen and (max-width: $breakpoint-lg) {
+      display: block;
+    }
+  }
+
+  // The header has several variants (notably one for the home page and one for the login page).
+  // Switch class on the header to switch variant.
+
+  &.variant-home {
+    height: 27.5rem;
+
+    @media screen and (max-width: $breakpoint-lg) {
+      height: auto;
+
+      .q-toolbar {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    .q-toolbar {
+      margin-bottom: 5.625rem;
+    }
+
+    #header-home-title {
+      display: block;
+    }
+
+    #header-title {
+      display: none;
+    }
+  }
+
+  &.variant-space-1 #header-title-icon {
+    i.space-1-icon {
+      display: inline;
+      position: relative;
+      font-size: 2rem;
+
+      @media screen and (min-width: $breakpoint-md) {
+        top: -0.7rem;
+      }
+    }
+  }
+
+  &.variant-space-2 #header-title-icon {
+    background-color: $charteColor;
+
+    i.space-2-icon {
+      display: inline;
+      position: relative;
+      font-size: 2rem;
+
+      @media screen and (min-width: $breakpoint-md) {
+        top: -0.7rem;
+      }
+    }
+  }
+
+  &.variant-space-3 #header-title-icon {
+    background-color: $capeColor;
+
+    i.space-3-icon {
+      display: inline;
+      position: relative;
+      font-size: 2rem;
+
+      // Changing the icon header's position to fit with the Accessibility Requirement
+      @media only screen and (min-width: $breakpoint-vsm) {
+        top: .2rem;
+      }
+
+      @media only screen and (min-width: $breakpoint-md) {
+        top: -0.6rem;
+      }
+    }
+  }
+
+  &.variant-space-4 #header-title-icon {
+    background-color: $dashboardColor;
+
+    i.space-4-icon {
+      display: inline;
+      position: relative;
+      font-size: 2rem;
+
+      @media screen and (min-width: $breakpoint-md) {
+        top: -0.6rem;
+      }
+    }
+  }
+
+  &.variant-minimal {
+    height: 5.375rem;
+
+    .q-toolbar {
+      margin-bottom: 0;
+    }
+
+    #header-title {
+      display: none;
+    }
+  }
+}
+
+// Site title in the header - appears only on the home page
+#header-home-title {
+  h2, h3 {
+    color: $textColor3;
+    font-weight: $medium-weight;
+    line-height: 3rem;
+    padding: .5rem;
+  }
+
+  h2 {
+    font-family: $titleFont;
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    z-index: 10;
+
+    strong {
+      text-transform: uppercase;
+    }
+
+    @media screen and (max-width: $breakpoint-lg) {
+      font-size: 2.8rem;
+    }
+  }
+
+  h3 {
+    display: inline-block;
+    font-size: 2rem;
+    border: 1px solid white;
+    margin: 0 2rem 2rem;
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(0.125rem);
+  }
+
+}
+
+// Page title in the header - appears in all pages not using the home or minimal variant of the header.
+#header-title {
+  width: auto;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  padding: 0 1.56rem 0 1.56rem;
+
+  h1 {
+    width: $fullSize;
+    font-family: $titleFont;
+    color: $textColor3;
+    font-weight: $normal-weight;
+    padding: 0 0 1rem 4rem;
+    line-height: 1.15;
+    text-transform: none;
+
+    strong {
+      font-family: $titleFont;
+      text-transform: uppercase;
+      font-weight: $normal-weight;
+    }
+
+    #header-title-icon {
+      display: inline-block;
+      width: 4rem;
+      height: 4rem;
+      border-radius: $radiusCircle;
+      background-color: $annuaireColor;
+      position: absolute;
+      left: 1rem;
+      text-align: center;
+
+      i {
+        font-size: 2.8rem;
+        color: $textColor3;
+        display: none;
+        vertical-align: middle;
+      }
+    }
+
+    // Changing the size of the header's font to fit with the Accessibility Requirement
+    @media screen and (min-width: $breakpoint-vsm) {
+      font-size: 2.8rem;
+    }
+
+    @media screen and (min-width: $breakpoint-md) {
+      font-size: 4rem;
+    }
+  }
+}
+
+// Dropdown menu in the "my account" button
+.profile-menu {
+  background: transparent;
+  border-radius: 0;
+
+  .q-list {
+    border: 1px solid white;
+    background: rgba(0, 0, 0, 0.2);
+
+    .q-focus-helper, .q-ripple {
+      display: none;
+    }
+
+    .q-item {
+      position: relative;
+      text-align: center;
+      padding: 0.300rem;
+      display: block;
+
+      .q-item__section {
+        display: block;
+        line-height: normal;
+      }
+
+      &::after {
+        content: ' ';
+        width: 90%;
+        height: 1px;
+        background-color: rgba(255, 255, 255, 0.5);
+        position: absolute;
+        bottom: 0;
+        left: 5%;
+      }
+
+      &:last-child::after {
+        display: none;
+      }
+
+      .q-item__label {
+        font-weight: $normal-weight;
+        text-decoration: none;
+        color: $textColor3;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 0.625rem 1.25rem;
+        width: $fullSize;
+        transition: background 0.03s linear;
+
+        &:hover, &:focus {
+          background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        &:active {
+          background: rgba(255, 255, 255, 0.2) !important;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,136 @@
+@import '@/assets/variables';
+
+.q-footer {
+  z-index: 1;
+}
+
+#layout-footer {
+  position: relative;
+  background-color: $footerBackgroundColor;
+  padding-bottom: 1.563rem;
+
+  .q-layout__shadow {
+    display: none;
+  }
+
+  #footer-logos {
+    background-color: $annuaireColorBackground;
+    border-bottom: 0.6rem solid $annuaireColor;
+    padding: 2rem 1.56rem;
+
+    .wrapper {
+      width: $fullSize;
+      text-align: center;
+      margin: 0 auto;
+
+      li {
+        display: inline-block;
+        margin: 1.25rem;
+
+        img {
+          width: auto;
+          max-height: 7.5rem;
+        }
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &:focus {
+          outline: 2px solid $outlineColor2;
+          outline-offset: 0.5rem;
+        }
+      }
+    }
+  }
+
+  .q-toolbar {
+    margin: 1.25rem 0 0.6rem;
+  }
+
+  // Footer links
+  .footer-text {
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 1.56rem 0;
+
+    li {
+      margin: 0 1rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: inline-block;
+      border-bottom: 1px solid transparent;
+
+      a {
+        color: $textColor3;
+        text-decoration: none;
+      }
+
+      i {
+        font-size: 1.2em;
+        opacity: 0.8;
+        margin-right: 0.7rem;
+        position: relative;
+        bottom: -1px;
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $outlineColor1;
+        outline-offset: 2px;
+      }
+
+      &:hover, &:focus {
+        border-bottom: 1px solid transparentize($textColor3, 0.4);
+      }
+    }
+  }
+
+  // Footer text
+  & > p {
+    width: $fullSize;
+    max-width: 80rem;
+    margin: 0 auto 1.5rem;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: $footerTextColor;
+    padding: 0 1.56rem 0;
+  }
+
+  // The footer has several variants that change its color depending on the current space.
+  // Use a different class to switch variant.
+
+  &.variant-space-2 {
+    #footer-logos {
+      background-color: $charteColorBackground;
+      border-color: $charteColor;
+    }
+  }
+
+  &.variant-space-3 {
+    #footer-logos {
+      background-color: $capeColorBackground;
+      border-color: $capeColor;
+    }
+  }
+
+  &.variant-space-4 {
+    #footer-logos {
+      background-color: $dashboardColorBackground;
+      border-color: $dashboardColor;
+    }
+  }
+}
