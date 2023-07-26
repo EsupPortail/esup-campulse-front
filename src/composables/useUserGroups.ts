@@ -8,7 +8,6 @@ import type {UserGroup} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useSecurity from '@/composables/useSecurity'
-import type {Institution} from '#/association'
 
 
 // Used to store groups
@@ -36,11 +35,11 @@ const isMemberFund = ref<boolean | undefined>(undefined)
 // Used to display or not the select for commissions
 const commissionMemberIsSelected = ref<boolean>(false)
 
-export default function () {
+export default function() {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const {userFunds} = useCommissions()
-    const {axiosPublic} = useAxios()
+    // const {axiosPublic} = useAxios()
 
 
     const groupNames: GroupCodeLiteralName[] = [
@@ -111,7 +110,7 @@ export default function () {
     async function initGroupLabels(onlyPublicGroups: boolean) {
         const {hasPerm} = useSecurity()
         const labels: SelectGroupLabel[] = []
-        groups.value?.map(function (group) {
+        groups.value?.map(function(group) {
             if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
                 const label: string | undefined = getGroupLiteral(group.id)
                 if (label) {
@@ -128,7 +127,7 @@ export default function () {
             }
         })
         // Sort by alphabetical order
-        labels.sort(function (a, b) {
+        labels.sort(function(a, b) {
             const labelA = a.label.toLowerCase().normalize('NFD'), labelB = b.label.toLowerCase().normalize('NFD')
             if (labelA < labelB)
                 return -1

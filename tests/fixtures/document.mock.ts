@@ -16,7 +16,7 @@ export const _document: Document = {
     ],
     processType: 'CHARTER_ASSOCIATION',
     institution: null,
-    commission: null
+    fund: null
 }
 
 export const _documents: Document[] = [
@@ -36,7 +36,7 @@ export const _documents: Document[] = [
         ],
         processType: 'CHARTER_ASSOCIATION',
         institution: null,
-        commission: null
+        fund: null
     },
     {
         id: 2,
@@ -56,7 +56,7 @@ export const _documents: Document[] = [
         ],
         processType: 'CHARTER_ASSOCIATION',
         institution: null,
-        commission: null
+        fund: null
     },
     {
         id: 3,
@@ -74,7 +74,7 @@ export const _documents: Document[] = [
         ],
         processType: 'CHARTER_PROJECT_FUND',
         institution: null,
-        commission: 1
+        fund: 1
     }
 ]
 
