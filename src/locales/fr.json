@@ -181,6 +181,11 @@
   "cancel-delete": "Annuler la suppression",
   "cancel-search": "Annuler la recherche",
   "charter": {
+    "actions": {
+      "reject": "Refuser la charte",
+      "return": "Demander des informations complémentaires",
+      "validate": "Valider la charte"
+    },
     "all-charters": "Toutes les chartes",
     "association-charter": "Charte du site Alsace",
     "association-charters": "Chartes par associations",

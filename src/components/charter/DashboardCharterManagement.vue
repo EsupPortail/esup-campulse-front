@@ -182,7 +182,7 @@ const initTabs = () => {
                                             <TableManageCharters/>
                                         </QTabPanel>
                                         <QTabPanel name="processingCharters">
-                                            <TableManageProcessingCharters/>
+                                            <TableManageProcessingCharters :process-type="tab.name"/>
                                         </QTabPanel>
                                     </QTabPanels>
                                 </template>
