@@ -118,7 +118,14 @@ export interface ProjectReview {
     impactStudents: string,
     description: string,
     difficulties: string,
-    improvements: string
+    improvements: string,
+    plannedStartDate: string,
+    plannedEndDate: string,
+    plannedLocation: string,
+    associationUser: number | null,
+    commissions: Commission[],
+    creationDate: string,
+    editionDate: string
 }
 
 export interface ProjectAssociation {
