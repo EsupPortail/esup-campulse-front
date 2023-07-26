@@ -3,10 +3,12 @@ import {useI18n} from 'vue-i18n'
 import useCharters from '@/composables/useCharters'
 import type {QTableProps} from 'quasar'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
+import useUtility from '@/composables/useUtility'
 
 
 const {t} = useI18n()
 const {processingCharters} = useCharters()
+const {formatDate} = useUtility()
 
 
 const columns: QTableProps['columns'] = [
@@ -16,12 +18,26 @@ const columns: QTableProps['columns'] = [
         align: 'left',
         label: t('association.labels.institution'),
         field: 'institution',
-        sortable: false
+        sortable: true
+    },
+    {
+        name: 'charter',
+        align: 'left',
+        label: t('charter.charter', 1),
+        field: 'charter',
+        sortable: true
+    },
+    {
+        name: 'uploadedDate',
+        align: 'left',
+        label: t('charter.uploaded-date'),
+        field: 'uploadedDate',
+        sortable: true
     },
     {
         name: 'charterStatus',
-        align: 'left',
-        label: t('charter.charter', 2),
+        align: 'right',
+        label: t('status'),
         field: 'charterStatus',
         sortable: true
     },
@@ -67,6 +83,20 @@ const columns: QTableProps['columns'] = [
                     {{ props.row.institution }}
                 </QTd>
                 <QTd
+                    key="charter"
+                    :props="props"
+                    headers="charter"
+                >
+                    {{ props.row.charterName }}
+                </QTd>
+                <QTd
+                    key="uploadedDate"
+                    :props="props"
+                    headers="uploadedDate"
+                >
+                    {{ formatDate(props.row.uploadedDate).split('-').reverse().join('/') }}
+                </QTd>
+                <QTd
                     key="charterStatus"
                     :props="props"
                     headers="charterStatus"
@@ -79,8 +109,9 @@ const columns: QTableProps['columns'] = [
                     headers="actions"
                 >
                     <QBtn
+                        :label="t('manage')"
                         color="charter"
-                        label="Gérer"
+                        disable
                         outline
                     />
                 </QTd>

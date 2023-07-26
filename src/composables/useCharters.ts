@@ -96,23 +96,22 @@ export default function () {
             const document = documents.value.find(doc => doc.id === uploadCharter.document)
             const association = associationStore.associations.find(association => association.id === uploadCharter.association)
             if (document && association) {
-                const charterStatus = initCharterStatus(association.isSite, document, uploadCharter)
+                if (document.processType === charterType && uploadCharter.association === association.id) {
+                    const charterStatus = initCharterStatus(association.isSite, document, uploadCharter)
+                    if (charterStatus.charterStatus === 'PROCESSING') {
+                        processingCharters.value.push({
+                            associationId: association.id,
+                            associationName: association.name,
+                            institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                            charterId: document.id,
+                            charterName: document.name,
+                            uploadedDate: uploadCharter.uploadDate as string,
+                            charterStatus: charterStatus.charterStatus
+                        })
+                    }
+                }
             }
 
-        })
-        associationStore.associations.forEach(association => {
-            if (document) {
-                const charterStatus = initCharterStatus(true, document, charter)
-                chartersToManage.value.push({
-                    associationId: association.id,
-                    associationName: association.name,
-                    institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
-                    charterId: charter.document,
-                    uploadedDate: charter.uploadDate as string,
-                    validatedDate: charter.validatedDate,
-                    charterStatus: charterStatus.charterStatus
-                })
-            }
         })
     }
 

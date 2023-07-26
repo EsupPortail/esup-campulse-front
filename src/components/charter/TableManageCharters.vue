@@ -2,7 +2,6 @@
 import {useI18n} from 'vue-i18n'
 import useCharters from '@/composables/useCharters'
 import type {QTableProps} from 'quasar'
-import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 
 
 const {t} = useI18n()
@@ -16,14 +15,14 @@ const columns: QTableProps['columns'] = [
         align: 'left',
         label: t('association.labels.institution'),
         field: 'institution',
-        sortable: false
+        sortable: true
     },
     {
         name: 'charterStatus',
         align: 'left',
         label: t('charter.charter', 2),
         field: 'charterStatus',
-        sortable: true
+        sortable: false
     },
     {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
 ]
@@ -72,9 +71,9 @@ const columns: QTableProps['columns'] = [
                     headers="charterStatus"
                 >
                     <QExpansionItem
+                        :label="t('charter.view-charter', 2)"
                         expand-separator
                         header-class="text-charter"
-                        label="Voir les chartes"
                     >
                         <QCard>
                             <QCardSection>
@@ -118,8 +117,9 @@ const columns: QTableProps['columns'] = [
                     headers="actions"
                 >
                     <QBtn
+                        :label="t('manage')"
                         color="charter"
-                        label="Gérer"
+                        disable
                         outline
                     />
                 </QTd>

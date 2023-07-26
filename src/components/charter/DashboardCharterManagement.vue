@@ -14,7 +14,13 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {initAssociationCharters, getCharters, charterProcesses, initProcessingCharters} = useCharters()
+const {
+    initAssociationCharters,
+    getCharters,
+    charterProcesses,
+    initProcessingCharters,
+    processingCharters
+} = useCharters()
 const {loading, notify} = useQuasar()
 const associationStore = useAssociationStore()
 const {getDocuments} = useDocumentUploads()
@@ -49,13 +55,13 @@ type InnerTabOption = 'allCharters' | 'processingCharters'
 const tab = ref<TabOption | ''>('')
 const innerTab = ref<InnerTabOption>('allCharters')
 
-watch(() => tab.value, () => {
-    if (innerTab.value === 'allCharters') {
-        initAssociationCharters(tab.value as TabOption)
-    } else {
-        initProcessingCharters(tab.value as TabOption)
-    }
-})
+const initCharters = () => {
+    initAssociationCharters(tab.value as TabOption)
+    initProcessingCharters(tab.value as TabOption)
+}
+
+watch(() => tab.value, initCharters)
+watch(() => innerTab.value, initCharters)
 
 const splitterModel = ref<number>(20)
 
@@ -73,12 +79,12 @@ interface InnerTab {
 const innerTabs: InnerTab[] = [
     {
         name: 'allCharters',
-        label: 'Toutes les chartes',
+        label: t('charter.all-charters'),
         icon: 'bi-book'
     },
     {
         name: 'processingCharters',
-        label: 'Chartes à valider',
+        label: t('charter.processing-charters'),
         icon: 'bi-bell'
     }
 ]
@@ -89,12 +95,12 @@ const initTabs = () => {
     tabs.value = []
     if (!isManagerMisc()) {
         tabs.value.push({
-            label: 'Charte des associations du site Alsace',
+            label: t('charter.site.title'),
             name: 'CHARTER_ASSOCIATION'
         })
     }
     tabs.value.push({
-        label: 'Chartes de subventionnement',
+        label: t('charter.project-fund.title'),
         name: 'CHARTER_PROJECT_FUND'
     })
     tab.value = tabs.value[0].name
@@ -152,7 +158,16 @@ const initTabs = () => {
                                             :icon="innerTab.icon"
                                             :label="innerTab.label"
                                             :name="innerTab.name"
-                                        />
+                                        >
+                                            <QBadge
+                                                v-if="innerTab.name === 'processingCharters' && processingCharters.length"
+                                                :aria-label="`${processingCharters.length} ${t('charter.processing-charters').toLowerCase()}`"
+                                                color="custom-red"
+                                                floating
+                                            >
+                                                {{ processingCharters.length }}
+                                            </QBadge>
+                                        </QTab>
                                     </QTabs>
                                 </template>
 
@@ -183,5 +198,4 @@ const initTabs = () => {
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
-
 </style>

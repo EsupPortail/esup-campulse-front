@@ -44,7 +44,7 @@ onMounted(async () => {
 })
 
 const columns: QTableProps['columns'] = [
-    {name: 'charter', align: 'left', label: t('charter.table-title'), field: 'charter', sortable: true},
+    {name: 'charter', align: 'left', label: t('charter.charter', 2), field: 'charter', sortable: true},
     {name: 'validatedDate', align: 'left', label: t('charter.validated-date'), field: 'validatedDate', sortable: true},
     {
         name: 'expirationDate',
@@ -120,7 +120,7 @@ const columns: QTableProps['columns'] = [
                                 <TableStudentChartersBtn
                                     :association-id="importedProps.associationId"
                                     :charter="props.row"
-                                    :is-site="props.isSite"
+                                    :is-site="importedProps.isSite"
                                 />
                             </QTd>
                         </QTr>

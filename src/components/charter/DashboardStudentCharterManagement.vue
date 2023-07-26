@@ -29,38 +29,40 @@ onMounted(initTab)
         <div class="dashboard-section-container">
             <div class="container">
                 <InfoDocumentLibrary/>
-                <QTabs
-                    v-model="tab"
-                    active-color="charter"
-                    align="justify"
-                    indicator-color="charter"
-                    narrow-indicator
-                >
-                    <QTab
-                        v-for="association in userStore.userAssociations"
-                        :key="association.association.id"
-                        :label="association.association.name"
-                        :name="association.association.id.toString()"
-                    />
-                </QTabs>
-
-                <QSeparator
-                    aria-hidden="true"
-                />
-
-                <QTabPanels
-                    v-model="tab"
-                    animated
-                >
-                    <QTabPanel
-                        :name="tab"
+                <QCard>
+                    <QTabs
+                        v-model="tab"
+                        active-color="charter"
+                        align="justify"
+                        indicator-color="charter"
+                        narrow-indicator
                     >
-                        <TableAssociationUserCharters
-                            :association-id="parseInt(tab)"
-                            :is-site="userStore.userAssociations.find(obj => obj.association.id === parseInt(tab))?.association.isSite"
+                        <QTab
+                            v-for="association in userStore.userAssociations"
+                            :key="association.association.id"
+                            :label="association.association.name"
+                            :name="association.association.id.toString()"
                         />
-                    </QTabPanel>
-                </QTabPanels>
+                    </QTabs>
+
+                    <QSeparator
+                        aria-hidden="true"
+                    />
+
+                    <QTabPanels
+                        v-model="tab"
+                        animated
+                    >
+                        <QTabPanel
+                            :name="tab"
+                        >
+                            <TableAssociationUserCharters
+                                :association-id="parseInt(tab)"
+                                :is-site="userStore.userAssociations.find(obj => obj.association.id === parseInt(tab))?.association.isSite"
+                            />
+                        </QTabPanel>
+                    </QTabPanels>
+                </QCard>
             </div>
         </div>
     </section>
@@ -69,4 +71,8 @@ onMounted(initTab)
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+
+.q-card {
+    margin-top: 2rem;
+}
 </style>

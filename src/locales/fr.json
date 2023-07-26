@@ -181,10 +181,10 @@
   "cancel-delete": "Annuler la suppression",
   "cancel-search": "Annuler la recherche",
   "charter": {
+    "all-charters": "Toutes les chartes",
     "association-charter": "Charte du site Alsace",
     "association-charters": "Chartes par associations",
     "charter": "Charte | Chartes",
-    "charters-to-manage": "Chartes à traiter",
     "expiration-date": "Date d'expiration",
     "funds": "Chartes CAPE",
     "no-charter-to-show": "Aucune charte à afficher.",
@@ -196,6 +196,10 @@
       "view": "Voir la charte"
     },
     "pdf-name": "Récapitulatif-Signature-Charte-",
+    "processing-charters": "Chartes à valider",
+    "project-fund": {
+      "title": "Chartes de subventionnement"
+    },
     "sign": "Signer la charte",
     "signed-charter": "Charte signée",
     "site": {
@@ -217,8 +221,8 @@
       "validated": "Charte signée et validée"
     },
     "uploaded-date": "Date de dépôt",
-    "table-title": "Chartes",
-    "validated-date": "Date de validation"
+    "validated-date": "Date de validation",
+    "view-charter": "Voir la charte | Voir les chartes"
   },
   "commission": {
     "add-new-date": "Ajouter une date de commission",

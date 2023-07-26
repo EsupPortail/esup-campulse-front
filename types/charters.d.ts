@@ -27,8 +27,8 @@ export interface ProcessingCharter {
     associationName: string,
     institution: string,
     charterId: number,
+    charterName: string,
     uploadedDate: string,
-    validatedDate: string,
     charterStatus: CharterStatus
 }
 
