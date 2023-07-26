@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {DocumentProcessType} from '#/documents'
+import type {DocumentProcessType} from '#/documents'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useCharters from '@/composables/useCharters'
 import ListDocumentCharter from '@/components/documents/ListDocumentCharter.vue'
