@@ -87,7 +87,7 @@ onMounted(initValues)
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/dashboard.scss';
-@import '@/assets/variables.scss';
+@import '@/assets/_variables.scss';
 
 .q-input {
   width: $fullSize;

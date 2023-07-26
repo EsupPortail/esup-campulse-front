@@ -152,6 +152,7 @@ const projectIsFirstEdition = () => {
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+@import "@/assets/_variables.scss";
 
 .flex-row > * {
   width: $fullSize;

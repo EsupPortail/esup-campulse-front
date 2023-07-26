@@ -532,6 +532,7 @@ async function onChangeLogo(action: string) {
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
+@import "@/assets/_variables.scss";
 
 .address-fields div {
   display: flex;

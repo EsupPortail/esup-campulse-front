@@ -203,6 +203,7 @@ async function onUpdateProjectStatus() {
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+@import "@/assets/_variables.scss";
 
 .q-card {
   padding: 1rem;

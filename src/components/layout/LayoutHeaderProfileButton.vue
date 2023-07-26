@@ -113,6 +113,7 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 @import "@/assets/_variables.scss";
+
 .q-btn-dropdown {
   font-size: 1.8rem;
 }
