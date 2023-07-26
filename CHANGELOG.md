@@ -1,6 +1,8 @@
-- Improve accessibility
-- Start sitemap in footer
-- Feature #113 - commission dashboard
-- Feature #107 - projectCommissionFund validation
-- New mobile menu
-- Schema.org on association detail
+- ✨ Charter management dashboard is done #165
+- ✨ Segmented /commissions/active_projects in two parameters
+- ✨ Project review validation
+- ♿️ Improve accessibility
+- 💄 Correct responsive bugs and remove dead CSS lines
+- 🐛 Planned dates and locations in review
+- 🩹 Hide fields if not project re-edition for amounts edition
+- ⬆️ Upgrade minor dependencies
