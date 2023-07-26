@@ -181,7 +181,17 @@
   "cancel-delete": "Annuler la suppression",
   "cancel-search": "Annuler la recherche",
   "charter": {
+    "actions": {
+      "reject": "Refuser la charte",
+      "return": "Demander des informations complémentaires",
+      "validate": "Valider la charte"
+    },
+    "all-charters": "Toutes les chartes",
+    "association-charter": "Charte du site Alsace",
+    "association-charters": "Chartes par associations",
+    "charter": "Charte | Chartes",
     "expiration-date": "Date d'expiration",
+    "funds": "Chartes CAPE",
     "no-charter-to-show": "Aucune charte à afficher.",
     "options": {
       "download": "Télécharger la charte",
@@ -191,6 +201,10 @@
       "view": "Voir la charte"
     },
     "pdf-name": "Récapitulatif-Signature-Charte-",
+    "processing-charters": "Chartes à valider",
+    "project-fund": {
+      "title": "Chartes de subventionnement"
+    },
     "sign": "Signer la charte",
     "signed-charter": "Charte signée",
     "site": {
@@ -202,16 +216,18 @@
           "title": "Votre charte a été signée"
         }
       },
-      "title": "Charte des association du site Alsace"
+      "title": "Charte des associations du site Alsace"
     },
     "status": {
       "expired": "Charte à renouveler",
       "no-charter": "Charte à signer",
+      "not-site": "Hors Site Alsace",
       "processing": "Charte en cours de validation",
       "validated": "Charte signée et validée"
     },
-    "table-title": "Chartes",
-    "validated-date": "Date de validation"
+    "uploaded-date": "Date de dépôt",
+    "validated-date": "Date de validation",
+    "view-charter": "Voir la charte | Voir les chartes"
   },
   "commission": {
     "add-new-date": "Ajouter une date de commission",

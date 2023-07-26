@@ -12,7 +12,7 @@ export interface Document {
     mimeTypes: MimeType[],
     processType: DocumentProcessType,
     institution: number | null,
-    commission: number | null
+    fund: number | null
 }
 
 type MimeType =

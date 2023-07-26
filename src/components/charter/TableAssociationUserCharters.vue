@@ -6,7 +6,7 @@ import useCharters from '@/composables/useCharters'
 import {onMounted} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import TableStudentCharterBtn from '@/components/charter/TableStudentCharterBtn.vue'
+import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 
 
@@ -17,14 +17,15 @@ const {catchHTTPError} = useErrors()
 
 
 const importedProps = defineProps<{
-    associationId: number
+    associationId: number,
+    isSite: boolean
 }>()
 
 
 async function onGetCharters() {
     if (importedProps.associationId) {
         try {
-            await initCharters(importedProps.associationId)
+            await initCharters(importedProps.associationId, importedProps.isSite)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -43,7 +44,7 @@ onMounted(async () => {
 })
 
 const columns: QTableProps['columns'] = [
-    {name: 'charter', align: 'left', label: t('charter.table-title'), field: 'charter', sortable: true},
+    {name: 'charter', align: 'left', label: t('charter.charter', 2), field: 'charter', sortable: true},
     {name: 'validatedDate', align: 'left', label: t('charter.validated-date'), field: 'validatedDate', sortable: true},
     {
         name: 'expirationDate',
@@ -53,7 +54,7 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
-    {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: true}
+    {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
 ]
 </script>
 
@@ -65,17 +66,17 @@ const columns: QTableProps['columns'] = [
                     :columns="columns"
                     :rows="manageCharters"
                     :rows-per-page-options="[10, 20, 50, 0]"
-                    row-key="name"
                     role="presentation"
+                    row-key="name"
                 >
                     <template v-slot:header="props">
                         <QTr :props="props">
                             <QTh
                                 v-for="col in props.cols"
+                                :id="col.name"
                                 :key="col.name"
                                 :props="props"
                                 scope="col"
-                                :id="col.name"
                             >
                                 {{ col.label }}
                             </QTh>
@@ -116,56 +117,59 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 headers="actions"
                             >
-                                <TableStudentCharterBtn
+                                <TableStudentChartersBtn
                                     :association-id="importedProps.associationId"
                                     :charter="props.row"
+                                    :is-site="importedProps.isSite"
                                 />
                             </QTd>
                         </QTr>
                     </template>
                     <template v-slot:pagination="scope">
-                        {{ t('table.results-amount', {
-                            firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
-                            lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
-                            amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
-                        }) }}
+                        {{
+                            t('table.results-amount', {
+                                firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
+                                lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
+                                amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
+                            })
+                        }}
                         <QBtn
                             v-if="scope.pagesNumber > 2"
-                            icon="bi-chevron-double-left"
-                            color="grey-8"
-                            dense
-                            flat
-                            :disable="scope.isFirstPage"
-                            @click="scope.firstPage"
                             :aria-label="t('table.first-page')"
-                        />
-                        <QBtn
-                            icon="bi-chevron-left"
-                            color="grey-8"
-                            dense
-                            flat
                             :disable="scope.isFirstPage"
-                            @click="scope.prevPage"
-                            :aria-label="t('table.previous-page')"
-                        />
-                        <QBtn
-                            icon="bi-chevron-right"
                             color="grey-8"
                             dense
                             flat
-                            :disable="scope.isLastPage"
-                            @click="scope.nextPage"
+                            icon="bi-chevron-double-left"
+                            @click="scope.firstPage"
+                        />
+                        <QBtn
+                            :aria-label="t('table.previous-page')"
+                            :disable="scope.isFirstPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-left"
+                            @click="scope.prevPage"
+                        />
+                        <QBtn
                             :aria-label="t('table.next-page')"
+                            :disable="scope.isLastPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-right"
+                            @click="scope.nextPage"
                         />
                         <QBtn
                             v-if="scope.pagesNumber > 2"
-                            icon="bi-chevron-double-right"
+                            :aria-label="t('table.last-page')"
+                            :disable="scope.isLastPage"
                             color="grey-8"
                             dense
                             flat
-                            :disable="scope.isLastPage"
+                            icon="bi-chevron-double-right"
                             @click="scope.lastPage"
-                            :aria-label="t('table.last-page')"
                         />
                     </template>
                 </QTable>

@@ -8,6 +8,7 @@ import type {UserGroup} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useSecurity from '@/composables/useSecurity'
+import type {Institution} from '#/association'
 
 
 // Used to store groups
@@ -39,6 +40,7 @@ export default function () {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const {userFunds} = useCommissions()
+    const {axiosPublic} = useAxios()
 
 
     const groupNames: GroupCodeLiteralName[] = [
@@ -67,6 +69,9 @@ export default function () {
             literalName: i18n.global.t('user-groups.student-misc')
         },
     ]
+
+    /* A list of groups that can join associations */
+    const canJoinAssociationGroups = ['STUDENT_INSTITUTION']
 
     /**
      * It gets the groups from the server and puts them in the groups variable.
@@ -155,9 +160,6 @@ export default function () {
         }
     }
 
-    /* It's a list of groups that can join associations */
-    const canJoinAssociationGroups = ['STUDENT_INSTITUTION']
-
     /**
      * If the user has selected a group that is not in the list of groups that can join the association, then the user
      * cannot join the association
@@ -207,6 +209,11 @@ export default function () {
     }
 
     watch(() => userStore.user?.groups.length, initIsMemberFund)
+
+    const isManagerMisc = () => {
+        const managerMiscGroup = groups.value.find(group => group.name === 'MANAGER_MISC')
+        return !!userStore.user?.groups.find(group => group.groupId === managerMiscGroup?.id)
+    }
 
     /**
      * Return the old groups that are not in the new groups.
@@ -289,6 +296,7 @@ export default function () {
         initCommissionMemberSelection,
         commissionGroup,
         isMemberFund,
-        initIsMemberFund
+        initIsMemberFund,
+        isManagerMisc
     }
 }

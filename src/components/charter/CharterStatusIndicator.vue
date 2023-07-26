@@ -23,6 +23,12 @@ onMounted(initSpanClasses)
 
 <template>
     <span
+        v-if="props.charterStatus === 'NOT_SITE'"
+        :class="spanClasses"
+    >
+        {{ t('charter.status.not-site') }}
+    </span>
+    <span
         v-if="props.charterStatus === 'NO_CHARTER'"
         :class="spanClasses"
     >
