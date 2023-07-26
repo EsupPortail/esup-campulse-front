@@ -144,6 +144,7 @@ async function onPatchProjectCommissionFunds() {
                                 <QCardSection class="flex-column">
                                     <h4>{{ t('project.amount-asked') }}</h4>
                                     <QInput
+                                        v-if="!projectCommissionFund.isFirstEdition"
                                         v-model="projectCommissionFund.amountAskedPreviousEdition"
                                         :label="`${t('project.previous-asked')} (${projectCommissionFund.fundLabel})`"
                                         color="commission"
@@ -161,6 +162,7 @@ async function onPatchProjectCommissionFunds() {
                                     />
                                     <h4>{{ t('project.amount-earned') }}</h4>
                                     <QInput
+                                        v-if="!projectCommissionFund.isFirstEdition"
                                         v-model="projectCommissionFund.amountEarnedPreviousEdition"
                                         :label="`${t('project.previous-earned')} (${projectCommissionFund.fundLabel})`"
                                         color="commission"
@@ -242,10 +244,10 @@ async function onPatchProjectCommissionFunds() {
 @import '@/assets/_variables.scss';
 
 .q-card {
-  padding: 1rem;
+    padding: 1rem;
 }
 
 .flex-row > * {
-  width: $fullSize;
+    width: $fullSize;
 }
 </style>
