@@ -201,9 +201,9 @@ async function onSignCharter() {
                                 clearable
                                 color="charter"
                                 filled
-                                type="date"
-                                min="1970-01-01"
                                 max="2120-01-01"
+                                min="1970-01-01"
+                                type="date"
                             />
                             <QInput
                                 v-model="editedAssociation.presidentNames"
@@ -384,10 +384,10 @@ async function onSignCharter() {
 @import '@/assets/_variables.scss';
 
 .q-field {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 .flex-row > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

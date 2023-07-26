@@ -194,6 +194,6 @@ async function clearSearch() {
 @import '@/assets/styles/forms.scss';
 
 .flex-row-center > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

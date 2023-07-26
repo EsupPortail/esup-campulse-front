@@ -16,10 +16,10 @@
   #footer-logos {
     background-color: $annuaireColorBackground;
     border-bottom: 0.6rem solid $annuaireColor;
-    padding: 2rem 0;
+    padding: 2rem 1.56rem;
 
     .wrapper {
-      width: 100%;
+      width: $fullSize;
       text-align: center;
       margin: 0 auto;
 
@@ -46,11 +46,6 @@
         }
       }
     }
-
-    @media screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
   }
 
   .q-toolbar {
@@ -61,6 +56,7 @@
   .footer-text {
     margin: 0 auto;
     text-align: center;
+    padding: 0 1.56rem 0;
 
     li {
       margin: 0 1rem;
@@ -100,27 +96,18 @@
         border-bottom: 1px solid transparentize($textColor3, 0.4);
       }
     }
-
-    @media screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
   }
 
   // Footer text
   & > p {
-    width: 100%;
+    width: $fullSize;
     max-width: 80rem;
     margin: 0 auto 1.5rem;
     text-align: center;
     font-size: 1.6rem;
     font-weight: 300;
     color: $footerTextColor;
-
-    @media screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
+    padding: 0 1.56rem 0;
   }
 
   // The footer has several variants that change its color depending on the current space.

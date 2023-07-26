@@ -168,7 +168,7 @@
     }
   }
 
-  @media screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $breakpoint-lg) {
     .q-card {
       .card-background {
         display: none;
@@ -249,13 +249,6 @@
 
     .q-file, .q-input {
       margin-bottom: .6rem;
-    }
-  }
-
-  @media screen and (min-width: $responsiveWidth) {
-    #association-logo-title {
-      width: $halfSize;
-      margin: auto;
     }
   }
 }

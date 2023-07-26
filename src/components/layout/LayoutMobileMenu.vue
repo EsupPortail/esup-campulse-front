@@ -29,49 +29,49 @@ const {openMenu} = useUtility()
 @import "@/assets/_variables.scss";
 
 .mobile-menu {
-    display: none;
+  display: none;
 }
 
-@media screen and (max-width: $responsiveWidth) {
-    .mobile-menu {
-        display: block;
-    }
+@media screen and (max-width: $breakpoint-lg) {
+  .mobile-menu {
+    display: block;
+  }
 
-    .mobile-nav-bar {
-        background-color: #fff;
-        width: 100%;
-        position: fixed;
-        padding: 0.5rem;
-        bottom: 0;
-        height: 5rem;
-        z-index: 9999999;
-        color: $textColor1;
-    }
+  .mobile-nav-bar {
+    background-color: #fff;
+    width: $fullSize;
+    position: fixed;
+    padding: 0.5rem;
+    bottom: 0;
+    height: 5rem;
+    z-index: 9999999;
+    color: $textColor1;
+  }
 
-    .box-shadow {
-        box-shadow: 0px -1px 5px 2px rgba(225, 225, 225, 0.54);
-        -webkit-box-shadow: 0px -1px 5px 2px rgba(225, 225, 225, 0.54);
-        -moz-box-shadow: 0px -1px 5px 2px rgba(225, 225, 225, 0.54);
-        transition: box-shadow 0.2s ease-out;
-    }
+  .box-shadow {
+    box-shadow: 0px -1px 5px 2px rgba(225, 225, 225, 0.54);
+    -webkit-box-shadow: 0px -1px 5px 2px rgba(225, 225, 225, 0.54);
+    -moz-box-shadow: 0px -1px 5px 2px rgba(225, 225, 225, 0.54);
+    transition: box-shadow 0.2s ease-out;
+  }
 
-    .mobile-menu > div + div {
-        position: fixed;
-        background-color: $backgroundColor2;
-        width: 100%;
-        color: $textColor1;
-        padding: 1rem;
-        transition: all 0.2s ease-out;
-        bottom: 5rem;
-    }
+  .mobile-menu > div + div {
+    position: fixed;
+    background-color: $backgroundColor2;
+    width: $fullSize;
+    color: $textColor1;
+    padding: 1rem;
+    transition: all 0.2s ease-out;
+    bottom: 5rem;
+  }
 
-    .close-menu {
-        visibility: hidden;
-    }
+  .close-menu {
+    visibility: hidden;
+  }
 
-    .open-menu {
-        visibility: visible;
-        z-index: 10;
-    }
+  .open-menu {
+    visibility: visible;
+    z-index: 10;
+  }
 }
 </style>

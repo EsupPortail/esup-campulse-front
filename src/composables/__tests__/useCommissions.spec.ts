@@ -74,9 +74,9 @@ describe('useCommissions', () => {
         describe('if all params are set to true', () => {
             it('should call API (get) with params params set to true', async () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
-                await getCommissionsForManagers(true, true, true, true)
+                await getCommissionsForManagers(true, true, true, true, true)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                const url = '/commissions/?active_projects=true&is_open_to_projects=true&is_site=true&managed_projects=true'
+                const url = '/commissions/?with_active_projects=true&only_with_active_projects=true&is_open_to_projects=true&is_site=true&managed_projects=true'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
                 expect(commissions.value).toEqual(_commissions)
             })
@@ -84,9 +84,9 @@ describe('useCommissions', () => {
         describe('if all params are set to false', () => {
             it('should call API (get)', async () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
-                await getCommissionsForManagers(false, false, false, false)
+                await getCommissionsForManagers(false, false, false, false, false)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
-                const url = '/commissions/?active_projects=false&is_open_to_projects=false&is_site=false&managed_projects=false'
+                const url = '/commissions/?with_active_projects=false&only_with_active_projects=false&is_open_to_projects=false&is_site=false&managed_projects=false'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)
                 expect(commissions.value).toEqual(_commissions)
             })
@@ -94,7 +94,7 @@ describe('useCommissions', () => {
         describe('if all params are set to undefined', () => {
             it('should call API (get)', async () => {
                 mockedPublicAxios.get.mockResolvedValueOnce({data: _commissions})
-                await getCommissionsForManagers(undefined, undefined, undefined, undefined)
+                await getCommissionsForManagers(undefined, undefined, undefined, undefined, undefined)
                 expect(axiosPublic.get).toHaveBeenCalledOnce()
                 const url = '/commissions/'
                 expect(axiosPublic.get).toHaveBeenCalledWith(url)

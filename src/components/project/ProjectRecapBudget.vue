@@ -154,6 +154,6 @@ const projectIsFirstEdition = () => {
 @import "@/assets/styles/dashboard.scss";
 
 .flex-row > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

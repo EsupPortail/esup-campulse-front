@@ -56,13 +56,6 @@ body {
   justify-content: right;
 }
 
-.flex-row-center-md {
-  @media screen and (min-width: $responsiveWidth) {
-    display: flex;
-    justify-content: center;
-  }
-}
-
 .flex-row-space-between {
   justify-content: space-between;
 }
@@ -202,7 +195,7 @@ main {
 // Page section
 .page-section {
   width: $fullSize;
-  max-width: $pageWidth;
+  max-width: 120rem;
   margin: 0 auto;
 }
 
@@ -215,7 +208,7 @@ main {
     gap: 3rem;
     align-items: center;
     width: $fullSize;
-    max-width: $pageWidth;
+    max-width: 120rem;
     margin: 0 auto 0;
 
     .intro-image {
@@ -255,33 +248,7 @@ main {
     background-color: $annuaireColorBackground;
   }
 
-  @media screen and (min-width: $responsiveWidth) {
-    .content {
-      .intro-image {
-        img {
-          margin-left: 1rem;
-        }
-      }
-    }
-  }
-
-  @media screen and (max-width: $pageWidth) {
-    .content {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-      gap: 1.875rem;
-
-      .intro-image {
-        flex: 0 0 15.625rem;
-
-        img {
-          width: 15.625rem;
-        }
-      }
-    }
-  }
-
-  @media screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $breakpoint-lg) {
     .content {
       display: block;
 
@@ -354,7 +321,7 @@ p.paragraph {
   font-weight: $normal-weight;
   line-height: normal;
   letter-spacing: normal;
-  margin-bottom: 1.8rem;
+  margin: auto 1.5rem 1.8rem;
 
   .float-left, .float-right {
     position: relative;
@@ -369,11 +336,6 @@ p.paragraph {
   .float-right {
     float: right;
     margin: 0 0 1rem 1.4rem;
-  }
-
-  @media screen and (max-width: $pageWidth) {
-    margin-left: 1.5rem;
-    margin-right: 1.5rem;
   }
 }
 

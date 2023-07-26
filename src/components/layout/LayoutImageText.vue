@@ -22,6 +22,8 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/_variables.scss";
+
 .image-text-section {
   padding: 3rem 1rem;
   margin: 2rem 0;
@@ -37,10 +39,17 @@ const props = defineProps<{
 }
 
 /* Changing the page's position to fit with the Accessibility Requirement */
-@media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+@media screen and (min-width: $breakpoint-vsm) {
   .container {
     display: flex;
     flex-direction: column;
+  }
+}
+
+@media screen and (min-width: $breakpoint-md) {
+  .container {
+    display: flex;
+    flex-direction: row;
   }
 }
 

@@ -113,7 +113,7 @@ strong {
 
 .q-form, .instructions {
   max-width: 720px;
-  width: 100%;
+  width: $fullSize;
   margin: auto;
 }
 

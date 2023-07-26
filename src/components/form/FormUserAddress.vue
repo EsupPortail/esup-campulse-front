@@ -73,6 +73,6 @@ onMounted(initUserInfos)
 
 <style lang="scss" scoped>
 .full-width > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

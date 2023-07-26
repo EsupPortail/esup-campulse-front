@@ -205,12 +205,12 @@ async function onUpdateProjectStatus() {
 @import "@/assets/styles/dashboard.scss";
 
 .q-card {
-    padding: 1rem;
-    max-width: 60rem;
-    width: 100%;
+  padding: 1rem;
+  max-width: 60rem;
+  width: $fullSize;
 }
 
 .q-form.flex-column {
-    gap: 2rem;
+  gap: 2rem;
 }
 </style>

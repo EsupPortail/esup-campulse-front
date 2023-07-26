@@ -220,6 +220,6 @@ async function onGetProjectDetail() {
 }
 
 .display-row {
-  width: 100%;
+  width: $fullSize;
 }*/
 </style>

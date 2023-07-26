@@ -16,7 +16,7 @@ const commission = ref<Commission | undefined>(undefined)
 const commissionFunds = ref<CommissionFund[]>([])
 const commissionLabels = ref<SelectLabel[]>([])
 
-export default function () {
+export default function() {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -64,7 +64,8 @@ export default function () {
 
     // Commissions
     async function getCommissionsForManagers(
-        activeProjects: boolean | undefined,
+        withActiveProjects: boolean | undefined,
+        onlyWithActiveProjects: boolean | undefined,
         isOpenToProjects: boolean | undefined,
         isSite: boolean | undefined,
         managedProjects: boolean | undefined,
@@ -73,7 +74,8 @@ export default function () {
         let urlString = '/commissions/'
         const urlArray = []
 
-        if (activeProjects !== undefined) urlArray.push(`active_projects=${activeProjects}`)
+        if (withActiveProjects !== undefined) urlArray.push(`with_active_projects=${withActiveProjects}`)
+        if (onlyWithActiveProjects !== undefined) urlArray.push(`only_with_active_projects=${onlyWithActiveProjects}`)
         if (isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${isOpenToProjects}`)
         if (isSite !== undefined) urlArray.push(`is_site=${isSite}`)
         if (managedProjects !== undefined) urlArray.push(`managed_projects=${managedProjects}`)

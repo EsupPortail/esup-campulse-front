@@ -242,10 +242,10 @@ async function onPatchProjectCommissionFunds() {
 @import '@/assets/_variables.scss';
 
 .q-card {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .flex-row > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

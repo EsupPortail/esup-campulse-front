@@ -48,6 +48,7 @@ onMounted(async () => {
             :menu-offset="[0, 8]"
             align="between"
             content-class="profile-menu"
+            flat
             no-caps
             padding="0"
         >
@@ -111,28 +112,29 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/_variables.scss";
 .q-btn-dropdown {
-    font-size: 1.8rem;
+  font-size: 1.8rem;
 }
 
 .q-list {
-    max-width: 30rem;
-    width: 100%;
+  max-width: 30rem;
+  width: $fullSize;
 }
 
 .q-btn__content > span > * {
-    padding: 0 0.5rem;
+  padding: 0 0.5rem;
 }
 
 p {
-    margin-bottom: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 ul {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 li {
-    list-style-type: none;
+  list-style-type: none;
 }
 </style>

@@ -43,10 +43,10 @@
 
     ul {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
 
-      @media screen and (min-width: $responsiveWidth) {
-        flex-direction: row;
+      @media screen and (max-width: $breakpoint-lg) {
+        flex-direction: column;
       }
     }
 
@@ -107,7 +107,7 @@
       }
     }
 
-    /*@media screen and (max-width: $responsiveWidth) {
+    /*@media screen and (max-width: $breakpoint-lg) {
       flex-direction: column;
       align-items: flex-end;
       height: 0;
@@ -174,7 +174,7 @@
       }
     }
 
-    @media screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $breakpoint-lg) {
       padding-right: 0;
       padding-left: 0.625rem;
     }
@@ -202,7 +202,7 @@
         font-size: 3rem;
       }
 
-      @media screen and (max-width: $responsiveWidth) {
+      @media screen and (max-width: $breakpoint-lg) {
         display: block;
         z-index: 10;
       }
@@ -223,7 +223,7 @@
       opacity: 1;
     }
 
-    @media screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $breakpoint-lg) {
       display: block;
     }
   }
@@ -234,7 +234,7 @@
   &.variant-home {
     height: 27.5rem;
 
-    @media screen and (max-width: $responsiveWidth) {
+    @media screen and (max-width: $breakpoint-lg) {
       height: auto;
 
       .q-toolbar {
@@ -259,8 +259,11 @@
     i.space-1-icon {
       display: inline;
       position: relative;
-      top: -0.7rem;
       font-size: 2rem;
+
+      @media screen and (min-width: $breakpoint-md) {
+        top: -0.7rem;
+      }
     }
   }
 
@@ -270,8 +273,11 @@
     i.space-2-icon {
       display: inline;
       position: relative;
-      top: -0.7rem;
       font-size: 2rem;
+
+      @media screen and (min-width: $breakpoint-md) {
+        top: -0.7rem;
+      }
     }
   }
 
@@ -281,12 +287,15 @@
     i.space-3-icon {
       display: inline;
       position: relative;
-      top: -0.6rem;
       font-size: 2rem;
 
-      // Changing the size of the icon header's position to fit with the Accessibility Requirement
-      @media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+      // Changing the icon header's position to fit with the Accessibility Requirement
+      @media only screen and (min-width: $breakpoint-vsm) {
         top: .2rem;
+      }
+
+      @media only screen and (min-width: $breakpoint-md) {
+        top: -0.6rem;
       }
     }
   }
@@ -297,8 +306,11 @@
     i.space-4-icon {
       display: inline;
       position: relative;
-      top: -0.6rem;
       font-size: 2rem;
+
+      @media screen and (min-width: $breakpoint-md) {
+        top: -0.6rem;
+      }
     }
   }
 
@@ -334,8 +346,8 @@
       text-transform: uppercase;
     }
 
-    @media screen and (max-width: $responsiveWidth) {
-      font-size: 2.8rem
+    @media screen and (max-width: $breakpoint-lg) {
+      font-size: 2.8rem;
     }
   }
 
@@ -392,13 +404,13 @@
     }
 
     // Changing the size of the header's font to fit with the Accessibility Requirement
-    @media screen and (min-width: 20rem) and (max-width: 26.875rem) {
+    @media screen and (min-width: $breakpoint-vsm) {
       font-size: 2.8rem;
     }
-  }
 
-  @media screen and (min-width: $responsiveWidth) {
-    left: calc(50% - #{$pageWidth * 0.5});
+    @media screen and (min-width: $breakpoint-md) {
+      font-size: 4rem;
+    }
   }
 }
 

@@ -263,11 +263,11 @@ async function onChangeLogo(action: string) {
                         <QInput
                             v-model="association.socialObject"
                             :label="t('association.labels.social-object')"
+                            bottom-slots
                             clearable
                             filled
-                            type="textarea"
-                            bottom-slots
                             for="socialObject"
+                            type="textarea"
                         >
                             <template v-slot:hint>
                                 <p aria-describedby="socialObject">{{ t('forms.social-object-hint') }}</p>
@@ -347,9 +347,9 @@ async function onChangeLogo(action: string) {
                             :label="t('association.labels.last-goa')"
                             clearable
                             filled
-                            type="date"
-                            min="1970-01-01"
                             max="2120-01-01"
+                            min="1970-01-01"
+                            type="date"
                         >
                             <template v-slot:prepend>
                                 <QIcon name="mdi-calendar"/>
@@ -368,17 +368,21 @@ async function onChangeLogo(action: string) {
                             v-model="association.amountMembersAllowed"
                             :label="t('association.labels.amount-members-allowed')"
                             :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
+                            bottom-slots
                             clearable
                             filled
+                            for="amountMembersAllowed"
                             inputmode="numeric"
                             lazy-rules
                             min="0"
                             type="number"
-                            bottom-slots
-                            for="amountMembersAllowed"
                         >
                             <template v-slot:hint>
-                                <p aria-describedby="amountMembersAllowed">{{ t('forms.amount-student-allowed-cannot-be-inferior-to-members', { amount: membersCount }) }}</p>
+                                <p aria-describedby="amountMembersAllowed">
+                                    {{
+                                        t('forms.amount-student-allowed-cannot-be-inferior-to-members', {amount: membersCount})
+                                    }}
+                                </p>
                             </template>
                         </QInput>
                         <QInput
@@ -530,15 +534,15 @@ async function onChangeLogo(action: string) {
 @import '@/assets/styles/dashboard.scss';
 
 .address-fields div {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 
-    * {
-        width: 100%;
-    }
+  * {
+    width: $fullSize;
+  }
 }
 
 .q-separator {
-    margin: 0.5rem 0 1rem 0;
+  margin: 0.5rem 0 1rem 0;
 }
 </style>
