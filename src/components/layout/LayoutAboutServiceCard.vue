@@ -1,32 +1,28 @@
 <script lang="ts" setup>
-defineProps({
-    header: String,
-    footer: String,
-    label: String,
-    code: String,
-    body: String,
-    cssClass: String
-})
+
+const props = defineProps<{
+    header: string,
+    body: string,
+    cssClass: string
+}>()
 </script>
 
 
 <template>
-    <section :class="['services-section', 'home-section', cssClass]">
+    <section :class="['services-section', 'home-section', props.cssClass]">
         <div :class="['section-card', 'service-card']">
-            <div>
+            <div class="flex-column">
                 <div
                     aria-hidden="true"
                     class="card-icon"
                 >
                     <i class="bi bi-filter-circle"></i>
                 </div>
-
-                <div :class="['section-title', 'services-title']">
-                    <h4 v-html="header"></h4>
-                </div>
+                
+                <h3 v-html="props.header"></h3>
 
                 <div class="section-content">
-                    <p v-html="body"></p>
+                    <p v-html="props.body"></p>
                 </div>
             </div>
         </div>
@@ -35,4 +31,8 @@ defineProps({
 
 <style lang="scss" scoped>
 @import '@/assets/styles/home.scss';
+
+h3 {
+    text-align: left;
+}
 </style>
