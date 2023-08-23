@@ -243,6 +243,11 @@ export const useAssociationStore = defineStore('associationStore', {
         async getAssociationDocuments() {
             const {axiosAuthenticated} = useAxios()
             this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?=association_id=${this.association?.id}`)).data
+        },
+        async exportCSV(associations: number[]) {
+            const {axiosAuthenticated} = useAxios()
+            const url = `/associations/csv_export?associations=${associations.join(',')}`
+            return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         }
     }
 })

@@ -57,9 +57,9 @@ watch(() => endIndex.value, () => {
 // Scroll back to search fields on top of associations
 function scrollToTop() {
     const searchFields = document.querySelector('#search-form') as HTMLElement
-    const firstAssociationElement = document.querySelector('.directory-sorting + div a:first-child') as HTMLElement
     searchFields.scrollIntoView()
-    firstAssociationElement?.focus()
+    const element = document.querySelector('.directory-sorting + div a:first-child')
+    if (element) (element as HTMLAnchorElement).focus()
 }
 
 // Functions
@@ -153,7 +153,11 @@ async function loadAssociationsActivityFields() {
                         <QCardSection>
                             <div class="list-logo">
                                 <QImg
-                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? (!association.pathLogo.list?.startsWith('http') ? baseUrl + association.pathLogo.list : association.pathLogo.list) : noLogoSquare.default) : noLogoSquare.default"
+                                    :src="association.pathLogo ?
+                                        (Object.keys(association.pathLogo).length !== 0 ?
+                                            (!association.pathLogo.list?.startsWith('http') ?
+                                                baseUrl + association.pathLogo.list : association.pathLogo.list) :
+                                            noLogoSquare.default) : noLogoSquare.default"
                                     aria-hidden="true"
                                 />
                             </div>
