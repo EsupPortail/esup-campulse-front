@@ -1,4 +1,4 @@
-import type {Document, DocumentUpload, ProcessDocument} from '#/documents'
+import type { Document, DocumentUpload, ProcessDocument } from '#/documents'
 
 export const _document: Document = {
     id: 1,
@@ -121,6 +121,7 @@ export const _projectDocuments: DocumentUpload[] = [
         id: 1,
         uploadDate: '2023-06-19',
         validatedDate: '',
+        comment: '',
         pathFile: 'pathFile',
         size: 1000,
         document: 1,
@@ -135,6 +136,7 @@ export const _projectDocuments: DocumentUpload[] = [
         pathFile: 'pathFile',
         size: 1000,
         validatedDate: '',
+        comment: '',
         document: 2,
         user: 1,
         association: null,
