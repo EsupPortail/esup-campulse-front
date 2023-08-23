@@ -68,6 +68,14 @@ async function onGetAssociationUsers() {
             <p>{{ projectAssociationUsersLabels.find(x => x.value === projectBasicInfos.associationUser)?.label }}</p>
         </div>
 
+        <div
+            v-if="projectBasicInfos.partnerAssociation"
+            class="display-row"
+        >
+            <p class="row-title">{{ t('project.partner-association') }}</p>
+            <p>{{ projectBasicInfos.partnerAssociation }}</p>
+        </div>
+
         <ProjectRecapCategories/>
     </div>
 </template>

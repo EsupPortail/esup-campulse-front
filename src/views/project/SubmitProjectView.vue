@@ -548,6 +548,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     color="commission"
                                 />
                             </div>
+                            <QInput
+                                v-model="projectBasicInfos.partnerAssociation"
+                                :label="t('project.partner-association')"
+                                clearable
+                                color="commission"
+                                filled
+                                lazy-rules
+                            />
                             <div class="flex-row-center padding-top padding-bottom">
                                 <QBtn
                                     :label="t('continue')"

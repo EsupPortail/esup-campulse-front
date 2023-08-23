@@ -10,6 +10,7 @@ export interface Project {
     user: number | null,
     association: number | null,
     associationUser: number | null,
+    partnerAssociation: string,
     categories?: ProjectCategoryName[],
     budgetPreviousEdition: number,
     targetAudience: string,
@@ -71,7 +72,8 @@ export interface ProjectBasicInfos {
     plannedLocation: string,
     user: number | null,
     association: number | null,
-    associationUser: number | null
+    associationUser: number | null,
+    partnerAssociation: string,
 }
 
 export interface ProjectBudget {
