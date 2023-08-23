@@ -61,7 +61,8 @@ type ContentCode =
     'ABOUT_FUNDING' |
     'ABOUT_PARTNERSHIP' |
     'CONTACT_INFO' |
-    'CONTACT_LIST'
+    'CONTACT_LIST' |
+    'ASSOCIATION_HOME_FIRST_BLOCK'
 
 export interface PageCard {
     to: { name: string },

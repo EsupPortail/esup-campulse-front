@@ -9,8 +9,10 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
 import {useRoute} from 'vue-router'
+import {useContentStore} from '@/stores/useContentStore'
 
 const associationStore = useAssociationStore()
+const contentStore = useContentStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -22,6 +24,7 @@ onMounted(async function () {
     await associationStore.getAssociations(true)
     associations.value = associationStore.associations
     await loadAssociationsActivityFields()
+    await getContents()
     loading.hide()
 })
 
@@ -78,6 +81,19 @@ async function loadAssociationsActivityFields() {
     }
 }
 
+async function getContents() {
+    try {
+        await contentStore.getContentsByCode(['ASSOCIATION_HOME_FIRST_BLOCK'])
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
 </script>
 
 <template>
@@ -91,19 +107,8 @@ async function loadAssociationsActivityFields() {
                     />
                 </div>
                 <div>
-                    <h2>{{ t('directory.subtitle') }}</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore
-                        et
-                        dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure
-                        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                        sint
-                        occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
+                    <h2 v-html="contentStore.contents[0]?.header"></h2>
+                    <p v-html="contentStore.contents[0]?.body"></p>
                 </div>
             </div>
         </div>

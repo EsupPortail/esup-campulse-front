@@ -1,7 +1,5 @@
 import {defineStore} from 'pinia'
-
 import type {Content, ContentCode, ContentStore} from '#/index'
-import i18n from '@/plugins/i18n'
 import {useAxios} from '@/composables/useAxios'
 
 export const useContentStore = defineStore('contentStore', {
