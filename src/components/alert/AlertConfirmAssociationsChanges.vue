@@ -6,6 +6,8 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 import type {Association} from '#/association'
 import useSecurity from '@/composables/useSecurity'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
@@ -13,11 +15,13 @@ const deletionWord = ref<string>('')
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 const {hasPerm} = useSecurity()
+const {catchHTTPError} = useErrors()
 
 const emit = defineEmits(['updateSelectedAssociations'])
 
 const actionsOptions = ref([
-    {id: 'email', label: t('association.all-selected-mail')}
+    {id: 'email', label: t('association.all-selected-mail')},
+    {id: 'csv-export', label: t('association.export-csv')}
 ])
 
 const switches = ref<string>()
@@ -92,6 +96,34 @@ async function onConfirmChanges(emailType: string) {
                 type: 'negative',
                 message: t('notifications.negative.association-before-deletion-word-error')
             })
+        }
+        break
+    case 'csv-export':
+        if (props.selectedAssociations?.length) {
+            try {
+                const associationIds = props.selectedAssociations.map(x => x.id)
+                const associationNames = props.selectedAssociations.map(x => x.name)
+                const file = await associationStore.exportCSV(associationIds)
+                const message = t(`notifications.positive.${switches.value}-associations`)
+                notify({
+                    type: 'positive',
+                    message: `<p>${message}${associationNames.join(', ')}</p>`,
+                    html: true
+                })
+                const link = document.createElement('a')
+                link.href = window.URL.createObjectURL(new Blob([file]))
+                link.download = `${t('association.csv-name')}${encodeURI(associationNames.join('-'))}.csv`
+                document.body.appendChild(link)
+                link.click()
+                link.remove()
+            } catch (error) {
+                if (axios.isAxiosError(error) && error.response) {
+                    notify({
+                        type: 'negative',
+                        message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    })
+                }
+            }
         }
         break
     }
@@ -173,13 +205,13 @@ async function onConfirmChanges(emailType: string) {
                     @paste.prevent
                 />
             </QCardSection>
-            <QCardActions>
-                <div class="flex-row padding-top">
+            <QCardSection>
+                <div class="flex-row-center padding-top">
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"
                         class="btn-lg"
-                        color="dashboard"
+                        color="association"
                         icon="bi-x-lg"
                     />
                     <QBtn
@@ -199,6 +231,15 @@ async function onConfirmChanges(emailType: string) {
                         color="association"
                         icon="bi-envelope"
                         @click="onConfirmChanges('web')"
+                    />
+                    <QBtn
+                        v-if="switches === 'csv-export'"
+                        v-close-popup
+                        :label="t('association.export-csv')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-filetype-csv"
+                        @click="onConfirmChanges('')"
                     />
                     <QBtn
                         v-if="switches === 'enable'"
@@ -228,7 +269,7 @@ async function onConfirmChanges(emailType: string) {
                         @click="onConfirmChanges('')"
                     />
                 </div>
-            </QCardActions>
+            </QCardSection>
         </QCard>
     </QDialog>
 </template>
@@ -238,10 +279,10 @@ async function onConfirmChanges(emailType: string) {
 @import '@/assets/variables.scss';
 
 p {
-  font-size: 1.8rem;
+    font-size: 1.8rem;
 }
 
 li {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 </style>
