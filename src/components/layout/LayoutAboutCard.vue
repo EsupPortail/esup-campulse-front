@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-defineProps({
-    header: String,
-    label: String,
-    code: String,
-    body: String,
-    cssClass: String
-})
+
+const props = defineProps<{
+    header: string,
+    /*label: string,
+    code: string,*/
+    body: string,
+    cssClass: string
+}>()
 </script>
 
 
 <template>
-    <section :class="['home-section', 'form-container', cssClass]">
+    <section :class="['home-section', 'form-container', props.cssClass]">
         <div class="section-card">
             <div class="section-background">
                 <span></span>
@@ -18,11 +19,11 @@ defineProps({
 
             <div class="section-title">
                 <div class="section-info">
-                    <h3 v-html="header"></h3>
+                    <h3 v-html="props.header"></h3>
                 </div>
             </div>
             <div class="section-content">
-                <p v-html="body"></p>
+                <p v-html="props.body"></p>
             </div>
         </div>
     </section>
@@ -32,12 +33,4 @@ defineProps({
 @import '@/assets/styles/home.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/_variables.scss';
-
-.section-title {
-  p {
-    font-size: 2.5rem;
-    font-weight: $semibold-weight;
-    line-height: 3rem;
-  }
-}
 </style>

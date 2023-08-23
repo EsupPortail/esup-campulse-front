@@ -64,6 +64,10 @@ body {
   flex-direction: column;
 }
 
+.align-items-stretch {
+  align-items: stretch;
+}
+
 // Padding utilities
 .padding-top {
   padding-top: 1rem;
@@ -76,6 +80,11 @@ body {
 // Margin utilities
 .margin-bottom {
   margin-bottom: 1rem;
+}
+
+// Alignment utilities
+.text-center {
+  text-align: center;
 }
 
 // Page layout
@@ -285,7 +294,7 @@ main {
 h1, .title-1, h2, .title-2, h3, .title-3, h4, .title-4, h5, .title-5, h6, .title-6 {
   color: $textColor1;
   font-weight: $normal-weight;
-  line-height: normal;
+  line-height: 1.6;
   letter-spacing: normal;
   text-transform: uppercase;
 }

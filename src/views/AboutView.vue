@@ -23,6 +23,7 @@ const {catchHTTPError} = useErrors()
 onMounted(async () => {
     loading.show()
     await onGetContent()
+    initContent()
     loading.hide()
 })
 
@@ -43,24 +44,22 @@ function findContentObject(code: string) {
     return content.about.find(obj => obj.code === code)
 }
 
-watch(() => content.about, () => {
+const initContent = () => {
     aboutApp.value = findContentObject('ABOUT_APP')
     aboutFunding.value = findContentObject('ABOUT_FUNDING')
     aboutPartnership.value = findContentObject('ABOUT_PARTNERSHIP')
     homeAssociation.value = findContentObject('HOME_ASSOCIATION')
     homeProject.value = findContentObject('HOME_PROJECT')
     homeCharter.value = findContentObject('HOME_CHARTER')
-})
+}
 </script>
 
 <template>
-    <section
-        id="home-section"
-        class="dashboard-section"
-    >
-        <div class="section-headtitle">
-            <h2>{{ t('about.presentation') }}</h2>
-        </div>
+    <section class="dashboard-section">
+        <h2>
+            <QIcon name="bi-info-circle"/>
+            {{ t('about.presentation') }}
+        </h2>
 
         <div class="dashboard-section-container">
             <div class="container">
@@ -73,58 +72,61 @@ watch(() => content.about, () => {
                     :body="aboutPartnership?.body"
                     :cssClass="content.cards[1].cssClass"
                     :header="aboutPartnership?.header"
-                    :label="aboutPartnership?.label"
                 />
                 <AboutCard
                     :body="aboutFunding?.body"
                     :cssClass="content.cards[2].cssClass"
                     :header="aboutFunding?.header"
-                    :label="aboutFunding?.label"
                 />
             </div>
         </div>
 
-        <div class="services-features dashboard-section">
-            <div class="section-headtitle">
-                <h2>{{ t('about.services') }}</h2>
-            </div>
-
-            <div class="services-section dashboard-section-container">
-                <ServiceCard
-                    :body="homeAssociation?.body"
-                    :cssClass="content.cards[0].cssClass"
-                    :footer="homeAssociation?.header"
-                    :header="homeAssociation?.header"
-                />
-
-                <ServiceCard
-                    :body="homeCharter?.body"
-                    :cssClass="content.cards[1].cssClass"
-                    :footer="homeCharter?.header"
-                    :header="homeCharter?.header"
-                />
-
-                <ServiceCard
-                    :body="homeProject?.body"
-                    :cssClass="content.cards[2].cssClass"
-                    :footer="homeProject?.footer"
-                    :header="homeProject?.header"
-                />
-            </div>
-        </div>
-
-        <div class="contact-project dashboard-section">
-            <div class="section-headtitle">
-                <h2>{{ t('about.contact') }}</h2>
-            </div>
+        <div class="dashboard-section">
+            <h2>
+                <QIcon name="bi-shop-window"/>
+                {{ t('about.services') }}
+            </h2>
 
             <div class="dashboard-section-container">
-                <div class="flex-column">
-                    <h4>{{ t('about.intro-contact') }}</h4>
+                <div class="container flex-row-center align-items-stretch">
+                    <ServiceCard
+                        :body="homeAssociation?.body"
+                        :cssClass="content.cards[0].cssClass"
+                        :header="homeAssociation?.header"
+                    />
+                    <ServiceCard
+                        :body="homeCharter?.body"
+                        :cssClass="content.cards[1].cssClass"
+                        :header="homeCharter?.header"
+                    />
+                    <ServiceCard
+                        :body="homeProject?.body"
+                        :cssClass="content.cards[2].cssClass"
+                        :header="homeProject?.header"
+                    />
+                </div>
+            </div>
+        </div>
 
-                    <RouterLink :to="{name: 'Contact'}">
-                        {{ t('about.contact-us') }}
-                    </RouterLink>
+        <div class="dashboard-section">
+            <h2>
+                <QIcon name="bi-envelope"/>
+                {{ t('about.contact') }}
+            </h2>
+
+            <div class="dashboard-section-container">
+                <div class="flex-column text-center">
+                    <p>{{ t('about.intro-contact') }}</p>
+
+                    <div>
+                        <QBtn
+                            :label="t('about.contact-us')"
+                            :to="{name: 'Contact'}"
+                            class="btn-lg"
+                            color="association"
+                            icon="bi-envelope"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -136,8 +138,14 @@ watch(() => content.about, () => {
 @import '@/assets/styles/dashboard.scss';
 
 .home-section {
-  &.home-section-cape, &.home-section-annuaire, &.home-section-charte {
-    background-image: none;
-  }
+    &.home-section-cape, &.home-section-annuaire, &.home-section-charte {
+        background-image: none;
+    }
+}
+
+@media screen and (max-width: $breakpoint-lg) {
+    .flex-row-center {
+        flex-direction: column;
+    }
 }
 </style>

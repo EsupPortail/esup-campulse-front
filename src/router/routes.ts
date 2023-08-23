@@ -496,7 +496,7 @@ const routes: RouteRecordRaw[] = [
                 ]
             },
             {
-                path: 'about-page',
+                path: 'about',
                 name: 'About',
                 component: () => import('@/views/AboutView.vue'),
                 meta: {
@@ -507,7 +507,7 @@ const routes: RouteRecordRaw[] = [
                 }
             },
             {
-                path: 'contact-page',
+                path: 'contact',
                 name: 'Contact',
                 component: () => import('@/views/ContactView.vue'),
                 meta: {
