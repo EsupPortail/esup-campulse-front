@@ -294,7 +294,7 @@ main {
 h1, .title-1, h2, .title-2, h3, .title-3, h4, .title-4, h5, .title-5, h6, .title-6 {
   color: $textColor1;
   font-weight: $normal-weight;
-  line-height: normal;
+  line-height: 1.6;
   letter-spacing: normal;
   text-transform: uppercase;
 }
