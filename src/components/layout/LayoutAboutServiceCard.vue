@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 
 const props = defineProps<{
-    header: string,
-    body: string,
+    header?: string,
+    body?: string,
     cssClass: string
 }>()
 </script>
@@ -18,7 +18,7 @@ const props = defineProps<{
                 >
                     <i class="bi bi-filter-circle"></i>
                 </div>
-                
+
                 <h3 v-html="props.header"></h3>
 
                 <div class="section-content">

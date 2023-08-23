@@ -555,16 +555,24 @@
     "subtitle": "Le site de la vie étudiante associative de l'UNISTRA"
   },
   "home": {
-    "back-dashboard": "Retour",
-    "banner": {
-      "description": "Association, porteur ou porteuse de projet, venez présenter votre projet.",
-      "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022"
+    "directory": {
+      "button": "Consulter l'annuaire",
+      "registered-associations": "associations enregistrées dans l'annuaire",
+      "title-line-1": "Annuaire",
+      "title-line-2": "des associations"
     },
-    "charter": "Charte des associations",
-    "commission": "Commission d'aide aux projets étudiants",
-    "dashboard": "Tableau de bord",
-    "directory": "Annuaire des associations",
-    "title": "Bienvenue sur la plateforme"
+    "charter": {
+      "button": "Espace charte",
+      "charter-update": "Dernière mise à jour de la charte le",
+      "title-line-1": "Charte",
+      "title-line-2": "des associations du site Alsace"
+    },
+    "commission": {
+      "button": "Espace CAPE",
+      "next-commission": "Prochaine commission",
+      "title-line-1": "CAPE",
+      "title-line-2": "Commission d'Aide aux Projets Étudiants"
+    }
   },
   "loading": "Chargement...",
   "login": {
@@ -593,7 +601,7 @@
       "association-before-deletion-word-error": "Vérification échouée, veuillez réessayer.",
       "delete-associations-error": "Les associations suivantes ne peuvent être supprimées : ",
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
-      "disable-associations-error": "Les associations suivantes ne peuvent être desactivées : ",
+      "disable-associations-error": "Les associations suivantes ne peuvent être désactivées : ",
       "email-associations-error": "Ces associations n'ont pas d'adresse email : ",
       "enable-associations-error": "Les associations suivantes ne peuvent être activées : ",
       "error": "Une erreur est survenue.",

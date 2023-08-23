@@ -2,16 +2,12 @@
 defineProps({
     title: String,
     description: String,
-    isDisplayed: Boolean
 })
 </script>
 
 <template>
     <div class="container">
-        <div
-            v-if="isDisplayed"
-            class="flex-row"
-        >
+        <div class="flex-row">
             <div
                 aria-hidden="true"
                 class="home-banner-icon"
@@ -19,8 +15,8 @@ defineProps({
                 <i class="bi bi-info-circle"></i>
             </div>
             <div>
-                <h3><strong>{{ title }}</strong></h3>
-                <p>{{ description }}</p>
+                <h3><strong v-html="title"></strong></h3>
+                <p v-html="description"></p>
             </div>
         </div>
     </div>

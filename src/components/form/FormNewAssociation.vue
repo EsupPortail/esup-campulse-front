@@ -133,7 +133,7 @@ const clearValues = () => {
         />
         <div class="flex-row-center">
             <QBtn
-                :label="t('home.back-dashboard')"
+                :label="t('back')"
                 :to="{ name: 'Dashboard' }"
                 class="btn-lg"
                 color="dashboard"

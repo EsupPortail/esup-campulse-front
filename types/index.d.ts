@@ -23,11 +23,8 @@ export interface HomeBanner {
 }
 
 interface ContentStore {
-    cards: HomeCards,
-    banner: HomeBanner,
-    about: AboutStore[],
-    contact: ContactStore[],
-    home: HomeStore[]
+    contents: Content[],
+    CSSClasses: string[]
 }
 
 interface SelectLabel {
@@ -46,34 +43,16 @@ interface PasswordCheckerTest {
     additionalMessage: string
 }
 
-export interface AboutStore {
+export interface Content {
     id: number,
-    code: contentCode,
+    code: ContentCode,
     label: string,
     header: string,
     body: string,
     footer: string
 }
 
-export interface ContactStore {
-    id: number,
-    code: contentCode,
-    label: string,
-    header: string,
-    body: string,
-    footer: string
-}
-
-export interface HomeStore {
-    id: number,
-    code: contentCode,
-    label: string,
-    header: string,
-    body: string,
-    footer: string
-}
-
-type contentCode =
+type ContentCode =
     'HOME_ASSOCIATION' |
     'HOME_CHARTER' |
     'HOME_PROJECT' |
