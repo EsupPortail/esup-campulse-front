@@ -7,7 +7,7 @@ const {t} = useI18n()
 interface LibraryDocument {
     id: number,
     name: string,
-    path: string | null,
+    path: string | undefined,
     process: DocumentProcessType
 }
 
@@ -15,7 +15,7 @@ const props = defineProps<{
     documents: LibraryDocument[],
 }>()
 
-function onDownloadDocument(documentId: number) {
+function onDownloadDocument(documentId: number | undefined) {
     const documentToDownload = props.documents.find(doc => doc?.id === documentId)
     if (documentToDownload && documentToDownload.path) {
         const anchor = document.createElement('a')

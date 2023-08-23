@@ -105,7 +105,7 @@ async function onUpdateProjectStatus() {
                             @click="open = false"
                         />
                         <QBtn
-                            :color="selectedAction === 'reject' || selectedAction === 'return' ? 'custom-red' : 'commission'"
+                            :color="selectedAction === 'return' ? 'custom-red' : 'commission'"
                             :icon="selectedIcon"
                             :label="t(`project.review-${selectedAction}`)"
                             class="btn-lg"

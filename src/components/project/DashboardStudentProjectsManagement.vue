@@ -264,9 +264,9 @@ async function onGetProjects() {
                                             :association-id="tab.association"
                                             :projects="tab.association ?
                                                 projectStore.projects.filter(project => project.association === tab.association &&
-                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED')) :
+                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELLED')) :
                                                 projectStore.projects.filter(project => project.user === userStore.user?.id &&
-                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_REVIEW_REJECTED'))"
+                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELLED'))"
                                             :title="t('project.rejected-projects')"
                                         />
                                     </QTabPanel>

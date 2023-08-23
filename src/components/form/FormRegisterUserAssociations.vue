@@ -81,7 +81,7 @@ function checkAssociationAuthorization(association: AssociationRole) {
 
 async function addAssociationFocus() {
     await addAssociation()
-    document.querySelectorAll('.new-association')[document.querySelectorAll('.new-association').length - 1].querySelector('input').focus()
+    document.querySelectorAll('.new-association')[document.querySelectorAll('.new-association').length - 1].querySelector('input')?.focus()
 }
 
 watch(() => processDocuments.value[0]?.pathFile, () => {

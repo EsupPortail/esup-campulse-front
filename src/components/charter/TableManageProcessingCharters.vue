@@ -111,7 +111,7 @@ const openValidationPopUp = (associationId: number, charterId: number) => {
                     :props="props"
                     headers="uploadedDate"
                 >
-                    {{ formatDate(props.row.uploadedDate).split('-').reverse().join('/') }}
+                    {{ formatDate(props.row.uploadedDate)?.split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
                     key="charterStatus"

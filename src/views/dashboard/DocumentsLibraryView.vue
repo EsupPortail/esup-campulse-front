@@ -25,7 +25,7 @@ const isLoaded = ref(false)
 interface LibraryDocument {
     id: number,
     name: string,
-    path: string | null,
+    path: string | undefined,
     process: DocumentProcessType
 }
 

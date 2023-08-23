@@ -20,7 +20,7 @@ const {hasPerm} = useSecurity()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
-    project: number
+    project: number | undefined
 }>()
 
 const open = ref<boolean>(false)
@@ -85,7 +85,7 @@ async function onPostNewComment() {
                     t('project.comments.comment-metadata',
                       {
                           user: comment.user.firstName + ' ' + comment.user.lastName,
-                          date: formatDate(comment.creationDate).split('-').reverse().join('/'),
+                          date: formatDate(comment.creationDate)?.split('-').reverse().join('/'),
                           hour: new Date(comment.creationDate).getHours(),
                           minutes: new Date(comment.creationDate).getMinutes() < 10 ? '0' + new Date(comment.creationDate).getMinutes() :
                               new Date(comment.creationDate).getMinutes()

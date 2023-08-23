@@ -18,7 +18,7 @@ const {catchHTTPError} = useErrors()
 
 const importedProps = defineProps<{
     associationId: number,
-    isSite: boolean
+    isSite: boolean | undefined
 }>()
 
 

@@ -33,7 +33,7 @@ const newDocumentForm = ref(QForm)
 interface LibraryDocument {
     id: number,
     name: string,
-    path: string | null,
+    path: string | undefined,
     newName: string,
     file: undefined | Blob,
     processType: DocumentProcessType,

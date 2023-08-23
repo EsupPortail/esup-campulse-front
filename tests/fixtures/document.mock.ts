@@ -10,7 +10,7 @@ export const _document: Document = {
     isRequiredInProcess: false,
     daysBeforeExpiration: '365 00:00:00',
     expirationDay: '',
-    pathTemplate: null,
+    pathTemplate: undefined,
     mimeTypes: [
         'application/pdf'
     ],
@@ -30,7 +30,7 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
-        pathTemplate: null,
+        pathTemplate: undefined,
         mimeTypes: [
             'application/pdf'
         ],
@@ -48,7 +48,7 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
-        pathTemplate: null,
+        pathTemplate: undefined,
         mimeTypes: [
             'application/pdf',
             'image/jpeg',
@@ -68,7 +68,7 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
-        pathTemplate: null,
+        pathTemplate: undefined,
         mimeTypes: [
             'application/pdf'
         ],

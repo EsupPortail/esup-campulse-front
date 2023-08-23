@@ -12,7 +12,7 @@ const associationStore = useAssociationStore()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    association: number
+    association: number | undefined
 }>()
 
 onMounted(async () => {

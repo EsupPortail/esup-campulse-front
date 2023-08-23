@@ -26,7 +26,7 @@ const props = defineProps<{
     projectId: number,
     projectName: string,
     projectStatus: ProjectStatus,
-    isSite: boolean,
+    isSite: boolean | undefined,
     projectCommissionFunds: ProjectCommissionFund[]
 }>()
 

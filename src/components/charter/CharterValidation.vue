@@ -13,8 +13,8 @@ const emit = defineEmits(['closeDialog'])
 
 const props = defineProps<{
     processType: DocumentProcessType,
-    association: number,
-    charter: number
+    association: number | undefined,
+    charter: number | undefined
 }>()
 
 </script>

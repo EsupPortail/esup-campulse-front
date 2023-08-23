@@ -74,8 +74,8 @@ onMounted(() => {
             color="dashboard"
             filled
             lazy-rules
-            @focus="() => { variant = Variant.Home }"
         />
+        <!-- @focus="() => { variant = Variant.Home }" -->
         <QInput
             v-model="userToUpdate.lastName"
             :disable="!!props.user?.isCas"

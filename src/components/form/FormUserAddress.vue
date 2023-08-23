@@ -8,17 +8,17 @@ const {t} = useI18n()
 const {userToUpdate} = useUsers()
 
 const props = defineProps<{
-    user: User,
+    user: User | undefined,
     color: 'commission' | 'dashboard'
 }>()
 
 const userRef = toRefs(props).user
 
 const initUserInfos = () => {
-    userToUpdate.value.address = userRef.value.address
-    userToUpdate.value.zipcode = userRef.value.zipcode
-    userToUpdate.value.city = userRef.value.city
-    userToUpdate.value.country = userRef.value.country
+    userToUpdate.value.address = userRef.value?.address
+    userToUpdate.value.zipcode = userRef.value?.zipcode
+    userToUpdate.value.city = userRef.value?.city
+    userToUpdate.value.country = userRef.value?.country
 }
 
 onMounted(initUserInfos)

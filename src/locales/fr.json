@@ -788,13 +788,13 @@
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des financeurs liées à votre demande afin que votre dossier soit complet.",
     "status": {
       "archived": "Archivé",
+      "cancelled": "Annulé",
       "draft": "Brouillon",
       "processing": "Projet en attente de validation",
       "rejected": "Projet refusé",
       "review-cancelled": "Projet annulé",
       "review-draft": "En attente de bilan",
       "review-processing": "Bilan en attente de validation",
-      "review-rejected": "Bilan refusé",
       "title": "Statut du projet",
       "validated": "Validé, en attente de commission"
     },

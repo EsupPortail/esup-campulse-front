@@ -8,7 +8,7 @@ const {t} = useI18n()
 
 const props = defineProps<{
     view: 'signCharter' | 'charterDetail',
-    associationId: number | null
+    associationId: number | undefined
 }>()
 
 const emit = defineEmits(['changeStep'])

@@ -102,14 +102,14 @@ const {colorVariant} = useColorVariants()
         <QToolbar>
             <ul class="footer-text">
                 <li
-                    v-for="route in router.options.routes[0].children.filter((r) => r.meta?.siteMap === true)"
+                    v-for="route in router.options.routes[0].children?.filter((r) => r.meta?.siteMap === true)"
                     :key="route.name"
                 >
                     <RouterLink
                         class="li-footer"
                         :to="route.path"
                     >
-                        {{ route?.meta?.title ? route?.meta?.title : route?.children[0].meta?.title }}
+                        {{ route?.meta?.title ? route?.meta?.title : (route?.children ? route?.children[0].meta?.title : '') }}
                     </RouterLink>
                 </li>
                 <li>

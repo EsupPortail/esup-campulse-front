@@ -59,7 +59,7 @@ onMounted(async () => {
             <p class="row-title">{{ t('project.planned-start-date') }}</p>
             <p>
                 {{
-                    formatDate(projectReview.realStartDate).split('-').reverse().join('/')
+                    formatDate(projectReview.realStartDate)?.split('-').reverse().join('/')
                 }}
             </p>
         </div>
@@ -68,7 +68,7 @@ onMounted(async () => {
             <p class="row-title">{{ t('project.planned-end-date') }}</p>
             <p>
                 {{
-                    formatDate(projectReview.realEndDate).split('-').reverse().join('/')
+                    formatDate(projectReview.realEndDate)?.split('-').reverse().join('/')
                 }}
             </p>
         </div>

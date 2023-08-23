@@ -661,7 +661,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         :key="commissionFund.id"
                                         v-model="commissionFund.amountAskedPreviousEdition"
                                         :label="funds.find(obj => obj.id === (commissionFunds
-                                            .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
+                                            .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
                                         :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.required-project-amount-asked-previous')] : []"
                                         :shadow-text="` ${CURRENCY}`"
                                         color="commission"
@@ -679,7 +679,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         :key="commissionFund.id"
                                         v-model="commissionFund.amountEarnedPreviousEdition"
                                         :label="funds.find(obj => obj.id === (commissionFunds
-                                            .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
+                                            .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
                                         :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.required-project-amount-earned-previous')] : []"
                                         :shadow-text="` ${CURRENCY}`"
                                         color="commission"
@@ -787,7 +787,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :key="commissionFund.id"
                                     v-model="commissionFund.amountAsked"
                                     :label="funds.find(obj => obj.id === (commissionFunds
-                                        .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
+                                        .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
                                     :rules="[ val => val && val.length > 0 || t('forms.required-project-budget')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     color="commission"

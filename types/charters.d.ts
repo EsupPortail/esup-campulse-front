@@ -3,7 +3,7 @@ export interface ManageCharter {
     documentId: number,
     documentUploadId?: number | null,
     documentName: string,
-    pathTemplate: string | null,
+    pathTemplate: string | null | undefined,
     pathFile?: string,
     validatedDate?: string,
     expirationDate?: string,

@@ -37,8 +37,7 @@ interface SelectLabel {
 
 export interface PasswordChecker {
     valid: boolean,
-    score: number,
-    tests: PasswordCheckerTest[]
+    score: number
 }
 
 interface PasswordCheckerTest {

@@ -62,7 +62,7 @@ async function onGetAssociationDetail() {
                 <div class="association-logo">
                     <QImg
                         v-if="association"
-                        :src="hasLogo ? (!association?.pathLogo?.detail.startsWith('http') ?
+                        :src="hasLogo ? (!association?.pathLogo?.detail?.startsWith('http') ?
                             baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
                         aria-hidden="true"
                         itemprop="logo"
@@ -181,7 +181,7 @@ async function onGetAssociationDetail() {
                             class="display-row"
                         >
                             <dt>{{ t('association.labels.charter-date') }}</dt>
-                            <dd>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</dd>
+                            <dd>{{ formatDate(association?.charterDate)?.split('-').reverse().join('/') }}</dd>
                         </div>
 
                         <div
@@ -189,7 +189,7 @@ async function onGetAssociationDetail() {
                             class="display-row"
                         >
                             <dt>{{ t('association.labels.last-goa') }}</dt>
-                            <dd>{{ formatDate(association?.lastGoaDate).split('-').reverse().join('/') }}</dd>
+                            <dd>{{ formatDate(association?.lastGoaDate)?.split('-').reverse().join('/') }}</dd>
                         </div>
 
                         <div
@@ -299,7 +299,7 @@ async function onGetAssociationDetail() {
             <QBtn
                 v-if="userStore.user?.associations.find(x => x.id === association?.id)"
                 :label="t('dashboard.association-user.manage-association')"
-                :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                :to="{name: 'AssociationDashboard', params: {id: association?.id}}"
                 class="btn-lg"
                 color="dashboard"
                 icon="bi-pencil-square"

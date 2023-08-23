@@ -28,7 +28,7 @@ const projectStore = useProjectStore()
 
 const props = defineProps<{
     process: 'project' | 'review' | 'charter' | 'registration',
-    associationId: number | null
+    associationId: number | null | undefined
 }>()
 
 // CONST

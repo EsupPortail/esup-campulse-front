@@ -179,7 +179,7 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
     </div>
     <ProjectDelete
         :open-dialog="openDelete"
-        :project="props.project"
+        :project="props.projectId"
         @close-dialog="openDelete = false"
     />
 </template>
