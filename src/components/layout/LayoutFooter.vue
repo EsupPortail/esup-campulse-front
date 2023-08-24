@@ -2,9 +2,49 @@
 import {useI18n} from 'vue-i18n'
 import useColorVariants from '@/composables/useColorVariants'
 import router from '@/router'
+import {useContentStore} from '@/stores/useContentStore'
+import {onMounted, ref} from 'vue'
+import type {Content} from '#/index'
+import axios from 'axios'
+import {useQuasar} from 'quasar'
+import useErrors from '@/composables/useErrors'
+import {ContentCode} from '#/index'
 
 const {t} = useI18n()
+const {notify, loading} = useQuasar()
+const {catchHTTPError} = useErrors()
 const {colorVariant} = useColorVariants()
+const contentStore = useContentStore()
+
+const footerContent = ref<Content>()
+
+function findContentObject(code: ContentCode) {
+    return contentStore.contents.find(obj => obj.code === code)
+}
+
+const initContent = () => {
+    footerContent.value = findContentObject('SITE_FOOTER')
+}
+
+async function onGetContent() {
+    try {
+        await contentStore.getContentsByCode(['SITE_FOOTER'])
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+onMounted(async () => {
+    loading.show()
+    await onGetContent()
+    initContent()
+    loading.hide()
+})
 </script>
 
 <template>
@@ -106,10 +146,12 @@ const {colorVariant} = useColorVariants()
                     :key="route.name"
                 >
                     <RouterLink
-                        class="li-footer"
                         :to="route.path"
+                        class="li-footer"
                     >
-                        {{ route?.meta?.title ? route?.meta?.title : (route?.children ? route?.children[0].meta?.title : '') }}
+                        {{
+                            route?.meta?.title ? route?.meta?.title : (route?.children ? route?.children[0].meta?.title : '')
+                        }}
                     </RouterLink>
                 </li>
                 <li>
@@ -122,8 +164,8 @@ const {colorVariant} = useColorVariants()
                 </li>
             </ul>
         </QToolbar>
-        <p>{{ t('footer.database') }}</p>
-        <p>{{ t('footer.copyright') }}</p>
+        <p v-html="footerContent?.body"></p>
+        <p v-html="footerContent?.footer"></p>
     </QFooter>
 </template>
 
