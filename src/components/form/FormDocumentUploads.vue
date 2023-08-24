@@ -147,7 +147,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
             <QFile
                 v-model="document.pathFile"
                 :accept="document.mimeTypes?.join(', ')"
-                :aria-required="document.isRequiredInProcess"
+                :aria-required="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length"
                 :color="fieldColor"
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
@@ -157,20 +157,22 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
                 :multiple="document.isMultiple"
-                :rules="document.isRequiredInProcess ? [val => (document.isMultiple ? val.length : val) || t('forms.select-document')] : []"
+                :rules="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length ? [val => (document.isMultiple ? val.length : val) || t('forms.select-document')] : []"
                 append
+                bottom-slots
                 clearable
                 counter
                 filled
+                for="pathFile"
                 lazy-rules
                 use-chips
                 @rejected="onDocumentRejected"
-                bottom-slots
-                for="pathFile"
             >
                 <template v-slot:hint>
                     <p aria-describedby="pathFile">
-                        {{ props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')) }}
+                        {{
+                            props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : ''))
+                        }}
                     </p>
                 </template>
                 <template v-slot:prepend>

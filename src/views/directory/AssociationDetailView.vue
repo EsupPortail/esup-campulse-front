@@ -63,16 +63,16 @@ async function onGetAssociationCharter() {
             let str = ''
             switch (charter.charterStatus) {
             case 'VALIDATED':
-                str = `Charte site Alsace valide jusqu'au ${charter.expirationDate}`
+                str = t('charter.association-charter-status.validated', {expirationDate: charter.expirationDate})
                 break
             case 'EXPIRED':
-                str = `Charte site Alsace expirée depuis le ${charter.expirationDate}`
+                str = t('charter.association-charter-status.expired', {expirationDate: charter.expirationDate})
                 break
             case 'PROCESSING':
-                str = 'Charte site Alsace en cours de validation'
+                str = t('charter.association-charter-status.processing')
                 break
             default:
-                str = 'Charte site Alsace non signée.'
+                str = t('charter.association-charter-status.no-charter')
             }
             associationCharterStatus.value = str
         }
@@ -104,22 +104,17 @@ async function onGetAssociationCharter() {
                         itemprop="logo"
                     />
                 </div>
-                <div class="association-name">
+                <div class="association-name text-center container">
                     <p
                         v-if="association?.acronym"
-                        class="flex-row-center"
+                        class="title-2"
                         itemprop="name"
                     >
                         {{ association?.name }} ({{ association?.acronym }})
                     </p>
                     <!--                    <p>{{ t('association.labels.charter-validity') }}</p>-->
                     <p>{{ associationCharterStatus }}</p>
-                </div>
-                <div
-                    v-if="association?.socialObject"
-                    class="socialObjectSection"
-                >
-                    <p>{{ association?.socialObject }}</p>
+                    <p v-if="association?.socialObject">{{ association?.socialObject }}</p>
                 </div>
             </div>
         </div>
@@ -243,7 +238,8 @@ async function onGetAssociationCharter() {
 
 
         <div
-            v-if="association?.address || association?.phone || association?.email || association?.website ||(association?.socialNetworks && association?.socialNetworks?.length > 0)"
+            v-if="association?.address || association?.phone || association?.email || association?.website ||
+                (association?.socialNetworks && association?.socialNetworks?.length > 0)"
         >
             <div class="dashboard-section">
                 <h2>
@@ -265,10 +261,9 @@ async function onGetAssociationCharter() {
                                 itemscope
                                 itemtype="https://schema.org/PostalAddress"
                             >
-                                <span itemprop="streetAddress">{{ association?.address }}</span><br/>
-                                <span itemprop="postalCode">{{ association?.zipcode }}</span> <span
-                                    itemprop="addressLocality"
-                                >{{ association?.city }}</span><br/>
+                                <span itemprop="streetAddress">{{ association?.address }}</span>
+                                <span itemprop="postalCode">{{ association?.zipcode }}</span>
+                                <span itemprop="addressLocality">{{ association?.city }}</span>
                                 <span itemprop="addressCountry">{{ association?.country }}</span>
                             </dd>
                         </div>
