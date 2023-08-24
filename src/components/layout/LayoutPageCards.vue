@@ -17,10 +17,10 @@ const props = defineProps<{
             <LayoutPageCard
                 v-for="(card, index) in props.pageCards"
                 :key="index"
-                :btn-label="card.btnLabel"
+                :btn-label="card.btnLabel ? card.btnLabel : ''"
                 :color="props.color"
                 :icon="card.icon"
-                :text="card.text"
+                :text="card.text ? card.text : ''"
                 :to="card.to"
             />
         </div>

@@ -4,11 +4,10 @@ import useColorVariants from '@/composables/useColorVariants'
 import router from '@/router'
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref} from 'vue'
-import type {Content} from '#/index'
+import type {Content, ContentCode} from '#/index'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
-import {ContentCode} from '#/index'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()

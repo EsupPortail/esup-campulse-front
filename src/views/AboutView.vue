@@ -2,7 +2,7 @@
 import AboutCard from '@/components/layout/LayoutAboutCard.vue'
 import ServiceCard from '@/components/layout/LayoutAboutServiceCard.vue'
 import {useContentStore} from '@/stores/useContentStore'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, ref} from 'vue'
 import type {Content} from '#/index'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'

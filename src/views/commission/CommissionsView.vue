@@ -2,7 +2,7 @@
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import LayoutTextImageColor from '@/components/layout/LayoutTextImageColor.vue'
 import LayoutPageCards from '@/components/layout/LayoutPageCards.vue'
-import type {Content, PageCard} from '#/index'
+import type {Content, ContentCode, PageCard} from '#/index'
 import useUserGroups from '@/composables/useUserGroups'
 import {onMounted, ref} from 'vue'
 import useSecurity from '@/composables/useSecurity'
@@ -11,7 +11,6 @@ import {useContentStore} from '@/stores/useContentStore'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {useI18n} from 'vue-i18n'
-import {ContentCode} from '#/index'
 
 const {isStaff, isMemberFund} = useUserGroups()
 const {hasPerm} = useSecurity()
