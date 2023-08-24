@@ -172,7 +172,7 @@ export default function() {
     }
 
     async function getCommissionCSVExport(id: number) {
-        const url = `/commissions/${id}/csv_export`
+        const url = `/commissions/${id}/export?mode=csv`
         return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
     }
 
