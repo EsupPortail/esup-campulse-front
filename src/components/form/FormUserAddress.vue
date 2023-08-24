@@ -8,17 +8,17 @@ const {t} = useI18n()
 const {userToUpdate} = useUsers()
 
 const props = defineProps<{
-    user: User,
+    user: User | undefined,
     color: 'commission' | 'dashboard'
 }>()
 
 const userRef = toRefs(props).user
 
 const initUserInfos = () => {
-    userToUpdate.value.address = userRef.value.address
-    userToUpdate.value.zipcode = userRef.value.zipcode
-    userToUpdate.value.city = userRef.value.city
-    userToUpdate.value.country = userRef.value.country
+    userToUpdate.value.address = userRef.value?.address
+    userToUpdate.value.zipcode = userRef.value?.zipcode
+    userToUpdate.value.city = userRef.value?.city
+    userToUpdate.value.country = userRef.value?.country
 }
 
 onMounted(initUserInfos)
@@ -30,7 +30,7 @@ onMounted(initUserInfos)
             v-model="userToUpdate.address"
             :color="props.color"
             :label="t('address.address') + ' *'"
-            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+            :rules="[val => val && val.length > 0 || t('forms.required-address')]"
             aria-required="true"
             autocomplete="street-address"
             clearable
@@ -41,7 +41,7 @@ onMounted(initUserInfos)
                 v-model="userToUpdate.zipcode"
                 :color="props.color"
                 :label="t('address.zipcode') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[val => val && val.length > 0 || t('forms.required-zipcode')]"
                 aria-required="true"
                 autocomplete="postal-code"
                 clearable
@@ -51,7 +51,7 @@ onMounted(initUserInfos)
                 v-model="userToUpdate.city"
                 :color="props.color"
                 :label="t('address.city') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[val => val && val.length > 0 || t('forms.required-city')]"
                 aria-required="true"
                 autocomplete="address-level2"
                 clearable
@@ -61,7 +61,7 @@ onMounted(initUserInfos)
                 v-model="userToUpdate.country"
                 :color="props.color"
                 :label="t('address.country') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[val => val && val.length > 0 || t('forms.required-country')]"
                 aria-required="true"
                 autocomplete="country-name"
                 clearable
@@ -72,7 +72,9 @@ onMounted(initUserInfos)
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/_variables.scss";
+
 .full-width > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

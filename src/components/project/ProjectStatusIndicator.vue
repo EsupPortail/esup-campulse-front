@@ -6,7 +6,7 @@ import {useRoute} from 'vue-router'
 
 const props = defineProps<{
     showDraft: boolean,
-    projectStatus: ProjectStatus
+    projectStatus: ProjectStatus | undefined
 }>()
 
 const {t} = useI18n()
@@ -84,10 +84,10 @@ onMounted(initSpanClasses)
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_REVIEW_REJECTED'"
+        v-if="props.projectStatus === 'PROJECT_CANCELLED'"
         :class="spanClasses"
     >
-        {{ t('project.status.review-rejected') }}
+        {{ t('project.status.cancelled') }}
         <span
             aria-hidden="true"
             class="form-state-icon form-state-red"

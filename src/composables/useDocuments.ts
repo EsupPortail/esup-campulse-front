@@ -8,7 +8,7 @@ export default function() {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
 
-    const libraryProcesses = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_COMMISSION', 'NO_PROCESS']
+    const libraryProcesses = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_FUND', 'NO_PROCESS']
 
     async function getLibraryDocuments() {
         documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_types=${libraryProcesses.join(',')}`)).data

@@ -3,9 +3,10 @@
 .dashboard-section {
   h2 {
     width: $fullSize;
-    max-width: $pageWidth;
+    max-width: 120rem;
     text-transform: uppercase;
-    line-height: 3rem;
+    margin: 0 auto;
+    line-height: 4rem;
     padding: 1.5rem 0 1.5rem 1.5rem;
 
     i {
@@ -58,13 +59,6 @@
       margin: 0 0 1rem 0.5rem;
     }
   }
-
-  @media screen and (min-width: $responsiveWidth) {
-    h2 {
-      margin: 0 auto;
-      padding-left: 0;
-    }
-  }
 }
 
 .dashboard-btn-group {
@@ -74,7 +68,7 @@
 
   * {
     max-width: 40rem;
-    width: 100%;
+    width: $fullSize;
     margin: auto;
   }
 }

@@ -101,7 +101,7 @@ async function onRegister() {
         class="dashboard-section"
         @submit.prevent="onRegister"
     >
-        <section class="dashboard-section">
+        <div class="dashboard-section">
             <h2>
                 <i
                     aria-hidden="true"
@@ -120,7 +120,6 @@ async function onRegister() {
                         :disable="!!userStore.isCas || newUser.isCas"
                         :label="t('forms.first-name') + ' *'"
                         :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
-                        aria-invalid="true"
                         aria-required="true"
                         autocomplete="given-name"
                         clearable
@@ -133,7 +132,6 @@ async function onRegister() {
                         :disable="!!userStore.isCas || newUser.isCas"
                         :label="t('forms.last-name') + ' *'"
                         :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
-                        aria-invalid="true"
                         aria-required="true"
                         autocomplete="family-name"
                         clearable
@@ -147,7 +145,6 @@ async function onRegister() {
                         :label="t('forms.email') + ' *'"
                         :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
                                  val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
-                        aria-invalid="true"
                         aria-required="true"
                         autocomplete="email"
                         clearable
@@ -161,7 +158,6 @@ async function onRegister() {
                         :disable="!!userStore.isCas || newUser.isCas"
                         :label="t('forms.repeat-email') + ' *'"
                         :rules="[(val, rules) => rules.email(val) && val === newUser.email || t('forms.required-repeat-email')]"
-                        aria-invalid="true"
                         aria-required="true"
                         autocomplete="email"
                         clearable
@@ -172,17 +168,21 @@ async function onRegister() {
                     />
                     <QInput
                         v-model="newUser.phone"
-                        :hint="t('forms.hint-phone')"
                         :label="t('forms.phone')"
                         :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
-                        aria-invalid="true"
                         autocomplete="tel"
                         clearable
                         color="dashboard"
                         filled
                         lazy-rules
                         type="tel"
-                    />
+                        bottom-slots
+                        for="phone"
+                    >
+                        <template v-slot:hint>
+                            <p aria-describedby="phone">{{ t('forms.hint-phone') }}</p>
+                        </template>
+                    </QInput>
                     <!--
                     <FormDocumentUploads
                         v-if="!newUser.isCas"
@@ -192,8 +192,8 @@ async function onRegister() {
                     -->
                 </div>
             </div>
-        </section>
-        <section>
+        </div>
+        <div>
             <h2>
                 <i
                     aria-hidden="true"
@@ -206,9 +206,9 @@ async function onRegister() {
                     <FormUserGroups/>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section v-if="groupCanJoinAssociation">
+        <div v-if="groupCanJoinAssociation">
             <h2>
                 <i
                     aria-hidden="true"
@@ -221,10 +221,10 @@ async function onRegister() {
                     <FormRegisterUserAssociations/>
                 </div>
             </div>
-        </section>
+        </div>
 
 
-        <section v-if="!isStaff">
+        <div v-if="!isStaff">
             <h2>
                 <i
                     aria-hidden="true"
@@ -240,7 +240,7 @@ async function onRegister() {
                     />
                 </div>
             </div>
-        </section>
+        </div>
 
         <div class="flex-row-center padding-top padding-bottom">
             <QBtn
@@ -258,14 +258,4 @@ async function onRegister() {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/_variables.scss';
-
-/*.q-banner {
-  padding-bottom: .8rem;
-  margin-bottom: 1rem;
-
-  p {
-    font-weight: bold;
-    margin: 0;
-  }
-}*/
 </style>

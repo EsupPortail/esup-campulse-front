@@ -7,7 +7,6 @@ import useProjectComments from '@/composables/useProjectComments'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
 import type {ProjectStatus} from '#/project'
-import FormAddComment from '@/components/form/FormAddComment.vue'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -47,7 +46,7 @@ async function onUpdateProjectStatus() {
             newComment.value = ''
             notify({
                 type: 'positive',
-                message: t(`notifications.positive.${selectedAction.value}-project`)
+                message: t(`notifications.positive.${selectedAction.value}-project-review`)
             })
         }
     } catch (error) {
@@ -82,12 +81,38 @@ async function onUpdateProjectStatus() {
     <QDialog v-model="open">
         <QCard class="variant-space-3">
             <QCardSection class="q-pt-none">
-                <FormAddComment
-                    :selected-action="selectedAction"
-                    :selected-icon="selectedIcon"
+                <QForm
+                    class="flex-column"
                     @submit="onUpdateProjectStatus"
-                    @close-dialog="open = false"
-                />
+                >
+                    <QInput
+                        v-model="newComment"
+                        :aria-required="selectedAction !== 'validate'"
+                        :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
+                        :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
+                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
+                        color="commission"
+                        filled
+                        lazy-rules
+                        type="textarea"
+                    />
+                    <div class="flex-row-center padding-top">
+                        <QBtn
+                            :label="t('back')"
+                            class="btn-lg"
+                            color="commission"
+                            icon="bi-box-arrow-left"
+                            @click="open = false"
+                        />
+                        <QBtn
+                            :color="selectedAction === 'return' ? 'custom-red' : 'commission'"
+                            :icon="selectedIcon"
+                            :label="t(`project.review-${selectedAction}`)"
+                            class="btn-lg"
+                            type="submit"
+                        />
+                    </div>
+                </QForm>
             </QCardSection>
         </QCard>
     </QDialog>
@@ -100,5 +125,9 @@ async function onUpdateProjectStatus() {
 
 .q-card {
     padding: 1rem;
+}
+
+.q-form.flex-column {
+    gap: 2rem;
 }
 </style>

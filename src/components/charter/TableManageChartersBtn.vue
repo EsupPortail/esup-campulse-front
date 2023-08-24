@@ -91,6 +91,7 @@ async function onOptionClick(option: Option) {
             v-if="options.length"
             :label="t('manage')"
             class="text-charter"
+            disable
             outline
         >
             <QList>
@@ -116,6 +117,7 @@ async function onOptionClick(option: Option) {
     <FormSignCharters
         :association-id="props.associationId"
         :charter="props.charter"
+        :is-site="props.isSite"
         :open-sign="openSign"
         @close-dialog="openSign = false"
     />

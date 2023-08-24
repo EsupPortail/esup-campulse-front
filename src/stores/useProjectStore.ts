@@ -36,8 +36,8 @@ export const useProjectStore = defineStore('projectStore', {
         projectCommission: (state: ProjectStore): number | undefined => {
             const {commissionFunds, commissions} = useCommissions()
             return commissions.value
-                .find(y => y.id === (commissionFunds.value
-                    .find(x => x.id === (state.projectCommissionFunds[0]?.commissionFund))?.commission))?.id
+                .find(commission => commission.id === (commissionFunds.value
+                    .find(commissionFund => commissionFund.id === (state.projectCommissionFunds[0]?.commissionFund))?.commission))?.id
         }
     },
     actions: {
@@ -77,8 +77,8 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getManagedProjects(commission: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const statuses = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT',
-                'PROJECT_REVIEW_PROCESSING', 'PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED'].join(',')
+            const statuses = ['PROJECT_DRAFT_PROCESSED', 'PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT',
+                'PROJECT_REVIEW_PROCESSING', 'PROJECT_REJECTED', 'PROJECT_CANCELLED', 'PROJECT_REVIEW_VALIDATED'].join(',')
             let urlString = '/projects/'
             const urlArray = []
             urlArray.push(`project_statuses=${statuses}`)
@@ -120,6 +120,12 @@ export const useProjectStore = defineStore('projectStore', {
                 await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
                 this.project.projectStatus = projectStatus
             }
+        },
+
+        async patchProjectCommissionFund(oldCommissionFund: number, newCommissionFund: number) {
+            const {axiosAuthenticated} = useAxios()
+            await axiosAuthenticated.patch(`/projects/${this.project?.id}/commission_funds/${oldCommissionFund}`,
+                {projectId: this.project?.id, commissionFundId: newCommissionFund})
         }
     }
 })

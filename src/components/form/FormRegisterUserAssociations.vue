@@ -79,6 +79,11 @@ function checkAssociationAuthorization(association: AssociationRole) {
     checkHasStudentCertificate(association)
 }
 
+async function addAssociationFocus() {
+    await addAssociation()
+    document.querySelectorAll('.new-association')[document.querySelectorAll('.new-association').length - 1].querySelector('input')?.focus()
+}
+
 watch(() => processDocuments.value[0]?.pathFile, () => {
     newAssociations.value.forEach(association => {
         checkAssociationAuthorization(association)
@@ -96,7 +101,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
             <div
                 v-for="(association, index) in newAssociations"
                 :key="index"
-                class="flex-row"
+                class="flex-row new-association"
             >
                 <div>
                     <div class="flex-column">
@@ -105,6 +110,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                             :label="t('forms.select-association')"
                             :options="options"
                             clearable
+                            color="dashboard"
                             emit-value
                             fill-input
                             filled
@@ -128,14 +134,12 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                         <QSeparator
                             v-if="routeName !== 'ManageAccount'"
                             aria-hidden="true"
-                            role="presentation"
                         />
                     </div>
                 </div>
                 <QSeparator
                     aria-hidden="true"
                     inset
-                    role="presentation"
                     vertical
                 />
                 <div>
@@ -169,7 +173,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                     color="dashboard"
                     icon="bi-plus-circle"
                     outline
-                    @click="addAssociation"
+                    @click="addAssociationFocus"
                 />
             </div>
         </QCardSection>
@@ -180,22 +184,4 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
 @import '@/assets/_variables.scss';
-
-/*.flex-group, .q-separator {
-    margin: 1rem 0 1rem 0;
-}
-
-@media screen and (min-width: $responsiveWidth) {
-    .flex-group {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
-        align-items: center;
-
-        .q-separator {
-            padding: 0;
-            margin: 0;
-        }
-    }
-}*/
 </style>

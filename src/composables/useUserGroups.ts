@@ -25,16 +25,21 @@ const groupChoiceIsValid = computed(() => {
 // Used to dynamically show or hide FormRegisterUserAssociations
 const groupCanJoinAssociation = ref<boolean>(true)
 
-// Helper to know if a user in userStore if a staff member
+// Helper to know if a user in userStore is a staff member
 const isStaff = ref<boolean | undefined>(undefined)
+
+// Helper to know if a user in userStore is a fund member
+const MEMBER_FUND = 'MEMBER_FUND'
+const isMemberFund = ref<boolean | undefined>(undefined)
 
 // Used to display or not the select for commissions
 const commissionMemberIsSelected = ref<boolean>(false)
 
-export default function () {
+export default function() {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const {userFunds} = useCommissions()
+    // const {axiosPublic} = useAxios()
 
 
     const groupNames: GroupCodeLiteralName[] = [
@@ -63,6 +68,9 @@ export default function () {
             literalName: i18n.global.t('user-groups.student-misc')
         },
     ]
+
+    /* A list of groups that can join associations */
+    const canJoinAssociationGroups = ['STUDENT_INSTITUTION']
 
     /**
      * It gets the groups from the server and puts them in the groups variable.
@@ -102,7 +110,7 @@ export default function () {
     async function initGroupLabels(onlyPublicGroups: boolean) {
         const {hasPerm} = useSecurity()
         const labels: SelectGroupLabel[] = []
-        groups.value?.map(function (group) {
+        groups.value?.map(function(group) {
             if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
                 const label: string | undefined = getGroupLiteral(group.id)
                 if (label) {
@@ -119,7 +127,7 @@ export default function () {
             }
         })
         // Sort by alphabetical order
-        labels.sort(function (a, b) {
+        labels.sort(function(a, b) {
             const labelA = a.label.toLowerCase().normalize('NFD'), labelB = b.label.toLowerCase().normalize('NFD')
             if (labelA < labelB)
                 return -1
@@ -151,9 +159,6 @@ export default function () {
         }
     }
 
-    /* It's a list of groups that can join associations */
-    const canJoinAssociationGroups = ['STUDENT_INSTITUTION']
-
     /**
      * If the user has selected a group that is not in the list of groups that can join the association, then the user
      * cannot join the association
@@ -178,7 +183,7 @@ export default function () {
     /**
      * If the user is a member of a non-public group, then they are staff
      */
-    function initStaffStatus() {
+    const initStaffStatus = () => {
         let perm = false
         const userGroups = userStore.user?.groups
 
@@ -193,6 +198,21 @@ export default function () {
     }
 
     watch(() => userStore.user?.groups.length, initStaffStatus)
+
+    const initIsMemberFund = () => {
+        let perm = false
+        const userGroups = userStore.user?.groups
+
+        if (userGroups?.find(g => g.groupId === (groups.value.find(g => g.name === MEMBER_FUND))?.id)) perm = true
+        isMemberFund.value = perm
+    }
+
+    watch(() => userStore.user?.groups.length, initIsMemberFund)
+
+    const isManagerMisc = () => {
+        const managerMiscGroup = groups.value.find(group => group.name === 'MANAGER_MISC')
+        return !!userStore.user?.groups.find(group => group.groupId === managerMiscGroup?.id)
+    }
 
     /**
      * Return the old groups that are not in the new groups.
@@ -240,9 +260,9 @@ export default function () {
         }
     }
 
-    const commissionGroup = ref<Group | undefined>(groups.value.find(obj => obj.name === 'MEMBER_FUND'))
+    const commissionGroup = ref<Group | undefined>(groups.value.find(obj => obj.name === MEMBER_FUND))
     watch(() => groups.value, () => {
-        commissionGroup.value = groups.value.find(obj => obj.name === 'MEMBER_FUND')
+        commissionGroup.value = groups.value.find(obj => obj.name === MEMBER_FUND)
     })
 
     // To test
@@ -273,6 +293,9 @@ export default function () {
         groupNames,
         commissionMemberIsSelected,
         initCommissionMemberSelection,
-        commissionGroup
+        commissionGroup,
+        isMemberFund,
+        initIsMemberFund,
+        isManagerMisc
     }
 }

@@ -13,10 +13,11 @@ const {
     fundsLabels,
     getCommissionFunds,
     getFunds,
-    initChosenCommissionFundsLabels,
+    commissionLabels,
+    funds,
+    commissionFunds,
     getAllCommissions,
-    initCommissionLabels,
-    commissionLabels
+    initCommissionLabels
 } = useCommissions()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -46,12 +47,11 @@ async function onGetProjectCommissions() {
     if (projectStore.project) {
         loading.show()
         try {
+            await projectStore.getProjectCommissionFunds(false, undefined)
             await getAllCommissions()
             await getCommissionFunds()
-            await projectStore.getProjectCommissionFunds(false, undefined)
             await getFunds()
             initCommissionLabels()
-            initChosenCommissionFundsLabels(projectStore.projectCommission as number, true)
             initProjectCommissionLabel()
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -67,7 +67,7 @@ async function onGetProjectCommissions() {
 </script>
 
 <template>
-    <section
+    <div
         v-if="props.view === 'projectRecap' || props.view === 'projectReviewRecap'"
         class="flex-column"
     >
@@ -85,7 +85,10 @@ async function onGetProjectCommissions() {
                     color="commission"
                     outline
                 >
-                    {{ fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label }}
+                    {{
+                        funds.find(obj => obj.id === (commissionFunds
+                            .find(obj => obj.id === projectCommissionFund.commissionFund))?.fund)?.acronym
+                    }}
                 </QChip>
             </p>
         </div>
@@ -115,7 +118,7 @@ async function onGetProjectCommissions() {
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <div
         v-if="props.view === 'submitProjectReview'"

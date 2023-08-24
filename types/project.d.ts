@@ -10,6 +10,7 @@ export interface Project {
     user: number | null,
     association: number | null,
     associationUser: number | null,
+    partnerAssociation: string,
     categories?: ProjectCategoryName[],
     budgetPreviousEdition: number,
     targetAudience: string,
@@ -43,13 +44,14 @@ export interface ProjectList {
 
 type ProjectStatus =
     'PROJECT_DRAFT'
+    | 'PROJECT_DRAFT_PROCESSED'
     | 'PROJECT_REJECTED'
     | 'PROJECT_PROCESSING'
     | 'PROJECT_VALIDATED'
     | 'PROJECT_REVIEW_DRAFT'
     | 'PROJECT_REVIEW_PROCESSING'
     | 'PROJECT_REVIEW_VALIDATED'
-    | 'PROJECT_REVIEW_CANCELLED'
+    | 'PROJECT_CANCELLED'
 
 interface ProjectCategory {
     id: number,
@@ -70,7 +72,8 @@ export interface ProjectBasicInfos {
     plannedLocation: string,
     user: number | null,
     association: number | null,
-    associationUser: number | null
+    associationUser: number | null,
+    partnerAssociation: string,
 }
 
 export interface ProjectBudget {
@@ -100,7 +103,7 @@ export interface ProjectCommissionFund {
     amountEarnedPreviousEdition?: number | string,
     amountAsked?: number | string,
     amountEarned?: number | string,
-    isValidatedByAdmin: boolean
+    isValidatedByAdmin: boolean | null
 }
 
 export interface ProjectReview {
@@ -117,7 +120,14 @@ export interface ProjectReview {
     impactStudents: string,
     description: string,
     difficulties: string,
-    improvements: string
+    improvements: string,
+    plannedStartDate: string,
+    plannedEndDate: string,
+    plannedLocation: string,
+    associationUser: number | null,
+    commissions: Commission[],
+    creationDate: string,
+    editionDate: string
 }
 
 export interface ProjectAssociation {

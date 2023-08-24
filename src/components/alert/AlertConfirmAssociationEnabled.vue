@@ -55,9 +55,11 @@ async function onEnableAssociation() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{
-                    isEnabled ? t('association.confirm-disable') : t('association.confirm-enable')
-                }}</span>
+                <p class="q-ml-sm">
+                    {{
+                        isEnabled ? t('association.confirm-disable') : t('association.confirm-enable')
+                    }}
+                </p>
                 <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup

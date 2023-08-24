@@ -26,7 +26,7 @@ async function onDeleteAssociation() {
         } else {
             notify({
                 type: 'negative',
-                message: t('association.before-deletion-word-error')
+                message: t('notifications.negative.association-before-deletion-word-error')
             })
         }
     } catch (error) {
@@ -55,7 +55,7 @@ async function onDeleteAssociation() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t('association.confirm-delete') }}</span>
+                <p class="q-ml-sm">{{ t('association.confirm-delete') }}</p>
             </QCardSection>
             <QCardSection>
                 <QInput

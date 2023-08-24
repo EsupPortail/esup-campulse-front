@@ -1,118 +1,171 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import useColorVariants from '@/composables/useColorVariants'
+import router from '@/router'
+import {useContentStore} from '@/stores/useContentStore'
+import {onMounted, ref} from 'vue'
+import type {Content} from '#/index'
+import axios from 'axios'
+import {useQuasar} from 'quasar'
+import useErrors from '@/composables/useErrors'
+import {ContentCode} from '#/index'
 
 const {t} = useI18n()
+const {notify, loading} = useQuasar()
+const {catchHTTPError} = useErrors()
 const {colorVariant} = useColorVariants()
+const contentStore = useContentStore()
+
+const footerContent = ref<Content>()
+
+function findContentObject(code: ContentCode) {
+    return contentStore.contents.find(obj => obj.code === code)
+}
+
+const initContent = () => {
+    footerContent.value = findContentObject('SITE_FOOTER')
+}
+
+async function onGetContent() {
+    try {
+        await contentStore.getContentsByCode(['SITE_FOOTER'])
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+onMounted(async () => {
+    loading.show()
+    await onGetContent()
+    initContent()
+    loading.hide()
+})
 </script>
 
 <template>
     <QFooter
         id="layout-footer"
         :class="'variant-' + colorVariant"
-        elevated
         role="contentinfo"
     >
         <div id="footer-logos">
-            <div class="wrapper">
-                <a href="https://www.crous-strasbourg.fr/">
-                    <img
-                        alt="Le Crous (Centre régional des œuvres universitaires et scolaires)"
-                        src="@/assets/img/logos/crous.png"
-                    />
-                </a>
-                <a href="https://www.unistra.fr/">
-                    <img
-                        alt="L'Université de Strasbourg"
-                        src="@/assets/img/logos/unistra.png"
-                    />
-                </a>
+            <ul class="wrapper">
+                <li>
+                    <a href="https://www.crous-strasbourg.fr/">
+                        <img
+                            alt="Le Centre régional des œuvres universitaires et scolaires"
+                            src="@/assets/img/logos/crous.png"
+                        />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.unistra.fr/">
+                        <img
+                            alt="L'Université de Strasbourg"
+                            src="@/assets/img/logos/unistra.png"
+                        />
+                    </a>
+                </li>
                 <!--
-                <a href="https://www.uha.fr/">
-                    <img
-                        src="@/assets/img/logos/uha.png"
-                        alt="L'Université de Haute-Alsace"
-                    />
-                </a>
-                <a href="https://www.insa-strasbourg.fr/">
-                    <img
-                        src="@/assets/img/logos/insa.png"
-                        alt="L'Institut National des Sciences Appliquées Strasbourg"
-                    />
-                </a>
-                <a href="https://www.hear.fr/">
-                    <img
-                        src="@/assets/img/logos/hear-white.png"
-                        alt="La Haute École des Arts du Rhin"
-                    />
-                </a>
-                <a href="https://engees.unistra.fr/">
-                    <img
-                        src="@/assets/img/logos/engees.png"
-                        alt="L'École Nationale du Génie de l'Eau et de l'Environnement de Strasbourg"
-                    />
-                </a>
-                <a href="https://www.strasbourg.archi.fr/">
-                    <img
-                        src="@/assets/img/logos/ensas.png"
-                        alt="L'École Nationale Supérieure d'Architecture de Strasbourg"
-                    />
-                </a>
+                <li>
+                    <a href="https://www.uha.fr/">
+                        <img
+                            alt="L'Université de Haute-Alsace"
+                            src="@/assets/img/logos/uha.png"
+                        />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.insa-strasbourg.fr/">
+                        <img
+                            alt="L'Institut National des Sciences Appliquées Strasbourg"
+                            src="@/assets/img/logos/insa.png"
+                        />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hear.fr/">
+                        <img
+                            alt="La Haute École des Arts du Rhin"
+                            src="@/assets/img/logos/hear-white.png"
+                        />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://engees.unistra.fr/">
+                        <img
+                            alt="L'École Nationale du Génie de l'Eau et de l'Environnement de Strasbourg"
+                            src="@/assets/img/logos/engees.png"
+                        />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.strasbourg.archi.fr/">
+                        <img
+                            alt="L'École Nationale Supérieure d'Architecture de Strasbourg"
+                            src="@/assets/img/logos/ensas.png"
+                        />
+                    </a>
+                </li>
                 -->
-                <a href="https://cvec.etudiant.gouv.fr/">
-                    <img
-                        alt="La Contribution Vie Étudiante et de Campus"
-                        src="@/assets/img/logos/cvec.png"
-                    />
-                </a>
-                <a href="https://www.economie.gouv.fr/plan-de-relance">
-                    <img
-                        alt="France Relance"
-                        src="@/assets/img/logos/france-relance.png"
-                    />
-                </a>
-                <a href="https://www.enseignementsup-recherche.gouv.fr/">
-                    <img
-                        alt="Le Ministère de l'Enseignement Supérieur et de la Recherche"
-                        src="@/assets/img/logos/esr.png"
-                    />
-                </a>
-            </div>
+                <li>
+                    <a href="https://cvec.etudiant.gouv.fr/">
+                        <img
+                            alt="La Contribution Vie Étudiante et de Campus"
+                            src="@/assets/img/logos/cvec.png"
+                        />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.economie.gouv.fr/plan-de-relance">
+                        <img
+                            alt="France Relance"
+                            src="@/assets/img/logos/france-relance.png"
+                        />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.enseignementsup-recherche.gouv.fr/">
+                        <img
+                            alt="Le Ministère de l'Enseignement Supérieur et de la Recherche"
+                            src="@/assets/img/logos/esr.png"
+                        />
+                    </a>
+                </li>
+            </ul>
         </div>
-        <QToolbar role="">
-            <div class="footer-text">
-                <RouterLink
-                    class="li-footer"
-                    to="about-page"
+        <QToolbar>
+            <ul class="footer-text">
+                <li
+                    v-for="route in router.options.routes[0].children?.filter((r) => r.meta?.siteMap === true)"
+                    :key="route.name"
                 >
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-card-text"
-                    ></i>{{ t('footer.about') }}
-                </RouterLink>
-                <RouterLink
-                    class="li-footer"
-                    to="/"
-                >
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-envelope"
-                    ></i>{{ t('footer.legal-notice') }}
-                </RouterLink>
-                <RouterLink
-                    class="li-footer"
-                    to="contact-page"
-                >
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-envelope"
-                    ></i>{{ t('footer.contact') }}
-                </RouterLink>
-                <!-- <QToolbarTitle>{{ t("footer.copyright") }}</QToolbarTitle> -->
-            </div>
+                    <RouterLink
+                        :to="route.path"
+                        class="li-footer"
+                    >
+                        {{
+                            route?.meta?.title ? route?.meta?.title : (route?.children ? route?.children[0].meta?.title : '')
+                        }}
+                    </RouterLink>
+                </li>
+                <li>
+                    <RouterLink
+                        class="li-footer"
+                        to="/login"
+                    >
+                        {{ t('login.login') }}
+                    </RouterLink>
+                </li>
+            </ul>
         </QToolbar>
-        <p>{{ t('footer.database') }}</p>
-        <p>{{ t('footer.copyright') }}</p>
+        <p v-html="footerContent?.body"></p>
+        <p v-html="footerContent?.footer"></p>
     </QFooter>
 </template>
 

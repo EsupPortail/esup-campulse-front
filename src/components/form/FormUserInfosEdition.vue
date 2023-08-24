@@ -75,6 +75,7 @@ onMounted(() => {
             filled
             lazy-rules
         />
+        <!-- @focus="() => { variant = Variant.Home }" -->
         <QInput
             v-model="userToUpdate.lastName"
             :disable="!!props.user?.isCas"
@@ -132,13 +133,18 @@ onMounted(() => {
             v-model="userToUpdate.phone"
             :label="t('forms.phone')"
             autocomplete="tel"
+            clearable
             color="dashboard"
             filled
-            hint="Format : 06 00 00 00 00"
             lazy-rules
-            mask="## ## ## ## ##"
             type="tel"
-        />
+            bottom-slots
+            for="phone"
+        >
+            <template v-slot:hint>
+                <p aria-describedby="phone">{{ t('forms.hint-phone') }}</p>
+            </template>
+        </QInput>
         <div
             v-if="(!editedByStaff && hasPerm('add_project_user'))
                 || (editedByStaff && userRef.permissions?.includes('add_project_user'))"
@@ -167,4 +173,10 @@ onMounted(() => {
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/_variables.scss';
+
+
+q-input:focus {
+  color: red;
+  background-color: yellow;
+}
 </style>

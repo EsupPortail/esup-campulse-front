@@ -1,5 +1,9 @@
 @import '@/assets/variables';
 
+.q-footer {
+  z-index: 1;
+}
+
 #layout-footer {
   position: relative;
   background-color: $footerBackgroundColor;
@@ -12,20 +16,20 @@
   #footer-logos {
     background-color: $annuaireColorBackground;
     border-bottom: 0.6rem solid $annuaireColor;
-    padding: 2rem 0;
+    padding: 2rem 1.56rem;
 
     .wrapper {
-      width: 100%;
+      width: $fullSize;
       text-align: center;
       margin: 0 auto;
 
-      a {
+      li {
         display: inline-block;
         margin: 1.25rem;
 
         img {
           width: auto;
-          max-height: 5rem;
+          max-height: 7.5rem;
         }
 
         &:first-child {
@@ -42,11 +46,6 @@
         }
       }
     }
-
-    @media only screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
   }
 
   .q-toolbar {
@@ -57,16 +56,20 @@
   .footer-text {
     margin: 0 auto;
     text-align: center;
+    padding: 0 1.56rem 0;
 
-    a {
+    li {
       margin: 0 1rem;
       font-size: 1.6rem;
       font-weight: 600;
-      color: $textColor3;
-      text-decoration: none;
       text-transform: uppercase;
       display: inline-block;
       border-bottom: 1px solid transparent;
+
+      a {
+        color: $textColor3;
+        text-decoration: none;
+      }
 
       i {
         font-size: 1.2em;
@@ -89,31 +92,22 @@
         outline-offset: 2px;
       }
 
-      &:hover {
+      &:hover, &:focus {
         border-bottom: 1px solid transparentize($textColor3, 0.4);
       }
-    }
-
-    @media only screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
     }
   }
 
   // Footer text
   & > p {
-    width: 100%;
+    width: $fullSize;
     max-width: 80rem;
     margin: 0 auto 1.5rem;
     text-align: center;
     font-size: 1.6rem;
     font-weight: 300;
     color: $footerTextColor;
-
-    @media only screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
+    padding: 0 1.56rem 0;
   }
 
   // The footer has several variants that change its color depending on the current space.

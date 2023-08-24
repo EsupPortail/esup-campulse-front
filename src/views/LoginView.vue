@@ -22,9 +22,9 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                         name="bi-person-circle"
                     />
                 </div>
-                <h2>
+                <h1>
                     {{ t('login.introduction-login') }}
-                </h2>
+                </h1>
             </div>
             <div
                 v-if="!newUser && !isCas"
@@ -36,7 +36,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                 >
                     <QCardSection>
                         <div class="card-content">
-                            <span class="card-title">{{ t('login.im-cas-user') }}</span>
+                            <p class="card-title">{{ t('login.im-cas-user') }}</p>
                             <h2>{{ t('login.login-with-cas') }}</h2>
                         </div>
                         <div class="flex-row-center">
@@ -62,7 +62,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                 >
                     <QCardSection>
                         <div class="card-content">
-                            <span class="card-title">{{ t('login.im-not-cas-user') }}</span>
+                            <p class="card-title">{{ t('login.im-not-cas-user') }}</p>
                             <h2>{{ t('login.login-without-cas') }}</h2>
                         </div>
                         <FormLocalLogin/>

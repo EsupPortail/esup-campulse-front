@@ -3,11 +3,11 @@
 #layout-breadcrumbs {
   .q-breadcrumbs {
     background-color: $annuaireColor;
-    padding: 0.938rem 0;
+    padding: 1rem;
 
     & > * {
-      width: 100%;
-      max-width: $pageWidth;
+      width: $fullSize;
+      max-width: 120rem;
       margin: 0 auto;
     }
 
@@ -26,13 +26,9 @@
       background-image: $chevronRightImage;
       background-repeat: no-repeat;
       background-position: center center;
-      background-size: auto 100%;
+      background-size: auto $fullSize;
     }
 
-    @media only screen and (max-width: $pageWidth) {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-    }
   }
 
   // The breadcrumbs have several variants (notably one for the home page and one for the login page).
@@ -42,11 +38,23 @@
     display: none;
   }
 
+  &.variant-space-1 .q-breadcrumbs {
+    .q-breadcrumbs__el:focus {
+      outline: 2px solid $outlineColor1;
+      outline-offset: 2px;
+    }
+  }
+
   &.variant-space-2 .q-breadcrumbs {
     background-color: $charteColor;
 
     .q-breadcrumbs__el {
       color: $charteColorText;
+
+      &:focus {
+        outline: 2px solid $outlineColor2;
+        outline-offset: 2px;
+      }
     }
 
     .q-breadcrumbs__separator {
@@ -56,10 +64,20 @@
 
   &.variant-space-3 .q-breadcrumbs {
     background-color: $capeColor;
+
+    .q-breadcrumbs__el:focus {
+      outline: 2px solid $outlineColor1;
+      outline-offset: 2px;
+    }
   }
 
   &.variant-space-4 .q-breadcrumbs {
     background-color: $dashboardColor;
+
+    .q-breadcrumbs__el:focus {
+      outline: 2px solid $outlineColor1;
+      outline-offset: 2px;
+    }
   }
 
   &.variant-minimal .q-breadcrumbs {

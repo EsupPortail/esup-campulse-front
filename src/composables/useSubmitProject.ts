@@ -24,7 +24,8 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         plannedLocation: '',
         user: null,
         association: null,
-        associationUser: null
+        associationUser: null,
+        partnerAssociation: '',
     }
 )
 
@@ -63,7 +64,7 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function () {
+export default function() {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()
@@ -85,13 +86,14 @@ export default function () {
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
         projectBasicInfos.value.associationUser = projectStore.project?.associationUser as number | null
+        projectBasicInfos.value.partnerAssociation = projectStore.project?.partnerAssociation as string
     }
 
     const initProjectAssociationUsersLabels = async (associationId: number) => {
         projectAssociationUsersLabels.value = []
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function (associationUser) {
+        associationStore.associationUsers.forEach(function(associationUser) {
             const member = userNames.find(obj => obj.id === associationUser.user)
             if (member && associationUser.id) {
                 projectAssociationUsersLabels.value.push({
@@ -151,6 +153,7 @@ export default function () {
         projectBasicInfos.value.user = null
         projectBasicInfos.value.association = null
         projectBasicInfos.value.associationUser = null
+        projectBasicInfos.value.partnerAssociation = ''
         projectCategories.value = []
         projectCommission.value = null
         projectCommissionFunds.value = []

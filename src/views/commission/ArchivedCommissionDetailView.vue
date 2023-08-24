@@ -51,7 +51,7 @@ watch(() => commission.value, initCommissionName)
 <template>
     <section class="dashboard-section">
         <div class="dashboard-section-container">
-            <div class="container">
+            <div class="container-lg">
                 <TableManagedProjects
                     :commission="commissionId"
                     :title="t('project.archived-projects')"

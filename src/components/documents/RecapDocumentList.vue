@@ -26,7 +26,7 @@ const projectStore = useProjectStore()
 
 const props = defineProps<{
     process: 'project' | 'review' | 'charter',
-    associationId: number | null
+    associationId: number | null | undefined
 }>()
 
 
@@ -86,7 +86,7 @@ onMounted(async () => await onGetDocuments())
             class="display-row"
         >
             <h4>{{ document.description }}</h4>
-            <ul role="list">
+            <ul>
                 <li
                     v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                     :key="uploadedDocument.id"

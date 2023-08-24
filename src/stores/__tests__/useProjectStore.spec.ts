@@ -105,8 +105,8 @@ describe('Project store', () => {
     })
 
     describe('getManagedProjects', () => {
-        const statuses = ['PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT',
-            'PROJECT_REVIEW_PROCESSING', 'PROJECT_REJECTED', 'PROJECT_REVIEW_REJECTED', 'PROJECT_REVIEW_VALIDATED'].join(',')
+        const statuses = ['PROJECT_DRAFT_PROCESSED', 'PROJECT_PROCESSING', 'PROJECT_VALIDATED', 'PROJECT_REVIEW_DRAFT',
+            'PROJECT_REVIEW_PROCESSING', 'PROJECT_REJECTED', 'PROJECT_CANCELLED', 'PROJECT_REVIEW_VALIDATED'].join(',')
 
         describe('of a specific commission', () => {
             it('should make an API call specifying chosen commission', async () => {

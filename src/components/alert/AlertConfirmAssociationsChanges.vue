@@ -6,6 +6,8 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 import type {Association} from '#/association'
 import useSecurity from '@/composables/useSecurity'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
@@ -13,11 +15,13 @@ const deletionWord = ref<string>('')
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 const {hasPerm} = useSecurity()
+const {catchHTTPError} = useErrors()
 
 const emit = defineEmits(['updateSelectedAssociations'])
 
 const actionsOptions = ref([
-    {id: 'email', label: t('association.all-selected-mail')}
+    {id: 'email', label: t('association.all-selected-mail')},
+    {id: 'csv-export', label: t('association.export-csv')}
 ])
 
 const switches = ref<string>()
@@ -90,8 +94,36 @@ async function onConfirmChanges(emailType: string) {
         } else {
             notify({
                 type: 'negative',
-                message: t('association.before-deletion-word-error')
+                message: t('notifications.negative.association-before-deletion-word-error')
             })
+        }
+        break
+    case 'csv-export':
+        if (props.selectedAssociations?.length) {
+            try {
+                const associationIds = props.selectedAssociations.map(x => x.id)
+                const associationNames = props.selectedAssociations.map(x => x.name)
+                const file = await associationStore.exportCSV(associationIds)
+                const message = t(`notifications.positive.${switches.value}-associations`)
+                notify({
+                    type: 'positive',
+                    message: `<p>${message}${associationNames.join(', ')}</p>`,
+                    html: true
+                })
+                const link = document.createElement('a')
+                link.href = window.URL.createObjectURL(new Blob([file]))
+                link.download = `${t('association.csv-name')}${encodeURI(associationNames.join('-'))}.csv`
+                document.body.appendChild(link)
+                link.click()
+                link.remove()
+            } catch (error) {
+                if (axios.isAxiosError(error) && error.response) {
+                    notify({
+                        type: 'negative',
+                        message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    })
+                }
+            }
         }
         break
     }
@@ -103,7 +135,8 @@ async function onConfirmChanges(emailType: string) {
             message = t(`notifications.positive.${switches.value}-associations`)
             notify({
                 type: 'positive',
-                message: `${message}${associationsSuccess.join(', ')}`
+                message: `<p>${message}${associationsSuccess.join(', ')}</p>`,
+                html: true
             })
         }
         if (associationsError.length > 0) {
@@ -111,7 +144,8 @@ async function onConfirmChanges(emailType: string) {
             message = t(`notifications.negative.${switches.value}-associations-error`)
             notify({
                 type: 'negative',
-                message: `${message}${associationsError.join(', ')}`
+                message: `<p>${message}${associationsError.join(', ')}</p>`,
+                html: true
             })
         }
     })
@@ -145,8 +179,8 @@ async function onConfirmChanges(emailType: string) {
         persistent
     >
         <QCard>
-            <QCardSection class="row items-center dialog-message">
-                <span class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</span>
+            <QCardSection class="flex-column items-center dialog-message">
+                <p class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</p>
                 <template v-if="switches === 'email'">
                     <ul
                         v-for="association in selectedAssociations"
@@ -171,61 +205,84 @@ async function onConfirmChanges(emailType: string) {
                     @paste.prevent
                 />
             </QCardSection>
-            <QCardActions
-                align="center"
-                class="dialog-card-actions"
-            >
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="bi-x-lg"
-                />
-                <QBtn
-                    v-if="switches === 'email'"
-                    v-close-popup
-                    :label="t('association.email-software')"
-                    color="secondary"
-                    icon="bi-enveloppe"
-                    @click="onConfirmChanges('software')"
-                />
-                <QBtn
-                    v-if="switches === 'email'"
-                    v-close-popup
-                    :label="t('association.email-web')"
-                    color="secondary"
-                    icon="bi-enveloppe"
-                    @click="onConfirmChanges('web')"
-                />
-                <QBtn
-                    v-if="switches === 'enable'"
-                    v-close-popup
-                    :icon="t('icons.association.is-enabled')"
-                    :label="t('association.enable')"
-                    color="green"
-                    @click="onConfirmChanges('')"
-                />
-                <QBtn
-                    v-if="switches === 'disable'"
-                    v-close-popup
-                    :label="t('association.disable')"
-                    color="orange"
-                    icon="bi-lock"
-                    @click="onConfirmChanges('')"
-                />
-                <QBtn
-                    v-if="switches === 'delete'"
-                    v-close-popup
-                    :label="t('association.delete')"
-                    color="delete"
-                    icon="bi-trash"
-                    @click="onConfirmChanges('')"
-                />
-            </QCardActions>
+            <QCardSection>
+                <div class="flex-row-center padding-top">
+                    <QBtn
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-x-lg"
+                    />
+                    <QBtn
+                        v-if="switches === 'email'"
+                        v-close-popup
+                        :label="t('association.email-software')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-envelope"
+                        @click="onConfirmChanges('software')"
+                    />
+                    <QBtn
+                        v-if="switches === 'email'"
+                        v-close-popup
+                        :label="t('association.email-web')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-envelope"
+                        @click="onConfirmChanges('web')"
+                    />
+                    <QBtn
+                        v-if="switches === 'csv-export'"
+                        v-close-popup
+                        :label="t('association.export-csv')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-filetype-csv"
+                        @click="onConfirmChanges('')"
+                    />
+                    <QBtn
+                        v-if="switches === 'enable'"
+                        v-close-popup
+                        :label="t('association.enable')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-unlock"
+                        @click="onConfirmChanges('')"
+                    />
+                    <QBtn
+                        v-if="switches === 'disable'"
+                        v-close-popup
+                        :label="t('association.disable')"
+                        class="btn-lg"
+                        color="custom-red"
+                        icon="bi-lock"
+                        @click="onConfirmChanges('')"
+                    />
+                    <QBtn
+                        v-if="switches === 'delete'"
+                        v-close-popup
+                        :label="t('association.delete')"
+                        class="btn-lg"
+                        color="custom-red"
+                        icon="bi-trash"
+                        @click="onConfirmChanges('')"
+                    />
+                </div>
+            </QCardSection>
         </QCard>
     </QDialog>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
+@import '@/assets/variables.scss';
+
+p {
+    font-size: 1.8rem;
+}
+
+li {
+    font-size: 1.5rem;
+}
 </style>

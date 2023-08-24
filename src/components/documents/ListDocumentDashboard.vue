@@ -8,7 +8,7 @@ const props = defineProps<{
     documents: DocumentUpload[],
 }>()
 
-function onDownloadDocument(documentId: number) {
+function onDownloadDocument(documentId: number | undefined) {
     const documentToDownload = props.documents.find(doc => doc?.id === documentId)
     if (documentToDownload && documentToDownload.pathFile && documentToDownload.name) {
         const anchor = document.createElement('a')

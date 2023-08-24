@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {RouterLink} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
+import LayoutMobileMenu from '@/components/layout/LayoutMobileMenu.vue'
 
 const siteName = import.meta.env.VITE_APP_SITE_NAME
 </script>
@@ -9,25 +10,23 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
     <QHeader
         id="layout-minimal-header"
         class="variant-space-1"
-        elevated
         height-hint="98"
         role="banner"
     >
         <div class="container">
-            <QToolbar role="">
+            <QToolbar>
                 <QToolbarTitle>
-                    <h1>
-                        <RouterLink
-                            :to="{name: 'Home'}"
-                            class="home-link"
-                        >
-                            {{ siteName }}
-                        </RouterLink>
-                    </h1>
+                    <RouterLink
+                        :to="{name: 'Home'}"
+                        class="home-link"
+                    >
+                        {{ siteName }}
+                    </RouterLink>
                 </QToolbarTitle>
-                <LayoutHeaderNav/>
+                <LayoutHeaderNav device="desktop"/>
             </QToolbar>
         </div>
+        <LayoutMobileMenu/>
     </QHeader>
 </template>
 

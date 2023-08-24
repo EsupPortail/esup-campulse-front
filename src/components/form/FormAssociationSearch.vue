@@ -192,8 +192,9 @@ async function clearSearch() {
 <style lang="scss" scoped>
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
+@import "@/assets/_variables.scss";
 
 .flex-row-center > * {
-    width: 100%;
+  width: $fullSize;
 }
 </style>

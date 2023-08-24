@@ -135,39 +135,63 @@ const columns: QTableProps['columns'] = [
                     :rows="associations"
                     :rows-per-page-options="[10, 20, 50, 0]"
                     :title="t('directory.title')"
+                    role="presentation"
                     row-key="name"
                     selection="multiple"
                 >
+                    <template v-slot:header="props">
+                        <QTr :props="props">
+                            <QTh>
+                                <QCheckbox
+                                    v-model="props.selected"
+                                    :aria-label="t('table.select-all')"
+                                />
+                            </QTh>
+                            <QTh
+                                v-for="col in props.cols"
+                                :id="col.name"
+                                :key="col.name"
+                                :props="props"
+                                scope="col"
+                            >
+                                {{ col.label }}
+                            </QTh>
+                        </QTr>
+                    </template>
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd>
                                 <QCheckbox
                                     v-model="props.selected"
-                                    color="association"
                                     :aria-label="props.row.name"
+                                    color="association"
                                 />
                             </QTd>
                             <QTd
                                 key="name"
                                 :props="props"
+                                headers="name"
                             >
                                 {{ props.row.name }}
                             </QTd>
                             <QTd
                                 key="acronym"
                                 :props="props"
+                                headers="acronym"
                             >
                                 {{ props.row.acronym }}
                             </QTd>
                             <QTd
                                 key="institution"
                                 :props="props"
+                                headers="institution"
                             >
                                 {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
                             </QTd>
                             <QTd
                                 key="activityField"
                                 :props="props"
+                                headers="activityField"
                             >
                                 {{
                                     associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name
@@ -177,6 +201,7 @@ const columns: QTableProps['columns'] = [
                                 key="status"
                                 :props="props"
                                 class="state-cell"
+                                headers="status"
                             >
                                 <span
                                     v-if="!props.row.isEnabled"
@@ -203,6 +228,7 @@ const columns: QTableProps['columns'] = [
                                 key="public"
                                 :props="props"
                                 class="state-cell"
+                                headers="public"
                             >
                                 <span
                                     v-if="!props.row.isPublic"
@@ -229,10 +255,11 @@ const columns: QTableProps['columns'] = [
                                 key="edition"
                                 :props="props"
                                 class="actions-cell-compact"
+                                headers="edition"
                             >
                                 <div class="button-container">
                                     <QBtn
-                                        :aria-label="t('edit')"
+                                        :aria-label="t('edit') + ' ' + props.row.name"
                                         :to="{name: 'EditAssociation', params: {id: props.row.id}}"
                                         color="association"
                                         icon="bi-pencil"
@@ -241,6 +268,53 @@ const columns: QTableProps['columns'] = [
                                 </div>
                             </QTd>
                         </QTr>
+                    </template>
+                    <template v-slot:pagination="scope">
+                        {{
+                            t('table.results-amount', {
+                                firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
+                                lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
+                                amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
+                            })
+                        }}
+                        <QBtn
+                            v-if="scope.pagesNumber > 2"
+                            :aria-label="t('table.first-page')"
+                            :disable="scope.isFirstPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-double-left"
+                            @click="scope.firstPage"
+                        />
+                        <QBtn
+                            :aria-label="t('table.previous-page')"
+                            :disable="scope.isFirstPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-left"
+                            @click="scope.prevPage"
+                        />
+                        <QBtn
+                            :aria-label="t('table.next-page')"
+                            :disable="scope.isLastPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-right"
+                            @click="scope.nextPage"
+                        />
+                        <QBtn
+                            v-if="scope.pagesNumber > 2"
+                            :aria-label="t('table.last-page')"
+                            :disable="scope.isLastPage"
+                            color="grey-8"
+                            dense
+                            flat
+                            icon="bi-chevron-double-right"
+                            @click="scope.lastPage"
+                        />
                     </template>
                 </QTable>
                 <AlertConfirmAssociationsChanges
@@ -256,4 +330,22 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/variables.scss';
+
+.q-table tr th:first-child {
+  text-align: left;
+}
+
+@media screen and (max-width: $breakpoint-lg) {
+  .flex-row-space-between {
+    flex-direction: column;
+
+    h2 {
+      padding-bottom: 0;
+    }
+
+    .q-btn {
+      margin: 1rem;
+    }
+  }
+}
 </style>

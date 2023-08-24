@@ -14,13 +14,15 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/HomeView.vue'),
                 meta: {
                     title: i18n.global.t('breadcrumbs.home'),
+                    siteMap: true,
                 }
             },
             {
                 path: 'associations',
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.directory'),
-                    colorVariant: 'space-1'
+                    colorVariant: 'space-1',
+                    siteMap: true,
                 },
                 children: [
                     {
@@ -29,6 +31,7 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/directory/AssociationsView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.directory'),
+                            siteMap: true,
                         }
                     },
                     {
@@ -45,8 +48,8 @@ const routes: RouteRecordRaw[] = [
                 path: 'charter',
                 meta: {
                     colorVariant: 'space-2',
-                    breadcrumb: i18n.global.t('breadcrumbs.charter')
-
+                    breadcrumb: i18n.global.t('breadcrumbs.charter'),
+                    siteMap: true,
                 },
                 children: [
                     {
@@ -54,7 +57,8 @@ const routes: RouteRecordRaw[] = [
                         name: 'Charter',
                         component: () => import('@/views/charter/CharterView.vue'),
                         meta: {
-                            title: i18n.global.t('breadcrumbs.charter')
+                            title: i18n.global.t('breadcrumbs.charter'),
+                            siteMap: true,
                         },
                     },
                     {
@@ -64,7 +68,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.manage-charters'),
                             title: i18n.global.t('breadcrumbs.manage-charters'),
-                            requiresAuth: true
+                            requiresAuth: true,
+                            siteMap: true,
                         }
                     },
                     {
@@ -95,7 +100,8 @@ const routes: RouteRecordRaw[] = [
                 path: 'commission',
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.commission'),
-                    colorVariant: 'space-3'
+                    colorVariant: 'space-3',
+                    siteMap: true,
                 },
                 children: [
                     {
@@ -103,7 +109,8 @@ const routes: RouteRecordRaw[] = [
                         name: 'Commission',
                         component: () => import('@/views/commission/CommissionsView.vue'),
                         meta: {
-                            title: i18n.global.t('breadcrumbs.commission')
+                            title: i18n.global.t('breadcrumbs.commission'),
+                            siteMap: true,
                         }
                     },
                     {
@@ -113,7 +120,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.commission-dashboard'),
                             title: i18n.global.t('breadcrumbs.commission-dashboard'),
-                            requiresAuth: true
+                            requiresAuth: true,
+                            siteMap: true,
                         }
                     },
                     {
@@ -121,7 +129,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.archived-commission'),
                             staffOnly: true,
-                            requiresAuth: true
+                            requiresAuth: true,
+                            siteMap: true,
                         },
                         children: [
                             {
@@ -130,6 +139,7 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/commission/ArchivedCommissionsView.vue'),
                                 meta: {
                                     title: i18n.global.t('breadcrumbs.archived-commission'),
+                                    siteMap: true,
                                 }
                             },
                             {
@@ -165,7 +175,8 @@ const routes: RouteRecordRaw[] = [
                         path: 'individual',
                         meta: {
                             projectBearersOnly: true,
-                            requiresAuth: true
+                            requiresAuth: true,
+                            siteMap: true,
                         },
                         children: [
                             {
@@ -191,8 +202,18 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
-                        path: 'project-detail/:projectId',
-                        name: 'ProjectDetail',
+                        path: 'view-project/:projectId',
+                        name: 'ViewProject',
+                        component: () => import('@/views/project/ProjectDetailView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: 'manage-project/:projectId',
+                        name: 'ManageProject',
                         component: () => import('@/views/project/ProjectDetailView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-recap'),
@@ -222,8 +243,18 @@ const routes: RouteRecordRaw[] = [
                         }
                     },
                     {
-                        path: 'project-review-detail/:projectId',
-                        name: 'ProjectReviewDetail',
+                        path: 'view-project-review/:projectId',
+                        name: 'ViewProjectReview',
+                        component: () => import('@/views/project/ProjectReviewDetailView.vue'),
+                        meta: {
+                            title: i18n.global.t('breadcrumbs.project-review-recap'),
+                            breadcrumb: i18n.global.t('breadcrumbs.project-review-recap'),
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: 'manage-project-review/:projectId',
+                        name: 'ManageProjectReview',
                         component: () => import('@/views/project/ProjectReviewDetailView.vue'),
                         meta: {
                             title: i18n.global.t('breadcrumbs.project-review-recap'),
@@ -239,22 +270,19 @@ const routes: RouteRecordRaw[] = [
                             title: i18n.global.t('breadcrumbs.manage-commission-dates'),
                             breadcrumb: i18n.global.t('breadcrumbs.manage-commission-dates'),
                             staffOnly: true,
-                            requiresAuth: true
+                            requiresAuth: true,
+                            siteMap: true,
                         }
                     }
                 ]
-            },
-            {
-                path: 'cas-login',
-                name: 'CASLogin',
-                component: () => import('@/views/CASLoginView.vue')
             },
             {
                 path: 'dashboard',
                 meta: {
                     breadcrumb: i18n.global.t('breadcrumbs.dashboard'),
                     requiresAuth: true,
-                    colorVariant: 'space-4'
+                    colorVariant: 'space-4',
+                    siteMap: true,
                 },
                 children: [
                     {
@@ -262,7 +290,8 @@ const routes: RouteRecordRaw[] = [
                         name: 'Dashboard',
                         component: () => import('@/views/dashboard/DashboardView.vue'),
                         meta: {
-                            title: i18n.global.t('breadcrumbs.dashboard')
+                            title: i18n.global.t('breadcrumbs.dashboard'),
+                            siteMap: true,
                         }
                     },
                     {
@@ -271,7 +300,8 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/dashboard/AccountInfosView.vue'),
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.account-infos'),
-                            title: i18n.global.t('breadcrumbs.account-infos')
+                            title: i18n.global.t('breadcrumbs.account-infos'),
+                            siteMap: true,
                         }
                     },
                     {
@@ -312,7 +342,8 @@ const routes: RouteRecordRaw[] = [
                         path: 'validate-users',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.validate-users'),
-                            staffOnly: true
+                            staffOnly: true,
+                            siteMap: true,
                         },
                         children: [
                             {
@@ -320,7 +351,8 @@ const routes: RouteRecordRaw[] = [
                                 name: 'ValidateUsers',
                                 component: () => import('@/views/dashboard/UserManagementView.vue'),
                                 meta: {
-                                    title: i18n.global.t('breadcrumbs.validate-users')
+                                    title: i18n.global.t('breadcrumbs.validate-users'),
+                                    siteMap: true,
                                 }
                             },
                             {
@@ -338,7 +370,8 @@ const routes: RouteRecordRaw[] = [
                         path: 'validate-association-users',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.validate-association-users'),
-                            staffOnly: true
+                            staffOnly: true,
+                            siteMap: true,
                         },
                         children: [
                             {
@@ -346,7 +379,8 @@ const routes: RouteRecordRaw[] = [
                                 name: 'ValidateAssociationUsers',
                                 component: () => import('@/views/dashboard/AssociationUsersValidationView.vue'),
                                 meta: {
-                                    title: i18n.global.t('breadcrumbs.validate-association-users')
+                                    title: i18n.global.t('breadcrumbs.validate-association-users'),
+                                    siteMap: true,
                                 }
                             },
                             {
@@ -364,7 +398,8 @@ const routes: RouteRecordRaw[] = [
                         path: 'manage-users',
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.manage-users'),
-                            staffOnly: true
+                            staffOnly: true,
+                            siteMap: true,
                         },
                         children: [
                             {
@@ -372,7 +407,8 @@ const routes: RouteRecordRaw[] = [
                                 name: 'ManageUsers',
                                 component: () => import('@/views/dashboard/UserManagementView.vue'),
                                 meta: {
-                                    title: i18n.global.t('breadcrumbs.manage-users')
+                                    title: i18n.global.t('breadcrumbs.manage-users'),
+                                    siteMap: true,
                                 }
                             },
                             {
@@ -390,7 +426,8 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/dashboard/UserAddView.vue'),
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.add-user'),
-                                    title: i18n.global.t('breadcrumbs.add-user')
+                                    title: i18n.global.t('breadcrumbs.add-user'),
+                                    siteMap: true,
                                 }
                             },
                         ]
@@ -398,7 +435,8 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'manage-associations',
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-associations')
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-associations'),
+                            siteMap: true,
                         },
                         children: [
                             {
@@ -408,7 +446,8 @@ const routes: RouteRecordRaw[] = [
                                 meta: {
                                     title: i18n.global.t('breadcrumbs.manage-associations'),
                                     colorVariant: 'space-1',
-                                    staffOnly: true
+                                    staffOnly: true,
+                                    siteMap: true,
                                 }
                             },
                             {
@@ -427,7 +466,8 @@ const routes: RouteRecordRaw[] = [
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.create-association'),
                                     title: i18n.global.t('breadcrumbs.create-association'),
-                                    staffOnly: true
+                                    staffOnly: true,
+                                    siteMap: true,
                                 },
                             }
                         ]
@@ -439,7 +479,8 @@ const routes: RouteRecordRaw[] = [
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.template-documents-library'),
                             title: i18n.global.t('breadcrumbs.template-documents-library'),
-                            staffOnly: true
+                            staffOnly: true,
+                            siteMap: true,
                         },
                     },
                     {
@@ -448,20 +489,33 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/dashboard/DocumentsLibraryView.vue'),
                         meta: {
                             breadcrumb: i18n.global.t('breadcrumbs.template-documents-library'),
-                            title: i18n.global.t('breadcrumbs.template-documents-library')
+                            title: i18n.global.t('breadcrumbs.template-documents-library'),
+                            siteMap: true,
                         },
                     }
                 ]
             },
             {
-                path: 'register',
-                name: 'Registration',
-                component: () => import('@/views/RegisterLocalView.vue'),
+                path: 'about',
+                name: 'About',
+                component: () => import('@/views/AboutView.vue'),
                 meta: {
-                    breadcrumb: i18n.global.t('breadcrumbs.register'),
-                    title: i18n.global.t('breadcrumbs.register'),
-                    colorVariant: 'space-4'
-                },
+                    title: i18n.global.t('breadcrumbs.about'),
+                    breadcrumb: i18n.global.t('breadcrumbs.about'),
+                    colorVariant: 'space-1',
+                    siteMap: true,
+                }
+            },
+            {
+                path: 'contact',
+                name: 'Contact',
+                component: () => import('@/views/ContactView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.contact'),
+                    breadcrumb: i18n.global.t('breadcrumbs.contact'),
+                    colorVariant: 'space-1',
+                    siteMap: true,
+                }
             },
             {
                 path: 'cas-register',
@@ -471,6 +525,22 @@ const routes: RouteRecordRaw[] = [
                     breadcrumb: i18n.global.t('breadcrumbs.register'),
                     title: i18n.global.t('breadcrumbs.register'),
                     colorVariant: 'space-4'
+                },
+            },
+            {
+                path: 'cas-login',
+                name: 'CASLogin',
+                component: () => import('@/views/CASLoginView.vue')
+            },
+            {
+                path: 'register',
+                name: 'Registration',
+                component: () => import('@/views/RegisterLocalView.vue'),
+                meta: {
+                    breadcrumb: i18n.global.t('breadcrumbs.register'),
+                    title: i18n.global.t('breadcrumbs.register'),
+                    colorVariant: 'space-4',
+                    siteMap: true,
                 },
             },
             {
@@ -507,6 +577,7 @@ const routes: RouteRecordRaw[] = [
                     colorVariant: 'space-4',
                     breadcrumb: i18n.global.t('breadcrumbs.password-reset'),
                     title: i18n.global.t('breadcrumbs.password-reset'),
+                    siteMap: true,
                 }
             },
             {
@@ -518,32 +589,15 @@ const routes: RouteRecordRaw[] = [
                     breadcrumb: i18n.global.t('breadcrumbs.password-reset-confirm'),
                     title: i18n.global.t('breadcrumbs.password-reset-confirm'),
                 }
-            },
-            {
-                path: 'about-page',
-                name: 'About',
-                component: () => import('@/views/AboutView.vue'),
-                meta: {
-                    title: i18n.global.t('breadcrumbs.about'),
-                    breadcrumb: i18n.global.t('breadcrumbs.about'),
-                    colorVariant: 'space-1',
-                }
-            },
-            {
-                path: 'contact-page',
-                name: 'Contact',
-                component: () => import('@/views/ContactView.vue'),
-                meta: {
-                    title: i18n.global.t('breadcrumbs.contact'),
-                    breadcrumb: i18n.global.t('breadcrumbs.contact'),
-                    colorVariant: 'space-1',
-                }
             }
         ]
     },
     {
         path: '/login',
         component: () => import('@/layouts/LayoutMinimalHeader.vue'),
+        meta: {
+            siteMap: true,
+        },
         children: [
             {
                 path: '',
@@ -562,12 +616,6 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/404View.vue')
             }
         ]
-    },
-    // TO DELETE AFTER DEVELOPMENT
-    {
-        path: '/design-system',
-        name: 'DesignSystem',
-        component: () => import('@/views/DesignSystem.vue'),
     },
     // This must be last
     {

@@ -39,17 +39,21 @@ body {
 }
 
 // Flex utilities
-.flex-row, .flex-row-center, .flex-row-space-between, .flex-column {
+.flex-row, .flex-row-center, .flex-row-right, .flex-row-space-between, .flex-column {
   display: flex;
   gap: 1rem;
 }
 
-.flex-row, .flex-row-center, .flex-row-space-between {
+.flex-row, .flex-row-center, .flex-row-right, .flex-row-space-between {
   align-items: baseline;
 }
 
 .flex-row-center {
   justify-content: center;
+}
+
+.flex-row-right {
+  justify-content: right;
 }
 
 .flex-row-space-between {
@@ -60,6 +64,10 @@ body {
   flex-direction: column;
 }
 
+.align-items-stretch {
+  align-items: stretch;
+}
+
 // Padding utilities
 .padding-top {
   padding-top: 1rem;
@@ -67,6 +75,16 @@ body {
 
 .padding-bottom {
   padding-bottom: 1rem;
+}
+
+// Margin utilities
+.margin-bottom {
+  margin-bottom: 1rem;
+}
+
+// Alignment utilities
+.text-center {
+  text-align: center;
 }
 
 // Page layout
@@ -112,7 +130,7 @@ main {
       transition: transform 0.03s linear;
     }
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $annuaireColorHover;
 
       i {
@@ -133,7 +151,7 @@ main {
       transition: none;
     }
 
-    button:hover i {
+    button:hover i, button:focus i {
       transform: none;
     }
   }
@@ -145,7 +163,7 @@ main {
     background-color: $charteColor;
     color: $charteColorText;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $charteColorHover;
     }
 
@@ -159,7 +177,7 @@ main {
   button {
     background-color: $capeColor;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $capeColorHover;
     }
 
@@ -173,7 +191,7 @@ main {
   button {
     background-color: $dashboardColor;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $dashboardColorHover;
     }
 
@@ -186,7 +204,7 @@ main {
 // Page section
 .page-section {
   width: $fullSize;
-  max-width: $pageWidth;
+  max-width: 120rem;
   margin: 0 auto;
 }
 
@@ -199,7 +217,7 @@ main {
     gap: 3rem;
     align-items: center;
     width: $fullSize;
-    max-width: $pageWidth;
+    max-width: 120rem;
     margin: 0 auto 0;
 
     .intro-image {
@@ -239,33 +257,7 @@ main {
     background-color: $annuaireColorBackground;
   }
 
-  @media screen and (min-width: $responsiveWidth) {
-    .content {
-      .intro-image {
-        img {
-          margin-left: 1rem;
-        }
-      }
-    }
-  }
-
-  @media only screen and (max-width: $pageWidth) {
-    .content {
-      padding-left: $responsiveMargin;
-      padding-right: $responsiveMargin;
-      gap: 1.875rem;
-
-      .intro-image {
-        flex: 0 0 15.625rem;
-
-        img {
-          width: 15.625rem;
-        }
-      }
-    }
-  }
-
-  @media only screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $breakpoint-lg) {
     .content {
       display: block;
 
@@ -302,7 +294,7 @@ main {
 h1, .title-1, h2, .title-2, h3, .title-3, h4, .title-4, h5, .title-5, h6, .title-6 {
   color: $textColor1;
   font-weight: $normal-weight;
-  line-height: normal;
+  line-height: 1.6;
   letter-spacing: normal;
   text-transform: uppercase;
 }
@@ -335,10 +327,10 @@ h6, .title-6 {
 p.paragraph {
   color: $textColor1;
   font-size: inherit;
-  font-weight: 400;
+  font-weight: $normal-weight;
   line-height: normal;
   letter-spacing: normal;
-  margin-bottom: 1.8rem;
+  margin: auto 1.5rem 1.8rem;
 
   .float-left, .float-right {
     position: relative;
@@ -353,11 +345,6 @@ p.paragraph {
   .float-right {
     float: right;
     margin: 0 0 1rem 1.4rem;
-  }
-
-  @media only screen and (max-width: $pageWidth) {
-    margin-left: 1.5rem;
-    margin-right: 1.5rem;
   }
 }
 
@@ -391,4 +378,27 @@ ul {
   font-size: 1.6rem;
 }
 
+// Contrasts
+body.desktop {
+  .q-checkbox:not(.disabled) .q-checkbox__inner::before, .q-radio:not(.disabled) .q-radio__inner::before {
+    opacity: 0.33;
+  }
+}
 
+.q-field__focusable-action {
+  opacity: 1;
+}
+
+.q-select__dropdown-icon {
+  color: #000;
+}
+
+// Expansion item
+.text-caption {
+  font-size: 1.6rem;
+}
+
+// Notify
+.q-notification p {
+  margin-bottom: 0;
+}

@@ -43,7 +43,7 @@ interface Option {
     icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf',
     label: string,
     to?: {
-        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ProjectDetail' | 'SubmitProjectReview' | 'ProjectReviewDetail',
+        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ViewProject' | 'SubmitProjectReview' | 'ViewProjectReview',
         params: { associationId?: number, projectId: number }
     },
     action?: 'delete' | 'download-pdf'
@@ -76,7 +76,7 @@ const initOptions = () => {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view'),
-            to: {name: 'ProjectDetail', params: {projectId: props.projectId}}
+            to: {name: 'ViewProject', params: {projectId: props.projectId}}
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
@@ -89,11 +89,11 @@ const initOptions = () => {
         }
     }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
-        || props.projectStatus === 'PROJECT_REVIEW_CANCELLED') {
+        || props.projectStatus === 'PROJECT_CANCELLED') {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),
-            to: {name: 'ProjectReviewDetail', params: {projectId: props.projectId}}
+            to: {name: 'ViewProjectReview', params: {projectId: props.projectId}}
         })
     }
     if (props.projectStatus !== 'PROJECT_DRAFT') {
@@ -179,7 +179,7 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
     </div>
     <ProjectDelete
         :open-dialog="openDelete"
-        :project="props.project"
+        :project="props.projectId"
         @close-dialog="openDelete = false"
     />
 </template>

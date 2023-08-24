@@ -27,8 +27,8 @@ async function onValidateChanges() {
         await updateAssociation()
         emit('hasValidated')
         notify({
-            message: t('notifications.positive.association-successfully-updated'),
-            type: 'positive'
+            type: 'positive',
+            message: t('notifications.positive.association-successfully-updated')
         })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -57,7 +57,7 @@ async function onValidateChanges() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ t('association.alert-confirm-changes') }}</span>
+                <p class="q-ml-sm">{{ t('association.alert-confirm-changes') }}</p>
                 <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup

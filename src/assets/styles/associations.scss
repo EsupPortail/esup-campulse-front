@@ -152,7 +152,7 @@
       }
     }
 
-    &:hover {
+    &:hover, &:focus {
       .q-card__section {
         box-shadow: 1rem 0 0 0 $annuaireColor inset;
       }
@@ -168,7 +168,7 @@
     }
   }
 
-  @media only screen and (max-width: $responsiveWidth) {
+  @media screen and (max-width: $breakpoint-lg) {
     .q-card {
       .card-background {
         display: none;
@@ -228,7 +228,7 @@
         }
       }
 
-      &:hover {
+      &:hover, &:focus {
         .card-chevron {
           right: 0.625rem;
         }
@@ -251,13 +251,6 @@
       margin-bottom: .6rem;
     }
   }
-
-  @media screen and (min-width: $responsiveWidth) {
-    #association-logo-title {
-      width: $halfSize;
-      margin: auto;
-    }
-  }
 }
 
 .association-detail {
@@ -266,13 +259,17 @@
     color: $annuaireColor;
   }
 
-  a:hover {
+  a:hover, a:focus {
     color: $annuaireColorHover;
   }
 
   ul {
     margin: 0;
     list-style: none;
+  }
+
+  dt {
+    font-weight: $semibold-weight;
   }
 }
 

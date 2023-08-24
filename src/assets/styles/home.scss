@@ -55,7 +55,7 @@
 
   & > div {
     width: $fullSize;
-    max-width: $pageWidth;
+    max-width: 120rem;
     margin: 0 auto;
     padding: 0;
 
@@ -111,7 +111,7 @@
   }
 
   .section-card {
-    display: block;
+    display: flex;
     border-radius: 1rem;
     position: relative;
     background-color: $backgroundColor1;
@@ -124,7 +124,8 @@
     .section-background {
       background-color: $annuaireColorBackground;
       height: 50rem;
-      width: 20rem;
+      width: 36rem;
+      opacity: 1;
       position: absolute;
       top: calc(50% - 25rem);
       left: 0;
@@ -221,9 +222,10 @@
         text-align: center;
         margin: 1rem;
 
+
         a {
           display: inline-block;
-          padding: 1rem;
+          padding: 1rem 4rem;
           font-weight: $normal-weight;
           color: $annuaireColorText;
           border: .0625rem solid $annuaireColorText;
@@ -238,7 +240,7 @@
             top: .07rem;
           }
 
-          &:hover {
+          &:hover, &:focus {
             background-color: $annuaireColorText;
             color: $textColor3;
           }
@@ -251,20 +253,11 @@
       }
     }
 
-    @media screen and (min-width: $responsiveWidth) {
-      display: flex;
+    @media screen and (max-width: $breakpoint-lg) {
+      display: block;
 
       .section-background {
-        width: 36rem;
-        opacity: 1;
-      }
-
-      .section-content {
-        .section-buttons {
-          a {
-            padding: 1rem 4rem;
-          }
-        }
+        width: 20rem;
       }
     }
   }
@@ -341,7 +334,7 @@
             color: $charteColorText;
             border-color: $charteColorText;
 
-            &:hover {
+            &:hover, &:focus {
               background-color: $charteColorText;
               color: $textColor3;
             }
@@ -404,7 +397,7 @@
             color: $capeColorText;
             border-color: $capeColorText;
 
-            &:hover {
+            &:hover, &:focus {
               background-color: $capeColorText;
               color: $textColor3;
             }
@@ -415,37 +408,6 @@
             }
           }
         }
-      }
-    }
-  }
-}
-
-
-/*
-  * About section
- */
-.section-headtitle {
-  text-align: center;
-  padding: 2rem 0;
-}
-
-.services-features {
-  .services-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    h4 {
-      text-align: center;
-      font-weight: $semibold-weight;
-    }
-
-    @media screen and (min-width: $responsiveWidth) {
-      flex-direction: row;
-      gap: 1rem;
-
-      .service-card {
-        height: 25rem;
       }
     }
   }

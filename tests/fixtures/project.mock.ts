@@ -16,6 +16,7 @@ export const _project: Project = {
     user: null,
     association: 1,
     associationUser: 1,
+    partnerAssociation: 'Personne',
     budgetPreviousEdition: 1000,
     targetAudience: 'Une centaine d\'étudiants.',
     amountStudentsAudience: 90,
@@ -247,7 +248,8 @@ export const _projectBasicInfos: ProjectBasicInfos = {
     plannedLocation: 'Strasbourg',
     user: null,
     association: null,
-    associationUser: null
+    associationUser: null,
+    partnerAssociation: 'Personne',
 }
 
 export const _projectBudget: ProjectBudget = {

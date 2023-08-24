@@ -44,7 +44,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <section class="flex-column">
+    <div class="flex-column">
         <div class="display-row">
             <p class="row-title">{{ t('project.applicant') }}</p>
             <p>{{ applicant }}</p>
@@ -59,7 +59,7 @@ onMounted(async () => {
             <p class="row-title">{{ t('project.planned-start-date') }}</p>
             <p>
                 {{
-                    formatDate(projectReview.realStartDate).split('-').reverse().join('/')
+                    formatDate(projectReview.realStartDate)?.split('-').reverse().join('/')
                 }}
             </p>
         </div>
@@ -68,7 +68,7 @@ onMounted(async () => {
             <p class="row-title">{{ t('project.planned-end-date') }}</p>
             <p>
                 {{
-                    formatDate(projectReview.realEndDate).split('-').reverse().join('/')
+                    formatDate(projectReview.realEndDate)?.split('-').reverse().join('/')
                 }}
             </p>
         </div>
@@ -117,7 +117,7 @@ onMounted(async () => {
             <p class="row-title">{{ t('project.income') }}</p>
             <p>{{ projectReview.income + CURRENCY }}</p>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>

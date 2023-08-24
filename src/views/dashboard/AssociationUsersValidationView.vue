@@ -85,36 +85,55 @@ const columns: QTableProps['columns'] = [
                     :rows-per-page-options="[10, 20, 50, 0]"
                     :title="t('user-manager.users')"
                     row-key="id"
+                    role="presentation"
                 >
+                    <template v-slot:header="props">
+                        <QTr :props="props">
+                            <QTh
+                                v-for="col in props.cols"
+                                :key="col.name"
+                                :props="props"
+                                scope="col"
+                                :id="col.name"
+                            >
+                                {{ col.label }}
+                            </QTh>
+                        </QTr>
+                    </template>
                     <template v-slot:body="props">
                         <QTr :props="props">
                             <QTd
                                 key="firstName"
                                 :props="props"
+                                headers="firstName"
                             >
                                 {{ props.row.firstName }}
                             </QTd>
                             <QTd
                                 key="lastName"
                                 :props="props"
+                                headers="lastName"
                             >
                                 {{ props.row.lastName }}
                             </QTd>
                             <QTd
                                 key="association"
                                 :props="props"
+                                headers="association"
                             >
                                 {{ props.row.associationName }}
                             </QTd>
                             <QTd
                                 key="role"
                                 :props="props"
+                                headers="role"
                             >
                                 {{ props.row.role }}
                             </QTd>
                             <QTd
                                 key="isValidatedByAdmin"
                                 :props="props"
+                                headers="isValidatedByAdmin"
                             >
                                 <span class="form-state">
                                     {{
@@ -131,6 +150,7 @@ const columns: QTableProps['columns'] = [
                             <QTd
                                 key="validation"
                                 :props="props"
+                                headers="validation"
                                 class="actions-cell-compact"
                             >
                                 <QBtn
@@ -138,10 +158,55 @@ const columns: QTableProps['columns'] = [
                                     :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
                                     color="dashboard"
                                     icon="bi-pencil"
-                                    ouline
+                                    outline
                                 />
                             </QTd>
                         </QTr>
+                    </template>
+                    <template v-slot:pagination="scope">
+                        {{ t('table.results-amount', {
+                            firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
+                            lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
+                            amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
+                        }) }}
+                        <QBtn
+                            v-if="scope.pagesNumber > 2"
+                            icon="bi-chevron-double-left"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isFirstPage"
+                            @click="scope.firstPage"
+                            :aria-label="t('table.first-page')"
+                        />
+                        <QBtn
+                            icon="bi-chevron-left"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isFirstPage"
+                            @click="scope.prevPage"
+                            :aria-label="t('table.previous-page')"
+                        />
+                        <QBtn
+                            icon="bi-chevron-right"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isLastPage"
+                            @click="scope.nextPage"
+                            :aria-label="t('table.next-page')"
+                        />
+                        <QBtn
+                            v-if="scope.pagesNumber > 2"
+                            icon="bi-chevron-double-right"
+                            color="grey-8"
+                            dense
+                            flat
+                            :disable="scope.isLastPage"
+                            @click="scope.lastPage"
+                            :aria-label="t('table.last-page')"
+                        />
                     </template>
                 </QTable>
 

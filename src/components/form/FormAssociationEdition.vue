@@ -90,13 +90,12 @@ watch(() => associationStore.association, initValues)
 
 const membersCount = ref<number>(0)
 
-const initMembersCount = () => {
+const initMembersCount = async () => {
     if (associationStore.association) {
-        associationStore.getAssociationUsers(associationStore.association.id)
+        await associationStore.getAssociationUsers(associationStore.association.id)
         membersCount.value = associationStore.associationUsers.length
     }
 }
-watch(() => associationStore.association, initMembersCount)
 
 onMounted(async () => {
     loading.show()
@@ -159,8 +158,8 @@ async function onChangeLogo(action: string) {
             newLogo.value = undefined
         }
         notify({
-            message: t('notifications.positive.association-logo-updated'),
-            type: 'positive'
+            type: 'positive',
+            message: t('notifications.positive.association-logo-updated')
         })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -183,7 +182,6 @@ async function onChangeLogo(action: string) {
             <div class="association-logo">
                 <QImg
                     :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (!pathLogo.detail.startsWith('http') ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
-                    alt=""
                     aria-hidden="true"
                 />
             </div>
@@ -250,7 +248,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.name"
                             :disable=!isStaff
                             :label="t('association.labels.name') + ' *'"
-                            :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                            :rules="[val => val && val.length > 0 || t('forms.required-association-name-field')]"
                             aria-required="true"
                             clearable
                             filled
@@ -264,12 +262,17 @@ async function onChangeLogo(action: string) {
                         />
                         <QInput
                             v-model="association.socialObject"
-                            :hint="t('forms.social-object-hint')"
                             :label="t('association.labels.social-object')"
+                            bottom-slots
                             clearable
                             filled
+                            for="socialObject"
                             type="textarea"
-                        />
+                        >
+                            <template v-slot:hint>
+                                <p aria-describedby="socialObject">{{ t('forms.social-object-hint') }}</p>
+                            </template>
+                        </QInput>
                         <QInput
                             v-model="association.currentProjects"
                             :label="t('association.labels.current-projects')"
@@ -281,7 +284,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.institution"
                             :label="t('association.labels.institution') + ' *'"
                             :options="associationStore.institutionLabels"
-                            :rules="[val => val || t('forms.fill-field')]"
+                            :rules="[val => val || t('forms.required-association-institution')]"
                             aria-required="true"
                             clearable
                             emit-value
@@ -301,7 +304,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.activityField"
                             :label="t('association.labels.activity-field') + ' *'"
                             :options="associationStore.activityFieldLabels"
-                            :rules="[val => val || t('forms.fill-field')]"
+                            :rules="[val => val || t('forms.required-activity-field')]"
                             aria-required="true"
                             clearable
                             emit-value
@@ -344,6 +347,8 @@ async function onChangeLogo(action: string) {
                             :label="t('association.labels.last-goa')"
                             clearable
                             filled
+                            max="2120-01-01"
+                            min="1970-01-01"
                             type="date"
                         >
                             <template v-slot:prepend>
@@ -356,20 +361,30 @@ async function onChangeLogo(action: string) {
                             clearable
                             filled
                             inputmode="numeric"
+                            maxlength="14"
                         />
                         <QInput
                             v-if="hasPerm('change_association_all_fields')"
                             v-model="association.amountMembersAllowed"
-                            :hint="`${t('forms.amount-student-allowed-cannot-be-inferior-to-members')} : ${membersCount}`"
                             :label="t('association.labels.amount-members-allowed')"
                             :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
+                            bottom-slots
                             clearable
                             filled
+                            for="amountMembersAllowed"
                             inputmode="numeric"
                             lazy-rules
                             min="0"
                             type="number"
-                        />
+                        >
+                            <template v-slot:hint>
+                                <p aria-describedby="amountMembersAllowed">
+                                    {{
+                                        t('forms.amount-student-allowed-cannot-be-inferior-to-members', {amount: membersCount})
+                                    }}
+                                </p>
+                            </template>
+                        </QInput>
                         <QInput
                             v-model="association.studentCount"
                             :label="t('forms.association-student-count')"
@@ -427,7 +442,6 @@ async function onChangeLogo(action: string) {
                         </fieldset>
                         <QSeparator
                             aria-hidden="true"
-                            role="presentation"
                         />
                         <QInput
                             v-model="association.email"
@@ -518,17 +532,18 @@ async function onChangeLogo(action: string) {
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
+@import "@/assets/_variables.scss";
 
 .address-fields div {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 
-    * {
-        width: 100%;
-    }
+  * {
+    width: $fullSize;
+  }
 }
 
 .q-separator {
-    margin: 0.5rem 0 1rem 0;
+  margin: 0.5rem 0 1rem 0;
 }
 </style>

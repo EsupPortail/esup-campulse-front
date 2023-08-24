@@ -11,7 +11,7 @@ const props = defineProps<{
 <template>
     <div class="page-card flex-column">
         <div>
-            <p>{{ props.text }}</p>
+            <p v-html="props.text"></p>
         </div>
         <div class="flex-row-center">
             <QBtn
@@ -29,11 +29,10 @@ const props = defineProps<{
 @import "@/assets/_variables.scss";
 
 .page-card {
-    max-width: 55rem;
-    width: 100%;
+    width: $fullSize;
 
     .q-btn {
-        width: 100%;
+        width: $fullSize;
     }
 }
 </style>

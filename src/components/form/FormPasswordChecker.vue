@@ -51,7 +51,7 @@ const resultLabels = [
 ]
 </script>
 <template>
-    <section
+    <div
         v-if="password"
         class="password-feedback"
     >
@@ -72,7 +72,7 @@ const resultLabels = [
                 {{ resultLabels.find(label => label.score === props.passwordChecker.score)?.label }}
             </p>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>

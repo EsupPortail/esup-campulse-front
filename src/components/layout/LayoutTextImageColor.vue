@@ -14,8 +14,8 @@ const props = defineProps<{
     >
         <div class="container">
             <div>
-                <h2>{{ props.title }}</h2>
-                <p>{{ props.text }}</p>
+                <h2 v-html="props.title"></h2>
+                <p v-html="props.text"></p>
             </div>
             <img
                 alt=""
@@ -46,4 +46,18 @@ const props = defineProps<{
     }
 }
 
+/* Changing the page's position to fit with the Accessibility Requirement */
+@media screen and (min-width: $breakpoint-vsm) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media screen and (min-width: $breakpoint-md) {
+    .container {
+        display: flex;
+        flex-direction: row;
+    }
+}
 </style>

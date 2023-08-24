@@ -1,29 +1,8 @@
-- ✨ Student dashboard is finally complete
-- ✨ Download PDF of any project from dashboard for students
-- ✨ Download PDF of any project from dashboard for managers
-- ✨ Review detail page
-- 🩹 Comments are now available at each step
-- ♿️ [8.9] Removed useless role on QToolbars
-- ♿️ [9.2] Breadcrumb a11y
-- ♿️ [3.1] QStep current panels are bold
-- ♿️ [8.6] Dynamic title
-- ♿️ [11.10] "Les champs marqués d'un astérique sont obligatoires."
-- ♿️ [13.1] Notify not automatically hidden
-- ♿️ Improve Notify color contrast
-- ♿️ Improved Password Checker
-- ♿️ Trying to implement skip to content link
-- ♿️ Added aria-label on AssociationManagaementView table
-- ♿️ Remove alt for images on landing pages
-- ♿️ Removed alt from association logos
-- 🗃️ Removed association altLogo
-- 🎨 Improve dynamic <title>
-- 🎨 Required address fields and style on SubmitProjectReview
-- 🎨 Remove auth on landing pages
-- 🐛 Watch initStaffStatus on dashboard reload
-- 🐛 Fixed title levels and v-html on about page
-- 🐛 Fix isMultiple field for documentUploads #33
-- 💄 Try to fix landing pages img imports
-- 💄 fix: header's icon
-- 💄 fix: plan-a-design scss is now campulse-design
-- ⬆️ Upgrade unplugin-vue-i18n
+- ✨ Charter management dashboard is done #165
+- ✨ Segmented /commissions/active_projects in two parameters
+- ✨ Project review validation
+- ♿️ Improve accessibility
+- 💄 Correct responsive bugs and remove dead CSS lines
+- 🐛 Planned dates and locations in review
+- 🩹 Hide fields if not project re-edition for amounts edition
 - ⬆️ Upgrade minor dependencies

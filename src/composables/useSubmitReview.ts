@@ -22,7 +22,14 @@ const projectReview = ref<ProjectReview>(
         impactStudents: '',
         description: '',
         difficulties: '',
-        improvements: ''
+        improvements: '',
+        plannedStartDate: '',
+        plannedEndDate: '',
+        plannedLocation: '',
+        associationUser: null,
+        commissions: [],
+        creationDate: '',
+        editionDate: ''
     }
 )
 
@@ -44,11 +51,12 @@ export default function () {
                 projectStore.projectReview.income.toString() : '0'
             projectReview.value.association = projectStore.projectReview.association
             projectReview.value.user = projectStore.projectReview.user
-            projectReview.value.realStartDate = formatDate(projectStore.projectReview.realStartDate ??
-                projectStore.project.plannedStartDate) as string
-            projectReview.value.realEndDate = formatDate(projectStore.projectReview.realEndDate ??
-                projectStore.project.plannedEndDate) as string
-            projectReview.value.realLocation = projectStore.projectReview.realLocation ?? projectStore.project.plannedLocation
+            projectReview.value.realStartDate = formatDate(projectStore.projectReview.realStartDate ?
+                projectStore.projectReview.realStartDate : projectStore.projectReview.plannedStartDate) as string
+            projectReview.value.realEndDate = formatDate(projectStore.projectReview.realEndDate ?
+                projectStore.projectReview.realEndDate : projectStore.projectReview.plannedEndDate) as string
+            projectReview.value.realLocation = projectStore.projectReview.realLocation ?
+                projectStore.projectReview.realLocation : projectStore.projectReview.plannedLocation
             projectReview.value.review = projectStore.projectReview.review
             projectReview.value.impactStudents = projectStore.projectReview.impactStudents
             projectReview.value.description = projectStore.projectReview.description

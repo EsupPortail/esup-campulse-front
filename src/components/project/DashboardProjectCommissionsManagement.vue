@@ -56,6 +56,7 @@ async function onGetCommissions() {
             true,
             undefined,
             undefined,
+            undefined,
             true)
         await getFunds()
         await getCommissionFunds()
@@ -91,7 +92,6 @@ async function onGetCommissions() {
 
         <QSeparator
             aria-hidden="true"
-            role="presentation"
         />
 
         <QTabPanels
@@ -103,7 +103,6 @@ async function onGetCommissions() {
                 :key="index"
                 :name="tab.name"
                 class="q-pa-none"
-                role=""
             >
                 <QSplitter
                     v-model="splitterModel"
@@ -112,6 +111,7 @@ async function onGetCommissions() {
                         <CommissionExportCSV
                             :commission-id="tab.commission"
                             :commission-name="tab.name"
+                            class="padding-bottom"
                         />
                         <QTabs
                             v-model="innerTab"
@@ -145,7 +145,6 @@ async function onGetCommissions() {
                         >
                             <QTabPanel
                                 name="allProjects"
-                                role=""
                             >
                                 <TableManagedProjects
                                     :commission="tab.commission"
@@ -155,7 +154,6 @@ async function onGetCommissions() {
                             </QTabPanel>
                             <QTabPanel
                                 name="validatedProjects"
-                                role=""
                             >
                                 <TableManagedProjects
                                     :commission="tab.commission"
@@ -165,7 +163,6 @@ async function onGetCommissions() {
                             </QTabPanel>
                             <QTabPanel
                                 name="archivedProjects"
-                                role=""
                             >
                                 <TableManagedProjects
                                     :commission="tab.commission"

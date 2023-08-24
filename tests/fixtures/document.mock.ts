@@ -10,13 +10,13 @@ export const _document: Document = {
     isRequiredInProcess: false,
     daysBeforeExpiration: '365 00:00:00',
     expirationDay: '',
-    pathTemplate: null,
+    pathTemplate: undefined,
     mimeTypes: [
         'application/pdf'
     ],
     processType: 'CHARTER_ASSOCIATION',
     institution: null,
-    commission: null
+    fund: null
 }
 
 export const _documents: Document[] = [
@@ -30,13 +30,13 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
-        pathTemplate: null,
+        pathTemplate: undefined,
         mimeTypes: [
             'application/pdf'
         ],
         processType: 'CHARTER_ASSOCIATION',
         institution: null,
-        commission: null
+        fund: null
     },
     {
         id: 2,
@@ -48,7 +48,7 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
-        pathTemplate: null,
+        pathTemplate: undefined,
         mimeTypes: [
             'application/pdf',
             'image/jpeg',
@@ -56,7 +56,7 @@ export const _documents: Document[] = [
         ],
         processType: 'CHARTER_ASSOCIATION',
         institution: null,
-        commission: null
+        fund: null
     },
     {
         id: 3,
@@ -68,13 +68,13 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
-        pathTemplate: null,
+        pathTemplate: undefined,
         mimeTypes: [
             'application/pdf'
         ],
         processType: 'CHARTER_PROJECT_FUND',
         institution: null,
-        commission: 1
+        fund: 1
     }
 ]
 
@@ -121,6 +121,7 @@ export const _projectDocuments: DocumentUpload[] = [
         id: 1,
         uploadDate: '2023-06-19',
         validatedDate: '',
+        comment: '',
         pathFile: 'pathFile',
         size: 1000,
         document: 1,
@@ -135,6 +136,7 @@ export const _projectDocuments: DocumentUpload[] = [
         pathFile: 'pathFile',
         size: 1000,
         validatedDate: '',
+        comment: '',
         document: 2,
         user: 1,
         association: null,

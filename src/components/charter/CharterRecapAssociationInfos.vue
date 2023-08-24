@@ -12,7 +12,7 @@ const associationStore = useAssociationStore()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    association: number
+    association: number | undefined
 }>()
 
 onMounted(async () => {
@@ -38,7 +38,7 @@ async function onGetAssociationDetails() {
 </script>
 
 <template>
-    <section class="flex-column padding-top padding-bottom">
+    <div class="flex-column padding-top padding-bottom">
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.name') }}</p>
             <p>{{ associationStore.association?.name }}</p>
@@ -83,7 +83,7 @@ async function onGetAssociationDetails() {
                 {{ associationStore.association?.country }}
             </p>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>

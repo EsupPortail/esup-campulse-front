@@ -99,7 +99,7 @@ const clearValues = () => {
         <QInput
             v-model="newAssociation.name"
             :label="t('forms.association-name')"
-            :rules="[val => val.length > 0 || t('forms.fill-field')]"
+            :rules="[val => val.length > 0 || t('forms.required-association-name')]"
             color="dashboard"
             filled
             lazy-rules
@@ -118,7 +118,7 @@ const clearValues = () => {
             v-model="newAssociation.institution"
             :label="t('forms.association-institution')"
             :options="institutions"
-            :rules="[val => val !== undefined || t('forms.select-option')]"
+            :rules="[val => val !== undefined || t('forms.select-establishment')]"
             color="dashboard"
             emit-value
             filled
@@ -133,7 +133,7 @@ const clearValues = () => {
         />
         <div class="flex-row-center">
             <QBtn
-                :label="t('home.back-dashboard')"
+                :label="t('back')"
                 :to="{ name: 'Dashboard' }"
                 class="btn-lg"
                 color="dashboard"

@@ -24,24 +24,27 @@ onMounted(initValues)
 <template>
     <div
         v-for="(socialNetwork, index) in associationSocialNetworks"
-        id="network-section"
         :key="index"
         class="display-row"
     >
         <div class="flex-row">
             <QInput
                 v-model="socialNetwork.type"
-                :hint="t('forms.social-network-type-hint')"
                 :label="t('association.labels.social-network-type') + ' *'"
-                :rules="[val => val && val.length > 0 || t('forms.fill-field')]"
+                :rules="[val => val && val.length > 0 || t('forms.required-association-socials')]"
                 aria-required="true"
                 clearable
                 filled
                 lazy-rules
-            />
+                bottom-slots
+                :for="'socialNetworkType-' + index"
+            >
+                <template v-slot:hint>
+                    <p :aria-describedby="'socialNetworkType-' + index">{{ t('forms.social-network-type-hint') }}</p>
+                </template>
+            </QInput>
             <QInput
                 v-model="socialNetwork.location"
-                :hint="t('forms.social-network-location-hint')"
                 :label="t('association.labels.social-network-location') + ' *'"
                 :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
                 aria-required="true"
@@ -49,10 +52,15 @@ onMounted(initValues)
                 filled
                 lazy-rules
                 type="url"
-            />
+                bottom-slots
+                :for="'socialNetworkLocation-' + index"
+            >
+                <template v-slot:hint>
+                    <p :aria-describedby="'socialNetworkLocation-' + index">{{ t('forms.social-network-location-hint') }}</p>
+                </template>
+            </QInput>
             <QSeparator
                 aria-hidden="true"
-                role="presentation"
             />
             <QBtn
                 :aria-label="t('delete')"
@@ -79,9 +87,9 @@ onMounted(initValues)
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/dashboard.scss';
-@import '@/assets/variables.scss';
+@import '@/assets/_variables.scss';
 
 .q-input {
-    width: $fullSize;
+  width: $fullSize;
 }
 </style>

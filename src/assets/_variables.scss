@@ -1,9 +1,11 @@
-$pageWidth: 120rem;
-$responsiveMargin: 1.56rem;
 $fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
 // ---------------- Responsive----------------
-$responsiveWidth: 56.25rem;
+$breakpoint-vsm: 320px;
+$breakpoint-sm: 340px;
+$breakpoint-smd: 400px;
+$breakpoint-md: 430px;
+$breakpoint-lg: 910px;
 
 // ---------------- Images ----------------
 $headerBackground: url('./img/resized/header-background2.jpg');
@@ -107,6 +109,7 @@ $outlineColor2: rgba(0, 0, 0, 0.8);
 $formSeparatorColor: #d4d4d4;
 
 $customRed: #e91b0c;
+$customGreen: #178731;
 
 // ---------------- Colors for Quasar ----------------
 // Useful for example for buttons, whom style is tricky to configure
@@ -125,6 +128,14 @@ $customRed: #e91b0c;
 
 .text-custom-red {
   color: $customRed;
+}
+
+.bg-custom-green {
+  background: $customGreen;
+}
+
+.text-custom-green {
+  color: $customGreen;
 }
 
 .bg-dashboard {

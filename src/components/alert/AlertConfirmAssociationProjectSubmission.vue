@@ -53,9 +53,11 @@ async function onManageAssociationSubmission() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{
-                    !associationStore.association?.canSubmitProjects ? t('alerts.confirm-association-can-submit-projects') : t('alerts.confirm-association-cannot-submit-projects')
-                }}</span>
+                <p class="q-ml-sm">
+                    {{
+                        !associationStore.association?.canSubmitProjects ? t('alerts.confirm-association-can-submit-projects') : t('alerts.confirm-association-cannot-submit-projects')
+                    }}
+                </p>
                 <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup

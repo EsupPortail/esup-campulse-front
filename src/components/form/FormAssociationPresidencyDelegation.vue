@@ -108,15 +108,24 @@ async function onDelegatePresidency(activate: boolean) {
                         color="dashboard"
                         filled
                         type="date"
+                        min="1970-01-01"
+                        max="2120-01-01"
                     />
                     <QInput
                         v-model="delegation.to"
-                        :hint="t('forms.hint-delegation-to')"
                         :label="t('to')"
                         color="dashboard"
                         filled
                         type="date"
-                    />
+                        min="1970-01-01"
+                        max="2120-01-01"
+                        bottom-slots
+                        for="delegation"
+                    >
+                        <template v-slot:hint>
+                            <p aria-describedby="delegation">{{ t('forms.hint-delegation-to') }}</p>
+                        </template>
+                    </QInput>
                     <QBtn
                         v-close-popup
                         :label="t('cancel')"

@@ -12,16 +12,14 @@ import {onMounted, watch} from 'vue'
 const {t} = useI18n()
 const {projectBudget} = useSubmitProject()
 const {CURRENCY} = useUtility()
-const {fundsLabels} = useCommissions()
-
-
 const projectStore = useProjectStore()
 const {
     getCommissionFunds,
     getFunds,
     initChosenCommissionFundsLabels,
     getAllCommissions,
-    initCommissionLabels
+    initCommissionLabels,
+    getFundLabel
 } = useCommissions()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -59,17 +57,31 @@ async function onGetProjectCommissions() {
         }
     }
 }
+
+const projectIsFirstEdition = () => {
+    let perm = true
+    if (projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)) perm = false
+    return perm
+}
 </script>
 
 <template>
-    <section class="flex-column">
+    <div class="flex-column">
         <div class="display-row">
             <h4>{{ t('project.re-edition') }}</h4>
             <p>
                 {{
-                    projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false) ? t('yes') : t('no')
+                    !projectIsFirstEdition ? t('yes') : t('no')
                 }}
             </p>
+        </div>
+
+        <div
+            v-if="!projectIsFirstEdition"
+            class="display-row"
+        >
+            <h4>{{ t('project.budget-previous-edition') }}</h4>
+            <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
         </div>
 
         <div class="display-row">
@@ -98,62 +110,51 @@ async function onGetProjectCommissions() {
         </div>
 
         <div
-            v-for="commissionFund in projectStore.projectCommissionFunds"
-            :key="commissionFund.id"
-            class="display-row"
+            v-for="projectCommissionFund in projectStore.projectCommissionFunds"
+            :key="projectCommissionFund.id"
+            class="flex-column padding-top"
         >
-            <h4>
-                {{
-                    `${t('project.amount-asked')}
-                                    (${fundsLabels.find(obj => obj.value === commissionFund.commissionFund)?.label})`
-                }}
-            </h4>
-            <p>{{ commissionFund.amountAsked + CURRENCY }}</p>
-        </div>
-
-        <div
-            v-if="projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)"
-            class="flex-section"
-        >
-            <h3>{{ t('project.previous-edition') }}</h3>
+            <h3>{{ getFundLabel(projectCommissionFund.commissionFund) }}</h3>
 
             <div
-                v-for="commissionFund in projectStore.projectCommissionFunds"
-                :key="commissionFund.id"
-                class="display-row"
+                v-if="!projectIsFirstEdition"
+                class="flex-row"
             >
-                <h4>
-                    {{
-                        `${t('project.previous-asked')}
-                                        (${fundsLabels.find(obj => obj.value === commissionFund.commissionFund)?.label})`
-                    }}
-                </h4>
-                <p>{{ commissionFund.amountAskedPreviousEdition + CURRENCY }}</p>
+                <div class="display-row">
+                    <h4>{{ t('project.previous-asked') }}</h4>
+                    <p>{{ projectCommissionFund.amountAskedPreviousEdition + CURRENCY }}</p>
+                </div>
+
+                <div class="display-row">
+                    <h4>{{ t('project.previous-earned') }}</h4>
+                    <p>{{ projectCommissionFund.amountEarnedPreviousEdition + CURRENCY }}</p>
+                </div>
             </div>
 
-            <div
-                v-for="commissionFund in projectStore.projectCommissionFunds"
-                :key="commissionFund.id"
-                class="display-row"
-            >
-                <h4>
-                    {{
-                        `${t('project.previous-earned')}
-                                        (${fundsLabels.find(obj => obj.value === commissionFund.commissionFund)?.label})`
-                    }}
-                </h4>
-                <p>{{ commissionFund.amountEarnedPreviousEdition + CURRENCY }}</p>
-            </div>
+            <div class="flex-row">
+                <div class="display-row">
+                    <h4>{{ t('project.amount-asked') }}</h4>
+                    <p>{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
+                </div>
 
-            <div class="display-row">
-                <h4>{{ t('project.budget-previous-edition') }}</h4>
-                <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
+                <div
+                    v-if="projectCommissionFund.amountEarned"
+                    class="display-row"
+                >
+                    <h4>{{ t('project.amount-earned') }}</h4>
+                    <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+@import "@/assets/_variables.scss";
+
+.flex-row > * {
+  width: $fullSize;
+}
 </style>

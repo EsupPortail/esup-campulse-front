@@ -8,11 +8,11 @@ export interface Document {
     isRequiredInProcess: boolean,
     daysBeforeExpiration: string,
     expirationDay: string,
-    pathTemplate: string | null,
+    pathTemplate: string | undefined,
     mimeTypes: MimeType[],
     processType: DocumentProcessType,
     institution: number | null,
-    commission: number | null
+    fund: number | null
 }
 
 type MimeType =
@@ -46,6 +46,7 @@ export interface DocumentUpload {
     pathFile: string,
     size: number,
     validatedDate: string,
+    comment: string,
     document: number,
     user?: number | null,
     association?: number | null,
@@ -63,7 +64,7 @@ export interface ProcessDocument {
     isRequiredInProcess?: boolean,
     mimeTypes?: MimeType[],
     name?: string,
-    pathTemplate?: string | null
+    pathTemplate?: string | undefined
 }
 
 type DocumentUploadStatus = 'DOCUMENT_REJECTED' | 'DOCUMENT_PROCESSING' | 'DOCUMENT_VALIDATED'
