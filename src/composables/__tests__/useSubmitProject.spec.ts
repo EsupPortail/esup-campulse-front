@@ -95,6 +95,7 @@ describe('useSubmitProject', () => {
                     plannedEndDate: '2023-06-15T00:00:00.000Z',
                     plannedLocation: 'Strasbourg',
                     association: '1',
+                    partnerAssociation: 'Personne'
                 })
             })
         })
@@ -109,7 +110,8 @@ describe('useSubmitProject', () => {
                     plannedStartDate: '2023-06-15T00:00:00.000Z',
                     plannedEndDate: '2023-06-15T00:00:00.000Z',
                     plannedLocation: 'Strasbourg',
-                    user: '7'
+                    user: '7',
+                    partnerAssociation: 'Personne'
                 })
             })
         })
