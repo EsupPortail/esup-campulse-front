@@ -191,6 +191,12 @@
     },
     "all-charters": "Toutes les chartes",
     "association-charter": "Charte du site Alsace",
+    "association-charter-status": {
+      "expired": "Charte site Alsace expirée depuis le {expirationDate}",
+      "no-charter": "Charte site Alsace non signée",
+      "processing": "Charte site Alsace en cours de validation",
+      "validated": "Charte site Alsace valide jusqu'au {expirationDate}"
+    },
     "association-charters": "Chartes par associations",
     "charter": "Charte | Chartes",
     "expiration-date": "Date d'expiration",

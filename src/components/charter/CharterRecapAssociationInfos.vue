@@ -49,7 +49,7 @@ async function onGetAssociationDetails() {
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.last-goa') }}</p>
-            <p>{{ associationStore.association?.lastGoaDate }}</p>
+            <p>{{ associationStore.association?.lastGoaDate.split('-').reverse().join('/') }}</p>
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.president-name') }}</p>

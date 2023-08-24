@@ -50,12 +50,13 @@ export default function () {
             manageCharters.value.push({
                 associationId: uploadedCharter?.association,
                 documentId: document.id,
+                documentAcronym: document.acronym,
                 documentUploadId: uploadedCharter?.id ?? 0,
                 documentName: document.name,
                 pathTemplate: document.pathTemplate,
                 pathFile: uploadedCharter?.pathFile,
-                validatedDate: charterStatus.validatedDate,
-                expirationDate: charterStatus.expirationDate,
+                validatedDate: formatDate(charterStatus.validatedDate)?.split('-').reverse().join('/'),
+                expirationDate: formatDate(charterStatus.expirationDate)?.split('-').reverse().join('/'),
                 charterStatus: charterStatus.charterStatus
             })
         })
@@ -126,7 +127,7 @@ export default function () {
                 charterStatus = 'PROCESSING'
             } else if (document.daysBeforeExpiration) { // if document must be signed once a year
                 const splitValidatedDate = validatedDate.split('-')
-                expirationDate = [splitValidatedDate[0] + 1, splitValidatedDate[1], splitValidatedDate[2]].join('-')
+                expirationDate = [(parseInt(splitValidatedDate[0]) + 1).toString(), splitValidatedDate[1], splitValidatedDate[2]].join('-')
                 if (fromDateIsAnterior(validatedDate, expirationDate, false)) {
                     charterStatus = 'VALIDATED'
                 } else {

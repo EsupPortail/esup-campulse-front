@@ -8,6 +8,7 @@ import {useRoute} from 'vue-router'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import useCharters from '@/composables/useCharters'
 import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
@@ -18,6 +19,7 @@ const route = useRoute()
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
 const {catchHTTPError} = useErrors()
+const {initCharters, manageCharters} = useCharters()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
@@ -26,9 +28,12 @@ watch(() => associationStore.association, () => {
 
 const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
+const associationCharterStatus = ref<string>('')
+
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
+    await onGetAssociationCharter()
     dynamicTitle.value = associationStore.association?.name
     loading.hide()
 })
@@ -40,6 +45,37 @@ const hasLogo = computed(() => {
 async function onGetAssociationDetail() {
     try {
         await associationStore.getAssociationDetail(parseInt(route.params.id as string), true)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
+
+async function onGetAssociationCharter() {
+    try {
+        await initCharters(parseInt(route.params.id as string), association.value?.isSite as boolean)
+        const charter = manageCharters.value.find(x => x.documentAcronym === 'CHARTE_SITE_ALSACE')
+        if (charter) {
+            let str = ''
+            switch (charter.charterStatus) {
+            case 'VALIDATED':
+                str = t('charter.association-charter-status.validated', {expirationDate: charter.expirationDate})
+                break
+            case 'EXPIRED':
+                str = t('charter.association-charter-status.expired', {expirationDate: charter.expirationDate})
+                break
+            case 'PROCESSING':
+                str = t('charter.association-charter-status.processing')
+                break
+            default:
+                str = t('charter.association-charter-status.no-charter')
+            }
+            associationCharterStatus.value = str
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -68,21 +104,17 @@ async function onGetAssociationDetail() {
                         itemprop="logo"
                     />
                 </div>
-                <div class="association-name">
+                <div class="association-name text-center container">
                     <p
                         v-if="association?.acronym"
-                        class="flex-row-center"
+                        class="title-2"
                         itemprop="name"
                     >
                         {{ association?.name }} ({{ association?.acronym }})
                     </p>
-                    <p>{{ t('association.labels.charter-validity') }}</p>
-                </div>
-                <div
-                    v-if="association?.socialObject"
-                    class="socialObjectSection"
-                >
-                    <p>{{ association?.socialObject }}</p>
+                    <!--                    <p>{{ t('association.labels.charter-validity') }}</p>-->
+                    <p>{{ associationCharterStatus }}</p>
+                    <p v-if="association?.socialObject">{{ association?.socialObject }}</p>
                 </div>
             </div>
         </div>
@@ -206,7 +238,8 @@ async function onGetAssociationDetail() {
 
 
         <div
-            v-if="association?.address || association?.phone || association?.email || association?.website ||(association?.socialNetworks && association?.socialNetworks?.length > 0)"
+            v-if="association?.address || association?.phone || association?.email || association?.website ||
+                (association?.socialNetworks && association?.socialNetworks?.length > 0)"
         >
             <div class="dashboard-section">
                 <h2>
@@ -228,8 +261,9 @@ async function onGetAssociationDetail() {
                                 itemscope
                                 itemtype="https://schema.org/PostalAddress"
                             >
-                                <span itemprop="streetAddress">{{ association?.address }}</span><br/>
-                                <span itemprop="postalCode">{{ association?.zipcode }}</span> <span itemprop="addressLocality">{{ association?.city }}</span><br/>
+                                <span itemprop="streetAddress">{{ association?.address }}</span>
+                                <span itemprop="postalCode">{{ association?.zipcode }}</span>
+                                <span itemprop="addressLocality">{{ association?.city }}</span>
                                 <span itemprop="addressCountry">{{ association?.country }}</span>
                             </dd>
                         </div>
