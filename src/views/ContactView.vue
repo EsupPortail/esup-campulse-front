@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref} from 'vue'
-import type {ContactStore} from '#/index'
+import type {Content} from '#/index'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
@@ -12,8 +12,8 @@ const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 
-const contactInfo = ref<ContactStore>()
-const contactList = ref<ContactStore>()
+const contactInfo = ref<Content>()
+const contactList = ref<Content>()
 
 onMounted(async function () {
     loading.show()
@@ -24,7 +24,7 @@ onMounted(async function () {
 
 async function onGetContent() {
     try {
-        await contentStore.getContent()
+        await contentStore.getContentsByCode(['CONTACT_INFO', 'CONTACT_LIST'])
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -36,7 +36,7 @@ async function onGetContent() {
 }
 
 function findContentObject(code: string) {
-    return contentStore.about.find(obj => obj.code === code)
+    return contentStore.contents.find(obj => obj.code === code)
 }
 
 const initContent = () => {

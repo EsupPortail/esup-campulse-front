@@ -3,22 +3,23 @@ import AboutCard from '@/components/layout/LayoutAboutCard.vue'
 import ServiceCard from '@/components/layout/LayoutAboutServiceCard.vue'
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref, watch} from 'vue'
-import type {AboutStore} from '#/index'
+import type {Content} from '#/index'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 
-const content = useContentStore()
-const aboutApp = ref<AboutStore>()
-const aboutFunding = ref<AboutStore>()
-const aboutPartnership = ref<AboutStore>()
-const homeAssociation = ref<AboutStore>()
-const homeCharter = ref<AboutStore>()
-const homeProject = ref<AboutStore>()
+const contentStore = useContentStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
+
+const aboutApp = ref<Content>()
+const aboutFunding = ref<Content>()
+const aboutPartnership = ref<Content>()
+const homeAssociation = ref<Content>()
+const homeCharter = ref<Content>()
+const homeProject = ref<Content>()
 
 onMounted(async () => {
     loading.show()
@@ -29,7 +30,7 @@ onMounted(async () => {
 
 async function onGetContent() {
     try {
-        await content.getContent()
+        await contentStore.getContentsByCode(['ABOUT_APP', 'ABOUT_FUNDING', 'ABOUT_PARTNERSHIP', 'HOME_ASSOCIATION', 'HOME_PROJECT', 'HOME_CHARTER'])
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -41,7 +42,7 @@ async function onGetContent() {
 }
 
 function findContentObject(code: string) {
-    return content.about.find(obj => obj.code === code)
+    return contentStore.contents.find(obj => obj.code === code)
 }
 
 const initContent = () => {
@@ -52,6 +53,7 @@ const initContent = () => {
     homeProject.value = findContentObject('HOME_PROJECT')
     homeCharter.value = findContentObject('HOME_CHARTER')
 }
+
 </script>
 
 <template>
@@ -65,17 +67,17 @@ const initContent = () => {
             <div class="container">
                 <AboutCard
                     :body="aboutApp?.body"
-                    :cssClass="content.cards[0].cssClass"
+                    :cssClass="contentStore.CSSClasses[0]"
                     :header="aboutApp?.header"
                 />
                 <AboutCard
                     :body="aboutPartnership?.body"
-                    :cssClass="content.cards[1].cssClass"
+                    :cssClass="contentStore.CSSClasses[1]"
                     :header="aboutPartnership?.header"
                 />
                 <AboutCard
                     :body="aboutFunding?.body"
-                    :cssClass="content.cards[2].cssClass"
+                    :cssClass="contentStore.CSSClasses[2]"
                     :header="aboutFunding?.header"
                 />
             </div>
@@ -91,17 +93,17 @@ const initContent = () => {
                 <div class="container flex-row-center align-items-stretch">
                     <ServiceCard
                         :body="homeAssociation?.body"
-                        :cssClass="content.cards[0].cssClass"
+                        :cssClass="contentStore.CSSClasses[0]"
                         :header="homeAssociation?.header"
                     />
                     <ServiceCard
                         :body="homeCharter?.body"
-                        :cssClass="content.cards[1].cssClass"
+                        :cssClass="contentStore.CSSClasses[1]"
                         :header="homeCharter?.header"
                     />
                     <ServiceCard
                         :body="homeProject?.body"
-                        :cssClass="content.cards[2].cssClass"
+                        :cssClass="contentStore.CSSClasses[2]"
                         :header="homeProject?.header"
                     />
                 </div>

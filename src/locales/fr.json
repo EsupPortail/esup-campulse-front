@@ -369,7 +369,6 @@
     "no-match": "Aucune association trouvée.",
     "search": "Chercher dans l'annuaire",
     "search-placeholder": "Université de Strasbourg, Sciences...",
-    "subtitle": "Toutes les associations du site Alsace sont ici !",
     "title": "Associations"
   },
   "discard-changes": "Abandonner les modifications",
@@ -388,8 +387,6 @@
   "footer": {
     "about": "À propos",
     "contact": "Contact",
-    "copyright": "2017-2023 - Unistra - Tous droits réservés",
-    "database": "La Base de Données des Associations Etudiantes d’Alsace est un annuaire regroupant les associations étudiantes d’Alsace. Ce projet est réalisé dans le cadre du Schéma Directeur de la Vie Etudiante – Alsace, qui lie les établissements d’enseignement supérieur (Unistra, UHA, INSA, ENGEES, ENSAS, HEAR) et la BNU, en partenariat avec le Crous.",
     "legal-notice": "Mentions légales"
   },
   "forbidden": "Non autorisé",
@@ -555,16 +552,24 @@
     "subtitle": "Le site de la vie étudiante associative de l'UNISTRA"
   },
   "home": {
-    "back-dashboard": "Retour",
-    "banner": {
-      "description": "Association, porteur ou porteuse de projet, venez présenter votre projet.",
-      "title": "INFORMATIONS: Commission de CAPE le 10 décembre 2022"
+    "directory": {
+      "button": "Consulter l'annuaire",
+      "registered-associations": "associations enregistrées dans l'annuaire",
+      "title-line-1": "Annuaire",
+      "title-line-2": "des associations"
     },
-    "charter": "Charte des associations",
-    "commission": "Commission d'aide aux projets étudiants",
-    "dashboard": "Tableau de bord",
-    "directory": "Annuaire des associations",
-    "title": "Bienvenue sur la plateforme"
+    "charter": {
+      "button": "Espace charte",
+      "charter-update": "Dernière mise à jour de la charte le",
+      "title-line-1": "Charte",
+      "title-line-2": "des associations du site Alsace"
+    },
+    "commission": {
+      "button": "Espace CAPE",
+      "next-commission": "Prochaine commission",
+      "title-line-1": "CAPE",
+      "title-line-2": "Commission d'Aide aux Projets Étudiants"
+    }
   },
   "loading": "Chargement...",
   "login": {
@@ -593,7 +598,7 @@
       "association-before-deletion-word-error": "Vérification échouée, veuillez réessayer.",
       "delete-associations-error": "Les associations suivantes ne peuvent être supprimées : ",
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
-      "disable-associations-error": "Les associations suivantes ne peuvent être desactivées : ",
+      "disable-associations-error": "Les associations suivantes ne peuvent être désactivées : ",
       "email-associations-error": "Ces associations n'ont pas d'adresse email : ",
       "enable-associations-error": "Les associations suivantes ne peuvent être activées : ",
       "error": "Une erreur est survenue.",

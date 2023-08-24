@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 
 const props = defineProps<{
-    header: string,
+    header?: string,
     /*label: string,
     code: string,*/
-    body: string,
+    body?: string,
     cssClass: string
 }>()
 </script>

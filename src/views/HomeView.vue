@@ -9,8 +9,9 @@ import {useI18n} from 'vue-i18n'
 import {onMounted, ref, watch} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import type {Content} from '#/index'
 
-const home = useContentStore()
+const contentStore = useContentStore()
 const associationStore = useAssociationStore()
 const {getNextCommission, commission} = useCommissions()
 const {notify, loading} = useQuasar()
@@ -20,6 +21,7 @@ const {catchHTTPError} = useErrors()
 onMounted(async () => {
     loading.show()
     await onGetContents()
+    initContent()
     loading.hide()
 })
 
@@ -28,10 +30,27 @@ watch(() => associationStore.associationNames.length, () => {
     associationCount.value = associationStore.associationNames.length
 })
 
+const homeAssociation = ref<Content>()
+const homeCharter = ref<Content>()
+const homeProject = ref<Content>()
+const homeInfo = ref<Content>()
+
+function findContentObject(code: string) {
+    return contentStore.contents.find(obj => obj.code === code)
+}
+
+const initContent = () => {
+    homeAssociation.value = findContentObject('HOME_ASSOCIATION')
+    homeProject.value = findContentObject('HOME_PROJECT')
+    homeCharter.value = findContentObject('HOME_CHARTER')
+    homeInfo.value = findContentObject('HOME_INFO')
+}
+
 const nextCommissionDate = ref<string>()
 
 async function onGetContents() {
     try {
+        await contentStore.getContentsByCode(['HOME_ASSOCIATION', 'HOME_CHARTER', 'HOME_PROJECT', 'HOME_INFO'])
         await associationStore.getAssociationNames(true, false)
         await getNextCommission()
         nextCommissionDate.value = commission.value?.commissionDate.split('-').reverse().join('/')
@@ -50,41 +69,40 @@ async function onGetContents() {
 <template>
     <HomeBanner
         id="home-info-panel"
-        :description="home.banner.description"
-        :is-displayed="home.banner.isDisplayed"
-        :title="home.banner.title"
+        :description="homeInfo?.body"
+        :title="homeInfo?.header"
     />
 
     <div id="home-section">
         <HomeCard
-            :buttonLabel="home.cards[0].buttonLabel"
-            :cssClass="home.cards[0].cssClass"
-            :description="home.cards[0].description"
-            :iconClass="home.cards[0].iconClass"
-            :infoContent="'<strong>' + associationCount + '</strong> ' + home.cards[0].infoContent"
-            :link="home.cards[0].link"
-            :titleLine1="home.cards[0].titleLine1"
-            :titleLine2="home.cards[0].titleLine2"
+            :buttonLabel="t('home.directory.button')"
+            :cssClass="contentStore.CSSClasses[0]"
+            :description="homeAssociation?.body"
+            :infoContent="'<strong>' + associationCount + '</strong> ' + t('home.directory.registered-associations')"
+            :titleLine1="t('home.directory.title-line-1')"
+            :titleLine2="t('home.directory.title-line-2')"
+            iconClass="bi-geo-alt"
+            link="/associations"
         />
         <HomeCard
-            :buttonLabel="home.cards[1].buttonLabel"
-            :cssClass="home.cards[1].cssClass"
-            :description="home.cards[1].description"
-            :iconClass="home.cards[1].iconClass"
-            :infoContent="home.cards[1].infoContent"
-            :link="home.cards[1].link"
-            :titleLine1="home.cards[1].titleLine1"
-            :titleLine2="home.cards[1].titleLine2"
+            :buttonLabel="t('home.charter.button')"
+            :cssClass="contentStore.CSSClasses[1]"
+            :description="homeCharter?.body"
+            :infoContent="t('home.charter.charter-update') + ' <strong>15/01/2022</strong>'"
+            :titleLine1="t('home.charter.title-line-1')"
+            :titleLine2="t('home.charter.title-line-2')"
+            iconClass="bi-book"
+            link="/charter"
         />
         <HomeCard
-            :buttonLabel="home.cards[2].buttonLabel"
-            :cssClass="home.cards[2].cssClass"
-            :description="home.cards[2].description"
-            :iconClass="home.cards[2].iconClass"
-            :infoContent="home.cards[2].infoContent + ' <strong>' + nextCommissionDate + '</strong>'"
-            :link="home.cards[2].link"
-            :titleLine1="home.cards[2].titleLine1"
-            :titleLine2="home.cards[2].titleLine2"
+            :buttonLabel="t('home.commission.button')"
+            :cssClass="contentStore.CSSClasses[2]"
+            :description="homeProject?.body"
+            :infoContent="t('home.commission.next-commission') + ' :<br>' + ' <strong>' + nextCommissionDate + '</strong>'"
+            :titleLine1="t('home.commission.title-line-1')"
+            :titleLine2="t('home.commission.title-line-2')"
+            iconClass="bi-send"
+            link="/commission"
         />
     </div>
 </template>

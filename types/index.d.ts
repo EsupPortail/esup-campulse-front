@@ -23,11 +23,8 @@ export interface HomeBanner {
 }
 
 interface ContentStore {
-    cards: HomeCards,
-    banner: HomeBanner,
-    about: AboutStore[],
-    contact: ContactStore[],
-    home: HomeStore[]
+    contents: Content[],
+    CSSClasses: string[]
 }
 
 interface SelectLabel {
@@ -46,34 +43,16 @@ interface PasswordCheckerTest {
     additionalMessage: string
 }
 
-export interface AboutStore {
+export interface Content {
     id: number,
-    code: contentCode,
+    code: ContentCode,
     label: string,
     header: string,
     body: string,
     footer: string
 }
 
-export interface ContactStore {
-    id: number,
-    code: contentCode,
-    label: string,
-    header: string,
-    body: string,
-    footer: string
-}
-
-export interface HomeStore {
-    id: number,
-    code: contentCode,
-    label: string,
-    header: string,
-    body: string,
-    footer: string
-}
-
-type contentCode =
+type ContentCode =
     'HOME_ASSOCIATION' |
     'HOME_CHARTER' |
     'HOME_PROJECT' |
@@ -82,11 +61,26 @@ type contentCode =
     'ABOUT_FUNDING' |
     'ABOUT_PARTNERSHIP' |
     'CONTACT_INFO' |
-    'CONTACT_LIST'
+    'CONTACT_LIST' |
+    'ASSOCIATION_HOME_FIRST_BLOCK' |
+    'CHARTER_HOME_FIRST_BLOCK' |
+    'CHARTER_HOME_SECOND_BLOCK' |
+    'CHARTER_HOME_ACTION_VALIDATE_CHARTERS' |
+    'CHARTER_HOME_ACTION_MANAGE_DOCUMENTS' |
+    'CHARTER_HOME_ACTION_SIGN_CHARTERS' |
+    'CHARTER_HOME_ACTION_DOWNLOAD_DOCUMENTS' |
+    'COMMISSION_HOME_FIRST_BLOCK' |
+    'COMMISSION_HOME_SECOND_BLOCK' |
+    'COMMISSION_HOME_ACTION_MANAGE_PROJECTS' |
+    'COMMISSION_HOME_ACTION_MANAGE_ARCHIVE' |
+    'COMMISSION_HOME_ACTION_MANAGE_COMMISSIONS' |
+    'COMMISSION_HOME_ACTION_SUBMIT_PROJECT' |
+    'COMMISSION_HOME_ACTION_DOWNLOAD_DOCUMENTS' |
+    'SITE_FOOTER'
 
 export interface PageCard {
     to: { name: string },
-    btnLabel: string,
+    btnLabel?: string,
     icon: string,
-    text: string
+    text?: string
 }

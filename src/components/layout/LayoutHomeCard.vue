@@ -47,7 +47,7 @@ defineProps({
             </div>
 
             <div class="section-content">
-                <p>{{ description }}</p>
+                <p v-html="description"></p>
                 <div class="section-buttons">
                     <RouterLink :to="link">
                         {{ buttonLabel }} <i
@@ -63,4 +63,8 @@ defineProps({
 
 <style lang="scss" scoped>
 @import '@/assets/styles/home.scss';
+
+h2 {
+    line-height: 1.4;
+}
 </style>
