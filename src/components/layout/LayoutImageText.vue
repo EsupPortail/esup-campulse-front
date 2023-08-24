@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const props = defineProps<{
-    title: string,
-    text: string,
+    title?: string,
+    text?: string,
     img: string
 }>()
 </script>
@@ -14,8 +14,8 @@ const props = defineProps<{
                 src="@/assets/img/unistra.jpg"
             />
             <div>
-                <h2 v-html="props.title"></h2>
-                <p v-html="props.text"></p>
+                <h2 v-html="props?.title"></h2>
+                <p v-html="props?.text"></p>
             </div>
         </div>
     </div>

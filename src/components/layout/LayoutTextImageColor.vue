@@ -2,8 +2,8 @@
 
 const props = defineProps<{
     color: 'charter' | 'commission'
-    title: string,
-    text: string,
+    title?: string,
+    text?: string,
     img: string
 }>()
 </script>
@@ -14,8 +14,8 @@ const props = defineProps<{
     >
         <div class="container">
             <div>
-                <h2 v-html="props.title"></h2>
-                <p v-html="props.text"></p>
+                <h2 v-html="props?.title"></h2>
+                <p v-html="props?.text"></p>
             </div>
             <img
                 alt=""
