@@ -1,7 +1,7 @@
 import {createI18n} from 'vue-i18n'
 
 const appLocale = import.meta.env.VITE_APP_I18N_LOCALE
-const {default: localeFile} = await import(`../locales/${import.meta.env.VITE_APP_I18N_FOLDER}/${import.meta.env.VITE_APP_I18N_LOCALE}.json`)
+const {default: localeFile} = await import(`../locales/${import.meta.env.VITE_APP_I18N_LOCALE}.json`)
 
 // localStorage.getItem('octantLocale') || navigator.language.split('-')[0] || appLocale
 
