@@ -24,6 +24,7 @@ export interface HomeBanner {
 
 interface ContentStore {
     contents: Content[],
+    logos: Logo[],
     CSSClasses: string[]
 }
 
@@ -50,6 +51,15 @@ export interface Content {
     header: string,
     body: string,
     footer: string
+}
+
+export interface Logo {
+    id: number,
+    acronym: string,
+    title: string,
+    url: string,
+    pathLogo: string,
+    visible: boolean
 }
 
 type ContentCode =

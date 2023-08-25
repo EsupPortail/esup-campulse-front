@@ -8,7 +8,6 @@ import type {Content, ContentCode} from '#/index'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
-import logosFile from '@/assets/img/logos/logos.json'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -29,6 +28,7 @@ const initContent = () => {
 async function onGetContent() {
     try {
         await contentStore.getContentsByCode(['SITE_FOOTER'])
+        await contentStore.getLogos()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -56,13 +56,13 @@ onMounted(async () => {
         <div id="footer-logos">
             <ul class="wrapper">
                 <li
-                    v-for="logo in logosFile.filter((l) => l.visible === true)"
-                    :key="logo.src"
+                    v-for="logo in contentStore.logos.filter((l) => l.visible === true)"
+                    :key="logo.acronym"
                 >
                     <a :href="logo.url">
                         <img
-                            :alt="logo.alt"
-                            :src="'src/assets/img/logos/' + logo.src"
+                            :alt="logo.title"
+                            :src="logo.pathLogo"
                         />
                     </a>
                 </li>
