@@ -41,7 +41,11 @@
         "@intlify/vue-i18n/no-unused-keys": [
             "warn",
             {
-                "extensions": [".js", ".vue", ".ts"]
+                "extensions": [
+                    ".js",
+                    ".vue",
+                    ".ts"
+                ]
             }
         ],
         "vue/first-attribute-linebreak": "warn",

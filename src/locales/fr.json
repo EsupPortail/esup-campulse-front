@@ -29,7 +29,6 @@
     "confirm-association-cannot-submit-projects": "Voulez-vous vraiment retirer le droit de soumettre des projets à cette association ?",
     "confirm-association-publish": "Voulez-vous vraiment publier cette association dans l'annuaire ? Toutes les informations la concernant présentes sur cette fiche seront visibles publiquement.",
     "confirm-association-unpublish": "Voulez-vous vraiment dépublier cette association de l'annuaire ? Toutes les informations la concernant présentes sur cette fiche ne seront plus visibles pour le public.",
-    "delete-user": {},
     "leave-association-edition": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues.",
     "leave-user-edition": "Êtes-vous sûr de vouloir quitter l'édition des informations de cet utilisateur ? Si vous avez effectué des modifications, celles-ci seront perdues.",
     "modify-email": "Attention, l'adresse mail est utilisée comme identifiant pour se connecter. En cas de modification, elle deviendra le nouvel identifiant du compte. Un mail de vérification sera envoyé sur cette adresse pour la valider."
@@ -225,7 +224,6 @@
     "submission": "Date limite de soumission"
   },
   "consult": "Consulter",
-  "contact": {},
   "continue": "Continuer",
   "dashboard": {
     "account-infos": "Modifier mes informations personnelles",
@@ -339,7 +337,6 @@
     "description": "Le contenu que vous avez demandé est introuvable. Vous pouvez retourner sur la page d'accueil ou votre espace, si vous êtes connecté.",
     "title": "Contenu introuvable"
   },
-  "footer": {},
   "forbidden": "Non autorisé",
   "forms": {
     "add-association": "Ajouter une association",
@@ -753,7 +750,6 @@
     "delete-account-application": "Supprimer la demande de compte",
     "delete-association-user": "Supprimer l'affiliation",
     "delete-user": "Supprimer l'utilisateur",
-    "forms": {},
     "management": "Gestion des comptes",
     "register-in-new-associations": "Ajouter l'utilisateur dans de nouvelles associations",
     "user-associations": "Associations de l'utilisateur",
