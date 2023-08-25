@@ -8,6 +8,7 @@ import type {Content, ContentCode} from '#/index'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
+import logosFile from '@/assets/img/logos/logos.json'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -54,85 +55,14 @@ onMounted(async () => {
     >
         <div id="footer-logos">
             <ul class="wrapper">
-                <li>
-                    <a href="https://www.crous-strasbourg.fr/">
+                <li
+                    v-for="logo in logosFile.filter((l) => l.visible === true)"
+                    :key="logo.src"
+                >
+                    <a :href="logo.url">
                         <img
-                            alt="Le Centre régional des œuvres universitaires et scolaires"
-                            src="@/assets/img/logos/crous.png"
-                        />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.unistra.fr/">
-                        <img
-                            alt="L'Université de Strasbourg"
-                            src="@/assets/img/logos/unistra.png"
-                        />
-                    </a>
-                </li>
-                <!--
-                <li>
-                    <a href="https://www.uha.fr/">
-                        <img
-                            alt="L'Université de Haute-Alsace"
-                            src="@/assets/img/logos/uha.png"
-                        />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.insa-strasbourg.fr/">
-                        <img
-                            alt="L'Institut National des Sciences Appliquées Strasbourg"
-                            src="@/assets/img/logos/insa.png"
-                        />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.hear.fr/">
-                        <img
-                            alt="La Haute École des Arts du Rhin"
-                            src="@/assets/img/logos/hear.png"
-                        />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://engees.unistra.fr/">
-                        <img
-                            alt="L'École Nationale du Génie de l'Eau et de l'Environnement de Strasbourg"
-                            src="@/assets/img/logos/engees.png"
-                        />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.strasbourg.archi.fr/">
-                        <img
-                            alt="L'École Nationale Supérieure d'Architecture de Strasbourg"
-                            src="@/assets/img/logos/ensas.png"
-                        />
-                    </a>
-                </li>
-                -->
-                <li>
-                    <a href="https://cvec.etudiant.gouv.fr/">
-                        <img
-                            alt="La Contribution Vie Étudiante et de Campus"
-                            src="@/assets/img/logos/cvec.png"
-                        />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.economie.gouv.fr/plan-de-relance">
-                        <img
-                            alt="France Relance"
-                            src="@/assets/img/logos/france-relance.png"
-                        />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.enseignementsup-recherche.gouv.fr/">
-                        <img
-                            alt="Le Ministère de l'Enseignement Supérieur et de la Recherche"
-                            src="@/assets/img/logos/esr.png"
+                            :alt="logo.alt"
+                            :src="'src/assets/img/logos/' + logo.src"
                         />
                     </a>
                 </li>
