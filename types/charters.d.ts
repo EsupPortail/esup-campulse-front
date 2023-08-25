@@ -1,7 +1,10 @@
+import type {DocumentProcessType} from '#/documents'
+
 export interface ManageCharter {
     associationId?: number | null,
     documentId: number,
     documentAcronym: string,
+    documentProcessType: DocumentProcessType,
     documentUploadId?: number | null,
     documentName: string,
     pathTemplate: string | null | undefined,

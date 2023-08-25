@@ -144,6 +144,7 @@
     "add-user": "Ajouter un compte",
     "archived-commission": "CAPE archivées",
     "archived-projects": "Projets archivés",
+    "association-charters-detail": "Chartes de l'association",
     "association-dashboard": "Gérer mon association",
     "association-detail": "Fiche association",
     "charter": "Espace chartes",
@@ -189,6 +190,7 @@
       "return": "Demander des informations complémentaires",
       "validate": "Valider la charte"
     },
+    "add-new-comment": "Ajouter un commentaire",
     "all-charters": "Toutes les chartes",
     "association-charter": "Charte du site Alsace",
     "association-charter-status": {
@@ -197,7 +199,7 @@
       "processing": "Charte site Alsace en cours de validation",
       "validated": "Charte site Alsace valide jusqu'au {expirationDate}"
     },
-    "association-charters": "Chartes par associations",
+    "association-charters": "Chartes de l'association",
     "charter": "Charte | Chartes",
     "expiration-date": "Date d'expiration",
     "funds": "Chartes CAPE",
@@ -207,6 +209,7 @@
       "manage": "Signer et gérer les chartes",
       "re-sign": "Renouveler la signature de la charte",
       "sign": "Signer la charte",
+      "validate": "Valider la charte",
       "view": "Voir la charte"
     },
     "pdf-name": "Récapitulatif-Signature-Charte-",
@@ -407,6 +410,7 @@
     "association-name": "Nom de l'association",
     "association-role": "Votre fonction dans l'association",
     "association-student-count": "Nombre de membres dans l'association",
+    "charter-validation-comment": "Commentaire obligatoire en cas de refus de charte ou de demande d'informations complémentaires.",
     "comment": "Votre commentaire",
     "commission-date-must-be-posterior-to-submission-date": "La date de commission doit être postérieure à la date limite de soumission. Les dates ne doivent pas être passées.",
     "confirm-delete": "Êtes-vous sûr de vouloir supprimer ? Cette action est irréversible.",

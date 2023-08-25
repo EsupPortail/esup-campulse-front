@@ -12,7 +12,7 @@ const associationCharters = ref<AssociationCharter[]>([])
 const processingCharters = ref<ProcessingCharter[]>([])
 
 export default function () {
-    const {formatDate, fromDateIsAnterior} = useUtility()
+    const {formatDate} = useUtility()
     const associationStore = useAssociationStore()
     const {axiosAuthenticated} = useAxios()
 
@@ -51,6 +51,7 @@ export default function () {
                 associationId: uploadedCharter?.association,
                 documentId: document.id,
                 documentAcronym: document.acronym,
+                documentProcessType: document.processType,
                 documentUploadId: uploadedCharter?.id ?? 0,
                 documentName: document.name,
                 pathTemplate: document.pathTemplate,
@@ -120,6 +121,8 @@ export default function () {
         let charterStatus: CharterStatus = 'NO_CHARTER'
         let validatedDate = ''
         let expirationDate = ''
+        const todayDate = new Date()
+        todayDate.setHours(0, 0, 0, 0)
         if (!isSite && document.acronym === 'CHARTE_SITE_ALSACE') charterStatus = 'NOT_SITE'
         else if (uploadedCharter) {
             validatedDate = formatDate(uploadedCharter.validatedDate) as string
@@ -128,15 +131,30 @@ export default function () {
             } else if (document.daysBeforeExpiration) { // if document must be signed once a year
                 const splitValidatedDate = validatedDate.split('-')
                 expirationDate = [(parseInt(splitValidatedDate[0]) + 1).toString(), splitValidatedDate[1], splitValidatedDate[2]].join('-')
-                if (fromDateIsAnterior(validatedDate, expirationDate, false)) {
+                // check if expiration date is inferior to today
+                const formatedExpirationDate = new Date(expirationDate)
+                if (formatedExpirationDate <= todayDate) {
                     charterStatus = 'VALIDATED'
                 } else {
                     charterStatus = 'EXPIRED'
                 }
             } else { // if document has a fixed expiration date
-                const expirationDate = document.expirationDay.split('-')
-                expirationDate.splice(0, 0, new Date().getFullYear().toString())
-                if (fromDateIsAnterior(validatedDate, expirationDate.join('-'), false)) {
+                const currentYear = new Date().getFullYear().toString()
+                const nextYear = (new Date().getFullYear() + 1).toString()
+                const factory: string[] = document.expirationDay.split('-')
+                factory.splice(0, 0, currentYear)
+                const currentYearExpirationDate = factory.join('-')
+                const formatedCurrentYearExpirationDate = new Date(currentYearExpirationDate)
+                // determine if expiration date is this year or next year
+                if (formatedCurrentYearExpirationDate >= todayDate) { // if expiration date is yet to come this year
+                    expirationDate = currentYearExpirationDate
+                } else { // if expiration date is passed this year
+                    factory.splice(0, 1, nextYear)
+                    expirationDate = factory.join('-')
+                }
+                // check if expiration date is inferior to today
+                const formatedExpirationDate = new Date(expirationDate)
+                if (formatedExpirationDate >= todayDate) {
                     charterStatus = 'VALIDATED'
                 } else {
                     charterStatus = 'EXPIRED'
@@ -170,6 +188,19 @@ export default function () {
         document.body.appendChild(link)
         link.click()
         link.remove()
+    }
+
+    // TODO
+    async function validateCharter(action: 'validate' | 'return' | 'reject', id: number, comment: string) {
+        let dataToPatch = {}
+        if (comment) {
+            dataToPatch = Object.assign(dataToPatch, {comment})
+        }
+        if (action === 'validate') {
+            const todayDate = new Date().toJSON().slice(0, 10)
+            dataToPatch = Object.assign(dataToPatch, {validatedDate: formatDate(todayDate)})
+        }
+        await axiosAuthenticated.patch(`/documents/uploads/${id}`, dataToPatch)
     }
 
     return {

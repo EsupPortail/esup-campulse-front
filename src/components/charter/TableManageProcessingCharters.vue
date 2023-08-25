@@ -54,12 +54,6 @@ const columns: QTableProps['columns'] = [
     },
     {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
 ]
-
-const openValidationPopUp = (associationId: number, charterId: number) => {
-    association.value = associationId
-    charter.value = charterId
-    open.value = true
-}
 </script>
 
 <template>
@@ -127,10 +121,9 @@ const openValidationPopUp = (associationId: number, charterId: number) => {
                 >
                     <QBtn
                         :label="t('manage')"
+                        :to="{name: 'AssociationChartersDetail', params: {associationId: props.row.associationId}}"
                         color="charter"
-                        disable
                         outline
-                        @click="openValidationPopUp(props.row.associationId, props.row.charterId)"
                     />
                 </QTd>
             </QTr>
