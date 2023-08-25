@@ -19,7 +19,7 @@ const props = defineProps<{
             </div>
             <img
                 alt=""
-                src="@/assets/img/unistra.jpg"
+                :src="props?.img"
             />
         </div>
     </div>

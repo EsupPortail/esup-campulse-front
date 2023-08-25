@@ -11,7 +11,7 @@ const props = defineProps<{
         <div class="container">
             <img
                 alt=""
-                src="@/assets/img/unistra.jpg"
+                :src="props?.img"
             />
             <div>
                 <h2 v-html="props?.title"></h2>

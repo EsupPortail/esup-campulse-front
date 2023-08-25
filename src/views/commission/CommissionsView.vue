@@ -121,14 +121,14 @@ onMounted(async () => {
         <LayoutImageText
             :text="firstBlock?.body"
             :title="firstBlock?.header"
-            img="unistra.jpg"
+            img="src/assets/img/commission-image-1.jpg"
             img-alt=""
         />
         <LayoutTextImageColor
             :text="secondBlock?.body"
             :title="secondBlock?.header"
             color="commission"
-            img="unistra.jpg"
+            img="src/assets/img/commission-image-2.jpg"
             img-alt=""
         />
         <LayoutPageCards

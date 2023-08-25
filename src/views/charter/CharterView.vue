@@ -113,13 +113,13 @@ onMounted(async () => {
         <LayoutImageText
             :text="firstBlock?.body"
             :title="firstBlock?.header"
-            img="unistra.jpg"
+            img="src/assets/img/charter-image-1.jpg"
         />
         <LayoutTextImageColor
             :text="secondBlock?.body"
             :title="secondBlock?.header"
             color="charter"
-            img="unistra.jpg"
+            img="src/assets/img/charter-image-2.jpg"
         />
         <LayoutPageCards
             v-if="pageCards.length"

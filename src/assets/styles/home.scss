@@ -65,7 +65,7 @@
   }
 
   &.home-section-annuaire {
-    background-image: $homeDirectoryImage;
+    background-image: $homeDirectoryBackground;
     background-position: center center;
 
     .card-icon {
@@ -79,7 +79,7 @@
   }
 
   &.home-section-charte {
-    background-image: $homeCharterImage;
+    background-image: $homeCharterBackground;
     background-position: center center;
 
     .section-card {
@@ -97,7 +97,7 @@
   }
 
   &.home-section-cape {
-    background-image: $homeCapeImage;
+    background-image: $homeCapeBackground;
     background-position: center center;
 
     .card-icon {

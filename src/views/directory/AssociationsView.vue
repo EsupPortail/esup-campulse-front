@@ -103,7 +103,7 @@ async function getContents() {
                 <div class="intro-image">
                     <img
                         :alt="t('directory.image-alt')"
-                        src="@/assets/img/unistra.jpg"
+                        src="@/assets/img/directory-image.jpg"
                     />
                 </div>
                 <div>
