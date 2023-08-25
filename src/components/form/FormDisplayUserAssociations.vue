@@ -59,12 +59,12 @@ async function onGetUserAssociations() {
                 <h3>{{ association.name }}</h3>
                 <ul>
                     <li>
-                        {{ t('dashboard.association-user.my-role') }} : <span>{{
+                        {{ t('dashboard.association-user.my-role') }}{{ t('colon') }}<span>{{
                             associationRoleOptions.find(obj => obj.value === association.role)?.label ?? t('dashboard.association-user.member')
                         }}</span>
                     </li>
                     <li>
-                        {{ t('dashboard.association-user.presidency-status') }} : <span>{{
+                        {{ t('dashboard.association-user.presidency-status') }}{{ t('colon') }}<span>{{
                             (association.role === 'isPresident'
                                 || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null
                                     && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo
@@ -72,8 +72,7 @@ async function onGetUserAssociations() {
                         }}</span>
                     </li>
                     <li>
-                        {{ t('dashboard.association-user.is-validated-by-admin') }} :
-                        <span>{{ association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
+                        {{ t('dashboard.association-user.is-validated-by-admin') }}{{ t('colon') }}<span>{{ association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
                     </li>
                 </ul>
                 <div class="flex-row padding-top padding-bottom">

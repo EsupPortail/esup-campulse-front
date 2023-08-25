@@ -75,7 +75,7 @@ async function onGetLibraryDocuments() {
     <div class="dashboard-section">
         <h2>
             <i class="bi bi-file-earmark"></i>
-            Documents
+            {{ t('documents.documents') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">

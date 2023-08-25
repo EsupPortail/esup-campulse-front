@@ -3,10 +3,17 @@
     "extends": [
         "plugin:vue/vue3-essential",
         "eslint:recommended",
-        "@vue/eslint-config-typescript/recommended"
+        "@vue/eslint-config-typescript/recommended",
+        "plugin:@intlify/vue-i18n/recommended"
     ],
     "env": {
         "vue/setup-compiler-macros": true
+    },
+    "settings": {
+        "vue-i18n": {
+            "localeDir": "./src/locales/*.{json,json5,yaml,yml}",
+            "messageSyntaxVersion": "^9.0.0"
+        }
     },
     "rules": {
         "indent": "warn",
@@ -25,6 +32,16 @@
             "error",
             {
                 "ts-ignore": "allow-with-description"
+            }
+        ],
+        "@intlify/vue-i18n/key-format-style": [
+            "warn",
+            "kebab-case"
+        ],
+        "@intlify/vue-i18n/no-unused-keys": [
+            "warn",
+            {
+                "extensions": [".js", ".vue", ".ts"]
             }
         ],
         "vue/first-attribute-linebreak": "warn",

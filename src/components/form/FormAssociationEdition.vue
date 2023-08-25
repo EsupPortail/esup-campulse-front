@@ -115,7 +115,7 @@ const MAX_FILE_SIZE = 8388608
 async function onLogoRejected() {
     notify({
         type: 'negative',
-        message: t('notifications.negative.413-error')
+        message: t('notifications.negative.error-413')
     })
 }
 
@@ -248,7 +248,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.name"
                             :disable=!isStaff
                             :label="t('association.labels.name') + ' *'"
-                            :rules="[val => val && val.length > 0 || t('forms.required-association-name-field')]"
+                            :rules="[val => val && val.length > 0 || t('forms.required-association-name')]"
                             aria-required="true"
                             clearable
                             filled
@@ -304,7 +304,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.activityField"
                             :label="t('association.labels.activity-field') + ' *'"
                             :options="associationStore.activityFieldLabels"
-                            :rules="[val => val || t('forms.required-activity-field')]"
+                            :rules="[val => val || t('forms.required-association-activity-field')]"
                             aria-required="true"
                             clearable
                             emit-value

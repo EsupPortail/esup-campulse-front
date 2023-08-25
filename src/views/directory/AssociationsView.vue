@@ -131,7 +131,7 @@ async function getContents() {
                                 {{
                                     associations.length > 1 ? t('directory.found-associations-plural') :
                                     t('directory.found-associations-singular')
-                                }} :
+                                }}{{ t('colon') }}
                             </p>
                             <p v-else>{{ t('directory.no-match') }}</p>
                             <p>
@@ -139,7 +139,7 @@ async function getContents() {
                                 {{
                                     associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') :
                                     t('directory.associations-on-page-singular')
-                                }} :
+                                }}{{ t('colon') }}
                             </p>
                         </div>
                     </div>

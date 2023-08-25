@@ -163,7 +163,7 @@ onMounted(() => {
                 aria-hidden="true"
                 class="bi bi-info"
             ></i>
-            <p>{{ t('dashboard.my-status') }} : <span><strong>{{ userGroups }}</strong></span></p>
+            <p>{{ t('dashboard.my-status') }}{{ t('colon') }}<span><strong>{{ userGroups }}</strong></span></p>
             <p>{{ t('dashboard.update-my-status') }}</p>
         </div>
     </div>

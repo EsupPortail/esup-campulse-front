@@ -110,7 +110,7 @@ async function onGetAssociationCharter() {
                         class="title-2"
                         itemprop="name"
                     >
-                        {{ association?.name }} ({{ association?.acronym }})
+                        {{ association?.name }}{{ t('colon') }}{{ association?.acronym }}
                     </p>
                     <!--                    <p>{{ t('association.labels.charter-validity') }}</p>-->
                     <p>{{ associationCharterStatus }}</p>

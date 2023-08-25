@@ -97,7 +97,7 @@ async function onGetDocuments() {
 async function onDocumentRejected() {
     notify({
         type: 'negative',
-        message: t('notifications.negative.413-error')
+        message: t('notifications.negative.error-413')
     })
 }
 

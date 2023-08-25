@@ -155,20 +155,16 @@ async function onDeleteUser() {
                             <h3>{{ association.association.name }}</h3>
                             <ul>
                                 <li>
-                                    {{ t('dashboard.association-user.is-president') }} :
-                                    {{ association.isPresident ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-president') }}{{ t('colon') }}{{ association.isPresident ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-vice-president') }} :
-                                    {{ association.isVicePresident ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-vice-president') }}{{ t('colon') }}{{ association.isVicePresident ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-secretary') }} :
-                                    {{ association.isSecretary ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-secretary') }}{{ t('colon') }}{{ association.isSecretary ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-treasurer') }} :
-                                    {{ association.isTreasurer ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-treasurer') }}{{ t('colon') }}{{ association.isTreasurer ? t('yes') : t('no') }}
                                 </li>
                             </ul>
                         </div>
@@ -223,4 +219,3 @@ async function onDeleteUser() {
 @import '@/assets/styles/dashboard.scss';
 @import "@/assets/_variables.scss";
 </style>
-

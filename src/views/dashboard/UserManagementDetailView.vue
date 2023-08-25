@@ -127,8 +127,7 @@ onBeforeRouteLeave((to, from, next) => {
                     <FormUserGroups/>
                     <ul>
                         <li>
-                            <strong>{{ t('user.is-cas') }}</strong> :
-                            {{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
+                            <strong>{{ t('user.is-cas') }}</strong>{{ t('colon') }}{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
                         </li>
                         <li>
                             <strong>{{ t('user.is-validated-by-admin') }}</strong>
