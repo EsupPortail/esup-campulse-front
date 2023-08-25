@@ -8,12 +8,10 @@ $breakpoint-md: 430px;
 $breakpoint-lg: 910px;
 
 // ---------------- Images ----------------
-$headerBackground: url('./img/resized/header-background2.jpg');
-$chevronRightImage: url('./img/chevron-right.png');
-$chevronRightCharteImage: url('./img/chevron-right-charte.png');
-$homeDirectoryImage: url('./img/resized/background-annuaire-2.jpg');
-$homeCharterImage: url('./img/resized/background-charte-2.jpg');
-$homeCapeImage: url('./img/resized/background-cape.jpg');
+$headerBackground: url('./img/header-background.jpg');
+$homeDirectoryImage: url('./img/background-annuaire.jpg');
+$homeCharterImage: url('./img/background-charte.jpg');
+$homeCapeImage: url('./img/background-cape.jpg');
 
 // ---------------- Fonts ----------------
 $baseFont: 'Titillium Web', sans-serif;

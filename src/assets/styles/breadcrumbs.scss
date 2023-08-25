@@ -21,12 +21,17 @@
     }
 
     .q-breadcrumbs__separator {
-      width: 2.75rem;
+      color: $textColor3;
       height: 0.875rem;
-      background-image: $chevronRightImage;
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: auto $fullSize;
+      position: relative;
+      width: 2.75rem;
+
+      &::before {
+        content: ">";
+        position: absolute;
+        left: 0.75rem;
+        top: -0.875rem;
+      }
     }
 
   }
@@ -58,7 +63,7 @@
     }
 
     .q-breadcrumbs__separator {
-      background-image: $chevronRightCharteImage;
+      color: $charteColorText;
     }
   }
 

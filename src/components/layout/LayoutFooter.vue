@@ -91,7 +91,7 @@ onMounted(async () => {
                     <a href="https://www.hear.fr/">
                         <img
                             alt="La Haute École des Arts du Rhin"
-                            src="@/assets/img/logos/hear-white.png"
+                            src="@/assets/img/logos/hear.png"
                         />
                     </a>
                 </li>
