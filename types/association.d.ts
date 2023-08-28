@@ -1,5 +1,6 @@
 import type {AssociationUser} from '#/user'
 import type {DocumentUpload} from '#/documents'
+import type {AssociationCharterStatus} from '#/charters'
 
 export interface Association {
     id: number,
@@ -31,7 +32,7 @@ export interface Association {
     institutionComponent?: number,
     activityField?: number,
     canSubmitProjects: boolean,
-    charterStatus: string,
+    charterStatus: AssociationCharterStatus,
     charterDate: string,
     amountMembersAllowed: number
 }

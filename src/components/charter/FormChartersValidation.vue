@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue'
-import {toRefs, watch} from 'vue'
+import {onMounted, ref, toRefs, watch} from 'vue'
 import type {ManageCharter} from '#/charters'
 import {useI18n} from 'vue-i18n'
 import useCharters from '@/composables/useCharters'
@@ -9,9 +8,6 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import CharterRecap from '@/components/charter/CharterRecap.vue'
-import CharterRecapAssociationInfos from '@/components/charter/CharterRecapAssociationInfos.vue'
-import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -173,34 +169,6 @@ async function onValidateCharter(action: 'validate' | 'return' | 'reject') {
                             />
                         </div>
                     </div>
-                    <!-- <QFile
-                        v-model="signedCharter"
-                        :label="t('charter.signed-charter') + ' *'"
-                        color="charter"
-                        filled
-                    >
-                        <template v-slot:prepend>
-                            <QIcon name="bi-paperclip"/>
-                        </template>
-                    </QFile>
-                    <div class="flex-row padding-top">
-                        <QBtn
-                            :label="t('cancel')"
-                            class="btn-lg"
-                            color="charter"
-                            icon="bi-chevron-left"
-                            text-color="charter"
-                            @click="open = false"
-                        />
-                        <QBtn
-                            :label="t('charter.sign')"
-                            class="btn-lg"
-                            color="charter"
-                            icon="bi-check-lg"
-                            text-color="charter"
-                            type="submit"
-                        />
-                    </div>-->
                 </QForm>
             </QCardSection>
         </QCard>

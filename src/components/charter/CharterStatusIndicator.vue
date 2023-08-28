@@ -49,6 +49,16 @@ onMounted(initSpanClasses)
         ><i class="bi bi-check"></i></span>
     </span>
     <span
+        v-if="props.charterStatus === 'REJECTED'"
+        :class="spanClasses"
+    >
+        {{ t('charter.status.rejected') }}
+        <span
+            aria-hidden="true"
+            class="form-state-icon form-state-red"
+        ><i class="bi bi-x"></i></span>
+    </span>
+    <span
         v-if="props.charterStatus === 'EXPIRED'"
         :class="spanClasses"
     >

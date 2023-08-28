@@ -118,7 +118,7 @@ const columns: QTableProps['columns'] = [
                 >
                     <QBtn
                         :label="t('manage')"
-                        :to="{name: 'AssociationChartersDetail', params: {associationId: props.row.associationId}}"
+                        :to="{name: 'AssociationCharterList', params: {associationId: props.row.associationId}}"
                         color="charter"
                         outline
                     />

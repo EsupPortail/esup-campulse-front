@@ -58,7 +58,6 @@ onMounted(initTab)
                         >
                             <TableAssociationUserCharters
                                 :association-id="parseInt(tab)"
-                                :is-site="userStore.userAssociations.find(obj => obj.association.id === parseInt(tab))?.association.isSite"
                             />
                         </QTabPanel>
                     </QTabPanels>

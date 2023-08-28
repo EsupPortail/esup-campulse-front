@@ -36,4 +36,11 @@ export interface ProcessingCharter {
     charterStatus: CharterStatus
 }
 
-type CharterStatus = 'VALIDATED' | 'EXPIRED' | 'PROCESSING' | 'NO_CHARTER' | 'NOT_SITE'
+type CharterStatus = 'VALIDATED' | 'EXPIRED' | 'PROCESSING' | 'REJECTED' | 'NO_CHARTER' | 'NOT_SITE'
+
+type AssociationCharterStatus =
+    'CHARTER_DRAFT'
+    | 'CHARTER_REJECTED'
+    | 'CHARTER_PROCESSING'
+    | 'CHARTER_VALIDATED'
+    | 'CHARTER_EXPIRED'

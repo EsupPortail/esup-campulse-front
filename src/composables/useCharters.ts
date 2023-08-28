@@ -2,7 +2,13 @@ import {ref} from 'vue'
 import {useAxios} from '@/composables/useAxios'
 import type {Document, DocumentProcessType, DocumentUpload} from '#/documents'
 import useDocumentUploads from '@/composables/useDocumentUploads'
-import type {AssociationCharter, CharterStatus, ManageCharter, ProcessingCharter} from '#/charters'
+import type {
+    AssociationCharter,
+    AssociationCharterStatus,
+    CharterStatus,
+    ManageCharter,
+    ProcessingCharter
+} from '#/charters'
 import useUtility from '@/composables/useUtility'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
@@ -26,10 +32,6 @@ export default function () {
         charterDocuments.value = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
     }
 
-    async function signCharter(associationId: number) {
-        await axiosAuthenticated.patch(`/associations/${associationId}/status`, {charterStatus: 'CHARTER_PROCESSING'})
-    }
-
     async function getCharters(associationId?: number) {
         const processes: string = charterProcesses.join(',')
         const params = []
@@ -39,14 +41,14 @@ export default function () {
         charterDocuments.value = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
     }
 
-    const initCharters = async (associationId: number, isSite: boolean) => {
+    const initCharters = async (associationId: number, isSite: boolean, associationCharterStatus: AssociationCharterStatus) => {
         const {getDocuments, documents} = useDocumentUploads()
         await getDocuments(charterProcesses)
         await getCharters(associationId)
         manageCharters.value = []
         documents.value.forEach(document => {
             const uploadedCharter = charterDocuments.value.find(x => x.document === document.id)
-            const charterStatus = initCharterStatus(isSite, document, uploadedCharter)
+            const charterStatus = initCharterStatus(isSite, associationCharterStatus, document, uploadedCharter)
             manageCharters.value.push({
                 associationId: uploadedCharter?.association,
                 documentId: document.id,
@@ -79,7 +81,7 @@ export default function () {
                 const charters = documents.value.filter(obj => obj.processType === charterType)
                 charters.forEach(charter => {
                     const uploadedCharter = charterDocuments.value.find(obj => obj.document === charter.id && obj.association === association.id)
-                    const charterStatus = initCharterStatus(association.isSite, charter, uploadedCharter)
+                    const charterStatus = initCharterStatus(association.isSite, association.charterStatus, charter, uploadedCharter)
                     data.charters.push({
                         charterId: charter.id,
                         charterName: charter.name,
@@ -99,7 +101,7 @@ export default function () {
             const association = associationStore.associations.find(association => association.id === uploadCharter.association)
             if (document && association) {
                 if (document.processType === charterType && uploadCharter.association === association.id) {
-                    const charterStatus = initCharterStatus(association.isSite, document, uploadCharter)
+                    const charterStatus = initCharterStatus(association.isSite, association.charterStatus, document, uploadCharter)
                     if (charterStatus.charterStatus === 'PROCESSING') {
                         processingCharters.value.push({
                             associationId: association.id,
@@ -117,23 +119,32 @@ export default function () {
         })
     }
 
-    const initCharterStatus = (isSite: boolean, document: Document, uploadedCharter: DocumentUpload | undefined) => {
+    const initCharterStatus = (isSite: boolean, associationCharterStatus: AssociationCharterStatus, document: Document, uploadedCharter: DocumentUpload | undefined) => {
         let charterStatus: CharterStatus = 'NO_CHARTER'
         let validatedDate = ''
         let expirationDate = ''
         const todayDate = new Date()
         todayDate.setHours(0, 0, 0, 0)
-        if (!isSite && document.acronym === 'CHARTE_SITE_ALSACE') charterStatus = 'NOT_SITE'
+        if (!isSite && document.processType === 'CHARTER_ASSOCIATION') charterStatus = 'NOT_SITE'
         else if (uploadedCharter) {
             validatedDate = formatDate(uploadedCharter.validatedDate) as string
-            if (uploadedCharter.uploadDate && !uploadedCharter.validatedDate) { // if document has been uploaded but is not validated yet
-                charterStatus = 'PROCESSING'
+            if (document.processType === 'CHARTER_ASSOCIATION') {
+                if (associationCharterStatus === 'CHARTER_PROCESSING') charterStatus = 'PROCESSING'
+                else if (associationCharterStatus === 'CHARTER_VALIDATED') charterStatus = 'VALIDATED'
+                else if (associationCharterStatus === 'CHARTER_REJECTED') charterStatus = 'REJECTED'
+                else if (associationCharterStatus === 'CHARTER_EXPIRED') charterStatus = 'EXPIRED'
+            } else if (uploadedCharter.uploadDate && !uploadedCharter.validatedDate) { // if document has been uploaded but is not validated yet
+                if (uploadedCharter.comment) {
+                    charterStatus = 'REJECTED'
+                } else {
+                    charterStatus = 'PROCESSING'
+                }
             } else if (document.daysBeforeExpiration) { // if document must be signed once a year
                 const splitValidatedDate = validatedDate.split('-')
                 expirationDate = [(parseInt(splitValidatedDate[0]) + 1).toString(), splitValidatedDate[1], splitValidatedDate[2]].join('-')
                 // check if expiration date is inferior to today
                 const formatedExpirationDate = new Date(expirationDate)
-                if (formatedExpirationDate <= todayDate) {
+                if (formatedExpirationDate >= todayDate) {
                     charterStatus = 'VALIDATED'
                 } else {
                     charterStatus = 'EXPIRED'
@@ -191,7 +202,7 @@ export default function () {
     }
 
     // TODO
-    async function validateCharter(action: 'validate' | 'return' | 'reject', id: number, comment: string) {
+    async function patchCharterDocument(action: 'validate' | 'reject', id: number, comment: string) {
         let dataToPatch = {}
         if (comment) {
             dataToPatch = Object.assign(dataToPatch, {comment})
@@ -203,10 +214,14 @@ export default function () {
         await axiosAuthenticated.patch(`/documents/uploads/${id}`, dataToPatch)
     }
 
+    // TODO
+    async function patchCharterStatus(charterStatus: AssociationCharterStatus, associationId: number) {
+        await axiosAuthenticated.patch(`/associations/${associationId}/status`, {charterStatus})
+    }
+
     return {
         getCharterDocuments,
         charterDocuments,
-        signCharter,
         initCharters,
         manageCharters,
         uploadCharter,
@@ -216,6 +231,8 @@ export default function () {
         getCharters,
         initAssociationCharters,
         processingCharters,
-        initProcessingCharters
+        initProcessingCharters,
+        patchCharterDocument,
+        patchCharterStatus
     }
 }

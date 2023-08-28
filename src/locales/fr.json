@@ -144,7 +144,9 @@
     "add-user": "Ajouter un compte",
     "archived-commission": "CAPE archivées",
     "archived-projects": "Projets archivés",
-    "association-charters-detail": "Chartes de l'association",
+    "association-charter-detail": "Charte des associations du site Alsace",
+    "association-charter-validation": "Validation de la charte des associations du site Alsace",
+    "association-charters-detail": "Chartes par association",
     "association-dashboard": "Gérer mon association",
     "association-detail": "Fiche association",
     "charter": "Espace chartes",
@@ -186,6 +188,7 @@
   "cancel-search": "Annuler la recherche",
   "charter": {
     "actions": {
+      "manage": "Gérer la charte",
       "reject": "Refuser la charte",
       "return": "Demander des informations complémentaires",
       "validate": "Valider la charte"
@@ -200,6 +203,7 @@
       "validated": "Charte site Alsace valide jusqu'au {expirationDate}"
     },
     "association-charters": "Chartes de l'association",
+    "comment": "Commentaire | Commentaires",
     "charter": "Charte | Chartes",
     "expiration-date": "Date d'expiration",
     "funds": "Chartes CAPE",
@@ -217,6 +221,8 @@
     "project-fund": {
       "title": "Chartes de subventionnement"
     },
+    "rejected-info": "Votre charte a été refusée pour le motif suivant :",
+    "resign-info": "Veuillez soumettre à nouveau votre charte en prenant en compte ces éléments.",
     "sign": "Signer la charte",
     "signed-charter": "Charte signée",
     "site": {
@@ -235,6 +241,7 @@
       "no-charter": "Charte à signer",
       "not-site": "Hors Site Alsace",
       "processing": "Charte en cours de validation",
+      "rejected": "Charte refusée",
       "validated": "Charte signée et validée"
     },
     "uploaded-date": "Date de dépôt",
@@ -627,7 +634,9 @@
       "association-successfully-updated": "L'association a bien été mise à jour.",
       "association-up-to-date": "L'association est déjà à jour.",
       "associations-successfully-updated": "Les associations ont bien été mises à jour.",
+      "charter-reject": "La charte a été refusée.",
       "charter-signed": "La charte a été signée.",
+      "charter-validate": "La charte a été validée.",
       "comment-deleted": "Le commentaire a été supprimé.",
       "comment-modified": "Le commentaire a été modifié.",
       "commission-date-deleted": "La date de commission a été supprimée.",

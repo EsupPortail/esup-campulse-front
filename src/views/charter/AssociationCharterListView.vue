@@ -19,7 +19,7 @@ const {catchHTTPError} = useErrors()
 const {dynamicTitle} = useUtility()
 const {initCharters, manageCharters} = useCharters()
 
-const associationId = ref<number | undefined>(undefined)
+const associationId = ref<number>(parseInt(route.params.associationId as string))
 
 async function onGetAssociationDetail() {
     if (associationId.value) {
@@ -37,9 +37,9 @@ async function onGetAssociationDetail() {
 }
 
 async function onGetAssociationCharters() {
-    if (associationId.value) {
+    if (associationId.value && associationStore.association) {
         try {
-            await initCharters(associationId.value, associationStore.association?.isSite as boolean)
+            await initCharters(associationId.value, associationStore.association.isSite, associationStore.association.charterStatus)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -53,7 +53,6 @@ async function onGetAssociationCharters() {
 
 onMounted(async () => {
     loading.show()
-    associationId.value = parseInt(route.params.associationId as string)
     await onGetAssociationDetail()
     dynamicTitle.value = associationStore.association?.name + ' - ' + t('charter.association-charters')
     await onGetAssociationCharters()
@@ -77,10 +76,6 @@ const columns: QTableProps['columns'] = [
 
 <template>
     <section class="dashboard-section">
-        <!--        <h2>
-                    <QIcon name="bi-book"/>
-                    {{ t('charter.association-charters') }}
-                </h2>-->
         <div class="dashboard-section-container">
             <div class="container">
                 <QTable

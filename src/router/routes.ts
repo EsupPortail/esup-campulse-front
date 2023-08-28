@@ -79,8 +79,8 @@ const routes: RouteRecordRaw[] = [
                             },
                             {
                                 path: ':associationId',
-                                name: 'AssociationChartersDetail',
-                                component: () => import('@/views/charter/AssociationChartersDetailView.vue'),
+                                name: 'AssociationCharterList',
+                                component: () => import('@/views/charter/AssociationCharterListView.vue'),
                                 meta: {
                                     breadcrumb: i18n.global.t('breadcrumbs.association-charters-detail')
                                 }
@@ -90,7 +90,15 @@ const routes: RouteRecordRaw[] = [
                                 name: 'AssociationCharterValidation',
                                 component: () => import('@/views/charter/AssociationCharterValidationView.vue'),
                                 meta: {
-                                    breadcrumb: i18n.global.t('breadcrumbs.association-charters-detail')
+                                    breadcrumb: i18n.global.t('breadcrumbs.association-charter-validation')
+                                }
+                            },
+                            {
+                                path: ':associationId/view',
+                                name: 'AssociationCharterDetail',
+                                component: () => import('@/views/charter/AssociationCharterDetailView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.association-charter-detail')
                                 }
                             }
                         ]

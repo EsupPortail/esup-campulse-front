@@ -8,24 +8,39 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
+import type {AssociationCharterStatus} from '#/charters'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {initCharters, manageCharters} = useCharters()
 const {catchHTTPError} = useErrors()
+const associationStore = useAssociationStore()
 
 
 const importedProps = defineProps<{
     associationId: number,
-    isSite: boolean | undefined
 }>()
+
+async function onGetAssociationDetail() {
+    try {
+        await associationStore.getAssociationDetail(importedProps.associationId, false)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+}
 
 
 async function onGetCharters() {
-    if (importedProps.associationId) {
+    if (importedProps.associationId && associationStore.association) {
         try {
-            await initCharters(importedProps.associationId, importedProps.isSite)
+            await initCharters(importedProps.associationId, associationStore.association.isSite, associationStore.association.charterStatus)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -39,6 +54,7 @@ async function onGetCharters() {
 
 onMounted(async () => {
     loading.show()
+    await onGetAssociationDetail()
     await onGetCharters()
     loading.hide()
 })
@@ -120,7 +136,7 @@ const columns: QTableProps['columns'] = [
                                 <TableStudentChartersBtn
                                     :association-id="importedProps.associationId"
                                     :charter="props.row"
-                                    :is-site="importedProps.isSite"
+                                    :is-site="associationStore.association?.isSite"
                                 />
                             </QTd>
                         </QTr>
