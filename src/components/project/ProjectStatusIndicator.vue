@@ -24,7 +24,7 @@ onMounted(initSpanClasses)
 
 <template>
     <span
-        v-if="props.projectStatus === 'PROJECT_DRAFT' && showDraft"
+        v-if="(props.projectStatus === 'PROJECT_DRAFT' || props.projectStatus === 'PROJECT_DRAFT_PROCESSED') && showDraft"
         :class="spanClasses"
     >
         {{ t('project.status.draft') }}

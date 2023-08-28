@@ -4,22 +4,16 @@ import {useI18n} from 'vue-i18n'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
-const {documents} = useDocumentUploads()
+const {createFileLink, documents} = useDocumentUploads()
 
 const props = defineProps<{
     charterDocuments: DocumentUpload[],
 }>()
 
-function onDownloadDocument(documentId: number | undefined) {
+async function onDownloadDocument(documentId: number | undefined) {
     const documentToDownload = props.charterDocuments.find(doc => doc?.id === documentId)
     if (documentToDownload && documentToDownload.pathFile && documentToDownload.name) {
-        const anchor = document.createElement('a')
-        anchor.href = documentToDownload.pathFile
-        anchor.download = documentToDownload.name
-        anchor.target = '_blank'
-        document.body.appendChild(anchor)
-        anchor.click()
-        document.body.removeChild(anchor)
+        await createFileLink(documentToDownload)
     }
 }
 </script>

@@ -54,7 +54,7 @@ const options = ref<Option[]>([])
 const initOptions = () => {
     options.value = []
     initCanModifyProjectAndReview()
-    if (props.projectStatus === 'PROJECT_DRAFT') {
+    if ((props.projectStatus === 'PROJECT_DRAFT') || (props.projectStatus === 'PROJECT_DRAFT_PROCESSED')) {
         if (canModifyProjectAndReview.value) {
             options.value.push({
                 icon: 'bi-pencil',
@@ -72,7 +72,7 @@ const initOptions = () => {
             })
         }
     }
-    if (props.projectStatus !== 'PROJECT_DRAFT') {
+    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view'),
@@ -96,7 +96,7 @@ const initOptions = () => {
             to: {name: 'ViewProjectReview', params: {projectId: props.projectId}}
         })
     }
-    if (props.projectStatus !== 'PROJECT_DRAFT') {
+    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
         options.value.push({
             icon: 'bi-filetype-pdf',
             label: t('project.download-recap'),

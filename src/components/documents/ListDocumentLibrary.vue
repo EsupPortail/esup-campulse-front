@@ -22,7 +22,6 @@ function onDownloadDocument(documentId: number | undefined) {
         const anchor = document.createElement('a')
         anchor.href = documentToDownload.path
         anchor.download = documentToDownload.name
-        anchor.target = '_blank'
         document.body.appendChild(anchor)
         anchor.click()
         document.body.removeChild(anchor)
