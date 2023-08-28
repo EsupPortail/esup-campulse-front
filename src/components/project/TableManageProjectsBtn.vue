@@ -38,10 +38,10 @@ const changeCommission = ref<boolean>(false)
 
 
 interface Option {
-    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-signpost' | 'bi-piggy-bank',
+    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-file-earmark-zip' | 'bi-signpost' | 'bi-piggy-bank',
     label: string,
     to?: { name: 'ViewProject' | 'ManageProject' | 'ViewProjectReview' | 'ManageProjectReview', params: { projectId: number } }
-    action?: 'updateProjectDates' | 'download-pdf' | 'changeCommission' | 'editCommissionFundsAmounts'
+    action?: 'updateProjectDates' | 'download-pdf' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
 }
 
 const canChangeProject = () => {
@@ -142,6 +142,13 @@ const initOptions = () => {
         label: t('project.download-recap'),
         action: 'download-pdf'
     })
+
+    // Download uploaded files
+    options.value.push({
+        icon: 'bi-file-earmark-zip',
+        label: t('project.download-files'),
+        action: 'download-files'
+    })
 }
 
 onMounted(initOptions)
@@ -155,6 +162,8 @@ async function onOptionClick(option: Option) {
             changeCommission.value = true
         } else if (option.action === 'download-pdf') {
             await onGetProjectPdf(props.projectId, props.projectName)
+        }  else if (option.action === 'download-files') {
+            await onGetProjectFiles(props.projectId, props.projectName)
         } else {
             editCommissionFundsAmounts.value = true
         }
@@ -168,6 +177,27 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
         link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
+
+async function onGetProjectFiles(projectId: number, projectName: string) {
+    loading.show()
+    try {
+        const file = await projectStore.getProjectFiles(projectId)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(new Blob([file]))
+        link.download = `${t('project.documents-name')}${encodeURI(projectName)}.zip`
         document.body.appendChild(link)
         link.click()
         link.remove()

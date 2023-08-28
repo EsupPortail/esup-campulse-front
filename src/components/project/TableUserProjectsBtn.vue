@@ -40,13 +40,13 @@ const initCanModifyProjectAndReview = () => {
 }
 
 interface Option {
-    icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf',
+    icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf' | 'bi-file-earmark-zip',
     label: string,
     to?: {
         name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ViewProject' | 'SubmitProjectReview' | 'ViewProjectReview',
         params: { associationId?: number, projectId: number }
     },
-    action?: 'delete' | 'download-pdf'
+    action?: 'delete' | 'download-pdf' | 'download-files'
 }
 
 const options = ref<Option[]>([])
@@ -102,6 +102,12 @@ const initOptions = () => {
             label: t('project.download-recap'),
             action: 'download-pdf'
         })
+
+        options.value.push({
+            icon: 'bi-file-earmark-zip',
+            label: t('project.download-files'),
+            action: 'download-files'
+        })
     }
 }
 
@@ -118,6 +124,8 @@ async function onOptionClick(option: Option) {
             openDelete.value = true
         } else if (option.action === 'download-pdf') {
             await onGetProjectPdf(props.projectId, props.projectName)
+        } else if (option.action === 'download-files') {
+            await onGetProjectFiles(props.projectId, props.projectName)
         }
     }
 }
@@ -129,6 +137,27 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
         link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+            })
+        }
+    }
+    loading.hide()
+}
+
+async function onGetProjectFiles(projectId: number, projectName: string) {
+    loading.show()
+    try {
+        const file = await projectStore.getProjectFiles(projectId)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(new Blob([file]))
+        link.download = `${t('project.documents-name')}${encodeURI(projectName)}.zip`
         document.body.appendChild(link)
         link.click()
         link.remove()
