@@ -9,6 +9,7 @@ export interface Document {
     daysBeforeExpiration: string,
     expirationDay: string,
     pathTemplate: string | undefined,
+    size: number,
     mimeTypes: MimeType[],
     processType: DocumentProcessType,
     institution: number | null,

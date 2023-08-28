@@ -26,6 +26,7 @@ interface LibraryDocument {
     id: number,
     name: string,
     path: string | undefined,
+    size: number,
     process: DocumentProcessType
 }
 
@@ -39,6 +40,7 @@ const initLibraryDocuments = () => {
                 id: document.id,
                 name: document.name,
                 path: document.pathTemplate,
+                size: document.size,
                 process: document.processType as DocumentProcessType
             })
         }

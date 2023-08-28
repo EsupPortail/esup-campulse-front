@@ -11,6 +11,7 @@ export const _document: Document = {
     daysBeforeExpiration: '365 00:00:00',
     expirationDay: '',
     pathTemplate: undefined,
+    size: 0,
     mimeTypes: [
         'application/pdf'
     ],
@@ -31,6 +32,7 @@ export const _documents: Document[] = [
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
         pathTemplate: undefined,
+        size: 0,
         mimeTypes: [
             'application/pdf'
         ],
@@ -49,6 +51,7 @@ export const _documents: Document[] = [
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
         pathTemplate: undefined,
+        size: 0,
         mimeTypes: [
             'application/pdf',
             'image/jpeg',
@@ -69,6 +72,7 @@ export const _documents: Document[] = [
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
         pathTemplate: undefined,
+        size: 0,
         mimeTypes: [
             'application/pdf'
         ],

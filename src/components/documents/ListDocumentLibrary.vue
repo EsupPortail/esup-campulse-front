@@ -8,6 +8,7 @@ interface LibraryDocument {
     id: number,
     name: string,
     path: string | undefined,
+    size: number,
     process: DocumentProcessType
 }
 
@@ -39,12 +40,8 @@ function onDownloadDocument(documentId: number | undefined) {
             <div class="document-input-header">
                 <h4 class="library-document">
                     <span>
-                        <a
-                            :href="document.path"
-                            target="_blank"
-                        >
-                            {{ document?.name }}
-                        </a>
+                        <strong>{{ document?.name }}</strong>
+                        <em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>
                     </span>
                 </h4>
                 <button

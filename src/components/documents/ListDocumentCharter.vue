@@ -34,7 +34,8 @@ function onDownloadDocument(documentId: number | undefined) {
             <div class="document-input-header">
                 <h4 class="library-document">
                     <span>
-                        {{ documents.find(doc => doc.id === document.document)?.name }}
+                        <strong>{{ documents.find(doc => doc.id === document.document)?.name }}</strong>
+                        <em>{{ Math.floor((documents.find(doc => doc.id === document.document)?.size ?? 0) / 1000) + ' kb' }}</em>
                     </span>
                 </h4>
                 <button

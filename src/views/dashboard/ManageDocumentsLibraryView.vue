@@ -34,6 +34,7 @@ interface LibraryDocument {
     id: number,
     name: string,
     path: string | undefined,
+    size: number,
     newName: string,
     file: undefined | Blob,
     processType: DocumentProcessType,
@@ -48,6 +49,7 @@ const initLibraryDocuments = () => {
         id: document.id,
         name: document.name,
         path: document.pathTemplate,
+        size: document.size,
         newName: document.name ?? '',
         file: undefined,
         processType: document.processType,
@@ -220,7 +222,8 @@ async function onDeleteDocument(documentId: number) {
                                         :href="document.path"
                                         target="_blank"
                                     >
-                                        {{ document.name }}
+                                        <strong>{{ document?.name }}</strong>
+                                        <em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>
                                     </a>
                                     <i
                                         v-if="document.path"
