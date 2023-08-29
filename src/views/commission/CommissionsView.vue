@@ -10,12 +10,10 @@ import axios from 'axios'
 import {useContentStore} from '@/stores/useContentStore'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
-import {useI18n} from 'vue-i18n'
 
 const {isStaff, isMemberFund} = useUserGroups()
 const {hasPerm} = useSecurity()
 const {notify, loading} = useQuasar()
-const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const contentStore = useContentStore()
 
@@ -100,7 +98,7 @@ async function onGetContent() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }

@@ -3,13 +3,11 @@ import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref} from 'vue'
 import type {Content} from '#/index'
 import {useQuasar} from 'quasar'
-import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 
 const contentStore = useContentStore()
 const {loading, notify} = useQuasar()
-const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 
 const contactInfo = ref<Content>()
@@ -29,7 +27,7 @@ async function onGetContent() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }

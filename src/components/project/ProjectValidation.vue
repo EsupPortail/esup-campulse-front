@@ -98,16 +98,30 @@ async function onUpdateProjectStatus() {
             await projectStore.getProjectCommissionFunds(false, undefined)
             open.value = false
             newComment.value = ''
+            let message = ''
+            switch (selectedAction.value) {
+            case 'validate':
+                message = t('notifications.positive.validate-project')
+                break
+            case 'return':
+                message = t('notifications.positive.return-project')
+                break
+            case 'reject':
+                message = t('notifications.positive.reject-project')
+                break
+            default:
+                break
+            }
             notify({
                 type: 'positive',
-                message: t(`notifications.positive.${selectedAction.value}-project`)
+                message: message
             })
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -186,9 +200,26 @@ async function onUpdateProjectStatus() {
                             @click="open = false"
                         />
                         <QBtn
-                            :color="selectedAction === 'reject' || selectedAction === 'return' ? 'custom-red' : 'commission'"
+                            v-if="selectedAction === 'validate'"
+                            color="commission"
                             :icon="selectedIcon"
-                            :label="t(`project.${selectedAction}`)"
+                            :label="t('project.validate')"
+                            class="btn-lg"
+                            type="submit"
+                        />
+                        <QBtn
+                            v-if="selectedAction === 'reject'"
+                            color="custom-red"
+                            :icon="selectedIcon"
+                            :label="t('project.reject')"
+                            class="btn-lg"
+                            type="submit"
+                        />
+                        <QBtn
+                            v-if="selectedAction === 'return'"
+                            color="custom-red"
+                            :icon="selectedIcon"
+                            :label="t('project.return')"
                             class="btn-lg"
                             type="submit"
                         />

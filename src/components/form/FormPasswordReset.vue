@@ -4,10 +4,12 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useSecurity from '@/composables/useSecurity'
+import useErrors from '@/composables/useErrors'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {passwordReset} = useSecurity()
+const {catchHTTPError} = useErrors()
 
 const email = ref<string>()
 const isReset = ref<boolean>(false)
@@ -21,18 +23,18 @@ async function reset() {
             let errorMessage = null
             switch (error.response?.status) {
             case 404:
-                errorMessage = 'unknown-email'
+                errorMessage = t('notifications.negative.unknown-email')
                 break
             case 403:
-                errorMessage = 'restricted-email'
+                errorMessage = t('notifications.negative.restricted-email')
                 break
             default:
-                errorMessage = 'error'
+                errorMessage = catchHTTPError(error.response?.status ?? 500)
                 break
             }
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${errorMessage}`)
+                message: errorMessage
             })
         }
     }

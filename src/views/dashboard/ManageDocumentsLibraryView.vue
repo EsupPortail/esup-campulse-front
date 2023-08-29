@@ -75,7 +75,7 @@ async function onGetLibraryDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -95,7 +95,7 @@ async function onUploadNewDocument() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -123,7 +123,7 @@ async function onUpdateDocument(documentId: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -144,7 +144,7 @@ async function onDeleteDocument(documentId: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }

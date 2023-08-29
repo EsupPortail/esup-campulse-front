@@ -67,7 +67,7 @@ async function onGetProjectReview() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -83,7 +83,7 @@ async function onSubmitProjectReviewInfos(nextStep: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -100,7 +100,7 @@ async function onUploadDocuments(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }

@@ -38,6 +38,7 @@
             "warn",
             "kebab-case"
         ],
+        "@intlify/vue-i18n/no-dynamic-keys": "warn",
         "@intlify/vue-i18n/no-unused-keys": [
             "warn",
             {

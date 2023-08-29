@@ -23,13 +23,13 @@ async function onManageAssociationSubmission() {
         emit('hasValidated')
         notify({
             type: 'positive',
-            message: t(`notifications.positive.association-${patchedCanSubmitProjects ? 'can' : 'cannot'}-submit-projects`)
+            message: patchedCanSubmitProjects ? t('notifications.positive.association-can-submit-projects') : t('notifications.positive.association-cannot-submit-projects')
         })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }

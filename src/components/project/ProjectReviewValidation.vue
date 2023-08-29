@@ -44,16 +44,27 @@ async function onUpdateProjectStatus() {
             await getProjectComments(projectStore.project.id)
             open.value = false
             newComment.value = ''
+            let message = ''
+            switch (selectedAction.value) {
+            case 'validate':
+                message = t('notifications.positive.validate-project-review')
+                break
+            case 'return':
+                message = t('notifications.positive.return-project-review')
+                break
+            default:
+                break
+            }
             notify({
                 type: 'positive',
-                message: t(`notifications.positive.${selectedAction.value}-project-review`)
+                message: message
             })
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -105,9 +116,18 @@ async function onUpdateProjectStatus() {
                             @click="open = false"
                         />
                         <QBtn
-                            :color="selectedAction === 'return' ? 'custom-red' : 'commission'"
+                            v-if="selectedAction === 'validate'"
+                            color="commission"
                             :icon="selectedIcon"
-                            :label="t(`project.review-${selectedAction}`)"
+                            :label="t('project.review-validate')"
+                            class="btn-lg"
+                            type="submit"
+                        />
+                        <QBtn
+                            v-if="selectedAction === 'return'"
+                            color="custom-red"
+                            :icon="selectedIcon"
+                            :label="t('project.review-return')"
                             class="btn-lg"
                             type="submit"
                         />

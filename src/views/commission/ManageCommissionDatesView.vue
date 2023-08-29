@@ -64,7 +64,7 @@ async function onGetCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
 
@@ -111,7 +111,7 @@ async function onUpdateCommission(commission: UpdateCommission) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -132,7 +132,7 @@ async function onDeleteCommission(commission: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -153,7 +153,7 @@ async function onAddNewCommission() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -195,9 +195,15 @@ const onClearValues = () => {
 
                             <p class="form-state form-state-cape">
                                 <span
-                                    :aria-label="t(`commission.is-${commission.oldIsOpenToProjects ? 'open' : 'closed'}-to-projects`)"
-                                    :class="`form-state-icon form-state-${commission.oldIsOpenToProjects ? 'green' : 'red'}`"
-                                ><i :class="`bi bi-${commission.oldIsOpenToProjects ? 'check' : 'x'}`"></i></span>
+                                    v-if="commission.oldIsOpenToProjects"
+                                    :aria-label="t('commission.is-open-to-projects')"
+                                    class="form-state-icon form-state-green"
+                                ><i class="bi bi-check"></i></span>
+                                <span
+                                    v-else
+                                    :aria-label="t('commission.is-closed-to-projects')"
+                                    class="form-state-icon form-state-red"
+                                ><i class="bi bi-x"></i></span>
                             </p>
 
                             <button @click.prevent="commission.open = !commission.open">

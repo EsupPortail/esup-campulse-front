@@ -23,18 +23,23 @@ onMounted(() => {
 
 
 async function onEnableAssociation() {
-    const messageKeyword = isEnabled.value ? 'disable' : 'enable'
+    let positiveMessage = t('notifications.positive.enable-association')
+    let negativeMessage = t('notifications.negative.enable-association-error')
+    if (isEnabled.value) {
+        positiveMessage = t('notifications.positive.disable-association')
+        negativeMessage = t('notifications.negative.disable-association-error')
+    }
     try {
         await associationStore.patchEnabledAssociation(!isEnabled.value as boolean, associationStore.association?.id)
         emit('hasValidated')
         notify({
             type: 'positive',
-            message: t(`notifications.positive.${messageKeyword}-association`)
+            message: positiveMessage
         })
     } catch (e) {
         notify({
             type: 'negative',
-            message: t(`notifications.negative.${messageKeyword}-association-error`)
+            message: negativeMessage
         })
     }
 }

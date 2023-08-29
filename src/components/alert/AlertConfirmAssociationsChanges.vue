@@ -50,6 +50,8 @@ async function onConfirmChanges(emailType: string) {
     const associationsError: string[] = []
     const promisesToExecute: Promise<void>[] = []
     let mailto = 'mailto:?bcc='
+    let positiveMessage = ''
+    let negativeMessage = ''
     switch (switches.value) {
     case 'email':
         props.selectedAssociations?.forEach((selectedAssociation) => {
@@ -63,6 +65,8 @@ async function onConfirmChanges(emailType: string) {
         window.open(mailto, (emailType as string === 'web') ? '_blank' : '_self')
         break
     case 'enable':
+        positiveMessage = t('notifications.positive.enable-associations')
+        negativeMessage = t('notifications.negative.enable-associations-error')
         props.selectedAssociations?.forEach((selectedAssociation) => {
             promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
                 associationsSuccess.push(selectedAssociation.name)
@@ -70,6 +74,8 @@ async function onConfirmChanges(emailType: string) {
         })
         break
     case 'disable':
+        positiveMessage = t('notifications.positive.disable-associations')
+        negativeMessage = t('notifications.negative.disable-associations-error')
         props.selectedAssociations?.forEach((selectedAssociation) => {
             promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
                 associationsSuccess.push(selectedAssociation.name)
@@ -77,6 +83,8 @@ async function onConfirmChanges(emailType: string) {
         })
         break
     case 'delete':
+        positiveMessage = t('notifications.positive.delete-associations')
+        negativeMessage = t('notifications.negative.delete-associations-error')
         if (deletionWord.value === t('association.before-deletion-word')) {
             props.selectedAssociations?.forEach((selectedAssociation) => {
                 promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
@@ -104,7 +112,7 @@ async function onConfirmChanges(emailType: string) {
                 const associationIds = props.selectedAssociations.map(x => x.id)
                 const associationNames = props.selectedAssociations.map(x => x.name)
                 const file = await associationStore.exportCSV(associationIds)
-                const message = t(`notifications.positive.${switches.value}-associations`)
+                const message = t('notifications.positive.csv-export-associations')
                 notify({
                     type: 'positive',
                     message: `<p>${message}${associationNames.join(', ')}</p>`,
@@ -120,7 +128,7 @@ async function onConfirmChanges(emailType: string) {
                 if (axios.isAxiosError(error) && error.response) {
                     notify({
                         type: 'negative',
-                        message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                        message: catchHTTPError(error.response.status)
                     })
                 }
             }
@@ -132,7 +140,7 @@ async function onConfirmChanges(emailType: string) {
         let message = ''
         if (associationsSuccess.length > 0) {
             associationStore.getManagedAssociations()
-            message = t(`notifications.positive.${switches.value}-associations`)
+            message = positiveMessage
             notify({
                 type: 'positive',
                 message: `<p>${message}${associationsSuccess.join(', ')}</p>`,
@@ -141,7 +149,7 @@ async function onConfirmChanges(emailType: string) {
         }
         if (associationsError.length > 0) {
             associationStore.getManagedAssociations()
-            message = t(`notifications.negative.${switches.value}-associations-error`)
+            message = negativeMessage
             notify({
                 type: 'negative',
                 message: `<p>${message}${associationsError.join(', ')}</p>`,
@@ -180,7 +188,36 @@ async function onConfirmChanges(emailType: string) {
     >
         <QCard>
             <QCardSection class="flex-column items-center dialog-message">
-                <p class="q-ml-sm">{{ t(`association.confirm-all-${switches}`) }}</p>
+                <p
+                    v-if="switches === 'email'"
+                    class="q-ml-sm"
+                >
+                    {{ t('association.confirm-all-email') }}
+                </p>
+                <p
+                    v-if="switches === 'csv-export'"
+                    class="q-ml-sm"
+                >
+                    {{ t('association.confirm-all-csv-export') }}
+                </p>
+                <p
+                    v-if="switches === 'enable'"
+                    class="q-ml-sm"
+                >
+                    {{ t('association.confirm-all-enable') }}
+                </p>
+                <p
+                    v-if="switches === 'disable'"
+                    class="q-ml-sm"
+                >
+                    {{ t('association.confirm-all-disable') }}
+                </p>
+                <p
+                    v-if="switches === 'delete'"
+                    class="q-ml-sm"
+                >
+                    {{ t('association.confirm-all-delete') }}
+                </p>
                 <template v-if="switches === 'email'">
                     <ul
                         v-for="association in selectedAssociations"

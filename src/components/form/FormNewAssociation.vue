@@ -72,7 +72,7 @@ async function onCreate() {
             } else {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }

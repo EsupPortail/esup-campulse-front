@@ -46,7 +46,7 @@ watch(() => open.value, async () => {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
@@ -69,7 +69,7 @@ async function onUpdateProjectDates() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }

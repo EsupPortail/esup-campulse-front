@@ -2,7 +2,6 @@
 import type {ProcessDocument, DocumentProcessType} from '#/documents'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
-import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharters'
@@ -11,7 +10,6 @@ import {onMounted} from 'vue'
 
 const {createFileLink} = useDocumentUploads()
 const {notify, loading} = useQuasar()
-const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {
     processDocuments,
@@ -38,7 +36,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -68,7 +66,7 @@ async function onGetDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }

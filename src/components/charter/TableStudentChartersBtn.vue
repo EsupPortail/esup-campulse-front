@@ -38,10 +38,13 @@ const initOptions = () => {
     })
     if (props.charter.charterStatus === 'NO_CHARTER' || props.charter.charterStatus === 'EXPIRED'
         || props.charter.charterStatus === 'VALIDATED') {
+        let optionLabel = t('charter.options.sign')
+        if (props.charter.charterStatus === 'EXPIRED' || props.charter.charterStatus === 'VALIDATED') {
+            optionLabel = t('charter.options.re-sign')
+        }
         const option: Option = {
             icon: 'bi-pen',
-            label: t(`charter.options.${props.charter.charterStatus === 'EXPIRED'
-            || props.charter.charterStatus === 'VALIDATED' ? 're-' : ''}sign`)
+            label: optionLabel
         }
         const charterAssociationDocs = documents.value.filter(x => x.processType === 'CHARTER_ASSOCIATION').map(y => y.id)
         if (charterAssociationDocs.includes(props.charter.documentId)) {

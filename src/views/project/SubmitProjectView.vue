@@ -189,7 +189,7 @@ async function onGetProjectDetail() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
@@ -207,7 +207,7 @@ async function onGetProjectCategories() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -220,7 +220,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -235,7 +235,7 @@ async function onGetAssociationUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -262,7 +262,7 @@ async function onGetCommissionDates() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -278,7 +278,7 @@ async function onGetProjectBudget() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -301,7 +301,7 @@ async function onGetProjectDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -322,7 +322,7 @@ async function onSubmitBasicInfos(nextStep: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -339,7 +339,7 @@ async function onSubmitCommission(nextStep: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -358,7 +358,7 @@ async function onSubmitBudget(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
@@ -377,7 +377,7 @@ async function onSubmitGoals(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
@@ -396,7 +396,7 @@ async function onUploadDocuments(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
@@ -415,7 +415,7 @@ async function onSubmitProject() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
