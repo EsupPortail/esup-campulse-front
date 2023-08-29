@@ -63,14 +63,45 @@ const routes: RouteRecordRaw[] = [
                     },
                     {
                         path: 'manage',
-                        name: 'ManageCharters',
-                        component: () => import('@/views/charter/CharterDashboardView.vue'),
                         meta: {
-                            breadcrumb: i18n.global.t('breadcrumbs.manage-charters'),
-                            title: i18n.global.t('breadcrumbs.manage-charters'),
-                            requiresAuth: true,
-                            siteMap: true,
-                        }
+                            requiresAuth: true
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'ManageCharters',
+                                component: () => import('@/views/charter/CharterDashboardView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.manage-charters'),
+                                    title: i18n.global.t('breadcrumbs.manage-charters'),
+                                    siteMap: true
+                                }
+                            },
+                            {
+                                path: ':associationId',
+                                name: 'AssociationCharterList',
+                                component: () => import('@/views/charter/AssociationCharterListView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.association-charters-detail')
+                                }
+                            },
+                            {
+                                path: ':associationId/validate',
+                                name: 'AssociationCharterValidation',
+                                component: () => import('@/views/charter/AssociationCharterValidationView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.association-charter-validation')
+                                }
+                            },
+                            {
+                                path: ':associationId/view',
+                                name: 'AssociationCharterDetail',
+                                component: () => import('@/views/charter/AssociationCharterDetailView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.association-charter-detail')
+                                }
+                            }
+                        ]
                     },
                     {
                         path: 'sign/:associationId',

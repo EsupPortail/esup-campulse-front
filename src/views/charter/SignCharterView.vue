@@ -24,7 +24,7 @@ const {catchHTTPError} = useErrors()
 const {formatDate, phoneRegex} = useUtility()
 const {checkChanges, updateAssociation} = useAssociation()
 const {uploadDocuments} = useDocumentUploads()
-const {signCharter} = useCharters()
+const {patchCharterStatus} = useCharters()
 const route = useRoute()
 const userStore = useUserStore()
 const associationStore = useAssociationStore()
@@ -139,7 +139,7 @@ async function onSignCharter() {
     loading.show()
     if (associationId.value) {
         try {
-            await signCharter(associationId.value)
+            await patchCharterStatus('CHARTER_PROCESSING', associationId.value)
             await router.push({name: 'SignCharterSuccessful', params: {associationId: associationId.value}})
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {

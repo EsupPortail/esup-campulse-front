@@ -1,50 +1,50 @@
 <script lang="ts" setup>
-import {useI18n} from 'vue-i18n'
-import type {QTableProps} from 'quasar'
-import {useQuasar} from 'quasar'
-import useCharters from '@/composables/useCharters'
-import {onMounted} from 'vue'
-import axios from 'axios'
-import useErrors from '@/composables/useErrors'
-import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
-import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useRoute} from 'vue-router'
+import axios from 'axios'
+import {QTableProps, useQuasar} from 'quasar'
+import {useI18n} from 'vue-i18n'
+import useErrors from '@/composables/useErrors'
+import {onMounted, ref} from 'vue'
+import useUtility from '@/composables/useUtility'
+import useCharters from '@/composables/useCharters'
+import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
+import TableManagerChartersBtn from '@/components/charter/TableManageChartersBtn.vue'
 
-
-const {t} = useI18n()
-const {loading, notify} = useQuasar()
-const {initCharters, manageCharters} = useCharters()
-const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
+const route = useRoute()
+const {notify, loading} = useQuasar()
+const {t} = useI18n()
+const {catchHTTPError} = useErrors()
+const {dynamicTitle} = useUtility()
+const {initCharters, manageCharters} = useCharters()
 
-
-const importedProps = defineProps<{
-    associationId: number,
-}>()
+const associationId = ref<number>(parseInt(route.params.associationId as string))
 
 async function onGetAssociationDetail() {
-    try {
-        await associationStore.getAssociationDetail(importedProps.associationId, false)
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-}
-
-
-async function onGetCharters() {
-    if (importedProps.associationId && associationStore.association) {
+    if (associationId.value) {
         try {
-            await initCharters(importedProps.associationId, associationStore.association.isSite, associationStore.association.charterStatus)
+            await associationStore.getAssociationDetail(associationId.value, false)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                })
+            }
+        }
+    }
+}
+
+async function onGetAssociationCharters() {
+    if (associationId.value && associationStore.association) {
+        try {
+            await initCharters(associationId.value, associationStore.association.isSite, associationStore.association.charterStatus)
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
                 })
             }
         }
@@ -54,7 +54,8 @@ async function onGetCharters() {
 onMounted(async () => {
     loading.show()
     await onGetAssociationDetail()
-    await onGetCharters()
+    dynamicTitle.value = associationStore.association?.name + ' - ' + t('charter.association-charters')
+    await onGetAssociationCharters()
     loading.hide()
 })
 
@@ -79,6 +80,7 @@ const columns: QTableProps['columns'] = [
             <div class="container">
                 <QTable
                     :columns="columns"
+                    :loading="!manageCharters.length"
                     :rows="manageCharters"
                     :rows-per-page-options="[10, 20, 50, 0]"
                     role="presentation"
@@ -132,10 +134,9 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 headers="actions"
                             >
-                                <TableStudentChartersBtn
-                                    :association-id="importedProps.associationId"
+                                <TableManagerChartersBtn
+                                    :association-id="associationId"
                                     :charter="props.row"
-                                    :is-site="associationStore.association?.isSite"
                                 />
                             </QTd>
                         </QTr>
@@ -192,3 +193,10 @@ const columns: QTableProps['columns'] = [
         </div>
     </section>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/dashboard.scss';
+@import "@/assets/styles/forms.scss";
+@import "@/assets/_variables.scss";
+
+</style>

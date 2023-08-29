@@ -120,6 +120,9 @@
     "add-user": "Ajouter un compte",
     "archived-commission": "CAPE archivées",
     "archived-projects": "Projets archivés",
+    "association-charter-detail": "Charte des associations du site Alsace",
+    "association-charter-validation": "Validation de la charte des associations du site Alsace",
+    "association-charters-detail": "Chartes par association",
     "association-dashboard": "Gérer mon association",
     "association-detail": "Fiche association",
     "charter": "Espace chartes",
@@ -158,10 +161,12 @@
   "cancel-search": "Annuler la recherche",
   "charter": {
     "actions": {
+      "manage": "Gérer la charte",
       "reject": "Refuser la charte",
       "return": "Demander des informations complémentaires",
       "validate": "Valider la charte"
     },
+    "add-new-comment": "Ajouter un commentaire",
     "all-charters": "Toutes les chartes",
     "association-charter-status": {
       "expired": "Charte site Alsace expirée depuis le {expirationDate}",
@@ -169,6 +174,8 @@
       "processing": "Charte site Alsace en cours de validation",
       "validated": "Charte site Alsace valide jusqu'au {expirationDate}"
     },
+    "association-charters": "Chartes de l'association",
+    "comment": "Commentaire | Commentaires",
     "charter": "Charte | Chartes",
     "expiration-date": "Date d'expiration",
     "no-charter-to-show": "Aucune charte à afficher.",
@@ -177,6 +184,7 @@
       "manage": "Signer et gérer les chartes",
       "re-sign": "Renouveler la signature de la charte",
       "sign": "Signer la charte",
+      "validate": "Valider la charte",
       "view": "Voir la charte"
     },
     "pdf-name": "Récapitulatif-Signature-Charte-",
@@ -184,6 +192,9 @@
     "project-fund": {
       "title": "Chartes de subventionnement"
     },
+    "reject-info": "Attention, en refusant cette charte, le statut de l'association passera automatiquement à \"hors site Alsace\".",
+    "resign-info": "Veuillez soumettre à nouveau votre charte en prenant en compte ces éléments.",
+    "returned-info": "La charte n'a pas pu être validée pour le motif suivant :",
     "sign": "Signer la charte",
     "signed-charter": "Charte signée",
     "site": {
@@ -202,6 +213,8 @@
       "no-charter": "Charte à signer",
       "not-site": "Hors Site Alsace",
       "processing": "Charte en cours de validation",
+      "rejected": "Charte refusée",
+      "returned": "En attente de modification par l'association",
       "validated": "Charte signée et validée"
     },
     "uploaded-date": "Date de dépôt",
@@ -355,6 +368,7 @@
     "association-name": "Nom de l'association",
     "association-role": "Votre fonction dans l'association",
     "association-student-count": "Nombre de membres dans l'association",
+    "charter-validation-comment": "Commentaire obligatoire en cas de refus de charte ou de demande d'informations complémentaires.",
     "comment": "Votre commentaire",
     "commission-date-must-be-posterior-to-submission-date": "La date de commission doit être postérieure à la date limite de soumission. Les dates ne doivent pas être passées.",
     "correct-amount-audience": "Le nombre d'étudiants doit être inférieur ou égal au nombre total de personnes visées.",
@@ -552,7 +566,12 @@
       "association-logo-updated": "Le logo de l'association a été modifié avec succès.",
       "association-successfully-updated": "L'association a bien été mise à jour.",
       "associations-successfully-updated": "Les associations ont bien été mises à jour.",
+      "charter-reject": "La charte a été refusée.",
+      "charter-return": "La charte a été retournée à l'association pour modification.",
       "charter-signed": "La charte a été signée.",
+      "charter-validate": "La charte a été validée.",
+      "comment-deleted": "Le commentaire a été supprimé.",
+      "comment-modified": "Le commentaire a été modifié.",
       "commission-date-deleted": "La date de commission a été supprimée.",
       "commission-date-modified": "La date de commission a été mise à jour.",
       "csv-export-associations": "Les associations suivantes ont été exportées en CSV : ",
