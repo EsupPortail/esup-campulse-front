@@ -4,7 +4,7 @@ import type {UserAssociation} from '#/user'
 
 export const _association: Association = {
     canSubmitProjects: false,
-    charterStatus: '',
+    charterStatus: 'CHARTER_DRAFT',
     charterDate: '',
     id: 1,
     name: 'PLANA',
@@ -97,7 +97,7 @@ export const _associations: Association[] = [
         institutionComponent: 1,
         activityField: 1,
         canSubmitProjects: true,
-        charterStatus: 'draft',
+        charterStatus: 'CHARTER_DRAFT',
         charterDate: '',
         amountMembersAllowed: 4
     },
@@ -114,7 +114,7 @@ export const _associations: Association[] = [
         institutionComponent: 2,
         activityField: 2,
         canSubmitProjects: true,
-        charterStatus: 'draft',
+        charterStatus: 'CHARTER_DRAFT',
         charterDate: '',
         amountMembersAllowed: 4
     }

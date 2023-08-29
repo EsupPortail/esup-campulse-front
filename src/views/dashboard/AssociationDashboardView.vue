@@ -109,7 +109,9 @@ async function onGetAssociationDocuments() {
 
 async function onGetAssociationCharters() {
     try {
-        await initCharters(associationStore.association?.id as number, associationStore?.association?.isSite as boolean)
+        if (associationStore.association) {
+            await initCharters(associationStore.association.id, associationStore.association.isSite, associationStore.association.charterStatus)
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

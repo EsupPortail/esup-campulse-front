@@ -2,7 +2,7 @@
 import {useI18n} from 'vue-i18n'
 import {onMounted, ref, watch} from 'vue'
 import router from '@/router'
-import type {ManageCharter} from '#/charters'
+import type {AssociationCharterStatus, ManageCharter} from '#/charters'
 import FormSignCharters from '@/components/charter/FormSignCharters.vue'
 import useCharters from '@/composables/useCharters'
 
@@ -12,7 +12,8 @@ const {downloadCharter, manageCharters} = useCharters()
 const props = defineProps<{
     charter: ManageCharter,
     associationId: number,
-    isSite: boolean
+    associationCharterStatus?: AssociationCharterStatus,
+    isSite?: boolean
 }>()
 
 interface Option {
@@ -132,6 +133,7 @@ async function onOptionClick(option: Option) {
         :charter="props.charter"
         :is-site="props.isSite"
         :open-sign="openSign"
+        :association-charter-status="props.associationCharterStatus"
         @close-dialog="openSign = false"
     />
 </template>

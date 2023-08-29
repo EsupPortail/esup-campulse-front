@@ -17,7 +17,7 @@ const manageCharters = ref<ManageCharter[]>([])
 const associationCharters = ref<AssociationCharter[]>([])
 const processingCharters = ref<ProcessingCharter[]>([])
 
-export default function () {
+export default function() {
     const {formatDate} = useUtility()
     const associationStore = useAssociationStore()
     const {axiosAuthenticated} = useAxios()
@@ -41,7 +41,7 @@ export default function () {
         charterDocuments.value = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
     }
 
-    const initCharters = async (associationId: number, isSite: boolean, associationCharterStatus: AssociationCharterStatus) => {
+    const initCharters = async (associationId: number, isSite: boolean, associationCharterStatus: AssociationCharterStatus | undefined) => {
         const {getDocuments, documents} = useDocumentUploads()
         await getDocuments(charterProcesses)
         await getCharters(associationId)
@@ -120,7 +120,7 @@ export default function () {
     }
 
     // TODO test
-    const initCharterStatus = (isSite: boolean, associationCharterStatus: AssociationCharterStatus, document: Document, uploadedCharter: DocumentUpload | undefined) => {
+    const initCharterStatus = (isSite: boolean, associationCharterStatus: AssociationCharterStatus | undefined, document: Document, uploadedCharter: DocumentUpload | undefined) => {
         let charterStatus: CharterStatus = 'NO_CHARTER'
         let validatedDate = ''
         let expirationDate = ''
