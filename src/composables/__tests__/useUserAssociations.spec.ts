@@ -17,6 +17,7 @@ import {
 import useUserAssociations from '@/composables/useUserAssociations'
 import {useAxios} from '@/composables/useAxios'
 import {_association, _associationNames} from '~/fixtures/association.mock'
+// import {useAssociationStore} from '@/stores/useAssociationStore'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -44,11 +45,13 @@ config.global.plugins = [
 
 let userManagerStore = useUserManagerStore()
 let userStore = useUserStore()
+// let associationStore = useAssociationStore()
 
 describe('useUserAssociations', () => {
     beforeEach(() => {
         userStore = useUserStore()
         userManagerStore = useUserManagerStore()
+        // associationStore = useAssociationStore()
     })
 
     afterEach(() => {
