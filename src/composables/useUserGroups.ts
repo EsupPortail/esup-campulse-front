@@ -35,7 +35,10 @@ const isMemberFund = ref<boolean | undefined>(undefined)
 // Used to display or not the select for commissions
 const commissionMemberIsSelected = ref<boolean>(false)
 
-export default function() {
+// Used to display or not the document needed for registration (only for students)
+const studentGroupIsSelected = ref<boolean>(false)
+
+export default function () {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const {userFunds} = useCommissions()
@@ -110,7 +113,7 @@ export default function() {
     async function initGroupLabels(onlyPublicGroups: boolean) {
         const {hasPerm} = useSecurity()
         const labels: SelectGroupLabel[] = []
-        groups.value?.map(function(group) {
+        groups.value?.map(function (group) {
             if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
                 const label: string | undefined = getGroupLiteral(group.id)
                 if (label) {
@@ -127,7 +130,7 @@ export default function() {
             }
         })
         // Sort by alphabetical order
-        labels.sort(function(a, b) {
+        labels.sort(function (a, b) {
             const labelA = a.label.toLowerCase().normalize('NFD'), labelB = b.label.toLowerCase().normalize('NFD')
             if (labelA < labelB)
                 return -1
@@ -273,6 +276,22 @@ export default function() {
     }
     watch(() => newGroups.value, initCommissionMemberSelection)
 
+    const studentGroups = ref<Group[] | undefined>(groups.value.filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC'))
+    watch(() => groups.value, () => {
+        studentGroups.value = groups.value.filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC')
+    })
+
+    // To test
+    const initStudentGroupSelection = () => {
+        studentGroupIsSelected.value = false
+        if (studentGroups.value?.length) {
+            studentGroups.value?.forEach(group => {
+                if (newGroups.value.includes(group.id)) studentGroupIsSelected.value = true
+            })
+        }
+    }
+    watch(() => newGroups.value, initStudentGroupSelection)
+
 
     return {
         groups,
@@ -296,6 +315,8 @@ export default function() {
         commissionGroup,
         isMemberFund,
         initIsMemberFund,
-        isManagerMisc
+        isManagerMisc,
+        studentGroupIsSelected,
+        initStudentGroupSelection
     }
 }

@@ -14,6 +14,7 @@ import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 import useUtility from '@/composables/useUtility'
 import useErrors from '@/composables/useErrors'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -22,6 +23,7 @@ const {register, newUser, initNewUserData, loadCASUser, emailVerification, addUs
 const {groupChoiceIsValid, groupCanJoinAssociation, isStaff} = useUserGroups()
 const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
+const {uploadDocuments} = useDocumentUploads()
 
 
 const hasConsent = ref<boolean>(false)
@@ -54,6 +56,7 @@ async function onRegister() {
             try {
                 if (isStaff.value) {
                     await addUserAsManager()
+                    await uploadDocuments(undefined, newUser.username, false)
                     notify({
                         type: 'positive',
                         message: t('notifications.positive.account-created')
@@ -61,6 +64,7 @@ async function onRegister() {
                     await router.push({name: 'Dashboard'})
                 } else {
                     await register()
+                    await uploadDocuments(undefined, newUser.username, true)
                     await router.push({name: 'RegistrationSuccessful'})
                 }
                 newUser.isCas = false
@@ -171,25 +175,18 @@ async function onRegister() {
                         :label="t('forms.phone')"
                         :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
                         autocomplete="tel"
+                        bottom-slots
                         clearable
                         color="dashboard"
                         filled
+                        for="phone"
                         lazy-rules
                         type="tel"
-                        bottom-slots
-                        for="phone"
                     >
                         <template v-slot:hint>
                             <p aria-describedby="phone">{{ t('forms.hint-phone') }}</p>
                         </template>
                     </QInput>
-                    <!--
-                    <FormDocumentUploads
-                        v-if="!newUser.isCas"
-                        :association-id="null"
-                        process="registration"
-                    />
-                    -->
                 </div>
             </div>
         </div>

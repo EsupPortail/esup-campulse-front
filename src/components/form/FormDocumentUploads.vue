@@ -151,13 +151,13 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 :color="fieldColor"
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
-                :label="props.process === 'registration' ? t('forms.student-certificate')
-                    : (document.description + (document.isRequiredInProcess ? ' *' : ''))"
+                :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
                 :multiple="document.isMultiple"
-                :rules="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length ? [val => (document.isMultiple ? val.length : val) || t('forms.select-document')] : []"
+                :rules="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length ?
+                    [val => (document.isMultiple ? val.length : val) || t('forms.select-document')] : []"
                 append
                 bottom-slots
                 clearable
@@ -171,7 +171,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 <template v-slot:hint>
                     <p aria-describedby="pathFile">
                         {{
-                            props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : ''))
+                            props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint')
+                                + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : ''))
                         }}
                     </p>
                 </template>
