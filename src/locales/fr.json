@@ -234,6 +234,7 @@
     "date": "Date de commission",
     "dates": "Dates de commission",
     "export-csv": "Exporter en CSV",
+    "export-pdf": "Exporter en PDF",
     "funds": "Financeurs",
     "funds-validation-status": "Décisions des financeurs",
     "is-closed-to-projects": "Fermée à la soumission de nouveaux projets",

@@ -4,6 +4,7 @@ import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import useCommissions from '@/composables/useCommissions'
+import type {ProjectList} from '#/project'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -12,7 +13,8 @@ const {getCommissionCSVExport} = useCommissions()
 
 const props = defineProps<{
     commissionId: number,
-    commissionName: string
+    commissionName: string,
+    selected: ProjectList[]
 }>()
 
 async function onExportCSV() {
@@ -40,11 +42,20 @@ async function onExportCSV() {
 <template>
     <div class="flex-row-center padding-top">
         <QBtn
+            :disable="!props.selected.length"
             :label="t('commission.export-csv')"
             class="btn-lg"
             color="commission"
             icon="bi-filetype-csv"
             @click="onExportCSV"
+        />
+        <QBtn
+            :disable="!props.selected.length"
+            :label="t('commission.export-pdf')"
+            class="btn-lg"
+            color="commission"
+            icon="bi-filetype-pdf"
+            @click="onExportPDF"
         />
     </div>
 </template>
