@@ -1,9 +1,8 @@
 import {createTestingPinia} from '@pinia/testing'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
+import {afterEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 import {createPinia, setActivePinia} from 'pinia'
-import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import {useAxios} from '@/composables/useAxios'
 import {_commissionFunds, _commissions, _funds} from '~/fixtures/commissions.mock'
@@ -24,13 +23,7 @@ config.global.plugins = [
     })
 ]
 
-let userStore = useUserStore()
-
 describe('useCommissions', () => {
-    beforeEach(() => {
-        userStore = useUserStore()
-    })
-
     afterEach(() => {
         vi.restoreAllMocks()
         funds.value = []

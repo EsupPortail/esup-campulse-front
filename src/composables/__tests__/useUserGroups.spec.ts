@@ -162,7 +162,7 @@ describe('useUserGroups', () => {
         })
     })
 
-    describe('updateUserGroups', () => {
+    describe('updateUserGroups changes', () => {
         const {updateUserGroups} = useUserGroups()
 
         const spies = {
@@ -170,17 +170,25 @@ describe('useUserGroups', () => {
             deleteUserGroups: vi.spyOn(userManagerStore, 'deleteUserGroups')
         }
 
-        beforeEach(() => {
-            userManagerStore.user = _institutionStudent
-        })
-
         it('should update groups if there are changes', async () => {
+            userManagerStore.user = _institutionStudent
             newGroups.value = [7] // student misc
             await updateUserGroups()
             expect(spies.updateUserGroups).toHaveBeenCalledOnce()
             expect(spies.deleteUserGroups).toHaveBeenCalledOnce()
         })
+    })
+
+    describe('updateUserGroups no changes', () => {
+        const {updateUserGroups} = useUserGroups()
+
+        const spies = {
+            updateUserGroups: vi.spyOn(userManagerStore, 'updateUserGroups'),
+            deleteUserGroups: vi.spyOn(userManagerStore, 'deleteUserGroups')
+        }
+
         it('should not update groups if there are no changes', async () => {
+            userManagerStore.user = _institutionStudent
             newGroups.value = [6] // student institution
             await updateUserGroups()
             expect(spies.updateUserGroups).toHaveBeenCalledTimes(0)
