@@ -10,7 +10,6 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import useCharters from '@/composables/useCharters'
 import {useUserStore} from '@/stores/useUserStore'
-import useUserGroups from '@/composables/useUserGroups'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -21,7 +20,6 @@ const associationStore = useAssociationStore()
 const userStore = useUserStore()
 const {catchHTTPError} = useErrors()
 const {initCharters, manageCharters} = useCharters()
-const {isStaff} = useUserGroups()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
@@ -46,7 +44,7 @@ const hasLogo = computed(() => {
 
 async function onGetAssociationDetail() {
     try {
-        await associationStore.getAssociationDetail(parseInt(route.params.id as string), !isStaff.value)
+        await associationStore.getAssociationDetail(parseInt(route.params.id as string), true)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
