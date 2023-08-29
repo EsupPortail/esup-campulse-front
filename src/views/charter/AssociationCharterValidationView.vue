@@ -17,9 +17,10 @@ import type {AssociationCharterStatus} from '#/charters'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const {uploadDocuments, initCharterDocumentUploads} = useDocumentUploads()
 const associationStore = useAssociationStore()
 const route = useRoute()
-const {patchCharterDocument, patchCharterStatus} = useCharters()
+const {patchCharterDocument, patchCharterStatus, getCharterDocuments} = useCharters()
 const {documents, documentUploads} = useDocumentUploads()
 
 const associationId = ref<number>()
@@ -32,8 +33,8 @@ interface ActionOption {
     icon: Icon,
 }
 
-type Action = 'validate' | 'reject' | ''
-type Icon = 'bi-check-lg' | 'bi-x-octagon' | ''
+type Action = 'validate' | 'reject' | 'return' | ''
+type Icon = 'bi-check-lg' | 'bi-x-octagon' | 'bi-exclamation-triangle' | ''
 
 const open = ref<boolean>(false)
 
@@ -43,11 +44,11 @@ const actions: ActionOption[] = [
         label: t('charter.actions.validate'),
         icon: 'bi-check-lg'
     },
-    /*{
+    {
         value: 'return',
         label: t('charter.actions.return'),
         icon: 'bi-exclamation-triangle'
-    },*/
+    },
     {
         value: 'reject',
         label: t('charter.actions.reject'),
@@ -98,18 +99,27 @@ onMounted(async () => {
 })
 
 async function onValidateCharter() {
+    loading.show()
     try {
+        // We upload new documents if needed
+        await uploadDocuments(associationId.value)
+        // We update our document uploads
+        await getCharterDocuments(associationId.value)
+        initCharterDocumentUploads()
+        // We look for the right ids to patch
         const uploadedAssociationCharter = documentUploads.value
             .find(x => x.document === (documents.value
                 .find(y => y.acronym === 'CHARTE_SITE_ALSACE'))?.id)?.id
         const uploadedGDPRAssociationCharter = documentUploads.value
             .find(x => x.document === (documents.value
                 .find(y => y.acronym === 'RGPD_SITE_ALSACE'))?.id)?.id
+        // We patch our documents and the charter status of the association
         if (associationId.value && selectedAction.value && uploadedAssociationCharter && uploadedGDPRAssociationCharter) {
             await patchCharterDocument(selectedAction.value, uploadedAssociationCharter, comment.value)
             await patchCharterDocument(selectedAction.value, uploadedGDPRAssociationCharter, comment.value)
             let associationCharterStatus: AssociationCharterStatus = 'CHARTER_REJECTED'
             if (selectedAction.value === 'validate') associationCharterStatus = 'CHARTER_VALIDATED'
+            else if (selectedAction.value === 'return') associationCharterStatus = 'CHARTER_DRAFT'
             await patchCharterStatus(associationCharterStatus, associationId.value)
         }
         notify({
@@ -125,8 +135,8 @@ async function onValidateCharter() {
             })
         }
     }
+    loading.hide
 }
-
 </script>
 
 <template>
@@ -191,6 +201,16 @@ async function onValidateCharter() {
     <QDialog v-model="open">
         <QCard class="variant-space-2">
             <QCardSection class="q-pt-none flex-column">
+                <div
+                    v-if="selectedAction === 'reject'"
+                    class="info-panel info-panel-error"
+                >
+                    <i
+                        aria-hidden="true"
+                        class="bi bi-exclamation-lg"
+                    ></i>
+                    <p>{{ t('charter.reject-info') }}</p>
+                </div>
                 <QForm
                     class="flex-column"
                     @submit="onValidateCharter"

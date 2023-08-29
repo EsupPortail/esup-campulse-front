@@ -24,7 +24,7 @@ const associationId = ref<number>(parseInt(route.params.associationId as string)
 async function onGetAssociationDetail() {
     if (associationId.value) {
         try {
-            await associationStore.getAssociationDetail(associationId.value, true)
+            await associationStore.getAssociationDetail(associationId.value, false)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({

@@ -11,7 +11,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {uploadCharter, initCharters, charterDocuments} = useCharters()
+const {initCharters, patchCharterDocument} = useCharters()
 const {catchHTTPError} = useErrors()
 const {getFile} = useDocumentUploads()
 const associationStore = useAssociationStore()
@@ -59,21 +59,16 @@ const comment = ref('')
 const commentIsMandatory = ref<boolean>(false)
 
 
-async function onValidateCharter(action: 'validate' | 'return' | 'reject') {
+async function onValidateCharter(action: 'validate' | 'reject') {
     if (action !== 'validate') commentIsMandatory.value = true
     if (commentIsMandatory.value && !comment.value) return
     else {
         loading.show()
         try {
-            /*if (signedCharter.value) {
-                await uploadCharter(props.charter.documentUploadId, props.associationId, props.charter.documentId, signedCharter.value)
-                open.value = false
-                await initCharters(props.associationId, props.isSite)
-                notify({
-                    type: 'positive',
-                    message: t('notifications.positive.charter-signed')
-                })
-            }*/
+            if (props.charter.documentUploadId && associationStore.association) {
+                await patchCharterDocument(action, props.charter.documentUploadId, comment.value)
+                await initCharters(props.associationId, associationStore.association.isSite, associationStore.association?.charterStatus)
+            }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -133,41 +128,30 @@ async function onValidateCharter(action: 'validate' | 'return' | 'reject') {
                             </p>
                         </template>
                     </QInput>
-                    <div class="flex-column padding-top padding-bottom">
-                        <div class="flex-row">
-                            <QBtn
-                                :label="t('charter.actions.validate')"
-                                class="btn-lg"
-                                color="charter"
-                                icon="bi-check-lg"
-                                text-color="charter"
-                                @click="onValidateCharter('validate')"
-                            />
-                            <QBtn
-                                :label="t('charter.actions.return')"
-                                class="btn-lg"
-                                color="custom-red"
-                                icon="bi-exclamation-triangle"
-                                @click="onValidateCharter('return')"
-                            />
-                            <QBtn
-                                :label="t('charter.actions.reject')"
-                                class="btn-lg"
-                                color="custom-red"
-                                icon="bi-x-octagon"
-                                @click="onValidateCharter('reject')"
-                            />
-                        </div>
-                        <div>
-                            <QBtn
-                                :label="t('back')"
-                                class="btn-lg"
-                                color="charter"
-                                icon="bi-box-arrow-left"
-                                text-color="charter"
-                                @click="emit('closeDialog')"
-                            />
-                        </div>
+                    <div class="flex-row-center padding-top padding-bottom">
+                        <QBtn
+                            :label="t('back')"
+                            class="btn-lg"
+                            color="charter"
+                            icon="bi-box-arrow-left"
+                            text-color="charter"
+                            @click="emit('closeDialog')"
+                        />
+                        <QBtn
+                            :label="t('charter.actions.validate')"
+                            class="btn-lg"
+                            color="charter"
+                            icon="bi-check-lg"
+                            text-color="charter"
+                            @click="onValidateCharter('validate')"
+                        />
+                        <QBtn
+                            :label="t('charter.actions.reject')"
+                            class="btn-lg"
+                            color="custom-red"
+                            icon="bi-x-octagon"
+                            @click="onValidateCharter('reject')"
+                        />
                     </div>
                 </QForm>
             </QCardSection>

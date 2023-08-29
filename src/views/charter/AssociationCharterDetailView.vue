@@ -73,19 +73,22 @@ onMounted(async () => {
             <div class="container">
                 <!-- Comment if charter is rejected -->
                 <div
-                    v-if="associationStore.association?.charterStatus === 'CHARTER_REJECTED'"
+                    v-if="associationStore.association?.charterStatus === 'CHARTER_DRAFT'"
                     class="info-panel info-panel-error"
                 >
                     <i
                         aria-hidden="true"
                         class="bi bi-exclamation-lg"
                     ></i>
-                    <p>{{ t('charter.rejected-info') }}</p>
+                    <p>{{ t('charter.returned-info') }}</p>
                     <p>{{ comment }}</p>
-                    <p>{{ t('charter.resign-info') }}</p>
+                    <p v-if="!isStaff">{{ t('charter.resign-info') }}</p>
                 </div>
                 <!-- Classic comment -->
-                <div class="info-panel">
+                <div
+                    v-else
+                    class="info-panel"
+                >
                     <i
                         aria-hidden="true"
                         class="bi bi-info"

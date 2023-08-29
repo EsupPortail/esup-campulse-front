@@ -8,7 +8,6 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
-import type {AssociationCharterStatus} from '#/charters'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 

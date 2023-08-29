@@ -43,7 +43,7 @@ const initOptions = () => {
             })
         }
     }
-    if (props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'PROCESSING' || props.charter.charterStatus === 'REJECTED') {
+    if (props.charter.charterStatus === 'RETURNED' || props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'PROCESSING' || props.charter.charterStatus === 'REJECTED') {
         if (props.charter.documentProcessType === 'CHARTER_ASSOCIATION') {
             options.value.push({
                 icon: 'bi-eye',

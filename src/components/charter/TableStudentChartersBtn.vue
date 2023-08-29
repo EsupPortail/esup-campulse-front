@@ -3,12 +3,10 @@ import {useI18n} from 'vue-i18n'
 import {onMounted, ref, watch} from 'vue'
 import router from '@/router'
 import type {ManageCharter} from '#/charters'
-import useDocumentUploads from '@/composables/useDocumentUploads'
 import FormSignCharters from '@/components/charter/FormSignCharters.vue'
 import useCharters from '@/composables/useCharters'
 
 const {t} = useI18n()
-const {documents} = useDocumentUploads()
 const {downloadCharter, manageCharters} = useCharters()
 
 const props = defineProps<{
@@ -31,17 +29,19 @@ const options = ref<Option[]>([])
 
 const initOptions = () => {
     options.value = []
-    options.value.push({
-        icon: 'bi-download',
-        label: t('charter.options.download'),
-        action: 'download'
-    })
+    if (props.charter.charterStatus !== 'NOT_SITE') {
+        options.value.push({
+            icon: 'bi-download',
+            label: t('charter.options.download'),
+            action: 'download'
+        })
+    }
     if (props.charter.charterStatus === 'NO_CHARTER' || props.charter.charterStatus === 'EXPIRED'
-        || props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'REJECTED') {
+        || props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'RETURNED' || props.charter.charterStatus === 'REJECTED') {
         const option: Option = {
             icon: 'bi-pen',
             label: t(`charter.options.${props.charter.charterStatus === 'EXPIRED'
-            || props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'REJECTED' ? 're-' : ''}sign`)
+            || props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'RETURNED' || props.charter.charterStatus === 'REJECTED' ? 're-' : ''}sign`)
         }
         if (props.charter.documentProcessType === 'CHARTER_ASSOCIATION') {
             option.to = {
@@ -53,7 +53,7 @@ const initOptions = () => {
         }
         options.value.push(option)
     }
-    if (props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'PROCESSING' || props.charter.charterStatus === 'REJECTED') {
+    if (props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'PROCESSING' || props.charter.charterStatus === 'RETURNED') {
         if (props.charter.documentProcessType === 'CHARTER_ASSOCIATION') {
             options.value.push({
                 icon: 'bi-eye',

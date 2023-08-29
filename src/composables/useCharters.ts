@@ -57,7 +57,7 @@ export default function () {
                 documentUploadId: uploadedCharter?.id ?? 0,
                 documentName: document.name,
                 pathTemplate: document.pathTemplate,
-                pathFile: uploadedCharter?.pathFile,
+                pathFile: uploadedCharter?.pathFile ?? '',
                 validatedDate: formatDate(charterStatus.validatedDate)?.split('-').reverse().join('/'),
                 expirationDate: formatDate(charterStatus.expirationDate)?.split('-').reverse().join('/'),
                 charterStatus: charterStatus.charterStatus
@@ -102,7 +102,7 @@ export default function () {
             if (document && association) {
                 if (document.processType === charterType && uploadCharter.association === association.id) {
                     const charterStatus = initCharterStatus(association.isSite, association.charterStatus, document, uploadCharter)
-                    if (charterStatus.charterStatus === 'PROCESSING') {
+                    if (charterStatus?.charterStatus === 'PROCESSING') {
                         processingCharters.value.push({
                             associationId: association.id,
                             associationName: association.name,
@@ -119,56 +119,72 @@ export default function () {
         })
     }
 
+    // TODO test
     const initCharterStatus = (isSite: boolean, associationCharterStatus: AssociationCharterStatus, document: Document, uploadedCharter: DocumentUpload | undefined) => {
         let charterStatus: CharterStatus = 'NO_CHARTER'
         let validatedDate = ''
         let expirationDate = ''
+        // We set today's date
         const todayDate = new Date()
         todayDate.setHours(0, 0, 0, 0)
+        // If the charter is the association charter, we verify if the association isSite
         if (!isSite && document.processType === 'CHARTER_ASSOCIATION') charterStatus = 'NOT_SITE'
-        else if (uploadedCharter) {
-            validatedDate = formatDate(uploadedCharter.validatedDate) as string
+        // Then if there is an uploaded charter
+        else if (uploadedCharter || document.processType === 'CHARTER_ASSOCIATION') {
+            // We set the validated date
+            if (uploadedCharter) validatedDate = formatDate(uploadedCharter?.validatedDate) as string
+            // If the charter is the association charter, we can determine its status by the association's charter status
             if (document.processType === 'CHARTER_ASSOCIATION') {
                 if (associationCharterStatus === 'CHARTER_PROCESSING') charterStatus = 'PROCESSING'
                 else if (associationCharterStatus === 'CHARTER_VALIDATED') charterStatus = 'VALIDATED'
                 else if (associationCharterStatus === 'CHARTER_REJECTED') charterStatus = 'REJECTED'
+                else if (associationCharterStatus === 'CHARTER_DRAFT') charterStatus = 'RETURNED'
                 else if (associationCharterStatus === 'CHARTER_EXPIRED') charterStatus = 'EXPIRED'
-            } else if (uploadedCharter.uploadDate && !uploadedCharter.validatedDate) { // if document has been uploaded but is not validated yet
-                if (uploadedCharter.comment) {
-                    charterStatus = 'REJECTED'
-                } else {
-                    charterStatus = 'PROCESSING'
+                // Check if the charter has not been resigned
+                if (charterStatus === 'PROCESSING' && validatedDate) {
+                    validatedDate = ''
+                    expirationDate = ''
+                } else if (validatedDate) {
+                    const splitValidatedDate = validatedDate.split('-')
+                    expirationDate = [(parseInt(splitValidatedDate[0]) + 1).toString(), splitValidatedDate[1], splitValidatedDate[2]].join('-')
                 }
-            } else if (document.daysBeforeExpiration) { // if document must be signed once a year
-                const splitValidatedDate = validatedDate.split('-')
-                expirationDate = [(parseInt(splitValidatedDate[0]) + 1).toString(), splitValidatedDate[1], splitValidatedDate[2]].join('-')
-                // check if expiration date is inferior to today
-                const formatedExpirationDate = new Date(expirationDate)
+                /*const formatedExpirationDate = new Date(expirationDate)
                 if (formatedExpirationDate >= todayDate) {
                     charterStatus = 'VALIDATED'
                 } else {
                     charterStatus = 'EXPIRED'
-                }
-            } else { // if document has a fixed expiration date
-                const currentYear = new Date().getFullYear().toString()
-                const nextYear = (new Date().getFullYear() + 1).toString()
-                const factory: string[] = document.expirationDay.split('-')
-                factory.splice(0, 0, currentYear)
-                const currentYearExpirationDate = factory.join('-')
-                const formatedCurrentYearExpirationDate = new Date(currentYearExpirationDate)
-                // determine if expiration date is this year or next year
-                if (formatedCurrentYearExpirationDate >= todayDate) { // if expiration date is yet to come this year
-                    expirationDate = currentYearExpirationDate
-                } else { // if expiration date is passed this year
-                    factory.splice(0, 1, nextYear)
-                    expirationDate = factory.join('-')
-                }
-                // check if expiration date is inferior to today
-                const formatedExpirationDate = new Date(expirationDate)
-                if (formatedExpirationDate >= todayDate) {
-                    charterStatus = 'VALIDATED'
-                } else {
-                    charterStatus = 'EXPIRED'
+                }*/
+            } else {
+                // First, we check if the charter has been validated
+                if (uploadedCharter) {
+                    if (uploadedCharter.uploadDate && !uploadedCharter.validatedDate) { // if document has been uploaded but is not validated yet
+                        if (uploadedCharter.comment) {
+                            charterStatus = 'REJECTED'
+                        } else {
+                            charterStatus = 'PROCESSING'
+                        }
+                    }
+                } else { // If so, we calculate the expiration date
+                    const currentYear = new Date().getFullYear().toString()
+                    const nextYear = (new Date().getFullYear() + 1).toString()
+                    const factory: string[] = document.expirationDay.split('-')
+                    factory.splice(0, 0, currentYear)
+                    const currentYearExpirationDate = factory.join('-')
+                    const formatedCurrentYearExpirationDate = new Date(currentYearExpirationDate)
+                    // Determine if expiration date is this year or next year
+                    if (formatedCurrentYearExpirationDate >= todayDate) { // if expiration date is yet to come this year
+                        expirationDate = currentYearExpirationDate
+                    } else { // if expiration date is passed this year
+                        factory.splice(0, 1, nextYear)
+                        expirationDate = factory.join('-')
+                    }
+                    // Check if expiration date is inferior to today
+                    const formatedExpirationDate = new Date(expirationDate)
+                    if (formatedExpirationDate >= todayDate) {
+                        charterStatus = 'VALIDATED'
+                    } else {
+                        charterStatus = 'EXPIRED'
+                    }
                 }
             }
         }
@@ -202,7 +218,7 @@ export default function () {
     }
 
     // TODO
-    async function patchCharterDocument(action: 'validate' | 'reject', id: number, comment: string) {
+    async function patchCharterDocument(action: 'validate' | 'reject' | 'return', id: number, comment: string) {
         let dataToPatch = {}
         if (comment) {
             dataToPatch = Object.assign(dataToPatch, {comment})

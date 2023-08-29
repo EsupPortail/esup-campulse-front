@@ -221,8 +221,9 @@
     "project-fund": {
       "title": "Chartes de subventionnement"
     },
-    "rejected-info": "Votre charte a été refusée pour le motif suivant :",
+    "reject-info": "Attention, en refusant cette charte, le statut de l'association passera automatiquement à \"hors site Alsace\".",
     "resign-info": "Veuillez soumettre à nouveau votre charte en prenant en compte ces éléments.",
+    "returned-info": "La charte n'a pas pu être validée pour le motif suivant :",
     "sign": "Signer la charte",
     "signed-charter": "Charte signée",
     "site": {
@@ -242,6 +243,7 @@
       "not-site": "Hors Site Alsace",
       "processing": "Charte en cours de validation",
       "rejected": "Charte refusée",
+      "returned": "En attente de modification par l'association",
       "validated": "Charte signée et validée"
     },
     "uploaded-date": "Date de dépôt",
@@ -635,6 +637,7 @@
       "association-up-to-date": "L'association est déjà à jour.",
       "associations-successfully-updated": "Les associations ont bien été mises à jour.",
       "charter-reject": "La charte a été refusée.",
+      "charter-return": "La charte a été retournée à l'association pour modification.",
       "charter-signed": "La charte a été signée.",
       "charter-validate": "La charte a été validée.",
       "comment-deleted": "Le commentaire a été supprimé.",
