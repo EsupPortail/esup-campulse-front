@@ -179,5 +179,6 @@ export interface UserSearch {
     search: string,
     firstName: string,
     lastName: string,
-    email: string
+    email: string,
+    association: number | null
 }

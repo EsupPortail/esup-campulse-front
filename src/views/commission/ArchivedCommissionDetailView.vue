@@ -8,7 +8,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import useCommissions from '@/composables/useCommissions'
 import useUtility from '@/composables/useUtility'
-import CommissionExportCSV from '@/components/commissions/CommissionExportCSV.vue'
+import CommissionExport from '@/components/commissions/CommissionExport.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -53,11 +53,12 @@ watch(() => commission.value, initCommissionName)
         <div class="dashboard-section-container">
             <div class="container-lg">
                 <TableManagedProjects
-                    :commission="commissionId"
+                    :commission-id="commissionId"
+                    :commission-name="commissionName"
                     :title="t('project.archived-projects')"
                     project-status="all"
                 />
-                <CommissionExportCSV
+                <CommissionExport
                     :commission-id="commissionId"
                     :commission-name="commissionName"
                 />
