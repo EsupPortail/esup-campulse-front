@@ -191,7 +191,8 @@ describe('useUsers', () => {
                     search: '',
                     firstName: 'Student',
                     lastName: 'Misc',
-                    email: 'misc-student@unistra.fr'
+                    email: 'misc-student@unistra.fr',
+                    association: null
                 })
                 expect(matches).toEqual([_miscStudent])
             })
@@ -200,7 +201,8 @@ describe('useUsers', () => {
                     search: '',
                     firstName: 'Chantal',
                     lastName: '',
-                    email: ''
+                    email: '',
+                    association: null
                 })
                 expect(matches).toEqual([])
             })
@@ -211,7 +213,8 @@ describe('useUsers', () => {
                     search: '',
                     firstName: '',
                     lastName: '',
-                    email: ''
+                    email: '',
+                    association: null
                 })
                 expect(matches).toEqual(undefined)
             })

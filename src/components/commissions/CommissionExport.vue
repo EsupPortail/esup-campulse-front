@@ -14,13 +14,13 @@ const {getCommissionExport} = useCommissions()
 const props = defineProps<{
     commissionId: number,
     commissionName: string,
-    selected: ProjectList[]
+    selected: ProjectList[] | undefined
 }>()
 
 async function onExportCommission(mode: 'csv' | 'pdf') {
     loading.show()
     try {
-        const projects = props.selected.map(project => project.id)
+        const projects = props.selected?.map(project => project.id)
         const file = await getCommissionExport(props.commissionId, mode, projects)
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
@@ -43,7 +43,7 @@ async function onExportCommission(mode: 'csv' | 'pdf') {
 <template>
     <div class="flex-row-center padding-top">
         <QBtn
-            :disable="!props.selected.length"
+            :disable="!props.selected?.length"
             :label="t('commission.export-csv')"
             class="btn-lg"
             color="commission"
@@ -51,7 +51,7 @@ async function onExportCommission(mode: 'csv' | 'pdf') {
             @click="onExportCommission('csv')"
         />
         <QBtn
-            :disable="!props.selected.length"
+            :disable="!props.selected?.length"
             :label="t('commission.export-pdf')"
             class="btn-lg"
             color="commission"
