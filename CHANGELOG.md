@@ -1,8 +1,14 @@
-- ✨ Charter management dashboard is done #165
-- ✨ Segmented /commissions/active_projects in two parameters
-- ✨ Project review validation
-- ♿️ Improve accessibility
-- 💄 Correct responsive bugs and remove dead CSS lines
-- 🐛 Planned dates and locations in review
-- 🩹 Hide fields if not project re-edition for amounts edition
-- ⬆️ Upgrade minor dependencies
+- ✨ Student certificate can be uploaded (registration, user validation / management, account info update) #153 & #32
+- 🔧 Nginx CSP with variables
+- ✨ Commission CSV & PDF export for a list of projects #113
+- ✨ Add association field in search form for managed users #149
+- ✨ Charter validation is done? #166
+- ♻️ Refactored i18n management
+- ♿️ Added sizes on uploaded files
+- ✨ Added "Download all project documents" button
+- ✨ Footer logos now managed by backend
+- ➕ Added eslint-plugin-vue-i18n
+- ✨ Display charter status and expiration date on association detail page #65
+- ✨ Dynamic contents #38
+- ✨ Contact page #19
+- ✨ Associations CSV export #160
