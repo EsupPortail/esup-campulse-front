@@ -29,7 +29,7 @@ async function onGetAssociationDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }
@@ -135,6 +135,7 @@ const columns: QTableProps['columns'] = [
                                 <TableStudentChartersBtn
                                     :association-id="importedProps.associationId"
                                     :charter="props.row"
+                                    :association-charter-status="associationStore.association?.charterStatus"
                                     :is-site="associationStore.association?.isSite"
                                 />
                             </QTd>

@@ -6,7 +6,6 @@ import {onMounted, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
-import CommissionExportCSV from '@/components/commissions/CommissionExportCSV.vue'
 
 const {catchHTTPError} = useErrors()
 const {
@@ -108,11 +107,6 @@ async function onGetCommissions() {
                     v-model="splitterModel"
                 >
                     <template v-slot:before>
-                        <CommissionExportCSV
-                            :commission-id="tab.commission"
-                            :commission-name="tab.name"
-                            class="padding-bottom"
-                        />
                         <QTabs
                             v-model="innerTab"
                             class="cape-color"
@@ -147,7 +141,8 @@ async function onGetCommissions() {
                                 name="allProjects"
                             >
                                 <TableManagedProjects
-                                    :commission="tab.commission"
+                                    :commission-id="tab.commission"
+                                    :commission-name="tab.name"
                                     :title="t('project.all-projects')"
                                     project-status="all"
                                 />
@@ -156,7 +151,8 @@ async function onGetCommissions() {
                                 name="validatedProjects"
                             >
                                 <TableManagedProjects
-                                    :commission="tab.commission"
+                                    :commission-id="tab.commission"
+                                    :commission-name="tab.name"
                                     :title="t('project.validated-projects')"
                                     project-status="validated"
                                 />
@@ -165,7 +161,8 @@ async function onGetCommissions() {
                                 name="archivedProjects"
                             >
                                 <TableManagedProjects
-                                    :commission="tab.commission"
+                                    :commission-id="tab.commission"
+                                    :commission-name="tab.name"
                                     :title="t('project.archived-projects')"
                                     project-status="archived"
                                 />

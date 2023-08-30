@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {ref} from 'vue'
 import {toRefs, watch} from 'vue'
-import type {ManageCharter} from '#/charters'
+import type {AssociationCharterStatus, ManageCharter} from '#/charters'
 import {useI18n} from 'vue-i18n'
 import useCharters from '@/composables/useCharters'
 import {useQuasar} from 'quasar'
@@ -17,6 +17,7 @@ const props = defineProps<{
     openSign: boolean,
     charter: ManageCharter,
     associationId: number,
+    associationCharterStatus?: AssociationCharterStatus,
     isSite: boolean
 }>()
 
@@ -41,7 +42,7 @@ async function onSignCharter() {
         if (signedCharter.value) {
             await uploadCharter(props.charter.documentUploadId, props.associationId, props.charter.documentId, signedCharter.value)
             open.value = false
-            await initCharters(props.associationId, props.isSite)
+            await initCharters(props.associationId, props.isSite, props.associationCharterStatus)
             notify({
                 type: 'positive',
                 message: t('notifications.positive.charter-signed')

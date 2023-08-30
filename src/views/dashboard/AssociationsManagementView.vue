@@ -145,6 +145,7 @@ const columns: QTableProps['columns'] = [
                                 <QCheckbox
                                     v-model="props.selected"
                                     :aria-label="t('table.select-all')"
+                                    color="association"
                                 />
                             </QTh>
                             <QTh
@@ -332,20 +333,20 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/variables.scss';
 
 .q-table tr th:first-child {
-  text-align: left;
+    text-align: left;
 }
 
 @media screen and (max-width: $breakpoint-lg) {
-  .flex-row-space-between {
-    flex-direction: column;
+    .flex-row-space-between {
+        flex-direction: column;
 
-    h2 {
-      padding-bottom: 0;
-    }
+        h2 {
+            padding-bottom: 0;
+        }
 
-    .q-btn {
-      margin: 1rem;
+        .q-btn {
+            margin: 1rem;
+        }
     }
-  }
 }
 </style>

@@ -120,7 +120,7 @@ export default function () {
      * @returns An array of users that match the search criteria
      */
     function advancedSearch(settings: UserSearch) {
-        if (userManagerStore.users.length > 0 && (settings.firstName || settings.lastName || settings.email)) {
+        if (userManagerStore.users.length > 0 && (settings.firstName || settings.lastName || settings.email || settings.association)) {
             let matches: User[] = []
             if (settings.firstName) {
                 matches = userManagerStore.users.filter(user => {
@@ -147,6 +147,14 @@ export default function () {
                     matches = [...newMatches]
                 } else {
                     matches = userManagerStore.users.filter(user => user.email === settings.email)
+                }
+            }
+            if (settings.association) {
+                if (matches.length) {
+                    const newMatches = matches.filter(user => user.associations.map(association => association.id).includes(settings.association as number))
+                    matches = [...newMatches]
+                } else {
+                    matches = userManagerStore.users.filter(user => user.associations.map(association => association.id).includes(settings.association as number))
                 }
             }
             return matches

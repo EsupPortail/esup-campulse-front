@@ -57,7 +57,9 @@ async function onGetAssociationDetail() {
 
 async function onGetAssociationCharter() {
     try {
-        await initCharters(parseInt(route.params.id as string), association.value?.isSite as boolean)
+        if (association.value) {
+            await initCharters(parseInt(route.params.id as string), association.value.isSite, association.value.charterStatus)
+        }
         const charter = manageCharters.value.find(x => x.documentAcronym === 'CHARTE_SITE_ALSACE')
         if (charter) {
             let str = ''

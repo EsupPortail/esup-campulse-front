@@ -82,7 +82,7 @@ async function onGetAssociationDetail() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
@@ -114,24 +114,39 @@ async function onValidateCharter() {
             .find(x => x.document === (documents.value
                 .find(y => y.acronym === 'RGPD_SITE_ALSACE'))?.id)?.id
         // We patch our documents and the charter status of the association
+        let message = ''
         if (associationId.value && selectedAction.value && uploadedAssociationCharter && uploadedGDPRAssociationCharter) {
             await patchCharterDocument(selectedAction.value, uploadedAssociationCharter, comment.value)
             await patchCharterDocument(selectedAction.value, uploadedGDPRAssociationCharter, comment.value)
             let associationCharterStatus: AssociationCharterStatus = 'CHARTER_REJECTED'
-            if (selectedAction.value === 'validate') associationCharterStatus = 'CHARTER_VALIDATED'
-            else if (selectedAction.value === 'return') associationCharterStatus = 'CHARTER_DRAFT'
+            switch (selectedAction.value) {
+            case 'validate':
+                associationCharterStatus = 'CHARTER_VALIDATED'
+                message = t('notifications.positive.charter-validate')
+                break
+            case 'reject':
+                associationCharterStatus = 'CHARTER_REJECTED'
+                message = t('notifications.positive.charter-reject')
+                break
+            case 'return':
+                associationCharterStatus = 'CHARTER_DRAFT'
+                message = t('notifications.positive.charter-return')
+                break
+            default:
+                break
+            }
             await patchCharterStatus(associationCharterStatus, associationId.value)
         }
         notify({
             type: 'positive',
-            message: t(`notifications.positive.charter-${selectedAction.value}`)
+            message
         })
         await router.push({name: 'AssociationCharterList', params: {associationId: associationId.value}})
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response.status)
             })
         }
     }

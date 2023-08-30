@@ -2,7 +2,8 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useRoute} from 'vue-router'
 import axios from 'axios'
-import {QTableProps, useQuasar} from 'quasar'
+import type {QTableProps} from 'quasar'
+import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref} from 'vue'
@@ -29,7 +30,7 @@ async function onGetAssociationDetail() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
@@ -44,7 +45,7 @@ async function onGetAssociationCharters() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response.status)
                 })
             }
         }
