@@ -75,7 +75,7 @@ onMounted(async () => {
                     :key="route.name"
                 >
                     <RouterLink
-                        :to="route.path"
+                        :to="route.path !== '' ? route.path : '/'"
                         class="li-footer"
                     >
                         {{
@@ -85,8 +85,8 @@ onMounted(async () => {
                 </li>
                 <li>
                     <RouterLink
-                        class="li-footer"
                         to="/login"
+                        class="li-footer"
                     >
                         {{ t('login.login') }}
                     </RouterLink>
