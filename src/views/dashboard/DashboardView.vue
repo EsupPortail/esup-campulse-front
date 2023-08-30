@@ -29,7 +29,7 @@ const initAssociationCounter = () => {
 watch(() => userStore.userAssociations.length, initAssociationCounter)
 
 async function onGetUserDocuments() {
-    if (!isStaff && hasPerm('add_project_user')) {
+    if (!isStaff.value && hasPerm('add_project_user')) {
         try {
             await userStore.getUserDocuments()
         } catch (error) {
@@ -240,7 +240,7 @@ onMounted(async () => {
             <div class="container">
                 <InfoDocumentLibrary color="dashboard"/>
                 <ListDocumentDashboard
-                    v-if="userStore.userDocuments.length"
+                    v-if="userStore.userDocuments?.length"
                     :documents="userStore.userDocuments"
                 />
                 <div v-else>

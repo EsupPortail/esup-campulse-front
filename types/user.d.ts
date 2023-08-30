@@ -131,7 +131,8 @@ export interface UserGroupRegister {
 export interface UserManagerStore {
     user: User | undefined,
     users: User[],
-    userAssociations: AssociationUserDetail[]
+    userAssociations: AssociationUserDetail[],
+    userDocuments: DocumentUpload[]
 }
 
 // Register

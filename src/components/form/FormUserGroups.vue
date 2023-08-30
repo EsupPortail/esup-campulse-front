@@ -131,11 +131,16 @@ function onInitGroupLabels() {
         style="width: 250px"
         use-chips
     />
-    <FormDocumentUploads
-        v-if="!newUser.isCas && studentGroupIsSelected"
-        :association-id="null"
-        process="registration"
-    />
+    <div v-if="!newUser.isCas && studentGroupIsSelected">
+        <hgroup>
+            <h3>{{ t('forms.student-status-document') }}</h3>
+            <p>{{ t('forms.student-status-document-hint') }}</p>
+        </hgroup>
+        <FormDocumentUploads
+            :association-id="null"
+            process="registration"
+        />
+    </div>
 </template>
 
 <style lang="scss" scoped>

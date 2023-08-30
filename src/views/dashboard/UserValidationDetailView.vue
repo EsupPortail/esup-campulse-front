@@ -11,6 +11,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -18,6 +19,7 @@ const {validateUser} = useUsers()
 const {newGroups, groupChoiceIsValid} = useUserGroups()
 const {getUserAssociations} = useUserAssociations()
 const {catchHTTPError} = useErrors()
+const {uploadDocuments} = useDocumentUploads()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -63,6 +65,7 @@ async function onValidateUser() {
     if (groupChoiceIsValid.value) {
         try {
             await validateUser()
+            await uploadDocuments(undefined, userManagerStore.user?.username, false)
             await router.push({name: 'ValidateUsers'})
             notify({
                 type: 'positive',
@@ -155,16 +158,24 @@ async function onDeleteUser() {
                             <h3>{{ association.association.name }}</h3>
                             <ul>
                                 <li>
-                                    {{ t('dashboard.association-user.is-president') }}{{ t('colon') }}{{ association.isPresident ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-president') }}{{
+                                        t('colon')
+                                    }}{{ association.isPresident ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-vice-president') }}{{ t('colon') }}{{ association.isVicePresident ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-vice-president') }}{{
+                                        t('colon')
+                                    }}{{ association.isVicePresident ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-secretary') }}{{ t('colon') }}{{ association.isSecretary ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-secretary') }}{{
+                                        t('colon')
+                                    }}{{ association.isSecretary ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-treasurer') }}{{ t('colon') }}{{ association.isTreasurer ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-treasurer') }}{{
+                                        t('colon')
+                                    }}{{ association.isTreasurer ? t('yes') : t('no') }}
                                 </li>
                             </ul>
                         </div>

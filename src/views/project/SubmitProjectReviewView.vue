@@ -94,7 +94,7 @@ async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await uploadDocuments(parseInt(route.params.associationId as string))
+            await uploadDocuments(parseInt(route.params.associationId as string), undefined, false)
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {

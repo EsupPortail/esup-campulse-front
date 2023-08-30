@@ -4,6 +4,8 @@ import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharters'
 import type {AxiosInstance} from 'axios'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useUserStore} from '@/stores/useUserStore'
 
 const documents = ref<Document[]>([])
 
@@ -14,6 +16,8 @@ const documentUploads = ref<ProcessDocument[]>([])
 export default function () {
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const projectStore = useProjectStore()
+    const userManagerStore = useUserManagerStore()
+    const userStore = useUserStore()
 
     // Init documents to work on
     const initProcessDocuments = () => {
@@ -61,6 +65,36 @@ export default function () {
         })
     }
 
+    const initManagedUserDocumentUploads = () => {
+        documentUploads.value = []
+        const documentIds = processDocuments.value.map((document) => (document.document))
+        userManagerStore.userDocuments.forEach((document) => {
+            if (documentIds.includes(document.document)) {
+                documentUploads.value.push({
+                    id: document.id,
+                    document: document.document,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                    name: document.name as string
+                })
+            }
+        })
+    }
+
+    const initUserDocumentUploads = () => {
+        documentUploads.value = []
+        const documentIds = processDocuments.value.map((document) => (document.document))
+        userStore.userDocuments.forEach((document) => {
+            if (documentIds.includes(document.document)) {
+                documentUploads.value.push({
+                    id: document.id,
+                    document: document.document,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                    name: document.name as string
+                })
+            }
+        })
+    }
+
     // Get documents
     async function getDocuments(processes: DocumentProcessType[] | 'all') {
         let url = '/documents/'
@@ -84,7 +118,7 @@ export default function () {
         constructor(file: Blob, associationId: number | undefined, username: string | undefined, document: number) {
             this.file = file
             this.association = associationId ? associationId.toString() : ''
-            this.user = username ? username.toString() : ''
+            this.user = username ?? ''
             this.document = document.toString()
             this.project = projectStore.project?.id.toString() as string
         }
@@ -165,6 +199,8 @@ export default function () {
         DocumentUpload,
         createFileLink,
         initCharterDocumentUploads,
-        getStudentCertificate
+        getStudentCertificate,
+        initManagedUserDocumentUploads,
+        initUserDocumentUploads
     }
 }

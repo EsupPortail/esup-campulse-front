@@ -13,13 +13,15 @@ import FormDisplayUserAssociations from '@/components/form/FormDisplayUserAssoci
 import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
 import useSecurity from '@/composables/useSecurity'
 import useErrors from '@/composables/useErrors'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
 const userStore = useUserStore()
 const {isStaff, initGroupPermToJoinAssociation} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
 const {notify, loading} = useQuasar()
-const {userAssociationsRegister} = useSecurity()
+const {userAssociationsRegister, hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
 const {
     newAssociations,
@@ -28,6 +30,7 @@ const {
     initUserAssociations,
     userAssociations
 } = useUserAssociations()
+const {uploadDocuments, initProcessDocuments, initUserDocumentUploads} = useDocumentUploads()
 
 const tab = ref<string>('infos')
 
@@ -41,12 +44,16 @@ async function onUpdateUserInfos() {
                 type: 'positive',
                 message: t('notifications.positive.update-user-infos')
             })
-        } else {
+        } /*else {
             notify({
                 type: 'warning',
                 message: t('notifications.warning.no-modifications-found')
             })
-        }
+        }*/
+        await uploadDocuments(undefined, userStore.user?.username, false)
+        initProcessDocuments()
+        await userStore.getUserDocuments()
+        initUserDocumentUploads()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -140,6 +147,16 @@ onMounted(() => {
                                 :edited-by-staff="false"
                                 :user="userStore.user"
                             />
+                            <div v-if="!isStaff && (hasPerm('add_project_user') || hasPerm('add_project_association'))">
+                                <hgroup>
+                                    <h3>{{ t('forms.student-status-document') }}</h3>
+                                    <p>{{ t('forms.student-status-document-hint') }}</p>
+                                </hgroup>
+                                <FormDocumentUploads
+                                    :association-id="undefined"
+                                    process="account-infos"
+                                />
+                            </div>
                             <div class="flex-row-center">
                                 <QBtn
                                     :label="t('validate-changes')"

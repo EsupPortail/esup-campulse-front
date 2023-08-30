@@ -121,7 +121,7 @@ async function onPatchAssociation() {
 async function onUploadDocuments(nextStep: number) {
     loading.show()
     try {
-        await uploadDocuments(associationId.value)
+        await uploadDocuments(associationId.value, undefined, false)
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
