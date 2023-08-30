@@ -481,7 +481,6 @@
     "social-network-location-hint": "Saisir une adresse valide ; Par exemple : https://facebook.com/",
     "social-network-type-hint": "Par exemple : Facebook",
     "social-object-hint": "Objet figurant sur les statuts de l'association",
-    "student-certificate": "Certificat de scolarité pour l'année universitaire en cours",
     "student-certificate-hint": "Obligatoire pour s'inscrire dans le bureau d'une association ou déposer des demandes de subventions.",
     "student-status-document": "Justificatif de statut étudiant",
     "student-status-document-hint": "Au moins un document obligatoire (carte étudiante ou certificat de scolarité)",
@@ -608,9 +607,6 @@
       "validate-project-review": "Le bilan a été validé.",
       "validate-success": "Le compte a été validé.",
       "validate-user-association": "Le rôle dans l'utilisateur dans l'association a bien été validé."
-    },
-    "warning": {
-      "no-modifications-found": "Aucun changement n'a été effectué."
     }
   },
   "optional": "facultatif",

@@ -10,7 +10,6 @@ import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
-import useDocuments from '@/composables/useDocuments'
 
 const {
     processDocuments,
