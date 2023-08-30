@@ -9,7 +9,7 @@ import type {ProjectList} from '#/project'
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {getCommissionCSVExport} = useCommissions()
+const {getCommissionExport} = useCommissions()
 
 const props = defineProps<{
     commissionId: number,
@@ -17,13 +17,14 @@ const props = defineProps<{
     selected: ProjectList[]
 }>()
 
-async function onExportCSV() {
+async function onExportCommission(mode: 'csv' | 'pdf') {
     loading.show()
     try {
-        const file = await getCommissionCSVExport(props.commissionId)
+        const projects = props.selected.map(project => project.id)
+        const file = await getCommissionExport(props.commissionId, mode, projects)
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('commission.csv-name')}${encodeURI(props.commissionName)}.csv`
+        link.download = `${t('commission.export-name')}${encodeURI(props.commissionName)}.${mode}`
         document.body.appendChild(link)
         link.click()
         link.remove()
@@ -47,7 +48,7 @@ async function onExportCSV() {
             class="btn-lg"
             color="commission"
             icon="bi-filetype-csv"
-            @click="onExportCSV"
+            @click="onExportCommission('csv')"
         />
         <QBtn
             :disable="!props.selected.length"
@@ -55,7 +56,7 @@ async function onExportCSV() {
             class="btn-lg"
             color="commission"
             icon="bi-filetype-pdf"
-            @click="onExportPDF"
+            @click="onExportCommission('pdf')"
         />
     </div>
 </template>
