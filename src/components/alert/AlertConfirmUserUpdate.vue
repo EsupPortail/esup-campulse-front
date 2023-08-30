@@ -9,6 +9,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useSecurity from '@/composables/useSecurity'
 import useErrors from '@/composables/useErrors'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 
 const {t} = useI18n()
@@ -19,6 +20,7 @@ const {updateUserGroups} = useUserGroups()
 const {updateUserAssociations, userAssociations} = useUserAssociations()
 const {userAssociationsRegister} = useSecurity()
 const {catchHTTPError} = useErrors()
+const {uploadDocuments, initManagedUserDocumentUploads, initProcessDocuments} = useDocumentUploads()
 
 
 const emit = defineEmits(['hasValidated'])
@@ -37,10 +39,14 @@ async function onValidateChanges() {
             await userAssociationsRegister(false, userManagerStore.user?.username)
         }
         await updateUserGroups()
+        await uploadDocuments(undefined, userManagerStore.user?.username, false)
+        initProcessDocuments()
+        await userManagerStore.getUserDocuments()
+        initManagedUserDocumentUploads()
         emit('hasValidated')
         notify({
             type: 'positive',
-            message: t('notifications.positive.validate-success')
+            message: t('notifications.positive.update-user-infos')
         })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

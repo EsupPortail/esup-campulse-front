@@ -2,9 +2,10 @@ import {ref} from 'vue'
 import type {Document, DocumentProcessType, ProcessDocument} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
-import {useUserStore} from '@/stores/useUserStore'
 import useCharters from '@/composables/useCharters'
 import type {AxiosInstance} from 'axios'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useUserStore} from '@/stores/useUserStore'
 
 const documents = ref<Document[]>([])
 
@@ -15,6 +16,7 @@ const documentUploads = ref<ProcessDocument[]>([])
 export default function () {
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const projectStore = useProjectStore()
+    const userManagerStore = useUserManagerStore()
     const userStore = useUserStore()
 
     // Init documents to work on
@@ -63,6 +65,36 @@ export default function () {
         })
     }
 
+    const initManagedUserDocumentUploads = () => {
+        documentUploads.value = []
+        const documentIds = processDocuments.value.map((document) => (document.document))
+        userManagerStore.userDocuments.forEach((document) => {
+            if (documentIds.includes(document.document)) {
+                documentUploads.value.push({
+                    id: document.id,
+                    document: document.document,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                    name: document.name as string
+                })
+            }
+        })
+    }
+
+    const initUserDocumentUploads = () => {
+        documentUploads.value = []
+        const documentIds = processDocuments.value.map((document) => (document.document))
+        userStore.userDocuments.forEach((document) => {
+            if (documentIds.includes(document.document)) {
+                documentUploads.value.push({
+                    id: document.id,
+                    document: document.document,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                    name: document.name as string
+                })
+            }
+        })
+    }
+
     // Get documents
     async function getDocuments(processes: DocumentProcessType[] | 'all') {
         let url = '/documents/'
@@ -72,7 +104,7 @@ export default function () {
 
     // Get student certificate for registration
     async function getStudentCertificate() {
-        const url = '/documents/?acronym=CERTIFICAT_SCOLARITE_USER'
+        const url = '/documents/?process_types=DOCUMENT_USER'
         documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
@@ -83,10 +115,10 @@ export default function () {
         document: string
         project: string
 
-        constructor(file: Blob, associationId: number | undefined, document: number) {
+        constructor(file: Blob, associationId: number | undefined, username: string | undefined, document: number) {
             this.file = file
             this.association = associationId ? associationId.toString() : ''
-            this.user = associationId ? '' : userStore.user?.id.toString() as string
+            this.user = username ?? ''
             this.document = document.toString()
             this.project = projectStore.project?.id.toString() as string
         }
@@ -105,7 +137,7 @@ export default function () {
     }
 
     // Post document uploads
-    async function uploadDocuments(associationId: number | undefined, publicRequest?: boolean) {
+    async function uploadDocuments(associationId: number | undefined, username: string | undefined, publicRequest: boolean) {
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic as AxiosInstance
         for (let i = 0; i < processDocuments.value.length; i++) {
@@ -116,13 +148,15 @@ export default function () {
                     const files = processDocuments.value[i].pathFile as Blob[] | []
 
                     for (let j = 0; j < files.length; j++) {
-                        const documentUpload = new DocumentUpload(files[j], associationId, processDocuments.value[i].document as number)
+                        const documentUpload = new DocumentUpload(files[j], associationId, username,
+                            processDocuments.value[i].document as number)
                         const documentData = documentUpload.formData()
                         await instance.post('/documents/uploads', documentData)
                     }
                 } else {
                     const file = processDocuments.value[i].pathFile as Blob
-                    const documentUpload = new DocumentUpload(file, associationId, processDocuments.value[i].document as number)
+                    const documentUpload = new DocumentUpload(file, associationId, username,
+                        processDocuments.value[i].document as number)
                     const documentData = documentUpload.formData()
                     await instance.post('/documents/uploads', documentData)
                 }
@@ -165,6 +199,8 @@ export default function () {
         DocumentUpload,
         createFileLink,
         initCharterDocumentUploads,
-        getStudentCertificate
+        getStudentCertificate,
+        initManagedUserDocumentUploads,
+        initUserDocumentUploads
     }
 }

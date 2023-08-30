@@ -390,7 +390,7 @@ async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await uploadDocuments(parseInt(route.params.associationId as string))
+            await uploadDocuments(parseInt(route.params.associationId as string), undefined, false)
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -441,7 +441,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
         <div class="dashboard-section-container">
             <div class="container">
                 <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']"/>
-                
+
                 <QStepper
                     ref="stepper"
                     v-model="step"
@@ -477,9 +477,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 color="commission"
                                 filled
                                 lazy-rules
-                                type="date"
-                                min="1970-01-01"
                                 max="2120-01-01"
+                                min="1970-01-01"
+                                type="date"
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedEndDate"
@@ -490,9 +490,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 color="commission"
                                 filled
                                 lazy-rules
-                                type="date"
-                                min="1970-01-01"
                                 max="2120-01-01"
+                                min="1970-01-01"
+                                type="date"
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedLocation"

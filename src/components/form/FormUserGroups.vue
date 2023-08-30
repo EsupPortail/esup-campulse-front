@@ -7,6 +7,9 @@ import {useRoute} from 'vue-router'
 import useCommissions from '@/composables/useCommissions'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+import useSecurity from '@/composables/useSecurity'
+
 
 const {t} = useI18n()
 const {
@@ -19,6 +22,8 @@ const {
     preSelectGroup,
     initGroupPermToJoinAssociation,
     commissionMemberIsSelected,
+    studentGroupIsSelected,
+    initStudentGroupSelection
 } = useUserGroups()
 const {notify, loading} = useQuasar()
 const route = useRoute()
@@ -29,6 +34,7 @@ const {
     userFunds,
     initUserFunds
 } = useCommissions()
+const {newUser} = useSecurity()
 const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
@@ -36,6 +42,7 @@ onMounted(async () => {
     await onGetGroups()
     onInitGroupLabels()
     await onGetCommissions()
+    initStudentGroupSelection()
     loading.hide()
 })
 
@@ -124,6 +131,16 @@ function onInitGroupLabels() {
         style="width: 250px"
         use-chips
     />
+    <div v-if="!newUser.isCas && studentGroupIsSelected">
+        <hgroup>
+            <h3>{{ t('forms.student-status-document') }}</h3>
+            <p>{{ t('forms.student-status-document-hint') }}</p>
+        </hgroup>
+        <FormDocumentUploads
+            :association-id="null"
+            process="registration"
+        />
+    </div>
 </template>
 
 <style lang="scss" scoped>

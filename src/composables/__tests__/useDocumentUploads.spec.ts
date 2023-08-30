@@ -125,7 +125,7 @@ describe('useDocumentUploads', () => {
             it('should construct an upload document object', () => {
                 projectStore.project = _project
                 const _blob = new Blob
-                const documentUpload = new DocumentUpload(_blob, 1, 12)
+                const documentUpload = new DocumentUpload(_blob, 1, undefined, 12)
                 expect(documentUpload.file).toEqual(_blob)
                 expect(documentUpload.association).toEqual('1')
                 expect(documentUpload.user).toEqual('')
@@ -138,7 +138,7 @@ describe('useDocumentUploads', () => {
             it('should return a new formData', () => {
                 const _blob = new Blob
                 projectStore.project = _project
-                const documentUpload = new DocumentUpload(_blob, 1, 12)
+                const documentUpload = new DocumentUpload(_blob, 1, undefined, 12)
                 const _formData = new FormData()
                 _formData.append('pathFile', _blob)
                 _formData.append('document', '12')
@@ -152,9 +152,9 @@ describe('useDocumentUploads', () => {
     describe('uploadDocuments', () => {
         it('should post all documents required in the ongoing process', async () => {
             processDocuments.value = _processDocuments as ProcessDocument[]
-            await uploadDocuments(1)
+            await uploadDocuments(1, undefined, false)
             expect(axiosAuthenticated.post).toHaveBeenCalledTimes(3)
-            const documentUpload = new DocumentUpload(processDocuments.value[1].pathFile as Blob, 1, processDocuments.value[1].document as number)
+            const documentUpload = new DocumentUpload(processDocuments.value[1].pathFile as Blob, 1, undefined, processDocuments.value[1].document as number)
             const documentData = documentUpload.formData()
             expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/documents/uploads', documentData)
         })

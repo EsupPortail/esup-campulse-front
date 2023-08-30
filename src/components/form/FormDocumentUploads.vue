@@ -8,6 +8,9 @@ import type {DocumentProcessType, ProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useUserStore} from '@/stores/useUserStore'
+import useDocuments from '@/composables/useDocuments'
 
 const {
     processDocuments,
@@ -18,16 +21,20 @@ const {
     initProcessDocuments,
     getDocuments,
     initCharterDocumentUploads,
-    getStudentCertificate
+    getStudentCertificate,
+    initManagedUserDocumentUploads,
+    initUserDocumentUploads
 } = useDocumentUploads()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {getCharterDocuments} = useCharters()
 const projectStore = useProjectStore()
+const userManagerStore = useUserManagerStore()
+const userStore = useUserStore()
 
 const props = defineProps<{
-    process: 'project' | 'review' | 'charter' | 'registration',
+    process: 'project' | 'review' | 'charter' | 'registration' | 'account-infos',
     associationId: number | null | undefined
 }>()
 
@@ -66,8 +73,8 @@ async function onGetDocuments() {
         // Get documents by processes
         if (processes.length) await getDocuments(processes)
 
-        // Get only one specific document for registration
-        if (props.process === 'registration') await getStudentCertificate()
+        // Get only one specific document for registration or account management
+        if (props.process === 'registration' || props.process === 'account-infos') await getStudentCertificate()
 
         // Init documents for form
         initProcessDocuments()
@@ -81,6 +88,12 @@ async function onGetDocuments() {
                 await getCharterDocuments(props.associationId)
                 initCharterDocumentUploads()
             }
+        } else if (props.process === 'registration') {
+            await userManagerStore.getUserDocuments()
+            initManagedUserDocumentUploads()
+        } else {
+            await userStore.getUserDocuments()
+            initUserDocumentUploads()
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -151,13 +164,17 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 :color="fieldColor"
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
-                :label="props.process === 'registration' ? t('forms.student-certificate')
-                    : (document.description + (document.isRequiredInProcess ? ' *' : ''))"
+                :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
                 :multiple="document.isMultiple"
-                :rules="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length ? [val => (document.isMultiple ? val.length : val) || t('forms.select-document')] : []"
+                :rules="(document.isRequiredInProcess || (props.process === 'registration' || props.process === 'account-infos')) &&
+                    !documentUploads.filter(obj => obj.document === document.document).length ?
+                        [val => ((document.isMultiple ? val.length : val) ||
+                            ((props.process === 'registration' || props.process === 'account-infos') &&
+                                (processDocuments.filter(x => x.pathFile).length > 0 || documentUploads.length))) ||
+                            t('forms.select-document')] : []"
                 append
                 bottom-slots
                 clearable
@@ -171,7 +188,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 <template v-slot:hint>
                     <p aria-describedby="pathFile">
                         {{
-                            props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : ''))
+                            props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint')
+                                + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : ''))
                         }}
                     </p>
                 </template>

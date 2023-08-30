@@ -102,7 +102,7 @@ async function onValidateCharter() {
     loading.show()
     try {
         // We upload new documents if needed
-        await uploadDocuments(associationId.value)
+        await uploadDocuments(associationId.value, undefined, false)
         // We update our document uploads
         await getCharterDocuments(associationId.value)
         initCharterDocumentUploads()
