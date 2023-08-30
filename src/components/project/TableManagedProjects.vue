@@ -14,6 +14,7 @@ import {onMounted, ref, watch} from 'vue'
 import TableManageProjectsBtn from '@/components/project/TableManageProjectsBtn.vue'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
 import useCommissions from '@/composables/useCommissions'
+import CommissionExport from '@/components/commissions/CommissionExport.vue'
 
 
 const {t} = useI18n()
@@ -26,7 +27,8 @@ const {catchHTTPError} = useErrors()
 const {getFunds, getCommissionFunds} = useCommissions()
 
 const props = defineProps<{
-    commission: number,
+    commissionId: number,
+    commissionName: string,
     projectStatus: 'all' | 'validated' | 'archived',
     title: string
 }>()
@@ -34,6 +36,8 @@ const props = defineProps<{
 const isLoaded = ref<boolean>(false)
 
 const projects = ref<ProjectList[]>([])
+
+const selected = ref<QTableProps['selected']>([])
 
 const applicant = (association: number | null, user: number | null) => {
     if (association) {
@@ -76,8 +80,8 @@ onMounted(async () => {
 
 async function onGetProjects() {
     try {
-        await projectStore.getManagedProjects(props.commission)
-        await projectStore.getProjectCommissionFunds(true, props.commission)
+        await projectStore.getManagedProjects(props.commissionId)
+        await projectStore.getProjectCommissionFunds(true, props.commissionId)
         await getCommissionFunds()
         await getFunds()
     } catch (error) {
@@ -124,17 +128,27 @@ const columns: QTableProps['columns'] = [
 <template>
     <div>
         <QTable
+            v-model:selected="selected"
             :columns="columns"
             :loading="!projects"
             :no-data-label="t('project.no-project-to-show')"
             :rows="projects"
             :rows-per-page-options="[10, 20, 50, 0]"
             :title="props.title"
+            flat
             role="presentation"
             row-key="name"
+            selection="multiple"
         >
             <template v-slot:header="props">
                 <QTr :props="props">
+                    <QTh>
+                        <QCheckbox
+                            v-model="props.selected"
+                            :aria-label="t('table.select-all')"
+                            color="commission"
+                        />
+                    </QTh>
                     <QTh
                         v-for="col in props.cols"
                         :id="col.name"
@@ -148,6 +162,13 @@ const columns: QTableProps['columns'] = [
             </template>
             <template v-slot:body="props">
                 <QTr :props="props">
+                    <QTd>
+                        <QCheckbox
+                            v-model="props.selected"
+                            :aria-label="props.row.name"
+                            color="commission"
+                        />
+                    </QTd>
                     <QTd
                         key="name"
                         :props="props"
@@ -255,6 +276,12 @@ const columns: QTableProps['columns'] = [
                 />
             </template>
         </QTable>
+        <CommissionExport
+            :commission-id="props.commissionId"
+            :commission-name="props.commissionName"
+            :selected="selected"
+            class="padding-bottom"
+        />
     </div>
 </template>
 

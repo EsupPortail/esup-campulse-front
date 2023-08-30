@@ -16,7 +16,7 @@ const commission = ref<Commission | undefined>(undefined)
 const commissionFunds = ref<CommissionFund[]>([])
 const commissionLabels = ref<SelectLabel[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -171,8 +171,9 @@ export default function() {
         await axiosAuthenticated.delete(`/commissions/${id}`)
     }
 
-    async function getCommissionCSVExport(id: number) {
-        const url = `/commissions/${id}/export?mode=csv`
+    // TODO test
+    async function getCommissionExport(id: number, mode: 'csv' | 'pdf', projects: number[]) {
+        const url = `/commissions/${id}/export?mode=${mode}&project_ids=${projects.join(',')}`
         return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
     }
 
@@ -198,7 +199,7 @@ export default function() {
         getCommission,
         commission,
         getNextCommission,
-        getCommissionCSVExport,
+        getCommissionExport,
         getFundLabel
     }
 }
