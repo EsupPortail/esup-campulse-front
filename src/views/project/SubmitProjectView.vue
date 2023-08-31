@@ -77,8 +77,11 @@ onMounted(async () => {
     if (projectId.value) newProject.value = false
     await onGetProjectDetail()
     // If project is not a draft, then push to 404
-    if (projectStore.project && projectStore.project?.projectStatus !== 'PROJECT_DRAFT' && projectStore.project?.projectStatus !== 'PROJECT_DRAFT_PROCESSED') {
-        await router.push({name: '404'})
+    if (projectStore.project) {
+        const acceptedStatuses = ['PROJECT_DRAFT', 'PROJECT_DRAFT_PROCESSED']
+        if (!acceptedStatuses.includes(projectStore.project.projectStatus)) {
+            await router.push({name: '404'})
+        }
     }
     await onGetProjectCategories()
     await onGetAssociationUsers()
