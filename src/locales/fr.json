@@ -724,6 +724,7 @@
       "archived": "Archivé",
       "cancelled": "Annulé",
       "draft": "Brouillon",
+      "draft-processed": "En attente de modification par le demandeur",
       "processing": "Projet en attente de validation",
       "rejected": "Projet refusé",
       "review-draft": "En attente de bilan",

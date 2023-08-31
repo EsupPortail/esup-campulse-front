@@ -24,10 +24,20 @@ onMounted(initSpanClasses)
 
 <template>
     <span
-        v-if="(props.projectStatus === 'PROJECT_DRAFT' || props.projectStatus === 'PROJECT_DRAFT_PROCESSED') && showDraft"
+        v-if="(props.projectStatus === 'PROJECT_DRAFT') && showDraft"
         :class="spanClasses"
     >
         {{ t('project.status.draft') }}
+        <span
+            aria-hidden="true"
+            class="form-state-icon form-state-grey"
+        ><i class="bi bi-dash"></i></span>
+    </span>
+    <span
+        v-if="props.projectStatus === 'PROJECT_DRAFT_PROCESSED'"
+        :class="spanClasses"
+    >
+        {{ t('project.status.draft-processed') }}
         <span
             aria-hidden="true"
             class="form-state-icon form-state-grey"
