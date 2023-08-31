@@ -164,7 +164,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
                 :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
-                :max-file-size="MAX_FILE_SIZE"
+                :max-file-size="MAX_FILE_SIZE * processDocuments.filter(x => x.pathFile).length"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
                 :multiple="document.isMultiple"
