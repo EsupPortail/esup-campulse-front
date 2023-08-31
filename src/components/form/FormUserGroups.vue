@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import useUserGroups from '@/composables/useUserGroups'
 import {useI18n} from 'vue-i18n'
-import {onMounted, onUnmounted} from 'vue'
+import {onMounted, onUnmounted, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import useCommissions from '@/composables/useCommissions'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 
 const {t} = useI18n()
+const userManagerStore = useUserManagerStore()
 const {
     groupChoiceIsValid,
     newGroups,
@@ -41,6 +43,8 @@ onMounted(async () => {
     initStudentGroupSelection()
     loading.hide()
 })
+
+watch(() => userManagerStore.user, initUserFunds)
 
 // Used to clean newGroups value
 onUnmounted(() => {
