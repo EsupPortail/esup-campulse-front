@@ -38,6 +38,17 @@ export const useProjectStore = defineStore('projectStore', {
             return commissions.value
                 .find(commission => commission.id === (commissionFunds.value
                     .find(commissionFund => commissionFund.id === (state.projectCommissionFunds[0]?.commissionFund))?.commission))?.id
+        },
+        projectFunds: (state: ProjectStore): number[] => {
+            const {commissionFunds} = useCommissions()
+            const projectFunds: number[] = []
+            state.projectCommissionFunds.forEach(projectCommissionFund => {
+                const commissionFund = commissionFunds.value.find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)
+                if (commissionFund) {
+                    projectFunds.push(commissionFund.fund)
+                }
+            })
+            return projectFunds
         }
     },
     actions: {

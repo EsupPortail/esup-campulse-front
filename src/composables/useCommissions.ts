@@ -16,7 +16,7 @@ const commission = ref<Commission | undefined>(undefined)
 const commissionFunds = ref<CommissionFund[]>([])
 const commissionLabels = ref<SelectLabel[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -38,11 +38,11 @@ export default function() {
 
     const initChosenCommissionFundsLabels = (commission: number, isSite: boolean) => {
         fundsLabels.value = []
-        commissionFunds.value.filter(obj => obj.commission === commission).forEach(x => {
-            const fund = funds.value.find(obj => obj.id === x.fund)
+        commissionFunds.value.filter(obj => obj.commission === commission).forEach(commissionFund => {
+            const fund = funds.value.find(obj => obj.id === commissionFund.fund)
             if (isSite || (!isSite && !fund?.isSite))
                 fundsLabels.value.push({
-                    value: x.id,
+                    value: commissionFund.id,
                     label: fund?.acronym as string,
                     fund: fund?.id
                 })

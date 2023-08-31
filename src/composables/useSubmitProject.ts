@@ -50,6 +50,9 @@ const projectCommission = ref<number | null>(null)
 // Used to store the chosen commission funds (v-model in SubmitProjectView)
 const projectCommissionFunds = ref<number[]>([])
 
+// Used to store the funds linked to the project
+const projectFunds = ref<number[]>([])
+
 // Used to copy projectCommissionFunds from the store and check changes
 const projectCommissionFundsDetail = ref<ProjectCommissionFund[]>([])
 
@@ -64,14 +67,13 @@ const projectGoals = ref<ProjectGoals>(
     }
 )
 
-export default function() {
-
+export default function () {
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
     const {arraysAreEqual} = useUtility()
     const {processDocuments} = useDocumentUploads()
-    const {initChosenCommissionFundsLabels} = useCommissions()
+    const {initChosenCommissionFundsLabels, commissionFunds} = useCommissions()
     const associationStore = useAssociationStore()
     const {getAssociationUsersNames} = useUserAssociations()
 
@@ -93,7 +95,7 @@ export default function() {
         projectAssociationUsersLabels.value = []
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function(associationUser) {
+        associationStore.associationUsers.forEach(function (associationUser) {
             const member = userNames.find(obj => obj.id === associationUser.user)
             if (member && associationUser.id) {
                 projectAssociationUsersLabels.value.push({
@@ -170,6 +172,16 @@ export default function() {
         projectGoals.value.marketingCampaign = ''
         projectGoals.value.sustainableDevelopment = ''
         processDocuments.value = []
+    }
+
+    const initProjectFunds = () => {
+        projectFunds.value = []
+        projectCommissionFunds.value.forEach(projectCommissionFund => {
+            const commissionFund = commissionFunds.value.find(commissionFund => commissionFund.id === projectCommissionFund)
+            if (commissionFund) {
+                projectFunds.value.push(commissionFund.fund)
+            }
+        })
     }
 
     // POSTS
@@ -310,7 +322,8 @@ export default function() {
                 }
             }
             if (Object.entries(dataToPatch).length) {
-                await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFundsDetail.value[i].commissionFund}`, dataToPatch)
+                const url = `/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFundsDetail.value[i].commissionFund}`
+                await axiosAuthenticated.patch(url, dataToPatch)
             }
         }
     }
@@ -361,6 +374,8 @@ export default function() {
         initProjectAssociationUsersLabels,
         projectAssociationUsersLabels,
         initProjectCommissionFundsDetail,
-        deleteProject
+        deleteProject,
+        projectFunds,
+        initProjectFunds
     }
 }
