@@ -15,12 +15,14 @@ import useUtility from '@/composables/useUtility'
 import useErrors from '@/composables/useErrors'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 import useDocumentUploads from '@/composables/useDocumentUploads'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
 const {register, newUser, initNewUserData, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
-const {groupChoiceIsValid, groupCanJoinAssociation, isStaff} = useUserGroups()
+const {groupChoiceIsValid, groupCanJoinAssociation, isStaff, studentGroupIsSelected} = useUserGroups()
 const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
 const {uploadDocuments} = useDocumentUploads()
@@ -201,6 +203,16 @@ async function onRegister() {
             <div class="dashboard-section-container">
                 <div class="container">
                     <FormUserGroups/>
+                    <div v-if="!newUser.isCas && studentGroupIsSelected">
+                        <hgroup>
+                            <h3>{{ t('forms.student-status-document') }}</h3>
+                            <p>{{ t('forms.student-status-document-hint') }}</p>
+                        </hgroup>
+                        <FormDocumentUploads
+                            :association-id="null"
+                            process="registration"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

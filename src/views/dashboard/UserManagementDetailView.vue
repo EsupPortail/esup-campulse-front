@@ -16,11 +16,14 @@ import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAsso
 import {useUserStore} from '@/stores/useUserStore'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {groupChoiceIsValid, groupCanJoinAssociation} = useUserGroups()
+const {groupChoiceIsValid, groupCanJoinAssociation, studentGroupIsSelected} = useUserGroups()
 const {catchHTTPError} = useErrors()
+
 
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
@@ -125,9 +128,21 @@ onBeforeRouteLeave((to, from, next) => {
             <div class="dashboard-section-container">
                 <div class="container">
                     <FormUserGroups/>
+                    <div v-if="!userManagerStore.user?.isCas && studentGroupIsSelected">
+                        <hgroup>
+                            <h3>{{ t('forms.student-status-document') }}</h3>
+                            <p>{{ t('forms.student-status-document-hint') }}</p>
+                        </hgroup>
+                        <FormDocumentUploads
+                            :association-id="null"
+                            process="user-management"
+                        />
+                    </div>
                     <ul>
                         <li>
-                            <strong>{{ t('user.is-cas') }}</strong>{{ t('colon') }}{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
+                            <strong>{{ t('user.is-cas') }}</strong>{{
+                                t('colon')
+                            }}{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}
                         </li>
                         <li>
                             <strong>{{ t('user.is-validated-by-admin') }}</strong>

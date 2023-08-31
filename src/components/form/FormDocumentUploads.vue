@@ -33,7 +33,7 @@ const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
 
 const props = defineProps<{
-    process: 'project' | 'review' | 'charter' | 'registration' | 'account-infos',
+    process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
     associationId: number | null | undefined
 }>()
 
@@ -73,7 +73,7 @@ async function onGetDocuments() {
         if (processes.length) await getDocuments(processes)
 
         // Get only one specific document for registration or account management
-        if (props.process === 'registration' || props.process === 'account-infos') await getStudentCertificate()
+        if (props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') await getStudentCertificate()
 
         // Init documents for form
         initProcessDocuments()
@@ -87,10 +87,10 @@ async function onGetDocuments() {
                 await getCharterDocuments(props.associationId)
                 initCharterDocumentUploads()
             }
-        } else if (props.process === 'registration') {
+        } else if (props.process === 'user-management') {
             await userManagerStore.getUserDocuments()
             initManagedUserDocumentUploads()
-        } else {
+        } else if (props.process === 'account-management') {
             await userStore.getUserDocuments()
             initUserDocumentUploads()
         }
@@ -168,10 +168,10 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
                 :multiple="document.isMultiple"
-                :rules="(document.isRequiredInProcess || (props.process === 'registration' || props.process === 'account-infos')) &&
+                :rules="(document.isRequiredInProcess || (props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management')) &&
                     !documentUploads.filter(obj => obj.document === document.document).length ?
                         [val => ((document.isMultiple ? val.length : val) ||
-                            ((props.process === 'registration' || props.process === 'account-infos') &&
+                            ((props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') &&
                                 (processDocuments.filter(x => x.pathFile).length > 0 || documentUploads.length))) ||
                             t('forms.select-document')] : []"
                 append

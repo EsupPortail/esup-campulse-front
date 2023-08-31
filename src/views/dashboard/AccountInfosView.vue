@@ -154,7 +154,7 @@ onMounted(() => {
                                 </hgroup>
                                 <FormDocumentUploads
                                     :association-id="undefined"
-                                    process="account-infos"
+                                    process="account-management"
                                 />
                             </div>
                             <div class="flex-row-center">

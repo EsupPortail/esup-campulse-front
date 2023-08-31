@@ -12,11 +12,13 @@ import useUserAssociations from '@/composables/useUserAssociations'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 import useDocumentUploads from '@/composables/useDocumentUploads'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {validateUser} = useUsers()
-const {newGroups, groupChoiceIsValid} = useUserGroups()
+const {newGroups, groupChoiceIsValid, studentGroupIsSelected} = useUserGroups()
 const {getUserAssociations} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 const {uploadDocuments} = useDocumentUploads()
@@ -196,6 +198,16 @@ async function onDeleteUser() {
         <div class="dashboard-section-container">
             <div class="container">
                 <FormUserGroups/>
+                <div v-if="!userManagerStore.user?.isCas && studentGroupIsSelected">
+                    <hgroup>
+                        <h3>{{ t('forms.student-status-document') }}</h3>
+                        <p>{{ t('forms.student-status-document-hint') }}</p>
+                    </hgroup>
+                    <FormDocumentUploads
+                        :association-id="null"
+                        process="user-management"
+                    />
+                </div>
             </div>
         </div>
     </div>
