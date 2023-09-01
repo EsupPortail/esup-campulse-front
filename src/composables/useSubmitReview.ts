@@ -29,11 +29,12 @@ const projectReview = ref<ProjectReview>(
         associationUser: null,
         commissions: [],
         creationDate: '',
-        editionDate: ''
+        editionDate: '',
+        processingDate: ''
     }
 )
 
-export default function () {
+export default function() {
 
     const projectStore = useProjectStore()
     const userStore = useUserStore()

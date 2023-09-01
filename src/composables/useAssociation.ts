@@ -96,7 +96,7 @@ export default function() {
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
             const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'zipcode', 'city', 'country',
-                'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone']
+                'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone', 'presidentEmail']
             if (indexes.includes(key)) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})

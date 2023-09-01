@@ -22,6 +22,7 @@ export const _project: Project = {
     amountStudentsAudience: 90,
     amountAllAudience: 100,
     ticketPrice: 10,
+    studentTicketPrice: 0,
     individualCost: 15,
     goals: 'Ceci sont les objectifs de mon projet en tant que porteur individuel. Par exemple rassembler les étudiants autour d\'une cause commune.',
     summary: 'Récapitulatif simple du projet.',
@@ -31,7 +32,8 @@ export const _project: Project = {
     sustainableDevelopment: 'Actions en rapport avec la DDRS (Développement Durable et Responsabilité Sociétale)',
     projectStatus: 'PROJECT_DRAFT',
     creationDate: '2023-06-01',
-    editionDate: '2023-06-02'
+    editionDate: '2023-06-02',
+    processingDate: '2023-06-02'
 }
 
 export const _projects = [
@@ -258,6 +260,7 @@ export const _projectBudget: ProjectBudget = {
     amountStudentsAudience: 50,
     amountAllAudience: 60,
     ticketPrice: 2,
+    studentTicketPrice: 0,
     individualCost: 5
 }
 

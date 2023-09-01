@@ -179,7 +179,7 @@ async function onGetAssociationCharter() {
         </div>
 
         <div
-            v-if="association?.presidentNames || association?.presidentPhone || association?.lastGoaDate || association?.siret || association?.charterDate"
+            v-if="association?.presidentNames || association?.presidentPhone || association?.presidentEmail || association?.lastGoaDate || association?.siret || association?.charterDate"
         >
             <div class="dashboard-section">
                 <h2>
@@ -208,6 +208,14 @@ async function onGetAssociationCharter() {
                         >
                             <dt>{{ t('association.labels.president-phone') }}</dt>
                             <dd>{{ association?.presidentPhone }}</dd>
+                        </div>
+
+                        <div
+                            v-if="association?.presidentEmail"
+                            class="display-row"
+                        >
+                            <dt>{{ t('association.labels.president-email') }}</dt>
+                            <dd>{{ association?.presidentEmail }}</dd>
                         </div>
 
                         <div

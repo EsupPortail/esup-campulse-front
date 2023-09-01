@@ -41,6 +41,7 @@ const editedAssociation = ref<EditedAssociation>({
     lastGoaDate: '',
     presidentNames: '',
     presidentPhone: '',
+    presidentEmail: '',
     address: '',
     zipcode: '',
     city: '',
@@ -58,6 +59,7 @@ const initEditedAssociation = () => {
     editedAssociation.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string)
     editedAssociation.value.presidentNames = associationStore.association?.presidentNames
     editedAssociation.value.presidentPhone = associationStore.association?.presidentPhone
+    editedAssociation.value.presidentEmail = associationStore.association?.presidentEmail
     editedAssociation.value.address = associationStore.association?.address
     editedAssociation.value.zipcode = associationStore.association?.zipcode
     editedAssociation.value.city = associationStore.association?.city
@@ -225,6 +227,16 @@ async function onSignCharter() {
                                 color="charter"
                                 filled
                                 type="tel"
+                            />
+                            <QInput
+                                v-model="editedAssociation.presidentEmail"
+                                :label="t('association.labels.president-email') + ' *'"
+                                :rules="[val => val && val.length > 0 || t('forms.required-email')]"
+                                aria-required="true"
+                                clearable
+                                color="charter"
+                                filled
+                                type="email"
                             />
                             <QSelect
                                 v-model="editedAssociation.institutionComponent"

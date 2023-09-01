@@ -105,6 +105,11 @@ const projectIsFirstEdition = () => {
         </div>
 
         <div class="display-row">
+            <h4>{{ t('project.student-ticket-price') }}</h4>
+            <p>{{ projectBudget.studentTicketPrice + CURRENCY }}</p>
+        </div>
+
+        <div class="display-row">
             <h4>{{ t('project.individual-cost') }}</h4>
             <p>{{ projectBudget.individualCost + CURRENCY }}</p>
         </div>
