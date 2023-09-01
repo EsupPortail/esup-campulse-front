@@ -7,11 +7,13 @@ import useCharters from '@/composables/useCharters'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {uploadCharter, initCharters} = useCharters()
 const {catchHTTPError} = useErrors()
+const {MAX_FILE_SIZE} = useDocumentUploads()
 
 const props = defineProps<{
     openSign: boolean,
@@ -58,6 +60,14 @@ async function onSignCharter() {
     }
     loading.hide()
 }
+
+// FILE TOO LARGE
+async function onDocumentRejected() {
+    notify({
+        type: 'negative',
+        message: t('notifications.negative.error-413')
+    })
+}
 </script>
 
 <template>
@@ -65,15 +75,22 @@ async function onSignCharter() {
         <QCard>
             <QCardSection>
                 <h3>{{ props.charter.documentName }}</h3>
-                <p></p>
+                <p>{{ t('charter.sign-hint') }}</p>
                 <QForm
                     @submit="onSignCharter"
                 >
                     <QFile
                         v-model="signedCharter"
+                        :accept="props.charter.mimeTypes.join(', ')"
                         :label="t('charter.signed-charter') + ' *'"
+                        :max-file-size="MAX_FILE_SIZE"
+                        aria-required="true"
+                        clearable
                         color="charter"
+                        counter
                         filled
+                        use-chips
+                        @rejected="onDocumentRejected"
                     >
                         <template v-slot:prepend>
                             <QIcon name="bi-paperclip"/>

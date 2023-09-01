@@ -11,7 +11,6 @@ import useCharters from '@/composables/useCharters'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
 import useSubmitProject from '@/composables/useSubmitProject'
-import useCommissions from '@/composables/useCommissions'
 
 const {
     processDocuments,
@@ -24,7 +23,9 @@ const {
     initCharterDocumentUploads,
     getStudentCertificate,
     initManagedUserDocumentUploads,
-    initUserDocumentUploads
+    initUserDocumentUploads,
+    MAX_FILE_SIZE,
+    MAX_FILES
 } = useDocumentUploads()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -33,16 +34,12 @@ const {getCharterDocuments} = useCharters()
 const projectStore = useProjectStore()
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
-const {projectCommissionFunds, projectFunds, initProjectFunds} = useSubmitProject()
+const {projectFunds, initProjectFunds} = useSubmitProject()
 
 const props = defineProps<{
     process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
     associationId: number | null | undefined
 }>()
-
-// CONST
-const MAX_FILES = 10
-const MAX_FILE_SIZE = 8388608
 
 // COLOR
 const fieldColor = ref<string>('')

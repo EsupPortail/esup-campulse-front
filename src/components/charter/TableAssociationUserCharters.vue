@@ -3,7 +3,7 @@ import {useI18n} from 'vue-i18n'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import useCharters from '@/composables/useCharters'
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
@@ -21,6 +21,8 @@ const associationStore = useAssociationStore()
 const importedProps = defineProps<{
     associationId: number,
 }>()
+
+const isLoaded = ref<boolean>(false)
 
 async function onGetAssociationDetail() {
     try {
@@ -55,6 +57,7 @@ onMounted(async () => {
     loading.show()
     await onGetAssociationDetail()
     await onGetCharters()
+    isLoaded.value = true
     loading.hide()
 })
 
@@ -79,6 +82,7 @@ const columns: QTableProps['columns'] = [
             <div class="container">
                 <QTable
                     :columns="columns"
+                    :loading="!manageCharters.length"
                     :rows="manageCharters"
                     :rows-per-page-options="[10, 20, 50, 0]"
                     role="presentation"
@@ -133,9 +137,10 @@ const columns: QTableProps['columns'] = [
                                 headers="actions"
                             >
                                 <TableStudentChartersBtn
+                                    v-if="isLoaded"
+                                    :association-charter-status="associationStore.association?.charterStatus"
                                     :association-id="importedProps.associationId"
                                     :charter="props.row"
-                                    :association-charter-status="associationStore.association?.charterStatus"
                                     :is-site="associationStore.association?.isSite"
                                 />
                             </QTd>

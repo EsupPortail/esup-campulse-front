@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, ref, toRefs, watch} from 'vue'
 import router from '@/router'
 import type {AssociationCharterStatus, ManageCharter} from '#/charters'
 import FormSignCharters from '@/components/charter/FormSignCharters.vue'
 import useCharters from '@/composables/useCharters'
 
 const {t} = useI18n()
-const {downloadCharter, manageCharters} = useCharters()
+const {downloadCharter} = useCharters()
 
 const props = defineProps<{
     charter: ManageCharter,
@@ -15,6 +15,11 @@ const props = defineProps<{
     associationCharterStatus?: AssociationCharterStatus,
     isSite?: boolean
 }>()
+
+const charterRef = toRefs(props).charter
+watch(() => charterRef.value, () => {
+    initOptions()
+})
 
 interface Option {
     icon: 'bi-download' | 'bi-pen' | 'bi-eye',
@@ -77,7 +82,6 @@ const initOptions = () => {
 }
 
 onMounted(initOptions)
-watch(() => manageCharters.value.length, initOptions)
 
 const openSign = ref<boolean>(false)
 
@@ -129,11 +133,11 @@ async function onOptionClick(option: Option) {
         </QBtnDropdown>
     </div>
     <FormSignCharters
+        :association-charter-status="props.associationCharterStatus"
         :association-id="props.associationId"
         :charter="props.charter"
         :is-site="props.isSite"
         :open-sign="openSign"
-        :association-charter-status="props.associationCharterStatus"
         @close-dialog="openSign = false"
     />
 </template>

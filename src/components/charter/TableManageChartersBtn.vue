@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, toRefs, watch} from 'vue'
 import router from '@/router'
 import type {ManageCharter} from '#/charters'
 import FormChartersValidation from '@/components/charter/FormChartersValidation.vue'
@@ -13,6 +13,11 @@ const props = defineProps<{
     charter: ManageCharter,
     associationId: number
 }>()
+
+const charterRef = toRefs(props).charter
+watch(() => charterRef.value, () => {
+    initOptions()
+})
 
 interface Option {
     icon: 'bi-check-lg' | 'bi-eye',

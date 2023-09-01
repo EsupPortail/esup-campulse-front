@@ -17,7 +17,7 @@ const manageCharters = ref<ManageCharter[]>([])
 const associationCharters = ref<AssociationCharter[]>([])
 const processingCharters = ref<ProcessingCharter[]>([])
 
-export default function() {
+export default function () {
     const {formatDate} = useUtility()
     const associationStore = useAssociationStore()
     const {axiosAuthenticated} = useAxios()
@@ -60,7 +60,8 @@ export default function() {
                 pathFile: uploadedCharter?.pathFile ?? '',
                 validatedDate: formatDate(charterStatus.validatedDate)?.split('-').reverse().join('/'),
                 expirationDate: formatDate(charterStatus.expirationDate)?.split('-').reverse().join('/'),
-                charterStatus: charterStatus.charterStatus
+                charterStatus: charterStatus.charterStatus,
+                mimeTypes: document.mimeTypes
             })
         })
     }
@@ -127,44 +128,53 @@ export default function() {
         // We set today's date
         const todayDate = new Date()
         todayDate.setHours(0, 0, 0, 0)
-        // If the charter is the association charter, we verify if the association isSite
-        if (!isSite && document.processType === 'CHARTER_ASSOCIATION') charterStatus = 'NOT_SITE'
-        // Then if there is an uploaded charter
-        else if (uploadedCharter || document.processType === 'CHARTER_ASSOCIATION') {
-            // We set the validated date
-            if (uploadedCharter) validatedDate = formatDate(uploadedCharter?.validatedDate) as string
+        if (uploadedCharter) {
+            validatedDate = formatDate(uploadedCharter.validatedDate) ?? ''
             // If the charter is the association charter, we can determine its status by the association's charter status
             if (document.processType === 'CHARTER_ASSOCIATION') {
-                if (associationCharterStatus === 'CHARTER_PROCESSING') charterStatus = 'PROCESSING'
-                else if (associationCharterStatus === 'CHARTER_VALIDATED') charterStatus = 'VALIDATED'
-                else if (associationCharterStatus === 'CHARTER_REJECTED') charterStatus = 'REJECTED'
-                else if (associationCharterStatus === 'CHARTER_DRAFT') charterStatus = 'RETURNED'
-                else if (associationCharterStatus === 'CHARTER_EXPIRED') charterStatus = 'EXPIRED'
-                // Check if the charter has not been resigned
-                if (charterStatus === 'PROCESSING' && validatedDate) {
-                    validatedDate = ''
-                    expirationDate = ''
-                } else if (validatedDate) {
-                    const splitValidatedDate = validatedDate.split('-')
-                    expirationDate = [(parseInt(splitValidatedDate[0]) + 1).toString(), splitValidatedDate[1], splitValidatedDate[2]].join('-')
-                }
-                /*const formatedExpirationDate = new Date(expirationDate)
-                if (formatedExpirationDate >= todayDate) {
-                    charterStatus = 'VALIDATED'
+                if (!isSite) {
+                    charterStatus = 'NOT_SITE'
                 } else {
-                    charterStatus = 'EXPIRED'
-                }*/
-            } else {
-                // First, we check if the charter has been validated
-                if (uploadedCharter) {
-                    if (uploadedCharter.uploadDate && !uploadedCharter.validatedDate) { // if document has been uploaded but is not validated yet
-                        if (uploadedCharter.comment) {
-                            charterStatus = 'REJECTED'
+                    switch (associationCharterStatus) {
+                    case 'CHARTER_PROCESSING':
+                        charterStatus = 'PROCESSING'
+                        break
+                    case 'CHARTER_VALIDATED':
+                        charterStatus = 'VALIDATED'
+                        break
+                    case 'CHARTER_REJECTED':
+                        charterStatus = 'REJECTED'
+                        break
+                    case 'CHARTER_DRAFT':
+                        charterStatus = 'RETURNED'
+                        break
+                    default:
+                        charterStatus = 'EXPIRED'
+                    }
+                    if (validatedDate) {
+                        // Check if the charter has not been resigned
+                        if (charterStatus === 'PROCESSING') {
+                            validatedDate = ''
+                            expirationDate = ''
                         } else {
-                            charterStatus = 'PROCESSING'
+                            const splitValidatedDate = validatedDate.split('-')
+                            expirationDate = [(parseInt(splitValidatedDate[0]) + 1).toString(), splitValidatedDate[1], splitValidatedDate[2]].join('-')
                         }
                     }
-                } else { // If so, we calculate the expiration date
+                }
+            }
+            // If the charter is a project fund charter
+            else {
+                // If the document has been uploaded but is not validated yet
+                if (uploadedCharter.uploadDate && !validatedDate) {
+                    if (uploadedCharter.comment) {
+                        charterStatus = 'REJECTED'
+                    } else {
+                        charterStatus = 'PROCESSING'
+                    }
+                }
+                // If the document has been validated, we calculate its expiration date
+                else {
                     const currentYear = new Date().getFullYear().toString()
                     const nextYear = (new Date().getFullYear() + 1).toString()
                     const factory: string[] = document.expirationDay.split('-')

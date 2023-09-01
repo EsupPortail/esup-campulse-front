@@ -195,6 +195,7 @@
     "resign-info": "Veuillez soumettre à nouveau votre charte en prenant en compte ces éléments.",
     "returned-info": "La charte n'a pas pu être validée pour le motif suivant :",
     "sign": "Signer la charte",
+    "sign-hint": "Veuillez déposer votre charte signée et valider.",
     "signed-charter": "Charte signée",
     "site": {
       "sign-form": {
