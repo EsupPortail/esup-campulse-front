@@ -64,7 +64,9 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'manage',
                         meta: {
-                            requiresAuth: true
+                            requiresAuth: true,
+                            breadcrumb: i18n.global.t('breadcrumbs.manage-charters'),
+                            siteMap: true
                         },
                         children: [
                             {
@@ -72,35 +74,38 @@ const routes: RouteRecordRaw[] = [
                                 name: 'ManageCharters',
                                 component: () => import('@/views/charter/CharterDashboardView.vue'),
                                 meta: {
-                                    breadcrumb: i18n.global.t('breadcrumbs.manage-charters'),
                                     title: i18n.global.t('breadcrumbs.manage-charters'),
-                                    siteMap: true
                                 }
                             },
                             {
                                 path: ':associationId',
-                                name: 'AssociationCharterList',
-                                component: () => import('@/views/charter/AssociationCharterListView.vue'),
-                                meta: {
-                                    breadcrumb: i18n.global.t('breadcrumbs.association-charters-detail')
-                                }
+                                children: [
+                                    {
+                                        path: '',
+                                        name: 'AssociationCharterList',
+                                        component: () => import('@/views/charter/AssociationCharterListView.vue'),
+                                        meta: {
+                                            breadcrumb: i18n.global.t('breadcrumbs.association-charters-detail')
+                                        }
+                                    },
+                                    {
+                                        path: 'validate',
+                                        name: 'AssociationCharterValidation',
+                                        component: () => import('@/views/charter/AssociationCharterValidationView.vue'),
+                                        meta: {
+                                            breadcrumb: i18n.global.t('breadcrumbs.association-charter-validation')
+                                        }
+                                    },
+                                    {
+                                        path: 'view',
+                                        name: 'AssociationCharterDetail',
+                                        component: () => import('@/views/charter/AssociationCharterDetailView.vue'),
+                                        meta: {
+                                            breadcrumb: i18n.global.t('breadcrumbs.association-charter-detail')
+                                        }
+                                    }
+                                ]
                             },
-                            {
-                                path: ':associationId/validate',
-                                name: 'AssociationCharterValidation',
-                                component: () => import('@/views/charter/AssociationCharterValidationView.vue'),
-                                meta: {
-                                    breadcrumb: i18n.global.t('breadcrumbs.association-charter-validation')
-                                }
-                            },
-                            {
-                                path: ':associationId/view',
-                                name: 'AssociationCharterDetail',
-                                component: () => import('@/views/charter/AssociationCharterDetailView.vue'),
-                                meta: {
-                                    breadcrumb: i18n.global.t('breadcrumbs.association-charter-detail')
-                                }
-                            }
                         ]
                     },
                     {
