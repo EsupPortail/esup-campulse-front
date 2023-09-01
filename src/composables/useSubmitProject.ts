@@ -42,6 +42,7 @@ const projectBudget = ref<ProjectBudget>(
         amountStudentsAudience: 0,
         amountAllAudience: 0,
         ticketPrice: 0,
+        studentTicketPrice: 0,
         individualCost: 0
     }
 )
@@ -127,6 +128,7 @@ export default function () {
         projectBudget.value.amountStudentsAudience = projectStore.project?.amountStudentsAudience.toString() as string
         projectBudget.value.amountAllAudience = projectStore.project?.amountAllAudience.toString() as string
         projectBudget.value.ticketPrice = projectStore.project?.ticketPrice.toString() as string
+        projectBudget.value.studentTicketPrice = projectStore.project?.studentTicketPrice.toString() as string
         projectBudget.value.individualCost = projectStore.project?.individualCost.toString() as string
         projectBudget.value.budgetPreviousEdition = projectStore.project?.budgetPreviousEdition.toString() as string
     }
@@ -166,6 +168,7 @@ export default function () {
         projectBudget.value.amountStudentsAudience = 0
         projectBudget.value.amountAllAudience = 0
         projectBudget.value.ticketPrice = 0
+        projectBudget.value.studentTicketPrice = 0
         projectBudget.value.individualCost = 0
         projectBudget.value.budgetPreviousEdition = 0
         projectGoals.value.goals = ''
@@ -271,7 +274,7 @@ export default function () {
     async function patchProjectBudget(isFirstEdition: boolean) {
         let dataToPatch = {}
         for (const [key, value] of Object.entries(projectBudget.value)) {
-            const numbers = ['amountStudentsAudience', 'amountAllAudience', 'ticketPrice', 'individualCost']
+            const numbers = ['amountStudentsAudience', 'amountAllAudience', 'ticketPrice', 'studentTicketPrice', 'individualCost']
             if (numbers.includes(key)) {
                 if (parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
                     dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})

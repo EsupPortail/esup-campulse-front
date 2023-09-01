@@ -17,6 +17,7 @@ export interface Project {
     amountStudentsAudience: number,
     amountAllAudience: number,
     ticketPrice: number,
+    studentTicketPrice: number,
     individualCost: number,
     goals: string,
     summary: string,
@@ -27,6 +28,7 @@ export interface Project {
     projectStatus: ProjectStatus,
     creationDate: string,
     editionDate: string,
+    processingDate: string,
     manualIdentifier: string
 }
 
@@ -84,6 +86,7 @@ export interface ProjectBudget {
     amountStudentsAudience: number | string,
     amountAllAudience: number | string,
     ticketPrice: number | string,
+    studentTicketPrice: number | string,
     individualCost: number | string
 }
 
@@ -129,7 +132,8 @@ export interface ProjectReview {
     associationUser: number | null,
     commissions: Commission[],
     creationDate: string,
-    editionDate: string
+    editionDate: string,
+    processingDate: string
 }
 
 export interface ProjectComment {

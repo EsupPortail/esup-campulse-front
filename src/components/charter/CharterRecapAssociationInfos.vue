@@ -60,6 +60,10 @@ async function onGetAssociationDetails() {
             <p>{{ associationStore.association?.presidentPhone }}</p>
         </div>
         <div class="display-row">
+            <p class="row-title">{{ t('association.labels.president-email') }}</p>
+            <p>{{ associationStore.association?.presidentEmail }}</p>
+        </div>
+        <div class="display-row">
             <p class="row-title">{{ t('association.labels.institution-component') }}</p>
             <p>
                 {{

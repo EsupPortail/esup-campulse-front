@@ -748,6 +748,20 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             />
 
                             <QInput
+                                v-model="projectBudget.studentTicketPrice"
+                                :label="t('project.student-ticket-price') + ' *'"
+                                :rules="[ val => val && val.length > 0 || t('forms.required-project-ticket')]"
+                                :shadow-text="` ${CURRENCY}`"
+                                aria-required="true"
+                                color="commission"
+                                filled
+                                inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
+                            />
+
+                            <QInput
                                 v-model="projectBudget.individualCost"
                                 :label="t('project.individual-cost') + ' *'"
                                 :rules="[ val => val && val.length > 0 || t('forms.required-project-individual-cost')]"

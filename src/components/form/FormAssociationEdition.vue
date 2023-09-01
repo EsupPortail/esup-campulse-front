@@ -55,6 +55,7 @@ const association = ref<EditedAssociation>({
     website: '',
     presidentNames: '',
     presidentPhone: '',
+    presidentEmail: '',
     approvalDate: '',
     lastGoaDate: '',
     amountMembersAllowed: '',
@@ -77,6 +78,7 @@ const initValues = () => {
     association.value.website = associationStore.association?.website as string
     association.value.presidentNames = associationStore.association?.presidentNames as string
     association.value.presidentPhone = associationStore.association?.presidentPhone as string
+    association.value.presidentEmail = associationStore.association?.presidentEmail as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution)?.value
@@ -341,6 +343,13 @@ async function onChangeLogo(action: string) {
                             clearable
                             filled
                             type="tel"
+                        />
+                        <QInput
+                            v-model="association.presidentEmail"
+                            :label="t('association.labels.president-email')"
+                            clearable
+                            filled
+                            type="email"
                         />
                         <QInput
                             v-model="association.lastGoaDate"

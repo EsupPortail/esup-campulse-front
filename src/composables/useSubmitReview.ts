@@ -5,8 +5,6 @@ import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useUsers from '@/composables/useUsers'
-import useSubmitProject from '@/composables/useSubmitProject'
-
 
 const projectReview = ref<ProjectReview>(
     {
@@ -30,13 +28,14 @@ const projectReview = ref<ProjectReview>(
         associationUser: null,
         commissions: [],
         creationDate: '',
-        editionDate: ''
+        editionDate: '',
+        processingDate: ''
     }
 )
 
 const projectId = ref<string | undefined>()
 
-export default function () {
+export default function() {
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
