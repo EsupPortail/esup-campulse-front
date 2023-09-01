@@ -5,6 +5,7 @@ import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useUsers from '@/composables/useUsers'
+import useSubmitProject from '@/composables/useSubmitProject'
 
 
 const projectReview = ref<ProjectReview>(
@@ -33,8 +34,9 @@ const projectReview = ref<ProjectReview>(
     }
 )
 
-export default function () {
+const projectId = ref<string | undefined>()
 
+export default function () {
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
@@ -43,6 +45,7 @@ export default function () {
 
     const initProjectReview = () => {
         if (projectStore.projectReview && projectStore.project) {
+            projectId.value = projectStore.project?.manualIdentifier
             projectReview.value.id = projectStore.projectReview.id
             projectReview.value.name = projectStore.projectReview.name
             projectReview.value.outcome = projectStore.projectReview.outcome ?
@@ -108,6 +111,7 @@ export default function () {
         projectReview,
         initProjectReview,
         patchProjectReview,
-        submitProjectReview
+        submitProjectReview,
+        projectId
     }
 }

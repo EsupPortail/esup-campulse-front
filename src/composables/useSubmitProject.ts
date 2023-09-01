@@ -16,6 +16,8 @@ import type {User} from '#/user'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUserAssociations from '@/composables/useUserAssociations'
 
+const projectId = ref<string | undefined>()
+
 const projectBasicInfos = ref<ProjectBasicInfos>(
     {
         name: '',
@@ -81,6 +83,7 @@ export default function () {
     // INIT DATA
     const initProjectBasicInfos = () => {
         const {formatDate} = useUtility()
+        projectId.value = projectStore.project?.manualIdentifier
         projectBasicInfos.value.name = projectStore.project?.name as string
         projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
         projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
@@ -376,6 +379,7 @@ export default function () {
         initProjectCommissionFundsDetail,
         deleteProject,
         projectFunds,
-        initProjectFunds
+        initProjectFunds,
+        projectId
     }
 }

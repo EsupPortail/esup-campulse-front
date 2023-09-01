@@ -26,7 +26,8 @@ export interface Project {
     sustainableDevelopment: string,
     projectStatus: ProjectStatus,
     creationDate: string,
-    editionDate: string
+    editionDate: string,
+    manualIdentifier: string
 }
 
 export interface ProjectList {
@@ -39,7 +40,8 @@ export interface ProjectList {
     plannedEndDate: string,
     plannedLocation: string,
     projectStatus: ProjectStatus,
-    commission: Commission
+    commission: Commission,
+    manualIdentifier: string
 }
 
 type ProjectStatus =
@@ -128,19 +130,6 @@ export interface ProjectReview {
     commissions: Commission[],
     creationDate: string,
     editionDate: string
-}
-
-export interface ProjectAssociation {
-    address: string,
-    zipcode: string,
-    city: string,
-    country: string,
-    phone: string,
-    email: string,
-    presidentNames: string,
-    presidentPhone: string,
-    presidentEmail: string,
-    name: string
 }
 
 export interface ProjectComment {
