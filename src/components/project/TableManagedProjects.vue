@@ -115,6 +115,7 @@ async function onGetApplicants() {
 }
 
 const columns: QTableProps['columns'] = [
+    {name: 'id', align: 'left', label: t('project.id'), field: 'id', sortable: true},
     {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
     {name: 'applicant', align: 'left', label: t('project.applicant'), field: 'applicant', sortable: true},
     {name: 'lastModifiedDate', align: 'left', label: t('project.last-modified-date'), field: 'email', sortable: true},
@@ -137,7 +138,7 @@ const columns: QTableProps['columns'] = [
             :title="props.title"
             flat
             role="presentation"
-            row-key="name"
+            row-key="id"
             selection="multiple"
         >
             <template v-slot:header="props">
@@ -168,6 +169,13 @@ const columns: QTableProps['columns'] = [
                             :aria-label="props.row.name"
                             color="commission"
                         />
+                    </QTd>
+                    <QTd
+                        key="id"
+                        :props="props"
+                        headers="id"
+                    >
+                        {{ props.row.manualIdentifier ?? '' }}
                     </QTd>
                     <QTd
                         key="name"

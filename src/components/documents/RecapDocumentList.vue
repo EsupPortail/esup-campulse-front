@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type {ProcessDocument, DocumentProcessType} from '#/documents'
+import type {DocumentProcessType, ProcessDocument} from '#/documents'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
@@ -52,7 +52,7 @@ async function onGetDocuments() {
         else if (props.process === 'review') processes = ['DOCUMENT_PROJECT_REVIEW']
         else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
         await getDocuments(processes)
-        initProcessDocuments()
+        initProcessDocuments(props.process === 'project', projectStore.projectFunds)
         if (props.process === 'project' || props.process === 'review') {
             await projectStore.getProjectDocuments()
             initProjectDocumentUploads()

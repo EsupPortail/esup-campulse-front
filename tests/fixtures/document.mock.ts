@@ -10,6 +10,7 @@ export const _document: Document = {
     isRequiredInProcess: false,
     daysBeforeExpiration: '365 00:00:00',
     expirationDay: '',
+    editionDate: '',
     pathTemplate: undefined,
     size: 0,
     mimeTypes: [
@@ -31,6 +32,7 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
+        editionDate: '2023-06-02',
         pathTemplate: undefined,
         size: 0,
         mimeTypes: [
@@ -50,6 +52,7 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
+        editionDate: '2023-06-02',
         pathTemplate: undefined,
         size: 0,
         mimeTypes: [
@@ -71,6 +74,7 @@ export const _documents: Document[] = [
         isRequiredInProcess: false,
         daysBeforeExpiration: '365 00:00:00',
         expirationDay: '',
+        editionDate: '2023-06-02',
         pathTemplate: undefined,
         size: 0,
         mimeTypes: [

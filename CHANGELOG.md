@@ -1,14 +1,10 @@
-- ✨ Student certificate can be uploaded (registration, user validation / management, account info update) #153 & #32
-- 🔧 Nginx CSP with variables
-- ✨ Commission CSV & PDF export for a list of projects #113
-- ✨ Add association field in search form for managed users #149
-- ✨ Charter validation is done? #166
-- ♻️ Refactored i18n management
-- ♿️ Added sizes on uploaded files
-- ✨ Added "Download all project documents" button
-- ✨ Footer logos now managed by backend
-- ➕ Added eslint-plugin-vue-i18n
-- ✨ Display charter status and expiration date on association detail page #65
-- ✨ Dynamic contents #38
-- ✨ Contact page #19
-- ✨ Associations CSV export #160
+- ✨ Dynamic last charter update date on home page
+- ✨ Projects now show only fund related documents
+- 🐛 Fix max-file-size for multiple fields on FormDocumentUploads
+- 🐛 Fix missing status indicator for project draft_processed
+- 🐛 Fix missing userFunds on FormUserGroups
+- 🐛 Fix undefined user_id on document uploads request for registration
+- 🐛 Fix push to 404 if project is not a draft (again)
+- 💄 Style buttons on SubmitProjectSuccessful
+- 🐛 Fix push to 404 when project is not a draft
+- ♿️ Corrected home link in footer

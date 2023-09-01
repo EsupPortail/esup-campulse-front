@@ -10,6 +10,8 @@ import {onMounted, ref, watch} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import type {Content} from '#/index'
+import useDocuments from '@/composables/useDocuments'
+import useUtility from '@/composables/useUtility'
 
 const contentStore = useContentStore()
 const associationStore = useAssociationStore()
@@ -17,6 +19,8 @@ const {getNextCommission, commission} = useCommissions()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
+const {documents, getDocumentByAcronym} = useDocuments()
+const {formatDate} = useUtility()
 
 onMounted(async () => {
     loading.show()
@@ -46,14 +50,17 @@ const initContent = () => {
     homeInfo.value = findContentObject('HOME_INFO')
 }
 
-const nextCommissionDate = ref<string>()
+const nextCommissionDate = ref('')
+const lastCharterUpdate = ref('')
 
 async function onGetContents() {
     try {
         await contentStore.getContentsByCode(['HOME_ASSOCIATION', 'HOME_CHARTER', 'HOME_PROJECT', 'HOME_INFO'])
         await associationStore.getAssociationNames(true, false)
         await getNextCommission()
-        nextCommissionDate.value = commission.value?.commissionDate.split('-').reverse().join('/')
+        nextCommissionDate.value = commission.value?.commissionDate.split('-').reverse().join('/') ?? ''
+        await getDocumentByAcronym('CHARTE_SITE_ALSACE')
+        lastCharterUpdate.value = formatDate(documents.value[0]?.editionDate)?.split('-').reverse().join('/') ?? ''
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -88,7 +95,7 @@ async function onGetContents() {
             :buttonLabel="t('home.charter.button')"
             :cssClass="contentStore.CSSClasses[1]"
             :description="homeCharter?.body"
-            :infoContent="t('home.charter.charter-update') + ' <strong>15/01/2022</strong>'"
+            :infoContent="t('home.charter.charter-update') + ' <strong>' + lastCharterUpdate + '</strong>'"
             :titleLine1="t('home.charter.title-line-1')"
             :titleLine2="t('home.charter.title-line-2')"
             iconClass="bi-book"

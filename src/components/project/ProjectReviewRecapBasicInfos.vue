@@ -12,7 +12,7 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 const {t} = useI18n()
 const {formatDate, CURRENCY} = useUtility()
-const {projectReview} = useSubmitReview()
+const {projectReview, projectId} = useSubmitReview()
 const {userToUpdate} = useUsers()
 const userStore = useUserStore()
 const {isStaff} = useUserGroups()
@@ -45,6 +45,11 @@ onMounted(async () => {
 
 <template>
     <div class="flex-column">
+        <div class="display-row">
+            <p class="row-title">{{ t('project.id') }}</p>
+            <p>{{ projectId }}</p>
+        </div>
+
         <div class="display-row">
             <p class="row-title">{{ t('project.applicant') }}</p>
             <p>{{ applicant }}</p>

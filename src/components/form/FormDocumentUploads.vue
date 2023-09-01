@@ -10,6 +10,7 @@ import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
+import useSubmitProject from '@/composables/useSubmitProject'
 
 const {
     processDocuments,
@@ -31,6 +32,7 @@ const {getCharterDocuments} = useCharters()
 const projectStore = useProjectStore()
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
+const {projectFunds, initProjectFunds} = useSubmitProject()
 
 const props = defineProps<{
     process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
@@ -76,7 +78,8 @@ async function onGetDocuments() {
         if (props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') await getStudentCertificate()
 
         // Init documents for form
-        initProcessDocuments()
+        if (props.process === 'project') initProjectFunds()
+        initProcessDocuments(props.process === 'project', projectFunds.value ?? [])
 
         // Get uploaded documents for projet, review, charter
         if (props.process === 'project' || props.process === 'review') {

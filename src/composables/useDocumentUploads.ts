@@ -20,17 +20,31 @@ export default function () {
     const userStore = useUserStore()
 
     // Init documents to work on
-    const initProcessDocuments = () => {
+    const initProcessDocuments = (filterByFund?: boolean, funds?: number[]) => {
         processDocuments.value = []
         documents.value.forEach((document) => {
-            processDocuments.value.push({
-                document: document.id,
-                isMultiple: document.isMultiple,
-                description: document.description,
-                pathFile: document.isMultiple ? [] : undefined,
-                isRequiredInProcess: document.isRequiredInProcess,
-                mimeTypes: document.mimeTypes
-            })
+            let initDocument = false
+            if (!filterByFund) {
+                initDocument = true
+            } else {
+                if (funds?.length && document.fund) {
+                    if (funds?.includes(document.fund)) {
+                        initDocument = true
+                    }
+                } else {
+                    initDocument = true
+                }
+            }
+            if (initDocument) {
+                processDocuments.value.push({
+                    document: document.id,
+                    isMultiple: document.isMultiple,
+                    description: document.description,
+                    pathFile: document.isMultiple ? [] : undefined,
+                    isRequiredInProcess: document.isRequiredInProcess,
+                    mimeTypes: document.mimeTypes
+                })
+            }
         })
     }
 

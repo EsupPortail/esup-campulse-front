@@ -28,7 +28,8 @@ export interface Project {
     projectStatus: ProjectStatus,
     creationDate: string,
     editionDate: string,
-    processingDate: string
+    processingDate: string,
+    manualIdentifier: string
 }
 
 export interface ProjectList {
@@ -41,7 +42,8 @@ export interface ProjectList {
     plannedEndDate: string,
     plannedLocation: string,
     projectStatus: ProjectStatus,
-    commission: Commission
+    commission: Commission,
+    manualIdentifier: string
 }
 
 type ProjectStatus =
@@ -132,19 +134,6 @@ export interface ProjectReview {
     creationDate: string,
     editionDate: string,
     processingDate: string
-}
-
-export interface ProjectAssociation {
-    address: string,
-    zipcode: string,
-    city: string,
-    country: string,
-    phone: string,
-    email: string,
-    presidentNames: string,
-    presidentPhone: string,
-    presidentEmail: string,
-    name: string
 }
 
 export interface ProjectComment {

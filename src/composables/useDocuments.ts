@@ -4,7 +4,7 @@ import {useAxios} from '@/composables/useAxios'
 
 const documents = ref<Document[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
 
@@ -12,6 +12,10 @@ export default function() {
 
     async function getLibraryDocuments() {
         documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_types=${libraryProcesses.join(',')}`)).data
+    }
+
+    async function getDocumentByAcronym(acronym: string) {
+        documents.value = (await axiosPublic.get<Document[]>(`/documents/?acronym=${acronym}`)).data
     }
 
     async function postNewDocument(name: string, file: Blob) {
@@ -38,6 +42,7 @@ export default function() {
         postNewDocument,
         patchDocument,
         deleteDocument,
-        libraryProcesses
+        libraryProcesses,
+        getDocumentByAcronym
     }
 }

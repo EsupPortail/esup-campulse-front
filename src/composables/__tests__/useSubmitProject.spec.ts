@@ -183,7 +183,7 @@ describe('useSubmitProject', () => {
                     individualCost: 5,
                     targetAudience: 'Tout le monde',
                     ticketPrice: 2,
-                    studentTicketPrice: 0
+                    studentTicketPrice: 1
                 })
             })
         })
@@ -198,7 +198,7 @@ describe('useSubmitProject', () => {
                     individualCost: 5,
                     targetAudience: 'Tout le monde',
                     ticketPrice: 2,
-                    studentTicketPrice: 0
+                    studentTicketPrice: 1
                 })
             })
         })

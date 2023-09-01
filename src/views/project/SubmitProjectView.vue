@@ -47,10 +47,7 @@ const {
     projectAssociationUsersLabels
 } = useSubmitProject()
 const {
-    getDocuments,
-    initProcessDocuments,
     uploadDocuments,
-    initProjectDocumentUploads,
     createFileLink
 } = useDocumentUploads()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
@@ -125,11 +122,6 @@ watch(() => step.value === 3, async () => {
 watch(() => step.value === 4, async () => {
     loading.show()
     await onGetProjectGoals()
-    loading.hide()
-})
-watch(() => step.value === 5, async () => {
-    loading.show()
-    await onGetProjectDocuments()
     loading.hide()
 })
 
@@ -291,23 +283,6 @@ async function onGetProjectBudget() {
 // GET DATA FOR STEP 4
 function onGetProjectGoals() {
     initProjectGoals()
-}
-
-// GET DATA FOR STEP 5
-async function onGetProjectDocuments() {
-    try {
-        await getDocuments(['DOCUMENT_PROJECT'])
-        initProcessDocuments()
-        await projectStore.getProjectDocuments()
-        initProjectDocumentUploads()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: catchHTTPError(error.response.status)
-            })
-        }
-    }
 }
 
 // SUBMIT STEP 1

@@ -33,7 +33,8 @@ export const _project: Project = {
     projectStatus: 'PROJECT_DRAFT',
     creationDate: '2023-06-01',
     editionDate: '2023-06-02',
-    processingDate: '2023-06-02'
+    processingDate: '2023-06-02',
+    manualIdentifier: '20230001'
 }
 
 export const _projects = [
@@ -260,7 +261,7 @@ export const _projectBudget: ProjectBudget = {
     amountStudentsAudience: 50,
     amountAllAudience: 60,
     ticketPrice: 2,
-    studentTicketPrice: 0,
+    studentTicketPrice: 1,
     individualCost: 5
 }
 
