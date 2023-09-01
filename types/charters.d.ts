@@ -1,4 +1,4 @@
-import type {DocumentProcessType} from '#/documents'
+import type {DocumentProcessType, MimeType} from '#/documents'
 
 export interface ManageCharter {
     associationId?: number | null,
@@ -11,7 +11,8 @@ export interface ManageCharter {
     pathFile?: string,
     validatedDate?: string,
     expirationDate?: string,
-    charterStatus: CharterStatus
+    charterStatus: CharterStatus,
+    mimeTypes: MimeType[]
 }
 
 export interface AssociationCharter {

@@ -13,6 +13,9 @@ const processDocuments = ref<ProcessDocument[]>([])
 
 const documentUploads = ref<ProcessDocument[]>([])
 
+const MAX_FILE_SIZE = 8388608
+const MAX_FILES = 10
+
 export default function () {
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const projectStore = useProjectStore()
@@ -215,6 +218,8 @@ export default function () {
         initCharterDocumentUploads,
         getStudentCertificate,
         initManagedUserDocumentUploads,
-        initUserDocumentUploads
+        initUserDocumentUploads,
+        MAX_FILES,
+        MAX_FILE_SIZE
     }
 }

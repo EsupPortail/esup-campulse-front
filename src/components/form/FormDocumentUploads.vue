@@ -23,7 +23,9 @@ const {
     initCharterDocumentUploads,
     getStudentCertificate,
     initManagedUserDocumentUploads,
-    initUserDocumentUploads
+    initUserDocumentUploads,
+    MAX_FILE_SIZE,
+    MAX_FILES
 } = useDocumentUploads()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -38,10 +40,6 @@ const props = defineProps<{
     process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
     associationId: number | null | undefined
 }>()
-
-// CONST
-const MAX_FILES = 10
-const MAX_FILE_SIZE = 8388608
 
 // COLOR
 const fieldColor = ref<string>('')
