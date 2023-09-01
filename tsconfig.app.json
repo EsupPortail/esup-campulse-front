@@ -1,5 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "env.d.ts",
     "src/**/*",
@@ -25,7 +25,7 @@
       ]
     },
     "lib": [
-      "es2017",
+      "es2020",
       "dom"
     ]
   }
