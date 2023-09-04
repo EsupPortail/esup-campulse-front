@@ -46,7 +46,7 @@ interface Option {
         name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ViewProject' | 'SubmitProjectReview' | 'ViewProjectReview',
         params: { associationId?: number, projectId: number }
     },
-    action?: 'delete' | 'download-pdf' | 'download-files'
+    action?: 'delete' | 'download-pdf' | 'download-review-pdf' | 'download-files'
 }
 
 const options = ref<Option[]>([])
@@ -72,13 +72,6 @@ const initOptions = () => {
             })
         }
     }
-    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
-        options.value.push({
-            icon: 'bi-eye',
-            label: t('project.view'),
-            to: {name: 'ViewProject', params: {projectId: props.projectId}}
-        })
-    }
     if (props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
         if (canModifyProjectAndReview.value) {
             options.value.push({
@@ -88,6 +81,25 @@ const initOptions = () => {
             })
         }
     }
+    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
+        options.value.push({
+            icon: 'bi-file-earmark-zip',
+            label: t('project.download-files'),
+            action: 'download-files'
+        })
+
+        options.value.push({
+            icon: 'bi-eye',
+            label: t('project.view'),
+            to: {name: 'ViewProject', params: {projectId: props.projectId}}
+        })
+
+        options.value.push({
+            icon: 'bi-filetype-pdf',
+            label: t('project.download-recap'),
+            action: 'download-pdf'
+        })
+    }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
         || props.projectStatus === 'PROJECT_CANCELLED') {
         options.value.push({
@@ -95,18 +107,11 @@ const initOptions = () => {
             label: t('project.view-review'),
             to: {name: 'ViewProjectReview', params: {projectId: props.projectId}}
         })
-    }
-    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
-        options.value.push({
-            icon: 'bi-filetype-pdf',
-            label: t('project.download-recap'),
-            action: 'download-pdf'
-        })
 
         options.value.push({
-            icon: 'bi-file-earmark-zip',
-            label: t('project.download-files'),
-            action: 'download-files'
+            icon: 'bi-filetype-pdf',
+            label: t('project.download-review-recap'),
+            action: 'download-review-pdf'
         })
     }
 }
@@ -123,17 +128,19 @@ async function onOptionClick(option: Option) {
         if (option.action === 'delete') {
             openDelete.value = true
         } else if (option.action === 'download-pdf') {
-            await onGetProjectPdf(props.projectId, props.projectName)
+            await onGetProjectPdf(props.projectId, props.projectName, false)
+        } else if (option.action === 'download-review-pdf') {
+            await onGetProjectPdf(props.projectId, props.projectName, true)
         } else if (option.action === 'download-files') {
             await onGetProjectFiles(props.projectId, props.projectName)
         }
     }
 }
 
-async function onGetProjectPdf(projectId: number, projectName: string) {
+async function onGetProjectPdf(projectId: number, projectName: string, isReview: boolean) {
     loading.show()
     try {
-        const file = await projectStore.getProjectPdf(projectId)
+        const file = !isReview ? await projectStore.getProjectPdf(projectId) : await projectStore.getProjectReviewPdf(projectId)
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
         link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`

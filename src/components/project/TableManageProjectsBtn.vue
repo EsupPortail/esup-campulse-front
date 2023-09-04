@@ -41,7 +41,7 @@ interface Option {
     icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-file-earmark-zip' | 'bi-signpost' | 'bi-piggy-bank',
     label: string,
     to?: { name: 'ViewProject' | 'ManageProject' | 'ViewProjectReview' | 'ManageProjectReview', params: { projectId: number } }
-    action?: 'updateProjectDates' | 'download-pdf' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
+    action?: 'updateProjectDates' | 'download-pdf' | 'download-review-pdf' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
 }
 
 const canChangeProject = () => {
@@ -62,13 +62,6 @@ const options = ref<Option[]>([])
 
 const initOptions = () => {
     options.value = []
-
-    // View project
-    options.value.push({
-        icon: 'bi-eye',
-        label: t('project.view'),
-        to: {name: 'ViewProject', params: {projectId: props.projectId}}
-    })
 
     // Manage project
     if (props.projectStatus === 'PROJECT_PROCESSING' &&
@@ -115,17 +108,6 @@ const initOptions = () => {
         })
     }
 
-    // View review
-    if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' ||
-        props.projectStatus === 'PROJECT_REVIEW_VALIDATED' ||
-        props.projectStatus === 'PROJECT_CANCELLED') {
-        options.value.push({
-            icon: 'bi-eye',
-            label: t('project.view-review'),
-            to: {name: 'ViewProjectReview', params: {projectId: props.projectId}}
-        })
-    }
-
     // Manage review
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' &&
         hasPerm('change_project_as_validator') && canChangeProject()) {
@@ -136,19 +118,39 @@ const initOptions = () => {
         })
     }
 
-    // Download PDF
-    options.value.push({
-        icon: 'bi-filetype-pdf',
-        label: t('project.download-recap'),
-        action: 'download-pdf'
-    })
+    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
+        options.value.push({
+            icon: 'bi-file-earmark-zip',
+            label: t('project.download-files'),
+            action: 'download-files'
+        })
 
-    // Download uploaded files
-    options.value.push({
-        icon: 'bi-file-earmark-zip',
-        label: t('project.download-files'),
-        action: 'download-files'
-    })
+        options.value.push({
+            icon: 'bi-eye',
+            label: t('project.view'),
+            to: {name: 'ViewProject', params: {projectId: props.projectId}}
+        })
+
+        options.value.push({
+            icon: 'bi-filetype-pdf',
+            label: t('project.download-recap'),
+            action: 'download-pdf'
+        })
+    }
+    if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
+        || props.projectStatus === 'PROJECT_CANCELLED') {
+        options.value.push({
+            icon: 'bi-eye',
+            label: t('project.view-review'),
+            to: {name: 'ViewProjectReview', params: {projectId: props.projectId}}
+        })
+
+        options.value.push({
+            icon: 'bi-filetype-pdf',
+            label: t('project.download-review-recap'),
+            action: 'download-review-pdf'
+        })
+    }
 }
 
 onMounted(initOptions)
@@ -161,8 +163,10 @@ async function onOptionClick(option: Option) {
         } else if (option.action === 'changeCommission') {
             changeCommission.value = true
         } else if (option.action === 'download-pdf') {
-            await onGetProjectPdf(props.projectId, props.projectName)
-        }  else if (option.action === 'download-files') {
+            await onGetProjectPdf(props.projectId, props.projectName, false)
+        } else if (option.action === 'download-review-pdf') {
+            await onGetProjectPdf(props.projectId, props.projectName, true)
+        } else if (option.action === 'download-files') {
             await onGetProjectFiles(props.projectId, props.projectName)
         } else {
             editCommissionFundsAmounts.value = true
@@ -170,10 +174,10 @@ async function onOptionClick(option: Option) {
     }
 }
 
-async function onGetProjectPdf(projectId: number, projectName: string) {
+async function onGetProjectPdf(projectId: number, projectName: string, isReview: boolean) {
     loading.show()
     try {
-        const file = await projectStore.getProjectPdf(projectId)
+        const file = !isReview ? await projectStore.getProjectPdf(projectId) : await projectStore.getProjectReviewPdf(projectId)
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
         link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`
