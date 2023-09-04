@@ -1,10 +1,8 @@
-- ✨ Dynamic last charter update date on home page
-- ✨ Projects now show only fund related documents
-- 🐛 Fix max-file-size for multiple fields on FormDocumentUploads
-- 🐛 Fix missing status indicator for project draft_processed
-- 🐛 Fix missing userFunds on FormUserGroups
-- 🐛 Fix undefined user_id on document uploads request for registration
-- 🐛 Fix push to 404 if project is not a draft (again)
-- 💄 Style buttons on SubmitProjectSuccessful
-- 🐛 Fix push to 404 when project is not a draft
-- ♿️ Corrected home link in footer
+- ✨ Add processingDate to project detail
+- 🐛 Fix buggy create file link functions
+- ♻️ Moved env.d.ts in src folder
+- ⬆️ Upgrade minor dependencies
+- ✨ Added buttons on tables to see Project Review PDFs
+- 🐛 Fix refresh of buttons for charter management + initCharterStatus
+- ✨ Project id
+- 🎨 Optimize route nesting for charter management

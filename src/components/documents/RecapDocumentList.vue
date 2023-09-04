@@ -8,7 +8,7 @@ import useCharters from '@/composables/useCharters'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import {onMounted} from 'vue'
 
-const {createFileLink} = useDocumentUploads()
+const {createUploadedFileLink} = useDocumentUploads()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {
@@ -31,7 +31,7 @@ const props = defineProps<{
 async function onGetFile(uploadedDocument: ProcessDocument) {
     loading.show()
     try {
-        await createFileLink(uploadedDocument)
+        await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

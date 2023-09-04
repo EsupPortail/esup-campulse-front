@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import type {DocumentProcessType} from '#/documents'
 import {useI18n} from 'vue-i18n'
+import useDocuments from '@/composables/useDocuments'
 
 const {t} = useI18n()
+const {createFileLink} = useDocuments()
 
 interface LibraryDocument {
     id: number,
@@ -19,12 +21,7 @@ const props = defineProps<{
 function onDownloadDocument(documentId: number | undefined) {
     const documentToDownload = props.documents.find(doc => doc?.id === documentId)
     if (documentToDownload && documentToDownload.path) {
-        const anchor = document.createElement('a')
-        anchor.href = documentToDownload.path
-        anchor.download = documentToDownload.name
-        document.body.appendChild(anchor)
-        anchor.click()
-        document.body.removeChild(anchor)
+        createFileLink(documentToDownload.path, documentToDownload.name)
     }
 }
 </script>

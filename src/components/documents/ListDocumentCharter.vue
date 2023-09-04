@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
-const {createFileLink, documents} = useDocumentUploads()
+const {createUploadedFileLink, documents} = useDocumentUploads()
 
 const props = defineProps<{
     charterDocuments: DocumentUpload[],
@@ -13,7 +13,7 @@ const props = defineProps<{
 async function onDownloadDocument(documentId: number | undefined) {
     const documentToDownload = props.charterDocuments.find(doc => doc?.id === documentId)
     if (documentToDownload && documentToDownload.pathFile && documentToDownload.name) {
-        await createFileLink(documentToDownload)
+        await createUploadedFileLink(documentToDownload.pathFile, documentToDownload.name)
     }
 }
 </script>
