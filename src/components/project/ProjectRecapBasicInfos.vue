@@ -10,6 +10,7 @@ import ProjectRecapCategories from '@/components/project/ProjectRecapCategories.
 const {
     projectBasicInfos,
     projectId,
+    projectProcessingDate,
     initProjectAssociationUsersLabels,
     projectAssociationUsersLabels
 } = useSubmitProject()
@@ -47,6 +48,14 @@ async function onGetAssociationUsers() {
         >
             <p class="row-title">{{ t('project.id') }}</p>
             <p>{{ projectId }}</p>
+        </div>
+
+        <div
+            v-if="projectProcessingDate"
+            class="display-row"
+        >
+            <p class="row-title">{{ t('project.processing-date') }}</p>
+            <p>{{ projectProcessingDate }}</p>
         </div>
 
         <div class="display-row">
