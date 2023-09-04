@@ -192,12 +192,12 @@ export default function () {
         return (await axiosAuthenticated.get(pathFile, {responseType: 'blob'})).data
     }
 
-    // Generate link to doc
-    async function createFileLink(uploadedDocument: ProcessDocument) {
-        const file = await getFile(uploadedDocument.pathFile as string)
+    // Generate link to uploaded doc with authentification
+    async function createUploadedFileLink(pathFile: string, name: string) {
+        const file = await getFile(pathFile)
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(file)
-        link.download = uploadedDocument.name as string
+        link.download = name
         document.body.appendChild(link)
         link.click()
         link.remove()
@@ -214,7 +214,7 @@ export default function () {
         deleteDocumentUpload,
         getFile,
         DocumentUpload,
-        createFileLink,
+        createUploadedFileLink,
         initCharterDocumentUploads,
         getStudentCertificate,
         initManagedUserDocumentUploads,

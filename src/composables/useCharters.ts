@@ -216,17 +216,6 @@ export default function () {
         await axiosAuthenticated.post('/documents/uploads', charterData)
     }
 
-    async function downloadCharter(path: string, documentName: string) {
-        const {getFile} = useDocumentUploads()
-        const file = await getFile(path as string)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(file)
-        link.download = documentName as string
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
-    }
-
     // TODO
     async function patchCharterDocument(action: 'validate' | 'reject' | 'return', id: number, comment: string) {
         let dataToPatch = {}
@@ -251,7 +240,6 @@ export default function () {
         initCharters,
         manageCharters,
         uploadCharter,
-        downloadCharter,
         associationCharters,
         charterProcesses,
         getCharters,

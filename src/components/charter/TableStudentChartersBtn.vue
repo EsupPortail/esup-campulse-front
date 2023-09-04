@@ -4,10 +4,12 @@ import {onMounted, ref, toRefs, watch} from 'vue'
 import router from '@/router'
 import type {AssociationCharterStatus, ManageCharter} from '#/charters'
 import FormSignCharters from '@/components/charter/FormSignCharters.vue'
-import useCharters from '@/composables/useCharters'
+import useDocumentUploads from '@/composables/useDocumentUploads'
+import useDocuments from '@/composables/useDocuments'
 
 const {t} = useI18n()
-const {downloadCharter} = useCharters()
+const {createUploadedFileLink} = useDocumentUploads()
+const {createFileLink} = useDocuments()
 
 const props = defineProps<{
     charter: ManageCharter,
@@ -90,11 +92,11 @@ async function onOptionClick(option: Option) {
     else if (option.action) {
         if (option.action === 'download') {
             if (props.charter.pathTemplate) {
-                await downloadCharter(props.charter.pathTemplate, props.charter.documentName)
+                await createFileLink(props.charter.pathTemplate, props.charter.documentName)
             }
         } else if (option.action === 'view') {
             if (props.charter.pathFile) {
-                await downloadCharter(props.charter.pathFile, props.charter.documentName)
+                await createUploadedFileLink(props.charter.pathFile, props.charter.documentName)
             }
         } else if (option.action === 'sign') {
             openSign.value = true
