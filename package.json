@@ -1,6 +1,6 @@
 {
   "name": "plana",
-  "version": "0.9.20230831",
+  "version": "0.9.20230904",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "dev": "vite",
