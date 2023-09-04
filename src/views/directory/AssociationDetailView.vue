@@ -8,7 +8,6 @@ import {useRoute} from 'vue-router'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import useCharters from '@/composables/useCharters'
 import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
@@ -19,7 +18,6 @@ const route = useRoute()
 const associationStore = useAssociationStore()
 const userStore = useUserStore()
 const {catchHTTPError} = useErrors()
-const {initCharters, manageCharters} = useCharters()
 
 const association = ref(associationStore.association)
 watch(() => associationStore.association, () => {
@@ -33,7 +31,7 @@ const associationCharterStatus = ref<string>('')
 onMounted(async function () {
     loading.show()
     await onGetAssociationDetail()
-    await onGetAssociationCharter()
+    initAssociationCharter()
     dynamicTitle.value = associationStore.association?.name
     loading.hide()
 })
@@ -55,37 +53,29 @@ async function onGetAssociationDetail() {
     }
 }
 
-async function onGetAssociationCharter() {
-    try {
-        if (association.value) {
-            await initCharters(parseInt(route.params.id as string), association.value.isSite, association.value.charterStatus)
-        }
-        const charter = manageCharters.value.find(x => x.documentAcronym === 'CHARTE_SITE_ALSACE')
-        if (charter) {
-            let str = ''
-            switch (charter.charterStatus) {
-            case 'VALIDATED':
-                str = t('charter.association-charter-status.validated', {expirationDate: charter.expirationDate})
+const initAssociationCharter = () => {
+    let str = t('charter.association-charter-status.no-charter')
+    if (association.value) {
+        const charterDate = formatDate(association.value?.charterDate)
+        if (charterDate) {
+            const splitCharterDate = charterDate.split('-').reverse()
+            const expirationDate = splitCharterDate[0] + splitCharterDate[1] + (parseInt(splitCharterDate[2]) + 1).toString()
+            switch (association.value?.charterStatus) {
+            case 'CHARTER_VALIDATED':
+                str = t('charter.association-charter-status.validated', {expirationDate: expirationDate})
                 break
-            case 'EXPIRED':
-                str = t('charter.association-charter-status.expired', {expirationDate: charter.expirationDate})
+            case 'CHARTER_EXPIRED':
+                str = t('charter.association-charter-status.expired', {expirationDate: expirationDate})
                 break
-            case 'PROCESSING':
+            case 'CHARTER_PROCESSING':
                 str = t('charter.association-charter-status.processing')
                 break
             default:
                 str = t('charter.association-charter-status.no-charter')
             }
-            associationCharterStatus.value = str
-        }
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: catchHTTPError(error.response.status)
-            })
         }
     }
+    associationCharterStatus.value = str
 }
 </script>
 
