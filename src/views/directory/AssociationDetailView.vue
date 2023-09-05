@@ -59,7 +59,8 @@ const initAssociationCharter = () => {
         const charterDate = formatDate(association.value?.charterDate)
         if (charterDate) {
             const splitCharterDate = charterDate.split('-').reverse()
-            const expirationDate = splitCharterDate[0] + splitCharterDate[1] + (parseInt(splitCharterDate[2]) + 1).toString()
+            const expirationDate = `${splitCharterDate[0]}/${splitCharterDate[1]}/${(parseInt(splitCharterDate[2]) + 1).toString()}`
+            console.log(expirationDate)
             switch (association.value?.charterStatus) {
             case 'CHARTER_VALIDATED':
                 str = t('charter.association-charter-status.validated', {expirationDate: expirationDate})
