@@ -102,8 +102,10 @@
     },
     "more-details": "Fiche détail de l'association",
     "not-public": "Non Publiée",
+    "not-site": "Non Site",
     "public": "Publiée",
     "publish-in-directory": "Publier dans l'annuaire",
+    "site": "Site",
     "titles": {
       "admin": "Administration",
       "contact": "Contact",
@@ -337,6 +339,7 @@
       "association-institution-component": "Composante d'établissement",
       "association-name": "Nom de l'association",
       "association-public": "Annuaire",
+      "association-site": "Est Site Alsace",
       "association-status": "Statut"
     },
     "list": "Liste des associations",

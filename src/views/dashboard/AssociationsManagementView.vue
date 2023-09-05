@@ -91,6 +91,13 @@ const columns: QTableProps['columns'] = [
         sortable: true
     },
     {
+        name: 'site',
+        align: 'right',
+        label: t('directory.labels.association-site'),
+        field: 'isSite',
+        sortable: true
+    },
+    {
         name: 'public',
         align: 'right',
         label: t('directory.labels.association-public'),
@@ -219,6 +226,33 @@ const columns: QTableProps['columns'] = [
                                     class="form-state"
                                 >
                                     {{ t('association.enabled') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-green"
+                                    ><i class="bi bi-check-lg"></i></span>
+                                </span>
+                            </QTd>
+                            <QTd
+                                key="site"
+                                :props="props"
+                                class="state-cell"
+                                headers="site"
+                            >
+                                <span
+                                    v-if="!props.row.isSite"
+                                    class="form-state"
+                                >
+                                    {{ t('association.not-site') }}
+                                    <span
+                                        aria-hidden="true"
+                                        class="form-state-icon form-state-red"
+                                    ><i class="bi bi-x-lg"></i></span>
+                                </span>
+                                <span
+                                    v-else
+                                    class="form-state"
+                                >
+                                    {{ t('association.site') }}
                                     <span
                                         aria-hidden="true"
                                         class="form-state-icon form-state-green"

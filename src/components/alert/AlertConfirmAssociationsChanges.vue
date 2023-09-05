@@ -110,7 +110,6 @@ async function onConfirmChanges(emailType: string) {
         if (props.selectedAssociations?.length) {
             try {
                 const associationIds = props.selectedAssociations.map(x => x.id)
-                const associationNames = props.selectedAssociations.map(x => x.name)
                 const file = await associationStore.exportCSV(associationIds)
                 const message = t('notifications.positive.csv-export-associations')
                 notify({
