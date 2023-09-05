@@ -180,7 +180,7 @@
     "expiration-date": "Date d'expiration",
     "no-charter-to-show": "Aucune charte à afficher.",
     "options": {
-      "download": "Télécharger la charte",
+      "download": "Télécharger le document type \"{documentName}\"",
       "manage": "Signer et gérer les chartes",
       "re-sign": "Renouveler la signature de la charte",
       "sign": "Signer la charte",

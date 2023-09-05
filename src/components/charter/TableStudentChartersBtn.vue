@@ -30,7 +30,8 @@ interface Option {
         name: string,
         params: { associationId: number }
     },
-    action?: 'download' | 'view' | 'sign'
+    action?: 'download' | 'view' | 'sign',
+    id?: number
 }
 
 const options = ref<Option[]>([])
@@ -38,10 +39,13 @@ const options = ref<Option[]>([])
 const initOptions = () => {
     options.value = []
     if (props.charter.charterStatus !== 'NOT_SITE') {
-        options.value.push({
-            icon: 'bi-download',
-            label: t('charter.options.download'),
-            action: 'download'
+        props.charter.pathTemplate.forEach(template => {
+            options.value.push({
+                icon: 'bi-download',
+                label: t('charter.options.download', {documentName: template.name}),
+                action: 'download',
+                id: template.documentId
+            })
         })
     }
     if (props.charter.charterStatus === 'NO_CHARTER' || props.charter.charterStatus === 'EXPIRED' ||
@@ -91,8 +95,9 @@ async function onOptionClick(option: Option) {
     if (option.to) await router.push(option.to)
     else if (option.action) {
         if (option.action === 'download') {
-            if (props.charter.pathTemplate) {
-                await createFileLink(props.charter.pathTemplate, props.charter.documentName)
+            if (props.charter.pathTemplate.length) {
+                const pathTemplate = props.charter.pathTemplate.find(pathTemplate => pathTemplate.documentId === option.id)
+                if (pathTemplate) await createFileLink(pathTemplate.path, props.charter.documentName)
             }
         } else if (option.action === 'view') {
             if (props.charter.pathFile) {
