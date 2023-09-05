@@ -51,13 +51,13 @@ async function onGetUser() {
 
 // Open alert if user leaves
 const openAlert = ref<boolean>(false)
-const leaveEdition = ref<boolean>(false)
+const leaveEdition = ref<boolean>(true)
 const hasValidated = ref<boolean>(false)
 
-function onLeaveEdition() {
+/*function onLeaveEdition() {
     leaveEdition.value = true
     router.push({name: 'ManageUsers'})
-}
+}*/
 
 // Check is there are any changes before leaving the page
 onBeforeRouteLeave((to, from, next) => {
@@ -153,19 +153,20 @@ onBeforeRouteLeave((to, from, next) => {
             </div>
 
             <div class="flex-row-center padding-top padding-bottom">
+                <!-- Add @click="openAlert = true" and remove to -->
                 <QBtn
                     :label="t('back')"
+                    :to="{name: 'ManageUsers'}"
                     class="btn-lg"
                     color="dashboard"
                     icon="bi-box-arrow-left"
-                    @click="openAlert = true"
                 />
-                <AlertLeaveEdition
-                    :open-alert="openAlert"
-                    :text="t('alerts.leave-user-edition')"
-                    @closeAlert="openAlert = !openAlert"
-                    @leaveEdition="onLeaveEdition"
-                />
+                <!--                <AlertLeaveEdition
+                                    :open-alert="openAlert"
+                                    :text="t('alerts.leave-user-edition')"
+                                    @closeAlert="openAlert = !openAlert"
+                                    @leaveEdition="onLeaveEdition"
+                                />-->
                 <AlertConfirmUserUpdate
                     v-if="groupChoiceIsValid"
                     @has-validated="hasValidated = true"
@@ -180,5 +181,4 @@ onBeforeRouteLeave((to, from, next) => {
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
-
 </style>
