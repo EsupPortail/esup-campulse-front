@@ -36,6 +36,15 @@ export default function () {
         await axiosAuthenticated.delete(`/documents/${id}`)
     }
 
+    function createFileLink(pathFile: string, name: string) {
+        const anchor = document.createElement('a')
+        anchor.href = pathFile
+        anchor.download = name
+        document.body.appendChild(anchor)
+        anchor.click()
+        document.body.removeChild(anchor)
+    }
+
     return {
         getLibraryDocuments,
         documents,
@@ -43,6 +52,7 @@ export default function () {
         patchDocument,
         deleteDocument,
         libraryProcesses,
-        getDocumentByAcronym
+        getDocumentByAcronym,
+        createFileLink
     }
 }

@@ -4,10 +4,10 @@ import {onMounted, ref, toRefs, watch} from 'vue'
 import router from '@/router'
 import type {ManageCharter} from '#/charters'
 import FormChartersValidation from '@/components/charter/FormChartersValidation.vue'
-import useCharters from '@/composables/useCharters'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
-const {downloadCharter} = useCharters()
+const {createUploadedFileLink} = useDocumentUploads()
 
 const props = defineProps<{
     charter: ManageCharter,
@@ -77,7 +77,7 @@ async function onOptionClick(option: Option) {
             openValidate.value = true
         } else if (option.action === 'view') {
             if (props.charter.pathFile) {
-                await downloadCharter(props.charter.pathFile, props.charter.documentName)
+                await createUploadedFileLink(props.charter.pathFile, props.charter.documentName)
             }
         }
     }

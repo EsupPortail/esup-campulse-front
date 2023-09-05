@@ -110,17 +110,16 @@ async function onConfirmChanges(emailType: string) {
         if (props.selectedAssociations?.length) {
             try {
                 const associationIds = props.selectedAssociations.map(x => x.id)
-                const associationNames = props.selectedAssociations.map(x => x.name)
                 const file = await associationStore.exportCSV(associationIds)
                 const message = t('notifications.positive.csv-export-associations')
                 notify({
                     type: 'positive',
-                    message: `<p>${message}${associationNames.join(', ')}</p>`,
+                    message,
                     html: true
                 })
                 const link = document.createElement('a')
                 link.href = window.URL.createObjectURL(new Blob([file]))
-                link.download = `${t('association.csv-name')}${encodeURI(associationNames.join('-'))}.csv`
+                link.download = `${t('association.csv-name')}.csv`
                 document.body.appendChild(link)
                 link.click()
                 link.remove()

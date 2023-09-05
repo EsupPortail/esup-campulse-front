@@ -28,8 +28,8 @@ export interface Project {
     projectStatus: ProjectStatus,
     creationDate: string,
     editionDate: string,
-    processingDate: string,
-    manualIdentifier: string
+    processingDate?: string,
+    manualIdentifier: string,
 }
 
 export interface ProjectList {

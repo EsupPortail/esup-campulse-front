@@ -7,12 +7,16 @@ export interface ManageCharter {
     documentProcessType: DocumentProcessType,
     documentUploadId?: number | null,
     documentName: string,
-    pathTemplate: string | null | undefined,
+    pathTemplate: {
+        name: string,
+        path: string,
+        documentId: number
+    }[],
     pathFile?: string,
     validatedDate?: string,
     expirationDate?: string,
     charterStatus: CharterStatus,
-    mimeTypes: MimeType[]
+    mimeTypes?: MimeType[]
 }
 
 export interface AssociationCharter {

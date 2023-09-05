@@ -48,7 +48,7 @@ const {
 } = useSubmitProject()
 const {
     uploadDocuments,
-    createFileLink
+    createUploadedFileLink
 } = useDocumentUploads()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
@@ -210,7 +210,7 @@ async function onGetProjectCategories() {
 
 async function onGetFile(uploadedDocument: ProcessDocument) {
     try {
-        await createFileLink(uploadedDocument)
+        await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

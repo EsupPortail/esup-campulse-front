@@ -4,5 +4,11 @@ import FormPasswordResetConfirm from '@/components/form/FormPasswordResetConfirm
 </script>
 
 <template>
-    <FormPasswordResetConfirm/>
+    <section class="dashboard-section">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <FormPasswordResetConfirm/>
+            </div>
+        </div>
+    </section>
 </template>

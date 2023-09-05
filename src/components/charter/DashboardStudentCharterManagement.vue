@@ -74,4 +74,9 @@ onMounted(initTab)
 .q-card {
     margin-top: 2rem;
 }
+
+.dashboard-section .dashboard-section-container {
+    padding: 0 0 3rem 0;
+}
+
 </style>

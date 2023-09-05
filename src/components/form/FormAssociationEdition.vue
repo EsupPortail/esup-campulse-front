@@ -102,7 +102,7 @@ const initMembersCount = async () => {
 onMounted(async () => {
     loading.show()
     initValues()
-    initMembersCount()
+    await initMembersCount()
     loading.hide()
 })
 
@@ -188,43 +188,45 @@ async function onChangeLogo(action: string) {
                 />
             </div>
 
-            <div class="association-name">
-                <!--<h2>{{ association?.name }}</h2>-->
-                <p
-                    v-if="association?.acronym"
-                    class="acronym"
-                >
-                    {{ association?.acronym }}
-                </p>
-            </div>
+            <div class="container">
+                <div class="association-name text-center">
+                    <!--<h2>{{ association?.name }}</h2>-->
+                    <p
+                        v-if="association?.acronym"
+                        class="acronym"
+                    >
+                        {{ association?.acronym }}
+                    </p>
+                </div>
 
-            <QFile
-                v-model="newLogo"
-                :label="t('association.logo.pickup')"
-                :max-file-size="MAX_FILE_SIZE"
-                accept="image/png, image/jpeg"
-                clearable
-                filled
-                @rejected="onLogoRejected"
-            />
+                <QFile
+                    v-model="newLogo"
+                    :label="t('association.logo.pickup')"
+                    :max-file-size="MAX_FILE_SIZE"
+                    accept="image/png, image/jpeg"
+                    clearable
+                    filled
+                    @rejected="onLogoRejected"
+                />
 
-            <div class="flex-row-space-between">
-                <QBtn
-                    :label="t('association.logo.update')"
-                    class="btn-lg"
-                    color="association"
-                    icon="bi-check-lg"
-                    outline
-                    type="submit"
-                />
-                <QBtn
-                    :label="t('association.logo.remove')"
-                    class="btn-lg"
-                    color="custom-red"
-                    icon="bi-trash"
-                    outline
-                    @click="onChangeLogo('delete')"
-                />
+                <div class="flex-row-space-between">
+                    <QBtn
+                        :label="t('association.logo.update')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-check-lg"
+                        outline
+                        type="submit"
+                    />
+                    <QBtn
+                        :label="t('association.logo.remove')"
+                        class="btn-lg"
+                        color="custom-red"
+                        icon="bi-trash"
+                        outline
+                        @click="onChangeLogo('delete')"
+                    />
+                </div>
             </div>
         </div>
     </QForm>
@@ -544,15 +546,15 @@ async function onChangeLogo(action: string) {
 @import "@/assets/_variables.scss";
 
 .address-fields div {
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: 1rem;
 
-  * {
-    width: $fullSize;
-  }
+    * {
+        width: $fullSize;
+    }
 }
 
 .q-separator {
-  margin: 0.5rem 0 1rem 0;
+    margin: 0.5rem 0 1rem 0;
 }
 </style>
