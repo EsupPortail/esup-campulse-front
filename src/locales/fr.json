@@ -551,7 +551,7 @@
       "email-used": "Cette adresse email est déjà utilisée.",
       "error-400": "Requête invalide.",
       "error-401": "Veuillez vous authentifier.",
-      "error-403": "Erreur d'authentification.",
+      "error-403": "Vous n'avez pas les droits nécessaires pour effectuer cette action.",
       "error-404": "La ressource demandée n'existe pas.",
       "error-405": "Impossible d'effectuer cette action.",
       "error-413": "Le fichier est trop gros.",
