@@ -102,7 +102,7 @@ const initMembersCount = async () => {
 onMounted(async () => {
     loading.show()
     initValues()
-    initMembersCount()
+    await initMembersCount()
     loading.hide()
 })
 
