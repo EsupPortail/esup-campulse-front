@@ -30,7 +30,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/types": "^7.22.11",
+    "@babel/types": "^7.22.15",
     "@intlify/eslint-plugin-vue-i18n": "^2.0.0",
     "@intlify/unplugin-vue-i18n": "^0.13.0",
     "@pinia/testing": "^0.1.3",

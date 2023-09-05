@@ -107,7 +107,12 @@ const initAssociationCharter = () => {
                     </p>
                     <!--<p>{{ t('association.labels.charter-validity') }}</p>-->
                     <p>{{ associationCharterStatus }}</p>
-                    <p v-if="association?.socialObject">{{ association?.socialObject }}</p>
+                    <p
+                        v-if="association?.socialObject"
+                        class="breakline"
+                    >
+                        {{ association?.socialObject }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -127,7 +132,7 @@ const initAssociationCharter = () => {
                         class="display-row"
                     >
                         <dt>{{ t('association.labels.current-projects') }}</dt>
-                        <dd>{{ association?.currentProjects }}</dd>
+                        <dd class="breakline">{{ association?.currentProjects }}</dd>
                     </div>
 
                     <div
@@ -363,5 +368,9 @@ h2 > i {
 
 ul {
     padding-left: 0;
+}
+
+.breakline {
+    white-space: pre-line;
 }
 </style>
