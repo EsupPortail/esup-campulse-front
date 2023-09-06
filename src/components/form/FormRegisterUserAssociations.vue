@@ -18,7 +18,6 @@ const {
 } = useUserAssociations()
 const {
     checkHasPresident,
-    checkHasStudentCertificate
 } = useAssociation()
 const {processDocuments} = useDocumentUploads()
 const {t} = useI18n()
@@ -76,7 +75,8 @@ function clearOptions() {
 function checkAssociationAuthorization(association: AssociationRole) {
     updateRegisterRoleInAssociation()
     checkHasPresident(association)
-    checkHasStudentCertificate(association)
+    // Commented since all local students must upload a student card
+    //checkHasStudentCertificate(association)
 }
 
 async function addAssociationFocus() {
