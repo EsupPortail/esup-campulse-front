@@ -10,6 +10,8 @@ import {useContentStore} from '@/stores/useContentStore'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
+import CharterImage1 from '@/assets/img/charter-image-1.jpg'
+import CharterImage2 from '@/assets/img/charter-image-2.jpg'
 
 
 const {isStaff} = useUserGroups()
@@ -109,15 +111,15 @@ onMounted(async () => {
 <template>
     <section>
         <LayoutImageText
+            :img="CharterImage1"
             :text="firstBlock?.body"
             :title="firstBlock?.header"
-            img="src/assets/img/charter-image-1.jpg"
         />
         <LayoutTextImageColor
+            :img="CharterImage2"
             :text="secondBlock?.body"
             :title="secondBlock?.header"
             color="charter"
-            img="src/assets/img/charter-image-2.jpg"
         />
         <LayoutPageCards
             v-if="pageCards.length"

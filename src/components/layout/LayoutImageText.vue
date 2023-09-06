@@ -10,8 +10,8 @@ const props = defineProps<{
     <div class="image-text-section">
         <div class="container">
             <img
+                :src="props.img"
                 alt=""
-                :src="props?.img"
             />
             <div>
                 <h2 v-html="props?.title"></h2>
