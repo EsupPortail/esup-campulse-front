@@ -81,7 +81,7 @@ async function onDocumentRejected() {
                 >
                     <QFile
                         v-model="signedCharter"
-                        :accept="props.charter.mimeTypes.join(', ')"
+                        :accept="props.charter.mimeTypes?.join(', ')"
                         :label="t('charter.signed-charter') + ' *'"
                         :max-file-size="MAX_FILE_SIZE"
                         aria-required="true"
