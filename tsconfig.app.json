@@ -11,8 +11,13 @@
     "src/**/__tests__/*"
   ],
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
+    "composite": true,
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "paths": {
       "@/*": [
         "./src/*"
@@ -23,10 +28,6 @@
       "~/*": [
         "./tests/*"
       ]
-    },
-    "lib": [
-      "es2020",
-      "dom"
-    ]
+    }
   }
 }

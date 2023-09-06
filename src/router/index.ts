@@ -81,7 +81,7 @@ router.beforeEach(async (to) => {
         && !hasPerm('change_association')) return {name: '404'}
     if (to.name === 'CreateAssociation' && !hasPerm('add_association')) return {name: '404'}
     if (to.name === 'ManageDocumentsLibrary'
-        && (!hasPerm('add_document' || !hasPerm('change_document')))) return {name: '404'}
+        && (!hasPerm('add_document') || !hasPerm('change_document'))) return {name: '404'}
 
     // Password setting and registration
     if (to.name == 'PasswordResetConfirm' && !to.query.uid && !to.query.token) return {name: '404'}
