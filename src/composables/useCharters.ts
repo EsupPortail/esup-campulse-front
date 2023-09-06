@@ -204,7 +204,7 @@ export default function () {
             validatedDate = formatDate(uploadedCharter.validatedDate) ?? ''
             // If the charter is the association charter, we can determine its status by the association's charter status
             if (document.processType === 'CHARTER_ASSOCIATION') {
-                if (!isSite) {
+                if (!isSite && associationCharterStatus !== 'CHARTER_PROCESSING') {
                     charterStatus = 'NOT_SITE'
                 } else {
                     switch (associationCharterStatus) {

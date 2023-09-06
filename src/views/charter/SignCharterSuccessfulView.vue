@@ -72,7 +72,7 @@ async function onGetAssociationPdfExport() {
                         />
                         <QBtn
                             :label="t('dashboard.charter-dashboard')"
-                            :to="{name: 'Charter'}"
+                            :to="{name: 'ManageCharters'}"
                             class="btn-lg"
                             color="charter"
                             icon="bi-chevron-compact-right"
