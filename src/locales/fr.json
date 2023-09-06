@@ -30,7 +30,6 @@
     "confirm-association-publish": "Voulez-vous vraiment publier cette association dans l'annuaire ? Toutes les informations la concernant présentes sur cette fiche seront visibles publiquement.",
     "confirm-association-unpublish": "Voulez-vous vraiment dépublier cette association de l'annuaire ? Toutes les informations la concernant présentes sur cette fiche ne seront plus visibles pour le public.",
     "leave-association-edition": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues.",
-    "leave-user-edition": "Êtes-vous sûr de vouloir quitter l'édition des informations de cet utilisateur ? Si vous avez effectué des modifications, celles-ci seront perdues.",
     "modify-email": "Attention, l'adresse mail est utilisée comme identifiant pour se connecter. En cas de modification, elle deviendra le nouvel identifiant du compte. Un mail de vérification sera envoyé sur cette adresse pour la valider."
   },
   "association": {
