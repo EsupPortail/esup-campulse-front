@@ -90,11 +90,16 @@ async function onSubmitProjectReviewInfos(nextStep: number) {
     loading.hide()
 }
 
+// Submit step 3 (documents)
 async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await uploadDocuments(parseInt(route.params.associationId as string), undefined, false)
+            await uploadDocuments(
+                projectStore.project.association ?? undefined,
+                projectStore.project.user ? userStore.user?.username : undefined,
+                false
+            )
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {

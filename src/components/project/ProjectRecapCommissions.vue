@@ -17,7 +17,8 @@ const {
     funds,
     commissionFunds,
     getAllCommissions,
-    initCommissionLabels
+    initCommissionLabels,
+    initFundsLabels
 } = useCommissions()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -51,6 +52,7 @@ async function onGetProjectCommissions() {
             await getAllCommissions()
             await getCommissionFunds()
             await getFunds()
+            initFundsLabels()
             initCommissionLabels()
             initProjectCommissionLabel()
         } catch (error) {
@@ -102,7 +104,8 @@ async function onGetProjectCommissions() {
                 <div class="display-row">
                     <h4>
                         {{
-                            t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'
+                            t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === commissionFunds
+                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund).fund)?.label + ')'
                         }}
                     </h4>
                     <p>{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
@@ -111,7 +114,8 @@ async function onGetProjectCommissions() {
                 <div class="display-row">
                     <h4>
                         {{
-                            t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'
+                            t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === commissionFunds
+                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund).fund)?.label + ')'
                         }}
                     </h4>
                     <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>

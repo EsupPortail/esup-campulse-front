@@ -22,20 +22,13 @@ const projectReview = ref<ProjectReview>(
         description: '',
         difficulties: '',
         improvements: '',
-        plannedStartDate: '',
-        plannedEndDate: '',
-        plannedLocation: '',
-        associationUser: null,
-        commissions: [],
-        creationDate: '',
-        editionDate: '',
-        processingDate: ''
+        associationUser: null
     }
 )
 
 const projectId = ref<string | undefined>()
 
-export default function() {
+export default function () {
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
@@ -54,11 +47,11 @@ export default function() {
             projectReview.value.association = projectStore.projectReview.association
             projectReview.value.user = projectStore.projectReview.user
             projectReview.value.realStartDate = formatDate(projectStore.projectReview.realStartDate ?
-                projectStore.projectReview.realStartDate : projectStore.projectReview.plannedStartDate) as string
+                projectStore.projectReview.realStartDate : projectStore.projectReview.plannedStartDate as string) as string
             projectReview.value.realEndDate = formatDate(projectStore.projectReview.realEndDate ?
-                projectStore.projectReview.realEndDate : projectStore.projectReview.plannedEndDate) as string
+                projectStore.projectReview.realEndDate : projectStore.projectReview.plannedEndDate as string) as string
             projectReview.value.realLocation = projectStore.projectReview.realLocation ?
-                projectStore.projectReview.realLocation : projectStore.projectReview.plannedLocation
+                projectStore.projectReview.realLocation : projectStore.projectReview.plannedLocation as string
             projectReview.value.review = projectStore.projectReview.review
             projectReview.value.impactStudents = projectStore.projectReview.impactStudents
             projectReview.value.description = projectStore.projectReview.description
@@ -71,7 +64,7 @@ export default function() {
         let projectReviewDataToPatch = {}
         const numbers = ['outcome', 'income']
         const dates = ['realStartDate', 'realEndDate']
-        const privateFields = ['id', 'association', 'user', 'name']
+        const privateFields = ['id', 'association', 'user', 'name', 'associationUser']
         for (const [key, value] of Object.entries(projectReview.value)) {
             if (!privateFields.includes(key)) {
                 if (numbers.includes(key)) {
@@ -79,7 +72,7 @@ export default function() {
                         projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: parseInt(value as string)})
                     }
                 } else if (dates.includes(key)) {
-                    if (value !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
+                    if (value !== formatDate(projectStore.projectReview?.[key as keyof typeof projectStore.projectReview] as string)) {
                         projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: value + 'T00:00:00.000Z'})
                     }
                 } else {
