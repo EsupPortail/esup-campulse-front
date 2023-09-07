@@ -28,7 +28,7 @@ const canModifyProjectAndReview = ref<boolean>(false)
 const initCanModifyProjectAndReview = () => {
     let perm = false
     if (props.association) {
-        const projectAssociationUserId = projectStore.projects.find(x => x.id === props.projectId)?.associationUser
+        const projectAssociationUserId = projectStore.selfProjects.find(x => x.id === props.projectId)?.associationUser
         const associationUserId = userStore.userAssociations.find(x => x.association.id === props.association)?.id
         if (userStore.hasPresidentStatus(props.association) || projectAssociationUserId === associationUserId) {
             perm = true

@@ -72,6 +72,7 @@ const props = defineProps<{
             <li>
                 <LayoutHeaderProfileButton
                     v-if="userStore.isAuth"
+                    :device="props.device"
                     class="profile-button"
                 />
             </li>
@@ -84,18 +85,18 @@ const props = defineProps<{
 @import "@/assets/_variables.scss";
 
 nav.mobile a {
-  color: $textColor1 !important;
+    color: $textColor1 !important;
 }
 
 nav.desktop {
-  display: block;
+    display: block;
 
-  @media screen and (max-width: $breakpoint-lg) {
-    display: none;
-  }
+    @media screen and (max-width: $breakpoint-lg) {
+        display: none;
+    }
 }
 
 li {
-  list-style-type: none;
+    list-style-type: none;
 }
 </style>

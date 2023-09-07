@@ -38,8 +38,8 @@ async function onDeleteProject() {
     loading.show()
     try {
         await deleteProject(props.project)
-        const index = projectStore.projects.findIndex(obj => obj.id === props.project)
-        projectStore.projects.splice(index, 1)
+        const index = projectStore.selfProjects.findIndex(obj => obj.id === props.project)
+        projectStore.selfProjects.splice(index, 1)
         notify({
             type: 'positive',
             message: t('notifications.positive.project-deleted')
@@ -64,21 +64,24 @@ async function onDeleteProject() {
                     @submit="onDeleteProject"
                 >
                     <p class="paragraph">{{ t('project.confirm-project-delete') }}</p>
-                    <QCardActions align="right">
+                    <div class="flex-row-center">
                         <QBtn
                             v-close-popup
                             :label="t('cancel')"
+                            class="btn-lg"
+                            color="commission"
                             icon="bi-box-arrow-left"
                             @click="emit('closeDialog')"
                         />
                         <QBtn
                             v-close-popup
                             :label="t('delete')"
+                            class="btn-lg"
                             color="custom-red"
                             icon="bi-trash"
                             type="submit"
                         />
-                    </QCardActions>
+                    </div>
                 </QForm>
             </QCardSection>
         </QCard>

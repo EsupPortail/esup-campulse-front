@@ -84,11 +84,11 @@ const initOptions = () => {
     }
 
     // Update project dates
-    if (props.projectStatus === 'PROJECT_DRAFT_PROCESSED' ||
-        props.projectStatus === 'PROJECT_PROCESSING' ||
-        props.projectStatus === 'PROJECT_VALIDATED' ||
-        props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-        props.projectStatus === 'PROJECT_REVIEW_PROCESSING' &&
+    if ((props.projectStatus === 'PROJECT_DRAFT_PROCESSED' ||
+            props.projectStatus === 'PROJECT_PROCESSING' ||
+            props.projectStatus === 'PROJECT_VALIDATED' ||
+            props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
+            props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
         hasPerm('change_project_as_validator')) {
         options.value.push({
             icon: 'bi-calendar',
@@ -98,8 +98,8 @@ const initOptions = () => {
     }
 
     // Change commission
-    if (props.projectStatus === 'PROJECT_PROCESSING' ||
-        props.projectStatus === 'PROJECT_VALIDATED' &&
+    if ((props.projectStatus === 'PROJECT_PROCESSING' ||
+            props.projectStatus === 'PROJECT_VALIDATED') &&
         hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
             icon: 'bi-signpost',

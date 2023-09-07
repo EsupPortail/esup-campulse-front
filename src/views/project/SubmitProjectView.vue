@@ -103,6 +103,8 @@ onMounted(async () => {
             initIsSite()
         } else await router.push({name: '404'})
     }
+    // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
+    projectStore.projectCommissionFunds = []
     isLoaded.value = true
     loading.hide()
 })

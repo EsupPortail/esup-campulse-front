@@ -264,10 +264,10 @@ async function onGetAssociationProjects() {
                         />
                     </div>
                     <section
-                        v-if="projectStore.projects.length"
+                        v-if="projectStore.selfProjects.length"
                     >
                         <div
-                            v-for="project in projectStore.projects.slice(0, 3)"
+                            v-for="project in projectStore.selfProjects.slice(0, 3)"
                             :key="project.id"
                             class="document-input variant-space-1"
                         >

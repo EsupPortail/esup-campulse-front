@@ -92,7 +92,7 @@ const columns = ref<QTableProps['columns']>([
 <template>
     <QTable
         :columns="columns"
-        :loading="!projectStore.projects"
+        :loading="!projectStore.selfProjects"
         :no-data-label="t('project.no-project-to-show')"
         :rows="importedProps.projects"
         :rows-per-page-options="[10, 20, 50, 0]"

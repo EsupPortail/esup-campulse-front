@@ -8,15 +8,12 @@ import {onMounted, ref, watch} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
-import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {Association} from '#/association'
 import useUserAssociations from '@/composables/useUserAssociations'
 
 const {hasPerm} = useSecurity()
 const {t} = useI18n()
 const userStore = useUserStore()
 const projectStore = useProjectStore()
-const associationStore = useAssociationStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {initUserAssociations} = useUserAssociations()
@@ -47,7 +44,9 @@ const initTabs = () => {
             association: null
         })
     }
-    if (tabs.value.length) tab.value = tabs.value[0].name
+    if (tabs.value.length) {
+        tab.value = tabs.value[0].name
+    }
 }
 watch(() => userStore.userAssociations, initTabs)
 
@@ -58,34 +57,11 @@ const splitterModel = ref(20)
 onMounted(async () => {
     loading.show()
     await onGetProjects()
-    await onGetAssociations()
+    //await onGetAssociations()
     initUserAssociations(false)
     initTabs()
     loading.hide()
 })
-
-watch(() => userStore.userAssociations, async () => {
-    await onGetAssociations()
-})
-
-async function onGetAssociations() {
-    try {
-        const associationIds = userStore.userAssociations.map(association => association.association.id)
-        associationStore.associations = []
-        for (const associationId of associationIds) {
-            await associationStore.getAssociationDetail(associationId, false)
-            associationStore.associations.push(associationStore.association as Association)
-        }
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: catchHTTPError(error.response.status)
-            })
-        }
-    }
-}
-
 
 async function onGetProjects() {
     try {
@@ -100,6 +76,15 @@ async function onGetProjects() {
 
     }
 }
+
+const canSubmitProjects = ref<boolean>(false)
+
+const initCanSubmitProjects = () => {
+    const associationId = tabs.value.find(obj => obj.name === tab.value)?.association
+    const userAssociation = userStore.userAssociations.find(obj => obj.association.id === associationId)
+    canSubmitProjects.value = (userAssociation?.association.isEnabled && userAssociation?.association.canSubmitProjects) ?? false
+}
+watch(() => tab.value, initCanSubmitProjects)
 
 </script>
 
@@ -149,15 +134,13 @@ async function onGetProjects() {
                         >
                             <template v-slot:before>
                                 <div v-if="tab.association">
-                                    <div
-                                        v-if="associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
-                                    >
+                                    <div v-if="canSubmitProjects">
                                         <div
                                             v-if="userStore.hasPresidentStatus(tab.association)"
                                             class="flex-row-center padding-top padding-bottom"
                                         >
                                             <QBtn
-                                                :disable="!associationStore.associations.find(obj => obj.id === tab.association)?.canSubmitProjects"
+                                                :disable="!canSubmitProjects"
                                                 :label="t('project.submit-new-project')"
                                                 :to="{name: 'SubmitProjectAssociation', params: {associationId: tab.association}}"
                                                 class="btn-lg"
@@ -239,8 +222,8 @@ async function onGetProjects() {
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?
-                                                projectStore.projects.filter(project => project.association === tab.association) :
-                                                projectStore.projects.filter(project => project.user === userStore.user?.id)"
+                                                projectStore.selfProjects.filter(project => project.association === tab.association) :
+                                                projectStore.selfProjects.filter(project => project.user === userStore.user?.id)"
                                             :title="t('project.all-projects')"
                                         />
                                     </QTabPanel>
@@ -250,9 +233,9 @@ async function onGetProjects() {
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?
-                                                projectStore.projects.filter(project => project.association === tab.association
+                                                projectStore.selfProjects.filter(project => project.association === tab.association
                                                     && project.projectStatus === 'PROJECT_REVIEW_VALIDATED') :
-                                                projectStore.projects.filter(project => project.user === userStore.user?.id
+                                                projectStore.selfProjects.filter(project => project.user === userStore.user?.id
                                                     && project.projectStatus === 'PROJECT_REVIEW_VALIDATED')"
                                             :title="t('project.validated-projects')"
                                         />
@@ -263,9 +246,9 @@ async function onGetProjects() {
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?
-                                                projectStore.projects.filter(project => project.association === tab.association &&
+                                                projectStore.selfProjects.filter(project => project.association === tab.association &&
                                                     (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELLED')) :
-                                                projectStore.projects.filter(project => project.user === userStore.user?.id &&
+                                                projectStore.selfProjects.filter(project => project.user === userStore.user?.id &&
                                                     (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELLED'))"
                                             :title="t('project.rejected-projects')"
                                         />
