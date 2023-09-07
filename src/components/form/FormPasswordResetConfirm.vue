@@ -55,7 +55,7 @@ async function resetConfirm() {
     <div class="form-container">
         <div class="form">
             <QForm
-                class="q-gutter-md"
+                class="flex-column"
                 @submit.prevent="resetConfirm"
             >
                 <QInput
@@ -65,12 +65,23 @@ async function resetConfirm() {
                         val => val && val.length > 0 || t('forms.required-new-password'),
                         val => val && passwordChecker.valid || t('forms.required-strong-password')
                     ]"
+                    autocomplete="new-password"
+                    bottom-slots
                     clearable
+                    color="dashboard"
                     filled
+                    for="new-password-to-check"
                     lazy-rules
                     type="password"
-                    autocomplete="new-password"
-                />
+                >
+                    <template v-slot:hint>
+                        <p aria-describedby="new-password-to-check">
+                            {{
+                                t('forms.strong-password-hint')
+                            }}
+                        </p>
+                    </template>
+                </QInput>
                 <QInput
                     v-model="newPassword.newPassword2"
                     :label="t('forms.repeat-new-password')"
@@ -78,27 +89,36 @@ async function resetConfirm() {
                         val => val && val.length > 0 || t('forms.required-repeat-new-password'),
                         val => val && val === newPassword.newPassword1 || t('forms.passwords-are-not-equal')
                     ]"
+                    autocomplete="new-password"
                     clearable
+                    color="dashboard"
                     filled
                     lazy-rules
                     type="password"
-                    autocomplete="new-password"
                 />
                 <FormPasswordChecker
                     :password="newPassword.newPassword1"
                     :password-checker="passwordChecker"
                 />
-                <QBtn
-                    :disable="!passwordChecker.valid || newPassword.newPassword1 !== newPassword.newPassword2"
-                    :label="t('forms.send')"
-                    color="primary"
-                    type="submit"
-                />
+                <div>
+                    <QBtn
+                        :disable="!passwordChecker.valid || newPassword.newPassword1 !== newPassword.newPassword2"
+                        :label="t('forms.send')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-check-lg"
+                        type="submit"
+                    />
+                </div>
             </QForm>
         </div>
     </div>
 </template>
 
-<style lang="sass" scoped>
-@import "@/assets/styles/forms.scss"
+<style lang="scss" scoped>
+@import "@/assets/styles/forms.scss";
+
+.q-form {
+    margin: 3rem 0;
+}
 </style>

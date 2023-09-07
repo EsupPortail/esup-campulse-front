@@ -31,9 +31,9 @@ onMounted(async () => {
     <div class="dashboard-section">
         <h2 class="flex-row-center">{{ messageTitle }}</h2>
         <div class="dashboard-section-container">
-            <div class="container flex-center">
+            <div class="container flex-column text-center">
                 <p>{{ messageDescription }}</p>
-                <RouterLink to="/">{{ t("register.back-to-home") }}</RouterLink>
+                <RouterLink to="/">{{ t('register.back-to-home') }}</RouterLink>
             </div>
         </div>
     </div>
