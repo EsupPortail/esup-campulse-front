@@ -77,7 +77,7 @@ async function onGetProjectPdf() {
                         />
                         <QBtn
                             :label="t('dashboard.cape-dashboard')"
-                            :to="{name: 'Commission'}"
+                            :to="{name: 'ManageProjects'}"
                             class="btn-lg"
                             color="commission"
                             icon="bi-chevron-compact-right"

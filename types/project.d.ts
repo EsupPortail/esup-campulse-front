@@ -151,7 +151,8 @@ export interface ProjectComment {
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
-    projects: ProjectList[],
+    selfProjects: ProjectList[],
+    managedProjects: ProjectList[],
     projectCategories: ProjectCategory[],
     projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],

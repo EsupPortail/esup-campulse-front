@@ -46,6 +46,7 @@ export interface AssociationUserDetail {
         institution?: number,
         isEnabled?: boolean,
         isPublic?: boolean,
+        canSubmitProjects?: boolean
     }
     isPresident: boolean,
     canBePresidentFrom: string | null,
@@ -53,7 +54,7 @@ export interface AssociationUserDetail {
     isValidatedByAdmin: boolean,
     isVicePresident: boolean,
     isSecretary: boolean,
-    isTreasurer: boolean,
+    isTreasurer: boolean
 }
 
 export interface AssociationMember {

@@ -92,7 +92,7 @@ async function onOpenDeleteAlert() {
         >
             <QCard class="variant-space-3">
                 <QCardSection class="row items-center">
-                    <p v-if="!projectStore.projects.length">
+                    <p v-if="!projectStore.managedProjects.length">
                         {{ t('commission.alerts.confirm-delete') }}
                     </p>
                     <div
@@ -114,7 +114,7 @@ async function onOpenDeleteAlert() {
                             icon="bi-x-lg"
                         />
                         <QBtn
-                            v-if="!projectStore.projects.length"
+                            v-if="!projectStore.managedProjects.length"
                             v-close-popup
                             :label="t('delete')"
                             class="btn-lg"

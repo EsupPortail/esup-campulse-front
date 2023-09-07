@@ -18,7 +18,8 @@ import useCommissions from '@/composables/useCommissions'
 export const useProjectStore = defineStore('projectStore', {
     state: (): ProjectStore => ({
         project: undefined,
-        projects: [],
+        selfProjects: [],
+        managedProjects: [],
         projectCategories: [],
         projectCommissionFunds: [],
         projectDocuments: [],
@@ -95,17 +96,17 @@ export const useProjectStore = defineStore('projectStore', {
             urlArray.push(`project_statuses=${statuses}`)
             if (commission) urlArray.push(`commission_id=${commission}`)
             if (urlArray.length) urlString += '?' + urlArray.join('&')
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
+            this.managedProjects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
         },
 
         async getAllProjects() {
             const {axiosAuthenticated} = useAxios()
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
+            this.selfProjects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
         },
 
         async getAssociationProjects(associationId: number) {
             const {axiosAuthenticated} = useAxios()
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
+            this.selfProjects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
         },
 
         async getProjectReview(projectId: number) {
