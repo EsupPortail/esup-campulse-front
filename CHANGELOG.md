@@ -1,8 +1,22 @@
-- ✨ Add processingDate to project detail
-- 🐛 Fix buggy create file link functions
-- ♻️ Moved env.d.ts in src folder
-- ⬆️ Upgrade minor dependencies
-- ✨ Added buttons on tables to see Project Review PDFs
-- 🐛 Fix refresh of buttons for charter management + initCharterStatus
-- ✨ Project id
-- 🎨 Optimize route nesting for charter management
+- 🐛 Fix various bugs on project management for student+commission account + divided project state
+- 🔧 Changing Nginx conf for Gravitee
+- 🔧 Gravitee conf for test server
+- 💬 Added content types on about page
+- ⚗️ Enabling Matomo debug mode
+- 🔧 Upgrade Nginx conf for Matomo
+- ♻️ An association not site can now sign the association charter
+- 🩹 Fix dynamic image paths for landing pages
+- 🩹 Comment has uploaded student certificate checker in registration form
+- 🎨 Remove president phone in directory + improve association address
+- 💡 Comment leave edition pop up on userManagerDetailView
+- ♻️ Explicit 403 error message
+- ♻️ Merge association charter and GDPR association charter (manager UI)
+- ♻️ Merge association charter and GDPR association charter (student UI)
+- ✏️ Missing container on PasswordResetConfirm.
+- ✏️ Added breaklines on AssociationDetailView
+- ✏️ Added isSite on Association Dashboard
+- ✏️ #160 Removed associations names from AlertConfirmAssociationsChanges CSV export
+- 🐛 Fix misformatted charter date in directory
+- 🔧 Added Matomo to CSP conf
+- 💄 Fix logo fields in associationEdition
+- 🐛 Fix private to public request to charter date in association directory
