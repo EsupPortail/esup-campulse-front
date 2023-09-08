@@ -115,7 +115,7 @@ async function onGetProjectCommissions() {
                     <h4>
                         {{
                             t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === commissionFunds
-                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund).fund)?.label + ')'
+                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'
                         }}
                     </h4>
                     <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
