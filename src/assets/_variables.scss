@@ -1,3 +1,5 @@
+@import "_create-palette.scss";
+
 $fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
 
 // ---------------- Responsive----------------
@@ -50,6 +52,7 @@ $black-weight: 900;
 $radiusCircle: 50%;
 
 // ---------------- Colors ----------------
+
 $backgroundColor1: #ffffff;
 $backgroundColor2: #f5f5f5;
 $footerBackgroundColor: #2c2c2c;
@@ -58,33 +61,45 @@ $textColor1: #272727;
 $textColor2: #67727D;
 $textColor3: #ffffff;
 
-$associationColor: #3971be;
-$associationColorBackground: #e7efff;
-$associationColorText: #152639;
-$associationColorBorders: #aeb8c4;
-$associationColorHover: #3065b4;
-$associationColorActive: #285496;
-
-$charterColor: #ffc64a;
-$charterColorBackground: #fff6e4;
-$charterColorText: #4d3a1e;
-$charterColorBorders: #c4b8ae;
-$charterColorHover: #fab83e;
-$charterColorActive: #f1ad2d;
-
+// Main colors (one for each space of the application (dashboard, associations, charters, commissions)
+$associationColor: #3466AD;
 $commissionColor: #df3603;
-$commissionColorBackground: #ffefe9;
-$commissionColorText: #4d271b;
-$commissionColorBorders: #c4b3ae;
-$commissionColorHover: #e25c27;
-$commissionColorActive: #c74f20;
-
+$charterColor: #ffc64a;
 $dashboardColor: #257875;
-$dashboardColorBackground: #e7f3f2;
-$dashboardColorText: #10312e;
-$dashboardColorBorders: #a2b9b7;
-$dashboardColorHover: #2e857d;
-$dashboardColorActive: #27746d;
+
+// Initializing palettes
+$associationPalette: palette($associationColor, false);
+$commissionPalette: palette($commissionColor, false);
+$charterPalette: palette($charterColor, true);
+$dashboardPalette: palette($dashboardColor, false);
+
+// Association colors
+$associationColorBackground: lightest($associationPalette);
+$associationColorText: darkest($associationPalette);
+$associationColorBorders: lighter($associationPalette);
+$associationColorHover: dark($associationPalette);
+$associationColorActive: darker($associationPalette);
+
+// Charter colors
+$charterColorBackground: lightest($charterPalette);
+$charterColorText: darkest($charterPalette);
+$charterColorBorders: lighter($charterPalette);
+$charterColorHover: dark($charterPalette);
+$charterColorActive: darker($charterPalette);
+
+// Commission colors
+$commissionColorBackground: lightest($commissionPalette);
+$commissionColorText: darkest($commissionPalette);
+$commissionColorBorders: lighter($commissionPalette);
+$commissionColorHover: dark($commissionPalette);
+$commissionColorActive: darker($commissionPalette);
+
+// Dashboard colors
+$dashboardColorBackground: lightest($dashboardPalette);
+$dashboardColorText: darkest($dashboardPalette);
+$dashboardColorBorders: lighter($dashboardPalette);
+$dashboardColorHover: dark($dashboardPalette);
+$dashboardColorActive: darker($dashboardPalette);
 
 $stateColorPassword0: #000000;
 $stateColorPassword1: #7a2520;
@@ -92,9 +107,9 @@ $stateColorPassword2: #c74501;
 $stateColorPassword3: #088241;
 $stateColorPassword4: #285496;
 
-$stateColorGreen: #088241;
-$stateColorOrange: #c74501;
-$stateColorRed: #e82026;
+$stateColorGreen: #01a451;
+$stateColorOrange: #ff7d3c;
+$stateColorRed: #e82c32;
 $stateColorGrey: #797676;
 
 $errorPanelColor: #db463d;
