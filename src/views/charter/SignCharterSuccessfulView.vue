@@ -91,7 +91,7 @@ async function onGetAssociationPdfExport() {
 @import '@/assets/_variables.scss';
 
 i {
-    color: $charteColor;
+    color: $charterColor;
     font-size: 5rem;
 }
 

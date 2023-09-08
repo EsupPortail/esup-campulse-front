@@ -2,7 +2,7 @@
 
 #layout-breadcrumbs {
   .q-breadcrumbs {
-    background-color: $annuaireColor;
+    background-color: $associationColor;
     padding: 1rem;
 
     & > * {
@@ -51,10 +51,10 @@
   }
 
   &.variant-space-2 .q-breadcrumbs {
-    background-color: $charteColor;
+    background-color: $charterColor;
 
     .q-breadcrumbs__el {
-      color: $charteColorText;
+      color: $charterColorText;
 
       &:focus {
         outline: 2px solid $outlineColor2;
@@ -63,12 +63,12 @@
     }
 
     .q-breadcrumbs__separator {
-      color: $charteColorText;
+      color: $charterColorText;
     }
   }
 
   &.variant-space-3 .q-breadcrumbs {
-    background-color: $capeColor;
+    background-color: $commissionColor;
 
     .q-breadcrumbs__el:focus {
       outline: 2px solid $outlineColor1;

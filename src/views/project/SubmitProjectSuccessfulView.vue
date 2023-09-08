@@ -95,7 +95,7 @@ async function onGetProjectPdf() {
 @import '@/assets/_variables.scss';
 
 i {
-    color: $capeColor;
+    color: $commissionColor;
     font-size: 5rem;
 }
 
