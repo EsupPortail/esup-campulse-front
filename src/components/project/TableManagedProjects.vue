@@ -45,7 +45,7 @@ const applicant = (association: number | null, user: number | null) => {
         if (obj) return obj.name
     } else {
         const userObj = userManagerStore.users.find(obj => obj.id === user)
-        return `${userObj?.firstName} ${userObj?.lastName}`
+        if (userObj) return `${userObj.firstName} ${userObj.lastName}`
     }
 }
 
