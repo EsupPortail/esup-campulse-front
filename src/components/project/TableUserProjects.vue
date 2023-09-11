@@ -11,6 +11,8 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref} from 'vue'
 import useSubmitProject from '@/composables/useSubmitProject'
+import useSecurity from '@/composables/useSecurity'
+import {useUserStore} from '@/stores/useUserStore'
 
 const importedProps = defineProps<{
     projects: ProjectList[],
@@ -19,11 +21,13 @@ const importedProps = defineProps<{
 }>()
 
 const projectStore = useProjectStore()
+const userStore = useUserStore()
 const {formatDate} = useUtility()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {initProjectAssociationUsersLabels, projectAssociationUsersLabels} = useSubmitProject()
+const {hasPerm} = useSecurity()
 
 onMounted(async () => {
     loading.show()
@@ -134,7 +138,10 @@ const columns = ref<QTableProps['columns']>([
                     :props="props"
                     headers="projectAssociationUser"
                 >
-                    {{ projectAssociationUser(props.row.associationUser) }}
+                    {{
+                        hasPerm('add_project_association') ? projectAssociationUser(props.row.associationUser) :
+                        userStore.user?.firstName + ' ' + userStore.user?.lastName
+                    }}
                 </QTd>
                 <!--                <QTd
                                     key="plannedStartDate"

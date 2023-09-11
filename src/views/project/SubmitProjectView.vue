@@ -370,7 +370,11 @@ async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await uploadDocuments(parseInt(route.params.associationId as string), undefined, false)
+            await uploadDocuments(
+                applicant.value === 'association' ? associationId.value : undefined,
+                applicant.value === 'user' ? userStore.user?.username : undefined,
+                false
+            )
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -529,6 +533,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 />
                             </div>
                             <QInput
+                                v-if="applicant === 'association'"
                                 v-model="projectBasicInfos.partnerAssociation"
                                 :label="t('project.partner-association')"
                                 clearable
