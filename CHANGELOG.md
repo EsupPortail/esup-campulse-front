@@ -1,22 +1,17 @@
-- 🐛 Fix various bugs on project management for student+commission account + divided project state
-- 🔧 Changing Nginx conf for Gravitee
-- 🔧 Gravitee conf for test server
-- 💬 Added content types on about page
-- ⚗️ Enabling Matomo debug mode
-- 🔧 Upgrade Nginx conf for Matomo
-- ♻️ An association not site can now sign the association charter
-- 🩹 Fix dynamic image paths for landing pages
-- 🩹 Comment has uploaded student certificate checker in registration form
-- 🎨 Remove president phone in directory + improve association address
-- 💡 Comment leave edition pop up on userManagerDetailView
-- ♻️ Explicit 403 error message
-- ♻️ Merge association charter and GDPR association charter (manager UI)
-- ♻️ Merge association charter and GDPR association charter (student UI)
-- ✏️ Missing container on PasswordResetConfirm.
-- ✏️ Added breaklines on AssociationDetailView
-- ✏️ Added isSite on Association Dashboard
-- ✏️ #160 Removed associations names from AlertConfirmAssociationsChanges CSV export
-- 🐛 Fix misformatted charter date in directory
-- 🔧 Added Matomo to CSP conf
-- 💄 Fix logo fields in associationEdition
-- 🐛 Fix private to public request to charter date in association directory
+- 💄 Quick CSS fixes on directory
+- 🩹 Add no matches found after LDAP search
+- ✨ Added XLSX export
+- 🩹 Fix init of documents in library for managers
+- 🩹 Change permission on document library
+- 💄 Change create association button to outline
+- 🎨 Reorganize buttons on project management for managers
+- 🐛 Fix SubmitProjectReview success page
+- 🐛 Fix user project submission and commission dashboard
+- ✏️ Replace old mdi icons and add conditional button text for fund members
+- 💬 Added CHARTER_HOME_THIRD_BLOCK
+- 💄 Rename old CSS variables
+- 🔍️ Added meta description and robots.txt
+- 🐛 Fix documentUploads, info patch and dates in project review
+- ✏️ Add more explicit hint for password setting form
+- ✏️ Add more explicit error message and hint for new password form
+- 🔧 Switch back URL to Gravitee
