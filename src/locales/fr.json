@@ -818,6 +818,7 @@
     "delete-association-user": "Supprimer l'affiliation",
     "delete-user": "Supprimer l'utilisateur",
     "management": "Gestion des comptes",
+    "no-users-found": "Aucun utilisateur trouvé.",
     "register-in-new-associations": "Ajouter l'utilisateur dans de nouvelles associations",
     "user-associations": "Associations de l'utilisateur",
     "user-infos": "Informations de l'utilisateur",
