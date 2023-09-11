@@ -320,7 +320,8 @@
     "update-my-status": "Pour changer de statut, merci de contacter le gestionnaire dont vous dépendez.",
     "user-management": "Gérer les informations des utilisateurs",
     "user-validation": "Valider les demandes de compte",
-    "validate-changes": "Valider les changements"
+    "validate-changes": "Valider les changements",
+    "view-projects": "Consulter les demandes de subventionnement"
   },
   "deactivate": "Désactiver",
   "delegate": "Déléguer",

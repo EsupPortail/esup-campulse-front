@@ -140,7 +140,7 @@ async function onGetAssociationProjects() {
 <template>
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-account"/>
+            <QIcon name="bi-person"/>
             {{ t('dashboard.association-user.my-role') }}
         </h2>
         <div class="dashboard-section-container">
@@ -162,7 +162,7 @@ async function onGetAssociationProjects() {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-format-list-bulleted-square"/>
+            <QIcon name="bi-card-list"/>
             {{ t('dashboard.association-user.manage-association') }}
         </h2>
         <div class="dashboard-section-container">
@@ -197,7 +197,7 @@ async function onGetAssociationProjects() {
     <!-- Association documents -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-file-outline"/>
+            <QIcon name="bi-file-earmark"/>
             {{ t('dashboard.association-user.association-documents') }}
         </h2>
         <div class="dashboard-section-container">
@@ -215,7 +215,7 @@ async function onGetAssociationProjects() {
     <!-- Association procedures -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-pencil-box-outline"/>
+            <QIcon name="bi-pencil-square"/>
             {{ t('dashboard.association-user.association-procedures') }}
         </h2>
         <div class="dashboard-section-container">

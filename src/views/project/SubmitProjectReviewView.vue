@@ -141,7 +141,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="1"
                         :title="t('project.general-infos')"
-                        icon="mdi-card-text-outline"
+                        icon="bi-card-list"
                     >
                         <QForm
                             class="flex-column"
@@ -294,7 +294,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="2"
                         :title="t('project.review')"
-                        icon="mdi-chart-box-outline"
+                        icon="bi-clipboard-data"
                     >
                         <QForm
                             class="flex-column"
@@ -390,7 +390,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="3"
                         :title="t('project.documents')"
-                        icon="mdi-file-document-outline"
+                        icon="bi-file-earmark"
                     >
                         <QForm
                             @submit.prevent="onUploadDocuments(4)"
@@ -423,7 +423,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="4"
                         :title="t('recap')"
-                        icon="mdi-check"
+                        icon="bi-check-lg"
                     >
                         <ProjectReviewRecap
                             :view="'submitProjectReview'"

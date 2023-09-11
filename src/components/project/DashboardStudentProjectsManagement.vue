@@ -57,7 +57,6 @@ const splitterModel = ref(20)
 onMounted(async () => {
     loading.show()
     await onGetProjects()
-    //await onGetAssociations()
     initUserAssociations(false)
     initTabs()
     loading.hide()

@@ -70,12 +70,16 @@ async function onGetProjectReviewPdf() {
                     <div class="flex-btn-group">
                         <QBtn
                             :label="t('project.download-recap')"
+                            class="btn-lg"
+                            color="commission"
                             icon="bi-filetype-pdf"
                             @click="onGetProjectReviewPdf"
                         />
                         <QBtn
                             :label="t('dashboard.cape-dashboard')"
-                            :to="{name: 'Commission'}"
+                            :to="{name: 'ManageProjects'}"
+                            class="btn-lg"
+                            color="commission"
                             icon="bi-chevron-compact-right"
                         />
                     </div>

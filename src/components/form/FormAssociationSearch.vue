@@ -92,14 +92,14 @@ async function clearSearch() {
                         :label="t('search')"
                         class="btn-lg"
                         color="association"
-                        icon="mdi-chevron-right"
+                        icon="bi-chevron-right"
                         type="submit"
                     />
                     <QBtn
                         :label="t('cancel-search')"
                         class="btn-lg"
                         color="association"
-                        icon="mdi-close"
+                        icon="bi-x-lg"
                         @click="clearSearch"
                     />
                 </div>
@@ -173,14 +173,14 @@ async function clearSearch() {
                         :label="t('advanced-search')"
                         class="btn-lg"
                         color="association"
-                        icon="mdi-chevron-right"
+                        icon="bi-chevron-right"
                         type="submit"
                     />
                     <QBtn
                         :label="t('cancel-search')"
                         class="btn-lg"
                         color="association"
-                        icon="mdi-close"
+                        icon="bi-x-lg"
                         @click="clearSearch"
                     />
                 </div>
@@ -195,6 +195,6 @@ async function clearSearch() {
 @import "@/assets/_variables.scss";
 
 .flex-row-center > * {
-  width: $fullSize;
+    width: $fullSize;
 }
 </style>
