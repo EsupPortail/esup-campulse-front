@@ -40,7 +40,7 @@ export const useUserStore = defineStore('userStore', {
     },
     actions: {
         /**
-         * It takes a url and a data object, and then it makes a post request to the url with the data object
+         * It takes an url and a data object, and then it makes a post request to the url with the data object
          * @param {string} url - The url to send the request to.
          * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
          */

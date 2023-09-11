@@ -8,6 +8,7 @@ import {useI18n} from 'vue-i18n'
 import type {DocumentProcessType, MimeType} from '#/documents'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
+import useCommissions from '@/composables/useCommissions'
 
 const {getLibraryDocuments, documents, postNewDocument, patchDocument, deleteDocument} = useDocuments()
 const {loading, notify} = useQuasar()
@@ -15,9 +16,12 @@ const {catchHTTPError} = useErrors()
 const {t} = useI18n()
 const userStore = useUserStore()
 const {hasPerm} = useSecurity()
+const {getFunds, funds} = useCommissions()
 
 onMounted(async () => {
     loading.show()
+    await onGetFunds()
+    initManagerFunds()
     await onGetLibraryDocuments()
     loading.hide()
 })
@@ -48,10 +52,24 @@ interface LibraryDocument {
 
 const libraryDocuments = ref<LibraryDocument[]>([])
 
+const managerFunds = ref<number[]>([])
+
 const initLibraryDocuments = () => {
     const list: LibraryDocument[] = []
     documents.value.forEach(document => {
-        if ((userStore.userCommissionFunds?.includes(document.fund) || hasPerm('change_document_any_fund')) || document.processType === 'NO_PROCESS') {
+        let pushDocument = false
+        if (document.processType === 'NO_PROCESS') {
+            pushDocument = true
+        } else {
+            if (document.fund) {
+                if (hasPerm('change_document_any_fund')) {
+                    pushDocument = true
+                } else if (managerFunds.value.includes(document.fund)) {
+                    pushDocument = true
+                }
+            }
+        }
+        if (pushDocument) {
             list.push({
                 id: document.id,
                 name: document.name,
@@ -88,6 +106,29 @@ async function onGetLibraryDocuments() {
             })
         }
     }
+}
+
+async function onGetFunds() {
+    try {
+        await getFunds()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response.status)
+            })
+        }
+    }
+}
+
+const initManagerFunds = () => {
+    managerFunds.value = []
+    userStore.user?.groups.forEach(group => {
+        const fund = funds.value.find(fund => fund.institution === group.institutionId)
+        if (fund) {
+            managerFunds.value.push(fund.id)
+        }
+    })
 }
 
 async function onUploadNewDocument() {
