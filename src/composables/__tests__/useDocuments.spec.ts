@@ -48,7 +48,8 @@ describe('useDocuments', () => {
         documents,
         postNewDocument,
         patchDocument,
-        deleteDocument
+        deleteDocument,
+        libraryProcesses
     } = useDocuments()
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const mockedPublicAxios = vi.mocked(axiosPublic, true)
@@ -60,7 +61,6 @@ describe('useDocuments', () => {
     newDocument.append('pathTemplate', file)
 
     describe('getLibraryDocuments', () => {
-        const libraryProcesses = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_FUND', 'NO_PROCESS']
         it('should get documents of the library processes', async () => {
             mockedPublicAxios.get.mockResolvedValueOnce({data: []})
             await getLibraryDocuments()
