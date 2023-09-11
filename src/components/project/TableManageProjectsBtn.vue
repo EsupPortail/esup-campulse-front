@@ -73,7 +73,30 @@ const initOptions = () => {
         })
     }
 
-    // Give money
+    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
+        // View project
+        options.value.push({
+            icon: 'bi-eye',
+            label: t('project.view'),
+            to: {name: 'ViewProject', params: {projectId: props.projectId}}
+        })
+
+        // Download project files
+        options.value.push({
+            icon: 'bi-file-earmark-zip',
+            label: t('project.download-files'),
+            action: 'download-files'
+        })
+
+        // Download project pdf
+        options.value.push({
+            icon: 'bi-filetype-pdf',
+            label: t('project.download-recap'),
+            action: 'download-pdf'
+        })
+    }
+
+    // Give money $$$
     if (props.projectStatus === 'PROJECT_VALIDATED' &&
         hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
@@ -118,33 +141,17 @@ const initOptions = () => {
         })
     }
 
-    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
-        options.value.push({
-            icon: 'bi-file-earmark-zip',
-            label: t('project.download-files'),
-            action: 'download-files'
-        })
 
-        options.value.push({
-            icon: 'bi-eye',
-            label: t('project.view'),
-            to: {name: 'ViewProject', params: {projectId: props.projectId}}
-        })
-
-        options.value.push({
-            icon: 'bi-filetype-pdf',
-            label: t('project.download-recap'),
-            action: 'download-pdf'
-        })
-    }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
         || props.projectStatus === 'PROJECT_CANCELLED') {
+        // View review
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),
             to: {name: 'ViewProjectReview', params: {projectId: props.projectId}}
         })
 
+        // Download review pdf
         options.value.push({
             icon: 'bi-filetype-pdf',
             label: t('project.download-review-recap'),
