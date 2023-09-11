@@ -17,7 +17,7 @@ const props = defineProps<{
     selected: ProjectList[] | undefined
 }>()
 
-async function onExportCommission(mode: 'csv' | 'pdf') {
+async function onExportCommission(mode: 'csv' | 'pdf' | 'xlsx') {
     loading.show()
     try {
         const projects = props.selected?.map(project => project.id)
@@ -44,6 +44,14 @@ async function onExportCommission(mode: 'csv' | 'pdf') {
     <div class="flex-row-center padding-top">
         <QBtn
             :disable="!props.selected?.length"
+            :label="t('commission.export-pdf')"
+            class="btn-lg"
+            color="commission"
+            icon="bi-filetype-pdf"
+            @click="onExportCommission('pdf')"
+        />
+        <QBtn
+            :disable="!props.selected?.length"
             :label="t('commission.export-csv')"
             class="btn-lg"
             color="commission"
@@ -52,11 +60,11 @@ async function onExportCommission(mode: 'csv' | 'pdf') {
         />
         <QBtn
             :disable="!props.selected?.length"
-            :label="t('commission.export-pdf')"
+            :label="t('commission.export-xlsx')"
             class="btn-lg"
             color="commission"
-            icon="bi-filetype-pdf"
-            @click="onExportCommission('pdf')"
+            icon="bi-filetype-xlsx"
+            @click="onExportCommission('xlsx')"
         />
     </div>
 </template>

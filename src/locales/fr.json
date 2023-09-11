@@ -49,11 +49,12 @@
     "confirm-all-disable": "Voulez-vous vraiment désactiver ces associations ?",
     "confirm-all-email": "Voulez-vous vraiment ouvrir l'interface de messagerie pour toutes ces associations (seules les associations ayant renseigné leur adresse email sont listées) ?",
     "confirm-all-enable": "Voulez-vous vraiment activer ces associations ?",
+    "confirm-all-xlsx-export": "Voulez-vous vraiment exporter ces associations en format Excel ?",
     "confirm-delete": "Voulez-vous vraiment supprimer cette association ? Attention cette action est irréversible et toutes les données seront perdues.",
     "confirm-disable": "Voulez-vous vraiment désactiver cette association ?",
     "confirm-enable": "Voulez-vous vraiment activer cette association ?",
     "contact": "Contacter l'association",
-    "csv-name": "Export-Associations-",
+    "csv-name": "Export-Associations",
     "delete": "Supprimer",
     "delete-association": "Supprimer l'association",
     "disable": "Désactiver",
@@ -67,6 +68,7 @@
     "enable-project-submission": "Activer la soumission de projets",
     "enabled": "Activée",
     "export-csv": "Exporter en CSV",
+    "export-xlsx": "Exporter en format Excel",
     "go-back": "Retour",
     "labels": {
       "acronym": "Acronyme",
@@ -238,6 +240,7 @@
     "export-csv": "Exporter en CSV",
     "export-name": "Export-Projets-",
     "export-pdf": "Exporter en PDF",
+    "export-xlsx": "Exporter en format Excel",
     "funds": "Financeurs",
     "funds-validation-status": "Décisions des financeurs",
     "is-closed-to-projects": "Fermée à la soumission de nouveaux projets",
@@ -611,7 +614,8 @@
       "validate-project": "Le projet a été validé.",
       "validate-project-review": "Le bilan a été validé.",
       "validate-success": "Le compte a été validé.",
-      "validate-user-association": "Le rôle dans l'utilisateur dans l'association a bien été validé."
+      "validate-user-association": "Le rôle dans l'utilisateur dans l'association a bien été validé.",
+      "xlsx-export-associations": "Les associations ont été exportées en format Excel."
     }
   },
   "optional": "facultatif",
