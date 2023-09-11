@@ -37,7 +37,7 @@ async function resend() {
             <template v-slot:avatar>
                 <QIcon
                         color="primary"
-                        name="mdi-information-outline"
+                        name="bi-info-circle"
                         size="md"
                 />
             </template>
@@ -53,7 +53,7 @@ async function resend() {
         @submit="resend"
     >
         <div class="dashboard-section">
-            <h2>{{ t("forms.resend-email-confirmation") }}</h2>
+            <h2>{{ t('forms.resend-email-confirmation') }}</h2>
 
             <div class="flex-column">
                 <div>
@@ -64,13 +64,13 @@ async function resend() {
                         <template v-slot:avatar>
                             <QIcon
                                 color="dashboard"
-                                name="mdi-information-outline"
+                                name="bi-info-circle"
                                 size="md"
                             />
                         </template>
-                        <strong>{{ t("forms.resend-email-cas") }}</strong>
+                        <strong>{{ t('forms.resend-email-cas') }}</strong>
                     </QBanner>
-                    <p v-if="isResend">{{ t("forms.resend-email-ok") }}</p>
+                    <p v-if="isResend">{{ t('forms.resend-email-ok') }}</p>
                 </div>
                 <QInput
                     v-model="email"
@@ -99,7 +99,7 @@ async function resend() {
 @import '@/assets/styles/forms.scss';
 
 strong {
-  font-size: 1.2rem;
+    font-size: 1.2rem;
 }
 
 /*

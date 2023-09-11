@@ -80,7 +80,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-card-account-details-outline"/>
+            <QIcon name="bi-people"/>
             {{ t('dashboard.association-user.my-associations') }}
         </h2>
         <div class="dashboard-section-container">
@@ -109,7 +109,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-format-list-bulleted-square"/>
+            <QIcon name="bi-card-list"/>
             {{ t('dashboard.manage-association-directory') }}
         </h2>
         <div class="dashboard-section-container">
@@ -140,7 +140,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-file-multiple-outline"/>
+            <QIcon name="bi-files"/>
             {{ t('dashboard.template-document-library') }}
         </h2>
         <div class="dashboard-section-container">
@@ -164,14 +164,14 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-folder-edit-outline"/>
+            <QIcon name="bi-journal-text"/>
             {{ t('dashboard.manage-commissions') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
                 <div class="dashboard-btn-group">
                     <QBtn
-                        :label="t('dashboard.manage-projects')"
+                        :label="isMemberFund ? t('dashboard.view-projects') : t('dashboard.manage-projects')"
                         :to="{name: 'ManageProjects'}"
                         class="btn-lg"
                         color="dashboard"
@@ -188,7 +188,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-account-group"/>
+            <QIcon name="bi-people"/>
             {{ t('dashboard.manage-users') }}
         </h2>
         <div class="dashboard-section-container">
@@ -233,7 +233,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-pencil-box-outline"/>
+            <QIcon name="bi-pencil-square"/>
             {{ t('dashboard.my-documents') }}
         </h2>
         <div class="dashboard-section-container">

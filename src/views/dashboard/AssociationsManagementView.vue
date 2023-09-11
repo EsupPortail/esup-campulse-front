@@ -118,7 +118,7 @@ const columns: QTableProps['columns'] = [
     <section class="dashboard-section">
         <div class="container-lg flex-row-space-between">
             <h2>
-                <QIcon name="mdi-pencil-box-outline"/>
+                <QIcon name="bi-pencil-square"/>
                 {{ t('dashboard.association-list') }}
             </h2>
             <QBtn
