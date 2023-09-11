@@ -21,7 +21,8 @@ const emit = defineEmits(['updateSelectedAssociations'])
 
 const actionsOptions = ref([
     {id: 'email', label: t('association.all-selected-mail')},
-    {id: 'csv-export', label: t('association.export-csv')}
+    {id: 'csv-export', label: t('association.export-csv')},
+    {id: 'xlsx-export', label: t('association.export-xlsx')}
 ])
 
 const switches = ref<string>()
@@ -106,12 +107,12 @@ async function onConfirmChanges(emailType: string) {
             })
         }
         break
-    case 'csv-export':
+    case 'csv-export': case 'xlsx-export':
         if (props.selectedAssociations?.length) {
             try {
                 const associationIds = props.selectedAssociations.map(x => x.id)
-                const file = await associationStore.exportCSV(associationIds)
-                const message = t('notifications.positive.csv-export-associations')
+                const file = await associationStore.export(associationIds, (switches.value === 'csv-export') ? 'csv' : 'xlsx')
+                const message = (switches.value === 'csv-export') ? t('notifications.positive.csv-export-associations') : t('notifications.positive.xlsx-export-associations')
                 notify({
                     type: 'positive',
                     message,
@@ -119,7 +120,7 @@ async function onConfirmChanges(emailType: string) {
                 })
                 const link = document.createElement('a')
                 link.href = window.URL.createObjectURL(new Blob([file]))
-                link.download = `${t('association.csv-name')}.csv`
+                link.download = (switches.value === 'csv-export') ? `${t('association.csv-name')}.csv` : `${t('association.csv-name')}.xlsx`
                 document.body.appendChild(link)
                 link.click()
                 link.remove()
@@ -200,6 +201,12 @@ async function onConfirmChanges(emailType: string) {
                     {{ t('association.confirm-all-csv-export') }}
                 </p>
                 <p
+                    v-if="switches === 'xlsx-export'"
+                    class="q-ml-sm"
+                >
+                    {{ t('association.confirm-all-xlsx-export') }}
+                </p>
+                <p
                     v-if="switches === 'enable'"
                     class="q-ml-sm"
                 >
@@ -275,6 +282,15 @@ async function onConfirmChanges(emailType: string) {
                         class="btn-lg"
                         color="association"
                         icon="bi-filetype-csv"
+                        @click="onConfirmChanges('')"
+                    />
+                    <QBtn
+                        v-if="switches === 'xlsx-export'"
+                        v-close-popup
+                        :label="t('association.export-xlsx')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-filetype-xlsx"
                         @click="onConfirmChanges('')"
                     />
                     <QBtn
