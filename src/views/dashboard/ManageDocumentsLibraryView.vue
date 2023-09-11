@@ -6,11 +6,15 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {useI18n} from 'vue-i18n'
 import type {DocumentProcessType, MimeType} from '#/documents'
+import {useUserStore} from '@/stores/useUserStore'
+import useSecurity from '@/composables/useSecurity'
 
 const {getLibraryDocuments, documents, postNewDocument, patchDocument, deleteDocument} = useDocuments()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {t} = useI18n()
+const userStore = useUserStore()
+const {hasPerm} = useSecurity()
 
 onMounted(async () => {
     loading.show()
@@ -45,17 +49,22 @@ interface LibraryDocument {
 const libraryDocuments = ref<LibraryDocument[]>([])
 
 const initLibraryDocuments = () => {
-    const list = documents.value.map((document) => ({
-        id: document.id,
-        name: document.name,
-        path: document.pathTemplate,
-        size: document.size,
-        newName: document.name ?? '',
-        file: undefined,
-        processType: document.processType,
-        mimeTypes: document.processType === 'NO_PROCESS' ? [] : document.mimeTypes,
-        open: false
-    }))
+    const list: LibraryDocument[] = []
+    documents.value.forEach(document => {
+        if ((userStore.userCommissionFunds?.includes(document.fund) || hasPerm('change_document_any_fund')) || document.processType === 'NO_PROCESS') {
+            list.push({
+                id: document.id,
+                name: document.name,
+                path: document.pathTemplate,
+                size: document.size,
+                newName: document.name ?? '',
+                file: undefined,
+                processType: document.processType,
+                mimeTypes: document.processType === 'NO_PROCESS' ? [] : document.mimeTypes,
+                open: false
+            })
+        }
+    })
     list.sort(function (a, b) {
         const labelA = a.name.toLowerCase().normalize('NFD'), labelB = b.name.toLowerCase().normalize('NFD')
         if (labelA < labelB)
@@ -199,7 +208,10 @@ async function onDeleteDocument(documentId: number) {
     </section>
 
     <!-- View documents -->
-    <section class="dashboard-section">
+    <section
+        v-if="libraryDocuments.length"
+        class="dashboard-section"
+    >
         <h2>
             <i
                 aria-hidden="true"
