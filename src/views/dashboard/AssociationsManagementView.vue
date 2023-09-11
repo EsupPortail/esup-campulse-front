@@ -127,6 +127,7 @@ const columns: QTableProps['columns'] = [
                 :to="{name: 'CreateAssociation'}"
                 color="association"
                 icon="bi-plus-circle"
+                outline
             />
         </div>
         <div class="dashboard-section-container">
