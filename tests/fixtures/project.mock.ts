@@ -4,7 +4,7 @@ import type {
     ProjectBudget,
     ProjectCategory,
     ProjectCommissionFund,
-    ProjectGoals
+    ProjectGoals, ProjectReview
 } from '#/project'
 
 export const _project: Project = {
@@ -272,4 +272,22 @@ export const _projectGoals: ProjectGoals = {
     preventionSafety: 'Sécurité',
     marketingCampaign: 'Communication',
     sustainableDevelopment: 'Développement durable',
+}
+
+export const _projectReview: ProjectReview = {
+    id: 1,
+    name: 'Review',
+    user: null,
+    association: 1,
+    outcome: '300',
+    income: '200',
+    realStartDate: '2023-07-21',
+    realEndDate: '2023-07-22',
+    realLocation: 'Strasbourg',
+    review: 'Everything went well.',
+    impactStudents: '200',
+    description: 'A project for students.',
+    difficulties: 'The weather was hot.',
+    improvements: 'Need more parasols and free water.',
+    associationUser: null
 }
