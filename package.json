@@ -24,7 +24,7 @@
     "pinia": "^2.1.6",
     "quasar": "^2.12.6",
     "vue": "^3.2.47",
-    "vue-i18n": "^9.3.0",
+    "vue-i18n": "^9.4.0",
     "vue-matomo": "^4.2.0",
     "vue-router": "^4.2.4",
     "zxcvbn": "^4.4.2"
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/types": "^7.22.17",
     "@intlify/eslint-plugin-vue-i18n": "^2.0.0",
-    "@intlify/unplugin-vue-i18n": "^1.0.1",
+    "@intlify/unplugin-vue-i18n": "^1.2.0",
     "@pinia/testing": "^0.1.3",
     "@quasar/vite-plugin": "^1.5.0",
     "@types/jsdom": "^21.1.2",
