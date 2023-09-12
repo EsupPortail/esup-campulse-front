@@ -6,21 +6,21 @@ export const _funds: Fund[] = [
         name: 'Fonds de Solidarité et de Développement des Initiatives Étudiantes',
         acronym: 'FSDIE',
         isSite: true,
-        institution: 2
+        institution: 1
     },
     {
         id: 2,
         name: 'Initiative d\'Excellence « Creative Thinkers »',
         acronym: 'IdEx',
         isSite: true,
-        institution: 2
+        institution: 1
     },
     {
         id: 3,
         name: 'Culture-ActionS',
         acronym: 'Culture-ActionS',
         isSite: false,
-        institution: 1
+        institution: 3
     }
 ]
 
