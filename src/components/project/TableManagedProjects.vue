@@ -45,7 +45,7 @@ const applicant = (association: number | null, user: number | null) => {
         if (obj) return obj.name
     } else {
         const userObj = userManagerStore.users.find(obj => obj.id === user)
-        return `${userObj?.firstName} ${userObj?.lastName}`
+        if (userObj) return `${userObj.firstName} ${userObj.lastName}`
     }
 }
 
@@ -57,17 +57,17 @@ const isSite = (association: number | null) => {
 
 const initProjects = () => {
     if (props.projectStatus === 'validated') {
-        projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_VALIDATED'
+        projects.value = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_VALIDATED'
             || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else if (props.projectStatus === 'archived') {
-        projects.value = projectStore.projects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
+        projects.value = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
             || obj.projectStatus === 'PROJECT_CANCELLED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else {
-        projects.value = projectStore.projects
+        projects.value = projectStore.managedProjects
     }
 }
 
-watch(() => projectStore.projects, initProjects)
+watch(() => projectStore.managedProjects, initProjects)
 
 onMounted(async () => {
     loading.show()
@@ -96,11 +96,11 @@ async function onGetProjects() {
 
 async function onGetApplicants() {
     try {
-        if (projectStore.projects.length) {
-            if (projectStore.projects.find(obj => obj.association !== null)) {
-                await associationStore.getAssociations(true)
+        if (projectStore.managedProjects.length) {
+            if (projectStore.managedProjects.find(obj => obj.association !== null)) {
+                await associationStore.getAssociations(false)
             }
-            if (projectStore.projects.find(obj => obj.user !== null)) {
+            if (projectStore.managedProjects.find(obj => obj.user !== null)) {
                 await userManagerStore.getUsers('validated')
             }
         }

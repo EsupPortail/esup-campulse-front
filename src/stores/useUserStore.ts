@@ -40,17 +40,17 @@ export const useUserStore = defineStore('userStore', {
     },
     actions: {
         /**
-         * It takes a url and a data object, and then it makes a post request to the url with the data object
+         * It takes an url and a data object, and then it makes a post request to the url with the data object
          * @param {string} url - The url to send the request to.
          * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
          */
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const {axiosPublic} = useAxios()
             const response = await axiosPublic.post(url, data)
-            const {accessToken, refreshToken, user} = response.data
+            const {access, refresh, user} = response.data
             if (user.isValidatedByAdmin) {
                 const {setTokens} = useSecurity()
-                setTokens(accessToken, refreshToken)
+                setTokens(access, refresh)
                 this.user = user
             } else {
                 throw new Error
@@ -138,9 +138,9 @@ export const useUserStore = defineStore('userStore', {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
             const {axiosPublic} = useAxios()
             const data = (await axiosPublic.post('/users/auth/cas/login/', {ticket, service})).data
-            const {accessToken, refreshToken, user} = data
+            const {access, refresh, user} = data
             const {setTokens} = useSecurity()
-            setTokens(accessToken, refreshToken)
+            setTokens(access, refresh)
             this.newUser = user
         },
 

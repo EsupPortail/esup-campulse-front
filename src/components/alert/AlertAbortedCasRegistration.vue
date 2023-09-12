@@ -20,7 +20,7 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
             <QCardSection class="row no-wrap">
                 <QIcon
                     color="negative"
-                    name="mdi-information-outline"
+                    name="bi-info-circle"
                     size="md"
                 />
                 <p class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</p>

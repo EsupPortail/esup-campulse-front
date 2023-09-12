@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import LayoutPageCard from '@/components/layout/LayoutPageCard.vue'
 import type {PageCard} from '#/index'
+import CharterBackgroundImage from '@/assets/img/background-charter.jpg'
+import CommissionBackgroundImage from '@/assets/img/background-cape.jpg'
+
 
 const props = defineProps<{
     color: 'charter' | 'commission',
@@ -10,7 +13,7 @@ const props = defineProps<{
 
 <template>
     <div
-        :style="`background-image: url('./src/assets/img/background-${props.color === 'charter' ? 'charter' : 'cape'}.jpg');`"
+        :style="`background-image: url(\'${props.color === 'charter' ? CharterBackgroundImage : CommissionBackgroundImage}\');`"
         class="page-card-container"
     >
         <div class="container">

@@ -71,12 +71,12 @@ async function reset() {
                 :label="t('forms.email')"
                 :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
                 autocomplete="email"
+                bottom-slots
                 color="dashboard"
                 filled
+                for="email"
                 lazy-rules
                 type="email"
-                bottom-slots
-                for="email"
             >
                 <template v-slot:hint>
                     <p aria-describedby="email">{{ t('forms.password-reset-instructions') }}</p>

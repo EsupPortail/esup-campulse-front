@@ -19,11 +19,14 @@ const displayResetButton = ref<boolean>(false)
 
 const selectedUser = ref<string>('')
 
+const matches = ref<boolean>(true)
+
 async function onGetUsersFromCAS() {
     if (lastName.value) {
         try {
             loading.show()
             await getUsersFromCAS(lastName.value)
+            matches.value = !!CASUsers.value.length
             loading.hide()
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -71,6 +74,7 @@ function onReset() {
     CASUsers.value = []
     displayResetButton.value = false
     lastName.value = ''
+    matches.value = true
     loading.hide()
 }
 </script>
@@ -100,7 +104,7 @@ function onReset() {
         <QCard>
             <QCardSection>
                 <QForm
-                    v-if="CASUsers.length === 0"
+                    v-if="!CASUsers.length"
                     class="q-gutter-md"
                     @submit.prevent="onGetUsersFromCAS"
                 >
@@ -113,6 +117,7 @@ function onReset() {
                         filled
                         lazy-rules
                     />
+                    <p v-if="!matches">{{ t('user-manager.no-users-found') }}</p>
                     <div class="flex-row">
                         <QBtn
                             :label="t('cancel')"

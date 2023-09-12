@@ -38,26 +38,22 @@ const options = ref<Option[]>([])
 
 const initOptions = () => {
     options.value = []
-    if (props.charter.charterStatus !== 'NOT_SITE') {
-        props.charter.pathTemplate.forEach(template => {
-            options.value.push({
-                icon: 'bi-download',
-                label: t('charter.options.download', {documentName: template.name}),
-                action: 'download',
-                id: template.documentId
-            })
+    // Download docs
+    props.charter.pathTemplate.forEach(template => {
+        options.value.push({
+            icon: 'bi-download',
+            label: t('charter.options.download', {documentName: template.name}),
+            action: 'download',
+            id: template.documentId
         })
-    }
-    if (props.charter.charterStatus === 'NO_CHARTER' || props.charter.charterStatus === 'EXPIRED' ||
-        props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'RETURNED' ||
-        props.charter.charterStatus === 'REJECTED') {
+    })
+    // Sign or resign charter
+    if (props.charter.charterStatus !== 'PROCESSING') {
         const option: Option = {
-            icon: 'bi-pen'
-        }
-        if (props.charter.charterStatus === 'NO_CHARTER') {
-            option.label = t('charter.options.sign')
-        } else {
-            option.label = t('charter.options.re-sign')
+            icon: 'bi-pen',
+            label: props.charter.charterStatus === 'NOT_SITE' || props.charter.charterStatus === 'NO_CHARTER' || props.charter.charterStatus === 'EXPIRED' ?
+                t('charter.options.sign') : t('charter.options.re-sign')
+
         }
         if (props.charter.documentProcessType === 'CHARTER_ASSOCIATION') {
             option.to = {
@@ -69,21 +65,19 @@ const initOptions = () => {
         }
         options.value.push(option)
     }
-    if (props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'PROCESSING' ||
-        props.charter.charterStatus === 'RETURNED') {
-        if (props.charter.documentProcessType === 'CHARTER_ASSOCIATION') {
-            options.value.push({
-                icon: 'bi-eye',
-                label: t('charter.options.view'),
-                to: {name: 'AssociationCharterDetail', params: {associationId: props.associationId}}
-            })
-        } else {
-            options.value.push({
-                icon: 'bi-eye',
-                label: t('charter.options.view'),
-                action: 'view'
-            })
+    // View charter
+    if (props.charter.charterStatus === 'PROCESSING' || props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'RETURNED' ||
+        props.charter.charterStatus === 'REJECTED') {
+        const option: Option = {
+            icon: 'bi-eye',
+            label: t('charter.options.view')
         }
+        if (props.charter.documentProcessType === 'CHARTER_ASSOCIATION') {
+            option.to = {name: 'AssociationCharterDetail', params: {associationId: props.associationId}}
+        } else {
+            option.action = 'view'
+        }
+        options.value.push(option)
     }
 }
 

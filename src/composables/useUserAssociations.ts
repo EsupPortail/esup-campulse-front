@@ -186,7 +186,8 @@ export default function () {
                     isSite: association.isSite,
                     institution: association.institution,
                     isEnabled: association.isEnabled,
-                    isPublic: association.isPublic
+                    isPublic: association.isPublic,
+                    canSubmitProjects: association.canSubmitProjects
                 }
             } else {
                 const {axiosPublic} = useAxios()

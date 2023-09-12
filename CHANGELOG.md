@@ -1,8 +1,17 @@
-- ✨ Add processingDate to project detail
-- 🐛 Fix buggy create file link functions
-- ♻️ Moved env.d.ts in src folder
-- ⬆️ Upgrade minor dependencies
-- ✨ Added buttons on tables to see Project Review PDFs
-- 🐛 Fix refresh of buttons for charter management + initCharterStatus
-- ✨ Project id
-- 🎨 Optimize route nesting for charter management
+- 💄 Quick CSS fixes on directory
+- 🩹 Add no matches found after LDAP search
+- ✨ Added XLSX export
+- 🩹 Fix init of documents in library for managers
+- 🩹 Change permission on document library
+- 💄 Change create association button to outline
+- 🎨 Reorganize buttons on project management for managers
+- 🐛 Fix SubmitProjectReview success page
+- 🐛 Fix user project submission and commission dashboard
+- ✏️ Replace old mdi icons and add conditional button text for fund members
+- 💬 Added CHARTER_HOME_THIRD_BLOCK
+- 💄 Rename old CSS variables
+- 🔍️ Added meta description and robots.txt
+- 🐛 Fix documentUploads, info patch and dates in project review
+- ✏️ Add more explicit hint for password setting form
+- ✏️ Add more explicit error message and hint for new password form
+- 🔧 Switch back URL to Gravitee

@@ -11,7 +11,7 @@
 
   &#layout-minimal-header {
     height: 7rem;
-    border-bottom: 0.5rem solid $annuaireColor;
+    border-bottom: 0.5rem solid $associationColor;
   }
 
   &::before {
@@ -95,15 +95,15 @@
 
       // Links are underlined in the color of the space they point to
       &.space-1::after {
-        border-color: $annuaireColor;
+        border-color: $associationColor;
       }
 
       &.space-2::after {
-        border-color: $charteColor;
+        border-color: $charterColor;
       }
 
       &.space-3::after {
-        border-color: $capeColor;
+        border-color: $commissionColor;
       }
     }
 
@@ -268,7 +268,7 @@
   }
 
   &.variant-space-2 #header-title-icon {
-    background-color: $charteColor;
+    background-color: $charterColor;
 
     i.space-2-icon {
       display: inline;
@@ -282,7 +282,7 @@
   }
 
   &.variant-space-3 #header-title-icon {
-    background-color: $capeColor;
+    background-color: $commissionColor;
 
     i.space-3-icon {
       display: inline;
@@ -390,7 +390,7 @@
       width: 4rem;
       height: 4rem;
       border-radius: $radiusCircle;
-      background-color: $annuaireColor;
+      background-color: $associationColor;
       position: absolute;
       left: 1rem;
       text-align: center;

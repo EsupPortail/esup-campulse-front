@@ -9,6 +9,8 @@ import ListDocumentDashboard from '@/components/documents/ListDocumentDashboard.
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
+import {useProjectStore} from '@/stores/useProjectStore'
+import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 
 
 const userStore = useUserStore()
@@ -17,6 +19,8 @@ const {hasPerm} = useSecurity()
 const {isStaff, isMemberFund} = useUserGroups()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const projectStore = useProjectStore()
+const {isManagerMisc} = useUserGroups()
 
 const associationCounter = ref<number>(0)
 
@@ -43,16 +47,39 @@ async function onGetUserDocuments() {
     }
 }
 
+async function onGetProjects() {
+    try {
+        await projectStore.getAllProjects()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response.status)
+            })
+        }
+    }
+}
+
 onMounted(async () => {
     loading.show()
     initAssociationCounter()
     await onGetUserDocuments()
+    await onGetProjects()
     loading.hide()
 })
 
 </script>
 
 <template>
+    <!-- Welcome message + username -->
+    <section class="dashboard-section">
+        <div class="dashboard-section-container">
+            <p class="text-center">
+                {{ t('dashboard.welcome-message', {name: userStore.user?.firstName + ' ' + userStore.user?.lastName}) }}
+            </p>
+        </div>
+    </section>
+
     <!-- Account management -->
     <section class="dashboard-section">
         <h2>
@@ -80,7 +107,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-card-account-details-outline"/>
+            <QIcon name="bi-people"/>
             {{ t('dashboard.association-user.my-associations') }}
         </h2>
         <div class="dashboard-section-container">
@@ -109,8 +136,8 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-format-list-bulleted-square"/>
-            {{ t('dashboard.manage-association-directory') }}
+            <QIcon name="bi-card-list"/>
+            {{ t('dashboard.association-directory') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
@@ -140,7 +167,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-file-multiple-outline"/>
+            <QIcon name="bi-files"/>
             {{ t('dashboard.template-document-library') }}
         </h2>
         <div class="dashboard-section-container">
@@ -158,20 +185,43 @@ onMounted(async () => {
         </div>
     </section>
 
+    <!-- Charter management, for staff only -->
+    <section
+        v-if="isStaff && !isManagerMisc"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-pen"/>
+            {{ t('charter.charter', 2) }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
+                    <QBtn
+                        :label="t('dashboard.manage-charters')"
+                        :to="{name: 'ManageCharters'}"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Commission management, for staff only -->
     <section
         v-if="(isStaff || isMemberFund) && (hasPerm('view_project'))"
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-folder-edit-outline"/>
-            {{ t('dashboard.manage-commissions') }}
+            <QIcon name="bi-journal-text"/>
+            {{ t('commission.commission', 2) }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
                 <div class="dashboard-btn-group">
                     <QBtn
-                        :label="t('dashboard.manage-projects')"
+                        :label="isMemberFund ? t('dashboard.view-projects') : t('dashboard.manage-projects')"
                         :to="{name: 'ManageProjects'}"
                         class="btn-lg"
                         color="dashboard"
@@ -188,7 +238,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-account-group"/>
+            <QIcon name="bi-people"/>
             {{ t('dashboard.manage-users') }}
         </h2>
         <div class="dashboard-section-container">
@@ -233,7 +283,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-pencil-box-outline"/>
+            <QIcon name="bi-file-earmark"/>
             {{ t('dashboard.my-documents') }}
         </h2>
         <div class="dashboard-section-container">
@@ -245,6 +295,56 @@ onMounted(async () => {
                 />
                 <div v-else>
                     <p>{{ t('documents.no-documents-to-show') }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My projects, for misc students only -->
+    <section
+        v-if="hasPerm('add_project_user')"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-pen"/>
+            {{ t('dashboard.user-procedures') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="document-input-group">
+                    <div class="flex-row-space-between padding-top padding-bottom">
+                        <h3>{{ t('dashboard.association-user.project-status-processing') }}</h3>
+                        <QBtn
+                            :label="t('project.manage')"
+                            :to="{name: 'ManageProjects'}"
+                            class="btn-lg"
+                            color="dashboard"
+                        />
+                    </div>
+                    <section
+                        v-if="projectStore.selfProjects.length"
+                    >
+                        <div
+                            v-for="project in projectStore.selfProjects.slice(0, 3)"
+                            :key="project.id"
+                            class="document-input variant-space-1"
+                        >
+                            <div class="document-input-header">
+                                <div class="flex-row-space-between">
+                                    <h4>
+                                        {{ project.name }}
+                                    </h4>
+                                    <ProjectStatusIndicator
+                                        :project-status="project.projectStatus"
+                                        :show-draft="true"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section v-else>
+                        <p>{{ t('project.no-project-to-show') }}</p>
+                    </section>
                 </div>
             </div>
         </div>

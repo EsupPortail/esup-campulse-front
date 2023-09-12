@@ -17,7 +17,7 @@ const associations = ref<Association[]>([])
 // Changed data when modifying an association
 let changedData = {}
 
-export default function() {
+export default function () {
 
     const associationStore = useAssociationStore()
     const {newAssociations} = useUserAssociations()
@@ -51,11 +51,12 @@ export default function() {
     }
 
     // TODO test
+    // Commented in component since issue is not clear
     function checkHasStudentCertificate(association: AssociationRole) {
         if (association.options) {
             // If new user has not uploaded a student certificate
-            // he/she can not join an association as an office member
-            if (!processDocuments.value[0].pathFile) {
+            // He/she cannot join an association as an office member
+            if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
                 association.options.forEach(association => {
                     if (association.isInOffice) association.disable = true
                 })

@@ -3,7 +3,7 @@ import type {UserAssociation} from '#/user'
 
 
 export const _association: Association = {
-    canSubmitProjects: false,
+    canSubmitProjects: true,
     charterStatus: 'CHARTER_DRAFT',
     charterDate: '',
     id: 1,

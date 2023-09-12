@@ -126,14 +126,14 @@ export interface ProjectReview {
     description: string,
     difficulties: string,
     improvements: string,
-    plannedStartDate: string,
-    plannedEndDate: string,
-    plannedLocation: string,
+    plannedStartDate?: string,
+    plannedEndDate?: string,
+    plannedLocation?: string,
     associationUser: number | null,
-    commissions: Commission[],
-    creationDate: string,
-    editionDate: string,
-    processingDate: string
+    commissions?: Commission[],
+    creationDate?: string,
+    editionDate?: string,
+    processingDate?: string
 }
 
 export interface ProjectComment {
@@ -151,7 +151,8 @@ export interface ProjectComment {
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
-    projects: ProjectList[],
+    selfProjects: ProjectList[],
+    managedProjects: ProjectList[],
     projectCategories: ProjectCategory[],
     projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],

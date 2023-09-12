@@ -60,7 +60,6 @@ const initAssociationCharter = () => {
         if (charterDate) {
             const splitCharterDate = charterDate.split('-').reverse()
             const expirationDate = `${splitCharterDate[0]}/${splitCharterDate[1]}/${(parseInt(splitCharterDate[2]) + 1).toString()}`
-            console.log(expirationDate)
             switch (association.value?.charterStatus) {
             case 'CHARTER_VALIDATED':
                 str = t('charter.association-charter-status.validated', {expirationDate: expirationDate})
@@ -175,7 +174,8 @@ const initAssociationCharter = () => {
         </div>
 
         <div
-            v-if="association?.presidentNames || association?.presidentPhone || association?.presidentEmail || association?.lastGoaDate || association?.siret || association?.charterDate"
+            v-if="association?.presidentNames || association?.presidentPhone || association?.presidentEmail ||
+                association?.lastGoaDate || association?.siret || association?.charterDate"
         >
             <div class="dashboard-section">
                 <h2>
@@ -198,13 +198,13 @@ const initAssociationCharter = () => {
                             <dd itemprop="name">{{ association?.presidentNames }}</dd>
                         </div>
 
-                        <div
-                            v-if="association?.presidentPhone"
-                            class="display-row"
-                        >
-                            <dt>{{ t('association.labels.president-phone') }}</dt>
-                            <dd>{{ association?.presidentPhone }}</dd>
-                        </div>
+                        <!--                        <div
+                                                    v-if="association?.presidentPhone"
+                                                    class="display-row"
+                                                >
+                                                    <dt>{{ t('association.labels.president-phone') }}</dt>
+                                                    <dd>{{ association?.presidentPhone }}</dd>
+                                                </div>-->
 
                         <div
                             v-if="association?.presidentEmail"
@@ -263,13 +263,16 @@ const initAssociationCharter = () => {
                         >
                             <dt>{{ t('association.labels.address') }}</dt>
                             <dd
+                                class="address-fields"
                                 itemprop="address"
                                 itemscope
                                 itemtype="https://schema.org/PostalAddress"
                             >
                                 <span itemprop="streetAddress">{{ association?.address }}</span>
-                                <span itemprop="postalCode">{{ association?.zipcode }}</span>
-                                <span itemprop="addressLocality">{{ association?.city }}</span>
+                                <span>
+                                    <span itemprop="postalCode">{{ association?.zipcode }}</span>
+                                    <span itemprop="addressLocality">{{ association?.city }}</span>
+                                </span>
                                 <span itemprop="addressCountry">{{ association?.country }}</span>
                             </dd>
                         </div>
@@ -372,5 +375,15 @@ ul {
 
 .breakline {
     white-space: pre-line;
+}
+
+.address-fields, .address-fields > * {
+    display: flex;
+    flex-direction: column;
+}
+
+.address-fields > span + span {
+    flex-direction: row;
+    gap: 1rem;
 }
 </style>

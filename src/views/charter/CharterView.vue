@@ -10,6 +10,9 @@ import {useContentStore} from '@/stores/useContentStore'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
+import CharterImage1 from '@/assets/img/charter-image-1.jpg'
+import CharterImage2 from '@/assets/img/charter-image-2.jpg'
+import CharterImage3 from '@/assets/img/charter-image-3.jpg'
 
 
 const {isStaff} = useUserGroups()
@@ -20,6 +23,7 @@ const contentStore = useContentStore()
 
 const firstBlock = ref<Content>()
 const secondBlock = ref<Content>()
+const thirdBlock = ref<Content>()
 const validateCharters = ref<Content>()
 const manageDocuments = ref<Content>()
 const signCharters = ref<Content>()
@@ -35,6 +39,7 @@ function findContentObject(code: ContentCode) {
 const initContents = () => {
     firstBlock.value = findContentObject('CHARTER_HOME_FIRST_BLOCK')
     secondBlock.value = findContentObject('CHARTER_HOME_SECOND_BLOCK')
+    thirdBlock.value = findContentObject('CHARTER_HOME_THIRD_BLOCK')
     validateCharters.value = findContentObject('CHARTER_HOME_ACTION_VALIDATE_CHARTERS')
     manageDocuments.value = findContentObject('CHARTER_HOME_ACTION_MANAGE_DOCUMENTS')
     signCharters.value = findContentObject('CHARTER_HOME_ACTION_SIGN_CHARTERS')
@@ -81,6 +86,7 @@ async function onGetContent() {
         await contentStore.getContentsByCode([
             'CHARTER_HOME_FIRST_BLOCK',
             'CHARTER_HOME_SECOND_BLOCK',
+            'CHARTER_HOME_THIRD_BLOCK',
             'CHARTER_HOME_ACTION_VALIDATE_CHARTERS',
             'CHARTER_HOME_ACTION_MANAGE_DOCUMENTS',
             'CHARTER_HOME_ACTION_SIGN_CHARTERS',
@@ -109,15 +115,20 @@ onMounted(async () => {
 <template>
     <section>
         <LayoutImageText
+            :img="CharterImage1"
             :text="firstBlock?.body"
             :title="firstBlock?.header"
-            img="src/assets/img/charter-image-1.jpg"
         />
         <LayoutTextImageColor
+            :img="CharterImage2"
             :text="secondBlock?.body"
             :title="secondBlock?.header"
             color="charter"
-            img="src/assets/img/charter-image-2.jpg"
+        />
+        <LayoutImageText
+            :img="CharterImage3"
+            :text="thirdBlock?.body"
+            :title="thirdBlock?.header"
         />
         <LayoutPageCards
             v-if="pageCards.length"

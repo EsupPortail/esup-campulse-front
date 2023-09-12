@@ -242,11 +242,11 @@ export const useAssociationStore = defineStore('associationStore', {
         },
         async getAssociationDocuments() {
             const {axiosAuthenticated} = useAxios()
-            this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?=association_id=${this.association?.id}`)).data
+            this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?association_id=${this.association?.id}`)).data
         },
-        async exportCSV(associations: number[]) {
+        async export(associations: number[], format: string) {
             const {axiosAuthenticated} = useAxios()
-            const url = `/associations/csv_export?associations=${associations.join(',')}`
+            const url = `/associations/export?associations=${associations.join(',')}&mode=${format}`
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         }
     }

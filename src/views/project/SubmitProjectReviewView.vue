@@ -90,11 +90,16 @@ async function onSubmitProjectReviewInfos(nextStep: number) {
     loading.hide()
 }
 
+// Submit step 3 (documents)
 async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await uploadDocuments(parseInt(route.params.associationId as string), undefined, false)
+            await uploadDocuments(
+                projectStore.project.association ?? undefined,
+                projectStore.project.user ? userStore.user?.username : undefined,
+                false
+            )
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -136,7 +141,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="1"
                         :title="t('project.general-infos')"
-                        icon="mdi-card-text-outline"
+                        icon="bi-card-list"
                     >
                         <QForm
                             class="flex-column"
@@ -289,7 +294,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="2"
                         :title="t('project.review')"
-                        icon="mdi-chart-box-outline"
+                        icon="bi-clipboard-data"
                     >
                         <QForm
                             class="flex-column"
@@ -385,7 +390,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="3"
                         :title="t('project.documents')"
-                        icon="mdi-file-document-outline"
+                        icon="bi-file-earmark"
                     >
                         <QForm
                             @submit.prevent="onUploadDocuments(4)"
@@ -418,7 +423,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="4"
                         :title="t('recap')"
-                        icon="mdi-check"
+                        icon="bi-check-lg"
                     >
                         <ProjectReviewRecap
                             :view="'submitProjectReview'"

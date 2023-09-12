@@ -187,15 +187,15 @@ async function onGetCommissions() {
 @import '@/assets/styles/forms.scss';
 
 .text-cape-color {
-    color: $capeColor;
+    color: $commissionColor;
 }
 
 .bg-cape-color {
-    background: $capeColorBackground;
+    background: $commissionColorBackground;
 }
 
 .cape-color {
-    color: $capeColor;
+    color: $commissionColor;
 }
 
 .q-tab-panel {

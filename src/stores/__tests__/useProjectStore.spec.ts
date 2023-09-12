@@ -115,7 +115,7 @@ describe('Project store', () => {
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
                 const url = `/projects/?project_statuses=${statuses}&commission_id=1`
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-                expect(projectStore.projects).toEqual(_projects)
+                expect(projectStore.managedProjects).toEqual(_projects)
             })
         })
 
@@ -126,7 +126,7 @@ describe('Project store', () => {
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
                 const url = `/projects/?project_statuses=${statuses}`
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-                expect(projectStore.projects).toEqual(_projects)
+                expect(projectStore.managedProjects).toEqual(_projects)
             })
         })
 
@@ -136,7 +136,7 @@ describe('Project store', () => {
                 await projectStore.getAllProjects()
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/')
-                expect(projectStore.projects).toEqual(_projects)
+                expect(projectStore.selfProjects).toEqual(_projects)
             })
         })
 
@@ -146,7 +146,7 @@ describe('Project store', () => {
                 await projectStore.getAssociationProjects(1)
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/?association_id=1')
-                expect(projectStore.projects).toEqual(_projects)
+                expect(projectStore.selfProjects).toEqual(_projects)
             })
         })
 

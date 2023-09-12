@@ -10,6 +10,8 @@ import axios from 'axios'
 import {useContentStore} from '@/stores/useContentStore'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
+import CommissionImage1 from '@/assets/img/commission-image-1.jpg'
+import CommissionImage2 from '@/assets/img/commission-image-2.jpg'
 
 const {isStaff, isMemberFund} = useUserGroups()
 const {hasPerm} = useSecurity()
@@ -117,17 +119,15 @@ onMounted(async () => {
 <template>
     <section>
         <LayoutImageText
+            :img="CommissionImage1"
             :text="firstBlock?.body"
             :title="firstBlock?.header"
-            img="src/assets/img/commission-image-1.jpg"
-            img-alt=""
         />
         <LayoutTextImageColor
+            :img="CommissionImage2"
             :text="secondBlock?.body"
             :title="secondBlock?.header"
             color="commission"
-            img="src/assets/img/commission-image-2.jpg"
-            img-alt=""
         />
         <LayoutPageCards
             v-if="pageCards.length"

@@ -14,6 +14,10 @@ const {notify, loading} = useQuasar()
 const {getUserAssociations} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 
+const props = defineProps<{
+    device?: 'mobile' | 'desktop'
+}>()
+
 async function onLogOut() {
     loading.show()
     try {
@@ -34,9 +38,15 @@ async function onLogOut() {
     loading.hide()
 }
 
+const initUserAssociations = async () => {
+    if (userStore.user?.associations.length && !userStore.userAssociations.length && props.device !== 'mobile') {
+        await getUserAssociations(userStore.user?.id as number, false)
+    }
+}
+
 onMounted(async () => {
     loading.show()
-    if (userStore.user?.associations.length !== 0) await getUserAssociations(userStore.user?.id as number, false)
+    await initUserAssociations()
     loading.hide()
 })
 
@@ -115,27 +125,27 @@ onMounted(async () => {
 @import "@/assets/_variables.scss";
 
 .q-btn-dropdown {
-  font-size: 1.8rem;
+    font-size: 1.8rem;
 }
 
 .q-list {
-  max-width: 30rem;
-  width: $fullSize;
+    max-width: 30rem;
+    width: $fullSize;
 }
 
 .q-btn__content > span > * {
-  padding: 0 0.5rem;
+    padding: 0 0.5rem;
 }
 
 p {
-  margin-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 ul {
-  padding-left: 0;
+    padding-left: 0;
 }
 
 li {
-  list-style-type: none;
+    list-style-type: none;
 }
 </style>

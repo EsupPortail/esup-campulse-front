@@ -103,6 +103,8 @@ onMounted(async () => {
             initIsSite()
         } else await router.push({name: '404'})
     }
+    // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
+    projectStore.projectCommissionFunds = []
     isLoaded.value = true
     loading.hide()
 })
@@ -368,7 +370,11 @@ async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await uploadDocuments(parseInt(route.params.associationId as string), undefined, false)
+            await uploadDocuments(
+                applicant.value === 'association' ? associationId.value : undefined,
+                applicant.value === 'user' ? userStore.user?.username : undefined,
+                false
+            )
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -527,6 +533,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 />
                             </div>
                             <QInput
+                                v-if="applicant === 'association'"
                                 v-model="projectBasicInfos.partnerAssociation"
                                 :label="t('project.partner-association')"
                                 clearable

@@ -30,7 +30,7 @@ onMounted(async () => {
 
 async function onGetContent() {
     try {
-        await contentStore.getContentsByCode(['ABOUT_APP', 'ABOUT_FUNDING', 'ABOUT_PARTNERSHIP', 'HOME_ASSOCIATION', 'HOME_PROJECT', 'HOME_CHARTER'])
+        await contentStore.getContentsByCode(['ABOUT_APP', 'ABOUT_FUNDING', 'ABOUT_PARTNERSHIP', 'ABOUT_ASSOCIATION', 'ABOUT_CHARTER', 'ABOUT_PROJECT'])
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -49,9 +49,9 @@ const initContent = () => {
     aboutApp.value = findContentObject('ABOUT_APP')
     aboutFunding.value = findContentObject('ABOUT_FUNDING')
     aboutPartnership.value = findContentObject('ABOUT_PARTNERSHIP')
-    homeAssociation.value = findContentObject('HOME_ASSOCIATION')
-    homeProject.value = findContentObject('HOME_PROJECT')
-    homeCharter.value = findContentObject('HOME_CHARTER')
+    homeAssociation.value = findContentObject('ABOUT_ASSOCIATION')
+    homeCharter.value = findContentObject('ABOUT_CHARTER')
+    homeProject.value = findContentObject('ABOUT_PROJECT')
 }
 
 </script>

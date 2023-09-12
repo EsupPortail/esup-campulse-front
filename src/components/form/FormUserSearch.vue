@@ -124,14 +124,14 @@ async function clearSearch() {
                         :label="t('search')"
                         class="btn-lg"
                         color="dashboard"
-                        icon="mdi-chevron-right"
+                        icon="bi-chevron-right"
                         type="submit"
                     />
                     <QBtn
                         :label="t('cancel-search')"
                         class="btn-lg"
                         color="dashboard"
-                        icon="mdi-close"
+                        icon="bi-x-lg"
                         @click="clearSearch"
                     />
                 </div>
@@ -196,14 +196,14 @@ async function clearSearch() {
                         :label="t('advanced-search')"
                         class="btn-lg"
                         color="dashboard"
-                        icon="mdi-chevron-right"
+                        icon="bi-chevron-right"
                         type="submit"
                     />
                     <QBtn
                         :label="t('cancel-search')"
                         class="btn-lg"
                         color="dashboard"
-                        icon="mdi-close"
+                        icon="bi-x-lg"
                         @click="clearSearch"
                     />
                 </div>

@@ -227,7 +227,8 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
             isSite: true,
             institution: 1,
             isEnabled: true,
-            isPublic: true
+            isPublic: true,
+            canSubmitProjects: true
         }
     },
     {
@@ -245,7 +246,8 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
             isSite: true,
             institution: 1,
             isEnabled: true,
-            isPublic: true
+            isPublic: true,
+            canSubmitProjects: true
         }
     },
     {
@@ -263,7 +265,8 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
             isSite: true,
             institution: 1,
             isEnabled: true,
-            isPublic: true
+            isPublic: true,
+            canSubmitProjects: true
         }
     },
     {
@@ -281,7 +284,8 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
             isSite: true,
             institution: 1,
             isEnabled: true,
-            isPublic: true
+            isPublic: true,
+            canSubmitProjects: true
         }
     },
     {
@@ -295,7 +299,8 @@ export const _userAssociationDetails: AssociationUserDetail[] = [
         isTreasurer: false,
         association: {
             id: 5,
-            name: 'EMPRUNTE'
+            name: 'EMPRUNTE',
+            canSubmitProjects: true
         }
     }
 ]

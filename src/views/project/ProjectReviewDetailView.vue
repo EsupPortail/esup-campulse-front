@@ -98,7 +98,7 @@ async function onGetProjectReviewDetail() {
                 <ProjectRecapDocuments
                     v-if="isLoaded"
                     :association-id="null"
-                    process="project"
+                    process="review"
                 />
             </div>
         </div>

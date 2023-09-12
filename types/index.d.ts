@@ -1,27 +1,3 @@
-/**
- *  HomeCard Model
- *  Card displayed on the home view and redirects to another view.
- *  @params: title, description, imagePath, imageAlt
- */
-export interface HomeCard {
-    description: string,
-    link: string,
-    cssClass: string,
-    buttonLabel: string,
-    infoContent: string,
-    titleLine1: string,
-    titleLine2: string,
-    iconClass: string
-}
-
-export type HomeCards = HomeCard[]
-
-export interface HomeBanner {
-    title: string,
-    description: string,
-    isDisplayed: boolean
-}
-
 interface ContentStore {
     contents: Content[],
     logos: Logo[],
@@ -38,19 +14,14 @@ export interface PasswordChecker {
     score: number
 }
 
-interface PasswordCheckerTest {
-    valid: boolean,
-    message: string,
-    additionalMessage: string
-}
-
 export interface Content {
     id: number,
     code: ContentCode,
     label: string,
     header: string,
     body: string,
-    footer: string
+    footer: string,
+    aside: string
 }
 
 export interface Logo {
@@ -70,11 +41,15 @@ type ContentCode =
     'ABOUT_APP' |
     'ABOUT_FUNDING' |
     'ABOUT_PARTNERSHIP' |
+    'ABOUT_ASSOCIATION' |
+    'ABOUT_CHARTER' |
+    'ABOUT_PROJECT' |
     'CONTACT_INFO' |
     'CONTACT_LIST' |
     'ASSOCIATION_HOME_FIRST_BLOCK' |
     'CHARTER_HOME_FIRST_BLOCK' |
     'CHARTER_HOME_SECOND_BLOCK' |
+    'CHARTER_HOME_THIRD_BLOCK' |
     'CHARTER_HOME_ACTION_VALIDATE_CHARTERS' |
     'CHARTER_HOME_ACTION_MANAGE_DOCUMENTS' |
     'CHARTER_HOME_ACTION_SIGN_CHARTERS' |

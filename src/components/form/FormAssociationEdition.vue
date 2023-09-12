@@ -363,7 +363,7 @@ async function onChangeLogo(action: string) {
                             type="date"
                         >
                             <template v-slot:prepend>
-                                <QIcon name="mdi-calendar"/>
+                                <QIcon name="bi-calendar"/>
                             </template>
                         </QInput>
                         <QInput
