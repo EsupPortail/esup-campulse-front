@@ -50,8 +50,8 @@ router.beforeEach(async (to) => {
     // Get isStaff status if user is auth
     if (userStore.isAuth) {
         await getGroups()
-        await initStaffStatus()
-        await initIsMemberFund()
+        initStaffStatus()
+        initIsMemberFund()
     }
 
     // Authenticated views
