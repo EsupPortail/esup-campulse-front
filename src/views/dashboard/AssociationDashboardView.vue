@@ -215,7 +215,7 @@ async function onGetAssociationProjects() {
     <!-- Association procedures -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-pencil-square"/>
+            <QIcon name="bi-pen"/>
             {{ t('dashboard.association-user.association-procedures') }}
         </h2>
         <div class="dashboard-section-container">
