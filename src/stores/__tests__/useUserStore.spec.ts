@@ -97,8 +97,8 @@ describe('User store', () => {
         const mockedAxios = vi.mocked(axiosPublic, true)
         const data = {
             user: _institutionStudent,
-            accessToken: _tokens.access,
-            refreshToken: _tokens.refresh
+            access: _tokens.access,
+            refresh: _tokens.refresh
         }
         it('should set tokens and populate user data in store', async () => {
             mockedAxios.post.mockResolvedValueOnce({data})
