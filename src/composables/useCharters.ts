@@ -24,6 +24,7 @@ export default function () {
 
     const charterProcesses: DocumentProcessType[] = ['CHARTER_ASSOCIATION', 'CHARTER_PROJECT_FUND']
 
+    // Get all documents uploads needed to signe the association charter
     async function getCharterDocuments(associationId?: number) {
         const params = []
         if (associationId) params.push(`association_id=${associationId}`)
@@ -32,6 +33,7 @@ export default function () {
         charterDocuments.value = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
     }
 
+    // Get all document uploads linked to charters
     async function getCharters(associationId?: number) {
         const processes: string = charterProcesses.join(',')
         const params = []
@@ -253,10 +255,14 @@ export default function () {
                     factory.splice(0, 0, currentYear)
                     const currentYearExpirationDate = factory.join('-')
                     const formatedCurrentYearExpirationDate = new Date(currentYearExpirationDate)
+                    const formatedValidatedDate = new Date(validatedDate.split('/').join('-'))
                     // Determine if expiration date is this year or next year
-                    if (formatedCurrentYearExpirationDate >= todayDate) { // if expiration date is yet to come this year
+                    // if expiration date is yet to come this year
+                    if (formatedCurrentYearExpirationDate >= formatedValidatedDate || formatedCurrentYearExpirationDate >= todayDate) {
                         expirationDate = currentYearExpirationDate
-                    } else { // if expiration date is passed this year
+                    }
+                    // if expiration date is passed this year
+                    else {
                         factory.splice(0, 1, nextYear)
                         expirationDate = factory.join('-')
                     }
@@ -288,7 +294,6 @@ export default function () {
         await axiosAuthenticated.post('/documents/uploads', charterData)
     }
 
-    // TODO
     async function patchCharterDocument(action: 'validate' | 'reject' | 'return', id: number, comment: string) {
         let dataToPatch = {}
         if (comment) {
@@ -301,7 +306,6 @@ export default function () {
         await axiosAuthenticated.patch(`/documents/uploads/${id}`, dataToPatch)
     }
 
-    // TODO
     async function patchCharterStatus(charterStatus: AssociationCharterStatus, associationId: number) {
         await axiosAuthenticated.patch(`/associations/${associationId}/status`, {charterStatus})
     }

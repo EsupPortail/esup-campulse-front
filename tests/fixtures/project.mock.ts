@@ -4,8 +4,11 @@ import type {
     ProjectBudget,
     ProjectCategory,
     ProjectCommissionFund,
-    ProjectGoals, ProjectReview
+    ProjectGoals,
+    ProjectReview
 } from '#/project'
+import type {DocumentUpload} from '#/documents'
+import {_currentYear} from './dates.mock'
 
 export const _project: Project = {
     id: 1,
@@ -229,18 +232,45 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     }
 ]
 
-export const _documentUploads = [
+export const _documentUploads: DocumentUpload[] = [
     {
         id: 1,
-        path_file: 'string',
-        size: 1000,
-        name: 'document',
-        uploadDate: '2023-05-02T09:19:50.997Z',
-        documentUploadStatus: 'DOCUMENT_REJECTED',
-        document: 12,
-        user: 0,
+        uploadDate: '2023-07-22',
+        pathFile: 'https://campulse.unistra.fr',
+        size: 10000,
+        validatedDate: '2023-01-01',
+        comment: '',
+        document: 1,
+        user: null,
         association: 1,
-        project: 1
+        project: null,
+        name: 'charte-site-alsace.fr'
+    },
+    {
+        id: 2,
+        uploadDate: '2023-07-22',
+        pathFile: 'https://campulse.unistra.fr',
+        size: 10000,
+        validatedDate: '2023-01-01',
+        comment: '',
+        document: 2,
+        user: null,
+        association: 1,
+        project: null,
+        name: 'charte-rgpd-site-alsace.fr'
+    },
+    {
+        id: 3,
+        uploadDate: '2023-07-22',
+        pathFile: 'https://campulse.unistra.fr',
+        size: 10000,
+        validatedDate: [_currentYear, '01', '01'].join('-'),
+        comment: '',
+        document: 3,
+        user: null,
+        association: 1,
+        project: null,
+        name: 'charte-fsdie.fr'
     }
 ]
 

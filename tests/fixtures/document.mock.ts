@@ -1,4 +1,5 @@
 import type {Document, DocumentUpload, ProcessDocument} from '#/documents'
+import {_chartersExpirationDate, _chartersExpirationDay} from './dates.mock'
 
 export const _document: Document = {
     id: 1,
@@ -30,7 +31,7 @@ export const _documents: Document[] = [
         contact: 'https://svu.unistra.fr/vie-des-campus/vie-universitaire/soutien-aux-associations-etudiantes/agrement-association-etudiante-du-site-alsace',
         isMultiple: false,
         isRequiredInProcess: false,
-        daysBeforeExpiration: '365 00:00:00',
+        daysBeforeExpiration: '365',
         expirationDay: '',
         editionDate: '2023-06-02',
         pathTemplate: undefined,
@@ -50,15 +51,13 @@ export const _documents: Document[] = [
         contact: 'https://svu.unistra.fr/vie-des-campus/vie-universitaire/soutien-aux-associations-etudiantes/agrement-association-etudiante-du-site-alsace',
         isMultiple: false,
         isRequiredInProcess: false,
-        daysBeforeExpiration: '365 00:00:00',
+        daysBeforeExpiration: '365',
         expirationDay: '',
         editionDate: '2023-06-02',
         pathTemplate: undefined,
         size: 0,
         mimeTypes: [
-            'application/pdf',
-            'image/jpeg',
-            'image/png'
+            'application/pdf'
         ],
         processType: 'CHARTER_ASSOCIATION',
         institution: null,
@@ -72,8 +71,8 @@ export const _documents: Document[] = [
         contact: 'https://svu.unistra.fr/vie-des-campus/vie-universitaire/soutien-aux-associations-etudiantes/agrement-association-etudiante-du-site-alsace',
         isMultiple: false,
         isRequiredInProcess: false,
-        daysBeforeExpiration: '365 00:00:00',
-        expirationDay: '',
+        daysBeforeExpiration: '',
+        expirationDay: _chartersExpirationDay,
         editionDate: '2023-06-02',
         pathTemplate: undefined,
         size: 0,
