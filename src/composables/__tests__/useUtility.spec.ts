@@ -78,10 +78,8 @@ describe('useUtility', () => {
         })
 
         it('should get an id from params if there is an id in the route path', () => {
-            // @ts-ignore For testing purpose only
             vi.mocked(useRoute).mockReturnValue({
                 name: 'AssociationDetail',
-                params: {id: '1'},
                 matched: [
                     {
                         path: '/',
@@ -92,7 +90,7 @@ describe('useUtility', () => {
                         meta: {breadcrumb: 'Annuaire des associations'}
                     },
                     {
-                        path: '/associations/:id',
+                        path: '/associations/1',
                         meta: {breadcrumb: 'Fiche association'},
                     }
                 ]
