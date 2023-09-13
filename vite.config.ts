@@ -26,7 +26,7 @@ export default defineConfig(({command, mode}) => {
                 include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**'),
             }),
         ],
-        publicDir: env.PUBLIC_FOLDER ? env.PUBLIC_FOLDER : 'public/pprd',
+        publicDir: env.PUBLIC_FOLDER,
         resolve: {
             alias: {
                 '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -41,15 +41,13 @@ export default defineConfig(({command, mode}) => {
             port: 3000,
         },
         test: {
-            environment: 'jsdom'
+            environment: 'jsdom',
+            // Enable coverage for untested files.
+            /*
+            coverage: {
+                all: true
+            }
+            */
         }
-        /*
-        // Enable coverage for untested files.
-        test: {
-          coverage: {
-            all: true
-          }
-        },
-        */
     }
 })
