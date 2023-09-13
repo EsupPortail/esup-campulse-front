@@ -7,7 +7,6 @@ import {useRoute} from 'vue-router'
 import type {AxiosInstance} from 'axios'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useCommissions from '@/composables/useCommissions'
-// @ts-ignore Missing types when importing
 import zxcvbn from 'zxcvbn'
 
 // Used for local login

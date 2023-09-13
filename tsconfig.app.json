@@ -11,8 +11,12 @@
     "src/**/__tests__/*"
   ],
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
+    "composite": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "paths": {
       "@/*": [
         "./src/*"
@@ -23,10 +27,6 @@
       "~/*": [
         "./tests/*"
       ]
-    },
-    "lib": [
-      "esnext",
-      "dom"
-    ]
+    }
   }
 }

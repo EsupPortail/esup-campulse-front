@@ -63,9 +63,9 @@ export const useAssociationStore = defineStore('associationStore', {
 
     actions: {
         getAssociationSubDetails(association: Association) {
-            association.institution = this.institutions.find((institution) => institution.id === association.institution)?.id
-            association.institutionComponent = this.institutionComponents.find((institutionComponent) => institutionComponent.id === association.institutionComponent)?.id
-            association.activityField = this.activityFields.find((activityField) => activityField.id === association.activityField)?.id
+            association.institution = this.institutions.find((institution: Institution) => institution.id === association.institution)?.id
+            association.institutionComponent = this.institutionComponents.find((institutionComponent: InstitutionComponent) => institutionComponent.id === association.institutionComponent)?.id
+            association.activityField = this.activityFields.find((activityField: AssociationActivityField) => activityField.id === association.activityField)?.id
             return association
         },
         getAssociationsSubDetails(associations: Association[]) {
