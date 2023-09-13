@@ -1,13 +1,5 @@
 /// <reference types="vite/client" />
 
-declare module '@vue-unistra/cas-authentication' {
-  interface CasAuthentication {
-    axiosRequestInterceptor: (config: AxiosInterceptorConfig, inComposable = true) => (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig>;
-    login: (config: LoginConfig) => Promise<void>;
-  }
-  function useCasAuthentication(): CasAuthentication;
-}
-
 declare module 'vue-matomo' {
   import {RouteLocationNormalized, Router} from 'vue-router'
   import {App} from 'vue'
