@@ -293,7 +293,9 @@ async function onSubmitBasicInfos(nextStep: number) {
     try {
         if (newProject.value) {
             await postNewProject(parseInt(route.params.associationId as string))
+            newProject.value = false
         } else {
+            await onGetProjectCategories()
             await patchProjectBasicInfos()
         }
         await updateProjectCategories()
