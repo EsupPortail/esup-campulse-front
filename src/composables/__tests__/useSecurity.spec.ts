@@ -302,7 +302,7 @@ describe('useSecurity', () => {
     })
 
     describe('checkPasswordStrength', () => {
-        it('should test password strength through regex and plugin ZXCVB', () => {
+        it('should test password strength through regex and plugin ZXCVBN', () => {
             const valid = checkPasswordStrength('ghtRf6è!*tgr5DJn')
             expect(valid).toEqual({
                 score: 4,
