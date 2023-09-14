@@ -10,6 +10,65 @@ export default function () {
 
     const libraryProcesses = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_FUND', 'DOCUMENT_PROJECT', 'NO_PROCESS']
 
+    const mimeTypesLabels = [
+        {
+            value: 'application/pdf',
+            label: '.pdf'
+        },
+        {
+            value: 'image/jpeg',
+            label: '.jpg/.jpeg'
+        },
+        {
+            value: 'image/png',
+            label: '.png'
+        },
+        {
+            value: 'application/msword',
+            label: '.doc'
+        },
+        {
+            value: 'application/vnd.oasis.opendocument.text',
+            label: '.odt'
+        },
+        {
+            value: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            label: '.docx'
+        },
+        {
+            value: 'application/vnd.ms-excel',
+            label: '.xls'
+        },
+        {
+            value: 'application/vnd.oasis.opendocument.spreadsheet',
+            label: '.ods'
+        },
+        {
+            value: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            label: '.xlsx'
+        },
+        {
+            value: 'application/x-7z-compressed',
+            label: '.7z'
+        },
+        {
+            value: 'application/x-bzip2',
+            label: '.bz2'
+        },
+        {
+            value: 'application/x-rar-compressed',
+            label: '.rar'
+        },
+        {
+            value: 'application/x-tar',
+            label: '.tar'
+        },
+        {
+            value: 'application/zip',
+            label: '.zip'
+        }
+    ]
+
     async function getLibraryDocuments() {
         documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_types=${libraryProcesses.join(',')}`)).data
     }
@@ -53,6 +112,7 @@ export default function () {
         deleteDocument,
         libraryProcesses,
         getDocumentByAcronym,
-        createFileLink
+        createFileLink,
+        mimeTypesLabels
     }
 }

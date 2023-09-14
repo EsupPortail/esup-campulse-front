@@ -370,6 +370,7 @@
   },
   "forbidden": "Non autorisé",
   "forms": {
+    "accepted-formats": "Formats acceptés : ",
     "add-association": "Ajouter une association",
     "amount-members-allowed-must-be-superior-to-members": "Veuillez choisir un nombre supérieur ou égal au nombre de membres actuels.",
     "amount-student-allowed-cannot-be-inferior-to-members": "Ne peut pas être inférieur au nombre de {amount} membres inscrits sur la plateforme actuellement",

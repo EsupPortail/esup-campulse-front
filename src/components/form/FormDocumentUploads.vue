@@ -4,13 +4,14 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import type {Document, DocumentProcessType, MimeType, ProcessDocument} from '#/documents'
+import type {DocumentProcessType, ProcessDocument, MimeType} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
 import useSubmitProject from '@/composables/useSubmitProject'
+import useDocuments from '@/composables/useDocuments'
 
 const {
     processDocuments,
@@ -27,6 +28,7 @@ const {
     MAX_FILE_SIZE,
     MAX_FILES
 } = useDocumentUploads()
+const {mimeTypesLabels} = useDocuments()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -159,6 +161,10 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         }
     }
 }
+
+const acceptedFormats = (mimeTypes: MimeType[]) => {
+    return mimeTypes.map(mimeType => mimeTypesLabels.find(obj => obj.value === mimeType)?.label ?? '').join(', ')
+}
 </script>
 
 <template>
@@ -184,7 +190,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                         [val => ((document.isMultiple ? val.length : val) ||
                             ((props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') &&
                                 (processDocuments.filter(x => x.pathFile).length > 0 || documentUploads.length))) ||
-                            t('forms.select-document')] : []"
+                            t('forms.select-document') + ' ' + t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.'] : []"
                 append
                 bottom-slots
                 clearable
@@ -199,7 +205,8 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                     <p aria-describedby="pathFile">
                         {{
                             props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint')
-                                + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : ''))
+                                + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '') + ' ' +
+                                t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.')
                         }}
                     </p>
                 </template>
