@@ -135,6 +135,7 @@ const associationId = ref<number>()
 const projectId = ref<number>()
 
 const newProject = ref<boolean>(true)
+const newProjectPosted = ref<boolean>(false)
 
 const projectReEdition = ref<boolean>(false)
 watch(() => projectStore.projectCommissionFunds.length, () => {
@@ -196,7 +197,7 @@ async function onGetProjectDetail() {
 async function onGetProjectCategories() {
     try {
         await projectStore.getProjectCategoryNames()
-        if (!newProject.value && projectStore.project) {
+        if ((!newProject.value || newProjectPosted.value) && projectStore.project) {
             await projectStore.getProjectCategories()
             initProjectCategories()
         }
@@ -291,14 +292,14 @@ function onGetProjectGoals() {
 async function onSubmitBasicInfos(nextStep: number) {
     loading.show()
     try {
-        if (newProject.value) {
+        if (newProject.value && !newProjectPosted.value) {
             await postNewProject(parseInt(route.params.associationId as string))
-            newProject.value = false
+            newProjectPosted.value = true
         } else {
-            await onGetProjectCategories()
             await patchProjectBasicInfos()
         }
         await updateProjectCategories()
+        await onGetProjectCategories()
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
