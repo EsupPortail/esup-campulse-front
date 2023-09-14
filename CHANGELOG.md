@@ -1,17 +1,10 @@
-- 💄 Quick CSS fixes on directory
-- 🩹 Add no matches found after LDAP search
-- ✨ Added XLSX export
-- 🩹 Fix init of documents in library for managers
-- 🩹 Change permission on document library
-- 💄 Change create association button to outline
-- 🎨 Reorganize buttons on project management for managers
-- 🐛 Fix SubmitProjectReview success page
-- 🐛 Fix user project submission and commission dashboard
-- ✏️ Replace old mdi icons and add conditional button text for fund members
-- 💬 Added CHARTER_HOME_THIRD_BLOCK
-- 💄 Rename old CSS variables
-- 🔍️ Added meta description and robots.txt
-- 🐛 Fix documentUploads, info patch and dates in project review
-- ✏️ Add more explicit hint for password setting form
-- ✏️ Add more explicit error message and hint for new password form
-- 🔧 Switch back URL to Gravitee
+- 💩 Try to fix submit new project post that is incrementing
+- ✅ Tests for useCharters
+- 🔧 Changed ES version in tsconfig
+- 🔧 Checked configuration before production
+- ♻️ Removed ts-ignore statements
+- 🔧 Differentiate public folder for robots.txt
+- ✅ Tests for useSubmitReview
+- ✅ Tests for useManageProjects
+- ✅ Tests for ContentStore
+- ✨ Add new sections to dashboards
