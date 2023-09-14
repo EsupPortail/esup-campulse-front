@@ -21,7 +21,7 @@ export const _associationCharter: ManageCharter = {
             documentId: 2
         }
     ],
-    pathFile: 'https://campulse.unistra.fr',
+    pathFile: 'https://plana.unistra.fr',
     validatedDate: '01/01/2023',
     expirationDate: '01/01/2024',
     charterStatus: 'VALIDATED'
@@ -39,7 +39,7 @@ const _validatedCharter: ManageCharter = {
         path: '',
         documentId: 3
     }],
-    pathFile: 'https://campulse.unistra.fr',
+    pathFile: 'https://plana.unistra.fr',
     validatedDate: ['01', '01', _currentYear].join('/'),
     expirationDate: ['31', '08', _currentYear].join('/'),
     charterStatus: 'VALIDATED',
@@ -60,7 +60,7 @@ const _expiredCharter: ManageCharter = {
         path: '',
         documentId: 3
     }],
-    pathFile: 'https://campulse.unistra.fr',
+    pathFile: 'https://plana.unistra.fr',
     validatedDate: ['01', '01', _currentYear].join('/'),
     expirationDate: ['31', '08', _currentYear].join('/'),
     charterStatus: 'EXPIRED',
