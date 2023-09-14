@@ -85,13 +85,13 @@ export const _documents: Document[] = [
     }
 ]
 
-export const _processDocuments = [
+export const _processDocuments: ProcessDocument[] = [
     {
         id: 1,
-        document: 10,
+        document: 1,
         isMultiple: true,
-        description: 'Document 10',
-        pathFile: ['PathFile Document 10 1/2', 'PathFile Document 10 2/2'],
+        description: 'Document 1',
+        pathFile: ['PathFile Document 1 1/2', 'PathFile Document 1 2/2'],
         isRequiredInProcess: false,
         mimeTypes: [
             'application/pdf'
@@ -99,10 +99,10 @@ export const _processDocuments = [
     },
     {
         id: 2,
-        document: 11,
+        document: 2,
         isMultiple: false,
-        description: 'Document 11',
-        pathFile: ['PathFile Document 11'],
+        description: 'Document 2',
+        pathFile: ['PathFile Document 2'],
         isRequiredInProcess: true,
         mimeTypes: [
             'application/pdf'

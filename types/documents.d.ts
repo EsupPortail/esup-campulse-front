@@ -59,7 +59,7 @@ export interface DocumentUpload {
 export interface ProcessDocument {
     id?: number,
     uploadDate?: string,
-    pathFile: Blob | Blob[] | undefined | [] | string,
+    pathFile: Blob | Blob[] | undefined | [] | string | string[],
     document?: number,
     description?: string,
     isMultiple?: boolean,

@@ -5,10 +5,13 @@ import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useAxios} from '@/composables/useAxios'
-import {_documents, _processDocuments, _projectDocuments} from '~/fixtures/document.mock'
+import {_document, _documents, _processDocuments, _projectDocuments} from '~/fixtures/document.mock'
 import {useProjectStore} from '@/stores/useProjectStore'
-import {_project} from '~/fixtures/project.mock'
+import {_documentUploads, _project} from '~/fixtures/project.mock'
 import type {ProcessDocument} from '#/documents'
+import useCharters from '@/composables/useCharters'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useUserStore} from '@/stores/useUserStore'
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -17,18 +20,11 @@ vi.mock('@/composables/useAxios', () => ({
     })
 }))
 
-vi.mock('@/composable/useUserAssociations', () => ({
-    default: () => ({
-        updateUserAssociations: vi.fn(),
-        deleteUserAssociation: vi.fn(),
-        getUserAssociations: vi.fn(),
-        patchUserAssociations: vi.fn()
-    })
-}))
-
 setActivePinia(createPinia())
 
 let projectStore = useProjectStore()
+let userManagerStore = useUserManagerStore()
+let userStore = useUserStore()
 
 config.global.plugins = [
     createTestingPinia({
@@ -39,6 +35,8 @@ config.global.plugins = [
 describe('useDocumentUploads', () => {
     beforeEach(() => {
         projectStore = useProjectStore()
+        userManagerStore = useUserManagerStore()
+        userStore = useUserStore()
     })
 
     afterEach(() => {
@@ -59,30 +57,56 @@ describe('useDocumentUploads', () => {
         deleteDocumentUpload,
         documentUploads,
         getFile,
-        initProcessDocuments
+        initProcessDocuments,
+        initProjectDocumentUploads,
+        initCharterDocumentUploads,
+        initManagedUserDocumentUploads,
+        initUserDocumentUploads,
+        getStudentCertificate
     } = useDocumentUploads()
+    const {charterDocuments} = useCharters()
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const mockedAxios = vi.mocked(axiosPublic, true)
 
     describe('initProcessDocuments', () => {
-        it('should initialize documents and pathFiles', () => {
+        beforeEach(() => {
             documents.value = _documents
-            initProcessDocuments()
-            expect(processDocuments.value).toEqual(_documents.map(doc => ({
-                document: doc.id,
-                isMultiple: doc.isMultiple,
-                description: doc.description,
-                pathFile: doc.isMultiple ? [] : undefined,
-                isRequiredInProcess: doc.isRequiredInProcess,
-                mimeTypes: doc.mimeTypes
-            })))
+        })
+        afterEach(() => {
+            processDocuments.value = []
+        })
+        describe('if we do not filter by fund', () => {
+            it('should initialize documents and pathFiles', () => {
+                initProcessDocuments()
+                expect(processDocuments.value).toEqual(_documents.map(doc => ({
+                    document: doc.id,
+                    isMultiple: doc.isMultiple,
+                    description: doc.description,
+                    pathFile: doc.isMultiple ? [] : undefined,
+                    isRequiredInProcess: doc.isRequiredInProcess,
+                    mimeTypes: doc.mimeTypes
+                })))
+            })
+        })
+        describe('if we filter by fund', () => {
+            it('should initialize documents and pathFiles based on funds', () => {
+                initProcessDocuments(true, [1])
+                expect(processDocuments.value).toEqual(_documents.map(doc => ({
+                    document: doc.id,
+                    isMultiple: doc.isMultiple,
+                    description: doc.description,
+                    pathFile: doc.isMultiple ? [] : undefined,
+                    isRequiredInProcess: doc.isRequiredInProcess,
+                    mimeTypes: doc.mimeTypes
+                })))
+            })
         })
     })
 
     describe('initProjectDocumentUploads', () => {
         it('should initialize documents and pathFiles', () => {
             projectStore.projectDocuments = _projectDocuments
-            processDocuments.value = _processDocuments as ProcessDocument[]
+            processDocuments.value = _processDocuments
             const test: ProcessDocument[] = []
             const documentIds = processDocuments.value.map((document) => (document.document))
             projectStore.projectDocuments.forEach((document) => {
@@ -95,6 +119,70 @@ describe('useDocumentUploads', () => {
                     })
                 }
             })
+            initProjectDocumentUploads()
+            expect(documentUploads.value).toEqual(test)
+        })
+    })
+
+    describe('initCharterDocumentUploads', () => {
+        it('should init all charters uploaded by a user', () => {
+            charterDocuments.value = _documentUploads
+            processDocuments.value = _processDocuments
+            const documentIds = processDocuments.value.map((document) => (document.document))
+            const test: ProcessDocument[] = []
+            charterDocuments.value.forEach((document) => {
+                if (documentIds.includes(document.document)) {
+                    test.push({
+                        id: document.id,
+                        document: document.document,
+                        pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                        name: document.name as string
+                    })
+                }
+            })
+            initCharterDocumentUploads()
+            expect(documentUploads.value).toEqual(test)
+        })
+    })
+
+    describe('initManagedUserDocumentUploads', () => {
+        it('should init the documents uploads of a managed user', () => {
+            userManagerStore.userDocuments = _documentUploads
+            processDocuments.value = _processDocuments
+            const test: ProcessDocument[] = []
+            const documentIds = processDocuments.value.map((document) => (document.document))
+            userManagerStore.userDocuments.forEach((document) => {
+                if (documentIds.includes(document.document)) {
+                    test.push({
+                        id: document.id,
+                        document: document.document,
+                        pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                        name: document.name as string
+                    })
+                }
+            })
+            initManagedUserDocumentUploads()
+            expect(documentUploads.value).toEqual(test)
+        })
+    })
+
+    describe('initUserDocumentUploads', () => {
+        it('should init the document uploads of a user', () => {
+            userStore.userDocuments = _documentUploads
+            processDocuments.value = _processDocuments
+            const test: ProcessDocument[] = []
+            const documentIds = processDocuments.value.map((document) => (document.document))
+            userStore.userDocuments.forEach((document) => {
+                if (documentIds.includes(document.document)) {
+                    test.push({
+                        id: document.id,
+                        document: document.document,
+                        pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                        name: document.name as string
+                    })
+                }
+            })
+            initUserDocumentUploads()
             expect(documentUploads.value).toEqual(test)
         })
     })
@@ -120,31 +208,71 @@ describe('useDocumentUploads', () => {
         })
     })
 
+    describe('getStudentCertificate', () => {
+        it('should call the API (get) to get the corresponding document', async () => {
+            mockedAxios.get.mockResolvedValueOnce({data: [_document]})
+            await getStudentCertificate()
+            expect(axiosPublic.get).toHaveBeenCalledOnce()
+            expect(axiosPublic.get).toHaveBeenCalledWith('/documents/?process_types=DOCUMENT_USER')
+            expect(documents.value).toEqual([_document])
+        })
+    })
+
     describe('DocumentUpload class', () => {
-        describe('constructor', () => {
-            it('should construct an upload document object', () => {
-                projectStore.project = _project
-                const _blob = new Blob
-                const documentUpload = new DocumentUpload(_blob, 1, undefined, 12)
-                expect(documentUpload.file).toEqual(_blob)
-                expect(documentUpload.association).toEqual('1')
-                expect(documentUpload.user).toEqual('')
-                expect(documentUpload.document).toEqual('12')
-                expect(documentUpload.project).toEqual(projectStore.project?.id.toString())
+        describe('if the upload is made by an association', () => {
+            describe('constructor', () => {
+                it('should construct an upload document object', () => {
+                    projectStore.project = _project
+                    const _blob = new Blob
+                    const documentUpload = new DocumentUpload(_blob, 1, undefined, 12)
+                    expect(documentUpload.file).toEqual(_blob)
+                    expect(documentUpload.association).toEqual('1')
+                    expect(documentUpload.user).toEqual('')
+                    expect(documentUpload.document).toEqual('12')
+                    expect(documentUpload.project).toEqual(projectStore.project?.id.toString())
+                })
+            })
+
+            describe('formData', () => {
+                it('should return a new formData', () => {
+                    const _blob = new Blob
+                    projectStore.project = _project
+                    const documentUpload = new DocumentUpload(_blob, 1, undefined, 12)
+                    const _formData = new FormData()
+                    _formData.append('pathFile', _blob)
+                    _formData.append('document', '12')
+                    _formData.append('project', projectStore.project?.id.toString())
+                    _formData.append('association', '1')
+                    expect(documentUpload.formData()).toEqual(_formData)
+                })
             })
         })
+        describe('if the upload is made by a user', () => {
+            describe('constructor', () => {
+                it('should construct an upload document object', () => {
+                    projectStore.project = _project
+                    const _blob = new Blob
+                    const documentUpload = new DocumentUpload(_blob, undefined, 'username', 12)
+                    expect(documentUpload.file).toEqual(_blob)
+                    expect(documentUpload.association).toEqual('')
+                    expect(documentUpload.user).toEqual('username')
+                    expect(documentUpload.document).toEqual('12')
+                    expect(documentUpload.project).toEqual(projectStore.project?.id.toString())
+                })
+            })
 
-        describe('formData', () => {
-            it('should return a new formData', () => {
-                const _blob = new Blob
-                projectStore.project = _project
-                const documentUpload = new DocumentUpload(_blob, 1, undefined, 12)
-                const _formData = new FormData()
-                _formData.append('pathFile', _blob)
-                _formData.append('document', '12')
-                _formData.append('project', projectStore.project?.id.toString())
-                _formData.append('association', '1')
-                expect(documentUpload.formData()).toEqual(_formData)
+            describe('formData', () => {
+                it('should return a new formData', () => {
+                    const _blob = new Blob
+                    projectStore.project = _project
+                    const documentUpload = new DocumentUpload(_blob, undefined, 'username', 12)
+                    const _formData = new FormData()
+                    _formData.append('pathFile', _blob)
+                    _formData.append('document', '12')
+                    _formData.append('project', projectStore.project?.id.toString())
+                    _formData.append('user', 'username')
+                    expect(documentUpload.formData()).toEqual(_formData)
+                })
             })
         })
     })
