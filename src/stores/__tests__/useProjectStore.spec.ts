@@ -8,9 +8,11 @@ import {
     _project,
     _projectCategories,
     _projectCategoryNames,
-    _projectCommissionFunds,
+    _projectCommissionFunds, _projectReview,
     _projects
 } from '~/fixtures/project.mock'
+import useCommissions from '../../composables/useCommissions'
+import {_commissionFunds, _commissions} from '../../../tests/fixtures/commissions.mock'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -37,6 +39,34 @@ describe('Project store', () => {
         projectStore.projectCategoryNames = []
         projectStore.projectCategories = []
         projectStore.projectCommissionFunds = []
+    })
+
+    const {commissions, commissionFunds} = useCommissions()
+    commissions.value = _commissions
+    commissionFunds.value = _commissionFunds
+
+    describe('projectCategoriesLabels', () => {
+        it('should init pairs of values and labels based on project categories', () => {
+            projectStore.projectCategoryNames = _projectCategoryNames
+            expect(projectStore.projectCategoriesLabels).toEqual(_projectCategoryNames.map(category => ({
+                value: category.id,
+                label: category.name
+            })))
+        })
+    })
+
+    describe('projectCommission', () => {
+        it('should find the id of the commission the project is attached to', () => {
+            projectStore.projectCommissionFunds = _projectCommissionFunds
+            expect(projectStore.projectCommission).toEqual(1)
+        })
+    })
+
+    describe('projectFunds', () => {
+        it('should return an array of fund ids based on project commission funds', () => {
+            projectStore.projectCommissionFunds = _projectCommissionFunds
+            expect(projectStore.projectFunds).toEqual([1, 2, 3])
+        })
     })
 
     describe('getProjectCategoryNames', () => {
@@ -129,46 +159,91 @@ describe('Project store', () => {
                 expect(projectStore.managedProjects).toEqual(_projects)
             })
         })
+    })
 
-        describe('getAllProjects', () => {
-            it('should get all projects with no params', async () => {
-                mockedAuthAxios.get.mockResolvedValueOnce({data: _projects})
-                await projectStore.getAllProjects()
-                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/')
-                expect(projectStore.selfProjects).toEqual(_projects)
+    describe('getAllProjects', () => {
+        it('should get all projects with no params', async () => {
+            mockedAuthAxios.get.mockResolvedValueOnce({data: _projects})
+            await projectStore.getAllProjects()
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/')
+            expect(projectStore.selfProjects).toEqual(_projects)
+        })
+    })
+
+    describe('getAssociationProjects', () => {
+        it('should get projects linked to an association', async () => {
+            mockedAuthAxios.get.mockResolvedValueOnce({data: _projects})
+            await projectStore.getAssociationProjects(1)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/?association_id=1')
+            expect(projectStore.selfProjects).toEqual(_projects)
+        })
+    })
+
+    describe('getProjectReview', () => {
+        it('should call the API (get) to get the review data', async () => {
+            mockedAuthAxios.get.mockResolvedValueOnce({data: _projectReview})
+            await projectStore.getProjectReview(1)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/review')
+            expect(projectStore.projectReview).toEqual(_projectReview)
+        })
+    })
+
+    describe('getProjectPdf', () => {
+        it('should get a pdf recap document of the project', async () => {
+            const file = new Blob
+            mockedAuthAxios.get.mockResolvedValueOnce({data: file})
+            const response = await projectStore.getProjectPdf(1)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/pdf_export', {responseType: 'blob'})
+            expect(response).toEqual(file)
+        })
+    })
+
+    describe('getProjectReviewPdf', () => {
+        it('should get a pdf recap document of the review', async () => {
+            const file = new Blob
+            mockedAuthAxios.get.mockResolvedValueOnce({data: file})
+            const response = await projectStore.getProjectReviewPdf(1)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/review/pdf_export', {responseType: 'blob'})
+            expect(response).toEqual(file)
+        })
+    })
+
+    describe('getProjectFiles', () => {
+        it('should get all the files uploaded during project submission', async () => {
+            const file = new Blob
+            mockedAuthAxios.get.mockResolvedValueOnce({data: file})
+            const response = await projectStore.getProjectFiles(1)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/documents/uploads/file?project_id=1', {responseType: 'blob'})
+            expect(response).toEqual(file)
+        })
+    })
+
+    describe('patchProjectStatus', () => {
+        it('should patch the status of the project', async () => {
+            projectStore.project = _project
+            await projectStore.patchProjectStatus('PROJECT_PROCESSING')
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/projects/1/status', {
+                projectStatus: 'PROJECT_PROCESSING'
             })
         })
+    })
 
-        describe('getAssociationProjects', () => {
-            it('should get projects linked to an association', async () => {
-                mockedAuthAxios.get.mockResolvedValueOnce({data: _projects})
-                await projectStore.getAssociationProjects(1)
-                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/?association_id=1')
-                expect(projectStore.selfProjects).toEqual(_projects)
-            })
-        })
-
-        describe('getProjectPdf', () => {
-            it('should get a pdf recap document of the project', async () => {
-                const file = new Blob
-                mockedAuthAxios.get.mockResolvedValueOnce({data: file})
-                const response = await projectStore.getProjectPdf(1)
-                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/pdf_export', {responseType: 'blob'})
-                expect(response).toEqual(file)
-            })
-        })
-
-        describe('patchProjectStatus', () => {
-            it('should patch the status of the project', async () => {
-                projectStore.project = _project
-                await projectStore.patchProjectStatus('PROJECT_PROCESSING')
-                expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/projects/1/status', {
-                    projectStatus: 'PROJECT_PROCESSING'
-                })
+    describe('patchProjectCommissionFunds', () => {
+        it('should patch an old commission with new commission and corresponding information', async () => {
+            projectStore.project = _project
+            await projectStore.patchProjectCommissionFund(1, 2)
+            const url = `/projects/${projectStore.project?.id}/commission_funds/1`
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(url, {
+                projectId: projectStore.project?.id,
+                commissionFundId: 2
             })
         })
     })

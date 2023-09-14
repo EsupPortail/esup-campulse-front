@@ -164,7 +164,7 @@ export const _projectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 1,
         project: 1,
-        commissionFund: 3,
+        commissionFund: 1,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
@@ -175,7 +175,7 @@ export const _projectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 2,
         project: 2,
-        commissionFund: 4,
+        commissionFund: 2,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
@@ -186,7 +186,7 @@ export const _projectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 3,
         project: 2,
-        commissionFund: 2,
+        commissionFund: 3,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
@@ -200,7 +200,7 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 1,
         project: 1,
-        commissionFund: 3,
+        commissionFund: 1,
         isFirstEdition: true,
         amountAskedPreviousEdition: 100,
         amountEarnedPreviousEdition: 100,
@@ -211,7 +211,7 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 2,
         project: 2,
-        commissionFund: 4,
+        commissionFund: 2,
         isFirstEdition: true,
         amountAskedPreviousEdition: 300,
         amountEarnedPreviousEdition: 300,
@@ -222,7 +222,7 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 3,
         project: 2,
-        commissionFund: 2,
+        commissionFund: 4,
         isFirstEdition: true,
         amountAskedPreviousEdition: 500,
         amountEarnedPreviousEdition: 500,

@@ -214,10 +214,11 @@ describe('useSubmitProject', () => {
             it('should patch updated infos', async () => {
                 await patchProjectCommissionFunds(true)
                 expect(axiosAuthenticated.patch).toHaveBeenCalledTimes(3)
-                expect(axiosAuthenticated.patch).toHaveBeenLastCalledWith('/projects/1/commission_funds/2', {
+                expect(axiosAuthenticated.patch).toHaveBeenLastCalledWith('/projects/1/commission_funds/4', {
                     amountAskedPreviousEdition: 500,
                     amountEarnedPreviousEdition: 500,
                     amountAsked: 1500,
+                    commissionFund: 4
                 })
             })
         })
@@ -225,11 +226,12 @@ describe('useSubmitProject', () => {
             it('should patch updated infos', async () => {
                 await patchProjectCommissionFunds(false)
                 expect(axiosAuthenticated.patch).toHaveBeenCalledTimes(3)
-                expect(axiosAuthenticated.patch).toHaveBeenLastCalledWith('/projects/1/commission_funds/2', {
+                expect(axiosAuthenticated.patch).toHaveBeenLastCalledWith('/projects/1/commission_funds/4', {
                     isFirstEdition: false,
                     amountAskedPreviousEdition: 500,
                     amountEarnedPreviousEdition: 500,
                     amountAsked: 1500,
+                    commissionFund: 4
                 })
             })
         })
