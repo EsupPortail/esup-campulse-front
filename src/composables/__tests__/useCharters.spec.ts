@@ -60,8 +60,8 @@ describe('useCharters', () => {
         manageCharters,
         associationCharters,
         initAssociationCharters,
-        initProcessingCharters,
-        processingCharters,
+        // initProcessingCharters,
+        // processingCharters,
         uploadCharter,
         patchCharterDocument,
         patchCharterStatus
