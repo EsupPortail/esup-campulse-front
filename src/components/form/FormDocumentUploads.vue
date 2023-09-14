@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import type {DocumentProcessType, ProcessDocument} from '#/documents'
+import type {Document, DocumentProcessType, MimeType, ProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
@@ -107,10 +107,20 @@ async function onGetDocuments() {
 }
 
 // FILE TOO LARGE
-async function onDocumentRejected() {
-    notify({
-        type: 'negative',
-        message: t('notifications.negative.error-413')
+async function onDocumentRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
+    rejectedEntries.forEach(entry => {
+        if (entry.failedPropValidation === 'accept') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-mimetype')
+            })
+        }
+        if (entry.failedPropValidation === 'max-file-size') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-413')
+            })
+        }
     })
 }
 
