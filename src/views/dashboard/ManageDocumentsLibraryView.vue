@@ -67,6 +67,8 @@ const initLibraryDocuments = () => {
                 } else if (managerFunds.value.includes(document.fund)) {
                     pushDocument = true
                 }
+            } else if (document.pathTemplate) {
+                pushDocument = true
             }
         }
         if (pushDocument) {
@@ -296,9 +298,7 @@ async function onDeleteDocument(documentId: number) {
                     </div>
 
                     <div v-if="document.open">
-                        <QForm
-                            @submit.prevent="onUpdateDocument(document.id)"
-                        >
+                        <QForm @submit.prevent="onUpdateDocument(document.id)">
                             <QInput
                                 v-model="document.newName"
                                 :label="t('documents.choose-name')"

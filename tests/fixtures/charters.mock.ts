@@ -1,5 +1,5 @@
-import type {AssociationCharter, CharterStatus, ManageCharter} from '#/charters'
-import {_chartersExpirationDate, _currentYear, _nextYear, _todayDate} from './dates.mock'
+import type {AssociationCharter, ManageCharter} from '#/charters'
+import {_chartersExpirationDate, _currentYear, _todayDate} from './dates.mock'
 
 
 export const _associationCharter: ManageCharter = {
