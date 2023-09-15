@@ -24,13 +24,13 @@
     "pinia": "^2.1.6",
     "quasar": "^2.12.7",
     "vue": "^3.2.47",
-    "vue-i18n": "^9.4.0",
+    "vue-i18n": "^9.4.1",
     "vue-matomo": "^4.2.0",
     "vue-router": "^4.2.4",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/types": "^7.22.17",
+    "@babel/types": "^7.22.19",
     "@intlify/eslint-plugin-vue-i18n": "^2.0.0",
     "@intlify/unplugin-vue-i18n": "^1.2.0",
     "@pinia/testing": "^0.1.3",
