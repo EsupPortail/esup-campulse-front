@@ -8,12 +8,14 @@ import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import useDocumentUploads from '@/composables/useDocumentUploads'
+import useDocuments from '@/composables/useDocuments'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {uploadCharter, initCharters} = useCharters()
 const {catchHTTPError} = useErrors()
 const {MAX_FILE_SIZE} = useDocumentUploads()
+const {acceptedFormats} = useDocuments()
 
 const props = defineProps<{
     openSign: boolean,
@@ -61,11 +63,21 @@ async function onSignCharter() {
     loading.hide()
 }
 
-// FILE TOO LARGE
-async function onDocumentRejected() {
-    notify({
-        type: 'negative',
-        message: t('notifications.negative.error-413')
+// FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
+async function onDocumentRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
+    rejectedEntries.forEach(entry => {
+        if (entry.failedPropValidation === 'accept') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-mimetype')
+            })
+        }
+        if (entry.failedPropValidation === 'max-file-size') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-413')
+            })
+        }
     })
 }
 </script>
@@ -85,13 +97,22 @@ async function onDocumentRejected() {
                         :label="t('charter.signed-charter') + ' *'"
                         :max-file-size="MAX_FILE_SIZE"
                         aria-required="true"
+                        bottom-slots
                         clearable
                         color="charter"
                         counter
                         filled
+                        for="pathFile"
                         use-chips
                         @rejected="onDocumentRejected"
                     >
+                        <template v-slot:hint>
+                            <p aria-describedby="pathFile">
+                                {{
+                                    t('forms.accepted-formats') + acceptedFormats(props.charter.mimeTypes) + '.'
+                                }}
+                            </p>
+                        </template>
                         <template v-slot:prepend>
                             <QIcon name="bi-paperclip"/>
                         </template>

@@ -10,7 +10,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useCommissions from '@/composables/useCommissions'
 
-const {getLibraryDocuments, documents, postNewDocument, patchDocument, deleteDocument} = useDocuments()
+const {getLibraryDocuments, documents, postNewDocument, patchDocument, deleteDocument, acceptedFormats} = useDocuments()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {t} = useI18n()
@@ -234,10 +234,15 @@ async function onDeleteDocument(documentId: number) {
                         v-model="newDocument.file"
                         :label="t('documents.choose-file')"
                         :rules="[val => val || t('forms.required-document-file')]"
+                        bottom-slots
                         clearable
                         color="dashboard"
                         filled
-                    />
+                    >
+                        <template v-slot:prepend>
+                            <QIcon name="bi-paperclip"/>
+                        </template>
+                    </QFile>
                     <QBtn
                         :label="t('add')"
                         class="btn-lg"
@@ -313,10 +318,23 @@ async function onDeleteDocument(documentId: number) {
                                 :accept="document.mimeTypes.join(',')"
                                 :label="t('documents.choose-file')"
                                 :rules="[val => val || t('forms.required-document-file')]"
+                                bottom-slots
                                 clearable
                                 color="dashboard"
                                 filled
-                            />
+                                for="pathFile"
+                            >
+                                <template v-slot:hint>
+                                    <p aria-describedby="pathFile">
+                                        {{
+                                            t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.'
+                                        }}
+                                    </p>
+                                </template>
+                                <template v-slot:prepend>
+                                    <QIcon name="bi-paperclip"/>
+                                </template>
+                            </QFile>
                             <div class="flex-row padding-top padding-bottom">
                                 <QBtn
                                     :icon="document.path ? 'bi-arrow-repeat' : 'bi-upload'"

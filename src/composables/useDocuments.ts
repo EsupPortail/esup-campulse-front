@@ -1,6 +1,7 @@
 import {ref} from 'vue'
-import type {Document} from '#/documents'
+import type {Document, MimeType} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
+
 
 const documents = ref<Document[]>([])
 
@@ -69,6 +70,10 @@ export default function () {
         }
     ]
 
+    const acceptedFormats = (mimeTypes: MimeType[]) => {
+        return mimeTypes.map(mimeType => mimeTypesLabels.find(obj => obj.value === mimeType)?.label ?? '').join(', ')
+    }
+
     async function getLibraryDocuments() {
         documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_types=${libraryProcesses.join(',')}`)).data
     }
@@ -113,6 +118,7 @@ export default function () {
         libraryProcesses,
         getDocumentByAcronym,
         createFileLink,
-        mimeTypesLabels
+        mimeTypesLabels,
+        acceptedFormats
     }
 }

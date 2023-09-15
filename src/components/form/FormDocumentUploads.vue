@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import type {DocumentProcessType, ProcessDocument, MimeType} from '#/documents'
+import type {DocumentProcessType, ProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
@@ -28,7 +28,7 @@ const {
     MAX_FILE_SIZE,
     MAX_FILES
 } = useDocumentUploads()
-const {mimeTypesLabels} = useDocuments()
+const {acceptedFormats} = useDocuments()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -108,7 +108,7 @@ async function onGetDocuments() {
     loading.hide()
 }
 
-// FILE TOO LARGE
+// FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
 async function onDocumentRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
     rejectedEntries.forEach(entry => {
         if (entry.failedPropValidation === 'accept') {
@@ -160,10 +160,6 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
             })
         }
     }
-}
-
-const acceptedFormats = (mimeTypes: MimeType[]) => {
-    return mimeTypes.map(mimeType => mimeTypesLabels.find(obj => obj.value === mimeType)?.label ?? '').join(', ')
 }
 </script>
 

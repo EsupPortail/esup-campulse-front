@@ -21,6 +21,7 @@ import useSecurity from '@/composables/useSecurity'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import useErrors from '@/composables/useErrors'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
+import useDocuments from '@/composables/useDocuments'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -32,6 +33,7 @@ const {
 const {isStaff} = useUserGroups()
 const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
+const {acceptedFormats} = useDocuments()
 
 const associationStore = useAssociationStore()
 
@@ -114,10 +116,21 @@ watch(() => associationStore.association?.pathLogo, () => {
 })
 const MAX_FILE_SIZE = 8388608
 
-async function onLogoRejected() {
-    notify({
-        type: 'negative',
-        message: t('notifications.negative.error-413')
+// FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
+async function onLogoRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
+    rejectedEntries.forEach(entry => {
+        if (entry.failedPropValidation === 'accept') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-mimetype')
+            })
+        }
+        if (entry.failedPropValidation === 'max-file-size') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-413')
+            })
+        }
     })
 }
 
@@ -204,10 +217,23 @@ async function onChangeLogo(action: string) {
                     :label="t('association.logo.pickup')"
                     :max-file-size="MAX_FILE_SIZE"
                     accept="image/png, image/jpeg"
+                    bottom-slots
                     clearable
                     filled
+                    for="pathFile"
                     @rejected="onLogoRejected"
-                />
+                >
+                    <template v-slot:hint>
+                        <p aria-describedby="pathFile">
+                            {{
+                                t('forms.accepted-formats') + acceptedFormats(['image/png', 'image/jpeg']) + '.'
+                            }}
+                        </p>
+                    </template>
+                    <template v-slot:prepend>
+                        <QIcon name="bi-image"/>
+                    </template>
+                </QFile>
 
                 <div class="flex-row-space-between">
                     <QBtn
