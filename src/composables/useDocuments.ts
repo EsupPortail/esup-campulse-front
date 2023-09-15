@@ -70,8 +70,8 @@ export default function () {
         }
     ]
 
-    const acceptedFormats = (mimeTypes: MimeType[]) => {
-        return mimeTypes.map(mimeType => mimeTypesLabels.find(obj => obj.value === mimeType)?.label ?? '').join(', ')
+    const acceptedFormats = (mimeTypes: MimeType[] | undefined) => {
+        return mimeTypes?.map(mimeType => mimeTypesLabels.find(obj => obj.value === mimeType)?.label ?? '').join(', ')
     }
 
     async function getLibraryDocuments() {
