@@ -78,6 +78,19 @@ export const _manageCharters: ManageCharter[] = [
 
 export const _associationCharters: AssociationCharter[] = [
     {
+        associationId: 1,
+        associationName: 'Association',
+        institution: 'Unistra',
+        isSite: true,
+        charters: [
+            {
+                charterId: 1,
+                charterName: 'Charte Site Alsace + RGPD Site Alsace',
+                charterStatus: 'RETURNED'
+            }
+        ]
+    },
+    {
         associationId: 2,
         associationName: 'Amicale des étudiants en Chimie',
         institution: 'UHA',
@@ -97,7 +110,7 @@ export const _projectFundCharters: AssociationCharter[] = [
         associationId: 1,
         associationName: 'Association',
         institution: 'Unistra',
-        isSite: false,
+        isSite: true,
         charters: [
             {
                 charterId: 3,

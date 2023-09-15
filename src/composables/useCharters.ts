@@ -194,7 +194,6 @@ export default function () {
         })
     }
 
-    // TODO test
     const initCharterStatus = (isSite: boolean, associationCharterStatus: AssociationCharterStatus | undefined, document: Document, uploadedCharter: DocumentUpload | undefined) => {
         let charterStatus: CharterStatus = 'NO_CHARTER'
         let validatedDate = ''

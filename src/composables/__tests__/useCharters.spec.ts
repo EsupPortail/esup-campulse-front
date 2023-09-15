@@ -12,7 +12,7 @@ import {_documents} from '~/fixtures/document.mock'
 import {_associationCharters, _manageCharters, _projectFundCharters} from '~/fixtures/charters.mock'
 import {_associations, _institutions} from '~/fixtures/association.mock'
 import {_todayDate} from '~/fixtures/dates.mock'
-import useUtility from '../useUtility'
+import useUtility from '@/composables/useUtility'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -60,8 +60,8 @@ describe('useCharters', () => {
         manageCharters,
         associationCharters,
         initAssociationCharters,
-        // initProcessingCharters,
-        // processingCharters,
+        initProcessingCharters,
+        processingCharters,
         uploadCharter,
         patchCharterDocument,
         patchCharterStatus
@@ -122,21 +122,23 @@ describe('useCharters', () => {
         })
     })
 
-    // TO DO
-    /*describe('initProcessingCharters', () => {
-        describe('if charter type is association charter', () => {
-            it('should init all pending association charters to validate', () => {
-                initProcessingCharters('CHARTER_ASSOCIATION')
-                expect(processingCharters.value).toEqual([])
+    /*    describe('initProcessingCharters', () => {
+            describe('if charter type is association charter', () => {
+                it('should init all pending association charters to validate', async () => {
+                    charterDocuments.value = _documentUploads
+                    documents.value = _documents
+                    associationStore.associations = _associations
+                    await initProcessingCharters('CHARTER_ASSOCIATION')
+                    expect(processingCharters.value).toEqual([])
+                })
             })
-        })
-        describe('if charter type is project fund charter', () => {
-            it('should init all pending project fund charters to validate', () => {
-                initProcessingCharters('CHARTER_PROJECT_FUND')
-                expect(processingCharters.value).toEqual([])
+            describe('if charter type is project fund charter', () => {
+                it('should init all pending project fund charters to validate', async () => {
+                    await initProcessingCharters('CHARTER_PROJECT_FUND')
+                    expect(processingCharters.value).toEqual([])
+                })
             })
-        })
-    })*/
+        })*/
 
     describe('uploadCharter', () => {
         it('should post an uploaded charter document and delete the old one', async () => {

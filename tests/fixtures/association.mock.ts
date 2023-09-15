@@ -95,7 +95,7 @@ export const _associations: Association[] = [
         email: '',
         isEnabled: true,
         isPublic: true,
-        isSite: false,
+        isSite: true,
         institution: 1,
         institutionComponent: 1,
         activityField: 1,
