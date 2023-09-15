@@ -24,7 +24,7 @@ function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
 }
 
 export const _userGroups: UserGroup[] = [
-    // Manager
+    // General manager
     {
         userId: 1,
         groupId: 1,
@@ -57,6 +57,12 @@ export const _userGroups: UserGroup[] = [
         userId: 3,
         groupId: 4,
         fundId: 1
+    },
+    // Misc manager
+    {
+        userId: 4,
+        groupId: 3,
+        fundId: 3
     }
 ]
 
@@ -88,6 +94,21 @@ export const _generalManager: User = {
     associations: [],
     groups: [_userGroups[0]],
     permissions: getUserGroupsPermissions([_userGroups[0]])
+}
+
+export const _miscManager: User = {
+    id: 4,
+    username: 'misc-manager@unistra.fr',
+    firstName: 'Manager',
+    lastName: 'Misc',
+    phone: '',
+    email: 'misc-manager@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[6]],
+    permissions: getUserGroupsPermissions([_userGroups[6]])
 }
 
 export const _institutionStudent: User = {

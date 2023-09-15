@@ -238,11 +238,11 @@ export default function () {
         })
     }
 
-    // TODO: test
     const initUserAssociations = (editedByStaff: boolean) => {
         userAssociations.value = []
-        let associations: AssociationUserDetail[] = userStore.userAssociations
+        let associations: AssociationUserDetail[] | [] = []
         if (editedByStaff) associations = userManagerStore.userAssociations
+        else associations = userStore.userAssociations
         associations.forEach(function (association) {
             const role = getAssociationUserRole(association)
             userAssociations.value.push({
@@ -258,7 +258,6 @@ export default function () {
         })
     }
 
-    // TODO: test
     async function getUnvalidatedAssociationUsers() {
         associationMembers.value = []
 

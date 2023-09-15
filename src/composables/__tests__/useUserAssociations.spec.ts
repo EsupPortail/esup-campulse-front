@@ -6,9 +6,9 @@ import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {
-    // _associationMembers,
-    _associationRole,
-    _institutionStudent,
+    _associationMembers,
+    _associationRole, _generalManager,
+    _institutionStudent, _miscManager,
     _userAssociationDetail,
     _userAssociationDetails,
     _userAssociations,
@@ -17,7 +17,9 @@ import {
 import useUserAssociations from '@/composables/useUserAssociations'
 import {useAxios} from '@/composables/useAxios'
 import {_association, _associationNames} from '~/fixtures/association.mock'
-// import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+//import type {AssociationMember} from '#/user'
+
 
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
@@ -45,13 +47,13 @@ config.global.plugins = [
 
 let userManagerStore = useUserManagerStore()
 let userStore = useUserStore()
-// let associationStore = useAssociationStore()
+let associationStore = useAssociationStore()
 
 describe('useUserAssociations', () => {
     beforeEach(() => {
         userStore = useUserStore()
         userManagerStore = useUserManagerStore()
-        // associationStore = useAssociationStore()
+        associationStore = useAssociationStore()
     })
 
     afterEach(() => {
@@ -61,15 +63,29 @@ describe('useUserAssociations', () => {
     const {
         deleteUserAssociation,
         patchUserAssociations,
-        userAssociations
+        userAssociations,
+        initAssociationMembers,
+        associationMembers,
+        updateUserAssociations,
+        newAssociations,
+        addAssociation,
+        associationRoleOptions,
+        removeAssociation,
+        updateRegisterRoleInAssociation,
+        newAssociationsUser,
+        getAssociationUsersNames,
+        getUserAssociations,
+        getAssociationUserRole,
+        initUserAssociations,
+        getUnvalidatedAssociationUsers
     } = useUserAssociations()
+    const {axiosAuthenticated} = useAxios()
+
+    const mockedAxios = vi.mocked(axiosAuthenticated, true)
+
 
     describe('updateUserAssociations', () => {
-        const {updateUserAssociations} = useUserAssociations()
-        const {axiosAuthenticated} = useAxios()
-
         describe('if editedByStaff', () => {
-
             beforeEach(() => {
                 userManagerStore.user = _institutionStudent
                 userAssociations.value = [_associationRole]
@@ -100,7 +116,6 @@ describe('useUserAssociations', () => {
         })
 
         describe('if not editedByStaff', () => {
-
             beforeEach(() => {
                 userStore.user = _institutionStudent
                 userAssociations.value = [_associationRole]
@@ -134,7 +149,6 @@ describe('useUserAssociations', () => {
     describe('deleteUserAssociation', () => {
         it('should call API once on /users/userId/associations/associationId', async () => {
             userManagerStore.user = _institutionStudent
-            const {axiosAuthenticated} = useAxios()
             await deleteUserAssociation(userManagerStore.user?.id, 1)
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}/associations/1`)
@@ -153,15 +167,12 @@ describe('useUserAssociations', () => {
                 isVicePresident: false
             }
             await patchUserAssociations(userManagerStore.user?.id, 1, dataToPatch)
-            const {axiosAuthenticated} = useAxios()
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}/associations/1`, dataToPatch)
         })
     })
 
     describe('addAssociation', () => {
-        const {newAssociations, addAssociation, associationRoleOptions} = useUserAssociations()
-
         afterEach(() => {
             newAssociations.value = []
         })
@@ -177,8 +188,6 @@ describe('useUserAssociations', () => {
     })
 
     describe('removeAssociation', () => {
-        const {newAssociations, addAssociation, removeAssociation} = useUserAssociations()
-
         afterEach(() => {
             newAssociations.value = []
         })
@@ -191,8 +200,6 @@ describe('useUserAssociations', () => {
     })
 
     describe('updateRegisterRoleInAssociation', () => {
-        const {updateRegisterRoleInAssociation, newAssociations, newAssociationsUser} = useUserAssociations()
-
         afterEach(() => {
             newAssociations.value = []
         })
@@ -216,11 +223,7 @@ describe('useUserAssociations', () => {
     })
 
     describe('getUserAssociations', () => {
-        const {getUserAssociations} = useUserAssociations()
-        const {axiosAuthenticated} = useAxios()
-
         const associationNamesUrl = '/associations/names'
-
         describe('if the user is a managedUser', () => {
             beforeEach(() => {
                 userManagerStore.user = _institutionStudent
@@ -234,15 +237,12 @@ describe('useUserAssociations', () => {
 
             it('should get extended userAssociations', async () => {
                 const userAssociationsUrl = `/users/${userManagerStore.user?.id}/associations/`
-
                 const mockedAxios = vi.mocked(axiosAuthenticated, true)
                 mockedAxios.get.mockImplementation((url) => {
                     if (url === userAssociationsUrl) return Promise.resolve({data: [_userAssociations[0]]})
                     else return Promise.resolve({data: _association})
                 })
-
                 await getUserAssociations(userManagerStore.user?.id, true)
-
                 expect(axiosAuthenticated.get).toHaveBeenCalledTimes(2)
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(userAssociationsUrl)
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith('/associations/1')
@@ -262,16 +262,12 @@ describe('useUserAssociations', () => {
 
             it('should get extended userAssociations', async () => {
                 const userAssociationsUrl = '/users/associations/'
-
-                const mockedAxios = vi.mocked(axiosAuthenticated, true)
                 mockedAxios.get.mockImplementation((url) => {
                     if (url === userAssociationsUrl) return Promise.resolve({data: [_userAssociations[4]]})
                     else if (url === associationNamesUrl) return Promise.resolve({data: _associationNames})
                     else return Promise.resolve({data: _association})
                 })
-
                 await getUserAssociations(userStore.user?.id, false)
-
                 expect(axiosAuthenticated.get).toHaveBeenCalledTimes(2)
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(userAssociationsUrl)
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(associationNamesUrl)
@@ -281,8 +277,6 @@ describe('useUserAssociations', () => {
     })
 
     describe('getAssociationUserRole', () => {
-        const {getAssociationUserRole} = useUserAssociations()
-
         it('should return the string code of the role', () => {
             expect(getAssociationUserRole(_userAssociations[0])).toEqual('isPresident')
             expect(getAssociationUserRole(_userAssociations[1])).toEqual('isSecretary')
@@ -293,11 +287,7 @@ describe('useUserAssociations', () => {
     })
 
     describe('getAssociationUserNames', () => {
-        const {axiosAuthenticated} = useAxios()
-        const {getAssociationUsersNames} = useUserAssociations()
-
         it('should get users based on association affiliation', async () => {
-            const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.get.mockResolvedValueOnce({data: _users})
             await getAssociationUsersNames(1)
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
@@ -305,18 +295,13 @@ describe('useUserAssociations', () => {
         })
     })
 
-    /* TODO : test broken after vitest update.
     describe('initAssociationMembers', () => {
-        const {initAssociationMembers, associationMembers} = useUserAssociations()
-        const {axiosAuthenticated} = useAxios()
-        const spy = vi.spyOn(associationStore, 'getAssociationUsers')
-
         beforeEach(() => {
-            const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.get.mockResolvedValueOnce({data: _users})
         })
 
         it('should get associationUsers and userNames', async () => {
+            const spy = vi.spyOn(associationStore, 'getAssociationUsers')
             await initAssociationMembers(1, false)
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/?association_id=1')
@@ -325,9 +310,90 @@ describe('useUserAssociations', () => {
 
         it('should init all users into associationMembers', async () => {
             associationStore.associationUsers = _userAssociations
+            vi.spyOn(associationStore, 'getAssociationUsers')
             await initAssociationMembers(1, false)
             expect(associationMembers.value).toEqual(_associationMembers)
         })
     })
-    */
+
+    describe('initUserAssociations', () => {
+        describe('if edited by staff', () => {
+            it('should init a the associations of a user with his/her role and role options', () => {
+                userManagerStore.userAssociations = _userAssociationDetails
+                initUserAssociations(true)
+                expect(userAssociations.value).toEqual(_userAssociationDetails.map(association => ({
+                    id: association.association.id,
+                    name: association.association.name,
+                    role: getAssociationUserRole(association),
+                    options: associationRoleOptions,
+                    isValidatedByAdmin: association.isValidatedByAdmin,
+                    canBePresidentFrom: association.canBePresidentFrom,
+                    canBePresidentTo: association.canBePresidentTo,
+                    deleteAssociation: false
+                })))
+            })
+        })
+    })
+
+    describe('getUnvalidatedAssociationUsers', () => {
+        describe('if manager is misc', () => {
+            it('should get unvalidated association users from their institution', async () => {
+                userStore.user = _miscManager
+                mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
+                const spies = {
+                    getAssociationNames: vi.spyOn(associationStore, 'getAssociationNames'),
+                    getUsers: vi.spyOn(userManagerStore, 'getUsers')
+                }
+                const url = `/users/associations/?institutions=${userStore.userInstitutions?.join(',') + ','}&is_validated_by_admin=false`
+                await getUnvalidatedAssociationUsers()
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
+                expect(spies.getAssociationNames).toHaveBeenCalledOnce()
+                expect(spies.getAssociationNames).toHaveBeenCalledWith(false, false)
+                expect(spies.getUsers).toHaveBeenCalledOnce()
+                expect(spies.getUsers).toHaveBeenCalledWith('validated')
+            })
+        })
+
+        describe('if manager is not misc', () => {
+            it('should get unvalidated association users from their institution', async () => {
+                userStore.user = _generalManager
+                mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
+                vi.spyOn(associationStore, 'getAssociationNames')
+                vi.spyOn(userManagerStore, 'getUsers')
+                const url = `/users/associations/?institutions=${userStore.userInstitutions?.join(',') + ','}&is_validated_by_admin=false`
+                await getUnvalidatedAssociationUsers()
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
+            })
+            /*it('should init association members with their role', async () => {
+                userStore.user = _generalManager
+                userManagerStore.users = _users
+                associationStore.associationNames = _associationNames
+                mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
+                vi.spyOn(associationStore, 'getAssociationNames')
+                vi.spyOn(userManagerStore, 'getUsers')
+                await getUnvalidatedAssociationUsers()
+                const test: AssociationMember[] = []
+                _userAssociations.forEach((associationUser) => {
+                    const extendedUser = _users.find(obj => obj.id === associationUser.user)
+                    const associationName = _associationNames.find(obj => obj.id === associationUser.association)?.name
+                    if (extendedUser && associationName) {
+                        test.push({
+                            id: associationUser.user as number,
+                            associationId: associationUser.association as number,
+                            associationName,
+                            firstName: extendedUser.firstName,
+                            lastName: extendedUser.lastName,
+                            role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label as string,
+                            canBePresidentFrom: associationUser.canBePresidentFrom,
+                            canBePresidentTo: associationUser.canBePresidentTo,
+                            isValidatedByAdmin: associationUser.isValidatedByAdmin as boolean
+                        })
+                    }
+                })
+                expect(associationMembers.value).toEqual(test)
+            })*/
+        })
+    })
 })
