@@ -45,7 +45,8 @@ export default function () {
                     description: document.description,
                     pathFile: document.isMultiple ? [] : undefined,
                     isRequiredInProcess: document.isRequiredInProcess,
-                    mimeTypes: document.mimeTypes
+                    mimeTypes: document.mimeTypes,
+                    pathTemplate: document.pathTemplate
                 })
             }
         })

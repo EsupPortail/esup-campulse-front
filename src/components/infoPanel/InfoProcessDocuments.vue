@@ -45,7 +45,7 @@ onMounted(async () => {
         ></i>
         <p>{{ t('project.form-help') }}</p>
         <p>
-            {{ t('project.required-documents-list') + ' :' }}
+            {{ t('project.required-documents-list') }}
         </p>
         <ul>
             <li
@@ -55,7 +55,6 @@ onMounted(async () => {
                 <span v-if="document.pathTemplate">
                     <a
                         :href="document.pathTemplate"
-                        :title="t('project.document.download-template')"
                         target="_blank"
                     >{{ document.description }}</a>
                 </span>
@@ -68,4 +67,10 @@ onMounted(async () => {
 <style lang="scss" scoped>
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/styles/forms.scss";
+@import "@/assets/_variables.scss";
+
+a {
+    color: inherit;
+    font-weight: $semibold-weight;
+}
 </style>
