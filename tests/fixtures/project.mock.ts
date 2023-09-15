@@ -235,7 +235,7 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
 export const _documentUploads: DocumentUpload[] = [
     {
         id: 1,
-        uploadDate: '2023-07-22',
+        uploadDate: '2023-01-01',
         pathFile: 'https://plana.unistra.fr',
         size: 10000,
         validatedDate: '2023-01-01',
@@ -248,7 +248,7 @@ export const _documentUploads: DocumentUpload[] = [
     },
     {
         id: 2,
-        uploadDate: '2023-07-22',
+        uploadDate: '2023-01-01',
         pathFile: 'https://plana.unistra.fr',
         size: 10000,
         validatedDate: '2023-01-01',
@@ -261,7 +261,7 @@ export const _documentUploads: DocumentUpload[] = [
     },
     {
         id: 3,
-        uploadDate: '2023-07-22',
+        uploadDate: '2023-01-01',
         pathFile: 'https://plana.unistra.fr',
         size: 10000,
         validatedDate: [_currentYear, '01', '01'].join('-'),
