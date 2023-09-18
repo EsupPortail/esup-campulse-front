@@ -247,4 +247,13 @@ describe('Project store', () => {
             })
         })
     })
+
+    describe('searchProject', () => {
+        it('should filter through managed projects and only retrieve the one corresponding to manual identifier', () => {
+            projectStore.managedProjects = _projects
+            const manualIdentifier = '2023090003'
+            projectStore.searchProjectByManualIdentifier(manualIdentifier)
+            expect(projectStore.managedProjects).toEqual([_projects.find(obj => obj.manualIdentifier === manualIdentifier)])
+        })
+    })
 })

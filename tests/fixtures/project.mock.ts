@@ -4,7 +4,7 @@ import type {
     ProjectBudget,
     ProjectCategory,
     ProjectCommissionFund,
-    ProjectGoals,
+    ProjectGoals, ProjectList,
     ProjectReview
 } from '#/project'
 import type {DocumentUpload} from '#/documents'
@@ -40,14 +40,25 @@ export const _project: Project = {
     manualIdentifier: '20230001'
 }
 
-export const _projects = [
+export const _projects: ProjectList[] = [
     {
         id: 1,
         name: 'Projet associatif de porteur de projet individuel',
         association: null,
         user: 9,
         editionDate: '2023-03-15T11:18:47+01:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090001'
     },
     {
         id: 2,
@@ -55,7 +66,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-03-14T11:18:47+01:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090002'
     },
     {
         id: 3,
@@ -63,7 +85,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-04-26T14:27:42.938670+02:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090003'
     },
     {
         id: 4,
@@ -71,7 +104,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-04-26T14:28:59.408076+02:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090004'
     },
     {
         id: 5,
@@ -79,7 +123,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-04-28T11:06:52.944326+02:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090005'
     },
     {
         id: 6,
@@ -87,7 +142,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-04-28T11:07:42.336557+02:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090006'
     }
 ]
 

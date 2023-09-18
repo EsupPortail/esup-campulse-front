@@ -144,6 +144,12 @@ export const useProjectStore = defineStore('projectStore', {
             const {axiosAuthenticated} = useAxios()
             await axiosAuthenticated.patch(`/projects/${this.project?.id}/commission_funds/${oldCommissionFund}`,
                 {projectId: this.project?.id, commissionFundId: newCommissionFund})
+        },
+
+        // TODO test
+        searchProjectByManualIdentifier(manualIdentifier: string) {
+            this.managedProjects = this.managedProjects.filter(obj => obj.manualIdentifier === manualIdentifier)
         }
     }
+
 })
