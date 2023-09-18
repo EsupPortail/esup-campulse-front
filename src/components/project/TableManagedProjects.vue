@@ -30,7 +30,8 @@ const props = defineProps<{
     commissionId: number,
     commissionName: string,
     projectStatus: 'all' | 'validated' | 'archived',
-    title: string
+    title: string,
+    flat: boolean
 }>()
 
 const isLoaded = ref<boolean>(false)
@@ -130,12 +131,12 @@ const columns: QTableProps['columns'] = [
     <QTable
         v-model:selected="selected"
         :columns="columns"
+        :flat="props.flat"
         :loading="!projects"
         :no-data-label="t('project.no-project-to-show')"
         :rows="projects"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="props.title"
-        flat
         role="presentation"
         row-key="id"
         selection="multiple"

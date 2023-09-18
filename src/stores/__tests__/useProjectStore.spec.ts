@@ -11,8 +11,8 @@ import {
     _projectCommissionFunds, _projectReview,
     _projects
 } from '~/fixtures/project.mock'
-import useCommissions from '../../composables/useCommissions'
-import {_commissionFunds, _commissions} from '../../../tests/fixtures/commissions.mock'
+import useCommissions from '@/composables/useCommissions'
+import {_commissionFunds, _commissions} from '~/fixtures/commissions.mock'
 
 
 vi.mock('@/composables/useAxios', () => ({

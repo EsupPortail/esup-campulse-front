@@ -186,6 +186,7 @@ async function onClearSearch() {
                                         <TableManagedProjects
                                             :commission-id="tab.commission"
                                             :commission-name="tab.name"
+                                            :flat="true"
                                             :title="t('project.all-projects')"
                                             project-status="all"
                                         />
@@ -196,6 +197,7 @@ async function onClearSearch() {
                                         <TableManagedProjects
                                             :commission-id="tab.commission"
                                             :commission-name="tab.name"
+                                            :flat="true"
                                             :title="t('project.validated-projects')"
                                             project-status="validated"
                                         />
@@ -206,6 +208,7 @@ async function onClearSearch() {
                                         <TableManagedProjects
                                             :commission-id="tab.commission"
                                             :commission-name="tab.name"
+                                            :flat="true"
                                             :title="t('project.archived-projects')"
                                             project-status="archived"
                                         />
