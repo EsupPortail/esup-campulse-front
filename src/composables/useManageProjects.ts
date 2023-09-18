@@ -3,6 +3,7 @@ import type {ProjectCommissionFund} from '#/project'
 import useCommissions from '@/composables/useCommissions'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
+import {useProjectStore} from '@/stores/useProjectStore'
 
 interface ProjectCommissionFundLabel {
     value: number,

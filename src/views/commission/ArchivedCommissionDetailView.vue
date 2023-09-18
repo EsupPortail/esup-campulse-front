@@ -8,6 +8,8 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import useCommissions from '@/composables/useCommissions'
 import useUtility from '@/composables/useUtility'
+import FormProjectSearch from '@/components/form/FormProjectSearch.vue'
+import {useProjectStore} from '@/stores/useProjectStore'
 // import CommissionExport from '@/components/commissions/CommissionExport.vue'
 
 const {t} = useI18n()
@@ -16,6 +18,7 @@ const {catchHTTPError} = useErrors()
 const {getCommission, commission} = useCommissions()
 const {dynamicTitle} = useUtility()
 const route = useRoute()
+const projectStore = useProjectStore()
 
 const commissionId = ref<number>(parseInt(route.params.id as string))
 const commissionName = ref<string>('')
@@ -45,16 +48,38 @@ const initCommissionName = () => {
 }
 watch(() => commission.value, initCommissionName)
 
+
+async function onClearSearch() {
+    loading.show()
+    try {
+        // Reset projects
+        await projectStore.getManagedProjects(commissionId.value)
+        await projectStore.getProjectCommissionFunds(true, commissionId.value)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response.status)
+            })
+        }
+    }
+    loading.hide()
+}
+
 </script>
 
 
 <template>
     <section class="dashboard-section">
         <div class="dashboard-section-container">
-            <div class="container-lg">
+            <div class="container-lg flex-column">
+                <div class="container padding-top padding-bottom">
+                    <FormProjectSearch @on-clear-search="onClearSearch"/>
+                </div>
                 <TableManagedProjects
                     :commission-id="commissionId"
                     :commission-name="commissionName"
+                    :flat="false"
                     :title="t('project.archived-projects')"
                     project-status="all"
                 />

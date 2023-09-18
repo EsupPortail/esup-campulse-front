@@ -24,7 +24,8 @@ onMounted(async () => {
 
 async function onGetCommissions() {
     try {
-        await getCommissionsForManagers(undefined, false, false, undefined, true)
+        // await getCommissionsForManagers(undefined, false, false, undefined, true)
+        await getCommissionsForManagers(undefined, undefined, undefined, undefined, undefined)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

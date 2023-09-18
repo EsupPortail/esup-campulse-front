@@ -30,7 +30,8 @@ const props = defineProps<{
     commissionId: number,
     commissionName: string,
     projectStatus: 'all' | 'validated' | 'archived',
-    title: string
+    title: string,
+    flat: boolean
 }>()
 
 const isLoaded = ref<boolean>(false)
@@ -127,170 +128,168 @@ const columns: QTableProps['columns'] = [
 </script>
 
 <template>
-    <div>
-        <QTable
-            v-model:selected="selected"
-            :columns="columns"
-            :loading="!projects"
-            :no-data-label="t('project.no-project-to-show')"
-            :rows="projects"
-            :rows-per-page-options="[10, 20, 50, 0]"
-            :title="props.title"
-            flat
-            role="presentation"
-            row-key="id"
-            selection="multiple"
-        >
-            <template v-slot:header="props">
-                <QTr :props="props">
-                    <QTh>
-                        <QCheckbox
-                            v-model="props.selected"
-                            :aria-label="t('table.select-all')"
-                            color="commission"
-                        />
-                    </QTh>
-                    <QTh
-                        v-for="col in props.cols"
-                        :id="col.name"
-                        :key="col.name"
-                        :props="props"
-                        scope="col"
-                    >
-                        {{ col.label }}
-                    </QTh>
-                </QTr>
-            </template>
-            <template v-slot:body="props">
-                <QTr :props="props">
-                    <QTd>
-                        <QCheckbox
-                            v-model="props.selected"
-                            :aria-label="props.row.name"
-                            color="commission"
-                        />
-                    </QTd>
-                    <QTd
-                        key="id"
-                        :props="props"
-                        headers="id"
-                    >
-                        {{ props.row.manualIdentifier ?? '' }}
-                    </QTd>
-                    <QTd
-                        key="name"
-                        :props="props"
-                        headers="name"
-                    >
-                        {{ props.row.name }}
-                    </QTd>
-                    <QTd
-                        key="applicant"
-                        :props="props"
-                        headers="applicant"
-                    >
-                        {{ applicant(props.row.association, props.row.user) }}
-                    </QTd>
-                    <QTd
-                        key="lastModifiedDate"
-                        :props="props"
-                        headers="lastModifiedDate"
-                    >
-                        {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
-                    </QTd>
-                    <QTd
-                        key="funds"
-                        :props="props"
-                    >
-                        <ProjectFundValidationIndicator
+    <QTable
+        v-model:selected="selected"
+        :columns="columns"
+        :flat="props.flat"
+        :loading="!projects"
+        :no-data-label="t('project.no-project-to-show')"
+        :rows="projects"
+        :rows-per-page-options="[10, 20, 50, 0]"
+        :title="props.title"
+        role="presentation"
+        row-key="id"
+        selection="multiple"
+    >
+        <template v-slot:header="props">
+            <QTr :props="props">
+                <QTh>
+                    <QCheckbox
+                        v-model="props.selected"
+                        :aria-label="t('table.select-all')"
+                        color="commission"
+                    />
+                </QTh>
+                <QTh
+                    v-for="col in props.cols"
+                    :id="col.name"
+                    :key="col.name"
+                    :props="props"
+                    scope="col"
+                >
+                    {{ col.label }}
+                </QTh>
+            </QTr>
+        </template>
+        <template v-slot:body="props">
+            <QTr :props="props">
+                <QTd>
+                    <QCheckbox
+                        v-model="props.selected"
+                        :aria-label="props.row.name"
+                        color="commission"
+                    />
+                </QTd>
+                <QTd
+                    key="id"
+                    :props="props"
+                    headers="id"
+                >
+                    {{ props.row.manualIdentifier ?? '' }}
+                </QTd>
+                <QTd
+                    key="name"
+                    :props="props"
+                    headers="name"
+                >
+                    {{ props.row.name }}
+                </QTd>
+                <QTd
+                    key="applicant"
+                    :props="props"
+                    headers="applicant"
+                >
+                    {{ applicant(props.row.association, props.row.user) }}
+                </QTd>
+                <QTd
+                    key="lastModifiedDate"
+                    :props="props"
+                    headers="lastModifiedDate"
+                >
+                    {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
+                </QTd>
+                <QTd
+                    key="funds"
+                    :props="props"
+                >
+                    <ProjectFundValidationIndicator
+                        v-if="isLoaded"
+                        :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
+                    />
+                </QTd>
+                <QTd
+                    key="status"
+                    :props="props"
+                >
+                    <ProjectStatusIndicator
+                        :project-status="props.row.projectStatus"
+                        :show-draft="false"
+                    />
+                </QTd>
+                <QTd
+                    key="edition"
+                    :props="props"
+                    class="actions-cell-compact"
+                    headers="edition"
+                >
+                    <div class="button-container">
+                        <TableManageProjectsBtn
                             v-if="isLoaded"
+                            :is-site="isSite(props.row.association)"
                             :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
-                        />
-                    </QTd>
-                    <QTd
-                        key="status"
-                        :props="props"
-                    >
-                        <ProjectStatusIndicator
+                            :project-id="props.row.id"
+                            :project-name="props.row.name"
                             :project-status="props.row.projectStatus"
-                            :show-draft="false"
+                            @refresh-projects="onGetProjects()"
                         />
-                    </QTd>
-                    <QTd
-                        key="edition"
-                        :props="props"
-                        class="actions-cell-compact"
-                        headers="edition"
-                    >
-                        <div class="button-container">
-                            <TableManageProjectsBtn
-                                v-if="isLoaded"
-                                :is-site="isSite(props.row.association)"
-                                :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
-                                :project-id="props.row.id"
-                                :project-name="props.row.name"
-                                :project-status="props.row.projectStatus"
-                                @refresh-projects="onGetProjects()"
-                            />
-                        </div>
-                    </QTd>
-                </QTr>
-            </template>
-            <template v-slot:pagination="scope">
-                {{
-                    t('table.results-amount', {
-                        firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
-                        lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
-                        amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
-                    })
-                }}
-                <QBtn
-                    v-if="scope.pagesNumber > 2"
-                    :aria-label="t('table.first-page')"
-                    :disable="scope.isFirstPage"
-                    color="grey-8"
-                    dense
-                    flat
-                    icon="bi-chevron-double-left"
-                    @click="scope.firstPage"
-                />
-                <QBtn
-                    :aria-label="t('table.previous-page')"
-                    :disable="scope.isFirstPage"
-                    color="grey-8"
-                    dense
-                    flat
-                    icon="bi-chevron-left"
-                    @click="scope.prevPage"
-                />
-                <QBtn
-                    :aria-label="t('table.next-page')"
-                    :disable="scope.isLastPage"
-                    color="grey-8"
-                    dense
-                    flat
-                    icon="bi-chevron-right"
-                    @click="scope.nextPage"
-                />
-                <QBtn
-                    v-if="scope.pagesNumber > 2"
-                    :aria-label="t('table.last-page')"
-                    :disable="scope.isLastPage"
-                    color="grey-8"
-                    dense
-                    flat
-                    icon="bi-chevron-double-right"
-                    @click="scope.lastPage"
-                />
-            </template>
-        </QTable>
-        <CommissionExport
-            :commission-id="props.commissionId"
-            :commission-name="props.commissionName"
-            :selected="selected"
-            class="padding-bottom"
-        />
-    </div>
+                    </div>
+                </QTd>
+            </QTr>
+        </template>
+        <template v-slot:pagination="scope">
+            {{
+                t('table.results-amount', {
+                    firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
+                    lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
+                    amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
+                })
+            }}
+            <QBtn
+                v-if="scope.pagesNumber > 2"
+                :aria-label="t('table.first-page')"
+                :disable="scope.isFirstPage"
+                color="grey-8"
+                dense
+                flat
+                icon="bi-chevron-double-left"
+                @click="scope.firstPage"
+            />
+            <QBtn
+                :aria-label="t('table.previous-page')"
+                :disable="scope.isFirstPage"
+                color="grey-8"
+                dense
+                flat
+                icon="bi-chevron-left"
+                @click="scope.prevPage"
+            />
+            <QBtn
+                :aria-label="t('table.next-page')"
+                :disable="scope.isLastPage"
+                color="grey-8"
+                dense
+                flat
+                icon="bi-chevron-right"
+                @click="scope.nextPage"
+            />
+            <QBtn
+                v-if="scope.pagesNumber > 2"
+                :aria-label="t('table.last-page')"
+                :disable="scope.isLastPage"
+                color="grey-8"
+                dense
+                flat
+                icon="bi-chevron-double-right"
+                @click="scope.lastPage"
+            />
+        </template>
+    </QTable>
+    <CommissionExport
+        :commission-id="props.commissionId"
+        :commission-name="props.commissionName"
+        :selected="selected"
+        class="padding-bottom"
+    />
 </template>
 
 <style lang="scss" scoped>
