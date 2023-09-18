@@ -68,7 +68,6 @@ export interface ProjectCategoryName {
     name: string
 }
 
-
 export interface ProjectBasicInfos {
     name: string,
     plannedStartDate: string,
@@ -145,7 +144,9 @@ export interface ProjectComment {
         lastName: string
     },
     text: string,
-    creationDate: string
+    creationDate: string,
+    editionDate: string,
+    isVisible: boolean
 }
 
 // STORE

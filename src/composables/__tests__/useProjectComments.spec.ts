@@ -45,7 +45,12 @@ describe('useProjectComments', () => {
         userStore.user = undefined
     })
 
-    const {getProjectComments, comments, postNewProjectComment} = useProjectComments()
+    const {
+        getProjectComments,
+        comments,
+        postNewProjectComment,
+        patchProjectComment
+    } = useProjectComments()
     const {axiosAuthenticated} = useAxios()
     const mockedAuthAxios = vi.mocked(axiosAuthenticated, true)
 
@@ -58,15 +63,35 @@ describe('useProjectComments', () => {
             expect(comments.value).toEqual(_comments)
         })
     })
+
     describe('postProjectComment', () => {
         it('should post new comment', async () => {
             userStore.user = _institutionManager
-            await postNewProjectComment(1, 'Commentaire')
+            await postNewProjectComment(1, {text: 'Commentaire', isVisible: true})
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/projects/comments', {
                 project: 1,
                 text: 'Commentaire',
-                user: userStore?.user.id
+                user: userStore?.user.id,
+                isVisible: true
+            })
+        })
+    })
+
+    describe('patchProjectComment', () => {
+        it('should patch comment text and visibility', async () => {
+            const projectId = 1
+            const commentData = {
+                id: 1,
+                text: 'Commentaire',
+                isVisible: true
+            }
+            const url = `/projects/${projectId}/comments/${commentData.id}`
+            await patchProjectComment(projectId, commentData)
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(url, {
+                text: commentData.text,
+                isVisible: commentData.isVisible
             })
         })
     })

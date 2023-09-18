@@ -381,6 +381,7 @@
     "association-student-count": "Nombre de membres dans l'association",
     "charter-validation-comment": "Commentaire obligatoire en cas de refus de charte ou de demande d'informations complémentaires.",
     "comment": "Votre commentaire",
+    "comment-visibility": "Visible des porteurs de projets",
     "commission-date-must-be-posterior-to-submission-date": "La date de commission doit être postérieure à la date limite de soumission. Les dates ne doivent pas être passées.",
     "correct-amount-audience": "Le nombre d'étudiants doit être inférieur ou égal au nombre total de personnes visées.",
     "create-account": "Créer un compte",

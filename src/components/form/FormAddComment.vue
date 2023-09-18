@@ -14,7 +14,7 @@ const emit = defineEmits(['closeDialog', 'submit'])
         @submit.prevent="emit('submit')"
     >
         <QInput
-            v-model="newComment"
+            v-model="newComment.text"
             :aria-required="true"
             :label="t('forms.comment')"
             :rules="[ val => val && val.length > 0 || t('forms.required-comment')]"
@@ -23,6 +23,11 @@ const emit = defineEmits(['closeDialog', 'submit'])
             for="newComment"
             lazy-rules
             type="textarea"
+        />
+        <QToggle
+            v-model="newComment.isVisible"
+            :label="t('forms.comment-visibility')"
+            color="commission"
         />
         <div class="flex-row-center padding-top comment-btn">
             <QBtn
