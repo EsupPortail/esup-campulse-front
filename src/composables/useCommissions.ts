@@ -16,7 +16,7 @@ const commission = ref<Commission | undefined>(undefined)
 const commissionFunds = ref<CommissionFund[]>([])
 const commissionLabels = ref<SelectLabel[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -117,8 +117,8 @@ export default function() {
         commissions.value = (await axiosPublic.get<Commission[]>('/commissions/')).data
     }
 
-    async function getCommissionFunds() {
-        if (!commissionFunds.value.length) {
+    async function getCommissionFunds(forceRefresh?: boolean) {
+        if (!commissionFunds.value.length || forceRefresh) {
             commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/funds')).data
         }
     }

@@ -57,9 +57,9 @@ async function onGetCommissions() {
             undefined,
             undefined,
             undefined)
-        await getCommissionFunds()
-        initDates()
         initFundsLabels()
+        await getCommissionFunds(true)
+        initDates()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -236,10 +236,10 @@ const onClearValues = () => {
                                 clearable
                                 color="commission"
                                 filled
+                                max="2120-01-01"
+                                min="1970-01-01"
                                 reactive-rules
                                 type="date"
-                                min="1970-01-01"
-                                max="2120-01-01"
                                 @update:model-value="() => commission.datesAreLegal =
                                     fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
@@ -253,10 +253,10 @@ const onClearValues = () => {
                                 clearable
                                 color="commission"
                                 filled
+                                max="2120-01-01"
+                                min="1970-01-01"
                                 reactive-rules
                                 type="date"
-                                min="1970-01-01"
-                                max="2120-01-01"
                                 @update:model-value="() => commission.datesAreLegal =
                                     fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
@@ -324,10 +324,10 @@ const onClearValues = () => {
                         clearable
                         color="commission"
                         filled
+                        max="2120-01-01"
+                        min="1970-01-01"
                         reactive-rules
                         type="date"
-                        min="1970-01-01"
-                        max="2120-01-01"
                         @update:model-value="() => newCommission.datesAreLegal =
                             fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />
@@ -341,10 +341,10 @@ const onClearValues = () => {
                         clearable
                         color="commission"
                         filled
+                        max="2120-01-01"
+                        min="1970-01-01"
                         reactive-rules
                         type="date"
-                        min="1970-01-01"
-                        max="2120-01-01"
                         @update:model-value="() => newCommission.datesAreLegal =
                             fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />
