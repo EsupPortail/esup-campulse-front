@@ -62,7 +62,7 @@ export default function () {
 
     async function patchProjectReview() {
         let projectReviewDataToPatch = {}
-        const numbers = ['outcome', 'income', 'impactStudents']
+        const numbers = ['outcome', 'income']
         const dates = ['realStartDate', 'realEndDate']
         const privateFields = ['id', 'association', 'user', 'name', 'associationUser']
         for (const [key, value] of Object.entries(projectReview.value)) {
