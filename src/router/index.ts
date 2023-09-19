@@ -86,7 +86,7 @@ router.beforeEach(async (to) => {
     // Password setting and registration
     if (to.name == 'PasswordResetConfirm' && !to.query.uid && !to.query.token) return {name: '404'}
     if (to.name == 'RegistrationVerifyEmail' && !to.query.key) return {name: '404'}
-    if (to.name == 'RegistrationSuccessful' && !newUser.firstName) return {name: '404'}
+    // if (to.name == 'RegistrationSuccessful' && !newUser.firstName) return {name: '404'}
 
     // If user is authenticated
     if (userStore.isAuth) {

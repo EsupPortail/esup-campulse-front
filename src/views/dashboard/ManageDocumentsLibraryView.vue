@@ -5,12 +5,20 @@ import {QForm, useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {useI18n} from 'vue-i18n'
-import type {DocumentProcessType, MimeType} from '#/documents'
+import type {LibraryDocument} from '#/documents'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useCommissions from '@/composables/useCommissions'
+import FormManageLibraryDocument from '@/components/form/FormManageLibraryDocument.vue'
 
-const {getLibraryDocuments, documents, postNewDocument, patchDocument, deleteDocument, acceptedFormats} = useDocuments()
+const {
+    getLibraryDocuments,
+    documents,
+    postNewDocument,
+    patchDocument,
+    deleteDocument,
+    acceptedFormats
+} = useDocuments()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {t} = useI18n()
@@ -37,18 +45,6 @@ const newDocument = ref<NewDocument>({
 })
 
 const newDocumentForm = ref(QForm)
-
-interface LibraryDocument {
-    id: number,
-    name: string,
-    path: string | undefined,
-    size: number,
-    newName: string,
-    file: undefined | Blob,
-    processType: DocumentProcessType,
-    mimeTypes: MimeType[],
-    open: boolean
-}
 
 const libraryDocuments = ref<LibraryDocument[]>([])
 
@@ -240,7 +236,7 @@ async function onDeleteDocument(documentId: number) {
                         filled
                     >
                         <template v-slot:prepend>
-                            <QIcon name="bi-paperclip" />
+                            <QIcon name="bi-paperclip"/>
                         </template>
                     </QFile>
                     <QBtn
@@ -269,6 +265,24 @@ async function onDeleteDocument(documentId: number) {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
+                <h3 class="padding-bottom">{{ t('charter.charter', 2) }}</h3>
+                <FormManageLibraryDocument
+                    :library-documents="libraryDocuments
+                        .filter(doc => doc.processType === 'CHARTER_ASSOCIATION' || doc.processType === 'CHARTER_PROJECT_FUND')"
+                    @get-library-documents="onGetLibraryDocuments"
+                />
+                <h3 class="padding-top padding-bottom">{{ t('documents.template-documents') }}</h3>
+                <FormManageLibraryDocument
+                    :library-documents="libraryDocuments
+                        .filter(doc => doc.processType === 'DOCUMENT_PROJECT' || doc.processType === 'DOCUMENT_PROJECT_REVIEW')"
+                    @get-library-documents="onGetLibraryDocuments"
+                />
+                <h3 class="padding-top padding-bottom">{{ t('documents.other-documents') }}</h3>
+                <FormManageLibraryDocument
+                    :library-documents="libraryDocuments
+                        .filter(doc => doc.processType === 'NO_PROCESS')"
+                    @get-library-documents="onGetLibraryDocuments"
+                />
                 <div
                     v-for="(document, index) in libraryDocuments"
                     :key="index"
@@ -332,7 +346,7 @@ async function onDeleteDocument(documentId: number) {
                                     </p>
                                 </template>
                                 <template v-slot:prepend>
-                                    <QIcon name="bi-paperclip" />
+                                    <QIcon name="bi-paperclip"/>
                                 </template>
                             </QFile>
                             <div class="flex-row padding-top padding-bottom">
