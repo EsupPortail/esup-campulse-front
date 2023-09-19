@@ -20,7 +20,6 @@ const {isStaff, isMemberFund} = useUserGroups()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
-const {isManagerMisc} = useUserGroups()
 
 const associationCounter = ref<number>(0)
 
@@ -101,136 +100,6 @@ onMounted(async () => {
         </div>
     </section>
 
-    <!-- My associations, for association members only -->
-    <section
-        v-if="associationCounter > 0"
-        class="dashboard-section"
-    >
-        <h2>
-            <QIcon name="bi-people" />
-            {{ t('dashboard.association-user.my-associations') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="dashboard-btn-group">
-                <div
-                    v-for="association in userStore.userAssociations"
-                    :key="association.association.id"
-                >
-                    <QBtn
-                        v-if="association.isValidatedByAdmin"
-                        :label="t('manage') + ' ' + association.association.name"
-                        :to="{ name: 'AssociationDashboard', params: { id: association.association.id } }"
-                        class="btn-lg"
-                        color="dashboard"
-                    />
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Association management, for staff only -->
-    <section
-        v-if="isStaff &&
-            (hasPerm('change_association') ||
-                hasPerm('add_association'))"
-        class="dashboard-section"
-    >
-        <h2>
-            <QIcon name="bi-card-list" />
-            {{ t('dashboard.association-directory') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <div class="dashboard-btn-group">
-                    <QBtn
-                        v-if="hasPerm('add_association')"
-                        :label="t('dashboard.create-association')"
-                        :to="{ name: 'CreateAssociation' }"
-                        class="btn-lg"
-                        color="dashboard"
-                    />
-                    <QBtn
-                        v-if="hasPerm('change_association')"
-                        :label="t('dashboard.edit-or-delete-association')"
-                        :to="{ name: 'ManageAssociations' }"
-                        class="btn-lg"
-                        color="dashboard"
-                    />
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Template document library management -->
-    <section
-        v-if="isStaff && (hasPerm('add_document'))"
-        class="dashboard-section"
-    >
-        <h2>
-            <QIcon name="bi-files" />
-            {{ t('dashboard.template-document-library') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <div class="dashboard-btn-group">
-                    <QBtn
-                        v-if="hasPerm('add_document')"
-                        :label="t('dashboard.manage-template-documents')"
-                        :to="{ name: 'ManageDocumentsLibrary' }"
-                        class="btn-lg"
-                        color="dashboard"
-                    />
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Charter management, for staff only -->
-    <section
-        v-if="isStaff && !isManagerMisc"
-        class="dashboard-section"
-    >
-        <h2>
-            <QIcon name="bi-pen" />
-            {{ t('charter.charter', 2) }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <div class="dashboard-btn-group">
-                    <QBtn
-                        :label="t('dashboard.manage-charters')"
-                        :to="{ name: 'ManageCharters' }"
-                        class="btn-lg"
-                        color="dashboard"
-                    />
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Commission management, for staff only -->
-    <section
-        v-if="(isStaff || isMemberFund) && (hasPerm('view_project'))"
-        class="dashboard-section"
-    >
-        <h2>
-            <QIcon name="bi-journal-text" />
-            {{ t('commission.commission', 2) }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <div class="dashboard-btn-group">
-                    <QBtn
-                        :label="isMemberFund ? t('dashboard.view-projects') : t('dashboard.manage-projects')"
-                        :to="{ name: 'ManageProjects' }"
-                        class="btn-lg"
-                        color="dashboard"
-                    />
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- User management, for staff only -->
     <section
         v-if="isStaff && (hasPerm('change_user') ||
@@ -269,6 +138,143 @@ onMounted(async () => {
                         v-if="hasPerm('add_user')"
                         :label="t('dashboard.create-user')"
                         :to="{ name: 'AddUser' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Association management, for staff only -->
+    <section
+        v-if="isStaff &&
+            (hasPerm('change_association') ||
+                hasPerm('add_association'))"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-card-list" />
+            {{ t('dashboard.association-directory') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
+                    <QBtn
+                        v-if="hasPerm('change_association')"
+                        :label="t('dashboard.edit-or-delete-association')"
+                        :to="{ name: 'ManageAssociations' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                    <QBtn
+                        v-if="hasPerm('add_association')"
+                        :label="t('dashboard.create-association')"
+                        :to="{ name: 'CreateAssociation' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charter management, for staff only -->
+    <section
+        v-if="isStaff && hasPerm('add_association_all_fields')"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-pen" />
+            {{ t('charter.charter', 2) }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
+                    <QBtn
+                        :label="t('dashboard.manage-charters')"
+                        :to="{ name: 'ManageCharters' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commission management, for staff only -->
+    <section
+        v-if="(isStaff || isMemberFund) && (hasPerm('view_project'))"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-journal-text" />
+            {{ t('commission.commission', 2) }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
+                    <QBtn
+                        :label="isMemberFund ? t('dashboard.view-projects') : t('dashboard.manage-projects')"
+                        :to="{ name: 'ManageProjects' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                    <QBtn
+                        v-if="hasPerm('add_commission')"
+                        :label="t('dashboard.manage-commissions')"
+                        :to="{ name: 'ManageCommissionDates' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Template document library management -->
+    <section
+        v-if="isStaff && (hasPerm('add_document'))"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-files" />
+            {{ t('dashboard.template-document-library') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
+                    <QBtn
+                        v-if="hasPerm('add_document')"
+                        :label="t('dashboard.manage-template-documents')"
+                        :to="{ name: 'ManageDocumentsLibrary' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My associations, for association members only -->
+    <section
+        v-if="associationCounter > 0"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-people" />
+            {{ t('dashboard.association-user.my-associations') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="dashboard-btn-group">
+                <div
+                    v-for="association in userStore.userAssociations"
+                    :key="association.association.id"
+                >
+                    <QBtn
+                        v-if="association.isValidatedByAdmin"
+                        :label="t('manage') + ' ' + association.association.name"
+                        :to="{ name: 'AssociationDashboard', params: { id: association.association.id } }"
                         class="btn-lg"
                         color="dashboard"
                     />
@@ -353,3 +359,6 @@ onMounted(async () => {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 </style>
+
+
+
