@@ -5,12 +5,17 @@ import {QForm, useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {useI18n} from 'vue-i18n'
-import type {DocumentProcessType, MimeType} from '#/documents'
+import type {LibraryDocument} from '#/documents'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useCommissions from '@/composables/useCommissions'
+import FormManageLibraryDocument from '@/components/form/FormManageLibraryDocument.vue'
 
-const {getLibraryDocuments, documents, postNewDocument, patchDocument, deleteDocument, acceptedFormats} = useDocuments()
+const {
+    getLibraryDocuments,
+    documents,
+    postNewDocument
+} = useDocuments()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {t} = useI18n()
@@ -37,18 +42,6 @@ const newDocument = ref<NewDocument>({
 })
 
 const newDocumentForm = ref(QForm)
-
-interface LibraryDocument {
-    id: number,
-    name: string,
-    path: string | undefined,
-    size: number,
-    newName: string,
-    file: undefined | Blob,
-    processType: DocumentProcessType,
-    mimeTypes: MimeType[],
-    open: boolean
-}
 
 const libraryDocuments = ref<LibraryDocument[]>([])
 
@@ -158,50 +151,6 @@ const onClearValues = () => {
     newDocument.value.name = ''
     newDocument.value.file = undefined
 }
-
-async function onUpdateDocument(documentId: number) {
-    loading.show()
-    try {
-        const document = libraryDocuments.value.find(doc => doc.id === documentId)
-        if (document) {
-            await patchDocument(documentId, document.newName, document.file as Blob)
-        }
-        await onGetLibraryDocuments()
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.document-updated')
-        })
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: catchHTTPError(error.response.status)
-            })
-        }
-    }
-    loading.hide()
-}
-
-async function onDeleteDocument(documentId: number) {
-    loading.show()
-    try {
-        await deleteDocument(documentId)
-        const libraryId = libraryDocuments.value.findIndex(doc => doc.id === documentId)
-        libraryDocuments.value.splice(libraryId, 1)
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.document-deleted')
-        })
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: catchHTTPError(error.response.status)
-            })
-        }
-    }
-    loading.hide()
-}
 </script>
 
 <template>
@@ -269,92 +218,24 @@ async function onDeleteDocument(documentId: number) {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <div
-                    v-for="(document, index) in libraryDocuments"
-                    :key="index"
-                    class="document-input-group"
-                >
-                    <div class="document-input">
-                        <div class="document-input-header">
-                            <h4 class="library-document">
-                                <span :class="document.path ? 'active-link' : ''">
-                                    <a
-                                        :href="document.path"
-                                        target="_blank"
-                                    >
-                                        <strong>{{ document?.name }}</strong>
-                                        <em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>
-                                    </a>
-                                    <i
-                                        v-if="document.path"
-                                        aria-hidden="true"
-                                        class="bi bi-eye"
-                                    ></i>
-                                </span>
-                            </h4>
-
-                            <button @click.prevent="document.open = !document.open">
-                                <i
-                                    :class="`bi bi-${document.open ? 'x' : 'pencil'}`"
-                                    aria-hidden="true"
-                                ></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div v-if="document.open">
-                        <QForm @submit.prevent="onUpdateDocument(document.id)">
-                            <QInput
-                                v-model="document.newName"
-                                :label="t('documents.choose-name')"
-                                :rules="[val => val && val.length > 0 || t('forms.required-document-name')]"
-                                clearable
-                                color="dashboard"
-                                filled
-                            />
-
-                            <QFile
-                                v-model="document.file"
-                                :accept="document.mimeTypes.join(',')"
-                                :label="t('documents.choose-file')"
-                                :rules="[val => val || t('forms.required-document-file')]"
-                                bottom-slots
-                                clearable
-                                color="dashboard"
-                                filled
-                                for="pathFile"
-                            >
-                                <template v-slot:hint>
-                                    <p aria-describedby="pathFile">
-                                        {{
-                                            t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.'
-                                        }}
-                                    </p>
-                                </template>
-                                <template v-slot:prepend>
-                                    <QIcon name="bi-paperclip"/>
-                                </template>
-                            </QFile>
-                            <div class="flex-row padding-top padding-bottom">
-                                <QBtn
-                                    :icon="document.path ? 'bi-arrow-repeat' : 'bi-upload'"
-                                    :label="document.path ? t('update') : t('add')"
-                                    class="btn-lg"
-                                    color="dashboard"
-                                    type="submit"
-                                />
-                                <QBtn
-                                    :disable="document.processType !== 'NO_PROCESS'"
-                                    :label="t('delete')"
-                                    class="btn-lg"
-                                    color="custom-red"
-                                    icon="bi-trash"
-                                    @click="onDeleteDocument(document.id)"
-                                />
-                            </div>
-                        </QForm>
-                    </div>
-                </div>
+                <h3 class="padding-bottom">{{ t('charter.charter', 2) }}</h3>
+                <FormManageLibraryDocument
+                    :library-documents="libraryDocuments
+                        .filter(doc => doc.processType === 'CHARTER_ASSOCIATION' || doc.processType === 'CHARTER_PROJECT_FUND')"
+                    @get-library-documents="onGetLibraryDocuments"
+                />
+                <h3 class="padding-top padding-bottom">{{ t('documents.template-documents') }}</h3>
+                <FormManageLibraryDocument
+                    :library-documents="libraryDocuments
+                        .filter(doc => doc.processType === 'DOCUMENT_PROJECT' || doc.processType === 'DOCUMENT_PROJECT_REVIEW')"
+                    @get-library-documents="onGetLibraryDocuments"
+                />
+                <h3 class="padding-top padding-bottom">{{ t('documents.other-documents') }}</h3>
+                <FormManageLibraryDocument
+                    :library-documents="libraryDocuments
+                        .filter(doc => doc.processType === 'NO_PROCESS')"
+                    @get-library-documents="onGetLibraryDocuments"
+                />
             </div>
         </div>
     </section>

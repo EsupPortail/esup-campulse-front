@@ -1,5 +1,5 @@
 import type {Document, DocumentUpload, ProcessDocument} from '#/documents'
-import {_chartersExpirationDay} from './dates.mock'
+import {_chartersExpirationDay} from '~/fixtures/dates.mock'
 
 export const _document: Document = {
     id: 1,

@@ -70,3 +70,16 @@ export interface ProcessDocument {
 }
 
 type DocumentUploadStatus = 'DOCUMENT_REJECTED' | 'DOCUMENT_PROCESSING' | 'DOCUMENT_VALIDATED'
+
+
+export interface LibraryDocument {
+    id: number,
+    name: string,
+    path: string | undefined,
+    size: number,
+    newName: string,
+    file: undefined | Blob,
+    processType: DocumentProcessType,
+    mimeTypes: MimeType[],
+    open: boolean
+}

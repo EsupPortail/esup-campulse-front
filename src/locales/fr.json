@@ -361,6 +361,7 @@
     "no-documents-to-show": "Aucun document à afficher.",
     "no-process-library": "Documents de la bibliothèque",
     "other-documents": "Autres documents",
+    "template-documents": "Documents de projet types",
     "upload-new": "Déposer un nouveau document"
   },
   "download": "Télécharger",
