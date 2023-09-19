@@ -58,7 +58,10 @@ interface EditProjectCommissionFund {
     amountEarned: number | string | null,
     amountEarnedPreviousEdition: number | string,
     isFirstEdition: boolean,
-    comment: string,
+    comment: {
+        text: string,
+        isVisible: boolean
+    },
     needComment: boolean,
     amountEarnedIsValidatedByAdmin: boolean
 }
@@ -79,7 +82,10 @@ const initValues = () => {
                     projectCommissionFund.amountEarned.toString() : null,
                 amountEarnedPreviousEdition: projectCommissionFund.amountEarnedPreviousEdition?.toString() ?? '0',
                 isFirstEdition: projectCommissionFund.isFirstEdition as boolean,
-                comment: '',
+                comment: {
+                    text: '',
+                    isVisible: false
+                },
                 needComment: false,
                 amountEarnedIsValidatedByAdmin: !!projectCommissionFund.amountEarned
             })
@@ -192,7 +198,7 @@ async function onPatchProjectCommissionFunds() {
                                             projectCommissionFund.needComment = true : projectCommissionFund.needComment = false"
                                     />
                                     <QInput
-                                        v-model="projectCommissionFund.comment"
+                                        v-model="projectCommissionFund.comment.text"
                                         :aria-required="projectCommissionFund.needComment"
                                         :hint="!projectCommissionFund.amountEarnedIsValidatedByAdmin
                                             && projectCommissionFund.needComment ?

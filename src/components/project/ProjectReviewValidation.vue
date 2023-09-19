@@ -29,7 +29,10 @@ const onOpenDialog = (action: Action, icon: Icon) => {
 }
 
 watch(() => open.value, () => {
-    if (open.value === false) newComment.value = ''
+    if (open.value === false) {
+        newComment.value.text = ''
+        newComment.value.isVisible = false
+    }
 })
 
 async function onUpdateProjectStatus() {
@@ -43,7 +46,8 @@ async function onUpdateProjectStatus() {
             if (projectStatus) await projectStore.patchProjectStatus(projectStatus)
             await getProjectComments(projectStore.project.id)
             open.value = false
-            newComment.value = ''
+            newComment.value.text = ''
+            newComment.value.isVisible = false
             let message = ''
             switch (selectedAction.value) {
             case 'validate':
@@ -97,7 +101,7 @@ async function onUpdateProjectStatus() {
                     @submit="onUpdateProjectStatus"
                 >
                     <QInput
-                        v-model="newComment"
+                        v-model="newComment.text"
                         :aria-required="selectedAction !== 'validate'"
                         :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
                         :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
@@ -117,18 +121,18 @@ async function onUpdateProjectStatus() {
                         />
                         <QBtn
                             v-if="selectedAction === 'validate'"
-                            color="commission"
                             :icon="selectedIcon"
                             :label="t('project.review-validate')"
                             class="btn-lg"
+                            color="commission"
                             type="submit"
                         />
                         <QBtn
                             v-if="selectedAction === 'return'"
-                            color="custom-red"
                             :icon="selectedIcon"
                             :label="t('project.review-return')"
                             class="btn-lg"
+                            color="custom-red"
                             type="submit"
                         />
                     </div>

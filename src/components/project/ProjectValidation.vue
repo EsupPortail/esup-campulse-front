@@ -48,7 +48,10 @@ const onOpenDialog = async (action: Action, icon: Icon) => {
 }
 
 watch(() => open.value, () => {
-    if (open.value === false) newComment.value = ''
+    if (open.value === false) {
+        newComment.value.text = ''
+        newComment.value.isVisible = false
+    }
 })
 
 const canChangeProject = () => {
@@ -97,7 +100,8 @@ async function onUpdateProjectStatus() {
             await projectStore.getProjectDetail(projectStore.project.id)
             await projectStore.getProjectCommissionFunds(false, undefined)
             open.value = false
-            newComment.value = ''
+            newComment.value.text = ''
+            newComment.value.isVisible = false
             let message = ''
             switch (selectedAction.value) {
             case 'validate':
@@ -181,7 +185,7 @@ async function onUpdateProjectStatus() {
                         use-chips
                     />
                     <QInput
-                        v-model="newComment"
+                        v-model="newComment.text"
                         :aria-required="selectedAction !== 'validate'"
                         :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
                         :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
@@ -201,26 +205,26 @@ async function onUpdateProjectStatus() {
                         />
                         <QBtn
                             v-if="selectedAction === 'validate'"
-                            color="commission"
                             :icon="selectedIcon"
                             :label="t('project.validate')"
                             class="btn-lg"
+                            color="commission"
                             type="submit"
                         />
                         <QBtn
                             v-if="selectedAction === 'reject'"
-                            color="custom-red"
                             :icon="selectedIcon"
                             :label="t('project.reject')"
                             class="btn-lg"
+                            color="custom-red"
                             type="submit"
                         />
                         <QBtn
                             v-if="selectedAction === 'return'"
-                            color="custom-red"
                             :icon="selectedIcon"
                             :label="t('project.return')"
                             class="btn-lg"
+                            color="custom-red"
                             type="submit"
                         />
                     </div>
@@ -237,12 +241,12 @@ async function onUpdateProjectStatus() {
 @import "@/assets/_variables.scss";
 
 .q-card {
-  padding: 1rem;
-  max-width: 60rem;
-  width: $fullSize;
+    padding: 1rem;
+    max-width: 60rem;
+    width: $fullSize;
 }
 
 .q-form.flex-column {
-  gap: 2rem;
+    gap: 2rem;
 }
 </style>
