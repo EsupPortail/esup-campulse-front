@@ -344,6 +344,7 @@
 
     strong {
       text-transform: uppercase;
+      font-weight: $xbold-weight;
     }
 
     @media screen and (max-width: $breakpoint-lg) {
