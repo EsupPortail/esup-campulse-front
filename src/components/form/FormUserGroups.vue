@@ -58,7 +58,7 @@ async function onGetGroups() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -73,7 +73,7 @@ async function onGetCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -92,7 +92,7 @@ function onInitGroupLabels() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -122,7 +122,7 @@ function onInitGroupLabels() {
         v-model="userFunds"
         :label="t('commission.commission', 2)"
         :options="fundsLabels"
-        :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
+        :rules="[val => val.length >= 1 || t('forms.required-commission')]"
         color="dashboard"
         emit-value
         filled

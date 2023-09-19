@@ -36,7 +36,7 @@ async function onDeleteUserAssociation() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -61,11 +61,10 @@ async function onDeleteUserAssociation() {
     >
         <QCard>
             <QCardSection class="row items-center">
-                <p
-                    class="q-ml-sm"
-                >
+                <p class="q-ml-sm">
                     {{
-                        props.editedByStaff ? t('dashboard.association-user.confirm-delete') : t('dashboard.association-user.confirm-delete-self')
+                        props.editedByStaff ? t('dashboard.association-user.confirm-delete') :
+                        t('dashboard.association-user.confirm-delete-self')
                     }}
                 </p>
             </QCardSection>

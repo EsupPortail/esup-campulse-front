@@ -47,7 +47,7 @@ async function onGetAssociationDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -153,7 +153,8 @@ const initAssociationCharter = () => {
                         <dt>{{ t('association.labels.institution-component') }}</dt>
                         <dd>
                             {{
-                                associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
+                                associationStore.institutionComponents.find(obj => obj.id ===
+                                    association?.institutionComponent)?.name
                             }}
                         </dd>
                     </div>
@@ -302,7 +303,8 @@ const initAssociationCharter = () => {
                                 <a
                                     :href="association?.website"
                                     :title="`${t('association.labels.website-link')} ${association?.name}`"
-                                >{{ association?.website }}</a>
+                                >{{
+                                    association?.website }}</a>
                             </dd>
                         </div>
 
@@ -329,12 +331,10 @@ const initAssociationCharter = () => {
             </div>
         </div>
 
-        <div
-            class="flex-row-center padding-top padding-bottom"
-        >
+        <div class="flex-row-center padding-top padding-bottom">
             <QBtn
                 :label="t('association.back-directory')"
-                :to="{name: 'Associations'}"
+                :to="{ name: 'Associations' }"
                 class="btn-lg"
                 color="association"
                 icon="bi-box-arrow-left"
@@ -342,7 +342,7 @@ const initAssociationCharter = () => {
             <QBtn
                 v-if="userStore.user?.associations.find(x => x.id === association?.id)"
                 :label="t('dashboard.association-user.manage-association')"
-                :to="{name: 'AssociationDashboard', params: {id: association?.id}}"
+                :to="{ name: 'AssociationDashboard', params: { id: association?.id } }"
                 class="btn-lg"
                 color="dashboard"
                 icon="bi-pencil-square"
@@ -365,7 +365,7 @@ const initAssociationCharter = () => {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 
-h2 > i {
+h2>i {
     padding: 0.25rem 1rem 0 0;
 }
 
@@ -377,12 +377,13 @@ ul {
     white-space: pre-line;
 }
 
-.address-fields, .address-fields > * {
+.address-fields,
+.address-fields>* {
     display: flex;
     flex-direction: column;
 }
 
-.address-fields > span + span {
+.address-fields>span+span {
     flex-direction: row;
     gap: 1rem;
 }

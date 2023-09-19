@@ -33,7 +33,7 @@ async function onGetAssociationUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -98,7 +98,7 @@ async function onGetAssociationUsers() {
             <p>{{ projectBasicInfos.partnerAssociation }}</p>
         </div>
 
-        <ProjectRecapCategories/>
+        <ProjectRecapCategories />
     </div>
 </template>
 

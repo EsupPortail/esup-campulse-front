@@ -104,7 +104,7 @@ async function onGetLibraryDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -117,7 +117,7 @@ async function onGetFunds() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -147,7 +147,7 @@ async function onUploadNewDocument() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -175,7 +175,7 @@ async function onUpdateDocument(documentId: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -196,7 +196,7 @@ async function onDeleteDocument(documentId: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -240,7 +240,7 @@ async function onDeleteDocument(documentId: number) {
                         filled
                     >
                         <template v-slot:prepend>
-                            <QIcon name="bi-paperclip"/>
+                            <QIcon name="bi-paperclip" />
                         </template>
                     </QFile>
                     <QBtn
@@ -332,7 +332,7 @@ async function onDeleteDocument(documentId: number) {
                                     </p>
                                 </template>
                                 <template v-slot:prepend>
-                                    <QIcon name="bi-paperclip"/>
+                                    <QIcon name="bi-paperclip" />
                                 </template>
                             </QFile>
                             <div class="flex-row padding-top padding-bottom">

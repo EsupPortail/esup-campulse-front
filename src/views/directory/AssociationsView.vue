@@ -75,7 +75,7 @@ async function loadAssociationsActivityFields() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -88,7 +88,7 @@ async function getContents() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -168,7 +168,7 @@ async function getContents() {
                             </div>
                             <div class="list-details">
                                 <h3>
-                                    <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
+                                    <RouterLink :to="{ name: 'AssociationDetail', params: { id: association.id } }">
                                         {{ association.name }}
                                     </RouterLink>
                                 </h3>
@@ -192,7 +192,8 @@ async function getContents() {
                                             {{ t('directory.labels.association-institution') + ' : ' }}
                                         </span>
                                         <span class="value">{{
-                                            associationStore.institutions.find(obj => obj.id === association?.institution)?.name
+                                            associationStore.institutions.find(obj => obj.id ===
+                                                association?.institution)?.name
                                         }}</span>
                                     </li>
                                     <li v-if="association.activityField">
@@ -204,7 +205,8 @@ async function getContents() {
                                             {{ t('directory.labels.association-activity-field') + ' : ' }}
                                         </span>
                                         <span class="value">{{
-                                            associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
+                                            associationStore.activityFields.find(obj => obj.id ===
+                                                association?.activityField)?.name
                                         }}</span>
                                     </li>
                                     <li v-if="association.institutionComponent">
@@ -216,7 +218,8 @@ async function getContents() {
                                             {{ t('directory.labels.association-institution-component') + ' : ' }}
                                         </span>
                                         <span class="value">{{
-                                            associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
+                                            associationStore.institutionComponents.find(obj => obj.id ===
+                                                association?.institutionComponent)?.name
                                         }}</span>
                                     </li>
                                 </ul>

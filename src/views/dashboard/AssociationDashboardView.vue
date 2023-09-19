@@ -88,7 +88,7 @@ async function onGetAssociationDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -101,7 +101,7 @@ async function onGetAssociationDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -116,7 +116,7 @@ async function onGetAssociationCharters() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -129,7 +129,7 @@ async function onGetAssociationProjects() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -140,14 +140,12 @@ async function onGetAssociationProjects() {
 <template>
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-person"/>
+            <QIcon name="bi-person" />
             {{ t('dashboard.association-user.my-role') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <p
-                    v-if="associationUserRole.literalName"
-                >
+                <p v-if="associationUserRole.literalName">
                     {{
                         associationUserRole.literalName + (associationUserRole.codeName !== 'isPresident' ?
                             ` ${hasPresidentStatus ? t('with') : t('without')} droits de présidence` : '')
@@ -162,7 +160,7 @@ async function onGetAssociationProjects() {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-card-list"/>
+            <QIcon name="bi-card-list" />
             {{ t('dashboard.association-user.manage-association') }}
         </h2>
         <div class="dashboard-section-container">
@@ -197,7 +195,7 @@ async function onGetAssociationProjects() {
     <!-- Association documents -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-file-earmark"/>
+            <QIcon name="bi-file-earmark" />
             {{ t('dashboard.association-user.association-documents') }}
         </h2>
         <div class="dashboard-section-container">
@@ -215,12 +213,12 @@ async function onGetAssociationProjects() {
     <!-- Association procedures -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-pen"/>
+            <QIcon name="bi-pen" />
             {{ t('dashboard.association-user.association-procedures') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoDocumentLibrary color="dashboard"/>
+                <InfoDocumentLibrary color="dashboard" />
                 <div class="document-input-group">
                     <div class="flex-row-space-between padding-top padding-bottom">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
@@ -231,9 +229,7 @@ async function onGetAssociationProjects() {
                             color="dashboard"
                         />
                     </div>
-                    <section
-                        v-if="manageCharters.length"
-                    >
+                    <section v-if="manageCharters.length">
                         <div
                             v-for="charter in manageCharters"
                             :key="charter.documentId"
@@ -244,7 +240,7 @@ async function onGetAssociationProjects() {
                                     <h4>
                                         {{ charter.documentName }}
                                     </h4>
-                                    <CharterStatusIndicator :charter-status="charter.charterStatus"/>
+                                    <CharterStatusIndicator :charter-status="charter.charterStatus" />
                                 </div>
                             </div>
                         </div>
@@ -263,9 +259,7 @@ async function onGetAssociationProjects() {
                             color="dashboard"
                         />
                     </div>
-                    <section
-                        v-if="projectStore.selfProjects.length"
-                    >
+                    <section v-if="projectStore.selfProjects.length">
                         <div
                             v-for="project in projectStore.selfProjects.slice(0, 3)"
                             :key="project.id"

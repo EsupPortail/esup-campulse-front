@@ -36,7 +36,7 @@ async function onGetAssociationNames() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -63,7 +63,7 @@ async function onSearch() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -87,7 +87,7 @@ async function clearSearch() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -116,7 +116,7 @@ async function clearSearch() {
                     lazy-rules
                 >
                     <template v-slot:prepend>
-                        <QIcon name="bi-search"/>
+                        <QIcon name="bi-search" />
                     </template>
                 </QInput>
                 <div class="flex-row padding-top">

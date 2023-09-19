@@ -101,7 +101,7 @@ async function onGetDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -135,7 +135,7 @@ async function onDeleteDocumentUpload(documentId: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -156,7 +156,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -207,7 +207,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                     </p>
                 </template>
                 <template v-slot:prepend>
-                    <QIcon name="bi-paperclip"/>
+                    <QIcon name="bi-paperclip" />
                 </template>
             </QFile>
 
@@ -274,5 +274,4 @@ ul.document-input-list {
 ul.document-input-list li {
     cursor: pointer;
 }
-
 </style>

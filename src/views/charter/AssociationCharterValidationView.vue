@@ -82,7 +82,7 @@ async function onGetAssociationDetail() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -146,7 +146,7 @@ async function onValidateCharter() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -158,18 +158,18 @@ async function onValidateCharter() {
     <QForm @submit="open = true">
         <section class="dashboard-section">
             <h2>
-                <QIcon name="bi-info-circle"/>
+                <QIcon name="bi-info-circle" />
                 {{ t('charter.site.sign-form.association-infos-update') }}
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <CharterRecapAssociationInfos :association="associationId"/>
+                    <CharterRecapAssociationInfos :association="associationId" />
                 </div>
             </div>
         </section>
         <section class="dashboard-section">
             <h2>
-                <QIcon name="bi-file-earmark"/>
+                <QIcon name="bi-file-earmark" />
                 {{ t('charter.site.sign-form.documents-upload') }}
             </h2>
             <div class="dashboard-section-container">
@@ -204,7 +204,7 @@ async function onValidateCharter() {
             <div class="flex-row-center">
                 <QBtn
                     :label="t('back')"
-                    :to="{name: 'AssociationCharterList', params: {associationId: associationId}}"
+                    :to="{ name: 'AssociationCharterList', params: { associationId: associationId } }"
                     class="btn-lg"
                     color="charter"
                     icon="bi-box-arrow-left"
@@ -234,7 +234,7 @@ async function onValidateCharter() {
                         v-model="comment"
                         :aria-required="selectedAction !== 'validate'"
                         :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
+                        :rules="selectedAction !== 'validate' ? [val => val && val.length > 0 || t('forms.required-comment')] : []"
                         color="charter"
                         filled
                         lazy-rules

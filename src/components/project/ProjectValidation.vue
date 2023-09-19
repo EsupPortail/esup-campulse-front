@@ -125,7 +125,7 @@ async function onUpdateProjectStatus() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -171,7 +171,7 @@ async function onUpdateProjectStatus() {
                         v-if="selectedAction !== 'return'"
                         v-model="selectedProjectCommissionFunds"
                         :label="t('project.commission-funds-validation',
-                                  {action: `${selectedAction === 'validate' ? 'valider' : 'refuser'}`}) + ' (' + t('required') + ')'"
+                                  { action: `${selectedAction === 'validate' ? 'valider' : 'refuser'}` }) + ' (' + t('required') + ')'"
                         :options="projectCommissionFundLabels"
                         :rules="[val => val && val.length || t('forms.required-fund')]"
                         aria-required="true"
@@ -189,7 +189,7 @@ async function onUpdateProjectStatus() {
                         :aria-required="selectedAction !== 'validate'"
                         :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
                         :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
+                        :rules="selectedAction !== 'validate' ? [val => val && val.length > 0 || t('forms.required-comment')] : []"
                         color="commission"
                         filled
                         lazy-rules

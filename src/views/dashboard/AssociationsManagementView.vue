@@ -41,7 +41,7 @@ async function onGetManagedAssociations() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -118,13 +118,13 @@ const columns: QTableProps['columns'] = [
     <section class="dashboard-section">
         <div class="container-lg flex-row-space-between">
             <h2>
-                <QIcon name="bi-pencil-square"/>
+                <QIcon name="bi-pencil-square" />
                 {{ t('dashboard.association-list') }}
             </h2>
             <QBtn
                 v-if="hasPerm('add_association')"
                 :label="t('dashboard.create-association')"
-                :to="{name: 'CreateAssociation'}"
+                :to="{ name: 'CreateAssociation' }"
                 color="association"
                 icon="bi-plus-circle"
                 outline
@@ -220,7 +220,9 @@ const columns: QTableProps['columns'] = [
                                     <span
                                         aria-hidden="true"
                                         class="form-state-icon form-state-red"
-                                    ><i class="bi bi-x-lg"></i></span>
+                                    ><i
+                                        class="bi bi-x-lg"
+                                    ></i></span>
                                 </span>
                                 <span
                                     v-else
@@ -230,7 +232,9 @@ const columns: QTableProps['columns'] = [
                                     <span
                                         aria-hidden="true"
                                         class="form-state-icon form-state-green"
-                                    ><i class="bi bi-check-lg"></i></span>
+                                    ><i
+                                        class="bi bi-check-lg"
+                                    ></i></span>
                                 </span>
                             </QTd>
                             <QTd
@@ -247,7 +251,9 @@ const columns: QTableProps['columns'] = [
                                     <span
                                         aria-hidden="true"
                                         class="form-state-icon form-state-red"
-                                    ><i class="bi bi-x-lg"></i></span>
+                                    ><i
+                                        class="bi bi-x-lg"
+                                    ></i></span>
                                 </span>
                                 <span
                                     v-else
@@ -257,7 +263,9 @@ const columns: QTableProps['columns'] = [
                                     <span
                                         aria-hidden="true"
                                         class="form-state-icon form-state-green"
-                                    ><i class="bi bi-check-lg"></i></span>
+                                    ><i
+                                        class="bi bi-check-lg"
+                                    ></i></span>
                                 </span>
                             </QTd>
                             <QTd
@@ -274,7 +282,9 @@ const columns: QTableProps['columns'] = [
                                     <span
                                         aria-hidden="true"
                                         class="form-state-icon form-state-red"
-                                    ><i class="bi bi-x-lg"></i></span>
+                                    ><i
+                                        class="bi bi-x-lg"
+                                    ></i></span>
                                 </span>
                                 <span
                                     v-else
@@ -284,7 +294,9 @@ const columns: QTableProps['columns'] = [
                                     <span
                                         aria-hidden="true"
                                         class="form-state-icon form-state-green"
-                                    ><i class="bi bi-check-lg"></i></span>
+                                    ><i
+                                        class="bi bi-check-lg"
+                                    ></i></span>
                                 </span>
                             </QTd>
                             <QTd
@@ -296,7 +308,7 @@ const columns: QTableProps['columns'] = [
                                 <div class="button-container">
                                     <QBtn
                                         :aria-label="t('edit') + ' ' + props.row.name"
-                                        :to="{name: 'EditAssociation', params: {id: props.row.id}}"
+                                        :to="{ name: 'EditAssociation', params: { id: props.row.id } }"
                                         color="association"
                                         icon="bi-pencil"
                                         outline

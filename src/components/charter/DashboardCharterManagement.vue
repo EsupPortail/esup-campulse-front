@@ -36,7 +36,7 @@ async function onGetCharters() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -129,9 +129,7 @@ const initTabs = () => {
                         />
                     </QTabs>
 
-                    <QSeparator
-                        aria-hidden="true"
-                    />
+                    <QSeparator aria-hidden="true" />
 
                     <QTabPanels
                         v-model="tab"
@@ -143,9 +141,7 @@ const initTabs = () => {
                             :name="tab.name"
                             class="q-pa-none"
                         >
-                            <QSplitter
-                                v-model="splitterModel"
-                            >
+                            <QSplitter v-model="splitterModel">
                                 <template v-slot:before>
                                     <QTabs
                                         v-model="innerTab"
@@ -179,10 +175,10 @@ const initTabs = () => {
                                         transition-prev="slide-down"
                                     >
                                         <QTabPanel name="allCharters">
-                                            <TableManageCharters/>
+                                            <TableManageCharters />
                                         </QTabPanel>
                                         <QTabPanel name="processingCharters">
-                                            <TableManageProcessingCharters :process-type="tab.name"/>
+                                            <TableManageProcessingCharters :process-type="tab.name" />
                                         </QTabPanel>
                                     </QTabPanels>
                                 </template>

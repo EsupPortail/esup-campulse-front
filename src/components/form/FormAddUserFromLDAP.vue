@@ -32,7 +32,7 @@ async function onGetUsersFromCAS() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -112,7 +112,7 @@ function onReset() {
                     <QInput
                         v-model="lastName"
                         :label="t('forms.last-name')"
-                        :rules="[ val => val && val.length > 0 || t('forms.required-last-name')]"
+                        :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
                         color="dashboard"
                         filled
                         lazy-rules

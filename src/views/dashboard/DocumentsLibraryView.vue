@@ -65,7 +65,7 @@ async function onGetLibraryDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -102,7 +102,7 @@ async function onGetLibraryDocuments() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <ListDocumentsLibrary :documents="libraryDocuments.filter(doc => doc.process !== 'NO_PROCESS')"/>
+                    <ListDocumentsLibrary :documents="libraryDocuments.filter(doc => doc.process !== 'NO_PROCESS')" />
                 </div>
             </div>
         </div>
@@ -117,7 +117,7 @@ async function onGetLibraryDocuments() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <ListDocumentsLibrary :documents="libraryDocuments.filter(doc => doc.process === 'NO_PROCESS')"/>
+                    <ListDocumentsLibrary :documents="libraryDocuments.filter(doc => doc.process === 'NO_PROCESS')" />
                 </div>
             </div>
         </div>

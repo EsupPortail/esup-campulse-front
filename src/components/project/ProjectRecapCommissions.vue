@@ -59,7 +59,7 @@ async function onGetProjectCommissions() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -105,7 +105,8 @@ async function onGetProjectCommissions() {
                     <h4>
                         {{
                             t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === commissionFunds
-                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'
+                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label +
+                                ')'
                         }}
                     </h4>
                     <p>{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
@@ -115,7 +116,8 @@ async function onGetProjectCommissions() {
                     <h4>
                         {{
                             t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === commissionFunds
-                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'
+                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label +
+                                ')'
                         }}
                     </h4>
                     <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>

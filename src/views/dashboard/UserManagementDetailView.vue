@@ -43,7 +43,7 @@ async function onGetUser() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -114,20 +114,20 @@ onBeforeRouteLeave((to, from, next) => {
 
             <div class="dashboard-section-container">
                 <div class="container flex-column">
-                    <FormUpdateUserAssociations/>
-                    <FormRegisterUserAssociations/>
+                    <FormUpdateUserAssociations />
+                    <FormRegisterUserAssociations />
                 </div>
             </div>
         </section>
 
         <section class="dashboard-section">
             <h2>
-                <QIcon name="bi-person-lines-fill"/>
+                <QIcon name="bi-person-lines-fill" />
                 {{ t('user-manager.user-status') }}
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormUserGroups/>
+                    <FormUserGroups />
                     <div v-if="!userManagerStore.user?.isCas && studentGroupIsSelected">
                         <hgroup>
                             <h3>{{ t('forms.student-status-document') }}</h3>
@@ -156,7 +156,7 @@ onBeforeRouteLeave((to, from, next) => {
                 <!-- Add @click="openAlert = true" and remove to -->
                 <QBtn
                     :label="t('back')"
-                    :to="{name: 'ManageUsers'}"
+                    :to="{ name: 'ManageUsers' }"
                     class="btn-lg"
                     color="dashboard"
                     icon="bi-box-arrow-left"
@@ -171,7 +171,7 @@ onBeforeRouteLeave((to, from, next) => {
                     v-if="groupChoiceIsValid"
                     @has-validated="hasValidated = true"
                 />
-                <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
+                <AlertConfirmUserDelete @has-validated="hasValidated = true" />
             </div>
         </section>
     </QForm>

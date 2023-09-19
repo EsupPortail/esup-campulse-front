@@ -24,7 +24,7 @@ async function onGetProjectCategories() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
 
@@ -43,9 +43,7 @@ watch(() => projectStore.project, async () => {
 </script>
 
 <template>
-    <div
-        class="display-row"
-    >
+    <div class="display-row">
         <p class="row-title">{{ t('project.categories') }}</p>
         <p>
             <QChip

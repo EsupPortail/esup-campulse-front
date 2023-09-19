@@ -73,7 +73,7 @@ async function onValidateCharter(action: 'validate' | 'reject') {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -115,7 +115,7 @@ async function onValidateCharter(action: 'validate' | 'reject') {
                     <QInput
                         v-model="comment"
                         :label="`${t('forms.comment')} ${commentIsMandatory ? '*' : ''}`"
-                        :rules="commentIsMandatory ? [ val => val && val.length > 0 || t('forms.charter-validation-comment')] : []"
+                        :rules="commentIsMandatory ? [val => val && val.length > 0 || t('forms.charter-validation-comment')] : []"
                         bottom-slots
                         color="charter"
                         filled

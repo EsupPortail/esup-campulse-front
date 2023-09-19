@@ -151,7 +151,7 @@ async function onGetProjectPdf(projectId: number, projectName: string, isReview:
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -172,7 +172,7 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -198,9 +198,7 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
                     @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
-                        <QAvatar
-                            :icon="option.icon"
-                        />
+                        <QAvatar :icon="option.icon" />
                     </QItemSection>
                     <QItemSection>
                         <QItemLabel>{{ option.label }}</QItemLabel>

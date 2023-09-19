@@ -56,7 +56,7 @@ async function onSignCharter() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -88,9 +88,7 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
             <QCardSection>
                 <h3>{{ props.charter.documentName }}</h3>
                 <p>{{ t('charter.sign-hint') }}</p>
-                <QForm
-                    @submit="onSignCharter"
-                >
+                <QForm @submit="onSignCharter">
                     <QFile
                         v-model="signedCharter"
                         :accept="props.charter.mimeTypes?.join(', ')"
@@ -114,7 +112,7 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
                             </p>
                         </template>
                         <template v-slot:prepend>
-                            <QIcon name="bi-paperclip"/>
+                            <QIcon name="bi-paperclip" />
                         </template>
                     </QFile>
                     <div class="flex-row padding-top">

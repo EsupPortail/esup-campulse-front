@@ -45,7 +45,7 @@ async function onLoadCASUser() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -87,7 +87,7 @@ async function onRegister() {
                     } else {
                         notify({
                             type: 'negative',
-                            message: catchHTTPError(error.response.status)
+                            message: catchHTTPError(error.response)
                         })
                     }
                 }
@@ -117,9 +117,9 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormAddUserFromLDAP v-if="isStaff"/>
+                    <FormAddUserFromLDAP v-if="isStaff" />
 
-                    <InfoFormRequiredFields/>
+                    <InfoFormRequiredFields />
 
                     <QInput
                         v-model="newUser.firstName"
@@ -202,7 +202,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormUserGroups/>
+                    <FormUserGroups />
                     <div v-if="!newUser.isCas && studentGroupIsSelected">
                         <hgroup>
                             <h3>{{ t('forms.student-status-document') }}</h3>
@@ -227,7 +227,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormRegisterUserAssociations/>
+                    <FormRegisterUserAssociations />
                 </div>
             </div>
         </div>

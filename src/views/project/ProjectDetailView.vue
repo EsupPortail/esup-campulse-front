@@ -52,7 +52,7 @@ async function onGetProjectDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -71,7 +71,7 @@ async function onGetProjectDetail() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <ProjectRecapBasicInfos/>
+                <ProjectRecapBasicInfos />
             </div>
         </div>
     </div>
@@ -87,7 +87,7 @@ async function onGetProjectDetail() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <ProjectRecapCommissions view="projectRecap"/>
+                <ProjectRecapCommissions view="projectRecap" />
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@ async function onGetProjectDetail() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <ProjectRecapBudget :load-data="false"/>
+                <ProjectRecapBudget :load-data="false" />
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@ async function onGetProjectDetail() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <ProjectRecapGoals/>
+                <ProjectRecapGoals />
             </div>
         </div>
     </div>
@@ -156,7 +156,7 @@ async function onGetProjectDetail() {
         <div class="dashboard-section-container">
             <div class="container">
                 <div class="display-row">
-                    <ProjectFundValidationIndicator :project-commission-funds="projectStore.projectCommissionFunds"/>
+                    <ProjectFundValidationIndicator :project-commission-funds="projectStore.projectCommissionFunds" />
                 </div>
             </div>
         </div>

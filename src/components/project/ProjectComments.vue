@@ -46,7 +46,7 @@ async function onGetProjectComments() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -69,7 +69,7 @@ async function onPostNewComment() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -92,7 +92,7 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -121,11 +121,9 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
                                   user: comment.user.firstName + ' ' + comment.user.lastName,
                                   date: formatDate(comment.creationDate)?.split('-').reverse().join('/'),
                                   hour: new Date(comment.creationDate).getHours(),
-                                  minutes: new Date(comment.creationDate).getMinutes() < 10 ? '0' + new Date(comment.creationDate).getMinutes() :
-                                      new Date(comment.creationDate).getMinutes()
-                              }
-                            )
-                        }}
+                                  minutes: new Date(comment.creationDate).getMinutes() < 10 ? '0' + new
+                                      Date(comment.creationDate).getMinutes() : new Date(comment.creationDate).getMinutes()
+                              }) }}
                     </p>
                     <p>
                         {{ comment.text }}
@@ -174,7 +172,7 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-.comment-row > div {
+.comment-row>div {
     align-items: flex-start;
 }
 
