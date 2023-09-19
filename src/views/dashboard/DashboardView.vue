@@ -74,7 +74,7 @@ onMounted(async () => {
     <section class="dashboard-section">
         <div class="dashboard-section-container">
             <p class="text-center">
-                {{ t('dashboard.welcome-message', { name: userStore.user?.firstName + ' ' + userStore.user?.lastName }) }}
+                {{ t('dashboard.welcome-message', {name: userStore.user?.firstName + ' ' + userStore.user?.lastName}) }}
             </p>
         </div>
     </section>
@@ -107,7 +107,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-people" />
+            <QIcon name="bi-people"/>
             {{ t('dashboard.manage-users') }}
         </h2>
         <div class="dashboard-section-container">
@@ -154,7 +154,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-card-list" />
+            <QIcon name="bi-card-list"/>
             {{ t('dashboard.association-directory') }}
         </h2>
         <div class="dashboard-section-container">
@@ -185,7 +185,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-pen" />
+            <QIcon name="bi-pen"/>
             {{ t('charter.charter', 2) }}
         </h2>
         <div class="dashboard-section-container">
@@ -208,7 +208,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-journal-text" />
+            <QIcon name="bi-journal-text"/>
             {{ t('commission.commission', 2) }}
         </h2>
         <div class="dashboard-section-container">
@@ -238,7 +238,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-files" />
+            <QIcon name="bi-files"/>
             {{ t('dashboard.template-document-library') }}
         </h2>
         <div class="dashboard-section-container">
@@ -256,13 +256,36 @@ onMounted(async () => {
         </div>
     </section>
 
+    <!-- Template document library -->
+    <section
+        v-if="hasPerm('add_project_association') || hasPerm('add_project_user')"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-files"/>
+            {{ t('dashboard.template-document-library') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
+                    <QBtn
+                        :label="t('dashboard.template-document-library')"
+                        :to="{ name: 'DocumentsLibrary' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- My associations, for association members only -->
     <section
         v-if="associationCounter > 0"
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-people" />
+            <QIcon name="bi-people"/>
             {{ t('dashboard.association-user.my-associations') }}
         </h2>
         <div class="dashboard-section-container">
@@ -289,12 +312,12 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-file-earmark" />
+            <QIcon name="bi-file-earmark"/>
             {{ t('dashboard.my-documents') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoDocumentLibrary color="dashboard" />
+                <InfoDocumentLibrary color="dashboard"/>
                 <ListDocumentDashboard
                     v-if="userStore.userDocuments?.length"
                     :documents="userStore.userDocuments"
@@ -312,7 +335,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-pen" />
+            <QIcon name="bi-pen"/>
             {{ t('dashboard.user-procedures') }}
         </h2>
         <div class="dashboard-section-container">
