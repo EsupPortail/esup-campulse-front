@@ -31,7 +31,7 @@ async function onLogOut() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -133,7 +133,7 @@ onMounted(async () => {
     width: $fullSize;
 }
 
-.q-btn__content > span > * {
+.q-btn__content>span>* {
     padding: 0 0.5rem;
 }
 

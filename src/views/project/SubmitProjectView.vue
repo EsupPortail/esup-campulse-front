@@ -187,7 +187,7 @@ async function onGetProjectDetail() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -205,7 +205,7 @@ async function onGetProjectCategories() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -218,7 +218,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -233,7 +233,7 @@ async function onGetAssociationUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -260,7 +260,7 @@ async function onGetCommissionDates() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -276,7 +276,7 @@ async function onGetProjectBudget() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -305,7 +305,7 @@ async function onSubmitBasicInfos(nextStep: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -322,7 +322,7 @@ async function onSubmitCommission(nextStep: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -341,7 +341,7 @@ async function onSubmitBudget(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -360,7 +360,7 @@ async function onSubmitGoals(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -383,7 +383,7 @@ async function onUploadDocuments(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -402,7 +402,7 @@ async function onSubmitProject() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -427,7 +427,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']"/>
+                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']" />
 
                 <QStepper
                     ref="stepper"
@@ -445,11 +445,11 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             class="flex-column"
                             @submit.prevent="onSubmitBasicInfos(2)"
                         >
-                            <InfoFormRequiredFields/>
+                            <InfoFormRequiredFields />
                             <QInput
                                 v-model="projectBasicInfos.name"
                                 :label="t('project.name') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-name')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-name')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -458,7 +458,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBasicInfos.plannedStartDate"
                                 :label="t('project.planned-start-date') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-startdate'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-startdate'), val => val && datesAreLegal || t('forms.legal-dates')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -471,7 +471,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBasicInfos.plannedEndDate"
                                 :label="t('project.planned-end-date') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-enddate'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-enddate'), val => val && datesAreLegal || t('forms.legal-dates')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -484,7 +484,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBasicInfos.plannedLocation"
                                 :label="t('project.planned-location') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-location')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-location')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -496,7 +496,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :hint="t('forms.multiple-choices-enabled')"
                                 :label="t('project.categories') + ' *'"
                                 :options="projectStore.projectCategoriesLabels"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-categories')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-categories')]"
                                 clearable
                                 color="commission"
                                 emit-value
@@ -511,7 +511,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     v-model="projectBasicInfos.associationUser"
                                     :label="t('project.association-user') + ' *'"
                                     :options="projectAssociationUsersLabels"
-                                    :rules="[ val => val || t('forms.required-project-association-user')]"
+                                    :rules="[val => val || t('forms.required-project-association-user')]"
                                     clearable
                                     color="commission"
                                     emit-value
@@ -520,9 +520,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     map-options
                                 />
                             </div>
-                            <div
-                                v-else
-                            >
+                            <div v-else>
                                 <div class="info-panel info-panel-warning">
                                     <i
                                         aria-hidden="true"
@@ -570,7 +568,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 v-model="projectCommission"
                                 :label="t('project.commission-choice') + ' *'"
                                 :options="commissionLabels"
-                                :rules="[ val => val || t('forms.select-project-commission-date')]"
+                                :rules="[val => val || t('forms.select-project-commission-date')]"
                                 clearable
                                 color="commission"
                                 emit-value
@@ -594,7 +592,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :label="t('project.commission-funds-choice') + ' *'"
                                 :options="fundsLabels"
                                 :readonly="!projectCommission"
-                                :rules="[ val => val || t('forms.select-project-commission-member')]"
+                                :rules="[val => val || t('forms.select-project-commission-member')]"
                                 clearable
                                 color="commission"
                                 emit-value
@@ -658,7 +656,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         v-model="commissionFund.amountAskedPreviousEdition"
                                         :label="funds.find(obj => obj.id === (commissionFunds
                                             .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
-                                        :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.required-project-amount-asked-previous')] : []"
+                                        :rules="projectReEdition ? [val => val && val.length > 0 || t('forms.required-project-amount-asked-previous')] : []"
                                         :shadow-text="` ${CURRENCY}`"
                                         color="commission"
                                         filled
@@ -676,7 +674,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         v-model="commissionFund.amountEarnedPreviousEdition"
                                         :label="funds.find(obj => obj.id === (commissionFunds
                                             .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
-                                        :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.required-project-amount-earned-previous')] : []"
+                                        :rules="projectReEdition ? [val => val && val.length > 0 || t('forms.required-project-amount-earned-previous')] : []"
                                         :shadow-text="` ${CURRENCY}`"
                                         color="commission"
                                         filled
@@ -689,7 +687,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QInput
                                     v-model="projectBudget.budgetPreviousEdition"
                                     :label="t('project.budget-previous-edition') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.required-project-budget-previous')]"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-project-budget-previous')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     color="commission"
@@ -709,7 +707,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.targetAudience"
                                 :label="t('project.target-audience') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-audience')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -720,7 +718,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountStudentsAudience"
                                 :label="t('project.target-students-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-amount-students-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-students-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -733,7 +731,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-amount-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -746,7 +744,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.ticketPrice"
                                 :label="t('project.ticket-price') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-ticket')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-ticket')]"
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 color="commission"
@@ -760,7 +758,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.studentTicketPrice"
                                 :label="t('project.student-ticket-price') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-ticket')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-ticket')]"
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 color="commission"
@@ -774,7 +772,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.individualCost"
                                 :label="t('project.individual-cost') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-individual-cost')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-individual-cost')]"
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 color="commission"
@@ -798,7 +796,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     v-model="commissionFund.amountAsked"
                                     :label="funds.find(obj => obj.id === (commissionFunds
                                         .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.required-project-budget')]"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-project-budget')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     color="commission"
                                     filled
@@ -840,7 +838,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.goals"
                                 :label="t('project.goals') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-goals')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-goals')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -851,7 +849,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.summary"
                                 :label="t('project.summary') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-summary')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-summary')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -862,7 +860,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.plannedActivities"
                                 :label="t('project.planned-activities') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-activities')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-activities')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -873,7 +871,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.preventionSafety"
                                 :label="t('project.prevention-safety') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-safety')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-safety')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -884,7 +882,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.marketingCampaign"
                                 :label="t('project.marketing-campaign') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-marketing')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-marketing')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -895,7 +893,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.sustainableDevelopment"
                                 :label="t('project.sustainable-development') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-sustainable')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-sustainable')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -928,9 +926,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         :title="t('project.documents')"
                         icon="bi-file-earmark"
                     >
-                        <QForm
-                            @submit.prevent="onUploadDocuments(6)"
-                        >
+                        <QForm @submit.prevent="onUploadDocuments(6)">
                             <!--
                                                         <h3 class="title-2">{{ t('project.documents') }}</h3>
                             -->

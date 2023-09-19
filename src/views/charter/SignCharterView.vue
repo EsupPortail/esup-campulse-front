@@ -89,7 +89,7 @@ async function onGetAssociationDetails() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -112,7 +112,7 @@ async function onPatchAssociation() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -129,7 +129,7 @@ async function onUploadDocuments(nextStep: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -147,7 +147,7 @@ async function onSignCharter() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -161,9 +161,7 @@ async function onSignCharter() {
     <section class="dashboard-section">
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoProcessDocuments
-                    :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"
-                />
+                <InfoProcessDocuments :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']" />
                 <QStepper
                     ref="stepper"
                     v-model="step"
@@ -175,10 +173,8 @@ async function onSignCharter() {
                         :title="t('charter.site.sign-form.association-infos-update')"
                         icon="bi-pencil"
                     >
-                        <QForm
-                            @submit="onPatchAssociation"
-                        >
-                            <InfoFormRequiredFields/>
+                        <QForm @submit="onPatchAssociation">
+                            <InfoFormRequiredFields />
                             <QInput
                                 v-model="editedAssociation.name"
                                 :label="t('association.labels.name') + ' *'"
@@ -329,10 +325,8 @@ async function onSignCharter() {
                         :title="t('charter.site.sign-form.documents-upload')"
                         icon="bi-file-earmark"
                     >
-                        <QForm
-                            @submit="onUploadDocuments(3)"
-                        >
-                            <InfoFormRequiredFields/>
+                        <QForm @submit="onUploadDocuments(3)">
+                            <InfoFormRequiredFields />
                             <FormDocumentUploads
                                 :association-id="associationId"
                                 process="charter"
@@ -363,9 +357,7 @@ async function onSignCharter() {
                         :title="t('recap')"
                         icon="bi-check-lg"
                     >
-                        <QForm
-                            @submit="onSignCharter"
-                        >
+                        <QForm @submit="onSignCharter">
                             <CharterRecap
                                 :association-id="associationId"
                                 view="signCharter"
@@ -406,7 +398,7 @@ async function onSignCharter() {
     padding-bottom: 20px;
 }
 
-.flex-row > * {
+.flex-row>* {
     width: $fullSize;
 }
 </style>

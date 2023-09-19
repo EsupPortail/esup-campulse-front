@@ -69,7 +69,7 @@ async function onGetProjects() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
 
@@ -114,9 +114,7 @@ watch(() => tab.value, initCanSubmitProjects)
                     />
                 </QTabs>
 
-                <QSeparator
-                    aria-hidden="true"
-                />
+                <QSeparator aria-hidden="true" />
 
                 <QTabPanels
                     v-model="tab"
@@ -128,9 +126,7 @@ watch(() => tab.value, initCanSubmitProjects)
                         :name="tab.name"
                         class="q-pa-none"
                     >
-                        <QSplitter
-                            v-model="splitterModel"
-                        >
+                        <QSplitter v-model="splitterModel">
                             <template v-slot:before>
                                 <div v-if="tab.association">
                                     <div v-if="canSubmitProjects">
@@ -141,7 +137,7 @@ watch(() => tab.value, initCanSubmitProjects)
                                             <QBtn
                                                 :disable="!canSubmitProjects"
                                                 :label="t('project.submit-new-project')"
-                                                :to="{name: 'SubmitProjectAssociation', params: {associationId: tab.association}}"
+                                                :to="{ name: 'SubmitProjectAssociation', params: { associationId: tab.association } }"
                                                 class="btn-lg"
                                                 color="commission"
                                                 icon="bi-plus-circle"
@@ -177,7 +173,7 @@ watch(() => tab.value, initCanSubmitProjects)
                                     <div class="flex-row-center padding-top">
                                         <QBtn
                                             :label="t('project.submit-new-project')"
-                                            :to="{name: 'SubmitProjectIndividual'}"
+                                            :to="{ name: 'SubmitProjectIndividual' }"
                                             class="btn-lg"
                                             color="commission"
                                             icon="bi-plus-circle"
@@ -215,9 +211,7 @@ watch(() => tab.value, initCanSubmitProjects)
                                     transition-next="slide-up"
                                     transition-prev="slide-down"
                                 >
-                                    <QTabPanel
-                                        name="allProjects"
-                                    >
+                                    <QTabPanel name="allProjects">
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?
@@ -226,9 +220,7 @@ watch(() => tab.value, initCanSubmitProjects)
                                             :title="t('project.all-projects')"
                                         />
                                     </QTabPanel>
-                                    <QTabPanel
-                                        name="validatedProjects"
-                                    >
+                                    <QTabPanel name="validatedProjects">
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?
@@ -239,9 +231,7 @@ watch(() => tab.value, initCanSubmitProjects)
                                             :title="t('project.validated-projects')"
                                         />
                                     </QTabPanel>
-                                    <QTabPanel
-                                        name="rejectedProjects"
-                                    >
+                                    <QTabPanel name="rejectedProjects">
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?

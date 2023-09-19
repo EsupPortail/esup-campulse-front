@@ -49,7 +49,7 @@ async function onGetUserAssociations() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -69,7 +69,7 @@ async function onValidateAssociationUser() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -89,7 +89,7 @@ async function onDeleteAssociationUser() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -97,12 +97,10 @@ async function onDeleteAssociationUser() {
 </script>
 
 <template>
-    <QForm
-        @submit.prevent="onValidateAssociationUser"
-    >
+    <QForm @submit.prevent="onValidateAssociationUser">
         <div class="dashboard-section">
             <h2>
-                <QIcon name="bi-person"/>
+                <QIcon name="bi-person" />
                 {{ t('user.infos') }}
             </h2>
             <div class="dashboard-section-container">
@@ -127,7 +125,7 @@ async function onDeleteAssociationUser() {
 
         <div class="dashboard-section">
             <h2>
-                <QIcon name="bi-person-lines-fill"/>
+                <QIcon name="bi-person-lines-fill" />
                 {{ t('dashboard.association-user.association') }}
             </h2>
 

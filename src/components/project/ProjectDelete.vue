@@ -48,7 +48,7 @@ async function onDeleteProject() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -60,9 +60,7 @@ async function onDeleteProject() {
     <QDialog v-model="open">
         <QCard class="variant-space-3">
             <QCardSection>
-                <QForm
-                    @submit="onDeleteProject"
-                >
+                <QForm @submit="onDeleteProject">
                     <p class="paragraph">{{ t('project.confirm-project-delete') }}</p>
                     <div class="flex-row-center">
                         <QBtn

@@ -66,7 +66,7 @@ async function onGetCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -83,7 +83,7 @@ async function onClearSearch() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -104,7 +104,7 @@ async function onClearSearch() {
         <div class="dashboard-section-container flex-column">
             <div class="container margin-bottom">
                 <h3>{{ t('commission.search-project') }}</h3>
-                <FormProjectSearch @on-clear-search="onClearSearch"/>
+                <FormProjectSearch @on-clear-search="onClearSearch" />
             </div>
             <QCard v-if="tabs.length">
                 <QTabs
@@ -123,9 +123,7 @@ async function onClearSearch() {
                     />
                 </QTabs>
 
-                <QSeparator
-                    aria-hidden="true"
-                />
+                <QSeparator aria-hidden="true" />
 
                 <QTabPanels
                     v-model="tab"
@@ -137,9 +135,7 @@ async function onClearSearch() {
                         :name="tab.name"
                         class="q-pa-none"
                     >
-                        <QSplitter
-                            v-model="splitterModel"
-                        >
+                        <QSplitter v-model="splitterModel">
                             <template v-slot:before>
                                 <QTabs
                                     v-model="innerTab"
@@ -180,9 +176,7 @@ async function onClearSearch() {
                                     transition-next="slide-up"
                                     transition-prev="slide-down"
                                 >
-                                    <QTabPanel
-                                        name="allProjects"
-                                    >
+                                    <QTabPanel name="allProjects">
                                         <TableManagedProjects
                                             :commission-id="tab.commission"
                                             :commission-name="tab.name"
@@ -191,9 +185,7 @@ async function onClearSearch() {
                                             project-status="all"
                                         />
                                     </QTabPanel>
-                                    <QTabPanel
-                                        name="validatedProjects"
-                                    >
+                                    <QTabPanel name="validatedProjects">
                                         <TableManagedProjects
                                             :commission-id="tab.commission"
                                             :commission-name="tab.name"
@@ -202,9 +194,7 @@ async function onClearSearch() {
                                             project-status="validated"
                                         />
                                     </QTabPanel>
-                                    <QTabPanel
-                                        name="archivedProjects"
-                                    >
+                                    <QTabPanel name="archivedProjects">
                                         <TableManagedProjects
                                             :commission-id="tab.commission"
                                             :commission-name="tab.name"

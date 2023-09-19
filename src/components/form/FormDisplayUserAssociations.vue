@@ -36,7 +36,7 @@ async function onGetUserAssociations() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -60,7 +60,8 @@ async function onGetUserAssociations() {
                 <ul>
                     <li>
                         {{ t('dashboard.association-user.my-role') }}{{ t('colon') }}<span>{{
-                            associationRoleOptions.find(obj => obj.value === association.role)?.label ?? t('dashboard.association-user.member')
+                            associationRoleOptions.find(obj => obj.value === association.role)?.label ??
+                                t('dashboard.association-user.member')
                         }}</span>
                     </li>
                     <li>
@@ -68,11 +69,12 @@ async function onGetUserAssociations() {
                             (association.role === 'isPresident'
                                 || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null
                                     && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo
-                                    && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <= today)) ? t('yes') : t('no')
-                        }}</span>
+                                    && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <=
+                                        today)) ? t('yes') : t('no') }}</span>
                     </li>
                     <li>
-                        {{ t('dashboard.association-user.is-validated-by-admin') }}{{ t('colon') }}<span>{{ association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
+                        {{ t('dashboard.association-user.is-validated-by-admin') }}{{ t('colon') }}<span>{{
+                            association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
                     </li>
                 </ul>
                 <div class="flex-row padding-top padding-bottom">
@@ -85,7 +87,7 @@ async function onGetUserAssociations() {
                     <QBtn
                         v-if="association.isValidatedByAdmin && association.id !== null && userStore.hasPresidentStatus(association.id)"
                         :label="t('dashboard.association-user.manage-association')"
-                        :to="{name: 'AssociationDashboard', params: {id: association.id}}"
+                        :to="{ name: 'AssociationDashboard', params: { id: association.id } }"
                         class="btn-lg"
                         color="dashboard"
                         icon="bi-pencil"

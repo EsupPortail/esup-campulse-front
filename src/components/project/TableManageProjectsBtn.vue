@@ -108,10 +108,10 @@ const initOptions = () => {
 
     // Update project dates
     if ((props.projectStatus === 'PROJECT_DRAFT_PROCESSED' ||
-            props.projectStatus === 'PROJECT_PROCESSING' ||
-            props.projectStatus === 'PROJECT_VALIDATED' ||
-            props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-            props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
+        props.projectStatus === 'PROJECT_PROCESSING' ||
+        props.projectStatus === 'PROJECT_VALIDATED' ||
+        props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
+        props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
         hasPerm('change_project_as_validator')) {
         options.value.push({
             icon: 'bi-calendar',
@@ -122,7 +122,7 @@ const initOptions = () => {
 
     // Change commission
     if ((props.projectStatus === 'PROJECT_PROCESSING' ||
-            props.projectStatus === 'PROJECT_VALIDATED') &&
+        props.projectStatus === 'PROJECT_VALIDATED') &&
         hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
             icon: 'bi-signpost',
@@ -195,7 +195,7 @@ async function onGetProjectPdf(projectId: number, projectName: string, isReview:
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -216,7 +216,7 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -242,9 +242,7 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
                     @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
-                        <QAvatar
-                            :icon="option.icon"
-                        />
+                        <QAvatar :icon="option.icon" />
                     </QItemSection>
                     <QItemSection>
                         <QItemLabel>{{ option.label }}</QItemLabel>

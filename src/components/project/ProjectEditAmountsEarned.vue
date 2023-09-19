@@ -113,7 +113,7 @@ async function onPatchProjectCommissionFunds() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -130,7 +130,7 @@ async function onPatchProjectCommissionFunds() {
                     class="flex-column"
                     @submit="onPatchProjectCommissionFunds"
                 >
-                    <InfoFormRequiredFields/>
+                    <InfoFormRequiredFields />
                     <QList
                         bordered
                         class="rounded-borders"
@@ -185,7 +185,8 @@ async function onPatchProjectCommissionFunds() {
                                         :rules="[val => val && val.length > 0
                                             || t('forms.required-field', {
                                                 label: `${t('project.amount-earned')} (${projectCommissionFund.fundLabel
-                                                })`})]"
+                                                })`
+                                            })]"
                                         :shadow-text="` ${CURRENCY}`"
                                         clearable
                                         color="commission"
@@ -193,7 +194,6 @@ async function onPatchProjectCommissionFunds() {
                                         lazy-rules
                                         min="0"
                                         type="number"
-
                                         @update:model-value="projectCommissionFund.amountEarned === '0' ?
                                             projectCommissionFund.needComment = true : projectCommissionFund.needComment = false"
                                     />
@@ -204,10 +204,11 @@ async function onPatchProjectCommissionFunds() {
                                             && projectCommissionFund.needComment ?
                                                 t('project.no-amount-earned-comment-hint') : ''"
                                         :label="`${t('project.new-comment')} (${projectCommissionFund.fundLabel})
-                                            ${projectCommissionFund.needComment ? ' *' : ''}`"
+                                                ${projectCommissionFund.needComment ? ' *' : ''}`"
                                         :readonly="projectCommissionFund.amountEarnedIsValidatedByAdmin"
                                         :rules="[val => (!projectCommissionFund.needComment || val && val.length > 0) || t('forms.required-field', {
-                                            label: `${t('project.new-comment')} (${projectCommissionFund.fundLabel})`})]"
+                                            label: `${t('project.new-comment')} (${projectCommissionFund.fundLabel})`
+                                        })]"
                                         clearable
                                         color="commission"
                                         filled
@@ -253,7 +254,7 @@ async function onPatchProjectCommissionFunds() {
     padding: 1rem;
 }
 
-.flex-row > * {
+.flex-row>* {
     width: $fullSize;
 }
 </style>

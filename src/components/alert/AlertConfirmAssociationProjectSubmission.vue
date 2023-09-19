@@ -29,7 +29,7 @@ async function onManageAssociationSubmission() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -55,7 +55,8 @@ async function onManageAssociationSubmission() {
             <QCardSection class="row items-center">
                 <p class="q-ml-sm">
                     {{
-                        !associationStore.association?.canSubmitProjects ? t('alerts.confirm-association-can-submit-projects') : t('alerts.confirm-association-cannot-submit-projects')
+                        !associationStore.association?.canSubmitProjects ? t('alerts.confirm-association-can-submit-projects') :
+                        t('alerts.confirm-association-cannot-submit-projects')
                     }}
                 </p>
                 <div class="flex-row padding-top">

@@ -52,7 +52,7 @@ async function onGetProjectCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -159,7 +159,7 @@ const projectIsFirstEdition = () => {
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-.flex-row > * {
-  width: $fullSize;
+.flex-row>* {
+    width: $fullSize;
 }
 </style>

@@ -31,7 +31,7 @@ async function onGetAssociationDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -46,7 +46,7 @@ async function onGetCharters() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -129,7 +129,7 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 headers="status"
                             >
-                                <CharterStatusIndicator :charter-status="props.row.charterStatus"/>
+                                <CharterStatusIndicator :charter-status="props.row.charterStatus" />
                             </QTd>
                             <QTd
                                 key="actions"

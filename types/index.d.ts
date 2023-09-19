@@ -9,6 +9,13 @@ interface SelectLabel {
     label: string
 }
 
+export interface Error {
+    status: number
+    data: {
+        error: string
+    }
+}
+
 export interface PasswordChecker {
     valid: boolean,
     score: number

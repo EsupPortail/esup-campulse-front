@@ -58,7 +58,7 @@ async function onUpdateUserInfos() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -81,7 +81,7 @@ async function onUpdateUserAssociations() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -124,9 +124,7 @@ onMounted(() => {
         v-model="tab"
         animated
     >
-        <QTabPanel
-            name="infos"
-        >
+        <QTabPanel name="infos">
             <div class="dashboard-section">
                 <h2>
                     <i
@@ -172,9 +170,7 @@ onMounted(() => {
             </div>
         </QTabPanel>
 
-        <QTabPanel
-            name="associations"
-        >
+        <QTabPanel name="associations">
             <div class="dashboard-section">
                 <h2>
                     <i
@@ -186,7 +182,7 @@ onMounted(() => {
 
                 <div class="dashboard-section-container">
                     <div class="container flex-column">
-                        <FormDisplayUserAssociations/>
+                        <FormDisplayUserAssociations />
                     </div>
                 </div>
             </div>
@@ -205,10 +201,8 @@ onMounted(() => {
 
                 <div class="dashboard-section-container">
                     <div class="container">
-                        <QForm
-                            @submit.prevent="onUpdateUserAssociations"
-                        >
-                            <FormRegisterUserAssociations/>
+                        <QForm @submit.prevent="onUpdateUserAssociations">
+                            <FormRegisterUserAssociations />
                             <div class="flex-row-center padding-top">
                                 <QBtn
                                     :label="t('back')"
@@ -224,10 +218,8 @@ onMounted(() => {
             </section>
         </QTabPanel>
 
-        <QTabPanel
-            name="password"
-        >
-            <FormProfilePasswordEdit/>
+        <QTabPanel name="password">
+            <FormProfilePasswordEdit />
         </QTabPanel>
     </QTabPanels>
 </template>

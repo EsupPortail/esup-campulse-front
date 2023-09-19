@@ -36,7 +36,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -66,7 +66,7 @@ async function onGetDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -102,7 +102,7 @@ onMounted(async () => await onGetDocuments())
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-ul > li {
+ul>li {
     text-decoration: underline;
     font-weight: $semibold-weight;
     cursor: pointer;

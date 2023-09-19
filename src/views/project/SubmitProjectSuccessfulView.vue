@@ -28,7 +28,7 @@ async function onGetProjectDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -48,7 +48,7 @@ async function onGetProjectPdf() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -77,7 +77,7 @@ async function onGetProjectPdf() {
                         />
                         <QBtn
                             :label="t('dashboard.cape-dashboard')"
-                            :to="{name: 'ManageProjects'}"
+                            :to="{ name: 'ManageProjects' }"
                             class="btn-lg"
                             color="commission"
                             icon="bi-chevron-compact-right"

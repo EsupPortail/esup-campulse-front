@@ -42,7 +42,7 @@ async function onGetUser() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -56,7 +56,7 @@ async function onGetUserAssociations() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -77,7 +77,7 @@ async function onValidateUser() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response.status)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -96,7 +96,7 @@ async function onDeleteUser() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -106,7 +106,7 @@ async function onDeleteUser() {
 <template>
     <div class="dashboard-section">
         <h2>
-            <QIcon name="bi-person"/>
+            <QIcon name="bi-person" />
             {{ t('user.infos') }}
         </h2>
 
@@ -144,7 +144,7 @@ async function onDeleteUser() {
 
     <div class="dashboard-section">
         <h2>
-            <QIcon name="bi-building"/>
+            <QIcon name="bi-building" />
             {{ t('directory.title') }}
         </h2>
 
@@ -192,12 +192,12 @@ async function onDeleteUser() {
 
     <div class="dashboard-section">
         <h2>
-            <QIcon name="bi-person-lines-fill"/>
+            <QIcon name="bi-person-lines-fill" />
             {{ t('user.groups') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <FormUserGroups/>
+                <FormUserGroups />
                 <div v-if="!userManagerStore.user?.isCas && studentGroupIsSelected">
                     <hgroup>
                         <h3>{{ t('forms.student-status-document') }}</h3>

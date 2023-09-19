@@ -42,7 +42,7 @@ async function onGetUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -55,7 +55,7 @@ async function onGetUserGroups() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -214,7 +214,7 @@ const columns: QTableProps['columns'] = [
                                     <QBtn
                                         v-if="route.name === 'ManageUsers' && canEditUser(props.row.groups)"
                                         :aria-label="t('modify')"
-                                        :to="{name: 'UserManagementDetail', params: {id: props.row.id}}"
+                                        :to="{ name: 'UserManagementDetail', params: { id: props.row.id } }"
                                         color="dashboard"
                                         icon="bi-pencil"
                                         outline
@@ -222,7 +222,7 @@ const columns: QTableProps['columns'] = [
                                     <QBtn
                                         v-if="route.name === 'ValidateUsers'"
                                         :aria-label="t('consult')"
-                                        :to="{name: 'UserValidationDetail', params: {id: props.row.id}}"
+                                        :to="{ name: 'UserValidationDetail', params: { id: props.row.id } }"
                                         color="dashboard"
                                         icon="bi-eye"
                                         outline
@@ -291,7 +291,7 @@ ul {
     padding-left: 0;
 }
 
-ul > li {
+ul>li {
     list-style: none;
 }
 </style>

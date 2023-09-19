@@ -180,7 +180,7 @@ async function onChangeLogo(action: string) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response.status)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -231,7 +231,7 @@ async function onChangeLogo(action: string) {
                         </p>
                     </template>
                     <template v-slot:prepend>
-                        <QIcon name="bi-image"/>
+                        <QIcon name="bi-image" />
                     </template>
                 </QFile>
 
@@ -258,7 +258,7 @@ async function onChangeLogo(action: string) {
     </QForm>
 
     <div class="container">
-        <InfoFormRequiredFields/>
+        <InfoFormRequiredFields />
     </div>
 
     <QForm class="association-edition">
@@ -389,7 +389,7 @@ async function onChangeLogo(action: string) {
                             type="date"
                         >
                             <template v-slot:prepend>
-                                <QIcon name="bi-calendar"/>
+                                <QIcon name="bi-calendar" />
                             </template>
                         </QInput>
                         <QInput
@@ -417,7 +417,7 @@ async function onChangeLogo(action: string) {
                             <template v-slot:hint>
                                 <p aria-describedby="amountMembersAllowed">
                                     {{
-                                        t('forms.amount-student-allowed-cannot-be-inferior-to-members', {amount: membersCount})
+                                        t('forms.amount-student-allowed-cannot-be-inferior-to-members', { amount: membersCount })
                                     }}
                                 </p>
                             </template>
@@ -477,9 +477,7 @@ async function onChangeLogo(action: string) {
                                 />
                             </div>
                         </fieldset>
-                        <QSeparator
-                            aria-hidden="true"
-                        />
+                        <QSeparator aria-hidden="true" />
                         <QInput
                             v-model="association.email"
                             :label="t('association.labels.mail')"
@@ -521,7 +519,7 @@ async function onChangeLogo(action: string) {
 
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormAssociationSocialNetworks/>
+                    <FormAssociationSocialNetworks />
                 </div>
             </div>
         </div>
@@ -551,9 +549,7 @@ async function onChangeLogo(action: string) {
                 v-if="isStaff && associationStore.association?.isEnabled"
                 @has-validated="hasValidated = true"
             />
-            <AlertConfirmAssociationDeletion
-                v-if="isStaff && !associationStore.association?.isEnabled"
-            />
+            <AlertConfirmAssociationDeletion v-if="isStaff && !associationStore.association?.isEnabled" />
         </div>
 
         <AlertLeaveEdition
