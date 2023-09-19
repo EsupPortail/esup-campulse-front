@@ -3,7 +3,7 @@ import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
-import type {DocumentUpload} from '#/documents'
+import type {DocumentProcessType, DocumentUpload} from '#/documents'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -176,9 +176,13 @@ export const useUserStore = defineStore('userStore', {
             return perm
         },
 
-        async getUserDocuments() {
+        async getUserDocuments(processTypes?: DocumentProcessType[]) {
             const {axiosAuthenticated} = useAxios()
-            this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?user_id=${this.user?.id}`)).data
+            let url = `/documents/uploads?user_id=${this.user?.id}`
+            if (processTypes?.length) {
+                url += `&process_types=${processTypes.join(',')}`
+            }
+            this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
         }
     }
 })

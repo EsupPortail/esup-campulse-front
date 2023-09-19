@@ -35,7 +35,7 @@ watch(() => userStore.userAssociations.length, initAssociationCounter)
 async function onGetUserDocuments() {
     if (!isStaff.value && hasPerm('add_project_user')) {
         try {
-            await userStore.getUserDocuments()
+            await userStore.getUserDocuments(['DOCUMENT_USER'])
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({

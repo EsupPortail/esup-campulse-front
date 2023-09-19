@@ -96,7 +96,7 @@ async function onGetAssociationDetail() {
 
 async function onGetAssociationDocuments() {
     try {
-        await associationStore.getAssociationDocuments()
+        await associationStore.getAssociationDocuments(['DOCUMENT_ASSOCIATION'])
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

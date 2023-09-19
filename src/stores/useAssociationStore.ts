@@ -12,7 +12,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import type {AssociationUser} from '#/user'
-import type {DocumentUpload} from '#/documents'
+import type {DocumentProcessType, DocumentUpload} from '#/documents'
 
 
 export const useAssociationStore = defineStore('associationStore', {
@@ -240,9 +240,13 @@ export const useAssociationStore = defineStore('associationStore', {
             const {axiosAuthenticated} = useAxios()
             this.associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/?association_id=${associationId}`)).data
         },
-        async getAssociationDocuments() {
+        async getAssociationDocuments(processTypes?: DocumentProcessType[]) {
             const {axiosAuthenticated} = useAxios()
-            this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?association_id=${this.association?.id}`)).data
+            let url = `/documents/uploads?association_id=${this.association?.id}`
+            if (processTypes?.length) {
+                url += `&process_types=${processTypes.join(',')}`
+            }
+            this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
         },
         async export(associations: number[], format: string) {
             const {axiosAuthenticated} = useAxios()
