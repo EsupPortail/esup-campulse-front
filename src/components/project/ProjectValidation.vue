@@ -195,6 +195,12 @@ async function onUpdateProjectStatus() {
                         lazy-rules
                         type="textarea"
                     />
+                    <QToggle
+                        v-model="newComment.isVisible"
+                        :disable="!newComment.text"
+                        :label="t('forms.comment-visibility')"
+                        color="commission"
+                    />
                     <div class="flex-row-center padding-top">
                         <QBtn
                             :label="t('back')"

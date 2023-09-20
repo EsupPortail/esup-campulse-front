@@ -130,7 +130,7 @@ async function onPatchProjectCommissionFunds() {
                     class="flex-column"
                     @submit="onPatchProjectCommissionFunds"
                 >
-                    <InfoFormRequiredFields />
+                    <InfoFormRequiredFields/>
                     <QList
                         bordered
                         class="rounded-borders"
@@ -215,6 +215,12 @@ async function onPatchProjectCommissionFunds() {
                                         reactive-rules
                                         type="textarea"
                                     />
+                                    <QToggle
+                                        v-model="projectCommissionFund.comment.isVisible"
+                                        :disable="!projectCommissionFund.comment.text"
+                                        :label="t('forms.comment-visibility')"
+                                        color="commission"
+                                    />
                                 </QCardSection>
                             </QCard>
                         </QExpansionItem>
@@ -254,7 +260,7 @@ async function onPatchProjectCommissionFunds() {
     padding: 1rem;
 }
 
-.flex-row>* {
+.flex-row > * {
     width: $fullSize;
 }
 </style>
