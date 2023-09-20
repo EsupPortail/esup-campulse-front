@@ -106,7 +106,7 @@ export interface ProjectCommissionFund {
     amountAskedPreviousEdition?: number | string,
     amountEarnedPreviousEdition?: number | string,
     amountAsked?: number | string,
-    amountEarned?: number | string,
+    amountEarned?: number | string | null,
     isValidatedByAdmin: boolean | null
 }
 

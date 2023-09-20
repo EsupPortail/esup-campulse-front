@@ -78,8 +78,7 @@ const initValues = () => {
                 fundLabel: getFundLabel(projectCommissionFund.commissionFund) ?? '',
                 amountAsked: projectCommissionFund.amountAsked?.toString() ?? '0',
                 amountAskedPreviousEdition: projectCommissionFund.amountAskedPreviousEdition?.toString() ?? '0',
-                amountEarned: projectCommissionFund.amountEarned ?
-                    projectCommissionFund.amountEarned.toString() : null,
+                amountEarned: projectCommissionFund.amountEarned === null ? null : (projectCommissionFund.amountEarned as number).toString(),
                 amountEarnedPreviousEdition: projectCommissionFund.amountEarnedPreviousEdition?.toString() ?? '0',
                 isFirstEdition: projectCommissionFund.isFirstEdition as boolean,
                 comment: {
@@ -87,7 +86,7 @@ const initValues = () => {
                     isVisible: false
                 },
                 needComment: false,
-                amountEarnedIsValidatedByAdmin: !!projectCommissionFund.amountEarned
+                amountEarnedIsValidatedByAdmin: projectCommissionFund.amountEarned !== null
             })
         }
     })
@@ -133,6 +132,7 @@ async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectC
                         :key="index"
                         :caption="projectCommissionFund.amountEarnedIsValidatedByAdmin ?
                             t('project.amount-earned-validated') : t('project.amount-earned-pending')"
+                        :disable="projectCommissionFund.amountEarnedIsValidatedByAdmin"
                         :header-class="`text-custom-${projectCommissionFund.amountEarnedIsValidatedByAdmin ?
                             'green' : 'red'}`"
                         :label="projectCommissionFund.fundLabel"
