@@ -87,7 +87,7 @@ onMounted(async () => {
         }
     }
     await onGetProjectCategories()
-    await onGetAssociationUsers()
+    // Init applicant
     initApplicant()
     // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
     if (applicant.value === 'association') {
@@ -109,6 +109,8 @@ onMounted(async () => {
             initIsSite()
         } else await router.push({name: '404'})
     }
+    // Init association users
+    await onGetAssociationUsers()
     // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
     projectStore.projectCommissionFunds = []
     isLoaded.value = true
@@ -937,7 +939,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <!--
                                                         <h3 class="title-2">{{ t('project.documents') }}</h3>
                             -->
-
                             <div class="info-panel info-panel-warning">
                                 <i
                                     aria-hidden="true"
