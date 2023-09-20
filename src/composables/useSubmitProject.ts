@@ -138,9 +138,9 @@ export default function () {
 
     const initProjectCommissionFundsDetail = () => {
         projectCommissionFundsDetail.value.forEach(projectCommissionFund => {
-            projectCommissionFund.amountAskedPreviousEdition = (projectCommissionFund.amountAskedPreviousEdition as number).toString()
-            projectCommissionFund.amountEarnedPreviousEdition = (projectCommissionFund.amountEarnedPreviousEdition as number).toString()
-            projectCommissionFund.amountAsked = (projectCommissionFund.amountAsked as number).toString()
+            projectCommissionFund.amountAskedPreviousEdition = (projectCommissionFund.amountAskedPreviousEdition ?? 0).toString()
+            projectCommissionFund.amountEarnedPreviousEdition = (projectCommissionFund.amountEarnedPreviousEdition ?? 0).toString()
+            projectCommissionFund.amountAsked = (projectCommissionFund.amountAsked ?? 0).toString()
         })
     }
     watch(() => projectCommissionFundsDetail.value, initProjectCommissionFundsDetail)
