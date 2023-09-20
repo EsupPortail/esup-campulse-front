@@ -21,6 +21,7 @@ async function reset() {
     } catch (error) {
         if (axios.isAxiosError(error)) {
             let errorMessage = null
+            const errorObject = {'status': 500, 'data': {'error': error.response?.data}}
             switch (error.response?.status) {
             case 404:
                 errorMessage = t('notifications.negative.unknown-email')
@@ -29,7 +30,10 @@ async function reset() {
                 errorMessage = t('notifications.negative.restricted-email')
                 break
             default:
-                errorMessage = catchHTTPError(error.response?.status ?? 500)
+                if (error.response?.status) {
+                    errorObject.status = error.response?.status
+                }
+                errorMessage = catchHTTPError(errorObject)
                 break
             }
             notify({

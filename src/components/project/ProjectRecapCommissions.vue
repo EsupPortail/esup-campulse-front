@@ -143,13 +143,14 @@ async function onGetProjectCommissions() {
         >
             <h4>
                 {{
-                    fundsLabels.find(x => x.value === commissionFunds.find(y => y.id === projectCommissionFund.commissionFund).fund)?.label
+                    fundsLabels.find(x => x.value === commissionFunds.find(y => y.id ===
+                        projectCommissionFund.commissionFund)?.fund)?.label
                 }}
             </h4>
             <QInput
                 v-model="projectCommissionFund.amountAsked"
                 :label="t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === commissionFunds
-                    .find(y => y.id === projectCommissionFund.commissionFund).fund)?.label + ')'"
+                    .find(y => y.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'"
                 :shadow-text="` ${CURRENCY}`"
                 filled
                 readonly
@@ -157,7 +158,7 @@ async function onGetProjectCommissions() {
             <QInput
                 v-model="projectCommissionFund.amountEarned"
                 :label="t('project.amount-earned') + ' (' + fundsLabels
-                    .find(x => x.value === commissionFunds.find(y => y.id === projectCommissionFund.commissionFund).fund)?.label + ')'"
+                    .find(x => x.value === commissionFunds.find(y => y.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'"
                 :shadow-text="` ${CURRENCY}`"
                 filled
                 readonly
