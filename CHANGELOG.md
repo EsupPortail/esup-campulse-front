@@ -1,10 +1,30 @@
-- 💩 Try to fix submit new project post that is incrementing
-- ✅ Tests for useCharters
-- 🔧 Changed ES version in tsconfig
-- 🔧 Checked configuration before production
-- ♻️ Removed ts-ignore statements
-- 🔧 Differentiate public folder for robots.txt
-- ✅ Tests for useSubmitReview
-- ✅ Tests for useManageProjects
-- ✅ Tests for ContentStore
-- ✨ Add new sections to dashboards
+- 🎨 Refactor route nesting of commissions
+- ✏️ Change title of student commission dashboard
+- 🩹 Fix project amounts earned edition
+- 🩹 Fix userAssociation labels on submit project form
+- 🐛 Various fixes on submit project and recap
+- 🐛 Corrected userStore.userFunds
+- 🐛 More generic error management
+- 🩹 A project validator can only validate the funds to which it is linked
+- 🩹 Backup data in case projectCommissionFunds are null
+- ♻️ ProjectEditAmountsEarned can now be edited individually
+- ✨ Switch on project comments for project / review validation and amount earned edition
+- 🩹 Fix undefined fund in SubmitProjectReview
+- 🩹 ImpactStudents in review is not a number
+- 🐛 Fix broken refresh on new commission
+- ✨ Test banner added
+- 🩹 Fix 404 after register with CAS
+- ✨ Add template document library button on dashboard
+- ✨ Optimize UX of document library management
+- ✨ Changed Dashboard disposition
+- ✨ Show backend errors on plana-test
+- 🎨 Add filter on document process types for uploads of association and user dashboard
+- 💄 Change font weight of home title
+- ✨ Project search bar (by manual identifier) for archived projects #164
+- ✨ Project search bar (by manual identifier) #164
+- ✨ Patch project comment visibility
+- ✨ Add link to template document in InfoProcessDocuments
+- ♿️ Add file formats at the bottom of QFiles
+- ✨ Mime types in hints of QFile for FormDocumentUploads
+- 🐛 Properly fix increment project in submit form + categories update on patch
+- ✅ Unit tests
