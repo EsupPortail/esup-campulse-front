@@ -31,10 +31,10 @@ export const useUserStore = defineStore('userStore', {
             const fundsArray: number[] = []
             state.user?.groups.forEach(group => {
                 if (group.institutionId) {
-                    const fund = funds.value.find(fund => fund.institution === group.institutionId)
-                    if (fund) {
+                    const foundFunds = funds.value.filter(fund => fund.institution === group.institutionId)
+                    foundFunds?.forEach((fund) => {
                         fundsArray.push(fund.id)
-                    }
+                    })
                 }
             })
             return fundsArray

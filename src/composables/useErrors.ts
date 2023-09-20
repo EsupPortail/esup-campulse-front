@@ -6,7 +6,7 @@ export default function() {
     function catchHTTPError(error: Error) {
         let notification = ''
         if (import.meta.env.VITE_APP_ENABLE_BACKEND_ERRORS && (error.data.error !== '')) {
-            notification = `${error.status} : ${error.data.error}`
+            notification = `${error.status} : ${JSON.stringify(error.data)}`
         } else {
             switch (error.status) {
             case 400:

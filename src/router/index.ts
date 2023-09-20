@@ -16,7 +16,7 @@ const colorVariant = ref<string>('')
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
     const {initStaffStatus, isStaff, getGroups, initIsMemberFund} = useUserGroups()
-    const {newUser, hasPerm} = useSecurity()
+    const {hasPerm} = useSecurity()
     const {dynamicTitle, openMenu} = useUtility()
 
     if (openMenu.value) {
