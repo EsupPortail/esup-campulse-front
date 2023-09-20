@@ -93,15 +93,13 @@ const initValues = () => {
     })
 }
 
-async function onPatchProjectCommissionFunds() {
+async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectCommissionFund) {
     loading.show()
     try {
-        for (const projectCommissionFund of editProjectCommissionFunds.value) {
-            if (!projectCommissionFund.amountEarnedIsValidatedByAdmin) {
-                await postNewProjectComment(props.project, projectCommissionFund.comment)
-                await patchAmountAsked(props.project, projectCommissionFund.commissionFundId,
-                    parseInt(projectCommissionFund.amountEarned as string))
-            }
+        if (!projectCommissionFund.amountEarnedIsValidatedByAdmin) {
+            await postNewProjectComment(props.project, projectCommissionFund.comment)
+            await patchAmountAsked(props.project, projectCommissionFund.commissionFundId,
+                parseInt(projectCommissionFund.amountEarned as string))
         }
         emit('closeDialog')
         emit('refreshProjects')
@@ -126,28 +124,28 @@ async function onPatchProjectCommissionFunds() {
         <QCard class="variant-space-3">
             <QCardSection>
                 <h2>{{ props.projectName }}</h2>
-                <QForm
-                    class="flex-column"
-                    @submit="onPatchProjectCommissionFunds"
+                <QList
+                    bordered
+                    class="rounded-borders"
                 >
-                    <InfoFormRequiredFields/>
-                    <QList
-                        bordered
-                        class="rounded-borders"
+                    <QExpansionItem
+                        v-for="(projectCommissionFund, index) in editProjectCommissionFunds"
+                        :key="index"
+                        :caption="projectCommissionFund.amountEarnedIsValidatedByAdmin ?
+                            t('project.amount-earned-validated') : t('project.amount-earned-pending')"
+                        :header-class="`text-custom-${projectCommissionFund.amountEarnedIsValidatedByAdmin ?
+                            'green' : 'red'}`"
+                        :label="projectCommissionFund.fundLabel"
+                        expand-separator
+                        icon="bi-bank"
                     >
-                        <QExpansionItem
-                            v-for="(projectCommissionFund, index) in editProjectCommissionFunds"
-                            :key="index"
-                            :caption="projectCommissionFund.amountEarnedIsValidatedByAdmin ?
-                                t('project.amount-earned-validated') : t('project.amount-earned-pending')"
-                            :header-class="`text-custom-${projectCommissionFund.amountEarnedIsValidatedByAdmin ?
-                                'green' : 'red'}`"
-                            :label="projectCommissionFund.fundLabel"
-                            expand-separator
-                            icon="bi-bank"
+                        <QForm
+                            class="flex-column"
+                            @submit="onPatchProjectCommissionFunds(projectCommissionFund)"
                         >
-                            <QCard>
+                            <QCard flat>
                                 <QCardSection class="flex-column">
+                                    <InfoFormRequiredFields/>
                                     <h4>{{ t('project.amount-asked') }}</h4>
                                     <QInput
                                         v-if="!projectCommissionFund.isFirstEdition"
@@ -223,29 +221,27 @@ async function onPatchProjectCommissionFunds() {
                                     />
                                 </QCardSection>
                             </QCard>
-                        </QExpansionItem>
-                    </QList>
-                    <div class="flex-row-center padding-top">
-                        <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            class="btn-lg"
-                            color="commission"
-                            icon="bi-box-arrow-left"
-                            @click="emit('closeDialog')"
-                        />
-                        <QBtn
-                            :disable="!editProjectCommissionFunds
-                                .map(x => x.amountEarnedIsValidatedByAdmin).includes(false)
-                                || editProjectCommissionFunds.map(x => x.amountEarned).includes(null)"
-                            :label="t('validate')"
-                            class="btn-lg"
-                            color="commission"
-                            icon="bi-check-lg"
-                            type="submit"
-                        />
-                    </div>
-                </QForm>
+                            <div class="flex-row-center padding-bottom">
+                                <QBtn
+                                    v-close-popup
+                                    :label="t('cancel')"
+                                    class="btn-lg"
+                                    color="commission"
+                                    icon="bi-box-arrow-left"
+                                    @click="emit('closeDialog')"
+                                />
+                                <QBtn
+                                    :disable="!projectCommissionFund.amountEarned"
+                                    :label="t('validate')"
+                                    class="btn-lg"
+                                    color="commission"
+                                    icon="bi-check-lg"
+                                    type="submit"
+                                />
+                            </div>
+                        </QForm>
+                    </QExpansionItem>
+                </QList>
             </QCardSection>
         </QCard>
     </QDialog>
