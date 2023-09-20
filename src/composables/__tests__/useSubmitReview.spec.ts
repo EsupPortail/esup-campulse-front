@@ -96,7 +96,7 @@ describe('useSubmitReview', () => {
                 realEndDate: '2023-07-22T00:00:00.000Z',
                 realLocation: 'Strasbourg',
                 review: 'Everything went well.',
-                impactStudents: 200,
+                impactStudents: 'Amazing.',
                 description: 'A project for students.',
                 difficulties: 'The weather was hot.',
                 improvements: 'Need more parasols and free water.',

@@ -381,7 +381,7 @@ export const _projectReview: ProjectReview = {
     realEndDate: '2023-07-22',
     realLocation: 'Strasbourg',
     review: 'Everything went well.',
-    impactStudents: '200',
+    impactStudents: 'Amazing.',
     description: 'A project for students.',
     difficulties: 'The weather was hot.',
     improvements: 'Need more parasols and free water.',
