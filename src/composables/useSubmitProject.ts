@@ -317,7 +317,9 @@ export default function () {
                     dataToPatch = Object.assign(dataToPatch, {amountAskedPreviousEdition: 0})
                     dataToPatch = Object.assign(dataToPatch, {amountEarnedPreviousEdition: 0})
                     dataToPatch = Object.assign(dataToPatch, {amountAsked: newCommissionFund.amountAsked})
-                } else {
+                } /*else if (key === 'isFirstEdition') {
+                    dataToPatch = Object.assign(dataToPatch, {[key]: isFirstEdition})
+                }*/ else {
                     if (numbers.includes(key)) {
                         if (parseInt(value as string) !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
                             dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
@@ -325,7 +327,6 @@ export default function () {
                     } else {
                         if (value !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
                             dataToPatch = Object.assign(dataToPatch, {[key]: value})
-
                         }
                     }
                 }

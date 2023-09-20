@@ -72,6 +72,12 @@ onMounted(async () => {
     loading.show()
     projectId.value = parseInt(route.params.projectId as string)
     if (projectId.value) newProject.value = false
+    // If the project has not been posted yet, we clean project store
+    if (!projectId.value) {
+        projectStore.project = undefined
+        projectStore.projectCategories = []
+        reInitSubmitProjectForm()
+    }
     await onGetProjectDetail()
     // If project is not a draft, then push to 404
     if (projectStore.project && projectStore.project.id === projectId.value) {
@@ -427,7 +433,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']" />
+                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']"/>
 
                 <QStepper
                     ref="stepper"
@@ -445,7 +451,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             class="flex-column"
                             @submit.prevent="onSubmitBasicInfos(2)"
                         >
-                            <InfoFormRequiredFields />
+                            <InfoFormRequiredFields/>
                             <QInput
                                 v-model="projectBasicInfos.name"
                                 :label="t('project.name') + ' *'"
@@ -454,6 +460,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 clearable
                                 color="commission"
                                 filled
+                                lazy-rules
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedStartDate"

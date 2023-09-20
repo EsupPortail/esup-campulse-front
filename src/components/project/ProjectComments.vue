@@ -50,6 +50,8 @@ async function onGetProjectComments() {
                 })
             }
         }
+    } else {
+        comments.value = []
     }
 }
 
@@ -123,7 +125,8 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
                                   hour: new Date(comment.creationDate).getHours(),
                                   minutes: new Date(comment.creationDate).getMinutes() < 10 ? '0' + new
                                       Date(comment.creationDate).getMinutes() : new Date(comment.creationDate).getMinutes()
-                              }) }}
+                              })
+                        }}
                     </p>
                     <p>
                         {{ comment.text }}
@@ -172,7 +175,7 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-.comment-row>div {
+.comment-row > div {
     align-items: flex-start;
 }
 

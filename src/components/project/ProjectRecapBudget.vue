@@ -71,7 +71,7 @@ const projectIsFirstEdition = () => {
             <h4>{{ t('project.re-edition') }}</h4>
             <p>
                 {{
-                    !projectIsFirstEdition ? t('yes') : t('no')
+                    projectIsFirstEdition ? t('yes') : t('no')
                 }}
             </p>
         </div>
@@ -159,7 +159,7 @@ const projectIsFirstEdition = () => {
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-.flex-row>* {
+.flex-row > * {
     width: $fullSize;
 }
 </style>
