@@ -22,14 +22,17 @@ export default function () {
         await getFunds()
         await getCommissionFunds()
         projectCommissionFunds.forEach(projectCommissionFund => {
-            if (projectCommissionFund.isValidatedByAdmin === null ||
-                projectCommissionFund.isValidatedByAdmin && action !== 'validate' ||
-                !projectCommissionFund.isValidatedByAdmin && action !== 'reject') {
-                projectCommissionFundLabels.value.push({
-                    value: projectCommissionFund.commissionFund as number,
-                    label: funds.value.find(obj => obj.id ===
-                        (commissionFunds.value.find(obj => obj.id === projectCommissionFund.commissionFund)?.fund))?.acronym as string,
-                })
+            if (userStore.userFunds?.includes(commissionFunds.value
+                .find(obj => obj.id === projectCommissionFund.commissionFund)?.fund)) {
+                if (projectCommissionFund.isValidatedByAdmin === null ||
+                    projectCommissionFund.isValidatedByAdmin && action !== 'validate' ||
+                    !projectCommissionFund.isValidatedByAdmin && action !== 'reject') {
+                    projectCommissionFundLabels.value.push({
+                        value: projectCommissionFund.commissionFund as number,
+                        label: funds.value.find(obj => obj.id ===
+                            (commissionFunds.value.find(obj => obj.id === projectCommissionFund.commissionFund)?.fund))?.acronym as string,
+                    })
+                }
             }
         })
     }

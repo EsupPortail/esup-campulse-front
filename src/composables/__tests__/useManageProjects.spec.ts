@@ -31,6 +31,7 @@ config.global.plugins = [
 describe('useManageProjects', () => {
     beforeEach(() => {
         userStore = useUserStore()
+        userStore.user = _generalManager
         funds.value = _funds
         commissionFunds.value = _commissionFunds
     })
@@ -59,12 +60,12 @@ describe('useManageProjects', () => {
             describe('if the manager validates the funding', () => {
                 it('should init the corresponding label', async () => {
                     await initProjectCommissionFundLabels([projectCommissionFund], 'validate')
-                    expect(projectCommissionFundLabels.value).toEqual([{
-                        label: funds.value
-                            .find(obj => obj.id === (commissionFunds.value
-                                .find(obj => obj.id === projectCommissionFund.commissionFund)?.fund))?.acronym,
-                        value: projectCommissionFund.commissionFund
-                    }])
+                    expect(projectCommissionFundLabels.value).toEqual([
+                        {
+                            label: 'FSDIE',
+                            value: 1
+                        }
+                    ])
                 })
             })
             describe('if the manager refuses the funding', () => {
@@ -87,12 +88,12 @@ describe('useManageProjects', () => {
             describe('if the manager refuses the funding', () => {
                 it('should init the corresponding label', async () => {
                     await initProjectCommissionFundLabels([projectCommissionFund], 'reject')
-                    expect(projectCommissionFundLabels.value).toEqual([{
-                        label: funds.value
-                            .find(obj => obj.id === (commissionFunds.value
-                                .find(obj => obj.id === projectCommissionFund.commissionFund)?.fund))?.acronym,
-                        value: projectCommissionFund.commissionFund
-                    }])
+                    expect(projectCommissionFundLabels.value).toEqual([
+                        {
+                            label: 'FSDIE',
+                            value: 1
+                        }
+                    ])
                 })
             })
         })

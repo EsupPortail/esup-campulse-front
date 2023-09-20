@@ -4,6 +4,7 @@ import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import type {DocumentProcessType, DocumentUpload} from '#/documents'
+import useCommissions from '@/composables/useCommissions'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -25,14 +26,18 @@ export const useUserStore = defineStore('userStore', {
             })
             return institutionsArray
         },
-        userCommissionFunds: (state: UserStore): (number | null | undefined)[] | undefined => {
-            const commissionsArray: number[] = []
-            state.user?.groups?.forEach((group) => {
-                if (group.fundId) {
-                    commissionsArray.push(group.fundId)
+        userFunds: (state: UserStore): (number | null | undefined)[] | undefined => {
+            const {funds} = useCommissions()
+            const fundsArray: number[] = []
+            state.user?.groups.forEach(group => {
+                if (group.institutionId) {
+                    const fund = funds.value.find(fund => fund.institution === group.institutionId)
+                    if (fund) {
+                        fundsArray.push(fund.id)
+                    }
                 }
             })
-            return commissionsArray
+            return fundsArray
         },
         isAssociationMember: (state: UserStore): boolean => {
             return !!state.user?.associations?.length
