@@ -94,7 +94,7 @@ watch(() => tab.value, initCanSubmitProjects)
                 aria-hidden="true"
                 class="bi bi-send"
             ></i>
-            {{ t('project.project', 2) }}
+            {{ t('project.my-projects') }}
         </h2>
         <div class="dashboard-section-container">
             <QCard>
@@ -114,7 +114,7 @@ watch(() => tab.value, initCanSubmitProjects)
                     />
                 </QTabs>
 
-                <QSeparator aria-hidden="true" />
+                <QSeparator aria-hidden="true"/>
 
                 <QTabPanels
                     v-model="tab"
