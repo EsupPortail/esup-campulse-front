@@ -42,6 +42,11 @@ onMounted(async () => {
 
 const step = ref(1)
 
+watch(() => step.value, () => {
+    // Scroll to top when we change step
+    document.getElementById('stepper')?.scrollIntoView()
+})
+
 const applicant = ref<string | undefined>('')
 
 const initApplicant = () => {
@@ -129,9 +134,10 @@ async function onUploadDocuments(nextStep: number) {
         <div class="dashboard-section-container">
             <div class="container">
                 <!-- Info panel -->
-                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT_REVIEW']" />
+                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT_REVIEW']"/>
 
                 <QStepper
+                    id="stepper"
                     ref="stepper"
                     v-model="step"
                     active-color="commission-bold"
@@ -147,7 +153,7 @@ async function onUploadDocuments(nextStep: number) {
                             class="flex-column"
                             @submit.prevent="onSubmitProjectReviewInfos(2)"
                         >
-                            <InfoFormRequiredFields />
+                            <InfoFormRequiredFields/>
                             <div class="flex-column">
                                 <QInput
                                     v-model="applicant"
@@ -241,7 +247,7 @@ async function onUploadDocuments(nextStep: number) {
                             </div>
 
                             <h3>{{ t('commission.commission', 1) }}</h3>
-                            <ProjectRecapCommissions :view="'submitProjectReview'" />
+                            <ProjectRecapCommissions :view="'submitProjectReview'"/>
 
                             <div class="fieldset">
                                 <h3>

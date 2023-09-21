@@ -119,6 +119,11 @@ onMounted(async () => {
 
 const step = ref(1)
 
+watch(() => step.value, () => {
+    // Scroll to top when we change step
+    document.getElementById('stepper')?.scrollIntoView()
+})
+
 watch(() => step.value === 2, async () => {
     loading.show()
     await onGetCommissionDates()
@@ -438,6 +443,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                 <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']"/>
 
                 <QStepper
+                    id="stepper"
                     ref="stepper"
                     v-model="step"
                     active-color="commission-bold"

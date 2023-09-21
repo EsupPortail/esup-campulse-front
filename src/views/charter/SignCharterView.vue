@@ -31,6 +31,11 @@ const associationStore = useAssociationStore()
 
 const step = ref(1)
 
+watch(() => step.value, () => {
+    // Scroll to top when we change step
+    document.getElementById('stepper')?.scrollIntoView()
+})
+
 // Association infos
 const associationId = ref<number>()
 const associationName = ref<string | undefined>('')
@@ -161,8 +166,9 @@ async function onSignCharter() {
     <section class="dashboard-section">
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoProcessDocuments :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']" />
+                <InfoProcessDocuments :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"/>
                 <QStepper
+                    id="stepper"
                     ref="stepper"
                     v-model="step"
                     active-color="charter-bold"
@@ -174,7 +180,7 @@ async function onSignCharter() {
                         icon="bi-pencil"
                     >
                         <QForm @submit="onPatchAssociation">
-                            <InfoFormRequiredFields />
+                            <InfoFormRequiredFields/>
                             <QInput
                                 v-model="editedAssociation.name"
                                 :label="t('association.labels.name') + ' *'"
@@ -326,7 +332,7 @@ async function onSignCharter() {
                         icon="bi-file-earmark"
                     >
                         <QForm @submit="onUploadDocuments(3)">
-                            <InfoFormRequiredFields />
+                            <InfoFormRequiredFields/>
                             <FormDocumentUploads
                                 :association-id="associationId"
                                 process="charter"
@@ -398,7 +404,7 @@ async function onSignCharter() {
     padding-bottom: 20px;
 }
 
-.flex-row>* {
+.flex-row > * {
     width: $fullSize;
 }
 </style>
