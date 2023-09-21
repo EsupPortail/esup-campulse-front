@@ -30,7 +30,7 @@ PREPROD_NGINX_CONF="plana-pprd.app.unistra.fr"
 
 # TODO: faire la conf de la prod quand elle sera décidée + penser à faire le fichier NGINX
 PROD_HOSTS=("root@rp-dip-public-m.di.unistra.fr" "root@rp-dip-public-s.di.unistra.fr")
-PROD_NGINX_CONF="plana.unistra.fr"
+PROD_NGINX_CONF="etu-campulse.fr"
 
 # Json info file template
 TEMPLATE='{"info":{"app_host":"%s","repo_url":"%s","local_user":"%s","tag":"%s","commit_id":"%s"}}'
