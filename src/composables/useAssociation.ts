@@ -39,12 +39,15 @@ export default function () {
      */
     function checkHasPresident(association: AssociationRole) {
         if (association.options) {
-            const a = associationStore.associationNames.find(obj => obj.id === association.id)
-            if (a) {
-                association.options[0].disable = a.hasPresident
-                if (association.role === 'isPresident') {
-                    const model = newAssociations.value.find(obj => obj.id === association.id)
-                    if (model) model.role = 'isMember'
+            association.options[0].disable = false
+            const associationDetail = associationStore.associationNames.find(obj => obj.id === association.id)
+            if (associationDetail) {
+                if (associationDetail.hasPresident) {
+                    association.options[0].disable = true
+                    if (association.role === 'isPresident') {
+                        const model = newAssociations.value.find(obj => obj.id === association.id)
+                        if (model) model.role = 'isMember'
+                    }
                 }
             }
         }
