@@ -2,17 +2,21 @@
 const props = defineProps<{
     title?: string,
     text?: string,
-    img: string
+    img: string,
+    copyright?: string
 }>()
 </script>
 
 <template>
     <div class="image-text-section">
         <div class="container">
-            <img
-                :src="props.img"
-                alt=""
-            />
+            <figure>
+                <img
+                    :src="props.img"
+                    alt=""
+                />
+                <figcaption v-if="props.copyright">{{ props.copyright }}</figcaption>
+            </figure>
             <div>
                 <h2 v-html="props?.title"></h2>
                 <p v-html="props?.text"></p>
@@ -52,5 +56,4 @@ const props = defineProps<{
         flex-direction: row;
     }
 }
-
 </style>

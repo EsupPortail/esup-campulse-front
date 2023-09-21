@@ -4,7 +4,8 @@ const props = defineProps<{
     color: 'charter' | 'commission'
     title?: string,
     text?: string,
-    img: string
+    img: string,
+    copyright?: string
 }>()
 </script>
 
@@ -17,10 +18,13 @@ const props = defineProps<{
                 <h2 v-html="props?.title"></h2>
                 <p v-html="props?.text"></p>
             </div>
-            <img
-                alt=""
-                :src="props?.img"
-            />
+            <figure>
+                <img
+                    :src="props?.img"
+                    alt=""
+                />
+                <figcaption v-if="props.copyright">{{ props.copyright }}</figcaption>
+            </figure>
         </div>
     </div>
 </template>
