@@ -60,8 +60,8 @@ describe('useCharters', () => {
         manageCharters,
         associationCharters,
         initAssociationCharters,
-        // initProcessingCharters,
-        // processingCharters,
+        initProcessingCharters,
+        processingCharters,
         uploadCharter,
         patchCharterDocument,
         patchCharterStatus
@@ -122,23 +122,53 @@ describe('useCharters', () => {
         })
     })
 
-    /*    describe('initProcessingCharters', () => {
-            describe('if charter type is association charter', () => {
-                it('should init all pending association charters to validate', async () => {
-                    charterDocuments.value = _documentUploads
-                    documents.value = _documents
-                    associationStore.associations = _associations
-                    await initProcessingCharters('CHARTER_ASSOCIATION')
-                    expect(processingCharters.value).toEqual([])
-                })
+    describe('initProcessingCharters', () => {
+        beforeEach(() => {
+            charterDocuments.value = _documentUploads
+            documents.value = _documents
+            associationStore.associations = _associations
+        })
+
+        afterEach(() => {
+            associationStore.associations = []
+        })
+
+        describe('if charter type is association charter', () => {
+            it('should init all pending association charters to validate', async () => {
+                associationStore.associations[0].charterStatus = 'CHARTER_PROCESSING'
+                associationStore.associations[1].charterStatus = 'CHARTER_PROCESSING'
+                await initProcessingCharters('CHARTER_ASSOCIATION')
+                expect(processingCharters.value).toEqual([
+                    {
+                        associationId: 1,
+                        associationName: 'Association',
+                        charterId: 1,
+                        charterName: 'Charte Site Alsace + RGPD Site Alsace',
+                        charterStatus: 'PROCESSING',
+                        institution: 'Unistra',
+                        uploadedDate: '2023-01-01'
+                    }
+                ])
             })
-            describe('if charter type is project fund charter', () => {
-                it('should init all pending project fund charters to validate', async () => {
-                    await initProcessingCharters('CHARTER_PROJECT_FUND')
-                    expect(processingCharters.value).toEqual([])
-                })
+        })
+        describe('if charter type is project fund charter', () => {
+            it('should init all pending project fund charters to validate', async () => {
+                charterDocuments.value[2].validatedDate = ''
+                await initProcessingCharters('CHARTER_PROJECT_FUND')
+                expect(processingCharters.value).toEqual([
+                    {
+                        associationId: 1,
+                        associationName: 'Association',
+                        charterId: 3,
+                        charterName: 'Charte FSDIE',
+                        charterStatus: 'PROCESSING',
+                        institution: 'Unistra',
+                        uploadedDate: '2023-01-01'
+                    }
+                ])
             })
-        })*/
+        })
+    })
 
     describe('uploadCharter', () => {
         it('should post an uploaded charter document and delete the old one', async () => {

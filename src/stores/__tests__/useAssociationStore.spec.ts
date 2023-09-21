@@ -344,12 +344,13 @@ describe('Association store', () => {
             associationStore.association = _association
             const logoData = new FormData()
             const associationId = 1
-            const response = {pathLogo: 'path'}
+            const response = {pathLogo: 'newLogo'}
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.patch.mockResolvedValueOnce({data: response})
             await associationStore.updateAssociationLogo(logoData, associationId)
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/associations/${associationId}`, logoData)
+            expect(associationStore.association.pathLogo?.detail).toEqual(response.pathLogo)
         })
     })
 

@@ -62,7 +62,8 @@ describe('useDocumentUploads', () => {
         initCharterDocumentUploads,
         initManagedUserDocumentUploads,
         initUserDocumentUploads,
-        getStudentCertificate
+        getStudentCertificate,
+        createUploadedFileLink
     } = useDocumentUploads()
     const {charterDocuments} = useCharters()
     const {axiosPublic, axiosAuthenticated} = useAxios()

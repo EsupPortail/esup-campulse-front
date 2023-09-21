@@ -193,7 +193,6 @@ export default function () {
         await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
-    // TODO test
     async function changeAssociationLogo(newLogo: undefined | Blob, deleteLogoData: null | object) {
         if (deleteLogoData === null) {
             const patchLogoData = new FormData()

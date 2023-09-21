@@ -194,7 +194,6 @@ export default function () {
     }
 
     // Generate link to uploaded doc with authentification
-    // TODO test
     async function createUploadedFileLink(pathFile: string, name: string) {
         const file = await getFile(pathFile)
         const link = document.createElement('a')

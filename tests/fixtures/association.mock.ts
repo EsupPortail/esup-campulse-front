@@ -9,7 +9,11 @@ export const _association: Association = {
     id: 1,
     name: 'PLANA',
     acronym: '',
-    pathLogo: null,
+    pathLogo: {
+        base: 'base',
+        detail: 'detail',
+        list: 'list'
+    },
     socialObject: '',
     currentProjects: '',
     address: '',

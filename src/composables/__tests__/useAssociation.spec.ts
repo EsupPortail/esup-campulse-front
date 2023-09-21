@@ -27,16 +27,35 @@ vi.mock('@/composables/useAxios', () => ({
 config.global.plugins = [
     createTestingPinia({createSpy: vi.fn()}),
 ]
+let associationStore = useAssociationStore()
 
 describe('useAssociation', () => {
-    let associationStore = useAssociationStore()
     beforeEach(() => {
         associationStore = useAssociationStore()
     })
 
+    afterEach(() => {
+        vi.restoreAllMocks()
+    })
+
+    const {axiosAuthenticated} = useAxios()
+    const {newAssociations} = useUserAssociations()
+    const {
+        createAssociation,
+        checkHasPresident,
+        addNetwork,
+        associationSocialNetworks,
+        removeNetwork,
+        checkSocialNetworks,
+        changedData,
+        checkChanges,
+        updateAssociation,
+        changeAssociationLogo
+    } = useAssociation()
+
+
     describe('createAssociation', () => {
         it('should call API only once on /associations/ with name as payload', async () => {
-            const {createAssociation} = useAssociation()
             const newAssociation = {
                 name: 'Association test',
                 email: 'asso-test@test.tld',
@@ -44,16 +63,12 @@ describe('useAssociation', () => {
                 institution: 1
             }
             await createAssociation(newAssociation)
-            const {axiosAuthenticated} = useAxios()
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/associations/', newAssociation)
         })
     })
 
     describe('checkHasPresident', () => {
-        const {checkHasPresident} = useAssociation()
-        const {newAssociations} = useUserAssociations()
-
         beforeEach(() => {
             associationStore.associationNames = _associationNames
             newAssociations.value = [_associationRole]
@@ -76,8 +91,6 @@ describe('useAssociation', () => {
     })
 
     describe('addNetwork', () => {
-        const {addNetwork, associationSocialNetworks} = useAssociation()
-
         afterEach(() => {
             associationSocialNetworks.value = []
         })
@@ -89,8 +102,6 @@ describe('useAssociation', () => {
     })
 
     describe('removeNetwork', () => {
-        const {addNetwork, removeNetwork, associationSocialNetworks} = useAssociation()
-
         it('should remove a network from associationSocialNetworks based on network index', () => {
             addNetwork()
             removeNetwork(0)
@@ -99,8 +110,6 @@ describe('useAssociation', () => {
     })
 
     describe('checkSocialNetworks', () => {
-        const {associationSocialNetworks, checkSocialNetworks, changedData} = useAssociation()
-
         beforeEach(() => {
             associationStore.association = _association
             associationStore.association.socialNetworks = JSON.parse(JSON.stringify(_associationSocialNetworks))
@@ -112,7 +121,6 @@ describe('useAssociation', () => {
         })
 
         describe('If old and new arrays have the same length', () => {
-
             it('if both arrays are the same, it should not push anything to changedData', () => {
                 associationSocialNetworks.value = _associationSocialNetworks
                 checkSocialNetworks()
@@ -153,8 +161,6 @@ describe('useAssociation', () => {
     })
 
     describe('checkChanges', () => {
-        const {associationSocialNetworks, checkChanges} = useAssociation()
-
         beforeEach(() => {
             associationStore.association = JSON.parse(JSON.stringify(_association))
         })
@@ -203,14 +209,39 @@ describe('useAssociation', () => {
     })
 
     describe('updateAssociation', () => {
-        const {updateAssociation} = useAssociation()
-        const {axiosAuthenticated} = useAxios()
-
         it('should call API once on /associations/id to patch changedData', async () => {
             associationStore.association = _association
             await updateAssociation()
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/associations/${associationStore.association.id}`, {})
+        })
+    })
+
+    describe('changeAssociationLogo', () => {
+        associationStore.association = _association
+
+        describe('if deleteLogoData is null', () => {
+            it('should upload a new logo', async () => {
+                const spy = vi.spyOn(associationStore, 'updateAssociationLogo')
+                const newLogo = new Blob
+                const deleteLogoData = null
+                const patchLogoData = new FormData()
+                patchLogoData.append('pathLogo', newLogo)
+                await changeAssociationLogo(newLogo, deleteLogoData)
+                expect(spy).toHaveBeenCalledOnce()
+                expect(spy).toHaveBeenCalledWith(patchLogoData, _association.id)
+            })
+        })
+
+        describe('if deleteLogoData is not null', () => {
+            it('should upload a blank logo', async () => {
+                const spy = vi.spyOn(associationStore, 'updateAssociationLogo')
+                const newLogo = undefined
+                const deleteLogoData = {}
+                await changeAssociationLogo(newLogo, deleteLogoData)
+                expect(spy).toHaveBeenCalledOnce()
+                expect(spy).toHaveBeenCalledWith(deleteLogoData, _association.id)
+            })
         })
     })
 })
