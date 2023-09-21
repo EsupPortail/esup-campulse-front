@@ -43,7 +43,8 @@ describe('useCommissions', () => {
         commissionFunds,
         postNewCommission,
         updateCommission,
-        deleteCommission
+        deleteCommission,
+        getCommissionExport
     } = useCommissions()
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const mockedPublicAxios = vi.mocked(axiosPublic, true)
@@ -221,6 +222,19 @@ describe('useCommissions', () => {
             await deleteCommission(1)
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.delete).toHaveBeenCalledWith('/commissions/1')
+        })
+    })
+    describe('getCommissionExport', () => {
+        it('should download an export of a commission depending on mode', async () => {
+            const file = new Blob
+            mockedAuthAxios.get.mockResolvedValueOnce({data: file})
+            const commissionId = 1
+            const mode = 'csv'
+            const projects = [1, 2, 3]
+            const url = `/commissions/${commissionId}/export?mode=${mode}&project_ids=${projects?.join(',')}`
+            await getCommissionExport(commissionId, mode, projects)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith(url, {responseType: 'blob'})
         })
     })
 })

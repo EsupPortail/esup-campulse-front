@@ -219,7 +219,7 @@ export default function () {
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
         associationStore.associationUsers.forEach(function (user) {
-            if (!withPresident && user.user === userStore.user?.id) { // TODO: test condition
+            if (!withPresident && user.user === userStore.user?.id) { // TODO test condition
                 return
             } else {
                 const member = userNames.find(obj => obj.id === user.user)

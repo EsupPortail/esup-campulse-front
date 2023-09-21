@@ -132,7 +132,7 @@ describe('useUserAssociations', () => {
                 expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
                 const url = `/users/${userStore.user?.id}/associations/${userAssociations.value[0].id}`
                 expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
-                //expect(userAssociations.value.length).toEqual(0) TODO: test this part
+                //expect(userAssociations.value.length).toEqual(0) TODO test this part
             })
 
             it('should patch userAssociations if there are changes', async () => {

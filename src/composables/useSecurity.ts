@@ -29,7 +29,7 @@ watch(() => newUser.email, () => {
     if (!newUser.isCas) newUser.username = newUser.email
 })
 
-export default function() {
+export default function () {
 
     const userStore = useUserStore()
 
@@ -82,7 +82,6 @@ export default function() {
 
     watch(() => userStore.newUser, initNewUserData)
 
-    // TODO test
     async function userLocalRegister() {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/', newUser)
@@ -132,10 +131,10 @@ export default function() {
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
         if (newGroups.value.length) {
-            newGroups.value.forEach(function(group) {
+            newGroups.value.forEach(function (group) {
                 // Register commission groups
                 if (group === commissionGroup.value?.id) {
-                    userFunds.value.forEach(function(fund) {
+                    userFunds.value.forEach(function (fund) {
                         groupsToRegister.push({
                             user: newUser.username,
                             group,

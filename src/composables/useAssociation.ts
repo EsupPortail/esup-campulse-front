@@ -53,7 +53,6 @@ export default function () {
         }
     }
 
-    // TODO test
     // Commented in component since issue is not clear
     function checkHasStudentCertificate(association: AssociationRole) {
         if (association.options) {
@@ -194,7 +193,7 @@ export default function () {
         await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
-    // TODO: test
+    // TODO test
     async function changeAssociationLogo(newLogo: undefined | Blob, deleteLogoData: null | object) {
         if (deleteLogoData === null) {
             const patchLogoData = new FormData()

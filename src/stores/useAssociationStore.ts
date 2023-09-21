@@ -166,7 +166,7 @@ export const useAssociationStore = defineStore('associationStore', {
             await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
             this.association = this.getAssociationSubDetails((await instance.get<Association>(`/associations/${id}`)).data)
         },
-        // TODO: test
+        // TODO test
         async updateAssociationLogo(logoData: FormData | object, id: number) {
             if (this.association) {
                 const {axiosAuthenticated} = useAxios()

@@ -41,7 +41,7 @@ onMounted(async function () {
     loading.hide()
 })
 
-// TODO; find a way to avoid double request
+// TODO find a way to avoid double request
 watch(() => route.path, async () => {
     if (route.name === 'AssociationDashboard') await onGetAssociationDetail()
     dynamicTitle.value = association.value?.name

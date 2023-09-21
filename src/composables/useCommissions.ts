@@ -171,7 +171,6 @@ export default function () {
         await axiosAuthenticated.delete(`/commissions/${id}`)
     }
 
-    // TODO test
     async function getCommissionExport(id: number, mode: 'csv' | 'pdf' | 'xlsx', projects: number[] | undefined) {
         const url = `/commissions/${id}/export?mode=${mode}&project_ids=${projects?.join(',')}`
         return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data

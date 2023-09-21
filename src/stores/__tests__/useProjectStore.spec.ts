@@ -39,6 +39,8 @@ describe('Project store', () => {
         projectStore.projectCategoryNames = []
         projectStore.projectCategories = []
         projectStore.projectCommissionFunds = []
+        projectStore.managedProjects = []
+        projectStore.selfProjects = []
     })
 
     const {commissions, commissionFunds} = useCommissions()
@@ -254,6 +256,15 @@ describe('Project store', () => {
             const manualIdentifier = '2023090003'
             projectStore.searchProjectByManualIdentifier(manualIdentifier)
             expect(projectStore.managedProjects).toEqual([_projects.find(obj => obj.manualIdentifier === manualIdentifier)])
+        })
+    })
+
+    describe('searchProjectByManualIdentifier', () => {
+        it('should filter the project matching the manual identifier', () => {
+            projectStore.managedProjects = _projects
+            const manualIdentifier = '2023090001'
+            projectStore.searchProjectByManualIdentifier(manualIdentifier)
+            expect(projectStore.managedProjects).toEqual([_projects[0]])
         })
     })
 })

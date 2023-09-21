@@ -146,7 +146,6 @@ export const useProjectStore = defineStore('projectStore', {
                 {projectId: this.project?.id, commissionFundId: newCommissionFund})
         },
 
-        // TODO test
         searchProjectByManualIdentifier(manualIdentifier: string) {
             this.managedProjects = this.managedProjects.filter(obj => obj.manualIdentifier === manualIdentifier)
         }
