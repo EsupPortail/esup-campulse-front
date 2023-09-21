@@ -231,7 +231,8 @@ const onClearValues = () => {
                                 :label="t('commission.date')"
                                 :rules="[
                                     val => val && val.length > 0 || t('forms.required-commission-date'),
-                                    val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
+                                    val => val && fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, false)
+                                        || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
                                 clearable
                                 color="commission"
@@ -240,15 +241,14 @@ const onClearValues = () => {
                                 min="1970-01-01"
                                 reactive-rules
                                 type="date"
-                                @update:model-value="() => commission.datesAreLegal =
-                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
                             <QInput
                                 v-model="commission.newSubmissionDate"
                                 :label="t('commission.submission')"
                                 :rules="[
                                     val => val && val.length > 0 || t('forms.required-commission-submission-date'),
-                                    val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
+                                    val => val && fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, false)
+                                        || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
                                 clearable
                                 color="commission"
