@@ -27,30 +27,35 @@ function onDownloadDocument(documentId: number | undefined) {
 </script>
 
 <template>
-    <div
-        v-for="(document, index) in props.documents"
-        :key="index"
-        class="document-input-group"
-    >
-        <div class="document-input variant-space-1">
-            <div class="document-input-header">
-                <h4 class="library-document">
-                    <span>
-                        <strong>{{ document?.name }}</strong>
-                        <em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>
-                    </span>
-                </h4>
-                <button
-                    :aria-label="t('download') + ' ' + document?.name"
-                    @click.prevent="onDownloadDocument(document?.id)"
-                >
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-arrow-bar-down"
-                    ></i>
-                </button>
+    <div v-if="props.documents.length">
+        <div
+            v-for="(document, index) in props.documents"
+            :key="index"
+            class="document-input-group"
+        >
+            <div class="document-input variant-space-1">
+                <div class="document-input-header">
+                    <h4 class="library-document">
+                        <span>
+                            <strong>{{ document?.name }}</strong>
+                            <em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>
+                        </span>
+                    </h4>
+                    <button
+                        :aria-label="t('download') + ' ' + document?.name"
+                        @click.prevent="onDownloadDocument(document?.id)"
+                    >
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-arrow-bar-down"
+                        ></i>
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
+    <div v-else>
+        <p>{{ t('documents.no-document-to-show') }}</p>
     </div>
 </template>
 

@@ -136,7 +136,7 @@ async function onDeleteDocument(documentId: number) {
                             </p>
                         </template>
                         <template v-slot:prepend>
-                            <QIcon name="bi-paperclip" />
+                            <QIcon name="bi-paperclip"/>
                         </template>
                     </QFile>
                     <div class="flex-row padding-top padding-bottom">
@@ -161,7 +161,7 @@ async function onDeleteDocument(documentId: number) {
         </div>
     </div>
     <div v-else>
-        <p>{{ t('documents.no-documents-to-show') }}</p>
+        <p>{{ t('documents.no-document-to-show') }}</p>
     </div>
 </template>
 

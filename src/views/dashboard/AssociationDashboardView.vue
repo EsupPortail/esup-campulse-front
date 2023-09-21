@@ -140,7 +140,7 @@ async function onGetAssociationProjects() {
 <template>
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-person" />
+            <QIcon name="bi-person"/>
             {{ t('dashboard.association-user.my-role') }}
         </h2>
         <div class="dashboard-section-container">
@@ -160,7 +160,7 @@ async function onGetAssociationProjects() {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-card-list" />
+            <QIcon name="bi-card-list"/>
             {{ t('dashboard.association-user.manage-association') }}
         </h2>
         <div class="dashboard-section-container">
@@ -195,7 +195,7 @@ async function onGetAssociationProjects() {
     <!-- Association documents -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-file-earmark" />
+            <QIcon name="bi-file-earmark"/>
             {{ t('dashboard.association-user.association-documents') }}
         </h2>
         <div class="dashboard-section-container">
@@ -205,7 +205,7 @@ async function onGetAssociationProjects() {
                     :documents="associationStore.associationDocuments"
                 />
                 <div v-else>
-                    <p>{{ t('documents.no-documents-to-show') }}</p>
+                    <p>{{ t('documents.no-document-to-show') }}</p>
                 </div>
             </div>
         </div>
@@ -213,12 +213,12 @@ async function onGetAssociationProjects() {
     <!-- Association procedures -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-pen" />
+            <QIcon name="bi-pen"/>
             {{ t('dashboard.association-user.association-procedures') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoDocumentLibrary color="dashboard" />
+                <InfoDocumentLibrary color="dashboard"/>
                 <div class="document-input-group">
                     <div class="flex-row-space-between padding-top padding-bottom">
                         <h3>{{ t('dashboard.association-user.charter-status-processing') }}</h3>
@@ -240,7 +240,7 @@ async function onGetAssociationProjects() {
                                     <h4>
                                         {{ charter.documentName }}
                                     </h4>
-                                    <CharterStatusIndicator :charter-status="charter.charterStatus" />
+                                    <CharterStatusIndicator :charter-status="charter.charterStatus"/>
                                 </div>
                             </div>
                         </div>

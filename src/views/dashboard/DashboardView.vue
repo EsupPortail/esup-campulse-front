@@ -323,7 +323,7 @@ onMounted(async () => {
                     :documents="userStore.userDocuments"
                 />
                 <div v-else>
-                    <p>{{ t('documents.no-documents-to-show') }}</p>
+                    <p>{{ t('documents.no-document-to-show') }}</p>
                 </div>
             </div>
         </div>
