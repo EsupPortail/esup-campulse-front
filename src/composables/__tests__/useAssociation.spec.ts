@@ -223,7 +223,7 @@ describe('useAssociation', () => {
         describe('if deleteLogoData is null', () => {
             it('should upload a new logo', async () => {
                 const spy = vi.spyOn(associationStore, 'updateAssociationLogo')
-                const newLogo = new Blob
+                const newLogo = new File([], 'file')
                 const deleteLogoData = null
                 const patchLogoData = new FormData()
                 patchLogoData.append('pathLogo', newLogo)

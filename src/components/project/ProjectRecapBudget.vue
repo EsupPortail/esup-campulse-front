@@ -71,7 +71,7 @@ const projectIsFirstEdition = () => {
             <h4>{{ t('project.re-edition') }}</h4>
             <p>
                 {{
-                    projectIsFirstEdition ? t('yes') : t('no')
+                    projectIsFirstEdition() ? t('yes') : t('no')
                 }}
             </p>
         </div>

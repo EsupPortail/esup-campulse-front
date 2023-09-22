@@ -282,7 +282,7 @@ export default function () {
         }
     }
 
-    async function uploadCharter(documentUploadId: number | undefined | null, associationId: number, documentId: number, charter: Blob) {
+    async function uploadCharter(documentUploadId: number | undefined | null, associationId: number, documentId: number, charter: File) {
         if (documentUploadId) {
             await axiosAuthenticated.delete(`/documents/uploads/${documentUploadId}`)
         }

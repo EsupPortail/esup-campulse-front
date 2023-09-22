@@ -31,7 +31,7 @@ async function onUpdateDocument(documentId: number) {
     try {
         const document = props.libraryDocuments.find(doc => doc.id === documentId)
         if (document) {
-            await patchDocument(documentId, document.newName, document.file as Blob)
+            await patchDocument(documentId, document.newName, document.file as File)
         }
         emit('getLibraryDocuments')
         notify({

@@ -38,7 +38,7 @@ watch(() => open.value, () => {
     }
 })
 
-const signedCharter = ref<Blob>()
+const signedCharter = ref<File>()
 
 async function onSignCharter() {
     loading.show()
@@ -112,7 +112,7 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
                             </p>
                         </template>
                         <template v-slot:prepend>
-                            <QIcon name="bi-paperclip" />
+                            <QIcon name="bi-paperclip"/>
                         </template>
                     </QFile>
                     <div class="flex-row padding-top">

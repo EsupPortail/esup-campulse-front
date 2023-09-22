@@ -14,10 +14,7 @@ import FormManageLibraryDocument from '@/components/form/FormManageLibraryDocume
 const {
     getLibraryDocuments,
     documents,
-    postNewDocument,
-    patchDocument,
-    deleteDocument,
-    acceptedFormats
+    postNewDocument
 } = useDocuments()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -36,7 +33,7 @@ onMounted(async () => {
 
 interface NewDocument {
     name: string,
-    file: undefined | Blob
+    file: undefined | File
 }
 
 const newDocument = ref<NewDocument>({
@@ -132,7 +129,7 @@ const initManagerFunds = () => {
 async function onUploadNewDocument() {
     loading.show()
     try {
-        await postNewDocument(newDocument.value.name, newDocument.value.file as Blob)
+        await postNewDocument(newDocument.value.name, newDocument.value.file as File)
         newDocumentForm.value.reset()
         await onGetLibraryDocuments()
         notify({
@@ -155,49 +152,6 @@ const onClearValues = () => {
     newDocument.value.file = undefined
 }
 
-async function onUpdateDocument(documentId: number) {
-    loading.show()
-    try {
-        const document = libraryDocuments.value.find(doc => doc.id === documentId)
-        if (document) {
-            await patchDocument(documentId, document.newName, document.file as Blob)
-        }
-        await onGetLibraryDocuments()
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.document-updated')
-        })
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: catchHTTPError(error.response)
-            })
-        }
-    }
-    loading.hide()
-}
-
-async function onDeleteDocument(documentId: number) {
-    loading.show()
-    try {
-        await deleteDocument(documentId)
-        const libraryId = libraryDocuments.value.findIndex(doc => doc.id === documentId)
-        libraryDocuments.value.splice(libraryId, 1)
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.document-deleted')
-        })
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: catchHTTPError(error.response)
-            })
-        }
-    }
-    loading.hide()
-}
 </script>
 
 <template>
@@ -283,92 +237,6 @@ async function onDeleteDocument(documentId: number) {
                         .filter(doc => doc.processType === 'NO_PROCESS')"
                     @get-library-documents="onGetLibraryDocuments"
                 />
-                <div
-                    v-for="(document, index) in libraryDocuments"
-                    :key="index"
-                    class="document-input-group"
-                >
-                    <div class="document-input">
-                        <div class="document-input-header">
-                            <h4 class="library-document">
-                                <span :class="document.path ? 'active-link' : ''">
-                                    <a
-                                        :href="document.path"
-                                        target="_blank"
-                                    >
-                                        <strong>{{ document?.name }}</strong>
-                                        <em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>
-                                    </a>
-                                    <i
-                                        v-if="document.path"
-                                        aria-hidden="true"
-                                        class="bi bi-eye"
-                                    ></i>
-                                </span>
-                            </h4>
-
-                            <button @click.prevent="document.open = !document.open">
-                                <i
-                                    :class="`bi bi-${document.open ? 'x' : 'pencil'}`"
-                                    aria-hidden="true"
-                                ></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div v-if="document.open">
-                        <QForm @submit.prevent="onUpdateDocument(document.id)">
-                            <QInput
-                                v-model="document.newName"
-                                :label="t('documents.choose-name')"
-                                :rules="[val => val && val.length > 0 || t('forms.required-document-name')]"
-                                clearable
-                                color="dashboard"
-                                filled
-                            />
-
-                            <QFile
-                                v-model="document.file"
-                                :accept="document.mimeTypes.join(',')"
-                                :label="t('documents.choose-file')"
-                                :rules="[val => val || t('forms.required-document-file')]"
-                                bottom-slots
-                                clearable
-                                color="dashboard"
-                                filled
-                                for="pathFile"
-                            >
-                                <template v-slot:hint>
-                                    <p aria-describedby="pathFile">
-                                        {{
-                                            t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.'
-                                        }}
-                                    </p>
-                                </template>
-                                <template v-slot:prepend>
-                                    <QIcon name="bi-paperclip"/>
-                                </template>
-                            </QFile>
-                            <div class="flex-row padding-top padding-bottom">
-                                <QBtn
-                                    :icon="document.path ? 'bi-arrow-repeat' : 'bi-upload'"
-                                    :label="document.path ? t('update') : t('add')"
-                                    class="btn-lg"
-                                    color="dashboard"
-                                    type="submit"
-                                />
-                                <QBtn
-                                    :disable="document.processType !== 'NO_PROCESS'"
-                                    :label="t('delete')"
-                                    class="btn-lg"
-                                    color="custom-red"
-                                    icon="bi-trash"
-                                    @click="onDeleteDocument(document.id)"
-                                />
-                            </div>
-                        </QForm>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

@@ -59,7 +59,7 @@ export interface DocumentUpload {
 export interface ProcessDocument {
     id?: number,
     uploadDate?: string,
-    pathFile: Blob | Blob[] | undefined | [] | string | string[],
+    pathFile: File | File[] | undefined | [] | string | string[],
     document?: number,
     description?: string,
     isMultiple?: boolean,
@@ -69,16 +69,13 @@ export interface ProcessDocument {
     pathTemplate?: string | undefined
 }
 
-type DocumentUploadStatus = 'DOCUMENT_REJECTED' | 'DOCUMENT_PROCESSING' | 'DOCUMENT_VALIDATED'
-
-
 export interface LibraryDocument {
     id: number,
     name: string,
     path: string | undefined,
     size: number,
     newName: string,
-    file: undefined | Blob,
+    file: undefined | File,
     processType: DocumentProcessType,
     mimeTypes: MimeType[],
     open: boolean

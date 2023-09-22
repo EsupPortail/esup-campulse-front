@@ -172,7 +172,7 @@ describe('useCharters', () => {
 
     describe('uploadCharter', () => {
         it('should post an uploaded charter document and delete the old one', async () => {
-            const charter = new Blob
+            const charter = new File([], 'file')
             const charterData = new FormData()
             charterData.append('pathFile', charter)
             charterData.append('document', '1')

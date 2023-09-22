@@ -82,14 +82,14 @@ export default function () {
         documents.value = (await axiosPublic.get<Document[]>(`/documents/?acronym=${acronym}`)).data
     }
 
-    async function postNewDocument(name: string, file: Blob) {
+    async function postNewDocument(name: string, file: File) {
         const newDocument = new FormData()
         newDocument.append('name', name)
         newDocument.append('pathTemplate', file)
         await axiosAuthenticated.post('/documents/', newDocument)
     }
 
-    async function patchDocument(id: number, name: string, file: Blob) {
+    async function patchDocument(id: number, name: string, file: File) {
         const newDocument = new FormData()
         newDocument.append('name', name)
         newDocument.append('pathTemplate', file)

@@ -14,15 +14,6 @@ vi.mock('@/composables/useAxios', () => ({
     })
 }))
 
-vi.mock('@/composable/useUserAssociations', () => ({
-    default: () => ({
-        updateUserAssociations: vi.fn(),
-        deleteUserAssociation: vi.fn(),
-        getUserAssociations: vi.fn(),
-        patchUserAssociations: vi.fn()
-    })
-}))
-
 setActivePinia(createPinia())
 
 let projectStore = useProjectStore()
@@ -55,7 +46,7 @@ describe('useDocuments', () => {
     const mockedPublicAxios = vi.mocked(axiosPublic, true)
 
     const name = 'document'
-    const file = new Blob
+    const file = new File([], 'file')
     const newDocument = new FormData()
     newDocument.append('name', name)
     newDocument.append('pathTemplate', file)
