@@ -91,7 +91,7 @@ export const _processDocuments: ProcessDocument[] = [
         document: 1,
         isMultiple: true,
         description: 'Document 1',
-        pathFile: ['PathFile Document 1 1/2', 'PathFile Document 1 2/2'],
+        pathFile: [new File([], 'file1'), new File([], 'file2')],
         isRequiredInProcess: false,
         mimeTypes: [
             'application/pdf'
@@ -102,7 +102,7 @@ export const _processDocuments: ProcessDocument[] = [
         document: 2,
         isMultiple: false,
         description: 'Document 2',
-        pathFile: ['PathFile Document 2'],
+        pathFile: new File([], 'file'),
         isRequiredInProcess: true,
         mimeTypes: [
             'application/pdf'
@@ -110,18 +110,20 @@ export const _processDocuments: ProcessDocument[] = [
     }
 ]
 
-export const _processDocument: ProcessDocument = {
-    id: 1,
-    uploadDate: '2301-06-20',
-    pathFile: 'pathFile',
-    document: 1,
-    description: 'description',
-    isMultiple: false,
-    isRequiredInProcess: true,
-    mimeTypes: ['application/pdf'],
-    name: 'nom du document',
-    pathTemplate: 'pathTemplate'
-}
+export const _uploadedProcessDocuments = [
+    {
+        id: 1,
+        document: 1,
+        pathFile: 'File 1',
+        name: 'File 1'
+    },
+    {
+        id: 2,
+        document: 2,
+        pathFile: 'File 2',
+        name: 'File 2'
+    }
+]
 
 export const _projectDocuments: DocumentUpload[] = [
     {

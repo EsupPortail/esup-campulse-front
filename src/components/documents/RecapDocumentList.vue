@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type {DocumentProcessType, ProcessDocument} from '#/documents'
+import type {DocumentProcessType, UploadedProcessDocument} from '#/documents'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
@@ -28,7 +28,7 @@ const props = defineProps<{
 }>()
 
 
-async function onGetFile(uploadedDocument: ProcessDocument) {
+async function onGetFile(uploadedDocument: UploadedProcessDocument) {
     loading.show()
     try {
         await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
@@ -102,7 +102,7 @@ onMounted(async () => await onGetDocuments())
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-ul>li {
+ul > li {
     text-decoration: underline;
     font-weight: $semibold-weight;
     cursor: pointer;

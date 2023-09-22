@@ -59,7 +59,7 @@ export interface DocumentUpload {
 export interface ProcessDocument {
     id?: number,
     uploadDate?: string,
-    pathFile: File | File[] | undefined | [] | string | string[],
+    pathFile: File | File[] | undefined | [],
     document?: number,
     description?: string,
     isMultiple?: boolean,
@@ -67,6 +67,13 @@ export interface ProcessDocument {
     mimeTypes?: MimeType[],
     name?: string,
     pathTemplate?: string | undefined
+}
+
+export interface UploadedProcessDocument {
+    id: number,
+    document: number,
+    pathFile: string | string[],
+    name: string
 }
 
 export interface LibraryDocument {

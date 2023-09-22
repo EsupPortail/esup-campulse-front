@@ -1,5 +1,5 @@
 import {ref} from 'vue'
-import type {Document, DocumentProcessType, ProcessDocument} from '#/documents'
+import type {Document, DocumentProcessType, ProcessDocument, UploadedProcessDocument} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharters'
@@ -11,7 +11,7 @@ const documents = ref<Document[]>([])
 
 const processDocuments = ref<ProcessDocument[]>([])
 
-const documentUploads = ref<ProcessDocument[]>([])
+const documentUploads = ref<UploadedProcessDocument[]>([])
 
 const MAX_FILE_SIZE = 8388608
 const MAX_FILES = 10
@@ -58,7 +58,7 @@ export default function () {
         projectStore.projectDocuments.forEach((document) => {
             if (documentIds.includes(document.document)) {
                 documentUploads.value.push({
-                    id: document.id,
+                    id: document.id as number,
                     document: document.document,
                     pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                     name: document.name as string
@@ -74,7 +74,7 @@ export default function () {
         charterDocuments.value.forEach((document) => {
             if (documentIds.includes(document.document)) {
                 documentUploads.value.push({
-                    id: document.id,
+                    id: document.id as number,
                     document: document.document,
                     pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                     name: document.name as string
@@ -89,7 +89,7 @@ export default function () {
         userManagerStore.userDocuments.forEach((document) => {
             if (documentIds.includes(document.document)) {
                 documentUploads.value.push({
-                    id: document.id,
+                    id: document.id as number,
                     document: document.document,
                     pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                     name: document.name as string
@@ -104,7 +104,7 @@ export default function () {
         userStore.userDocuments.forEach((document) => {
             if (documentIds.includes(document.document)) {
                 documentUploads.value.push({
-                    id: document.id,
+                    id: document.id as number,
                     document: document.document,
                     pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                     name: document.name as string

@@ -5,10 +5,16 @@ import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useAxios} from '@/composables/useAxios'
-import {_document, _documents, _processDocuments, _projectDocuments} from '~/fixtures/document.mock'
+import {
+    _document,
+    _documents,
+    _processDocuments,
+    _projectDocuments,
+    _uploadedProcessDocuments
+} from '~/fixtures/document.mock'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {_documentUploads, _project} from '~/fixtures/project.mock'
-import type {ProcessDocument} from '#/documents'
+import type {ProcessDocument, UploadedProcessDocument} from '#/documents'
 import useCharters from '@/composables/useCharters'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
@@ -62,8 +68,7 @@ describe('useDocumentUploads', () => {
         initCharterDocumentUploads,
         initManagedUserDocumentUploads,
         initUserDocumentUploads,
-        getStudentCertificate,
-        createUploadedFileLink
+        getStudentCertificate
     } = useDocumentUploads()
     const {charterDocuments} = useCharters()
     const {axiosPublic, axiosAuthenticated} = useAxios()
@@ -108,12 +113,12 @@ describe('useDocumentUploads', () => {
         it('should initialize documents and pathFiles', () => {
             projectStore.projectDocuments = _projectDocuments
             processDocuments.value = _processDocuments
-            const test: ProcessDocument[] = []
+            const test: UploadedProcessDocument[] = []
             const documentIds = processDocuments.value.map((document) => (document.document))
             projectStore.projectDocuments.forEach((document) => {
                 if (documentIds.includes(document.document)) {
                     test.push({
-                        id: document.id,
+                        id: document.id as number,
                         document: document.document,
                         pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                         name: document.name as string
@@ -130,11 +135,11 @@ describe('useDocumentUploads', () => {
             charterDocuments.value = _documentUploads
             processDocuments.value = _processDocuments
             const documentIds = processDocuments.value.map((document) => (document.document))
-            const test: ProcessDocument[] = []
+            const test: UploadedProcessDocument[] = []
             charterDocuments.value.forEach((document) => {
                 if (documentIds.includes(document.document)) {
                     test.push({
-                        id: document.id,
+                        id: document.id as number,
                         document: document.document,
                         pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                         name: document.name as string
@@ -150,12 +155,12 @@ describe('useDocumentUploads', () => {
         it('should init the documents uploads of a managed user', () => {
             userManagerStore.userDocuments = _documentUploads
             processDocuments.value = _processDocuments
-            const test: ProcessDocument[] = []
+            const test: UploadedProcessDocument[] = []
             const documentIds = processDocuments.value.map((document) => (document.document))
             userManagerStore.userDocuments.forEach((document) => {
                 if (documentIds.includes(document.document)) {
                     test.push({
-                        id: document.id,
+                        id: document.id as number,
                         document: document.document,
                         pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                         name: document.name as string
@@ -171,12 +176,12 @@ describe('useDocumentUploads', () => {
         it('should init the document uploads of a user', () => {
             userStore.userDocuments = _documentUploads
             processDocuments.value = _processDocuments
-            const test: ProcessDocument[] = []
+            const test: UploadedProcessDocument[] = []
             const documentIds = processDocuments.value.map((document) => (document.document))
             userStore.userDocuments.forEach((document) => {
                 if (documentIds.includes(document.document)) {
                     test.push({
-                        id: document.id,
+                        id: document.id as number,
                         document: document.document,
                         pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                         name: document.name as string
@@ -291,7 +296,7 @@ describe('useDocumentUploads', () => {
 
     describe('deleteDocumentUpload', () => {
         it('should delete document on the API and splice it from documentUploads ref', async () => {
-            documentUploads.value = _processDocuments as ProcessDocument[]
+            documentUploads.value = _uploadedProcessDocuments
             await deleteDocumentUpload(1)
             expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
             expect(documentUploads.value.length).toEqual(1)

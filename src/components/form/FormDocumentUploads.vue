@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import type {DocumentProcessType, ProcessDocument} from '#/documents'
+import type {DocumentProcessType, UploadedProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
@@ -143,7 +143,7 @@ async function onDeleteDocumentUpload(documentId: number) {
 }
 
 // CREATE LINK TO VIEW FILE
-async function onGetFile(uploadedDocument: ProcessDocument) {
+async function onGetFile(uploadedDocument: UploadedProcessDocument) {
     try {
         const file = await getFile(uploadedDocument.pathFile as string)
         const link = document.createElement('a')
@@ -207,7 +207,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
                     </p>
                 </template>
                 <template v-slot:prepend>
-                    <QIcon name="bi-paperclip" />
+                    <QIcon name="bi-paperclip"/>
                 </template>
             </QFile>
 

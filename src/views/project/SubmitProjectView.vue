@@ -12,7 +12,7 @@ import useCommissions from '@/composables/useCommissions'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import router from '@/router'
 import useErrors from '@/composables/useErrors'
-import type {ProcessDocument} from '#/documents'
+import type {UploadedProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import ProjectRecap from '@/components/project/ProjectRecap.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
@@ -89,9 +89,6 @@ onMounted(async () => {
     await onGetProjectCategories()
     // Init applicant
     initApplicant()
-    //await initApplicantDetails()
-    // Init association users
-    //await onGetAssociationUsers()
     // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
     projectStore.projectCommissionFunds = []
     isLoaded.value = true
@@ -142,16 +139,17 @@ const isLoaded = ref<boolean>(false)
 
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
-    if (route.name === 'SubmitProjectAssociation') applicant.value = 'association'
-    else applicant.value = 'user'
+    if (route.name === 'SubmitProjectAssociation') {
+        applicant.value = 'association'
+        associationId.value = parseInt(route.params.associationId as string)
+    } else applicant.value = 'user'
 }
 
 const initApplicantDetails = async () => {
     // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
     if (applicant.value === 'association') {
-        const association = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.associationId as string))
-        if (association) {
-            associationId.value = association.association.id
+        const association = userStore.userAssociations.find(obj => obj.association.id === associationId.value)
+        if (association && associationId.value) {
             const associationUserId = association.id
             // Get association users
             await onGetAssociationUsers()
@@ -234,7 +232,7 @@ async function onGetProjectCategories() {
     }
 }
 
-async function onGetFile(uploadedDocument: ProcessDocument) {
+async function onGetFile(uploadedDocument: UploadedProcessDocument) {
     try {
         await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
     } catch (error) {
