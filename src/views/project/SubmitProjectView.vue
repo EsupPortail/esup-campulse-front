@@ -89,28 +89,9 @@ onMounted(async () => {
     await onGetProjectCategories()
     // Init applicant
     initApplicant()
-    // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
-    if (applicant.value === 'association') {
-        const association = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.associationId as string))
-        if (association) {
-            associationId.value = association.association.id
-            const associationUserId = association.id
-            // If new project and user has no president status, redirect to 404
-            if (newProject.value) {
-                if (!userStore.hasPresidentStatus(associationId.value)) await router.push({name: '404'})
-            }
-            // If existing project and user has no president status nor project delegate status; redirect to 404
-            else {
-                if (!userStore.hasPresidentStatus(associationId.value) && projectStore.project?.associationUser !== associationUserId) {
-                    await router.push({name: '404'})
-                }
-            }
-            associationName.value = association.association.name
-            initIsSite()
-        } else await router.push({name: '404'})
-    }
+    //await initApplicantDetails()
     // Init association users
-    await onGetAssociationUsers()
+    //await onGetAssociationUsers()
     // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
     projectStore.projectCommissionFunds = []
     isLoaded.value = true
@@ -164,6 +145,35 @@ const initApplicant = () => {
     if (route.name === 'SubmitProjectAssociation') applicant.value = 'association'
     else applicant.value = 'user'
 }
+
+const initApplicantDetails = async () => {
+    // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
+    if (applicant.value === 'association') {
+        const association = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.associationId as string))
+        if (association) {
+            associationId.value = association.association.id
+            const associationUserId = association.id
+            // Get association users
+            await onGetAssociationUsers()
+            // If new project and user has no president status, redirect to 404
+            if (newProject.value) {
+                if (!userStore.hasPresidentStatus(associationId.value)) await router.push({name: '404'})
+            }
+            // If existing project and user has no president status nor project delegate status; redirect to 404
+            else {
+                if (!userStore.hasPresidentStatus(associationId.value) && projectStore.project?.associationUser !== associationUserId) {
+                    await router.push({name: '404'})
+                }
+            }
+            associationName.value = association.association.name
+            initIsSite()
+        } else {
+            await router.push({name: '404'})
+        }
+    }
+}
+
+watch(async () => userStore.userAssociations.length, await initApplicantDetails)
 
 // INIT IS SITE
 const initIsSite = () => {
