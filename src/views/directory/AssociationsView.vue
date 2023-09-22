@@ -10,6 +10,8 @@ import useErrors from '@/composables/useErrors'
 import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
 import {useRoute} from 'vue-router'
 import {useContentStore} from '@/stores/useContentStore'
+import LayoutImageText from '@/components/layout/LayoutImageText.vue'
+import DirectoryImage from '@/assets/img/directory-image.jpg'
 
 const associationStore = useAssociationStore()
 const contentStore = useContentStore()
@@ -100,16 +102,11 @@ async function getContents() {
     <section class="dashboard-section">
         <div class="introduction-section">
             <div class="content">
-                <div class="intro-image">
-                    <img
-                        :alt="t('directory.image-alt')"
-                        src="@/assets/img/directory-image.jpg"
-                    />
-                </div>
-                <div>
-                    <h2 v-html="contentStore.contents[0]?.header"></h2>
-                    <p v-html="contentStore.contents[0]?.body"></p>
-                </div>
+                <LayoutImageText
+                    :img="DirectoryImage"
+                    :text="contentStore.contents[0]?.body"
+                    :title="contentStore.contents[0]?.header"
+                />
             </div>
         </div>
 
