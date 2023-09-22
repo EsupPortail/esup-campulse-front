@@ -315,7 +315,6 @@
     "my-infos": "Mes informations",
     "my-password": "Mon mot de passe",
     "my-status": "Mon statut actuel",
-    "no-document-in-template-library": "Aucun document dans la bibliothèque.",
     "user-procedures": "Mes démarches",
     "search-user-via-cas": "Rechercher un utilisateur via CAS",
     "template-document-library": "Bibliothèque de documents",
@@ -337,7 +336,6 @@
     "directory-advanced": "Annuaire des associations avancé",
     "found-associations-plural": "associations trouvées",
     "found-associations-singular": "association trouvée",
-    "image-alt": "",
     "labels": {
       "association-acronym": "Sigle",
       "association-activity-field": "Domaine d'activité",
@@ -358,7 +356,6 @@
     "charters": "Chartes",
     "choose-file": "Choisir un document",
     "choose-name": "Nom du document",
-    "documents": "Documents",
     "no-document-to-show": "Aucun document à afficher.",
     "no-process-library": "Documents de la bibliothèque",
     "other-documents": "Autres documents",
