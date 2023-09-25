@@ -116,12 +116,26 @@ async function onGetApplicants() {
 }
 
 const columns: QTableProps['columns'] = [
-    {name: 'id', align: 'left', label: t('project.id'), field: 'id', sortable: true},
+    {
+        name: 'id',
+        align: 'left',
+        label: t('project.id'),
+        field: row => row.manualIdentifier,
+        sortable: true,
+        format: val => `${val}`
+    },
     {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
     {name: 'applicant', align: 'left', label: t('project.applicant'), field: 'applicant', sortable: true},
     {name: 'lastModifiedDate', align: 'left', label: t('project.last-modified-date'), field: 'email', sortable: true},
     {name: 'funds', align: 'right', label: t('commission.funds'), field: 'funds', sortable: true},
-    {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
+    {
+        name: 'status',
+        align: 'right',
+        label: t('status'),
+        field: row => row.projectStatus,
+        sortable: true,
+        format: val => `${val}`
+    },
     {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
 ]
 

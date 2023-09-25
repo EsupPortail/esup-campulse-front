@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import type {ProjectCommissionFund, ProjectStatus} from '#/project'
 import router from '@/router'
 import useSecurity from '@/composables/useSecurity'
@@ -108,10 +108,10 @@ const initOptions = () => {
 
     // Update project dates
     if ((props.projectStatus === 'PROJECT_DRAFT_PROCESSED' ||
-        props.projectStatus === 'PROJECT_PROCESSING' ||
-        props.projectStatus === 'PROJECT_VALIDATED' ||
-        props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-        props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
+            props.projectStatus === 'PROJECT_PROCESSING' ||
+            props.projectStatus === 'PROJECT_VALIDATED' ||
+            props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
+            props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
         hasPerm('change_project_as_validator')) {
         options.value.push({
             icon: 'bi-calendar',
@@ -122,7 +122,7 @@ const initOptions = () => {
 
     // Change commission
     if ((props.projectStatus === 'PROJECT_PROCESSING' ||
-        props.projectStatus === 'PROJECT_VALIDATED') &&
+            props.projectStatus === 'PROJECT_VALIDATED') &&
         hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
             icon: 'bi-signpost',
@@ -161,6 +161,7 @@ const initOptions = () => {
 }
 
 onMounted(initOptions)
+watch(() => props.projectId, initOptions)
 
 async function onOptionClick(option: Option) {
     if (option.to) await router.push(option.to)
@@ -242,7 +243,7 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
                     @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
-                        <QAvatar :icon="option.icon" />
+                        <QAvatar :icon="option.icon"/>
                     </QItemSection>
                     <QItemSection>
                         <QItemLabel>{{ option.label }}</QItemLabel>

@@ -58,8 +58,21 @@ const projectAssociationUser = (associationUserId: number) => {
 }
 
 const columns = ref<QTableProps['columns']>([
-    {name: 'id', align: 'left', label: t('project.id'), field: 'id', sortable: true},
-    {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
+    {
+        name: 'id',
+        align: 'left',
+        label: t('project.id'),
+        field: row => row.manualIdentifier,
+        sortable: true,
+        format: val => `${val}`
+    },
+    {
+        name: 'name',
+        align: 'left',
+        label: t('project.name'),
+        field: 'name',
+        sortable: true
+    },
     {
         name: 'projectAssociationUser',
         align: 'left',
@@ -67,20 +80,6 @@ const columns = ref<QTableProps['columns']>([
         field: 'projectAssociationUser',
         sortable: true
     },
-    /*{
-        name: 'plannedStartDate',
-        align: 'left',
-        label: t('project.planned-start-date'),
-        field: 'plannedStartDate',
-        sortable: true
-    },
-    {
-        name: 'plannedEndDate',
-        align: 'left',
-        label: t('project.planned-end-date'),
-        field: 'plannedEndDate',
-        sortable: true
-    },*/
     {
         name: 'commissionDate',
         align: 'left',
@@ -88,7 +87,14 @@ const columns = ref<QTableProps['columns']>([
         field: 'commissionDate',
         sortable: true
     },
-    {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
+    {
+        name: 'status',
+        align: 'right',
+        label: t('status'),
+        field: row => row.projectStatus,
+        sortable: true,
+        format: val => `${val}`
+    },
     {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
 ])
 </script>
@@ -102,7 +108,7 @@ const columns = ref<QTableProps['columns']>([
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="importedProps.title"
         role="presentation"
-        row-key="name"
+        row-key="id"
     >
         <template v-slot:header="props">
             <QTr :props="props">
@@ -124,7 +130,7 @@ const columns = ref<QTableProps['columns']>([
                     :props="props"
                     headers="id"
                 >
-                    {{ props.row.manualIdentifier ?? '' }}
+                    {{ props.row.manualIdentifier ?? '00000000' }}
                 </QTd>
                 <QTd
                     key="name"
@@ -143,18 +149,6 @@ const columns = ref<QTableProps['columns']>([
                         userStore.user?.firstName + ' ' + userStore.user?.lastName
                     }}
                 </QTd>
-                <!--                <QTd
-                                    key="plannedStartDate"
-                                    :props="props"
-                                >
-                                    {{ formatDate(props.row.plannedStartDate)?.split('-').reverse().join('/') }}
-                                </QTd>
-                                <QTd
-                                    key="plannedEndDate"
-                                    :props="props"
-                                >
-                                    {{ formatDate(props.row.plannedEndDate)?.split('-').reverse().join('/') }}
-                                </QTd>-->
                 <QTd
                     key="commissionDate"
                     :props="props"

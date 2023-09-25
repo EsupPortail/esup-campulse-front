@@ -117,6 +117,7 @@ const initOptions = () => {
 }
 
 watch(() => userStore.user, initOptions)
+watch(() => props.projectId, initOptions)
 
 onMounted(initOptions)
 
@@ -198,7 +199,7 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
                     @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
-                        <QAvatar :icon="option.icon" />
+                        <QAvatar :icon="option.icon"/>
                     </QItemSection>
                     <QItemSection>
                         <QItemLabel>{{ option.label }}</QItemLabel>
