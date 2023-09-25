@@ -70,7 +70,14 @@ const columns: QTableProps['columns'] = [
         field: 'expirationDate',
         sortable: true
     },
-    {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
+    {
+        name: 'status',
+        align: 'right',
+        label: t('status'),
+        field: row => row.charterStatus,
+        sortable: true,
+        format: val => `${val}`
+    },
     {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
 ]
 </script>
@@ -128,7 +135,7 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 headers="status"
                             >
-                                <CharterStatusIndicator :charter-status="props.row.charterStatus" />
+                                <CharterStatusIndicator :charter-status="props.row.charterStatus"/>
                             </QTd>
                             <QTd
                                 key="actions"
