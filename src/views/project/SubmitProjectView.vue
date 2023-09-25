@@ -552,6 +552,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     <p>{{ t('address.verify') }}</p>
                                 </div>
                                 <FormUserAddress
+                                    :edited-by-staff="false"
                                     :user="userStore.user"
                                     color="commission"
                                 />

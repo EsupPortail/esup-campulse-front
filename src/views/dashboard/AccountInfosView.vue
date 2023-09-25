@@ -40,10 +40,6 @@ async function onUpdateUserInfos() {
         initInfosToPatch(userStore.user)
         if (Object.entries(infosToPatch).length) {
             await updateUserInfos(userStore.user, false)
-            notify({
-                type: 'positive',
-                message: t('notifications.positive.update-user-infos')
-            })
         } /*else {
             notify({
                 type: 'warning',
@@ -54,6 +50,10 @@ async function onUpdateUserInfos() {
         initProcessDocuments()
         await userStore.getUserDocuments()
         initUserDocumentUploads()
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.update-user-infos')
+        })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -182,7 +182,7 @@ onMounted(() => {
 
                 <div class="dashboard-section-container">
                     <div class="container flex-column">
-                        <FormDisplayUserAssociations />
+                        <FormDisplayUserAssociations/>
                     </div>
                 </div>
             </div>
@@ -202,16 +202,7 @@ onMounted(() => {
                 <div class="dashboard-section-container">
                     <div class="container">
                         <QForm @submit.prevent="onUpdateUserAssociations">
-                            <FormRegisterUserAssociations />
-                            <div class="flex-row-center padding-top">
-                                <QBtn
-                                    :label="t('back')"
-                                    :to="{ name: 'Dashboard' }"
-                                    class="btn-lg"
-                                    color="dashboard"
-                                    icon="bi-chevron-compact-left"
-                                />
-                            </div>
+                            <FormRegisterUserAssociations/>
                         </QForm>
                     </div>
                 </div>
@@ -219,7 +210,7 @@ onMounted(() => {
         </QTabPanel>
 
         <QTabPanel name="password">
-            <FormProfilePasswordEdit />
+            <FormProfilePasswordEdit/>
         </QTabPanel>
     </QTabPanels>
 </template>

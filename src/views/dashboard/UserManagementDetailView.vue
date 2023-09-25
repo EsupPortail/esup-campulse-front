@@ -53,11 +53,17 @@ async function onGetUser() {
 const openAlert = ref<boolean>(false)
 const leaveEdition = ref<boolean>(true)
 const hasValidated = ref<boolean>(false)
+const confirmation = ref<boolean>(false)
 
 /*function onLeaveEdition() {
     leaveEdition.value = true
     router.push({name: 'ManageUsers'})
 }*/
+
+const onSubmit = () => {
+    openAlert.value = true
+    confirmation.value = true
+}
 
 // Check is there are any changes before leaving the page
 onBeforeRouteLeave((to, from, next) => {
@@ -79,7 +85,7 @@ onBeforeRouteLeave((to, from, next) => {
     <QForm
         v-if="userManagerStore.user"
         class="dashboard-section"
-        @submit.prevent="openAlert = true"
+        @submit="onSubmit"
     >
         <section>
             <h2>
@@ -114,20 +120,20 @@ onBeforeRouteLeave((to, from, next) => {
 
             <div class="dashboard-section-container">
                 <div class="container flex-column">
-                    <FormUpdateUserAssociations />
-                    <FormRegisterUserAssociations />
+                    <FormUpdateUserAssociations/>
+                    <FormRegisterUserAssociations/>
                 </div>
             </div>
         </section>
 
         <section class="dashboard-section">
             <h2>
-                <QIcon name="bi-person-lines-fill" />
+                <QIcon name="bi-person-lines-fill"/>
                 {{ t('user-manager.user-status') }}
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormUserGroups />
+                    <FormUserGroups/>
                     <div v-if="!userManagerStore.user?.isCas && studentGroupIsSelected">
                         <hgroup>
                             <h3>{{ t('forms.student-status-document') }}</h3>
@@ -169,9 +175,11 @@ onBeforeRouteLeave((to, from, next) => {
                                 />-->
                 <AlertConfirmUserUpdate
                     v-if="groupChoiceIsValid"
+                    :confirmation="confirmation"
                     @has-validated="hasValidated = true"
+                    @close-dialog="confirmation = false"
                 />
-                <AlertConfirmUserDelete @has-validated="hasValidated = true" />
+                <AlertConfirmUserDelete @has-validated="hasValidated = true"/>
             </div>
         </section>
     </QForm>

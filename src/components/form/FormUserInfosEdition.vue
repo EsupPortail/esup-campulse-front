@@ -133,13 +133,13 @@ onMounted(() => {
             v-model="userToUpdate.phone"
             :label="t('forms.phone')"
             autocomplete="tel"
+            bottom-slots
             clearable
             color="dashboard"
             filled
+            for="phone"
             lazy-rules
             type="tel"
-            bottom-slots
-            for="phone"
         >
             <template v-slot:hint>
                 <p aria-describedby="phone">{{ t('forms.hint-phone') }}</p>
@@ -151,6 +151,7 @@ onMounted(() => {
         >
             <h3>{{ t('address.address') }}</h3>
             <FormUserAddress
+                :edited-by-staff="props.editedByStaff"
                 :user="userRef"
                 color="dashboard"
             />
@@ -176,7 +177,7 @@ onMounted(() => {
 
 
 q-input:focus {
-  color: red;
-  background-color: yellow;
+    color: red;
+    background-color: yellow;
 }
 </style>

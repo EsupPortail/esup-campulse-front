@@ -240,6 +240,7 @@ async function onUploadDocuments(nextStep: number) {
                                         <p>{{ t('address.verify') }}</p>
                                     </div>
                                     <FormUserAddress
+                                        :edited-by-staff="false"
                                         :user="userStore.user"
                                         color="commission"
                                     />

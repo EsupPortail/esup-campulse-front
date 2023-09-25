@@ -136,7 +136,7 @@ const clearValues = () => {
                         :password="editPassword.newPassword1"
                         :password-checker="passwordChecker"
                     />
-                    <div>
+                    <div class="flex-row-center">
                         <QBtn
                             :disable="!passwordChecker.valid || editPassword.newPassword1 !== editPassword.newPassword2"
                             :label="t('password.edit-password')"
