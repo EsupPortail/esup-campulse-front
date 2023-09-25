@@ -89,6 +89,7 @@ onMounted(async () => {
     await onGetProjectCategories()
     // Init applicant
     initApplicant()
+    await initApplicantDetails()
     // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
     projectStore.projectCommissionFunds = []
     isLoaded.value = true
@@ -99,7 +100,8 @@ const step = ref(1)
 
 watch(() => step.value, () => {
     // Scroll to top when we change step
-    document.getElementById('stepper')?.scrollIntoView()
+    const stepper = document.getElementById('stepper')
+    stepper?.scrollIntoView()
 })
 
 watch(() => step.value === 2, async () => {
@@ -180,7 +182,7 @@ const initIsSite = () => {
 }
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
-const datesAreLegal = ref<boolean>(false)
+const datesAreLegal = ref<boolean>(true)
 watch(() => projectBasicInfos.value.plannedStartDate, () => {
     datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate, true)
 })
