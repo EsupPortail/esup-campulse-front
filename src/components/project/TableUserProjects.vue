@@ -84,8 +84,9 @@ const columns = ref<QTableProps['columns']>([
         name: 'commissionDate',
         align: 'left',
         label: t('commission.date'),
-        field: 'commissionDate',
-        sortable: true
+        field: row => row.commission?.commissionDate,
+        sortable: true,
+        format: val => `${val}`
     },
     {
         name: 'status',

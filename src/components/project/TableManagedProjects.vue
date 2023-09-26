@@ -126,7 +126,14 @@ const columns: QTableProps['columns'] = [
     },
     {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
     {name: 'applicant', align: 'left', label: t('project.applicant'), field: 'applicant', sortable: true},
-    {name: 'lastModifiedDate', align: 'left', label: t('project.last-modified-date'), field: 'email', sortable: true},
+    {
+        name: 'lastModifiedDate',
+        align: 'left',
+        label: t('project.last-modified-date'),
+        field: row => row.editionDate,
+        sortable: true,
+        format: val => `${val}`
+    },
     {name: 'funds', align: 'right', label: t('commission.funds'), field: 'funds', sortable: true},
     {
         name: 'status',
