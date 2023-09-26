@@ -360,7 +360,7 @@
     "no-process-library": "Documents de la bibliothèque",
     "other-documents": "Autres documents",
     "project-documents": "Documents de projets",
-    "template-documents": "Documents de projet types",
+    "template-documents": "Documents obligatoires pour dépôt de projet",
     "upload-new": "Déposer un nouveau document"
   },
   "download": "Télécharger",
