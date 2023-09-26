@@ -48,7 +48,10 @@ async function onGetAssociationUsers() {
             }
         }
     } else {
-        columns.value?.splice(1, 1)
+        const index = columns.value?.findIndex(column => column.name === 'projectAssociationUser')
+        if (index) {
+            columns.value?.splice(index, 1)
+        }
     }
 }
 
