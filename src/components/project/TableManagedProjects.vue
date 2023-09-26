@@ -125,7 +125,14 @@ const columns: QTableProps['columns'] = [
         format: val => `${val}`
     },
     {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
-    {name: 'applicant', align: 'left', label: t('project.applicant'), field: 'applicant', sortable: true},
+    {
+        name: 'applicant',
+        align: 'left',
+        label: t('project.applicant'),
+        field: row => applicant(row.association, row.user),
+        sortable: true,
+        format: val => `${val}`
+    },
     {
         name: 'lastModifiedDate',
         align: 'left',
@@ -196,7 +203,7 @@ const columns: QTableProps['columns'] = [
                     :props="props"
                     headers="id"
                 >
-                    {{ props.row.manualIdentifier ?? '' }}
+                    {{ props.row.manualIdentifier ?? '00000000' }}
                 </QTd>
                 <QTd
                     key="name"
