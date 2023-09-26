@@ -1,12 +1,15 @@
-- 🏷️ Fix various typecheck errors
-- 💄 Replace placeholders with nice images
-- 🐛 Fix 404 on SubmitProject
-- ✅ Add test => 90% of coverage
-- 🔧 Update conf for production
-- ✨ Scroll to top on QSteppers
-- 🩹 Fix dynamic radio button in user association register
-- 🎨 Avoid double API GET request in project detail view
-- ✨ Add photo copyright to landing pages components
-- 🍱 Add image for Culture-ActionS
-- 🎨 Improve UI/UX of student document library
-- ✨ Edited commission dates must be in the future
+- ✏️ Change typo in document lib
+- ✏️ RIP Opaline
+- 🔧 Change siteName
+- 🩹 Optimize sorting on project table (again)
+- ♿️ [3.2] Increase contrast between page title and header background image
+- ♿️ [8.6] Dynamic title on login page
+- ♿️ [9.2] Change HTML structure of breadcrumbs
+- ♿️ [3.2] Increase contrast on home page header
+- ♿️ [11.6] aria-label on association register radiogroup
+- 🩹 Fix sorting on commission date for student project management
+- 🩹 Optimize CAS registration and login
+- 🩹 Quick fix on associationUsers in SubmitProject form
+- 🎨 Optimize sorting on QTables
+- 🩹 Optimize user management form
+- 🐛 Fix sorting on projects for students and managers
