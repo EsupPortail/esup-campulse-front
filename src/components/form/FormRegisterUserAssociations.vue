@@ -124,8 +124,8 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                         />
                         <QOptionGroup
                             v-model="association.role"
+                            :aria-label="t('forms.association-role')"
                             :options="association.options"
-                            aria-label="t('forms.association-role')"
                             color="dashboard"
                             inline
                             role="radiogroup"
