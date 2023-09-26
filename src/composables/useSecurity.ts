@@ -169,8 +169,6 @@ export default function () {
      *
      * If the user is not CAS, it then calls `userAssociationsRegister` if `newAssociationsUser.value` is defined, and then
      * calls `userGroupsRegister`.
-     *
-     * Finally, if the user is CAS, it clears `newUser` to avoid persistence of session.
      */
     async function register() {
         const {newAssociationsUser} = useUserAssociations()
@@ -180,8 +178,6 @@ export default function () {
             if (newAssociationsUser) {
                 await userAssociationsRegister(true, newUser.username)
             }
-            // We must clear newUser to avoid persistence of session
-            userStore.unLoadNewUser()
         } else {
             await userLocalRegister()
             await userGroupsRegister(true)

@@ -64,17 +64,17 @@ async function onRegister() {
                         message: t('notifications.positive.account-created')
                     })
                     await router.push({name: 'Dashboard'})
+                    newUser.isCas = false
+                    newUser.firstName = ''
+                    newUser.lastName = ''
+                    newUser.username = ''
+                    newUser.email = ''
+                    newUser.phone = ''
                 } else {
                     await register()
                     await uploadDocuments(undefined, newUser.username, true)
                     await router.push({name: 'RegistrationSuccessful'})
                 }
-                newUser.isCas = false
-                newUser.firstName = ''
-                newUser.lastName = ''
-                newUser.username = ''
-                newUser.email = ''
-                newUser.phone = ''
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
                     const data = error.response.data
@@ -117,9 +117,9 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormAddUserFromLDAP v-if="isStaff" />
+                    <FormAddUserFromLDAP v-if="isStaff"/>
 
-                    <InfoFormRequiredFields />
+                    <InfoFormRequiredFields/>
 
                     <QInput
                         v-model="newUser.firstName"
@@ -202,7 +202,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormUserGroups />
+                    <FormUserGroups/>
                     <div v-if="!newUser.isCas && studentGroupIsSelected">
                         <hgroup>
                             <h3>{{ t('forms.student-status-document') }}</h3>
@@ -227,7 +227,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormRegisterUserAssociations />
+                    <FormRegisterUserAssociations/>
                 </div>
             </div>
         </div>

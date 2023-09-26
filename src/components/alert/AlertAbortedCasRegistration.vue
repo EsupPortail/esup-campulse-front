@@ -17,22 +17,16 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
         persistent
     >
         <QCard>
-            <QCardSection class="row no-wrap">
-                <QIcon
-                    color="negative"
-                    name="bi-info-circle"
-                    size="md"
-                />
+            <QCardSection>
                 <p class="q-ml-sm">{{ t('alerts.aborted-cas-registration.message') }}</p>
-            </QCardSection>
-            <QCardActions align="right">
-                <div class="flex-row padding-top">
+
+                <div class="flex-row-center padding-top">
                     <QBtn
                         v-close-popup
                         :label="t('alerts.close')"
                         class="btn-lg"
                         color="dashboard"
-                        flat
+                        icon="bi-box-arrow-left"
                     />
                     <QBtn
                         v-close-popup
@@ -40,9 +34,10 @@ const isCas = ref<boolean | undefined>(newUser?.isCas)
                         :to="{name: 'Registration'}"
                         class="btn-lg"
                         color="custom-red"
+                        icon="bi-check-lg"
                     />
                 </div>
-            </QCardActions>
+            </QCardSection>
         </QCard>
     </QDialog>
 </template>

@@ -95,6 +95,7 @@ const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${
                                     :to="{name: 'Registration'}"
                                     class="btn-lg"
                                     color="custom-red"
+                                    icon="bi-check-lg"
                                 />
                             </div>
                         </div>

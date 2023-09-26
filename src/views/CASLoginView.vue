@@ -39,6 +39,11 @@ onMounted(async () => {
                 type: 'negative',
                 message: catchHTTPError(error.response)
             })
+        } else {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.cas-user-not-validated-by-admin')
+            })
         }
     }
 })
