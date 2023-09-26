@@ -2,14 +2,21 @@
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
 import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from 'vue-i18n'
+import useUtility from '@/composables/useUtility'
+import {onMounted} from 'vue'
 
 const userStore = useUserStore()
 const newUser = userStore.newUser
 const isCas = userStore.isCas
 const {t} = useI18n()
+const {dynamicTitle} = useUtility()
 
 const CASUrlLogin = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-login`
 const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-register`
+
+onMounted(() => {
+    dynamicTitle.value = 'Connexion'
+})
 </script>
 
 <template>
