@@ -25,28 +25,47 @@ onMounted(() => {
 </script>
 
 <template>
+    <!--    <nav
+            id="layout-breadcrumbs"
+            :class="'variant-' + colorVariant"
+            role="navigation"
+            :aria-label="t('you-are-here')"
+        >
+            <QBreadcrumbs
+                gutter="none"
+                separator=""
+            >
+                <QBreadcrumbsEl
+                    :label="t('breadcrumbs.home')"
+                    :to="{ name: 'Home' }"
+                />
+                <QBreadcrumbsEl
+                    v-for="(element, index) in breadcrumbs"
+                    :key="index"
+                    :label="element.label"
+                    :to="element.to"
+                    :aria-current="(index === breadcrumbs.length - 1) ? 'page' : 'false'"
+                />
+            </QBreadcrumbs>
+        </nav>-->
     <nav
         id="layout-breadcrumbs"
+        :aria-label="t('you-are-here')"
         :class="'variant-' + colorVariant"
         role="navigation"
-        :aria-label="t('you-are-here')"
     >
-        <QBreadcrumbs
-            gutter="none"
-            separator=""
-        >
-            <QBreadcrumbsEl
-                :label="t('breadcrumbs.home')"
-                :to="{ name: 'Home' }"
-            />
-            <QBreadcrumbsEl
+        <ul class="flex-row container">
+            <li>
+                <RouterLink :to="{ name: 'Home' }">{{ t('breadcrumbs.home') }}</RouterLink>
+            </li>
+            <li
                 v-for="(element, index) in breadcrumbs"
                 :key="index"
-                :label="element.label"
-                :to="element.to"
                 :aria-current="(index === breadcrumbs.length - 1) ? 'page' : 'false'"
-            />
-        </QBreadcrumbs>
+            >
+                <RouterLink :to="element.to">{{ element.label }}</RouterLink>
+            </li>
+        </ul>
     </nav>
 </template>
 

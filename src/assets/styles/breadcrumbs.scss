@@ -1,96 +1,103 @@
 @import '@/assets/variables';
 
 #layout-breadcrumbs {
-  .q-breadcrumbs {
-    background-color: $associationColor;
+  ul {
     padding: 1rem;
+    gap: 0;
+    flex-wrap: wrap;
 
-    & > * {
-      width: $fullSize;
-      max-width: 120rem;
-      margin: 0 auto;
-    }
+    li {
+      list-style: none;
 
-    .q-breadcrumbs__el {
-      color: $textColor3;
-      text-decoration: none;
-    }
+      a {
+        text-decoration: none;
+      }
 
-    .q-breadcrumbs--last > .q-breadcrumbs__el {
-      font-weight: 600;
-    }
-
-    .q-breadcrumbs__separator {
-      color: $textColor3;
-      height: 0.875rem;
-      position: relative;
-      width: 2.75rem;
-
-      &::before {
+      &::after {
         content: ">";
-        position: absolute;
-        left: 0.75rem;
-        top: -0.875rem;
+        padding: 0 1rem;
       }
     }
 
-  }
+    li:last-child {
+      font-weight: 600;
 
-  // The breadcrumbs have several variants (notably one for the home page and one for the login page).
-  // Use a different class to switch variant.
+      &::after {
+        content: "";
+      }
+    }
+  }
 
   &.variant-home {
     display: none;
   }
 
-  &.variant-space-1 .q-breadcrumbs {
-    .q-breadcrumbs__el:focus {
-      outline: 2px solid $outlineColor1;
-      outline-offset: 2px;
-    }
-  }
+  &.variant-space-1 {
+    background-color: $associationColor;
 
-  &.variant-space-2 .q-breadcrumbs {
-    background-color: $charterColor;
+    li {
 
-    .q-breadcrumbs__el {
-      color: $charterColorText;
+      a {
+        color: $textColor3;
+      }
 
-      &:focus {
-        outline: 2px solid $outlineColor2;
-        outline-offset: 2px;
+      &::after {
+        color: $textColor3;
       }
     }
+  }
 
-    .q-breadcrumbs__separator {
-      color: $charterColorText;
+  &.variant-space-2 {
+    background-color: $charterColor;
+
+    li {
+
+      a {
+        color: $charterColorText;
+      }
+
+      &::after {
+        color: $charterColorText;
+      }
     }
   }
 
-  &.variant-space-3 .q-breadcrumbs {
+  &.variant-space-3 {
     background-color: $commissionColor;
 
-    .q-breadcrumbs__el:focus {
-      outline: 2px solid $outlineColor1;
-      outline-offset: 2px;
+    li {
+
+      a {
+        color: $textColor3;
+      }
+
+      &::after {
+        color: $textColor3;
+      }
     }
   }
 
-  &.variant-space-4 .q-breadcrumbs {
+  &.variant-space-4 {
     background-color: $dashboardColor;
 
-    .q-breadcrumbs__el:focus {
-      outline: 2px solid $outlineColor1;
-      outline-offset: 2px;
+    li {
+
+      a {
+        color: $textColor3;
+      }
+
+      &::after {
+        color: $textColor3;
+      }
     }
   }
 
-  &.variant-minimal .q-breadcrumbs {
+  /*&.variant-minimal .q-breadcrumbs {
     height: 0.625rem;
     padding: 0;
 
     & > * {
       display: none;
     }
-  }
+  }*/
 }
