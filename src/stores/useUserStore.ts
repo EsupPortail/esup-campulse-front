@@ -51,14 +51,31 @@ export const useUserStore = defineStore('userStore', {
          */
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const {axiosPublic} = useAxios()
+            const {newUser, setTokens} = useSecurity()
             const response = await axiosPublic.post(url, data)
-            const {access, refresh, user} = response.data
-            if (user.isValidatedByAdmin) {
-                const {setTokens} = useSecurity()
+            const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
+            // User account is complete
+            if (user.groups.length) {
+                // If user is validated by admin
+                if (user.isValidatedByAdmin) {
+                    setTokens(access, refresh)
+                    this.user = user
+                }
+                // If user is not validated by admin
+                else {
+                    throw new Error('USER_NOT_VALIDATED_BY_ADMIN')
+                }
+            }
+            // User account is not complete
+            else {
                 setTokens(access, refresh)
-                this.user = user
-            } else {
-                throw new Error
+                newUser.isCas = user.isCas
+                newUser.email = user.email
+                newUser.username = user.username
+                newUser.firstName = user.firstName
+                newUser.lastName = user.lastName
+                newUser.phone = user.phone
+                throw new Error('USER_ACCOUNT_NOT_COMPLETE')
             }
         },
         logOut() {
@@ -93,38 +110,6 @@ export const useUserStore = defineStore('userStore', {
                 }
             }
         },
-        /*async getUserAssociations() {
-            if (this.user && this.user.associations.length > 0) {
-                const {axiosAuthenticated} = useAxios()
-                const userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
-                for (const index in userAssociations) {
-                    const temp = {
-                        id: userAssociations[index].association,
-                        name: '',
-                        isSite: undefined,
-                        institution: undefined,
-                        isEnabled: undefined,
-                        isPublic: undefined,
-                    }
-                    if (userAssociations[index].isValidatedByAdmin) {
-                        const association = (await axiosAuthenticated.get(`/associations/${userAssociations[index].association}`)).data
-                        temp.name = association.name
-                        temp.isSite = association.isSite
-                        temp.institution = association.institution
-                        temp.isEnabled = association.isEnabled
-                        temp.isPublic = association.isPublic
-                    } else {
-                        const associationStore = useAssociationStore()
-                        await associationStore.getAssociationNames(false, false)
-                        const association = associationStore.associationNames.find(obj => obj.id === userAssociations[index].association)
-                        if (association) {
-                            temp.name = association.name
-                        }
-                    }
-                }
-                this.userAssociations = userAssociations
-            }
-        },*/
         unLoadUser() {
             this.user = undefined
             this.userAssociations = []
@@ -144,9 +129,16 @@ export const useUserStore = defineStore('userStore', {
             const {axiosPublic} = useAxios()
             const data = (await axiosPublic.post('/users/auth/cas/login/', {ticket, service})).data
             const {access, refresh, user} = data
-            const {setTokens} = useSecurity()
-            setTokens(access, refresh)
-            this.newUser = user
+            // If the user has already created an account
+            if (user.groups.length) {
+                throw new Error('USER_ACCOUNT_ALREADY_EXISTS')
+            }
+            // If the user has no account
+            else {
+                const {setTokens} = useSecurity()
+                setTokens(access, refresh)
+                this.newUser = user
+            }
         },
 
         /**

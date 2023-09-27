@@ -551,7 +551,9 @@
     "negative": {
       "association-already-exists": "Ce nom est déjà pris par une autre association.",
       "association-before-deletion-word-error": "Vérification échouée, veuillez réessayer.",
+      "cas-user-already-exists": "Vous avez déjà un compte. Veuillez vous connecter.",
       "cas-user-not-validated-by-admin": "Votre compte n'est pas encore validé par les administrateurs.",
+      "cas-user-redirected-login": "Veuillez créer un compte avant de vous connecter.",
       "delete-associations-error": "Les associations suivantes ne peuvent être supprimées : ",
       "different-passwords": "Les deux nouveaux mots de passe ne sont pas identiques.",
       "disable-association-error": "L'association ne peut être désactivée.",

@@ -572,7 +572,10 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'cas-login',
                 name: 'CASLogin',
-                component: () => import('@/views/CASLoginView.vue')
+                component: () => import('@/views/CASLoginView.vue'),
+                meta: {
+                    colorVariant: 'space-4'
+                }
             },
             {
                 path: 'register',

@@ -30,7 +30,6 @@ watch(() => newUser.email, () => {
 })
 
 export default function () {
-
     const userStore = useUserStore()
 
     /**

@@ -42,7 +42,12 @@ async function onLoadCASUser() {
         await loadCASUser()
     } catch (error) {
         await router.push({name: 'Login'})
-        if (axios.isAxiosError(error) && error.response) {
+        if ((error as Error).message === 'USER_ACCOUNT_ALREADY_EXISTS') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.cas-user-already-exists')
+            })
+        } else if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
                 message: catchHTTPError(error.response)
