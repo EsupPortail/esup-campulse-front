@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import useSecurity from '@/composables/useSecurity'
-import {onUnmounted} from 'vue'
+import {onBeforeUnmount} from 'vue'
 import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
@@ -9,7 +9,7 @@ const {t} = useI18n()
 const {newUser} = useSecurity()
 const userStore = useUserStore()
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
     // We must clear newUser to avoid persistence of session
     userStore.unLoadNewUser()
     newUser.isCas = false
