@@ -101,7 +101,7 @@ const step = ref(1)
 watch(() => step.value, () => {
     // Scroll to top when we change step
     const stepper = document.getElementById('stepper')
-    stepper?.scrollIntoView()
+    stepper?.scrollIntoView(true)
 })
 
 watch(() => step.value === 2, async () => {

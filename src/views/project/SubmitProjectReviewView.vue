@@ -44,7 +44,7 @@ const step = ref(1)
 
 watch(() => step.value, () => {
     // Scroll to top when we change step
-    document.getElementById('stepper')?.scrollIntoView()
+    document.getElementById('stepper')?.scrollIntoView(true)
 })
 
 const applicant = ref<string | undefined>('')
