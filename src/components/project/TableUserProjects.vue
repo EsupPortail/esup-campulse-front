@@ -80,8 +80,9 @@ const columns = ref<QTableProps['columns']>([
         name: 'projectAssociationUser',
         align: 'left',
         label: t('project.contact'),
-        field: 'projectAssociationUser',
-        sortable: true
+        field: row => projectAssociationUser(row.associationUser),
+        sortable: true,
+        format: val => `${val}`
     },
     {
         name: 'commissionDate',
