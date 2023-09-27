@@ -14,6 +14,8 @@ import type {User} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import useSecurity from '@/composables/useSecurity'
 import type {AxiosResponse} from 'axios'
+import type {DocumentProcessType} from '#/documents'
+import {_documentUploads} from '../../../tests/fixtures/project.mock'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -289,6 +291,43 @@ describe('User store', () => {
             userStore.userAssociations = [_userAssociationDetail]
             userStore.userAssociations[0].isPresident = false
             expect(userStore.hasPresidentStatus(1)).toBeFalsy()
+        })
+    })
+
+    describe('getUserDocuments', () => {
+        const {axiosAuthenticated} = useAxios()
+        const mockedAxios = vi.mocked(axiosAuthenticated, true)
+        const userId = _institutionStudent.id
+        const processTypes: DocumentProcessType[] = ['DOCUMENT_PROJECT', 'DOCUMENT_ASSOCIATION']
+
+        describe('if process types are given', () => {
+            beforeEach(() => {
+                mockedAxios.get.mockResolvedValueOnce({data: _documentUploads})
+                userStore.user = _institutionStudent
+            })
+
+            it('should get user document uploads corresponding to the process types', async () => {
+                await userStore.getUserDocuments(processTypes)
+                const url = `/documents/uploads?user_id=${userId}&process_types=${processTypes.join(',')}`
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
+                expect(userStore.userDocuments).toEqual(_documentUploads)
+            })
+        })
+
+        describe('if no specific process types are given', () => {
+            beforeEach(() => {
+                mockedAxios.get.mockResolvedValueOnce({data: _documentUploads})
+                userStore.user = _institutionStudent
+            })
+
+            it('should get all user document uploads', async () => {
+                await userStore.getUserDocuments()
+                const url = `/documents/uploads?user_id=${userId}`
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
+                expect(userStore.userDocuments).toEqual(_documentUploads)
+            })
         })
     })
 })
