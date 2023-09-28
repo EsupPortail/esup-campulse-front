@@ -1,15 +1,6 @@
-- ✏️ Change typo in document lib
-- ✏️ RIP Opaline
-- 🔧 Change siteName
-- 🩹 Optimize sorting on project table (again)
-- ♿️ [3.2] Increase contrast between page title and header background image
-- ♿️ [8.6] Dynamic title on login page
-- ♿️ [9.2] Change HTML structure of breadcrumbs
-- ♿️ [3.2] Increase contrast on home page header
-- ♿️ [11.6] aria-label on association register radiogroup
-- 🩹 Fix sorting on commission date for student project management
-- 🩹 Optimize CAS registration and login
-- 🩹 Quick fix on associationUsers in SubmitProject form
-- 🎨 Optimize sorting on QTables
-- 🩹 Optimize user management form
-- 🐛 Fix sorting on projects for students and managers
+- 💄 Optimize scroll to top of forms
+- 🩹 Project association user sorting on student commission dashboard
+- ✅ Add tests for UserStore
+- ♻️ Refactor CAS login process
+- 🐛 Change lifecycle hook on register successful view
+- 🩹 Dynamic splicing of associationUser for student project management
