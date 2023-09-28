@@ -11,11 +11,11 @@
     min-width: 3.8rem;
     height: 3.8rem;
     border-radius: $radiusCircle;
-    border: solid $annuaireColor 0.200rem;
+    border: solid $associationColor 0.200rem;
     position: relative;
 
     i {
-      color: $annuaireColor;
+      color: $associationColor;
       position: absolute;
       top: -0.4rem;
       left: 0.3rem;
@@ -34,12 +34,12 @@
     }
 
     &::before {
-      background-color: $charteColor;
+      background-color: $charterColor;
       bottom: -1.5rem;
     }
 
     &::after {
-      background-color: $capeColor;
+      background-color: $commissionColor;
       bottom: -3rem;
       top: 6.5rem;
     }
@@ -65,7 +65,7 @@
   }
 
   &.home-section-annuaire {
-    background-image: $homeDirectoryImage;
+    background-image: $homeDirectoryBackground;
     background-position: center center;
 
     .card-icon {
@@ -73,13 +73,13 @@
 
       i {
         font-size: $iconSize;
-        color: $annuaireColor;
+        color: $associationColor;
       }
     }
   }
 
   &.home-section-charte {
-    background-image: $homeCharterImage;
+    background-image: $homeCharterBackground;
     background-position: center center;
 
     .section-card {
@@ -90,14 +90,14 @@
 
         i {
           font-size: $iconSize;
-          color: $charteColor;
+          color: $charterColor;
         }
       }
     }
   }
 
   &.home-section-cape {
-    background-image: $homeCapeImage;
+    background-image: $homeCommissionBackground;
     background-position: center center;
 
     .card-icon {
@@ -105,7 +105,7 @@
 
       i {
         font-size: $iconSize;
-        color: $capeColor;
+        color: $commissionColor;
       }
     }
   }
@@ -122,7 +122,7 @@
     overflow: hidden;
 
     .section-background {
-      background-color: $annuaireColorBackground;
+      background-color: $associationColorBackground;
       height: 50rem;
       width: 36rem;
       opacity: 1;
@@ -135,7 +135,7 @@
         height: 0;
         border-style: solid;
         border-width: 25rem 0 25rem 6.20rem;
-        border-color: transparent transparent transparent $annuaireColorBackground;
+        border-color: transparent transparent transparent $associationColorBackground;
         position: absolute;
         right: -6rem;
       }
@@ -152,7 +152,7 @@
         font-family: $titleFont;
         font-size: 3.8rem;
         font-weight: $semibold-weight;
-        color: $annuaireColorText;
+        color: $associationColorText;
         text-transform: uppercase;
       }
 
@@ -169,20 +169,20 @@
           display: inline-block;
           width: 2rem;
           height: 2rem;
-          background-color: $annuaireColor;
-          color: $annuaireColorText;
+          background-color: $associationColor;
+          color: $associationColorText;
           border-radius: $radiusCircle;
 
           &:first-child {
             width: 4.5rem;
             height: 4.5rem;
-            color: $annuaireColorText;
+            color: $associationColorText;
             text-align: center;
 
             i {
               position: relative;
               font-size: $iconSize;
-              color: $annuaireColorText;
+              color: $associationColorText;
               top: -0.8rem;
               left: 0;
             }
@@ -194,8 +194,8 @@
     .section-info {
       font-weight: $normal-weight;
       line-height: 2rem;
-      color: $annuaireColorText;
-      border-left: .25rem solid $annuaireColor;
+      color: $associationColorText;
+      border-left: .25rem solid $associationColor;
       padding: 0 0 0 1rem;
       margin: 1.25rem auto 1rem;
 
@@ -215,7 +215,7 @@
 
       p {
         font-weight: $normal-weight;
-        color: $annuaireColorText;
+        color: $associationColorText;
       }
 
       .section-buttons {
@@ -227,8 +227,8 @@
           display: inline-block;
           padding: 1rem 4rem;
           font-weight: $normal-weight;
-          color: $annuaireColorText;
-          border: .0625rem solid $annuaireColorText;
+          color: $associationColorText;
+          border: .0625rem solid $associationColorText;
           background-color: transparent;
           text-decoration: none;
           text-transform: uppercase;
@@ -241,12 +241,12 @@
           }
 
           &:hover, &:focus {
-            background-color: $annuaireColorText;
+            background-color: $associationColorText;
             color: $textColor3;
           }
 
           &:active {
-            background-color: transparentize($annuaireColorText, 0.1);
+            background-color: transparentize($associationColorText, 0.1);
             color: $textColor3;
           }
         }
@@ -273,13 +273,13 @@
   &.home-section-charte {
     .section-card {
       .section-background {
-        background-color: $charteColorBackground;
+        background-color: $charterColorBackground;
         right: 0;
         left: unset;
 
         span {
           border-width: 25rem 6.2rem 25rem 0;
-          border-color: transparent $charteColorBackground transparent transparent;
+          border-color: transparent $charterColorBackground transparent transparent;
           left: -6rem;
         }
       }
@@ -289,23 +289,23 @@
 
         h2 > span {
           flex-direction: row-reverse;
-          color: $charteColorText;
+          color: $charterColorText;
         }
 
         .section-subtitle {
-          color: $charteColorText;
+          color: $charterColorText;
         }
 
         .section-icon {
           flex-direction: row-reverse;
 
           span {
-            background-color: $charteColor;
-            color: $charteColorText;
+            background-color: $charterColor;
+            color: $charterColorText;
 
             i {
-              background-color: $charteColor;
-              color: $charteColorText;
+              background-color: $charterColor;
+              color: $charterColorText;
             }
 
           }
@@ -318,29 +318,29 @@
 
       .section-info {
         border-left: none;
-        border-right: .25rem solid $charteColor;
+        border-right: .25rem solid $charterColor;
         padding-left: 0;
         padding-right: 1rem;
-        color: $charteColorText;
+        color: $charterColorText;
       }
 
       .section-content {
         p {
-          color: $charteColorText;
+          color: $charterColorText;
         }
 
         .section-buttons {
           a {
-            color: $charteColorText;
-            border-color: $charteColorText;
+            color: $charterColorText;
+            border-color: $charterColorText;
 
             &:hover, &:focus {
-              background-color: $charteColorText;
+              background-color: $charterColorText;
               color: $textColor3;
             }
 
             &:active {
-              background-color: transparentize($charteColorText, 0.1);
+              background-color: transparentize($charterColorText, 0.1);
               color: $textColor3;
             }
           }
@@ -352,30 +352,30 @@
   &.home-section-cape {
     .section-card {
       .section-background {
-        background-color: $capeColorBackground;
+        background-color: $commissionColorBackground;
 
         span {
-          border-color: transparent transparent transparent $capeColorBackground;
+          border-color: transparent transparent transparent $commissionColorBackground;
         }
       }
 
       .section-title {
         h1 {
-          color: $capeColorText;
+          color: $commissionColorText;
         }
 
         .section-subtitle {
-          color: $capeColorText;
+          color: $commissionColorText;
         }
 
         .section-icon {
           span {
-            background-color: $capeColor;
-            color: $capeColorText;
+            background-color: $commissionColor;
+            color: $commissionColorText;
 
             i {
-              background-color: $capeColor;
-              color: $capeColorText;
+              background-color: $commissionColor;
+              color: $commissionColorText;
               left: -0.150rem;
             }
           }
@@ -383,61 +383,32 @@
       }
 
       .section-info {
-        border-color: $capeColor;
-        color: $capeColorText;
+        border-color: $commissionColor;
+        color: $commissionColorText;
       }
 
       .section-content {
         p {
-          color: $capeColorText;
+          color: $commissionColorText;
         }
 
         .section-buttons {
           a {
-            color: $capeColorText;
-            border-color: $capeColorText;
+            color: $commissionColorText;
+            border-color: $commissionColorText;
 
             &:hover, &:focus {
-              background-color: $capeColorText;
+              background-color: $commissionColorText;
               color: $textColor3;
             }
 
             &:active {
-              background-color: transparentize($capeColorText, 0.1);
+              background-color: transparentize($commissionColorText, 0.1);
               color: $textColor3;
             }
           }
         }
       }
-    }
-  }
-}
-
-
-/*
-  * About section
- */
-.section-headtitle {
-  text-align: center;
-  padding: 2rem 0;
-}
-
-.services-features {
-  .services-section {
-    display: flex;
-    gap: 1rem;
-    flex-direction: row;
-    align-items: center;
-    min-height: 25rem;
-
-    h4 {
-      text-align: center;
-      font-weight: $semibold-weight;
-    }
-
-    @media screen and (max-width: $breakpoint-lg) {
-      flex-direction: column;
-      gap: 1rem;
     }
   }
 }

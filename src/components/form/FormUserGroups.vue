@@ -1,14 +1,17 @@
 <script lang="ts" setup>
 import useUserGroups from '@/composables/useUserGroups'
 import {useI18n} from 'vue-i18n'
-import {onMounted, onUnmounted} from 'vue'
+import {onMounted, onUnmounted, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import useCommissions from '@/composables/useCommissions'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+
 
 const {t} = useI18n()
+const userManagerStore = useUserManagerStore()
 const {
     groupChoiceIsValid,
     newGroups,
@@ -19,6 +22,7 @@ const {
     preSelectGroup,
     initGroupPermToJoinAssociation,
     commissionMemberIsSelected,
+    initStudentGroupSelection
 } = useUserGroups()
 const {notify, loading} = useQuasar()
 const route = useRoute()
@@ -36,8 +40,11 @@ onMounted(async () => {
     await onGetGroups()
     onInitGroupLabels()
     await onGetCommissions()
+    initStudentGroupSelection()
     loading.hide()
 })
+
+watch(() => userManagerStore.user, initUserFunds)
 
 // Used to clean newGroups value
 onUnmounted(() => {
@@ -51,7 +58,7 @@ async function onGetGroups() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -66,7 +73,7 @@ async function onGetCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -85,7 +92,7 @@ function onInitGroupLabels() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -115,7 +122,7 @@ function onInitGroupLabels() {
         v-model="userFunds"
         :label="t('commission.commission', 2)"
         :options="fundsLabels"
-        :rules="[ val => val.length >= 1 || t('forms.required-commission')]"
+        :rules="[val => val.length >= 1 || t('forms.required-commission')]"
         color="dashboard"
         emit-value
         filled

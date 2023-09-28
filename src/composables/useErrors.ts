@@ -1,14 +1,41 @@
-export default function () {
+import i18n from '@/plugins/i18n'
+import type {Error} from '#/index'
 
-    function catchHTTPError(code: number) {
-        const HTTP_ERROR_CODES = [400, 401, 403, 404, 405, 413, 415]
+export default function() {
+
+    function catchHTTPError(error: Error) {
         let notification = ''
-        if (HTTP_ERROR_CODES.includes(code)) {
-            notification = code.toString() + '-'
-        } else if (code >= 500) {
-            notification = '500-'
+        if (import.meta.env.VITE_APP_ENABLE_BACKEND_ERRORS && (error.data.error !== '')) {
+            notification = `${error.status} : ${JSON.stringify(error.data)}`
+        } else {
+            switch (error.status) {
+            case 400:
+                notification = i18n.global.t('notifications.negative.error-400')
+                break
+            case 401:
+                notification = i18n.global.t('notifications.negative.error-401')
+                break
+            case 403:
+                notification = i18n.global.t('notifications.negative.error-403')
+                break
+            case 404:
+                notification = i18n.global.t('notifications.negative.error-404')
+                break
+            case 405:
+                notification = i18n.global.t('notifications.negative.error-405')
+                break
+            case 413:
+                notification = i18n.global.t('notifications.negative.error-413')
+                break
+            case 415:
+                notification = i18n.global.t('notifications.negative.error-415')
+                break
+            default:
+                notification = i18n.global.t('notifications.negative.error-500')
+                break
+            }
         }
-        notification += 'error'
+        
         return notification
     }
 

@@ -1,22 +1,27 @@
 <script lang="ts" setup>
 import {ref} from 'vue'
 import {toRefs, watch} from 'vue'
-import type {ManageCharter} from '#/charters'
+import type {AssociationCharterStatus, ManageCharter} from '#/charters'
 import {useI18n} from 'vue-i18n'
 import useCharters from '@/composables/useCharters'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import useDocumentUploads from '@/composables/useDocumentUploads'
+import useDocuments from '@/composables/useDocuments'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {uploadCharter, initCharters} = useCharters()
 const {catchHTTPError} = useErrors()
+const {MAX_FILE_SIZE} = useDocumentUploads()
+const {acceptedFormats} = useDocuments()
 
 const props = defineProps<{
     openSign: boolean,
     charter: ManageCharter,
     associationId: number,
+    associationCharterStatus?: AssociationCharterStatus,
     isSite: boolean
 }>()
 
@@ -33,7 +38,7 @@ watch(() => open.value, () => {
     }
 })
 
-const signedCharter = ref<Blob>()
+const signedCharter = ref<File>()
 
 async function onSignCharter() {
     loading.show()
@@ -41,7 +46,7 @@ async function onSignCharter() {
         if (signedCharter.value) {
             await uploadCharter(props.charter.documentUploadId, props.associationId, props.charter.documentId, signedCharter.value)
             open.value = false
-            await initCharters(props.associationId, props.isSite)
+            await initCharters(props.associationId, props.isSite, props.associationCharterStatus)
             notify({
                 type: 'positive',
                 message: t('notifications.positive.charter-signed')
@@ -51,11 +56,29 @@ async function onSignCharter() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
     loading.hide()
+}
+
+// FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
+async function onDocumentRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
+    rejectedEntries.forEach(entry => {
+        if (entry.failedPropValidation === 'accept') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-mimetype')
+            })
+        }
+        if (entry.failedPropValidation === 'max-file-size') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-413')
+            })
+        }
+    })
 }
 </script>
 
@@ -64,16 +87,30 @@ async function onSignCharter() {
         <QCard>
             <QCardSection>
                 <h3>{{ props.charter.documentName }}</h3>
-                <p></p>
-                <QForm
-                    @submit="onSignCharter"
-                >
+                <p>{{ t('charter.sign-hint') }}</p>
+                <QForm @submit="onSignCharter">
                     <QFile
                         v-model="signedCharter"
+                        :accept="props.charter.mimeTypes?.join(', ')"
                         :label="t('charter.signed-charter') + ' *'"
+                        :max-file-size="MAX_FILE_SIZE"
+                        aria-required="true"
+                        bottom-slots
+                        clearable
                         color="charter"
+                        counter
                         filled
+                        for="pathFile"
+                        use-chips
+                        @rejected="onDocumentRejected"
                     >
+                        <template v-slot:hint>
+                            <p aria-describedby="pathFile">
+                                {{
+                                    t('forms.accepted-formats') + acceptedFormats(props.charter.mimeTypes) + '.'
+                                }}
+                            </p>
+                        </template>
                         <template v-slot:prepend>
                             <QIcon name="bi-paperclip"/>
                         </template>

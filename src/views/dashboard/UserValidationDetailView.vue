@@ -11,13 +11,17 @@ import useUserGroups from '@/composables/useUserGroups'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import useDocumentUploads from '@/composables/useDocumentUploads'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {validateUser} = useUsers()
-const {newGroups, groupChoiceIsValid} = useUserGroups()
+const {newGroups, groupChoiceIsValid, studentGroupIsSelected} = useUserGroups()
 const {getUserAssociations} = useUserAssociations()
 const {catchHTTPError} = useErrors()
+const {uploadDocuments} = useDocumentUploads()
 
 const userManagerStore = useUserManagerStore()
 const route = useRoute()
@@ -38,7 +42,7 @@ async function onGetUser() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -52,7 +56,7 @@ async function onGetUserAssociations() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -63,6 +67,7 @@ async function onValidateUser() {
     if (groupChoiceIsValid.value) {
         try {
             await validateUser()
+            await uploadDocuments(undefined, userManagerStore.user?.username, false)
             await router.push({name: 'ValidateUsers'})
             notify({
                 type: 'positive',
@@ -72,7 +77,7 @@ async function onValidateUser() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -91,7 +96,7 @@ async function onDeleteUser() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -101,7 +106,7 @@ async function onDeleteUser() {
 <template>
     <div class="dashboard-section">
         <h2>
-            <QIcon name="bi-person"/>
+            <QIcon name="bi-person" />
             {{ t('user.infos') }}
         </h2>
 
@@ -139,7 +144,7 @@ async function onDeleteUser() {
 
     <div class="dashboard-section">
         <h2>
-            <QIcon name="bi-building"/>
+            <QIcon name="bi-building" />
             {{ t('directory.title') }}
         </h2>
 
@@ -155,20 +160,24 @@ async function onDeleteUser() {
                             <h3>{{ association.association.name }}</h3>
                             <ul>
                                 <li>
-                                    {{ t('dashboard.association-user.is-president') }} :
-                                    {{ association.isPresident ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-president') }}{{
+                                        t('colon')
+                                    }}{{ association.isPresident ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-vice-president') }} :
-                                    {{ association.isVicePresident ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-vice-president') }}{{
+                                        t('colon')
+                                    }}{{ association.isVicePresident ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-secretary') }} :
-                                    {{ association.isSecretary ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-secretary') }}{{
+                                        t('colon')
+                                    }}{{ association.isSecretary ? t('yes') : t('no') }}
                                 </li>
                                 <li>
-                                    {{ t('dashboard.association-user.is-treasurer') }} :
-                                    {{ association.isTreasurer ? t('yes') : t('no') }}
+                                    {{ t('dashboard.association-user.is-treasurer') }}{{
+                                        t('colon')
+                                    }}{{ association.isTreasurer ? t('yes') : t('no') }}
                                 </li>
                             </ul>
                         </div>
@@ -183,12 +192,22 @@ async function onDeleteUser() {
 
     <div class="dashboard-section">
         <h2>
-            <QIcon name="bi-person-lines-fill"/>
+            <QIcon name="bi-person-lines-fill" />
             {{ t('user.groups') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <FormUserGroups/>
+                <FormUserGroups />
+                <div v-if="!userManagerStore.user?.isCas && studentGroupIsSelected">
+                    <hgroup>
+                        <h3>{{ t('forms.student-status-document') }}</h3>
+                        <p>{{ t('forms.student-status-document-hint') }}</p>
+                    </hgroup>
+                    <FormDocumentUploads
+                        :association-id="null"
+                        process="user-management"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -223,4 +242,3 @@ async function onDeleteUser() {
 @import '@/assets/styles/dashboard.scss';
 @import "@/assets/_variables.scss";
 </style>
-

@@ -1,33 +1,7 @@
-/**
- *  HomeCard Model
- *  Card displayed on the home view and redirects to another view.
- *  @params: title, description, imagePath, imageAlt
- */
-export interface HomeCard {
-    description: string,
-    link: string,
-    cssClass: string,
-    buttonLabel: string,
-    infoContent: string,
-    titleLine1: string,
-    titleLine2: string,
-    iconClass: string
-}
-
-export type HomeCards = HomeCard[]
-
-export interface HomeBanner {
-    title: string,
-    description: string,
-    isDisplayed: boolean
-}
-
 interface ContentStore {
-    cards: HomeCards,
-    banner: HomeBanner,
-    about: AboutStore[],
-    contact: ContactStore[],
-    home: HomeStore[]
+    contents: Content[],
+    logos: Logo[],
+    CSSClasses: string[]
 }
 
 interface SelectLabel {
@@ -35,46 +9,38 @@ interface SelectLabel {
     label: string
 }
 
+export interface Error {
+    status: number
+    data: {
+        error: string
+    }
+}
+
 export interface PasswordChecker {
     valid: boolean,
-    score: number,
-    tests: PasswordCheckerTest[]
+    score: number
 }
 
-interface PasswordCheckerTest {
-    valid: boolean,
-    message: string,
-    additionalMessage: string
-}
-
-export interface AboutStore {
+export interface Content {
     id: number,
-    code: contentCode,
+    code: ContentCode,
     label: string,
     header: string,
     body: string,
-    footer: string
+    footer: string,
+    aside: string
 }
 
-export interface ContactStore {
+export interface Logo {
     id: number,
-    code: contentCode,
-    label: string,
-    header: string,
-    body: string,
-    footer: string
+    acronym: string,
+    title: string,
+    url: string,
+    pathLogo: string,
+    visible: boolean
 }
 
-export interface HomeStore {
-    id: number,
-    code: contentCode,
-    label: string,
-    header: string,
-    body: string,
-    footer: string
-}
-
-type contentCode =
+type ContentCode =
     'HOME_ASSOCIATION' |
     'HOME_CHARTER' |
     'HOME_PROJECT' |
@@ -82,12 +48,31 @@ type contentCode =
     'ABOUT_APP' |
     'ABOUT_FUNDING' |
     'ABOUT_PARTNERSHIP' |
+    'ABOUT_ASSOCIATION' |
+    'ABOUT_CHARTER' |
+    'ABOUT_PROJECT' |
     'CONTACT_INFO' |
-    'CONTACT_LIST'
+    'CONTACT_LIST' |
+    'ASSOCIATION_HOME_FIRST_BLOCK' |
+    'CHARTER_HOME_FIRST_BLOCK' |
+    'CHARTER_HOME_SECOND_BLOCK' |
+    'CHARTER_HOME_THIRD_BLOCK' |
+    'CHARTER_HOME_ACTION_VALIDATE_CHARTERS' |
+    'CHARTER_HOME_ACTION_MANAGE_DOCUMENTS' |
+    'CHARTER_HOME_ACTION_SIGN_CHARTERS' |
+    'CHARTER_HOME_ACTION_DOWNLOAD_DOCUMENTS' |
+    'COMMISSION_HOME_FIRST_BLOCK' |
+    'COMMISSION_HOME_SECOND_BLOCK' |
+    'COMMISSION_HOME_ACTION_MANAGE_PROJECTS' |
+    'COMMISSION_HOME_ACTION_MANAGE_ARCHIVE' |
+    'COMMISSION_HOME_ACTION_MANAGE_COMMISSIONS' |
+    'COMMISSION_HOME_ACTION_SUBMIT_PROJECT' |
+    'COMMISSION_HOME_ACTION_DOWNLOAD_DOCUMENTS' |
+    'SITE_FOOTER'
 
 export interface PageCard {
     to: { name: string },
-    btnLabel: string,
+    btnLabel?: string,
     icon: string,
-    text: string
+    text?: string
 }

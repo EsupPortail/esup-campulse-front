@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import LayoutPageCard from '@/components/layout/LayoutPageCard.vue'
 import type {PageCard} from '#/index'
+import CharterBackgroundImage from '@/assets/img/background-charter.jpg'
+import CommissionBackgroundImage from '@/assets/img/background-cape.jpg'
+
 
 const props = defineProps<{
     color: 'charter' | 'commission',
@@ -10,17 +13,17 @@ const props = defineProps<{
 
 <template>
     <div
-        :style="`background-image: url('./src/assets/img/resized/background-${props.color === 'charter' ? 'charte' : 'cape'}.jpg');`"
+        :style="`background-image: url(\'${props.color === 'charter' ? CharterBackgroundImage : CommissionBackgroundImage}\');`"
         class="page-card-container"
     >
         <div class="container">
             <LayoutPageCard
                 v-for="(card, index) in props.pageCards"
                 :key="index"
-                :btn-label="card.btnLabel"
+                :btn-label="card.btnLabel ? card.btnLabel : ''"
                 :color="props.color"
                 :icon="card.icon"
-                :text="card.text"
+                :text="card.text ? card.text : ''"
                 :to="card.to"
             />
         </div>

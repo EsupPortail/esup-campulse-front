@@ -17,7 +17,7 @@ const associations = ref<Association[]>([])
 // Changed data when modifying an association
 let changedData = {}
 
-export default function() {
+export default function () {
 
     const associationStore = useAssociationStore()
     const {newAssociations} = useUserAssociations()
@@ -39,23 +39,26 @@ export default function() {
      */
     function checkHasPresident(association: AssociationRole) {
         if (association.options) {
-            const a = associationStore.associationNames.find(obj => obj.id === association.id)
-            if (a) {
-                association.options[0].disable = a.hasPresident
-                if (association.role === 'isPresident') {
-                    const model = newAssociations.value.find(obj => obj.id === association.id)
-                    if (model) model.role = 'isMember'
+            association.options[0].disable = false
+            const associationDetail = associationStore.associationNames.find(obj => obj.id === association.id)
+            if (associationDetail) {
+                if (associationDetail.hasPresident) {
+                    association.options[0].disable = true
+                    if (association.role === 'isPresident') {
+                        const model = newAssociations.value.find(obj => obj.id === association.id)
+                        if (model) model.role = 'isMember'
+                    }
                 }
             }
         }
     }
 
-    // TODO test
+    // Commented in component since issue is not clear
     function checkHasStudentCertificate(association: AssociationRole) {
         if (association.options) {
             // If new user has not uploaded a student certificate
-            // he/she can not join an association as an office member
-            if (!processDocuments.value[0].pathFile) {
+            // He/she cannot join an association as an office member
+            if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
                 association.options.forEach(association => {
                     if (association.isInOffice) association.disable = true
                 })
@@ -96,7 +99,7 @@ export default function() {
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
             const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'zipcode', 'city', 'country',
-                'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone']
+                'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone', 'presidentEmail']
             if (indexes.includes(key)) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})
@@ -190,11 +193,10 @@ export default function() {
         await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
-    // TODO: test
-    async function changeAssociationLogo(newLogo: undefined | Blob, deleteLogoData: null | object) {
+    async function changeAssociationLogo(newLogo: undefined | File, deleteLogoData: null | object) {
         if (deleteLogoData === null) {
             const patchLogoData = new FormData()
-            if (newLogo instanceof Blob) {
+            if (newLogo instanceof File) {
                 patchLogoData.append('pathLogo', newLogo)
             }
             await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)

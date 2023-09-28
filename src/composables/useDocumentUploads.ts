@@ -1,34 +1,54 @@
 import {ref} from 'vue'
-import type {Document, DocumentProcessType, ProcessDocument} from '#/documents'
+import type {Document, DocumentProcessType, ProcessDocument, UploadedProcessDocument} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
-import {useUserStore} from '@/stores/useUserStore'
 import useCharters from '@/composables/useCharters'
 import type {AxiosInstance} from 'axios'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useUserStore} from '@/stores/useUserStore'
 
 const documents = ref<Document[]>([])
 
 const processDocuments = ref<ProcessDocument[]>([])
 
-const documentUploads = ref<ProcessDocument[]>([])
+const documentUploads = ref<UploadedProcessDocument[]>([])
+
+const MAX_FILE_SIZE = 8388608
+const MAX_FILES = 10
 
 export default function () {
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const projectStore = useProjectStore()
+    const userManagerStore = useUserManagerStore()
     const userStore = useUserStore()
 
     // Init documents to work on
-    const initProcessDocuments = () => {
+    const initProcessDocuments = (filterByFund?: boolean, funds?: number[]) => {
         processDocuments.value = []
         documents.value.forEach((document) => {
-            processDocuments.value.push({
-                document: document.id,
-                isMultiple: document.isMultiple,
-                description: document.description,
-                pathFile: document.isMultiple ? [] : undefined,
-                isRequiredInProcess: document.isRequiredInProcess,
-                mimeTypes: document.mimeTypes
-            })
+            let initDocument = false
+            if (!filterByFund) {
+                initDocument = true
+            } else {
+                if (funds?.length && document.fund) {
+                    if (funds?.includes(document.fund)) {
+                        initDocument = true
+                    }
+                } else {
+                    initDocument = true
+                }
+            }
+            if (initDocument) {
+                processDocuments.value.push({
+                    document: document.id,
+                    isMultiple: document.isMultiple,
+                    description: document.description,
+                    pathFile: document.isMultiple ? [] : undefined,
+                    isRequiredInProcess: document.isRequiredInProcess,
+                    mimeTypes: document.mimeTypes,
+                    pathTemplate: document.pathTemplate
+                })
+            }
         })
     }
 
@@ -38,7 +58,7 @@ export default function () {
         projectStore.projectDocuments.forEach((document) => {
             if (documentIds.includes(document.document)) {
                 documentUploads.value.push({
-                    id: document.id,
+                    id: document.id as number,
                     document: document.document,
                     pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                     name: document.name as string
@@ -54,7 +74,37 @@ export default function () {
         charterDocuments.value.forEach((document) => {
             if (documentIds.includes(document.document)) {
                 documentUploads.value.push({
-                    id: document.id,
+                    id: document.id as number,
+                    document: document.document,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                    name: document.name as string
+                })
+            }
+        })
+    }
+
+    const initManagedUserDocumentUploads = () => {
+        documentUploads.value = []
+        const documentIds = processDocuments.value.map((document) => (document.document))
+        userManagerStore.userDocuments.forEach((document) => {
+            if (documentIds.includes(document.document)) {
+                documentUploads.value.push({
+                    id: document.id as number,
+                    document: document.document,
+                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                    name: document.name as string
+                })
+            }
+        })
+    }
+
+    const initUserDocumentUploads = () => {
+        documentUploads.value = []
+        const documentIds = processDocuments.value.map((document) => (document.document))
+        userStore.userDocuments.forEach((document) => {
+            if (documentIds.includes(document.document)) {
+                documentUploads.value.push({
+                    id: document.id as number,
                     document: document.document,
                     pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
                     name: document.name as string
@@ -72,7 +122,7 @@ export default function () {
 
     // Get student certificate for registration
     async function getStudentCertificate() {
-        const url = '/documents/?acronym=CERTIFICAT_SCOLARITE_USER'
+        const url = '/documents/?process_types=DOCUMENT_USER'
         documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
@@ -83,10 +133,10 @@ export default function () {
         document: string
         project: string
 
-        constructor(file: Blob, associationId: number | undefined, document: number) {
+        constructor(file: Blob, associationId: number | undefined, username: string | undefined, document: number) {
             this.file = file
             this.association = associationId ? associationId.toString() : ''
-            this.user = associationId ? '' : userStore.user?.id.toString() as string
+            this.user = username ?? ''
             this.document = document.toString()
             this.project = projectStore.project?.id.toString() as string
         }
@@ -105,7 +155,7 @@ export default function () {
     }
 
     // Post document uploads
-    async function uploadDocuments(associationId: number | undefined, publicRequest?: boolean) {
+    async function uploadDocuments(associationId: number | undefined, username: string | undefined, publicRequest: boolean) {
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic as AxiosInstance
         for (let i = 0; i < processDocuments.value.length; i++) {
@@ -116,13 +166,15 @@ export default function () {
                     const files = processDocuments.value[i].pathFile as Blob[] | []
 
                     for (let j = 0; j < files.length; j++) {
-                        const documentUpload = new DocumentUpload(files[j], associationId, processDocuments.value[i].document as number)
+                        const documentUpload = new DocumentUpload(files[j], associationId, username,
+                            processDocuments.value[i].document as number)
                         const documentData = documentUpload.formData()
                         await instance.post('/documents/uploads', documentData)
                     }
                 } else {
                     const file = processDocuments.value[i].pathFile as Blob
-                    const documentUpload = new DocumentUpload(file, associationId, processDocuments.value[i].document as number)
+                    const documentUpload = new DocumentUpload(file, associationId, username,
+                        processDocuments.value[i].document as number)
                     const documentData = documentUpload.formData()
                     await instance.post('/documents/uploads', documentData)
                 }
@@ -141,12 +193,12 @@ export default function () {
         return (await axiosAuthenticated.get(pathFile, {responseType: 'blob'})).data
     }
 
-    // Generate link to doc
-    async function createFileLink(uploadedDocument: ProcessDocument) {
-        const file = await getFile(uploadedDocument.pathFile as string)
+    // Generate link to uploaded doc with authentification
+    async function createUploadedFileLink(pathFile: string, name: string) {
+        const file = await getFile(pathFile)
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(file)
-        link.download = uploadedDocument.name as string
+        link.download = name
         document.body.appendChild(link)
         link.click()
         link.remove()
@@ -163,8 +215,12 @@ export default function () {
         deleteDocumentUpload,
         getFile,
         DocumentUpload,
-        createFileLink,
+        createUploadedFileLink,
         initCharterDocumentUploads,
-        getStudentCertificate
+        getStudentCertificate,
+        initManagedUserDocumentUploads,
+        initUserDocumentUploads,
+        MAX_FILES,
+        MAX_FILE_SIZE
     }
 }

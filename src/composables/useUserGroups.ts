@@ -8,7 +8,6 @@ import type {UserGroup} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useSecurity from '@/composables/useSecurity'
-import type {Institution} from '#/association'
 
 
 // Used to store groups
@@ -36,11 +35,14 @@ const isMemberFund = ref<boolean | undefined>(undefined)
 // Used to display or not the select for commissions
 const commissionMemberIsSelected = ref<boolean>(false)
 
+// Used to display or not the document needed for registration (only for students)
+const studentGroupIsSelected = ref<boolean>(false)
+
 export default function () {
     const userStore = useUserStore()
     const userManagerStore = useUserManagerStore()
     const {userFunds} = useCommissions()
-    const {axiosPublic} = useAxios()
+    // const {axiosPublic} = useAxios()
 
 
     const groupNames: GroupCodeLiteralName[] = [
@@ -274,6 +276,22 @@ export default function () {
     }
     watch(() => newGroups.value, initCommissionMemberSelection)
 
+    const studentGroups = ref<Group[] | undefined>(groups.value.filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC'))
+    watch(() => groups.value, () => {
+        studentGroups.value = groups.value.filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC')
+    })
+
+    // To test
+    const initStudentGroupSelection = () => {
+        studentGroupIsSelected.value = false
+        if (studentGroups.value?.length) {
+            studentGroups.value?.forEach(group => {
+                if (newGroups.value.includes(group.id)) studentGroupIsSelected.value = true
+            })
+        }
+    }
+    watch(() => newGroups.value, initStudentGroupSelection)
+
 
     return {
         groups,
@@ -297,6 +315,8 @@ export default function () {
         commissionGroup,
         isMemberFund,
         initIsMemberFund,
-        isManagerMisc
+        isManagerMisc,
+        studentGroupIsSelected,
+        initStudentGroupSelection
     }
 }

@@ -42,6 +42,11 @@ onMounted(async () => {
 
 const step = ref(1)
 
+watch(() => step.value, () => {
+    // Scroll to top when we change step
+    document.getElementById('stepper')?.scrollIntoView(true)
+})
+
 const applicant = ref<string | undefined>('')
 
 const initApplicant = () => {
@@ -67,7 +72,7 @@ async function onGetProjectReview() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -83,24 +88,29 @@ async function onSubmitProjectReviewInfos(nextStep: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
     loading.hide()
 }
 
+// Submit step 3 (documents)
 async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await uploadDocuments(parseInt(route.params.associationId as string))
+            await uploadDocuments(
+                projectStore.project.association ?? undefined,
+                projectStore.project.user ? userStore.user?.username : undefined,
+                false
+            )
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -127,6 +137,7 @@ async function onUploadDocuments(nextStep: number) {
                 <InfoProcessDocuments :processes="['DOCUMENT_PROJECT_REVIEW']"/>
 
                 <QStepper
+                    id="stepper"
                     ref="stepper"
                     v-model="step"
                     active-color="commission-bold"
@@ -136,7 +147,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="1"
                         :title="t('project.general-infos')"
-                        icon="mdi-card-text-outline"
+                        icon="bi-card-list"
                     >
                         <QForm
                             class="flex-column"
@@ -229,6 +240,7 @@ async function onUploadDocuments(nextStep: number) {
                                         <p>{{ t('address.verify') }}</p>
                                     </div>
                                     <FormUserAddress
+                                        :edited-by-staff="false"
                                         :user="userStore.user"
                                         color="commission"
                                     />
@@ -246,7 +258,7 @@ async function onUploadDocuments(nextStep: number) {
                                 <QInput
                                     v-model="projectReview.outcome"
                                     :label="t('project.outcome') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.required-project-outcome')]"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-project-outcome')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     clearable
@@ -261,7 +273,7 @@ async function onUploadDocuments(nextStep: number) {
                                 <QInput
                                     v-model="projectReview.income"
                                     :label="t('project.income') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.required-project-income')]"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-project-income')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     clearable
@@ -289,7 +301,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="2"
                         :title="t('project.review')"
-                        icon="mdi-chart-box-outline"
+                        icon="bi-clipboard-data"
                     >
                         <QForm
                             class="flex-column"
@@ -298,7 +310,7 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.review"
                                 :label="t('project.moral-review') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-moral-review')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-moral-review')]"
                                 aria-required="true"
                                 bottom-slots
                                 clearable
@@ -315,7 +327,7 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.impactStudents"
                                 :label="t('project.impact-students') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-impact')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-impact')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -326,7 +338,7 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.description"
                                 :label="t('project.description') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-description')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-description')]"
                                 aria-required="true"
                                 bottom-slots
                                 clearable
@@ -343,7 +355,7 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.difficulties"
                                 :label="t('project.difficulties') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-difficulties')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-difficulties')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -354,7 +366,7 @@ async function onUploadDocuments(nextStep: number) {
                             <QInput
                                 v-model="projectReview.improvements"
                                 :label="t('project.improvements') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-improvements')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-improvements')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -385,11 +397,9 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="3"
                         :title="t('project.documents')"
-                        icon="mdi-file-document-outline"
+                        icon="bi-file-earmark"
                     >
-                        <QForm
-                            @submit.prevent="onUploadDocuments(4)"
-                        >
+                        <QForm @submit.prevent="onUploadDocuments(4)">
                             <FormProjectDocumentUploads
                                 :association-id="projectReview.association"
                                 process="review"
@@ -418,7 +428,7 @@ async function onUploadDocuments(nextStep: number) {
                     <QStep
                         :name="4"
                         :title="t('recap')"
-                        icon="mdi-check"
+                        icon="bi-check-lg"
                     >
                         <ProjectReviewRecap
                             :view="'submitProjectReview'"

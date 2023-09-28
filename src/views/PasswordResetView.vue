@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import FormPassWordReset from '@/components/form/FormPasswordReset.vue'
+import FormPasswordReset from '@/components/form/FormPasswordReset.vue'
 
 </script>
 
@@ -7,7 +7,7 @@ import FormPassWordReset from '@/components/form/FormPasswordReset.vue'
     <section class="dashboard-section">
         <div class="dashboard-section-container">
             <div class="container">
-                <FormPassWordReset/>
+                <FormPasswordReset/>
             </div>
         </div>
     </section>

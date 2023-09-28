@@ -12,7 +12,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import type {AssociationUser} from '#/user'
-import type {DocumentUpload} from '#/documents'
+import type {DocumentProcessType, DocumentUpload} from '#/documents'
 
 
 export const useAssociationStore = defineStore('associationStore', {
@@ -63,9 +63,9 @@ export const useAssociationStore = defineStore('associationStore', {
 
     actions: {
         getAssociationSubDetails(association: Association) {
-            association.institution = this.institutions.find((institution) => institution.id === association.institution)?.id
-            association.institutionComponent = this.institutionComponents.find((institutionComponent) => institutionComponent.id === association.institutionComponent)?.id
-            association.activityField = this.activityFields.find((activityField) => activityField.id === association.activityField)?.id
+            association.institution = this.institutions.find((institution: Institution) => institution.id === association.institution)?.id
+            association.institutionComponent = this.institutionComponents.find((institutionComponent: InstitutionComponent) => institutionComponent.id === association.institutionComponent)?.id
+            association.activityField = this.activityFields.find((activityField: AssociationActivityField) => activityField.id === association.activityField)?.id
             return association
         },
         getAssociationsSubDetails(associations: Association[]) {
@@ -166,7 +166,7 @@ export const useAssociationStore = defineStore('associationStore', {
             await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
             this.association = this.getAssociationSubDetails((await instance.get<Association>(`/associations/${id}`)).data)
         },
-        // TODO: test
+
         async updateAssociationLogo(logoData: FormData | object, id: number) {
             if (this.association) {
                 const {axiosAuthenticated} = useAxios()
@@ -240,9 +240,18 @@ export const useAssociationStore = defineStore('associationStore', {
             const {axiosAuthenticated} = useAxios()
             this.associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(`/users/associations/?association_id=${associationId}`)).data
         },
-        async getAssociationDocuments() {
+        async getAssociationDocuments(processTypes?: DocumentProcessType[]) {
             const {axiosAuthenticated} = useAxios()
-            this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?=association_id=${this.association?.id}`)).data
+            let url = `/documents/uploads?association_id=${this.association?.id}`
+            if (processTypes?.length) {
+                url += `&process_types=${processTypes.join(',')}`
+            }
+            this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
+        },
+        async export(associations: number[], format: string) {
+            const {axiosAuthenticated} = useAxios()
+            const url = `/associations/export?associations=${associations.join(',')}&mode=${format}`
+            return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         }
     }
 })

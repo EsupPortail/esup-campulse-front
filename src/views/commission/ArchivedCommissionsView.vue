@@ -29,7 +29,7 @@ async function onGetCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -94,7 +94,7 @@ const columns: QTableProps['columns'] = [
                                 <div class="button-container">
                                     <QBtn
                                         :label="t('view.projects')"
-                                        :to="{name: 'ArchivedCommissionDetail', params: {id: props.row.id}}"
+                                        :to="{ name: 'ArchivedCommissionDetail', params: { id: props.row.id } }"
                                         color="commission"
                                         outline
                                     />

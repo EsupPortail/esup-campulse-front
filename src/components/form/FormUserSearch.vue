@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
@@ -7,12 +7,14 @@ import type {UserSearch} from '#/user'
 import useUsers from '@/composables/useUsers'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const {t} = useI18n()
 const userManagerStore = useUserManagerStore()
 const {loading, notify} = useQuasar()
 const {advancedSearch} = useUsers()
 const {catchHTTPError} = useErrors()
+const associationStore = useAssociationStore()
 
 
 const emit = defineEmits(['advancedSearch', 'getUsers'])
@@ -21,8 +23,37 @@ const settings = ref<UserSearch>({
     search: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    association: null
 })
+
+const associations = ref(associationStore.associationLabels)
+
+async function onGetAssociationNames() {
+    try {
+        await associationStore.getAssociationNames(false, false)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
+            })
+        }
+    }
+}
+
+onMounted(async () => {
+    loading.show()
+    await onGetAssociationNames()
+    loading.hide()
+})
+
+function filterAssociations(val: string, update: (cb: () => void) => void) {
+    update(() => {
+        const lower = val.toLowerCase()
+        associations.value = associationStore.associationLabels.filter(obj => obj.label.toLowerCase().indexOf(lower) > -1)
+    })
+}
 
 async function onSearch() {
     loading.show()
@@ -32,7 +63,7 @@ async function onSearch() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -48,14 +79,15 @@ async function clearSearch() {
             search: '',
             firstName: '',
             lastName: '',
-            email: ''
+            email: '',
+            association: null
         }
         emit('getUsers')
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -84,7 +116,7 @@ async function clearSearch() {
                     lazy-rules
                 >
                     <template v-slot:prepend>
-                        <QIcon name="bi-search"/>
+                        <QIcon name="bi-search" />
                     </template>
                 </QInput>
                 <div class="flex-row padding-top">
@@ -92,14 +124,14 @@ async function clearSearch() {
                         :label="t('search')"
                         class="btn-lg"
                         color="dashboard"
-                        icon="mdi-chevron-right"
+                        icon="bi-chevron-right"
                         type="submit"
                     />
                     <QBtn
                         :label="t('cancel-search')"
                         class="btn-lg"
                         color="dashboard"
-                        icon="mdi-close"
+                        icon="bi-x-lg"
                         @click="clearSearch"
                     />
                 </div>
@@ -117,22 +149,26 @@ async function clearSearch() {
                 header-class="text-dashboard"
             >
                 <div class="flex-column">
-                    <QInput
-                        v-model="settings.firstName"
-                        :label="t('user.first-name')"
-                        clearable
-                        color="dashboard"
-                        filled
-                        lazy-rules
-                    />
-                    <QInput
-                        v-model="settings.lastName"
-                        :label="t('user.last-name')"
-                        clearable
-                        color="dashboard"
-                        filled
-                        lazy-rules
-                    />
+                    <div class="flex-row">
+                        <QInput
+                            v-model="settings.firstName"
+                            :label="t('user.first-name')"
+                            class="full-width"
+                            clearable
+                            color="dashboard"
+                            filled
+                            lazy-rules
+                        />
+                        <QInput
+                            v-model="settings.lastName"
+                            :label="t('user.last-name')"
+                            class="full-width"
+                            clearable
+                            color="dashboard"
+                            filled
+                            lazy-rules
+                        />
+                    </div>
                     <QInput
                         v-model="settings.email"
                         :label="t('user.email')"
@@ -141,6 +177,18 @@ async function clearSearch() {
                         filled
                         lazy-rules
                     />
+                    <QSelect
+                        v-model="settings.association"
+                        :label="t('user.associations')"
+                        :options="associations"
+                        clearable
+                        color="dashboard"
+                        emit-value
+                        filled
+                        map-options
+                        use-input
+                        @filter="filterAssociations"
+                    />
                 </div>
 
                 <div class="flex-row padding-top padding-bottom">
@@ -148,14 +196,14 @@ async function clearSearch() {
                         :label="t('advanced-search')"
                         class="btn-lg"
                         color="dashboard"
-                        icon="mdi-chevron-right"
+                        icon="bi-chevron-right"
                         type="submit"
                     />
                     <QBtn
                         :label="t('cancel-search')"
                         class="btn-lg"
                         color="dashboard"
-                        icon="mdi-close"
+                        icon="bi-x-lg"
                         @click="clearSearch"
                     />
                 </div>

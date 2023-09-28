@@ -1,21 +1,25 @@
 <script lang="ts" setup>
 const props = defineProps<{
-    title: string,
-    text: string,
-    img: string
+    title?: string,
+    text?: string,
+    img: string,
+    copyright?: string
 }>()
 </script>
 
 <template>
     <div class="image-text-section">
         <div class="container">
-            <img
-                alt=""
-                src="@/assets/img/unistra.jpg"
-            />
+            <figure>
+                <img
+                    :src="props.img"
+                    alt=""
+                />
+                <figcaption v-if="props.copyright">{{ props.copyright }}</figcaption>
+            </figure>
             <div>
-                <h2>{{ props.title }}</h2>
-                <p>{{ props.text }}</p>
+                <h2 v-html="props?.title"></h2>
+                <p v-html="props?.text"></p>
             </div>
         </div>
     </div>
@@ -25,32 +29,31 @@ const props = defineProps<{
 @import "@/assets/_variables.scss";
 
 .image-text-section {
-  padding: 3rem 1rem;
-  margin: 2rem 0;
+    padding: 3rem 1rem;
+    margin: 2rem 0;
 
-  .container {
-    display: flex;
-    gap: 3rem;
+    .container {
+        display: flex;
+        gap: 3rem;
 
-    img {
-      height: 15rem;
+        img {
+            height: 15rem;
+        }
     }
-  }
 }
 
 /* Changing the page's position to fit with the Accessibility Requirement */
 @media screen and (min-width: $breakpoint-vsm) {
-  .container {
-    display: flex;
-    flex-direction: column;
-  }
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 @media screen and (min-width: $breakpoint-md) {
-  .container {
-    display: flex;
-    flex-direction: row;
-  }
+    .container {
+        display: flex;
+        flex-direction: row;
+    }
 }
-
 </style>

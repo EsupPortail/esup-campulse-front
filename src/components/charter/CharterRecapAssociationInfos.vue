@@ -12,7 +12,7 @@ const associationStore = useAssociationStore()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    association: number
+    association: number | undefined
 }>()
 
 onMounted(async () => {
@@ -29,7 +29,7 @@ async function onGetAssociationDetails() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -49,7 +49,7 @@ async function onGetAssociationDetails() {
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.last-goa') }}</p>
-            <p>{{ associationStore.association?.lastGoaDate }}</p>
+            <p>{{ associationStore.association?.lastGoaDate?.split('-').reverse().join('/') }}</p>
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.president-name') }}</p>
@@ -60,10 +60,15 @@ async function onGetAssociationDetails() {
             <p>{{ associationStore.association?.presidentPhone }}</p>
         </div>
         <div class="display-row">
+            <p class="row-title">{{ t('association.labels.president-email') }}</p>
+            <p>{{ associationStore.association?.presidentEmail }}</p>
+        </div>
+        <div class="display-row">
             <p class="row-title">{{ t('association.labels.institution-component') }}</p>
             <p>
                 {{
-                    associationStore.institutionComponentLabels.find(obj => obj.value === associationStore.association?.institutionComponent)?.label
+                    associationStore.institutionComponentLabels.find(obj => obj.value ===
+                        associationStore.association?.institutionComponent)?.label
                 }}
             </p>
         </div>
@@ -71,15 +76,16 @@ async function onGetAssociationDetails() {
             <p class="row-title">{{ t('association.labels.activity-field') }}</p>
             <p>
                 {{
-                    associationStore.activityFieldLabels.find(obj => obj.value === associationStore.association?.activityField)?.label
+                    associationStore.activityFieldLabels.find(obj => obj.value ===
+                        associationStore.association?.activityField)?.label
                 }}
             </p>
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.address') }}</p>
             <p>
-                {{ associationStore.association?.address }}<br/>
-                {{ associationStore.association?.zipcode + ' ' + associationStore.association?.city }}<br/>
+                {{ associationStore.association?.address }}<br />
+                {{ associationStore.association?.zipcode + ' ' + associationStore.association?.city }}<br />
                 {{ associationStore.association?.country }}
             </p>
         </div>

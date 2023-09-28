@@ -41,7 +41,7 @@ onMounted(async function () {
     loading.hide()
 })
 
-// TODO; find a way to avoid double request
+// TODO find a way to avoid double request
 watch(() => route.path, async () => {
     if (route.name === 'AssociationDashboard') await onGetAssociationDetail()
     dynamicTitle.value = association.value?.name
@@ -88,7 +88,7 @@ async function onGetAssociationDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -96,12 +96,12 @@ async function onGetAssociationDetail() {
 
 async function onGetAssociationDocuments() {
     try {
-        await associationStore.getAssociationDocuments()
+        await associationStore.getAssociationDocuments(['DOCUMENT_ASSOCIATION'])
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -109,12 +109,14 @@ async function onGetAssociationDocuments() {
 
 async function onGetAssociationCharters() {
     try {
-        await initCharters(associationStore.association?.id as number, associationStore?.association?.isSite as boolean)
+        if (associationStore.association) {
+            await initCharters(associationStore.association.id, associationStore.association.isSite, associationStore.association.charterStatus)
+        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -127,7 +129,7 @@ async function onGetAssociationProjects() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -138,14 +140,12 @@ async function onGetAssociationProjects() {
 <template>
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-account"/>
+            <QIcon name="bi-person"/>
             {{ t('dashboard.association-user.my-role') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <p
-                    v-if="associationUserRole.literalName"
-                >
+                <p v-if="associationUserRole.literalName">
                     {{
                         associationUserRole.literalName + (associationUserRole.codeName !== 'isPresident' ?
                             ` ${hasPresidentStatus ? t('with') : t('without')} droits de présidence` : '')
@@ -160,7 +160,7 @@ async function onGetAssociationProjects() {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="mdi-format-list-bulleted-square"/>
+            <QIcon name="bi-card-list"/>
             {{ t('dashboard.association-user.manage-association') }}
         </h2>
         <div class="dashboard-section-container">
@@ -195,7 +195,7 @@ async function onGetAssociationProjects() {
     <!-- Association documents -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-file-outline"/>
+            <QIcon name="bi-file-earmark"/>
             {{ t('dashboard.association-user.association-documents') }}
         </h2>
         <div class="dashboard-section-container">
@@ -205,7 +205,7 @@ async function onGetAssociationProjects() {
                     :documents="associationStore.associationDocuments"
                 />
                 <div v-else>
-                    <p>{{ t('documents.no-documents-to-show') }}</p>
+                    <p>{{ t('documents.no-document-to-show') }}</p>
                 </div>
             </div>
         </div>
@@ -213,7 +213,7 @@ async function onGetAssociationProjects() {
     <!-- Association procedures -->
     <section class="dashboard-section">
         <h2>
-            <QIcon name="mdi-pencil-box-outline"/>
+            <QIcon name="bi-pen"/>
             {{ t('dashboard.association-user.association-procedures') }}
         </h2>
         <div class="dashboard-section-container">
@@ -229,9 +229,7 @@ async function onGetAssociationProjects() {
                             color="dashboard"
                         />
                     </div>
-                    <section
-                        v-if="manageCharters.length"
-                    >
+                    <section v-if="manageCharters.length">
                         <div
                             v-for="charter in manageCharters"
                             :key="charter.documentId"
@@ -261,11 +259,9 @@ async function onGetAssociationProjects() {
                             color="dashboard"
                         />
                     </div>
-                    <section
-                        v-if="projectStore.projects.length"
-                    >
+                    <section v-if="projectStore.selfProjects.length">
                         <div
-                            v-for="project in projectStore.projects.slice(0, 3)"
+                            v-for="project in projectStore.selfProjects.slice(0, 3)"
                             :key="project.id"
                             class="document-input variant-space-1"
                         >

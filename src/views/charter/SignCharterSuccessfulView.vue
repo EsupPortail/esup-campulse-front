@@ -41,7 +41,7 @@ async function onGetAssociationPdfExport() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -72,7 +72,7 @@ async function onGetAssociationPdfExport() {
                         />
                         <QBtn
                             :label="t('dashboard.charter-dashboard')"
-                            :to="{name: 'Charter'}"
+                            :to="{ name: 'ManageCharters' }"
                             class="btn-lg"
                             color="charter"
                             icon="bi-chevron-compact-right"
@@ -91,7 +91,7 @@ async function onGetAssociationPdfExport() {
 @import '@/assets/_variables.scss';
 
 i {
-    color: $charteColor;
+    color: $charterColor;
     font-size: 5rem;
 }
 

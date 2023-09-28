@@ -58,7 +58,10 @@ interface EditProjectCommissionFund {
     amountEarned: number | string | null,
     amountEarnedPreviousEdition: number | string,
     isFirstEdition: boolean,
-    comment: string,
+    comment: {
+        text: string,
+        isVisible: boolean
+    },
     needComment: boolean,
     amountEarnedIsValidatedByAdmin: boolean
 }
@@ -75,27 +78,27 @@ const initValues = () => {
                 fundLabel: getFundLabel(projectCommissionFund.commissionFund) ?? '',
                 amountAsked: projectCommissionFund.amountAsked?.toString() ?? '0',
                 amountAskedPreviousEdition: projectCommissionFund.amountAskedPreviousEdition?.toString() ?? '0',
-                amountEarned: projectCommissionFund.amountEarned ?
-                    projectCommissionFund.amountEarned.toString() : null,
+                amountEarned: projectCommissionFund.amountEarned === null ? null : (projectCommissionFund.amountEarned as number).toString(),
                 amountEarnedPreviousEdition: projectCommissionFund.amountEarnedPreviousEdition?.toString() ?? '0',
                 isFirstEdition: projectCommissionFund.isFirstEdition as boolean,
-                comment: '',
+                comment: {
+                    text: '',
+                    isVisible: false
+                },
                 needComment: false,
-                amountEarnedIsValidatedByAdmin: !!projectCommissionFund.amountEarned
+                amountEarnedIsValidatedByAdmin: projectCommissionFund.amountEarned !== null
             })
         }
     })
 }
 
-async function onPatchProjectCommissionFunds() {
+async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectCommissionFund) {
     loading.show()
     try {
-        for (const projectCommissionFund of editProjectCommissionFunds.value) {
-            if (!projectCommissionFund.amountEarnedIsValidatedByAdmin) {
-                await postNewProjectComment(props.project, projectCommissionFund.comment)
-                await patchAmountAsked(props.project, projectCommissionFund.commissionFundId,
-                    parseInt(projectCommissionFund.amountEarned as string))
-            }
+        if (!projectCommissionFund.amountEarnedIsValidatedByAdmin) {
+            await postNewProjectComment(props.project, projectCommissionFund.comment)
+            await patchAmountAsked(props.project, projectCommissionFund.commissionFundId,
+                parseInt(projectCommissionFund.amountEarned as string))
         }
         emit('closeDialog')
         emit('refreshProjects')
@@ -107,7 +110,7 @@ async function onPatchProjectCommissionFunds() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -120,28 +123,29 @@ async function onPatchProjectCommissionFunds() {
         <QCard class="variant-space-3">
             <QCardSection>
                 <h2>{{ props.projectName }}</h2>
-                <QForm
-                    class="flex-column"
-                    @submit="onPatchProjectCommissionFunds"
+                <QList
+                    bordered
+                    class="rounded-borders"
                 >
-                    <InfoFormRequiredFields/>
-                    <QList
-                        bordered
-                        class="rounded-borders"
+                    <QExpansionItem
+                        v-for="(projectCommissionFund, index) in editProjectCommissionFunds"
+                        :key="index"
+                        :caption="projectCommissionFund.amountEarnedIsValidatedByAdmin ?
+                            t('project.amount-earned-validated') : t('project.amount-earned-pending')"
+                        :disable="projectCommissionFund.amountEarnedIsValidatedByAdmin"
+                        :header-class="`text-custom-${projectCommissionFund.amountEarnedIsValidatedByAdmin ?
+                            'green' : 'red'}`"
+                        :label="projectCommissionFund.fundLabel"
+                        expand-separator
+                        icon="bi-bank"
                     >
-                        <QExpansionItem
-                            v-for="(projectCommissionFund, index) in editProjectCommissionFunds"
-                            :key="index"
-                            :caption="projectCommissionFund.amountEarnedIsValidatedByAdmin ?
-                                t('project.amount-earned-validated') : t('project.amount-earned-pending')"
-                            :header-class="`text-custom-${projectCommissionFund.amountEarnedIsValidatedByAdmin ?
-                                'green' : 'red'}`"
-                            :label="projectCommissionFund.fundLabel"
-                            expand-separator
-                            icon="bi-bank"
+                        <QForm
+                            class="flex-column"
+                            @submit="onPatchProjectCommissionFunds(projectCommissionFund)"
                         >
-                            <QCard>
+                            <QCard flat>
                                 <QCardSection class="flex-column">
+                                    <InfoFormRequiredFields/>
                                     <h4>{{ t('project.amount-asked') }}</h4>
                                     <QInput
                                         v-if="!projectCommissionFund.isFirstEdition"
@@ -179,7 +183,8 @@ async function onPatchProjectCommissionFunds() {
                                         :rules="[val => val && val.length > 0
                                             || t('forms.required-field', {
                                                 label: `${t('project.amount-earned')} (${projectCommissionFund.fundLabel
-                                                })`})]"
+                                                })`
+                                            })]"
                                         :shadow-text="` ${CURRENCY}`"
                                         clearable
                                         color="commission"
@@ -187,52 +192,56 @@ async function onPatchProjectCommissionFunds() {
                                         lazy-rules
                                         min="0"
                                         type="number"
-
                                         @update:model-value="projectCommissionFund.amountEarned === '0' ?
                                             projectCommissionFund.needComment = true : projectCommissionFund.needComment = false"
                                     />
                                     <QInput
-                                        v-model="projectCommissionFund.comment"
+                                        v-model="projectCommissionFund.comment.text"
                                         :aria-required="projectCommissionFund.needComment"
                                         :hint="!projectCommissionFund.amountEarnedIsValidatedByAdmin
                                             && projectCommissionFund.needComment ?
                                                 t('project.no-amount-earned-comment-hint') : ''"
                                         :label="`${t('project.new-comment')} (${projectCommissionFund.fundLabel})
-                                            ${projectCommissionFund.needComment ? ' *' : ''}`"
+                                                ${projectCommissionFund.needComment ? ' *' : ''}`"
                                         :readonly="projectCommissionFund.amountEarnedIsValidatedByAdmin"
                                         :rules="[val => (!projectCommissionFund.needComment || val && val.length > 0) || t('forms.required-field', {
-                                            label: `${t('project.new-comment')} (${projectCommissionFund.fundLabel})`})]"
+                                            label: `${t('project.new-comment')} (${projectCommissionFund.fundLabel})`
+                                        })]"
                                         clearable
                                         color="commission"
                                         filled
                                         reactive-rules
                                         type="textarea"
                                     />
+                                    <QToggle
+                                        v-model="projectCommissionFund.comment.isVisible"
+                                        :disable="!projectCommissionFund.comment.text"
+                                        :label="t('forms.comment-visibility')"
+                                        color="commission"
+                                    />
                                 </QCardSection>
                             </QCard>
-                        </QExpansionItem>
-                    </QList>
-                    <div class="flex-row-center padding-top">
-                        <QBtn
-                            v-close-popup
-                            :label="t('cancel')"
-                            class="btn-lg"
-                            color="commission"
-                            icon="bi-box-arrow-left"
-                            @click="emit('closeDialog')"
-                        />
-                        <QBtn
-                            :disable="!editProjectCommissionFunds
-                                .map(x => x.amountEarnedIsValidatedByAdmin).includes(false)
-                                || editProjectCommissionFunds.map(x => x.amountEarned).includes(null)"
-                            :label="t('validate')"
-                            class="btn-lg"
-                            color="commission"
-                            icon="bi-check-lg"
-                            type="submit"
-                        />
-                    </div>
-                </QForm>
+                            <div class="flex-row-center padding-bottom">
+                                <QBtn
+                                    v-close-popup
+                                    :label="t('cancel')"
+                                    class="btn-lg"
+                                    color="commission"
+                                    icon="bi-box-arrow-left"
+                                    @click="emit('closeDialog')"
+                                />
+                                <QBtn
+                                    :disable="!projectCommissionFund.amountEarned"
+                                    :label="t('validate')"
+                                    class="btn-lg"
+                                    color="commission"
+                                    icon="bi-check-lg"
+                                    type="submit"
+                                />
+                            </div>
+                        </QForm>
+                    </QExpansionItem>
+                </QList>
             </QCardSection>
         </QCard>
     </QDialog>

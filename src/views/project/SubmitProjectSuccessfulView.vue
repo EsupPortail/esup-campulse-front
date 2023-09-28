@@ -28,7 +28,7 @@ async function onGetProjectDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -48,7 +48,7 @@ async function onGetProjectPdf() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -70,12 +70,16 @@ async function onGetProjectPdf() {
                     <div class="flex-btn-group">
                         <QBtn
                             :label="t('project.download-recap')"
+                            class="btn-lg"
+                            color="commission"
                             icon="bi-filetype-pdf"
                             @click="onGetProjectPdf"
                         />
                         <QBtn
                             :label="t('dashboard.cape-dashboard')"
-                            :to="{name: 'Commission'}"
+                            :to="{ name: 'ManageProjects' }"
+                            class="btn-lg"
+                            color="commission"
                             icon="bi-chevron-compact-right"
                         />
                     </div>
@@ -91,7 +95,7 @@ async function onGetProjectPdf() {
 @import '@/assets/_variables.scss';
 
 i {
-    color: $capeColor;
+    color: $commissionColor;
     font-size: 5rem;
 }
 

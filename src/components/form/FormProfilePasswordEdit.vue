@@ -45,7 +45,7 @@ async function passwordConfirm() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -79,6 +79,7 @@ const clearValues = () => {
             <div class="container">
                 <QForm
                     ref="form"
+                    class="flex-column"
                     @reset="clearValues"
                     @submit.prevent="passwordConfirm"
                 >
@@ -87,6 +88,7 @@ const clearValues = () => {
                         :label="t('forms.old-password')"
                         :rules="[val => val && val.length > 0 || t('forms.required-old-password')]"
                         autocomplete="current-password"
+                        clearable
                         color="dashboard"
                         filled
                         lazy-rules
@@ -100,12 +102,22 @@ const clearValues = () => {
                             val => val && passwordChecker.valid || t('forms.required-strong-password')
                         ]"
                         autocomplete="new-password"
+                        bottom-slots
+                        clearable
                         color="dashboard"
                         filled
+                        for="new-password-to-check"
                         lazy-rules
                         type="password"
-                        for="new-password-to-check"
-                    />
+                    >
+                        <template v-slot:hint>
+                            <p aria-describedby="new-password-to-check">
+                                {{
+                                    t('forms.strong-password-hint')
+                                }}
+                            </p>
+                        </template>
+                    </QInput>
                     <QInput
                         v-model="editPassword.newPassword2"
                         :label="t('forms.repeat-new-password')"
@@ -114,6 +126,7 @@ const clearValues = () => {
                             val => val === editPassword.newPassword1 || t('forms.passwords-are-not-equal')
                         ]"
                         autocomplete="new-password"
+                        clearable
                         color="dashboard"
                         filled
                         lazy-rules
@@ -123,14 +136,16 @@ const clearValues = () => {
                         :password="editPassword.newPassword1"
                         :password-checker="passwordChecker"
                     />
-                    <QBtn
-                        :disable="!passwordChecker.valid || editPassword.newPassword1 !== editPassword.newPassword2"
-                        :label="t('password.edit-password')"
-                        class="btn-lg"
-                        color="dashboard"
-                        icon="bi-check-lg"
-                        type="submit"
-                    />
+                    <div class="flex-row-center">
+                        <QBtn
+                            :disable="!passwordChecker.valid || editPassword.newPassword1 !== editPassword.newPassword2"
+                            :label="t('password.edit-password')"
+                            class="btn-lg"
+                            color="dashboard"
+                            icon="bi-check-lg"
+                            type="submit"
+                        />
+                    </div>
                 </QForm>
             </div>
         </div>

@@ -7,7 +7,13 @@ import {onMounted} from 'vue'
 import useErrors from '@/composables/useErrors'
 import ProjectRecapCategories from '@/components/project/ProjectRecapCategories.vue'
 
-const {projectBasicInfos, initProjectAssociationUsersLabels, projectAssociationUsersLabels} = useSubmitProject()
+const {
+    projectBasicInfos,
+    projectId,
+    projectProcessingDate,
+    initProjectAssociationUsersLabels,
+    projectAssociationUsersLabels
+} = useSubmitProject()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -27,7 +33,7 @@ async function onGetAssociationUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -36,6 +42,22 @@ async function onGetAssociationUsers() {
 
 <template>
     <div class="flex-column">
+        <div
+            v-if="projectId"
+            class="display-row"
+        >
+            <p class="row-title">{{ t('project.id') }}</p>
+            <p>{{ projectId }}</p>
+        </div>
+
+        <div
+            v-if="projectProcessingDate"
+            class="display-row"
+        >
+            <p class="row-title">{{ t('project.processing-date') }}</p>
+            <p>{{ projectProcessingDate }}</p>
+        </div>
+
         <div class="display-row">
             <p class="row-title">{{ t('project.name') }}</p>
             <p>{{ projectBasicInfos.name }}</p>
@@ -68,7 +90,15 @@ async function onGetAssociationUsers() {
             <p>{{ projectAssociationUsersLabels.find(x => x.value === projectBasicInfos.associationUser)?.label }}</p>
         </div>
 
-        <ProjectRecapCategories/>
+        <div
+            v-if="projectBasicInfos.partnerAssociation"
+            class="display-row"
+        >
+            <p class="row-title">{{ t('project.partner-association') }}</p>
+            <p>{{ projectBasicInfos.partnerAssociation }}</p>
+        </div>
+
+        <ProjectRecapCategories />
     </div>
 </template>
 

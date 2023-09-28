@@ -10,6 +10,7 @@ import * as Sentry from '@sentry/vue'
 import App from '@/App.vue'
 import router from '@/router'
 import i18n from '@/plugins/i18n'
+import VueMatomo from 'vue-matomo'
 
 
 /**
@@ -31,6 +32,18 @@ if (import.meta.env.PROD) {
         ],
         tracesSampleRate: 1.0,
     })
+}
+
+if (import.meta.env.VITE_APP_MATOMO_SERVER && import.meta.env.VITE_APP_MATOMO_SITE_ID) {
+    app.use(
+        VueMatomo,
+        {
+            router,
+            host: import.meta.env.VITE_APP_MATOMO_SERVER,
+            siteId: import.meta.env.VITE_APP_MATOMO_SITE_ID,
+            debug: import.meta.env.VITE_APP_MATOMO_DEBUG || false,
+        },
+    )
 }
 
 app.use(i18n)

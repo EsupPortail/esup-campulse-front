@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {onMounted, ref} from 'vue'
-import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useRoute} from 'vue-router'
@@ -12,7 +11,6 @@ import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
 import useUserGroups from '@/composables/useUserGroups'
 
-const {t} = useI18n()
 const {notify, loading} = useQuasar()
 
 const route = useRoute()
@@ -38,7 +36,7 @@ async function onGetAssociationDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -51,7 +49,7 @@ async function onGetInstitutions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -64,7 +62,7 @@ async function onGetInstitutionComponents() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -77,7 +75,7 @@ async function onGetAssociationActivityFields() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -100,5 +98,5 @@ onMounted(async function () {
 </script>
 
 <template>
-    <FormAssociationEdition v-if="isLoaded"/>
+    <FormAssociationEdition v-if="isLoaded" />
 </template>

@@ -33,11 +33,22 @@ onMounted(async () => {
             })
         }
     } catch (error) {
-        await router.push({name: 'Login'})
-        if (axios.isAxiosError(error) && error.response) {
+        if ((error as Error).message === 'USER_NOT_VALIDATED_BY_ADMIN') {
+            await router.push({name: 'Login'})
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: t('notifications.negative.cas-user-not-validated-by-admin')
+            })
+        } else if ((error as Error).message === 'USER_ACCOUNT_NOT_COMPLETE') {
+            await router.push({name: 'Registration'})
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.cas-user-redirected-login')
+            })
+        } else if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
             })
         }
     }

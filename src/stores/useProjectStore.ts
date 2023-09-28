@@ -18,7 +18,8 @@ import useCommissions from '@/composables/useCommissions'
 export const useProjectStore = defineStore('projectStore', {
     state: (): ProjectStore => ({
         project: undefined,
-        projects: [],
+        selfProjects: [],
+        managedProjects: [],
         projectCategories: [],
         projectCommissionFunds: [],
         projectDocuments: [],
@@ -38,6 +39,17 @@ export const useProjectStore = defineStore('projectStore', {
             return commissions.value
                 .find(commission => commission.id === (commissionFunds.value
                     .find(commissionFund => commissionFund.id === (state.projectCommissionFunds[0]?.commissionFund))?.commission))?.id
+        },
+        projectFunds: (state: ProjectStore): number[] => {
+            const {commissionFunds} = useCommissions()
+            const projectFunds: number[] = []
+            state.projectCommissionFunds.forEach(projectCommissionFund => {
+                const commissionFund = commissionFunds.value.find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)
+                if (commissionFund) {
+                    projectFunds.push(commissionFund.fund)
+                }
+            })
+            return projectFunds
         }
     },
     actions: {
@@ -84,17 +96,17 @@ export const useProjectStore = defineStore('projectStore', {
             urlArray.push(`project_statuses=${statuses}`)
             if (commission) urlArray.push(`commission_id=${commission}`)
             if (urlArray.length) urlString += '?' + urlArray.join('&')
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
+            this.managedProjects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
         },
 
         async getAllProjects() {
             const {axiosAuthenticated} = useAxios()
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
+            this.selfProjects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
         },
 
         async getAssociationProjects(associationId: number) {
             const {axiosAuthenticated} = useAxios()
-            this.projects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
+            this.selfProjects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
         },
 
         async getProjectReview(projectId: number) {
@@ -114,6 +126,12 @@ export const useProjectStore = defineStore('projectStore', {
             return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
         },
 
+        async getProjectFiles(id: number) {
+            const {axiosAuthenticated} = useAxios()
+            const url = `/documents/uploads/file?project_id=${id}`
+            return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
+        },
+
         async patchProjectStatus(projectStatus: ProjectStatus) {
             const {axiosAuthenticated} = useAxios()
             if (this.project && this.project.projectStatus !== projectStatus) {
@@ -126,6 +144,11 @@ export const useProjectStore = defineStore('projectStore', {
             const {axiosAuthenticated} = useAxios()
             await axiosAuthenticated.patch(`/projects/${this.project?.id}/commission_funds/${oldCommissionFund}`,
                 {projectId: this.project?.id, commissionFundId: newCommissionFund})
+        },
+
+        searchProjectByManualIdentifier(manualIdentifier: string) {
+            this.managedProjects = this.managedProjects.filter(obj => obj.manualIdentifier === manualIdentifier)
         }
     }
+
 })

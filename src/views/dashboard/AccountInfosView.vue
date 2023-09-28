@@ -13,13 +13,15 @@ import FormDisplayUserAssociations from '@/components/form/FormDisplayUserAssoci
 import FormRegisterUserAssociations from '@/components/form/FormRegisterUserAssociations.vue'
 import useSecurity from '@/composables/useSecurity'
 import useErrors from '@/composables/useErrors'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
 const userStore = useUserStore()
 const {isStaff, initGroupPermToJoinAssociation} = useUserGroups()
 const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
 const {notify, loading} = useQuasar()
-const {userAssociationsRegister} = useSecurity()
+const {userAssociationsRegister, hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
 const {
     newAssociations,
@@ -28,6 +30,7 @@ const {
     initUserAssociations,
     userAssociations
 } = useUserAssociations()
+const {uploadDocuments, initProcessDocuments, initUserDocumentUploads} = useDocumentUploads()
 
 const tab = ref<string>('infos')
 
@@ -37,21 +40,25 @@ async function onUpdateUserInfos() {
         initInfosToPatch(userStore.user)
         if (Object.entries(infosToPatch).length) {
             await updateUserInfos(userStore.user, false)
-            notify({
-                type: 'positive',
-                message: t('notifications.positive.update-user-infos')
-            })
-        } else {
+        } /*else {
             notify({
                 type: 'warning',
                 message: t('notifications.warning.no-modifications-found')
             })
-        }
+        }*/
+        await uploadDocuments(undefined, userStore.user?.username, false)
+        initProcessDocuments()
+        await userStore.getUserDocuments()
+        initUserDocumentUploads()
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.update-user-infos')
+        })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -74,7 +81,7 @@ async function onUpdateUserAssociations() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -117,9 +124,7 @@ onMounted(() => {
         v-model="tab"
         animated
     >
-        <QTabPanel
-            name="infos"
-        >
+        <QTabPanel name="infos">
             <div class="dashboard-section">
                 <h2>
                     <i
@@ -140,6 +145,16 @@ onMounted(() => {
                                 :edited-by-staff="false"
                                 :user="userStore.user"
                             />
+                            <div v-if="!isStaff && (hasPerm('add_project_user') || hasPerm('add_project_association'))">
+                                <hgroup>
+                                    <h3>{{ t('forms.student-status-document') }}</h3>
+                                    <p>{{ t('forms.student-status-document-hint') }}</p>
+                                </hgroup>
+                                <FormDocumentUploads
+                                    :association-id="undefined"
+                                    process="account-management"
+                                />
+                            </div>
                             <div class="flex-row-center">
                                 <QBtn
                                     :label="t('validate-changes')"
@@ -155,9 +170,7 @@ onMounted(() => {
             </div>
         </QTabPanel>
 
-        <QTabPanel
-            name="associations"
-        >
+        <QTabPanel name="associations">
             <div class="dashboard-section">
                 <h2>
                     <i
@@ -188,28 +201,15 @@ onMounted(() => {
 
                 <div class="dashboard-section-container">
                     <div class="container">
-                        <QForm
-                            @submit.prevent="onUpdateUserAssociations"
-                        >
+                        <QForm @submit.prevent="onUpdateUserAssociations">
                             <FormRegisterUserAssociations/>
-                            <div class="flex-row-center padding-top">
-                                <QBtn
-                                    :label="t('back')"
-                                    :to="{ name: 'Dashboard' }"
-                                    class="btn-lg"
-                                    color="dashboard"
-                                    icon="bi-chevron-compact-left"
-                                />
-                            </div>
                         </QForm>
                     </div>
                 </div>
             </section>
         </QTabPanel>
 
-        <QTabPanel
-            name="password"
-        >
+        <QTabPanel name="password">
             <FormProfilePasswordEdit/>
         </QTabPanel>
     </QTabPanels>

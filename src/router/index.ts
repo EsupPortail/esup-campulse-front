@@ -16,7 +16,7 @@ const colorVariant = ref<string>('')
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
     const {initStaffStatus, isStaff, getGroups, initIsMemberFund} = useUserGroups()
-    const {newUser, hasPerm} = useSecurity()
+    const {hasPerm} = useSecurity()
     const {dynamicTitle, openMenu} = useUtility()
 
     if (openMenu.value) {
@@ -50,8 +50,8 @@ router.beforeEach(async (to) => {
     // Get isStaff status if user is auth
     if (userStore.isAuth) {
         await getGroups()
-        await initStaffStatus()
-        await initIsMemberFund()
+        initStaffStatus()
+        initIsMemberFund()
     }
 
     // Authenticated views
@@ -81,12 +81,12 @@ router.beforeEach(async (to) => {
         && !hasPerm('change_association')) return {name: '404'}
     if (to.name === 'CreateAssociation' && !hasPerm('add_association')) return {name: '404'}
     if (to.name === 'ManageDocumentsLibrary'
-        && (!hasPerm('add_document' || !hasPerm('change_document')))) return {name: '404'}
+        && (!hasPerm('add_document') || !hasPerm('change_document'))) return {name: '404'}
 
     // Password setting and registration
     if (to.name == 'PasswordResetConfirm' && !to.query.uid && !to.query.token) return {name: '404'}
     if (to.name == 'RegistrationVerifyEmail' && !to.query.key) return {name: '404'}
-    if (to.name == 'RegistrationSuccessful' && !newUser.firstName) return {name: '404'}
+    // if (to.name == 'RegistrationSuccessful' && !newUser.firstName) return {name: '404'}
 
     // If user is authenticated
     if (userStore.isAuth) {

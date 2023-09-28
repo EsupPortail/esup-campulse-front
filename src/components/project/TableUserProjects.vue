@@ -11,6 +11,8 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {onMounted, ref} from 'vue'
 import useSubmitProject from '@/composables/useSubmitProject'
+import useSecurity from '@/composables/useSecurity'
+import {useUserStore} from '@/stores/useUserStore'
 
 const importedProps = defineProps<{
     projects: ProjectList[],
@@ -19,11 +21,13 @@ const importedProps = defineProps<{
 }>()
 
 const projectStore = useProjectStore()
+const userStore = useUserStore()
 const {formatDate} = useUtility()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {initProjectAssociationUsersLabels, projectAssociationUsersLabels} = useSubmitProject()
+const {hasPerm} = useSecurity()
 
 onMounted(async () => {
     loading.show()
@@ -39,12 +43,15 @@ async function onGetAssociationUsers() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
     } else {
-        columns.value?.splice(1, 1)
+        const index = columns.value?.findIndex(column => column.name === 'projectAssociationUser')
+        if (index) {
+            columns.value?.splice(index, 1)
+        }
     }
 }
 
@@ -54,36 +61,45 @@ const projectAssociationUser = (associationUserId: number) => {
 }
 
 const columns = ref<QTableProps['columns']>([
-    {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
+    {
+        name: 'id',
+        align: 'left',
+        label: t('project.id'),
+        field: row => row.manualIdentifier,
+        sortable: true,
+        format: val => `${val}`
+    },
+    {
+        name: 'name',
+        align: 'left',
+        label: t('project.name'),
+        field: 'name',
+        sortable: true
+    },
     {
         name: 'projectAssociationUser',
         align: 'left',
         label: t('project.contact'),
-        field: 'projectAssociationUser',
-        sortable: true
+        field: row => projectAssociationUser(row.associationUser),
+        sortable: true,
+        format: val => `${val}`
     },
-    /*{
-        name: 'plannedStartDate',
-        align: 'left',
-        label: t('project.planned-start-date'),
-        field: 'plannedStartDate',
-        sortable: true
-    },
-    {
-        name: 'plannedEndDate',
-        align: 'left',
-        label: t('project.planned-end-date'),
-        field: 'plannedEndDate',
-        sortable: true
-    },*/
     {
         name: 'commissionDate',
         align: 'left',
         label: t('commission.date'),
-        field: 'commissionDate',
-        sortable: true
+        field: row => row.commission?.commissionDate,
+        sortable: true,
+        format: val => `${val}`
     },
-    {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
+    {
+        name: 'status',
+        align: 'right',
+        label: t('status'),
+        field: row => row.projectStatus,
+        sortable: true,
+        format: val => `${val}`
+    },
     {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
 ])
 </script>
@@ -91,22 +107,22 @@ const columns = ref<QTableProps['columns']>([
 <template>
     <QTable
         :columns="columns"
-        :loading="!projectStore.projects"
+        :loading="!projectStore.selfProjects"
         :no-data-label="t('project.no-project-to-show')"
         :rows="importedProps.projects"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="importedProps.title"
-        row-key="name"
         role="presentation"
+        row-key="id"
     >
         <template v-slot:header="props">
             <QTr :props="props">
                 <QTh
                     v-for="col in props.cols"
+                    :id="col.name"
                     :key="col.name"
                     :props="props"
                     scope="col"
-                    :id="col.name"
                 >
                     {{ col.label }}
                 </QTh>
@@ -114,6 +130,13 @@ const columns = ref<QTableProps['columns']>([
         </template>
         <template v-slot:body="props">
             <QTr :props="props">
+                <QTd
+                    key="id"
+                    :props="props"
+                    headers="id"
+                >
+                    {{ props.row.manualIdentifier ?? '00000000' }}
+                </QTd>
                 <QTd
                     key="name"
                     :props="props"
@@ -126,20 +149,11 @@ const columns = ref<QTableProps['columns']>([
                     :props="props"
                     headers="projectAssociationUser"
                 >
-                    {{ projectAssociationUser(props.row.associationUser) }}
+                    {{
+                        hasPerm('add_project_association') ? projectAssociationUser(props.row.associationUser) :
+                        userStore.user?.firstName + ' ' + userStore.user?.lastName
+                    }}
                 </QTd>
-                <!--                <QTd
-                                    key="plannedStartDate"
-                                    :props="props"
-                                >
-                                    {{ formatDate(props.row.plannedStartDate)?.split('-').reverse().join('/') }}
-                                </QTd>
-                                <QTd
-                                    key="plannedEndDate"
-                                    :props="props"
-                                >
-                                    {{ formatDate(props.row.plannedEndDate)?.split('-').reverse().join('/') }}
-                                </QTd>-->
                 <QTd
                     key="commissionDate"
                     :props="props"
@@ -150,8 +164,8 @@ const columns = ref<QTableProps['columns']>([
                 <QTd
                     key="status"
                     :props="props"
-                    headers="status"
                     class="state-cell"
+                    headers="status"
                 >
                     <ProjectStatusIndicator
                         :project-status="props.row.projectStatus"
@@ -161,8 +175,8 @@ const columns = ref<QTableProps['columns']>([
                 <QTd
                     key="edition"
                     :props="props"
-                    headers="edition"
                     class="actions-cell-compact"
+                    headers="edition"
                 >
                     <div class="btn-group">
                         <TableUserProjectsBtn
@@ -176,48 +190,50 @@ const columns = ref<QTableProps['columns']>([
             </QTr>
         </template>
         <template v-slot:pagination="scope">
-            {{ t('table.results-amount', {
-                firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
-                lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
-                amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
-            }) }}
+            {{
+                t('table.results-amount', {
+                    firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
+                    lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
+                    amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
+                })
+            }}
             <QBtn
                 v-if="scope.pagesNumber > 2"
-                icon="bi-chevron-double-left"
-                color="grey-8"
-                dense
-                flat
-                :disable="scope.isFirstPage"
-                @click="scope.firstPage"
                 :aria-label="t('table.first-page')"
-            />
-            <QBtn
-                icon="bi-chevron-left"
-                color="grey-8"
-                dense
-                flat
                 :disable="scope.isFirstPage"
-                @click="scope.prevPage"
-                :aria-label="t('table.previous-page')"
-            />
-            <QBtn
-                icon="bi-chevron-right"
                 color="grey-8"
                 dense
                 flat
-                :disable="scope.isLastPage"
-                @click="scope.nextPage"
+                icon="bi-chevron-double-left"
+                @click="scope.firstPage"
+            />
+            <QBtn
+                :aria-label="t('table.previous-page')"
+                :disable="scope.isFirstPage"
+                color="grey-8"
+                dense
+                flat
+                icon="bi-chevron-left"
+                @click="scope.prevPage"
+            />
+            <QBtn
                 :aria-label="t('table.next-page')"
+                :disable="scope.isLastPage"
+                color="grey-8"
+                dense
+                flat
+                icon="bi-chevron-right"
+                @click="scope.nextPage"
             />
             <QBtn
                 v-if="scope.pagesNumber > 2"
-                icon="bi-chevron-double-right"
+                :aria-label="t('table.last-page')"
+                :disable="scope.isLastPage"
                 color="grey-8"
                 dense
                 flat
-                :disable="scope.isLastPage"
+                icon="bi-chevron-double-right"
                 @click="scope.lastPage"
-                :aria-label="t('table.last-page')"
             />
         </template>
     </QTable>

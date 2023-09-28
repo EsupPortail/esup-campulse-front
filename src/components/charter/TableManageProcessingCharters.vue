@@ -4,22 +4,11 @@ import useCharters from '@/composables/useCharters'
 import type {QTableProps} from 'quasar'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import useUtility from '@/composables/useUtility'
-import {ref} from 'vue'
-import type {DocumentProcessType} from '#/documents'
-import CharterValidation from '@/components/charter/CharterValidation.vue'
 
 
 const {t} = useI18n()
 const {processingCharters} = useCharters()
 const {formatDate} = useUtility()
-
-const props = defineProps<{
-    processType: DocumentProcessType
-}>()
-
-const open = ref<boolean>(false)
-const association = ref<number>()
-const charter = ref<number>()
 
 
 const columns: QTableProps['columns'] = [
@@ -54,12 +43,6 @@ const columns: QTableProps['columns'] = [
     },
     {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
 ]
-
-const openValidationPopUp = (associationId: number, charterId: number) => {
-    association.value = associationId
-    charter.value = charterId
-    open.value = true
-}
 </script>
 
 <template>
@@ -111,7 +94,7 @@ const openValidationPopUp = (associationId: number, charterId: number) => {
                     :props="props"
                     headers="uploadedDate"
                 >
-                    {{ formatDate(props.row.uploadedDate).split('-').reverse().join('/') }}
+                    {{ formatDate(props.row.uploadedDate)?.split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
                     key="charterStatus"
@@ -127,10 +110,9 @@ const openValidationPopUp = (associationId: number, charterId: number) => {
                 >
                     <QBtn
                         :label="t('manage')"
+                        :to="{name: 'AssociationCharterList', params: {associationId: props.row.associationId}}"
                         color="charter"
-                        disable
                         outline
-                        @click="openValidationPopUp(props.row.associationId, props.row.charterId)"
                     />
                 </QTd>
             </QTr>
@@ -183,18 +165,6 @@ const openValidationPopUp = (associationId: number, charterId: number) => {
             />
         </template>
     </QTable>
-    <QDialog v-model="open">
-        <QCard class="variant-space-2">
-            <QCardSection class="q-pt-none flex-column">
-                <CharterValidation
-                    :association="association"
-                    :charter="charter"
-                    :process-type="props.processType"
-                    @close-dialog="open = false"
-                />
-            </QCardSection>
-        </QCard>
-    </QDialog>
 </template>
 
 <style lang="scss" scoped>

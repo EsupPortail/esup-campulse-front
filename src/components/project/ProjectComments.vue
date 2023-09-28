@@ -13,14 +13,20 @@ import FormAddComment from '@/components/form/FormAddComment.vue'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {comments, getProjectComments, newComment, postNewProjectComment} = useProjectComments()
+const {
+    comments,
+    getProjectComments,
+    newComment,
+    postNewProjectComment,
+    patchProjectComment
+} = useProjectComments()
 const {catchHTTPError} = useErrors()
 const {formatDate} = useUtility()
 const {hasPerm} = useSecurity()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
-    project: number
+    project: number | undefined
 }>()
 
 const open = ref<boolean>(false)
@@ -40,10 +46,12 @@ async function onGetProjectComments() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
+    } else {
+        comments.value = []
     }
 }
 
@@ -55,17 +63,43 @@ async function onPostNewComment() {
             await postNewProjectComment(projectId, newComment.value)
             await getProjectComments(projectId)
             open.value = false
-            newComment.value = ''
+            newComment.value = {
+                text: '',
+                isVisible: false
+            }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
         loading.hide()
     }
+}
+
+async function onPatchProjectCommentVisibility(projectId: number, commentId: number) {
+    loading.show()
+    const comment = comments.value.find(obj => obj.id === commentId)
+    if (comment) {
+        const commentData = {
+            id: comment.id,
+            text: comment.text,
+            isVisible: comment.isVisible
+        }
+        try {
+            await patchProjectComment(projectId, commentData)
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: catchHTTPError(error.response)
+                })
+            }
+        }
+    }
+    loading.hide()
 }
 </script>
 
@@ -74,28 +108,40 @@ async function onPostNewComment() {
         <div
             v-for="comment in comments"
             :key="comment.id"
-            class="comment-row"
+            :class="(!comment.isVisible ? 'disabled-comment-row' : '') + ' comment-row'"
         >
-            <p class="comment-head">
-                <i
-                    aria-hidden="true"
-                    class="bi bi-chat"
-                ></i>
-                {{
-                    t('project.comments.comment-metadata',
-                      {
-                          user: comment.user.firstName + ' ' + comment.user.lastName,
-                          date: formatDate(comment.creationDate).split('-').reverse().join('/'),
-                          hour: new Date(comment.creationDate).getHours(),
-                          minutes: new Date(comment.creationDate).getMinutes() < 10 ? '0' + new Date(comment.creationDate).getMinutes() :
-                              new Date(comment.creationDate).getMinutes()
-                      }
-                    )
-                }}
-            </p>
-            <p>
-                {{ comment.text }}
-            </p>
+            <div class="flex-row-space-between">
+                <div>
+                    <p class="comment-head">
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-chat"
+                        ></i>
+                        {{
+                            t('project.comments.comment-metadata',
+                              {
+                                  user: comment.user.firstName + ' ' + comment.user.lastName,
+                                  date: formatDate(comment.creationDate)?.split('-').reverse().join('/'),
+                                  hour: new Date(comment.creationDate).getHours(),
+                                  minutes: new Date(comment.creationDate).getMinutes() < 10 ? '0' + new
+                                      Date(comment.creationDate).getMinutes() : new Date(comment.creationDate).getMinutes()
+                              })
+                        }}
+                    </p>
+                    <p>
+                        {{ comment.text }}
+                    </p>
+                </div>
+                <QToggle
+                    v-if="hasPerm('change_projectcomment')"
+                    v-model="comment.isVisible"
+                    :aria-label="t('forms.comment-visibility')"
+                    :icon="comment.isVisible ? 'bi-eye' : 'bi-eye-slash'"
+                    color="commission"
+                    size="lg"
+                    @update:model-value="onPatchProjectCommentVisibility(comment.project, comment.id)"
+                />
+            </div>
         </div>
         <div v-if="!comments.length">
             <p>{{ t('project.comments.no-comment-to-show') }}</p>
@@ -128,4 +174,12 @@ async function onPostNewComment() {
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
+
+.comment-row > div {
+    align-items: flex-start;
+}
+
+.disabled-comment-row {
+    border-color: $textColor2 !important;
+}
 </style>

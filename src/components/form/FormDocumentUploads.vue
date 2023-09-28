@@ -4,10 +4,14 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import type {DocumentProcessType, ProcessDocument} from '#/documents'
+import type {DocumentProcessType, UploadedProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useUserStore} from '@/stores/useUserStore'
+import useSubmitProject from '@/composables/useSubmitProject'
+import useDocuments from '@/composables/useDocuments'
 
 const {
     processDocuments,
@@ -18,22 +22,26 @@ const {
     initProcessDocuments,
     getDocuments,
     initCharterDocumentUploads,
-    getStudentCertificate
+    getStudentCertificate,
+    initManagedUserDocumentUploads,
+    initUserDocumentUploads,
+    MAX_FILE_SIZE,
+    MAX_FILES
 } = useDocumentUploads()
+const {acceptedFormats} = useDocuments()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {getCharterDocuments} = useCharters()
 const projectStore = useProjectStore()
+const userManagerStore = useUserManagerStore()
+const userStore = useUserStore()
+const {projectFunds, initProjectFunds} = useSubmitProject()
 
 const props = defineProps<{
-    process: 'project' | 'review' | 'charter' | 'registration',
-    associationId: number | null
+    process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
+    associationId: number | null | undefined
 }>()
-
-// CONST
-const MAX_FILES = 10
-const MAX_FILE_SIZE = 8388608
 
 // COLOR
 const fieldColor = ref<string>('')
@@ -66,11 +74,12 @@ async function onGetDocuments() {
         // Get documents by processes
         if (processes.length) await getDocuments(processes)
 
-        // Get only one specific document for registration
-        if (props.process === 'registration') await getStudentCertificate()
+        // Get only one specific document for registration or account management
+        if (props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') await getStudentCertificate()
 
         // Init documents for form
-        initProcessDocuments()
+        if (props.process === 'project') initProjectFunds()
+        initProcessDocuments(props.process === 'project', projectFunds.value ?? [])
 
         // Get uploaded documents for projet, review, charter
         if (props.process === 'project' || props.process === 'review') {
@@ -81,23 +90,39 @@ async function onGetDocuments() {
                 await getCharterDocuments(props.associationId)
                 initCharterDocumentUploads()
             }
+        } else if (props.process === 'user-management') {
+            await userManagerStore.getUserDocuments()
+            initManagedUserDocumentUploads()
+        } else if (props.process === 'account-management') {
+            await userStore.getUserDocuments()
+            initUserDocumentUploads()
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
     loading.hide()
 }
 
-// FILE TOO LARGE
-async function onDocumentRejected() {
-    notify({
-        type: 'negative',
-        message: t('notifications.negative.413-error')
+// FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
+async function onDocumentRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
+    rejectedEntries.forEach(entry => {
+        if (entry.failedPropValidation === 'accept') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-mimetype')
+            })
+        }
+        if (entry.failedPropValidation === 'max-file-size') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-413')
+            })
+        }
     })
 }
 
@@ -110,7 +135,7 @@ async function onDeleteDocumentUpload(documentId: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -118,7 +143,7 @@ async function onDeleteDocumentUpload(documentId: number) {
 }
 
 // CREATE LINK TO VIEW FILE
-async function onGetFile(uploadedDocument: ProcessDocument) {
+async function onGetFile(uploadedDocument: UploadedProcessDocument) {
     try {
         const file = await getFile(uploadedDocument.pathFile as string)
         const link = document.createElement('a')
@@ -131,7 +156,7 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -147,30 +172,38 @@ async function onGetFile(uploadedDocument: ProcessDocument) {
             <QFile
                 v-model="document.pathFile"
                 :accept="document.mimeTypes?.join(', ')"
-                :aria-required="document.isRequiredInProcess"
+                :aria-required="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length"
                 :color="fieldColor"
                 :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
-                :label="props.process === 'registration' ? t('forms.student-certificate')
-                    : (document.description + (document.isRequiredInProcess ? ' *' : ''))"
-                :max-file-size="MAX_FILE_SIZE"
+                :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
+                :max-file-size="MAX_FILE_SIZE * (processDocuments.filter(x => x.pathFile).length ? processDocuments.filter(x => x.pathFile).length : 1)"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
                 :multiple="document.isMultiple"
-                :rules="document.isRequiredInProcess ? [val => (document.isMultiple ? val.length : val) || t('forms.select-document')] : []"
+                :rules="(document.isRequiredInProcess || (props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management')) &&
+                    !documentUploads.filter(obj => obj.document === document.document).length ?
+                        [val => ((document.isMultiple ? val.length : val) ||
+                            ((props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') &&
+                                (processDocuments.filter(x => x.pathFile).length > 0 || documentUploads.length))) ||
+                            t('forms.select-document') + ' ' + t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.'] : []"
                 append
+                bottom-slots
                 clearable
                 counter
                 filled
+                for="pathFile"
                 lazy-rules
                 use-chips
                 @rejected="onDocumentRejected"
-                bottom-slots
-                for="pathFile"
             >
                 <template v-slot:hint>
                     <p aria-describedby="pathFile">
-                        {{ props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint') + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '')) }}
+                        {{
+                            props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint')
+                                + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '') + ' ' +
+                                t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.')
+                        }}
                     </p>
                 </template>
                 <template v-slot:prepend>
@@ -241,5 +274,4 @@ ul.document-input-list {
 ul.document-input-list li {
     cursor: pointer;
 }
-
 </style>

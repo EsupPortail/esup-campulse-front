@@ -6,7 +6,7 @@ import {useRoute} from 'vue-router'
 
 const props = defineProps<{
     showDraft: boolean,
-    projectStatus: ProjectStatus
+    projectStatus: ProjectStatus | undefined
 }>()
 
 const {t} = useI18n()
@@ -24,10 +24,20 @@ onMounted(initSpanClasses)
 
 <template>
     <span
-        v-if="props.projectStatus === 'PROJECT_DRAFT' && showDraft"
+        v-if="(props.projectStatus === 'PROJECT_DRAFT') && showDraft"
         :class="spanClasses"
     >
         {{ t('project.status.draft') }}
+        <span
+            aria-hidden="true"
+            class="form-state-icon form-state-grey"
+        ><i class="bi bi-dash"></i></span>
+    </span>
+    <span
+        v-if="props.projectStatus === 'PROJECT_DRAFT_PROCESSED'"
+        :class="spanClasses"
+    >
+        {{ t('project.status.draft-processed') }}
         <span
             aria-hidden="true"
             class="form-state-icon form-state-grey"
@@ -84,10 +94,10 @@ onMounted(initSpanClasses)
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_REVIEW_REJECTED'"
+        v-if="props.projectStatus === 'PROJECT_CANCELLED'"
         :class="spanClasses"
     >
-        {{ t('project.status.review-rejected') }}
+        {{ t('project.status.cancelled') }}
         <span
             aria-hidden="true"
             class="form-state-icon form-state-red"

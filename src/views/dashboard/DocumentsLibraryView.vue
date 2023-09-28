@@ -25,7 +25,8 @@ const isLoaded = ref(false)
 interface LibraryDocument {
     id: number,
     name: string,
-    path: string | null,
+    path: string | undefined,
+    size: number,
     process: DocumentProcessType
 }
 
@@ -39,6 +40,7 @@ const initLibraryDocuments = () => {
                 id: document.id,
                 name: document.name,
                 path: document.pathTemplate,
+                size: document.size,
                 process: document.processType as DocumentProcessType
             })
         }
@@ -63,7 +65,7 @@ async function onGetLibraryDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -71,52 +73,74 @@ async function onGetLibraryDocuments() {
 </script>
 
 <template>
-    <!-- Text -->
+    <!-- Charter documents -->
     <div class="dashboard-section">
         <h2>
-            <i class="bi bi-file-earmark"></i>
-            Documents
+            <i
+                aria-hidden="true"
+                class="bi bi-pen"
+            ></i>
+            {{ t('documents.charters') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <div v-if="!libraryDocuments.length">
-                    <p class="paragraph">
-                        {{ isLoaded ? t('dashboard.no-document-in-template-library') : '' }}
-                    </p>
-                </div>
+                <ListDocumentsLibrary
+                    v-if="isLoaded"
+                    :documents="libraryDocuments.filter(doc => doc.process === 'CHARTER_ASSOCIATION' || doc.process === 'CHARTER_PROJECT_FUND')"
+                />
+                <QSpinner
+                    v-else
+                    color="dashboard"
+                    size="2em"
+                />
             </div>
         </div>
     </div>
 
-    <!-- Docs library -->
-    <div v-if="libraryDocuments.length">
-        <div class="dashboard-section">
-            <h2>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-file-earmark"
-                ></i>
-                {{ t('documents.charters') }}
-            </h2>
-            <div class="dashboard-section-container">
-                <div class="container">
-                    <ListDocumentsLibrary :documents="libraryDocuments.filter(doc => doc.process !== 'NO_PROCESS')"/>
-                </div>
+    <!-- Project documents -->
+    <div class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-file-earmark"
+            ></i>
+            {{ t('documents.project-documents') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <ListDocumentsLibrary
+                    v-if="isLoaded"
+                    :documents="libraryDocuments.filter(doc => doc.process === 'DOCUMENT_PROJECT')"
+                />
+                <QSpinner
+                    v-else
+                    color="dashboard"
+                    size="2em"
+                />
             </div>
         </div>
+    </div>
 
-        <div class="dashboard-section">
-            <h2>
-                <i
-                    aria-hidden="true"
-                    class="bi bi-file-earmark"
-                ></i>
-                {{ t('documents.other-documents') }}
-            </h2>
-            <div class="dashboard-section-container">
-                <div class="container">
-                    <ListDocumentsLibrary :documents="libraryDocuments.filter(doc => doc.process === 'NO_PROCESS')"/>
-                </div>
+    <!-- No process documents -->
+    <div class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-file-earmark"
+            ></i>
+            {{ t('documents.other-documents') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <ListDocumentsLibrary
+                    v-if="isLoaded"
+                    :documents="libraryDocuments.filter(doc => doc.process === 'NO_PROCESS')"
+                />
+                <QSpinner
+                    v-else
+                    color="dashboard"
+                    size="2em"
+                />
             </div>
         </div>
     </div>

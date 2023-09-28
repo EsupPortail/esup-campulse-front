@@ -46,6 +46,7 @@ export interface AssociationUserDetail {
         institution?: number,
         isEnabled?: boolean,
         isPublic?: boolean,
+        canSubmitProjects?: boolean
     }
     isPresident: boolean,
     canBePresidentFrom: string | null,
@@ -53,7 +54,7 @@ export interface AssociationUserDetail {
     isValidatedByAdmin: boolean,
     isVicePresident: boolean,
     isSecretary: boolean,
-    isTreasurer: boolean,
+    isTreasurer: boolean
 }
 
 export interface AssociationMember {
@@ -131,7 +132,8 @@ export interface UserGroupRegister {
 export interface UserManagerStore {
     user: User | undefined,
     users: User[],
-    userAssociations: AssociationUserDetail[]
+    userAssociations: AssociationUserDetail[],
+    userDocuments: DocumentUpload[]
 }
 
 // Register
@@ -179,5 +181,6 @@ export interface UserSearch {
     search: string,
     firstName: string,
     lastName: string,
-    email: string
+    email: string,
+    association: number | null
 }

@@ -18,7 +18,6 @@ const {
 } = useUserAssociations()
 const {
     checkHasPresident,
-    checkHasStudentCertificate
 } = useAssociation()
 const {processDocuments} = useDocumentUploads()
 const {t} = useI18n()
@@ -56,7 +55,7 @@ async function loadAssociations() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -76,12 +75,13 @@ function clearOptions() {
 function checkAssociationAuthorization(association: AssociationRole) {
     updateRegisterRoleInAssociation()
     checkHasPresident(association)
-    checkHasStudentCertificate(association)
+    // Commented since all local students must upload a student card
+    //checkHasStudentCertificate(association)
 }
 
 async function addAssociationFocus() {
     await addAssociation()
-    document.querySelectorAll('.new-association')[document.querySelectorAll('.new-association').length - 1].querySelector('input').focus()
+    document.querySelectorAll('.new-association')[document.querySelectorAll('.new-association').length - 1].querySelector('input')?.focus()
 }
 
 watch(() => processDocuments.value[0]?.pathFile, () => {
@@ -124,8 +124,8 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                         />
                         <QOptionGroup
                             v-model="association.role"
+                            :aria-label="t('forms.association-role')"
                             :options="association.options"
-                            aria-label="t('forms.association-role')"
                             color="dashboard"
                             inline
                             role="radiogroup"

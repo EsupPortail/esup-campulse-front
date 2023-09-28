@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
@@ -9,24 +8,41 @@ import useUserGroups from '@/composables/useUserGroups'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useSecurity from '@/composables/useSecurity'
 import useErrors from '@/composables/useErrors'
+import useDocumentUploads from '@/composables/useDocumentUploads'
+import {ref, toRefs, watch} from 'vue'
 
 
 const {t} = useI18n()
-const {notify} = useQuasar()
+const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const {updateUserInfos, initInfosToPatch, infosToPatch} = useUsers()
 const {updateUserGroups} = useUserGroups()
 const {updateUserAssociations, userAssociations} = useUserAssociations()
 const {userAssociationsRegister} = useSecurity()
 const {catchHTTPError} = useErrors()
+const {uploadDocuments, initManagedUserDocumentUploads, initProcessDocuments} = useDocumentUploads()
 
 
-const emit = defineEmits(['hasValidated'])
+const emit = defineEmits(['hasValidated', 'closeDialog'])
 
-const confirmation = ref<boolean>(false)
+const props = defineProps<{
+    confirmation: boolean
+}>()
 
+
+const confirm = ref<boolean>(false)
+const confirmRef = toRefs(props).confirmation
+watch(() => confirmRef.value, () => {
+    confirm.value = confirmRef.value
+})
+watch(() => confirm.value, () => {
+    if (!confirm.value) {
+        emit('closeDialog')
+    }
+})
 
 async function onValidateChanges() {
+    loading.show()
     try {
         initInfosToPatch(userManagerStore.user)
         if (Object.entries(infosToPatch).length) {
@@ -37,19 +53,24 @@ async function onValidateChanges() {
             await userAssociationsRegister(false, userManagerStore.user?.username)
         }
         await updateUserGroups()
+        await uploadDocuments(undefined, userManagerStore.user?.username, false)
+        initProcessDocuments()
+        await userManagerStore.getUserDocuments()
+        initManagedUserDocumentUploads()
         emit('hasValidated')
         notify({
             type: 'positive',
-            message: t('notifications.positive.validate-success')
+            message: t('notifications.positive.update-user-infos')
         })
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
+    loading.hide()
 }
 </script>
 
@@ -59,11 +80,11 @@ async function onValidateChanges() {
         class="btn-lg"
         color="dashboard"
         icon="bi-check-lg"
-        @click="confirmation = true"
+        type="submit"
     />
 
     <QDialog
-        v-model="confirmation"
+        v-model="confirm"
         persistent
     >
         <QCard>

@@ -11,6 +11,8 @@ export const _comments: ProjectComment[] = [
         },
         text: 'Commentaire',
         creationDate: '2023-06-16',
+        editionDate: '2023-06-20',
+        isVisible: true
     },
     {
         id: 2,
@@ -22,6 +24,8 @@ export const _comments: ProjectComment[] = [
         },
         text: 'Commentaire',
         creationDate: '2023-06-16',
+        editionDate: '2023-06-20',
+        isVisible: true
     },
     {
         id: 3,
@@ -33,5 +37,7 @@ export const _comments: ProjectComment[] = [
         },
         text: 'Commentaire',
         creationDate: '2023-06-16',
+        editionDate: '2023-06-20',
+        isVisible: true
     }
 ]

@@ -57,14 +57,14 @@ async function onGetCommissions() {
             undefined,
             undefined,
             undefined)
-        await getCommissionFunds()
-        initDates()
         initFundsLabels()
+        await getCommissionFunds(true)
+        initDates()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
 
@@ -111,7 +111,7 @@ async function onUpdateCommission(commission: UpdateCommission) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -132,7 +132,7 @@ async function onDeleteCommission(commission: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -153,7 +153,7 @@ async function onAddNewCommission() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -195,9 +195,15 @@ const onClearValues = () => {
 
                             <p class="form-state form-state-cape">
                                 <span
-                                    :aria-label="t(`commission.is-${commission.oldIsOpenToProjects ? 'open' : 'closed'}-to-projects`)"
-                                    :class="`form-state-icon form-state-${commission.oldIsOpenToProjects ? 'green' : 'red'}`"
-                                ><i :class="`bi bi-${commission.oldIsOpenToProjects ? 'check' : 'x'}`"></i></span>
+                                    v-if="commission.oldIsOpenToProjects"
+                                    :aria-label="t('commission.is-open-to-projects')"
+                                    class="form-state-icon form-state-green"
+                                ><i class="bi bi-check"></i></span>
+                                <span
+                                    v-else
+                                    :aria-label="t('commission.is-closed-to-projects')"
+                                    class="form-state-icon form-state-red"
+                                ><i class="bi bi-x"></i></span>
                             </p>
 
                             <button @click.prevent="commission.open = !commission.open">
@@ -225,32 +231,32 @@ const onClearValues = () => {
                                 :label="t('commission.date')"
                                 :rules="[
                                     val => val && val.length > 0 || t('forms.required-commission-date'),
-                                    val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
+                                    val => val && fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, false)
+                                        || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
                                 clearable
                                 color="commission"
                                 filled
+                                max="2120-01-01"
+                                min="1970-01-01"
                                 reactive-rules
                                 type="date"
-                                min="1970-01-01"
-                                max="2120-01-01"
-                                @update:model-value="() => commission.datesAreLegal =
-                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
                             <QInput
                                 v-model="commission.newSubmissionDate"
                                 :label="t('commission.submission')"
                                 :rules="[
                                     val => val && val.length > 0 || t('forms.required-commission-submission-date'),
-                                    val => val && commission.datesAreLegal || t('forms.commission-date-must-be-posterior-to-submission-date')
+                                    val => val && fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, false)
+                                        || t('forms.commission-date-must-be-posterior-to-submission-date')
                                 ]"
                                 clearable
                                 color="commission"
                                 filled
+                                max="2120-01-01"
+                                min="1970-01-01"
                                 reactive-rules
                                 type="date"
-                                min="1970-01-01"
-                                max="2120-01-01"
                                 @update:model-value="() => commission.datesAreLegal =
                                     fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
                             />
@@ -318,10 +324,10 @@ const onClearValues = () => {
                         clearable
                         color="commission"
                         filled
+                        max="2120-01-01"
+                        min="1970-01-01"
                         reactive-rules
                         type="date"
-                        min="1970-01-01"
-                        max="2120-01-01"
                         @update:model-value="() => newCommission.datesAreLegal =
                             fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />
@@ -335,10 +341,10 @@ const onClearValues = () => {
                         clearable
                         color="commission"
                         filled
+                        max="2120-01-01"
+                        min="1970-01-01"
                         reactive-rules
                         type="date"
-                        min="1970-01-01"
-                        max="2120-01-01"
                         @update:model-value="() => newCommission.datesAreLegal =
                             fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
                     />

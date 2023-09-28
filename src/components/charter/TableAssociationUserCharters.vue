@@ -3,34 +3,50 @@ import {useI18n} from 'vue-i18n'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import useCharters from '@/composables/useCharters'
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
+import {useAssociationStore} from '@/stores/useAssociationStore'
 
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {initCharters, manageCharters} = useCharters()
 const {catchHTTPError} = useErrors()
+const associationStore = useAssociationStore()
 
 
 const importedProps = defineProps<{
     associationId: number,
-    isSite: boolean
 }>()
+
+const isLoaded = ref<boolean>(false)
+
+async function onGetAssociationDetail() {
+    try {
+        await associationStore.getAssociationDetail(importedProps.associationId, false)
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
+            })
+        }
+    }
+}
 
 
 async function onGetCharters() {
-    if (importedProps.associationId) {
+    if (importedProps.associationId && associationStore.association) {
         try {
-            await initCharters(importedProps.associationId, importedProps.isSite)
+            await initCharters(importedProps.associationId, associationStore.association.isSite, associationStore.association.charterStatus)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -39,7 +55,9 @@ async function onGetCharters() {
 
 onMounted(async () => {
     loading.show()
+    await onGetAssociationDetail()
     await onGetCharters()
+    isLoaded.value = true
     loading.hide()
 })
 
@@ -53,7 +71,14 @@ const columns: QTableProps['columns'] = [
         field: 'expirationDate',
         sortable: true
     },
-    {name: 'status', align: 'right', label: t('status'), field: 'status', sortable: true},
+    {
+        name: 'status',
+        align: 'right',
+        label: t('status'),
+        field: row => row.charterStatus,
+        sortable: true,
+        format: val => `${val}`
+    },
     {name: 'actions', align: 'center', label: t('manage'), field: 'actions', sortable: false}
 ]
 </script>
@@ -64,6 +89,7 @@ const columns: QTableProps['columns'] = [
             <div class="container">
                 <QTable
                     :columns="columns"
+                    :loading="!manageCharters.length"
                     :rows="manageCharters"
                     :rows-per-page-options="[10, 20, 50, 0]"
                     role="presentation"
@@ -118,9 +144,11 @@ const columns: QTableProps['columns'] = [
                                 headers="actions"
                             >
                                 <TableStudentChartersBtn
+                                    v-if="isLoaded"
+                                    :association-charter-status="associationStore.association?.charterStatus"
                                     :association-id="importedProps.associationId"
                                     :charter="props.row"
-                                    :is-site="importedProps.isSite"
+                                    :is-site="associationStore.association?.isSite"
                                 />
                             </QTd>
                         </QTr>

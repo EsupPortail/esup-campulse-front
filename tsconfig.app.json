@@ -1,17 +1,22 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
-    "env.d.ts",
+    "src/env.d.ts",
     "src/**/*",
     "src/**/*.vue",
+    "src/**/*.ts",
     "src/**/*.json"
   ],
   "exclude": [
     "src/**/__tests__/*"
   ],
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
+    "composite": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "paths": {
       "@/*": [
         "./src/*"
@@ -22,10 +27,6 @@
       "~/*": [
         "./tests/*"
       ]
-    },
-    "lib": [
-      "es2017",
-      "dom"
-    ]
+    }
   }
 }

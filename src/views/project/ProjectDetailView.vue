@@ -42,7 +42,7 @@ onMounted(async () => {
 async function onGetProjectDetail() {
     try {
         await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
-        await projectStore.getProjectCommissionFunds(false, undefined)
+        //await projectStore.getProjectCommissionFunds(false, undefined)
         initProjectBasicInfos()
         initProjectBudget()
         initProjectGoals()
@@ -52,7 +52,7 @@ async function onGetProjectDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }

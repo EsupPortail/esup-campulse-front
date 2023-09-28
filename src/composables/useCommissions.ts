@@ -16,7 +16,7 @@ const commission = ref<Commission | undefined>(undefined)
 const commissionFunds = ref<CommissionFund[]>([])
 const commissionLabels = ref<SelectLabel[]>([])
 
-export default function() {
+export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
     const userManagerStore = useUserManagerStore()
@@ -38,11 +38,11 @@ export default function() {
 
     const initChosenCommissionFundsLabels = (commission: number, isSite: boolean) => {
         fundsLabels.value = []
-        commissionFunds.value.filter(obj => obj.commission === commission).forEach(x => {
-            const fund = funds.value.find(obj => obj.id === x.fund)
+        commissionFunds.value.filter(obj => obj.commission === commission).forEach(commissionFund => {
+            const fund = funds.value.find(obj => obj.id === commissionFund.fund)
             if (isSite || (!isSite && !fund?.isSite))
                 fundsLabels.value.push({
-                    value: x.id,
+                    value: commissionFund.id,
                     label: fund?.acronym as string,
                     fund: fund?.id
                 })
@@ -117,8 +117,8 @@ export default function() {
         commissions.value = (await axiosPublic.get<Commission[]>('/commissions/')).data
     }
 
-    async function getCommissionFunds() {
-        if (!commissionFunds.value.length) {
+    async function getCommissionFunds(forceRefresh?: boolean) {
+        if (!commissionFunds.value.length || forceRefresh) {
             commissionFunds.value = (await axiosPublic.get<CommissionFund[]>('/commissions/funds')).data
         }
     }
@@ -171,8 +171,8 @@ export default function() {
         await axiosAuthenticated.delete(`/commissions/${id}`)
     }
 
-    async function getCommissionCSVExport(id: number) {
-        const url = `/commissions/${id}/csv_export`
+    async function getCommissionExport(id: number, mode: 'csv' | 'pdf' | 'xlsx', projects: number[] | undefined) {
+        const url = `/commissions/${id}/export?mode=${mode}&project_ids=${projects?.join(',')}`
         return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
     }
 
@@ -198,7 +198,7 @@ export default function() {
         getCommission,
         commission,
         getNextCommission,
-        getCommissionCSVExport,
+        getCommissionExport,
         getFundLabel
     }
 }

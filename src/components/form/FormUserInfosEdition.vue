@@ -74,8 +74,8 @@ onMounted(() => {
             color="dashboard"
             filled
             lazy-rules
-            @focus="() => { variant = Variant.Home }"
         />
+        <!-- @focus="() => { variant = Variant.Home }" -->
         <QInput
             v-model="userToUpdate.lastName"
             :disable="!!props.user?.isCas"
@@ -133,13 +133,13 @@ onMounted(() => {
             v-model="userToUpdate.phone"
             :label="t('forms.phone')"
             autocomplete="tel"
+            bottom-slots
             clearable
             color="dashboard"
             filled
+            for="phone"
             lazy-rules
             type="tel"
-            bottom-slots
-            for="phone"
         >
             <template v-slot:hint>
                 <p aria-describedby="phone">{{ t('forms.hint-phone') }}</p>
@@ -151,6 +151,7 @@ onMounted(() => {
         >
             <h3>{{ t('address.address') }}</h3>
             <FormUserAddress
+                :edited-by-staff="props.editedByStaff"
                 :user="userRef"
                 color="dashboard"
             />
@@ -163,7 +164,7 @@ onMounted(() => {
                 aria-hidden="true"
                 class="bi bi-info"
             ></i>
-            <p>{{ t('dashboard.my-status') }} : <span><strong>{{ userGroups }}</strong></span></p>
+            <p>{{ t('dashboard.my-status') }}{{ t('colon') }}<span><strong>{{ userGroups }}</strong></span></p>
             <p>{{ t('dashboard.update-my-status') }}</p>
         </div>
     </div>
@@ -176,7 +177,7 @@ onMounted(() => {
 
 
 q-input:focus {
-  color: red;
-  background-color: yellow;
+    color: red;
+    background-color: yellow;
 }
 </style>

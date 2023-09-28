@@ -21,6 +21,7 @@ import useSecurity from '@/composables/useSecurity'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import useErrors from '@/composables/useErrors'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
+import useDocuments from '@/composables/useDocuments'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -32,6 +33,7 @@ const {
 const {isStaff} = useUserGroups()
 const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
+const {acceptedFormats} = useDocuments()
 
 const associationStore = useAssociationStore()
 
@@ -55,6 +57,7 @@ const association = ref<EditedAssociation>({
     website: '',
     presidentNames: '',
     presidentPhone: '',
+    presidentEmail: '',
     approvalDate: '',
     lastGoaDate: '',
     amountMembersAllowed: '',
@@ -77,6 +80,7 @@ const initValues = () => {
     association.value.website = associationStore.association?.website as string
     association.value.presidentNames = associationStore.association?.presidentNames as string
     association.value.presidentPhone = associationStore.association?.presidentPhone as string
+    association.value.presidentEmail = associationStore.association?.presidentEmail as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
     association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution)?.value
@@ -100,22 +104,33 @@ const initMembersCount = async () => {
 onMounted(async () => {
     loading.show()
     initValues()
-    initMembersCount()
+    await initMembersCount()
     loading.hide()
 })
 
 // Logo management
-const newLogo = ref<undefined | Blob>(undefined)
+const newLogo = ref<undefined | File>(undefined)
 const pathLogo = ref<AssociationLogo | null | undefined>(associationStore.association?.pathLogo)
 watch(() => associationStore.association?.pathLogo, () => {
     pathLogo.value = associationStore.association?.pathLogo
 })
 const MAX_FILE_SIZE = 8388608
 
-async function onLogoRejected() {
-    notify({
-        type: 'negative',
-        message: t('notifications.negative.413-error')
+// FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
+async function onLogoRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
+    rejectedEntries.forEach(entry => {
+        if (entry.failedPropValidation === 'accept') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-mimetype')
+            })
+        }
+        if (entry.failedPropValidation === 'max-file-size') {
+            notify({
+                type: 'negative',
+                message: t('notifications.negative.error-413')
+            })
+        }
     })
 }
 
@@ -165,7 +180,7 @@ async function onChangeLogo(action: string) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -181,48 +196,65 @@ async function onChangeLogo(action: string) {
         <div id="association-logo-title">
             <div class="association-logo">
                 <QImg
-                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ? (pathLogo.detail ? (!pathLogo.detail.startsWith('http') ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
+                    :src="(pathLogo && Object.keys(pathLogo).length > 0) ?
+                        (pathLogo.detail ? (!pathLogo.detail.startsWith('http')
+                            ? baseUrl + pathLogo.detail : pathLogo.detail) : noLogoSquare.default) : noLogoSquare.default"
                     aria-hidden="true"
                 />
             </div>
 
-            <div class="association-name">
-                <!--<h2>{{ association?.name }}</h2>-->
-                <p
-                    v-if="association?.acronym"
-                    class="acronym"
+            <div class="container">
+                <div class="association-name text-center">
+                    <!--<h2>{{ association?.name }}</h2>-->
+                    <p
+                        v-if="association?.acronym"
+                        class="acronym"
+                    >
+                        {{ association?.acronym }}
+                    </p>
+                </div>
+
+                <QFile
+                    v-model="newLogo"
+                    :label="t('association.logo.pickup')"
+                    :max-file-size="MAX_FILE_SIZE"
+                    accept="image/png, image/jpeg"
+                    bottom-slots
+                    clearable
+                    filled
+                    for="pathFile"
+                    @rejected="onLogoRejected"
                 >
-                    {{ association?.acronym }}
-                </p>
-            </div>
+                    <template v-slot:hint>
+                        <p aria-describedby="pathFile">
+                            {{
+                                t('forms.accepted-formats') + acceptedFormats(['image/png', 'image/jpeg']) + '.'
+                            }}
+                        </p>
+                    </template>
+                    <template v-slot:prepend>
+                        <QIcon name="bi-image"/>
+                    </template>
+                </QFile>
 
-            <QFile
-                v-model="newLogo"
-                :label="t('association.logo.pickup')"
-                :max-file-size="MAX_FILE_SIZE"
-                accept="image/png, image/jpeg"
-                clearable
-                filled
-                @rejected="onLogoRejected"
-            />
-
-            <div class="flex-row-space-between">
-                <QBtn
-                    :label="t('association.logo.update')"
-                    class="btn-lg"
-                    color="association"
-                    icon="bi-check-lg"
-                    outline
-                    type="submit"
-                />
-                <QBtn
-                    :label="t('association.logo.remove')"
-                    class="btn-lg"
-                    color="custom-red"
-                    icon="bi-trash"
-                    outline
-                    @click="onChangeLogo('delete')"
-                />
+                <div class="flex-row-space-between">
+                    <QBtn
+                        :label="t('association.logo.update')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-check-lg"
+                        outline
+                        type="submit"
+                    />
+                    <QBtn
+                        :label="t('association.logo.remove')"
+                        class="btn-lg"
+                        color="custom-red"
+                        icon="bi-trash"
+                        outline
+                        @click="onChangeLogo('delete')"
+                    />
+                </div>
             </div>
         </div>
     </QForm>
@@ -248,7 +280,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.name"
                             :disable=!isStaff
                             :label="t('association.labels.name') + ' *'"
-                            :rules="[val => val && val.length > 0 || t('forms.required-association-name-field')]"
+                            :rules="[val => val && val.length > 0 || t('forms.required-association-name')]"
                             aria-required="true"
                             clearable
                             filled
@@ -304,7 +336,7 @@ async function onChangeLogo(action: string) {
                             v-model="association.activityField"
                             :label="t('association.labels.activity-field') + ' *'"
                             :options="associationStore.activityFieldLabels"
-                            :rules="[val => val || t('forms.required-activity-field')]"
+                            :rules="[val => val || t('forms.required-association-activity-field')]"
                             aria-required="true"
                             clearable
                             emit-value
@@ -343,6 +375,13 @@ async function onChangeLogo(action: string) {
                             type="tel"
                         />
                         <QInput
+                            v-model="association.presidentEmail"
+                            :label="t('association.labels.president-email')"
+                            clearable
+                            filled
+                            type="email"
+                        />
+                        <QInput
                             v-model="association.lastGoaDate"
                             :label="t('association.labels.last-goa')"
                             clearable
@@ -352,7 +391,7 @@ async function onChangeLogo(action: string) {
                             type="date"
                         >
                             <template v-slot:prepend>
-                                <QIcon name="mdi-calendar"/>
+                                <QIcon name="bi-calendar"/>
                             </template>
                         </QInput>
                         <QInput
@@ -440,9 +479,7 @@ async function onChangeLogo(action: string) {
                                 />
                             </div>
                         </fieldset>
-                        <QSeparator
-                            aria-hidden="true"
-                        />
+                        <QSeparator aria-hidden="true"/>
                         <QInput
                             v-model="association.email"
                             :label="t('association.labels.mail')"
@@ -514,9 +551,7 @@ async function onChangeLogo(action: string) {
                 v-if="isStaff && associationStore.association?.isEnabled"
                 @has-validated="hasValidated = true"
             />
-            <AlertConfirmAssociationDeletion
-                v-if="isStaff && !associationStore.association?.isEnabled"
-            />
+            <AlertConfirmAssociationDeletion v-if="isStaff && !associationStore.association?.isEnabled"/>
         </div>
 
         <AlertLeaveEdition
@@ -535,15 +570,15 @@ async function onChangeLogo(action: string) {
 @import "@/assets/_variables.scss";
 
 .address-fields div {
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: 1rem;
 
-  * {
-    width: $fullSize;
-  }
+    * {
+        width: $fullSize;
+    }
 }
 
 .q-separator {
-  margin: 0.5rem 0 1rem 0;
+    margin: 0.5rem 0 1rem 0;
 }
 </style>

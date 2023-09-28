@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import {ref, watch} from 'vue'
 import {useRoute} from 'vue-router'
+import {useI18n} from 'vue-i18n'
 
 const route = useRoute()
 const skipLink = ref()
+const {t} = useI18n()
 
 watch(
     () => route.path,
@@ -21,9 +23,7 @@ watch(
     <a
         class="skip-link"
         href="#main"
-    >
-        Aller au contenu
-    </a>
+    >{{ t('skip-to-content') }}</a>
 </template>
 
 <style lang="scss" scoped>

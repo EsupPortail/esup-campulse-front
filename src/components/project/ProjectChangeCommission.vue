@@ -61,7 +61,7 @@ watch(() => open.value, () => {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -103,7 +103,7 @@ async function onGetCommissionDates() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -132,7 +132,7 @@ async function onChangeCommission() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -171,15 +171,13 @@ const onReInitProjectCommissionFunds = () => {
                         {{ t('project.change-commission-info') }}
                     </p>
                 </div>
-                <QForm
-                    @submit="onChangeCommission"
-                >
+                <QForm @submit="onChangeCommission">
                     <QSelect
                         v-model="projectCommission"
                         :hint="t('project.commission-choice-hint')"
                         :label="t('project.commission-choice') + ' *'"
                         :options="commissionLabels"
-                        :rules="[ val => val || t('forms.required-commission')]"
+                        :rules="[val => val || t('forms.required-commission')]"
                         clearable
                         color="commission"
                         emit-value
@@ -194,7 +192,7 @@ const onReInitProjectCommissionFunds = () => {
                         :hint="t('project.commission-funds-choice-hint')"
                         :label="t('project.commission-funds-choice') + ' *'"
                         :options="fundsLabels"
-                        :rules="[ val => val || t('forms.required-project-commission-fund')]"
+                        :rules="[val => val || t('forms.required-project-commission-fund')]"
                         clearable
                         color="commission"
                         emit-value
@@ -244,7 +242,7 @@ h3 {
     padding-bottom: 1rem;
 }
 
-.q-select + .q-select {
+.q-select+.q-select {
     margin-top: 2rem;
 }
 

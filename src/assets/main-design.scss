@@ -1,5 +1,4 @@
 @import '@/assets/variables';
-@import '@/assets/styles/quasar.variables.scss';
 
 // Bootstrap icons
 $bootstrap-icons-font-src: url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"), url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");
@@ -64,6 +63,10 @@ body {
   flex-direction: column;
 }
 
+.align-items-stretch {
+  align-items: stretch;
+}
+
 // Padding utilities
 .padding-top {
   padding-top: 1rem;
@@ -76,6 +79,11 @@ body {
 // Margin utilities
 .margin-bottom {
   margin-bottom: 1rem;
+}
+
+// Alignment utilities
+.text-center {
+  text-align: center;
 }
 
 // Page layout
@@ -108,7 +116,7 @@ main {
     width: 5rem;
     height: 5rem;
     border: none;
-    background-color: $annuaireColor;
+    background-color: $associationColor;
     color: $textColor3;
     border-radius: 50%;
     font-size: 3.5rem;
@@ -122,7 +130,7 @@ main {
     }
 
     &:hover, &:focus {
-      background-color: $annuaireColorHover;
+      background-color: $associationColorHover;
 
       i {
         transform: scale(1.1);
@@ -130,7 +138,7 @@ main {
     }
 
     &:active {
-      background-color: $annuaireColorActive;
+      background-color: $associationColorActive;
     }
   }
 
@@ -151,29 +159,29 @@ main {
 
 .variant-space-2 .navigate-top-button {
   button {
-    background-color: $charteColor;
-    color: $charteColorText;
+    background-color: $charterColor;
+    color: $charterColorText;
 
     &:hover, &:focus {
-      background-color: $charteColorHover;
+      background-color: $charterColorHover;
     }
 
     &:active {
-      background-color: $charteColorActive;
+      background-color: $charterColorActive;
     }
   }
 }
 
 .variant-space-3 .navigate-top-button {
   button {
-    background-color: $capeColor;
+    background-color: $commissionColor;
 
     &:hover, &:focus {
-      background-color: $capeColorHover;
+      background-color: $commissionColorHover;
     }
 
     &:active {
-      background-color: $capeColorActive;
+      background-color: $commissionColorActive;
     }
   }
 }
@@ -225,14 +233,14 @@ main {
       font-size: $titleSize;
       line-height: 2.5rem;
       font-weight: $normal-weight;
-      color: $annuaireColorText;
+      color: $associationColorText;
       text-transform: uppercase;
       margin-bottom: .6rem;
     }
 
     p {
       font-weight: $normal-weight;
-      color: $annuaireColorText;
+      color: $associationColorText;
     }
   }
 
@@ -245,7 +253,7 @@ main {
   }
 
   &.color-background {
-    background-color: $annuaireColorBackground;
+    background-color: $associationColorBackground;
   }
 
   @media screen and (max-width: $breakpoint-lg) {
@@ -270,11 +278,11 @@ main {
 }
 
 .variant-space-2 .introduction.color-background {
-  background-color: $charteColorBackground;
+  background-color: $charterColorBackground;
 }
 
 .variant-space-3 .introduction.color-background {
-  background-color: $capeColorBackground;
+  background-color: $commissionColorBackground;
 }
 
 .variant-space-4 .introduction.color-background {
@@ -285,7 +293,7 @@ main {
 h1, .title-1, h2, .title-2, h3, .title-3, h4, .title-4, h5, .title-5, h6, .title-6 {
   color: $textColor1;
   font-weight: $normal-weight;
-  line-height: normal;
+  line-height: 1.6;
   letter-spacing: normal;
   text-transform: uppercase;
 }
@@ -392,4 +400,10 @@ body.desktop {
 // Notify
 .q-notification p {
   margin-bottom: 0;
+}
+
+// Images
+figcaption {
+  color: $textColor2;
+  font-size: 1.3rem;
 }

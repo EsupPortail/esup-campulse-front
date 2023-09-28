@@ -10,13 +10,9 @@ const {hasPerm} = useSecurity()
 </script>
 
 <template>
-    <section class="dashboard-section">
-        <div class="dashboard-section-container">
-            <DashboardStudentProjectsManagement
-                v-if="hasPerm('add_project_association') || hasPerm('add_project_user')"
-            />
-            <DashboardProjectsManagement v-if="isStaff || isMemberFund"/>
-        </div>
-    </section>
+    <DashboardStudentProjectsManagement
+        v-if="hasPerm('add_project_association') || hasPerm('add_project_user')"
+    />
+    <DashboardProjectsManagement v-if="isStaff || isMemberFund"/>
 </template>
 

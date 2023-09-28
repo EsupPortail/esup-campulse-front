@@ -1,13 +1,22 @@
+import type {DocumentProcessType, MimeType} from '#/documents'
+
 export interface ManageCharter {
     associationId?: number | null,
     documentId: number,
+    documentAcronym: string,
+    documentProcessType: DocumentProcessType,
     documentUploadId?: number | null,
     documentName: string,
-    pathTemplate: string | null,
+    pathTemplate: {
+        name: string,
+        path: string,
+        documentId: number
+    }[],
     pathFile?: string,
     validatedDate?: string,
     expirationDate?: string,
-    charterStatus: CharterStatus
+    charterStatus: CharterStatus,
+    mimeTypes?: MimeType[]
 }
 
 export interface AssociationCharter {
@@ -32,4 +41,11 @@ export interface ProcessingCharter {
     charterStatus: CharterStatus
 }
 
-type CharterStatus = 'VALIDATED' | 'EXPIRED' | 'PROCESSING' | 'NO_CHARTER' | 'NOT_SITE'
+type CharterStatus = 'VALIDATED' | 'EXPIRED' | 'PROCESSING' | 'REJECTED' | 'RETURNED' | 'NO_CHARTER' | 'NOT_SITE'
+
+type AssociationCharterStatus =
+    'CHARTER_DRAFT'
+    | 'CHARTER_REJECTED'
+    | 'CHARTER_PROCESSING'
+    | 'CHARTER_VALIDATED'
+    | 'CHARTER_EXPIRED'

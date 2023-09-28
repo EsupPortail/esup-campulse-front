@@ -1,50 +1,61 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, toRefs, watch} from 'vue'
 import router from '@/router'
-import type {ManageCharter} from '#/charters'
-import useDocumentUploads from '@/composables/useDocumentUploads'
+import type {AssociationCharterStatus, ManageCharter} from '#/charters'
 import FormSignCharters from '@/components/charter/FormSignCharters.vue'
-import useCharters from '@/composables/useCharters'
+import useDocumentUploads from '@/composables/useDocumentUploads'
+import useDocuments from '@/composables/useDocuments'
 
 const {t} = useI18n()
-const {documents} = useDocumentUploads()
-const {downloadCharter} = useCharters()
+const {createUploadedFileLink} = useDocumentUploads()
+const {createFileLink} = useDocuments()
 
 const props = defineProps<{
     charter: ManageCharter,
     associationId: number,
-    isSite: boolean
+    associationCharterStatus?: AssociationCharterStatus,
+    isSite?: boolean
 }>()
+
+const charterRef = toRefs(props).charter
+watch(() => charterRef.value, () => {
+    initOptions()
+})
 
 interface Option {
     icon: 'bi-download' | 'bi-pen' | 'bi-eye',
-    label: string,
+    label?: string,
     to?: {
         name: string,
         params: { associationId: number }
     },
-    action?: 'download' | 'view' | 'sign'
+    action?: 'download' | 'view' | 'sign',
+    id?: number
 }
 
 const options = ref<Option[]>([])
 
 const initOptions = () => {
     options.value = []
-    options.value.push({
-        icon: 'bi-download',
-        label: t('charter.options.download'),
-        action: 'download'
+    // Download docs
+    props.charter.pathTemplate.forEach(template => {
+        options.value.push({
+            icon: 'bi-download',
+            label: t('charter.options.download', {documentName: template.name}),
+            action: 'download',
+            id: template.documentId
+        })
     })
-    if (props.charter.charterStatus === 'NO_CHARTER' || props.charter.charterStatus === 'EXPIRED'
-        || props.charter.charterStatus === 'VALIDATED') {
+    // Sign or resign charter
+    if (props.charter.charterStatus !== 'PROCESSING') {
         const option: Option = {
             icon: 'bi-pen',
-            label: t(`charter.options.${props.charter.charterStatus === 'EXPIRED'
-            || props.charter.charterStatus === 'VALIDATED' ? 're-' : ''}sign`)
+            label: props.charter.charterStatus === 'NOT_SITE' || props.charter.charterStatus === 'NO_CHARTER' || props.charter.charterStatus === 'EXPIRED' ?
+                t('charter.options.sign') : t('charter.options.re-sign')
+
         }
-        const charterAssociationDocs = documents.value.filter(x => x.processType === 'CHARTER_ASSOCIATION').map(y => y.id)
-        if (charterAssociationDocs.includes(props.charter.documentId)) {
+        if (props.charter.documentProcessType === 'CHARTER_ASSOCIATION') {
             option.to = {
                 name: 'SignCharter',
                 params: {associationId: props.associationId}
@@ -54,12 +65,19 @@ const initOptions = () => {
         }
         options.value.push(option)
     }
-    if (props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'PROCESSING') {
-        options.value.push({
+    // View charter
+    if (props.charter.charterStatus === 'PROCESSING' || props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'RETURNED' ||
+        props.charter.charterStatus === 'REJECTED') {
+        const option: Option = {
             icon: 'bi-eye',
-            label: t('charter.options.view'),
-            action: 'view'
-        })
+            label: t('charter.options.view')
+        }
+        if (props.charter.documentProcessType === 'CHARTER_ASSOCIATION') {
+            option.to = {name: 'AssociationCharterDetail', params: {associationId: props.associationId}}
+        } else {
+            option.action = 'view'
+        }
+        options.value.push(option)
     }
 }
 
@@ -71,12 +89,13 @@ async function onOptionClick(option: Option) {
     if (option.to) await router.push(option.to)
     else if (option.action) {
         if (option.action === 'download') {
-            if (props.charter.pathTemplate) {
-                await downloadCharter(props.charter.pathTemplate, props.charter.documentName)
+            if (props.charter.pathTemplate.length) {
+                const pathTemplate = props.charter.pathTemplate.find(pathTemplate => pathTemplate.documentId === option.id)
+                if (pathTemplate) await createFileLink(pathTemplate.path, props.charter.documentName)
             }
         } else if (option.action === 'view') {
             if (props.charter.pathFile) {
-                await downloadCharter(props.charter.pathFile, props.charter.documentName)
+                await createUploadedFileLink(props.charter.pathFile, props.charter.documentName)
             }
         } else if (option.action === 'sign') {
             openSign.value = true
@@ -115,6 +134,7 @@ async function onOptionClick(option: Option) {
         </QBtnDropdown>
     </div>
     <FormSignCharters
+        :association-charter-status="props.associationCharterStatus"
         :association-id="props.associationId"
         :charter="props.charter"
         :is-site="props.isSite"

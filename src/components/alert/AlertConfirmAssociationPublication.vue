@@ -13,18 +13,23 @@ const emit = defineEmits(['hasValidated'])
 const confirmation = ref<boolean>(false)
 
 async function onPublishAssociation() {
-    const messageKeyword = !associationStore.association?.isPublic ? 'publish' : 'unpublish'
+    let positiveMessage = t('notifications.positive.unpublish-association')
+    let negativeMessage = t('notifications.negative.unpublish-association-error')
+    if (!associationStore.association?.isPublic) {
+        positiveMessage = t('notifications.positive.publish-association')
+        negativeMessage = t('notifications.negative.publish-association-error')
+    }
     try {
         await associationStore.patchPublicAssociation(!associationStore.association?.isPublic, associationStore.association?.id)
         emit('hasValidated')
         notify({
             type: 'positive',
-            message: t(`notifications.positive.${messageKeyword}-association`)
+            message: positiveMessage
         })
     } catch (e) {
         notify({
             type: 'negative',
-            message: t(`notifications.negative.${messageKeyword}-association-error`)
+            message: negativeMessage
         })
     }
 }

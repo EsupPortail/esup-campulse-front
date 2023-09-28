@@ -17,7 +17,8 @@ const {
     funds,
     commissionFunds,
     getAllCommissions,
-    initCommissionLabels
+    initCommissionLabels,
+    initFundsLabels
 } = useCommissions()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -51,13 +52,14 @@ async function onGetProjectCommissions() {
             await getAllCommissions()
             await getCommissionFunds()
             await getFunds()
+            initFundsLabels()
             initCommissionLabels()
             initProjectCommissionLabel()
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -102,7 +104,9 @@ async function onGetProjectCommissions() {
                 <div class="display-row">
                     <h4>
                         {{
-                            t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'
+                            t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === commissionFunds
+                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label +
+                                ')'
                         }}
                     </h4>
                     <p>{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
@@ -111,7 +115,9 @@ async function onGetProjectCommissions() {
                 <div class="display-row">
                     <h4>
                         {{
-                            t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'
+                            t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === commissionFunds
+                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label +
+                                ')'
                         }}
                     </h4>
                     <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
@@ -137,19 +143,22 @@ async function onGetProjectCommissions() {
         >
             <h4>
                 {{
-                    fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label
+                    fundsLabels.find(x => x.value === commissionFunds.find(y => y.id ===
+                        projectCommissionFund.commissionFund)?.fund)?.label
                 }}
             </h4>
             <QInput
                 v-model="projectCommissionFund.amountAsked"
-                :label="t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'"
+                :label="t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === commissionFunds
+                    .find(y => y.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'"
                 :shadow-text="` ${CURRENCY}`"
                 filled
                 readonly
             />
             <QInput
                 v-model="projectCommissionFund.amountEarned"
-                :label="t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === projectCommissionFund.commissionFund)?.label + ')'"
+                :label="t('project.amount-earned') + ' (' + fundsLabels
+                    .find(x => x.value === commissionFunds.find(y => y.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'"
                 :shadow-text="` ${CURRENCY}`"
                 filled
                 readonly

@@ -29,7 +29,10 @@ const onOpenDialog = (action: Action, icon: Icon) => {
 }
 
 watch(() => open.value, () => {
-    if (open.value === false) newComment.value = ''
+    if (open.value === false) {
+        newComment.value.text = ''
+        newComment.value.isVisible = false
+    }
 })
 
 async function onUpdateProjectStatus() {
@@ -43,17 +46,29 @@ async function onUpdateProjectStatus() {
             if (projectStatus) await projectStore.patchProjectStatus(projectStatus)
             await getProjectComments(projectStore.project.id)
             open.value = false
-            newComment.value = ''
+            newComment.value.text = ''
+            newComment.value.isVisible = false
+            let message = ''
+            switch (selectedAction.value) {
+            case 'validate':
+                message = t('notifications.positive.validate-project-review')
+                break
+            case 'return':
+                message = t('notifications.positive.return-project-review')
+                break
+            default:
+                break
+            }
             notify({
                 type: 'positive',
-                message: t(`notifications.positive.${selectedAction.value}-project-review`)
+                message: message
             })
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -86,15 +101,21 @@ async function onUpdateProjectStatus() {
                     @submit="onUpdateProjectStatus"
                 >
                     <QInput
-                        v-model="newComment"
+                        v-model="newComment.text"
                         :aria-required="selectedAction !== 'validate'"
                         :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
                         :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
+                        :rules="selectedAction !== 'validate' ? [val => val && val.length > 0 || t('forms.required-comment')] : []"
                         color="commission"
                         filled
                         lazy-rules
                         type="textarea"
+                    />
+                    <QToggle
+                        v-model="newComment.isVisible"
+                        :disable="!newComment.text"
+                        :label="t('forms.comment-visibility')"
+                        color="commission"
                     />
                     <div class="flex-row-center padding-top">
                         <QBtn
@@ -105,10 +126,19 @@ async function onUpdateProjectStatus() {
                             @click="open = false"
                         />
                         <QBtn
-                            :color="selectedAction === 'reject' || selectedAction === 'return' ? 'custom-red' : 'commission'"
+                            v-if="selectedAction === 'validate'"
                             :icon="selectedIcon"
-                            :label="t(`project.review-${selectedAction}`)"
+                            :label="t('project.review-validate')"
                             class="btn-lg"
+                            color="commission"
+                            type="submit"
+                        />
+                        <QBtn
+                            v-if="selectedAction === 'return'"
+                            :icon="selectedIcon"
+                            :label="t('project.review-return')"
+                            class="btn-lg"
+                            color="custom-red"
                             type="submit"
                         />
                     </div>

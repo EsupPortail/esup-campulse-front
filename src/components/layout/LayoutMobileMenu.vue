@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
-import useUtility from '@/composables/useUtility.ts'
+import useUtility from '@/composables/useUtility'
 
 const {openMenu} = useUtility()
 </script>

@@ -33,7 +33,7 @@ async function onGetAssociationUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -155,7 +155,7 @@ const columns: QTableProps['columns'] = [
                             >
                                 <QBtn
                                     :aria-label="t('manage')"
-                                    :to="{name: 'AssociationUserValidationDetail', params: {userId: props.row.id, associationId: props.row.associationId}}"
+                                    :to="{ name: 'AssociationUserValidationDetail', params: { userId: props.row.id, associationId: props.row.associationId } }"
                                     color="dashboard"
                                     icon="bi-pencil"
                                     outline

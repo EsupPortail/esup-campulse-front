@@ -1,17 +1,15 @@
 <script lang="ts" setup>
-import type {ProcessDocument, DocumentProcessType} from '#/documents'
+import type {DocumentProcessType, UploadedProcessDocument} from '#/documents'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
-import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useErrors'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharters'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import {onMounted} from 'vue'
 
-const {createFileLink} = useDocumentUploads()
+const {createUploadedFileLink} = useDocumentUploads()
 const {notify, loading} = useQuasar()
-const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {
     processDocuments,
@@ -26,19 +24,19 @@ const projectStore = useProjectStore()
 
 const props = defineProps<{
     process: 'project' | 'review' | 'charter',
-    associationId: number | null
+    associationId: number | null | undefined
 }>()
 
 
-async function onGetFile(uploadedDocument: ProcessDocument) {
+async function onGetFile(uploadedDocument: UploadedProcessDocument) {
     loading.show()
     try {
-        await createFileLink(uploadedDocument)
+        await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -54,7 +52,7 @@ async function onGetDocuments() {
         else if (props.process === 'review') processes = ['DOCUMENT_PROJECT_REVIEW']
         else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
         await getDocuments(processes)
-        initProcessDocuments()
+        initProcessDocuments(props.process === 'project', projectStore.projectFunds)
         if (props.process === 'project' || props.process === 'review') {
             await projectStore.getProjectDocuments()
             initProjectDocumentUploads()
@@ -68,7 +66,7 @@ async function onGetDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }

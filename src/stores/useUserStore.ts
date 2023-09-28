@@ -3,7 +3,8 @@ import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
-import type {DocumentUpload} from '#/documents'
+import type {DocumentProcessType, DocumentUpload} from '#/documents'
+import useCommissions from '@/composables/useCommissions'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -25,14 +26,18 @@ export const useUserStore = defineStore('userStore', {
             })
             return institutionsArray
         },
-        userCommissionFunds: (state: UserStore): (number | null | undefined)[] | undefined => {
-            const commissionsArray: number[] = []
-            state.user?.groups?.forEach((group) => {
-                if (group.fundId) {
-                    commissionsArray.push(group.fundId)
+        userFunds: (state: UserStore): (number | null | undefined)[] | undefined => {
+            const {funds} = useCommissions()
+            const fundsArray: number[] = []
+            state.user?.groups.forEach(group => {
+                if (group.institutionId) {
+                    const foundFunds = funds.value.filter(fund => fund.institution === group.institutionId)
+                    foundFunds?.forEach((fund) => {
+                        fundsArray.push(fund.id)
+                    })
                 }
             })
-            return commissionsArray
+            return fundsArray
         },
         isAssociationMember: (state: UserStore): boolean => {
             return !!state.user?.associations?.length
@@ -40,20 +45,37 @@ export const useUserStore = defineStore('userStore', {
     },
     actions: {
         /**
-         * It takes a url and a data object, and then it makes a post request to the url with the data object
+         * It takes an url and a data object, and then it makes a post request to the url with the data object
          * @param {string} url - The url to send the request to.
          * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
          */
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const {axiosPublic} = useAxios()
+            const {newUser, setTokens} = useSecurity()
             const response = await axiosPublic.post(url, data)
-            const {accessToken, refreshToken, user} = response.data
-            if (user.isValidatedByAdmin) {
-                const {setTokens} = useSecurity()
-                setTokens(accessToken, refreshToken)
-                this.user = user
-            } else {
-                throw new Error
+            const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
+            // User account is complete
+            if (user.groups.length) {
+                // If user is validated by admin
+                if (user.isValidatedByAdmin) {
+                    setTokens(access, refresh)
+                    this.user = user
+                }
+                // If user is not validated by admin
+                else {
+                    throw new Error('USER_NOT_VALIDATED_BY_ADMIN')
+                }
+            }
+            // User account is not complete
+            else {
+                setTokens(access, refresh)
+                newUser.isCas = user.isCas
+                newUser.email = user.email
+                newUser.username = user.username
+                newUser.firstName = user.firstName
+                newUser.lastName = user.lastName
+                newUser.phone = user.phone
+                throw new Error('USER_ACCOUNT_NOT_COMPLETE')
             }
         },
         logOut() {
@@ -88,38 +110,6 @@ export const useUserStore = defineStore('userStore', {
                 }
             }
         },
-        /*async getUserAssociations() {
-            if (this.user && this.user.associations.length > 0) {
-                const {axiosAuthenticated} = useAxios()
-                const userAssociations = (await axiosAuthenticated.get('/users/associations/')).data
-                for (const index in userAssociations) {
-                    const temp = {
-                        id: userAssociations[index].association,
-                        name: '',
-                        isSite: undefined,
-                        institution: undefined,
-                        isEnabled: undefined,
-                        isPublic: undefined,
-                    }
-                    if (userAssociations[index].isValidatedByAdmin) {
-                        const association = (await axiosAuthenticated.get(`/associations/${userAssociations[index].association}`)).data
-                        temp.name = association.name
-                        temp.isSite = association.isSite
-                        temp.institution = association.institution
-                        temp.isEnabled = association.isEnabled
-                        temp.isPublic = association.isPublic
-                    } else {
-                        const associationStore = useAssociationStore()
-                        await associationStore.getAssociationNames(false, false)
-                        const association = associationStore.associationNames.find(obj => obj.id === userAssociations[index].association)
-                        if (association) {
-                            temp.name = association.name
-                        }
-                    }
-                }
-                this.userAssociations = userAssociations
-            }
-        },*/
         unLoadUser() {
             this.user = undefined
             this.userAssociations = []
@@ -138,10 +128,17 @@ export const useUserStore = defineStore('userStore', {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
             const {axiosPublic} = useAxios()
             const data = (await axiosPublic.post('/users/auth/cas/login/', {ticket, service})).data
-            const {accessToken, refreshToken, user} = data
-            const {setTokens} = useSecurity()
-            setTokens(accessToken, refreshToken)
-            this.newUser = user
+            const {access, refresh, user} = data
+            // If the user has already created an account
+            if (user.groups.length) {
+                throw new Error('USER_ACCOUNT_ALREADY_EXISTS')
+            }
+            // If the user has no account
+            else {
+                const {setTokens} = useSecurity()
+                setTokens(access, refresh)
+                this.newUser = user
+            }
         },
 
         /**
@@ -176,9 +173,13 @@ export const useUserStore = defineStore('userStore', {
             return perm
         },
 
-        async getUserDocuments() {
+        async getUserDocuments(processTypes?: DocumentProcessType[]) {
             const {axiosAuthenticated} = useAxios()
-            this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?user_id=${this.user?.id}`)).data
+            let url = `/documents/uploads?user_id=${this.user?.id}`
+            if (processTypes?.length) {
+                url += `&process_types=${processTypes.join(',')}`
+            }
+            this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
         }
     }
 })

@@ -95,6 +95,7 @@ describe('useSubmitProject', () => {
                     plannedEndDate: '2023-06-15T00:00:00.000Z',
                     plannedLocation: 'Strasbourg',
                     association: '1',
+                    partnerAssociation: 'Personne'
                 })
             })
         })
@@ -109,7 +110,8 @@ describe('useSubmitProject', () => {
                     plannedStartDate: '2023-06-15T00:00:00.000Z',
                     plannedEndDate: '2023-06-15T00:00:00.000Z',
                     plannedLocation: 'Strasbourg',
-                    user: '7'
+                    user: '7',
+                    partnerAssociation: 'Personne'
                 })
             })
         })
@@ -180,7 +182,8 @@ describe('useSubmitProject', () => {
                     budgetPreviousEdition: 0,
                     individualCost: 5,
                     targetAudience: 'Tout le monde',
-                    ticketPrice: 2
+                    ticketPrice: 2,
+                    studentTicketPrice: 1
                 })
             })
         })
@@ -194,7 +197,8 @@ describe('useSubmitProject', () => {
                     budgetPreviousEdition: 100,
                     individualCost: 5,
                     targetAudience: 'Tout le monde',
-                    ticketPrice: 2
+                    ticketPrice: 2,
+                    studentTicketPrice: 1
                 })
             })
         })
@@ -210,10 +214,11 @@ describe('useSubmitProject', () => {
             it('should patch updated infos', async () => {
                 await patchProjectCommissionFunds(true)
                 expect(axiosAuthenticated.patch).toHaveBeenCalledTimes(3)
-                expect(axiosAuthenticated.patch).toHaveBeenLastCalledWith('/projects/1/commission_funds/2', {
+                expect(axiosAuthenticated.patch).toHaveBeenLastCalledWith('/projects/1/commission_funds/4', {
                     amountAskedPreviousEdition: 500,
                     amountEarnedPreviousEdition: 500,
                     amountAsked: 1500,
+                    commissionFund: 4
                 })
             })
         })
@@ -221,11 +226,12 @@ describe('useSubmitProject', () => {
             it('should patch updated infos', async () => {
                 await patchProjectCommissionFunds(false)
                 expect(axiosAuthenticated.patch).toHaveBeenCalledTimes(3)
-                expect(axiosAuthenticated.patch).toHaveBeenLastCalledWith('/projects/1/commission_funds/2', {
+                expect(axiosAuthenticated.patch).toHaveBeenLastCalledWith('/projects/1/commission_funds/4', {
                     isFirstEdition: false,
                     amountAskedPreviousEdition: 500,
                     amountEarnedPreviousEdition: 500,
                     amountAsked: 1500,
+                    commissionFund: 4
                 })
             })
         })

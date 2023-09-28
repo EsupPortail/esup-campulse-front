@@ -3,13 +3,17 @@ import type {UserAssociation} from '#/user'
 
 
 export const _association: Association = {
-    canSubmitProjects: false,
-    charterStatus: '',
+    canSubmitProjects: true,
+    charterStatus: 'CHARTER_DRAFT',
     charterDate: '',
     id: 1,
     name: 'PLANA',
     acronym: '',
-    pathLogo: null,
+    pathLogo: {
+        base: 'base',
+        detail: 'detail',
+        list: 'list'
+    },
     socialObject: '',
     currentProjects: '',
     address: '',
@@ -21,6 +25,7 @@ export const _association: Association = {
     amountMembersAllowed: 4,
     presidentNames: '',
     presidentPhone: '',
+    presidentEmail: '',
     isEnabled: true,
     isPublic: true,
     isSite: true,
@@ -52,6 +57,7 @@ export const _editedAssociation: EditedAssociation = {
     studentCount: '0',
     presidentNames: 'Jeanne Dupont',
     presidentPhone: '',
+    presidentEmail: '',
     isPublic: true,
     approvalDate: null,
     lastGoaDate: '2023-01-24',
@@ -74,6 +80,7 @@ export const _nonEditedAssociation: EditedAssociation = {
     studentCount: '0',
     presidentNames: '',
     presidentPhone: '',
+    presidentEmail: '',
     isPublic: false,
     approvalDate: '',
     lastGoaDate: null,
@@ -97,7 +104,7 @@ export const _associations: Association[] = [
         institutionComponent: 1,
         activityField: 1,
         canSubmitProjects: true,
-        charterStatus: 'draft',
+        charterStatus: 'CHARTER_DRAFT',
         charterDate: '',
         amountMembersAllowed: 4
     },
@@ -114,7 +121,7 @@ export const _associations: Association[] = [
         institutionComponent: 2,
         activityField: 2,
         canSubmitProjects: true,
-        charterStatus: 'draft',
+        charterStatus: 'CHARTER_DRAFT',
         charterDate: '',
         amountMembersAllowed: 4
     }

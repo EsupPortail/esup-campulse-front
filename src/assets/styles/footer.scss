@@ -14,8 +14,8 @@
   }
 
   #footer-logos {
-    background-color: $annuaireColorBackground;
-    border-bottom: 0.6rem solid $annuaireColor;
+    background-color: $associationColorBackground;
+    border-bottom: 0.6rem solid $associationColor;
     padding: 2rem 1.56rem;
 
     .wrapper {
@@ -115,15 +115,15 @@
 
   &.variant-space-2 {
     #footer-logos {
-      background-color: $charteColorBackground;
-      border-color: $charteColor;
+      background-color: $charterColorBackground;
+      border-color: $charterColor;
     }
   }
 
   &.variant-space-3 {
     #footer-logos {
-      background-color: $capeColorBackground;
-      border-color: $capeColor;
+      background-color: $commissionColorBackground;
+      border-color: $commissionColor;
     }
   }
 

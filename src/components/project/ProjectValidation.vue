@@ -48,7 +48,10 @@ const onOpenDialog = async (action: Action, icon: Icon) => {
 }
 
 watch(() => open.value, () => {
-    if (open.value === false) newComment.value = ''
+    if (open.value === false) {
+        newComment.value.text = ''
+        newComment.value.isVisible = false
+    }
 })
 
 const canChangeProject = () => {
@@ -97,17 +100,32 @@ async function onUpdateProjectStatus() {
             await projectStore.getProjectDetail(projectStore.project.id)
             await projectStore.getProjectCommissionFunds(false, undefined)
             open.value = false
-            newComment.value = ''
+            newComment.value.text = ''
+            newComment.value.isVisible = false
+            let message = ''
+            switch (selectedAction.value) {
+            case 'validate':
+                message = t('notifications.positive.validate-project')
+                break
+            case 'return':
+                message = t('notifications.positive.return-project')
+                break
+            case 'reject':
+                message = t('notifications.positive.reject-project')
+                break
+            default:
+                break
+            }
             notify({
                 type: 'positive',
-                message: t(`notifications.positive.${selectedAction.value}-project`)
+                message: message
             })
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -153,7 +171,7 @@ async function onUpdateProjectStatus() {
                         v-if="selectedAction !== 'return'"
                         v-model="selectedProjectCommissionFunds"
                         :label="t('project.commission-funds-validation',
-                                  {action: `${selectedAction === 'validate' ? 'valider' : 'refuser'}`}) + ' (' + t('required') + ')'"
+                                  { action: `${selectedAction === 'validate' ? 'valider' : 'refuser'}` }) + ' (' + t('required') + ')'"
                         :options="projectCommissionFundLabels"
                         :rules="[val => val && val.length || t('forms.required-fund')]"
                         aria-required="true"
@@ -167,15 +185,21 @@ async function onUpdateProjectStatus() {
                         use-chips
                     />
                     <QInput
-                        v-model="newComment"
+                        v-model="newComment.text"
                         :aria-required="selectedAction !== 'validate'"
                         :hint="selectedAction !== 'validate' ? t('forms.project-comment-hint') : ''"
                         :label="t('forms.comment') + (selectedAction !== 'validate' ? ` (${t('required')})` : ` (${t('optional')})`)"
-                        :rules="selectedAction !== 'validate' ? [ val => val && val.length > 0 || t('forms.required-comment')] : []"
+                        :rules="selectedAction !== 'validate' ? [val => val && val.length > 0 || t('forms.required-comment')] : []"
                         color="commission"
                         filled
                         lazy-rules
                         type="textarea"
+                    />
+                    <QToggle
+                        v-model="newComment.isVisible"
+                        :disable="!newComment.text"
+                        :label="t('forms.comment-visibility')"
+                        color="commission"
                     />
                     <div class="flex-row-center padding-top">
                         <QBtn
@@ -186,10 +210,27 @@ async function onUpdateProjectStatus() {
                             @click="open = false"
                         />
                         <QBtn
-                            :color="selectedAction === 'reject' || selectedAction === 'return' ? 'custom-red' : 'commission'"
+                            v-if="selectedAction === 'validate'"
                             :icon="selectedIcon"
-                            :label="t(`project.${selectedAction}`)"
+                            :label="t('project.validate')"
                             class="btn-lg"
+                            color="commission"
+                            type="submit"
+                        />
+                        <QBtn
+                            v-if="selectedAction === 'reject'"
+                            :icon="selectedIcon"
+                            :label="t('project.reject')"
+                            class="btn-lg"
+                            color="custom-red"
+                            type="submit"
+                        />
+                        <QBtn
+                            v-if="selectedAction === 'return'"
+                            :icon="selectedIcon"
+                            :label="t('project.return')"
+                            class="btn-lg"
+                            color="custom-red"
                             type="submit"
                         />
                     </div>
@@ -206,12 +247,12 @@ async function onUpdateProjectStatus() {
 @import "@/assets/_variables.scss";
 
 .q-card {
-  padding: 1rem;
-  max-width: 60rem;
-  width: $fullSize;
+    padding: 1rem;
+    max-width: 60rem;
+    width: $fullSize;
 }
 
 .q-form.flex-column {
-  gap: 2rem;
+    gap: 2rem;
 }
 </style>

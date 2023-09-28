@@ -4,22 +4,16 @@ import {useI18n} from 'vue-i18n'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 
 const {t} = useI18n()
-const {documents} = useDocumentUploads()
+const {createUploadedFileLink, documents} = useDocumentUploads()
 
 const props = defineProps<{
     charterDocuments: DocumentUpload[],
 }>()
 
-function onDownloadDocument(documentId: number) {
+async function onDownloadDocument(documentId: number | undefined) {
     const documentToDownload = props.charterDocuments.find(doc => doc?.id === documentId)
     if (documentToDownload && documentToDownload.pathFile && documentToDownload.name) {
-        const anchor = document.createElement('a')
-        anchor.href = documentToDownload.pathFile
-        anchor.download = documentToDownload.name
-        anchor.target = '_blank'
-        document.body.appendChild(anchor)
-        anchor.click()
-        document.body.removeChild(anchor)
+        await createUploadedFileLink(documentToDownload.pathFile, documentToDownload.name)
     }
 }
 </script>
@@ -34,7 +28,8 @@ function onDownloadDocument(documentId: number) {
             <div class="document-input-header">
                 <h4 class="library-document">
                     <span>
-                        {{ documents.find(doc => doc.id === document.document)?.name }}
+                        <strong>{{ documents.find(doc => doc.id === document.document)?.name }}</strong>
+                        <em>{{ Math.floor((documents.find(doc => doc.id === document.document)?.size ?? 0) / 1000) + ' kb' }}</em>
                     </span>
                 </h4>
                 <button

@@ -186,7 +186,8 @@ export default function () {
                     isSite: association.isSite,
                     institution: association.institution,
                     isEnabled: association.isEnabled,
-                    isPublic: association.isPublic
+                    isPublic: association.isPublic,
+                    canSubmitProjects: association.canSubmitProjects
                 }
             } else {
                 const {axiosPublic} = useAxios()
@@ -218,7 +219,7 @@ export default function () {
         const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
         associationStore.associationUsers.forEach(function (user) {
-            if (!withPresident && user.user === userStore.user?.id) { // TODO: test condition
+            if (!withPresident && user.user === userStore.user?.id) { // TODO test condition
                 return
             } else {
                 const member = userNames.find(obj => obj.id === user.user)
@@ -237,11 +238,11 @@ export default function () {
         })
     }
 
-    // TODO: test
     const initUserAssociations = (editedByStaff: boolean) => {
         userAssociations.value = []
-        let associations: AssociationUserDetail[] = userStore.userAssociations
+        let associations: AssociationUserDetail[] | [] = []
         if (editedByStaff) associations = userManagerStore.userAssociations
+        else associations = userStore.userAssociations
         associations.forEach(function (association) {
             const role = getAssociationUserRole(association)
             userAssociations.value.push({
@@ -257,7 +258,6 @@ export default function () {
         })
     }
 
-    // TODO: test
     async function getUnvalidatedAssociationUsers() {
         associationMembers.value = []
 

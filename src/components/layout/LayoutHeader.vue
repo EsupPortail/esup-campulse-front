@@ -56,7 +56,7 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
                     id="header-home-title"
                 >
                     <div class="flex-column flex-center">
-                        <h2>Bienvenue sur <strong>{{ siteName }}</strong></h2>
+                        <h2>{{ t('header.title') }} <strong>{{ siteName }}</strong></h2>
                         <h3>{{ t('header.subtitle') }}</h3>
                     </div>
                 </div>

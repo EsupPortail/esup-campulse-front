@@ -14,14 +14,18 @@ import FormAddUserFromLDAP from '@/components/form/FormAddUserFromLDAP.vue'
 import useUtility from '@/composables/useUtility'
 import useErrors from '@/composables/useErrors'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
+import useDocumentUploads from '@/composables/useDocumentUploads'
+import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
+
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
 const {register, newUser, initNewUserData, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
-const {groupChoiceIsValid, groupCanJoinAssociation, isStaff} = useUserGroups()
+const {groupChoiceIsValid, groupCanJoinAssociation, isStaff, studentGroupIsSelected} = useUserGroups()
 const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
+const {uploadDocuments} = useDocumentUploads()
 
 
 const hasConsent = ref<boolean>(false)
@@ -38,10 +42,15 @@ async function onLoadCASUser() {
         await loadCASUser()
     } catch (error) {
         await router.push({name: 'Login'})
-        if (axios.isAxiosError(error) && error.response) {
+        if ((error as Error).message === 'USER_ACCOUNT_ALREADY_EXISTS') {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: t('notifications.negative.cas-user-already-exists')
+            })
+        } else if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -54,21 +63,23 @@ async function onRegister() {
             try {
                 if (isStaff.value) {
                     await addUserAsManager()
+                    await uploadDocuments(undefined, newUser.username, false)
                     notify({
                         type: 'positive',
                         message: t('notifications.positive.account-created')
                     })
                     await router.push({name: 'Dashboard'})
+                    newUser.isCas = false
+                    newUser.firstName = ''
+                    newUser.lastName = ''
+                    newUser.username = ''
+                    newUser.email = ''
+                    newUser.phone = ''
                 } else {
                     await register()
+                    await uploadDocuments(undefined, newUser.username, true)
                     await router.push({name: 'RegistrationSuccessful'})
                 }
-                newUser.isCas = false
-                newUser.firstName = ''
-                newUser.lastName = ''
-                newUser.username = ''
-                newUser.email = ''
-                newUser.phone = ''
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
                     const data = error.response.data
@@ -81,7 +92,7 @@ async function onRegister() {
                     } else {
                         notify({
                             type: 'negative',
-                            message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                            message: catchHTTPError(error.response)
                         })
                     }
                 }
@@ -171,25 +182,18 @@ async function onRegister() {
                         :label="t('forms.phone')"
                         :rules="newUser.phone?.length ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
                         autocomplete="tel"
+                        bottom-slots
                         clearable
                         color="dashboard"
                         filled
+                        for="phone"
                         lazy-rules
                         type="tel"
-                        bottom-slots
-                        for="phone"
                     >
                         <template v-slot:hint>
                             <p aria-describedby="phone">{{ t('forms.hint-phone') }}</p>
                         </template>
                     </QInput>
-                    <!--
-                    <FormDocumentUploads
-                        v-if="!newUser.isCas"
-                        :association-id="null"
-                        process="registration"
-                    />
-                    -->
                 </div>
             </div>
         </div>
@@ -204,6 +208,16 @@ async function onRegister() {
             <div class="dashboard-section-container">
                 <div class="container">
                     <FormUserGroups/>
+                    <div v-if="!newUser.isCas && studentGroupIsSelected">
+                        <hgroup>
+                            <h3>{{ t('forms.student-status-document') }}</h3>
+                            <p>{{ t('forms.student-status-document-hint') }}</p>
+                        </hgroup>
+                        <FormDocumentUploads
+                            :association-id="null"
+                            process="registration"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

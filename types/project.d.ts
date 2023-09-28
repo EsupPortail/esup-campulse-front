@@ -10,12 +10,14 @@ export interface Project {
     user: number | null,
     association: number | null,
     associationUser: number | null,
+    partnerAssociation: string,
     categories?: ProjectCategoryName[],
     budgetPreviousEdition: number,
     targetAudience: string,
     amountStudentsAudience: number,
     amountAllAudience: number,
     ticketPrice: number,
+    studentTicketPrice: number,
     individualCost: number,
     goals: string,
     summary: string,
@@ -25,7 +27,9 @@ export interface Project {
     sustainableDevelopment: string,
     projectStatus: ProjectStatus,
     creationDate: string,
-    editionDate: string
+    editionDate: string,
+    processingDate?: string,
+    manualIdentifier: string,
 }
 
 export interface ProjectList {
@@ -38,7 +42,8 @@ export interface ProjectList {
     plannedEndDate: string,
     plannedLocation: string,
     projectStatus: ProjectStatus,
-    commission: Commission
+    commission: Commission,
+    manualIdentifier: string
 }
 
 type ProjectStatus =
@@ -63,7 +68,6 @@ export interface ProjectCategoryName {
     name: string
 }
 
-
 export interface ProjectBasicInfos {
     name: string,
     plannedStartDate: string,
@@ -71,7 +75,8 @@ export interface ProjectBasicInfos {
     plannedLocation: string,
     user: number | null,
     association: number | null,
-    associationUser: number | null
+    associationUser: number | null,
+    partnerAssociation: string,
 }
 
 export interface ProjectBudget {
@@ -80,6 +85,7 @@ export interface ProjectBudget {
     amountStudentsAudience: number | string,
     amountAllAudience: number | string,
     ticketPrice: number | string,
+    studentTicketPrice: number | string,
     individualCost: number | string
 }
 
@@ -100,7 +106,7 @@ export interface ProjectCommissionFund {
     amountAskedPreviousEdition?: number | string,
     amountEarnedPreviousEdition?: number | string,
     amountAsked?: number | string,
-    amountEarned?: number | string,
+    amountEarned?: number | string | null,
     isValidatedByAdmin: boolean | null
 }
 
@@ -119,26 +125,14 @@ export interface ProjectReview {
     description: string,
     difficulties: string,
     improvements: string,
-    plannedStartDate: string,
-    plannedEndDate: string,
-    plannedLocation: string,
+    plannedStartDate?: string,
+    plannedEndDate?: string,
+    plannedLocation?: string,
     associationUser: number | null,
-    commissions: Commission[],
-    creationDate: string,
-    editionDate: string
-}
-
-export interface ProjectAssociation {
-    address: string,
-    zipcode: string,
-    city: string,
-    country: string,
-    phone: string,
-    email: string,
-    presidentNames: string,
-    presidentPhone: string,
-    presidentEmail: string,
-    name: string
+    commissions?: Commission[],
+    creationDate?: string,
+    editionDate?: string,
+    processingDate?: string
 }
 
 export interface ProjectComment {
@@ -150,13 +144,16 @@ export interface ProjectComment {
         lastName: string
     },
     text: string,
-    creationDate: string
+    creationDate: string,
+    editionDate: string,
+    isVisible: boolean
 }
 
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
-    projects: ProjectList[],
+    selfProjects: ProjectList[],
+    managedProjects: ProjectList[],
     projectCategories: ProjectCategory[],
     projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],

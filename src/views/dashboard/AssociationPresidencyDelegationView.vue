@@ -49,7 +49,7 @@ async function onGetAssociationUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -129,7 +129,7 @@ const columns: QTableProps['columns'] = [
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoPresidencyDelegation/>
+                <InfoPresidencyDelegation />
                 <QTable
                     :columns="columns"
                     :loading="!associationMembers"
@@ -214,7 +214,7 @@ const columns: QTableProps['columns'] = [
                                     v-if="props.row.isValidatedByAdmin"
                                     class="button-container"
                                 >
-                                    <FormAssociationPresidencyDelegation :member="props.row"/>
+                                    <FormAssociationPresidencyDelegation :member="props.row" />
                                 </div>
                             </QTd>
                         </QTr>
@@ -268,7 +268,7 @@ const columns: QTableProps['columns'] = [
                 <div class="flex-row-center padding-top">
                     <QBtn
                         :label="t('back')"
-                        :to="{name: 'AssociationDashboard', params: {id: route.params.id}}"
+                        :to="{ name: 'AssociationDashboard', params: { id: route.params.id } }"
                         class="btn-lg"
                         color="dashboard"
                         icon="bi-chevron-compact-left"

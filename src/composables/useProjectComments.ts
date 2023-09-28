@@ -4,7 +4,10 @@ import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 
 const comments = ref<ProjectComment[]>([])
-const newComment = ref<string>('')
+const newComment = ref<{ text: string, isVisible: boolean }>({
+    text: '',
+    isVisible: false
+})
 
 export default function () {
     const {axiosAuthenticated} = useAxios()
@@ -15,24 +18,30 @@ export default function () {
         comments.value = (await axiosAuthenticated.get<ProjectComment[]>(`/projects/${projectId}/comments`)).data
     }
 
-    async function postNewProjectComment(project: number, text: string) {
-        if (text) await axiosAuthenticated.post('/projects/comments', {project, text, user: userStore.user?.id})
+    async function postNewProjectComment(project: number, comment: { text: string, isVisible: boolean }) {
+        if (comment.text) {
+            const data = {
+                project,
+                isVisible: comment.isVisible,
+                text: comment.text,
+                user: userStore.user?.id
+            }
+            await axiosAuthenticated.post('/projects/comments', data)
+        }
     }
 
-    /*    async function patchProjectComment(text: string, projectId: number, commentId: number) {
-            comment.value = (await axiosAuthenticated.patch(`/projects/${projectId}/comments/${commentId}`, {text})).data
-        }
-
-        async function deleteProjectComment(projectId: number, commentId: number) {
-            await axiosAuthenticated.delete(`projects/${projectId}/comments/${commentId}`)
-        }*/
+    async function patchProjectComment(projectId: number, comment: { id: number, text: string, isVisible: boolean }) {
+        await axiosAuthenticated.patch(`/projects/${projectId}/comments/${comment.id}`, {
+            text: comment.text,
+            isVisible: comment.isVisible
+        })
+    }
 
     return {
         getProjectComments,
         postNewProjectComment,
-        /*        patchProjectComment,
-                deleteProjectComment,*/
         newComment,
-        comments
+        comments,
+        patchProjectComment
     }
 }

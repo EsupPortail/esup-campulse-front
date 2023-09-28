@@ -5,12 +5,14 @@ import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import useCommissions from '@/composables/useCommissions'
+import type {DocumentUpload} from '#/documents'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
         user: undefined,
         users: [],
-        userAssociations: []
+        userAssociations: [],
+        userDocuments: []
     }),
 
     getters: {
@@ -163,6 +165,10 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                     this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data
                 }
             }
+        },
+        async getUserDocuments() {
+            const {axiosAuthenticated} = useAxios()
+            this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?user_id=${this.user?.id}`)).data
         }
     }
 })

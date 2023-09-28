@@ -16,6 +16,10 @@ import type {User} from '#/user'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUserAssociations from '@/composables/useUserAssociations'
 
+const projectId = ref<string | undefined>()
+
+const projectProcessingDate = ref<string | undefined>()
+
 const projectBasicInfos = ref<ProjectBasicInfos>(
     {
         name: '',
@@ -24,7 +28,8 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
         plannedLocation: '',
         user: null,
         association: null,
-        associationUser: null
+        associationUser: null,
+        partnerAssociation: '',
     }
 )
 
@@ -39,6 +44,7 @@ const projectBudget = ref<ProjectBudget>(
         amountStudentsAudience: 0,
         amountAllAudience: 0,
         ticketPrice: 0,
+        studentTicketPrice: 0,
         individualCost: 0
     }
 )
@@ -48,6 +54,9 @@ const projectCommission = ref<number | null>(null)
 
 // Used to store the chosen commission funds (v-model in SubmitProjectView)
 const projectCommissionFunds = ref<number[]>([])
+
+// Used to store the funds linked to the project
+const projectFunds = ref<number[]>([])
 
 // Used to copy projectCommissionFunds from the store and check changes
 const projectCommissionFundsDetail = ref<ProjectCommissionFund[]>([])
@@ -64,13 +73,12 @@ const projectGoals = ref<ProjectGoals>(
 )
 
 export default function () {
-
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const {axiosAuthenticated} = useAxios()
     const {arraysAreEqual} = useUtility()
     const {processDocuments} = useDocumentUploads()
-    const {initChosenCommissionFundsLabels} = useCommissions()
+    const {initChosenCommissionFundsLabels, commissionFunds} = useCommissions()
     const associationStore = useAssociationStore()
     const {getAssociationUsersNames} = useUserAssociations()
 
@@ -78,6 +86,8 @@ export default function () {
     // INIT DATA
     const initProjectBasicInfos = () => {
         const {formatDate} = useUtility()
+        projectId.value = projectStore.project?.manualIdentifier
+        projectProcessingDate.value = formatDate(projectStore.project?.processingDate as string)?.split('-').reverse().join('/')
         projectBasicInfos.value.name = projectStore.project?.name as string
         projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
         projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
@@ -85,6 +95,7 @@ export default function () {
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
         projectBasicInfos.value.associationUser = projectStore.project?.associationUser as number | null
+        projectBasicInfos.value.partnerAssociation = projectStore.project?.partnerAssociation as string
     }
 
     const initProjectAssociationUsersLabels = async (associationId: number) => {
@@ -120,15 +131,16 @@ export default function () {
         projectBudget.value.amountStudentsAudience = projectStore.project?.amountStudentsAudience.toString() as string
         projectBudget.value.amountAllAudience = projectStore.project?.amountAllAudience.toString() as string
         projectBudget.value.ticketPrice = projectStore.project?.ticketPrice.toString() as string
+        projectBudget.value.studentTicketPrice = projectStore.project?.studentTicketPrice.toString() as string
         projectBudget.value.individualCost = projectStore.project?.individualCost.toString() as string
         projectBudget.value.budgetPreviousEdition = projectStore.project?.budgetPreviousEdition.toString() as string
     }
 
     const initProjectCommissionFundsDetail = () => {
         projectCommissionFundsDetail.value.forEach(projectCommissionFund => {
-            projectCommissionFund.amountAskedPreviousEdition = (projectCommissionFund.amountAskedPreviousEdition as number).toString()
-            projectCommissionFund.amountEarnedPreviousEdition = (projectCommissionFund.amountEarnedPreviousEdition as number).toString()
-            projectCommissionFund.amountAsked = (projectCommissionFund.amountAsked as number).toString()
+            projectCommissionFund.amountAskedPreviousEdition = (projectCommissionFund.amountAskedPreviousEdition ?? 0).toString()
+            projectCommissionFund.amountEarnedPreviousEdition = (projectCommissionFund.amountEarnedPreviousEdition ?? 0).toString()
+            projectCommissionFund.amountAsked = (projectCommissionFund.amountAsked ?? 0).toString()
         })
     }
     watch(() => projectCommissionFundsDetail.value, initProjectCommissionFundsDetail)
@@ -151,6 +163,7 @@ export default function () {
         projectBasicInfos.value.user = null
         projectBasicInfos.value.association = null
         projectBasicInfos.value.associationUser = null
+        projectBasicInfos.value.partnerAssociation = ''
         projectCategories.value = []
         projectCommission.value = null
         projectCommissionFunds.value = []
@@ -158,6 +171,7 @@ export default function () {
         projectBudget.value.amountStudentsAudience = 0
         projectBudget.value.amountAllAudience = 0
         projectBudget.value.ticketPrice = 0
+        projectBudget.value.studentTicketPrice = 0
         projectBudget.value.individualCost = 0
         projectBudget.value.budgetPreviousEdition = 0
         projectGoals.value.goals = ''
@@ -167,6 +181,16 @@ export default function () {
         projectGoals.value.marketingCampaign = ''
         projectGoals.value.sustainableDevelopment = ''
         processDocuments.value = []
+    }
+
+    const initProjectFunds = () => {
+        projectFunds.value = []
+        projectCommissionFunds.value.forEach(projectCommissionFund => {
+            const commissionFund = commissionFunds.value.find(commissionFund => commissionFund.id === projectCommissionFund)
+            if (commissionFund) {
+                projectFunds.value.push(commissionFund.fund)
+            }
+        })
     }
 
     // POSTS
@@ -253,7 +277,7 @@ export default function () {
     async function patchProjectBudget(isFirstEdition: boolean) {
         let dataToPatch = {}
         for (const [key, value] of Object.entries(projectBudget.value)) {
-            const numbers = ['amountStudentsAudience', 'amountAllAudience', 'ticketPrice', 'individualCost']
+            const numbers = ['amountStudentsAudience', 'amountAllAudience', 'ticketPrice', 'studentTicketPrice', 'individualCost']
             if (numbers.includes(key)) {
                 if (parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
                     dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
@@ -293,7 +317,9 @@ export default function () {
                     dataToPatch = Object.assign(dataToPatch, {amountAskedPreviousEdition: 0})
                     dataToPatch = Object.assign(dataToPatch, {amountEarnedPreviousEdition: 0})
                     dataToPatch = Object.assign(dataToPatch, {amountAsked: newCommissionFund.amountAsked})
-                } else {
+                } /*else if (key === 'isFirstEdition') {
+                    dataToPatch = Object.assign(dataToPatch, {[key]: isFirstEdition})
+                }*/ else {
                     if (numbers.includes(key)) {
                         if (parseInt(value as string) !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
                             dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
@@ -301,13 +327,13 @@ export default function () {
                     } else {
                         if (value !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
                             dataToPatch = Object.assign(dataToPatch, {[key]: value})
-
                         }
                     }
                 }
             }
             if (Object.entries(dataToPatch).length) {
-                await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFundsDetail.value[i].commissionFund}`, dataToPatch)
+                const url = `/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFundsDetail.value[i].commissionFund}`
+                await axiosAuthenticated.patch(url, dataToPatch)
             }
         }
     }
@@ -358,6 +384,10 @@ export default function () {
         initProjectAssociationUsersLabels,
         projectAssociationUsersLabels,
         initProjectCommissionFundsDetail,
-        deleteProject
+        deleteProject,
+        projectFunds,
+        initProjectFunds,
+        projectId,
+        projectProcessingDate
     }
 }

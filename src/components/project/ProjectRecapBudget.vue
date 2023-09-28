@@ -52,7 +52,7 @@ async function onGetProjectCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -71,7 +71,7 @@ const projectIsFirstEdition = () => {
             <h4>{{ t('project.re-edition') }}</h4>
             <p>
                 {{
-                    !projectIsFirstEdition ? t('yes') : t('no')
+                    projectIsFirstEdition() ? t('yes') : t('no')
                 }}
             </p>
         </div>
@@ -102,6 +102,11 @@ const projectIsFirstEdition = () => {
         <div class="display-row">
             <h4>{{ t('project.ticket-price') }}</h4>
             <p>{{ projectBudget.ticketPrice + CURRENCY }}</p>
+        </div>
+
+        <div class="display-row">
+            <h4>{{ t('project.student-ticket-price') }}</h4>
+            <p>{{ projectBudget.studentTicketPrice + CURRENCY }}</p>
         </div>
 
         <div class="display-row">
@@ -155,6 +160,6 @@ const projectIsFirstEdition = () => {
 @import "@/assets/_variables.scss";
 
 .flex-row > * {
-  width: $fullSize;
+    width: $fullSize;
 }
 </style>

@@ -7,7 +7,6 @@ import {useRoute} from 'vue-router'
 import type {AxiosInstance} from 'axios'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useCommissions from '@/composables/useCommissions'
-// @ts-ignore Missing types when importing
 import zxcvbn from 'zxcvbn'
 
 // Used for local login
@@ -30,8 +29,7 @@ watch(() => newUser.email, () => {
     if (!newUser.isCas) newUser.username = newUser.email
 })
 
-export default function() {
-
+export default function () {
     const userStore = useUserStore()
 
     /**
@@ -83,7 +81,6 @@ export default function() {
 
     watch(() => userStore.newUser, initNewUserData)
 
-    // TODO test
     async function userLocalRegister() {
         const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/', newUser)
@@ -133,10 +130,10 @@ export default function() {
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
         if (newGroups.value.length) {
-            newGroups.value.forEach(function(group) {
+            newGroups.value.forEach(function (group) {
                 // Register commission groups
                 if (group === commissionGroup.value?.id) {
-                    userFunds.value.forEach(function(fund) {
+                    userFunds.value.forEach(function (fund) {
                         groupsToRegister.push({
                             user: newUser.username,
                             group,
@@ -171,8 +168,6 @@ export default function() {
      *
      * If the user is not CAS, it then calls `userAssociationsRegister` if `newAssociationsUser.value` is defined, and then
      * calls `userGroupsRegister`.
-     *
-     * Finally, if the user is CAS, it clears `newUser` to avoid persistence of session.
      */
     async function register() {
         const {newAssociationsUser} = useUserAssociations()
@@ -182,8 +177,6 @@ export default function() {
             if (newAssociationsUser) {
                 await userAssociationsRegister(true, newUser.username)
             }
-            // We must clear newUser to avoid persistence of session
-            userStore.unLoadNewUser()
         } else {
             await userLocalRegister()
             await userGroupsRegister(true)

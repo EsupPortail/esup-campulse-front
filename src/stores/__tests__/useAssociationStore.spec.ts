@@ -337,6 +337,23 @@ describe('Association store', () => {
         })
     })
 
+    describe('updateAssociationLogo', () => {
+        it('should patch the logo and update the store', async () => {
+            const {axiosAuthenticated} = useAxios()
+
+            associationStore.association = _association
+            const logoData = new FormData()
+            const associationId = 1
+            const response = {pathLogo: 'newLogo'}
+            const mockedAxios = vi.mocked(axiosAuthenticated, true)
+            mockedAxios.patch.mockResolvedValueOnce({data: response})
+            await associationStore.updateAssociationLogo(logoData, associationId)
+            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/associations/${associationId}`, logoData)
+            expect(associationStore.association.pathLogo?.detail).toEqual(response.pathLogo)
+        })
+    })
+
     describe('getInstitutions', () => {
         afterEach(() => {
             associationStore.institutions = []

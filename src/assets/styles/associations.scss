@@ -20,7 +20,7 @@
       line-height: 1.2rem;
 
       & > span {
-        color: $annuaireColor;
+        color: $associationColor;
         font-weight: $xbold-weight;
       }
     }
@@ -42,7 +42,7 @@
       flex-direction: row;
       align-items: center;
       gap: 6rem;
-      box-shadow: 0.5rem 0 0 0 $annuaireColor inset;
+      box-shadow: 0.5rem 0 0 0 $associationColor inset;
       transition: box-shadow 0.1s linear;
       padding: 1.25rem 3rem 1.563rem 1.875rem;
 
@@ -68,7 +68,7 @@
       position: absolute;
       top: calc(50% - 12.5rem);
       left: -1.875rem;
-      background-color: $annuaireColorBackground;
+      background-color: $associationColorBackground;
       z-index: 0;
       transition: left 0.1s linear;
 
@@ -78,7 +78,7 @@
         height: 0;
         border-style: solid;
         border-width: 12.5rem 0 12.5rem 4.375rem;
-        border-color: transparent transparent transparent $annuaireColorBackground;
+        border-color: transparent transparent transparent $associationColorBackground;
         position: absolute;
         top: 0;
         right: -4.313rem;
@@ -87,7 +87,7 @@
 
     .card-chevron {
       font-size: 3rem;
-      color: $annuaireColor;
+      color: $associationColor;
       position: absolute;
       top: calc(50% - 2rem);
       right: 1.875rem;
@@ -104,7 +104,7 @@
         font-size: 2.5rem;
         line-height: 2.4rem;
         font-weight: $semibold-weight;
-        color: $annuaireColorText;
+        color: $associationColorText;
         text-transform: uppercase;
         text-decoration: none;
       }
@@ -126,18 +126,16 @@
           text-transform: none;
           font-size: 1.6rem;
           font-weight: $medium-weight;
-          color: $annuaireColorText;
+          color: $associationColorText;
           padding-right: 1.25rem;
         }
 
         & > span.label {
           display: inline-block;
-          flex: 0 0 12.5rem;
           font-size: 1.6rem;
           font-weight: $medium-weight;
           color: $textColor2;
           text-transform: uppercase;
-          padding-top: 0.063rem;
           padding-right: 0.313rem;
           white-space: nowrap;
 
@@ -154,7 +152,7 @@
 
     &:hover, &:focus {
       .q-card__section {
-        box-shadow: 1rem 0 0 0 $annuaireColor inset;
+        box-shadow: 1rem 0 0 0 $associationColor inset;
       }
 
       .card-background {
@@ -256,11 +254,11 @@
 .association-detail {
   a:link, a:visited {
     text-decoration: none;
-    color: $annuaireColor;
+    color: $associationColor;
   }
 
   a:hover, a:focus {
-    color: $annuaireColorHover;
+    color: $associationColorHover;
   }
 
   ul {

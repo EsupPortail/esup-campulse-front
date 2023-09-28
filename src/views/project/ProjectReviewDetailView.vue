@@ -44,7 +44,7 @@ async function onGetProjectReviewDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -63,7 +63,7 @@ async function onGetProjectReviewDetail() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <ProjectReviewRecapBasicInfos v-if="isLoaded"/>
+                <ProjectReviewRecapBasicInfos v-if="isLoaded" />
             </div>
         </div>
     </div>
@@ -79,7 +79,7 @@ async function onGetProjectReviewDetail() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <ProjectReviewRecapReview v-if="isLoaded"/>
+                <ProjectReviewRecapReview v-if="isLoaded" />
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@ async function onGetProjectReviewDetail() {
                 <ProjectRecapDocuments
                     v-if="isLoaded"
                     :association-id="null"
-                    process="project"
+                    process="review"
                 />
             </div>
         </div>

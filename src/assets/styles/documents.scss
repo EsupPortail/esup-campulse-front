@@ -24,6 +24,10 @@
       display: none;
       color: $dashboardColor;
     }
+
+    em {
+      padding: 0 1rem;
+    }
   }
 
   .active-link {
@@ -39,44 +43,7 @@
 
   &:hover, &:focus {
     i {
-      display: inline
-    }
-  }
-}
-
-
-.library-document {
-  span {
-    display: flex;
-    gap: 0.3rem;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-
-  i {
-    display: none;
-    color: $dashboardColor;
-  }
-
-
-  .active-link {
-    a {
-      color: $dashboardColor,
-    }
-
-    &:hover, &:focus {
-      text-decoration: underline;
-
-    }
-
-    &:hover, &:focus {
-      i {
-        display: inline;
-      }
+      display: inline;
     }
   }
 }

@@ -15,17 +15,17 @@ input.custom-input, select.custom-input, textarea.custom-input {
   width: $fullSize;
   background-color: $backgroundColor1;
   border-radius: 0;
-  border: .0625rem solid $annuaireColorBorders;
+  border: .0625rem solid $associationColorBorders;
   box-shadow: $fieldsBoxShadow;
   padding: .625rem 1.25rem .75rem;
-  color: $annuaireColorText;
+  color: $associationColorText;
   font-size: 1.125rem;
   font-weight: $medium-weight;
   transition: border-color 0.07s linear;
   margin-bottom: 1.2rem;
 
   &:focus {
-    border-color: $annuaireColor;
+    border-color: $associationColor;
   }
 
   &:last-child {
@@ -36,7 +36,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
 .variant-space-2 {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
-      border-color: $charteColorHover;
+      border-color: $charterColorHover;
     }
   }
 }
@@ -44,7 +44,7 @@ input.custom-input, select.custom-input, textarea.custom-input {
 .variant-space-3 {
   input.custom-input, select.custom-input, textarea.custom-input {
     &:focus {
-      border-color: $capeColor;
+      border-color: $commissionColor;
     }
   }
 }
@@ -79,7 +79,7 @@ label.custom-label {
       background-color: $backgroundColor1;
       box-shadow: $fieldsBoxShadow;
       height: 5rem;
-      border-left: 0.3rem solid $annuaireColor;
+      border-left: 0.3rem solid $associationColor;
       position: relative;
       white-space: nowrap;
       padding: 0 1rem;
@@ -145,11 +145,11 @@ label.custom-label {
         cursor: pointer;
 
         &:hover, &:focus {
-          background-color: $annuaireColor;
+          background-color: $associationColor;
         }
 
         &:active {
-          background-color: mix(white, $annuaireColor, 10%);
+          background-color: mix(white, $associationColor, 10%);
         }
 
         &:disabled {
@@ -242,11 +242,11 @@ label.custom-label {
           right: 0;
 
           &:hover, &:focus {
-            background-color: $annuaireColor;
+            background-color: $associationColor;
           }
 
           &:active {
-            background-color: mix(white, $annuaireColor, 10%);
+            background-color: mix(white, $associationColor, 10%);
           }
         }
       }
@@ -261,26 +261,26 @@ label.custom-label {
 .variant-space-2 {
   .document-input-group .document-input {
     .document-input-header {
-      border-color: $charteColor;
+      border-color: $charterColor;
 
       & > button {
         &:hover, &:focus {
-          background-color: $charteColor;
+          background-color: $charterColor;
         }
 
         &:active {
-          background-color: mix(white, $charteColor, 10%);
+          background-color: mix(white, $charterColor, 10%);
         }
       }
     }
 
     .document-input-list .document-item button {
       &:hover, &:focus {
-        background-color: $charteColor;
+        background-color: $charterColor;
       }
 
       &:active {
-        background-color: mix(white, $charteColor, 10%);
+        background-color: mix(white, $charterColor, 10%);
       }
     }
   }
@@ -289,26 +289,26 @@ label.custom-label {
 .variant-space-3 {
   .document-input-group .document-input {
     .document-input-header {
-      border-color: $capeColor;
+      border-color: $commissionColor;
 
       & > button {
         &:hover, &:focus {
-          background-color: $capeColor;
+          background-color: $commissionColor;
         }
 
         &:active {
-          background-color: mix(white, $capeColor, 10%);
+          background-color: mix(white, $commissionColor, 10%);
         }
       }
     }
 
     .document-input-list .document-item button {
       &:hover, &:focus {
-        background-color: $capeColor;
+        background-color: $commissionColor;
       }
 
       &:active {
-        background-color: mix(white, $capeColor, 10%);
+        background-color: mix(white, $commissionColor, 10%);
       }
     }
   }
@@ -465,7 +465,7 @@ label.custom-label {
           pointer-events: none;
 
           .q-btn__content * {
-            color: $annuaireColor;
+            color: $associationColor;
             font-weight: $semibold-weight;
           }
         }
@@ -476,13 +476,13 @@ label.custom-label {
 
 .variant-space-2 {
   .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
-    color: $charteColorActive;
+    color: $charterColorActive;
   }
 }
 
 .variant-space-3 {
   .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
-    color: $capeColor;
+    color: $commissionColor;
   }
 }
 
@@ -510,7 +510,7 @@ label.custom-label {
       background-color: $backgroundColor1;
 
       .q-btn__content i {
-        color: $annuaireColor;
+        color: $associationColor;
       }
 
       &:hover, &:focus, &:active {
@@ -525,7 +525,7 @@ label.custom-label {
         font-size: 1.4rem;
 
         strong {
-          color: $annuaireColor;
+          color: $associationColor;
           font-weight: $xbold-weight;
           padding: 0 0.3rem;
         }
@@ -546,24 +546,24 @@ label.custom-label {
   .pagination .wrapper .q-btn {
     &:hover, &:focus, &:active {
       .q-btn__content i {
-        color: $charteColorText;
+        color: $charterColorText;
       }
     }
 
     .q-btn__content i {
-      color: $charteColorActive;
+      color: $charterColorActive;
     }
 
     &.counter-button strong {
-      color: $charteColorActive;
+      color: $charterColorActive;
     }
 
     &.counter-button {
       &:hover, &:focus, &:active {
-        color: $charteColorText;
+        color: $charterColorText;
 
         strong {
-          color: $charteColorText;
+          color: $charterColorText;
         }
       }
     }
@@ -573,11 +573,11 @@ label.custom-label {
 .variant-space-3 {
   .pagination .wrapper .q-btn {
     .q-btn__content i {
-      color: $capeColor;
+      color: $commissionColor;
     }
 
     &.counter-button strong {
-      color: $capeColor;
+      color: $commissionColor;
     }
   }
 }
@@ -678,7 +678,7 @@ label.custom-label {
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 1.125rem;
-    background-color: $annuaireColor;
+    background-color: $associationColor;
     color: $textColor3;
     box-shadow: $fieldsBoxShadow;
     text-align: center;
@@ -696,12 +696,12 @@ label.custom-label {
 }
 
 .variant-space-2 .section-title i {
-  background-color: $charteColor;
-  color: $charteColorText;
+  background-color: $charterColor;
+  color: $charterColorText;
 }
 
 .variant-space-3 .section-title i {
-  background-color: $capeColor;
+  background-color: $commissionColor;
 }
 
 .variant-space-4 .section-title i {
@@ -714,7 +714,7 @@ label.custom-label {
   width: $fullSize;
   aspect-ratio: 1 / 1;
   background-color: $backgroundColor1;
-  box-shadow: 0 0 0 1px $annuaireColorBorders inset, $fieldsBoxShadow;
+  box-shadow: 0 0 0 1px $associationColorBorders inset, $fieldsBoxShadow;
   padding: 0.95rem;
   position: relative;
   align-items: center;
@@ -757,7 +757,7 @@ label.custom-label {
       width: 2.75rem;
       height: 2.75rem;
       border-radius: 1.375rem;
-      background-color: $annuaireColor;
+      background-color: $associationColor;
       vertical-align: middle;
       box-shadow: $fieldsBoxShadow;
       color: $textColor3;
@@ -776,19 +776,19 @@ label.custom-label {
 }
 
 .variant-space-2 .image-input {
-  box-shadow: 0 0 0 1px $charteColorBorders inset;
+  box-shadow: 0 0 0 1px $charterColorBorders inset;
 
   label i {
-    background-color: $charteColor;
-    color: $charteColorText;
+    background-color: $charterColor;
+    color: $charterColorText;
   }
 }
 
 .variant-space-3 .image-input {
-  box-shadow: 0 0 0 1px $capeColorBorders inset;
+  box-shadow: 0 0 0 1px $commissionColorBorders inset;
 
   label i {
-    background-color: $capeColor;
+    background-color: $commissionColor;
   }
 }
 
@@ -850,7 +850,7 @@ label.custom-label {
   flex-direction: column;
   background-color: $backgroundColor1;
   box-shadow: $fieldsBoxShadow;
-  border-left: 4px solid $annuaireColor;
+  border-left: 4px solid $associationColor;
   padding: 1rem;
   color: $textColor1;
   font-weight: $medium-weight;
@@ -897,13 +897,13 @@ label.custom-label {
 
 .variant-space-2 {
   .display-row, .comment-row {
-    border-color: $charteColor;
+    border-color: $charterColor;
   }
 }
 
 .variant-space-3 {
   .display-row, .comment-row {
-    border-color: $capeColor;
+    border-color: $commissionColor;
   }
 }
 

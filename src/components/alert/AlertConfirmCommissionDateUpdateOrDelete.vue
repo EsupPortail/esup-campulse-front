@@ -30,7 +30,7 @@ async function onOpenDeleteAlert() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -58,11 +58,8 @@ async function onOpenDeleteAlert() {
         >
             <QCard class="variant-space-3">
                 <QCardSection class="row items-center">
-                    <p class="paragraph">{{ t('commission.alerts.confirm-update') }}</p>
-                </QCardSection>
-
-                <QCardActions>
-                    <div class="flex-row padding-top">
+                    <p>{{ t('commission.alerts.confirm-update') }}</p>
+                    <div class="flex-row-center padding-top">
                         <QBtn
                             v-close-popup
                             :label="t('cancel')"
@@ -79,7 +76,7 @@ async function onOpenDeleteAlert() {
                             @click="$emit('updateCommissionDate')"
                         />
                     </div>
-                </QCardActions>
+                </QCardSection>
             </QCard>
         </QDialog>
         <QBtn
@@ -95,10 +92,7 @@ async function onOpenDeleteAlert() {
         >
             <QCard class="variant-space-3">
                 <QCardSection class="row items-center">
-                    <p
-                        v-if="!projectStore.projects.length"
-                        class="paragraph"
-                    >
+                    <p v-if="!projectStore.managedProjects.length">
                         {{ t('commission.alerts.confirm-delete') }}
                     </p>
                     <div
@@ -109,14 +103,9 @@ async function onOpenDeleteAlert() {
                             aria-hidden="true"
                             class="bi bi-exclamation-lg"
                         ></i>
-                        <p class="paragraph">
-                            {{ t('commission.alerts.delete-warning-projects-submitted') }}
-                        </p>
+                        <p>{{ t('commission.alerts.delete-warning-projects-submitted') }}</p>
                     </div>
-                </QCardSection>
-
-                <QCardActions>
-                    <div class="flex-row padding-top">
+                    <div class="flex-row-center padding-top">
                         <QBtn
                             v-close-popup
                             :label="t('cancel')"
@@ -125,7 +114,7 @@ async function onOpenDeleteAlert() {
                             icon="bi-x-lg"
                         />
                         <QBtn
-                            v-if="!projectStore.projects.length"
+                            v-if="!projectStore.managedProjects.length"
                             v-close-popup
                             :label="t('delete')"
                             class="btn-lg"
@@ -134,7 +123,7 @@ async function onOpenDeleteAlert() {
                             @click="$emit('deleteCommissionDate')"
                         />
                     </div>
-                </QCardActions>
+                </QCardSection>
             </QCard>
         </QDialog>
     </div>
@@ -144,6 +133,6 @@ async function onOpenDeleteAlert() {
 @import "@/assets/styles/forms.scss";
 
 .q-card {
-  padding: 1rem
+    padding: 1rem
 }
 </style>

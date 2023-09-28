@@ -9,8 +9,12 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
 import {useRoute} from 'vue-router'
+import {useContentStore} from '@/stores/useContentStore'
+import LayoutImageText from '@/components/layout/LayoutImageText.vue'
+import DirectoryImage from '@/assets/img/directory-image.jpg'
 
 const associationStore = useAssociationStore()
+const contentStore = useContentStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
@@ -22,6 +26,7 @@ onMounted(async function () {
     await associationStore.getAssociations(true)
     associations.value = associationStore.associations
     await loadAssociationsActivityFields()
+    await getContents()
     loading.hide()
 })
 
@@ -58,7 +63,8 @@ watch(() => endIndex.value, () => {
 function scrollToTop() {
     const searchFields = document.querySelector('#search-form') as HTMLElement
     searchFields.scrollIntoView()
-    document.querySelector('.directory-sorting + div a:first-child').focus()
+    const element = document.querySelector('.directory-sorting + div a:first-child')
+    if (element) (element as HTMLAnchorElement).focus()
 }
 
 // Functions
@@ -71,7 +77,20 @@ async function loadAssociationsActivityFields() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
+            })
+        }
+    }
+}
+
+async function getContents() {
+    try {
+        await contentStore.getContentsByCode(['ASSOCIATION_HOME_FIRST_BLOCK'])
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -83,27 +102,11 @@ async function loadAssociationsActivityFields() {
     <section class="dashboard-section">
         <div class="introduction-section">
             <div class="content">
-                <div class="intro-image">
-                    <img
-                        :alt="t('directory.image-alt')"
-                        src="@/assets/img/unistra.jpg"
-                    />
-                </div>
-                <div>
-                    <h2>{{ t('directory.subtitle') }}</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore
-                        et
-                        dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure
-                        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                        sint
-                        occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                </div>
+                <LayoutImageText
+                    :img="DirectoryImage"
+                    :text="contentStore.contents[0]?.body"
+                    :title="contentStore.contents[0]?.header"
+                />
             </div>
         </div>
 
@@ -125,7 +128,7 @@ async function loadAssociationsActivityFields() {
                                 {{
                                     associations.length > 1 ? t('directory.found-associations-plural') :
                                     t('directory.found-associations-singular')
-                                }} :
+                                }}{{ t('colon') }}
                             </p>
                             <p v-else>{{ t('directory.no-match') }}</p>
                             <p>
@@ -133,7 +136,7 @@ async function loadAssociationsActivityFields() {
                                 {{
                                     associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') :
                                     t('directory.associations-on-page-singular')
-                                }} :
+                                }}{{ t('colon') }}
                             </p>
                         </div>
                     </div>
@@ -152,13 +155,17 @@ async function loadAssociationsActivityFields() {
                         <QCardSection>
                             <div class="list-logo">
                                 <QImg
-                                    :src="association.pathLogo ? (Object.keys(association.pathLogo).length !== 0 ? (!association.pathLogo.list.startsWith('http') ? baseUrl + association.pathLogo.list : association.pathLogo.list) : noLogoSquare.default) : noLogoSquare.default"
+                                    :src="association.pathLogo ?
+                                        (Object.keys(association.pathLogo).length !== 0 ?
+                                            (!association.pathLogo.list?.startsWith('http') ?
+                                                baseUrl + association.pathLogo.list : association.pathLogo.list) :
+                                            noLogoSquare.default) : noLogoSquare.default"
                                     aria-hidden="true"
                                 />
                             </div>
                             <div class="list-details">
                                 <h3>
-                                    <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}">
+                                    <RouterLink :to="{ name: 'AssociationDetail', params: { id: association.id } }">
                                         {{ association.name }}
                                     </RouterLink>
                                 </h3>
@@ -182,7 +189,8 @@ async function loadAssociationsActivityFields() {
                                             {{ t('directory.labels.association-institution') + ' : ' }}
                                         </span>
                                         <span class="value">{{
-                                            associationStore.institutions.find(obj => obj.id === association?.institution)?.name
+                                            associationStore.institutions.find(obj => obj.id ===
+                                                association?.institution)?.name
                                         }}</span>
                                     </li>
                                     <li v-if="association.activityField">
@@ -194,7 +202,8 @@ async function loadAssociationsActivityFields() {
                                             {{ t('directory.labels.association-activity-field') + ' : ' }}
                                         </span>
                                         <span class="value">{{
-                                            associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
+                                            associationStore.activityFields.find(obj => obj.id ===
+                                                association?.activityField)?.name
                                         }}</span>
                                     </li>
                                     <li v-if="association.institutionComponent">
@@ -206,7 +215,8 @@ async function loadAssociationsActivityFields() {
                                             {{ t('directory.labels.association-institution-component') + ' : ' }}
                                         </span>
                                         <span class="value">{{
-                                            associationStore.institutionComponents.find(obj => obj.id === association?.institutionComponent)?.name
+                                            associationStore.institutionComponents.find(obj => obj.id ===
+                                                association?.institutionComponent)?.name
                                         }}</span>
                                     </li>
                                 </ul>

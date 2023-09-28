@@ -12,7 +12,7 @@ import useCommissions from '@/composables/useCommissions'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import router from '@/router'
 import useErrors from '@/composables/useErrors'
-import type {ProcessDocument} from '#/documents'
+import type {UploadedProcessDocument} from '#/documents'
 import FormUserAddress from '@/components/form/FormUserAddress.vue'
 import ProjectRecap from '@/components/project/ProjectRecap.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
@@ -47,11 +47,8 @@ const {
     projectAssociationUsersLabels
 } = useSubmitProject()
 const {
-    getDocuments,
-    initProcessDocuments,
     uploadDocuments,
-    initProjectDocumentUploads,
-    createFileLink
+    createUploadedFileLink
 } = useDocumentUploads()
 const {fromDateIsAnterior, CURRENCY} = useUtility()
 const {
@@ -75,39 +72,37 @@ onMounted(async () => {
     loading.show()
     projectId.value = parseInt(route.params.projectId as string)
     if (projectId.value) newProject.value = false
+    // If the project has not been posted yet, we clean project store
+    if (!projectId.value) {
+        projectStore.project = undefined
+        projectStore.projectCategories = []
+        reInitSubmitProjectForm()
+    }
     await onGetProjectDetail()
     // If project is not a draft, then push to 404
-    if (projectStore.project && projectStore.project?.projectStatus !== 'PROJECT_DRAFT') {
-        await router.push({name: '404'})
+    if (projectStore.project && projectStore.project.id === projectId.value) {
+        const acceptedStatuses = ['PROJECT_DRAFT', 'PROJECT_DRAFT_PROCESSED']
+        if (!acceptedStatuses.includes(projectStore.project.projectStatus)) {
+            await router.push({name: '404'})
+        }
     }
     await onGetProjectCategories()
-    await onGetAssociationUsers()
+    // Init applicant
     initApplicant()
-    // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
-    if (applicant.value === 'association') {
-        const association = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.associationId as string))
-        if (association) {
-            associationId.value = association.association.id
-            const associationUserId = association.id
-            // If new project and user has no president status, redirect to 404
-            if (newProject.value) {
-                if (!userStore.hasPresidentStatus(associationId.value)) await router.push({name: '404'})
-            }
-            // If existing project and user has no president status nor project delegate status; redirect to 404
-            else {
-                if (!userStore.hasPresidentStatus(associationId.value) && projectStore.project?.associationUser !== associationUserId) {
-                    await router.push({name: '404'})
-                }
-            }
-            associationName.value = association.association.name
-            initIsSite()
-        } else await router.push({name: '404'})
-    }
+    await initApplicantDetails()
+    // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
+    projectStore.projectCommissionFunds = []
     isLoaded.value = true
     loading.hide()
 })
 
 const step = ref(1)
+
+watch(() => step.value, () => {
+    // Scroll to top when we change step
+    const stepper = document.getElementById('stepper')
+    stepper?.scrollIntoView(true)
+})
 
 watch(() => step.value === 2, async () => {
     loading.show()
@@ -124,11 +119,6 @@ watch(() => step.value === 4, async () => {
     await onGetProjectGoals()
     loading.hide()
 })
-watch(() => step.value === 5, async () => {
-    loading.show()
-    await onGetProjectDocuments()
-    loading.hide()
-})
 
 // REFS
 const applicant = ref<'association' | 'user' | undefined>()
@@ -138,6 +128,7 @@ const associationId = ref<number>()
 const projectId = ref<number>()
 
 const newProject = ref<boolean>(true)
+const newProjectPosted = ref<boolean>(false)
 
 const projectReEdition = ref<boolean>(false)
 watch(() => projectStore.projectCommissionFunds.length, () => {
@@ -150,9 +141,39 @@ const isLoaded = ref<boolean>(false)
 
 // INIT APPLICANT STATUS BASED ON ROUTER
 const initApplicant = () => {
-    if (route.name === 'SubmitProjectAssociation') applicant.value = 'association'
-    else applicant.value = 'user'
+    if (route.name === 'SubmitProjectAssociation') {
+        applicant.value = 'association'
+        associationId.value = parseInt(route.params.associationId as string)
+    } else applicant.value = 'user'
 }
+
+const initApplicantDetails = async () => {
+    // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
+    if (applicant.value === 'association') {
+        const association = userStore.userAssociations.find(obj => obj.association.id === associationId.value)
+        if (association && associationId.value) {
+            const associationUserId = association.id
+            // Get association users
+            await onGetAssociationUsers()
+            // If new project and user has no president status, redirect to 404
+            if (newProject.value) {
+                if (!userStore.hasPresidentStatus(associationId.value)) await router.push({name: '404'})
+            }
+            // If existing project and user has no president status nor project delegate status; redirect to 404
+            else {
+                if (!userStore.hasPresidentStatus(associationId.value) && projectStore.project?.associationUser !== associationUserId) {
+                    await router.push({name: '404'})
+                }
+            }
+            associationName.value = association.association.name
+            initIsSite()
+        } else {
+            await router.push({name: '404'})
+        }
+    }
+}
+
+watch(async () => userStore.userAssociations.length, await initApplicantDetails)
 
 // INIT IS SITE
 const initIsSite = () => {
@@ -161,7 +182,7 @@ const initIsSite = () => {
 }
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
-const datesAreLegal = ref<boolean>(false)
+const datesAreLegal = ref<boolean>(true)
 watch(() => projectBasicInfos.value.plannedStartDate, () => {
     datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate, true)
 })
@@ -189,7 +210,7 @@ async function onGetProjectDetail() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -199,7 +220,7 @@ async function onGetProjectDetail() {
 async function onGetProjectCategories() {
     try {
         await projectStore.getProjectCategoryNames()
-        if (!newProject.value && projectStore.project) {
+        if ((!newProject.value || newProjectPosted.value) && projectStore.project) {
             await projectStore.getProjectCategories()
             initProjectCategories()
         }
@@ -207,20 +228,20 @@ async function onGetProjectCategories() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
 }
 
-async function onGetFile(uploadedDocument: ProcessDocument) {
+async function onGetFile(uploadedDocument: UploadedProcessDocument) {
     try {
-        await createFileLink(uploadedDocument)
+        await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -235,7 +256,7 @@ async function onGetAssociationUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -262,7 +283,7 @@ async function onGetCommissionDates() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -278,7 +299,7 @@ async function onGetProjectBudget() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -290,39 +311,24 @@ function onGetProjectGoals() {
     initProjectGoals()
 }
 
-// GET DATA FOR STEP 5
-async function onGetProjectDocuments() {
-    try {
-        await getDocuments(['DOCUMENT_PROJECT'])
-        initProcessDocuments()
-        await projectStore.getProjectDocuments()
-        initProjectDocumentUploads()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
-            })
-        }
-    }
-}
-
 // SUBMIT STEP 1
 async function onSubmitBasicInfos(nextStep: number) {
     loading.show()
     try {
-        if (newProject.value) {
+        if (newProject.value && !newProjectPosted.value) {
             await postNewProject(parseInt(route.params.associationId as string))
+            newProjectPosted.value = true
         } else {
             await patchProjectBasicInfos()
         }
         await updateProjectCategories()
+        await onGetProjectCategories()
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -339,7 +345,7 @@ async function onSubmitCommission(nextStep: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -358,7 +364,7 @@ async function onSubmitBudget(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -377,7 +383,7 @@ async function onSubmitGoals(nextStep: number) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -390,13 +396,17 @@ async function onUploadDocuments(nextStep: number) {
     loading.show()
     if (projectStore.project) {
         try {
-            await uploadDocuments(parseInt(route.params.associationId as string))
+            await uploadDocuments(
+                applicant.value === 'association' ? associationId.value : undefined,
+                applicant.value === 'user' ? userStore.user?.username : undefined,
+                false
+            )
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -415,7 +425,7 @@ async function onSubmitProject() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -441,8 +451,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
         <div class="dashboard-section-container">
             <div class="container">
                 <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']"/>
-                
+
                 <QStepper
+                    id="stepper"
                     ref="stepper"
                     v-model="step"
                     active-color="commission-bold"
@@ -462,42 +473,43 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBasicInfos.name"
                                 :label="t('project.name') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-name')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-name')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
                                 filled
+                                lazy-rules
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedStartDate"
                                 :label="t('project.planned-start-date') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-startdate'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-startdate'), val => val && datesAreLegal || t('forms.legal-dates')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
                                 filled
                                 lazy-rules
-                                type="date"
-                                min="1970-01-01"
                                 max="2120-01-01"
+                                min="1970-01-01"
+                                type="date"
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedEndDate"
                                 :label="t('project.planned-end-date') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-enddate'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-enddate'), val => val && datesAreLegal || t('forms.legal-dates')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
                                 filled
                                 lazy-rules
-                                type="date"
-                                min="1970-01-01"
                                 max="2120-01-01"
+                                min="1970-01-01"
+                                type="date"
                             />
                             <QInput
                                 v-model="projectBasicInfos.plannedLocation"
                                 :label="t('project.planned-location') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-location')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-location')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -509,7 +521,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :hint="t('forms.multiple-choices-enabled')"
                                 :label="t('project.categories') + ' *'"
                                 :options="projectStore.projectCategoriesLabels"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-categories')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-categories')]"
                                 clearable
                                 color="commission"
                                 emit-value
@@ -524,7 +536,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     v-model="projectBasicInfos.associationUser"
                                     :label="t('project.association-user') + ' *'"
                                     :options="projectAssociationUsersLabels"
-                                    :rules="[ val => val || t('forms.required-project-association-user')]"
+                                    :rules="[val => val || t('forms.required-project-association-user')]"
                                     clearable
                                     color="commission"
                                     emit-value
@@ -533,9 +545,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     map-options
                                 />
                             </div>
-                            <div
-                                v-else
-                            >
+                            <div v-else>
                                 <div class="info-panel info-panel-warning">
                                     <i
                                         aria-hidden="true"
@@ -544,10 +554,20 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     <p>{{ t('address.verify') }}</p>
                                 </div>
                                 <FormUserAddress
+                                    :edited-by-staff="false"
                                     :user="userStore.user"
                                     color="commission"
                                 />
                             </div>
+                            <QInput
+                                v-if="applicant === 'association'"
+                                v-model="projectBasicInfos.partnerAssociation"
+                                :label="t('project.partner-association')"
+                                clearable
+                                color="commission"
+                                filled
+                                lazy-rules
+                            />
                             <div class="flex-row-center padding-top padding-bottom">
                                 <QBtn
                                     :label="t('continue')"
@@ -574,7 +594,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 v-model="projectCommission"
                                 :label="t('project.commission-choice') + ' *'"
                                 :options="commissionLabels"
-                                :rules="[ val => val || t('forms.select-project-commission-date')]"
+                                :rules="[val => val || t('forms.select-project-commission-date')]"
                                 clearable
                                 color="commission"
                                 emit-value
@@ -598,7 +618,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :label="t('project.commission-funds-choice') + ' *'"
                                 :options="fundsLabels"
                                 :readonly="!projectCommission"
-                                :rules="[ val => val || t('forms.select-project-commission-member')]"
+                                :rules="[val => val || t('forms.select-project-commission-member')]"
                                 clearable
                                 color="commission"
                                 emit-value
@@ -661,8 +681,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         :key="commissionFund.id"
                                         v-model="commissionFund.amountAskedPreviousEdition"
                                         :label="funds.find(obj => obj.id === (commissionFunds
-                                            .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
-                                        :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.required-project-amount-asked-previous')] : []"
+                                            .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
+                                        :rules="projectReEdition ? [val => val && val.length > 0 || t('forms.required-project-amount-asked-previous')] : []"
                                         :shadow-text="` ${CURRENCY}`"
                                         color="commission"
                                         filled
@@ -679,8 +699,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         :key="commissionFund.id"
                                         v-model="commissionFund.amountEarnedPreviousEdition"
                                         :label="funds.find(obj => obj.id === (commissionFunds
-                                            .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
-                                        :rules="projectReEdition ? [ val => val && val.length > 0 || t('forms.required-project-amount-earned-previous')] : []"
+                                            .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
+                                        :rules="projectReEdition ? [val => val && val.length > 0 || t('forms.required-project-amount-earned-previous')] : []"
                                         :shadow-text="` ${CURRENCY}`"
                                         color="commission"
                                         filled
@@ -693,7 +713,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 <QInput
                                     v-model="projectBudget.budgetPreviousEdition"
                                     :label="t('project.budget-previous-edition') + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.required-project-budget-previous')]"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-project-budget-previous')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     color="commission"
@@ -713,7 +733,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.targetAudience"
                                 :label="t('project.target-audience') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-audience')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -724,7 +744,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountStudentsAudience"
                                 :label="t('project.target-students-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-amount-students-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-students-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -737,7 +757,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-amount-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -750,7 +770,21 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.ticketPrice"
                                 :label="t('project.ticket-price') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-ticket')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-ticket')]"
+                                :shadow-text="` ${CURRENCY}`"
+                                aria-required="true"
+                                color="commission"
+                                filled
+                                inputmode="numeric"
+                                lazy-rules
+                                min="0"
+                                type="number"
+                            />
+
+                            <QInput
+                                v-model="projectBudget.studentTicketPrice"
+                                :label="t('project.student-ticket-price') + ' *'"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-ticket')]"
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 color="commission"
@@ -764,7 +798,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.individualCost"
                                 :label="t('project.individual-cost') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-individual-cost')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-individual-cost')]"
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 color="commission"
@@ -787,8 +821,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :key="commissionFund.id"
                                     v-model="commissionFund.amountAsked"
                                     :label="funds.find(obj => obj.id === (commissionFunds
-                                        .find(obj => obj.id === commissionFund.commissionFund).fund))?.acronym + ' *'"
-                                    :rules="[ val => val && val.length > 0 || t('forms.required-project-budget')]"
+                                        .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
+                                    :rules="[val => val && val.length > 0 || t('forms.required-project-budget')]"
                                     :shadow-text="` ${CURRENCY}`"
                                     color="commission"
                                     filled
@@ -830,7 +864,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.goals"
                                 :label="t('project.goals') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-goals')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-goals')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -841,7 +875,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.summary"
                                 :label="t('project.summary') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-summary')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-summary')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -852,7 +886,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.plannedActivities"
                                 :label="t('project.planned-activities') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-activities')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-activities')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -863,7 +897,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.preventionSafety"
                                 :label="t('project.prevention-safety') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-safety')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-safety')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -874,7 +908,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.marketingCampaign"
                                 :label="t('project.marketing-campaign') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-marketing')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-marketing')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -885,7 +919,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectGoals.sustainableDevelopment"
                                 :label="t('project.sustainable-development') + ' *'"
-                                :rules="[ val => val && val.length > 0 || t('forms.required-project-sustainable')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-sustainable')]"
                                 aria-required="true"
                                 color="commission"
                                 filled
@@ -918,13 +952,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         :title="t('project.documents')"
                         icon="bi-file-earmark"
                     >
-                        <QForm
-                            @submit.prevent="onUploadDocuments(6)"
-                        >
+                        <QForm @submit.prevent="onUploadDocuments(6)">
                             <!--
                                                         <h3 class="title-2">{{ t('project.documents') }}</h3>
                             -->
-
                             <div class="info-panel info-panel-warning">
                                 <i
                                     aria-hidden="true"

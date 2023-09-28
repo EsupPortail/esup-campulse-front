@@ -24,12 +24,17 @@ const {catchHTTPError} = useErrors()
 const {formatDate, phoneRegex} = useUtility()
 const {checkChanges, updateAssociation} = useAssociation()
 const {uploadDocuments} = useDocumentUploads()
-const {signCharter} = useCharters()
+const {patchCharterStatus} = useCharters()
 const route = useRoute()
 const userStore = useUserStore()
 const associationStore = useAssociationStore()
 
 const step = ref(1)
+
+watch(() => step.value, () => {
+    // Scroll to top when we change step
+    document.getElementById('stepper')?.scrollIntoView(true)
+})
 
 // Association infos
 const associationId = ref<number>()
@@ -41,6 +46,7 @@ const editedAssociation = ref<EditedAssociation>({
     lastGoaDate: '',
     presidentNames: '',
     presidentPhone: '',
+    presidentEmail: '',
     address: '',
     zipcode: '',
     city: '',
@@ -58,6 +64,7 @@ const initEditedAssociation = () => {
     editedAssociation.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string)
     editedAssociation.value.presidentNames = associationStore.association?.presidentNames
     editedAssociation.value.presidentPhone = associationStore.association?.presidentPhone
+    editedAssociation.value.presidentEmail = associationStore.association?.presidentEmail
     editedAssociation.value.address = associationStore.association?.address
     editedAssociation.value.zipcode = associationStore.association?.zipcode
     editedAssociation.value.city = associationStore.association?.city
@@ -87,7 +94,7 @@ async function onGetAssociationDetails() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -110,7 +117,7 @@ async function onPatchAssociation() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -121,13 +128,13 @@ async function onPatchAssociation() {
 async function onUploadDocuments(nextStep: number) {
     loading.show()
     try {
-        await uploadDocuments(associationId.value)
+        await uploadDocuments(associationId.value, undefined, false)
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -139,13 +146,13 @@ async function onSignCharter() {
     loading.show()
     if (associationId.value) {
         try {
-            await signCharter(associationId.value)
+            await patchCharterStatus('CHARTER_PROCESSING', associationId.value)
             await router.push({name: 'SignCharterSuccessful', params: {associationId: associationId.value}})
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                    message: catchHTTPError(error.response)
                 })
             }
         }
@@ -159,10 +166,9 @@ async function onSignCharter() {
     <section class="dashboard-section">
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoProcessDocuments
-                    :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"
-                />
+                <InfoProcessDocuments :processes="['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']"/>
                 <QStepper
+                    id="stepper"
                     ref="stepper"
                     v-model="step"
                     active-color="charter-bold"
@@ -173,9 +179,7 @@ async function onSignCharter() {
                         :title="t('charter.site.sign-form.association-infos-update')"
                         icon="bi-pencil"
                     >
-                        <QForm
-                            @submit="onPatchAssociation"
-                        >
+                        <QForm @submit="onPatchAssociation">
                             <InfoFormRequiredFields/>
                             <QInput
                                 v-model="editedAssociation.name"
@@ -196,31 +200,45 @@ async function onSignCharter() {
                             />
                             <QInput
                                 v-model="editedAssociation.lastGoaDate"
-                                :label="t('association.labels.last-goa')"
+                                :label="t('association.labels.last-goa') + ' *'"
                                 :rules="[val => val && val.length > 0 || t('forms.required-association-goa-date')]"
+                                aria-required="true"
                                 clearable
                                 color="charter"
                                 filled
+                                lazy-rules
                                 max="2120-01-01"
                                 min="1970-01-01"
                                 type="date"
                             />
                             <QInput
                                 v-model="editedAssociation.presidentNames"
-                                :label="t('association.labels.president-name')"
+                                :label="t('association.labels.president-name') + ' *'"
                                 :rules="[val => val && val.length > 0 || t('forms.required-association-president-names')]"
+                                aria-required="true"
                                 clearable
                                 color="charter"
                                 filled
                             />
                             <QInput
                                 v-model="editedAssociation.presidentPhone"
-                                :label="t('association.labels.president-phone')"
+                                :label="t('association.labels.president-phone') + ' *'"
                                 :rules="[val => phoneRegex.test(val) || t('forms.required-phone')]"
+                                aria-required="true"
                                 clearable
                                 color="charter"
                                 filled
                                 type="tel"
+                            />
+                            <QInput
+                                v-model="editedAssociation.presidentEmail"
+                                :label="t('association.labels.president-email') + ' *'"
+                                :rules="[val => val && val.length > 0 || t('forms.required-email')]"
+                                aria-required="true"
+                                clearable
+                                color="charter"
+                                filled
+                                type="email"
                             />
                             <QSelect
                                 v-model="editedAssociation.institutionComponent"
@@ -248,8 +266,9 @@ async function onSignCharter() {
                                 <legend class="title-4">{{ t('association.labels.address') }}</legend>
                                 <QInput
                                     v-model="editedAssociation.address"
-                                    :label="t('address.address')"
+                                    :label="t('address.address') + ' *'"
                                     :rules="[val => val && val.length > 0 || t('forms.required-address')]"
+                                    aria-required="true"
                                     clearable
                                     color="charter"
                                     filled
@@ -257,24 +276,27 @@ async function onSignCharter() {
                                 <div class="flex-row">
                                     <QInput
                                         v-model="editedAssociation.zipcode"
-                                        :label="t('address.zipcode')"
+                                        :label="t('address.zipcode') + ' *'"
                                         :rules="[val => val && val.length > 0 || t('forms.required-zipcode')]"
+                                        aria-required="true"
                                         clearable
                                         color="charter"
                                         filled
                                     />
                                     <QInput
                                         v-model="editedAssociation.city"
-                                        :label="t('address.city')"
+                                        :label="t('address.city') + ' *'"
                                         :rules="[val => val && val.length > 0 || t('forms.required-city')]"
+                                        aria-required="true"
                                         clearable
                                         color="charter"
                                         filled
                                     />
                                     <QInput
                                         v-model="editedAssociation.country"
-                                        :label="t('address.country')"
+                                        :label="t('address.country') + ' *'"
                                         :rules="[val => val && val.length > 0 || t('forms.required-country')]"
+                                        aria-required="true"
                                         clearable
                                         color="charter"
                                         filled
@@ -285,7 +307,6 @@ async function onSignCharter() {
                             <QInput
                                 v-model="editedAssociation.siret"
                                 :label="t('association.labels.siret')"
-                                :rules="[val => val && val.length > 0 || t('forms.required-association-siret')]"
                                 clearable
                                 color="charter"
                                 filled
@@ -310,9 +331,7 @@ async function onSignCharter() {
                         :title="t('charter.site.sign-form.documents-upload')"
                         icon="bi-file-earmark"
                     >
-                        <QForm
-                            @submit="onUploadDocuments(3)"
-                        >
+                        <QForm @submit="onUploadDocuments(3)">
                             <InfoFormRequiredFields/>
                             <FormDocumentUploads
                                 :association-id="associationId"
@@ -344,9 +363,7 @@ async function onSignCharter() {
                         :title="t('recap')"
                         icon="bi-check-lg"
                     >
-                        <QForm
-                            @submit="onSignCharter"
-                        >
+                        <QForm @submit="onSignCharter">
                             <CharterRecap
                                 :association-id="associationId"
                                 view="signCharter"
@@ -384,10 +401,10 @@ async function onSignCharter() {
 @import '@/assets/_variables.scss';
 
 .q-field {
-  padding-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 .flex-row > * {
-  width: $fullSize;
+    width: $fullSize;
 }
 </style>

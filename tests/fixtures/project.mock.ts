@@ -4,8 +4,11 @@ import type {
     ProjectBudget,
     ProjectCategory,
     ProjectCommissionFund,
-    ProjectGoals
+    ProjectGoals, ProjectList,
+    ProjectReview
 } from '#/project'
+import type {DocumentUpload} from '#/documents'
+import {_currentYear} from './dates.mock'
 
 export const _project: Project = {
     id: 1,
@@ -16,11 +19,13 @@ export const _project: Project = {
     user: null,
     association: 1,
     associationUser: 1,
+    partnerAssociation: 'Personne',
     budgetPreviousEdition: 1000,
     targetAudience: 'Une centaine d\'étudiants.',
     amountStudentsAudience: 90,
     amountAllAudience: 100,
     ticketPrice: 10,
+    studentTicketPrice: 0,
     individualCost: 15,
     goals: 'Ceci sont les objectifs de mon projet en tant que porteur individuel. Par exemple rassembler les étudiants autour d\'une cause commune.',
     summary: 'Récapitulatif simple du projet.',
@@ -30,17 +35,30 @@ export const _project: Project = {
     sustainableDevelopment: 'Actions en rapport avec la DDRS (Développement Durable et Responsabilité Sociétale)',
     projectStatus: 'PROJECT_DRAFT',
     creationDate: '2023-06-01',
-    editionDate: '2023-06-02'
+    editionDate: '2023-06-02',
+    processingDate: '2023-06-02',
+    manualIdentifier: '20230001'
 }
 
-export const _projects = [
+export const _projects: ProjectList[] = [
     {
         id: 1,
         name: 'Projet associatif de porteur de projet individuel',
         association: null,
         user: 9,
         editionDate: '2023-03-15T11:18:47+01:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090001'
     },
     {
         id: 2,
@@ -48,7 +66,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-03-14T11:18:47+01:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090002'
     },
     {
         id: 3,
@@ -56,7 +85,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-04-26T14:27:42.938670+02:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090003'
     },
     {
         id: 4,
@@ -64,7 +104,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-04-26T14:28:59.408076+02:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090004'
     },
     {
         id: 5,
@@ -72,7 +123,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-04-28T11:06:52.944326+02:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090005'
     },
     {
         id: 6,
@@ -80,7 +142,18 @@ export const _projects = [
         association: 2,
         user: null,
         editionDate: '2023-04-28T11:07:42.336557+02:00',
-        projectStatus: 'PROJECT_DRAFT'
+        projectStatus: 'PROJECT_DRAFT',
+        associationUser: 1,
+        plannedEndDate: '2023-09-30',
+        plannedLocation: 'Strasbourg',
+        commission: {
+            id: 1,
+            submissionDate: '',
+            commissionDate: '',
+            isOpenToProjects: true,
+            name: ''
+        },
+        manualIdentifier: '2023090006'
     }
 ]
 
@@ -157,7 +230,7 @@ export const _projectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 1,
         project: 1,
-        commissionFund: 3,
+        commissionFund: 1,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
@@ -168,7 +241,7 @@ export const _projectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 2,
         project: 2,
-        commissionFund: 4,
+        commissionFund: 2,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
@@ -179,7 +252,7 @@ export const _projectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 3,
         project: 2,
-        commissionFund: 2,
+        commissionFund: 3,
         isFirstEdition: true,
         amountAskedPreviousEdition: 0,
         amountEarnedPreviousEdition: 0,
@@ -193,7 +266,7 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 1,
         project: 1,
-        commissionFund: 3,
+        commissionFund: 1,
         isFirstEdition: true,
         amountAskedPreviousEdition: 100,
         amountEarnedPreviousEdition: 100,
@@ -204,7 +277,7 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 2,
         project: 2,
-        commissionFund: 4,
+        commissionFund: 2,
         isFirstEdition: true,
         amountAskedPreviousEdition: 300,
         amountEarnedPreviousEdition: 300,
@@ -215,7 +288,7 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     {
         id: 3,
         project: 2,
-        commissionFund: 2,
+        commissionFund: 4,
         isFirstEdition: true,
         amountAskedPreviousEdition: 500,
         amountEarnedPreviousEdition: 500,
@@ -225,18 +298,45 @@ export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
     }
 ]
 
-export const _documentUploads = [
+export const _documentUploads: DocumentUpload[] = [
     {
         id: 1,
-        path_file: 'string',
-        size: 1000,
-        name: 'document',
-        uploadDate: '2023-05-02T09:19:50.997Z',
-        documentUploadStatus: 'DOCUMENT_REJECTED',
-        document: 12,
-        user: 0,
+        uploadDate: '2023-01-01',
+        pathFile: 'https://plana.unistra.fr',
+        size: 10000,
+        validatedDate: '2023-01-01',
+        comment: '',
+        document: 1,
+        user: null,
         association: 1,
-        project: 1
+        project: null,
+        name: 'charte-site-alsace.fr'
+    },
+    {
+        id: 2,
+        uploadDate: '2023-01-01',
+        pathFile: 'https://plana.unistra.fr',
+        size: 10000,
+        validatedDate: '2023-01-01',
+        comment: '',
+        document: 2,
+        user: null,
+        association: 1,
+        project: null,
+        name: 'charte-rgpd-site-alsace.fr'
+    },
+    {
+        id: 3,
+        uploadDate: '2023-01-01',
+        pathFile: 'https://plana.unistra.fr',
+        size: 10000,
+        validatedDate: [_currentYear, '01', '01'].join('-'),
+        comment: '',
+        document: 3,
+        user: null,
+        association: 1,
+        project: null,
+        name: 'charte-fsdie.fr'
     }
 ]
 
@@ -247,7 +347,8 @@ export const _projectBasicInfos: ProjectBasicInfos = {
     plannedLocation: 'Strasbourg',
     user: null,
     association: null,
-    associationUser: null
+    associationUser: null,
+    partnerAssociation: 'Personne',
 }
 
 export const _projectBudget: ProjectBudget = {
@@ -256,6 +357,7 @@ export const _projectBudget: ProjectBudget = {
     amountStudentsAudience: 50,
     amountAllAudience: 60,
     ticketPrice: 2,
+    studentTicketPrice: 1,
     individualCost: 5
 }
 
@@ -266,4 +368,22 @@ export const _projectGoals: ProjectGoals = {
     preventionSafety: 'Sécurité',
     marketingCampaign: 'Communication',
     sustainableDevelopment: 'Développement durable',
+}
+
+export const _projectReview: ProjectReview = {
+    id: 1,
+    name: 'Review',
+    user: null,
+    association: 1,
+    outcome: '300',
+    income: '200',
+    realStartDate: '2023-07-21',
+    realEndDate: '2023-07-22',
+    realLocation: 'Strasbourg',
+    review: 'Everything went well.',
+    impactStudents: 'Amazing.',
+    description: 'A project for students.',
+    difficulties: 'The weather was hot.',
+    improvements: 'Need more parasols and free water.',
+    associationUser: null
 }

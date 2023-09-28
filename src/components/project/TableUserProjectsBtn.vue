@@ -28,7 +28,7 @@ const canModifyProjectAndReview = ref<boolean>(false)
 const initCanModifyProjectAndReview = () => {
     let perm = false
     if (props.association) {
-        const projectAssociationUserId = projectStore.projects.find(x => x.id === props.projectId)?.associationUser
+        const projectAssociationUserId = projectStore.selfProjects.find(x => x.id === props.projectId)?.associationUser
         const associationUserId = userStore.userAssociations.find(x => x.association.id === props.association)?.id
         if (userStore.hasPresidentStatus(props.association) || projectAssociationUserId === associationUserId) {
             perm = true
@@ -40,13 +40,13 @@ const initCanModifyProjectAndReview = () => {
 }
 
 interface Option {
-    icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf',
+    icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf' | 'bi-file-earmark-zip',
     label: string,
     to?: {
         name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ViewProject' | 'SubmitProjectReview' | 'ViewProjectReview',
         params: { associationId?: number, projectId: number }
     },
-    action?: 'delete' | 'download-pdf'
+    action?: 'delete' | 'download-pdf' | 'download-review-pdf' | 'download-files'
 }
 
 const options = ref<Option[]>([])
@@ -54,7 +54,7 @@ const options = ref<Option[]>([])
 const initOptions = () => {
     options.value = []
     initCanModifyProjectAndReview()
-    if (props.projectStatus === 'PROJECT_DRAFT') {
+    if ((props.projectStatus === 'PROJECT_DRAFT') || (props.projectStatus === 'PROJECT_DRAFT_PROCESSED')) {
         if (canModifyProjectAndReview.value) {
             options.value.push({
                 icon: 'bi-pencil',
@@ -72,13 +72,6 @@ const initOptions = () => {
             })
         }
     }
-    if (props.projectStatus !== 'PROJECT_DRAFT') {
-        options.value.push({
-            icon: 'bi-eye',
-            label: t('project.view'),
-            to: {name: 'ViewProject', params: {projectId: props.projectId}}
-        })
-    }
     if (props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
         if (canModifyProjectAndReview.value) {
             options.value.push({
@@ -88,6 +81,25 @@ const initOptions = () => {
             })
         }
     }
+    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
+        options.value.push({
+            icon: 'bi-file-earmark-zip',
+            label: t('project.download-files'),
+            action: 'download-files'
+        })
+
+        options.value.push({
+            icon: 'bi-eye',
+            label: t('project.view'),
+            to: {name: 'ViewProject', params: {projectId: props.projectId}}
+        })
+
+        options.value.push({
+            icon: 'bi-filetype-pdf',
+            label: t('project.download-recap'),
+            action: 'download-pdf'
+        })
+    }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
         || props.projectStatus === 'PROJECT_CANCELLED') {
         options.value.push({
@@ -95,17 +107,17 @@ const initOptions = () => {
             label: t('project.view-review'),
             to: {name: 'ViewProjectReview', params: {projectId: props.projectId}}
         })
-    }
-    if (props.projectStatus !== 'PROJECT_DRAFT') {
+
         options.value.push({
             icon: 'bi-filetype-pdf',
-            label: t('project.download-recap'),
-            action: 'download-pdf'
+            label: t('project.download-review-recap'),
+            action: 'download-review-pdf'
         })
     }
 }
 
 watch(() => userStore.user, initOptions)
+watch(() => props.projectId, initOptions)
 
 onMounted(initOptions)
 
@@ -117,15 +129,19 @@ async function onOptionClick(option: Option) {
         if (option.action === 'delete') {
             openDelete.value = true
         } else if (option.action === 'download-pdf') {
-            await onGetProjectPdf(props.projectId, props.projectName)
+            await onGetProjectPdf(props.projectId, props.projectName, false)
+        } else if (option.action === 'download-review-pdf') {
+            await onGetProjectPdf(props.projectId, props.projectName, true)
+        } else if (option.action === 'download-files') {
+            await onGetProjectFiles(props.projectId, props.projectName)
         }
     }
 }
 
-async function onGetProjectPdf(projectId: number, projectName: string) {
+async function onGetProjectPdf(projectId: number, projectName: string, isReview: boolean) {
     loading.show()
     try {
-        const file = await projectStore.getProjectPdf(projectId)
+        const file = !isReview ? await projectStore.getProjectPdf(projectId) : await projectStore.getProjectReviewPdf(projectId)
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(new Blob([file]))
         link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`
@@ -136,7 +152,28 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: t(`notifications.negative.${catchHTTPError(error.response.status)}`)
+                message: catchHTTPError(error.response)
+            })
+        }
+    }
+    loading.hide()
+}
+
+async function onGetProjectFiles(projectId: number, projectName: string) {
+    loading.show()
+    try {
+        const file = await projectStore.getProjectFiles(projectId)
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(new Blob([file]))
+        link.download = `${t('project.documents-name')}${encodeURI(projectName)}.zip`
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
             })
         }
     }
@@ -162,9 +199,7 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
                     @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
-                        <QAvatar
-                            :icon="option.icon"
-                        />
+                        <QAvatar :icon="option.icon"/>
                     </QItemSection>
                     <QItemSection>
                         <QItemLabel>{{ option.label }}</QItemLabel>
@@ -179,7 +214,7 @@ async function onGetProjectPdf(projectId: number, projectName: string) {
     </div>
     <ProjectDelete
         :open-dialog="openDelete"
-        :project="props.project"
+        :project="props.projectId"
         @close-dialog="openDelete = false"
     />
 </template>

@@ -10,12 +10,12 @@ const userStore = useUserStore()
     <section class="dashboard-section">
         <h2 class="flex-row-center">
             <i class="bi bi-exclamation-triangle"></i>
-            {{ t('404.title') }}
+            {{ t('error-404.title') }}
         </h2>
 
         <div class="dashboard-section-container">
             <div class="container">
-                <p class="flex-row-center">{{ t('404.description') }}</p>
+                <p class="flex-row-center">{{ t('error-404.description') }}</p>
 
                 <div class="flex-row-center padding-top padding-bottom">
                     <QBtn
@@ -44,5 +44,4 @@ const userStore = useUserStore()
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/dashboard.scss';
 </style>
-
 
