@@ -39,12 +39,17 @@ const props = defineProps<{
     margin: 5rem 0 6rem 0;
 
     div {
-        padding: 3rem;
+        padding: 2rem;
         display: flex;
-        gap: 3rem;
-        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: space-around;
         background-color: #fff;
         border-radius: 1rem;
+    }
+
+    div > * {
+        width: 40rem;
     }
 }
 </style>

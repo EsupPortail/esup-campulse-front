@@ -200,29 +200,10 @@
       }
 
       ul {
-        display: block;
-
         li {
-          display: block;
+          display: flex;
           width: $fullSize;
-
-          & > span.label {
-            width: 12.5rem;
-          }
-
-          &:nth-child(1) {
-            padding-left: 4.375rem;
-            margin-bottom: 0.938rem;
-
-            & > span.label {
-              font-size: 0;
-              width: auto;
-
-              i {
-                font-size: 1rem;
-              }
-            }
-          }
+          flex-wrap: wrap;
         }
       }
 

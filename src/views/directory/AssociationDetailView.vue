@@ -96,7 +96,7 @@ const initAssociationCharter = () => {
                         itemprop="logo"
                     />
                 </div>
-                <div class="association-name text-center container">
+                <div class="association-name text-center container padding-left padding-right">
                     <p
                         v-if="association?.acronym"
                         class="title-2"
@@ -304,7 +304,8 @@ const initAssociationCharter = () => {
                                     :href="association?.website"
                                     :title="`${t('association.labels.website-link')} ${association?.name}`"
                                 >{{
-                                    association?.website }}</a>
+                                    association?.website
+                                }}</a>
                             </dd>
                         </div>
 
@@ -331,7 +332,7 @@ const initAssociationCharter = () => {
             </div>
         </div>
 
-        <div class="flex-row-center padding-top padding-bottom">
+        <div class="flex-row-center padding-top padding-bottom padding-left padding-right align-items-stretch">
             <QBtn
                 :label="t('association.back-directory')"
                 :to="{ name: 'Associations' }"
@@ -365,7 +366,7 @@ const initAssociationCharter = () => {
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 
-h2>i {
+h2 > i {
     padding: 0.25rem 1rem 0 0;
 }
 
@@ -378,12 +379,12 @@ ul {
 }
 
 .address-fields,
-.address-fields>* {
+.address-fields > * {
     display: flex;
     flex-direction: column;
 }
 
-.address-fields>span+span {
+.address-fields > span + span {
     flex-direction: row;
     gap: 1rem;
 }

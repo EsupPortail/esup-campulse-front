@@ -61,7 +61,7 @@ async function onLogIn() {
             :label="t('forms.view-password')"
             color="association"
         />
-        <div class="flex-row-center">
+        <div class="flex-row-center align-items-stretch">
             <QBtn
                 :label="t('forms.login')"
                 class="btn-lg"
