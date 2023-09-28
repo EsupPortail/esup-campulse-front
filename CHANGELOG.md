@@ -1,1 +1,3 @@
-- 🐛 Fix create user fields for CAS user
+- 🔧 Testing opengraph config
+- 🎨 Avoid useless request to API for projects on dashboard
+- ⬆️ Upgrade minor dependencies
