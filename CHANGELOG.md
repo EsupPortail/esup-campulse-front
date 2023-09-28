@@ -1,6 +1,1 @@
-- 💄 Optimize scroll to top of forms
-- 🩹 Project association user sorting on student commission dashboard
-- ✅ Add tests for UserStore
-- ♻️ Refactor CAS login process
-- 🐛 Change lifecycle hook on register successful view
-- 🩹 Dynamic splicing of associationUser for student project management
+- 🐛 Fix create user fields for CAS user
