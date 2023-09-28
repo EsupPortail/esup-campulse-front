@@ -47,14 +47,16 @@ async function onGetUserDocuments() {
 }
 
 async function onGetProjects() {
-    try {
-        await projectStore.getAllProjects()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: catchHTTPError(error.response)
-            })
+    if (hasPerm('add_project_user')) {
+        try {
+            await projectStore.getAllProjects()
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: catchHTTPError(error.response)
+                })
+            }
         }
     }
 }
