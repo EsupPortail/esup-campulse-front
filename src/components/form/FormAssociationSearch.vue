@@ -87,7 +87,7 @@ async function clearSearch() {
                         <QIcon name="bi-search"/>
                     </template>
                 </QInput>
-                <div class="flex-row padding-top">
+                <div class="flex-row padding-top align-items-stretch">
                     <QBtn
                         :label="t('search')"
                         class="btn-lg"
@@ -168,7 +168,7 @@ async function clearSearch() {
                     </div>
                 </div>
 
-                <div class="flex-row padding-top padding-bottom">
+                <div class="flex-row padding-top padding-bottom align-items-stretch">
                     <QBtn
                         :label="t('advanced-search')"
                         class="btn-lg"

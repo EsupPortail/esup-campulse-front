@@ -46,7 +46,7 @@ onMounted(() => {
                             <p class="card-title">{{ t('login.im-cas-user') }}</p>
                             <h2>{{ t('login.login-with-cas') }}</h2>
                         </div>
-                        <div class="flex-row-center">
+                        <div class="flex-row-center align-items-stretch">
                             <QBtn
                                 :href="CASUrlLogin"
                                 :label="t('login.login')"
