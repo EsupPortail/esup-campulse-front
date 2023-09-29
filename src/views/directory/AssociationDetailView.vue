@@ -245,8 +245,8 @@ const initAssociationCharter = () => {
 
 
         <div
-            v-if="association?.address || association?.phone || association?.email || association?.website ||
-                (association?.socialNetworks && association?.socialNetworks?.length > 0)"
+            v-if="association?.address || association?.phone || (association?.email && !association?.email.includes('@mail.tld'))
+                || association?.website || (association?.socialNetworks && association?.socialNetworks?.length > 0)"
         >
             <div class="dashboard-section">
                 <h2>
@@ -287,7 +287,7 @@ const initAssociationCharter = () => {
                         </div>
 
                         <div
-                            v-if="association?.email"
+                            v-if="association?.email && !association?.email?.includes('@mail.tld')"
                             class="display-row"
                         >
                             <dt>{{ t('association.labels.mail') }}</dt>
@@ -349,7 +349,7 @@ const initAssociationCharter = () => {
                 icon="bi-pencil-square"
             />
             <QBtn
-                v-if="association?.email"
+                v-if="association?.email && !association?.email?.includes('@mail.tld')"
                 :href="`mailto:${association?.email}`"
                 :label="t('association.contact')"
                 :title="`${t('association.contact')} ${association?.name}`"
