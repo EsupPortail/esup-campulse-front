@@ -102,42 +102,39 @@ export default function () {
         const {documents} = useDocumentUploads()
         associationCharters.value = []
         associationStore.associations.forEach(association => {
-            if (!association.isSite && charterType === 'CHARTER_ASSOCIATION') return
-            else {
-                const data: AssociationCharter = {
-                    associationId: association.id,
-                    associationName: association.name,
-                    institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
-                    isSite: association.isSite,
-                    charters: []
+            const data: AssociationCharter = {
+                associationId: association.id,
+                associationName: association.name,
+                institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                isSite: association.isSite,
+                charters: []
+            }
+            const charters = documents.value.filter(obj => obj.processType === charterType)
+            if (charterType === 'CHARTER_ASSOCIATION') {
+                const associationCharter = charters.find(obj => obj.acronym === 'CHARTE_SITE_ALSACE')
+                if (associationCharter) {
+                    const uploadedCharter = charterDocuments.value.find(obj => obj.document === associationCharter.id && obj.association === association.id)
+                    const charterStatus = initCharterStatus(association.isSite, association.charterStatus, associationCharter, uploadedCharter)
+                    data.charters.push({
+                        charterId: associationCharter.id,
+                        charterName: charters.map(x => x.name).join(' + '),
+                        charterStatus: charterStatus.charterStatus
+                    })
                 }
-                const charters = documents.value.filter(obj => obj.processType === charterType)
-                if (charterType === 'CHARTER_ASSOCIATION') {
-                    const associationCharter = charters.find(obj => obj.acronym === 'CHARTE_SITE_ALSACE')
-                    if (associationCharter) {
-                        const uploadedCharter = charterDocuments.value.find(obj => obj.document === associationCharter.id && obj.association === association.id)
-                        const charterStatus = initCharterStatus(association.isSite, association.charterStatus, associationCharter, uploadedCharter)
+            } else {
+                charters.forEach(charter => {
+                    if (charter.processType !== 'CHARTER_ASSOCIATION') {
+                        const uploadedCharter = charterDocuments.value.find(obj => obj.document === charter.id && obj.association === association.id)
+                        const charterStatus = initCharterStatus(association.isSite, association.charterStatus, charter, uploadedCharter)
                         data.charters.push({
-                            charterId: associationCharter.id,
-                            charterName: charters.map(x => x.name).join(' + '),
+                            charterId: charter.id,
+                            charterName: charter.name,
                             charterStatus: charterStatus.charterStatus
                         })
                     }
-                } else {
-                    charters.forEach(charter => {
-                        if (charter.processType !== 'CHARTER_ASSOCIATION') {
-                            const uploadedCharter = charterDocuments.value.find(obj => obj.document === charter.id && obj.association === association.id)
-                            const charterStatus = initCharterStatus(association.isSite, association.charterStatus, charter, uploadedCharter)
-                            data.charters.push({
-                                charterId: charter.id,
-                                charterName: charter.name,
-                                charterStatus: charterStatus.charterStatus
-                            })
-                        }
-                    })
-                }
-                associationCharters.value.push(data)
+                })
             }
+            associationCharters.value.push(data)
         })
     }
 
