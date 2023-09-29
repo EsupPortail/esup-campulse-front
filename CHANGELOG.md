@@ -1,3 +1,3 @@
-- 🔧 Testing opengraph config
-- 🎨 Avoid useless request to API for projects on dashboard
-- ⬆️ Upgrade minor dependencies
+- 🩹 Conditional email if @mail.tld in association detail view
+- 💄 Optimize responsive
+- 🔧 Testing opengraph config with image in public folder
