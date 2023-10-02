@@ -42,7 +42,7 @@ export const useAssociationStore = defineStore('associationStore', {
             return state.institutions.map((
                 institution => ({
                     value: institution.id,
-                    label: institution.name
+                    label: `${institution.acronym} (${institution.name})`
                 })))
         },
         institutionComponentLabels: (state: AssociationStore) => {

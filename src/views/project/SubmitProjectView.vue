@@ -458,7 +458,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     v-model="step"
                     active-color="commission-bold"
                     animated
-                    header-nav
                 >
                     <!-- BASIC INFOS -->
                     <QStep
