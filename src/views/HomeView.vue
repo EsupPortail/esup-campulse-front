@@ -12,6 +12,7 @@ import useErrors from '@/composables/useErrors'
 import type {Content} from '#/index'
 import useDocuments from '@/composables/useDocuments'
 import useUtility from '@/composables/useUtility'
+import useCharters from '@/composables/useCharters'
 
 const contentStore = useContentStore()
 const associationStore = useAssociationStore()
@@ -21,6 +22,7 @@ const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {documents, getDocumentByAcronym} = useDocuments()
 const {formatDate} = useUtility()
+const {ASSOCIATION_CHARTER} = useCharters()
 
 onMounted(async () => {
     loading.show()
@@ -59,7 +61,7 @@ async function onGetContents() {
         await associationStore.getAssociationNames(true, false)
         await getNextCommission()
         nextCommissionDate.value = commission.value?.commissionDate.split('-').reverse().join('/') ?? ''
-        await getDocumentByAcronym('CHARTE_SITE_ALSACE')
+        await getDocumentByAcronym(ASSOCIATION_CHARTER)
         lastCharterUpdate.value = formatDate(documents.value[0]?.editionDate)?.split('-').reverse().join('/') ?? ''
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
