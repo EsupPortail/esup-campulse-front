@@ -84,7 +84,7 @@ export default function () {
                 path: document.pathTemplate ?? '',
                 documentId: document.id
             }))
-            manageCharters.value.push({
+            manageCharters.value.splice(0, 0, {
                 associationId: uploadedCharter?.association,
                 documentId: associationCharter.id,
                 documentAcronym: associationCharter.acronym,
