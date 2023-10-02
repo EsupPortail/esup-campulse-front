@@ -102,64 +102,65 @@ export default function () {
         const {documents} = useDocumentUploads()
         associationCharters.value = []
         associationStore.associations.forEach(association => {
-            if (!association.isSite && charterType === 'CHARTER_ASSOCIATION') return
-            else {
-                const data: AssociationCharter = {
-                    associationId: association.id,
-                    associationName: association.name,
-                    institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
-                    isSite: association.isSite,
-                    charters: []
+            const data: AssociationCharter = {
+                associationId: association.id,
+                associationName: association.name,
+                institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                isSite: association.isSite,
+                charters: []
+            }
+            const charters = documents.value.filter(obj => obj.processType === charterType)
+            if (charterType === 'CHARTER_ASSOCIATION') {
+                const associationCharter = charters.find(obj => obj.acronym === 'CHARTE_SITE_ALSACE')
+                if (associationCharter) {
+                    const uploadedCharter = charterDocuments.value.find(obj => obj.document === associationCharter.id && obj.association === association.id)
+                    const charterStatus = initCharterStatus(association.isSite, association.charterStatus, associationCharter, uploadedCharter)
+                    data.charters.push({
+                        charterId: associationCharter.id,
+                        charterName: charters.map(x => x.name).join(' + '),
+                        charterStatus: charterStatus.charterStatus
+                    })
                 }
-                const charters = documents.value.filter(obj => obj.processType === charterType)
-                if (charterType === 'CHARTER_ASSOCIATION') {
-                    const associationCharter = charters.find(obj => obj.acronym === 'CHARTE_SITE_ALSACE')
-                    if (associationCharter) {
-                        const uploadedCharter = charterDocuments.value.find(obj => obj.document === associationCharter.id && obj.association === association.id)
-                        const charterStatus = initCharterStatus(association.isSite, association.charterStatus, associationCharter, uploadedCharter)
+            } else {
+                charters.forEach(charter => {
+                    if (charter.processType !== 'CHARTER_ASSOCIATION') {
+                        const uploadedCharter = charterDocuments.value.find(obj => obj.document === charter.id && obj.association === association.id)
+                        const charterStatus = initCharterStatus(association.isSite, association.charterStatus, charter, uploadedCharter)
                         data.charters.push({
-                            charterId: associationCharter.id,
-                            charterName: charters.map(x => x.name).join(' + '),
+                            charterId: charter.id,
+                            charterName: charter.name,
                             charterStatus: charterStatus.charterStatus
                         })
                     }
-                } else {
-                    charters.forEach(charter => {
-                        if (charter.processType !== 'CHARTER_ASSOCIATION') {
-                            const uploadedCharter = charterDocuments.value.find(obj => obj.document === charter.id && obj.association === association.id)
-                            const charterStatus = initCharterStatus(association.isSite, association.charterStatus, charter, uploadedCharter)
-                            data.charters.push({
-                                charterId: charter.id,
-                                charterName: charter.name,
-                                charterStatus: charterStatus.charterStatus
-                            })
-                        }
-                    })
-                }
-                associationCharters.value.push(data)
+                })
             }
+            associationCharters.value.push(data)
         })
     }
 
     const initProcessingCharters = async (charterType: 'CHARTER_ASSOCIATION' | 'CHARTER_PROJECT_FUND') => {
         const {documents} = useDocumentUploads()
         processingCharters.value = []
-        const charterAssociationName: string[] = []
-        let charterAssociationId: number | null = null
-        let uploadedAssociationCharter: DocumentUpload | undefined = undefined
         let charterAssociationStatus: CharterStatus | undefined = undefined
+        const charterAssociationName = documents.value.filter(doc => doc.processType === 'CHARTER_ASSOCIATION').map(doc => doc.name).join(' + ')
         charterDocuments.value.forEach(uploadedCharter => {
             const association = associationStore.associations.find(association => association.id === uploadedCharter.association)
             const document = documents.value.find(doc => doc.id === uploadedCharter.document)
             if (document && association) {
                 if (document.processType === charterType && uploadedCharter.association === association.id) {
                     if (document.processType === 'CHARTER_ASSOCIATION') {
-                        charterAssociationName.push(document.name)
                         if (document.acronym === 'CHARTE_SITE_ALSACE') {
                             charterAssociationStatus = initCharterStatus(association.isSite, association.charterStatus, document, uploadedCharter).charterStatus
                             if (charterAssociationStatus === 'PROCESSING') {
-                                charterAssociationId = document.id
-                                uploadedAssociationCharter = uploadedCharter
+                                processingCharters.value.push({
+                                    associationId: association.id,
+                                    associationName: association.name,
+                                    institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                                    charterId: document.id,
+                                    charterName: charterAssociationName,
+                                    uploadedDate: uploadedCharter.uploadDate as string,
+                                    charterStatus: charterAssociationStatus
+                                })
                             }
                         }
                     } else {
@@ -175,19 +176,6 @@ export default function () {
                                 charterStatus: charterStatus.charterStatus
                             })
                         }
-                    }
-                }
-                if (charterDocuments.value.indexOf(uploadedCharter) === (charterDocuments.value.length - 1)) {
-                    if (charterAssociationId && uploadedAssociationCharter && uploadedAssociationCharter.uploadDate && charterAssociationStatus) {
-                        processingCharters.value.push({
-                            associationId: association.id,
-                            associationName: association.name,
-                            institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
-                            charterId: charterAssociationId,
-                            charterName: charterAssociationName.join(' + '),
-                            uploadedDate: uploadedAssociationCharter.uploadDate,
-                            charterStatus: charterAssociationStatus
-                        })
                     }
                 }
             }

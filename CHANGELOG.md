@@ -1,3 +1,1 @@
-- 🩹 Conditional email if @mail.tld in association detail view
-- 💄 Optimize responsive
-- 🔧 Testing opengraph config with image in public folder
+- 🐛 Fix various bugs in charter dashboards
