@@ -190,7 +190,7 @@ async function onChangeLogo(action: string) {
 
 <template>
     <QForm
-        class="association-edition padding-left padding-right"
+        class="association-edition padding-left padding-right padding-bottom"
         @submit.prevent="onChangeLogo('update')"
     >
         <div id="association-logo-title">
@@ -259,10 +259,6 @@ async function onChangeLogo(action: string) {
         </div>
     </QForm>
 
-    <div class="container padding-left padding-right padding-top">
-        <InfoFormRequiredFields/>
-    </div>
-
     <QForm class="association-edition">
         <!-- Informations -->
         <div class="dashboard-section">
@@ -275,6 +271,7 @@ async function onChangeLogo(action: string) {
 
             <div class="dashboard-section-container">
                 <div class="container flex-column">
+                    <InfoFormRequiredFields/>
                     <QInput
                         v-model="association.name"
                         :disable=!isStaff
@@ -311,8 +308,21 @@ async function onChangeLogo(action: string) {
                         filled
                         type="textarea"
                     />
+                    <div
+                        v-if="!isStaff"
+                        class="info-panel info-panel-warning"
+                    >
+                        <i
+                            aria-hidden="true"
+                            class="bi bi-info"
+                        ></i>
+                        <p>
+                            {{ t('forms.info-modify-association-institution') }}
+                        </p>
+                    </div>
                     <QSelect
                         v-model="association.institution"
+                        :disable="!isStaff"
                         :label="t('association.labels.institution') + ' *'"
                         :options="associationStore.institutionLabels"
                         :rules="[val => val || t('forms.required-association-institution')]"
