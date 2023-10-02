@@ -207,7 +207,7 @@ export default function () {
 
     async function getAssociationPdfExport(id: number) {
         const {axiosAuthenticated} = useAxios()
-        return (await axiosAuthenticated.get<Blob>(`/associations/${id}/pdf_export`, {responseType: 'blob'})).data
+        return (await axiosAuthenticated.get<Blob>(`/associations/${id}/export`, {responseType: 'blob'})).data
     }
 
 

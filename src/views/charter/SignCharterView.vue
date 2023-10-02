@@ -219,6 +219,7 @@ async function onSignCharter() {
                                 clearable
                                 color="charter"
                                 filled
+                                lazy-rules
                             />
                             <QInput
                                 v-model="editedAssociation.presidentPhone"
@@ -228,6 +229,7 @@ async function onSignCharter() {
                                 clearable
                                 color="charter"
                                 filled
+                                lazy-rules
                                 type="tel"
                             />
                             <QInput
@@ -238,6 +240,7 @@ async function onSignCharter() {
                                 clearable
                                 color="charter"
                                 filled
+                                lazy-rules
                                 type="email"
                             />
                             <QSelect
@@ -260,6 +263,7 @@ async function onSignCharter() {
                                 color="charter"
                                 emit-value
                                 filled
+                                lazy-rules
                                 map-options
                             />
                             <fieldset>
@@ -272,6 +276,7 @@ async function onSignCharter() {
                                     clearable
                                     color="charter"
                                     filled
+                                    lazy-rules
                                 />
                                 <div class="flex-row">
                                     <QInput
@@ -282,6 +287,7 @@ async function onSignCharter() {
                                         clearable
                                         color="charter"
                                         filled
+                                        lazy-rules
                                     />
                                     <QInput
                                         v-model="editedAssociation.city"
@@ -291,6 +297,7 @@ async function onSignCharter() {
                                         clearable
                                         color="charter"
                                         filled
+                                        lazy-rules
                                     />
                                     <QInput
                                         v-model="editedAssociation.country"
@@ -300,6 +307,7 @@ async function onSignCharter() {
                                         clearable
                                         color="charter"
                                         filled
+                                        lazy-rules
                                     />
                                 </div>
                             </fieldset>
