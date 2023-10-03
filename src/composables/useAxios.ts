@@ -27,12 +27,11 @@ const state = reactive<UseAxiosState>({
                     loginRoute: {name: 'Login'},
                     loginRouteIsInternal: true
                 }
-            },
-            ),
+            }),
             error => Promise.reject(error),
         )
 
-        _axios.interceptors.response.use(response => {
+        /*_axios.interceptors.response.use(response => {
             return response
         }, async function (error) {
             if (401 === error.response.status) {
@@ -42,7 +41,7 @@ const state = reactive<UseAxiosState>({
             } else {
                 return Promise.reject(error)
             }
-        })
+        })*/
 
         return _axios
     },

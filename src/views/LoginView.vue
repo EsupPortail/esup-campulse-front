@@ -1,13 +1,9 @@
 <script lang="ts" setup>
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
-import {useUserStore} from '@/stores/useUserStore'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
 import {onMounted} from 'vue'
 
-const userStore = useUserStore()
-const newUser = userStore.newUser
-const isCas = userStore.isCas
 const {t} = useI18n()
 const {dynamicTitle} = useUtility()
 
@@ -15,7 +11,7 @@ const CASUrlLogin = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${enc
 const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-register`
 
 onMounted(() => {
-    dynamicTitle.value = 'Connexion'
+    dynamicTitle.value = t('forms.login')
 })
 </script>
 
@@ -33,10 +29,7 @@ onMounted(() => {
                     {{ t('login.introduction-login') }}
                 </h1>
             </div>
-            <div
-                v-if="!newUser && !isCas"
-                class="dashboard-section-container"
-            >
+            <div class="dashboard-section-container">
                 <QCard
                     id="cas-login"
                     class="card"
@@ -73,39 +66,6 @@ onMounted(() => {
                             <h2>{{ t('login.login-without-cas') }}</h2>
                         </div>
                         <FormLocalLogin/>
-                    </QCardSection>
-                </QCard>
-            </div>
-            <div
-                v-else
-                class="container"
-            >
-                <QCard
-                    id="aborted-cas-registration"
-                    class="card"
-                >
-                    <QCardSection>
-                        <div class="card-content">
-                            <p
-                                class="card-title"
-                                role="alert"
-                            >
-                                {{ t('alerts.aborted-cas-registration.title') }}
-                            </p>
-
-                            <p role="alert">
-                                {{ t('alerts.aborted-cas-registration.message') }}
-                            </p>
-                            <div>
-                                <QBtn
-                                    :label="t('alerts.aborted-cas-registration.button')"
-                                    :to="{name: 'Registration'}"
-                                    class="btn-lg"
-                                    color="custom-red"
-                                    icon="bi-check-lg"
-                                />
-                            </div>
-                        </div>
                     </QCardSection>
                 </QCard>
             </div>

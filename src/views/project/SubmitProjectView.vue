@@ -70,14 +70,19 @@ const route = useRoute()
 
 onMounted(async () => {
     loading.show()
+    // We set the project id based on the route params, if any
     projectId.value = parseInt(route.params.projectId as string)
-    if (projectId.value) newProject.value = false
+    // If the project has an id, we can assume it's not a new project
+    if (projectId.value) {
+        newProject.value = false
+    }
     // If the project has not been posted yet, we clean project store
     if (!projectId.value) {
         projectStore.project = undefined
         projectStore.projectCategories = []
         reInitSubmitProjectForm()
     }
+    // We get project detail
     await onGetProjectDetail()
     // If project is not a draft, then push to 404
     if (projectStore.project && projectStore.project.id === projectId.value) {
@@ -86,12 +91,14 @@ onMounted(async () => {
             await router.push({name: '404'})
         }
     }
+    // We get project categories
     await onGetProjectCategories()
-    // Init applicant
+    // We initialize applicant
     initApplicant()
     await initApplicantDetails()
     // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
     projectStore.projectCommissionFunds = []
+    // When everything is done, then the page can be fully loaded
     isLoaded.value = true
     loading.hide()
 })
@@ -172,8 +179,6 @@ const initApplicantDetails = async () => {
         }
     }
 }
-
-watch(async () => userStore.userAssociations.length, await initApplicantDetails)
 
 // INIT IS SITE
 const initIsSite = () => {

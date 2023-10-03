@@ -220,7 +220,7 @@ export const _institutions = [
 
 export const _institutionLabels = _institutions.map(institution => ({
     value: institution.id,
-    label: institution.name
+    label: `${institution.acronym} (${institution.name})`
 }))
 
 export const _institutionComponents = [

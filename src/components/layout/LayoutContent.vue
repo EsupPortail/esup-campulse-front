@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import {RouterView} from 'vue-router'
+import {RouterView, useRoute} from 'vue-router'
 import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegistration.vue'
 import useColorVariants from '@/composables/useColorVariants'
 import NavigateTopButton from '@/components/NavigateTopButton.vue'
 
 const {colorVariant} = useColorVariants()
+const route = useRoute()
 
 </script>
 
@@ -20,6 +21,6 @@ const {colorVariant} = useColorVariants()
         <Suspense>
             <RouterView/>
         </Suspense>
-        <AlertAbortedCasRegistration/>
+        <AlertAbortedCasRegistration v-if="route.name !== 'Registration'"/>
     </main>
 </template>

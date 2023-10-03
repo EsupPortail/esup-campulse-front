@@ -46,6 +46,7 @@ onMounted(async () => {
                 message: t('notifications.negative.cas-user-redirected-login')
             })
         } else if (axios.isAxiosError(error) && error.response) {
+            await router.push({name: 'Login'})
             notify({
                 type: 'negative',
                 message: catchHTTPError(error.response)
