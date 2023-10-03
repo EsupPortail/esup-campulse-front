@@ -27,8 +27,7 @@ const state = reactive<UseAxiosState>({
                     loginRoute: {name: 'Login'},
                     loginRouteIsInternal: true
                 }
-            },
-            ),
+            }),
             error => Promise.reject(error),
         )
 
