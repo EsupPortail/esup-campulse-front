@@ -75,11 +75,11 @@ onMounted(async () => {
                     :key="route.name"
                 >
                     <RouterLink
-                        :to="{name: route?.name ?? route?.children[0].name}"
+                        :to="{name: route?.name ?? route?.children?.[0].name}"
                         class="li-footer"
                     >
                         {{
-                            route?.meta?.title ?? route?.children[0].meta?.title ?? ''
+                            route?.meta?.title ?? route?.children?.[0].meta?.title ?? ''
                         }}
                     </RouterLink>
                 </li>
