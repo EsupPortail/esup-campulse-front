@@ -89,7 +89,7 @@ onMounted(async () => {
     await onGetProjectCategories()
     // Init applicant
     initApplicant()
-    await initApplicantDetails()
+    //await initApplicantDetails()
     // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
     projectStore.projectCommissionFunds = []
     isLoaded.value = true
