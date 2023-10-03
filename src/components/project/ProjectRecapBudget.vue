@@ -58,9 +58,9 @@ async function onGetProjectCommissions() {
     }
 }
 
-const projectIsFirstEdition = () => {
-    let perm = true
-    if (projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)) perm = false
+const projectReEdition = () => {
+    let perm = false
+    if (projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)) perm = true
     return perm
 }
 </script>
@@ -71,13 +71,13 @@ const projectIsFirstEdition = () => {
             <h4>{{ t('project.re-edition') }}</h4>
             <p>
                 {{
-                    projectIsFirstEdition() ? t('yes') : t('no')
+                    projectReEdition() ? t('yes') : t('no')
                 }}
             </p>
         </div>
 
         <div
-            v-if="!projectIsFirstEdition"
+            v-if="projectReEdition()"
             class="display-row"
         >
             <h4>{{ t('project.budget-previous-edition') }}</h4>
@@ -122,7 +122,7 @@ const projectIsFirstEdition = () => {
             <h3>{{ getFundLabel(projectCommissionFund.commissionFund) }}</h3>
 
             <div
-                v-if="!projectIsFirstEdition"
+                v-if="projectReEdition()"
                 class="flex-row"
             >
                 <div class="display-row">

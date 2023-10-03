@@ -14,6 +14,7 @@ import useDocumentUploads from '@/composables/useDocumentUploads'
 import router from '@/router'
 import type {AssociationCharterStatus} from '#/charters'
 
+
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -107,17 +108,16 @@ async function onValidateCharter() {
         await getCharterDocuments(associationId.value)
         initCharterDocumentUploads()
         // We look for the right ids to patch
-        const uploadedAssociationCharter = documentUploads.value
-            .find(x => x.document === (documents.value
-                .find(y => y.acronym === 'CHARTE_SITE_ALSACE'))?.id)?.id
-        const uploadedGDPRAssociationCharter = documentUploads.value
-            .find(x => x.document === (documents.value
-                .find(y => y.acronym === 'RGPD_SITE_ALSACE'))?.id)?.id
+        const associationCharterDocuments = documents.value.filter(doc => doc.processType === 'CHARTER_ASSOCIATION')
+            .map(doc => doc.id)
+        const uploadedAssociationCharters = documentUploads.value.filter(doc => associationCharterDocuments
+            .includes(doc.document)).map(doc => doc.id)
         // We patch our documents and the charter status of the association
         let message = ''
-        if (associationId.value && selectedAction.value && uploadedAssociationCharter && uploadedGDPRAssociationCharter) {
-            await patchCharterDocument(selectedAction.value, uploadedAssociationCharter, comment.value)
-            await patchCharterDocument(selectedAction.value, uploadedGDPRAssociationCharter, comment.value)
+        if (associationId.value && selectedAction.value && uploadedAssociationCharters.length) {
+            for (const uploadedAssociationCharter of uploadedAssociationCharters) {
+                await patchCharterDocument(selectedAction.value, uploadedAssociationCharter, comment.value)
+            }
             let associationCharterStatus: AssociationCharterStatus = 'CHARTER_REJECTED'
             switch (selectedAction.value) {
             case 'validate':
@@ -158,18 +158,18 @@ async function onValidateCharter() {
     <QForm @submit="open = true">
         <section class="dashboard-section">
             <h2>
-                <QIcon name="bi-info-circle" />
+                <QIcon name="bi-info-circle"/>
                 {{ t('charter.site.sign-form.association-infos-update') }}
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <CharterRecapAssociationInfos :association="associationId" />
+                    <CharterRecapAssociationInfos :association="associationId"/>
                 </div>
             </div>
         </section>
         <section class="dashboard-section">
             <h2>
-                <QIcon name="bi-file-earmark" />
+                <QIcon name="bi-file-earmark"/>
                 {{ t('charter.site.sign-form.documents-upload') }}
             </h2>
             <div class="dashboard-section-container">

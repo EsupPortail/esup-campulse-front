@@ -22,6 +22,8 @@ export default function () {
     const associationStore = useAssociationStore()
     const {axiosAuthenticated} = useAxios()
 
+    const ASSOCIATION_CHARTER = 'CHARTE_SITE_ALSACE'
+
     const charterProcesses: DocumentProcessType[] = ['CHARTER_ASSOCIATION', 'CHARTER_PROJECT_FUND']
 
     // Get all documents uploads needed to signe the association charter
@@ -73,7 +75,7 @@ export default function () {
             }
         })
         const associationCharters = documents.value.filter(document => document.processType === 'CHARTER_ASSOCIATION')
-        const associationCharter = associationCharters.find(document => document.acronym === 'CHARTE_SITE_ALSACE')
+        const associationCharter = associationCharters.find(document => document.acronym === ASSOCIATION_CHARTER)
         if (associationCharters.length && associationCharter) {
             const uploadedCharter = charterDocuments.value.find(x => x.document === associationCharter.id)
             const charterStatus = initCharterStatus(isSite, associationCharterStatus, associationCharter, uploadedCharter)
@@ -82,7 +84,7 @@ export default function () {
                 path: document.pathTemplate ?? '',
                 documentId: document.id
             }))
-            manageCharters.value.push({
+            manageCharters.value.splice(0, 0, {
                 associationId: uploadedCharter?.association,
                 documentId: associationCharter.id,
                 documentAcronym: associationCharter.acronym,
@@ -111,7 +113,7 @@ export default function () {
             }
             const charters = documents.value.filter(obj => obj.processType === charterType)
             if (charterType === 'CHARTER_ASSOCIATION') {
-                const associationCharter = charters.find(obj => obj.acronym === 'CHARTE_SITE_ALSACE')
+                const associationCharter = charters.find(obj => obj.acronym === ASSOCIATION_CHARTER)
                 if (associationCharter) {
                     const uploadedCharter = charterDocuments.value.find(obj => obj.document === associationCharter.id && obj.association === association.id)
                     const charterStatus = initCharterStatus(association.isSite, association.charterStatus, associationCharter, uploadedCharter)
@@ -149,7 +151,7 @@ export default function () {
             if (document && association) {
                 if (document.processType === charterType && uploadedCharter.association === association.id) {
                     if (document.processType === 'CHARTER_ASSOCIATION') {
-                        if (document.acronym === 'CHARTE_SITE_ALSACE') {
+                        if (document.acronym === ASSOCIATION_CHARTER) {
                             charterAssociationStatus = initCharterStatus(association.isSite, association.charterStatus, document, uploadedCharter).charterStatus
                             if (charterAssociationStatus === 'PROCESSING') {
                                 processingCharters.value.push({
@@ -310,6 +312,7 @@ export default function () {
         processingCharters,
         initProcessingCharters,
         patchCharterDocument,
-        patchCharterStatus
+        patchCharterStatus,
+        ASSOCIATION_CHARTER
     }
 }

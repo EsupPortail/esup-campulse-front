@@ -31,6 +31,7 @@ watch(() => newUser.email, () => {
 
 export default function () {
     const userStore = useUserStore()
+    const {axiosAuthenticated, axiosPublic} = useAxios()
 
     /**
      * It takes two strings as arguments, and sets them as the values of two localStorage keys
@@ -60,6 +61,22 @@ export default function () {
         })
     }
 
+    async function cancelAbortedCasRegistration() {
+        // Delete user in DB
+        await axiosAuthenticated.delete('/users/auth/user/')
+        // Clean newUser data
+        newUser.isCas = false
+        newUser.firstName = ''
+        newUser.lastName = ''
+        newUser.email = ''
+        newUser.username = ''
+        newUser.phone = ''
+        // Clean userStore
+        userStore.newUser = undefined
+        // Clean local storage
+        removeTokens()
+    }
+
     /**
      * It returns true if the user has the permission passed in as a parameter
      * @param {string} permission - The permission you want to check for.
@@ -82,12 +99,10 @@ export default function () {
     watch(() => userStore.newUser, initNewUserData)
 
     async function userLocalRegister() {
-        const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/', newUser)
     }
 
     async function userCASRegister(newUserInfo: string | null) {
-        const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo})
     }
 
@@ -98,7 +113,6 @@ export default function () {
      */
     async function userAssociationsRegister(publicRequest: boolean, username: string | undefined) {
         const idsAssociations = []
-        const {axiosPublic, axiosAuthenticated} = useAxios()
         const {newAssociations} = useUserAssociations()
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
@@ -126,7 +140,6 @@ export default function () {
         const groupsToRegister: UserGroupRegister[] = []
         const {newGroups, commissionGroup} = useUserGroups()
         const {userFunds} = useCommissions()
-        const {axiosPublic, axiosAuthenticated} = useAxios()
         let instance = axiosAuthenticated as AxiosInstance
         if (publicRequest) instance = axiosPublic
         if (newGroups.value.length) {
@@ -204,7 +217,6 @@ export default function () {
 
     async function getUsersFromCAS(lastName: string) {
         CASUsers.value = []
-        const {axiosAuthenticated} = useAxios()
         CASUsers.value = (await axiosAuthenticated.get<CASUser[]>(`/users/external/?last_name=${lastName}`)).data
     }
 
@@ -229,27 +241,22 @@ export default function () {
     }
 
     async function userLocalRegisterAsManager(newUser: UserRegister) {
-        const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.post('/users/', newUser)
     }
 
     async function verifyEmail(key: string) {
-        const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/verify-email/', {key: key})
     }
 
     async function resendEmail(email: string) {
-        const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/registration/resend-email/', {email})
     }
 
     async function passwordReset(email: string) {
-        const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/password/reset/', {email})
     }
 
     async function passwordResetConfirm(uid: string, token: string, newPassword1: string, newPassword2: string) {
-        const {axiosPublic} = useAxios()
         await axiosPublic.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
     }
 
@@ -287,6 +294,7 @@ export default function () {
         CASUsers,
         CASUserOptions,
         checkPasswordStrength,
-        initCASUserOptions
+        initCASUserOptions,
+        cancelAbortedCasRegistration
     }
 }

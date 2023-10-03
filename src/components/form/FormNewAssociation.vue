@@ -37,7 +37,7 @@ const initValues = () => {
                 institutions.value.push(
                     {
                         value: institution.id,
-                        label: institution.name
+                        label: `${institution.acronym} (${institution.name})`
                     }
                 )
             }

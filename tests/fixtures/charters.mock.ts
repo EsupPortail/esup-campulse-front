@@ -72,8 +72,8 @@ const _expiredCharter: ManageCharter = {
 const _projectFundCharter: ManageCharter = _chartersExpirationDate >= _todayDate ? _validatedCharter : _expiredCharter
 
 export const _manageCharters: ManageCharter[] = [
-    _projectFundCharter,
-    _associationCharter
+    _associationCharter,
+    _projectFundCharter
 ]
 
 export const _associationCharters: AssociationCharter[] = [

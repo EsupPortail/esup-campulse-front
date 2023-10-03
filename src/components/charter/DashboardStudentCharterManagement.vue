@@ -27,7 +27,7 @@ onMounted(initTab)
 <template>
     <section class="dashboard-section">
         <div class="dashboard-section-container">
-            <div class="container">
+            <div class="container padding-top">
                 <InfoDocumentLibrary/>
                 <QCard>
                     <QTabs
