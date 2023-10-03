@@ -169,18 +169,37 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
             v-for="(document, index) in processDocuments"
             :key="index"
         >
+            <div
+                v-if="document.pathTemplate"
+                class="info-panel info-panel-warning"
+            >
+                <i
+                    aria-hidden="true"
+                    class="bi bi-exclamation-lg"
+                ></i>
+                <p>
+                    {{ t('project.document.use-template') }} <span>
+                        <a
+                            :href="document.pathTemplate"
+                            target="_blank"
+                        >{{
+                            `${t('project.document.download-template')} "${document.description}".`
+                        }}</a></span>
+                </p>
+            </div>
+            
             <QFile
                 v-model="document.pathFile"
                 :accept="document.mimeTypes?.join(', ')"
                 :aria-required="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length"
                 :color="fieldColor"
-                :disable="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
-                    !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
                 :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE * (processDocuments.filter(x => x.pathFile).length ? processDocuments.filter(x => x.pathFile).length : 1)"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
                 :multiple="document.isMultiple"
+                :readonly="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
+                    !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
                 :rules="(document.isRequiredInProcess || (props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management')) &&
                     !documentUploads.filter(obj => obj.document === document.document).length ?
                         [val => ((document.isMultiple ? val.length : val) ||
@@ -210,25 +229,6 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
                     <QIcon name="bi-paperclip"/>
                 </template>
             </QFile>
-
-            <div
-                v-if="document.pathTemplate"
-                class="info-panel info-panel-warning"
-            >
-                <i
-                    aria-hidden="true"
-                    class="bi bi-exclamation-lg"
-                ></i>
-                <p>
-                    {{ t('project.document.use-template') }} <span>
-                        <a
-                            :href="document.pathTemplate"
-                            target="_blank"
-                        >{{
-                            `${t('project.document.download-template')} "${document.description}".`
-                        }}</a></span>
-                </p>
-            </div>
 
             <div class="document-input-group">
                 <div class="document-input variant-space-3">
