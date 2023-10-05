@@ -152,7 +152,12 @@ const columns: QTableProps['columns'] = [
                                     :charter="props.row"
                                     :is-site="associationStore.association?.isSite"
                                 />
-                                <p v-else>{{ t('forbidden') }}</p>
+                                <p
+                                    v-else
+                                    class="no-presidency"
+                                >
+                                    {{ t('forbidden') }}
+                                </p>
                             </QTd>
                         </QTr>
                     </template>
@@ -208,3 +213,12 @@ const columns: QTableProps['columns'] = [
         </div>
     </section>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/_variables.scss";
+
+.no-presidency {
+    color: $textColor2;
+    margin: 1rem;
+}
+</style>

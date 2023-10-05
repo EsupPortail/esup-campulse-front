@@ -10,7 +10,7 @@ import axios from 'axios'
 const {t} = useI18n()
 const confirmation = ref<boolean>(false)
 const {deleteUserAssociation} = useUserAssociation()
-const {notify} = useQuasar()
+const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 
 const associationStore = useAssociationStore()
@@ -24,6 +24,7 @@ const props = defineProps<{
 }>()
 
 async function onDeleteUserAssociation() {
+    loading.show()
     try {
         await deleteUserAssociation(props.userId, props.associationId)
         emit('userAssociationDeleted')
@@ -40,7 +41,7 @@ async function onDeleteUserAssociation() {
             })
         }
     }
-
+    loading.hide()
 }
 
 </script>
@@ -67,9 +68,6 @@ async function onDeleteUserAssociation() {
                         t('dashboard.association-user.confirm-delete-self')
                     }}
                 </p>
-            </QCardSection>
-
-            <QCardActions>
                 <div class="flex-row padding-top">
                     <QBtn
                         v-close-popup
@@ -81,12 +79,13 @@ async function onDeleteUserAssociation() {
                     <QBtn
                         v-close-popup
                         :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+                        class="btn-lg"
                         color="custom-red"
                         icon="bi-trash"
                         @click="onDeleteUserAssociation"
                     />
                 </div>
-            </QCardActions>
+            </QCardSection>
         </QCard>
     </QDialog>
 </template>
