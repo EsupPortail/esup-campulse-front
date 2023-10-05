@@ -1,19 +1,2 @@
-- 🩹 Fix bad form UI in document uploads
-- 🎨 Add push to login for default error catching on CAS login
-- 🚨 Fix typecheck errors
-- 🩹 Fix 404 on direct url to association submit project
-- ♻️ Limit request to footer logos
-- 🍻 Test config of errors messages again with string (must type this later)
-- 🍻 Testing config of error messages
-- 🩹 Fix broken links in footer
-- ⬆️ Upgrade minor dependencies
-- ✅ Fix tests
-- ♻️ Delete aborted registration CAS user
-- ✏️ Display association charter on top of charter list
-- 💄 Add padding on principal nav
-- ♻️ Students cannot change the institution of an association
-- 🎨 Refactor 'CHARTE_SITE_ALSACE' into generic variable
-- ✏️ Add acronym + name of institutions in select
-- 🐛 Fix project reedition in project budget recap
-- 🐛 Test fix errors messages
-- 🔧 Comment custom Axios conf for 401 catching
+- ♻️ Display all documents in manager library but only allow modification with permission
+- ♻️ Refacto submit project form onMounted

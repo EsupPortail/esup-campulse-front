@@ -50,21 +50,23 @@ const managerFunds = ref<number[]>([])
 const initLibraryDocuments = () => {
     const list: LibraryDocument[] = []
     documents.value.forEach(document => {
-        let pushDocument = false
-        if (document.processType === 'NO_PROCESS') {
-            pushDocument = true
-        } else {
-            if (document.fund) {
-                if (hasPerm('change_document_any_fund')) {
-                    pushDocument = true
-                } else if (managerFunds.value.includes(document.fund)) {
-                    pushDocument = true
+        let canUpdateDocument = false
+        if (document.pathTemplate) {
+            if (document.processType === 'NO_PROCESS') {
+                canUpdateDocument = true
+            } else {
+                if (document.fund) {
+                    if (hasPerm('change_document_any_fund')) {
+                        canUpdateDocument = true
+                    } else if (managerFunds.value.includes(document.fund)) {
+                        canUpdateDocument = true
+                    }
+                } else if (document.processType === 'CHARTER_ASSOCIATION' || document.processType === 'DOCUMENT_PROJECT') {
+                    if (hasPerm('change_document_any_fund')) {
+                        canUpdateDocument = true
+                    }
                 }
-            } else if (document.pathTemplate) {
-                pushDocument = true
             }
-        }
-        if (pushDocument) {
             list.push({
                 id: document.id,
                 name: document.name,
@@ -74,7 +76,8 @@ const initLibraryDocuments = () => {
                 file: undefined,
                 processType: document.processType,
                 mimeTypes: document.processType === 'NO_PROCESS' ? [] : document.mimeTypes,
-                open: false
+                open: false,
+                canUpdateDocument
             })
         }
     })
@@ -117,12 +120,9 @@ async function onGetFunds() {
 }
 
 const initManagerFunds = () => {
-    managerFunds.value = []
     userStore.user?.groups.forEach(group => {
-        const fund = funds.value.find(fund => fund.institution === group.institutionId)
-        if (fund) {
-            managerFunds.value.push(fund.id)
-        }
+        const foundFunds = funds.value.filter(fund => fund.institution === group.institutionId)
+        managerFunds.value = foundFunds.map(fund => fund.id)
     })
 }
 
@@ -206,10 +206,7 @@ const onClearValues = () => {
     </section>
 
     <!-- View documents -->
-    <section
-        v-if="libraryDocuments.length"
-        class="dashboard-section"
-    >
+    <section class="dashboard-section">
         <h2>
             <i
                 aria-hidden="true"

@@ -47,7 +47,7 @@ onMounted(async () => {
         <p>
             {{ t('project.required-documents-list') }}
         </p>
-        <ul>
+        <ul v-if="processDocuments.length">
             <li
                 v-for="(document, index) in processDocuments"
                 :key="index"
@@ -61,6 +61,10 @@ onMounted(async () => {
                 <span v-else>{{ document.description }}</span>
             </li>
         </ul>
+        <QSpinner
+            v-else
+            size="lg"
+        />
     </div>
 </template>
 

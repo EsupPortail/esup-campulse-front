@@ -19,6 +19,7 @@ import ProjectComments from '@/components/project/ProjectComments.vue'
 import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vue'
 import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
+import type {AssociationUserDetail} from '#/user'
 
 const {t} = useI18n()
 const {
@@ -70,18 +71,10 @@ const route = useRoute()
 
 onMounted(async () => {
     loading.show()
-    // We set the project id based on the route params, if any
+    // We get project detail
     projectId.value = parseInt(route.params.projectId as string)
-    // If the project has an id, we can assume it's not a new project
-    if (projectId.value) {
-        newProject.value = false
-    }
-    // If the project has not been posted yet, we clean project store
-    if (!projectId.value) {
-        projectStore.project = undefined
-        projectStore.projectCategories = []
-        reInitSubmitProjectForm()
-    }
+    // We set if it is a new project
+    newProject.value = !projectId.value
     // We get project detail
     await onGetProjectDetail()
     // If project is not a draft, then push to 404
@@ -91,15 +84,19 @@ onMounted(async () => {
             await router.push({name: '404'})
         }
     }
+    // We set the association user
+    associationUser.value = userStore.userAssociations
+        .find(obj => obj.association.id === associationId.value)
     // We get project categories
     await onGetProjectCategories()
-    // We initialize applicant
-    initApplicant()
-    await initApplicantDetails()
+    // Get association users
+    await onGetAssociationUsers()
     // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
     projectStore.projectCommissionFunds = []
     // When everything is done, then the page can be fully loaded
     isLoaded.value = true
+    // Check if user can update project
+    await canUpdateProject()
     loading.hide()
 })
 
@@ -128,62 +125,65 @@ watch(() => step.value === 4, async () => {
 })
 
 // REFS
-const applicant = ref<'association' | 'user' | undefined>()
+const applicant = ref<'association' | 'user' | undefined>(route.name === 'SubmitProjectAssociation' ? 'association' : 'user')
 
-const associationName = ref<string | undefined>('')
-const associationId = ref<number>()
+const associationId = ref<number>(parseInt(route.params.associationId as string))
+
 const projectId = ref<number>()
+watch(() => projectId.value, () => {
+    // If the project has not been posted yet, we clean project store
+    if (!projectId.value) {
+        projectStore.project = undefined
+        projectStore.projectCategories = []
+        reInitSubmitProjectForm()
+    }
+    // We set if the project is a re-edition or not
+    projectReEdition.value = !!projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)
+})
+
+const associationUser = ref<AssociationUserDetail | undefined>()
+
+watch(() => userStore.userAssociations, () => {
+    associationUser.value = userStore.userAssociations
+        .find(obj => obj.association.id === associationId.value)
+})
+
+watch(() => associationUser.value, () => {
+    hasPresidentStatus.value = userStore.hasPresidentStatus(associationId.value)
+    isSite.value = !!(associationUser.value && associationUser.value?.association.isSite && applicant.value === 'association')
+})
+
+const hasPresidentStatus = ref<boolean>(false)
 
 const newProject = ref<boolean>(true)
+
 const newProjectPosted = ref<boolean>(false)
 
 const projectReEdition = ref<boolean>(false)
-watch(() => projectStore.projectCommissionFunds.length, () => {
-    if (projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)) projectReEdition.value = true
-})
 
 const isSite = ref<boolean>(false)
 
 const isLoaded = ref<boolean>(false)
 
-// INIT APPLICANT STATUS BASED ON ROUTER
-const initApplicant = () => {
-    if (route.name === 'SubmitProjectAssociation') {
-        applicant.value = 'association'
-        associationId.value = parseInt(route.params.associationId as string)
-    } else applicant.value = 'user'
-}
-
-const initApplicantDetails = async () => {
-    // If the applicant is an association and the person trying to submit project is not a member of the association, redirect to 404
+const canUpdateProject = async () => {
+    let canUpdateProject = false
+    // If the applicant is an association
     if (applicant.value === 'association') {
-        const association = userStore.userAssociations.find(obj => obj.association.id === associationId.value)
-        if (association && associationId.value) {
-            const associationUserId = association.id
-            // Get association users
-            await onGetAssociationUsers()
-            // If new project and user has no president status, redirect to 404
-            if (newProject.value) {
-                if (!userStore.hasPresidentStatus(associationId.value)) await router.push({name: '404'})
+        if (associationUser.value?.association?.canSubmitProjects) {
+            if (hasPresidentStatus.value) {
+                canUpdateProject = true
+            } else if (projectStore.project?.associationUser === associationUser.value?.id) {
+                canUpdateProject = true
             }
-            // If existing project and user has no president status nor project delegate status; redirect to 404
-            else {
-                if (!userStore.hasPresidentStatus(associationId.value) && projectStore.project?.associationUser !== associationUserId) {
-                    await router.push({name: '404'})
-                }
-            }
-            associationName.value = association.association.name
-            initIsSite()
-        } else {
-            await router.push({name: '404'})
         }
     }
-}
-
-// INIT IS SITE
-const initIsSite = () => {
-    const association = userStore.user?.associations.find(obj => obj.id === associationId.value)
-    if (association && association.isSite && applicant.value === 'association') isSite.value = true
+    // If the applicant is a user
+    else {
+        canUpdateProject = true
+    }
+    if (!canUpdateProject) {
+        await router.push({name: '404'})
+    }
 }
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL

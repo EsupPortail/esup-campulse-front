@@ -97,7 +97,10 @@ async function onDeleteDocument(documentId: number) {
                         </span>
                     </h4>
 
-                    <button @click.prevent="document.open = !document.open">
+                    <button
+                        v-if="document.canUpdateDocument"
+                        @click.prevent="document.open = !document.open"
+                    >
                         <i
                             :class="`bi bi-${document.open ? 'x' : 'pencil'}`"
                             aria-hidden="true"

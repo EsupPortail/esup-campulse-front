@@ -85,5 +85,6 @@ export interface LibraryDocument {
     file: undefined | File,
     processType: DocumentProcessType,
     mimeTypes: MimeType[],
-    open: boolean
+    open: boolean,
+    canUpdateDocument: boolean
 }
