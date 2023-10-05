@@ -9,6 +9,7 @@ import useErrors from '@/composables/useErrors'
 import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useUserStore} from '@/stores/useUserStore'
 
 
 const {t} = useI18n()
@@ -16,6 +17,7 @@ const {loading, notify} = useQuasar()
 const {initCharters, manageCharters} = useCharters()
 const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
+const userStore = useUserStore()
 
 
 const importedProps = defineProps<{
@@ -144,12 +146,13 @@ const columns: QTableProps['columns'] = [
                                 headers="actions"
                             >
                                 <TableStudentChartersBtn
-                                    v-if="isLoaded"
+                                    v-if="isLoaded && userStore.hasPresidentStatus(importedProps.associationId)"
                                     :association-charter-status="associationStore.association?.charterStatus"
                                     :association-id="importedProps.associationId"
                                     :charter="props.row"
                                     :is-site="associationStore.association?.isSite"
                                 />
+                                <p v-else>{{ t('forbidden') }}</p>
                             </QTd>
                         </QTr>
                     </template>
