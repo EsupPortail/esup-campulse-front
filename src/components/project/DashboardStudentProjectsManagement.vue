@@ -52,7 +52,7 @@ watch(() => userStore.userAssociations, initTabs)
 
 const tab = ref('')
 const innerTab = ref('allProjects')
-const splitterModel = ref(20)
+const splitterModel = ref(15)
 
 onMounted(async () => {
     loading.show()
@@ -126,7 +126,11 @@ watch(() => tab.value, initCanSubmitProjects)
                         :name="tab.name"
                         class="q-pa-none"
                     >
-                        <QSplitter v-model="splitterModel">
+                        <QSplitter
+                            v-model="splitterModel"
+                            :limits="[12, 100]"
+                            unit="%"
+                        >
                             <template v-slot:before>
                                 <div v-if="tab.association">
                                     <div v-if="canSubmitProjects">
@@ -202,6 +206,15 @@ watch(() => tab.value, initCanSubmitProjects)
                                         name="rejectedProjects"
                                     />
                                 </QTabs>
+                            </template>
+
+                            <template v-slot:separator>
+                                <QAvatar
+                                    color="commission"
+                                    icon="bi-arrows"
+                                    size="40px"
+                                    text-color="white"
+                                />
                             </template>
 
                             <template v-slot:after>

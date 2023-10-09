@@ -40,6 +40,7 @@ onMounted(initTab)
                         <QTab
                             v-for="association in userStore.userAssociations"
                             :key="association.association.id"
+                            :disable="!association.isValidatedByAdmin"
                             :label="association.association.name"
                             :name="association.association.id.toString()"
                         />

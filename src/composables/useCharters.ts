@@ -26,7 +26,7 @@ export default function () {
 
     const charterProcesses: DocumentProcessType[] = ['CHARTER_ASSOCIATION', 'CHARTER_PROJECT_FUND']
 
-    // Get all documents uploads needed to signe the association charter
+    // Get all documents uploads needed to sign the association charter
     async function getCharterDocuments(associationId?: number) {
         const params = []
         if (associationId) params.push(`association_id=${associationId}`)

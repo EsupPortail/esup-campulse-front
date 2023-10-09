@@ -27,7 +27,7 @@ watch(() => tab.value, () => {
 })
 
 const innerTab = ref('allProjects')
-const splitterModel = ref(20)
+const splitterModel = ref(10)
 
 interface Tab {
     name: string,
@@ -104,7 +104,7 @@ async function onClearSearch() {
         <div class="dashboard-section-container flex-column">
             <div class="container margin-bottom">
                 <h3>{{ t('commission.search-project') }}</h3>
-                <FormProjectSearch @on-clear-search="onClearSearch" />
+                <FormProjectSearch @on-clear-search="onClearSearch"/>
             </div>
             <QCard v-if="tabs.length">
                 <QTabs
@@ -123,7 +123,7 @@ async function onClearSearch() {
                     />
                 </QTabs>
 
-                <QSeparator aria-hidden="true" />
+                <QSeparator aria-hidden="true"/>
 
                 <QTabPanels
                     v-model="tab"
@@ -135,7 +135,11 @@ async function onClearSearch() {
                         :name="tab.name"
                         class="q-pa-none"
                     >
-                        <QSplitter v-model="splitterModel">
+                        <QSplitter
+                            v-model="splitterModel"
+                            :limits="[10, 100]"
+                            unit="%"
+                        >
                             <template v-slot:before>
                                 <QTabs
                                     v-model="innerTab"

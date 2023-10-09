@@ -31,6 +31,7 @@ onMounted(async function () {
 })
 
 const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 // Used for pagination
 const associationsPerPage = 15
 const currentPage = ref(1)
@@ -48,8 +49,16 @@ watch(() => currentPage.value, () => {
     endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
         associations.value.length : currentPage.value * associationsPerPage
 })
+watch(() => associations.value.length, () => {
+    endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
+        associations.value.length : currentPage.value * associationsPerPage
+})
+watch(() => pages.value, () => {
+    endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
+        associations.value.length : currentPage.value * associationsPerPage
+})
 const associationsOnPage = ref([...associations.value.slice(startIndex.value, endIndex.value)])
-watch(() => associations.value, () => {
+watch(() => associations.value.length, () => {
     associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
 })
 watch(() => startIndex.value, () => {
@@ -114,6 +123,7 @@ async function getContents() {
             <FormAssociationSearch
                 v-if="route.name"
                 :route="route.name"
+                @update-page="currentPage = 1"
             />
         </div>
 

@@ -1,2 +1,9 @@
-- ♻️ Display all documents in manager library but only allow modification with permission
-- ♻️ Refacto submit project form onMounted
+- 🩹 Fix project dates with reactive rules
+- ✏️ Fix typo in doc
+- 🩹 Fix directory search and pagination bug
+- 💄 Fix unstyled button in presidency delegation form
+- ⬆️ Upgrade minor dependencies
+- 🐛 Fix updateUserAssociatiosn
+- 🚸 Improve UI when association user is not validated by admin in charter module
+- 🚸 Improve commission dashboards UI
+- 🚸 Charter buttons are not visible if not president

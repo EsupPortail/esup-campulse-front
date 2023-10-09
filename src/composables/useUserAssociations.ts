@@ -92,10 +92,12 @@ export default function () {
                 // We compare the 2 objects
                 if (storeAssociation?.canBePresidentFrom !== association.canBePresidentFrom) hasChanges = true
                 if (storeAssociation?.canBePresidentTo !== association.canBePresidentTo) hasChanges = true
+
                 if (storeAssociation?.isPresident && association.role !== 'isPresident') hasChanges = true
-                if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
-                if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
-                if (storeAssociation?.isVicePresident && association.role !== 'isVicePresident') hasChanges = true
+                else if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
+                else if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
+                else if (storeAssociation?.isVicePresident && association.role !== 'isVicePresident') hasChanges = true
+                else if (association.role !== 'isMember') hasChanges = true
 
                 if (hasChanges && association.id) {
                     const infosToPatch = {

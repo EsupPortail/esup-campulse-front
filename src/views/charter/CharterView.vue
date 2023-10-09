@@ -13,6 +13,7 @@ import useErrors from '@/composables/useErrors'
 import CharterImage1 from '@/assets/img/charter-image-1.jpg'
 import CharterImage2 from '@/assets/img/charter-image-2.jpg'
 import CharterImage3 from '@/assets/img/charter-image-3.jpg'
+import {useUserStore} from '@/stores/useUserStore'
 
 
 const {isStaff} = useUserGroups()
@@ -20,6 +21,7 @@ const {hasPerm} = useSecurity()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const contentStore = useContentStore()
+const userStore = useUserStore()
 
 const firstBlock = ref<Content>()
 const secondBlock = ref<Content>()
@@ -63,7 +65,8 @@ const initPageCards = () => {
             text: manageDocuments.value?.body
         })
     }
-    if (hasPerm('add_project_association')) {
+    if (hasPerm('add_project_association') && userStore.userAssociations
+        .map(userAssociation => userAssociation.isValidatedByAdmin).includes(true)) {
         pageCards.value.push({
             to: {name: 'ManageCharters'},
             btnLabel: signCharters.value?.header,
