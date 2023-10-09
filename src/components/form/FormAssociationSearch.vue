@@ -18,6 +18,8 @@ const props = defineProps<{
     route: RouteRecordName
 }>()
 
+const emit = defineEmits(['updatePage'])
+
 watch(() => associationStore.associations, () => {
     associations.value = associationStore.associations
 })
@@ -34,8 +36,13 @@ const settings = ref<AssociationSearch>({
 async function onSearch() {
     loading.show()
     let isPublic = true
-    if (props.route === 'ManageAssociations') isPublic = false
+    if (props.route === 'ManageAssociations') {
+        isPublic = false
+    }
     associations.value = await simpleAssociationSearch(settings.value.search, isPublic)
+    if (props.route === 'Associations') {
+        emit('updatePage')
+    }
     loading.hide()
 }
 
@@ -57,8 +64,10 @@ async function clearSearch() {
         institutionComponent: null,
         activityField: null
     }
-    if (props.route === 'Associations') await associationStore.getAssociations(true)
-    else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
+    if (props.route === 'Associations') {
+        await associationStore.getAssociations(true)
+        emit('updatePage')
+    } else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
     loading.hide()
 }
 </script>

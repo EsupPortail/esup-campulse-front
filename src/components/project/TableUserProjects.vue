@@ -100,7 +100,13 @@ const columns = ref<QTableProps['columns']>([
         sortable: true,
         format: val => `${val}`
     },
-    {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
+    {
+        name: 'edition',
+        align: 'center',
+        label: t('manage'),
+        field: 'edition',
+        sortable: false
+    },
 ])
 </script>
 
@@ -238,7 +244,6 @@ const columns = ref<QTableProps['columns']>([
         </template>
     </QTable>
 </template>
-
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";

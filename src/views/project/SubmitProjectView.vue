@@ -493,9 +493,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 clearable
                                 color="commission"
                                 filled
-                                lazy-rules
                                 max="2120-01-01"
                                 min="1970-01-01"
+                                reactive-rules
                                 type="date"
                             />
                             <QInput
@@ -506,9 +506,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 clearable
                                 color="commission"
                                 filled
-                                lazy-rules
                                 max="2120-01-01"
                                 min="1970-01-01"
+                                reactive-rules
                                 type="date"
                             />
                             <QInput

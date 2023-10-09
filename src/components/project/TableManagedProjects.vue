@@ -43,7 +43,7 @@ const selected = ref<QTableProps['selected']>([])
 const applicant = (association: number | null, user: number | null) => {
     if (association) {
         const obj = associationStore.associations.find(x => x.id === association)
-        if (obj) return obj.name
+        if (obj) return obj.acronym
     } else {
         const userObj = userManagerStore.users.find(obj => obj.id === user)
         if (userObj) return `${userObj.firstName} ${userObj.lastName}`

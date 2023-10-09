@@ -107,20 +107,20 @@ async function onDelegatePresidency(activate: boolean) {
                         :label="t('from')"
                         color="dashboard"
                         filled
-                        type="date"
-                        min="1970-01-01"
                         max="2120-01-01"
+                        min="1970-01-01"
+                        type="date"
                     />
                     <QInput
                         v-model="delegation.to"
                         :label="t('to')"
+                        bottom-slots
                         color="dashboard"
                         filled
-                        type="date"
-                        min="1970-01-01"
-                        max="2120-01-01"
-                        bottom-slots
                         for="delegation"
+                        max="2120-01-01"
+                        min="1970-01-01"
+                        type="date"
                     >
                         <template v-slot:hint>
                             <p aria-describedby="delegation">{{ t('forms.hint-delegation-to') }}</p>
@@ -146,7 +146,9 @@ async function onDelegatePresidency(activate: boolean) {
                         v-if="props.member.canBePresidentFrom || props.member.canBePresidentTo"
                         v-close-popup
                         :label="t('deactivate')"
+                        class="btn-lg"
                         color="custom-red"
+                        icon="bi-x-lg"
                         @click="onDelegatePresidency(false)"
                     />
                 </QForm>
