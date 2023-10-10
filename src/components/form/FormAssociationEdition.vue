@@ -22,6 +22,7 @@ import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import useErrors from '@/composables/useErrors'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 import useDocuments from '@/composables/useDocuments'
+import AlertConfirmAssociationIsSite from '@/components/alert/AlertConfirmAssociationIsSite.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -544,6 +545,10 @@ async function onChangeLogo(action: string) {
                 @has-validated="hasValidated = true"
             />
             <AlertConfirmAssociationEnabled
+                v-if="isStaff"
+                @has-validated="hasValidated = true"
+            />
+            <AlertConfirmAssociationIsSite
                 v-if="isStaff"
                 @has-validated="hasValidated = true"
             />

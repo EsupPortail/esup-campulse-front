@@ -41,6 +41,8 @@ const initActionOptions = () => {
     if (hasPerm('change_association_all_fields')) {
         actionsOptions.value.push({id: 'enable', label: t('association.all-selected-enable')})
         actionsOptions.value.push({id: 'disable', label: t('association.all-selected-disable')})
+        actionsOptions.value.push({id: 'site', label: t('association.all-selected-site')})
+        actionsOptions.value.push({id: 'not-site', label: t('association.all-selected-not-site')})
     }
 }
 
@@ -83,6 +85,24 @@ async function onConfirmChanges(emailType: string) {
             }))
         })
         break
+    case 'site':
+        positiveMessage = t('notifications.positive.enable-associations-site')
+        negativeMessage = t('notifications.negative.enable-associations-site-error')
+        props.selectedAssociations?.forEach((selectedAssociation) => {
+            promisesToExecute.push(associationStore.patchIsSite(true, selectedAssociation.id).then(() => {
+                associationsSuccess.push(selectedAssociation.name)
+            }))
+        })
+        break
+    case 'not-site':
+        positiveMessage = t('notifications.positive.disable-associations-site')
+        negativeMessage = t('notifications.negative.disable-associations-site-error')
+        props.selectedAssociations?.forEach((selectedAssociation) => {
+            promisesToExecute.push(associationStore.patchIsSite(false, selectedAssociation.id).then(() => {
+                associationsSuccess.push(selectedAssociation.name)
+            }))
+        })
+        break
     case 'delete':
         positiveMessage = t('notifications.positive.delete-associations')
         negativeMessage = t('notifications.negative.delete-associations-error')
@@ -107,7 +127,8 @@ async function onConfirmChanges(emailType: string) {
             })
         }
         break
-    case 'csv-export': case 'xlsx-export':
+    case 'csv-export':
+    case 'xlsx-export':
         if (props.selectedAssociations?.length) {
             try {
                 const associationIds = props.selectedAssociations.map(x => x.id)
@@ -219,6 +240,18 @@ async function onConfirmChanges(emailType: string) {
                     {{ t('association.confirm-all-disable') }}
                 </p>
                 <p
+                    v-if="switches === 'site'"
+                    class="q-ml-sm"
+                >
+                    {{ t('association.confirm-all-site') }}
+                </p>
+                <p
+                    v-if="switches === 'not-site'"
+                    class="q-ml-sm"
+                >
+                    {{ t('association.confirm-all-not-site') }}
+                </p>
+                <p
                     v-if="switches === 'delete'"
                     class="q-ml-sm"
                 >
@@ -309,6 +342,24 @@ async function onConfirmChanges(emailType: string) {
                         class="btn-lg"
                         color="custom-red"
                         icon="bi-lock"
+                        @click="onConfirmChanges('')"
+                    />
+                    <QBtn
+                        v-if="switches === 'site'"
+                        v-close-popup
+                        :label="t('association.enable-association-site')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-file-earmark-check-fill"
+                        @click="onConfirmChanges('')"
+                    />
+                    <QBtn
+                        v-if="switches === 'not-site'"
+                        v-close-popup
+                        :label="t('association.disable-association-site')"
+                        class="btn-lg"
+                        color="custom-red"
+                        icon="bi-file-earmark-x-fill"
                         @click="onConfirmChanges('')"
                     />
                     <QBtn
