@@ -42,6 +42,12 @@ const props = defineProps<{
     }
 }
 
+@media screen and (max-width: $breakpoint-lg) {
+    .container {
+        flex-wrap: wrap;
+    }
+}
+
 /* Changing the page's position to fit with the Accessibility Requirement */
 @media screen and (min-width: $breakpoint-vsm) {
     .container {

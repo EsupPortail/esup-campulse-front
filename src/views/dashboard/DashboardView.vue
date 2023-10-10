@@ -223,7 +223,7 @@ onMounted(async () => {
                         color="dashboard"
                     />
                     <QBtn
-                        v-if="hasPerm('add_commission')"
+                        v-if="hasPerm('add_commission') || hasPerm('change_commission')"
                         :label="t('dashboard.manage-commissions')"
                         :to="{ name: 'ManageCommissionDates' }"
                         class="btn-lg"
