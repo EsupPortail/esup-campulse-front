@@ -43,7 +43,7 @@ router.beforeEach(async (to) => {
         try {
             await userStore.getUser()
         } catch (error) {
-            userStore.logOut()
+            await router.push({name: 'Logout'})
         }
     }
 

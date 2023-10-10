@@ -552,6 +552,7 @@
     "negative": {
       "association-already-exists": "Ce nom est déjà pris par une autre association.",
       "association-before-deletion-word-error": "Vérification échouée, veuillez réessayer.",
+      "automatic-logout": "Votre session a expiré.",
       "cas-user-already-exists": "Vous avez déjà un compte. Veuillez vous connecter.",
       "cas-user-not-validated-by-admin": "Votre compte n'est pas encore validé par les administrateurs.",
       "cas-user-redirected-login": "Veuillez créer un compte avant de vous connecter.",

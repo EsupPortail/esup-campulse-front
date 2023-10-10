@@ -31,17 +31,16 @@ const state = reactive<UseAxiosState>({
             error => Promise.reject(error),
         )
 
-        /*_axios.interceptors.response.use(response => {
+        _axios.interceptors.response.use(response => {
             return response
         }, async function (error) {
-            if (401 === error.response.status) {
-                localStorage.removeItem('JWT__access__token')
-                localStorage.removeItem('JWT__refresh__token')
-                await router.push({name: 'Login'})
+            if (error.response.status === 401 && error.response.data.code === 'token_not_valid'
+                && error.data.messages?.[0].tokenType === 'refresh') {
+                await router.push({name: 'Logout'})
             } else {
                 return Promise.reject(error)
             }
-        })*/
+        })
 
         return _axios
     },
