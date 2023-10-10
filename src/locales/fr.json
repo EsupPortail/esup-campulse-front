@@ -376,7 +376,7 @@
     "amount-members-allowed-must-be-superior-to-members": "Veuillez choisir un nombre supérieur ou égal au nombre de membres actuels.",
     "amount-student-allowed-cannot-be-inferior-to-members": "Ne peut pas être inférieur au nombre de {amount} membres inscrits sur la plateforme actuellement",
     "association-institution": "Établissement de rattachement",
-    "association-is-site": "Association chartée (rend l'association visible sur l'annuaire)",
+    "association-is-site": "Association site Alsace (rend l'association visible sur l'annuaire)",
     "association-name": "Nom de l'association",
     "association-role": "Votre fonction dans l'association",
     "association-student-count": "Nombre de membres dans l'association",
