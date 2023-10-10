@@ -467,6 +467,7 @@
     "required-project-improvements": "Veuillez indiquer les améliorations possibles.",
     "required-project-income": "Veuillez indiquer les recettes totales du projet.",
     "required-project-individual-cost": "Veuillez remplir le coût par personne.",
+    "required-project-individual-cost-not-null": "Le coût par personne ne peut être égal à 0.",
     "required-project-location": "Veuillez remplir le/les lieu(x) du projet.",
     "required-project-marketing": "Veuillez décrire la campagne de communication.",
     "required-project-moral-review": "Veuillez décrire le bilan moral du projet.",
