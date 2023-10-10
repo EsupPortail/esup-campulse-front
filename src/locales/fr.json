@@ -564,7 +564,7 @@
       "disable-associations-error": "Les associations suivantes ne peuvent être désactivées : ",
       "enable-association-error": "L'association ne peut être activée.",
       "enable-associations-error": "Les associations suivantes ne peuvent être activées : ",
-      "email-used": "Cette adresse email est déjà utilisée.",
+      "email-used": "Un compte lié à cette adresse mail existe déjà.",
       "error-400": "Requête invalide.",
       "error-401": "Veuillez vous authentifier.",
       "error-403": "Vous n'avez pas les droits nécessaires pour effectuer cette action.",
