@@ -120,6 +120,7 @@ const columns = ref<QTableProps['columns']>([
         :title="importedProps.title"
         role="presentation"
         row-key="id"
+        wrap-cells
     >
         <template v-slot:header="props">
             <QTr :props="props">

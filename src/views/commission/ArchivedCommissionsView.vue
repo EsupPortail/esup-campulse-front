@@ -55,6 +55,7 @@ const columns: QTableProps['columns'] = [
                     :title="t('commission.archived')"
                     role="presentation"
                     row-key="name"
+                    wrap-cells
                 >
                     <template v-slot:header="props">
                         <QTr :props="props">
