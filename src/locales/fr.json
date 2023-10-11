@@ -227,6 +227,7 @@
       "processing": "Charte en cours de validation",
       "rejected": "Charte refusée",
       "returned": "En attente de modification par l'association",
+      "title": "Statut de la charte",
       "validated": "Charte signée et validée"
     },
     "uploaded-date": "Date de dépôt",
@@ -672,7 +673,7 @@
     "amount-earned-pending": "Subvention à valider",
     "amount-earned-validated": "Subvention validée",
     "amounts-asked": "Montants demandés pour les financeurs sélectionnés",
-    "applicant": "Demandeur",
+    "applicant": "Porteur",
     "archived-projects": "Projets archivés",
     "association-user": "Responsable du projet dans l'association",
     "budget": "Budget",

@@ -3,9 +3,13 @@ import useSubmitProject from '@/composables/useSubmitProject'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
-import {onMounted} from 'vue'
+import {onMounted, ref} from 'vue'
 import useErrors from '@/composables/useErrors'
 import ProjectRecapCategories from '@/components/project/ProjectRecapCategories.vue'
+import {useAssociationStore} from '@/stores/useAssociationStore'
+import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
+import useCharters from '@/composables/useCharters'
+import {useUserManagerStore} from '@/stores/useUserManagerStore'
 
 const {
     projectBasicInfos,
@@ -17,17 +21,24 @@ const {
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const associationStore = useAssociationStore()
+const userManagerStore = useUserManagerStore()
+const {initAssociationCharterStatus} = useCharters()
+
+const applicant = ref<'association' | 'user'>(projectBasicInfos.value.association ? 'association' : 'user')
 
 onMounted(async () => {
     loading.show()
     await onGetAssociationUsers()
+    await onGetAssociationDetails()
+    await onGetUser()
     loading.hide()
 })
 
 async function onGetAssociationUsers() {
     try {
-        if (projectBasicInfos.value.associationUser && projectBasicInfos.value.association) {
-            await initProjectAssociationUsersLabels(projectBasicInfos.value.association)
+        if (projectBasicInfos.value.associationUser && applicant.value === 'association') {
+            await initProjectAssociationUsersLabels(projectBasicInfos.value.association as number)
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -38,10 +49,60 @@ async function onGetAssociationUsers() {
         }
     }
 }
+
+async function onGetAssociationDetails() {
+    if (applicant.value === 'association') {
+        try {
+            await associationStore.getAssociationDetail(projectBasicInfos.value.association as number, false)
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: catchHTTPError(error.response)
+                })
+            }
+        }
+    }
+}
+
+async function onGetUser() {
+    if (applicant.value === 'user') {
+        try {
+            await userManagerStore.getUserDetail(projectBasicInfos.value.user as number)
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: catchHTTPError(error.response)
+                })
+            }
+        }
+    }
+}
 </script>
 
 <template>
     <div class="flex-column">
+        <div class="display-row">
+            <p class="row-title">{{ t('project.applicant') }}</p>
+            <p>
+                {{
+                    applicant === 'association' ? `${associationStore.association?.acronym} (${associationStore.association?.name})` :
+                    `${userManagerStore.user?.firstName} ${userManagerStore.user?.lastName}`
+                }}
+            </p>
+        </div>
+
+        <div
+            v-if="applicant === 'association'"
+            class="display-row"
+        >
+            <p class="row-title">{{ t('charter.status.title') }}</p>
+            <CharterStatusIndicator
+                :charter-status="initAssociationCharterStatus(associationStore.association?.charterStatus, associationStore.association?.isSite)"
+            />
+        </div>
+
         <div
             v-if="projectId"
             class="display-row"
@@ -98,7 +159,7 @@ async function onGetAssociationUsers() {
             <p>{{ projectBasicInfos.partnerAssociation }}</p>
         </div>
 
-        <ProjectRecapCategories />
+        <ProjectRecapCategories/>
     </div>
 </template>
 

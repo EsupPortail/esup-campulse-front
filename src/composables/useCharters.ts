@@ -195,25 +195,8 @@ export default function () {
             validatedDate = formatDate(uploadedCharter.validatedDate) ?? ''
             // If the charter is the association charter, we can determine its status by the association's charter status
             if (document.processType === 'CHARTER_ASSOCIATION') {
-                if (!isSite && associationCharterStatus !== 'CHARTER_PROCESSING') {
-                    charterStatus = 'NOT_SITE'
-                } else {
-                    switch (associationCharterStatus) {
-                    case 'CHARTER_PROCESSING':
-                        charterStatus = 'PROCESSING'
-                        break
-                    case 'CHARTER_VALIDATED':
-                        charterStatus = 'VALIDATED'
-                        break
-                    case 'CHARTER_REJECTED':
-                        charterStatus = 'REJECTED'
-                        break
-                    case 'CHARTER_DRAFT':
-                        charterStatus = 'RETURNED'
-                        break
-                    default:
-                        charterStatus = 'EXPIRED'
-                    }
+                if (associationCharterStatus) {
+                    charterStatus = initAssociationCharterStatus(associationCharterStatus, isSite)
                     if (validatedDate) {
                         // Check if the charter has not been resigned
                         if (charterStatus === 'PROCESSING') {
@@ -272,6 +255,25 @@ export default function () {
         }
     }
 
+    const initAssociationCharterStatus = (charterStatus: AssociationCharterStatus, isSite: boolean) => {
+        if (!isSite && charterStatus !== 'CHARTER_PROCESSING') {
+            return 'NOT_SITE'
+        } else {
+            switch (charterStatus) {
+            case 'CHARTER_PROCESSING':
+                return 'PROCESSING'
+            case 'CHARTER_VALIDATED':
+                return 'VALIDATED'
+            case 'CHARTER_REJECTED':
+                return 'REJECTED'
+            case 'CHARTER_DRAFT':
+                return 'RETURNED'
+            default:
+                return 'EXPIRED'
+            }
+        }
+    }
+
     async function uploadCharter(documentUploadId: number | undefined | null, associationId: number, documentId: number, charter: File) {
         if (documentUploadId) {
             await axiosAuthenticated.delete(`/documents/uploads/${documentUploadId}`)
@@ -313,6 +315,7 @@ export default function () {
         initProcessingCharters,
         patchCharterDocument,
         patchCharterStatus,
-        ASSOCIATION_CHARTER
+        ASSOCIATION_CHARTER,
+        initAssociationCharterStatus
     }
 }
