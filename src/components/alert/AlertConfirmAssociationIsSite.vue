@@ -10,27 +10,27 @@ const {notify} = useQuasar()
 
 const emit = defineEmits(['hasValidated'])
 
-const isEnabled = ref<boolean>(false)
+const isSite = ref<boolean>(false)
 watch(() => associationStore.association, () => {
-    isEnabled.value = associationStore.association?.isEnabled as boolean
+    isSite.value = associationStore.association?.isSite as boolean
 })
 
 const openAlert = ref<boolean>(false)
 
 onMounted(() => {
-    isEnabled.value = associationStore.association?.isEnabled as boolean
+    isSite.value = associationStore.association?.isSite as boolean
 })
 
 
-async function onEnableAssociation() {
-    let positiveMessage = t('notifications.positive.enable-association')
-    let negativeMessage = t('notifications.negative.enable-association-error')
-    if (isEnabled.value) {
-        positiveMessage = t('notifications.positive.disable-association')
-        negativeMessage = t('notifications.negative.disable-association-error')
+async function onChangeIsSite() {
+    let positiveMessage = t('notifications.positive.enable-association-site')
+    let negativeMessage = t('notifications.negative.enable-association-site-error')
+    if (isSite.value) {
+        positiveMessage = t('notifications.positive.disable-association-site')
+        negativeMessage = t('notifications.negative.disable-association-site-error')
     }
     try {
-        await associationStore.patchEnabledAssociation(!isEnabled.value as boolean, associationStore.association?.id)
+        await associationStore.patchIsSite(!isSite.value as boolean, associationStore.association?.id)
         emit('hasValidated')
         notify({
             type: 'positive',
@@ -47,9 +47,9 @@ async function onEnableAssociation() {
 
 <template>
     <QBtn
-        :color="isEnabled ? 'custom-red' : 'association'"
-        :icon="isEnabled ? 'bi-ban' : 'bi-check-lg'"
-        :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+        :color="isSite ? 'custom-red' : 'association'"
+        :icon="isSite ? 'bi-file-earmark-x-fill' : 'bi-file-earmark-check-fill'"
+        :label="isSite ? t('association.disable-association-site') : t('association.enable-association-site')"
         class="btn-lg"
         @click="openAlert = true"
     />
@@ -62,7 +62,7 @@ async function onEnableAssociation() {
             <QCardSection class="row items-center">
                 <p class="q-ml-sm">
                     {{
-                        isEnabled ? t('association.confirm-disable') : t('association.confirm-enable')
+                        isSite ? t('association.confirm-disable-site') : t('association.confirm-enable-site')
                     }}
                 </p>
                 <div class="flex-row padding-top">
@@ -75,11 +75,11 @@ async function onEnableAssociation() {
                     />
                     <QBtn
                         v-close-popup
-                        :color="isEnabled ? 'custom-red' : 'association'"
-                        :icon="isEnabled ? 'bi-ban' : 'bi-check-lg'"
-                        :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+                        :color="isSite ? 'custom-red' : 'association'"
+                        :icon="isSite ? 'bi-file-earmark-x-fill' : 'bi-file-earmark-check-fill'"
+                        :label="isSite ? t('association.disable-association-site') : t('association.enable-association-site')"
                         class="btn-lg"
-                        @click="onEnableAssociation"
+                        @click="onChangeIsSite"
                     />
                 </div>
             </QCardSection>
