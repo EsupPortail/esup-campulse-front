@@ -28,20 +28,25 @@ const state = reactive<UseAxiosState>({
                     loginRouteIsInternal: true
                 }
             }),
-            error => Promise.reject(error),
+            error => Promise.reject(error)
         )
-
-        /*_axios.interceptors.response.use(response => {
+        
+        _axios.interceptors.response.use(response => {
             return response
         }, async function (error) {
-            if (401 === error.response.status) {
-                localStorage.removeItem('JWT__access__token')
-                localStorage.removeItem('JWT__refresh__token')
-                await router.push({name: 'Login'})
+            if (error.response.data.code === 'token_not_valid') {
+                const refreshToken = localStorage.getItem('JWT__refresh__token')
+                const refreshTokenExpired = () => {
+                    if (!refreshToken) return true
+                    return JSON.parse(window.atob(refreshToken.split('.')[1])).exp < Math.trunc(Date.now() / 1000)
+                }
+                if (refreshTokenExpired()) {
+                    await router.push({name: 'Logout'})
+                }
             } else {
                 return Promise.reject(error)
             }
-        })*/
+        })
 
         return _axios
     },
