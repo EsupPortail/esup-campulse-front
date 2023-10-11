@@ -117,7 +117,7 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
                 message: t('notifications.negative.error-mimetype')
             })
         }
-        if (entry.failedPropValidation === 'max-file-size') {
+        if (entry.failedPropValidation === 'max-file-size' || entry.failedPropValidation === 'max-total-size') {
             notify({
                 type: 'negative',
                 message: t('notifications.negative.error-413')
@@ -187,16 +187,17 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
                         }}</a></span>
                 </p>
             </div>
-            
+
             <QFile
                 v-model="document.pathFile"
                 :accept="document.mimeTypes?.join(', ')"
                 :aria-required="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length"
                 :color="fieldColor"
                 :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
-                :max-file-size="MAX_FILE_SIZE * (processDocuments.filter(x => x.pathFile).length ? processDocuments.filter(x => x.pathFile).length : 1)"
+                :max-file-size="MAX_FILE_SIZE"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
                     (1 - documentUploads.filter(obj => obj.document === document.document).length)"
+                :max-total-size="MAX_FILE_SIZE * 10"
                 :multiple="document.isMultiple"
                 :readonly="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
                     !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"

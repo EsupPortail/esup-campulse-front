@@ -13,7 +13,7 @@ const processDocuments = ref<ProcessDocument[]>([])
 
 const documentUploads = ref<UploadedProcessDocument[]>([])
 
-const MAX_FILE_SIZE = 8388608
+const MAX_FILE_SIZE = 8 * 1048576
 const MAX_FILES = 10
 
 export default function () {
