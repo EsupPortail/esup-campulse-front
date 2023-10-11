@@ -634,6 +634,14 @@ const routes: RouteRecordRaw[] = [
                     breadcrumb: i18n.global.t('breadcrumbs.password-reset-confirm'),
                     title: i18n.global.t('breadcrumbs.password-reset-confirm'),
                 }
+            },
+            {
+                path: 'logout',
+                name: 'Logout',
+                component: () => import('@/views/LogoutView.vue'),
+                meta: {
+                    colorVariant: 'space-4'
+                }
             }
         ]
     },
