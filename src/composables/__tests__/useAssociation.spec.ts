@@ -58,8 +58,9 @@ describe('useAssociation', () => {
         it('should call API only once on /associations/ with name as payload', async () => {
             const newAssociation = {
                 name: 'Association test',
+                acronym: 'ASSO',
                 email: 'asso-test@test.tld',
-                isSite: true,
+                isPublic: true,
                 institution: 1
             }
             await createAssociation(newAssociation)

@@ -73,7 +73,7 @@ const initOptions = () => {
         })
     }
 
-    if ((props.projectStatus !== 'PROJECT_DRAFT') && (props.projectStatus !== 'PROJECT_DRAFT_PROCESSED')) {
+    if ((props.projectStatus !== 'PROJECT_DRAFT')) {
         // View project
         options.value.push({
             icon: 'bi-eye',

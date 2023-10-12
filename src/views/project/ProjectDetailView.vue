@@ -36,6 +36,7 @@ const isLoaded = ref<boolean>(false)
 onMounted(async () => {
     loading.show()
     await onGetProjectDetail()
+    isLoaded.value = true
     loading.hide()
 })
 
@@ -46,7 +47,6 @@ async function onGetProjectDetail() {
         initProjectBasicInfos()
         initProjectBudget()
         initProjectGoals()
-        isLoaded.value = true
     } catch (error) {
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
@@ -71,7 +71,7 @@ async function onGetProjectDetail() {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <ProjectRecapBasicInfos/>
+                <ProjectRecapBasicInfos v-if="isLoaded"/>
             </div>
         </div>
     </div>

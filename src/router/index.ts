@@ -43,7 +43,7 @@ router.beforeEach(async (to) => {
         try {
             await userStore.getUser()
         } catch (error) {
-            userStore.logOut()
+            await router.push({name: 'Logout'})
         }
     }
 
@@ -65,9 +65,7 @@ router.beforeEach(async (to) => {
 
     // Commission
     if (to.name == 'ArchivedCommission' && !hasPerm('view_project')) return {name: '404'}
-    if (to.name === 'ManageCommissionDates'
-        && (!hasPerm('add_commission') || !hasPerm('change_commission') || !hasPerm('delete_commission')))
-        return {name: '404'}
+    if (to.name === 'ManageCommissionDates' && !(hasPerm('add_commission') || hasPerm('change_commission'))) return {name: '404'}
 
     // Dashboard
     if ((to.name === 'ValidateUsers' || to.name === 'UserValidationDetail')

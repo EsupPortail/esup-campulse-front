@@ -60,8 +60,7 @@ const initPageCards = () => {
             text: manageArchive.value?.body
         })
     }
-    if (hasPerm('add_commission') && hasPerm('change_commission')
-        && hasPerm('delete_commission')) {
+    if (hasPerm('add_commission') || hasPerm('change_commission')) {
         pageCards.value.push({
             to: {name: 'ManageCommissionDates'},
             btnLabel: manageCommissions.value?.header,

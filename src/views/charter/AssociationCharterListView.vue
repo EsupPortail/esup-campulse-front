@@ -93,6 +93,7 @@ const columns: QTableProps['columns'] = [
                     :rows-per-page-options="[10, 20, 50, 0]"
                     role="presentation"
                     row-key="name"
+                    wrap-cells
                 >
                     <template v-slot:header="props">
                         <QTr :props="props">

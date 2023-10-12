@@ -83,8 +83,7 @@ async function onRegister() {
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
                     const data = error.response.data
-                    if (data.email) {
-                        await router.push({name: 'Login'})
+                    if (data.error.email) {
                         notify({
                             type: 'negative',
                             message: t('notifications.negative.email-used')

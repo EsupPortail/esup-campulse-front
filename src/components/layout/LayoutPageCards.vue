@@ -41,15 +41,16 @@ const props = defineProps<{
     div {
         padding: 2rem;
         display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
+        gap: 1.5rem;
         justify-content: space-around;
         background-color: #fff;
         border-radius: 1rem;
     }
+}
 
-    div > * {
-        width: 40rem;
+@media screen and (max-width: $breakpoint-lg) {
+    .page-card-container div {
+        flex-wrap: wrap;
     }
 }
 </style>

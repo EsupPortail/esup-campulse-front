@@ -168,6 +168,7 @@ const columns: QTableProps['columns'] = [
         role="presentation"
         row-key="id"
         selection="multiple"
+        wrap-cells
     >
         <template v-slot:header="props">
             <QTr :props="props">

@@ -46,7 +46,7 @@ export interface DocumentUpload {
     id?: number,
     uploadDate?: string,
     pathFile: string,
-    size: number,
+    size?: number,
     validatedDate: string,
     comment: string,
     document: number,

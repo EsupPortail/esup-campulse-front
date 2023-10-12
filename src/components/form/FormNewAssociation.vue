@@ -21,9 +21,10 @@ const {catchHTTPError} = useErrors()
 
 const newAssociation = reactive<NewAssociation>({
     name: '',
+    acronym: '',
     email: '',
     institution: undefined,
-    isSite: false
+    isPublic: false
 })
 
 const institutions = ref<({ value: number, label: string } | undefined)[]>([])
@@ -76,15 +77,15 @@ async function onCreate() {
                 })
             }
         }
-
     }
 }
 
 const clearValues = () => {
     newAssociation.name = ''
+    newAssociation.acronym = ''
     newAssociation.email = ''
     newAssociation.institution = undefined
-    newAssociation.isSite = false
+    newAssociation.isPublic = false
 }
 
 </script>
@@ -100,6 +101,14 @@ const clearValues = () => {
             v-model="newAssociation.name"
             :label="t('forms.association-name')"
             :rules="[val => val.length > 0 || t('forms.required-association-name')]"
+            color="dashboard"
+            filled
+            lazy-rules
+        />
+        <QInput
+            v-model="newAssociation.acronym"
+            :label="t('forms.association-acronym')"
+            :rules="[val => val.length > 0 || t('forms.required-association-acronym')]"
             color="dashboard"
             filled
             lazy-rules
@@ -127,8 +136,8 @@ const clearValues = () => {
         />
         <QCheckbox
             v-if="hasPerm('add_association_all_fields')"
-            v-model="newAssociation.isSite"
-            :label="t('forms.association-is-site')"
+            v-model="newAssociation.isPublic"
+            :label="t('forms.association-is-public')"
             color="dashboard"
         />
         <div class="flex-row-center">

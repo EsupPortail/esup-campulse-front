@@ -29,7 +29,7 @@ async function onDownloadDocument(documentId: number | undefined) {
                 <h4 class="library-document">
                     <span>
                         <strong>{{ document?.name }}</strong>
-                        <em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>
+                        <!--<em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>-->
                     </span>
                 </h4>
                 <button

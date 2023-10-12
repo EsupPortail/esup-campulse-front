@@ -107,7 +107,8 @@ async function onConfirmChanges(emailType: string) {
             })
         }
         break
-    case 'csv-export': case 'xlsx-export':
+    case 'csv-export':
+    case 'xlsx-export':
         if (props.selectedAssociations?.length) {
             try {
                 const associationIds = props.selectedAssociations.map(x => x.id)

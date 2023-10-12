@@ -130,7 +130,8 @@ export interface EditedAssociation {
 
 export interface NewAssociation {
     name: string,
+    acronym: string,
     email: string,
-    isSite: boolean,
+    isPublic: boolean,
     institution: number | undefined,
 }
