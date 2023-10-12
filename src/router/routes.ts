@@ -540,7 +540,7 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'about',
                 name: 'About',
-                component: () => import('@/views/AboutView.vue'),
+                component: () => import('@/views/misc/AboutView.vue'),
                 meta: {
                     title: i18n.global.t('breadcrumbs.about'),
                     breadcrumb: i18n.global.t('breadcrumbs.about'),
@@ -551,10 +551,32 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'contact',
                 name: 'Contact',
-                component: () => import('@/views/ContactView.vue'),
+                component: () => import('@/views/misc/ContactView.vue'),
                 meta: {
                     title: i18n.global.t('breadcrumbs.contact'),
                     breadcrumb: i18n.global.t('breadcrumbs.contact'),
+                    colorVariant: 'space-1',
+                    siteMap: true,
+                }
+            },
+            {
+                path: 'legal-notice',
+                name: 'LegalNotice',
+                component: () => import('@/views/misc/LegalNoticeView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.legal-notice'),
+                    breadcrumb: i18n.global.t('breadcrumbs.legal-notice'),
+                    colorVariant: 'space-1',
+                    siteMap: true,
+                }
+            },
+            {
+                path: 'privacy-policy',
+                name: 'PrivacyPolicy',
+                component: () => import('@/views/misc/PrivacyPolicyView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.privacy-policy'),
+                    breadcrumb: i18n.global.t('breadcrumbs.privacy-policy'),
                     colorVariant: 'space-1',
                     siteMap: true,
                 }

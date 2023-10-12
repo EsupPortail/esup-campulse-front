@@ -68,7 +68,9 @@ type ContentCode =
     'COMMISSION_HOME_ACTION_MANAGE_COMMISSIONS' |
     'COMMISSION_HOME_ACTION_SUBMIT_PROJECT' |
     'COMMISSION_HOME_ACTION_DOWNLOAD_DOCUMENTS' |
-    'SITE_FOOTER'
+    'SITE_FOOTER' |
+    'LEGAL_NOTICE' |
+    'PRIVACY_POLICY'
 
 export interface PageCard {
     to: { name: string },
