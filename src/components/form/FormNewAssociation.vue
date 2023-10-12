@@ -24,7 +24,7 @@ const newAssociation = reactive<NewAssociation>({
     acronym: '',
     email: '',
     institution: undefined,
-    isSite: false
+    isPublic: false
 })
 
 const institutions = ref<({ value: number, label: string } | undefined)[]>([])
@@ -77,7 +77,6 @@ async function onCreate() {
                 })
             }
         }
-
     }
 }
 
@@ -86,7 +85,7 @@ const clearValues = () => {
     newAssociation.acronym = ''
     newAssociation.email = ''
     newAssociation.institution = undefined
-    newAssociation.isSite = false
+    newAssociation.isPublic = false
 }
 
 </script>
@@ -137,8 +136,8 @@ const clearValues = () => {
         />
         <QCheckbox
             v-if="hasPerm('add_association_all_fields')"
-            v-model="newAssociation.isSite"
-            :label="t('forms.association-is-site')"
+            v-model="newAssociation.isPublic"
+            :label="t('forms.association-is-public')"
             color="dashboard"
         />
         <div class="flex-row-center">

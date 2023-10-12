@@ -255,7 +255,7 @@ export default function () {
         }
     }
 
-    const initAssociationCharterStatus = (charterStatus: AssociationCharterStatus, isSite: boolean) => {
+    const initAssociationCharterStatus = (charterStatus: AssociationCharterStatus | undefined, isSite: boolean) => {
         if (!isSite && charterStatus !== 'CHARTER_PROCESSING') {
             return 'NOT_SITE'
         } else {

@@ -386,7 +386,7 @@
     "amount-student-allowed-cannot-be-inferior-to-members": "Ne peut pas être inférieur au nombre de {amount} membres inscrits sur la plateforme actuellement",
     "association-acronym": "Acronyme ou sigle de l'association",
     "association-institution": "Établissement de rattachement",
-    "association-is-site": "Association site Alsace (rend l'association visible sur l'annuaire)",
+    "association-is-public": "Association visible dans l'annuaire",
     "association-name": "Nom de l'association",
     "association-role": "Votre fonction dans l'association",
     "association-student-count": "Nombre de membres dans l'association",

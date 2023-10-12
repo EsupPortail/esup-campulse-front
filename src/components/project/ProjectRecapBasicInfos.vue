@@ -99,7 +99,7 @@ async function onGetUser() {
         >
             <p class="row-title">{{ t('charter.status.title') }}</p>
             <CharterStatusIndicator
-                :charter-status="initAssociationCharterStatus(associationStore.association?.charterStatus, associationStore.association?.isSite)"
+                :charter-status="initAssociationCharterStatus(associationStore.association?.charterStatus, associationStore.association?.isSite ?? false)"
             />
         </div>
 
