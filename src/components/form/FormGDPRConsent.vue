@@ -18,12 +18,17 @@ const props = defineProps({
             @click="$emit('updateConsent')"
         />
     </div>
-    <div>
-        <RouterLink :to="{ name: 'LegalNotice' }">{{ t('breadcrumbs.legal-notice') }}</RouterLink><br>
+    <div class="legal-links">
+        <!--<RouterLink :to="{ name: 'LegalNotice' }">{{ t('breadcrumbs.legal-notice') }}</RouterLink><br>-->
         <RouterLink :to="{ name: 'PrivacyPolicy' }">{{ t('breadcrumbs.privacy-policy') }}</RouterLink>
     </div>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
+
+.legal-links a {
+    color: $dashboardColor;
+    margin-left: 4rem;
+}
 </style>
