@@ -11,8 +11,8 @@ const userStore = useUserStore()
 
 onMounted(async () => {
     loading.show()
-    await userStore.logOut()
     await router.push({name: 'Login'})
+    await userStore.logOut()
     notify({
         type: 'negative',
         message: t('notifications.negative.automatic-logout')
