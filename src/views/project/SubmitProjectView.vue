@@ -103,9 +103,13 @@ onMounted(async () => {
 const step = ref(1)
 
 watch(() => step.value, () => {
-    // Scroll to top when we change step
-    const stepper = document.getElementById('stepper')
-    stepper?.scrollIntoView(true)
+    if (step.value === 2) {
+        setTimeout(() => {
+            document.getElementById('stepper')?.scrollIntoView(true)
+        }, 1000)
+    } else {
+        document.getElementById('stepper')?.scrollIntoView(true)
+    }
 })
 
 watch(() => step.value === 2, async () => {
@@ -269,6 +273,7 @@ async function onGetAssociationUsers() {
 
 // GET DATA FOR STEP 2
 async function onGetCommissionDates() {
+    loading.show()
     try {
         await getCommissionsForStudents(true, isSite.value)
         initCommissionLabels()
@@ -292,6 +297,7 @@ async function onGetCommissionDates() {
             })
         }
     }
+    loading.hide()
 }
 
 // GET DATA FOR STEP 3
@@ -455,8 +461,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
 
         <div class="dashboard-section-container">
             <div class="container">
-                <InfoProcessDocuments :processes="['DOCUMENT_PROJECT']"/>
-
+                <InfoProcessDocuments
+                    v-if="step === 1"
+                    :processes="['DOCUMENT_PROJECT']"
+                />
                 <QStepper
                     id="stepper"
                     ref="stepper"
