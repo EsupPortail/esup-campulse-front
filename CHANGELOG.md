@@ -1,12 +1,4 @@
-- ♻️ Change isSite -> isPublic on create association form
-- 🐛 Fix max-file-size and max-total-size on FormDocumentUploads
-- ✨ Add association charterStatus on project detail
-- ♻️ Remove size field on documentUploads
-- 🚸 Allow QTable cells to wrap
-- ✨ Automatic logout through Axios response interceptor
-- 🩹 More explicit error message on registration when email is already used
-- 🩹 Display button to manage commission according to change_commission permission
-- 🩹 Project budget individual cost cannot be null (#64)
-- 🩹 Add acronym on create association form and post request (#13)
-- 🩹 Managers can now view projects in PROJECT_DRAFT_PROCESSED state
-- 🚧 Work on a way to catch refresh token error and display logout message
+- 🩹 Try to fix scroll on QStepper in SubmitProject form again
+- 💄 Style personal data link on register form
+- 🩹 Try to fix push to login when auto-logout
+- ✨ Publish legal contents
