@@ -64,9 +64,6 @@ const initContent = () => {
                     ></i>
                     <p v-html="contactInfo?.body"></p>
                 </div>
-
-                <h3 v-html="contactList?.header"></h3>
-
                 <div v-html="contactList?.body"></div>
             </div>
         </div>
@@ -84,7 +81,7 @@ const initContent = () => {
     padding: 1.5rem 0 1.5rem 0;
 }
 
-h2 > p {
+h2>p {
     line-height: normal;
 }
 
@@ -94,3 +91,4 @@ i {
     color: $associationColor;
 }
 </style>
+
