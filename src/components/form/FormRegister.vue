@@ -21,7 +21,15 @@ import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const userStore = useUserStore()
-const {register, newUser, initNewUserData, loadCASUser, emailVerification, addUserAsManager} = useSecurity()
+const {
+    register,
+    newUser,
+    initNewUserData,
+    loadCASUser,
+    emailVerification,
+    addUserAsManager,
+    CAS_INSTITUTION_DOMAIN
+} = useSecurity()
 const {groupChoiceIsValid, groupCanJoinAssociation, isStaff, studentGroupIsSelected} = useUserGroups()
 const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
@@ -154,7 +162,8 @@ async function onRegister() {
                         :disable="newUser.isCas"
                         :label="t('forms.email') + ' *'"
                         :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
-                                 val => !val.endsWith('unistra.fr') && !userStore.isCas || t('forms.error-unistra-mail-domain')]"
+                                 val => !val.endsWith(CAS_INSTITUTION_DOMAIN) &&
+                                     !userStore.isCas || t('forms.error-unistra-mail-domain')]"
                         aria-required="true"
                         autocomplete="email"
                         clearable

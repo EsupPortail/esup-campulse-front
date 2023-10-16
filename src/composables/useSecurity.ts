@@ -29,6 +29,9 @@ watch(() => newUser.email, () => {
     if (!newUser.isCas) newUser.username = newUser.email
 })
 
+// Used in register form to avoid users with emails linked to the CAS institution to local register
+const CAS_INSTITUTION_DOMAIN = import.meta.env.VITE_APP_CAS_INSTITUTION_DOMAIN
+
 export default function () {
     const userStore = useUserStore()
     const {axiosAuthenticated, axiosPublic} = useAxios()
@@ -295,6 +298,7 @@ export default function () {
         CASUserOptions,
         checkPasswordStrength,
         initCASUserOptions,
-        cancelAbortedCasRegistration
+        cancelAbortedCasRegistration,
+        CAS_INSTITUTION_DOMAIN
     }
 }

@@ -52,6 +52,10 @@ const initContent = () => {
                 </h2>-->
         <div class="dashboard-section-container">
             <div class="container flex-column">
+                <i
+                    aria-hidden="true"
+                    class="bi bi-envelope-paper"
+                ></i>
                 <h2 v-html="contactInfo?.header"></h2>
                 <div class="info-panel">
                     <i
@@ -60,8 +64,6 @@ const initContent = () => {
                     ></i>
                     <p v-html="contactInfo?.body"></p>
                 </div>
-
-                <h3 v-html="contactList?.header"></h3>
                 <div v-html="contactList?.body"></div>
             </div>
         </div>
@@ -82,4 +84,11 @@ const initContent = () => {
 h2>p {
     line-height: normal;
 }
+
+i {
+    font-size: 7rem;
+    text-align: center;
+    color: $associationColor;
+}
 </style>
+
