@@ -1,4 +1,3 @@
-- 🩹 Try to fix scroll on QStepper in SubmitProject form again
-- 💄 Style personal data link on register form
-- 🩹 Try to fix push to login when auto-logout
-- ✨ Publish legal contents
+- 💬 Updated Contact text
+- 🔧 Add a CAS_INSTITUTION_DOMAIN variable to avoid users with CAS accounts to local register
+- 💄 Add icon on contact page
