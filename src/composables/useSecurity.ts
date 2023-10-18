@@ -30,7 +30,7 @@ watch(() => newUser.email, () => {
 })
 
 // Used in register form to avoid users with emails linked to the CAS institution to local register
-const CAS_INSTITUTION_DOMAIN = import.meta.env.VITE_APP_CAS_INSTITUTION_DOMAIN
+const CAS_INSTITUTION_DOMAIN = import.meta.env.VITE_APP_CAS_INSTITUTION_DOMAIN as string
 
 export default function () {
     const userStore = useUserStore()
