@@ -90,8 +90,7 @@ async function onRegister() {
                 }
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
-                    const data = error.response.data
-                    if (data.error.email) {
+                    if (error.response.data.email) {
                         notify({
                             type: 'negative',
                             message: t('notifications.negative.email-used')
