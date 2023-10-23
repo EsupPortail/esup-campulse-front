@@ -41,6 +41,7 @@ export default function () {
             if (initDocument) {
                 processDocuments.value.push({
                     document: document.id,
+                    acronym: document.acronym,
                     isMultiple: document.isMultiple,
                     description: document.description,
                     pathFile: document.isMultiple ? [] : undefined,

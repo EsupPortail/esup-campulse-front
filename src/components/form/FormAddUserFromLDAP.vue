@@ -145,7 +145,7 @@ function onReset() {
                     <QOptionGroup
                         v-model="selectedUser"
                         :options="CASUserOptions"
-                        aria-label="t('forms.user-to-add')"
+                        :aria-label="t('forms.user-to-add')"
                         color="dashboard"
                         emit-value
                         map-options

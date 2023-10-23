@@ -40,19 +40,21 @@ async function onLogIn() {
         <QInput
             v-model="user.username"
             :label="t('forms.email')"
-            :rules="[ (val, rules) => rules.email(val) || t('forms.required-email')]"
+            :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
             autocomplete="email"
             color="association"
+            data-test="email-input"
             filled
             lazy-rules
         />
         <QInput
             v-model="user.password"
             :label="t('forms.password')"
-            :rules="[ val => val && val.length > 0 || t('forms.required-password')]"
+            :rules="[val => val && val.length > 0 || t('forms.required-password')]"
             :type="passwordVisibility ? 'text' : 'password'"
             autocomplete="current-password"
             color="association"
+            data-test="password-input"
             filled
             lazy-rules
         />
@@ -66,13 +68,15 @@ async function onLogIn() {
                 :label="t('forms.login')"
                 class="btn-lg"
                 color="association"
+                data-test="login-button"
                 type="submit"
             />
             <QBtn
                 :label="t('forms.create-account')"
-                :to="{name: 'Registration'}"
+                :to="{ name: 'Registration' }"
                 class="btn-lg"
                 color="association"
+                data-test="register-button"
             />
         </div>
         <!-- <QBtn :label="t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
@@ -85,7 +89,7 @@ async function onLogIn() {
             >
                 <span class="icon icon-mentions"></span>{{ t('forms.reset-password') }}
             </RouterLink>
-            <br/>
+            <br />
             <RouterLink
                 class="login-link"
                 to="/register-resend-email"

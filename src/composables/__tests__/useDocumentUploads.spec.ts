@@ -86,6 +86,7 @@ describe('useDocumentUploads', () => {
                 initProcessDocuments()
                 expect(processDocuments.value).toEqual(_documents.map(doc => ({
                     document: doc.id,
+                    acronym: doc.acronym,
                     isMultiple: doc.isMultiple,
                     description: doc.description,
                     pathFile: doc.isMultiple ? [] : undefined,
@@ -99,6 +100,7 @@ describe('useDocumentUploads', () => {
                 initProcessDocuments(true, [1])
                 expect(processDocuments.value).toEqual(_documents.map(doc => ({
                     document: doc.id,
+                    acronym: doc.acronym,
                     isMultiple: doc.isMultiple,
                     description: doc.description,
                     pathFile: doc.isMultiple ? [] : undefined,

@@ -58,6 +58,7 @@ export interface DocumentUpload {
 
 export interface ProcessDocument {
     id?: number,
+    acronym?: string,
     uploadDate?: string,
     pathFile: File | File[] | undefined | [],
     document?: number,
