@@ -19,11 +19,11 @@ const props = defineProps<{
     >
         <ul>
             <li>
-                <RouterLink :to="{name: 'Home'}">{{ t('header.home') }}</RouterLink>
+                <RouterLink :to="{ name: 'Home' }">{{ t('header.home') }}</RouterLink>
             </li>
             <li>
                 <RouterLink
-                    :to="{name: 'Associations'}"
+                    :to="{ name: 'Associations' }"
                     class="space-1"
                 >
                     {{ t('header.associations') }}
@@ -31,7 +31,7 @@ const props = defineProps<{
             </li>
             <li>
                 <RouterLink
-                    :to="{name: 'Charter'}"
+                    :to="{ name: 'Charter' }"
                     class="space-2"
                 >
                     {{ t('header.charter') }}
@@ -39,7 +39,7 @@ const props = defineProps<{
             </li>
             <li>
                 <RouterLink
-                    :to="{name: 'Commission'}"
+                    :to="{ name: 'Commission' }"
                     class="space-3"
                 >
                     {{ t('header.commission') }}
@@ -47,7 +47,7 @@ const props = defineProps<{
             </li>
             <li>
                 <RouterLink
-                    :to="{name: 'About'}"
+                    :to="{ name: 'About' }"
                     class="space-1"
                 >
                     {{ t('header.about') }}
@@ -55,7 +55,7 @@ const props = defineProps<{
             </li>
             <li>
                 <RouterLink
-                    :to="{name: 'Contact'}"
+                    :to="{ name: 'Contact' }"
                     class="space-1"
                 >
                     {{ t('header.contact') }}
@@ -64,7 +64,7 @@ const props = defineProps<{
             <li>
                 <RouterLink
                     v-if="!userStore.isAuth"
-                    :to="{name: 'Login'}"
+                    :to="{ name: 'Login' }"
                 >
                     {{ t('header.login') }}
                 </RouterLink>

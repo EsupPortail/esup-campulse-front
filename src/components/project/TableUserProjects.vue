@@ -118,6 +118,7 @@ const columns = ref<QTableProps['columns']>([
         :rows="importedProps.projects"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="importedProps.title"
+        data-test="user-projects-table"
         role="presentation"
         row-key="id"
         wrap-cells

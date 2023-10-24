@@ -165,6 +165,7 @@ const columns: QTableProps['columns'] = [
         :rows="projects"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="props.title"
+        data-test="manager-projects-table"
         role="presentation"
         row-key="id"
         selection="multiple"

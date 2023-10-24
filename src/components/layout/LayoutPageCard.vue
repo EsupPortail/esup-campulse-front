@@ -16,6 +16,7 @@ const props = defineProps<{
         <div class="flex-row-center">
             <QBtn
                 :color="props.color"
+                :data-test="props.to.name.toLowerCase() + '-button'"
                 :icon="props.icon"
                 :label="props.btnLabel"
                 :to="props.to"

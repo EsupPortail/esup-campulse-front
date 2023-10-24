@@ -32,6 +32,7 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
     <QHeader
         id="layout-header"
         :class="route.name === 'Home' ? 'variant-home' : 'variant-' + colorVariant"
+        data-test="header"
         height-hint="98"
         role="banner"
     >
@@ -39,15 +40,13 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
             <QToolbar>
                 <QToolbarTitle>
                     <RouterLink
-                        :to="{name: 'Home'}"
+                        :to="{ name: 'Home' }"
                         class="home-link"
                     >
                         {{ siteName }}
                     </RouterLink>
                 </QToolbarTitle>
-                <LayoutHeaderNav
-                    device="desktop"
-                />
+                <LayoutHeaderNav device="desktop" />
             </QToolbar>
 
             <div v-if="route.name !== 'Login'">
@@ -77,7 +76,7 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
                 </div>
             </div>
         </div>
-        <LayoutMobileMenu/>
+        <LayoutMobileMenu />
     </QHeader>
 </template>
 

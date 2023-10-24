@@ -10,6 +10,7 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
     <QHeader
         id="layout-minimal-header"
         class="variant-space-1"
+        data-test="header"
         height-hint="98"
         role="banner"
     >
@@ -17,16 +18,16 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
             <QToolbar>
                 <QToolbarTitle>
                     <RouterLink
-                        :to="{name: 'Home'}"
+                        :to="{ name: 'Home' }"
                         class="home-link"
                     >
                         {{ siteName }}
                     </RouterLink>
                 </QToolbarTitle>
-                <LayoutHeaderNav device="desktop"/>
+                <LayoutHeaderNav device="desktop" />
             </QToolbar>
         </div>
-        <LayoutMobileMenu/>
+        <LayoutMobileMenu />
     </QHeader>
 </template>
 

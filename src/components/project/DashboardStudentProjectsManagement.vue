@@ -114,7 +114,7 @@ watch(() => tab.value, initCanSubmitProjects)
                     />
                 </QTabs>
 
-                <QSeparator aria-hidden="true"/>
+                <QSeparator aria-hidden="true" />
 
                 <QTabPanels
                     v-model="tab"
@@ -144,6 +144,7 @@ watch(() => tab.value, initCanSubmitProjects)
                                                 :to="{ name: 'SubmitProjectAssociation', params: { associationId: tab.association } }"
                                                 class="btn-lg"
                                                 color="commission"
+                                                data-test="new-project-button"
                                                 icon="bi-plus-circle"
                                             />
                                         </div>
@@ -278,3 +279,4 @@ watch(() => tab.value, initCanSubmitProjects)
     font-size: inherit;
 }
 </style>
+
