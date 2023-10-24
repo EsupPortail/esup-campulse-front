@@ -182,6 +182,7 @@ const columns: QTableProps['columns'] = [
                 </QTh>
                 <QTh
                     v-for="col in props.cols"
+                    :data-test="col.label"
                     :id="col.name"
                     :key="col.name"
                     :props="props"
