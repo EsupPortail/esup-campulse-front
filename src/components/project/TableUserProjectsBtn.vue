@@ -101,7 +101,7 @@ const initOptions = () => {
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
-        || props.projectStatus === 'PROJECT_CANCELLED') {
+        || props.projectStatus === 'PROJECT_CANCELED') {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),

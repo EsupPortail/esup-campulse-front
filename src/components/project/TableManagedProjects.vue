@@ -62,7 +62,7 @@ const initProjects = () => {
             || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else if (props.projectStatus === 'archived') {
         projects.value = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
-            || obj.projectStatus === 'PROJECT_CANCELLED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
+            || obj.projectStatus === 'PROJECT_CANCELED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else {
         projects.value = projectStore.managedProjects
     }

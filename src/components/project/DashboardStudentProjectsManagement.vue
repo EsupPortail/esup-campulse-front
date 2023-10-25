@@ -250,9 +250,9 @@ watch(() => tab.value, initCanSubmitProjects)
                                             :association-id="tab.association"
                                             :projects="tab.association ?
                                                 projectStore.selfProjects.filter(project => project.association === tab.association &&
-                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELLED')) :
+                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELED')) :
                                                 projectStore.selfProjects.filter(project => project.user === userStore.user?.id &&
-                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELLED'))"
+                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELED'))"
                                             :title="t('project.rejected-projects')"
                                         />
                                     </QTabPanel>
