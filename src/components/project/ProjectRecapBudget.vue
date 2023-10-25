@@ -143,7 +143,7 @@ const projectReEdition = () => {
                 </div>
 
                 <div
-                    v-if="projectCommissionFund.amountEarned"
+                    v-if="projectCommissionFund.amountEarned || projectCommissionFund.amountEarned === 0"
                     class="display-row"
                 >
                     <h4>{{ t('project.amount-earned') }}</h4>
@@ -159,7 +159,7 @@ const projectReEdition = () => {
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-.flex-row > * {
+.flex-row>* {
     width: $fullSize;
 }
 </style>
