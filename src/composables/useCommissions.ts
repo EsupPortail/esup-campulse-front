@@ -108,6 +108,19 @@ export default function () {
         }))
     }
 
+    const initChangeCommissionLabels = (currentCommission: number) => {
+        commissionLabels.value = []
+        commissions.value.forEach(commission => {
+            if (commission.isOpenToProjects || commission.id === currentCommission) {
+                commissionLabels.value.push({
+                    value: commission.id,
+                    label: commission.name + ' ('
+                        + commission.commissionDate.split('-').reverse().join('/') + ')'
+                })
+            }
+        })
+    }
+
     async function getNextCommission() {
         const openCommissions = (await axiosPublic.get<Commission[]>('/commissions/?is_open_to_projects=true')).data
         commission.value = openCommissions[0]
@@ -199,6 +212,7 @@ export default function () {
         commission,
         getNextCommission,
         getCommissionExport,
-        getFundLabel
+        getFundLabel,
+        initChangeCommissionLabels
     }
 }

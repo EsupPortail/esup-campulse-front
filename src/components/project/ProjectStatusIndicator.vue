@@ -94,7 +94,7 @@ onMounted(initSpanClasses)
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
-        v-if="props.projectStatus === 'PROJECT_CANCELLED'"
+        v-if="props.projectStatus === 'PROJECT_CANCELED'"
         :class="spanClasses"
     >
         {{ t('project.status.cancelled') }}

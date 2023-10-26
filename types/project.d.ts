@@ -55,7 +55,7 @@ type ProjectStatus =
     | 'PROJECT_REVIEW_DRAFT'
     | 'PROJECT_REVIEW_PROCESSING'
     | 'PROJECT_REVIEW_VALIDATED'
-    | 'PROJECT_CANCELLED'
+    | 'PROJECT_CANCELED'
 
 interface ProjectCategory {
     id: number,

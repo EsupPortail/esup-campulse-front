@@ -19,14 +19,14 @@ const {
 } = useSubmitProject()
 const {
     getCommissionsForManagers,
-    initCommissionLabels,
     getFunds,
     getCommissionFunds,
     commissionFunds,
     initChosenCommissionFundsLabels,
     commissionLabels,
     fundsLabels,
-    funds
+    funds,
+    initChangeCommissionLabels
 } = useCommissions()
 
 const emit = defineEmits(['closeDialog', 'refreshProjects'])
@@ -96,9 +96,8 @@ async function onGetCommissionDates() {
                 }
             })
         }
-        await getCommissionsForManagers(undefined, undefined, true, !props.isSite ? false : undefined, true, chosenFunds)
-        initCommissionLabels()
-
+        await getCommissionsForManagers(undefined, undefined, undefined, !props.isSite ? false : undefined, true, chosenFunds)
+        initChangeCommissionLabels(projectCommission.value)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -160,7 +159,7 @@ const onReInitProjectCommissionFunds = () => {
             <QCardSection>
                 <h3>{{ t('project.change-commission') }}</h3>
                 <div
-                    v-if="commissionLabels.length < 2"
+                    v-if="!commissionLabels.length || (commissionLabels.length === 1 && commissionLabels[0].value === projectCommission)"
                     class="info-panel info-panel-warning"
                 >
                     <i
@@ -215,7 +214,7 @@ const onReInitProjectCommissionFunds = () => {
                         />
                         <QBtn
                             v-close-popup
-                            :disable="commissionLabels.length < 2 || !projectCommissionFunds.length"
+                            :disable="!commissionLabels.length || !projectCommissionFunds.length || (commissionLabels.length === 1 && commissionLabels[0].value === projectCommission)"
                             :label="t('validate')"
                             class="btn-lg"
                             color="commission"
@@ -242,7 +241,7 @@ h3 {
     padding-bottom: 1rem;
 }
 
-.q-select+.q-select {
+.q-select + .q-select {
     margin-top: 2rem;
 }
 

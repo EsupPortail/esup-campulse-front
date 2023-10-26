@@ -80,7 +80,7 @@ function checkAssociationAuthorization(association: AssociationRole) {
 }
 
 async function addAssociationFocus() {
-    await addAssociation()
+    addAssociation()
     document.querySelectorAll('.new-association')[document.querySelectorAll('.new-association').length - 1].querySelector('input')?.focus()
 }
 
@@ -111,6 +111,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                             :options="options"
                             clearable
                             color="dashboard"
+                            data-test="association-select"
                             emit-value
                             fill-input
                             filled
@@ -127,6 +128,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                             :aria-label="t('forms.association-role')"
                             :options="association.options"
                             color="dashboard"
+                            data-test="association-roles-radiobuttons"
                             inline
                             role="radiogroup"
                             @update:model-value="updateRegisterRoleInAssociation"
@@ -171,6 +173,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                     :label="t('forms.add-association')"
                     class="btn-lg"
                     color="dashboard"
+                    data-test="add-association-button"
                     icon="bi-plus-circle"
                     outline
                     @click="addAssociationFocus"

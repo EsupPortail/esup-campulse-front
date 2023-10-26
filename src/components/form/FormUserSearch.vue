@@ -139,8 +139,8 @@ async function clearSearch() {
         </QForm>
 
         <QForm
+            :aria-label="t('user.directory-advanced')"
             id="advanced-search-form"
-            aria-label="t('user.directory-advanced')"
             role="search"
             @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
         >

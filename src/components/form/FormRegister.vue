@@ -90,8 +90,7 @@ async function onRegister() {
                 }
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
-                    const data = error.response.data
-                    if (data.error.email) {
+                    if (error.response.data.email) {
                         notify({
                             type: 'negative',
                             message: t('notifications.negative.email-used')
@@ -129,9 +128,9 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormAddUserFromLDAP v-if="isStaff"/>
+                    <FormAddUserFromLDAP v-if="isStaff" />
 
-                    <InfoFormRequiredFields/>
+                    <InfoFormRequiredFields />
 
                     <QInput
                         v-model="newUser.firstName"
@@ -142,6 +141,7 @@ async function onRegister() {
                         autocomplete="given-name"
                         clearable
                         color="dashboard"
+                        data-test="first-name-input"
                         filled
                         lazy-rules
                     />
@@ -154,6 +154,7 @@ async function onRegister() {
                         autocomplete="family-name"
                         clearable
                         color="dashboard"
+                        data-test="last-name-input"
                         filled
                         lazy-rules
                     />
@@ -168,6 +169,7 @@ async function onRegister() {
                         autocomplete="email"
                         clearable
                         color="dashboard"
+                        data-test="email-input"
                         filled
                         lazy-rules
                         type="email"
@@ -181,6 +183,7 @@ async function onRegister() {
                         autocomplete="email"
                         clearable
                         color="dashboard"
+                        data-test="confirm-email-input"
                         filled
                         lazy-rules
                         type="email"
@@ -193,6 +196,7 @@ async function onRegister() {
                         bottom-slots
                         clearable
                         color="dashboard"
+                        data-test="phone-input"
                         filled
                         for="phone"
                         lazy-rules
@@ -215,7 +219,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormUserGroups/>
+                    <FormUserGroups />
                     <div v-if="!newUser.isCas && studentGroupIsSelected">
                         <hgroup>
                             <h3>{{ t('forms.student-status-document') }}</h3>
@@ -240,7 +244,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormRegisterUserAssociations/>
+                    <FormRegisterUserAssociations />
                 </div>
             </div>
         </div>
@@ -269,6 +273,7 @@ async function onRegister() {
                 :label="t('forms.send')"
                 class="btn-lg"
                 color="dashboard"
+                data-test="register-button"
                 icon="bi-check-lg"
                 type="submit"
             />

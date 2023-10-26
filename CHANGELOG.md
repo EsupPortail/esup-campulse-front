@@ -1,3 +1,8 @@
-- 💬 Updated Contact text
-- 🔧 Add a CAS_INSTITUTION_DOMAIN variable to avoid users with CAS accounts to local register
-- 💄 Add icon on contact page
+- 🐛 #174 : fixed commission labels bug
+- 🐛 #iTop-167307 We say PROJECT_CANCELED in the US and PROJECT_CANCELLED in GB.
+- 🐛 #iTop-167310 Show project amount earned if equals 0.
+- 🔧 Sentry not enabled by default
+- ✅ Added data attributes for Autotest framework
+- 🔒️ Updated object-src CSP
+- 💬 Added CONTRIBUTORS.md
+- 🐛 Fix undefined response error in register when email already taken

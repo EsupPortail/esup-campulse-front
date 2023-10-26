@@ -89,6 +89,7 @@ export const _processDocuments: ProcessDocument[] = [
     {
         id: 1,
         document: 1,
+        acronym: 'DOCUMENT_1',
         isMultiple: true,
         description: 'Document 1',
         pathFile: [new File([], 'file1'), new File([], 'file2')],
@@ -100,6 +101,7 @@ export const _processDocuments: ProcessDocument[] = [
     {
         id: 2,
         document: 2,
+        acronym: 'DOCUMENT_2',
         isMultiple: false,
         description: 'Document 2',
         pathFile: new File([], 'file'),

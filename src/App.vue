@@ -11,9 +11,10 @@ const routesNames = ['Home', 'Login', 'CASLogin', '404', 'DesignSystem']
 </script>
 
 <template>
-    <SkipToContentLink/>
+    <SkipToContentLink />
     <RouterView
         v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
+        :data-page=route.name
     />
 </template>
 

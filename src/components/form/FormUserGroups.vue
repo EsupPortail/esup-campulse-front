@@ -113,6 +113,7 @@ function onInitGroupLabels() {
             :aria-label="t('forms.group-role')"
             :options="groupLabels"
             color="dashboard"
+            data-test="groups-checkboxes"
             type="checkbox"
             @update:model-value="initGroupPermToJoinAssociation(newGroups)"
         />
@@ -124,6 +125,7 @@ function onInitGroupLabels() {
         :options="fundsLabels"
         :rules="[val => val.length >= 1 || t('forms.required-commission')]"
         color="dashboard"
+        data-test="funds-select"
         emit-value
         filled
         map-options

@@ -62,7 +62,7 @@ const initProjects = () => {
             || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else if (props.projectStatus === 'archived') {
         projects.value = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
-            || obj.projectStatus === 'PROJECT_CANCELLED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
+            || obj.projectStatus === 'PROJECT_CANCELED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else {
         projects.value = projectStore.managedProjects
     }
@@ -165,6 +165,7 @@ const columns: QTableProps['columns'] = [
         :rows="projects"
         :rows-per-page-options="[10, 20, 50, 0]"
         :title="props.title"
+        data-test="manager-projects-table"
         role="presentation"
         row-key="id"
         selection="multiple"
@@ -181,6 +182,7 @@ const columns: QTableProps['columns'] = [
                 </QTh>
                 <QTh
                     v-for="col in props.cols"
+                    :data-test="col.label"
                     :id="col.name"
                     :key="col.name"
                     :props="props"

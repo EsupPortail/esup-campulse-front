@@ -72,6 +72,7 @@ async function onGetProjectPdf() {
                             :label="t('project.download-recap')"
                             class="btn-lg"
                             color="commission"
+                            data-test="download-recap-button"
                             icon="bi-filetype-pdf"
                             @click="onGetProjectPdf"
                         />

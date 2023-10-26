@@ -114,7 +114,7 @@ watch(() => tab.value, initCanSubmitProjects)
                     />
                 </QTabs>
 
-                <QSeparator aria-hidden="true"/>
+                <QSeparator aria-hidden="true" />
 
                 <QTabPanels
                     v-model="tab"
@@ -144,6 +144,7 @@ watch(() => tab.value, initCanSubmitProjects)
                                                 :to="{ name: 'SubmitProjectAssociation', params: { associationId: tab.association } }"
                                                 class="btn-lg"
                                                 color="commission"
+                                                data-test="new-project-button"
                                                 icon="bi-plus-circle"
                                             />
                                         </div>
@@ -249,9 +250,9 @@ watch(() => tab.value, initCanSubmitProjects)
                                             :association-id="tab.association"
                                             :projects="tab.association ?
                                                 projectStore.selfProjects.filter(project => project.association === tab.association &&
-                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELLED')) :
+                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELED')) :
                                                 projectStore.selfProjects.filter(project => project.user === userStore.user?.id &&
-                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELLED'))"
+                                                    (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELED'))"
                                             :title="t('project.rejected-projects')"
                                         />
                                     </QTabPanel>
@@ -278,3 +279,4 @@ watch(() => tab.value, initCanSubmitProjects)
     font-size: inherit;
 }
 </style>
+
