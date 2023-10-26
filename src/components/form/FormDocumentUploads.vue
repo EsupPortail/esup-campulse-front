@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import type {DocumentProcessType, UploadedProcessDocument} from '#/documents'
+import {DocumentProcessType, UploadedProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
@@ -228,7 +228,7 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
                     </p>
                 </template>
                 <template v-slot:prepend>
-                    <QIcon name="bi-paperclip" />
+                    <QIcon name="bi-paperclip"/>
                 </template>
             </QFile>
 
