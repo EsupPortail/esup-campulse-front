@@ -127,19 +127,19 @@ const projectReEdition = () => {
             >
                 <div class="display-row">
                     <h4>{{ t('project.previous-asked') }}</h4>
-                    <p>{{ projectCommissionFund.amountAskedPreviousEdition + CURRENCY }}</p>
+                    <p data-test="amount-asked-previous-edition">{{ projectCommissionFund.amountAskedPreviousEdition + CURRENCY }}</p>
                 </div>
 
                 <div class="display-row">
                     <h4>{{ t('project.previous-earned') }}</h4>
-                    <p>{{ projectCommissionFund.amountEarnedPreviousEdition + CURRENCY }}</p>
+                    <p data-test="amount-earned-previous-edition">{{ projectCommissionFund.amountEarnedPreviousEdition + CURRENCY }}</p>
                 </div>
             </div>
 
             <div class="flex-row">
                 <div class="display-row">
                     <h4>{{ t('project.amount-asked') }}</h4>
-                    <p>{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
+                    <p data-test="amount-asked">{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
                 </div>
 
                 <div
@@ -147,7 +147,7 @@ const projectReEdition = () => {
                     class="display-row"
                 >
                     <h4>{{ t('project.amount-earned') }}</h4>
-                    <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
+                    <p data-test="amount-earned">{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
                 </div>
             </div>
         </div>

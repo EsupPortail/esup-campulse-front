@@ -164,7 +164,10 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
 </script>
 
 <template>
-    <div class="flex-section">
+    <div
+        class="flex-section"
+        data-test="document-form"
+    >
         <div
             v-for="(document, index) in processDocuments"
             :key="index"

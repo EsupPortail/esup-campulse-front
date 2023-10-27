@@ -470,12 +470,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     ref="stepper"
                     v-model="step"
                     active-color="commission-bold"
+                    data-test="form-stepper"
                     animated
                 >
                     <!-- BASIC INFOS -->
                     <QStep
                         :name="1"
                         :title="t('project.general-infos')"
+                        data-test="project-step"
                         icon="bi-card-text"
                     >
                         <QForm
@@ -490,6 +492,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 clearable
                                 color="commission"
+                                data-test="name-input"
                                 filled
                                 lazy-rules
                             />
@@ -500,6 +503,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 clearable
                                 color="commission"
+                                data-test="planned-start-date-input"
                                 filled
                                 max="2120-01-01"
                                 min="1970-01-01"
@@ -513,6 +517,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 clearable
                                 color="commission"
+                                data-test="planned-end-date-input"
                                 filled
                                 max="2120-01-01"
                                 min="1970-01-01"
@@ -526,6 +531,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 aria-required="true"
                                 clearable
                                 color="commission"
+                                data-test="planned-location-input"
                                 filled
                                 lazy-rules
                             />
@@ -537,6 +543,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-categories')]"
                                 clearable
                                 color="commission"
+                                data-test="categories-select"
                                 emit-value
                                 filled
                                 lazy-rules
@@ -552,6 +559,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :rules="[val => val || t('forms.required-project-association-user')]"
                                     clearable
                                     color="commission"
+                                    data-test="association-select"
                                     emit-value
                                     filled
                                     lazy-rules
@@ -578,6 +586,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :label="t('project.partner-association')"
                                 clearable
                                 color="commission"
+                                data-test="partner-association-input"
                                 filled
                                 lazy-rules
                             />
@@ -586,6 +595,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('continue')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="continue-button"
                                     icon="bi-check2"
                                     type="submit"
                                 />
@@ -597,6 +607,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="2"
                         :title="t('project.commission-choice')"
+                        data-test="project-step"
                         icon="bi-calendar"
                     >
                         <QForm
@@ -610,6 +621,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val || t('forms.select-project-commission-date')]"
                                 clearable
                                 color="commission"
+                                data-test="commission-select"
                                 emit-value
                                 filled
                                 for="projectCommission"
@@ -634,6 +646,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val || t('forms.select-project-commission-member')]"
                                 clearable
                                 color="commission"
+                                data-test="commission-funds-select"
                                 emit-value
                                 filled
                                 for="projectCommissionFunds"
@@ -655,6 +668,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('back')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="back-button"
                                     icon="bi-chevron-left"
                                     @click="onSubmitCommission(1)"
                                 />
@@ -662,6 +676,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('continue')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="continue-button"
                                     icon="bi-check2"
                                     type="submit"
                                 />
@@ -673,6 +688,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="3"
                         :title="t('project.budget')"
+                        data-test="project-step"
                         icon="bi-piggy-bank"
                     >
                         <QForm
@@ -683,6 +699,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 v-model="projectReEdition"
                                 :label="t('project.re-edition')"
                                 color="commission"
+                                data-test="first-edition-checkbox"
                             />
 
                             <!-- Previous amounts -->
@@ -693,6 +710,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         v-for="commissionFund in projectCommissionFundsDetail"
                                         :key="commissionFund.id"
                                         v-model="commissionFund.amountAskedPreviousEdition"
+                                        :data-test="funds.find(obj => obj.id === (commissionFunds
+                                            .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + '-amount-asked-previous-edition-input'"
                                         :label="funds.find(obj => obj.id === (commissionFunds
                                             .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
                                         :rules="projectReEdition ? [val => val && val.length > 0 || t('forms.required-project-amount-asked-previous')] : []"
@@ -711,6 +730,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         v-for="commissionFund in projectCommissionFundsDetail"
                                         :key="commissionFund.id"
                                         v-model="commissionFund.amountEarnedPreviousEdition"
+                                        :data-test="funds.find(obj => obj.id === (commissionFunds
+                                            .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + '-amount-earned-previous-edition-input'"
                                         :label="funds.find(obj => obj.id === (commissionFunds
                                             .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
                                         :rules="projectReEdition ? [val => val && val.length > 0 || t('forms.required-project-amount-earned-previous')] : []"
@@ -730,6 +751,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     color="commission"
+                                    data-test="budget-previous-edition-input"
                                     filled
                                     inputmode="numeric"
                                     lazy-rules
@@ -748,6 +770,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :label="t('project.target-audience') + ' *'"
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-audience')]"
                                 aria-required="true"
+                                data-test="target-audience-textarea"
                                 color="commission"
                                 filled
                                 reactive-rules
@@ -760,6 +783,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-amount-students-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
+                                data-test="amount-students-audience-input"
                                 filled
                                 inputmode="numeric"
                                 min="0"
@@ -773,6 +797,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-amount-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
+                                data-test="amount-all-audience-input"
                                 filled
                                 inputmode="numeric"
                                 lazy-rules
@@ -787,6 +812,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 color="commission"
+                                data-test="ticket-price-input"
                                 filled
                                 inputmode="numeric"
                                 lazy-rules
@@ -801,6 +827,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 color="commission"
+                                data-test="student-ticket-price-input"
                                 filled
                                 inputmode="numeric"
                                 lazy-rules
@@ -816,6 +843,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
                                 color="commission"
+                                data-test="individual-cost-input"
                                 filled
                                 inputmode="numeric"
                                 lazy-rules
@@ -834,6 +862,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     v-for="commissionFund in projectCommissionFundsDetail"
                                     :key="commissionFund.id"
                                     v-model="commissionFund.amountAsked"
+                                    :data-test="funds.find(obj => obj.id === (commissionFunds
+                                        .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + 'amount-asked-input'"
                                     :label="funds.find(obj => obj.id === (commissionFunds
                                         .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
                                     :rules="[val => val && val.length > 0 || t('forms.required-project-budget')]"
@@ -851,6 +881,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('back')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="back-button"
                                     icon="bi-chevron-left"
                                     @click="onSubmitBudget(2)"
                                 />
@@ -858,6 +889,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('continue')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="continue-button"
                                     icon="bi-check2"
                                     type="submit"
                                 />
@@ -869,6 +901,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="4"
                         :title="t('project.goals-title')"
+                        data-test="project-step"
                         icon="bi-flag"
                     >
                         <QForm
@@ -881,6 +914,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-goals')]"
                                 aria-required="true"
                                 color="commission"
+                                data-test="goals-textarea"
                                 filled
                                 lazy-rules
                                 type="textarea"
@@ -892,6 +926,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-summary')]"
                                 aria-required="true"
                                 color="commission"
+                                data-test="summary-textarea"
                                 filled
                                 lazy-rules
                                 type="textarea"
@@ -903,6 +938,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-activities')]"
                                 aria-required="true"
                                 color="commission"
+                                data-test="planned-activities-textarea"
                                 filled
                                 lazy-rules
                                 type="textarea"
@@ -914,6 +950,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-safety')]"
                                 aria-required="true"
                                 color="commission"
+                                data-test="prevention-safety-textarea"
                                 filled
                                 lazy-rules
                                 type="textarea"
@@ -925,6 +962,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-marketing')]"
                                 aria-required="true"
                                 color="commission"
+                                data-test="marketing-campaign-textarea"
                                 filled
                                 lazy-rules
                                 type="textarea"
@@ -936,6 +974,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :rules="[val => val && val.length > 0 || t('forms.required-project-sustainable')]"
                                 aria-required="true"
                                 color="commission"
+                                data-test="sustainable-development-textarea"
                                 filled
                                 lazy-rules
                                 type="textarea"
@@ -946,6 +985,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('back')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="back-button"
                                     icon="bi-chevron-left"
                                     @click="onSubmitGoals(3)"
                                 />
@@ -953,6 +993,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('continue')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="continue-button"
                                     icon="bi-check2"
                                     type="submit"
                                 />
@@ -964,6 +1005,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="5"
                         :title="t('project.documents')"
+                        data-test="project-step"
                         icon="bi-file-earmark"
                     >
                         <QForm @submit.prevent="onUploadDocuments(6)">
@@ -988,6 +1030,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('back')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="back-button"
                                     icon="bi-chevron-left"
                                     @click="onUploadDocuments(4)"
                                 />
@@ -995,6 +1038,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :label="t('continue')"
                                     class="btn-lg"
                                     color="commission"
+                                    data-test="continue-button"
                                     icon="bi-check2"
                                     type="submit"
                                 />
@@ -1006,6 +1050,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                     <QStep
                         :name="6"
                         :title="t('recap')"
+                        data-test="project-step"
                         icon="bi-check-lg"
                     >
                         <ProjectRecap

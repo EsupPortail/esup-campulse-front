@@ -31,7 +31,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
 
         <div class="flex-column">
             <!-- BASIC INFOS -->
-            <div class="flex-row-space-between">
+            <div
+                class="flex-row-space-between"
+                data-test="recap-block"
+            >
                 <h3>{{ t('project.general-infos') }}</h3>
                 <QBtn
                     v-if="props.view === 'submitProject'"
@@ -45,7 +48,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <ProjectRecapBasicInfos/>
 
             <!-- COMMISSION CHOICE -->
-            <div class="flex-row-space-between padding-top padding-bottom">
+            <div
+                class="flex-row-space-between padding-top padding-bottom"
+                data-test="recap-block"
+            >
                 <h3>{{ t('project.commission-choice') }}</h3>
                 <QBtn
                     v-if="props.view === 'submitProject'"
@@ -59,7 +65,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <ProjectRecapCommissions view="projectRecap"/>
 
             <!-- BUDGET -->
-            <div class="flex-row-space-between padding-top padding-bottom">
+            <div
+                class="flex-row-space-between padding-top padding-bottom"
+                data-test="recap-block"
+            >
                 <h3>{{ t('project.budget') }}</h3>
                 <QBtn
                     v-if="props.view === 'submitProject'"
@@ -73,7 +82,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <ProjectRecapBudget :load-data="false"/>
 
             <!-- GOALS -->
-            <div class="flex-row-space-between padding-top padding-bottom">
+            <div
+                class="flex-row-space-between padding-top padding-bottom"
+                data-test="recap-block"
+            >
                 <h3>{{ t('project.goals') }}</h3>
                 <QBtn
                     v-if="props.view === 'submitProject'"
@@ -87,7 +99,10 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <ProjectRecapGoals/>
 
             <!-- DOCUMENTS -->
-            <div class="flex-row-space-between padding-top padding-bottom">
+            <div
+                class="flex-row-space-between padding-top padding-bottom"
+                data-test="recap-block"
+            >
                 <h3>{{ t('project.documents') }}</h3>
                 <QBtn
                     v-if="props.view === 'submitProject'"
@@ -114,6 +129,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 :label="t('back')"
                 class="btn-lg"
                 color="commission"
+                data-test="back-button"
                 icon="bi-chevron-left"
                 @click="emit('changeStep', 5)"
             />
@@ -121,6 +137,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
                 :label="t('project.submit')"
                 class="btn-lg"
                 color="commission"
+                data-test="submit-button"
                 icon="bi-check2"
                 type="submit"
             />

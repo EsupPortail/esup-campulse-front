@@ -82,6 +82,7 @@ onMounted(async () => await onGetDocuments())
             v-for="(document, index) in processDocuments"
             :key="index"
             class="display-row"
+            data-test="document-block"
         >
             <h4>{{ document.description }}</h4>
             <ul>
@@ -89,6 +90,7 @@ onMounted(async () => await onGetDocuments())
                     v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                     :key="uploadedDocument.id"
                     @click="onGetFile(uploadedDocument)"
+                    data-test="document-line"
                 >
                     {{ uploadedDocument.name }}
                 </li>
