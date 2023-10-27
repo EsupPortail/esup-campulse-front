@@ -118,6 +118,7 @@ const projectReEdition = () => {
             v-for="projectCommissionFund in projectStore.projectCommissionFunds"
             :key="projectCommissionFund.id"
             class="flex-column padding-top"
+            data-test="commission-fund-block"
         >
             <h3>{{ getFundLabel(projectCommissionFund.commissionFund) }}</h3>
 

@@ -863,7 +863,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                     :key="commissionFund.id"
                                     v-model="commissionFund.amountAsked"
                                     :data-test="funds.find(obj => obj.id === (commissionFunds
-                                        .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + 'amount-asked-input'"
+                                        .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + '-amount-asked-input'"
                                     :label="funds.find(obj => obj.id === (commissionFunds
                                         .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
                                     :rules="[val => val && val.length > 0 || t('forms.required-project-budget')]"

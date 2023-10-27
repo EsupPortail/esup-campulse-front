@@ -196,7 +196,7 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
                 :accept="document.mimeTypes?.join(', ')"
                 :aria-required="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length"
                 :color="fieldColor"
-                :data-test="document.acronym?.toLowerCase().replace(/_/g, '-') + '-file'"
+                :data-test="document.acronym + '-file'"
                 :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :

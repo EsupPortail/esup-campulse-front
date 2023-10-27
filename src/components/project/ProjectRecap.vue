@@ -33,7 +33,6 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <!-- BASIC INFOS -->
             <div
                 class="flex-row-space-between"
-                data-test="recap-block"
             >
                 <h3>{{ t('project.general-infos') }}</h3>
                 <QBtn
@@ -50,7 +49,6 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <!-- COMMISSION CHOICE -->
             <div
                 class="flex-row-space-between padding-top padding-bottom"
-                data-test="recap-block"
             >
                 <h3>{{ t('project.commission-choice') }}</h3>
                 <QBtn
@@ -67,7 +65,6 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <!-- BUDGET -->
             <div
                 class="flex-row-space-between padding-top padding-bottom"
-                data-test="recap-block"
             >
                 <h3>{{ t('project.budget') }}</h3>
                 <QBtn
@@ -84,7 +81,6 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <!-- GOALS -->
             <div
                 class="flex-row-space-between padding-top padding-bottom"
-                data-test="recap-block"
             >
                 <h3>{{ t('project.goals') }}</h3>
                 <QBtn
@@ -101,7 +97,6 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <!-- DOCUMENTS -->
             <div
                 class="flex-row-space-between padding-top padding-bottom"
-                data-test="recap-block"
             >
                 <h3>{{ t('project.documents') }}</h3>
                 <QBtn
