@@ -10,6 +10,7 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import type {AssociationRole} from '#/user'
 import useDocumentUploads from '@/composables/useDocumentUploads'
+import type {AssociationOptions} from '#/association'
 
 const associationStore = useAssociationStore()
 const route = useRoute()
@@ -79,11 +80,6 @@ function checkAssociationAuthorization(association: AssociationRole) {
     //checkHasStudentCertificate(association)
 }
 
-async function addAssociationFocus() {
-    addAssociation()
-    document.querySelectorAll('.new-association')[document.querySelectorAll('.new-association').length - 1].querySelector('input')?.focus()
-}
-
 watch(() => processDocuments.value[0]?.pathFile, () => {
     newAssociations.value.forEach(association => {
         checkAssociationAuthorization(association)
@@ -109,6 +105,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                             v-model="association.id"
                             :label="t('forms.select-association')"
                             :options="options"
+                            autofocus
                             clearable
                             color="dashboard"
                             data-test="association-select"
@@ -126,7 +123,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                         <QOptionGroup
                             v-model="association.role"
                             :aria-label="t('forms.association-role')"
-                            :options="association.options"
+                            :options="association.options as AssociationOptions[]"
                             color="dashboard"
                             data-test="association-roles-radiobuttons"
                             inline
@@ -176,7 +173,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                     data-test="add-association-button"
                     icon="bi-plus-circle"
                     outline
-                    @click="addAssociationFocus"
+                    @click="addAssociation"
                 />
             </div>
         </QCardSection>

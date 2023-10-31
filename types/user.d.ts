@@ -73,7 +73,7 @@ export interface AssociationRole {
     id: number | null,
     name?: string,
     role: string,
-    options?: AssociationOptions[]
+    options?: AssociationOptions[],
     canBePresidentFrom?: string | null,
     canBePresidentTo?: string | null,
     deleteAssociation?: boolean,
