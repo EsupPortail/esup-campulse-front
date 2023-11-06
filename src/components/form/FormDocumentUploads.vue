@@ -164,7 +164,10 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
 </script>
 
 <template>
-    <div class="flex-section">
+    <div
+        class="flex-section"
+        data-test="document-form"
+    >
         <div
             v-for="(document, index) in processDocuments"
             :key="index"
@@ -193,7 +196,7 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
                 :accept="document.mimeTypes?.join(', ')"
                 :aria-required="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length"
                 :color="fieldColor"
-                :data-test="document.acronym?.toLowerCase().replace(/_/g, '-') + '-file'"
+                :data-test="document.acronym + '-file'"
                 :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE"
                 :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
@@ -228,7 +231,7 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
                     </p>
                 </template>
                 <template v-slot:prepend>
-                    <QIcon name="bi-paperclip" />
+                    <QIcon name="bi-paperclip"/>
                 </template>
             </QFile>
 

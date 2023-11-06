@@ -33,7 +33,7 @@ const {
 const {groupChoiceIsValid, groupCanJoinAssociation, isStaff, studentGroupIsSelected} = useUserGroups()
 const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
-const {uploadDocuments} = useDocumentUploads()
+const {uploadDocuments, processDocuments} = useDocumentUploads()
 
 
 const hasConsent = ref<boolean>(false)
@@ -72,6 +72,8 @@ async function onRegister() {
                 if (isStaff.value) {
                     await addUserAsManager()
                     await uploadDocuments(undefined, newUser.username, false)
+                    // Reinitialize processDocuments to avoid persistance of non valid documents
+                    processDocuments.value = []
                     notify({
                         type: 'positive',
                         message: t('notifications.positive.account-created')
@@ -128,9 +130,9 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormAddUserFromLDAP v-if="isStaff" />
+                    <FormAddUserFromLDAP v-if="isStaff"/>
 
-                    <InfoFormRequiredFields />
+                    <InfoFormRequiredFields/>
 
                     <QInput
                         v-model="newUser.firstName"
@@ -219,7 +221,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormUserGroups />
+                    <FormUserGroups/>
                     <div v-if="!newUser.isCas && studentGroupIsSelected">
                         <hgroup>
                             <h3>{{ t('forms.student-status-document') }}</h3>
@@ -244,7 +246,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormRegisterUserAssociations />
+                    <FormRegisterUserAssociations/>
                 </div>
             </div>
         </div>

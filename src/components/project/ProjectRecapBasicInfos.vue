@@ -84,7 +84,7 @@ async function onGetUser() {
 <template>
     <div class="flex-column">
         <div class="display-row">
-            <p class="row-title">{{ t('project.applicant') }}</p>
+            <h4 class="row-title">{{ t('project.applicant') }}</h4>
             <p>
                 {{
                     applicant === 'association' ? `${associationStore.association?.acronym} (${associationStore.association?.name})` :
@@ -97,7 +97,7 @@ async function onGetUser() {
             v-if="applicant === 'association'"
             class="display-row"
         >
-            <p class="row-title">{{ t('charter.status.title') }}</p>
+            <h4 class="row-title">{{ t('charter.status.title') }}</h4>
             <CharterStatusIndicator
                 :charter-status="initAssociationCharterStatus(associationStore.association?.charterStatus, associationStore.association?.isSite ?? false)"
             />
@@ -107,7 +107,7 @@ async function onGetUser() {
             v-if="projectId"
             class="display-row"
         >
-            <p class="row-title">{{ t('project.id') }}</p>
+            <h4 class="row-title">{{ t('project.id') }}</h4>
             <p>{{ projectId }}</p>
         </div>
 
@@ -115,17 +115,17 @@ async function onGetUser() {
             v-if="projectProcessingDate"
             class="display-row"
         >
-            <p class="row-title">{{ t('project.processing-date') }}</p>
+            <h4 class="row-title">{{ t('project.processing-date') }}</h4>
             <p>{{ projectProcessingDate }}</p>
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.name') }}</p>
+            <h4 class="row-title">{{ t('project.name') }}</h4>
             <p>{{ projectBasicInfos.name }}</p>
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.planned-start-date') }}</p>
+            <h4 class="row-title">{{ t('project.planned-start-date') }}</h4>
             <p>
                 {{
                     projectBasicInfos.plannedStartDate.split('-').reverse().join('/')
@@ -134,12 +134,12 @@ async function onGetUser() {
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.planned-end-date') }}</p>
+            <h4 class="row-title">{{ t('project.planned-end-date') }}</h4>
             <p>{{ projectBasicInfos.plannedEndDate.split('-').reverse().join('/') }}</p>
         </div>
 
         <div class="display-row">
-            <p class="row-title">{{ t('project.planned-location') }}</p>
+            <h4 class="row-title">{{ t('project.planned-location') }}</h4>
             <p>{{ projectBasicInfos.plannedLocation }}</p>
         </div>
 
@@ -147,7 +147,7 @@ async function onGetUser() {
             v-if="projectBasicInfos.associationUser"
             class="display-row"
         >
-            <p class="row-title">{{ t('project.association-user') }}</p>
+            <h4 class="row-title">{{ t('project.association-user') }}</h4>
             <p>{{ projectAssociationUsersLabels.find(x => x.value === projectBasicInfos.associationUser)?.label }}</p>
         </div>
 
@@ -155,7 +155,7 @@ async function onGetUser() {
             v-if="projectBasicInfos.partnerAssociation"
             class="display-row"
         >
-            <p class="row-title">{{ t('project.partner-association') }}</p>
+            <h4 class="row-title">{{ t('project.partner-association') }}</h4>
             <p>{{ projectBasicInfos.partnerAssociation }}</p>
         </div>
 
