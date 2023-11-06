@@ -1,8 +1,6 @@
-- 🐛 #174 : fixed commission labels bug
-- 🐛 #iTop-167307 We say PROJECT_CANCELED in the US and PROJECT_CANCELLED in GB.
-- 🐛 #iTop-167310 Show project amount earned if equals 0.
-- 🔧 Sentry not enabled by default
-- ✅ Added data attributes for Autotest framework
-- 🔒️ Updated object-src CSP
-- 💬 Added CONTRIBUTORS.md
-- 🐛 Fix undefined response error in register when email already taken
+- 🐛 Fix persistance of user documents when registration by manager
+- ⬆️ Upgrade minor dependencies
+- 🐛 Fix Sentry typeError on FormRegisterUserAssociations
+- ✅ Fixed some data-test attributes.
+- ✅ Added almost all data-test for autotest.
+- 👷 Add lint and typecheck to GitLab CI
