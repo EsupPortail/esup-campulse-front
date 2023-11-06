@@ -74,12 +74,12 @@ async function onGetProjectCommissions() {
         class="flex-column"
     >
         <div class="display-row">
-            <h4>{{ t('project.commission-choice') }}</h4>
+            <h4 data-test="row-title">{{ t('project.commission-choice') }}</h4>
             <p>{{ projectCommissionLabel }}</p>
         </div>
 
         <div class="display-row">
-            <h4>{{ t('commission.funds') }}</h4>
+            <h4 data-test="row-title">{{ t('commission.funds') }}</h4>
             <p>
                 <QChip
                     v-for="projectCommissionFund in projectStore.projectCommissionFunds"
@@ -102,7 +102,7 @@ async function onGetProjectCommissions() {
                 class="flex-column"
             >
                 <div class="display-row">
-                    <h4>
+                    <h4 data-test="row-title">
                         {{
                             t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === commissionFunds
                                 .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label +
@@ -113,7 +113,7 @@ async function onGetProjectCommissions() {
                 </div>
 
                 <div class="display-row">
-                    <h4>
+                    <h4 data-test="row-title">
                         {{
                             t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === commissionFunds
                                 .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label +
@@ -141,7 +141,7 @@ async function onGetProjectCommissions() {
             :key="projectCommissionFund.id"
             class="flex-column"
         >
-            <h4>
+            <h4 data-test="row-title">
                 {{
                     fundsLabels.find(x => x.value === commissionFunds.find(y => y.id ===
                         projectCommissionFund.commissionFund)?.fund)?.label

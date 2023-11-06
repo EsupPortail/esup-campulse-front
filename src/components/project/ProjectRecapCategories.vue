@@ -44,7 +44,12 @@ watch(() => projectStore.project, async () => {
 
 <template>
     <div class="display-row">
-        <p class="row-title">{{ t('project.categories') }}</p>
+        <h4
+            class="row-title"
+            data-test="row-title"
+        >
+            {{ t('project.categories') }}
+        </h4>
         <p>
             <QChip
                 v-for="category in projectCategories"
