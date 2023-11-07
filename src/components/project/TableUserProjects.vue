@@ -98,6 +98,7 @@ const columns = ref<QTableProps['columns']>([
         label: t('status'),
         field: row => row.projectStatus,
         sortable: true,
+        sort: (a, b) => (projectStore.projectStatuses.indexOf(a) - projectStore.projectStatuses.indexOf(b)),
         format: val => `${val}`
     },
     {
