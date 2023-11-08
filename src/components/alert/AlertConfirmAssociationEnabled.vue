@@ -8,6 +8,8 @@ const {t} = useI18n()
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 
+const emit = defineEmits(['hasValidated'])
+
 const isEnabled = ref<boolean>(false)
 watch(() => associationStore.association, () => {
     isEnabled.value = associationStore.association?.isEnabled as boolean
@@ -21,17 +23,23 @@ onMounted(() => {
 
 
 async function onEnableAssociation() {
-    const messageKeyword = isEnabled.value ? 'disable' : 'enable'
+    let positiveMessage = t('notifications.positive.enable-association')
+    let negativeMessage = t('notifications.negative.enable-association-error')
+    if (isEnabled.value) {
+        positiveMessage = t('notifications.positive.disable-association')
+        negativeMessage = t('notifications.negative.disable-association-error')
+    }
     try {
         await associationStore.patchEnabledAssociation(!isEnabled.value as boolean, associationStore.association?.id)
+        emit('hasValidated')
         notify({
             type: 'positive',
-            message: t(`notifications.positive.${messageKeyword}-association`)
+            message: positiveMessage
         })
     } catch (e) {
         notify({
             type: 'negative',
-            message: t(`notifications.negative.${messageKeyword}-association-error`)
+            message: negativeMessage
         })
     }
 }
@@ -39,35 +47,46 @@ async function onEnableAssociation() {
 
 <template>
     <QBtn
-        :color="isEnabled ? 'orange' : 'green'"
-        :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
+        :color="isEnabled ? 'custom-red' : 'association'"
+        :icon="isEnabled ? 'bi-ban' : 'bi-check-lg'"
         :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+        class="btn-lg"
         @click="openAlert = true"
     />
 
-    <QDialog v-model="openAlert" persistent>
+    <QDialog
+        v-model="openAlert"
+        persistent
+    >
         <QCard>
             <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{
-                        isEnabled ? t("association.confirm-disable") : t("association.confirm-enable")
-                    }}</span>
+                <p class="q-ml-sm">
+                    {{
+                        isEnabled ? t('association.confirm-disable') : t('association.confirm-enable')
+                    }}
+                </p>
+                <div class="flex-row padding-top">
+                    <QBtn
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="association"
+                        icon="bi-x-lg"
+                    />
+                    <QBtn
+                        v-close-popup
+                        :color="isEnabled ? 'custom-red' : 'association'"
+                        :icon="isEnabled ? 'bi-ban' : 'bi-check-lg'"
+                        :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
+                        class="btn-lg"
+                        @click="onEnableAssociation"
+                    />
+                </div>
             </QCardSection>
-
-            <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="mdi-arrow-left-circle"
-                />
-                <QBtn
-                    v-close-popup
-                    :color="isEnabled ? 'orange' : 'green'"
-                    :icon="isEnabled ? 'mdi-eye-remove' : 'mdi-eye-check'"
-                    :label="isEnabled ? t('association.disable-association') : t('association.enable-association')"
-                    @click="onEnableAssociation"
-                />
-            </QCardActions>
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/variables.scss';
+</style>

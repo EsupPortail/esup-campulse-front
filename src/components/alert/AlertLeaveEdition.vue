@@ -14,27 +14,37 @@ const props = defineProps({
         :model-value="props.openAlert"
         persistent
     >
-        <QCard>
-            <QCardSection class="row items-center">
-                <span class="q-ml-sm">{{ props.text }}</span>
+        <QCard class="variant-space-4">
+            <QCardSection>
+                <p>{{ props.text }}</p>
+                <div class="flex-row padding-top align-items-stretch">
+                    <QBtn
+                        v-close-popup
+                        :label="t('cancel')"
+                        class="btn-lg"
+                        color="dashboard"
+                        icon="bi-x-lg"
+                        @click="$emit('closeAlert')"
+                    />
+                    <QBtn
+                        v-close-popup
+                        :label="t('discard-changes')"
+                        class="btn-lg"
+                        color="custom-red"
+                        icon="bi-box-arrow-left"
+                        @click="$emit('leaveEdition')"
+                    />
+                </div>
             </QCardSection>
-
-            <QCardActions align="right">
-                <QBtn
-                    v-close-popup
-                    :label="t('cancel')"
-                    color="secondary"
-                    icon="mdi-arrow-left-circle"
-                    @click="$emit('closeAlert')"
-                />
-                <QBtn
-                    v-close-popup
-                    :label="t('discard-changes')"
-                    color="red"
-                    icon="mdi-close-circle-outline"
-                    @click="$emit('leaveEdition')"
-                />
-            </QCardActions>
         </QCard>
     </QDialog>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+
+.q-card {
+    padding: 1rem
+}
+</style>

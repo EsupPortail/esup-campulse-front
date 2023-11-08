@@ -4,6 +4,7 @@ import {reactive} from 'vue'
 import {useCasAuthentication} from '@vue-unistra/cas-authentication'
 import router from '@/router'
 
+
 interface UseAxiosState {
     axios: () => AxiosInstance;
     axiosAuth: () => AxiosInstance;
@@ -19,17 +20,33 @@ const state = reactive<UseAxiosState>({
 
         _axios.interceptors.request.use(
             axiosRequestInterceptor({
-                    axios: _axios,
-                    router,
-                    jwtServerUrl: import.meta.env.VITE_APP_BASE_URL + '/users/auth',
-                    options: {
-                        loginRoute: {name: 'Login'},
-                        loginRouteIsInternal: true
-                    }
-                },
-            ),
-            error => Promise.reject(error),
+                axios: _axios,
+                router,
+                jwtServerUrl: import.meta.env.VITE_APP_BASE_URL + '/users/auth',
+                options: {
+                    loginRoute: {name: 'Login'},
+                    loginRouteIsInternal: true
+                }
+            }),
+            error => Promise.reject(error)
         )
+        
+        _axios.interceptors.response.use(response => {
+            return response
+        }, async function (error) {
+            if (error.response.data.code === 'token_not_valid') {
+                const refreshToken = localStorage.getItem('JWT__refresh__token')
+                const refreshTokenExpired = () => {
+                    if (!refreshToken) return true
+                    return JSON.parse(window.atob(refreshToken.split('.')[1])).exp < Math.trunc(Date.now() / 1000)
+                }
+                if (refreshTokenExpired()) {
+                    await router.push({name: 'Logout'})
+                }
+            } else {
+                return Promise.reject(error)
+            }
+        })
 
         return _axios
     },

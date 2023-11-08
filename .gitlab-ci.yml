@@ -1,0 +1,24 @@
+type check:
+  image: node:lts
+  stage: test
+  tags:
+    - cluster
+  only:
+    - develop
+  script:
+    - npm install --progress=false
+    - npm run lint
+    - npm run typecheck
+
+unit test:
+  image: node:lts
+  stage: test
+  tags:
+    - cluster
+  only:
+    - develop
+  script:
+    - npm install --progress=false
+    - npm run test:unit:coverage
+  coverage: /All files\s*\|\s*([\d\.]+)/
+

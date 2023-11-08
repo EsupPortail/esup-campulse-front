@@ -1,18 +1,27 @@
 <script lang="ts" setup>
-import {useI18n} from 'vue-i18n'
 import FormNewAssociation from '@/components/form/FormNewAssociation.vue'
+import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
 </script>
 
 <template>
-    <h1>{{ t("association.titles.create") }}</h1>
-    <QCard class="card">
-        <QCardSection>
-            <FormNewAssociation/>
-        </QCardSection>
-    </QCard>
+    <section class="dashboard-section">
+        <h2>
+            <i
+                aria-hidden="true"
+                class="bi bi-plus-square"
+            ></i>
+            {{ t('dashboard.create-association') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <FormNewAssociation/>
+            </div>
+        </div>
+    </section>
 </template>
 
-<style>
+<style lang="scss" scoped>
+@import '@/assets/styles/dashboard.scss';
 </style>

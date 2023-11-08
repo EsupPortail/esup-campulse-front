@@ -1,49 +1,70 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 defineProps({
-  title: String,
-  description: String,
-  imagePath: String,
-  imageAlt: String,
-  link: String
+    title: String,
+    description: String,
+    imagePath: String,
+    imageAlt: String,
+    link: {
+        type: String,
+        required: true
+    },
+    cssClass: String,
+    buttonLabel: String,
+    infoContent: String,
+    titleLine1: String,
+    titleLine2: String,
+    iconClass: String
 })
 </script>
 
 <template>
-  <section>
-    <div class="q-pa-md row items-start q-gutter-md">
-      <RouterLink :to="link">
-        <QCard class="card">
-          <img :src="imagePath" :alt="imageAlt">
+    <section :class="['home-section', cssClass]">
+        <div class="section-card">
+            <div class="section-background">
+                <span></span>
+            </div>
 
-          <QCardSection>
-            <div class="text-h6">{{ title }}</div>
-          </QCardSection>
+            <div class="section-title">
+                <h2 :aria-label="titleLine1 + ' ' + titleLine2">
+                    <span>
+                        {{ titleLine1 }}
+                        <span
+                            aria-hidden="true"
+                            class="section-icon"
+                        >
+                            <span><i :class="[ iconClass ]"></i></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </span>
+                    <span>{{ titleLine2 }}</span>
+                </h2>
 
-          <QCardSection class="q-pt-none">
-            {{ description }}
-          </QCardSection>
-        </QCard>
-      </RouterLink>
-    </div>
-  </section>
+                <div class="section-info">
+                    <p v-html="infoContent"></p>
+                </div>
+            </div>
+
+            <div class="section-content">
+                <p v-html="description"></p>
+                <div class="section-buttons">
+                    <RouterLink :to="link">
+                        {{ buttonLabel }} <i
+                            aria-hidden="true"
+                            class="bi bi-chevron-compact-right"
+                        ></i>
+                    </RouterLink>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
-<style scoped lang="sass">
-.card
-  width: 100%
-  min-height: 25em
-  max-width: 250px
+<style lang="scss" scoped>
+@import '@/assets/styles/home.scss';
 
-a
-  text-decoration: none
-  color: black
-
-@media screen and (max-width: 450px)
-
-  section
-    display: block
-
-  .card
-    width: 100%
-    min-height: 23em
+h2 {
+    line-height: 1.4;
+}
 </style>

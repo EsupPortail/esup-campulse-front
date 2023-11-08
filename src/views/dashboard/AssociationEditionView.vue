@@ -1,80 +1,102 @@
 <script lang="ts" setup>
 import {onMounted, ref} from 'vue'
-import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useDirectory from '@/composables/useDirectory'
 import {useRoute} from 'vue-router'
 import FormAssociationEdition from '@/components/form/FormAssociationEdition.vue'
+import useErrors from '@/composables/useErrors'
+import axios from 'axios'
+import useUtility from '@/composables/useUtility'
+import {useUserStore} from '@/stores/useUserStore'
+import router from '@/router'
+import useUserGroups from '@/composables/useUserGroups'
 
-const {t} = useI18n()
-const {notify} = useQuasar()
-const {loading} = useQuasar()
-const {getAssociationDetail} = useDirectory()
+const {notify, loading} = useQuasar()
 
 const route = useRoute()
 const associationStore = useAssociationStore()
+const {catchHTTPError} = useErrors()
+const {dynamicTitle} = useUtility()
+const userStore = useUserStore()
+const {isStaff} = useUserGroups()
 
 const isLoaded = ref(false)
+
+// Check if user has president status
+const isAuthorized = () => {
+    if (isStaff) return true
+    else return userStore.hasPresidentStatus(parseInt(route.params.id as string))
+}
 
 // Get all infos on mounted
 async function onGetAssociationDetail() {
     try {
-        await getAssociationDetail(route.params.id as string)
+        await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
+            })
+        }
     }
 }
 
-async function onGetAssociationInstitutions() {
+async function onGetInstitutions() {
     try {
         await associationStore.getInstitutions()
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
+            })
+        }
     }
 }
 
-async function onGetAssociationComponents() {
+async function onGetInstitutionComponents() {
     try {
-        await associationStore.getComponents()
+        await associationStore.getInstitutionComponents()
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
+            })
+        }
     }
 }
 
-async function onGetAssociationFields() {
+async function onGetAssociationActivityFields() {
     try {
-        await associationStore.getFields()
+        await associationStore.getActivityFields()
     } catch (error) {
-        notify({
-            type: 'negative',
-            message: t('notifications.negative.loading-error')
-        })
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
+            })
+        }
     }
 }
 
 onMounted(async function () {
-    loading.show
-    await onGetAssociationDetail()
-    await onGetAssociationInstitutions()
-    await onGetAssociationComponents()
-    await onGetAssociationFields()
-    isLoaded.value = true
-    loading.hide
+    loading.show()
+    if (isAuthorized()) {
+        await onGetAssociationDetail()
+        dynamicTitle.value = associationStore.association?.name
+        await onGetInstitutions()
+        await onGetInstitutionComponents()
+        await onGetAssociationActivityFields()
+        isLoaded.value = true
+    } else {
+        await router.push({name: '404'})
+    }
+    loading.hide()
 })
 </script>
 
 <template>
-    <h1>{{ associationStore.association?.name }}</h1>
-    <FormAssociationEdition
-        v-if="isLoaded"/>
+    <FormAssociationEdition v-if="isLoaded" />
 </template>

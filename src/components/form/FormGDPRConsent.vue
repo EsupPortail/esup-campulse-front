@@ -9,21 +9,27 @@ const props = defineProps({
 </script>
 
 <template>
-    <fieldset>
-        <legend>
-            {{ t('forms.gdpr-title') }}
-        </legend>
-        <div>
-            <QCheckbox
-                :label="t('forms.gdpr')"
-                :model-value="props.hasConsent"
-                @click="$emit('updateConsent')"
-            />
-        </div>
-    </fieldset>
+    <div>
+        <QCheckbox
+            :aria-label="t('forms.gdpr-accept')"
+            :label="t('forms.gdpr-accept')"
+            :model-value="props.hasConsent"
+            color="dashboard"
+            data-test="legal-notice-checkbox"
+            @click="$emit('updateConsent')"
+        />
+    </div>
+    <div class="legal-links">
+        <!--<RouterLink :to="{ name: 'LegalNotice' }">{{ t('breadcrumbs.legal-notice') }}</RouterLink><br>-->
+        <RouterLink :to="{ name: 'PrivacyPolicy' }">{{ t('breadcrumbs.privacy-policy') }}</RouterLink>
+    </div>
 </template>
 
-<style lang="sass" scoped>
-legend
-    font-size: 1.5em
+<style lang="scss" scoped>
+@import '@/assets/_variables.scss';
+
+.legal-links a {
+    color: $dashboardColor;
+    margin-left: 4rem;
+}
 </style>

@@ -1,16 +1,18 @@
 import {ref} from 'vue'
-
-import type {AssociationSocialNetwork, EditedAssociation} from '#/association'
-import type {UserAssociations} from '#/user'
+import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
+import type {AssociationRole} from '#/user'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useUserAssociations from '@/composables/useUserAssociations'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 
 
-const newAssociations = ref<UserAssociations>([])
-
-// Need to modify the social networks of an association
+// Needed to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
+
+// Needed to temporarily store associations (for searching and pagination)
+const associations = ref<Association[]>([])
 
 // Changed data when modifying an association
 let changedData = {}
@@ -18,39 +20,55 @@ let changedData = {}
 export default function () {
 
     const associationStore = useAssociationStore()
-
+    const {newAssociations} = useUserAssociations()
+    const {processDocuments} = useDocumentUploads()
 
     /**
      * It creates an association with the name provided as a parameter
-     * @param {string} name - The name of the association
+     * @param newAssociation
      */
-    async function createAssociation(name: string) {
+    async function createAssociation(newAssociation: NewAssociation) {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.post('/associations/', {name: name})
+        await axiosAuthenticated.post('/associations/', newAssociation)
     }
-
 
     /**
-     * When the user clicks the 'Add Association' button in registration for example,
-     * add a new association to the list of associations.
-     *
-     * The function is called when the user clicks the 'Add Association' button
-     *
-     * It's the same for the 'Remove Association' function below.
+     * If the association has a president, then disable the president role and remove the president role from the
+     * association
+     * @param {AssociationRole} association - AssociationRole - this is the association that is being checked
      */
-    function addAssociation() {
-        newAssociations.value.push({
-            id: null,
-            roleName: null,
-            hasOfficeStatus: false,
-            isPresident: false
-        })
+    function checkHasPresident(association: AssociationRole) {
+        if (association.options) {
+            association.options[0].disable = false
+            const associationDetail = associationStore.associationNames.find(obj => obj.id === association.id)
+            if (associationDetail) {
+                if (associationDetail.hasPresident) {
+                    association.options[0].disable = true
+                    if (association.role === 'isPresident') {
+                        const model = newAssociations.value.find(obj => obj.id === association.id)
+                        if (model) model.role = 'isMember'
+                    }
+                }
+            }
+        }
     }
 
-    function removeAssociation(index: number) {
-        newAssociations.value.splice(index, 1)
+    // Commented in component since issue is not clear
+    function checkHasStudentCertificate(association: AssociationRole) {
+        if (association.options) {
+            // If new user has not uploaded a student certificate
+            // He/she cannot join an association as an office member
+            if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
+                association.options.forEach(association => {
+                    if (association.isInOffice) association.disable = true
+                })
+            } else {
+                association.options.forEach(association => {
+                    if (association.isInOffice) association.disable = false
+                })
+            }
+        }
     }
-
 
     /**
      * It adds a new network to the associationSocialNetworks array.
@@ -80,24 +98,31 @@ export default function () {
         const {formatDate} = useUtility()
         for (const [key, value] of Object.entries(association)) {
             // Check non formatted values first
-            const indexes = ['name', 'acronym', 'description', 'activities', 'address', 'email', 'phone', 'siret', 'website', 'presidentNames', 'phonePres']
-            if (indexes.indexOf(key) !== -1) {
+            const indexes = ['name', 'acronym', 'socialObject', 'currentProjects', 'address', 'zipcode', 'city', 'country',
+                'email', 'phone', 'siret', 'website', 'presidentNames', 'presidentPhone', 'presidentEmail']
+            if (indexes.includes(key)) {
                 if (value !== associationStore.association?.[key as keyof typeof associationStore.association]) {
                     changedData = Object.assign(changedData, {[key]: value})
                 }
             }
+            // Check amountMembersAllowed
+            else if (key == 'amountMembersAllowed' || key == 'studentCount') {
+                if (parseInt(value) !== associationStore.association?.[key as keyof typeof associationStore.association]) {
+                    changedData = Object.assign(changedData, {[key]: parseInt(value)})
+                }
+            }
             // Check institution, component and field
-            else if (key == 'institution' && value !== associationStore.association?.institution?.id) {
+            else if (key == 'institution' && value !== associationStore.association?.institution) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'institutionComponent' && value !== associationStore.association?.institutionComponent?.id) {
+            } else if (key == 'institutionComponent' && value !== associationStore.association?.institutionComponent) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'activityField' && value !== associationStore.association?.activityField?.id) {
+            } else if (key == 'activityField' && value !== associationStore.association?.activityField) {
                 changedData = Object.assign(changedData, {[key]: value})
             }
             // Check date
             else if (key == 'lastGoaDate' && value !== formatDate(associationStore.association?.lastGoaDate as string)) {
                 if (value !== null) {
-                    changedData = Object.assign(changedData, {lastGoaDate: `${value}T00:00:00.000Z`})
+                    changedData = Object.assign(changedData, {lastGoaDate: value})
                 }
             }
         }
@@ -119,25 +144,25 @@ export default function () {
     function checkSocialNetworks() {
         let hasChanges = false
         // If there already are social networks
-        if (associationStore.association?.socialNetworks.length !== 0) {
+        if (associationStore.association?.socialNetworks?.length !== 0) {
             // If there are as many networks in old and new arrays
             // Then we need to compare more deeply
-            if (associationStore.association?.socialNetworks.length === associationSocialNetworks.value.length) {
-                for (let i = 0; i < associationStore.association?.socialNetworks.length; i++) {
+            if (associationStore.association?.socialNetworks?.length === associationSocialNetworks.value.length) {
+                associationStore.association?.socialNetworks.some((socialNetwork) => {
                     // Look for the same types
-                    const editedType = associationSocialNetworks.value.find(({type}) => type === associationStore.association?.socialNetworks[i].type)
+                    const editedType = associationSocialNetworks.value.find(({type}) => type === socialNetwork.type)
                     // If type has changed
                     if (editedType === undefined && !hasChanges) {
                         hasChanges = true
-                        break
+                        return hasChanges
                     }
                     // If location has changed
-                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === associationStore.association?.socialNetworks[i].location)
+                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === socialNetwork.location)
                     if (editedLocation === undefined && !hasChanges) {
                         hasChanges = true
-                        break
+                        return hasChanges
                     }
-                }
+                })
                 // If we detect changes, we can patch the new array
                 if (hasChanges) {
                     changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
@@ -159,24 +184,46 @@ export default function () {
         }
     }
 
-    // test
+
+    /**
+     * It updates the association in the database with the data that has been changed in the form
+     */
     async function updateAssociation() {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
     }
 
+    async function changeAssociationLogo(newLogo: undefined | File, deleteLogoData: null | object) {
+        if (deleteLogoData === null) {
+            const patchLogoData = new FormData()
+            if (newLogo instanceof File) {
+                patchLogoData.append('pathLogo', newLogo)
+            }
+            await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
+        } else {
+            await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
+        }
+    }
+
+    async function getAssociationPdfExport(id: number) {
+        const {axiosAuthenticated} = useAxios()
+        return (await axiosAuthenticated.get<Blob>(`/associations/${id}/export`, {responseType: 'blob'})).data
+    }
+
 
     return {
         createAssociation,
-        newAssociations,
-        addAssociation,
-        removeAssociation,
         addNetwork,
         removeNetwork,
         associationSocialNetworks,
         checkChanges,
         updateAssociation,
         checkSocialNetworks,
-        changedData
+        changedData,
+        checkHasPresident,
+        changeAssociationLogo,
+        associations,
+        getAssociationPdfExport,
+        checkHasStudentCertificate
     }
 }

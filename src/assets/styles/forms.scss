@@ -1,0 +1,920 @@
+@import '@/assets/_variables.scss';
+
+// A generic form wrapper.
+// Most forms on the site must be contained in both a "form" and "form-container" element.
+::v-deep(.q-card__section) {
+  padding: 1rem;
+}
+
+::v-deep(.q-tab-panel) {
+  padding: 0;
+}
+
+// Custom input fields
+input.custom-input, select.custom-input, textarea.custom-input {
+  width: $fullSize;
+  background-color: $backgroundColor1;
+  border-radius: 0;
+  border: .0625rem solid $associationColorBorders;
+  box-shadow: $fieldsBoxShadow;
+  padding: .625rem 1.25rem .75rem;
+  color: $associationColorText;
+  font-size: 1.125rem;
+  font-weight: $medium-weight;
+  transition: border-color 0.07s linear;
+  margin-bottom: 1.2rem;
+
+  &:focus {
+    border-color: $associationColor;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.variant-space-2 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $charterColorHover;
+    }
+  }
+}
+
+.variant-space-3 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $commissionColor;
+    }
+  }
+}
+
+.variant-space-4 {
+  input.custom-input, select.custom-input, textarea.custom-input {
+    &:focus {
+      border-color: $dashboardColor;
+    }
+  }
+}
+
+textarea.custom-input {
+  resize: vertical;
+}
+
+label.custom-label {
+  display: inline-block;
+  color: $textColor2;
+  font-size: .9375rem;
+  font-weight: $semibold-weight;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+// A document form element allowing to upload, remove and review a list of documents.
+.document-input-group {
+  .document-input {
+    margin-bottom: 1.25rem;
+
+    .document-input-header {
+      background-color: $backgroundColor1;
+      box-shadow: $fieldsBoxShadow;
+      height: 5rem;
+      border-left: 0.3rem solid $associationColor;
+      position: relative;
+      white-space: nowrap;
+      padding: 0 1rem;
+      line-height: 5rem;
+
+      & h4 {
+        display: inline-block;
+        max-width: $fullSize;
+        font-size: $fontSize;
+        font-weight: $medium-weight;
+        color: $textColor1;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: inherit;
+      }
+
+      & p {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 0 0 0.6rem;
+        line-height: inherit;
+
+        button {
+          display: inline-block;
+          opacity: 0.6;
+          cursor: pointer;
+          vertical-align: middle;
+          line-height: normal;
+          transition: transform 0.03s linear;
+          position: relative;
+          top: 0;
+          background: transparent;
+          border: none;
+
+          &:hover, &:focus {
+            opacity: 0.8;
+            transform: scale(1.15);
+
+            @media (prefers-reduced-motion) {
+              transform: none;
+            }
+          }
+
+          &:active {
+            opacity: 1;
+          }
+        }
+      }
+
+      & > button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 2.5rem;
+        color: $textColor1;
+        width: 5rem;
+        height: 5rem;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        cursor: pointer;
+
+        &:hover, &:focus {
+          background-color: $associationColor;
+        }
+
+        &:active {
+          background-color: mix(white, $associationColor, 10%);
+        }
+
+        &:disabled {
+          opacity: 0.4;
+
+          &:hover, &:focus {
+            background-color: transparent;
+          }
+
+          &:active {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+
+    .document-input-list {
+      padding: 1rem;
+
+      .document-item {
+        height: 5rem;
+        position: relative;
+        padding: 1.75rem 1rem 1.5rem 1rem;
+
+        &:hover, &:focus {
+          background-color: rgba(255, 255, 255, 0.65);
+          box-shadow: $fieldsBoxShadow;
+
+          button {
+            display: inline-block;
+
+            &:disabled {
+              display: none;
+            }
+          }
+        }
+
+        p {
+          width: $fullSize;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          line-height: $fontSize;
+
+          &:focus-within {
+            outline: 2px solid $outlineColor2;
+            outline-offset: 2px;
+          }
+
+          & > i {
+            color: $textColor1;
+            margin-right: .3125rem;
+          }
+
+          a {
+            font-weight: $medium-weight;
+            color: $textColor1;
+            text-decoration: none;
+            cursor: pointer;
+
+            i {
+              color: $textColor1;
+              margin-left: .3125rem;
+              display: none;
+            }
+
+            &:hover, &:focus {
+              text-decoration: underline;
+
+              i {
+                display: inline;
+              }
+            }
+
+            &:active {
+              opacity: 0.8;
+            }
+          }
+        }
+
+        button {
+          height: 5rem;
+          width: 5rem;
+          background-color: transparent;
+          border: none;
+          border-radius: 0;
+          cursor: pointer;
+          display: none;
+          position: absolute;
+          top: 0;
+          right: 0;
+
+          &:hover, &:focus {
+            background-color: $associationColor;
+          }
+
+          &:active {
+            background-color: mix(white, $associationColor, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  button:focus-visible {
+    outline: 2px solid $outlineColor2;
+  }
+}
+
+.variant-space-2 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $charterColor;
+
+      & > button {
+        &:hover, &:focus {
+          background-color: $charterColor;
+        }
+
+        &:active {
+          background-color: mix(white, $charterColor, 10%);
+        }
+      }
+    }
+
+    .document-input-list .document-item button {
+      &:hover, &:focus {
+        background-color: $charterColor;
+      }
+
+      &:active {
+        background-color: mix(white, $charterColor, 10%);
+      }
+    }
+  }
+}
+
+.variant-space-3 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $commissionColor;
+
+      & > button {
+        &:hover, &:focus {
+          background-color: $commissionColor;
+        }
+
+        &:active {
+          background-color: mix(white, $commissionColor, 10%);
+        }
+      }
+    }
+
+    .document-input-list .document-item button {
+      &:hover, &:focus {
+        background-color: $commissionColor;
+      }
+
+      &:active {
+        background-color: mix(white, $commissionColor, 10%);
+      }
+    }
+  }
+}
+
+.variant-space-4 {
+  .document-input-group .document-input {
+    .document-input-header {
+      border-color: $dashboardColor;
+
+      & > button {
+        &:hover, &:focus {
+          background-color: $dashboardColor;
+        }
+
+        &:active {
+          background-color: mix(white, $dashboardColor, 10%);
+        }
+      }
+    }
+
+    .document-input-list .document-item button {
+      &:hover, &:focus {
+        background-color: $dashboardColor;
+      }
+
+      &:active {
+        background-color: mix(white, $dashboardColor, 10%);
+      }
+    }
+  }
+}
+
+// State badges that can be used in forms.
+// Icons aren't defined here, only colors.
+.form-state {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: $textColor1;
+  font-weight: $medium-weight;
+
+  .form-state-icon {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: $radiusCircle;
+    box-shadow: $fieldsBoxShadow;
+    line-height: 2rem;
+    text-align: center;
+    margin-left: .4375rem;
+
+    i {
+      display: inline-block;
+      color: $textColor3;
+      position: relative;
+    }
+  }
+
+  .form-state-green {
+    background-color: $stateColorGreen;
+  }
+
+  .form-state-orange {
+    background-color: $stateColorOrange;
+  }
+
+  .form-state-red {
+    background-color: $stateColorRed;
+  }
+
+  .form-state-grey {
+    background-color: $stateColorGrey;
+  }
+}
+
+.password-rules {
+  ul {
+    width: 10px;
+  }
+
+  li {
+    list-style: none;
+  }
+}
+
+// Select elements used to choose an action to perform on selected table rows.
+.table-actions-select {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  margin: auto;
+  flex-wrap: wrap;
+
+  .q-select {
+    max-width: 130rem;
+    width: $fullSize;
+  }
+
+  .q-btn {
+    width: 29rem;
+  }
+}
+
+// Quasar dialog window
+.q-dialog {
+  .q-card {
+    border-radius: 0;
+  }
+
+  .dialog-message {
+    font-size: 1rem;
+    font-weight: $medium-weight;
+    color: $textColor1;
+    padding: 1.5625rem;
+
+    ul {
+      padding-left: 1.5625rem;
+      list-style-type: square;
+    }
+  }
+
+  .dialog-card-actions {
+    padding: 0 1.5625rem 1.5625rem;
+    display: flex;
+    gap: .9375rem;
+
+    .q-btn {
+      padding: .625rem 1.25rem;
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+}
+
+// Quasar pagination
+.q-pagination {
+  margin: 3rem 0 0.5rem;
+
+  .q-pagination__content {
+    width: $fullSize;
+
+    .q-pagination__middle {
+      margin: 0 auto;
+      gap: 0.2rem;
+
+      button {
+        padding: 0.7rem 1.4rem;
+        font-size: 1.3rem;
+
+        &.q-btn--standard {
+          background: $backgroundColor1;
+          pointer-events: none;
+
+          .q-btn__content * {
+            color: $associationColor;
+            font-weight: $semibold-weight;
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-space-2 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $charterColorActive;
+  }
+}
+
+.variant-space-3 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $commissionColor;
+  }
+}
+
+.variant-space-4 {
+  .q-pagination .q-pagination__content .q-pagination__middle button.q-btn--standard .q-btn__content * {
+    color: $dashboardColor;
+  }
+}
+
+// Custom pagination
+.pagination {
+  display: flex;
+  margin: 2rem 0;
+  justify-content: center;
+
+  .wrapper {
+    display: inline-flex;
+    // gap: 0.2rem;
+    background-color: $backgroundColor1;
+    box-shadow: $fieldsBoxShadow;
+
+    .q-btn {
+      box-shadow: none;
+      padding: 1rem 1.4rem;
+      background-color: $backgroundColor1;
+
+      .q-btn__content i {
+        color: $associationColor;
+      }
+
+      &:hover, &:focus, &:active {
+        .q-btn__content i {
+          color: $textColor3;
+        }
+      }
+
+      &.counter-button {
+        padding: 1rem 2.4rem;
+        color: $textColor2;
+        font-size: 1.4rem;
+
+        strong {
+          color: $associationColor;
+          font-weight: $xbold-weight;
+          padding: 0 0.3rem;
+        }
+
+        &:hover, &:focus, &:active {
+          color: $textColor3;
+
+          strong {
+            color: $textColor3;
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-space-2 {
+  .pagination .wrapper .q-btn {
+    &:hover, &:focus, &:active {
+      .q-btn__content i {
+        color: $charterColorText;
+      }
+    }
+
+    .q-btn__content i {
+      color: $charterColorActive;
+    }
+
+    &.counter-button strong {
+      color: $charterColorActive;
+    }
+
+    &.counter-button {
+      &:hover, &:focus, &:active {
+        color: $charterColorText;
+
+        strong {
+          color: $charterColorText;
+        }
+      }
+    }
+  }
+}
+
+.variant-space-3 {
+  .pagination .wrapper .q-btn {
+    .q-btn__content i {
+      color: $commissionColor;
+    }
+
+    &.counter-button strong {
+      color: $commissionColor;
+    }
+  }
+}
+
+.variant-space-4 {
+  .pagination .wrapper .q-btn {
+    .q-btn__content i {
+      color: $dashboardColor;
+    }
+
+    &.counter-button strong {
+      color: $dashboardColor;
+    }
+  }
+}
+
+// Info panels (error, warning...)
+.info-panel {
+  padding: 1.5rem;
+  border: 1px solid $textColor2;
+  background-color: transparentize($textColor2, 0.9);
+  position: relative;
+  margin: 1.2rem 0;
+
+  p {
+    color: $textColor1;
+  }
+
+  &.info-panel-error {
+    border-color: $errorPanelColor;
+    background-color: transparentize($errorPanelColor, 0.9);
+
+    p {
+      color: $errorTextColor;
+    }
+
+    i {
+      background-color: $errorPanelColor;
+    }
+  }
+
+  &.info-panel-warning {
+    border-color: $warningPanelColor;
+    background-color: transparentize($warningPanelColor, 0.9);
+
+    p, li {
+      color: $warningTextColor;
+    }
+
+    i {
+      background-color: $warningPanelColor;
+    }
+  }
+
+  &.info-panel-dashboard {
+    border-color: $dashboardColor;
+    background-color: transparentize($dashboardColor, 0.9);
+
+    p {
+      color: $dashboardColorText;
+    }
+
+    i {
+      background-color: $dashboardColor;
+    }
+  }
+
+  i {
+    display: block;
+    position: absolute;
+    top: -0.8rem;
+    left: -0.8rem;
+    background-color: $textColor2;
+    color: $textColor3;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    outline: 2px solid $backgroundColor1;
+    text-align: center;
+    font-size: 2rem;
+    line-height: 1.4rem;
+  }
+}
+
+.info-panel i {
+  outline-color: $backgroundColor2;
+}
+
+// Form section title
+.section-title {
+  color: $textColor1;
+  font-size: $headTitleMobileSize;
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+
+  i {
+    display: inline-block;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 1.125rem;
+    background-color: $associationColor;
+    color: $textColor3;
+    box-shadow: $fieldsBoxShadow;
+    text-align: center;
+    font-size: 1.15rem;
+    line-height: 2.2rem;
+    vertical-align: middle;
+    margin-right: 8px;
+    position: relative;
+    top: -3px;
+  }
+
+  @media screen and (max-width: $breakpoint-lg) {
+    margin-bottom: 0.8rem;
+  }
+}
+
+.variant-space-2 .section-title i {
+  background-color: $charterColor;
+  color: $charterColorText;
+}
+
+.variant-space-3 .section-title i {
+  background-color: $commissionColor;
+}
+
+.variant-space-4 .section-title i {
+  background-color: $dashboardColor;
+}
+
+// Image input
+.image-input {
+  display: flex;
+  width: $fullSize;
+  aspect-ratio: 1 / 1;
+  background-color: $backgroundColor1;
+  box-shadow: 0 0 0 1px $associationColorBorders inset, $fieldsBoxShadow;
+  padding: 0.95rem;
+  position: relative;
+  align-items: center;
+  overflow: hidden;
+
+  img {
+    width: $fullSize;
+    height: auto;
+    max-height: $fullSize;
+    position: relative;
+    z-index: 1;
+  }
+
+  input[type=file] {
+    position: absolute;
+    left: -9999px;
+
+    &:hover + label, &:focus + label {
+      opacity: 1;
+    }
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: $fullSize;
+    height: $fullSize;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.05s linear, background-color 0.05s linear;
+
+    i {
+      display: inline-block;
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 1.375rem;
+      background-color: $associationColor;
+      vertical-align: middle;
+      box-shadow: $fieldsBoxShadow;
+      color: $textColor3;
+      font-size: 1.4rem;
+      line-height: 2.7rem;
+    }
+
+    &:hover, &:focus {
+      opacity: 1;
+    }
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+.variant-space-2 .image-input {
+  box-shadow: 0 0 0 1px $charterColorBorders inset;
+
+  label i {
+    background-color: $charterColor;
+    color: $charterColorText;
+  }
+}
+
+.variant-space-3 .image-input {
+  box-shadow: 0 0 0 1px $commissionColorBorders inset;
+
+  label i {
+    background-color: $commissionColor;
+  }
+}
+
+.variant-space-4 .image-input {
+  box-shadow: 0 0 0 1px $dashboardColorBorders inset;
+
+  label i {
+    background-color: $dashboardColor;
+  }
+}
+
+/*// Multi-column form
+.form-col-container {
+  display: flex;
+  align-items: stretch;
+  width: $fullSize;
+  margin: 2rem 0;
+
+  .form-col {
+    flex: 1 1 0;
+    padding: 0 3.2rem;
+    border-left: 1px solid $formSeparatorColor;
+
+    &:first-child {
+      padding-left: 0;
+      border: none;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+
+  @media screen and (max-width: $pageWidth) {
+    .form-col {
+      padding: 0 2rem;
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-lg) {
+    flex-direction: column;
+
+    .form-col {
+      flex: 1 1 0;
+      padding: 0;
+      border-left: none;
+      margin-bottom: 2rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}*/
+
+// Display rows
+.display-row, .comment-row {
+  display: flex;
+  flex-direction: column;
+  background-color: $backgroundColor1;
+  box-shadow: $fieldsBoxShadow;
+  border-left: 4px solid $associationColor;
+  padding: 1rem;
+  color: $textColor1;
+  font-weight: $medium-weight;
+
+  p {
+    margin: 0;
+  }
+
+  .row-title {
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: $medium-weight;
+    line-height: normal;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
+
+  .q-select, .q-textarea, .q-input {
+    margin-bottom: .625rem;
+  }
+}
+
+.comment-row {
+  flex-direction: column;
+  gap: .625rem;
+  padding-bottom: 1.2rem;
+
+  .comment-head {
+    color: $textColor2;
+    font-weight: $medium-weight;
+
+    .value {
+      color: $textColor1;
+      font-weight: $semibold-weight;
+    }
+
+    i {
+      margin-right: .5rem;
+    }
+  }
+}
+
+.variant-space-2 {
+  .display-row, .comment-row {
+    border-color: $charterColor;
+  }
+}
+
+.variant-space-3 {
+  .display-row, .comment-row {
+    border-color: $commissionColor;
+  }
+}
+
+.variant-space-4 {
+  .display-row, .comment-row {
+    border-color: $dashboardColor;
+  }
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+}
+

@@ -1,52 +1,30 @@
-# front
+# PlanA / Opaline
 
-This template should help get you started developing with Vue 3 in Vite.
+## Health
 
-## Recommended IDE Setup
+### develop
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
+[![pipeline status](https://git.unistra.fr/di/plan_a/front/badges/develop/pipeline.svg)](https://git.unistra.fr/di/plan_a/front/-/commits/develop/)
+[![coverage report](https://git.unistra.fr/di/plan_a/front/badges/develop/coverage.svg)](https://git.unistra.fr/di/plan_a/front/-/commits/develop/)
 
-## Type Support for `.vue` Imports in TS
+## Description
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+Création d'une application web pour la gestion des associations étudiantes et de leurs projets.
+Documentation technique accessible à l'adresse [https://di.pages.unistra.fr/plan_a/plana/](https://di.pages.unistra.fr/plan_a/plana/)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Technologies requises
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+- [Node](https://nodejs.org/) (version >= 18)
 
-## Customize configuration
+## Technologies conseillées
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## Project Setup
 
-```sh
-npm install
-```
+## Technologies de développement
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- [Vite](https://vitejs.dev/) (bundler)
+- [Sass](https://sass-lang.com/) (styles)
+- [TypeScript](https://www.typescriptlang.org/) (scripts)
+- [vue-tsc](https://www.npmjs.com/package/vue-tsc) (typecheck)
+- [ESLint](https://eslint.org/) (linter)
+- [Vitest](https://vitest.dev/) (tests unitaires)

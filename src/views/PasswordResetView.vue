@@ -1,15 +1,14 @@
 <script lang="ts" setup>
-import FormPassWordReset from '@/components/form/FormPasswordReset.vue'
-import {useI18n} from "vue-i18n";
+import FormPasswordReset from '@/components/form/FormPasswordReset.vue'
 
-const {t} = useI18n()
 </script>
 
 <template>
-  <h1>{{ t("password.reset-password") }}</h1>
-  <FormPassWordReset/>
+    <section class="dashboard-section">
+        <div class="dashboard-section-container">
+            <div class="container">
+                <FormPasswordReset/>
+            </div>
+        </div>
+    </section>
 </template>
-
-<style lang="sass" scoped>
-
-</style>

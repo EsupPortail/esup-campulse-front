@@ -4,7 +4,7 @@ set -e
 PROJECT="plan-a-front"
 
 if [ ! $# -ge 2 ]; then
-  echo "👉 Usage: $0 branch/tag goal     IRL: $0 feature/introduce_bug prod"
+  echo "👉 Usage: $0 branch/tag goal [--update-nginx-conf]     IRL: $0 feature/introduce_bug prod"
   exit 1
 fi
 
@@ -30,7 +30,7 @@ PREPROD_NGINX_CONF="plana-pprd.app.unistra.fr"
 
 # TODO: faire la conf de la prod quand elle sera décidée + penser à faire le fichier NGINX
 PROD_HOSTS=("root@rp-dip-public-m.di.unistra.fr" "root@rp-dip-public-s.di.unistra.fr")
-PROD_NGINX_CONF="plana.unistra.fr"
+PROD_NGINX_CONF="etu-campulse.fr"
 
 # Json info file template
 TEMPLATE='{"info":{"app_host":"%s","repo_url":"%s","local_user":"%s","tag":"%s","commit_id":"%s"}}'
@@ -69,6 +69,14 @@ if [ "$SETUP_NGINX" == true ]; then
         scp -r "nginx/$TARGET_NGINX_CONF" "$i:/etc/nginx/sites-available/"
         # TODO: using systemctl instead of service ?
         ssh -q "$i" ln -s "/etc/nginx/sites-available/$TARGET_NGINX_CONF /etc/nginx/sites-enabled/$TARGET_NGINX_CONF && service nginx reload"
+      else
+        for j in "$@"; do
+            if [ "$j" == "--update-nginx-conf" ]; then
+                echo "🏗 Update nginx vhost for $i"
+                scp -r "nginx/$TARGET_NGINX_CONF" "$i:/etc/nginx/sites-available/"
+                ssh -q "$i" service nginx reload
+            fi
+        done
       fi
   done
 fi
@@ -86,7 +94,7 @@ echo "📦 Packaging stuff"
 . "${SOURCE_ENV_FILE}"
 
 npm run build:$ENVIRONMENT
-PROJECT_VERSION=$(git describe --always)
+PROJECT_VERSION=$(git describe --always --tags)
 # Create info file for app
 echo $(printf "$TEMPLATE" "$HOST" "$DISTANT_REPO" "$(whoami)" "$1" "$PROJECT_VERSION") > "dist/${PROJECT}_info.json"
 echo "🚀 Deploying files"
@@ -102,7 +110,7 @@ if [ "$USE_SENTRY" == true ]; then
   echo "🚧 Manipulating git distant repositories"
   git remote remove origin
   git remote add origin "$DISTANT_REPO"
-  PROJECT_VERSION=$(git describe --always)
+  PROJECT_VERSION=$(git describe --always --tags)
   # Create a release
   echo "📌 Telling about $PROJECT_VERSION to Sentry"
   sentry-cli releases new -p "$PROJECT" "$PROJECT_VERSION"

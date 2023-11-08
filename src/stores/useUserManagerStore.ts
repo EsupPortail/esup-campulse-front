@@ -1,23 +1,18 @@
 import {defineStore} from 'pinia'
-import type {
-    ManagedUser,
-    ManagedUsers,
-    UserAssociationDetail,
-    UserAssociationPatch,
-    UserAssociationStatus,
-    UserDirectory,
-    UserGroup,
-    UserManagerStore,
-    UserNames,
-    UserToUpdate
-} from '#/user'
+import type {User, UserGroupRegister, UserManagerStore, UserNames} from '#/user'
 import {useAxios} from '@/composables/useAxios'
+import {useUserStore} from '@/stores/useUserStore'
+import useSecurity from '@/composables/useSecurity'
+import useUserGroups from '@/composables/useUserGroups'
+import useCommissions from '@/composables/useCommissions'
+import type {DocumentUpload} from '#/documents'
 
 export const useUserManagerStore = defineStore('userManagerStore', {
     state: (): UserManagerStore => ({
         user: undefined,
         users: [],
-        userAssociations: []
+        userAssociations: [],
+        userDocuments: []
     }),
 
     getters: {
@@ -28,61 +23,116 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                     label: user.firstName + ' ' + user.lastName
                 }))
         },
-        userDirectory: (state: UserManagerStore): UserDirectory[] => {
-            return state.users
-                .map(user => ({
-                    id: user.id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    associations: user.associations,
-                    groups: user.groups,
-                    isValidatedByAdmin: user.isValidatedByAdmin
-                }))
-        },
         userGroups: (state: UserManagerStore): number[] => {
-            return state.user?.groups?.map<number>(group => group.id) || []
+            return [...new Set(state.user?.groups?.map<number>(group => group.groupId))]
         },
-        userInfosUpdate: (state: UserManagerStore): UserToUpdate => {
-            return {
-                firstName: state.user?.firstName as string,
-                lastName: state.user?.lastName as string,
-                email: state.user?.email as string,
-                phone: state.user?.phone as string
-            }
-        },
-        userAssociationStatus: (state: UserManagerStore): UserAssociationStatus[] => {
-            return state.userAssociations.map(association => ({
-                associationId: association.association,
-                roleName: association.roleName,
-                hasOfficeStatus: association.hasOfficeStatus,
-                isPresident: association.isPresident
-            }))
+        userCommissionFunds: (state: UserManagerStore): number[] => {
+            const temp: number[] = []
+            state.user?.groups?.forEach((group) => {
+                if (group.fundId) temp.push(group.fundId)
+            })
+            return temp
         }
     },
 
     actions: {
-        async getUsers() {
-            const {axiosAuthenticated} = useAxios()
-            this.users = (await axiosAuthenticated.get<ManagedUsers>('/users/')).data
+        /**
+         * It gets the users from the API, and if the user has institutions, it gets the users from those institutions
+         */
+        async getUsers(status: 'all' | 'validated' | 'unvalidated' | string) {
+            const {hasPerm} = useSecurity()
+            if (hasPerm('view_user')) {
+                const {axiosAuthenticated} = useAxios()
+                const userStore = useUserStore()
+
+                const urlString = '/users/?'
+                const urlArray = []
+
+                if (userStore.userInstitutions?.length !== 0) {
+                    let institutions = 'institutions='
+                    institutions += userStore.userInstitutions?.join(',')
+                    if (hasPerm('view_user_misc')) institutions += ','
+                    urlArray.push(institutions)
+                }
+
+                if (status === 'validated') urlArray.push('is_validated_by_admin=true')
+                else if (status === 'unvalidated') urlArray.push('is_validated_by_admin=false')
+
+                this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data
+            }
         },
-        async getUnvalidatedUsers() {
-            const {axiosAuthenticated} = useAxios()
-            this.users = (await axiosAuthenticated.get<ManagedUsers>('/users/?is_validated_by_admin=false')).data
-        },
+        /**
+         * It gets the user detail from the API.
+         * @param {number} id - number - The id of the user to get
+         */
         async getUserDetail(id: number) {
             const {axiosAuthenticated} = useAxios()
-            this.user = (await axiosAuthenticated.get<ManagedUser>(`/users/${id}`)).data
-            this.user.groups = (await axiosAuthenticated.get<UserGroup[]>(`/users/groups/${id}`)).data
+            this.user = (await axiosAuthenticated.get<User>(`/users/${id}`)).data
         },
-        async updateUserGroups(userGroups: number[]) {
+        /**
+         * It takes an array of group IDs, and adds the user to each group
+         * @param {number[]} groupsToAdd - number[] - An array of group IDs to add to the user.
+         * @param fundsToUpdate
+         */
+        async updateUserGroups(groupsToAdd: number[], fundsToUpdate: number[]) {
+            const {commissionGroup} = useUserGroups()
             const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.post('/users/groups/', {username: this.user?.username, groups: userGroups})
+
+            // Initialize object to post
+            const data: UserGroupRegister = {
+                user: this.user?.username as string,
+                group: null,
+                institution: null,
+                fund: null
+            }
+
+            for (let i = 0; i < groupsToAdd.length; i++) {
+                data.group = groupsToAdd[i]
+                // if groupsToAdd includes commissionGroup
+                if (groupsToAdd[i] === commissionGroup.value?.id) {
+                    for (let j = 0; j < fundsToUpdate.length; j++) {
+                        data.fund = fundsToUpdate[j]
+                        await axiosAuthenticated.post('/users/groups/', data)
+                    }
+                } else {
+                    data.fund = null
+                    await axiosAuthenticated.post('/users/groups/', data)
+                }
+            }
+
+            if (!groupsToAdd.includes(commissionGroup.value?.id as number) && fundsToUpdate.length !== 0) {
+                data.group = commissionGroup.value?.id as number
+                for (let i = 0; i < fundsToUpdate.length; i++) {
+                    data.fund = fundsToUpdate[i]
+                    await axiosAuthenticated.post('/users/groups/', data)
+                }
+            }
         },
-        async deleteUserGroups(groupsToDelete: number[]) {
+        /**
+         * It deletes all the groups in the array `groupsToDelete` from the user with the id `this.user?.id`
+         * @param {number[]} groupsToDelete - number[] - An array of group IDs to delete
+         * @param fundsToDelete
+         */
+        async deleteUserGroups(groupsToDelete: number[], fundsToDelete: number[]) {
             const {axiosAuthenticated} = useAxios()
-            for (let i = 0; i < groupsToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/users/groups/${this.user?.id}/${groupsToDelete[i]}`)
+            const {commissionGroup} = useUserGroups()
+            const {userFunds} = useCommissions()
+            if (groupsToDelete.length) {
+                for (let i = 0; i < groupsToDelete.length; i++) {
+                    if (groupsToDelete[i] !== commissionGroup.value?.id) {
+                        await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${groupsToDelete[i]}`)
+                    } else {
+                        for (let i = 0; i < userFunds.value.length; i++) {
+                            const url = `/users/${this.user?.id}/groups/${commissionGroup.value?.id}/funds/${userFunds.value[i]}`
+                            await axiosAuthenticated.delete(url)
+                        }
+                    }
+                }
+            }
+            if (fundsToDelete.length) {
+                for (let i = 0; i < fundsToDelete.length; i++) {
+                    await axiosAuthenticated.delete(`/users/${this.user?.id}/groups/${commissionGroup.value?.id}/funds/${fundsToDelete[i]}`)
+                }
             }
         },
         async validateUser() {
@@ -93,36 +143,32 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             const {axiosAuthenticated} = useAxios()
             await axiosAuthenticated.delete(`/users/${this.user?.id}`)
         },
-        async getUserAssociations(id: number) {
-            const {axiosAuthenticated} = useAxios()
-            this.userAssociations = (await axiosAuthenticated.get<UserAssociationDetail[]>(`/users/associations/${id}`)).data
-        },
-        async deleteUserAssociation(associationId: number) {
-            const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.delete(`/users/associations/${this.user?.id}/${associationId}`)
-        },
-        async patchUserAssociations(associationId: number, infosToPatch: UserAssociationPatch) {
-            const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.patch(`/users/associations/${this.user?.id}/${associationId}`, infosToPatch)
-        },
-        /**
-         * It takes an object with the same keys as the user object, and updates the user object with the values of the
-         * object passed as argument
-         * @param {UserToUpdate} user - UserToUpdate
-         */
-        async updateUserInfos(user: UserToUpdate) {
-            let infosToPatch = {}
-            for (const [key, value] of Object.entries(user)) {
-                if (value !== this.user?.[key as keyof typeof this.user]) {
-                    infosToPatch = Object.assign(infosToPatch, {[key]: value})
+        async searchUsers(searchQuery: string) {
+            const {hasPerm} = useSecurity()
+            if (hasPerm('view_user')) {
+                const {axiosAuthenticated} = useAxios()
+                const userStore = useUserStore()
+
+                const urlString = '/users/?'
+                const urlArray = []
+
+                if (searchQuery) {
+                    urlArray.push(`search=${searchQuery}`)
+
+                    if (userStore.userInstitutions?.length !== 0) {
+                        let institutions = 'institutions='
+                        institutions += userStore.userInstitutions?.join(',')
+                        if (hasPerm('view_user_misc')) institutions += ','
+                        urlArray.push(institutions)
+                    }
+
+                    this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data
                 }
             }
-            if (Object.keys(infosToPatch).length > 0) {
-                const {axiosAuthenticated} = useAxios()
-                await axiosAuthenticated.patch(`/users/${this.user?.id}`, infosToPatch)
-            }
+        },
+        async getUserDocuments() {
+            const {axiosAuthenticated} = useAxios()
+            this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?user_id=${this.user?.id}`)).data
         }
     }
 })
-
-

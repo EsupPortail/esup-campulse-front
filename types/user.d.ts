@@ -1,47 +1,139 @@
-import type {AssociationName} from '#/association'
-
+import type {AssociationOptions} from '#/association'
+import type {DocumentUpload} from '#/documents'
 
 export interface User {
     id: number,
-    password: string | null,
     username: string,
+    email: string,
+    address?: string,
+    zipcode?: string,
+    city?: string,
+    country?: string,
     firstName: string,
     lastName: string,
-    phone: string | undefined | null,
-    email: string,
-    isCas: boolean,
-    isValidatedByAdmin: boolean | null,
+    phone: string,
+    isValidatedByAdmin: boolean,
+    associations: UserAssociation[],
     groups: UserGroup[],
-    associations: AssociationName[],
+    isCas: boolean,
+    hasValidatedEmail: boolean
+    permissions: string[]
 }
 
 // STORES
 
-// User store
-export interface UserStore {
-    user: User | undefined,
-    newUser: UserRegister | undefined,
-    userAssociations: UserAssociationDetail[]
+// User's role in the association
+export interface AssociationUser {
+    id?: number,
+    user?: number,
+    association?: number | null,
+    isPresident?: boolean,
+    canBePresidentFrom?: string | null,
+    canBePresidentTo?: string | null,
+    isValidatedByAdmin?: boolean,
+    isVicePresident?: boolean,
+    isSecretary?: boolean,
+    isTreasurer?: boolean,
 }
 
-// User manager store
-export interface UserManagerStore {
-    user: ManagedUser | undefined,
-    users: ManagedUsers,
-    userAssociations: UserAssociationDetail[]
+export interface AssociationUserDetail {
+    id?: number,
+    user?: number | null,
+    association: {
+        id: number,
+        name: string,
+        isSite?: boolean,
+        institution?: number,
+        isEnabled?: boolean,
+        isPublic?: boolean,
+        canSubmitProjects?: boolean
+    }
+    isPresident: boolean,
+    canBePresidentFrom: string | null,
+    canBePresidentTo: string | null,
+    isValidatedByAdmin: boolean,
+    isVicePresident: boolean,
+    isSecretary: boolean,
+    isTreasurer: boolean
 }
 
-// Login
-export type UserLogin = Pick<User, 'username' | 'password'>
+export interface AssociationMember {
+    id: number,
+    firstName?: string,
+    lastName?: string,
+    associationId?: number,
+    associationName?: string,
+    role: string,
+    canBePresidentFrom?: string | null,
+    canBePresidentTo?: string | null,
+    isValidatedByAdmin: boolean
+}
 
-interface LocalLogin {
-    username: string,
-    password: string
+export interface AssociationRole {
+    id: number | null,
+    name?: string,
+    role: string,
+    options?: AssociationOptions[],
+    canBePresidentFrom?: string | null,
+    canBePresidentTo?: string | null,
+    deleteAssociation?: boolean,
+    isValidatedByAdmin?: boolean
 }
 
 interface CasLogin {
     ticket: string,
     service: string
+}
+
+// Login
+interface LocalLogin {
+    username: string,
+    password: string
+}
+
+// Password reset
+export interface PasswordReset {
+    newPassword1: string | null,
+    newPassword2: string | null
+}
+
+// Profile password edition
+export interface PasswordEdit {
+    oldPassword: string,
+    newPassword1: string,
+    newPassword2: string
+}
+
+// Association that the user belongs to
+export interface UserAssociation {
+    id: number,
+    name: string,
+    isSite: boolean,
+    institution: number
+}
+
+// User group
+export interface UserGroup {
+    id?: number,
+    userId: number,
+    groupId: number
+    institutionId?: number | null,
+    fundId?: number | null
+}
+
+export interface UserGroupRegister {
+    user: string,
+    group: number | null,
+    institution: number | null,
+    fund: number | null
+}
+
+// User manager store
+export interface UserManagerStore {
+    user: User | undefined,
+    users: User[],
+    userAssociations: AssociationUserDetail[],
+    userDocuments: DocumentUpload[]
 }
 
 // Register
@@ -54,75 +146,41 @@ export interface UserRegister {
     phone: string
 }
 
-// Password reset
-export interface PasswordReset {
-    newPassword1: string,
-    newPassword2: string
+export interface CASUser {
+    username: string,
+    firstName: string,
+    lastName: string,
+    mail: string
 }
 
-// Profile password edition
-export interface PasswordEdit {
-    oldPassword: string,
-    newPassword1: string,
-    newPassword2: string
+// User store
+export interface UserStore {
+    user: User | undefined,
+    newUser: UserRegister | undefined,
+    userAssociations: AssociationUserDetail[],
+    userDocuments: DocumentUpload[]
 }
 
-// User association
-interface UserAssociation {
-    id: number | null,
-    roleName: string | null,
-    hasOfficeStatus: boolean,
-    isPresident: boolean
+export interface UserToUpdate {
+    firstName: string,
+    lastName: string,
+    username: string,
+    email: string,
+    newEmail: string,
+    newEmailVerification: string,
+    phone: string,
+    address?: string,
+    zipcode?: string,
+    city?: string,
+    country?: string,
 }
-
-export type UserAssociations = UserAssociation[]
-
-export interface UserAssociationDetail {
-    user: string,
-    roleName: string,
-    hasOfficeStatus: boolean,
-    isPresident: boolean,
-    association: number
-}
-
-
-// User group
-export interface UserGroup {
-    id: number,
-    name: string
-}
-
-export type GroupList = { value: number, label: string }[]
-
-// Users
-export type ManagedUser = Omit<User, 'password'>
-export type ManagedUsers = ManagedUser[]
 
 export type UserNames = { value: number, label: string }[]
 
-export interface UserToUpdate {
-    firstName: string | undefined,
-    lastName: string | undefined,
-    email: string | undefined,
-    phone: string | undefined
+export interface UserSearch {
+    search: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    association: number | null
 }
-
-export interface UserAssociationStatus {
-    associationId: number,
-    roleName: string,
-    hasOfficeStatus: boolean,
-    isPresident: boolean
-}
-
-export interface UserAssociationManagement {
-    associationId: number,
-    associationName: string,
-    roleName: string,
-    hasOfficeStatus: boolean,
-    isPresident: boolean,
-    deleteAssociation: boolean
-}
-
-export type UserAssociationPatch = Pick<UserAssociationStatus, "roleName" | "hasOfficeStatus" | "isPresident">
-
-export type UserDirectory = Pick<User, "id" | "firstName" | "lastName" | "email" | "associations" | "groups" | "isValidatedByAdmin">

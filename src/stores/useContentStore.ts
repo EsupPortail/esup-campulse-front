@@ -1,37 +1,39 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
+import type {Content, ContentCode, ContentStore, Logo} from '#/index'
+import {useAxios} from '@/composables/useAxios'
 
-import type { HomeStore } from '#/index'
-import i18n from '@/plugins/i18n'
-
-export const useHomeContent = defineStore('homeContent', {
-    state: (): HomeStore => ({
-        cards: [
-            {
-                title: i18n.global.t('home.cards.charter.title'),
-                description: i18n.global.t('home.cards.charter.description'),
-                imagePath: '/images/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.charter.imageAlt'),
-                link: '/charter'
-            },
-            {
-                title: i18n.global.t('home.cards.directory.title'),
-                description: i18n.global.t('home.cards.directory.description'),
-                imagePath: '/images/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.directory.imageAlt'),
-                link: '/associations'
-            },
-            {
-                title: i18n.global.t('home.cards.commission.title'),
-                description: i18n.global.t('home.cards.commission.description'),
-                imagePath: '/images/unistra.jpg',
-                imageAlt: i18n.global.t('home.cards.commission.imageAlt'),
-                link: '/commission'
-            }
-        ],
-        banner: {
-            title: i18n.global.t('home.banner.title'),
-            description: i18n.global.t('home.banner.description'),
-            isDisplayed: true
-        }
+export const useContentStore = defineStore('contentStore', {
+    state: (): ContentStore => ({
+        contents: [],
+        logos: [],
+        CSSClasses: ['home-section-annuaire', 'home-section-charte', 'home-section-cape']
     }),
+
+    actions: {
+        /**
+         * It gets the content data from the server
+         * Available for the public
+         */
+        async getContents() {
+            const {axiosPublic} = useAxios()
+            const url = '/contents/'
+            this.contents = (await axiosPublic.get<Content[]>(url)).data
+        },
+        async getContentsByCode(codes: ContentCode[]) {
+            const {axiosPublic} = useAxios()
+            this.contents = []
+            for (const code of codes) {
+                const url = `/contents/?code=${code}`
+                const content = (await axiosPublic.get<Content[]>(url)).data[0]
+                this.contents.push(content)
+            }
+        },
+        async getLogos() {
+            if (!this.logos.length) {
+                const {axiosPublic} = useAxios()
+                const url = '/contents/logos'
+                this.logos = (await axiosPublic.get<Logo[]>(url)).data
+            }
+        },
+    }
 })

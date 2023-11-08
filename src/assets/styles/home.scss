@@ -1,0 +1,414 @@
+@import '@/assets/_variables.scss';
+
+// Intro element on the home page
+#home-info-panel {
+  padding: 1rem;
+  margin: 3rem auto;
+
+  .home-banner-icon {
+    display: inline-block;
+    width: 3.8rem;
+    min-width: 3.8rem;
+    height: 3.8rem;
+    border-radius: $radiusCircle;
+    border: solid $associationColor 0.200rem;
+    position: relative;
+
+    i {
+      color: $associationColor;
+      position: absolute;
+      top: -0.4rem;
+      left: 0.3rem;
+      font-size: 2.8rem;
+    }
+
+    &::before, &::after {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 2rem;
+      border-radius: $radiusCircle;
+      position: absolute;
+      left: 0.6rem;
+      top: 4rem;
+    }
+
+    &::before {
+      background-color: $charterColor;
+      bottom: -1.5rem;
+    }
+
+    &::after {
+      background-color: $commissionColor;
+      bottom: -3rem;
+      top: 6.5rem;
+    }
+  }
+
+}
+
+// Sections for each space on the site
+.home-section {
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 4rem 0;
+
+  & > div {
+    width: $fullSize;
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0;
+
+    a {
+      margin: 0;
+    }
+  }
+
+  &.home-section-annuaire {
+    background-image: $homeDirectoryBackground;
+    background-position: center center;
+
+    .card-icon {
+      text-align: center;
+
+      i {
+        font-size: $iconSize;
+        color: $associationColor;
+      }
+    }
+  }
+
+  &.home-section-charte {
+    background-image: $homeCharterBackground;
+    background-position: center center;
+
+    .section-card {
+      flex-direction: row-reverse;
+
+      .card-icon {
+        text-align: center;
+
+        i {
+          font-size: $iconSize;
+          color: $charterColor;
+        }
+      }
+    }
+  }
+
+  &.home-section-cape {
+    background-image: $homeCommissionBackground;
+    background-position: center center;
+
+    .card-icon {
+      text-align: center;
+
+      i {
+        font-size: $iconSize;
+        color: $commissionColor;
+      }
+    }
+  }
+
+  .section-card {
+    display: flex;
+    border-radius: 1rem;
+    position: relative;
+    background-color: $backgroundColor1;
+    box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.2);
+    padding: 3rem;
+    gap: 18rem;
+    align-items: center;
+    overflow: hidden;
+
+    .section-background {
+      background-color: $associationColorBackground;
+      height: 50rem;
+      width: 36rem;
+      opacity: 1;
+      position: absolute;
+      top: calc(50% - 25rem);
+      left: 0;
+
+      span {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 25rem 0 25rem 6.20rem;
+        border-color: transparent transparent transparent $associationColorBackground;
+        position: absolute;
+        right: -6rem;
+      }
+    }
+
+    .section-title {
+      flex: 0 0 26.25rem;
+      position: relative;
+      z-index: 2;
+
+      h2 > span:first-child {
+        display: flex;
+        gap: 1rem;
+        font-family: $titleFont;
+        font-size: 3.8rem;
+        font-weight: $semibold-weight;
+        color: $associationColorText;
+        text-transform: uppercase;
+      }
+
+      h3 {
+        line-height: 2.8rem;
+      }
+
+      .section-icon {
+        display: inline-flex;
+        gap: .6rem;
+        align-items: center;
+
+        span {
+          display: inline-block;
+          width: 2rem;
+          height: 2rem;
+          background-color: $associationColor;
+          color: $associationColorText;
+          border-radius: $radiusCircle;
+
+          &:first-child {
+            width: 4.5rem;
+            height: 4.5rem;
+            color: $associationColorText;
+            text-align: center;
+
+            i {
+              position: relative;
+              font-size: $iconSize;
+              color: $associationColorText;
+              top: -0.8rem;
+              left: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .section-info {
+      font-weight: $normal-weight;
+      line-height: 2rem;
+      color: $associationColorText;
+      border-left: .25rem solid $associationColor;
+      padding: 0 0 0 1rem;
+      margin: 1.25rem auto 1rem;
+
+      p {
+        margin: 0;
+        font-size: 1.9rem;
+
+        strong {
+          font-weight: $bold-weight;
+        }
+      }
+    }
+
+    .section-content {
+      position: relative;
+      z-index: 1;
+
+      p {
+        font-weight: $normal-weight;
+        color: $associationColorText;
+      }
+
+      .section-buttons {
+        text-align: center;
+        margin: 1rem;
+
+
+        a {
+          display: inline-block;
+          padding: 1rem 4rem;
+          font-weight: $normal-weight;
+          color: $associationColorText;
+          border: .0625rem solid $associationColorText;
+          background-color: transparent;
+          text-decoration: none;
+          text-transform: uppercase;
+          transition: background-color 0.03s linear, color 0.03s linear;
+
+          i {
+            font-size: $iconSize;
+            position: relative;
+            top: .07rem;
+          }
+
+          &:hover, &:focus {
+            background-color: $associationColorText;
+            color: $textColor3;
+          }
+
+          &:active {
+            background-color: transparentize($associationColorText, 0.1);
+            color: $textColor3;
+          }
+        }
+      }
+    }
+
+    @media screen and (max-width: $breakpoint-lg) {
+      display: block;
+
+      .section-background {
+        width: 20rem;
+      }
+    }
+  }
+
+  &.home-section-annuaire {
+    .section-icon {
+      span:nth-child(3), span:nth-child(4) {
+        display: none;
+      }
+    }
+  }
+
+  &.home-section-charte {
+    .section-card {
+      .section-background {
+        background-color: $charterColorBackground;
+        right: 0;
+        left: unset;
+
+        span {
+          border-width: 25rem 6.2rem 25rem 0;
+          border-color: transparent $charterColorBackground transparent transparent;
+          left: -6rem;
+        }
+      }
+
+      .section-title {
+        text-align: right;
+
+        h2 > span {
+          flex-direction: row-reverse;
+          color: $charterColorText;
+        }
+
+        .section-subtitle {
+          color: $charterColorText;
+        }
+
+        .section-icon {
+          flex-direction: row-reverse;
+
+          span {
+            background-color: $charterColor;
+            color: $charterColorText;
+
+            i {
+              background-color: $charterColor;
+              color: $charterColorText;
+            }
+
+          }
+
+          span:nth-child(4) {
+            display: none;
+          }
+        }
+      }
+
+      .section-info {
+        border-left: none;
+        border-right: .25rem solid $charterColor;
+        padding-left: 0;
+        padding-right: 1rem;
+        color: $charterColorText;
+      }
+
+      .section-content {
+        p {
+          color: $charterColorText;
+        }
+
+        .section-buttons {
+          a {
+            color: $charterColorText;
+            border-color: $charterColorText;
+
+            &:hover, &:focus {
+              background-color: $charterColorText;
+              color: $textColor3;
+            }
+
+            &:active {
+              background-color: transparentize($charterColorText, 0.1);
+              color: $textColor3;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.home-section-cape {
+    .section-card {
+      .section-background {
+        background-color: $commissionColorBackground;
+
+        span {
+          border-color: transparent transparent transparent $commissionColorBackground;
+        }
+      }
+
+      .section-title {
+        h1 {
+          color: $commissionColorText;
+        }
+
+        .section-subtitle {
+          color: $commissionColorText;
+        }
+
+        .section-icon {
+          span {
+            background-color: $commissionColor;
+            color: $commissionColorText;
+
+            i {
+              background-color: $commissionColor;
+              color: $commissionColorText;
+              left: -0.150rem;
+            }
+          }
+        }
+      }
+
+      .section-info {
+        border-color: $commissionColor;
+        color: $commissionColorText;
+      }
+
+      .section-content {
+        p {
+          color: $commissionColorText;
+        }
+
+        .section-buttons {
+          a {
+            color: $commissionColorText;
+            border-color: $commissionColorText;
+
+            &:hover, &:focus {
+              background-color: $commissionColorText;
+              color: $textColor3;
+            }
+
+            &:active {
+              background-color: transparentize($commissionColorText, 0.1);
+              color: $textColor3;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,22 +1,14 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {AssociationList, AssociationSearch} from '#/association'
+import type {Association, AssociationSearch} from '#/association'
 import {useAxios} from '@/composables/useAxios'
-
+import {useUserStore} from '@/stores/useUserStore'
+import useUtility from '@/composables/useUtility'
 
 export default function () {
 
     const associationStore = useAssociationStore()
-
-    async function getAssociationDetail(routeParams: string) {
-        if (routeParams) {
-            const id = parseInt(routeParams)
-            await associationStore.getAssociationDetail(id)
-        }
-    }
-
-    function filterizeSearch(stringToFilterize: string) {
-        return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    }
+    const userStore = useUserStore()
+    const {filterizeSearch} = useUtility()
 
     /**
      * It filters the associations in the store based on the search settings on the front end
@@ -26,18 +18,11 @@ export default function () {
     function advancedSearch(settings: AssociationSearch) {
         if (associationStore.associations.length > 0 &&
             (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
-            let matches: AssociationList[] = []
+            let matches: Association[] = []
             if (settings.name) {
-                if (matches.length) {
-                    const newMatches = matches.filter(association => {
-                        return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
-                    })
-                    matches = [...newMatches]
-                } else {
-                    matches = associationStore.associations.filter(association => {
-                        return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
-                    })
-                }
+                matches = associationStore.associations.filter(association => {
+                    return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
+                })
             }
             if (settings.acronym) {
                 // checking if a search has already been made
@@ -55,26 +40,26 @@ export default function () {
             }
             if (settings.institution) {
                 if (matches.length) {
-                    const newMatches = matches.filter(association => association.institution?.id === settings.institution)
+                    const newMatches = matches.filter(association => association.institution === settings.institution)
                     matches = [...newMatches]
                 } else {
-                    matches = associationStore.associations.filter(association => association.institution?.id === settings.institution)
+                    matches = associationStore.associations.filter(association => association.institution === settings.institution)
                 }
             }
             if (settings.institutionComponent) {
                 if (matches.length) {
-                    const newMatches = matches.filter(association => association.institutionComponent?.id === settings.institutionComponent)
+                    const newMatches = matches.filter(association => association.institutionComponent === settings.institutionComponent)
                     matches = [...newMatches]
                 } else {
-                    matches = associationStore.associations.filter(association => association.institutionComponent?.id === settings.institutionComponent)
+                    matches = associationStore.associations.filter(association => association.institutionComponent === settings.institutionComponent)
                 }
             }
             if (settings.activityField) {
                 if (matches.length) {
-                    const newMatches = matches.filter(association => association.activityField?.id === settings.activityField)
+                    const newMatches = matches.filter(association => association.activityField === settings.activityField)
                     matches = [...newMatches]
                 } else {
-                    matches = associationStore.associations.filter(association => association.activityField?.id === settings.activityField)
+                    matches = associationStore.associations.filter(association => association.activityField === settings.activityField)
                 }
             }
             return matches
@@ -83,16 +68,31 @@ export default function () {
 
     /**
      * It searches for associations that are public and match the search value on the API.
-     * @param {string} value - The value to search for
+     * @param {string} query - The value to search for
+     * @param forDirectory
      * @returns An array of AssociationList objects.
      */
-    async function simpleAssociationSearch(value: string): Promise<AssociationList[]> {
-        const {axiosPublic} = useAxios()
-        return (await axiosPublic.get<AssociationList[]>(`/associations/?is_public=true&search=${value}`)).data
+    async function simpleAssociationSearch(query: string, forDirectory: boolean): Promise<Association[]> {
+        const {axiosPublic, axiosAuthenticated} = useAxios()
+        let instance = axiosAuthenticated
+        if (forDirectory) instance = axiosPublic
+
+        let stringUrl = '/associations/?'
+        const arrayUrl = []
+
+        if (forDirectory) arrayUrl.push('is_public=true')
+        else arrayUrl.push(`institutions=${userStore.userInstitutions?.join(',')}`)
+
+        arrayUrl.push(`search=${query}`)
+
+        stringUrl += arrayUrl.join('&')
+
+        await Promise.all([associationStore.getInstitutions(), associationStore.getInstitutionComponents(), associationStore.getActivityFields()])
+        const associations = (await instance.get<Association[]>(stringUrl)).data
+        return associationStore.getAssociationsSubDetails(associations)
     }
 
     return {
-        getAssociationDetail,
         advancedSearch,
         simpleAssociationSearch
     }

@@ -1,62 +1,160 @@
-import type {ManagedUsers, User, UserAssociations, UserGroup, UserRegister} from '#/user'
-import {_associationName} from '~/fixtures/association.mock'
+import type {
+    AssociationMember,
+    AssociationRole,
+    AssociationUser,
+    AssociationUserDetail,
+    User,
+    UserGroup,
+    UserRegister
+} from '#/user'
+import {_userAssociation} from '~/fixtures/association.mock'
+import {_groups} from '~/fixtures/group.mock'
+import i18n from '@/plugins/i18n'
+
+function getUserGroupsPermissions(userGroups: UserGroup[]): string[] {
+    const permissions: string[] = []
+    userGroups.forEach((userGroup) => {
+        _groups.find(_group => _group.id === userGroup.groupId)?.permissions.forEach((permission) => {
+            if (permissions.indexOf(permission) === -1) {
+                permissions.push(permission)
+            }
+        })
+    })
+    return permissions
+}
 
 export const _userGroups: UserGroup[] = [
+    // General manager
     {
-        id: 1,
-        name: 'Gestionnaire SVU'
+        userId: 1,
+        groupId: 1,
+        institutionId: 1,
+        fundId: null
     },
     {
-        id: 2,
-        name: 'Étudiante ou Étudiant'
+        userId: 1,
+        groupId: 2,
+        institutionId: 2,
+        fundId: null
     },
     {
-        id: 3,
-        name: 'Membre de commission'
+        userId: 1,
+        groupId: 3,
+        institutionId: 3,
+        fundId: null
+    },
+    // Student
+    {
+        userId: 2,
+        groupId: 6,
+    },
+    {
+        userId: 7,
+        groupId: 7,
+    },
+    // Commission
+    {
+        userId: 3,
+        groupId: 4,
+        fundId: 1
+    },
+    // Misc manager
+    {
+        userId: 4,
+        groupId: 3,
+        fundId: 3
     }
 ]
 
-export const _newUserGroups: number[] = [1, 2]
-
-export const _manager: User = {
+export const _institutionManager: User = {
     id: 1,
-    password: 'motdepasse',
-    username: 'manager@unistra.fr',
+    username: 'institution-manager@unistra.fr',
     firstName: 'Manager',
-    lastName: 'Unistra',
+    lastName: 'Institution',
     phone: '',
-    email: 'manager@unistra.fr',
+    email: 'institution-manager@unistra.fr',
     isCas: false,
+    hasValidatedEmail: true,
     isValidatedByAdmin: true,
-    groups: [
-        {
-            id: 1,
-            name: 'Gestionnaire SVU'
-        }
-    ],
-    associations: _associationName
+    associations: [],
+    groups: [_userGroups[1], _userGroups[2]],
+    permissions: getUserGroupsPermissions([_userGroups[1], _userGroups[2]])
 }
 
-export const _student: User = {
+export const _generalManager: User = {
+    id: 2,
+    username: 'general-manager@unistra.fr',
+    firstName: 'Manager',
+    lastName: 'General',
+    phone: '',
+    email: 'general-manager@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[0]],
+    permissions: getUserGroupsPermissions([_userGroups[0]])
+}
+
+export const _miscManager: User = {
+    id: 4,
+    username: 'misc-manager@unistra.fr',
+    firstName: 'Manager',
+    lastName: 'Misc',
+    phone: '',
+    email: 'misc-manager@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[6]],
+    permissions: getUserGroupsPermissions([_userGroups[6]])
+}
+
+export const _institutionStudent: User = {
     id: 5,
-    password: 'motdepasse',
-    username: 'student@unistra.fr',
+    username: 'institution-student@unistra.fr',
     firstName: 'Student',
-    lastName: 'Unistra',
+    lastName: 'Institution',
     phone: '',
-    email: 'student@unistra.fr',
+    email: 'institution-student@unistra.fr',
     isCas: false,
+    hasValidatedEmail: true,
     isValidatedByAdmin: true,
-    groups: [
-        {
-            id: 2,
-            name: 'Étudiante ou Étudiant'
-        }
-    ],
-    associations: _associationName
+    associations: _userAssociation,
+    groups: [_userGroups[3]],
+    permissions: getUserGroupsPermissions([_userGroups[3]])
 }
 
-export const _users: ManagedUsers = [_student, _manager]
+export const _memberFund: User = {
+    id: 6,
+    username: 'commission@unistra.fr',
+    firstName: 'Commission',
+    lastName: 'Member',
+    phone: '',
+    email: 'commission@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[5]],
+    permissions: getUserGroupsPermissions([_userGroups[4]])
+}
+
+export const _miscStudent: User = {
+    id: 7,
+    username: 'misc-student@unistra.fr',
+    firstName: 'Student',
+    lastName: 'Misc',
+    phone: '',
+    email: 'misc-student@unistra.fr',
+    isCas: false,
+    hasValidatedEmail: true,
+    isValidatedByAdmin: true,
+    associations: [],
+    groups: [_userGroups[4]],
+    permissions: getUserGroupsPermissions([_userGroups[4]])
+}
 
 export const _newUser: UserRegister = {
     isCas: false,
@@ -67,73 +165,247 @@ export const _newUser: UserRegister = {
     email: 'john.lennon@bbc.com'
 }
 
-export const _userGroupList: number[] = _userGroups.map(group => group.id)
+export const _users = [_institutionStudent, _institutionManager, _memberFund, _miscStudent]
 
-export const _groupLabels = _userGroups.map(
-    group => ({
-        value: group.id,
-        label: group.name
+export const _usersNames = _users.map(
+    user => ({
+        value: user.id,
+        label: user.firstName + ' ' + user.lastName
     })
 )
 
-export const _userAssociations: UserAssociations = [
+export const _userAssociations: AssociationUser[] = [
     {
-        id: 1,
-        roleName: 'Président',
-        hasOfficeStatus: true,
-        isPresident: true
+        user: 1,
+        isPresident: true,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: false,
+        association: 1
     },
     {
-        id: 2,
-        roleName: 'Secrétaire',
-        hasOfficeStatus: false,
-        isPresident: false
+        user: 2,
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: true,
+        isTreasurer: false,
+        association: 2
     },
     {
-        id: 3,
-        roleName: 'Trésorier',
-        hasOfficeStatus: false,
-        isPresident: false
+        user: 3,
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: true,
+        association: 3
     },
     {
-        id: 4,
-        roleName: 'Membre',
-        hasOfficeStatus: false,
-        isPresident: false
+        user: 4,
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: false,
+        isVicePresident: true,
+        isSecretary: false,
+        isTreasurer: false,
+        association: 4
+    },
+    {
+        user: 5,
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: false,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: false,
+        association: 5
     }
 ]
 
-export const _userAssociationDetail = {
-    user: 'Jane',
-    roleName: 'Présidente',
-    hasOfficeStatus: true,
+export const _userAssociationDetails: AssociationUserDetail[] = [
+    {
+        user: 1,
+        isPresident: true,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: false,
+        association: {
+            id: 1,
+            name: 'PLANA',
+            isSite: true,
+            institution: 1,
+            isEnabled: true,
+            isPublic: true,
+            canSubmitProjects: true
+        }
+    },
+    {
+        user: 2,
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: true,
+        isTreasurer: false,
+        association: {
+            id: 2,
+            name: 'LUCIE',
+            isSite: true,
+            institution: 1,
+            isEnabled: true,
+            isPublic: true,
+            canSubmitProjects: true
+        }
+    },
+    {
+        user: 3,
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: true,
+        association: {
+            id: 3,
+            name: 'OCTANT',
+            isSite: true,
+            institution: 1,
+            isEnabled: true,
+            isPublic: true,
+            canSubmitProjects: true
+        }
+    },
+    {
+        user: 4,
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: false,
+        isVicePresident: true,
+        isSecretary: false,
+        isTreasurer: false,
+        association: {
+            id: 4,
+            name: 'OPALINE',
+            isSite: true,
+            institution: 1,
+            isEnabled: true,
+            isPublic: true,
+            canSubmitProjects: true
+        }
+    },
+    {
+        user: 5,
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: false,
+        isVicePresident: false,
+        isSecretary: false,
+        isTreasurer: false,
+        association: {
+            id: 5,
+            name: 'EMPRUNTE',
+            canSubmitProjects: true
+        }
+    }
+]
+
+export const _userAssociationDetail: AssociationUserDetail = {
     isPresident: true,
-    association: 1
+    canBePresidentFrom: null,
+    canBePresidentTo: null,
+    isValidatedByAdmin: true,
+    isVicePresident: false,
+    isSecretary: false,
+    isTreasurer: false,
+    association: {
+        id: 1,
+        name: 'Association',
+        isSite: true,
+        institution: 1,
+        isEnabled: true,
+        isPublic: true
+    }
 }
 
-export const _userAssociationsManagement = [
+export const _associationRole: AssociationRole = {
+    id: 1,
+    name: 'Jane',
+    role: 'isPresident',
+    deleteAssociation: false,
+    isValidatedByAdmin: true,
+    options: [
+        {
+            label: i18n.global.t('forms.im-association-president'),
+            value: 'isPresident',
+        },
+        {
+            label: i18n.global.t('forms.im-association-secretary'),
+            value: 'isSecretary'
+        },
+        {
+            label: i18n.global.t('forms.im-association-treasurer'),
+            value: 'isTreasurer'
+        },
+        {
+            label: i18n.global.t('forms.im-association-vice-president'),
+            value: 'isVicePresident'
+        },
+        {
+            label: i18n.global.t('forms.im-association-member'),
+            value: 'isMember'
+        }
+    ]
+}
+
+export const _associationMembers: AssociationMember[] = [
     {
-        associationId: 1,
-        associationName: 'PLANA',
-        roleName: 'Présidente',
-        hasOfficeStatus: true,
-        isPresident: true,
-        deleteAssociation: false
+        id: _institutionManager.id,
+        firstName: _institutionManager.firstName,
+        lastName: _institutionManager.lastName,
+        role: 'Présidente ou président de l\'association',
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: _userAssociations[0].isValidatedByAdmin as boolean
     },
     {
-        associationId: 2,
-        associationName: 'Octant',
-        roleName: 'Trésorière',
-        hasOfficeStatus: true,
-        isPresident: false,
-        deleteAssociation: false
+        id: _institutionStudent.id,
+        firstName: _institutionStudent.firstName,
+        lastName: _institutionStudent.lastName,
+        role: 'Autre membre de l\'association',
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: _userAssociations[4].isValidatedByAdmin as boolean
+    }
+]
+
+export const _CASUsers = [
+    {
+        username: 'lskywalker',
+        firstName: 'Luke',
+        lastName: 'Skywalker',
+        mail: 'lskywalker@unistra.fr'
     },
     {
-        associationId: 3,
-        associationName: 'Apogée',
-        roleName: 'Membre',
-        hasOfficeStatus: false,
-        isPresident: false,
-        deleteAssociation: true
+        username: 'hsolo',
+        firstName: 'Han',
+        lastName: 'Solo',
+        mail: 'hsolo@unistra.fr'
     }
 ]

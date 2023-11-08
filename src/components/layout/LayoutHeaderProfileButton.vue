@@ -1,111 +1,151 @@
 <script lang="ts" setup>
 import {useUserStore} from '@/stores/useUserStore'
-import {useI18n} from "vue-i18n";
-import {useQuasar} from "quasar";
-import router from "@/router";
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import router from '@/router'
+import {onMounted} from 'vue'
+import useUserAssociations from '@/composables/useUserAssociations'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const userStore = useUserStore()
 const {t} = useI18n()
-const {notify} = useQuasar()
+const {notify, loading} = useQuasar()
+const {getUserAssociations} = useUserAssociations()
+const {catchHTTPError} = useErrors()
 
+const props = defineProps<{
+    device?: 'mobile' | 'desktop'
+}>()
 
 async function onLogOut() {
-    await userStore.logOut()
-    await router.push({name: 'Login'})
-    notify({
-        type: 'positive',
-        message: t('notifications.positive.logout-success')
-    })
+    loading.show()
+    try {
+        userStore.logOut()
+        await router.push({name: 'Login'})
+        notify({
+            type: 'positive',
+            message: t('notifications.positive.logout-success')
+        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
+            })
+        }
+    }
+    loading.hide()
 }
+
+const initUserAssociations = async () => {
+    if (userStore.user?.associations.length && !userStore.userAssociations.length && props.device !== 'mobile') {
+        await getUserAssociations(userStore.user?.id as number, false)
+    }
+}
+
+onMounted(async () => {
+    loading.show()
+    await initUserAssociations()
+    loading.hide()
+})
+
 </script>
 
 <template>
     <div class="q-pa-md">
-        <QBtnDropdown align="between" color="secondary" no-caps padding="0">
+        <QBtnDropdown
+            :menu-offset="[0, 8]"
+            align="between"
+            content-class="profile-menu"
+            flat
+            no-caps
+            padding="0"
+        >
             <template v-slot:label>
-                <div class="row items-center no-wrap">
-
-                    <div class="avatar">
-                        <QAvatar color="primary" size="2em" text-color="white">{{
-                                userStore.userNameFirstLetter
-                            }}
-                        </QAvatar>
-                    </div>
-
-                    <div class="text-center">
-                        <p>{{ t("header.my-account") }}</p>
-                    </div>
-
-                </div>
+                <span class="row items-center no-wrap">
+                    <span
+                        aria-hidden="true"
+                        class="avatar"
+                    >
+                        <i class="bi bi-person-circle"></i>
+                    </span>
+                    <span class="text-center">{{ t('header.my-account') }}</span>
+                </span>
             </template>
 
             <QList>
-                <QItem
-                    v-close-popup
-                    clickable
-                    @click="router.push({name: 'Dashboard'})"
-                >
-                    <QItemSection>
-                        <QItemLabel>{{ t("header.my-profile") }}</QItemLabel>
-                    </QItemSection>
-                </QItem>
+                <ul>
+                    <li>
+                        <QItem
+                            v-close-popup
+                            clickable
+                            @click="router.push({ name: 'Dashboard' })"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ t('header.my-profile') }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
 
-                <QItem
-                    v-for="(item) in userStore.user?.associations"
-                    :key="item.id"
-                    v-close-popup
-                    clickable
-                    @click="router.push({name: 'AssociationDashboard', params: {id: item.id}})"
-                >
-                    <QItemSection>
-                        <QItemLabel>{{ item.name }}</QItemLabel>
-                    </QItemSection>
-                </QItem>
+                    <li
+                        v-for="(item) in userStore.userAssociations"
+                        :key="item.id"
+                    >
+                        <QItem
+                            v-if="item.isValidatedByAdmin"
+                            v-close-popup
+                            clickable
+                            @click="router.push({ name: 'AssociationDashboard', params: { id: item.association.id } })"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ item.association.name }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
 
-                <QItem
-                    v-close-popup
-                    clickable
-                    @click="onLogOut"
-                >
-                    <QItemSection>
-                        <QItemLabel>{{ t('header.logout') }}</QItemLabel>
-                    </QItemSection>
-                </QItem>
+                    <li>
+                        <QItem
+                            v-close-popup
+                            clickable
+                            @click="onLogOut"
+                        >
+                            <QItemSection>
+                                <QItemLabel>{{ t('header.logout') }}</QItemLabel>
+                            </QItemSection>
+                        </QItem>
+                    </li>
+                </ul>
             </QList>
         </QBtnDropdown>
     </div>
 </template>
 
+<style lang="scss" scoped>
+@import "@/assets/_variables.scss";
 
-<style lang="sass" scoped>
-p
-    font-size: 1.3em
-    margin: 0
+.q-btn-dropdown {
+    font-size: 1.8rem;
+}
 
-.avatar
-    padding: 0.3em
-    margin-right: 0.3em
+.q-list {
+    max-width: 30rem;
+    width: $fullSize;
+}
 
-.user-avatar
-    width: 32px
-    height: 32px
-    border-radius: 50%
-    border: 2px solid #fff
-    position: relative
-    margin-left: 5px
+.q-btn__content>span>* {
+    padding: 0 0.5rem;
+}
 
-.user-avatar span
-    position: absolute
-    text-align: center
-    font-size: 30px
-    line-height: 0
-    top: 15px
-    left: 6px
+p {
+    margin-bottom: 0 !important;
+}
 
-.label
-    color: black
-    text-decoration: none
+ul {
+    padding-left: 0;
+}
 
-.label:hover
-    background-color: rgba(255, 255, 255, 0.3)
+li {
+    list-style-type: none;
+}
 </style>

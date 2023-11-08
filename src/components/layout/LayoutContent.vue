@@ -1,16 +1,26 @@
 <script lang="ts" setup>
-import {RouterView} from 'vue-router'
+import {RouterView, useRoute} from 'vue-router'
 import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegistration.vue'
-import LayoutBreadcrumbs from "@/components/layout/LayoutBreadcrumbs.vue";</script>
+import useColorVariants from '@/composables/useColorVariants'
+import NavigateTopButton from '@/components/NavigateTopButton.vue'
+
+const {colorVariant} = useColorVariants()
+const route = useRoute()
+
+</script>
+
 
 <template>
-    <QPageContainer>
-        <main>
-            <LayoutBreadcrumbs/>
-            <Suspense>
-                <RouterView/>
-            </Suspense>
-            <AlertAbortedCasRegistration/>
-        </main>
-    </QPageContainer>
+    <main
+        id="main"
+        :class="'variant-' + colorVariant"
+        role="main"
+    >
+        <!--<LayoutBreadcrumbs/>-->
+        <NavigateTopButton/>
+        <Suspense>
+            <RouterView/>
+        </Suspense>
+        <AlertAbortedCasRegistration v-if="route.name !== 'Registration'"/>
+    </main>
 </template>

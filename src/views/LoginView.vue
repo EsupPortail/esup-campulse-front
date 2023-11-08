@@ -1,91 +1,80 @@
 <script lang="ts" setup>
 import FormLocalLogin from '@/components/form/FormLocalLogin.vue'
-import {useUserStore} from '@/stores/useUserStore'
-import {useI18n} from "vue-i18n";
+import {useI18n} from 'vue-i18n'
+import useUtility from '@/composables/useUtility'
+import {onMounted} from 'vue'
 
-const userStore = useUserStore()
-const newUser = userStore.newUser
-const isCas = userStore.isCas
 const {t} = useI18n()
+const {dynamicTitle} = useUtility()
 
 const CASUrlLogin = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-login`
 const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-register`
+
+onMounted(() => {
+    dynamicTitle.value = t('forms.login')
+})
 </script>
 
 <template>
-  <h1>{{ t('login.login') }}</h1>
-  <div v-if="!newUser && !isCas">
-    <QCard id="cas-login" class="card">
-      <QCardSection>
-        <div class="card-content">
-          <span class="card-title">{{ t("login.im-cas-user") }}</span>
-          {{ t("login.login-with-cas") }}
+    <section id="login-page">
+        <div class="dashboard-section">
+            <div class="login-intro-text flex-row-center">
+                <div class="login-intro-text-icon">
+                    <QIcon
+                        color="association"
+                        name="bi-person-circle"
+                    />
+                </div>
+                <h1>
+                    {{ t('login.introduction-login') }}
+                </h1>
+            </div>
+            <div class="dashboard-section-container">
+                <QCard
+                    id="cas-login"
+                    class="card"
+                >
+                    <QCardSection>
+                        <div class="card-content">
+                            <p class="card-title">{{ t('login.im-cas-user') }}</p>
+                            <h2>{{ t('login.login-with-cas') }}</h2>
+                        </div>
+                        <div class="flex-row-center align-items-stretch">
+                            <QBtn
+                                :href="CASUrlLogin"
+                                :label="t('login.login')"
+                                class="btn-lg"
+                                color="association"
+                            />
+                            <QBtn
+                                :href="CASUrlRegister"
+                                :label="t('login.create-account')"
+                                class="btn-lg"
+                                color="association"
+                            />
+                        </div>
+                    </QCardSection>
+                </QCard>
+
+                <!-- class="card" -->
+                <QCard
+                    id="local-login"
+                >
+                    <QCardSection>
+                        <div class="card-content">
+                            <p class="card-title">{{ t('login.im-not-cas-user') }}</p>
+                            <h2>{{ t('login.login-without-cas') }}</h2>
+                        </div>
+                        <FormLocalLogin/>
+                    </QCardSection>
+                </QCard>
+            </div>
         </div>
-        <div class="btn-group">
-          <QBtn
-              :href="CASUrlLogin"
-              :label="t('login.login')"
-              color="primary"
-          />
-          <QBtn
-              :href="CASUrlRegister"
-              :label="t('login.create-account')"
-              color="secondary"
-          />
-        </div>
-      </QCardSection>
-    </QCard>
-    <QCard id="local-login" class="card">
-      <QCardSection>
-        <div class="card-content">
-          <span class="card-title">{{ t("login.im-not-cas-user") }}</span>
-          {{ t("login.login-without-cas") }}
-        </div>
-        <FormLocalLogin/>
-      </QCardSection>
-    </QCard>
-  </div>
-  <div v-else>
-    <QCard id="aborted-cas-registration" class="card">
-      <QCardSection>
-        <div class="card-content">
-          <span class="card-title">
-            {{ t('alerts.aborted-cas-registration.title') }}
-          </span>
-          {{ t('alerts.aborted-cas-registration.message') }}
-          <div>
-            <QBtn
-                :label="t('alerts.aborted-cas-registration.button')"
-                color="warning"
-                to="/register"
-            />
-          </div>
-        </div>
-      </QCardSection>
-    </QCard>
-  </div>
+    </section>
 </template>
 
-<style lang="sass" scoped>
-.card
-  max-width: 700px
-  width: 100%
-  margin: auto auto 30px auto
-  height: auto
-
-.card-content
-  display: flex
-  flex-direction: column
-  font-size: 18px
-  margin-bottom: 10px
-
-.card-title
-  font-size: 1.4em
-
-.btn-group
-  display: flex
-  gap: 10px
-
-#aborted-cas-registration .q-btn
-  margin-top: 10px
+<style lang="scss" scoped>
+@import '@/assets/styles/login.scss';
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
 </style>

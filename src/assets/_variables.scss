@@ -1,0 +1,191 @@
+$fieldsBoxShadow: .125rem .125rem .5rem rgba(0, 0, 0, 0.1);
+
+// ---------------- Responsive----------------
+$breakpoint-vsm: 320px;
+$breakpoint-sm: 340px;
+$breakpoint-smd: 400px;
+$breakpoint-md: 430px;
+$breakpoint-lg: 910px;
+
+// ---------------- Images ----------------
+$headerBackground: url('./img/background-header.jpg');
+$homeDirectoryBackground: url('./img/background-directory.jpg');
+$homeCharterBackground: url('./img/background-charter.jpg');
+$homeCommissionBackground: url('./img/background-cape.jpg');
+
+// ---------------- Fonts ----------------
+$baseFont: 'Titillium Web', sans-serif;
+$titleFont: 'Open Sans', sans-serif;
+
+// Font-size
+$fontSize: 1.8rem;
+$headTitleMobileSize: 1.5rem;
+$headTitleComputerSize: 2rem;
+$titleSize: 2.3rem;
+
+// ---------------- Sizes ----------------
+$fullSize: 100%;
+$halfSize: 50%;
+
+// Logos
+$iconSize: 2.6rem;
+$logoSize: 3rem;
+
+// Home Banner q: quasar
+$qBannerInfoIconSize: 1.25rem;
+$qBannerDotsMobileSize: 1.063rem;
+
+// ---------------- Weights ----------------
+$hairline-weight: 100;
+$thin-weight: 200;
+$light-weight: 300;
+$normal-weight: 400;
+$medium-weight: 500;
+$semibold-weight: 600;
+$bold-weight: 700;
+$xbold-weight: 800;
+$black-weight: 900;
+
+// ---------------- Radius ----------------
+$radiusCircle: 50%;
+
+// ---------------- Colors ----------------
+$backgroundColor1: #ffffff;
+$backgroundColor2: #f5f5f5;
+$footerBackgroundColor: #2c2c2c;
+$footerTextColor: #e7e7e7;
+$textColor1: #272727;
+$textColor2: #67727D;
+$textColor3: #ffffff;
+
+$associationColor: #3971be;
+$associationColorBackground: #e7efff;
+$associationColorText: #152639;
+$associationColorBorders: #aeb8c4;
+$associationColorHover: #3065b4;
+$associationColorActive: #285496;
+
+$charterColor: #ffc64a;
+$charterColorBackground: #fff6e4;
+$charterColorText: #4d3a1e;
+$charterColorBorders: #c4b8ae;
+$charterColorHover: #fab83e;
+$charterColorActive: #f1ad2d;
+
+$commissionColor: #df3603;
+$commissionColorBackground: #ffefe9;
+$commissionColorText: #4d271b;
+$commissionColorBorders: #c4b3ae;
+$commissionColorHover: #e25c27;
+$commissionColorActive: #c74f20;
+
+$dashboardColor: #257875;
+$dashboardColorBackground: #e7f3f2;
+$dashboardColorText: #10312e;
+$dashboardColorBorders: #a2b9b7;
+$dashboardColorHover: #2e857d;
+$dashboardColorActive: #27746d;
+
+$stateColorPassword0: #000000;
+$stateColorPassword1: #7a2520;
+$stateColorPassword2: #c74501;
+$stateColorPassword3: #088241;
+$stateColorPassword4: #285496;
+
+$stateColorGreen: #088241;
+$stateColorOrange: #c74501;
+$stateColorRed: #e82026;
+$stateColorGrey: #797676;
+
+$errorPanelColor: #db463d;
+$errorTextColor: #7a2520;
+$warningPanelColor: #e7902a;
+$warningTextColor: #7a4120;
+
+$outlineColor1: rgba(255, 255, 255, 0.8);
+$outlineColor2: rgba(0, 0, 0, 0.8);
+$formSeparatorColor: #d4d4d4;
+
+$customRed: #e91b0c;
+$customGreen: #178731;
+
+// ---------------- Colors for Quasar ----------------
+// Useful for example for buttons, whom style is tricky to configure
+// Simply use it as QBtn attribute 'color'
+.text-base {
+  color: $textColor1;
+}
+
+.bg-base {
+  background: $textColor2;
+}
+
+.bg-custom-red {
+  background: $customRed;
+}
+
+.text-custom-red {
+  color: $customRed;
+}
+
+.bg-custom-green {
+  background: $customGreen;
+}
+
+.text-custom-green {
+  color: $customGreen;
+}
+
+.bg-dashboard {
+  background: $dashboardColor;
+}
+
+.text-dashboard {
+  color: $dashboardColor;
+}
+
+.bg-association {
+  background: $associationColor;
+}
+
+.text-association {
+  color: $associationColor;
+}
+
+.bg-commission {
+  background: $commissionColor;
+}
+
+.text-commission {
+  color: $commissionColor;
+}
+
+.text-commission-bold {
+  color: $commissionColor;
+  font-weight: $xbold-weight;
+}
+
+.bg-commission-light {
+  background: $commissionColorBackground;
+}
+
+.bg-charter {
+  background: $charterColor;
+}
+
+.text-charter {
+  color: $charterColorText;
+}
+
+.text-charter-bold {
+  color: $charterColorText;
+  font-weight: $xbold-weight;
+}
+
+.bg-charter-light {
+  background: $charterColorBackground;
+}
+
+.text-table {
+  font-size: 1.6rem;
+}

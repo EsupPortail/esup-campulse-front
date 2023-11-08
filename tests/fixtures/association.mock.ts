@@ -1,168 +1,183 @@
-import type {
-    Association,
-    AssociationList,
-    AssociationName,
-    AssociationSearch,
-    AssociationSocialNetwork,
-    EditedAssociation
-} from '#/association'
+import type {Association, AssociationSearch, AssociationSocialNetwork, EditedAssociation} from '#/association'
+import type {UserAssociation} from '#/user'
 
 
 export const _association: Association = {
+    canSubmitProjects: true,
+    charterStatus: 'CHARTER_DRAFT',
+    charterDate: '',
     id: 1,
-    institution: {
-        id: 1,
-        name: 'Université de Strasbourg',
-        acronym: 'Unistra',
-    },
-    institutionComponent: {
-        id: 1,
-        name: 'Faculté de médecine',
-    },
-    activityField: {
-        id: 1,
-        name: 'Santé',
-    },
-    socialNetworks: [
-        {
-            type: 'Mastodon',
-            location: 'https://mastodon.social'
-        }
-    ],
-    name: 'Association',
+    name: 'PLANA',
     acronym: '',
-    pathLogo: null,
-    altLogo: '',
-    description: '',
-    activities: '',
+    pathLogo: {
+        base: 'base',
+        detail: 'detail',
+        list: 'list'
+    },
+    socialObject: '',
+    currentProjects: '',
     address: '',
     phone: '',
     email: '',
     siret: '',
     website: '',
     studentCount: 0,
+    amountMembersAllowed: 4,
     presidentNames: '',
-    phonePres: '',
+    presidentPhone: '',
+    presidentEmail: '',
     isEnabled: true,
-    createdDate: '',
+    isPublic: true,
+    isSite: true,
+    creationDate: '',
     approvalDate: '',
     lastGoaDate: '',
     cgaDate: '',
-    isSite: true,
-    isPublic: true
+    socialNetworks: [
+        {
+            type: 'Mastodon',
+            location: 'https://mastodon.social'
+        }
+    ],
+    institution: 1,
+    institutionComponent: 1,
+    activityField: 1
 }
 
 export const _editedAssociation: EditedAssociation = {
-    institution: 1,
-    institutionComponent: 1,
-    activityField: 2,
     name: 'Association des étudiants en médecine',
     acronym: 'Asso',
-    description: 'Association des étudiants en médecine',
-    activities: 'Tutorat, sorties, randonnées et concerts',
+    socialObject: 'Association des étudiants en médecine',
+    currentProjects: 'Tutorat, sorties, randonnées et concerts',
     address: '1 rue de l\'hôpital',
     phone: '0102030405',
     email: 'asso-medecine@unistra.fr',
     siret: '0123456789',
     website: 'https://asso-medecine.fr',
+    studentCount: '0',
     presidentNames: 'Jeanne Dupont',
-    phonePres: null,
+    presidentPhone: '',
+    presidentEmail: '',
+    isPublic: true,
+    approvalDate: null,
     lastGoaDate: '2023-01-24',
-    approvalDate: null
+    institution: 2,
+    institutionComponent: 2,
+    activityField: 2,
+    amountMembersAllowed: '5'
 }
 
 export const _nonEditedAssociation: EditedAssociation = {
+    name: 'PLANA',
+    acronym: '',
+    socialObject: '',
+    currentProjects: '',
+    address: '',
+    phone: '',
+    email: '',
+    siret: '',
+    website: '',
+    studentCount: '0',
+    presidentNames: '',
+    presidentPhone: '',
+    presidentEmail: '',
+    isPublic: false,
+    approvalDate: '',
+    lastGoaDate: null,
     institution: 1,
     institutionComponent: 1,
     activityField: 1,
-    name: 'Association',
-    acronym: null,
-    description: null,
-    activities: null,
-    address: null,
-    phone: null,
-    email: null,
-    siret: null,
-    website: null,
-    presidentNames: null,
-    phonePres: null,
-    approvalDate: null,
-    lastGoaDate: null
+    amountMembersAllowed: '4'
 }
 
-export const _associations: AssociationList[] = [
+export const _associations: Association[] = [
     {
         id: 1,
-        institution: {
-            id: 1,
-            name: 'Université de Strasbourg',
-            acronym: 'Unistra',
-        },
-        institutionComponent: {
-            id: 1,
-            name: 'Faculté de médecine',
-        },
-        activityField: {
-            id: 1,
-            name: 'Santé',
-        },
         name: 'Association',
         acronym: 'Asso',
+        pathLogo: null,
+        email: '',
         isEnabled: true,
-        isSite: true,
         isPublic: true,
-        pathLogo: {},
-        altLogo: '',
-        email: ''
+        isSite: true,
+        institution: 1,
+        institutionComponent: 1,
+        activityField: 1,
+        canSubmitProjects: true,
+        charterStatus: 'CHARTER_DRAFT',
+        charterDate: '',
+        amountMembersAllowed: 4
     },
     {
         id: 2,
-        institution: {
-            id: 2,
-            name: 'Université de Haute-Alsace',
-            acronym: 'UHA',
-        },
-        institutionComponent: {
-            id: 2,
-            name: 'Faculté de Chimie',
-        },
-        activityField: {
-            id: 2,
-            name: 'Sciences',
-        },
         name: 'Amicale des étudiants en Chimie',
         acronym: 'AEC',
+        pathLogo: null,
+        email: '',
         isEnabled: true,
-        isSite: true,
         isPublic: false,
-        pathLogo: {},
-        altLogo: '',
-        email: ''
+        isSite: true,
+        institution: 2,
+        institutionComponent: 2,
+        activityField: 2,
+        canSubmitProjects: true,
+        charterStatus: 'CHARTER_DRAFT',
+        charterDate: '',
+        amountMembersAllowed: 4
     }
 ]
 
-export const _associationName: AssociationName[] = [
+export const _userAssociation: UserAssociation[] = [
     {
         id: 1,
-        name: 'Association'
+        name: 'Association',
+        isSite: true,
+        institution: 1
     }
 ]
 
-export const _associationNames = _associations.map(
+export const _associationNames = [
+    {
+        id: 1,
+        name: 'PLANA',
+        hasPresident: true,
+        institution: 1
+    },
+    {
+        id: 2,
+        name: 'LUCIE',
+        hasPresident: false,
+        institution: 1
+    },
+    {
+        id: 3,
+        name: 'OCTANT',
+        hasPresident: false,
+        institution: 1
+    },
+    {
+        id: 4,
+        name: 'OPALINE',
+        hasPresident: false,
+        institution: 1
+    },
+    {
+        id: 5,
+        name: 'EMPRUNTE',
+        hasPresident: false,
+        institution: 1
+    },
+]
+
+export const _associationLabels = _associationNames.map(
     association => ({
         value: association.id,
-        label: association.name
+        label: association.name,
+        hasPresident: association.hasPresident,
+        institution: association.institution,
+        disable: false
     })
 )
-
-export const _associationSearchSettings: AssociationSearch = {
-    search: '',
-    name: 'Chimie',
-    acronym: '',
-    institution: 2,
-    institutionComponent: 2,
-    activityField: 2
-}
 
 export const _associationWrongSearchSettings: AssociationSearch = {
     search: '',
@@ -187,3 +202,71 @@ export const _associationSocialNetworks: AssociationSocialNetwork[] = [
         location: 'https://facebook.com'
     }
 ]
+
+export const _institutions = [
+    {
+        id: 1,
+        name: 'Université de Strasbourg',
+        acronym: 'Unistra',
+        email: 'contact@unistra.fr',
+    },
+    {
+        id: 2,
+        name: 'Université de Haute Alsace',
+        acronym: 'UHA',
+        email: 'contact@uha.fr',
+    }
+]
+
+export const _institutionLabels = _institutions.map(institution => ({
+    value: institution.id,
+    label: `${institution.acronym} (${institution.name})`
+}))
+
+export const _institutionComponents = [
+    {
+        id: 1,
+        name: 'Faculté de Médecine',
+        institution: {
+            id: 1,
+            name: 'Université de Strasbourg',
+            acronym: 'Unistra',
+            email: 'contact@unistra.fr'
+        }
+    },
+    {
+        id: 2,
+        name: 'Faculté des Langues',
+        institution: {
+            id: 1,
+            name: 'Université de Strasbourg',
+            acronym: 'Unistra',
+            email: 'contact@unistra.fr'
+        }
+    }
+]
+
+export const _institutionComponentLabels = _institutionComponents.map(component => ({
+    value: component.id,
+    label: component.name
+}))
+
+export const _activityFields = [
+    {
+        id: 1,
+        name: 'Sciences'
+    },
+    {
+        id: 2,
+        name: 'Culture'
+    },
+    {
+        id: 3,
+        name: 'Musique'
+    },
+]
+
+export const _activityFieldLabels = _activityFields.map(field => ({
+    value: field.id,
+    label: field.name
+}))

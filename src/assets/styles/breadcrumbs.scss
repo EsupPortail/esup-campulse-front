@@ -1,0 +1,103 @@
+@import '@/assets/variables';
+
+#layout-breadcrumbs {
+  ul {
+    padding: 1rem;
+    gap: 0;
+    flex-wrap: wrap;
+
+    li {
+      list-style: none;
+
+      a {
+        text-decoration: none;
+      }
+
+      &::after {
+        content: ">";
+        padding: 0 1rem;
+      }
+    }
+
+    li:last-child {
+      font-weight: 600;
+
+      &::after {
+        content: "";
+      }
+    }
+  }
+
+  &.variant-home {
+    display: none;
+  }
+
+  &.variant-space-1 {
+    background-color: $associationColor;
+
+    li {
+
+      a {
+        color: $textColor3;
+      }
+
+      &::after {
+        color: $textColor3;
+      }
+    }
+  }
+
+  &.variant-space-2 {
+    background-color: $charterColor;
+
+    li {
+
+      a {
+        color: $charterColorText;
+      }
+
+      &::after {
+        color: $charterColorText;
+      }
+    }
+  }
+
+  &.variant-space-3 {
+    background-color: $commissionColor;
+
+    li {
+
+      a {
+        color: $textColor3;
+      }
+
+      &::after {
+        color: $textColor3;
+      }
+    }
+  }
+
+  &.variant-space-4 {
+    background-color: $dashboardColor;
+
+    li {
+
+      a {
+        color: $textColor3;
+      }
+
+      &::after {
+        color: $textColor3;
+      }
+    }
+  }
+
+  /*&.variant-minimal .q-breadcrumbs {
+    height: 0.625rem;
+    padding: 0;
+
+    & > * {
+      display: none;
+    }
+  }*/
+}

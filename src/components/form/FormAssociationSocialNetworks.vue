@@ -2,7 +2,7 @@
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
-import {AssociationSocialNetwork} from '#/association'
+import type {AssociationSocialNetwork} from '#/association'
 import {onMounted, watch} from 'vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
@@ -22,62 +22,74 @@ onMounted(initValues)
 
 </script>
 <template>
-    <fieldset>
-        <legend>{{ t('association.labels.socials') }}</legend>
-        <section v-for="(socialNetwork, index) in associationSocialNetworks" :key="index">
+    <div
+        v-for="(socialNetwork, index) in associationSocialNetworks"
+        :key="index"
+        class="display-row"
+    >
+        <div class="flex-row">
             <QInput
                 v-model="socialNetwork.type"
-                :hint="t('forms.social-network-type-hint')"
-                :label="t('association.labels.social-network-type')"
-                :rules="[ val => val && val.length > 0 || t('forms.fill-field')]"
+                :label="t('association.labels.social-network-type') + ' *'"
+                :rules="[val => val && val.length > 0 || t('forms.required-association-socials')]"
+                aria-required="true"
+                clearable
                 filled
                 lazy-rules
-            />
+                bottom-slots
+                :for="'socialNetworkType-' + index"
+            >
+                <template v-slot:hint>
+                    <p :aria-describedby="'socialNetworkType-' + index">{{ t('forms.social-network-type-hint') }}</p>
+                </template>
+            </QInput>
             <QInput
                 v-model="socialNetwork.location"
-                :hint="t('forms.social-network-location-hint')"
-                :label="t('association.labels.social-network-location')"
-                :rules="[ val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
+                :label="t('association.labels.social-network-location') + ' *'"
+                :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
+                aria-required="true"
+                clearable
                 filled
                 lazy-rules
                 type="url"
+                bottom-slots
+                :for="'socialNetworkLocation-' + index"
+            >
+                <template v-slot:hint>
+                    <p :aria-describedby="'socialNetworkLocation-' + index">{{ t('forms.social-network-location-hint') }}</p>
+                </template>
+            </QInput>
+            <QSeparator
+                aria-hidden="true"
             />
             <QBtn
-                :label="t('delete')"
-                color="red"
-                icon="mdi-delete"
+                :aria-label="t('delete')"
+                color="custom-red"
+                icon="bi-trash"
                 outline
                 @click="removeNetwork(index)"
             />
-        </section>
+        </div>
+    </div>
+    <div class="padding-top">
         <QBtn
             :label="t('association.labels.add-social-network')"
-            color="primary"
-            icon="mdi-plus-circle-outline"
+            class="btn-lg"
+            color="association"
+            icon="bi-plus-circle"
             outline
             @click="addNetwork"
         />
-    </fieldset>
+    </div>
 </template>
 
-<style lang="sass" scoped>
-fieldset
-    section
-        display: flex
-        gap: 10px
+<style lang="scss" scoped>
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/associations.scss';
+@import '@/assets/styles/dashboard.scss';
+@import '@/assets/_variables.scss';
 
-    section > .q-input
-        flex-grow: 2
-        margin-bottom: 10px
-
-    section > .q-btn
-        margin-bottom: 30px
-
-legend
-    background-color: $primary
-    color: #fff
-    font-size: 2em
-    text-align: center
-    width: 100%
-    margin-bottom: 15px
+.q-input {
+  width: $fullSize;
+}
 </style>

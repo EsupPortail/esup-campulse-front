@@ -5,32 +5,98 @@ import {useI18n} from 'vue-i18n'
 
 const userStore = useUserStore()
 const {t} = useI18n()
+
+const props = defineProps<{
+    device: 'mobile' | 'desktop'
+}>()
 </script>
 
 <template>
-    <nav aria-label=’primary’>
-        <RouterLink to="/">{{ t("header.home") }}</RouterLink>
-        <RouterLink to="/charter">{{ t("header.charter") }}</RouterLink>
-        <RouterLink to="/associations">{{ t("header.associations") }}</RouterLink>
-        <RouterLink to="/commission">{{ t("header.commission") }}</RouterLink>
-        <RouterLink v-if="!userStore.isAuth" to="/login">{{ t("header.login") }}
-        </RouterLink>
-        <LayoutHeaderProfileButton v-if="userStore.isAuth"/>
+    <nav
+        :aria-label="t('primary-nav')"
+        :class="`${props.device === 'desktop' ? 'flex-row-right' : 'flex-column'} ${props.device}`"
+        role="navigation"
+    >
+        <ul>
+            <li>
+                <RouterLink :to="{ name: 'Home' }">{{ t('header.home') }}</RouterLink>
+            </li>
+            <li>
+                <RouterLink
+                    :to="{ name: 'Associations' }"
+                    class="space-1"
+                >
+                    {{ t('header.associations') }}
+                </RouterLink>
+            </li>
+            <li>
+                <RouterLink
+                    :to="{ name: 'Charter' }"
+                    class="space-2"
+                >
+                    {{ t('header.charter') }}
+                </RouterLink>
+            </li>
+            <li>
+                <RouterLink
+                    :to="{ name: 'Commission' }"
+                    class="space-3"
+                >
+                    {{ t('header.commission') }}
+                </RouterLink>
+            </li>
+            <li>
+                <RouterLink
+                    :to="{ name: 'About' }"
+                    class="space-1"
+                >
+                    {{ t('header.about') }}
+                </RouterLink>
+            </li>
+            <li>
+                <RouterLink
+                    :to="{ name: 'Contact' }"
+                    class="space-1"
+                >
+                    {{ t('header.contact') }}
+                </RouterLink>
+            </li>
+            <li>
+                <RouterLink
+                    v-if="!userStore.isAuth"
+                    :to="{ name: 'Login' }"
+                >
+                    {{ t('header.login') }}
+                </RouterLink>
+            </li>
+            <li>
+                <LayoutHeaderProfileButton
+                    v-if="userStore.isAuth"
+                    :device="props.device"
+                    class="profile-button"
+                />
+            </li>
+        </ul>
     </nav>
 </template>
 
-<style lang="sass" scoped>
-nav
-    display: flex
-    justify-content: flex-end
+<style lang="scss" scoped>
+@import '@/assets/styles/header.scss';
+@import "@/assets/_variables.scss";
 
-nav > *
-    color: white
-    padding: 0.3em
-    text-decoration: none
-    font-size: 1.8em
+nav.mobile a {
+    color: $textColor1 !important;
+}
 
-nav > *:hover
-    background-color: rgba(255, 255, 255, 0.3)
+nav.desktop {
+    display: block;
 
+    @media screen and (max-width: $breakpoint-lg) {
+        display: none;
+    }
+}
+
+li {
+    list-style-type: none;
+}
 </style>
