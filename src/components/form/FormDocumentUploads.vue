@@ -6,13 +6,12 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import type {DocumentProcessType, UploadedProcessDocument} from '#/documents'
 import {useProjectStore} from '@/stores/useProjectStore'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, ref} from 'vue'
 import useCharters from '@/composables/useCharters'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
 import useSubmitProject from '@/composables/useSubmitProject'
 import useDocuments from '@/composables/useDocuments'
-import {useRoute} from 'vue-router'
 
 const {
     processDocuments,
@@ -38,7 +37,6 @@ const projectStore = useProjectStore()
 const userManagerStore = useUserManagerStore()
 const userStore = useUserStore()
 const {projectFunds, initProjectFunds} = useSubmitProject()
-const route = useRoute()
 
 const props = defineProps<{
     process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
@@ -98,6 +96,8 @@ async function onGetDocuments() {
         } else if (props.process === 'account-management') {
             await userStore.getUserDocuments()
             initUserDocumentUploads()
+        } else if (props.process === 'registration') {
+            documentUploads.value = []
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -109,10 +109,6 @@ async function onGetDocuments() {
     }
     loading.hide()
 }
-
-watch(() => route.path, async () => {
-    await onGetDocuments()
-})
 
 // FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
 async function onDocumentRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
