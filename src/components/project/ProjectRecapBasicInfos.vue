@@ -86,7 +86,7 @@ async function onGetUser() {
         <div class="display-row">
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.applicant')"
             >
                 {{ t('project.applicant') }}
             </h4>
@@ -104,7 +104,7 @@ async function onGetUser() {
         >
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('charter.status.title')"
             >
                 {{ t('charter.status.title') }}
             </h4>
@@ -119,7 +119,7 @@ async function onGetUser() {
         >
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.id')"
             >
                 {{ t('project.id') }}
             </h4>
@@ -132,7 +132,7 @@ async function onGetUser() {
         >
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.processing-date')"
             >
                 {{ t('project.processing-date') }}
             </h4>
@@ -142,7 +142,7 @@ async function onGetUser() {
         <div class="display-row">
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.name')"
             >
                 {{ t('project.name') }}
             </h4>
@@ -152,7 +152,7 @@ async function onGetUser() {
         <div class="display-row">
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.planned-start-date')"
             >
                 {{ t('project.planned-start-date') }}
             </h4>
@@ -166,7 +166,7 @@ async function onGetUser() {
         <div class="display-row">
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.planned-end-date')"
             >
                 {{ t('project.planned-end-date') }}
             </h4>
@@ -176,7 +176,7 @@ async function onGetUser() {
         <div class="display-row">
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.planned-location')"
             >
                 {{ t('project.planned-location') }}
             </h4>
@@ -189,7 +189,7 @@ async function onGetUser() {
         >
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.association-user')"
             >
                 {{ t('project.association-user') }}
             </h4>
@@ -202,7 +202,7 @@ async function onGetUser() {
         >
             <h4
                 class="row-title"
-                data-test="row-title"
+                :data-test="t('project.partner-association')"
             >
                 {{ t('project.partner-association') }}
             </h4>

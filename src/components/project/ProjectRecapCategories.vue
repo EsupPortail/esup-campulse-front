@@ -46,7 +46,7 @@ watch(() => projectStore.project, async () => {
     <div class="display-row">
         <h4
             class="row-title"
-            data-test="row-title"
+            :data-test="t('project.categories')"
         >
             {{ t('project.categories') }}
         </h4>

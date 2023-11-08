@@ -68,7 +68,7 @@ const projectReEdition = () => {
 <template>
     <div class="flex-column">
         <div class="display-row">
-            <h4 data-test="row-title">{{ t('project.re-edition') }}</h4>
+            <h4 :data-test="t('project.re-edition')">{{ t('project.re-edition') }}</h4>
             <p>
                 {{
                     projectReEdition() ? t('yes') : t('no')
@@ -80,37 +80,37 @@ const projectReEdition = () => {
             v-if="projectReEdition()"
             class="display-row"
         >
-            <h4 data-test="row-title">{{ t('project.budget-previous-edition') }}</h4>
+            <h4 :data-test="t('project.budget-previous-edition')">{{ t('project.budget-previous-edition') }}</h4>
             <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
         </div>
 
         <div class="display-row">
-            <h4 data-test="row-title">{{ t('project.target-audience') }}</h4>
+            <h4 :data-test="t('project.target-audience')">{{ t('project.target-audience') }}</h4>
             <p>{{ projectBudget.targetAudience }}</p>
         </div>
 
         <div class="display-row">
-            <h4 data-test="row-title">{{ t('project.target-students-amount') }}</h4>
+            <h4 :data-test="t('project.target-students-amount')">{{ t('project.target-students-amount') }}</h4>
             <p>{{ projectBudget.amountStudentsAudience }}</p>
         </div>
 
         <div class="display-row">
-            <h4 data-test="row-title">{{ t('project.target-all-amount') }}</h4>
+            <h4 :data-test="t('project.target-all-amount')">{{ t('project.target-all-amount') }}</h4>
             <p>{{ projectBudget.amountAllAudience }}</p>
         </div>
 
         <div class="display-row">
-            <h4 data-test="row-title">{{ t('project.ticket-price') }}</h4>
+            <h4 :data-test="t('project.ticket-price')">{{ t('project.ticket-price') }}</h4>
             <p>{{ projectBudget.ticketPrice + CURRENCY }}</p>
         </div>
 
         <div class="display-row">
-            <h4 data-test="row-title">{{ t('project.student-ticket-price') }}</h4>
+            <h4 :data-test="t('project.student-ticket-price')">{{ t('project.student-ticket-price') }}</h4>
             <p>{{ projectBudget.studentTicketPrice + CURRENCY }}</p>
         </div>
 
         <div class="display-row">
-            <h4 data-test="row-title">{{ t('project.individual-cost') }}</h4>
+            <h4 :data-test="t('project.individual-cost')">{{ t('project.individual-cost') }}</h4>
             <p>{{ projectBudget.individualCost + CURRENCY }}</p>
         </div>
 
@@ -127,19 +127,19 @@ const projectReEdition = () => {
                 class="flex-row"
             >
                 <div class="display-row">
-                    <h4 data-test="row-title">{{ t('project.previous-asked') }}</h4>
+                    <h4 :data-test="t('project.previous-asked')">{{ t('project.previous-asked') }}</h4>
                     <p data-test="amount-asked-previous-edition">{{ projectCommissionFund.amountAskedPreviousEdition + CURRENCY }}</p>
                 </div>
 
                 <div class="display-row">
-                    <h4 data-test="row-title">{{ t('project.previous-earned') }}</h4>
+                    <h4 :data-test="t('project.previous-earned')">{{ t('project.previous-earned') }}</h4>
                     <p data-test="amount-earned-previous-edition">{{ projectCommissionFund.amountEarnedPreviousEdition + CURRENCY }}</p>
                 </div>
             </div>
 
             <div class="flex-row">
                 <div class="display-row">
-                    <h4 data-test="row-title">{{ t('project.amount-asked') }}</h4>
+                    <h4 :data-test="t('project.amount-asked')">{{ t('project.amount-asked') }}</h4>
                     <p data-test="amount-asked">{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
                 </div>
 
@@ -147,7 +147,7 @@ const projectReEdition = () => {
                     v-if="projectCommissionFund.amountEarned || projectCommissionFund.amountEarned === 0"
                     class="display-row"
                 >
-                    <h4 data-test="row-title">{{ t('project.amount-earned') }}</h4>
+                    <h4 :data-test="t('project.amount-earned')">{{ t('project.amount-earned') }}</h4>
                     <p data-test="amount-earned">{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
                 </div>
             </div>
