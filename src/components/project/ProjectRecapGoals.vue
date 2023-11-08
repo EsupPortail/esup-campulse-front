@@ -9,32 +9,32 @@ const {t} = useI18n()
 <template>
     <div class="flex-column">
         <div class="display-row">
-            <h4>{{ t('project.goals-title') }}</h4>
+            <h4 :data-test="t('project.goals-title')">{{ t('project.goals-title') }}</h4>
             <p>{{ projectGoals.goals }}</p>
         </div>
 
         <div class="display-row">
-            <h4>{{ t('project.summary') }}</h4>
+            <h4 :data-test="t('project.summary')">{{ t('project.summary') }}</h4>
             <p>{{ projectGoals.summary }}</p>
         </div>
 
         <div class="display-row">
-            <h4>{{ t('project.planned-activities') }}</h4>
+            <h4 :data-test="t('project.planned-activities')">{{ t('project.planned-activities') }}</h4>
             <p>{{ projectGoals.plannedActivities }}</p>
         </div>
 
         <div class="display-row">
-            <h4>{{ t('project.prevention-safety') }}</h4>
+            <h4 :data-test="t('project.prevention-safety')">{{ t('project.prevention-safety') }}</h4>
             <p>{{ projectGoals.preventionSafety }}</p>
         </div>
 
         <div class="display-row">
-            <h4>{{ t('project.marketing-campaign') }}</h4>
+            <h4 :data-test="t('project.marketing-campaign')">{{ t('project.marketing-campaign') }}</h4>
             <p>{{ projectGoals.marketingCampaign }}</p>
         </div>
 
         <div class="display-row">
-            <h4>{{ t('project.sustainable-development') }}</h4>
+            <h4 :data-test="t('project.sustainable-development')">{{ t('project.sustainable-development') }}</h4>
             <p>{{ projectGoals.sustainableDevelopment }}</p>
         </div>
     </div>

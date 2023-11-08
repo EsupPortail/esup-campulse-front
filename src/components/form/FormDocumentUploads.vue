@@ -96,6 +96,8 @@ async function onGetDocuments() {
         } else if (props.process === 'account-management') {
             await userStore.getUserDocuments()
             initUserDocumentUploads()
+        } else if (props.process === 'registration') {
+            documentUploads.value = []
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

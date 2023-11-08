@@ -50,6 +50,19 @@ export const useProjectStore = defineStore('projectStore', {
                 }
             })
             return projectFunds
+        },
+        projectStatuses: (): ProjectStatus[] => {
+            return [
+                'PROJECT_DRAFT',
+                'PROJECT_DRAFT_PROCESSED',
+                'PROJECT_PROCESSING',
+                'PROJECT_REJECTED',
+                'PROJECT_VALIDATED',
+                'PROJECT_REVIEW_DRAFT',
+                'PROJECT_REVIEW_PROCESSING',
+                'PROJECT_REVIEW_VALIDATED',
+                'PROJECT_CANCELED'
+            ]
         }
     },
     actions: {

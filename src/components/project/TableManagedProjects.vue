@@ -148,6 +148,7 @@ const columns: QTableProps['columns'] = [
         label: t('status'),
         field: row => row.projectStatus,
         sortable: true,
+        sort: (a, b) => (projectStore.projectStatuses.indexOf(a) - projectStore.projectStatuses.indexOf(b)),
         format: val => `${val}`
     },
     {name: 'edition', align: 'center', label: t('manage'), field: 'edition', sortable: false},
