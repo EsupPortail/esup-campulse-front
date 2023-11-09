@@ -1,6 +1,5 @@
 - 🐛 Fix persistance of user documents when registration by manager
-- ⬆️ Upgrade minor dependencies
-- 🐛 Fix Sentry typeError on FormRegisterUserAssociations
-- ✅ Fixed some data-test attributes.
-- ✅ Added almost all data-test for autotest.
-- 👷 Add lint and typecheck to GitLab CI
+- 🐛 Fix bad refresh between form documents uploads
+- ⬆️ Upgrade dependencies through NPM
+- ✅ Changed ProjectRecap data-test attributes.
+- 🐛 Fixed project order in tables.
