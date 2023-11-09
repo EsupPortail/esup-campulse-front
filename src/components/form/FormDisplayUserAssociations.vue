@@ -70,11 +70,13 @@ async function onGetUserAssociations() {
                                 || (association?.canBePresidentFrom && association?.canBePresidentFrom !== null
                                     && (new Date(association?.canBePresidentFrom)) >= today) || (association?.canBePresidentTo
                                     && association?.canBePresidentTo !== null && (new Date(association?.canBePresidentTo)) <=
-                                        today)) ? t('yes') : t('no') }}</span>
+                                        today)) ? t('yes') : t('no')
+                        }}</span>
                     </li>
                     <li>
                         {{ t('dashboard.association-user.is-validated-by-admin') }}{{ t('colon') }}<span>{{
-                            association.isValidatedByAdmin ? t('yes') : t('no') }}</span>
+                            association.isValidatedByAdmin ? t('yes') : t('no')
+                        }}</span>
                     </li>
                 </ul>
                 <div class="flex-row padding-top padding-bottom">

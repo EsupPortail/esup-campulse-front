@@ -175,15 +175,15 @@ export default function () {
 
         const url = (managedUser) ? `/users/${userId}/associations/` : '/users/associations/'
 
-        const userAssociations = (await axiosAuthenticated.get(url)).data
+        const userAssociations: (AssociationUser | AssociationUserDetail)[] = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
 
         let associationNames: AssociationName[] = []
 
-        for (const index in userAssociations) {
-            if (managedUser || userAssociations[index].isValidatedByAdmin) {
-                const association = (await axiosAuthenticated.get(`/associations/${userAssociations[index].association}`)).data
-                userAssociations[index].association = {
-                    id: userAssociations[index].association,
+        for (const userAssociation of userAssociations) {
+            if (managedUser || userAssociation.isValidatedByAdmin) {
+                const association = (await axiosAuthenticated.get(`/associations/${userAssociation.association}`)).data
+                userAssociation.association = {
+                    id: userAssociation.association as number,
                     name: association.name,
                     isSite: association.isSite,
                     institution: association.institution,
@@ -194,16 +194,16 @@ export default function () {
             } else {
                 const {axiosPublic} = useAxios()
                 if (associationNames.length === 0) associationNames = (await axiosPublic.get('/associations/names')).data
-                const association = associationNames.find(obj => obj.id === userAssociations[index].association)
+                const association = associationNames.find(obj => obj.id === userAssociation.association)
                 if (association) {
-                    userAssociations[index].association = {
-                        id: userAssociations[index].association,
+                    userAssociation.association = {
+                        id: userAssociation.association as number,
                         name: association.name
                     }
                 }
             }
         }
-        store.userAssociations = userAssociations
+        store.userAssociations = userAssociations as AssociationUserDetail[]
     }
 
     function getAssociationUserRole(user: AssociationUser | AssociationUserDetail) {
