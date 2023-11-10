@@ -34,6 +34,8 @@ export interface AssociationUser {
     isVicePresident?: boolean,
     isSecretary?: boolean,
     isTreasurer?: boolean,
+
+    [key: number]: string | boolean | number | null;
 }
 
 export interface AssociationUserDetail {

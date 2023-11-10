@@ -1,5 +1,1 @@
-- 🐛 Fix persistance of user documents when registration by manager
-- 🐛 Fix bad refresh between form documents uploads
-- ⬆️ Upgrade dependencies through NPM
-- ✅ Changed ProjectRecap data-test attributes.
-- 🐛 Fixed project order in tables.
+- ♻️  A bit of cleaning on initUserAssociation
