@@ -794,14 +794,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
-                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[val => val && val.length > 1 || t('forms.required-project-amount-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 data-test="amount-all-audience-input"
                                 filled
                                 inputmode="numeric"
                                 lazy-rules
-                                min="0"
+                                min="1"
                                 type="number"
                             />
 
@@ -838,7 +838,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.individualCost"
                                 :label="t('project.individual-cost') + ' *'"
-                                :rules="[val => val && val.length > 0 || t('forms.required-project-individual-cost'),
+                                :rules="[val => val && val.length > 1 || t('forms.required-project-individual-cost'),
                                          val => val !== '0' || t('forms.required-project-individual-cost-not-null')]"
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
