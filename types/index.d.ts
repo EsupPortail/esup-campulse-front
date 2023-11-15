@@ -37,6 +37,8 @@ export interface Logo {
     title: string,
     url: string,
     pathLogo: string,
+    row: number,
+    column: number,
     visible: boolean
 }
 

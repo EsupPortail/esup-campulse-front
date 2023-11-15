@@ -58,7 +58,8 @@ export const _projects: ProjectList[] = [
             isOpenToProjects: true,
             name: ''
         },
-        manualIdentifier: '2023090001'
+        manualIdentifier: '2023090001',
+        budgetFile: null
     },
     {
         id: 2,
@@ -77,7 +78,8 @@ export const _projects: ProjectList[] = [
             isOpenToProjects: true,
             name: ''
         },
-        manualIdentifier: '2023090002'
+        manualIdentifier: '2023090002',
+        budgetFile: null
     },
     {
         id: 3,
@@ -96,7 +98,8 @@ export const _projects: ProjectList[] = [
             isOpenToProjects: true,
             name: ''
         },
-        manualIdentifier: '2023090003'
+        manualIdentifier: '2023090003',
+        budgetFile: null
     },
     {
         id: 4,
@@ -115,7 +118,8 @@ export const _projects: ProjectList[] = [
             isOpenToProjects: true,
             name: ''
         },
-        manualIdentifier: '2023090004'
+        manualIdentifier: '2023090004',
+        budgetFile: null
     },
     {
         id: 5,
@@ -134,7 +138,8 @@ export const _projects: ProjectList[] = [
             isOpenToProjects: true,
             name: ''
         },
-        manualIdentifier: '2023090005'
+        manualIdentifier: '2023090005',
+        budgetFile: null
     },
     {
         id: 6,
@@ -153,7 +158,8 @@ export const _projects: ProjectList[] = [
             isOpenToProjects: true,
             name: ''
         },
-        manualIdentifier: '2023090006'
+        manualIdentifier: '2023090006',
+        budgetFile: null
     }
 ]
 

@@ -46,6 +46,8 @@ export const _logos: Logo[] = [
         title: 'Le Centre régional des œuvres universitaires et scolaires',
         url: 'https://www.crous-strasbourg.fr/',
         visible: true,
+        row: 1,
+        column: 2,
         pathLogo: ''
     },
     {
@@ -54,6 +56,8 @@ export const _logos: Logo[] = [
         title: 'L\'Université de Strasbourg',
         url: 'https://www.unistra.fr/',
         visible: true,
+        row: 1,
+        column: 1,
         pathLogo: ''
     },
     {
@@ -62,6 +66,8 @@ export const _logos: Logo[] = [
         title: 'L\'Université de Haute-Alsace',
         url: 'https://www.uha.fr/',
         visible: false,
+        row: 1,
+        column: 3,
         pathLogo: ''
     }
 ]

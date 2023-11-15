@@ -9,6 +9,7 @@ import FormAssociationSocialNetworks from '@/components/form/FormAssociationSoci
 import AlertConfirmAssociationDeletion from '@/components/alert/AlertConfirmAssociationDeletion.vue'
 import AlertConfirmAssociationEnabled from '@/components/alert/AlertConfirmAssociationEnabled.vue'
 import AlertConfirmAssociationPublication from '@/components/alert/AlertConfirmAssociationPublication.vue'
+import AlertConfirmAssociationSite from '@/components/alert/AlertConfirmAssociationSite.vue'
 import AlertConfirmAssociationUpdate from '@/components/alert/AlertConfirmAssociationUpdate.vue'
 import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
 import AlertConfirmAssociationProjectSubmission from '@/components/alert/AlertConfirmAssociationProjectSubmission.vue'
@@ -548,7 +549,11 @@ async function onChangeLogo(action: string) {
                 @has-validated="hasValidated = true"
             />
             <AlertConfirmAssociationPublication
-                v-if="isStaff && associationStore.association?.isEnabled && associationStore.association?.isSite"
+                v-if="isStaff && associationStore.association?.isEnabled"
+                @has-validated="hasValidated = true"
+            />
+            <AlertConfirmAssociationSite
+                v-if="isStaff && associationStore.association?.isEnabled"
                 @has-validated="hasValidated = true"
             />
             <AlertConfirmAssociationProjectSubmission

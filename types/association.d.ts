@@ -133,5 +133,6 @@ export interface NewAssociation {
     acronym: string,
     email: string,
     isPublic: boolean,
+    isSite: boolean,
     institution: number | undefined,
 }

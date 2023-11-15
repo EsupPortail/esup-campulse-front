@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type {ProjectCommissionFund} from '#/project'
 import useCommissions from '@/composables/useCommissions'
+import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
 
 const props = defineProps<{
@@ -9,6 +10,7 @@ const props = defineProps<{
 
 const {t} = useI18n()
 const {commissionFunds, funds} = useCommissions()
+const {CURRENCY} = useUtility()
 
 </script>
 
@@ -33,6 +35,9 @@ const {commissionFunds, funds} = useCommissions()
                         :aria-label="t('validated')"
                         class="bi bi-check"
                     ></i>
+                </span>
+                <span v-if="commissionFund.amountEarned || commissionFund.amountEarned === 0">
+                    {{ ` (${commissionFund.amountEarned} ${CURRENCY})` }}
                 </span>
             </span>
             <span
@@ -75,5 +80,6 @@ ul {
 
 li {
     list-style: none;
+    white-space: nowrap;
 }
 </style>

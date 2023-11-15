@@ -107,14 +107,14 @@ main {
 
 // Goto top button
 .navigate-top-button {
+  bottom: 0;
   position: fixed;
-  top: 0;
   left: calc(100vw - 6.5rem);
   opacity: 0;
   transition: top 0.15s ease-in-out, opacity 0.15s linear;
 
   &.visible {
-    top: 2rem;
+    bottom: 2rem;
     opacity: 1;
     z-index: 3000;
   }
@@ -151,7 +151,7 @@ main {
   }
 
   @media (prefers-reduced-motion) {
-    top: 2rem;
+    bottom: 2rem;
     transition: opacity 0.15s linear;
 
     button i {

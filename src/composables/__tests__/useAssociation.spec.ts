@@ -61,6 +61,7 @@ describe('useAssociation', () => {
                 acronym: 'ASSO',
                 email: 'asso-test@test.tld',
                 isPublic: true,
+                isSite: true,
                 institution: 1
             }
             await createAssociation(newAssociation)

@@ -42,10 +42,10 @@ const projectBudget = ref<ProjectBudget>(
         budgetPreviousEdition: 0,
         targetAudience: '',
         amountStudentsAudience: 0,
-        amountAllAudience: 0,
+        amountAllAudience: 1,
         ticketPrice: 0,
         studentTicketPrice: 0,
-        individualCost: 0
+        individualCost: 1
     }
 )
 
@@ -169,10 +169,10 @@ export default function () {
         projectCommissionFunds.value = []
         projectBudget.value.targetAudience = ''
         projectBudget.value.amountStudentsAudience = 0
-        projectBudget.value.amountAllAudience = 0
+        projectBudget.value.amountAllAudience = 1
         projectBudget.value.ticketPrice = 0
         projectBudget.value.studentTicketPrice = 0
-        projectBudget.value.individualCost = 0
+        projectBudget.value.individualCost = 1
         projectBudget.value.budgetPreviousEdition = 0
         projectGoals.value.goals = ''
         projectGoals.value.summary = ''

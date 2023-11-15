@@ -28,7 +28,9 @@
     "confirm-association-can-submit-projects": "Voulez-vous vraiment autoriser cette association à soumettre des projets ?",
     "confirm-association-cannot-submit-projects": "Voulez-vous vraiment retirer le droit de soumettre des projets à cette association ?",
     "confirm-association-publish": "Voulez-vous vraiment publier cette association dans l'annuaire ? Toutes les informations la concernant présentes sur cette fiche seront visibles publiquement.",
+    "confirm-association-site": "Voulez-vous vraiment considérer cette association comme Site ? Elle n'aura temporairement plus à soumettre la charte Site.",
     "confirm-association-unpublish": "Voulez-vous vraiment dépublier cette association de l'annuaire ? Toutes les informations la concernant présentes sur cette fiche ne seront plus visibles pour le public.",
+    "confirm-association-unsite": "Voulez-vous vraiment considérer cette association comme hors Site ? Elle devra soumettre la charte Site.",
     "leave-association-edition": "Êtes-vous sûr de vouloir quitter l'édition de cette fiche association ? Si vous avez effectué des modifications, celles-ci seront perdues.",
     "modify-email": "Attention, l'adresse mail est utilisée comme identifiant pour se connecter. En cas de modification, elle deviendra le nouvel identifiant du compte. Un mail de vérification sera envoyé sur cette adresse pour la valider."
   },
@@ -106,6 +108,7 @@
     "not-site": "Non Site",
     "public": "Publiée",
     "publish-in-directory": "Publier dans l'annuaire",
+    "site-in-directory": "Passer Site",
     "site": "Site",
     "titles": {
       "admin": "Administration",
@@ -113,6 +116,7 @@
       "info": "Informations"
     },
     "unpublish-in-directory": "Dépublier de l'annuaire",
+    "unsite-in-directory": "Passer hors Site",
     "validate-all-changes": "Valider tous les changements"
   },
   "back": "Retour",
@@ -372,6 +376,9 @@
     "description": "Le contenu que vous avez demandé est introuvable. Vous pouvez retourner sur la page d'accueil ou votre espace, si vous êtes connecté.",
     "title": "Contenu introuvable"
   },
+  "footer": {
+    "financial-support": "Un projet réalisé avec le soutien financier de"
+  },
   "forbidden": "Non autorisé",
   "forms": {
     "accepted-formats": "Formats acceptés : ",
@@ -381,6 +388,7 @@
     "association-acronym": "Acronyme ou sigle de l'association",
     "association-institution": "Établissement de rattachement",
     "association-is-public": "Association visible dans l'annuaire",
+    "association-is-site": "Les chartes de cette association sont à jour",
     "association-name": "Nom de l'association",
     "association-role": "Votre fonction dans l'association",
     "association-student-count": "Nombre de membres dans l'association",
@@ -520,7 +528,7 @@
     "logout": "Déconnexion",
     "my-account": "Mon compte",
     "my-profile": "Mon espace",
-    "subtitle": "Le site de la vie étudiante associative de l'Unistra",
+    "subtitle": "La plateforme qui rythme la vie étudiante",
     "title": "Bienvenue sur"
   },
   "home": {
@@ -583,9 +591,11 @@
       "no-ticket": "Pas de ticket.",
       "publish-association-error": "L'association n'a pas été publiée dans l'annuaire.",
       "restricted-email": "Merci de vous connecter avec vos identifiants Établissement (Ernest).",
+      "site-association-error": "L'association n'a pas été passée Site.",
       "unknown-credentials": "L'identifiant et/ou le mot de passe sont erronés, veuillez réessayer.",
       "unknown-email": "Aucun compte n'a été trouvé avec cette adresse mail.",
-      "unpublish-association-error": "L'association n'a pas été dépubliée de l'annuaire."
+      "unpublish-association-error": "L'association n'a pas été dépubliée de l'annuaire.",
+      "unsite-association-error": "L'association n'a pas été passée hors Site."
     },
     "positive": {
       "account-created": "Compte créé.",
@@ -625,7 +635,9 @@
       "reject-project": "Le projet a été refusé.",
       "return-project": "Le projet a été retourné au porteur.",
       "return-project-review": "Le bilan a été retourné au porteur.",
+      "site-association": "L'association a bien été passée Site.",
       "unpublish-association": "L'association a bien été dépubliée de l'annuaire.",
+      "unsite-association": "L'association a bien été passée hors Site.",
       "update-user-infos": "Les informations du compte ont bien été mises à jour.",
       "validate-association": "L'association a été créée avec succès.",
       "validate-delete-user": "Le compte a bien été supprimé.",
@@ -692,10 +704,12 @@
       "use-template": "Merci de télécharger et de remplir impérativement le document type mis à disposition. Tout document non conforme entrainera le rejet du projet.",
       "verify": "Merci de vérifier que tous les documents transmis sont conformes avant de valider."
     },
+    "document-budget": "Budget-Demande-Subvention-",
     "document-hint": "Cliquez sur le champ pour ajouter un document.",
     "document-hint-multiple": "Vous pouvez sélectionner plusieurs documents.",
     "documents": "Documents",
     "documents-name": "Documents-Demande-Subvention-",
+    "download-budget": "Télécharger le budget prévisionnel",
     "download-files": "Télécharger tous les documents déposés",
     "download-recap": "Télécharger le ré'CAPE au format PDF",
     "download-review-recap": "Télécharger le ré'CAPE du bilan au format PDF",

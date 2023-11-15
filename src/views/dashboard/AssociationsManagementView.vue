@@ -267,6 +267,9 @@ const columns: QTableProps['columns'] = [
                                     ><i
                                         class="bi bi-check-lg"
                                     ></i></span>
+                                    <span v-if="props.row.charterDate">
+                                        <br>{{ ` (${new Date(props.row.charterDate).toLocaleDateString()})` }}
+                                    </span>
                                 </span>
                             </QTd>
                             <QTd
@@ -312,6 +315,13 @@ const columns: QTableProps['columns'] = [
                                         :to="{ name: 'EditAssociation', params: { id: props.row.id } }"
                                         color="association"
                                         icon="bi-pencil"
+                                        outline
+                                    />
+                                    <QBtn
+                                        :aria-label="t('charter.association-charters') + ' ' + props.row.name"
+                                        :to="{ name: 'AssociationCharterList', params: { associationId: props.row.id } }"
+                                        color="association"
+                                        icon="bi-file-earmark-text"
                                         outline
                                     />
                                 </div>
@@ -382,6 +392,11 @@ const columns: QTableProps['columns'] = [
 
 .q-table tr th:first-child {
     text-align: left;
+}
+
+.button-container {
+    display: flex;
+    gap: 1rem;
 }
 
 @media screen and (max-width: $breakpoint-lg) {

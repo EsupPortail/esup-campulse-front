@@ -57,6 +57,27 @@ async function onGetProjectDetail() {
         }
     }
 }
+
+async function onGetProjectPdf() {
+    loading.show()
+    try {
+        const file = await projectStore.getProjectPdf(parseInt(route.params.projectId as string))
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(new Blob([file]))
+        link.download = `${t('project.pdf-name')}${encodeURI(projectStore.project?.name as string)}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: catchHTTPError(error.response)
+            })
+        }
+    }
+    loading.hide()
+}
 </script>
 
 <template>
@@ -206,6 +227,19 @@ async function onGetProjectDetail() {
                 && hasPerm('change_project_as_validator')
                 && route.name === 'ManageProject'"
         />
+        <section
+            v-else
+            class="flex-row-center padding-top padding-bottom"
+        >
+            <QBtn
+                :label="t('project.download-recap')"
+                class="btn-lg"
+                color="commission"
+                data-test="download-recap-button"
+                icon="bi-filetype-pdf"
+                @click="onGetProjectPdf"
+            />
+        </section>
     </div>
 </template>
 
