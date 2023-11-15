@@ -53,10 +53,26 @@ onMounted(async () => {
         :class="'variant-' + colorVariant"
         role="contentinfo"
     >
-        <div id="footer-logos">
+        <div class="footer-logos">
             <ul class="wrapper">
                 <li
-                    v-for="logo in contentStore.logos.filter((l) => l.visible === true)"
+                    v-for="logo in contentStore.logos.filter((l) => (l.visible === true && l.row === 1)).sort((a, b) => { return a.column - b.column })"
+                    :key="logo.acronym"
+                >
+                    <a :href="logo.url">
+                        <img
+                            :alt="logo.title"
+                            :src="logo.pathLogo"
+                        />
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="footer-logos">
+            <p>{{ t('footer.financial-support') }}</p>
+            <ul class="wrapper">
+                <li
+                    v-for="logo in contentStore.logos.filter((l) => (l.visible === true && l.row === 2)).sort((a, b) => { return a.column - b.column })"
                     :key="logo.acronym"
                 >
                     <a :href="logo.url">

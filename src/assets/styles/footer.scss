@@ -7,13 +7,15 @@
 #layout-footer {
   position: relative;
   background-color: $footerBackgroundColor;
+  color: $textColor1;
   padding-bottom: 1.563rem;
+  text-align: center;
 
   .q-layout__shadow {
     display: none;
   }
 
-  #footer-logos {
+  .footer-logos {
     background-color: $associationColorBackground;
     border-bottom: 0.6rem solid $associationColor;
     padding: 2rem 1.56rem;
@@ -114,21 +116,21 @@
   // Use a different class to switch variant.
 
   &.variant-space-2 {
-    #footer-logos {
+    .footer-logos {
       background-color: $charterColorBackground;
       border-color: $charterColor;
     }
   }
 
   &.variant-space-3 {
-    #footer-logos {
+    .footer-logos {
       background-color: $commissionColorBackground;
       border-color: $commissionColor;
     }
   }
 
   &.variant-space-4 {
-    #footer-logos {
+    .footer-logos {
       background-color: $dashboardColorBackground;
       border-color: $dashboardColor;
     }

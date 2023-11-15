@@ -372,6 +372,9 @@
     "description": "Le contenu que vous avez demandé est introuvable. Vous pouvez retourner sur la page d'accueil ou votre espace, si vous êtes connecté.",
     "title": "Contenu introuvable"
   },
+  "footer": {
+    "financial-support": "Un projet réalisé avec le soutien financier de"
+  },
   "forbidden": "Non autorisé",
   "forms": {
     "accepted-formats": "Formats acceptés : ",
