@@ -262,6 +262,7 @@ const columns: QTableProps['columns'] = [
                             :project-id="props.row.id"
                             :project-name="props.row.name"
                             :project-status="props.row.projectStatus"
+                            :budget-file="props.row.budgetFile"
                             @refresh-projects="onGetProjects()"
                         />
                     </div>

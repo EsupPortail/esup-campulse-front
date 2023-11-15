@@ -692,10 +692,12 @@
       "use-template": "Merci de télécharger et de remplir impérativement le document type mis à disposition. Tout document non conforme entrainera le rejet du projet.",
       "verify": "Merci de vérifier que tous les documents transmis sont conformes avant de valider."
     },
+    "document-budget": "Budget-Demande-Subvention-",
     "document-hint": "Cliquez sur le champ pour ajouter un document.",
     "document-hint-multiple": "Vous pouvez sélectionner plusieurs documents.",
     "documents": "Documents",
     "documents-name": "Documents-Demande-Subvention-",
+    "download-budget": "Télécharger le budget prévisionnel",
     "download-files": "Télécharger tous les documents déposés",
     "download-recap": "Télécharger le ré'CAPE au format PDF",
     "download-review-recap": "Télécharger le ré'CAPE du bilan au format PDF",

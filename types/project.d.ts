@@ -43,7 +43,8 @@ export interface ProjectList {
     plannedLocation: string,
     projectStatus: ProjectStatus,
     commission: Commission,
-    manualIdentifier: string
+    manualIdentifier: string,
+    budgetFile: string | null
 }
 
 type ProjectStatus =

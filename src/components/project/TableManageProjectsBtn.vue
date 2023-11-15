@@ -12,6 +12,7 @@ import useErrors from '@/composables/useErrors'
 import ProjectEditCommissionFundsAmounts from '@/components/project/ProjectEditAmountsEarned.vue'
 import ProjectChangeCommission from '@/components/project/ProjectChangeCommission.vue'
 import useCommissions from '@/composables/useCommissions'
+import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
@@ -21,13 +22,15 @@ const projectStore = useProjectStore()
 const {catchHTTPError} = useErrors()
 const {commissionFunds, funds} = useCommissions()
 const userStore = useUserStore()
+const {createUploadedFileLink} = useDocumentUploads()
 
 const props = defineProps<{
     projectId: number,
     projectName: string,
     projectStatus: ProjectStatus,
     isSite: boolean | undefined,
-    projectCommissionFunds: ProjectCommissionFund[]
+    projectCommissionFunds: ProjectCommissionFund[],
+    budgetFile: string | null,
 }>()
 
 const emit = defineEmits(['refreshProjects'])
@@ -38,10 +41,10 @@ const changeCommission = ref<boolean>(false)
 
 
 interface Option {
-    icon: 'bi-eye' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-file-earmark-zip' | 'bi-signpost' | 'bi-piggy-bank',
+    icon: 'bi-eye' | 'bi-cash-stack' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-file-earmark-zip' | 'bi-signpost' | 'bi-piggy-bank',
     label: string,
     to?: { name: 'ViewProject' | 'ManageProject' | 'ViewProjectReview' | 'ManageProjectReview', params: { projectId: number } }
-    action?: 'updateProjectDates' | 'download-pdf' | 'download-review-pdf' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
+    action?: 'updateProjectDates' | 'download-pdf' | 'download-review-pdf' | 'download-budget' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
 }
 
 const canChangeProject = () => {
@@ -79,6 +82,13 @@ const initOptions = () => {
             icon: 'bi-eye',
             label: t('project.view'),
             to: {name: 'ViewProject', params: {projectId: props.projectId}}
+        })
+
+        // Download project budget file
+        options.value.push({
+            icon: 'bi-cash-stack',
+            label: t('project.download-budget'),
+            action: 'download-budget'
         })
 
         // Download project files
@@ -174,6 +184,8 @@ async function onOptionClick(option: Option) {
             await onGetProjectPdf(props.projectId, props.projectName, false)
         } else if (option.action === 'download-review-pdf') {
             await onGetProjectPdf(props.projectId, props.projectName, true)
+        } else if (option.action === 'download-budget') {
+            await onGetProjectBudget(props.budgetFile, props.projectName)
         } else if (option.action === 'download-files') {
             await onGetProjectFiles(props.projectId, props.projectName)
         } else {
@@ -198,6 +210,23 @@ async function onGetProjectPdf(projectId: number, projectName: string, isReview:
                 type: 'negative',
                 message: catchHTTPError(error.response)
             })
+        }
+    }
+    loading.hide()
+}
+
+async function onGetProjectBudget(budgetFile: string | null, projectName: string) {
+    loading.show()
+    if (budgetFile) {
+        try {
+            await createUploadedFileLink(budgetFile as string, `${t('project.document-budget')}${projectName}`)
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify({
+                    type: 'negative',
+                    message: catchHTTPError(error.response)
+                })
+            }
         }
     }
     loading.hide()
