@@ -267,6 +267,9 @@ const columns: QTableProps['columns'] = [
                                     ><i
                                         class="bi bi-check-lg"
                                     ></i></span>
+                                    <span v-if="props.row.charterDate">
+                                        <br>{{ ` (${new Date(props.row.charterDate).toLocaleDateString()})` }}
+                                    </span>
                                 </span>
                             </QTd>
                             <QTd
