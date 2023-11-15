@@ -317,6 +317,13 @@ const columns: QTableProps['columns'] = [
                                         icon="bi-pencil"
                                         outline
                                     />
+                                    <QBtn
+                                        :aria-label="t('charter.association-charters') + ' ' + props.row.name"
+                                        :to="{ name: 'AssociationCharterList', params: { associationId: props.row.id } }"
+                                        color="association"
+                                        icon="bi-file-earmark-text"
+                                        outline
+                                    />
                                 </div>
                             </QTd>
                         </QTr>
@@ -385,6 +392,11 @@ const columns: QTableProps['columns'] = [
 
 .q-table tr th:first-child {
     text-align: left;
+}
+
+.button-container {
+    display: flex;
+    gap: 1rem;
 }
 
 @media screen and (max-width: $breakpoint-lg) {
