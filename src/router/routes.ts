@@ -582,6 +582,28 @@ const routes: RouteRecordRaw[] = [
                 }
             },
             {
+                path: 'accessibility-declaration',
+                name: 'AccessibilityDeclaration',
+                component: () => import('@/views/misc/AccessibilityDeclarationView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.accessibility-declaration'),
+                    breadcrumb: i18n.global.t('breadcrumbs.accessibility-declaration'),
+                    colorVariant: 'space-1',
+                    siteMap: true,
+                }
+            },
+            {
+                path: 'multiannual-accessibility-plan',
+                name: 'MultiannualAccessibilityPlan',
+                component: () => import('@/views/misc/MultiannualAccessibilityPlanView.vue'),
+                meta: {
+                    title: i18n.global.t('breadcrumbs.multiannual-accessibility-plan'),
+                    breadcrumb: i18n.global.t('breadcrumbs.multiannual-accessibility-plan'),
+                    colorVariant: 'space-1',
+                    siteMap: true,
+                }
+            },
+            {
                 path: 'cas-register',
                 name: 'CASRegistration',
                 component: () => import('@/views/RegisterCASView.vue'),

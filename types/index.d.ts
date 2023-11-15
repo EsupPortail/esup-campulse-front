@@ -72,7 +72,9 @@ type ContentCode =
     'COMMISSION_HOME_ACTION_DOWNLOAD_DOCUMENTS' |
     'SITE_FOOTER' |
     'LEGAL_NOTICE' |
-    'PRIVACY_POLICY'
+    'PRIVACY_POLICY' |
+    'ACCESSIBILITY_DECLARATION' |
+    'MULTIANNUAL_ACCESSIBILITY_PLAN'
 
 export interface PageCard {
     to: { name: string },
