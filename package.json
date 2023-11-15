@@ -17,9 +17,9 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.8",
-    "@sentry/vue": "^7.80.0",
+    "@sentry/vue": "^7.80.1",
     "@vue-unistra/cas-authentication": "^2.1.2",
-    "axios": "^1.6.1",
+    "axios": "^1.6.2",
     "bootstrap-icons": "^1.11.1",
     "pinia": "^2.1.7",
     "quasar": "^2.14.0",
