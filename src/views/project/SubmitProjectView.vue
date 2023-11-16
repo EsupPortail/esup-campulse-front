@@ -1009,10 +1009,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                         icon="bi-file-earmark"
                     >
                         <QForm @submit.prevent="onUploadDocuments(6)">
-                            <!--
-                                                        <h3 class="title-2">{{ t('project.documents') }}</h3>
-                            -->
-                            <div class="info-panel info-panel-warning">
+                            <div class="info-panel info-panel-error">
                                 <i
                                     aria-hidden="true"
                                     class="bi bi-exclamation-lg"
