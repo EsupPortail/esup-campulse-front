@@ -1,10 +1,5 @@
-- ✨ Now we need is_site modification on association.
-- 💄 Added button to charters in dashboard association.
-- 💄 Added charter date in association dashboard.
-- 🗃️ Changed logos layout.
-- 💄 Added amount earned in project dashboard.
-- ✨ Added budget-file to Project list.
-- 💄 Added download-recap button on project detail view.
-- 🗃️ Fields on project cannot equal 0.
-- 💄 "Return to top" button is at the bottom.
-- 💬 Updated subtitle.
+# Changelog
+
+## 1.0.0 (16 Novembre 2023)
+
+- Stabilisation initiale de l'application.
