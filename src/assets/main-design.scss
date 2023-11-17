@@ -114,7 +114,7 @@ main {
   transition: top 0.15s ease-in-out, opacity 0.15s linear;
 
   &.visible {
-    bottom: 2rem;
+    bottom: 6rem;
     opacity: 1;
     z-index: 3000;
   }
