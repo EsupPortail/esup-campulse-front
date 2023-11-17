@@ -114,9 +114,13 @@ main {
   transition: top 0.15s ease-in-out, opacity 0.15s linear;
 
   &.visible {
-    bottom: 6rem;
+    bottom: 2rem;
     opacity: 1;
     z-index: 3000;
+
+    @media screen and (max-width: $breakpoint-lg) {
+      bottom: 6rem;
+    }
   }
 
   button {

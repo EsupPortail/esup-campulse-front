@@ -1,8 +1,15 @@
 <script lang="ts" setup>
-import {onMounted, onUnmounted, ref} from 'vue'
+import {onMounted, onUnmounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
+const {openMenu} = useUtility()
+
+const buttonVisible = ref(false)
+watch(() => openMenu.value, () => {
+    buttonVisible.value = !openMenu.value
+})
 
 onMounted(async function () {
     window.addEventListener('scroll', handleScroll)
@@ -22,14 +29,12 @@ function handleScroll() {
 function scrollToTop() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
 }
-
-const buttonVisible = ref(false)
 </script>
 
 <template>
     <div
-        class="navigate-top-button"
         :class="{ 'visible': buttonVisible }"
+        class="navigate-top-button"
     >
         <button
             :title="t('page-top')"
