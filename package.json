@@ -13,7 +13,8 @@
     "test:unit": "vitest --environment jsdom",
     "test:unit:coverage": "vitest --environment jsdom --coverage",
     "test:unit:ui": "vitest --environment jsdom --ui",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
+    "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "precommit": "npm run lint && npm run typecheck && npm run test:unit"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.8",
