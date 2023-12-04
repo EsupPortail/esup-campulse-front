@@ -199,21 +199,23 @@ const initAssociationCharter = () => {
                             <dd itemprop="name">{{ association?.presidentNames }}</dd>
                         </div>
 
-                        <!--                        <div
-                                                    v-if="association?.presidentPhone"
-                                                    class="display-row"
-                                                >
-                                                    <dt>{{ t('association.labels.president-phone') }}</dt>
-                                                    <dd>{{ association?.presidentPhone }}</dd>
-                                                </div>-->
+                        <!--
+                        <div
+                            v-if="association?.presidentPhone"
+                            class="display-row"
+                        >
+                            <dt>{{ t('association.labels.president-phone') }}</dt>
+                            <dd></dd>
+                        </div>
 
                         <div
                             v-if="association?.presidentEmail"
                             class="display-row"
                         >
                             <dt>{{ t('association.labels.president-email') }}</dt>
-                            <dd>{{ association?.presidentEmail }}</dd>
+                            <dd></dd>
                         </div>
+                        -->
 
                         <div
                             v-if="association?.charterDate"
