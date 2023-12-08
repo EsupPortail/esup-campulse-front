@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4 (08 Décembre 2023)
+
+- Changement du terme "Validé, en attente de commission" par "En attente d'attribution".
+
 ## 1.0.3 (04 Décembre 2023)
 
 - Retrait d'un champ de la fiche association.
