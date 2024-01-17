@@ -1,4 +1,5 @@
 interface ContentStore {
+    content: Content | undefined,
     contents: Content[],
     logos: Logo[],
     CSSClasses: string[]
@@ -24,6 +25,15 @@ export interface PasswordChecker {
 export interface Content {
     id: number,
     code: ContentCode,
+    label: string,
+    header: string,
+    body: string,
+    footer: string,
+    aside: string,
+    isEditable: boolean
+}
+
+export interface EditableContent {
     label: string,
     header: string,
     body: string,
@@ -74,7 +84,8 @@ type ContentCode =
     'LEGAL_NOTICE' |
     'PRIVACY_POLICY' |
     'ACCESSIBILITY_DECLARATION' |
-    'MULTIANNUAL_ACCESSIBILITY_PLAN'
+    'MULTIANNUAL_ACCESSIBILITY_PLAN' |
+    ''
 
 export interface PageCard {
     to: { name: string },

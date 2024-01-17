@@ -32,7 +32,7 @@ describe('Content store', () => {
     describe('getContents', () => {
         it('should make an API call (GET) and store data', async () => {
             mockedAxios.get.mockResolvedValueOnce({data: _contents})
-            await contentStore.getContents()
+            await contentStore.getContents(false)
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/contents/')
             expect(contentStore.contents).toEqual(_contents)

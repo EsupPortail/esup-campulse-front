@@ -258,6 +258,30 @@ onMounted(async () => {
         </div>
     </section>
 
+    <!-- Website contents management -->
+    <section
+        v-if="isStaff && (hasPerm('change_content'))"
+        class="dashboard-section"
+    >
+        <h2>
+            <QIcon name="bi-file-code"/>
+            {{ t('dashboard.contents') }}
+        </h2>
+        <div class="dashboard-section-container">
+            <div class="container">
+                <div class="dashboard-btn-group">
+                    <QBtn
+                        v-if="hasPerm('change_content')"
+                        :label="t('dashboard.manage-contents')"
+                        :to="{ name: 'ManageContents' }"
+                        class="btn-lg"
+                        color="dashboard"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Template document library -->
     <section
         v-if="hasPerm('add_project_association') || hasPerm('add_project_user')"

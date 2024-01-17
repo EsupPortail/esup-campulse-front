@@ -8,7 +8,8 @@ export const _contents: Content[] = [
         header: 'INFORMATIONS: Commission de CAPE le 23 novembre 2023',
         body: '<p>Association, porteur ou porteuse de projet, venez présenter votre projet.</p>',
         footer: '',
-        aside: ''
+        aside: '',
+        isEditable: true
     },
     {
         id: 2,
@@ -17,7 +18,8 @@ export const _contents: Content[] = [
         header: 'Annuaire des associations',
         body: '<p>Besoin d\'informations sur une association étudiante ? Tu as envie de t\'engager dans ton association de filière ? L\'annuaire des associations étudiantes est là pour ça !</p>',
         footer: 'Consulter l\'annuaire',
-        aside: ''
+        aside: '',
+        isEditable: true
     },
     {
         id: 3,
@@ -26,7 +28,8 @@ export const _contents: Content[] = [
         header: 'Charte des associations du Site Alsace',
         body: '<p>Une demande de locaux ? Un projet à soumettre pour obtenir une subvention pour son association ? La signature de la charte des associations étudiantes du site Alsace et des chartes de subventionnement sont obligatoires, et ça se passe par ici !</p>',
         footer: 'Espace charte',
-        aside: ''
+        aside: '',
+        isEditable: true
     },
     {
         id: 4,
@@ -35,7 +38,8 @@ export const _contents: Content[] = [
         header: 'CAPE Commission d\'aide aux projets étudiants',
         body: '<p>Déposez dès à présent vos dossiers de demandes de subventions aux commissions FSDIE, Cultures-ActionS et IdEx pour vos projets par ce module !</p>',
         footer: 'Espace CAPE',
-        aside: ''
+        aside: '',
+        isEditable: true
     }
 ]
 
