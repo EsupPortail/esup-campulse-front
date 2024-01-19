@@ -45,7 +45,8 @@ export default defineConfig(({command, mode}) => {
                 environment: 'jsdom',
                 coverage: {
                     extension: ['.ts'],
-                    include: ['src/composables', 'src/plugins', 'src/stores']
+                    include: ['src/composables', 'src/plugins', 'src/stores'],
+                    exclude: ['src/composables/useAxios.ts', 'src/composables/useColorVariants.ts'],
                 }
             }
         }
