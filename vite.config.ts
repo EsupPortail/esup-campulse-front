@@ -43,12 +43,9 @@ export default defineConfig(({command, mode}) => {
             },
             test: {
                 environment: 'jsdom',
-                // Enable coverage for untested files.
-                /*
                 coverage: {
-                    all: true
+                    extension: ['.ts']
                 }
-                */
             }
         }
     } else {
