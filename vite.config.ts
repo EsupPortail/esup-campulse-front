@@ -44,7 +44,8 @@ export default defineConfig(({command, mode}) => {
             test: {
                 environment: 'jsdom',
                 coverage: {
-                    extension: ['.ts']
+                    extension: ['.ts'],
+                    include: ['src/composables', 'src/plugins', 'src/stores']
                 }
             }
         }
