@@ -15,7 +15,7 @@
     "test:unit:coverage": "vitest --environment jsdom --coverage",
     "test:unit:ui": "vitest --environment jsdom --ui",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.9",
