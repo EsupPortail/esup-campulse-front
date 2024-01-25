@@ -534,7 +534,37 @@ const routes: RouteRecordRaw[] = [
                             title: i18n.global.t('breadcrumbs.template-documents-library'),
                             siteMap: true,
                         },
-                    }
+                    },
+                    {
+                        path: 'manage-contents',
+                        meta: {
+                            breadcrumb: i18n.global.t('breadcrumbs.contents'),
+                            staffOnly: true,
+                            siteMap: true,
+                        },
+                        children: [
+                            {
+                                path: '',
+                                name: 'ManageContents',
+                                component: () => import('@/views/dashboard/ContentManagementView.vue'),
+                                meta: {
+                                    title: i18n.global.t('breadcrumbs.contents'),
+                                    staffOnly: true,
+                                    siteMap: true,
+                                }
+                            },
+                            {
+                                path: ':id',
+                                name: 'ContentManagementDetail',
+                                component: () => import('@/views/dashboard/ContentManagementDetailView.vue'),
+                                meta: {
+                                    breadcrumb: i18n.global.t('breadcrumbs.content'),
+                                    title: i18n.global.t('breadcrumbs.content'),
+                                    staffOnly: true,
+                                }
+                            }
+                        ]
+                    },
                 ]
             },
             {

@@ -1,20 +1,19 @@
 # Changelog
 
-## 1.0.4 (08 Décembre 2023)
+## 1.1.0 (Q1 2024)
 
-- Changement du terme "Validé, en attente de commission" par "En attente d'attribution".
+### Fonctionnalités
 
-## 1.0.3 (04 Décembre 2023)
+- Possibilité de modifier les paragraphes de contenu du site par un MANAGER_GENERAL.
 
-- Retrait d'un champ de la fiche association.
-
-## 1.0.2 (23 Novembre 2023)
+### Corrections de bugs
 
 - Correction de la redirection automatique Logout > Login après expiration des tokens
-
-## 1.0.1 (17 Novembre 2023)
-
 - Placement du bouton "Revenir en haut" corrigé sur mobile.
+
+### Autres changements
+
+- Changement du terme "Validé, en attente de commission" par "En attente d'attribution".
 
 ## 1.0.0 (16 Novembre 2023)
 

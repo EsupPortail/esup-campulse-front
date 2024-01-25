@@ -43,12 +43,11 @@ export default defineConfig(({command, mode}) => {
             },
             test: {
                 environment: 'jsdom',
-                // Enable coverage for untested files.
-                /*
                 coverage: {
-                    all: true
+                    extension: ['.ts'],
+                    include: ['src/composables', 'src/plugins', 'src/stores'],
+                    exclude: ['src/composables/useAxios.ts', 'src/composables/useColorVariants.ts'],
                 }
-                */
             }
         }
     } else {
