@@ -259,6 +259,7 @@ onMounted(async () => {
     </section>
 
     <!-- Website contents management -->
+    <!--
     <section
         v-if="isStaff && (hasPerm('change_content'))"
         class="dashboard-section"
@@ -281,6 +282,7 @@ onMounted(async () => {
             </div>
         </div>
     </section>
+    -->
 
     <!-- Template document library -->
     <section
