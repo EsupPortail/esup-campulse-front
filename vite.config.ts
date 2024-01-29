@@ -12,6 +12,9 @@ export default defineConfig(({command, mode}) => {
     if (command) {
         const env = loadEnv(mode, process.cwd(), '')
         return {
+            build: {
+                sourcemap: true,
+            },
             define: {
                 __APP_ENV__: JSON.stringify(env.APP_ENV),
             },
