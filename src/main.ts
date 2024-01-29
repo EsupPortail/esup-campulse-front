@@ -27,10 +27,10 @@ if (import.meta.env.PROD) {
         integrations: [
             new Sentry.BrowserTracing({
                 routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-                tracingOrigins: ['localhost', import.meta.env.VITE_APP_FRONT_URL, /^\//]
             }),
         ],
         tracesSampleRate: 1.0,
+        tracePropagationTargets: ['localhost', import.meta.env.VITE_APP_SENTRY_API_REGEX, /^\//]
     })
 }
 
