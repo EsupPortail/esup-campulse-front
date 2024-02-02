@@ -14,6 +14,7 @@
 ### Autres changements
 
 - Changement du terme "Validé, en attente de commission" par "En attente d'attribution".
+- Changement du type de validation de la charte Site Alsace.
 
 ## 1.0.0 (16 Novembre 2023)
 
