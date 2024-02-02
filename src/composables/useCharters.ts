@@ -194,6 +194,7 @@ export default function () {
         if (uploadedCharter) {
             validatedDate = formatDate(uploadedCharter.validatedDate) ?? ''
             // If the charter is the association charter, we can determine its status by the association's charter status
+            /*
             if (document.processType === 'CHARTER_ASSOCIATION') {
                 if (associationCharterStatus) {
                     charterStatus = initAssociationCharterStatus(associationCharterStatus, isSite)
@@ -209,42 +210,41 @@ export default function () {
                     }
                 }
             }
+            */
             // If the charter is a project fund charter
-            else {
-                // If the document has been uploaded but is not validated yet
-                if (uploadedCharter.uploadDate && !validatedDate) {
-                    if (uploadedCharter.comment) {
-                        charterStatus = 'REJECTED'
-                    } else {
-                        charterStatus = 'PROCESSING'
-                    }
+            // If the document has been uploaded but is not validated yet
+            if (uploadedCharter.uploadDate && !validatedDate) {
+                if (uploadedCharter.comment) {
+                    charterStatus = 'REJECTED'
+                } else {
+                    charterStatus = 'PROCESSING'
                 }
-                // If the document has been validated, we calculate its expiration date
+            }
+            // If the document has been validated, we calculate its expiration date
+            else {
+                const currentYear = new Date().getFullYear().toString()
+                const nextYear = (new Date().getFullYear() + 1).toString()
+                const factory: string[] = document.expirationDay.split('-')
+                factory.splice(0, 0, currentYear)
+                const currentYearExpirationDate = factory.join('-')
+                const formatedCurrentYearExpirationDate = new Date(currentYearExpirationDate)
+                const formatedValidatedDate = new Date(validatedDate.split('/').join('-'))
+                // Determine if expiration date is this year or next year
+                // if expiration date is yet to come this year
+                if (formatedCurrentYearExpirationDate >= formatedValidatedDate || formatedCurrentYearExpirationDate >= todayDate) {
+                    expirationDate = currentYearExpirationDate
+                }
+                // if expiration date is passed this year
                 else {
-                    const currentYear = new Date().getFullYear().toString()
-                    const nextYear = (new Date().getFullYear() + 1).toString()
-                    const factory: string[] = document.expirationDay.split('-')
-                    factory.splice(0, 0, currentYear)
-                    const currentYearExpirationDate = factory.join('-')
-                    const formatedCurrentYearExpirationDate = new Date(currentYearExpirationDate)
-                    const formatedValidatedDate = new Date(validatedDate.split('/').join('-'))
-                    // Determine if expiration date is this year or next year
-                    // if expiration date is yet to come this year
-                    if (formatedCurrentYearExpirationDate >= formatedValidatedDate || formatedCurrentYearExpirationDate >= todayDate) {
-                        expirationDate = currentYearExpirationDate
-                    }
-                    // if expiration date is passed this year
-                    else {
-                        factory.splice(0, 1, nextYear)
-                        expirationDate = factory.join('-')
-                    }
-                    // Check if expiration date is inferior to today
-                    const formatedExpirationDate = new Date(expirationDate)
-                    if (formatedExpirationDate >= todayDate) {
-                        charterStatus = 'VALIDATED'
-                    } else {
-                        charterStatus = 'EXPIRED'
-                    }
+                    factory.splice(0, 1, nextYear)
+                    expirationDate = factory.join('-')
+                }
+                // Check if expiration date is inferior to today
+                const formatedExpirationDate = new Date(expirationDate)
+                if (formatedExpirationDate >= todayDate) {
+                    charterStatus = 'VALIDATED'
+                } else {
+                    charterStatus = 'EXPIRED'
                 }
             }
         }
