@@ -68,4 +68,8 @@ const initContent = () => {
 h2>p {
     line-height: normal;
 }
+
+::v-deep p {
+    margin-bottom: 0;
+}
 </style>
