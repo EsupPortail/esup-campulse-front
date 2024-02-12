@@ -69,7 +69,7 @@ h2>p {
     line-height: normal;
 }
 
-::v-deep p {
+:deep(p) {
     margin-bottom: 0;
 }
 </style>
