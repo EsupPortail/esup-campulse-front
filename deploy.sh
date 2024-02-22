@@ -28,7 +28,6 @@ TEST_NGINX_CONF="plana-test.app.unistra.fr"
 PREPROD_HOSTS=("root@rp-dip-pprd-public.di.unistra.fr")
 PREPROD_NGINX_CONF="plana-pprd.app.unistra.fr"
 
-# TODO: faire la conf de la prod quand elle sera décidée + penser à faire le fichier NGINX
 PROD_HOSTS=("root@rp-dip-public-m.di.unistra.fr" "root@rp-dip-public-s.di.unistra.fr")
 PROD_NGINX_CONF="etu-campulse.fr"
 
