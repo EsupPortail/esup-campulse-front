@@ -35,7 +35,7 @@ const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
 const {uploadDocuments, processDocuments} = useDocumentUploads()
 
-
+const isLDAPEnabled = import.meta.env.VITE_APP_OPEN_LDAP === 'true'
 const hasConsent = ref<boolean>(false)
 
 onMounted(async () => {
@@ -130,7 +130,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormAddUserFromLDAP v-if="isStaff"/>
+                    <FormAddUserFromLDAP v-if="isStaff && isLDAPEnabled"/>
 
                     <InfoFormRequiredFields/>
 
