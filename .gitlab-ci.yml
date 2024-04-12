@@ -1,11 +1,10 @@
 stages:
   - test
-  - build
-  - deploy
+  - deploy_saas
 
-type check:
+type_check:
   stage: test
-  image: node:20
+  image: node:lts
   tags:
     - cluster
   only:
@@ -15,9 +14,9 @@ type check:
     - npm run lint
     - npm run typecheck
 
-unit test:
+unit_test:
   stage: test
-  image: node:20
+  image: node:lts
   tags:
     - cluster
   only:
@@ -27,48 +26,7 @@ unit test:
     - npm run test:unit:coverage
   coverage: /All files\s*\|\s*([\d\.]+)/
 
-build:
-  stage: build
-  image: node:20
-  before_script:
-    - corepack enable
-    - corepack prepare pnpm@latest-8 --activate
-    - pnpm config set store-dir .pnpm-store
-    - echo "@vue-unistra:registry=https://gitlab.unistra.fr/api/v4/packages/npm/" >> .npmrc
-    - echo "//git.unistra.fr/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
-    - echo "//git.unistra.fr/api/v4/projects/17878/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
-    - echo "//git.unistra.fr/api/v4/projects/28372/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
-    - echo "//git.unistra.fr/api/v4/projects/9346/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
-    - echo "//git.unistra.fr/api/v4/projects/30348/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
-  script:
-    - pnpm install
-    - pnpm build
-  cache:
-    key:
-      files:
-        - pnpm-lock.yaml
-    paths:
-      - .pnpm-store
-      - dist
-  artifacts:
-    paths:
-      - dist
-  only:
-    - main
-
-deploy:
-  stage: deploy
-  image: alpine
-  before_script:
-    - apk add -y --no-cache openssh git curl rsync
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -e "Host $DEPLOY_HOST\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - ssh-keyscan -H $DEPLOY_PORT $DEPLOY_HOST >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-  script:
-    - rsync -av dist/* $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
-  only:
-    - main
+deploy_saas:
+  stage: deploy_saas
+  trigger:
+    include: .deploy-saas.gitlab-ci.yml
