@@ -1,3 +1,8 @@
+# You need to set this variable!
+# Unistra does not use this CI for deployment
+variables:
+  UNIVERSITY: "unistra"
+
 stages:
   - test
   - deploy_saas
@@ -28,5 +33,7 @@ unit_test:
 
 deploy_saas:
   stage: deploy_saas
+  rules:
+    - if: ${UNIVERSITY} != "unistra"
   trigger:
     include: .deploy-saas.gitlab-ci.yml

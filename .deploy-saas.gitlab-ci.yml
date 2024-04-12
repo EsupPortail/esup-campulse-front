@@ -1,8 +1,3 @@
-# You need to set this variable!
-# Unistra does not use this CI for deployment
-variables:
-  UNIVERSITY: "unistra"
-
 stages:
   - build
   - deploy_pprd
@@ -10,8 +5,7 @@ stages:
 
 build:
   stage: build
-  rules:
-    - if: ${UNIVERSITY} != "unistra"
+
   image: node:lts
   before_script:
     - echo "@vue-unistra:registry=https://gitlab.unistra.fr/api/v4/packages/npm/" >> .npmrc
@@ -31,8 +25,6 @@ build:
 
 deploy_pprd:
   stage: deploy_pprd
-  rules:
-    - if: ${UNIVERSITY} != "unistra"
   image: node:lts
   before_script:
     - npm ci
@@ -46,8 +38,6 @@ deploy_pprd:
 
 deploy_prod:
   stage: deploy_prod
-  rules:
-    - if: ${UNIVERSITY} != "unistra"
   image: node:lts
   before_script:
     - npm ci
