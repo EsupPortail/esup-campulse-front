@@ -8,38 +8,37 @@ stages:
 
 build:
   stage: build
+  rules:
+    - if: $UNIVERSITY != "unistra" && $CI_COMMIT_BRANCH == "main"
   image: node:lts
   before_script:
     - echo "@vue-unistra:registry=https://gitlab.unistra.fr/api/v4/packages/npm/" >> .npmrc
-    - echo "//git.unistra.fr/api/v4/projects/9346/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
+    - echo "//git.unistra.fr/api/v4/projects/9346/packages/npm/:_authToken=$CI_JOB_TOKEN" >> .npmrc
   script:
     - npm install
     - npm run build
   artifacts:
     paths:
       - dist
-  only:
-    - main
 
 deploy_pprd:
   stage: deploy_pprd
+  rules:
+    - if: $UNIVERSITY != "unistra" && $CI_COMMIT_BRANCH == "main"
   image: alpine
   before_script:
     - apk add rclone
-    - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id ${S3_ACCESSKEYID} secret_access_key ${S3_SECRETACCESSKEY}
+    - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id $S3_ACCESSKEYID secret_access_key $S3_SECRETACCESSKEY
   script:
     - rclone sync dist/* unistra:plana_"$UNIVERSITY"_preprod/front-static
-  only:
-    - main
 
 deploy_prod:
   stage: deploy_prod
+  rules:
+    - if: $UNIVERSITY != "unistra" && $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG
   image: alpine
   before_script:
     - apk add rclone
-    - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id ${S3_ACCESSKEYID} secret_access_key ${S3_SECRETACCESSKEY}
+    - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id $S3_ACCESSKEYID secret_access_key $S3_SECRETACCESSKEY
   script:
     - rclone sync dist/* unistra:plana_"$UNIVERSITY"_prod/front-static
-  only:
-    - tags
-    - main
