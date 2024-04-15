@@ -35,7 +35,7 @@ const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
 const {uploadDocuments, processDocuments} = useDocumentUploads()
 
-const isLDAPEnabled = import.meta.env.VITE_APP_OPEN_LDAP === 'true'
+const isLDAPEnabled = import.meta.env.VITE_APP_OPEN_LDAP
 const hasConsent = ref<boolean>(false)
 
 onMounted(async () => {
