@@ -1,45 +1,39 @@
 variables:
   UNIVERSITY: $UNIVERSITY
+  CUSTOM_REPO: $CUSTOM_REPO
+  DEPLOY_ENV: $DEPLOY_ENV
 
 stages:
   - build
-  - deploy_pprd
-  - deploy_prod
+  - deploy
 
 build:
   stage: build
   image: node:lts
   before_script:
+    - npm ci
     - echo "@vue-unistra:registry=https://gitlab.unistra.fr/api/v4/packages/npm/" >> .npmrc
     - echo "//git.unistra.fr/api/v4/projects/9346/packages/npm/:_authToken=$CI_JOB_TOKEN" >> .npmrc
+    - git clone "$CUSTOM_REPO" custom_repo
+    - rsync custom_repo/css/_custom.scss src/assets/_custom.scss
+    - rsync custom_repo/css/_fonts.scss src/assets/_fonts.scss
+    - rsync custom_repo/fonts src/assets/fonts
+    - rsync custom_repo/images src/assets/img
+    - rsync custom_repo/favicon.ico public/"$DEPLOY_ENV"/favicon.ico
+    - rsync custom_repo/opengraph-image.jpg public/"$DEPLOY_ENV"/opengraph-image.jpg
+    - rsync custom_repo/locales src/locales
   script:
     - npm install
-    - npm run build
+    - npm run build:"$DEPLOY_ENV"
   artifacts:
     paths:
       - dist
-  only:
-    - main
 
-deploy_pprd:
-  stage: deploy_pprd
+deploy:
+  stage: deploy
   image: alpine
   before_script:
     - apk add rclone
     - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id $S3_ACCESSKEYID secret_access_key $S3_SECRETACCESSKEY
   script:
-    - rclone sync dist/* unistra:plana-"$UNIVERSITY"-preprod/front-static
-  only:
-    - main
-
-deploy_prod:
-  stage: deploy_prod
-  image: alpine
-  before_script:
-    - apk add rclone
-    - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id $S3_ACCESSKEYID secret_access_key $S3_SECRETACCESSKEY
-  script:
-    - rclone sync dist/* unistra:plana-"$UNIVERSITY"-prod/front-static
-  only:
-    - tags
-    - main
+    - rclone sync dist/* unistra:"$UNIVERSITY"-plana-"$DEPLOY_ENV"-front

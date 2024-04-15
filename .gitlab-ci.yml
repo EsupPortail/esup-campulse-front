@@ -1,7 +1,8 @@
-# You need to set this variable!
+# You need to set these variables!
 # Unistra does not use this CI for deployment
 variables:
   UNIVERSITY: "unistra"
+  CUSTOM_REPO: "git_repo"
 
 stages:
   - test
@@ -31,7 +32,7 @@ unit_test:
     - npm run test:unit:coverage
   coverage: /All files\s*\|\s*([\d\.]+)/
 
-deploy_saas:
+deploy_saas_preprod:
   stage: deploy_saas
   trigger:
     include:
@@ -40,3 +41,17 @@ deploy_saas:
     - if: $UNIVERSITY != "unistra" && $CI_COMMIT_BRANCH == "main"
   variables:
     UNIVERSITY: $UNIVERSITY
+    CUSTOM_REPO: $CUSTOM_REPO
+    DEPLOY_ENV: "preprod"
+
+deploy_saas_prod:
+  stage: deploy_saas
+  trigger:
+    include:
+      - local: .deploy-saas.gitlab-ci.yml
+  rules:
+    - if: $UNIVERSITY != "unistra" && $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG
+  variables:
+    UNIVERSITY: $UNIVERSITY
+    CUSTOM_REPO: $CUSTOM_REPO
+    DEPLOY_ENV: "prod"
