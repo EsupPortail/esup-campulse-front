@@ -35,5 +35,7 @@ deploy_saas:
   stage: deploy_saas
   trigger:
     include: .deploy-saas.gitlab-ci.yml
+  rules:
+    - if: $UNIVERSITY != "unistra"
   variables:
     UNIVERSITY: $UNIVERSITY
