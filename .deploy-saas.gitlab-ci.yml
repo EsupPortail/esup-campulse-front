@@ -28,7 +28,7 @@ deploy_pprd:
     - apk add rclone
     - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id $S3_ACCESSKEYID secret_access_key $S3_SECRETACCESSKEY
   script:
-    - rclone sync dist/* unistra:plana_"$UNIVERSITY"_preprod/front-static
+    - rclone sync dist/* unistra:plana-"$UNIVERSITY"-preprod/front-static
   only:
     - main
 
@@ -39,7 +39,7 @@ deploy_prod:
     - apk add rclone
     - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id $S3_ACCESSKEYID secret_access_key $S3_SECRETACCESSKEY
   script:
-    - rclone sync dist/* unistra:plana_"$UNIVERSITY"_prod/front-static
+    - rclone sync dist/* unistra:plana-"$UNIVERSITY"-prod/front-static
   only:
     - tags
     - main
