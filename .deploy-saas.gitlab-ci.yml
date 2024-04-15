@@ -36,4 +36,4 @@ deploy:
     - apk add rclone
     - rclone config create unistra s3 provider Ceph endpoint https://s3.unistra.fr acl public-read access_key_id $S3_ACCESSKEYID secret_access_key $S3_SECRETACCESSKEY
   script:
-    - rclone sync dist/* unistra:"$UNIVERSITY"-plana-"$DEPLOY_ENV"-front
+    - rclone sync dist unistra:"$UNIVERSITY"-plana-"$DEPLOY_ENV"-front
