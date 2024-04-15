@@ -34,8 +34,9 @@ unit_test:
 deploy_saas:
   stage: deploy_saas
   trigger:
-    include: .deploy-saas.gitlab-ci.yml
+    include:
+      - local: .deploy-saas.gitlab-ci.yml
   rules:
-    - if: $UNIVERSITY != "unistra"
+    - if: $UNIVERSITY != "unistra" && $CI_COMMIT_BRANCH == "main"
   variables:
     UNIVERSITY: $UNIVERSITY
