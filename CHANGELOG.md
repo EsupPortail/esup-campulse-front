@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 (Q1 2024)
+## 1.1.0 (Q2 2024)
 
 ### Fonctionnalités
 
@@ -10,6 +10,7 @@
 
 - Correction de la redirection automatique Logout > Login après expiration des tokens
 - Placement du bouton "Revenir en haut" corrigé sur mobile.
+- Statut de la charte Site Alsace corrigé dans l'interface de gestion des chartes.
 
 ### Autres changements
 

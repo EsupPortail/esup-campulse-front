@@ -194,7 +194,6 @@ export default function () {
         if (uploadedCharter) {
             validatedDate = formatDate(uploadedCharter.validatedDate) ?? ''
             // If the charter is the association charter, we can determine its status by the association's charter status
-            /*
             if (document.processType === 'CHARTER_ASSOCIATION') {
                 if (associationCharterStatus) {
                     charterStatus = initAssociationCharterStatus(associationCharterStatus, isSite)
@@ -210,15 +209,17 @@ export default function () {
                     }
                 }
             }
-            */
             // If the charter is a project fund charter
             // If the document has been uploaded but is not validated yet
-            if (uploadedCharter.uploadDate && !validatedDate) {
+            else if (uploadedCharter.uploadDate && !validatedDate) {
+                /*
                 if (uploadedCharter.comment) {
                     charterStatus = 'REJECTED'
                 } else {
                     charterStatus = 'PROCESSING'
                 }
+                */
+                charterStatus = 'PROCESSING'
             }
             // If the document has been validated, we calculate its expiration date
             else {
