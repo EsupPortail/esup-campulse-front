@@ -188,64 +188,40 @@ export default function () {
         let charterStatus: CharterStatus = 'NO_CHARTER'
         let validatedDate = ''
         let expirationDate = ''
+        let formatedExpirationDate = null
         // We set today's date
         const todayDate = new Date()
         todayDate.setHours(0, 0, 0, 0)
         if (uploadedCharter) {
             validatedDate = formatDate(uploadedCharter.validatedDate) ?? ''
+            if (uploadedCharter.calculatedExpirationDate) {
+                expirationDate = formatDate(uploadedCharter.calculatedExpirationDate) ?? ''
+                formatedExpirationDate = new Date(uploadedCharter.calculatedExpirationDate)
+            }
             // If the charter is the association charter, we can determine its status by the association's charter status
             if (document.processType === 'CHARTER_ASSOCIATION') {
                 if (associationCharterStatus) {
                     charterStatus = initAssociationCharterStatus(associationCharterStatus, isSite)
-                    if (validatedDate) {
-                        // Check if the charter has not been resigned
-                        if (charterStatus === 'PROCESSING') {
-                            validatedDate = ''
-                            expirationDate = ''
-                        } else {
-                            const splitValidatedDate = validatedDate.split('-')
-                            expirationDate = [(parseInt(splitValidatedDate[0]) + 1).toString(), splitValidatedDate[1], splitValidatedDate[2]].join('-')
-                        }
+                    if (validatedDate && (charterStatus === 'PROCESSING')) {
+                        validatedDate = ''
+                        expirationDate = ''
                     }
                 }
             }
-            // If the charter is a project fund charter
+            // If the document has been validated, we calculate its expiration date
+            else if (validatedDate !== '') {
+                if (formatedExpirationDate && (formatedExpirationDate >= todayDate)) {
+                    charterStatus = 'VALIDATED'
+                } else {
+                    charterStatus = 'EXPIRED'
+                }
+            }
             // If the document has been uploaded but is not validated yet
-            else if (uploadedCharter.uploadDate && !validatedDate) {
-                /*
+            else if (uploadedCharter.uploadDate) {
                 if (uploadedCharter.comment) {
                     charterStatus = 'REJECTED'
                 } else {
                     charterStatus = 'PROCESSING'
-                }
-                */
-                charterStatus = 'PROCESSING'
-            }
-            // If the document has been validated, we calculate its expiration date
-            else {
-                const currentYear = new Date().getFullYear().toString()
-                const nextYear = (new Date().getFullYear() + 1).toString()
-                const factory: string[] = document.expirationDay.split('-')
-                factory.splice(0, 0, currentYear)
-                const currentYearExpirationDate = factory.join('-')
-                const formatedCurrentYearExpirationDate = new Date(currentYearExpirationDate)
-                const formatedValidatedDate = new Date(validatedDate.split('/').join('-'))
-                // Determine if expiration date is this year or next year
-                // if expiration date is yet to come this year
-                if (formatedCurrentYearExpirationDate >= formatedValidatedDate || formatedCurrentYearExpirationDate >= todayDate) {
-                    expirationDate = currentYearExpirationDate
-                }
-                // if expiration date is passed this year
-                else {
-                    factory.splice(0, 1, nextYear)
-                    expirationDate = factory.join('-')
-                }
-                // Check if expiration date is inferior to today
-                const formatedExpirationDate = new Date(expirationDate)
-                if (formatedExpirationDate >= todayDate) {
-                    charterStatus = 'VALIDATED'
-                } else {
-                    charterStatus = 'EXPIRED'
                 }
             }
         }
