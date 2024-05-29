@@ -4,7 +4,7 @@ set -e
 PROJECT="plan-a-front"
 
 if [ ! $# -ge 2 ]; then
-  echo "👉 Usage: $0 branch/tag goal [--update-nginx-conf]     IRL: $0 feature/introduce_bug prod"
+  echo "👉 Usage: $0 branch/tag goal [--update-nginx-conf] [--update-apache-conf]    IRL: $0 feature/introduce_bug prod"
   exit 1
 fi
 
