@@ -106,7 +106,7 @@ fi
 if [ "$SETUP_APACHE" == true ]; then
   for i in "${TARGET[@]}"; do
       if ! ssh -q "$i" test -L "/etc/apache2/sites-enabled/$TARGET_APACHE_CONF"; then
-        echo "🏗 Setup nginx vhost for $i"
+        echo "🏗 Setup apache vhost for $i"
         scp -r "apache/$TARGET_APACHE_CONF" "$i:/etc/apache2/sites-available/"
         ssh -q "$i" a2ensite "/etc/apache2/sites-available/$TARGET_APACHE_CONF"
         if [ $(apachectl configtest) == "Syntax OK" ]; then
