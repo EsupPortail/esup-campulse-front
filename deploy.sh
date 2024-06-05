@@ -109,8 +109,7 @@ if [ "$SETUP_APACHE" == true ]; then
         echo "🏗 Setup apache vhost for $i"
         scp -r "apache/$TARGET_APACHE_CONF" "$i:/etc/apache2/sites-available/"
         ssh -q "$i" a2ensite "/etc/apache2/sites-available/$TARGET_APACHE_CONF"
-        TEST_CONF=$(apachectl -t)
-        if [ "$TEST_CONF" == "Syntax OK" ]; then
+        if [ $(apachectl -t) ]; then
             echo "♻️ Reload Apache"
             service apache2 reload
         fi
@@ -119,8 +118,7 @@ if [ "$SETUP_APACHE" == true ]; then
             if [ "$j" == "--update-apache-conf" ]; then
                 echo "🏗 Update apache vhost for $i"
                 scp -r "apache/$TARGET_APACHE_CONF" "$i:/etc/apache2/sites-available/"
-                TEST_CONF=$(ssh -q "$i" apachectl -t)
-                if [ "$TEST_CONF" == "Syntax OK" ]; then
+                if [ $(ssh -q "$i" apachectl -t) ]; then
                   echo "♻️ Reload Apache"
                   service apache2 reload
                 fi
