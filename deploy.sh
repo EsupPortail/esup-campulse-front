@@ -113,7 +113,7 @@ if [ "$SETUP_APACHE" == true ]; then
         TEST_CONF=$?
         if [ "$TEST_CONF" == 0 ]; then
             echo "♻️ Reload Apache"
-            service apache2 reload
+            ssh -q "$i" service apache2 reload
         fi
       else
         for j in "$@"; do
@@ -124,7 +124,7 @@ if [ "$SETUP_APACHE" == true ]; then
                 TEST_CONF=$?
                 if [ "$TEST_CONF" == 0 ]; then
                   echo "♻️ Reload Apache"
-                  service apache2 reload
+                  ssh -q "$i" service apache2 reload
                 fi
             fi
         done
