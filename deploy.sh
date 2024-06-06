@@ -109,7 +109,7 @@ if [ "$SETUP_APACHE" == true ]; then
         echo "🏗 Setup apache vhost for $i"
         scp -r "apache/$TARGET_APACHE_CONF" "$i:/etc/apache2/sites-available/"
         ssh -q "$i" a2ensite "/etc/apache2/sites-available/$TARGET_APACHE_CONF"
-        apachectl -t
+        ssh -q "$i" apachectl -t
         TEST_CONF=$?
         if [ "$TEST_CONF" == 0 ]; then
             echo "♻️ Reload Apache"
