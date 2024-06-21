@@ -8,6 +8,7 @@
     "build:test": "vue-tsc --noEmit && NODE_ENV=development vite build --mode deploy_test",
     "build:preprod": "vue-tsc --noEmit && NODE_ENV=production vite build --mode deploy_pprd",
     "build:prod": "vue-tsc --noEmit && NODE_ENV=production vite build --mode deploy_prod",
+    "build:demo": "vue-tsc --noEmit && NODE_ENV=production vite build --mode deploy_demo",
     "lint": "eslint . --ext .vue,.ts,.js,.json --fix --ignore-path .gitignore",
     "opalint": "eslint . --ext .vue,.ts,.js,.json --fix --ignore-path .gitignore && echo '\\033[0;32mgropif\\033[0;32m'",
     "preview": "vite preview --port 5050",
