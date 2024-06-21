@@ -1,10 +1,10 @@
 import {fileURLToPath, URL} from 'url'
-
 import {defineConfig, loadEnv} from 'vite'
 import {resolve, dirname} from 'node:path'
 import {quasar, transformAssetUrls} from '@quasar/vite-plugin'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import {visualizer} from 'rollup-plugin-visualizer'
 
 
 // https://vitejs.dev/config/
@@ -14,6 +14,15 @@ export default defineConfig(({command, mode}) => {
         return {
             build: {
                 sourcemap: true,
+                rollupOptions: {
+                    output: {
+                        manualChunks: {
+                            zxcvbn: [
+                                'zxcvbn'
+                            ]
+                        }
+                    }
+                }
             },
             define: {
                 __APP_ENV__: JSON.stringify(env.APP_ENV),
@@ -29,6 +38,7 @@ export default defineConfig(({command, mode}) => {
                 VueI18nPlugin({
                     include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**'),
                 }),
+                visualizer()
             ],
             publicDir: env.PUBLIC_FOLDER,
             resolve: {

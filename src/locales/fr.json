@@ -601,6 +601,7 @@
       "error-415": "Le fichier n'est pas au bon format.",
       "error-500": "Une erreur est survenue au niveau du serveur.",
       "error-mimetype": "Le format du fichier attendu est incorrect.",
+      "error-title-length": "Le nom de votre fichier ne doit pas dépasser les 100 caractères.",
       "need-gdpr-consent": "Vous devez consentir à la politique de gestion des données personnelles.",
       "no-ticket": "Pas de ticket.",
       "publish-association-error": "L'association n'a pas été publiée dans l'annuaire.",

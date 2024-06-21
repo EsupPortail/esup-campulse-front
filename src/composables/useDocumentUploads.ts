@@ -15,6 +15,7 @@ const documentUploads = ref<UploadedProcessDocument[]>([])
 
 const MAX_FILE_SIZE = 8 * 1048576
 const MAX_FILES = 10
+const MAX_TITLE_LENGTH = 100
 
 export default function () {
     const {axiosPublic, axiosAuthenticated} = useAxios()
@@ -222,6 +223,7 @@ export default function () {
         initManagedUserDocumentUploads,
         initUserDocumentUploads,
         MAX_FILES,
-        MAX_FILE_SIZE
+        MAX_FILE_SIZE,
+        MAX_TITLE_LENGTH
     }
 }
