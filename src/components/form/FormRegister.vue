@@ -166,7 +166,7 @@ async function onRegister() {
                         :label="t('forms.email') + ' *'"
                         :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
                                  val => !val.endsWith(CAS_INSTITUTION_DOMAIN) &&
-                                     !userStore.isCas || t('forms.error-unistra-mail-domain')]"
+                                     !userStore.isCas || t('forms.error-university-mail-domain')]"
                         aria-required="true"
                         autocomplete="email"
                         clearable
