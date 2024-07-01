@@ -587,6 +587,7 @@ const routes: RouteRecordRaw[] = [
                     breadcrumb: i18n.global.t('breadcrumbs.contact'),
                     colorVariant: 'space-1',
                     siteMap: true,
+                    breaklineFooter: true,
                 }
             },
             {
@@ -631,6 +632,7 @@ const routes: RouteRecordRaw[] = [
                     breadcrumb: i18n.global.t('breadcrumbs.multiannual-accessibility-plan'),
                     colorVariant: 'space-1',
                     siteMap: true,
+                    breaklineFooter: true,
                 }
             },
             {

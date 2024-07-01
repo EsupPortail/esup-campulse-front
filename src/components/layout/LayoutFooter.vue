@@ -86,19 +86,22 @@ onMounted(async () => {
         </div>
         <QToolbar>
             <ul class="footer-text">
-                <li
+                <template
                     v-for="route in router.options.routes[0].children?.filter((r) => r?.meta?.siteMap === true)"
                     :key="route.name"
                 >
-                    <RouterLink
-                        :to="{name: route?.name ?? route?.children?.[0].name}"
-                        class="li-footer"
-                    >
-                        {{
-                            route?.meta?.title ?? route?.children?.[0].meta?.title ?? ''
-                        }}
-                    </RouterLink>
-                </li>
+                    <li>
+                        <RouterLink
+                            :to="{name: route?.name ?? route?.children?.[0].name}"
+                            class="li-footer"
+                        >
+                            {{
+                                route?.meta?.title ?? route?.children?.[0].meta?.title ?? ''
+                            }}
+                        </RouterLink>
+                    </li>
+                    <br v-if="route?.meta?.breaklineFooter">
+                </template>
                 <li>
                     <RouterLink
                         :to="{name: 'Login'}"

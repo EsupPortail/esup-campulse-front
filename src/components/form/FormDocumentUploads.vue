@@ -26,7 +26,8 @@ const {
     initManagedUserDocumentUploads,
     initUserDocumentUploads,
     MAX_FILE_SIZE,
-    MAX_FILES
+    MAX_FILES,
+    MAX_TITLE_LENGTH
 } = useDocumentUploads()
 const {acceptedFormats} = useDocuments()
 const {t} = useI18n()
@@ -39,8 +40,8 @@ const userStore = useUserStore()
 const {projectFunds, initProjectFunds} = useSubmitProject()
 
 const props = defineProps<{
-    process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
-    associationId: number | null | undefined
+  process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
+  associationId: number | null | undefined
 }>()
 
 // COLOR
@@ -64,7 +65,7 @@ onMounted(async () => {
 async function onGetDocuments() {
     loading.show()
     try {
-        // Get documents for project, review and charter processes
+    // Get documents for project, review and charter processes
         let processes: DocumentProcessType[] = []
 
         if (props.process === 'project') processes = ['DOCUMENT_PROJECT']
@@ -163,6 +164,7 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
         }
     }
 }
+
 </script>
 
 <template>
@@ -210,9 +212,11 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
                 :rules="(document.isRequiredInProcess || (props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management')) &&
                     !documentUploads.filter(obj => obj.document === document.document).length ?
                         [val => ((document.isMultiple ? val.length : val) ||
-                            ((props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') &&
-                                (processDocuments.filter(x => x.pathFile).length > 0 || documentUploads.length))) ||
-                            t('forms.select-document') + ' ' + t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.'] : []"
+                             ((props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') &&
+                                 (processDocuments.filter(x => x.pathFile).length > 0 || documentUploads.length))) ||
+                             t('forms.select-document') + ' ' + t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.',
+                         val => (document.isMultiple ? !(val.find((obj: File) => obj.name.length >= MAX_TITLE_LENGTH)) : val.name.length <= MAX_TITLE_LENGTH) || t('notifications.negative.error-title-length')
+                        ] : [ val => (document.isMultiple ? !(val.find((obj: File) => obj.name.length >= MAX_TITLE_LENGTH)) : val.name.length <= MAX_TITLE_LENGTH) || t('notifications.negative.error-title-length') ]"
                 append
                 bottom-slots
                 clearable
@@ -275,10 +279,10 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
 @import '@/assets/_variables.scss';
 
 ul.document-input-list {
-    list-style: none;
+  list-style: none;
 }
 
 ul.document-input-list li {
-    cursor: pointer;
+  cursor: pointer;
 }
 </style>
