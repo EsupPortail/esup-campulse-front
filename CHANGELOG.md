@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0 (Q3 2024)
+
+### Evolutions
+
+- Déplacement des variables CSS personnalisables dans un fichier dédié
+- Configuration pour le déploiement de l'instance démo (Apache)
+- Lissage des locales pour les rendre plus neutres en vue des futurs déploiements
+
+### Corrections de bugs
+
+- Correction de l'affichage du statut de la charte Site Alsace
+- Limite de caractères sur le nom des fichiers pouvant être soumis avec un projet
+
 ## 1.1.0 (Q2 2024)
 
 ### Fonctionnalités
