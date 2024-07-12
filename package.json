@@ -1,6 +1,6 @@
 {
   "name": "plana",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
@@ -26,7 +26,7 @@
     "bootstrap-icons": "^1.11.3",
     "pinia": "^2.1.7",
     "quasar": "^2.14.5",
-    "vue": "^3.4.15",
+    "vue": "3.4.27",
     "vue-i18n": "^9.9.1",
     "vue-matomo": "^4.2.0",
     "vue-router": "^4.3.0",
