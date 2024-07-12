@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1 (juillet 2024)
+
+### Evolutions
+
+- Mise à jour de la configuration des URL CAS pour permettre de l'étendre aux établissements du SaaS
+- Mise à jour des textes liés au RGPD
+
 ## 1.2.0 (Q3 2024)
 
 ### Evolutions
