@@ -66,6 +66,7 @@ async function onLoadCASUser() {
 
 // Register newUser
 async function onRegister() {
+    loading.show()
     if (groupChoiceIsValid.value) {
         if (isStaff.value || hasConsent.value) {
             try {
@@ -112,6 +113,7 @@ async function onRegister() {
             })
         }
     }
+    loading.hide()
 }
 </script>
 
