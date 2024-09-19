@@ -245,7 +245,7 @@ describe('Project store', () => {
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith(url, {
                 projectId: projectStore.project?.id,
-                commissionFundId: 2
+                newCommissionFundId: 2
             })
         })
     })

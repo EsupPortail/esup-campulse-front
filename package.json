@@ -1,6 +1,6 @@
 {
   "name": "plana",
-  "version": "1.1.0-beta",
+  "version": "1.2.1",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
@@ -8,6 +8,7 @@
     "build:test": "vue-tsc --noEmit && NODE_ENV=development vite build --mode deploy_test",
     "build:preprod": "vue-tsc --noEmit && NODE_ENV=production vite build --mode deploy_pprd",
     "build:prod": "vue-tsc --noEmit && NODE_ENV=production vite build --mode deploy_prod",
+    "build:demo": "vue-tsc --noEmit && NODE_ENV=production vite build --mode deploy_demo",
     "lint": "eslint . --ext .vue,.ts,.js,.json --fix --ignore-path .gitignore",
     "opalint": "eslint . --ext .vue,.ts,.js,.json --fix --ignore-path .gitignore && echo '\\033[0;32mgropif\\033[0;32m'",
     "preview": "vite preview --port 5050",
@@ -25,7 +26,7 @@
     "bootstrap-icons": "^1.11.3",
     "pinia": "^2.1.7",
     "quasar": "^2.14.5",
-    "vue": "^3.4.15",
+    "vue": "3.4.27",
     "vue-i18n": "^9.9.1",
     "vue-matomo": "^4.2.0",
     "vue-router": "^4.3.0",

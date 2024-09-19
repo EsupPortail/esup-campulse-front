@@ -53,7 +53,8 @@ export interface DocumentUpload {
     user?: number | null,
     association?: number | null,
     project?: number | null,
-    name?: string
+    name?: string,
+    calculatedExpirationDate?: string | null
 }
 
 export interface ProcessDocument {

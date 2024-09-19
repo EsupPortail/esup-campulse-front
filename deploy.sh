@@ -4,7 +4,7 @@ set -e
 PROJECT="plan-a-front"
 
 if [ ! $# -ge 2 ]; then
-  echo "👉 Usage: $0 branch/tag goal [--update-nginx-conf]     IRL: $0 feature/introduce_bug prod"
+  echo "👉 Usage: $0 branch/tag goal [--update-nginx-conf] [--update-apache-conf]    IRL: $0 feature/introduce_bug prod"
   exit 1
 fi
 
@@ -15,13 +15,6 @@ DISTANT_REPO="git@git.unistra.fr:di/plan_a/front.git" #$(git config --get remote
 WORKING_DIR="$TEMP/git-clone"
 DEST_PATH="/var/www/static/plan_a/"
 
-# Shall we install nginx config files ?
-SETUP_NGINX=true
-
-# Shall we use sentry ?
-# if so sentry-cli is required !!!!
-USE_SENTRY=true
-
 TEST_HOSTS=("root@django-test2.di.unistra.fr")
 TEST_NGINX_CONF="plana-test.app.unistra.fr"
 
@@ -31,10 +24,33 @@ PREPROD_NGINX_CONF="plana-pprd.app.unistra.fr"
 PROD_HOSTS=("root@rp-dip-public-m.di.unistra.fr" "root@rp-dip-public-s.di.unistra.fr")
 PROD_NGINX_CONF="etu-campulse.fr"
 
+DEMO_HOSTS=("root@rp-shib3-pprd-1.srv.unistra.fr" "root@rp-shib3-pprd-2.srv.unistra.fr")
+DEMO_APACHE_CONF="campulse-demo.unistra.fr"
+
 # Json info file template
 TEMPLATE='{"info":{"app_host":"%s","repo_url":"%s","local_user":"%s","tag":"%s","commit_id":"%s"}}'
 
+# Set env
 ENVIRONMENT="$2"
+
+# Shall we install nginx config files ?
+SETUP_NGINX=true
+
+# Shall we install apache config files ?
+SETUP_APACHE=false
+
+# Shall we use sentry ?
+# if so sentry-cli is required !!!!
+USE_SENTRY=true
+
+# Special conf for demo
+if [ $ENVIRONMENT == "demo" ]; then
+  SETUP_NGINX=false
+  SETUP_APACHE=true
+  USE_SENTRY=false
+  DEST_PATH="/var/www/static/campulse-demo/"
+fi
+
 case "$ENVIRONMENT" in
     test)
         TARGET=("${TEST_HOSTS[@]}")
@@ -54,6 +70,12 @@ case "$ENVIRONMENT" in
         TARGET_NGINX_CONF="$HOST.conf"
         SOURCE_ENV_FILE=".env.deploy_prod"
 	;;
+    demo)
+        TARGET=("${DEMO_HOSTS[@]}")
+        HOST="$DEMO_APACHE_CONF"
+        TARGET_APACHE_CONF="$HOST.conf"
+        SOURCE_ENV_FILE=".env.deploy_demo"
+  ;;
 esac
 
 echo "ENV : $2"
@@ -79,6 +101,37 @@ if [ "$SETUP_NGINX" == true ]; then
       fi
   done
 fi
+
+# Shall we install apache config ?
+if [ "$SETUP_APACHE" == true ]; then
+  for i in "${TARGET[@]}"; do
+      if ! ssh -q "$i" test -L "/etc/apache2/sites-enabled/$TARGET_APACHE_CONF"; then
+        echo "🏗 Setup apache vhost for $i"
+        scp -r "apache/$TARGET_APACHE_CONF" "$i:/etc/apache2/sites-available/"
+        ssh -q "$i" a2ensite "/etc/apache2/sites-available/$TARGET_APACHE_CONF"
+        ssh -q "$i" apachectl -t
+        TEST_CONF=$?
+        if [ "$TEST_CONF" == 0 ]; then
+            echo "♻️ Reload Apache"
+            ssh -q "$i" service apache2 reload
+        fi
+      else
+        for j in "$@"; do
+            if [ "$j" == "--update-apache-conf" ]; then
+                echo "🏗 Update apache vhost for $i"
+                scp -r "apache/$TARGET_APACHE_CONF" "$i:/etc/apache2/sites-available/"
+                ssh -q "$i" apachectl -t
+                TEST_CONF=$?
+                if [ "$TEST_CONF" == 0 ]; then
+                  echo "♻️ Reload Apache"
+                  ssh -q "$i" service apache2 reload
+                fi
+            fi
+        done
+      fi
+  done
+fi
+
 cd "$TEMP"
 echo "🔀 Cloning repository on target tag/branch"
 git clone -b "$1" --single-branch "$REPOSITORY" "$WORKING_DIR"
@@ -124,4 +177,3 @@ fi
 # Clean working dir
 cd .. && rm -rf "$WORKING_DIR"
 echo "🎉 $PROJECT $PROJECT_VERSION successfully deployed"
-

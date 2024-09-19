@@ -7,8 +7,8 @@ import {onMounted} from 'vue'
 const {t} = useI18n()
 const {dynamicTitle} = useUtility()
 
-const CASUrlLogin = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-login`
-const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/cas/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-register`
+const CASUrlLogin = `${import.meta.env.VITE_APP_CAS_URL}/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-login`
+const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-register`
 
 onMounted(() => {
     dynamicTitle.value = t('forms.login')
@@ -56,7 +56,6 @@ onMounted(() => {
                     </QCardSection>
                 </QCard>
 
-                <!-- class="card" -->
                 <QCard
                     id="local-login"
                 >

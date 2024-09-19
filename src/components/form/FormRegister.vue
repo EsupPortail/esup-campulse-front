@@ -66,6 +66,7 @@ async function onLoadCASUser() {
 
 // Register newUser
 async function onRegister() {
+    loading.show()
     if (groupChoiceIsValid.value) {
         if (isStaff.value || hasConsent.value) {
             try {
@@ -112,6 +113,7 @@ async function onRegister() {
             })
         }
     }
+    loading.hide()
 }
 </script>
 
@@ -166,7 +168,7 @@ async function onRegister() {
                         :label="t('forms.email') + ' *'"
                         :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
                                  val => !val.endsWith(CAS_INSTITUTION_DOMAIN) &&
-                                     !userStore.isCas || t('forms.error-unistra-mail-domain')]"
+                                     !userStore.isCas || t('forms.error-university-mail-domain')]"
                         aria-required="true"
                         autocomplete="email"
                         clearable

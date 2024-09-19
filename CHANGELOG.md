@@ -1,6 +1,26 @@
 # Changelog
 
-## 1.1.0 (Q1 2024)
+## 1.2.1 (juillet 2024)
+
+### Evolutions
+
+- Mise à jour de la configuration des URL CAS pour permettre de l'étendre aux établissements du SaaS
+- Mise à jour des textes liés au RGPD
+
+## 1.2.0 (Q3 2024)
+
+### Evolutions
+
+- Déplacement des variables CSS personnalisables dans un fichier dédié
+- Configuration pour le déploiement de l'instance démo (Apache)
+- Lissage des locales pour les rendre plus neutres en vue des futurs déploiements
+
+### Corrections de bugs
+
+- Correction de l'affichage du statut de la charte Site Alsace
+- Limite de caractères sur le nom des fichiers pouvant être soumis avec un projet
+
+## 1.1.0 (Q2 2024)
 
 ### Fonctionnalités
 
@@ -10,6 +30,7 @@
 
 - Correction de la redirection automatique Logout > Login après expiration des tokens
 - Placement du bouton "Revenir en haut" corrigé sur mobile.
+- Statut de la charte Site Alsace corrigé dans l'interface de gestion des chartes.
 
 ### Autres changements
 
