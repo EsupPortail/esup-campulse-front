@@ -163,5 +163,4 @@ export const useProjectStore = defineStore('projectStore', {
             this.managedProjects = this.managedProjects.filter(obj => obj.manualIdentifier === manualIdentifier)
         }
     }
-
 })
