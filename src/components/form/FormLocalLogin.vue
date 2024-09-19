@@ -10,14 +10,14 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const router = useRouter()
 const {user} = useSecurity()
-const {logIn} = useUserStore()
+const userStore = useUserStore()
 
 const passwordVisibility = ref<boolean>(false)
 
 async function onLogIn() {
     loading.show()
     try {
-        await logIn('/users/auth/login/', {
+        await userStore.logIn('/users/auth/login/', {
             username: user.value.username, password: user.value.password
         })
         await router.push({name: 'Dashboard'})
@@ -83,8 +83,6 @@ async function onLogIn() {
                 data-test="register-button"
             />
         </div>
-        <!-- <QBtn :label="t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
-        <QBtn :label="t('forms.resend-email')" class="q-sm" color="primary" flat to="/register-resend-email"/> -->
 
         <div class="login-links">
             <RouterLink
@@ -93,7 +91,7 @@ async function onLogIn() {
             >
                 <span class="icon icon-mentions"></span>{{ t('forms.reset-password') }}
             </RouterLink>
-            <br />
+            <br/>
             <RouterLink
                 class="login-link"
                 to="/register-resend-email"

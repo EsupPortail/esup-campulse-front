@@ -54,16 +54,6 @@ export default function () {
         localStorage.removeItem('JWT__refresh__token')
     }
 
-    /*    /!**
-     * It logs in a user.
-     *!/
-    async function logIn() {
-        await userStore.logIn('/users/auth/login/', {
-            username: user.value.username,
-            password: user.value.password as string
-        })
-    }*/
-
     async function cancelAbortedCasRegistration() {
         // Delete user in DB
         await axiosAuthenticated.delete('/users/auth/user/')
@@ -273,7 +263,6 @@ export default function () {
     }
 
     return {
-        //logIn,
         user,
         register,
         newUser,
