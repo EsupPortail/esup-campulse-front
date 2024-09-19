@@ -45,37 +45,43 @@ export const useUserStore = defineStore('userStore', {
     },
     actions: {
         /**
-         * It takes an url and a data object, and then it makes a post request to the url with the data object
-         * @param {string} url - The url to send the request to.
-         * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
+         * Logs in a user by posting the provided data to the specified URL.
+         * @param {string} url - The endpoint URL for the login request.
+         * @param {LocalLogin | CasLogin} data - User login data, either as LocalLogin or CasLogin.
+         * @throws {Error} If the user is not validated by an admin or if the user account is incomplete.
+         * @returns {Promise<void>} - Sets the user state and tokens if login is successful.
          */
+
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const {axiosPublic} = useAxios()
             const {newUser, setTokens} = useSecurity()
-            const response = await axiosPublic.post(url, data)
-            const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
-            // User account is complete
-            if (user.groups.length) {
-                // If user is validated by admin
-                if (user.isValidatedByAdmin) {
-                    setTokens(access, refresh)
-                    this.user = user
+
+            try {
+                const response = await axiosPublic.post(url, data)
+                const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
+                // User account is complete
+                if (user.groups.length) {
+                    if (user.isValidatedByAdmin) {
+                        setTokens(access, refresh)
+                        this.user = user
+                    } else {
+                        throw new Error('USER_NOT_VALIDATED_BY_ADMIN')
+                    }
                 }
-                // If user is not validated by admin
+                // User account is not complete
                 else {
-                    throw new Error('USER_NOT_VALIDATED_BY_ADMIN')
+                    setTokens(access, refresh)
+                    newUser.isCas = user.isCas
+                    newUser.email = user.email
+                    newUser.username = user.username
+                    newUser.firstName = user.firstName
+                    newUser.lastName = user.lastName
+                    newUser.phone = user.phone
+                    throw new Error('USER_ACCOUNT_NOT_COMPLETE')
                 }
-            }
-            // User account is not complete
-            else {
-                setTokens(access, refresh)
-                newUser.isCas = user.isCas
-                newUser.email = user.email
-                newUser.username = user.username
-                newUser.firstName = user.firstName
-                newUser.lastName = user.lastName
-                newUser.phone = user.phone
-                throw new Error('USER_ACCOUNT_NOT_COMPLETE')
+            } catch (error) {
+                console.error('Login failed: ', error)
+                throw error
             }
         },
         logOut() {

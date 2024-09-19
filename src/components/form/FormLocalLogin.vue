@@ -4,18 +4,22 @@ import {useQuasar} from 'quasar'
 import useSecurity from '@/composables/useSecurity'
 import {useRouter} from 'vue-router'
 import {ref} from 'vue'
+import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const router = useRouter()
-const {user, logIn} = useSecurity()
+const {user} = useSecurity()
+const {logIn} = useUserStore()
 
 const passwordVisibility = ref<boolean>(false)
 
 async function onLogIn() {
     loading.show()
     try {
-        await logIn()
+        await logIn('/users/auth/login/', {
+            username: user.value.username, password: user.value.password
+        })
         await router.push({name: 'Dashboard'})
         notify({
             type: 'positive',

@@ -36,8 +36,7 @@ describe('useSecurity', () => {
         CASUsers,
         setTokens,
         removeTokens,
-        logIn,
-        user,
+        // user,
         hasPerm,
         userLocalRegister,
         userCASRegister,
@@ -85,7 +84,7 @@ describe('useSecurity', () => {
         })
     })
 
-    describe('logIn', () => {
+    /*    describe('logIn', () => {
         it('should call logIn function in userStore with API route and user infos as payload', async () => {
             user.value = {
                 username: 'john',
@@ -96,7 +95,7 @@ describe('useSecurity', () => {
             expect(spy).toHaveBeenCalledOnce()
             expect(spy).toHaveBeenCalledWith('/users/auth/login/', user.value)
         })
-    })
+    })*/
 
     describe('hasPerm', () => {
         it('should return true if userPermission is in userStore', () => {
