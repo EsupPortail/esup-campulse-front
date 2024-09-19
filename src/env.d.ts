@@ -46,6 +46,10 @@ declare module 'vue-matomo' {
     enableLinkTracking(): void;
   }
 
+  interface ImportMetaEnv {
+    VITE_APP_OPEN_LDAP: boolean;
+  }
+
   declare type MatomoOptions = DefaultOptions | MatomoSetupOptions;
   const defaultOptions: DefaultOptions
   const matomoKey: string

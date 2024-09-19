@@ -13,6 +13,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "composite": true,
+    "strict": false,
     "lib": [
       "ESNext",
       "DOM"
