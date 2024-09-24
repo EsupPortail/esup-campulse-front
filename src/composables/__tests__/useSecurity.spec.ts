@@ -86,19 +86,6 @@ describe('useSecurity', () => {
         })
     })
 
-    /*    describe('logIn', () => {
-        it('should call logIn function in userStore with API route and user infos as payload', async () => {
-            user.value = {
-                username: 'john',
-                password: 'password'
-            }
-            const spy = vi.spyOn(userStore, 'logIn')
-            await logIn()
-            expect(spy).toHaveBeenCalledOnce()
-            expect(spy).toHaveBeenCalledWith('/users/auth/login/', user.value)
-        })
-    })*/
-
     /*describe('logIn', () => {
         afterEach(() => {
             _institutionStudent.isValidatedByAdmin = true
