@@ -1,24 +1,22 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import useSecurity from '@/composables/useSecurity'
 import {useRouter} from 'vue-router'
 import {ref} from 'vue'
-import {useUserStore} from '@/stores/useUserStore'
+import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const router = useRouter()
-const {user} = useSecurity()
-const userStore = useUserStore()
+const {userCredentials, logIn} = useSecurity()
 
 const passwordVisibility = ref<boolean>(false)
 
 async function onLogIn() {
     loading.show()
     try {
-        await userStore.logIn('/users/auth/login/', {
-            username: user.value.username, password: user.value.password
+        await logIn(false, {
+            username: userCredentials.value.username, password: userCredentials.value.password
         })
         await router.push({name: 'Dashboard'})
         notify({
@@ -42,7 +40,7 @@ async function onLogIn() {
         @submit.prevent="onLogIn"
     >
         <QInput
-            v-model="user.username"
+            v-model="userCredentials.username"
             :label="t('forms.email')"
             :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
             autocomplete="email"
@@ -52,7 +50,7 @@ async function onLogIn() {
             lazy-rules
         />
         <QInput
-            v-model="user.password"
+            v-model="userCredentials.password"
             :label="t('forms.password')"
             :rules="[val => val && val.length > 0 || t('forms.required-password')]"
             :type="passwordVisibility ? 'text' : 'password'"

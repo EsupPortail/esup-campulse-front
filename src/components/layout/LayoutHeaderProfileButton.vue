@@ -7,8 +7,10 @@ import {onMounted} from 'vue'
 import useUserAssociations from '@/composables/useUserAssociations'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import useSecurity from '@/composables/useSecurity'
 
 const userStore = useUserStore()
+const {logOut} = useSecurity()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {getUserAssociations} = useUserAssociations()
@@ -21,7 +23,7 @@ const props = defineProps<{
 async function onLogOut() {
     loading.show()
     try {
-        userStore.logOut()
+        logOut()
         await router.push({name: 'Login'})
         notify({
             type: 'positive',

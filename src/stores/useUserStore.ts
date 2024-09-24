@@ -1,8 +1,7 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
+import type {User, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
-import useUserGroups from '@/composables/useUserGroups'
 import type {DocumentProcessType, DocumentUpload} from '#/documents'
 import useCommissions from '@/composables/useCommissions'
 
@@ -44,53 +43,17 @@ export const useUserStore = defineStore('userStore', {
         }
     },
     actions: {
-        /**
-         * Logs in a user by posting the provided data to the specified URL.
-         * @param {string} url - The endpoint URL for the login request.
-         * @param {LocalLogin | CasLogin} data - User login data, either as LocalLogin or CasLogin.
-         * @throws {Error} If the user is not validated by an admin or if the user account is incomplete.
-         * @returns {Promise<void>} - Sets the user state and tokens if login is successful.
-         */
-
-        async logIn(url: string, data: LocalLogin | CasLogin) {
-            const {axiosPublic} = useAxios()
-            const {newUser, setTokens} = useSecurity()
-
-            try {
-                const response = await axiosPublic.post(url, data)
-                const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
-                // User account is complete
-                if (user.groups.length) {
-                    if (user.isValidatedByAdmin) {
-                        setTokens(access, refresh)
-                        this.user = user
-                    } else {
-                        throw new Error('USER_NOT_VALIDATED_BY_ADMIN')
-                    }
-                }
-                // User account is not complete
-                else {
-                    setTokens(access, refresh)
-                    newUser.isCas = user.isCas
-                    newUser.email = user.email
-                    newUser.username = user.username
-                    newUser.firstName = user.firstName
-                    newUser.lastName = user.lastName
-                    newUser.phone = user.phone
-                    throw new Error('USER_ACCOUNT_NOT_COMPLETE')
-                }
-            } catch (error) {
-                console.error('Login failed: ', error)
-                throw error
-            }
+        unLoadUser() {
+            this.user = undefined
+            this.userAssociations = []
         },
-        logOut() {
+
+        unLoadNewUser() {
             const {removeTokens} = useSecurity()
-            const {isStaff} = useUserGroups()
             removeTokens()
-            this.unLoadUser()
-            isStaff.value = undefined
+            this.newUser = undefined
         },
+
         /**
          * It gets the user data from the server, and if the user is validated by the admin, it sets the user data to the
          * user variable, and if the user is not validated by the admin, it sets the user data to the newUser variable
@@ -112,18 +75,10 @@ export const useUserStore = defineStore('userStore', {
                         phone: user.phone as string
                     }
                 } else {
-                    await this.logOut()
+                    const {logOut} = useSecurity()
+                    await logOut
                 }
             }
-        },
-        unLoadUser() {
-            this.user = undefined
-            this.userAssociations = []
-        },
-        unLoadNewUser() {
-            const {removeTokens} = useSecurity()
-            removeTokens()
-            this.newUser = undefined
         },
         /**
          * It sends a POST request to the backend with the CAS ticket and the service URL, and then it sets the tokens and

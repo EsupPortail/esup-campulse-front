@@ -3,21 +3,21 @@ import {onMounted} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useRoute} from 'vue-router'
 import {useQuasar} from 'quasar'
-import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import useSecurity from '@/composables/useSecurity'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const route = useRoute()
-const userStore = useUserStore()
+const {logIn} = useSecurity()
 const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     try {
         if (route.query.ticket) {
-            await userStore.logIn('/users/auth/cas/login/', {
+            await logIn(true, {
                 ticket: route.query.ticket as string,
                 service: import.meta.env.VITE_APP_FRONT_URL + '/cas-login'
             })

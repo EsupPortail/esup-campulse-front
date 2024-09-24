@@ -3,15 +3,15 @@ import {onMounted} from 'vue'
 import {useQuasar} from 'quasar'
 import router from '@/router'
 import {useI18n} from 'vue-i18n'
-import {useUserStore} from '@/stores/useUserStore'
+import useSecurity from '@/composables/useSecurity'
 
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
-const userStore = useUserStore()
+const {logOut} = useSecurity()
 
 onMounted(async () => {
     loading.show()
-    userStore.logOut()
+    logOut()
     await router.push({name: 'Login'})
     notify({
         type: 'negative',

@@ -1,5 +1,5 @@
 import {reactive, ref, watch} from 'vue'
-import type {CASUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
+import type {CasLogin, CASUser, LocalLogin, User, UserGroupRegister, UserRegister} from '#/user'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
@@ -10,7 +10,7 @@ import useCommissions from '@/composables/useCommissions'
 import zxcvbn from 'zxcvbn'
 
 // Used for local login
-const user = ref<LocalLogin>({
+const userCredentials = ref<LocalLogin>({
     username: '',
     password: ''
 })
@@ -52,6 +52,53 @@ export default function () {
     function removeTokens() {
         localStorage.removeItem('JWT__access__token')
         localStorage.removeItem('JWT__refresh__token')
+    }
+
+    /**
+     * Logs in a user by posting the provided data, determining the login type based on casLogin flag.
+     * @param {boolean} casLogin - Flag indicating whether the login is a CAS login (true) or a local login (false).
+     * @param {LocalLogin | CasLogin} data - User login data, either as LocalLogin or CasLogin.
+     * @throws {Error} If the user is not validated by an admin or if the user account is incomplete.
+     * @returns {Promise<void>} - Sets the user state and tokens if login is successful.
+     */
+    async function logIn(casLogin: boolean, data: LocalLogin | CasLogin) {
+        const {axiosPublic} = useAxios()
+
+        try {
+            const url = casLogin ? '/users/auth/cas/login/' : '/users/auth/login/'
+            const response = await axiosPublic.post(url, data)
+            const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
+            // User account is complete
+            if (user.groups.length) {
+                if (user.isValidatedByAdmin) {
+                    setTokens(access, refresh)
+                    userStore.user = user
+                } else {
+                    throw new Error('USER_NOT_VALIDATED_BY_ADMIN')
+                }
+            }
+            // User account is not complete
+            else {
+                setTokens(access, refresh)
+                newUser.isCas = user.isCas
+                newUser.email = user.email
+                newUser.username = user.username
+                newUser.firstName = user.firstName
+                newUser.lastName = user.lastName
+                newUser.phone = user.phone
+                throw new Error('USER_ACCOUNT_NOT_COMPLETE')
+            }
+        } catch (error) {
+            console.error('Login failed: ', error)
+            throw error
+        }
+    }
+
+    function logOut() {
+        const {isStaff} = useUserGroups()
+        removeTokens()
+        userStore.unLoadUser()
+        isStaff.value = undefined
     }
 
     async function cancelAbortedCasRegistration() {
@@ -263,7 +310,9 @@ export default function () {
     }
 
     return {
-        user,
+        userCredentials,
+        logIn,
+        logOut,
         register,
         newUser,
         loadCASUser,

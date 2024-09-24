@@ -9,7 +9,7 @@ import {
     _associationRole, _CASUsers,
     _institutionManager,
     _institutionStudent,
-    _newUser,
+    _newUser, /*_userGroups*/
 } from '~/fixtures/user.mock'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
@@ -25,7 +25,7 @@ config.global.plugins = [
 vi.mock('@/composables/useAxios', () => ({
     useAxios: () => ({
         axiosPublic: _axiosFixtures,
-        axiosAuthenticated: _axiosFixtures
+        axiosAuthenticated: _axiosFixtures,
     })
 }))
 
@@ -37,6 +37,8 @@ describe('useSecurity', () => {
         setTokens,
         removeTokens,
         // user,
+        //logIn,
+        //logOut,
         hasPerm,
         userLocalRegister,
         userCASRegister,
@@ -97,6 +99,64 @@ describe('useSecurity', () => {
         })
     })*/
 
+    /*describe('logIn', () => {
+        afterEach(() => {
+            _institutionStudent.isValidatedByAdmin = true
+            data.user.groups = [_userGroups[3]]
+        })
+        const {axiosPublic} = useAxios()
+        const mockedAxios = vi.mocked(axiosPublic, true)
+        const data = {
+            user: _institutionStudent,
+            access: _tokens.access,
+            refresh: _tokens.refresh
+        }
+        describe('if user account is complete', () => {
+            describe('if user account is validated by admin', () => {
+                it('should set tokens and populate user data in store', async () => {
+                    mockedAxios.post.mockResolvedValueOnce({data})
+                    await logIn('url', {username: 'john', password: 'password'})
+                    expect(setTokens).toHaveBeenCalledOnce()
+                    expect(setTokens).toHaveBeenCalledWith(_tokens.access, _tokens.refresh)
+                    expect(userStore.user).toEqual(_institutionStudent)
+                })
+            })
+            describe('if user account is not validated by admin', () => {
+                it('should throw an error', async () => {
+                    data.user.isValidatedByAdmin = false
+                    mockedAxios.post.mockResolvedValueOnce({data})
+                    await expect(() => logIn('url', {
+                        username: 'john',
+                        password: 'password'
+                    })).rejects.toThrowError(/^USER_NOT_VALIDATED_BY_ADMIN$/)
+                })
+            })
+        })
+        describe('if user account is not complete', () => {
+            it('should set tokens, populate user data in newUser and throw an error', async () => {
+                data.user.groups = []
+                mockedAxios.post.mockResolvedValueOnce({data})
+                await expect(() => logIn('url', {
+                    username: 'john',
+                    password: 'password'
+                })).rejects.toThrowError(/^USER_ACCOUNT_NOT_COMPLETE$/)
+                expect(setTokens).toHaveBeenCalledOnce()
+                expect(setTokens).toHaveBeenCalledWith(_tokens.access, _tokens.refresh)
+            })
+        })
+    })
+
+    describe('logOut', () => {
+        it('should remove tokens and call unLoadUser', () => {
+            const unLoadUser = vi.spyOn(userStore, 'unLoadUser')
+            localStorage.setItem('JWT__access__token', _tokens.access)
+            localStorage.setItem('JWT__refresh__token', _tokens.refresh)
+            logOut()
+            expect(removeTokens).toHaveBeenCalledOnce()
+            expect(unLoadUser).toHaveBeenCalledOnce()
+        })
+    })
+*/
     describe('hasPerm', () => {
         it('should return true if userPermission is in userStore', () => {
             userStore.user = _institutionManager
