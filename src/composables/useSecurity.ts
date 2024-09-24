@@ -64,6 +64,11 @@ export default function () {
         })
     }
 
+    const tokenExpired = (token: string): boolean => {
+        if (!token) return true
+        return JSON.parse(window.atob(token.split('.')[1])).exp < Math.trunc(Date.now() / 1000)
+    }
+
     async function cancelAbortedCasRegistration() {
         // Delete user in DB
         await axiosAuthenticated.delete('/users/auth/user/')
@@ -299,6 +304,7 @@ export default function () {
         checkPasswordStrength,
         initCASUserOptions,
         cancelAbortedCasRegistration,
-        CAS_INSTITUTION_DOMAIN
+        CAS_INSTITUTION_DOMAIN,
+        tokenExpired
     }
 }
