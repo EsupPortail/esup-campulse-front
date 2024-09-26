@@ -36,7 +36,7 @@ async function onGetAssociationDetail() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -49,7 +49,7 @@ async function onGetInstitutions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -62,7 +62,7 @@ async function onGetInstitutionComponents() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -75,7 +75,7 @@ async function onGetAssociationActivityFields() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -98,5 +98,5 @@ onMounted(async function () {
 </script>
 
 <template>
-    <FormAssociationEdition v-if="isLoaded" />
+    <FormAssociationEdition v-if="isLoaded"/>
 </template>

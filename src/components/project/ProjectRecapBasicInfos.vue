@@ -44,7 +44,7 @@ async function onGetAssociationUsers() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -58,7 +58,7 @@ async function onGetAssociationDetails() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -73,7 +73,7 @@ async function onGetUser() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -85,14 +85,15 @@ async function onGetUser() {
     <div class="flex-column">
         <div class="display-row">
             <h4
-                class="row-title"
                 :data-test="t('project.applicant')"
+                class="row-title"
             >
                 {{ t('project.applicant') }}
             </h4>
             <p>
                 {{
-                    applicant === 'association' ? `${associationStore.association?.acronym} (${associationStore.association?.name})` :
+                    applicant === 'association' ? `${associationStore.association?.acronym}
+                (${associationStore.association?.name})` :
                     `${userManagerStore.user?.firstName} ${userManagerStore.user?.lastName}`
                 }}
             </p>
@@ -103,8 +104,8 @@ async function onGetUser() {
             class="display-row"
         >
             <h4
-                class="row-title"
                 :data-test="t('charter.status.title')"
+                class="row-title"
             >
                 {{ t('charter.status.title') }}
             </h4>
@@ -118,8 +119,8 @@ async function onGetUser() {
             class="display-row"
         >
             <h4
-                class="row-title"
                 :data-test="t('project.id')"
+                class="row-title"
             >
                 {{ t('project.id') }}
             </h4>
@@ -131,8 +132,8 @@ async function onGetUser() {
             class="display-row"
         >
             <h4
-                class="row-title"
                 :data-test="t('project.processing-date')"
+                class="row-title"
             >
                 {{ t('project.processing-date') }}
             </h4>
@@ -141,8 +142,8 @@ async function onGetUser() {
 
         <div class="display-row">
             <h4
-                class="row-title"
                 :data-test="t('project.name')"
+                class="row-title"
             >
                 {{ t('project.name') }}
             </h4>
@@ -151,8 +152,8 @@ async function onGetUser() {
 
         <div class="display-row">
             <h4
-                class="row-title"
                 :data-test="t('project.planned-start-date')"
+                class="row-title"
             >
                 {{ t('project.planned-start-date') }}
             </h4>
@@ -165,8 +166,8 @@ async function onGetUser() {
 
         <div class="display-row">
             <h4
-                class="row-title"
                 :data-test="t('project.planned-end-date')"
+                class="row-title"
             >
                 {{ t('project.planned-end-date') }}
             </h4>
@@ -175,8 +176,8 @@ async function onGetUser() {
 
         <div class="display-row">
             <h4
-                class="row-title"
                 :data-test="t('project.planned-location')"
+                class="row-title"
             >
                 {{ t('project.planned-location') }}
             </h4>
@@ -188,8 +189,8 @@ async function onGetUser() {
             class="display-row"
         >
             <h4
-                class="row-title"
                 :data-test="t('project.association-user')"
+                class="row-title"
             >
                 {{ t('project.association-user') }}
             </h4>
@@ -201,8 +202,8 @@ async function onGetUser() {
             class="display-row"
         >
             <h4
-                class="row-title"
                 :data-test="t('project.partner-association')"
+                class="row-title"
             >
                 {{ t('project.partner-association') }}
             </h4>

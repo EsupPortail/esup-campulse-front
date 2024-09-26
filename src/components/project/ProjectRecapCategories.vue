@@ -24,7 +24,7 @@ async function onGetProjectCategories() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
 
@@ -45,8 +45,8 @@ watch(() => projectStore.project, async () => {
 <template>
     <div class="display-row">
         <h4
-            class="row-title"
             :data-test="t('project.categories')"
+            class="row-title"
         >
             {{ t('project.categories') }}
         </h4>

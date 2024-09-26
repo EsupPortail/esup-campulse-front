@@ -35,7 +35,7 @@ async function onGetContent() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -59,7 +59,7 @@ const initContent = () => {
 <template>
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-info-circle" />
+            <QIcon name="bi-info-circle"/>
             {{ t('about.presentation') }}
         </h2>
 
@@ -85,7 +85,7 @@ const initContent = () => {
 
         <div class="dashboard-section">
             <h2>
-                <QIcon name="bi-shop-window" />
+                <QIcon name="bi-shop-window"/>
                 {{ t('about.services') }}
             </h2>
 
@@ -112,7 +112,7 @@ const initContent = () => {
 
         <div class="dashboard-section">
             <h2>
-                <QIcon name="bi-envelope" />
+                <QIcon name="bi-envelope"/>
                 {{ t('about.contact') }}
             </h2>
 

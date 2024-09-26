@@ -89,7 +89,7 @@ async function onGetProjects() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -109,7 +109,7 @@ async function onGetApplicants() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -183,9 +183,9 @@ const columns: QTableProps['columns'] = [
                 </QTh>
                 <QTh
                     v-for="col in props.cols"
-                    :data-test="col.label"
                     :id="col.name"
                     :key="col.name"
+                    :data-test="col.label"
                     :props="props"
                     scope="col"
                 >
@@ -257,12 +257,12 @@ const columns: QTableProps['columns'] = [
                     <div class="button-container">
                         <TableManageProjectsBtn
                             v-if="isLoaded"
+                            :budget-file="props.row.budgetFile"
                             :is-site="isSite(props.row.association)"
                             :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
                             :project-id="props.row.id"
                             :project-name="props.row.name"
                             :project-status="props.row.projectStatus"
-                            :budget-file="props.row.budgetFile"
                             @refresh-projects="onGetProjects()"
                         />
                     </div>

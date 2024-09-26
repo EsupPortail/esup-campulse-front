@@ -32,7 +32,7 @@ async function onGetAssociationDetail() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -66,7 +66,7 @@ onMounted(async () => {
         class="dashboard-section"
     >
         <h2>
-            <QIcon name="bi-chat" />
+            <QIcon name="bi-chat"/>
             {{ t('charter.comment', 1) }}
         </h2>
         <div class="dashboard-section-container">
@@ -100,18 +100,18 @@ onMounted(async () => {
     </section>
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-info-circle" />
+            <QIcon name="bi-info-circle"/>
             {{ t('charter.site.sign-form.association-infos-update') }}
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <CharterRecapAssociationInfos :association="associationId" />
+                <CharterRecapAssociationInfos :association="associationId"/>
             </div>
         </div>
     </section>
     <section class="dashboard-section">
         <h2>
-            <QIcon name="bi-file-earmark" />
+            <QIcon name="bi-file-earmark"/>
             {{ t('charter.site.sign-form.documents-upload') }}
         </h2>
         <div class="dashboard-section-container">

@@ -36,7 +36,7 @@ async function onGetCommission() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -59,7 +59,7 @@ async function onClearSearch() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -74,7 +74,7 @@ async function onClearSearch() {
         <div class="dashboard-section-container">
             <div class="container-lg flex-column">
                 <div class="container padding-top padding-bottom">
-                    <FormProjectSearch @on-clear-search="onClearSearch" />
+                    <FormProjectSearch @on-clear-search="onClearSearch"/>
                 </div>
                 <TableManagedProjects
                     :commission-id="commissionId"
