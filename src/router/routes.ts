@@ -746,6 +746,17 @@ const routes: RouteRecordRaw[] = [
             }
         ]
     },
+    {
+        path: '/maintenance',
+        component: () => import('@/layouts/LayoutVanilla.vue'),
+        children: [
+            {
+                path: '',
+                name: 'Maintenance',
+                component: () => import('@/views/MaintenanceView.vue')
+            }
+        ]
+    },
     // This must be last
     {
         path: '/:catchAll(.*)',

@@ -43,7 +43,10 @@ const changeCommission = ref<boolean>(false)
 interface Option {
     icon: 'bi-eye' | 'bi-cash-stack' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-file-earmark-zip' | 'bi-signpost' | 'bi-piggy-bank',
     label: string,
-    to?: { name: 'ViewProject' | 'ManageProject' | 'ViewProjectReview' | 'ManageProjectReview', params: { projectId: number } }
+    to?: {
+        name: 'ViewProject' | 'ManageProject' | 'ViewProjectReview' | 'ManageProjectReview',
+        params: { projectId: number }
+    }
     action?: 'updateProjectDates' | 'download-pdf' | 'download-review-pdf' | 'download-budget' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
 }
 
@@ -118,10 +121,10 @@ const initOptions = () => {
 
     // Update project dates
     if ((props.projectStatus === 'PROJECT_DRAFT_PROCESSED' ||
-        props.projectStatus === 'PROJECT_PROCESSING' ||
-        props.projectStatus === 'PROJECT_VALIDATED' ||
-        props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-        props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
+            props.projectStatus === 'PROJECT_PROCESSING' ||
+            props.projectStatus === 'PROJECT_VALIDATED' ||
+            props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
+            props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
         hasPerm('change_project_as_validator')) {
         options.value.push({
             icon: 'bi-calendar',
@@ -132,7 +135,7 @@ const initOptions = () => {
 
     // Change commission
     if ((props.projectStatus === 'PROJECT_PROCESSING' ||
-        props.projectStatus === 'PROJECT_VALIDATED') &&
+            props.projectStatus === 'PROJECT_VALIDATED') &&
         hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
             icon: 'bi-signpost',
@@ -208,7 +211,7 @@ async function onGetProjectPdf(projectId: number, projectName: string, isReview:
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -224,7 +227,7 @@ async function onGetProjectBudget(budgetFile: string | null, projectName: string
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -246,7 +249,7 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -272,7 +275,7 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
                     @click="onOptionClick(option)"
                 >
                     <QItemSection avatar>
-                        <QAvatar :icon="option.icon" />
+                        <QAvatar :icon="option.icon"/>
                     </QItemSection>
                     <QItemSection>
                         <QItemLabel>{{ option.label }}</QItemLabel>

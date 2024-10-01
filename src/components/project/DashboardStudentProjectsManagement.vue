@@ -69,7 +69,7 @@ async function onGetProjects() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
 
@@ -114,7 +114,7 @@ watch(() => tab.value, initCanSubmitProjects)
                     />
                 </QTabs>
 
-                <QSeparator aria-hidden="true" />
+                <QSeparator aria-hidden="true"/>
 
                 <QTabPanels
                     v-model="tab"

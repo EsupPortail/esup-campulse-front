@@ -36,7 +36,7 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -66,7 +66,7 @@ async function onGetDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -89,8 +89,8 @@ onMounted(async () => await onGetDocuments())
                 <li
                     v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
                     :key="uploadedDocument.id"
-                    @click="onGetFile(uploadedDocument)"
                     data-test="document-line"
+                    @click="onGetFile(uploadedDocument)"
                 >
                     {{ uploadedDocument.name }}
                 </li>

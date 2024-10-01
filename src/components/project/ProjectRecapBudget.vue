@@ -52,7 +52,7 @@ async function onGetProjectCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -128,12 +128,22 @@ const projectReEdition = () => {
             >
                 <div class="display-row">
                     <h4 :data-test="t('project.previous-asked')">{{ t('project.previous-asked') }}</h4>
-                    <p data-test="amount-asked-previous-edition">{{ projectCommissionFund.amountAskedPreviousEdition + CURRENCY }}</p>
+                    <p data-test="amount-asked-previous-edition">
+                        {{
+                            projectCommissionFund.amountAskedPreviousEdition +
+                                CURRENCY
+                        }}
+                    </p>
                 </div>
 
                 <div class="display-row">
                     <h4 :data-test="t('project.previous-earned')">{{ t('project.previous-earned') }}</h4>
-                    <p data-test="amount-earned-previous-edition">{{ projectCommissionFund.amountEarnedPreviousEdition + CURRENCY }}</p>
+                    <p data-test="amount-earned-previous-edition">
+                        {{
+                            projectCommissionFund.amountEarnedPreviousEdition +
+                                CURRENCY
+                        }}
+                    </p>
                 </div>
             </div>
 
@@ -160,7 +170,7 @@ const projectReEdition = () => {
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-.flex-row>* {
+.flex-row > * {
     width: $fullSize;
 }
 </style>

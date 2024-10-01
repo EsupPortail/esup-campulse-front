@@ -104,7 +104,7 @@ async function onGetDocuments() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -138,7 +138,7 @@ async function onDeleteDocumentUpload(documentId: number) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -159,7 +159,7 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -282,7 +282,8 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
                 <template v-slot:hint>
                     <p aria-describedby="pathFile">
                         {{
-                            props.process === 'registration' ? t('forms.student-certificate-hint') : (t('project.document-hint')
+                            props.process === 'registration' ? t('forms.student-certificate-hint') :
+                            (t('project.document-hint')
                                 + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '') + ' ' +
                                 t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.')
                         }}

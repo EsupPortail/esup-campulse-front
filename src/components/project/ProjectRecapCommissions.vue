@@ -59,7 +59,7 @@ async function onGetProjectCommissions() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -105,7 +105,8 @@ async function onGetProjectCommissions() {
                     <h4 :data-test="t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === commissionFunds.find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'">
                         {{
                             t('project.amount-asked') + ' (' + fundsLabels.find(x => x.value === commissionFunds
-                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label +
+                                .find(commissionFund => commissionFund.id ===
+                                    projectCommissionFund.commissionFund)?.fund)?.label +
                                 ')'
                         }}
                     </h4>
@@ -116,7 +117,8 @@ async function onGetProjectCommissions() {
                     <h4 :data-test="t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === commissionFunds.find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label + ')'">
                         {{
                             t('project.amount-earned') + ' (' + fundsLabels.find(x => x.value === commissionFunds
-                                .find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)?.fund)?.label +
+                                .find(commissionFund => commissionFund.id ===
+                                    projectCommissionFund.commissionFund)?.fund)?.label +
                                 ')'
                         }}
                     </h4>

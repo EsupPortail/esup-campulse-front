@@ -32,7 +32,7 @@ async function onGetUsersFromCAS() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -144,8 +144,8 @@ function onReset() {
                     <p>{{ t('user-manager.choose-user-to-add') }}</p>
                     <QOptionGroup
                         v-model="selectedUser"
-                        :options="CASUserOptions"
                         :aria-label="t('forms.user-to-add')"
+                        :options="CASUserOptions"
                         color="dashboard"
                         emit-value
                         map-options

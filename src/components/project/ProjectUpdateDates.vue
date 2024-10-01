@@ -46,7 +46,7 @@ watch(() => open.value, async () => {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -69,7 +69,7 @@ async function onUpdateProjectDates() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -95,10 +95,10 @@ async function onUpdateProjectDates() {
                         clearable
                         color="commission"
                         filled
+                        max="2120-01-01"
+                        min="1970-01-01"
                         reactive-rules
                         type="date"
-                        min="1970-01-01"
-                        max="2120-01-01"
                     />
                     <QInput
                         v-model="projectBasicInfos.plannedEndDate"
@@ -111,10 +111,10 @@ async function onUpdateProjectDates() {
                         clearable
                         color="commission"
                         filled
+                        max="2120-01-01"
+                        min="1970-01-01"
                         reactive-rules
                         type="date"
-                        min="1970-01-01"
-                        max="2120-01-01"
                     />
                     <div class="flex-row-center">
                         <QBtn
