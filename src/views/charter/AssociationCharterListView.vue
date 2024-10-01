@@ -30,7 +30,7 @@ async function onGetAssociationDetail() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -45,7 +45,7 @@ async function onGetAssociationCharters() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }

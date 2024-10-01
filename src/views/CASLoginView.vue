@@ -49,7 +49,7 @@ onMounted(async () => {
             await router.push({name: 'Login'})
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }

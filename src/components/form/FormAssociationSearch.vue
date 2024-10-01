@@ -7,12 +7,15 @@ import {useI18n} from 'vue-i18n'
 import useAssociation from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
 import type {RouteRecordName} from 'vue-router'
+import axios from 'axios'
+import useErrors from '@/composables/useErrors'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const {t} = useI18n()
 const associationStore = useAssociationStore()
 const {associations} = useAssociation()
-const {loading} = useQuasar()
+const {loading, notify} = useQuasar()
+const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
     route: RouteRecordName
@@ -35,13 +38,22 @@ const settings = ref<AssociationSearch>({
 
 async function onSearch() {
     loading.show()
-    let isPublic = true
-    if (props.route === 'ManageAssociations') {
-        isPublic = false
-    }
-    associations.value = await simpleAssociationSearch(settings.value.search, isPublic)
-    if (props.route === 'Associations') {
-        emit('updatePage')
+    try {
+        let isPublic = true
+        if (props.route === 'ManageAssociations') {
+            isPublic = false
+        }
+        associations.value = await simpleAssociationSearch(settings.value.search, isPublic)
+        if (props.route === 'Associations') {
+            emit('updatePage')
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: await catchHTTPError(error.response)
+            })
+        }
     }
     loading.hide()
 }
@@ -56,18 +68,27 @@ function onAdvancedSearch() {
 // for API search it re-gets associations, for front search it looks back in store
 async function clearSearch() {
     loading.show()
-    settings.value = {
-        search: '',
-        name: '',
-        acronym: '',
-        institution: null,
-        institutionComponent: null,
-        activityField: null
+    try {
+        settings.value = {
+            search: '',
+            name: '',
+            acronym: '',
+            institution: null,
+            institutionComponent: null,
+            activityField: null
+        }
+        if (props.route === 'Associations') {
+            await associationStore.getAssociations(true)
+            emit('updatePage')
+        } else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: await catchHTTPError(error.response)
+            })
+        }
     }
-    if (props.route === 'Associations') {
-        await associationStore.getAssociations(true)
-        emit('updatePage')
-    } else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
     loading.hide()
 }
 </script>

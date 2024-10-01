@@ -13,14 +13,14 @@ const testMessage = import.meta.env.VITE_APP_TEST_MESSAGE
 
 <template>
     <QLayout
-        id="layout-page"
+        class="layout-page"
         view="hhh lpr fff"
     >
-        <LayoutTest v-if="testMessage !== ''" />
-        <LayoutHeader />
-        <LayoutBreadcrumbs v-if="route.name !== 'Home'" />
-        <LayoutContent />
-        <LayoutFooter />
+        <LayoutTest v-if="testMessage !== ''"/>
+        <LayoutHeader/>
+        <LayoutBreadcrumbs v-if="route.name !== 'Home'"/>
+        <LayoutContent/>
+        <LayoutFooter/>
     </QLayout>
 </template>
 

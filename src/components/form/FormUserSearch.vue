@@ -36,7 +36,7 @@ async function onGetAssociationNames() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -63,7 +63,7 @@ async function onSearch() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -87,7 +87,7 @@ async function clearSearch() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -116,7 +116,7 @@ async function clearSearch() {
                     lazy-rules
                 >
                     <template v-slot:prepend>
-                        <QIcon name="bi-search" />
+                        <QIcon name="bi-search"/>
                     </template>
                 </QInput>
                 <div class="flex-row padding-top">
@@ -139,8 +139,8 @@ async function clearSearch() {
         </QForm>
 
         <QForm
-            :aria-label="t('user.directory-advanced')"
             id="advanced-search-form"
+            :aria-label="t('user.directory-advanced')"
             role="search"
             @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userManagerStore.users)"
         >

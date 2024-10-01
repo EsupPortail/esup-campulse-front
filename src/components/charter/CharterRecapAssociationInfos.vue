@@ -29,7 +29,7 @@ async function onGetAssociationDetails() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -84,8 +84,8 @@ async function onGetAssociationDetails() {
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.address') }}</p>
             <p>
-                {{ associationStore.association?.address }}<br />
-                {{ associationStore.association?.zipcode + ' ' + associationStore.association?.city }}<br />
+                {{ associationStore.association?.address }}<br/>
+                {{ associationStore.association?.zipcode + ' ' + associationStore.association?.city }}<br/>
                 {{ associationStore.association?.country }}
             </p>
         </div>

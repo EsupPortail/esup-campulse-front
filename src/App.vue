@@ -6,12 +6,12 @@ import SkipToContentLink from '@/components/layout/SkipToContentLink.vue'
 const {colorVariant} = useColorVariants()
 const route = useRoute()
 
-const routesNames = ['Home', 'Login', 'CASLogin', '404', 'DesignSystem']
+const routesNames = ['Home', 'Login', 'CASLogin', '404', 'Maintenance', 'DesignSystem']
 
 </script>
 
 <template>
-    <SkipToContentLink />
+    <SkipToContentLink/>
     <RouterView
         v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
         :data-page=route.name

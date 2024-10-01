@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import {RouterLink} from 'vue-router'
+import {RouterLink, useRoute} from 'vue-router'
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 import LayoutMobileMenu from '@/components/layout/LayoutMobileMenu.vue'
+
+const route = useRoute()
 
 const siteName = import.meta.env.VITE_APP_SITE_NAME
 </script>
@@ -24,10 +26,13 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
                         {{ siteName }}
                     </RouterLink>
                 </QToolbarTitle>
-                <LayoutHeaderNav device="desktop" />
+                <LayoutHeaderNav
+                    v-if="route.name !== 'Maintenance'"
+                    device="desktop"
+                />
             </QToolbar>
         </div>
-        <LayoutMobileMenu />
+        <LayoutMobileMenu v-if="route.name !== 'Maintenance'"/>
     </QHeader>
 </template>
 

@@ -43,7 +43,7 @@ async function onGetAssociationUsers() {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
                     type: 'negative',
-                    message: catchHTTPError(error.response)
+                    message: await catchHTTPError(error.response)
                 })
             }
         }
@@ -128,9 +128,9 @@ const columns = ref<QTableProps['columns']>([
             <QTr :props="props">
                 <QTh
                     v-for="col in props.cols"
-                    :data-test="col.label"
                     :id="col.name"
                     :key="col.name"
+                    :data-test="col.label"
                     :props="props"
                     scope="col"
                 >

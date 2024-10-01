@@ -23,18 +23,22 @@ const state = reactive<UseAxiosState>({
                 axios: _axios,
                 router,
                 jwtServerUrl: import.meta.env.VITE_APP_BASE_URL + '/users/auth',
+                serverCAS: import.meta.env.VITE_APP_CAS_URL,
                 options: {
+                    appIsAllAuth: false,
+                    authCasLogoutUrl: 'Logout',
+                    hasFreeAPI: true,
                     loginRoute: {name: 'Login'},
                     loginRouteIsInternal: true
                 }
             }),
             error => Promise.reject(error)
         )
-        
+
         _axios.interceptors.response.use(response => {
             return response
         }, async function (error) {
-            if (error.response.data.code === 'token_not_valid') {
+            if (error.response.status === 401) {
                 const refreshToken = localStorage.getItem('JWT__refresh__token')
                 const refreshTokenExpired = () => {
                     if (!refreshToken) return true
@@ -47,7 +51,6 @@ const state = reactive<UseAxiosState>({
                 return Promise.reject(error)
             }
         })
-
         return _axios
     },
 })

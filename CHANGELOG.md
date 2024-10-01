@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.2.2 (octobre 2024)
+
+### Fonctionnalités
+
+- Débrayage de la fonctionnalité de création de compte par un gestionnaire depuis le LDAP
+- Page de maintenance automatique
+
+### Evolutions
+
+- Renommage de CHARTE_SITE_ALSACE en CHARTE_SITE
+
+### Corrections de bugs
+
+- *Navigation* guard et intercepteur Axios vérifiant l'expiration des tokens
+- Refactorisation de FormDocumentUploads pour clarifier les règles
+
+### Configuration
+
+- Correction des hosts de démo (ajout de root@)
+
 ## 1.2.1 (juillet 2024)
 
 ### Evolutions

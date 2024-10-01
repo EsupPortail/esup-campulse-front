@@ -22,7 +22,7 @@ export default function () {
     const associationStore = useAssociationStore()
     const {axiosAuthenticated} = useAxios()
 
-    const ASSOCIATION_CHARTER = 'CHARTE_SITE_ALSACE'
+    const ASSOCIATION_CHARTER = 'CHARTE_SITE'
 
     const charterProcesses: DocumentProcessType[] = ['CHARTER_ASSOCIATION', 'CHARTER_PROJECT_FUND']
 

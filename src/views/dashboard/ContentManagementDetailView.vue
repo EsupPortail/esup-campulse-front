@@ -24,7 +24,7 @@ async function onGetContent() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -50,7 +50,7 @@ onMounted(async function () {
         </h2>
         <div class="dashboard-section-container">
             <div class="container">
-                <FormChangeContents v-if="isLoaded" />
+                <FormChangeContents v-if="isLoaded"/>
             </div>
         </div>
     </section>

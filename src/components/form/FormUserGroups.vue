@@ -58,7 +58,7 @@ async function onGetGroups() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -73,18 +73,18 @@ async function onGetCommissions() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
 }
 
-function onInitGroupLabels() {
+async function onInitGroupLabels() {
     try {
         // Init group labels
         let privacy = false
         if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) privacy = true
-        initGroupLabels(privacy)
+        await initGroupLabels(privacy)
 
         // Preselect group
         if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) preSelectGroup('STUDENT_INSTITUTION')
@@ -92,7 +92,7 @@ function onInitGroupLabels() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }

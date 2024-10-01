@@ -24,7 +24,7 @@ PREPROD_NGINX_CONF="plana-pprd.app.unistra.fr"
 PROD_HOSTS=("root@rp-dip-public-m.di.unistra.fr" "root@rp-dip-public-s.di.unistra.fr")
 PROD_NGINX_CONF="etu-campulse.fr"
 
-DEMO_HOSTS=("rp-shib3-pprd-1.srv.unistra.fr" "rp-shib3-pprd-2.srv.unistra.fr")
+DEMO_HOSTS=("root@rp-shib3-pprd-1.srv.unistra.fr" "root@rp-shib3-pprd-2.srv.unistra.fr")
 DEMO_APACHE_CONF="campulse-demo.unistra.fr"
 
 # Json info file template

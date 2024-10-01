@@ -30,7 +30,7 @@ async function onSubmitProjectReview() {
         if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -57,7 +57,7 @@ async function onSubmitProjectReview() {
                         @click="emit('changeStep', 1)"
                     />
                 </div>
-                <ProjectReviewRecapBasicInfos />
+                <ProjectReviewRecapBasicInfos/>
             </div>
 
             <!-- REVIEW INFOS -->
@@ -73,7 +73,7 @@ async function onSubmitProjectReview() {
                         @click="emit('changeStep', 2)"
                     />
                 </div>
-                <ProjectReviewRecapReview />
+                <ProjectReviewRecapReview/>
             </div>
         </div>
 
@@ -91,7 +91,7 @@ async function onSubmitProjectReview() {
                 />
             </div>
 
-            <InfoVerifyDocuments v-if="props.view === 'submitProjectReview'" />
+            <InfoVerifyDocuments v-if="props.view === 'submitProjectReview'"/>
             <ProjectRecapDocuments
                 :association-id="null"
                 process="review"

@@ -57,6 +57,15 @@ router.beforeEach(async (to) => {
     // Authenticated views
     if (to.meta.requiresAuth && !userStore.isAuth) return {name: 'Login'}
 
+    // Check token expiration
+    if (to.meta.requiresAuth) {
+        const {tokenExpired} = useSecurity()
+        const refreshToken = localStorage.getItem('JWT__refresh__token')
+        if (tokenExpired(refreshToken)) {
+            return {name: 'Logout'}
+        }
+    }
+
     // Restrict a certain type of member only
     if (to.meta.projectBearersOnly && (!hasPerm('add_project')
         && !hasPerm('change_project_as_bearer'))) return {name: '404'}

@@ -35,7 +35,7 @@ const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
 const {uploadDocuments, processDocuments} = useDocumentUploads()
 
-
+const isLDAPEnabled = import.meta.env.VITE_APP_OPEN_LDAP
 const hasConsent = ref<boolean>(false)
 
 onMounted(async () => {
@@ -58,7 +58,7 @@ async function onLoadCASUser() {
         } else if (axios.isAxiosError(error) && error.response) {
             notify({
                 type: 'negative',
-                message: catchHTTPError(error.response)
+                message: await catchHTTPError(error.response)
             })
         }
     }
@@ -66,6 +66,7 @@ async function onLoadCASUser() {
 
 // Register newUser
 async function onRegister() {
+    loading.show()
     if (groupChoiceIsValid.value) {
         if (isStaff.value || hasConsent.value) {
             try {
@@ -100,7 +101,7 @@ async function onRegister() {
                     } else {
                         notify({
                             type: 'negative',
-                            message: catchHTTPError(error.response)
+                            message: await catchHTTPError(error.response)
                         })
                     }
                 }
@@ -112,6 +113,7 @@ async function onRegister() {
             })
         }
     }
+    loading.hide()
 }
 </script>
 
@@ -130,7 +132,7 @@ async function onRegister() {
             </h2>
             <div class="dashboard-section-container">
                 <div class="container">
-                    <FormAddUserFromLDAP v-if="isStaff"/>
+                    <FormAddUserFromLDAP v-if="isStaff && isLDAPEnabled"/>
 
                     <InfoFormRequiredFields/>
 
