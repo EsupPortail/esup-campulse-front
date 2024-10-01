@@ -37,6 +37,7 @@ export default function () {
                 if (route.name !== 'Maintenance') {
                     await router.push({name: 'Maintenance'})
                 }
+                notification = i18n.global.t('notifications.negative.error-503')
                 break
             default:
                 notification = i18n.global.t('notifications.negative.error-500')
