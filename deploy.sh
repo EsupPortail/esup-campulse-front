@@ -47,7 +47,6 @@ USE_SENTRY=true
 if [ $ENVIRONMENT == "demo" ]; then
   SETUP_NGINX=false
   SETUP_APACHE=true
-  USE_SENTRY=false
   DEST_PATH="/var/www/static/campulse-demo/"
 fi
 
