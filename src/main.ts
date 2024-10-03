@@ -24,7 +24,10 @@ if (import.meta.env.PROD) {
     Sentry.init({
         app,
         dsn: import.meta.env.VITE_APP_SENTRY_DSN,
-        integrations: [Sentry.browserTracingIntegration()],
+        integrations: [
+            Sentry.browserTracingIntegration({router}),
+            Sentry.replayIntegration(),
+        ],
         tracesSampleRate: 1.0,
         tracePropagationTargets: ['localhost', import.meta.env.VITE_APP_SENTRY_API_REGEX, /^\//]
     })
