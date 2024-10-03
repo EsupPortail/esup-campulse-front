@@ -24,11 +24,7 @@ if (import.meta.env.PROD) {
     Sentry.init({
         app,
         dsn: import.meta.env.VITE_APP_SENTRY_DSN,
-        integrations: [
-            new Sentry.BrowserTracing({
-                routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-            }),
-        ],
+        integrations: [Sentry.browserTracingIntegration()],
         tracesSampleRate: 1.0,
         tracePropagationTargets: ['localhost', import.meta.env.VITE_APP_SENTRY_API_REGEX, /^\//]
     })
