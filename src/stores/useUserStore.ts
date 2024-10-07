@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {User, UserStore} from '#/user'
+import type {UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import type {DocumentProcessType, DocumentUpload} from '#/documents'
@@ -54,32 +54,6 @@ export const useUserStore = defineStore('userStore', {
             this.newUser = undefined
         },
 
-        /**
-         * It gets the user data from the server, and if the user is validated by the admin, it sets the user data to the
-         * user variable, and if the user is not validated by the admin, it sets the user data to the newUser variable
-         */
-        async getUser() {
-            const {axiosAuthenticated} = useAxios()
-            const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
-            if (user.isValidatedByAdmin) {
-                this.user = user
-            } else {
-                // Specific case for CAS user data which can persist until complete registration
-                if (user.isCas) {
-                    this.newUser = {
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        isCas: true,
-                        username: user.username,
-                        email: user.email,
-                        phone: user.phone as string
-                    }
-                } else {
-                    const {logOut} = useSecurity()
-                    await logOut
-                }
-            }
-        },
         /**
          * It sends a POST request to the backend with the CAS ticket and the service URL, and then it sets the tokens and
          * the user

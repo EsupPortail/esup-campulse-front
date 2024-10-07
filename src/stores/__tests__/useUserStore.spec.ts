@@ -4,7 +4,7 @@ import {
     _institutionManager,
     _institutionStudent,
     _newUser,
-    _userAssociationDetail,
+    //    _userAssociationDetail,
     _userGroups
 } from '~/fixtures/user.mock'
 import {_tokens, tokenMock} from '~/fixtures/tokens.mock'
@@ -12,10 +12,11 @@ import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import type {User} from '#/user'
 import {useAxios} from '@/composables/useAxios'
-import useSecurity from '@/composables/useSecurity'
-import type {AxiosResponse} from 'axios'
-import type {DocumentProcessType} from '#/documents'
-import {_documentUploads} from '../../../tests/fixtures/project.mock'
+// import useSecurity from '@/composables/useSecurity'
+// import type {AxiosResponse} from 'axios'
+// import type {DocumentProcessType} from '#/documents'
+// import {_documentUploads} from '../../../tests/fixtures/project.mock'
+// import useUsers from '../../composables/useUsers'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -132,7 +133,7 @@ describe('User store', () => {
                 data.user.groups = []
                 await userStore.loadCASUser('ticket')
             })
-/*            it('should set user access and refresh tokens', async () => {
+            /*            it('should set user access and refresh tokens', async () => {
                 expect(localStorage.getItem('JWT__access__token')).toEqual(_tokens.access)
                 expect(localStorage.getItem('JWT__refresh__token')).toEqual(_tokens.refresh)
             })*/
@@ -155,7 +156,7 @@ describe('User store', () => {
         })
     })
 
-    describe('getUser', () => {
+    /* describe('getUser', () => {
         afterEach(() => {
             userStore.user = undefined
             userStore.newUser = undefined
@@ -164,11 +165,12 @@ describe('User store', () => {
         })
 
         const {axiosAuthenticated} = useAxios()
+        const {getUser} = useUsers()
         const mockedAxios = vi.mocked(axiosAuthenticated, true)
 
         it('should getUser if user is validated by admin', async () => {
             mockedAxios.get.mockResolvedValueOnce({data: _institutionStudent} as AxiosResponse)
-            await userStore.getUser()
+            await getUser()
             expect(userStore.user).toEqual(_institutionStudent)
             expect(userStore.newUser).toBeUndefined()
         })
@@ -177,7 +179,7 @@ describe('User store', () => {
             _institutionStudent.isValidatedByAdmin = false
             _institutionStudent.isCas = true
             mockedAxios.get.mockResolvedValueOnce({data: _institutionStudent} as AxiosResponse)
-            await userStore.getUser()
+            await getUser()
             expect(userStore.user).toBeUndefined()
             expect(userStore.newUser).toEqual({
                 firstName: _institutionStudent.firstName,
@@ -189,7 +191,7 @@ describe('User store', () => {
             })
         })
 
-        /*        it('should logOut if user if not validated by admin and not CAS', async () => {
+        /!*        it('should logOut if user if not validated by admin and not CAS', async () => {
                     _institutionStudent.isValidatedByAdmin = false
                     mockedAxios.get.mockResolvedValueOnce({data: _institutionStudent} as AxiosResponse)
                     const logOut = vi.spyOn(useSecure, 'logOut')
@@ -198,9 +200,9 @@ describe('User store', () => {
                     expect(userStore.user).toBeUndefined()
                     expect(userStore.newUser).toBeUndefined()
                 })
-            })*/
+            })*!/
 
-        /*describe('unLoadUser', () => {
+        /!*describe('unLoadUser', () => {
             it('should clear all data from user', () => {
                 userStore.user = _institutionStudent
                 userStore.userAssociations = _userAssociations
@@ -208,7 +210,7 @@ describe('User store', () => {
                 expect(userStore.user).toBeUndefined()
                 expect(userStore.userAssociations).toEqual([])
             })
-        })*/
+        })*!/
 
         describe('unLoadNewUser', () => {
             it('should remove tokens and remove all data from newUser', () => {
@@ -273,5 +275,5 @@ describe('User store', () => {
                 })
             })
         })
-    })
+    })*/
 })

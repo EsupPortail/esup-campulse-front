@@ -5,6 +5,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useUtility from '@/composables/useUtility'
+import useSecurity from '@/composables/useSecurity'
 
 // Used to update user infos
 const userToUpdate = ref<UserToUpdate>({
@@ -40,8 +41,36 @@ const infosToPatch: InfosToPatch = {}
 export default function () {
 
     const userManagerStore = useUserManagerStore()
+    const userStore = useUserStore()
     const {updateUserGroups} = useUserGroups()
     const {filterizeSearch} = useUtility()
+
+    /**
+     * It gets the user data from the server, and if the user is validated by the admin, it sets the user data to the
+     * user variable, and if the user is not validated by the admin, it sets the user data to the newUser variable
+     */
+    async function getUser() {
+        const {axiosAuthenticated} = useAxios()
+        const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
+        if (user.isValidatedByAdmin) {
+            userStore.user = user
+        } else {
+            // Specific case for CAS user data which can persist until complete registration
+            if (user.isCas) {
+                userStore.newUser = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    isCas: true,
+                    username: user.username,
+                    email: user.email,
+                    phone: user.phone as string
+                }
+            } else {
+                const {logOut} = useSecurity()
+                await logOut
+            }
+        }
+    }
 
     /**
      * The function `validateUser` calls the function `updateUserGroups` and then calls the function `validateUser` on
@@ -162,6 +191,7 @@ export default function () {
     }
 
     return {
+        getUser,
         validateUser,
         canEditUser,
         userToUpdate,
