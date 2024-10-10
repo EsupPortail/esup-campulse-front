@@ -1,15 +1,14 @@
 # build stage
-FROM node:18-alpine as build-stage
+FROM node:20-alpine as build-stage
 
 WORKDIR /app
 
 COPY package*.json ./
 
 RUN set -ex \
-    && apk add git \
     && npm install
 
-COPY app .
+COPY . .
 COPY .env.deploy_prod .
 
 RUN npm run build:prod
@@ -28,7 +27,8 @@ RUN set -ex \
     && cp /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone
 
-COPY nginx.conf /nginx/etu-campulse.fr.conf
+#COPY nginx/etu-campulse.fr.conf  /nginx/etu-campulse.fr.conf
+COPY nginx/etu-campulse.fr.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage /app/dist /var/www/plana
 
 CMD ["nginx", "-g", "daemon off;"]
