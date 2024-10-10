@@ -9,7 +9,7 @@ RUN set -ex \
     && npm install
 
 COPY . .
-COPY .env.deploy_prod .
+#COPY .env.deploy_prod .
 
 RUN npm run build:prod
 
@@ -28,7 +28,7 @@ RUN set -ex \
     && echo $TZ > /etc/timezone
 
 #COPY nginx/etu-campulse.fr.conf  /nginx/etu-campulse.fr.conf
-COPY nginx/etu-campulse.fr.conf /etc/nginx/conf.d/default.conf
-COPY --from=build-stage /app/dist /var/www/plana
+#COPY nginx/etu-campulse.fr.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
