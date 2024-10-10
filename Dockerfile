@@ -14,7 +14,7 @@ COPY . .
 RUN npm run build:prod
 
 # production stage
-FROM nginx:stable-alpine as production-stage
+FROM nginxinc/nginx-unprivileged:1-alpine as production-stage
 
 LABEL maintainer="DNum DIP - Université de Strasbourg <dnum-dip@unistra.fr>" \
       app="plana"
