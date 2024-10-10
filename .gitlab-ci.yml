@@ -14,9 +14,40 @@ stages:
   - scan
   - release
 
-include:
-  - project: "docker/template"
-    file: "docker-scan.gitlab-ci.yml"
+#include:
+#  - project: "docker/template"
+#    file: "docker-scan.gitlab-ci.yml"
+
+.build-image:
+  image:
+    # gcr.io/kaniko-project/executor:v1.7.0-debug
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}${CI_PROJECT_DIR_PATH}/Dockerfile"
+      --destination "${DESTINATION}" ${EXTRA_ARGS}
+      --registry-mirror quay.apps.mgmt.paas.unistra.fr/dnum
+  tags:
+    - cluster
+    - kubernetes
+
+b:docker:
+  extends: .build-image
+  stage: build
+  variables:
+    DESTINATION: $CONTAINER_TEST_IMAGE
+
+r:docker:
+  extends: .build-image
+  stage: release
+  variables:
+    DESTINATION: $CONTAINER_RELEASE_IMAGE
+
 
 variables:
   CONTAINER_TEST_IMAGE: $CI_REGISTRY/dnum/campulse-frontend:$CI_COMMIT_REF_NAME
