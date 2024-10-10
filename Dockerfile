@@ -23,10 +23,6 @@ EXPOSE 80
 
 ENV TZ=Europe/Paris
 
-RUN set -ex \
-    && cp /usr/share/zoneinfo/$TZ /etc/localtime \
-    && echo $TZ > /etc/timezone
-
 #COPY nginx/etu-campulse.fr.conf  /nginx/etu-campulse.fr.conf
 #COPY nginx/etu-campulse.fr.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage /app/dist /usr/share/nginx/html
