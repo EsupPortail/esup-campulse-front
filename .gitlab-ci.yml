@@ -1,24 +1,52 @@
-type check:
-  image: node:lts
-  stage: test
+# You must define these variables :
+# CONTAINER_TEST_IMAGE
+# CONTAINER_RELEASE_IMAGE
+# EXTRA_ARGS args to pass to the kaniko executor
+#
+# Optional variables to have in your CI :
+# CI_REGISTRY
+# CI_REGISTRY_USER
+# CI_REGISTRY_PASSWORD
+# CI_PROJECT_DIR_PATH
+
+stages:
+  - build
+  - release
+
+include:
+  - project: "docker/template"
+    file: "docker-scan.gitlab-ci.yml"
+
+variables:
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY/dnum/campulse_front:$CI_COMMIT_REF_NAME
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY/dnum/campulse_front:latest
+  EXTRA_ARGS: ""
+
+.build-image:
+  image:
+    # gcr.io/kaniko-project/executor:v1.7.0-debug
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}${CI_PROJECT_DIR_PATH}/Dockerfile"
+      --destination "${DESTINATION}" ${EXTRA_ARGS}
   tags:
     - cluster
-  only:
-    - develop
-  script:
-    - npm install --progress=false
-    - npm run lint
-    - npm run typecheck
+    - kubernetes
 
-unit test:
-  image: node:lts
-  stage: test
-  tags:
-    - cluster
-  only:
-    - develop
-  script:
-    - npm install --progress=false
-    - npm run test:unit:coverage
-  coverage: /All files\s*\|\s*([\d\.]+)/
+b:docker:
+  extends: .build-image
+  stage: build
+  variables:
+    DESTINATION: $CONTAINER_TEST_IMAGE
 
+r:docker:
+  extends: .build-image
+  stage: release
+  variables:
+    DESTINATION: $CONTAINER_RELEASE_IMAGE
