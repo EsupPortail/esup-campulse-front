@@ -19,6 +19,6 @@ include:
     file: "docker-scan.gitlab-ci.yml"
 
 variables:
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY/dnum/campulse_front:$CI_COMMIT_REF_NAME
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY/dnum/campulse_front:latest
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY/dnum/campulse-frontend:$CI_COMMIT_REF_NAME
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY/dnum/campulse-frontend:latest
   EXTRA_ARGS: ""
