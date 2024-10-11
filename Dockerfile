@@ -19,7 +19,7 @@ FROM nginxinc/nginx-unprivileged:1-alpine as production-stage
 LABEL maintainer="DNum DIP - Université de Strasbourg <dnum-dip@unistra.fr>" \
       app="plana"
 
-EXPOSE 80
+EXPOSE 8080
 
 ENV TZ=Europe/Paris
 
