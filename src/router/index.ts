@@ -5,7 +5,7 @@ import useUserGroups from '@/composables/useUserGroups'
 import {ref, watch} from 'vue'
 import useSecurity from '@/composables/useSecurity'
 import useUtility from '@/composables/useUtility'
-import useUsers from "@/composables/useUsers";
+import useUsers from '@/composables/useUsers'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +16,7 @@ const colorVariant = ref<string>('')
 
 router.beforeEach(async (to) => {
     const userStore = useUserStore()
-    const {getUser} = useUsers();
+    const {getUser} = useUsers()
     const {initStaffStatus, isStaff, getGroups, initIsMemberFund} = useUserGroups()
     const {hasPerm} = useSecurity()
     const {dynamicTitle, openMenu} = useUtility()

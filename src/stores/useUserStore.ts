@@ -4,6 +4,7 @@ import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import type {DocumentProcessType, DocumentUpload} from '#/documents'
 import useCommissions from '@/composables/useCommissions'
+import useUserGroups from '@/composables/useUserGroups'
 
 export const useUserStore = defineStore('userStore', {
     state: (): UserStore => ({
@@ -52,6 +53,14 @@ export const useUserStore = defineStore('userStore', {
             const {removeTokens} = useSecurity()
             removeTokens()
             this.newUser = undefined
+        },
+
+        logOut() {
+            const {isStaff} = useUserGroups()
+            const {removeTokens} = useSecurity()
+            removeTokens()
+            this.unLoadUser()
+            isStaff.value = undefined
         },
 
         /**

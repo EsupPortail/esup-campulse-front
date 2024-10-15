@@ -94,13 +94,6 @@ export default function () {
         }
     }
 
-    function logOut() {
-        const {isStaff} = useUserGroups()
-        removeTokens()
-        userStore.unLoadUser()
-        isStaff.value = undefined
-    }
-
     async function cancelAbortedCasRegistration() {
         // Delete user in DB
         await axiosAuthenticated.delete('/users/auth/user/')
@@ -312,7 +305,6 @@ export default function () {
     return {
         userCredentials,
         logIn,
-        logOut,
         register,
         newUser,
         loadCASUser,

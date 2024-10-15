@@ -5,7 +5,6 @@ import useUserGroups from '@/composables/useUserGroups'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useUtility from '@/composables/useUtility'
-import useSecurity from '@/composables/useSecurity'
 
 // Used to update user infos
 const userToUpdate = ref<UserToUpdate>({
@@ -66,8 +65,7 @@ export default function () {
                     phone: user.phone as string
                 }
             } else {
-                const {logOut} = useSecurity()
-                await logOut
+                await userStore.logOut()
             }
         }
     }
