@@ -368,7 +368,7 @@ const onClearValues = () => {
                     />
                     <div class="flex-btn">
                         <QBtn
-                            :disable="!newCommission.datesAreLegal || !newCommission.funds.length || !newCommission.name"
+                            :disable="!newCommission.datesAreLegal || !newCommission.funds?.length || !newCommission.name"
                             :label="t('add')"
                             class="btn-lg"
                             color="commission"
