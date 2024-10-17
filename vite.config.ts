@@ -5,6 +5,7 @@ import {quasar, transformAssetUrls} from '@quasar/vite-plugin'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import {visualizer} from 'rollup-plugin-visualizer'
+import importMetaEnv from "@import-meta-env/unplugin"
 
 
 // https://vitejs.dev/config/
@@ -27,6 +28,7 @@ export default defineConfig(({command, mode}) => {
             define: {
                 __APP_ENV__: JSON.stringify(env.APP_ENV),
             },
+            envPrefix: 'STATIC_',
             plugins: [
                 vue({
                     template: {transformAssetUrls}
@@ -37,6 +39,9 @@ export default defineConfig(({command, mode}) => {
                 // See https://vue-i18n.intlify.dev/guide/advanced/optimization.html
                 VueI18nPlugin({
                     include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**'),
+                }),
+                importMetaEnv.vite({
+                    example: '.env.example'
                 }),
                 visualizer()
             ],

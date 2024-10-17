@@ -1,24 +1,196 @@
+
+workflow:
+  # trigger pipelines on :
+  rules:
+    # always for merge requests
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    # scheduled
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    # default branch
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    # protected branches
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+    # release tags
+    - if: $CI_COMMIT_TAG =~ /^\d+(\.\d+)*[+-]/
+    # except when there are opened merge-requests
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"
+      when: never
+    # ok otherwise
+    - when: always
+
+stages:
+  - .pre
+  - prepare
+  - build
+  - test
+  - deploy
+  - release
+
+variables:
+  __CACHE_KEY: "${CI_PROJECT_DIR}"
+  NODE_TAG: 20-slim
+
+version:
+  stage: .pre
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/debian:testing-slim
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  before_script:
+    - apt -qy update && DEBIAN_FRONTEND=noninteractive apt -qqy install --no-install-recommends python3-dunamai git
+    - git config --global --add safe.directory "*"
+  script:
+    - echo VERSION=$(./version.sh) | tee .version
+  artifacts:
+    reports:
+      dotenv: .version
+
+prepare:
+  stage: prepare
+  variables:
+    npm_config_cache: $CI_PROJECT_DIR/.npm
+  cache:
+    key: "$__CACHE_KEY"
+    paths:
+      - .npm/
+  artifacts:
+    name: node_modules
+    paths:
+      - node_modules/
+    expire_in: "1 day"
+  image:
+    name: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/node:$NODE_TAG
+    entrypoint: [""]
+  tags:
+    - cluster
+  needs: []
+  script:
+    - set -x
+    - npm ci --progress=false
+
 type check:
-  image: node:lts
+  image:
+    name: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/node:$NODE_TAG
+    entrypoint: [""]
   stage: test
   tags:
     - cluster
-  only:
-    - develop
+  variables:
+    npm_config_cache: $CI_PROJECT_DIR/.npm
+  cache:
+    key: "$__CACHE_KEY"
+    paths:
+      - .npm/
+  needs:
+    - job: prepare
+      artifacts: true
   script:
-    - npm install --progress=false
     - npm run lint
     - npm run typecheck
 
+build:
+  stage: build
+  cache:
+    key: "$__CACHE_KEY"
+    paths:
+      - .npm/
+    when: always
+  image:
+    name: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/node:$NODE_TAG
+    entrypoint: [""]
+  tags:
+    - cluster
+  needs:
+    - job: prepare
+      artifacts: true
+  variables:
+    PATH: $CI_PROJECT_DIR/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    NODE_ENV: production
+  script:
+    - vue-tsc --noEmit && vite build --mode production
+  artifacts:
+    name: plan-a-front
+    paths:
+      - dist/
+
 unit test:
-  image: node:lts
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/node:$NODE_TAG
   stage: test
   tags:
     - cluster
-  only:
-    - develop
+  needs:
+    - job: prepare
+      artifacts: true
+  variables:
+    PATH: $CI_PROJECT_DIR/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   script:
-    - npm install --progress=false
-    - npm run test:unit:coverage
+    - vitest --run --environment jsdom
+      --coverage --coverage.reportOnFailure
+      --coverage.reporter cobertura
+      --reporter=junit --outputFile=test-results.xml
   coverage: /All files\s*\|\s*([\d\.]+)/
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - test-results.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
 
+kaniko:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      variables:
+        EXTRA: latest
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      variables:
+        EXTRA: ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_BRANCH =~ /[a-zA-Z\d_][a-zA-Z\d-_.]{1,127}/
+      variables:
+        EXTRA: $CI_COMMIT_BRANCH
+  tags:
+    - cluster
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  needs:
+    - job: version
+      artifacts: true
+    - job: build
+      artifacts: true
+  variables:
+    KANIKO_REGISTRY_MIRROR: $CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX
+  before_script:
+    # add auth for docker.io proxy
+    - echo "{\"auths\":{\"$CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX\":{\"auth\":\"$(echo -n ${CI_DEPENDENCY_PROXY_USER}:${CI_DEPENDENCY_PROXY_PASSWORD} | base64)\"}}}" > /kaniko/.docker/config.json
+  script:
+    - /kaniko/executor
+      --cache=true
+      --context "dir://${CI_PROJECT_DIR}"
+      --label org.opencontainers.image.title="$CI_PROJECT_TITLE"
+      --label org.opencontainers.image.version="${VERSION}"
+      --label org.opencontainers.image.revision="$CI_COMMIT_SHA"
+      --label org.opencontainers.image.created="$CI_JOB_STARTED_AT"
+      --label org.opencontainers.image.authors="Unistra-DNum-DIP"
+      --label maintainer="Unistra-DNum-DIP"
+      --label org.opencontainers.image.licenses="GPL-3.0-or-later"
+      --label org.opencontainers.image.documentation="https://di.pages.unistra.fr/plan_a/plana/frontend"
+      --label org.opencontainers.image.source="https://github.com/EsupPortail/esup-campulse-front"
+      --destination "${CI_REGISTRY_IMAGE}:${VERSION}"
+      ${EXTRA:+--destination ${CI_REGISTRY_IMAGE}:$(echo "$EXTRA" | sed 's/^feature\///;s/[^[:alnum:]._-]/_/g')}
+
+release_job:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^\d+(\.\d+)*$/
+  script:
+    - echo "release job"
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: 'Release $CI_COMMIT_TAG'
+    description: './CHANGELOG.md'

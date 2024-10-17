@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"label": "front build",
+			"detail": "build front OCI image",
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			},
+			"script": "build:prod"
+		},
+		{
+			"type": "docker-build",
+			"label": "front assemble",
+			"detail": "build front OCI image",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			},
+			"dockerBuild": {
+				"context": "${workspaceFolder}",
+				"tag": "registry.app.unistra.fr/di/plan_a/front:latest",
+				"labels": {}
+			},
+			"dependsOn": [ "front build" ]
+		},
+	]
+}
