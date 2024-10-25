@@ -11,7 +11,7 @@ RUN set -ex \
 COPY . .
 #COPY .env.deploy_prod .
 
-RUN npm run build:prod
+RUN npm run build:docker-dev
 
 # production stage
 FROM nginxinc/nginx-unprivileged:1-alpine as production-stage
