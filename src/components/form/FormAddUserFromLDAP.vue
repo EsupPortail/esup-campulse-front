@@ -56,7 +56,7 @@ function onImportUser() {
         loading.hide()
         notify({
             type: 'positive',
-            message: t('notifications.positive.get-cas-user-success')
+            message: t('notifications.positive.get-ldap-user-success')
         })
     }
 }
@@ -82,7 +82,7 @@ function onReset() {
 <template>
     <div class="flex-row-center">
         <QBtn
-            :label="t('dashboard.search-user-via-cas')"
+            :label="t('dashboard.search-user-via-ldap')"
             class="btn-lg"
             color="dashboard"
             icon="bi-person-plus"
@@ -108,7 +108,7 @@ function onReset() {
                     class="q-gutter-md"
                     @submit.prevent="onGetUsersFromCAS"
                 >
-                    <h3>{{ t('dashboard.search-user-via-cas') }}</h3>
+                    <h3>{{ t('dashboard.search-user-via-ldap') }}</h3>
                     <QInput
                         v-model="lastName"
                         :label="t('forms.last-name')"

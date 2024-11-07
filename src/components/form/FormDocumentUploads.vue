@@ -206,7 +206,7 @@ const documentIsSelected = (document: ProcessDocument, val: File | File[]): bool
 const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): boolean => {
     // If there is a file (or a group of file)
     // We must control each file's name length
-    const hasValue: boolean = document.isMultiple ? !!(val as File[]).length : !!val
+    const hasValue: boolean = document.isMultiple ? !!(val as File[])?.length : !!val
     if (hasValue) {
         if (document.isMultiple) {
             // Throw error if any file's name length is greater than MAX_TITLE_LENGTH

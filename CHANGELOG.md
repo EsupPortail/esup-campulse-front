@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.3 (novembre 2024)
+
+- Ajout de Sentry sur démo
+- Ajout de Matomo sur démo
+- Mise à jour majeure des dépendances avec npm
+- Correction de bug sur la vérification de la longueur du nom des documents soumis
+- Renommer la recherche LDAP
+- Correction de bug sur la variable d'environnement "open_ldap"
+
 ## 1.2.2 (octobre 2024)
 
 ### Fonctionnalités
