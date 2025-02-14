@@ -1,4 +1,4 @@
-@import '@/assets/variables';
+@import '@/assets/_variables.scss';
 
 // Bootstrap icons
 $bootstrap-icons-font-src: url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"), url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");
@@ -65,6 +65,14 @@ body {
 
 .align-items-stretch {
   align-items: stretch;
+}
+
+.no-gap {
+  gap: 0;
+}
+
+.gap-sm {
+  gap: 0.5rem;
 }
 
 // Padding utilities

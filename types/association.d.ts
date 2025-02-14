@@ -29,13 +29,23 @@ export interface Association {
     lastGoaDate?: string,
     cgaDate?: string,
     socialNetworks?: AssociationSocialNetwork[],
-    institution?: number,
-    institutionComponent?: number,
-    activityField?: number,
+    institution?: {
+        id: number,
+        name: string
+    },
+    institutionComponent?: {
+        id: number,
+        name: string
+    },
+    activityField?: {
+        id: number,
+        name: string
+    },
     canSubmitProjects: boolean,
     charterStatus: AssociationCharterStatus,
     charterDate: string,
-    amountMembersAllowed: number
+    amountMembersAllowed: number,
+    calculatedExpirationDate?: string
 }
 
 export interface AssociationLogo {

@@ -576,12 +576,6 @@
     "login-with-cas": "Connexion avec un compte CAS",
     "login-without-cas": "Connexion avec un compte externe"
   },
-  "maintenance": {
-    "title": "Maintenance",
-    "page-title": "Maintenance en cours",
-    "message-1": "Une opération de maintenance majeure est en cours, engendrant l'arrêt complet du service.",
-    "message-2": "Veuillez nous excuser pour la gêne occasionnée."
-  },
   "manage": "Gérer",
   "modify": "Modifier",
   "no": "Non",

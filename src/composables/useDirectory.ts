@@ -87,9 +87,7 @@ export default function () {
 
         stringUrl += arrayUrl.join('&')
 
-        await Promise.all([associationStore.getInstitutions(), associationStore.getInstitutionComponents(), associationStore.getActivityFields()])
-        const associations = (await instance.get<Association[]>(stringUrl)).data
-        return associationStore.getAssociationsSubDetails(associations)
+        return (await instance.get<Association[]>(stringUrl)).data
     }
 
     return {

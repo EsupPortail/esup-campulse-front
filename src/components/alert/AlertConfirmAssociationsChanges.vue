@@ -139,7 +139,7 @@ async function onConfirmChanges(emailType: string) {
 
     Promise.all(promisesToExecute).then(() => {
         let message = ''
-        if (associationsSuccess.length > 0) {
+        if (associationsSuccess.length) {
             associationStore.getManagedAssociations()
             message = positiveMessage
             notify({
@@ -148,7 +148,7 @@ async function onConfirmChanges(emailType: string) {
                 html: true
             })
         }
-        if (associationsError.length > 0) {
+        if (associationsError.length) {
             associationStore.getManagedAssociations()
             message = negativeMessage
             notify({

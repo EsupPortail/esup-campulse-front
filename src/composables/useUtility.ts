@@ -12,7 +12,7 @@ const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
 
 const openMenu = ref<boolean>(false)
 
-export default function() {
+export default function () {
     function formatDate(date: string) {
         if (date) {
             const timeStamp = Date.parse(date)
@@ -21,6 +21,7 @@ export default function() {
             const day = formatDate.getDate()
             return formatDate.getFullYear() + '-' + (month > 9 ? month : '0' + month) + '-' + (day > 9 ? day : '0' + day)
         }
+        return ''
     }
 
     // To test

@@ -26,13 +26,10 @@ const siteName = import.meta.env.VITE_APP_SITE_NAME
                         {{ siteName }}
                     </RouterLink>
                 </QToolbarTitle>
-                <LayoutHeaderNav
-                    v-if="route.name !== 'Maintenance'"
-                    device="desktop"
-                />
+                <LayoutHeaderNav device="desktop"/>
             </QToolbar>
         </div>
-        <LayoutMobileMenu v-if="route.name !== 'Maintenance'"/>
+        <LayoutMobileMenu/>
     </QHeader>
 </template>
 

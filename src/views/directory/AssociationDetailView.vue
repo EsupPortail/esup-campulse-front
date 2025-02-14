@@ -9,6 +9,10 @@ import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {useUserStore} from '@/stores/useUserStore'
+import AtomicDisplayField from '@/components/atomic/AtomicDisplayField.vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import router from '@/router'
+import type {AssociationCharterStatus} from '#/charters'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -54,69 +58,43 @@ async function onGetAssociationDetail() {
 }
 
 const initAssociationCharter = () => {
-    let str = t('charter.association-charter-status.no-charter')
-    if (association.value) {
-        const charterDate = formatDate(association.value?.charterDate)
-        if (charterDate) {
-            const splitCharterDate = charterDate.split('-').reverse()
-            const expirationDate = `${splitCharterDate[0]}/${splitCharterDate[1]}/${(parseInt(splitCharterDate[2]) + 1).toString()}`
-            switch (association.value?.charterStatus) {
-            case 'CHARTER_VALIDATED':
-                str = t('charter.association-charter-status.validated', {expirationDate: expirationDate})
-                break
-            case 'CHARTER_EXPIRED':
-                str = t('charter.association-charter-status.expired', {expirationDate: expirationDate})
-                break
-            case 'CHARTER_PROCESSING':
-                str = t('charter.association-charter-status.processing')
-                break
-            default:
-                str = t('charter.association-charter-status.no-charter')
-            }
-        }
+    let str: string
+    const charterStatus: AssociationCharterStatus = association.value?.charterStatus
+    const expirationDate: string = formatDate(association.value?.calculatedExpirationDate)
+    if (['CHARTER_VALIDATED', 'CHARTER_EXPIRED', 'CHARTER_PROCESSING'].includes(charterStatus)) {
+        str = t(`charter.association-charter-status.${charterStatus?.split('_')[1].toLowerCase()}`,
+            {expirationDate: expirationDate.split('-').reverse().join('/')})
+    } else {
+        str = t('charter.association-charter-status.no-charter')
     }
     associationCharterStatus.value = str
 }
 </script>
 
 <template>
-    <section
-        class="association-detail"
-        itemscope
-        itemtype="https://schema.org/Organization"
-    >
+    <div class="association-detail">
         <div class="dashboard-section-container">
-            <div id="association-logo-title">
-                <div class="association-logo">
-                    <QImg
-                        v-if="association"
-                        :src="hasLogo ? (!association?.pathLogo?.detail?.startsWith('http') ?
-                            baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
-                        aria-hidden="true"
-                        itemprop="logo"
-                    />
-                </div>
-                <div class="association-name text-center container padding-left padding-right">
-                    <p
-                        v-if="association?.acronym"
-                        class="title-2"
-                        itemprop="name"
-                    >
-                        {{ association?.name }}{{ t('colon') }}{{ association?.acronym }}
-                    </p>
-                    <!--<p>{{ t('association.labels.charter-validity') }}</p>-->
-                    <p>{{ associationCharterStatus }}</p>
-                    <p
-                        v-if="association?.socialObject"
-                        class="breakline"
-                    >
-                        {{ association?.socialObject }}
-                    </p>
-                </div>
+            <div class="association-logo">
+                <QImg
+                    v-if="association"
+                    :src="hasLogo ? (!association?.pathLogo?.detail?.startsWith('http') ?
+                        baseUrl + association?.pathLogo?.detail : association?.pathLogo?.detail) : noLogoSquare.default"
+                    aria-hidden="true"
+                />
+            </div>
+            <div class="text-center container padding-left padding-right">
+                <p
+                    v-if="association?.acronym"
+                    class="title-2"
+                >
+                    {{ association?.name }}{{ t('colon') }}{{ association?.acronym }}
+                </p>
+                <p>{{ associationCharterStatus }}</p>
+                <p v-if="association?.socialObject">{{ association?.socialObject }}</p>
             </div>
         </div>
 
-        <div class="dashboard-section">
+        <section class="dashboard-section">
             <h2>
                 <i
                     aria-hidden="true"
@@ -126,125 +104,82 @@ const initAssociationCharter = () => {
 
             <div class="dashboard-section-container">
                 <dl class="container flex-column">
-                    <div
+                    <AtomicDisplayField
                         v-if="association?.currentProjects"
-                        class="display-row"
+                        :title="t('association.labels.current-projects')"
+                        color="association"
                     >
-                        <dt>{{ t('association.labels.current-projects') }}</dt>
-                        <dd class="breakline">{{ association?.currentProjects }}</dd>
-                    </div>
-
-                    <div
+                        {{ association?.currentProjects }}
+                    </AtomicDisplayField>
+                    <AtomicDisplayField
                         v-if="association?.institution"
-                        class="display-row"
+                        :title="t('association.labels.institution')"
+                        color="association"
                     >
-                        <dt>{{ t('association.labels.institution') }}</dt>
-                        <dd>
-                            {{
-                                associationStore.institutions.find(obj => obj.id === association?.institution)?.name
-                            }}
-                        </dd>
-                    </div>
-
-                    <div
+                        {{ association?.institution.name }}
+                    </AtomicDisplayField>
+                    <AtomicDisplayField
                         v-if="association?.institutionComponent"
-                        class="display-row"
+                        :title="t('association.labels.institution-component')"
+                        color="association"
                     >
-                        <dt>{{ t('association.labels.institution-component') }}</dt>
-                        <dd>
-                            {{
-                                associationStore.institutionComponents.find(obj => obj.id ===
-                                    association?.institutionComponent)?.name
-                            }}
-                        </dd>
-                    </div>
-
-                    <div
+                        {{ association?.institutionComponent.name }}
+                    </AtomicDisplayField>
+                    <AtomicDisplayField
                         v-if="association?.activityField"
-                        class="display-row"
+                        :title="t('association.labels.activity-field')"
+                        color="association"
                     >
-                        <dt>{{ t('association.labels.activity-field') }}</dt>
-                        <dd>
-                            {{
-                                associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
-                            }}
-                        </dd>
-                    </div>
+                        {{ association?.activityField.name }}
+                    </AtomicDisplayField>
                 </dl>
             </div>
-        </div>
+        </section>
 
-        <div
-            v-if="association?.presidentNames || association?.presidentPhone || association?.presidentEmail ||
-                association?.lastGoaDate || association?.siret || association?.charterDate"
+        <section
+            v-if="association?.presidentNames || association?.lastGoaDate || association?.siret || association?.charterDate"
+            class="dashboard-section"
         >
-            <div class="dashboard-section">
-                <h2>
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-clipboard-check"
-                    ></i>{{ t('association.titles.admin') }}
-                </h2>
+            <h2>
+                <i
+                    aria-hidden="true"
+                    class="bi bi-clipboard-check"
+                ></i>{{ t('association.titles.admin') }}
+            </h2>
 
-                <div class="dashboard-section-container">
-                    <dl class="container flex-column">
-                        <div
-                            v-if="association?.presidentNames"
-                            class="display-row"
-                            itemprop="member"
-                            itemscope
-                            itemtype="https://schema.org/Person"
-                        >
-                            <dt>{{ t('association.labels.president-name') }}</dt>
-                            <dd itemprop="name">{{ association?.presidentNames }}</dd>
-                        </div>
-
-                        <!--
-                        <div
-                            v-if="association?.presidentPhone"
-                            class="display-row"
-                        >
-                            <dt>{{ t('association.labels.president-phone') }}</dt>
-                            <dd></dd>
-                        </div>
-
-                        <div
-                            v-if="association?.presidentEmail"
-                            class="display-row"
-                        >
-                            <dt>{{ t('association.labels.president-email') }}</dt>
-                            <dd></dd>
-                        </div>
-                        -->
-
-                        <div
-                            v-if="association?.charterDate"
-                            class="display-row"
-                        >
-                            <dt>{{ t('association.labels.charter-date') }}</dt>
-                            <dd>{{ formatDate(association?.charterDate)?.split('-').reverse().join('/') }}</dd>
-                        </div>
-
-                        <div
-                            v-if="association?.lastGoaDate"
-                            class="display-row"
-                        >
-                            <dt>{{ t('association.labels.last-goa') }}</dt>
-                            <dd>{{ formatDate(association?.lastGoaDate)?.split('-').reverse().join('/') }}</dd>
-                        </div>
-
-                        <div
-                            v-if="association?.siret"
-                            class="display-row"
-                        >
-                            <dt>{{ t('association.labels.siret') }}</dt>
-                            <dd>{{ association?.siret }}</dd>
-                        </div>
-                    </dl>
-                </div>
+            <div class="dashboard-section-container">
+                <dl class="container flex-column">
+                    <AtomicDisplayField
+                        v-if="association?.presidentNames"
+                        :title="t('association.labels.president-name')"
+                        color="association"
+                    >
+                        {{ association?.presidentNames }}
+                    </AtomicDisplayField>
+                    <AtomicDisplayField
+                        v-if="association?.charterDate"
+                        :title="t('association.labels.charter-date')"
+                        color="association"
+                    >
+                        {{ formatDate(association?.charterDate)?.split('-').reverse().join('/') }}
+                    </AtomicDisplayField>
+                    <AtomicDisplayField
+                        v-if="association?.lastGoaDate"
+                        :title="t('association.labels.last-goa')"
+                        color="association"
+                    >
+                        {{ formatDate(association?.lastGoaDate)?.split('-').reverse().join('/') }}
+                    </AtomicDisplayField>
+                    <AtomicDisplayField
+                        v-if="association?.siret"
+                        :title="t('association.labels.siret')"
+                        color="association"
+                    >
+                        {{ association?.siret }}
+                    </AtomicDisplayField>
+                </dl>
             </div>
-        </div>
-
+        </section>
 
         <div
             v-if="association?.address || association?.phone || (association?.email && !association?.email.includes('@mail.tld'))
@@ -260,134 +195,105 @@ const initAssociationCharter = () => {
 
                 <div class="dashboard-section-container">
                     <dl class="container flex-column">
-                        <div
+                        <AtomicDisplayField
                             v-if="association?.address"
-                            class="display-row"
+                            :title="t('association.labels.address')"
+                            color="association"
                         >
-                            <dt>{{ t('association.labels.address') }}</dt>
-                            <dd
-                                class="address-fields"
-                                itemprop="address"
-                                itemscope
-                                itemtype="https://schema.org/PostalAddress"
-                            >
-                                <span itemprop="streetAddress">{{ association?.address }}</span>
-                                <span>
-                                    <span itemprop="postalCode">{{ association?.zipcode }}</span>
-                                    <span itemprop="addressLocality">{{ association?.city }}</span>
+                            <div class="flex-column no-gap">
+                                <span>{{ association?.address }}</span>
+                                <span class="flex-row gap-sm">
+                                    <span>{{ association?.zipcode }}</span>
+                                    <span>{{ association?.city }}</span>
                                 </span>
-                                <span itemprop="addressCountry">{{ association?.country }}</span>
-                            </dd>
-                        </div>
-
-                        <div
+                                <span>{{ association?.country }}</span>
+                            </div>
+                        </AtomicDisplayField>
+                        <AtomicDisplayField
                             v-if="association?.phone"
-                            class="display-row"
+                            :title="t('association.labels.phone')"
+                            color="association"
                         >
-                            <dt>{{ t('association.labels.phone') }}</dt>
-                            <dd itemprop="telephone">{{ association?.phone }}</dd>
-                        </div>
-
-                        <div
+                            {{ association?.phone }}
+                        </AtomicDisplayField>
+                        <AtomicDisplayField
                             v-if="association?.email && !association?.email?.includes('@mail.tld')"
-                            class="display-row"
+                            :title="t('association.labels.mail')"
+                            color="association"
                         >
-                            <dt>{{ t('association.labels.mail') }}</dt>
-                            <dd itemprop="email">{{ association?.email }}</dd>
-                        </div>
-
-                        <div
+                            {{ association?.email }}
+                        </AtomicDisplayField>
+                        <AtomicDisplayField
                             v-if="association?.website"
-                            class="display-row"
+                            :title="t('association.labels.website')"
+                            color="association"
                         >
-                            <dt>{{ t('association.labels.website') }}</dt>
-                            <dd itemprop="url">
-                                <a
-                                    :href="association?.website"
-                                    :title="`${t('association.labels.website-link')} ${association?.name}`"
-                                >{{
-                                    association?.website
-                                }}</a>
-                            </dd>
-                        </div>
-
-                        <div
-                            v-if="association?.socialNetworks && association?.socialNetworks?.length > 0"
-                            class="display-row"
+                            <a
+                                :href="association?.website"
+                                :title="`${t('association.labels.website-link')} ${association?.name}`"
+                            >{{
+                                association?.website
+                            }}</a>
+                        </AtomicDisplayField>
+                        <AtomicDisplayField
+                            v-if="association?.socialNetworks.length"
+                            :title="t('association.labels.socials')"
+                            color="association"
                         >
-                            <dt>{{ t('association.labels.socials') }}</dt>
-                            <dd>
-                                <ul class="flex-row">
-                                    <li
-                                        v-for="(socialNetwork, index) in association?.socialNetworks"
-                                        :key="index"
-                                    >
-                                        <a :href="socialNetwork?.location">
-                                            {{ socialNetwork?.type }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </dd>
-                        </div>
+                            <ul class="flex-row">
+                                <li
+                                    v-for="(socialNetwork, index) in association?.socialNetworks"
+                                    :key="index"
+                                >
+                                    <a :href="socialNetwork?.location">
+                                        {{ socialNetwork?.type }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </AtomicDisplayField>
                     </dl>
                 </div>
             </div>
         </div>
 
-        <div class="flex-row-center padding-top padding-bottom padding-left padding-right align-items-stretch">
-            <QBtn
+        <div class="flex-row-center padding-top padding-bottom">
+            <AtomicButton
                 :label="t('association.back-directory')"
-                :to="{ name: 'Associations' }"
-                class="btn-lg"
                 color="association"
                 icon="bi-box-arrow-left"
+                @click="router.push({ name: 'Associations' })"
             />
-            <QBtn
+            <AtomicButton
                 v-if="userStore.user?.associations.find(x => x.id === association?.id)"
                 :label="t('dashboard.association-user.manage-association')"
-                :to="{ name: 'AssociationDashboard', params: { id: association?.id } }"
-                class="btn-lg"
                 color="dashboard"
                 icon="bi-pencil-square"
+                @click="router.push({ name: 'AssociationDashboard', params: { id: association?.id } })"
             />
-            <QBtn
+            <AtomicButton
                 v-if="association?.email && !association?.email?.includes('@mail.tld')"
+                :aria-label="`${t('association.contact')} ${association?.name}`"
                 :href="`mailto:${association?.email}`"
                 :label="t('association.contact')"
-                :title="`${t('association.contact')} ${association?.name}`"
-                class="btn-lg"
                 color="association"
                 icon="bi-envelope"
             />
         </div>
-    </section>
+    </div>
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
 @import '@/assets/styles/dashboard.scss';
 
+.association-logo {
+    width: 12rem;
+    height: 12rem;
+    display: block;
+    margin: 1rem auto;
+}
+
 h2 > i {
     padding: 0.25rem 1rem 0 0;
-}
-
-ul {
-    padding-left: 0;
-}
-
-.breakline {
-    white-space: pre-line;
-}
-
-.address-fields,
-.address-fields > * {
-    display: flex;
-    flex-direction: column;
-}
-
-.address-fields > span + span {
-    flex-direction: row;
-    gap: 1rem;
 }
 </style>

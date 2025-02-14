@@ -800,52 +800,7 @@ label.custom-label {
   }
 }
 
-/*// Multi-column form
-.form-col-container {
-  display: flex;
-  align-items: stretch;
-  width: $fullSize;
-  margin: 2rem 0;
-
-  .form-col {
-    flex: 1 1 0;
-    padding: 0 3.2rem;
-    border-left: 1px solid $formSeparatorColor;
-
-    &:first-child {
-      padding-left: 0;
-      border: none;
-    }
-
-    &:last-child {
-      padding-right: 0;
-    }
-  }
-
-  @media screen and (max-width: $pageWidth) {
-    .form-col {
-      padding: 0 2rem;
-    }
-  }
-
-  @media screen and (max-width: $breakpoint-lg) {
-    flex-direction: column;
-
-    .form-col {
-      flex: 1 1 0;
-      padding: 0;
-      border-left: none;
-      margin-bottom: 2rem;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-  }
-}*/
-
-// Display rows
-.display-row, .comment-row {
+.comment-row {
   display: flex;
   flex-direction: column;
   background-color: $backgroundColor1;
@@ -896,19 +851,19 @@ label.custom-label {
 }
 
 .variant-space-2 {
-  .display-row, .comment-row {
+  .comment-row {
     border-color: $charterColor;
   }
 }
 
 .variant-space-3 {
-  .display-row, .comment-row {
+  .comment-row {
     border-color: $commissionColor;
   }
 }
 
 .variant-space-4 {
-  .display-row, .comment-row {
+  .comment-row {
     border-color: $dashboardColor;
   }
 }

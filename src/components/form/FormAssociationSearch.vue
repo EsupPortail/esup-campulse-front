@@ -4,16 +4,17 @@ import {ref, watch} from 'vue'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useI18n} from 'vue-i18n'
-import useAssociation from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
 import type {RouteRecordName} from 'vue-router'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const {t} = useI18n()
 const associationStore = useAssociationStore()
-const {associations} = useAssociation()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 
@@ -23,8 +24,25 @@ const props = defineProps<{
 
 const emit = defineEmits(['updatePage'])
 
-watch(() => associationStore.associations, () => {
-    associations.value = associationStore.associations
+const expanded = ref<boolean>(false)
+
+async function getSearchOptions() {
+    try {
+        await associationStore.getInstitutions()
+        await associationStore.getInstitutionComponents()
+        await associationStore.getActivityFields()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: await catchHTTPError(error.response)
+            })
+        }
+    }
+}
+
+watch(() => expanded.value, () => {
+    if (expanded.value) getSearchOptions()
 })
 
 const settings = ref<AssociationSearch>({
@@ -43,7 +61,7 @@ async function onSearch() {
         if (props.route === 'ManageAssociations') {
             isPublic = false
         }
-        associations.value = await simpleAssociationSearch(settings.value.search, isPublic)
+        associationStore.associations = await simpleAssociationSearch(settings.value.search, isPublic)
         if (props.route === 'Associations') {
             emit('updatePage')
         }
@@ -98,117 +116,88 @@ async function clearSearch() {
         <QForm
             id="search-form"
             :aria-label="t('directory.directory')"
-            class="search-text-field"
             role="search"
             @submit.prevent="onSearch"
         >
-            <div>
-                <QInput
-                    v-model="settings.search"
+            <AtomicInput
+                :label="t('search')"
+                :model="settings.search"
+                color="association"
+                icon="bi-search"
+                type="search"
+                @update:model="settings.search = $event as string"
+            />
+            <div class="flex-row">
+                <AtomicButton
                     :label="t('search')"
-                    :placeholder="t('search')"
-                    clearable
                     color="association"
-                    filled
-                    inputmode="search"
-                    lazy-rules
-                >
-                    <template v-slot:prepend>
-                        <QIcon name="bi-search"/>
-                    </template>
-                </QInput>
-                <div class="flex-row padding-top align-items-stretch">
-                    <QBtn
-                        :label="t('search')"
-                        class="btn-lg"
-                        color="association"
-                        icon="bi-chevron-right"
-                        type="submit"
-                    />
-                    <QBtn
-                        :label="t('cancel-search')"
-                        class="btn-lg"
-                        color="association"
-                        icon="bi-x-lg"
-                        @click="clearSearch"
-                    />
-                </div>
+                    icon="bi-chevron-right"
+                    type="submit"
+                />
+                <AtomicButton
+                    :label="t('cancel-search')"
+                    color="association"
+                    icon="bi-x-lg"
+                    @click="clearSearch"
+                />
             </div>
         </QForm>
 
         <QForm
             :aria-label="t('directory.directory-advanced')"
-            class="search-text-field"
             role="search"
             @submit.prevent="onAdvancedSearch"
         >
             <QExpansionItem
+                v-model="expanded"
                 :label="t('advanced-search')"
                 header-class="text-association"
             >
-                <div class="flex-column">
-                    <QInput
-                        v-model="settings.name"
-                        :label="t('directory.labels.association-name')"
-                        class="full-size"
-                        clearable
+                <AtomicInput
+                    :label="t('directory.labels.association-name')"
+                    :model="settings.name"
+                    color="association"
+                    @update:model="settings.name = $event as string"
+                />
+                <AtomicInput
+                    :label="t('directory.labels.association-acronym')"
+                    :model="settings.acronym"
+                    color="association"
+                    @update:model="settings.acronym = $event as string"
+                />
+                <div class="flex-row-center">
+                    <AtomicSelect
+                        :label="t('directory.labels.association-institution')"
+                        :model="settings.institution"
+                        :options="associationStore.institutionLabels"
                         color="association"
-                        filled
-                        lazy-rules
+                        @update:model="settings.institution = $event as number"
                     />
-                    <QInput
-                        v-model="settings.acronym"
-                        :label="t('directory.labels.association-acronym')"
-                        clearable
+                    <AtomicSelect
+                        :label="t('directory.labels.association-institution-component')"
+                        :model="settings.institutionComponent"
+                        :options="associationStore.institutionComponentLabels"
                         color="association"
-                        filled
-                        lazy-rules
+                        @update:model="settings.institutionComponent = $event as number"
                     />
-                    <div class="flex-row-center">
-                        <QSelect
-                            v-model="settings.institution"
-                            :label="t('directory.labels.association-institution')"
-                            :options="associationStore.institutionLabels"
-                            clearable
-                            color="association"
-                            emit-value
-                            filled
-                            map-options
-                        />
-                        <QSelect
-                            v-model="settings.institutionComponent"
-                            :label="t('directory.labels.association-institution-component')"
-                            :options="associationStore.institutionComponentLabels"
-                            clearable
-                            color="association"
-                            emit-value
-                            filled
-                            map-options
-                        />
-                        <QSelect
-                            v-model="settings.activityField"
-                            :label="t('directory.labels.association-activity-field')"
-                            :options="associationStore.activityFieldLabels"
-                            clearable
-                            color="association"
-                            emit-value
-                            filled
-                            map-options
-                        />
-                    </div>
+                    <AtomicSelect
+                        :label="t('directory.labels.association-activity-field')"
+                        :model="settings.activityField"
+                        :options="associationStore.activityFieldLabels"
+                        color="association"
+                        @update:model="settings.activityField = $event as number"
+                    />
                 </div>
 
-                <div class="flex-row padding-top padding-bottom align-items-stretch">
-                    <QBtn
+                <div class="flex-row padding-bottom">
+                    <AtomicButton
                         :label="t('advanced-search')"
-                        class="btn-lg"
+                        :submit="true"
                         color="association"
                         icon="bi-chevron-right"
-                        type="submit"
                     />
-                    <QBtn
+                    <AtomicButton
                         :label="t('cancel-search')"
-                        class="btn-lg"
                         color="association"
                         icon="bi-x-lg"
                         @click="clearSearch"
@@ -223,8 +212,4 @@ async function clearSearch() {
 @import '@/assets/styles/associations.scss';
 @import '@/assets/styles/forms.scss';
 @import "@/assets/_variables.scss";
-
-.flex-row-center > * {
-    width: $fullSize;
-}
 </style>
