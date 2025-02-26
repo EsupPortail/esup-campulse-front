@@ -11,10 +11,6 @@ export const useContentStore = defineStore('contentStore', {
     }),
 
     actions: {
-        /**
-         * It gets the content data from the server
-         * Available for the public
-         */
         async getContents(isEditable: boolean) {
             const {axiosPublic} = useAxios()
             let url = '/contents/'
@@ -30,12 +26,11 @@ export const useContentStore = defineStore('contentStore', {
         },
         async getContentsByCode(codes: ContentCode[]) {
             const {axiosPublic} = useAxios()
-            this.contents = []
-            for (const code of codes) {
-                const url = `/contents/?code=${code}`
-                const content = (await axiosPublic.get<Content[]>(url)).data[0]
-                this.contents.push(content)
-            }
+            const missingCodes: ContentCode[] = codes.filter(code => !this.contents.find(content => content.code === code))
+            if (!missingCodes.length) return
+            const url = `/contents/?codes=${missingCodes.join(',')}`
+            const response = await axiosPublic.get<Content[]>(url)
+            this.contents = [this.contents, ...response.data]
         },
         async patchContent(content: EditableContent) {
             const {axiosAuthenticated} = useAxios()

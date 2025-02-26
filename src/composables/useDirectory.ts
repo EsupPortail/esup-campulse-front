@@ -10,11 +10,6 @@ export default function () {
     const userStore = useUserStore()
     const {filterizeSearch} = useUtility()
 
-    /**
-     * It filters the associations in the store based on the search settings on the front end
-     * @param {AssociationSearch} settings - AssociationSearch
-     * @returns An array of associations that match the search criteria
-     */
     function advancedSearch(settings: AssociationSearch) {
         if (associationStore.associations.length > 0 &&
             (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
@@ -66,12 +61,6 @@ export default function () {
         }
     }
 
-    /**
-     * It searches for associations that are public and match the search value on the API.
-     * @param {string} query - The value to search for
-     * @param forDirectory
-     * @returns An array of AssociationList objects.
-     */
     async function simpleAssociationSearch(query: string, forDirectory: boolean): Promise<Association[]> {
         const {axiosPublic, axiosAuthenticated} = useAxios()
         let instance = axiosAuthenticated
