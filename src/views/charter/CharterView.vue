@@ -132,7 +132,6 @@ onMounted(async () => {
             :img="CharterImage3"
             :text="thirdBlock?.body"
             :title="thirdBlock?.header"
-            copyright="@Manu Grimm"
         />
         <LayoutPageCards
             v-if="pageCards.length"
