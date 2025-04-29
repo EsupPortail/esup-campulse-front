@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.5 (avril 2025)
+
+- Retrait d'une commande obsolète et dernières références à Opaline
+
 ## 1.2.4 (avril 2025)
 
 - Retrait du copyright des images en dur dans le thème
