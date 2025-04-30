@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.6 (avril 2025)
+
+- Verify if socialNetworks are an array
+
 ## 1.2.5 (avril 2025)
 
 - Retrait d'une commande obsolète et dernières références à Opaline
