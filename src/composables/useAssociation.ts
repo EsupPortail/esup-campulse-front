@@ -131,59 +131,41 @@ export default function () {
         return changedData
     }
 
-    /**
-     * It checks if there are changes in an association's social networks array
-     *
-     * If the association have already social networks, we check if there are the same amount of networks in the old and new arrays,
-     * if so we check if the type or location of the networks have changed, if so we patch the new array,
-     * if not we do nothing,
-     * if there are not the same amount of networks we patch the new array,
-     * if there are not already social networks but there are new networks we patch the new array,
-     * if there are not already social networks and there are no new networks we do nothing
-     */
     function checkSocialNetworks() {
         let hasChanges = false
-        // If there already are social networks
-        if (associationStore.association?.socialNetworks?.length !== 0) {
-            // If there are as many networks in old and new arrays
-            // Then we need to compare more deeply
-            if (associationStore.association?.socialNetworks?.length === associationSocialNetworks.value.length) {
-                associationStore.association?.socialNetworks.some((socialNetwork) => {
-                    // Look for the same types
-                    const editedType = associationSocialNetworks.value.find(({type}) => type === socialNetwork.type)
-                    // If type has changed
+        const current = associationStore.association?.socialNetworks
+        const edited = associationSocialNetworks.value
+
+        if (Array.isArray(current) && current.length !== 0) {
+            if (current.length === edited.length) {
+                current.some((socialNetwork) => {
+                    const editedType = edited.find(({type}) => type === socialNetwork.type)
                     if (editedType === undefined && !hasChanges) {
                         hasChanges = true
-                        return hasChanges
+                        return true
                     }
-                    // If location has changed
-                    const editedLocation = associationSocialNetworks.value.find(({location}) => location === socialNetwork.location)
+
+                    const editedLocation = edited.find(({location}) => location === socialNetwork.location)
                     if (editedLocation === undefined && !hasChanges) {
                         hasChanges = true
-                        return hasChanges
+                        return true
                     }
+
+                    return false
                 })
-                // If we detect changes, we can patch the new array
+
                 if (hasChanges) {
-                    changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
+                    changedData = Object.assign(changedData, {socialNetworks: edited})
                 }
+            } else {
+                changedData = Object.assign(changedData, {socialNetworks: edited})
             }
-            // If there are not the same amount of networks
-            else {
-                // We can safely patch every new network
-                changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
-            }
-        }
-        // If there are not already social networks
-        else {
-            // But if there are new networks
-            if (associationSocialNetworks.value.length !== 0) {
-                // We can safely patch every new network
-                changedData = Object.assign(changedData, {socialNetworks: associationSocialNetworks.value})
+        } else {
+            if (Array.isArray(edited) && edited.length !== 0) {
+                changedData = Object.assign(changedData, {socialNetworks: edited})
             }
         }
     }
-
 
     /**
      * It updates the association in the database with the data that has been changed in the form
