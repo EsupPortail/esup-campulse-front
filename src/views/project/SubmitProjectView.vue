@@ -838,7 +838,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.individualCost"
                                 :label="t('project.individual-cost') + ' *'"
-                                :rules="[val => val && val.length > 1 || t('forms.required-project-individual-cost'),
+                                :rules="[val => val && val.length || t('forms.required-project-individual-cost'),
                                          val => val !== '0' || t('forms.required-project-individual-cost-not-null')]"
                                 :shadow-text="` ${CURRENCY}`"
                                 aria-required="true"
