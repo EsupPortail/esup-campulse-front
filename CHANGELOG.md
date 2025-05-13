@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.2.7 (mai 2025)
+
+- Le coût individuel dans un projet peut être inférieur à 10
+
 ## 1.2.6 (avril 2025)
 
-- Verify if socialNetworks are an array
+- Vérifier si socialNetworks est un array
 
 ## 1.2.5 (avril 2025)
 
