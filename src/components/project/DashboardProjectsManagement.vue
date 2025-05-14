@@ -38,7 +38,7 @@ const tabs = ref<Tab[]>([])
 
 const initTabs = () => {
     tabs.value = []
-    tabs.value = commissions.value.map(obj => ({
+    tabs.value = commissions.value.reverse().map(obj => ({
         name: obj.name,
         commission: obj.id
     }))
