@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.8 (mai 2025)
+
+- Inverser l'ordre des onglets de commission dans la gestion des projets
+
 ## 1.2.7 (mai 2025)
 
 - Le coût individuel dans un projet peut être inférieur à 10
