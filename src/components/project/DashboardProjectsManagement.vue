@@ -42,7 +42,7 @@ const initTabs = () => {
         name: obj.name,
         commission: obj.id
     }))
-    if (tabs.value.length) tab.value = tabs.value[0].name
+    if (tabs.value.length) tab.value = tabs.value.at(-1).name
 }
 
 onMounted(async () => {
