@@ -46,7 +46,7 @@ describe('Content store', () => {
             mockedAxios.get.mockResolvedValueOnce({data: contents})
             await contentStore.getContentsByCode(codes)
             expect(axiosPublic.get).toHaveBeenCalledTimes(1)
-            expect(axiosPublic.get).toHaveBeenCalledWith(`/contents/?code=${codes[0]}`)
+            expect(axiosPublic.get).toHaveBeenCalledWith(`/contents/?codes=${codes.join(',')}`)
             expect(contentStore.contents).toEqual(contents)
         })
     })

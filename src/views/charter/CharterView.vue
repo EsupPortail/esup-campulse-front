@@ -118,17 +118,20 @@ onMounted(async () => {
 <template>
     <section>
         <LayoutImageText
+            v-if="firstBlock"
             :img="CharterImage1"
             :text="firstBlock?.body"
             :title="firstBlock?.header"
         />
         <LayoutTextImageColor
+            v-if="secondBlock"
             :img="CharterImage2"
             :text="secondBlock?.body"
             :title="secondBlock?.header"
             color="charter"
         />
         <LayoutImageText
+            v-if="thirdBlock"
             :img="CharterImage3"
             :text="thirdBlock?.body"
             :title="thirdBlock?.header"

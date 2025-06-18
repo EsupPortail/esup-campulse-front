@@ -23,4 +23,3 @@ const testMessage = import.meta.env.VITE_APP_TEST_MESSAGE
         <LayoutFooter/>
     </QLayout>
 </template>
-

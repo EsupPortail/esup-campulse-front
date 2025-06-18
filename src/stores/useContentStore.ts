@@ -30,12 +30,8 @@ export const useContentStore = defineStore('contentStore', {
         },
         async getContentsByCode(codes: ContentCode[]) {
             const {axiosPublic} = useAxios()
-            this.contents = []
-            for (const code of codes) {
-                const url = `/contents/?code=${code}`
-                const content = (await axiosPublic.get<Content[]>(url)).data[0]
-                this.contents.push(content)
-            }
+            const url = `/contents/?codes=${codes.join(',')}`
+            this.contents = (await axiosPublic.get<Content[]>(url)).data
         },
         async patchContent(content: EditableContent) {
             const {axiosAuthenticated} = useAxios()
