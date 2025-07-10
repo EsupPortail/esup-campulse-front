@@ -91,7 +91,7 @@ async function onOptionClick(option: Option) {
         if (option.action === 'download') {
             if (props.charter.pathTemplate.length) {
                 const pathTemplate = props.charter.pathTemplate.find(pathTemplate => pathTemplate.documentId === option.id)
-                if (pathTemplate) await createFileLink(pathTemplate.path, props.charter.documentName)
+                if (pathTemplate) createFileLink(pathTemplate.path, props.charter.documentName)
             }
         } else if (option.action === 'view') {
             if (props.charter.pathFile) {
@@ -112,6 +112,7 @@ async function onOptionClick(option: Option) {
             :label="t('manage')"
             class="text-charter"
             outline
+            :data-test="`manage-${props.charter.documentAcronym}-button`"
         >
             <QList>
                 <QItem

@@ -173,11 +173,13 @@ async function onSignCharter() {
                     v-model="step"
                     active-color="charter-bold"
                     animated
+                    data-test="form-stepper"
                 >
                     <QStep
                         :name="1"
                         :title="t('charter.site.sign-form.association-infos-update')"
                         icon="bi-pencil"
+                        data-test="charter-step"
                     >
                         <QForm @submit="onPatchAssociation">
                             <InfoFormRequiredFields/>
@@ -329,6 +331,7 @@ async function onSignCharter() {
                                     icon="bi-check-lg"
                                     text-color="charter"
                                     type="submit"
+                                    data-test="continue-button"
                                 />
                             </div>
                         </QForm>
@@ -338,6 +341,7 @@ async function onSignCharter() {
                         :name="2"
                         :title="t('charter.site.sign-form.documents-upload')"
                         icon="bi-file-earmark"
+                        data-test="charter-step"
                     >
                         <QForm @submit="onUploadDocuments(3)">
                             <InfoFormRequiredFields/>
@@ -353,6 +357,7 @@ async function onSignCharter() {
                                     icon="bi-chevron-left"
                                     text-color="charter"
                                     @click="step = step - 1"
+                                    data-test="back-button"
                                 />
                                 <QBtn
                                     :label="t('continue')"
@@ -361,6 +366,7 @@ async function onSignCharter() {
                                     icon="bi-check-lg"
                                     text-color="charter"
                                     type="submit"
+                                    data-test="continue-button"
                                 />
                             </div>
                         </QForm>
@@ -370,6 +376,7 @@ async function onSignCharter() {
                         :name="3"
                         :title="t('recap')"
                         icon="bi-check-lg"
+                        data-test="charter-step"
                     >
                         <QForm @submit="onSignCharter">
                             <CharterRecap
@@ -385,6 +392,7 @@ async function onSignCharter() {
                                     icon="bi-chevron-left"
                                     text-color="charter"
                                     @click="step = step - 1"
+                                    data-test="back-button"
                                 />
                                 <QBtn
                                     :label="t('charter.sign')"
@@ -393,6 +401,7 @@ async function onSignCharter() {
                                     icon="bi-check-lg"
                                     text-color="charter"
                                     type="submit"
+                                    data-test="continue-button"
                                 />
                             </div>
                         </QForm>
