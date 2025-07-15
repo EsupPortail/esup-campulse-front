@@ -123,6 +123,7 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
                             icon="bi-chevron-left"
                             text-color="charter"
                             @click="open = false"
+                            data-test="cancel-button"
                         />
                         <QBtn
                             :label="t('charter.sign')"
@@ -131,6 +132,7 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
                             icon="bi-check-lg"
                             text-color="charter"
                             type="submit"
+                            data-test="sign-button"
                         />
                     </div>
                 </QForm>
