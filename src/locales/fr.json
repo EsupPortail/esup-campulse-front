@@ -837,11 +837,6 @@
   "skip-to-content": "Aller au contenu",
   "status": "Statut",
   "table": {
-    "first-page": "Première page",
-    "last-page": "Dernière page",
-    "next-page": "Page suivante",
-    "previous-page": "Page précédente",
-    "results-amount": "{firstResult}-{lastResult} sur {amountResults}",
     "select-all": "Sélectionner tout"
   },
   "to": "Jusqu'au",
