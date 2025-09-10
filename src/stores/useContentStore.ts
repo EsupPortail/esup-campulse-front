@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {Content, ContentCode, ContentStore, EditableContent, Logo} from '#/index'
+import type {Content, ContentCode, ContentStore, EditableContent, Logo, Stats} from '#/index'
 import {useAxios} from '@/composables/useAxios'
 
 export const useContentStore = defineStore('contentStore', {
@@ -7,7 +7,8 @@ export const useContentStore = defineStore('contentStore', {
         content: undefined,
         contents: [],
         logos: [],
-        CSSClasses: ['home-section-annuaire', 'home-section-charte', 'home-section-cape']
+        CSSClasses: ['home-section-annuaire', 'home-section-charte', 'home-section-cape'],
+        stats: undefined
     }),
 
     actions: {
@@ -60,5 +61,11 @@ export const useContentStore = defineStore('contentStore', {
                 this.logos = (await axiosPublic.get<Logo[]>(url)).data
             }
         },
+
+        async getStats() {
+            const {axiosPublic} = useAxios()
+            const url = '/stats/'
+            this.stats = (await axiosPublic.get<Stats>(url)).data
+        }
     }
 })
