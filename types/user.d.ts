@@ -124,7 +124,7 @@ export interface UserGroup {
 }
 
 export interface UserGroupRegister {
-    user: string,
+    user?: string,
     group: number | null,
     institution: number | null,
     fund: number | null

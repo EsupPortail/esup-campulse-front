@@ -6,7 +6,8 @@ import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {_tokens} from '~/fixtures/tokens.mock'
 import {
-    _associationRole, _CASUsers,
+    _associationRole,
+    _CASUsers,
     _institutionManager,
     _institutionStudent,
     _newUser,
@@ -108,9 +109,28 @@ describe('useSecurity', () => {
 
     describe('userLocalRegister', () => {
         it('should call API once on /users/auth/registration/ with newUser as data', async () => {
+            const {newAssociations} = useUserAssociations()
+
+            const user = {
+                email: newUser.email,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                phone: newUser.phone,
+                gifus: [],
+                associations: newAssociations.value.map((association) => {
+                    return {
+                        association: association.id,
+                        isPresident: association.role === 'isPresident',
+                        isSecretary: association.role === 'isSecretary',
+                        isTreasurer: association.role === 'isTreasurer',
+                        isVicePresident: association.role === 'isVicePresident'
+                    }
+                })
+            }
+
             await userLocalRegister()
             expect(axiosPublic.post).toHaveBeenCalledOnce()
-            expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/auth/registration/', newUser)
+            expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/auth/registration/', user)
         })
     })
 
