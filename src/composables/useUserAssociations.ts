@@ -5,6 +5,7 @@ import type {
     AssociationUser,
     AssociationUserDetail,
     User,
+    UserAssociationDetail,
     UserManagerStore,
     UserStore
 } from '#/user'
@@ -124,14 +125,6 @@ export default function () {
         await axiosAuthenticated.patch(`/users/${userId}/associations/${associationId}`, infosToPatch)
     }
 
-    /**
-     * When the user clicks the 'Add Association' button in registration for example,
-     * add a new association to the list of associations.
-     *
-     * The function is called when the user clicks the 'Add Association' button
-     *
-     * It's the same for the 'Remove Association' function below.
-     */
     function addAssociation() {
         newAssociations.value.push({
             id: null,
@@ -144,10 +137,6 @@ export default function () {
         newAssociations.value.splice(index, 1)
     }
 
-    /**
-     * It takes an array of associations and returns an array of association users
-     * @returns An array of AssociationUser
-     */
     function updateRegisterRoleInAssociation(): AssociationUser[] {
         newAssociationsUser.value = []
         newAssociations.value.forEach(association => {
@@ -206,7 +195,7 @@ export default function () {
         store.userAssociations = userAssociations as AssociationUserDetail[]
     }
 
-    function getAssociationUserRole(user: AssociationUser | AssociationUserDetail) {
+    function getAssociationUserRole(user: AssociationUser | AssociationUserDetail | UserAssociationDetail) {
         return user.isPresident ? 'isPresident' : user.isSecretary ? 'isSecretary' : user.isTreasurer ? 'isTreasurer' :
             user.isVicePresident ? 'isVicePresident' : 'isMember'
     }
@@ -261,34 +250,27 @@ export default function () {
     }
 
     async function getUnvalidatedAssociationUsers() {
-        associationMembers.value = []
 
         const {axiosAuthenticated} = useAxios()
         const {hasPerm} = useSecurity()
 
         let institutions = userStore.userInstitutions?.join(',')
         if (hasPerm('change_user_misc')) institutions += ','
+
         const url = `/users/associations/?institutions=${institutions}&is_validated_by_admin=false`
 
-        const associationUsers = (await axiosAuthenticated.get<AssociationUser[]>(url)).data
-        await associationStore.getAssociationNames(false, false)
-        await userManagerStore.getUsers('validated')
-
-        associationUsers.forEach((associationUser) => {
-            const extendedUser = userManagerStore.users.find(obj => obj.id === associationUser.user)
-            const associationName = associationStore.associationNames.find(obj => obj.id === associationUser.association)?.name
-            if (extendedUser && associationName) {
-                associationMembers.value.push({
-                    id: associationUser.user as number,
-                    associationId: associationUser.association as number,
-                    associationName,
-                    firstName: extendedUser.firstName,
-                    lastName: extendedUser.lastName,
-                    role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label as string,
-                    canBePresidentFrom: associationUser.canBePresidentFrom,
-                    canBePresidentTo: associationUser.canBePresidentTo,
-                    isValidatedByAdmin: associationUser.isValidatedByAdmin as boolean
-                })
+        const response = await axiosAuthenticated.get<UserAssociationDetail[]>(url)
+        associationMembers.value = response.data.map((userAssociation) => {
+            return {
+                id: userAssociation.id,
+                firstName: userAssociation.user.firstName,
+                lastName: userAssociation.user.lastName,
+                associationId: userAssociation.association.id,
+                associationName: userAssociation.association.name,
+                role: associationRoleOptions.find(role => role.value === getAssociationUserRole(userAssociation))?.label,
+                canBePresidentFrom: userAssociation.canBePresidentFrom,
+                canBePresidentTo: userAssociation.canBePresidentTo,
+                isValidatedByAdmin: userAssociation.isValidatedByAdmin
             }
         })
     }

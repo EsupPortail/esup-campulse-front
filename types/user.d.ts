@@ -22,6 +22,32 @@ export interface User {
 
 // STORES
 
+export interface UserAssociationDetail {
+    id: number,
+    user: {
+        id: number,
+        firstName: string,
+        lastName: string
+    },
+    association: {
+        id: number,
+        name: string,
+        acronym: string,
+        email: string,
+        isEnabled: boolean,
+        isPublic: boolean,
+        isSite: boolean,
+        institution: number
+    },
+    isPresident: boolean,
+    canBePresidentFrom: string,
+    canBePresidentTo: string,
+    isValidatedByAdmin: boolean,
+    isVicePresident: boolean,
+    isSecretary: boolean,
+    isTreasurer: boolean
+}
+
 // User's role in the association
 export interface AssociationUser {
     id?: number,

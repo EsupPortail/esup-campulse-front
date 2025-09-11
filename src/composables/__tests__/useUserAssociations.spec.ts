@@ -7,8 +7,10 @@ import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {
     _associationMembers,
-    _associationRole, _generalManager,
-    _institutionStudent, _miscManager,
+    _associationRole,
+    _generalManager,
+    _institutionStudent,
+    _miscManager,
     _userAssociationDetail,
     _userAssociationDetails,
     _userAssociations,
@@ -340,18 +342,10 @@ describe('useUserAssociations', () => {
             it('should get unvalidated association users from their institution', async () => {
                 userStore.user = _miscManager
                 mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
-                const spies = {
-                    getAssociationNames: vi.spyOn(associationStore, 'getAssociationNames'),
-                    getUsers: vi.spyOn(userManagerStore, 'getUsers')
-                }
                 const url = `/users/associations/?institutions=${userStore.userInstitutions?.join(',') + ','}&is_validated_by_admin=false`
                 await getUnvalidatedAssociationUsers()
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-                expect(spies.getAssociationNames).toHaveBeenCalledOnce()
-                expect(spies.getAssociationNames).toHaveBeenCalledWith(false, false)
-                expect(spies.getUsers).toHaveBeenCalledOnce()
-                expect(spies.getUsers).toHaveBeenCalledWith('validated')
             })
         })
 
@@ -359,8 +353,6 @@ describe('useUserAssociations', () => {
             it('should get unvalidated association users from their institution', async () => {
                 userStore.user = _generalManager
                 mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
-                vi.spyOn(associationStore, 'getAssociationNames')
-                vi.spyOn(userManagerStore, 'getUsers')
                 const url = `/users/associations/?institutions=${userStore.userInstitutions?.join(',') + ','}&is_validated_by_admin=false`
                 await getUnvalidatedAssociationUsers()
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
