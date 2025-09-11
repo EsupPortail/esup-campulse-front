@@ -5,13 +5,7 @@ import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {_tokens} from '~/fixtures/tokens.mock'
-import {
-    _associationRole,
-    _CASUsers,
-    _institutionManager,
-    _institutionStudent,
-    _newUser,
-} from '~/fixtures/user.mock'
+import {_associationRole, _CASUsers, _institutionManager, _institutionStudent, _newUser,} from '~/fixtures/user.mock'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
@@ -57,6 +51,7 @@ describe('useSecurity', () => {
     const {axiosAuthenticated, axiosPublic} = useAxios()
     const {groups, newGroups} = useUserGroups()
     const {userFunds} = useCommissions()
+    const {newAssociations} = useUserAssociations()
 
     beforeEach(() => {
         userStore = useUserStore()
@@ -136,9 +131,21 @@ describe('useSecurity', () => {
 
     describe('userCASRegister', () => {
         it('should call API once on /users/auth/user/ with new info to patch', async () => {
-            await userCASRegister('new info to patch')
+            await userCASRegister()
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/users/auth/user/', {phone: 'new info to patch'})
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/users/auth/registration/cas/', {
+                phone: newUser.phone,
+                gifus: [],
+                associations: newAssociations.value.map((association) => {
+                    return {
+                        association: association.id,
+                        isPresident: association.role === 'isPresident',
+                        isSecretary: association.role === 'isSecretary',
+                        isTreasurer: association.role === 'isTreasurer',
+                        isVicePresident: association.role === 'isVicePresident'
+                    }
+                })
+            })
         })
     })
 

@@ -117,8 +117,28 @@ export default function () {
         userFunds.value = []
     }
 
-    async function userCASRegister(newUserInfo: string | null) {
-        await axiosAuthenticated.patch('/users/auth/user/', {phone: newUserInfo})
+    async function userCASRegister() {
+        const {newAssociations} = useUserAssociations()
+        const {userFunds} = useCommissions()
+
+        const gifus: UserGroupRegister[] = groupsToRegister()
+
+        const user = {
+            phone: newUser.phone,
+            gifus,
+            associations: newAssociations.value.map((association) => {
+                return {
+                    association: association.id,
+                    isPresident: association.role === 'isPresident',
+                    isSecretary: association.role === 'isSecretary',
+                    isTreasurer: association.role === 'isTreasurer',
+                    isVicePresident: association.role === 'isVicePresident'
+                }
+            })
+        }
+
+        await axiosAuthenticated.patch('/users/auth/registration/cas/', user)
+        userFunds.value = []
     }
 
     async function userAssociationsRegister(publicRequest: boolean, username: string | undefined) {
@@ -182,13 +202,8 @@ export default function () {
     }
 
     async function register() {
-        const {newAssociationsUser} = useUserAssociations()
         if (userStore.isCas) {
-            await userCASRegister(newUser.phone)
-            await userGroupsRegister(true)
-            if (newAssociationsUser) {
-                await userAssociationsRegister(true, newUser.username)
-            }
+            await userCASRegister()
         } else {
             await userLocalRegister()
         }
