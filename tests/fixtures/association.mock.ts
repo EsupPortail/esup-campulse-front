@@ -1,5 +1,4 @@
 import type {Association, AssociationSearch, AssociationSocialNetwork, EditedAssociation} from '#/association'
-import type {UserAssociation} from '#/user'
 
 
 export const _association: Association = {
@@ -124,15 +123,6 @@ export const _associations: Association[] = [
         charterStatus: 'CHARTER_DRAFT',
         charterDate: '',
         amountMembersAllowed: 4
-    }
-]
-
-export const _userAssociation: UserAssociation[] = [
-    {
-        id: 1,
-        name: 'Association',
-        isSite: true,
-        institution: 1
     }
 ]
 

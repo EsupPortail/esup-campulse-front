@@ -19,9 +19,9 @@ const {catchHTTPError} = useErrors()
 const {initUserAssociations} = useUserAssociations()
 
 interface Tabs {
-    label: string,
-    name: string,
-    association: number | null
+  label: string,
+  name: string,
+  association: number | null
 }
 
 const tabs = ref<Tabs[]>([])
@@ -272,11 +272,10 @@ watch(() => tab.value, initCanSubmitProjects)
 @import "@/assets/styles/dashboard.scss";
 
 .info-panel {
-    margin: 1rem;
+  margin: 1rem;
 }
 
 .q-tab {
-    font-size: inherit;
+  font-size: inherit;
 }
 </style>
-

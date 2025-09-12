@@ -1,4 +1,4 @@
-import type {AssociationUser} from '#/user'
+import type {UserAssociation} from '#/user'
 import type {DocumentUpload} from '#/documents'
 import type {AssociationCharterStatus} from '#/charters'
 
@@ -96,7 +96,7 @@ export interface AssociationStore {
     institutions: Institution[],
     institutionComponents: InstitutionComponent[],
     activityFields: AssociationActivityField[],
-    associationUsers: AssociationUser[],
+    associationUsers: UserAssociation[],
     associationDocuments: DocumentUpload[]
 }
 

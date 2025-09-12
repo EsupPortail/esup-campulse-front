@@ -1,10 +1,5 @@
 import {ref, watch} from 'vue'
-import type {
-    ProjectBasicInfos,
-    ProjectBudget,
-    ProjectCommissionFund,
-    ProjectGoals
-} from '#/project'
+import type {ProjectBasicInfos, ProjectBudget, ProjectCommissionFund, ProjectGoals} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
@@ -12,9 +7,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import useCommissions from '@/composables/useCommissions'
 import type {SelectLabel} from '#/index'
-import type {User} from '#/user'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useUserAssociations from '@/composables/useUserAssociations'
 
 const projectId = ref<string | undefined>()
 
@@ -80,7 +73,6 @@ export default function () {
     const {processDocuments} = useDocumentUploads()
     const {initChosenCommissionFundsLabels, commissionFunds} = useCommissions()
     const associationStore = useAssociationStore()
-    const {getAssociationUsersNames} = useUserAssociations()
 
 
     // INIT DATA
@@ -99,18 +91,11 @@ export default function () {
     }
 
     const initProjectAssociationUsersLabels = async (associationId: number) => {
-        projectAssociationUsersLabels.value = []
-        const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function (associationUser) {
-            const member = userNames.find(obj => obj.id === associationUser.user)
-            if (member && associationUser.id) {
-                projectAssociationUsersLabels.value.push({
-                    value: associationUser.id,
-                    label: member.firstName + ' ' + member.lastName
-                })
-            }
-        })
+        projectAssociationUsersLabels.value = associationStore.associationUsers.map(associationUser => ({
+            value: associationUser.id,
+            label: associationUser.user.firstName + ' ' + associationUser.user.lastName
+        }))
     }
 
     const initProjectCategories = () => {

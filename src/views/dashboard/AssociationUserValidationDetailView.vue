@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import router from '@/router'
 import useUserAssociations from '@/composables/useUserAssociations'
-import type {AssociationUserDetail} from '#/user'
+import type {UserAssociation} from '#/user'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
@@ -34,7 +34,7 @@ onMounted(async () => {
     loading.hide()
 })
 
-const associationUser = ref<AssociationUserDetail | undefined>()
+const associationUser = ref<UserAssociation | undefined>()
 
 const initAssociationMember = () => {
     associationUser.value = userManagerStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.associationId as string))

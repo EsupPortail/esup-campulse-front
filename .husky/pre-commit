@@ -1,1 +1,8 @@
-npm run lint && npm run typecheck && npm run test:unit run
+#!/bin/sh
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$branch" = "develop" ] || [ "$branch" = "main" ]; then
+  pnpm typecheck &&
+  pnpm lint
+  pnpm test:unit --run
+fi

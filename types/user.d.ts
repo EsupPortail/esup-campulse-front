@@ -13,7 +13,7 @@ export interface User {
     lastName: string,
     phone: string,
     isValidatedByAdmin: boolean,
-    associations: UserAssociation[],
+    associations: UserAssociationDetail[],
     groups: UserGroup[],
     isCas: boolean,
     hasValidatedEmail: boolean
@@ -22,23 +22,15 @@ export interface User {
 
 // STORES
 
-export interface UserAssociationDetail {
+// User's role in the association
+export interface UserAssociation {
     id: number,
     user: {
         id: number,
         firstName: string,
         lastName: string
     },
-    association: {
-        id: number,
-        name: string,
-        acronym: string,
-        email: string,
-        isEnabled: boolean,
-        isPublic: boolean,
-        isSite: boolean,
-        institution: number
-    },
+    association: UserAssociationDetail,
     isPresident: boolean,
     canBePresidentFrom: string,
     canBePresidentTo: string,
@@ -48,41 +40,31 @@ export interface UserAssociationDetail {
     isTreasurer: boolean
 }
 
-// User's role in the association
+export interface UserAssociationDetail {
+    id: number,
+    name: string,
+    acronym: string,
+    email: string,
+    isEnabled: boolean,
+    isPublic: boolean,
+    isSite: boolean,
+    institution: number,
+    canSubmitProjects?: boolean,
+}
+
 export interface AssociationUser {
     id?: number,
     user?: number,
-    association?: number | null,
+    association?: number,
     isPresident?: boolean,
-    canBePresidentFrom?: string | null,
-    canBePresidentTo?: string | null,
+    canBePresidentFrom?: string,
+    canBePresidentTo?: string,
     isValidatedByAdmin?: boolean,
     isVicePresident?: boolean,
     isSecretary?: boolean,
     isTreasurer?: boolean,
 
     [key: number]: string | boolean | number | null;
-}
-
-export interface AssociationUserDetail {
-    id?: number,
-    user?: number | null,
-    association: {
-        id: number,
-        name: string,
-        isSite?: boolean,
-        institution?: number,
-        isEnabled?: boolean,
-        isPublic?: boolean,
-        canSubmitProjects?: boolean
-    }
-    isPresident: boolean,
-    canBePresidentFrom: string | null,
-    canBePresidentTo: string | null,
-    isValidatedByAdmin: boolean,
-    isVicePresident: boolean,
-    isSecretary: boolean,
-    isTreasurer: boolean
 }
 
 export interface AssociationMember {
@@ -108,12 +90,12 @@ export interface AssociationRole {
     isValidatedByAdmin?: boolean
 }
 
+// Login
 interface CasLogin {
     ticket: string,
     service: string
 }
 
-// Login
 interface LocalLogin {
     username: string,
     password: string
@@ -130,14 +112,6 @@ export interface PasswordEdit {
     oldPassword: string,
     newPassword1: string,
     newPassword2: string
-}
-
-// Association that the user belongs to
-export interface UserAssociation {
-    id: number,
-    name: string,
-    isSite: boolean,
-    institution: number
 }
 
 // User group
@@ -160,7 +134,7 @@ export interface UserGroupRegister {
 export interface UserManagerStore {
     user: User | undefined,
     users: User[],
-    userAssociations: AssociationUserDetail[],
+    userAssociations: UserAssociation[],
     userDocuments: DocumentUpload[]
 }
 
@@ -185,7 +159,7 @@ export interface CASUser {
 export interface UserStore {
     user: User | undefined,
     newUser: UserRegister | undefined,
-    userAssociations: AssociationUserDetail[],
+    userAssociations: UserAssociation[],
     userDocuments: DocumentUpload[]
 }
 

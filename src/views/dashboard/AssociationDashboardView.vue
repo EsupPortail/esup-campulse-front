@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import {useUserStore} from '@/stores/useUserStore'
 import type {Association} from '#/association'
-import type {AssociationUserDetail} from '#/user'
+import type {UserAssociation} from '#/user'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
@@ -59,7 +59,7 @@ const initValues = () => {
 watch(() => associationStore.association, initValues)
 watch(() => userStore.userAssociations.length, initValues)
 
-const associationUser = ref<AssociationUserDetail>()
+const associationUser = ref<UserAssociation>()
 
 const initAssociationUser = () => {
     associationUser.value = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.id as string))
