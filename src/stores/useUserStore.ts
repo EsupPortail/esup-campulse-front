@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
+import type {CasLogin, LocalLogin, User, UserAssociation, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
@@ -106,7 +106,7 @@ export const useUserStore = defineStore('userStore', {
                         phone: user.phone as string
                     }
                 } else {
-                    await this.logOut()
+                    this.logOut()
                 }
             }
         },
@@ -139,6 +139,15 @@ export const useUserStore = defineStore('userStore', {
                 setTokens(access, refresh)
                 this.newUser = user
             }
+        },
+
+        async getUserAssociations() {
+            const {axiosAuthenticated} = useAxios()
+
+            const url = `/users/${this.user?.id}/associations/`
+
+            const response = await axiosAuthenticated.get<UserAssociation[]>(url)
+            this.userAssociations = response.data
         },
 
         /**

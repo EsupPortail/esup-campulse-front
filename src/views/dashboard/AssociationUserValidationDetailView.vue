@@ -14,7 +14,6 @@ import axios from 'axios'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {
-    getUserAssociations,
     associationRoleOptions,
     getAssociationUserRole,
     patchUserAssociations,
@@ -44,7 +43,7 @@ watch(() => userManagerStore.userAssociations.length, initAssociationMember)
 // Get user associations
 async function onGetUserAssociations() {
     try {
-        await getUserAssociations(parseInt(route.params.userId as string), true)
+        await userManagerStore.getUserAssociations(parseInt(route.params.userId as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

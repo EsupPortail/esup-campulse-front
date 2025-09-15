@@ -11,7 +11,6 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {
     userAssociations,
-    getUserAssociations,
     initUserAssociations
 } = useUserAssociations()
 const userManagerStore = useUserManagerStore()
@@ -26,7 +25,7 @@ onMounted(async () => {
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
-        await getUserAssociations(userManagerStore.user?.id as number, true)
+        await userManagerStore.getUserAssociations(userManagerStore.user?.id as number)
         initUserAssociations(true)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

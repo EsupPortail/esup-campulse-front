@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {User, UserGroupRegister, UserManagerStore, UserNames} from '#/user'
+import type {User, UserAssociation, UserGroupRegister, UserManagerStore, UserNames} from '#/user'
 import {useAxios} from '@/composables/useAxios'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
@@ -169,6 +169,15 @@ export const useUserManagerStore = defineStore('userManagerStore', {
         async getUserDocuments() {
             const {axiosAuthenticated} = useAxios()
             this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?user_id=${this.user?.id}`)).data
+        },
+
+        async getUserAssociations(userId: number | null | undefined) {
+            const {axiosAuthenticated} = useAxios()
+
+            const url = `/users/${userId}/associations/`
+
+            const response = await axiosAuthenticated.get<UserAssociation[]>(url)
+            this.userAssociations = response.data
         }
     }
 })

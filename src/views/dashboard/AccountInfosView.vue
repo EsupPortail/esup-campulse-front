@@ -26,7 +26,6 @@ const {catchHTTPError} = useErrors()
 const {
     newAssociations,
     updateUserAssociations,
-    getUserAssociations,
     initUserAssociations,
     userAssociations
 } = useUserAssociations()
@@ -68,10 +67,10 @@ async function onUpdateUserInfos() {
 async function onUpdateUserAssociations() {
     loading.show()
     try {
-        await updateUserAssociations(false)
+        updateUserAssociations(false)
         await userAssociationsRegister(false, userStore.user?.username)
         newAssociations.value = []
-        await getUserAssociations(userStore.user?.id, false)
+        await userStore.getUserAssociations()
         initUserAssociations(false)
         notify({
             type: 'positive',

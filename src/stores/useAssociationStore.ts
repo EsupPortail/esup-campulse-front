@@ -209,7 +209,7 @@ export const useAssociationStore = defineStore('associationStore', {
         },
         async getAssociationUsers(associationId: number) {
             const {axiosAuthenticated} = useAxios()
-            this.associationUsers = (await axiosAuthenticated.get<UserAssociation[]>(`/users/associations/?association_id=${associationId}`)).data
+            this.associationUsers = (await axiosAuthenticated.get<UserAssociation[]>(`/associations/${associationId}/users`)).data
         },
         async getAssociationDocuments(processTypes?: DocumentProcessType[]) {
             const {axiosAuthenticated} = useAxios()
