@@ -17,7 +17,7 @@ const {notify, loading} = useQuasar()
 const userManagerStore = useUserManagerStore()
 const {updateUserInfos, initInfosToPatch, infosToPatch} = useUsers()
 const {updateUserGroups} = useUserGroups()
-const {updateUserAssociations, userAssociations} = useUserAssociations()
+const {updateUserAssociations} = useUserAssociations()
 const {userAssociationsRegister} = useSecurity()
 const {catchHTTPError} = useErrors()
 const {uploadDocuments, initManagedUserDocumentUploads, initProcessDocuments} = useDocumentUploads()
@@ -26,7 +26,7 @@ const {uploadDocuments, initManagedUserDocumentUploads, initProcessDocuments} = 
 const emit = defineEmits(['hasValidated', 'closeDialog'])
 
 const props = defineProps<{
-    confirmation: boolean
+  confirmation: boolean
 }>()
 
 
@@ -45,18 +45,20 @@ async function onValidateChanges() {
     loading.show()
     try {
         initInfosToPatch(userManagerStore.user)
-        if (Object.entries(infosToPatch).length) {
-            await updateUserInfos(userManagerStore.user, true)
-        }
-        await updateUserAssociations(true)
-        if (userAssociations.value.length) {
-            await userAssociationsRegister(false, userManagerStore.user?.username)
-        }
+
+        if (!Object.entries(infosToPatch).length) return
+        await updateUserInfos(userManagerStore.user, true)
+
+        updateUserAssociations(true)
+        await userAssociationsRegister(userManagerStore.user?.username)
+
         await updateUserGroups()
+
         await uploadDocuments(undefined, userManagerStore.user?.username, false)
         initProcessDocuments()
         await userManagerStore.getUserDocuments()
         initManagedUserDocumentUploads()
+
         emit('hasValidated')
         notify({
             type: 'positive',

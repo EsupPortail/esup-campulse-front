@@ -65,18 +65,16 @@ export default function () {
 
         userAssociations.value.forEach(async function (association) {
             // If we need to delete the association
-            if (association.id && association.deleteAssociation) {
+            if (association.deleteAssociation) {
                 await deleteUserAssociation(userId, association.id)
                 // Reactively remove the deleted item from interface
-                if (!editedByStaff) {
-                    userAssociations.value.splice(userAssociations.value.findIndex(obj => obj.id === association.id), 1)
-                    userStore.user?.associations.splice(userAssociations.value.findIndex(obj => obj.id === association.id), 1)
-                }
+                if (editedByStaff) return
+                userAssociations.value.splice(userAssociations.value.findIndex(obj => obj.id === association.id), 1)
+                userStore.user?.associations.splice(userAssociations.value.findIndex(obj => obj.id === association.id), 1)
             }
             // If we need to update the association
             else {
                 // We search for the corresponding association in store
-
                 const storeAssociation = instance.userAssociations.find(obj => obj.association?.id === association.id)
                 // We set a boolean to track changes
                 let hasChanges = false
@@ -90,17 +88,16 @@ export default function () {
                 else if (storeAssociation?.isVicePresident && association.role !== 'isVicePresident') hasChanges = true
                 else if (association.role !== 'isMember') hasChanges = true
 
-                if (hasChanges && association.id) {
-                    const infosToPatch = {
-                        isPresident: association.role === 'isPresident',
-                        canBePresidentFrom: association.canBePresidentFrom ? association.canBePresidentFrom : null,
-                        canBePresidentTo: association.canBePresidentTo ? association.canBePresidentTo : null,
-                        isSecretary: association.role === 'isSecretary',
-                        isTreasurer: association.role === 'isTreasurer',
-                        isVicePresident: association.role === 'isVicePresident'
-                    }
-                    await patchUserAssociations(userId, association.id, infosToPatch)
+                if (!hasChanges) return
+                const infosToPatch = {
+                    isPresident: association.role === 'isPresident',
+                    canBePresidentFrom: association.canBePresidentFrom ? association.canBePresidentFrom : null,
+                    canBePresidentTo: association.canBePresidentTo ? association.canBePresidentTo : null,
+                    isSecretary: association.role === 'isSecretary',
+                    isTreasurer: association.role === 'isTreasurer',
+                    isVicePresident: association.role === 'isVicePresident'
                 }
+                await patchUserAssociations(userId, association.id, infosToPatch)
             }
         })
     }

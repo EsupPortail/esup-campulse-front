@@ -71,7 +71,6 @@ describe('useUserAssociations', () => {
         updateRegisterRoleInAssociation,
         newAssociationsUser,
         getAssociationUsersNames,
-        getUserAssociations,
         getAssociationUserRole,
         initUserAssociations,
         getUnvalidatedAssociationUsers
@@ -216,47 +215,6 @@ describe('useUserAssociations', () => {
                     isVicePresident: false
                 }
             ])
-        })
-    })
-
-    describe('getUserAssociations', () => {
-        describe('if the user is a managedUser', () => {
-            beforeEach(() => {
-                userManagerStore.user = _institutionStudent
-            })
-
-            afterEach(() => {
-                userManagerStore.user = undefined
-                userManagerStore.userAssociations = []
-                vi.restoreAllMocks()
-            })
-
-            it('should get extended userAssociations', async () => {
-                const url = `/users/${userManagerStore.user?.id}/associations/`
-                mockedAxios.get.mockResolvedValueOnce([])
-                await getUserAssociations(userManagerStore.user?.id, true)
-                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-            })
-        })
-
-        describe('if the user is not a managedUser', () => {
-            beforeEach(() => {
-                userStore.user = _institutionStudent
-            })
-
-            afterEach(() => {
-                userStore.user = undefined
-                userStore.userAssociations = []
-            })
-
-            it('should get extended userAssociations', async () => {
-                const url = '/users/associations/'
-                mockedAxios.get.mockResolvedValueOnce([])
-                await getUserAssociations(userStore.user?.id, false)
-                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-            })
         })
     })
 

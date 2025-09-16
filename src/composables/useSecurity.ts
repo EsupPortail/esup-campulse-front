@@ -4,7 +4,6 @@ import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
 import {useRoute} from 'vue-router'
-import type {AxiosInstance} from 'axios'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useCommissions from '@/composables/useCommissions'
 import zxcvbn from 'zxcvbn'
@@ -141,14 +140,13 @@ export default function () {
         userFunds.value = []
     }
 
-    async function userAssociationsRegister(publicRequest: boolean, username: string | undefined) {
+    // TODO refactor with id of user instead of username
+    async function userAssociationsRegister(username: string | undefined) {
         const idsAssociations = []
         const {newAssociations} = useUserAssociations()
-        let instance = axiosAuthenticated as AxiosInstance
-        if (publicRequest) instance = axiosPublic
         for (let i = 0; i < newAssociations.value.length; i++) {
             if (idsAssociations.indexOf(newAssociations.value[i].id) === -1)
-                await instance.post('/users/associations/', {
+                await axiosAuthenticated.post('/users/associations/', {
                     user: username,
                     association: newAssociations.value[i].id,
                     isPresident: newAssociations.value[i].role === 'isPresident',
@@ -189,14 +187,13 @@ export default function () {
         return factory
     }
 
-    async function userGroupsRegister(publicRequest: boolean) {
+    // TODO refactor with id of user instead of username
+    async function userGroupsRegister() {
         const {newGroups} = useUserGroups()
         const {userFunds} = useCommissions()
-        let instance = axiosAuthenticated as AxiosInstance
-        if (publicRequest) instance = axiosPublic
         if (!newGroups.value.length) return
         for (const group of groupsToRegister()) {
-            await instance.post('/users/groups/', group)
+            await axiosAuthenticated.post('/users/groups/', group)
         }
         userFunds.value = []
     }
@@ -212,11 +209,11 @@ export default function () {
     async function addUserAsManager() {
         const {newAssociationsUser} = useUserAssociations()
         await userLocalRegisterAsManager(newUser)
-        await userGroupsRegister(false)
+        await userGroupsRegister()
         if (newAssociationsUser.value) {
             let username = newUser.email
             if (newUser.isCas) username = newUser.username
-            await userAssociationsRegister(false, username)
+            await userAssociationsRegister(username)
         }
     }
 
