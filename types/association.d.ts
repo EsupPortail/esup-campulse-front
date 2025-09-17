@@ -29,9 +29,9 @@ export interface Association {
     lastGoaDate?: string,
     cgaDate?: string,
     socialNetworks?: AssociationSocialNetwork[],
-    institution?: number,
-    institutionComponent?: number,
-    activityField?: number,
+    institution?: Institution,
+    institutionComponent?: InstitutionComponent,
+    activityField?: AssociationActivityField,
     canSubmitProjects: boolean,
     charterStatus: AssociationCharterStatus,
     charterDate: string,
@@ -53,7 +53,7 @@ export interface Institution {
 export interface InstitutionComponent {
     id: number,
     name: string,
-    institution: Institution,
+    institution: Institution | number,
 }
 
 export interface AssociationActivityField {

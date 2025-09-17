@@ -139,11 +139,7 @@ const initAssociationCharter = () => {
                         class="display-row"
                     >
                         <dt>{{ t('association.labels.institution') }}</dt>
-                        <dd>
-                            {{
-                                associationStore.institutions.find(obj => obj.id === association?.institution)?.name
-                            }}
-                        </dd>
+                        <dd>{{ association?.institution.name }}</dd>
                     </div>
 
                     <div
@@ -151,12 +147,7 @@ const initAssociationCharter = () => {
                         class="display-row"
                     >
                         <dt>{{ t('association.labels.institution-component') }}</dt>
-                        <dd>
-                            {{
-                                associationStore.institutionComponents.find(obj => obj.id ===
-                                    association?.institutionComponent)?.name
-                            }}
-                        </dd>
+                        <dd>{{ association?.institutionComponent.name }}</dd>
                     </div>
 
                     <div
@@ -164,11 +155,7 @@ const initAssociationCharter = () => {
                         class="display-row"
                     >
                         <dt>{{ t('association.labels.activity-field') }}</dt>
-                        <dd>
-                            {{
-                                associationStore.activityFields.find(obj => obj.id === association?.activityField)?.name
-                            }}
-                        </dd>
+                        <dd>{{ association?.activityField.name }}</dd>
                     </div>
                 </dl>
             </div>
@@ -200,22 +187,22 @@ const initAssociationCharter = () => {
                         </div>
 
                         <!--
-                        <div
-                            v-if="association?.presidentPhone"
-                            class="display-row"
-                        >
-                            <dt>{{ t('association.labels.president-phone') }}</dt>
-                            <dd></dd>
-                        </div>
+<div
+    v-if="association?.presidentPhone"
+    class="display-row"
+>
+    <dt>{{ t('association.labels.president-phone') }}</dt>
+    <dd></dd>
+</div>
 
-                        <div
-                            v-if="association?.presidentEmail"
-                            class="display-row"
-                        >
-                            <dt>{{ t('association.labels.president-email') }}</dt>
-                            <dd></dd>
-                        </div>
-                        -->
+<div
+    v-if="association?.presidentEmail"
+    class="display-row"
+>
+    <dt>{{ t('association.labels.president-email') }}</dt>
+    <dd></dd>
+</div>
+-->
 
                         <div
                             v-if="association?.charterDate"
@@ -369,25 +356,25 @@ const initAssociationCharter = () => {
 @import '@/assets/styles/dashboard.scss';
 
 h2 > i {
-    padding: 0.25rem 1rem 0 0;
+  padding: 0.25rem 1rem 0 0;
 }
 
 ul {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 .breakline {
-    white-space: pre-line;
+  white-space: pre-line;
 }
 
 .address-fields,
 .address-fields > * {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .address-fields > span + span {
-    flex-direction: row;
-    gap: 1rem;
+  flex-direction: row;
+  gap: 1rem;
 }
 </style>

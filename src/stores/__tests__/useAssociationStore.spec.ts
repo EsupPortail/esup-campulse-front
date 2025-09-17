@@ -89,53 +89,21 @@ describe('Association store', () => {
         })
 
         it('should get only public associations if isPublic is true', async () => {
-            mockedPublicAxios.get.mockImplementation((url) => {
-                switch (url) {
-                case '/associations/?is_public=true':
-                    return Promise.resolve({data: _associations})
-                case '/institutions/':
-                    return Promise.resolve({data: _institutions})
-                case '/institutions/institution_components':
-                    return Promise.resolve({data: _institutionComponents})
-                case '/associations/activity_fields':
-                    return Promise.resolve({data: _activityFields})
-                default:
-                    return Promise.reject(new Error('not found'))
-                }
-            })
+            mockedPublicAxios.get.mockResolvedValueOnce({data: _associations})
 
             await associationStore.getAssociations(true)
-            expect(axiosPublic.get).toHaveBeenCalledTimes(4)
+            expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_public=true')
-            expect(axiosPublic.get).toHaveBeenCalledWith('/institutions/')
-            expect(axiosPublic.get).toHaveBeenCalledWith('/institutions/institution_components')
-            expect(axiosPublic.get).toHaveBeenCalledWith('/associations/activity_fields')
             expect(associationStore.associations).toEqual(_associations)
         })
 
         it('should get all associations with auth instance if isPublic is false', async () => {
-            mockedAuthAxios.get.mockImplementation((url) => {
-                switch (url) {
-                case '/associations/':
-                    return Promise.resolve({data: _associations})
-                case '/institutions/':
-                    return Promise.resolve({data: _institutions})
-                case '/institutions/institution_components':
-                    return Promise.resolve({data: _institutionComponents})
-                case '/associations/activity_fields':
-                    return Promise.resolve({data: _activityFields})
-                default:
-                    return Promise.reject(new Error('not found'))
-                }
-            })
+            mockedAuthAxios.get.mockResolvedValueOnce({data: _associations})
 
             await associationStore.getAssociations(false)
 
-            expect(axiosAuthenticated.get).toHaveBeenCalledTimes(4)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.get).toHaveBeenCalledWith('/associations/')
-            expect(axiosPublic.get).toHaveBeenCalledWith('/institutions/')
-            expect(axiosPublic.get).toHaveBeenCalledWith('/institutions/institution_components')
-            expect(axiosPublic.get).toHaveBeenCalledWith('/associations/activity_fields')
             expect(associationStore.associations).toEqual(_associations)
         })
 
@@ -148,28 +116,12 @@ describe('Association store', () => {
 
             const {axiosAuthenticated} = useAxios()
             const mockedAuthAxios = vi.mocked(axiosAuthenticated, true)
-            mockedAuthAxios.get.mockImplementation((url) => {
-                switch (url) {
-                case `/associations/?institutions=${institutions}`:
-                    return Promise.resolve({data: _associations})
-                case '/institutions/':
-                    return Promise.resolve({data: _institutions})
-                case '/institutions/institution_components':
-                    return Promise.resolve({data: _institutionComponents})
-                case '/associations/activity_fields':
-                    return Promise.resolve({data: _activityFields})
-                default:
-                    return Promise.reject(new Error('not found'))
-                }
-            })
+            mockedAuthAxios.get.mockResolvedValueOnce({data: _associations})
 
             await associationStore.getInstitutionAssociations()
 
-            expect(axiosAuthenticated.get).toHaveBeenCalledTimes(4)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/associations/?institutions=${institutions}`)
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/institutions/')
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/institutions/institution_components')
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/associations/activity_fields')
             expect(associationStore.associations).toEqual(_associations)
         })
     })
@@ -236,28 +188,12 @@ describe('Association store', () => {
             it('should get all associations the user is a member of', async () => {
                 userStore.user = _institutionStudent
 
-                mockedAuthAxios.get.mockImplementation((url) => {
-                    switch (url) {
-                    case '/associations/1':
-                        return Promise.resolve({data: _association})
-                    case '/institutions/':
-                        return Promise.resolve({data: _institutions})
-                    case '/institutions/institution_components':
-                        return Promise.resolve({data: _institutionComponents})
-                    case '/associations/activity_fields':
-                        return Promise.resolve({data: _activityFields})
-                    default:
-                        return Promise.reject(new Error('not found'))
-                    }
-                })
+                mockedAuthAxios.get.mockResolvedValueOnce({data: _association})
 
                 await associationStore.getManagedAssociations()
 
-                expect(axiosAuthenticated.get).toHaveBeenCalledTimes(4)
+                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
                 expect(axiosAuthenticated.get).toHaveBeenLastCalledWith('/associations/1')
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/institutions/')
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/institutions/institution_components')
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith('/associations/activity_fields')
                 expect(associationStore.associations).toEqual([_association])
             })
         })
@@ -295,43 +231,17 @@ describe('Association store', () => {
         })
 
         it('should get a public association if isPublic is true', async () => {
-            mockedPublicAxios.get.mockImplementation((url) => {
-                switch (url) {
-                case `/associations/${_association.id}`:
-                    return Promise.resolve({data: _association})
-                case '/institutions/':
-                    return Promise.resolve({data: _institutions})
-                case '/institutions/institution_components':
-                    return Promise.resolve({data: _institutionComponents})
-                case '/associations/activity_fields':
-                    return Promise.resolve({data: _activityFields})
-                default:
-                    return Promise.reject(new Error('not found'))
-                }
-            })
+            mockedPublicAxios.get.mockResolvedValueOnce({data: _association})
             await associationStore.getAssociationDetail(_association.id, true)
-            expect(axiosPublic.get).toHaveBeenCalledTimes(4)
+            expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith(`/associations/${_association.id}`)
             expect(associationStore.association).toEqual(_association)
         })
 
         it('should get a private association if isPublic is false', async () => {
-            mockedAuthAxios.get.mockImplementation((url) => {
-                switch (url) {
-                case `/associations/${_association.id}`:
-                    return Promise.resolve({data: _association})
-                case '/institutions/':
-                    return Promise.resolve({data: _institutions})
-                case '/institutions/institution_components':
-                    return Promise.resolve({data: _institutionComponents})
-                case '/associations/activity_fields':
-                    return Promise.resolve({data: _activityFields})
-                default:
-                    return Promise.reject(new Error('not found'))
-                }
-            })
+            mockedAuthAxios.get.mockResolvedValueOnce({data: _association})
             await associationStore.getAssociationDetail(_association.id, false)
-            expect(axiosAuthenticated.get).toHaveBeenCalledTimes(4)
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.get).toHaveBeenCalledWith(`/associations/${_association.id}`)
             expect(associationStore.association).toEqual(_association)
         })

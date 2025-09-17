@@ -25,7 +25,6 @@ onMounted(async function () {
     loading.show()
     await associationStore.getAssociations(true)
     associations.value = associationStore.associations
-    await loadAssociationsActivityFields()
     await getContents()
     loading.hide()
 })
@@ -77,21 +76,6 @@ function scrollToTop() {
 }
 
 // Functions
-async function loadAssociationsActivityFields() {
-    try {
-        await associationStore.getInstitutions()
-        await associationStore.getInstitutionComponents()
-        await associationStore.getActivityFields()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
-    }
-}
-
 async function getContents() {
     try {
         await contentStore.getContentsByCode(['ASSOCIATION_HOME_FIRST_BLOCK'])
@@ -198,10 +182,7 @@ async function getContents() {
                                             ></i>
                                             {{ t('directory.labels.association-institution') + ' : ' }}
                                         </span>
-                                        <span class="value">{{
-                                            associationStore.institutions.find(obj => obj.id ===
-                                                association?.institution)?.name
-                                        }}</span>
+                                        <span class="value">{{ association.institution.name }}</span>
                                     </li>
                                     <li v-if="association.activityField">
                                         <span class="label">
@@ -211,10 +192,7 @@ async function getContents() {
                                             ></i>
                                             {{ t('directory.labels.association-activity-field') + ' : ' }}
                                         </span>
-                                        <span class="value">{{
-                                            associationStore.activityFields.find(obj => obj.id ===
-                                                association?.activityField)?.name
-                                        }}</span>
+                                        <span class="value">{{ association.activityField.name }}</span>
                                     </li>
                                     <li v-if="association.institutionComponent">
                                         <span class="label">
@@ -224,10 +202,7 @@ async function getContents() {
                                             ></i>
                                             {{ t('directory.labels.association-institution-component') + ' : ' }}
                                         </span>
-                                        <span class="value">{{
-                                            associationStore.institutionComponents.find(obj => obj.id ===
-                                                association?.institutionComponent)?.name
-                                        }}</span>
+                                        <span class="value">{{ association.institutionComponent.name }}</span>
                                     </li>
                                 </ul>
                             </div>

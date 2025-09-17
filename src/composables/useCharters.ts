@@ -107,7 +107,7 @@ export default function () {
             const data: AssociationCharter = {
                 associationId: association.id,
                 associationName: association.name,
-                institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                institution: association.institution.acronym,
                 isSite: association.isSite,
                 charters: []
             }
@@ -157,7 +157,7 @@ export default function () {
                                 processingCharters.value.push({
                                     associationId: association.id,
                                     associationName: association.name,
-                                    institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                                    institution: association.institution.acronym,
                                     charterId: document.id,
                                     charterName: charterAssociationName,
                                     uploadedDate: uploadedCharter.uploadDate as string,
@@ -171,7 +171,7 @@ export default function () {
                             processingCharters.value.push({
                                 associationId: association.id,
                                 associationName: association.name,
-                                institution: associationStore.institutions.find(obj => obj.id === association.institution)?.acronym ?? '',
+                                institution: association.institution.acronym,
                                 charterId: document.id,
                                 charterName: document.name,
                                 uploadedDate: uploadedCharter.uploadDate as string,

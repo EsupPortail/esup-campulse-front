@@ -12,7 +12,7 @@ const associationStore = useAssociationStore()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    association: number | undefined
+  association: number | undefined
 }>()
 
 onMounted(async () => {
@@ -65,21 +65,11 @@ async function onGetAssociationDetails() {
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.institution-component') }}</p>
-            <p>
-                {{
-                    associationStore.institutionComponentLabels.find(obj => obj.value ===
-                        associationStore.association?.institutionComponent)?.label
-                }}
-            </p>
+            <p>{{ associationStore.association?.institutionComponent.name }}</p>
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.activity-field') }}</p>
-            <p>
-                {{
-                    associationStore.activityFieldLabels.find(obj => obj.value ===
-                        associationStore.association?.activityField)?.label
-                }}
-            </p>
+            <p>{{ associationStore.association?.activityField.name }}</p>
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.address') }}</p>

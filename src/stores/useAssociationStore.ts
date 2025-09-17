@@ -62,19 +62,6 @@ export const useAssociationStore = defineStore('associationStore', {
     },
 
     actions: {
-        getAssociationSubDetails(association: Association) {
-            association.institution = this.institutions.find((institution: Institution) => institution.id === association.institution)?.id
-            association.institutionComponent = this.institutionComponents.find((institutionComponent: InstitutionComponent) => institutionComponent.id === association.institutionComponent)?.id
-            association.activityField = this.activityFields.find((activityField: AssociationActivityField) => activityField.id === association.activityField)?.id
-            return association
-        },
-        getAssociationsSubDetails(associations: Association[]) {
-            associations.forEach((association, index) => {
-                associations[index] = this.getAssociationSubDetails(association)
-            })
-            return associations
-        },
-
         async getAssociations(isPublic: boolean) {
             const {axiosPublic, axiosAuthenticated} = useAxios()
             let url = '/associations/'
@@ -84,17 +71,16 @@ export const useAssociationStore = defineStore('associationStore', {
 
             if (!isPublic) instance = axiosAuthenticated
 
-            await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
-            const associations = (await instance.get<Association[]>(url)).data
-            this.associations = this.getAssociationsSubDetails(associations)
+            const response = await instance.get<Association[]>(url)
+            this.associations = response.data
         },
 
         async getInstitutionAssociations() {
             const {axiosAuthenticated} = useAxios()
             const userStore = useUserStore()
             const url = `/associations/?institutions=${userStore.userInstitutions?.join(',')}`
-            await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
-            this.associations = this.getAssociationsSubDetails((await axiosAuthenticated.get<Association[]>(url)).data)
+            const response = await axiosAuthenticated.get<Association[]>(url)
+            this.associations = response.data
         },
 
         async getAssociationNames(publicRequest: boolean, allowNewUsers: boolean) {
@@ -126,11 +112,10 @@ export const useAssociationStore = defineStore('associationStore', {
             if (!isStaff.value && hasPerm('change_association')) { // Student institution
                 const {axiosAuthenticated} = useAxios()
                 this.associations = []
-                await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
-                for (let i = 0; i < (userStore.user?.associations.length as number); i++) {
-                    const associationId = userStore.user?.associations[i].id as number
-                    const association = (await axiosAuthenticated.get<Association>(`/associations/${associationId}`)).data
-                    this.associations.push(this.getAssociationSubDetails(association))
+                for (const userAssociation of userStore.user.associations) {
+                    const associationId = userAssociation.id as number
+                    const response = await axiosAuthenticated.get<Association>(`/associations/${associationId}`)
+                    this.associations = [...this.associations, response.data]
                 }
             } else if (hasPerm('change_association_any_institution')) { // Manager general
                 await this.getAssociations(false)
@@ -141,71 +126,59 @@ export const useAssociationStore = defineStore('associationStore', {
 
         async getAssociationDetail(id: number, publicRequest: boolean) {
             const {axiosPublic, axiosAuthenticated} = useAxios()
-            let instance = axiosAuthenticated
-            if (publicRequest) instance = axiosPublic
-            await Promise.all([this.getInstitutions(), this.getInstitutionComponents(), this.getActivityFields()])
-            this.association = this.getAssociationSubDetails((await instance.get<Association>(`/associations/${id}`)).data)
+            const instance = publicRequest ? axiosPublic : axiosAuthenticated
+            const response = await instance.get<Association>(`/associations/${id}`)
+            this.association = response.data
         },
 
         async updateAssociationLogo(logoData: FormData | object, id: number) {
-            if (this.association) {
-                const {axiosAuthenticated} = useAxios()
-                const response = (await axiosAuthenticated.patch(`/associations/${id}`, logoData)).data
-                if (this.association.pathLogo) {
-                    this.association.pathLogo.detail = response.pathLogo
-                }
-            }
+            if (!this.association) return
+            const {axiosAuthenticated} = useAxios()
+            const response = (await axiosAuthenticated.patch(`/associations/${id}`, logoData)).data
+            this.association.pathLogo.detail = response.pathLogo
         },
         async getInstitutions() {
-            if (this.institutions.length === 0) {
-                const {axiosPublic} = useAxios()
-                this.institutions = (await axiosPublic.get<Institution[]>('/institutions/')).data
-            }
+            if (this.institutions.length) return
+            const {axiosPublic} = useAxios()
+            this.institutions = (await axiosPublic.get<Institution[]>('/institutions/')).data
         },
         async getInstitutionComponents() {
-            if (this.institutionComponents.length === 0) {
-                const {axiosPublic} = useAxios()
-                this.institutionComponents = (await axiosPublic.get<InstitutionComponent[]>('/institutions/institution_components')).data
-            }
+            if (this.institutionComponents.length) return
+            const {axiosPublic} = useAxios()
+            this.institutionComponents = (await axiosPublic.get<InstitutionComponent[]>('/institutions/institution_components')).data
         },
         async getActivityFields() {
-            if (this.activityFields.length === 0) {
-                const {axiosPublic} = useAxios()
-                this.activityFields = (await axiosPublic.get<AssociationActivityField[]>('/associations/activity_fields')).data
-            }
+            if (this.activityFields.length) return
+            const {axiosPublic} = useAxios()
+            this.activityFields = (await axiosPublic.get<AssociationActivityField[]>('/associations/activity_fields')).data
         },
 
         async deleteAssociation(associationId: number | undefined) {
-            if (associationId) {
-                const {axiosAuthenticated} = useAxios()
-                await axiosAuthenticated.delete(`/associations/${associationId}`)
-            }
+            if (!associationId) return
+            const {axiosAuthenticated} = useAxios()
+            await axiosAuthenticated.delete(`/associations/${associationId}`)
         },
 
         async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
-            const {data} = patchedData
-            this.association = data
+            const response = await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
+            this.association = response.data
         },
 
         async patchPublicAssociation(isPublic: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isPublic})
-            const {data} = patchedData
-            this.association = data
+            const response = await axiosAuthenticated.patch(`/associations/${associationId}`, {isPublic})
+            this.association = response.data
         },
         async patchSiteAssociation(isSite: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {isSite})
-            const {data} = patchedData
-            this.association = data
+            const response = await axiosAuthenticated.patch(`/associations/${associationId}`, {isSite})
+            this.association = response.data
         },
         async patchCanSubmitProjects(canSubmitProjects: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const patchedData = await axiosAuthenticated.patch(`/associations/${associationId}`, {canSubmitProjects})
-            const {data} = patchedData
-            this.association = data
+            const response = await axiosAuthenticated.patch(`/associations/${associationId}`, {canSubmitProjects})
+            this.association = response.data
         },
         async getAssociationUsers(associationId: number) {
             const {axiosAuthenticated} = useAxios()
