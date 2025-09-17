@@ -68,7 +68,7 @@ async function onUpdateUserAssociations() {
     loading.show()
     try {
         updateUserAssociations(false)
-        await userAssociationsRegister(userStore.user?.username)
+        await userAssociationsRegister(userStore.user?.id)
         newAssociations.value = []
         await userStore.getUserAssociations()
         initUserAssociations(false)

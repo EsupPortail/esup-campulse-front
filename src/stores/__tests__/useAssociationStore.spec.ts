@@ -467,7 +467,7 @@ describe('Association store', () => {
             mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
             await associationStore.getAssociationUsers(1)
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenLastCalledWith('/users/associations/?association_id=1')
+            expect(axiosAuthenticated.get).toHaveBeenLastCalledWith('/associations/1/users')
             expect(associationStore.associationUsers).toEqual(_userAssociations)
         })
     })

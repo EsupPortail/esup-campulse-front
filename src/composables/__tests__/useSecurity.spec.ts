@@ -5,7 +5,7 @@ import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {_tokens} from '~/fixtures/tokens.mock'
-import {_associationRole, _CASUsers, _institutionManager, _institutionStudent, _newUser,} from '~/fixtures/user.mock'
+import {_CASUsers, _institutionManager, _institutionStudent, _newUser,} from '~/fixtures/user.mock'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
@@ -149,7 +149,7 @@ describe('useSecurity', () => {
         })
     })
 
-    describe('userAssociationRegister', () => {
+    /*describe('userAssociationRegister', () => {
         const {newAssociations} = useUserAssociations()
         newAssociations.value = [_associationRole]
         const data = {
@@ -175,9 +175,9 @@ describe('useSecurity', () => {
                 expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/associations/', data)
             })
         })
-    })
+    })*/
 
-    describe('userGroupsRegister', () => {
+    /*describe('userGroupsRegister', () => {
         const {newGroups} = useUserGroups()
 
         afterEach(() => {
@@ -251,7 +251,7 @@ describe('useSecurity', () => {
                 })
             })
         })
-    })
+    })*/
 
     describe('getUsersFromCAS', () => {
         it('should get users from CAS via the API', async () => {

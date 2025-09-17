@@ -1,5 +1,12 @@
 import {reactive, ref, watch} from 'vue'
-import type {CASUser, LocalLogin, UserGroupRegister, UserRegister} from '#/user'
+import type {
+    AssociationRole,
+    CASUser,
+    LocalLogin,
+    UserAssociationRegister,
+    UserGroupRegister,
+    UserRegister
+} from '#/user'
 import useUserGroups from '@/composables/useUserGroups'
 import {useUserStore} from '@/stores/useUserStore'
 import {useAxios} from '@/composables/useAxios'
@@ -7,6 +14,7 @@ import {useRoute} from 'vue-router'
 import useUserAssociations from '@/composables/useUserAssociations'
 import useCommissions from '@/composables/useCommissions'
 import zxcvbn from 'zxcvbn'
+import type {SelectLabel} from '#/index'
 
 // Used for local login
 const user = ref<LocalLogin>({
@@ -24,6 +32,7 @@ const newUser = reactive<UserRegister>({
     username: '',
     phone: ''
 })
+
 watch(() => newUser.email, () => {
     if (!newUser.isCas) newUser.username = newUser.email
 })
@@ -93,7 +102,7 @@ export default function () {
         const {newAssociations} = useUserAssociations()
         const {userFunds} = useCommissions()
 
-        const gifus: UserGroupRegister[] = groupsToRegister()
+        const gifus: UserGroupRegister[] = groupsToRegister(null)
 
         const user = {
             email: newUser.email,
@@ -101,15 +110,7 @@ export default function () {
             lastName: newUser.lastName,
             phone: newUser.phone,
             gifus,
-            associations: newAssociations.value.map((association) => {
-                return {
-                    association: association.id,
-                    isPresident: association.role === 'isPresident',
-                    isSecretary: association.role === 'isSecretary',
-                    isTreasurer: association.role === 'isTreasurer',
-                    isVicePresident: association.role === 'isVicePresident'
-                }
-            })
+            associations: associationsToRegister(newAssociations.value, null)
         }
 
         await axiosPublic.post('/users/auth/registration/', user)
@@ -120,79 +121,69 @@ export default function () {
         const {newAssociations} = useUserAssociations()
         const {userFunds} = useCommissions()
 
-        const gifus: UserGroupRegister[] = groupsToRegister()
+        const gifus: UserGroupRegister[] = groupsToRegister(null)
 
         const user = {
             phone: newUser.phone,
             gifus,
-            associations: newAssociations.value.map((association) => {
-                return {
-                    association: association.id,
-                    isPresident: association.role === 'isPresident',
-                    isSecretary: association.role === 'isSecretary',
-                    isTreasurer: association.role === 'isTreasurer',
-                    isVicePresident: association.role === 'isVicePresident'
-                }
-            })
+            associations: associationsToRegister(newAssociations.value, null)
         }
 
         await axiosAuthenticated.patch('/users/auth/registration/cas/', user)
         userFunds.value = []
     }
 
-    // TODO refactor with id of user instead of username
-    async function userAssociationsRegister(username: string | undefined) {
-        const idsAssociations = []
-        const {newAssociations} = useUserAssociations()
-        for (let i = 0; i < newAssociations.value.length; i++) {
-            if (idsAssociations.indexOf(newAssociations.value[i].id) === -1)
-                await axiosAuthenticated.post('/users/associations/', {
-                    user: username,
-                    association: newAssociations.value[i].id,
-                    isPresident: newAssociations.value[i].role === 'isPresident',
-                    isSecretary: newAssociations.value[i].role === 'isSecretary',
-                    isTreasurer: newAssociations.value[i].role === 'isTreasurer',
-                    isVicePresident: newAssociations.value[i].role === 'isVicePresident'
-                })
-            idsAssociations.push(newAssociations.value[i].id)
-        }
-    }
-
-    const groupsToRegister = (): UserGroupRegister[] => {
-        const {newGroups, commissionGroup} = useUserGroups()
-        const {userFunds} = useCommissions()
-        const factory: UserGroupRegister[] = []
-        newGroups.value.forEach(function (group) {
-            // Register commission groups
-            if (group === commissionGroup.value?.id) {
-                userFunds.value.forEach(function (fund) {
-                    factory.push({
-                        user: newUser.username,
-                        group,
-                        institution: null,
-                        fund
-                    })
-                })
-            }
-            // Register other groups
-            else {
-                factory.push({
-                    user: newUser.username,
-                    group,
-                    institution: null,
-                    fund: null
-                })
-            }
-        })
+    const associationsToRegister = (associations: AssociationRole[], user: number | null): UserAssociationRegister[] => {
+        const factory: UserAssociationRegister[] = associations.map(association => ({
+            association: association.id,
+            isPresident: association.role === 'isPresident',
+            isSecretary: association.role === 'isSecretary',
+            isTreasurer: association.role === 'isTreasurer',
+            isVicePresident: association.role === 'isVicePresident'
+        }))
+        if (user) factory.forEach(association => association.user = user)
         return factory
     }
 
-    // TODO refactor with id of user instead of username
-    async function userGroupsRegister() {
-        const {newGroups} = useUserGroups()
+    async function userAssociationsRegister(user: number | null) {
+        if (!user) return
+        const idsAssociations = []
+        const {newAssociations} = useUserAssociations()
+        for (const association of newAssociations.value) {
+            if (idsAssociations.indexOf(association.id) === -1)
+                await axiosAuthenticated.post('/users/associations/', associationsToRegister([association], user))
+            idsAssociations.push(association.id)
+        }
+    }
+
+    const groupsToRegister = (user: number | null): UserGroupRegister[] => {
+        const {newGroups, commissionGroup} = useUserGroups()
         const {userFunds} = useCommissions()
+
+        const nonCommissionGroups: UserGroupRegister[] = newGroups.value
+            .filter(group => group !== commissionGroup.value?.id)
+            .map(group => ({
+                group,
+                institution: null,
+                fund: null
+            }))
+        const commissionGroups: UserGroupRegister[] = userFunds.value
+            .map(fund => ({
+                group: commissionGroup.value?.id,
+                institution: null,
+                fund
+            }))
+
+        const groups = [...nonCommissionGroups, ...commissionGroups]
+        if (user) groups.forEach(group => group.user = user)
+        return groups
+    }
+
+    async function userGroupsRegister(user: number) {
+        const {newGroups} = useUserGroups()
         if (!newGroups.value.length) return
-        for (const group of groupsToRegister()) {
+        const {userFunds} = useCommissions()
+        for (const group of groupsToRegister(user)) {
             await axiosAuthenticated.post('/users/groups/', group)
         }
         userFunds.value = []
@@ -206,6 +197,7 @@ export default function () {
         }
     }
 
+    // TODO refactor this with new route?
     async function addUserAsManager() {
         const {newAssociationsUser} = useUserAssociations()
         await userLocalRegisterAsManager(newUser)
@@ -220,16 +212,16 @@ export default function () {
     const CASUsers = ref<CASUser[]>([])
 
     async function getUsersFromCAS(lastName: string) {
-        CASUsers.value = []
-        CASUsers.value = (await axiosAuthenticated.get<CASUser[]>(`/users/external/?last_name=${lastName}`)).data
+        const url = `/users/external/?last_name=${lastName}`
+        CASUsers.value = (await axiosAuthenticated.get<CASUser[]>(url)).data
     }
 
-    const CASUserOptions = ref<{ value: string, label: string }[]>([])
+    const CASUserOptions = ref<SelectLabel[]>([])
 
     const initCASUserOptions = () => {
         CASUserOptions.value = CASUsers.value.map(user => ({
             value: user.username,
-            label: user.firstName + ' ' + user.lastName + ' (' + user.mail + ')'
+            label: `${user.firstName} ${user.lastName} (${user.mail})`
         }))
     }
     watch(() => CASUsers.value.length, initCASUserOptions)
@@ -237,10 +229,8 @@ export default function () {
     async function loadCASUser() {
         const route = useRoute()
         // For aborted CAS registration or regular CAS registration
-        if ((userStore.newUser && userStore.isCas) || route.query.ticket) {
-            if (route.query.ticket) {
-                await userStore.loadCASUser(route.query.ticket as string)
-            }
+        if (userStore.newUser && userStore.isCas && route.query.ticket) {
+            await userStore.loadCASUser(route.query.ticket as string)
         }
     }
 

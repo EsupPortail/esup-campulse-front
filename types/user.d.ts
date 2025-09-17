@@ -52,6 +52,15 @@ export interface UserAssociationDetail {
     canSubmitProjects?: boolean,
 }
 
+export interface UserAssociationRegister {
+    user?: number,
+    association: number,
+    isPresident: boolean,
+    isSecretary: boolean,
+    isTreasurer: boolean,
+    isVicePresident: boolean
+}
+
 export interface AssociationUser {
     id?: number,
     user?: number,
@@ -124,7 +133,7 @@ export interface UserGroup {
 }
 
 export interface UserGroupRegister {
-    user?: string,
+    user?: number | null,
     group: number | null,
     institution: number | null,
     fund: number | null

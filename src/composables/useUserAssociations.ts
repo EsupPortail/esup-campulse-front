@@ -55,10 +55,7 @@ export default function () {
             isInOffice: false
         }
     ]
-
-    /**
-     * It updates the user associations when it is modified by a manager
-     */
+    
     function updateUserAssociations(editedByStaff: boolean) {
         const instance = editedByStaff ? userManagerStore : userStore
         const userId = instance.user?.id
@@ -140,20 +137,6 @@ export default function () {
         })
         return newAssociationsUser.value
     }
-
-    /*async function getUserAssociations(userId: number | null | undefined, managedUser: boolean) {
-        const {axiosAuthenticated} = useAxios()
-
-        let store: UserStore | UserManagerStore = userStore
-        if (managedUser) store = userManagerStore
-
-        store.userAssociations = []
-
-        const url = (managedUser) ? `/users/${userId}/associations/` : '/users/associations/'
-
-        const response = await axiosAuthenticated.get<UserAssociation[]>(url)
-        store.userAssociations = response.data
-    }*/
 
     function getAssociationUserRole(user: AssociationUser | UserAssociation) {
         return user.isPresident ? 'isPresident' : user.isSecretary ? 'isSecretary' : user.isTreasurer ? 'isTreasurer' :

@@ -50,7 +50,7 @@ async function onValidateChanges() {
         await updateUserInfos(userManagerStore.user, true)
 
         updateUserAssociations(true)
-        await userAssociationsRegister(userManagerStore.user?.username)
+        await userAssociationsRegister(userManagerStore.user?.id)
 
         await updateUserGroups()
 

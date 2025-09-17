@@ -40,8 +40,8 @@ const userStore = useUserStore()
 const {projectFunds, initProjectFunds} = useSubmitProject()
 
 const props = defineProps<{
-    process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
-    associationId: number | null | undefined
+  process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
+  associationId: number | null | undefined
 }>()
 
 // COLOR
@@ -65,7 +65,7 @@ onMounted(async () => {
 async function onGetDocuments() {
     loading.show()
     try {
-        // Get documents for project, review and charter processes
+    // Get documents for project, review and charter processes
         let processes: DocumentProcessType[] = []
 
         if (props.process === 'project') processes = ['DOCUMENT_PROJECT']
@@ -178,7 +178,7 @@ const documentIsSelected = (document: ProcessDocument, val: File | File[]): bool
     // And no previous document of this type has been selected
     // Control field and throw error
     if (documentIsRequired && documentIsNotSelected) {
-        // Field must have a val
+    // Field must have a val
         const hasValue: boolean = document.isMultiple ? !!(val as File[]).length : !!val
         // If there is a val
         // Field is valid
@@ -259,8 +259,7 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
                 :data-test="document.acronym + '-file'"
                 :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE"
-                :max-files="document.isMultiple ? (MAX_FILES - documentUploads.filter(obj => obj.document === document.document).length) :
-                    (1 - documentUploads.filter(obj => obj.document === document.document).length)"
+                :max-files="((document.isMultiple ? MAX_FILES : 1) - documentUploads.filter(obj => obj.document === document.document).length)"
                 :max-total-size="MAX_FILE_SIZE * 10"
                 :multiple="document.isMultiple"
                 :readonly="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
@@ -332,10 +331,10 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
 @import '@/assets/_variables.scss';
 
 ul.document-input-list {
-    list-style: none;
+  list-style: none;
 }
 
 ul.document-input-list li {
-    cursor: pointer;
+  cursor: pointer;
 }
 </style>

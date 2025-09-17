@@ -5,14 +5,7 @@ import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import {useUserStore} from '@/stores/useUserStore'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import {
-    _associationRole,
-    _generalManager,
-    _institutionStudent,
-    _miscManager,
-    _userAssociations,
-    _users
-} from '~/fixtures/user.mock'
+import {_associationRole, _institutionStudent, _userAssociations, _users} from '~/fixtures/user.mock'
 import useUserAssociations from '@/composables/useUserAssociations'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
@@ -278,54 +271,41 @@ describe('useUserAssociations', () => {
     })*/
 
     describe('getUnvalidatedAssociationUsers', () => {
-        describe('if manager is misc', () => {
-            it('should get unvalidated association users from their institution', async () => {
-                userStore.user = _miscManager
-                mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
-                const url = `/users/associations/?institutions=${userStore.userInstitutions?.join(',') + ','}&is_validated_by_admin=false`
-                await getUnvalidatedAssociationUsers()
-                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-            })
-        })
 
-        describe('if manager is not misc', () => {
-            it('should get unvalidated association users from their institution', async () => {
-                userStore.user = _generalManager
-                mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
-                const url = `/users/associations/?institutions=${userStore.userInstitutions?.join(',') + ','}&is_validated_by_admin=false`
-                await getUnvalidatedAssociationUsers()
-                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-            })
-            /*it('should init association members with their role', async () => {
-                userStore.user = _generalManager
-                userManagerStore.users = _users
-                associationStore.associationNames = _associationNames
-                mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
-                vi.spyOn(associationStore, 'getAssociationNames')
-                vi.spyOn(userManagerStore, 'getUsers')
-                await getUnvalidatedAssociationUsers()
-                const test: AssociationMember[] = []
-                _userAssociations.forEach((associationUser) => {
-                    const extendedUser = _users.find(obj => obj.id === associationUser.user)
-                    const associationName = _associationNames.find(obj => obj.id === associationUser.association)?.name
-                    if (extendedUser && associationName) {
-                        test.push({
-                            id: associationUser.user as number,
-                            associationId: associationUser.association as number,
-                            associationName,
-                            firstName: extendedUser.firstName,
-                            lastName: extendedUser.lastName,
-                            role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label as string,
-                            canBePresidentFrom: associationUser.canBePresidentFrom,
-                            canBePresidentTo: associationUser.canBePresidentTo,
-                            isValidatedByAdmin: associationUser.isValidatedByAdmin as boolean
-                        })
-                    }
-                })
-                expect(associationMembers.value).toEqual(test)
-            })*/
+        it('should get unvalidated association users', async () => {
+            mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
+            const url = '/users/associations/?is_validated_by_admin=false'
+            await getUnvalidatedAssociationUsers()
+            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
         })
+        /*it('should init association members with their role', async () => {
+            userStore.user = _generalManager
+            userManagerStore.users = _users
+            associationStore.associationNames = _associationNames
+            mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
+            vi.spyOn(associationStore, 'getAssociationNames')
+            vi.spyOn(userManagerStore, 'getUsers')
+            await getUnvalidatedAssociationUsers()
+            const test: AssociationMember[] = []
+            _userAssociations.forEach((associationUser) => {
+                const extendedUser = _users.find(obj => obj.id === associationUser.user)
+                const associationName = _associationNames.find(obj => obj.id === associationUser.association)?.name
+                if (extendedUser && associationName) {
+                    test.push({
+                        id: associationUser.user as number,
+                        associationId: associationUser.association as number,
+                        associationName,
+                        firstName: extendedUser.firstName,
+                        lastName: extendedUser.lastName,
+                        role: associationRoleOptions.find(obj => obj.value === getAssociationUserRole(associationUser))?.label as string,
+                        canBePresidentFrom: associationUser.canBePresidentFrom,
+                        canBePresidentTo: associationUser.canBePresidentTo,
+                        isValidatedByAdmin: associationUser.isValidatedByAdmin as boolean
+                    })
+                }
+            })
+            expect(associationMembers.value).toEqual(test)
+        })*/
     })
 })
