@@ -39,7 +39,7 @@ async function onSiteAssociation() {
 <template>
     <QBtn
         :color="!associationStore.association?.isSite ? 'association' : 'custom-red'"
-        :icon="!associationStore.association?.isSite ? 'bi-eye' : 'bi-eye-slash'"
+        :icon="!associationStore.association?.isSite ? 'bi-building-check' : 'bi-building-slash'"
         :label="!associationStore.association?.isSite ? t('association.site-in-directory') : t('association.unsite-in-directory')"
         class="btn-lg"
         @click="confirmation = true"
@@ -67,7 +67,7 @@ async function onSiteAssociation() {
                     <QBtn
                         v-close-popup
                         :color="!associationStore.association?.isSite ? 'association' : 'custom-red'"
-                        :icon="!associationStore.association?.isSite ? 'bi-eye' : 'bi-eye-slash'"
+                        :icon="!associationStore.association?.isSite ? 'bi-building-check' : 'bi-building-slash'"
                         :label="!associationStore.association?.isSite ? t('association.site-in-directory') : t('association.unsite-in-directory')"
                         class="btn-lg"
                         @click="onSiteAssociation"

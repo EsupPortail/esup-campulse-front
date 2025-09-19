@@ -84,9 +84,9 @@ const initValues = () => {
     association.value.presidentEmail = associationStore.association?.presidentEmail as string
     association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
     association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
-    association.value.institution = associationStore.association?.institution.id
-    association.value.institutionComponent = associationStore.association?.institutionComponent.id
-    association.value.activityField = associationStore.association?.activityField.id
+    association.value.institution = associationStore.association?.institution?.id
+    association.value.institutionComponent = associationStore.association?.institutionComponent?.id
+    association.value.activityField = associationStore.association?.activityField?.id
     association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed ? associationStore.association.amountMembersAllowed.toString() : '0'
     association.value.isPublic = associationStore.association?.isPublic as boolean
     association.value.studentCount = associationStore.association?.studentCount ? associationStore.association.studentCount.toString() : '0'

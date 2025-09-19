@@ -38,7 +38,7 @@ const state = reactive<UseAxiosState>({
         _axios.interceptors.response.use(response => {
             return response
         }, async function (error) {
-            if (error.response.status === 401) {
+            if (error.response?.status === 401) {
                 const refreshToken = localStorage.getItem('JWT__refresh__token')
                 const refreshTokenExpired = () => {
                     if (!refreshToken) return true
@@ -47,9 +47,8 @@ const state = reactive<UseAxiosState>({
                 if (refreshTokenExpired()) {
                     await router.push({name: 'Logout'})
                 }
-            } else {
-                return Promise.reject(error)
             }
+            return Promise.reject(error)
         })
         return _axios
     },
