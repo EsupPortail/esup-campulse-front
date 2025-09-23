@@ -24,9 +24,8 @@ export default function () {
 
     // Funds
     async function getFunds() {
-        if (!funds.value.length) {
-            funds.value = (await axiosPublic.get<Fund[]>('/commissions/funds/names')).data
-        }
+        if (funds.value.length) return
+        funds.value = (await axiosPublic.get<Fund[]>('/commissions/funds/names')).data
     }
 
     const initFundsLabels = () => {
@@ -122,7 +121,8 @@ export default function () {
     }
 
     async function getNextCommission() {
-        const openCommissions = (await axiosPublic.get<Commission[]>('/commissions/?is_open_to_projects=true')).data
+        const url = '/commissions/?is_open_to_projects=true'
+        const openCommissions = (await axiosPublic.get<Commission[]>(url)).data
         commission.value = openCommissions[0]
     }
 
@@ -164,19 +164,18 @@ export default function () {
         if (Object.entries(dataToPatch).length) {
             await axiosAuthenticated.patch(`/commissions/${commission.id}`, dataToPatch)
         }
-        if (!arraysAreEqual(commission.oldFunds, commission.newFunds)) {
-            const newFundsToPost = commission.newFunds.filter(x => commission.oldFunds.indexOf(x) === -1)
-            const oldFundsToDelete = commission.oldFunds.filter(x => commission.newFunds.indexOf(x) === -1)
+        if (arraysAreEqual(commission.oldFunds, commission.newFunds)) return
+        const newFundsToPost = commission.newFunds.filter(x => commission.oldFunds.indexOf(x) === -1)
+        const oldFundsToDelete = commission.oldFunds.filter(x => commission.newFunds.indexOf(x) === -1)
 
-            for (let i = 0; i < newFundsToPost.length; i++) {
-                await axiosAuthenticated.post('/commissions/funds', {
-                    commission: commission.id,
-                    fund: newFundsToPost[i]
-                })
-            }
-            for (let i = 0; i < oldFundsToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/commissions/${commission.id}/funds/${oldFundsToDelete[i]}`)
-            }
+        for (const fund of newFundsToPost) {
+            await axiosAuthenticated.post('/commissions/funds', {
+                commission: commission.id,
+                fund
+            })
+        }
+        for (const fund of oldFundsToDelete) {
+            await axiosAuthenticated.delete(`/commissions/${commission.id}/funds/${fund}`)
         }
     }
 

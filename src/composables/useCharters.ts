@@ -51,53 +51,52 @@ export default function () {
         await getCharters(associationId)
         manageCharters.value = []
         documents.value.forEach(document => {
-            if (document.processType !== 'CHARTER_ASSOCIATION') {
-                const uploadedCharter = charterDocuments.value.find(x => x.document === document.id)
-                const charterStatus = initCharterStatus(isSite, associationCharterStatus, document, uploadedCharter)
-                manageCharters.value.push({
-                    associationId: uploadedCharter?.association,
-                    documentId: document.id,
-                    documentAcronym: document.acronym,
-                    documentProcessType: document.processType,
-                    documentUploadId: uploadedCharter?.id ?? 0,
-                    documentName: document.name,
-                    pathTemplate: [{
-                        name: document.name ?? '',
-                        path: document.pathTemplate ?? '',
-                        documentId: document.id
-                    }],
-                    pathFile: uploadedCharter?.pathFile ?? '',
-                    validatedDate: formatDate(charterStatus.validatedDate)?.split('-').reverse().join('/'),
-                    expirationDate: formatDate(charterStatus.expirationDate)?.split('-').reverse().join('/'),
-                    charterStatus: charterStatus.charterStatus,
-                    mimeTypes: document.mimeTypes
-                })
-            }
-        })
-        const associationCharters = documents.value.filter(document => document.processType === 'CHARTER_ASSOCIATION')
-        const associationCharter = associationCharters.find(document => document.acronym === ASSOCIATION_CHARTER)
-        if (associationCharters.length && associationCharter) {
-            const uploadedCharter = charterDocuments.value.find(x => x.document === associationCharter.id)
-            const charterStatus = initCharterStatus(isSite, associationCharterStatus, associationCharter, uploadedCharter)
-            const pathTemplates = associationCharters.map(document => ({
-                name: document.name ?? '',
-                path: document.pathTemplate ?? '',
-                documentId: document.id
-            }))
-            manageCharters.value.splice(0, 0, {
+            if (document.processType === 'CHARTER_ASSOCIATION') return
+            const uploadedCharter = charterDocuments.value.find(x => x.document === document.id)
+            const charterStatus = initCharterStatus(isSite, associationCharterStatus, document, uploadedCharter)
+            manageCharters.value.push({
                 associationId: uploadedCharter?.association,
-                documentId: associationCharter.id,
-                documentAcronym: associationCharter.acronym,
-                documentProcessType: associationCharter.processType,
+                documentId: document.id,
+                documentAcronym: document.acronym,
+                documentProcessType: document.processType,
                 documentUploadId: uploadedCharter?.id ?? 0,
-                documentName: associationCharters.map(document => document.name).join(' + '),
-                pathTemplate: pathTemplates,
+                documentName: document.name,
+                pathTemplate: [{
+                    name: document.name ?? '',
+                    path: document.pathTemplate ?? '',
+                    documentId: document.id
+                }],
                 pathFile: uploadedCharter?.pathFile ?? '',
                 validatedDate: formatDate(charterStatus.validatedDate)?.split('-').reverse().join('/'),
                 expirationDate: formatDate(charterStatus.expirationDate)?.split('-').reverse().join('/'),
-                charterStatus: charterStatus.charterStatus
+                charterStatus: charterStatus.charterStatus,
+                mimeTypes: document.mimeTypes
             })
-        }
+        })
+        const associationCharterDocuments = documents.value.filter(document => document.processType === 'CHARTER_ASSOCIATION')
+        const associationCharter = associationCharterDocuments.find(document => document.acronym === ASSOCIATION_CHARTER)
+        if (!associationCharterDocuments.length || !associationCharter) return
+        const uploadedCharter = charterDocuments.value
+            .find(x => x.document === associationCharter.id)
+        const charterStatus = initCharterStatus(isSite, associationCharterStatus, associationCharter, uploadedCharter)
+        const pathTemplates = associationCharterDocuments.map(document => ({
+            name: document.name ?? '',
+            path: document.pathTemplate ?? '',
+            documentId: document.id
+        }))
+        manageCharters.value.splice(0, 0, {
+            associationId: uploadedCharter?.association,
+            documentId: associationCharter.id,
+            documentAcronym: associationCharter.acronym,
+            documentProcessType: associationCharter.processType,
+            documentUploadId: uploadedCharter?.id ?? 0,
+            documentName: associationCharterDocuments.map(document => document.name).join(' + '),
+            pathTemplate: pathTemplates,
+            pathFile: uploadedCharter?.pathFile ?? '',
+            validatedDate: formatDate(charterStatus.validatedDate)?.split('-').reverse().join('/'),
+            expirationDate: formatDate(charterStatus.expirationDate)?.split('-').reverse().join('/'),
+            charterStatus: charterStatus.charterStatus
+        })
     }
 
     const initAssociationCharters = async (charterType: 'CHARTER_ASSOCIATION' | 'CHARTER_PROJECT_FUND') => {
@@ -114,26 +113,26 @@ export default function () {
             const charters = documents.value.filter(obj => obj.processType === charterType)
             if (charterType === 'CHARTER_ASSOCIATION') {
                 const associationCharter = charters.find(obj => obj.acronym === ASSOCIATION_CHARTER)
-                if (associationCharter) {
-                    const uploadedCharter = charterDocuments.value.find(obj => obj.document === associationCharter.id && obj.association === association.id)
-                    const charterStatus = initCharterStatus(association.isSite, association.charterStatus, associationCharter, uploadedCharter)
-                    data.charters.push({
-                        charterId: associationCharter.id,
-                        charterName: charters.map(x => x.name).join(' + '),
-                        charterStatus: charterStatus.charterStatus
-                    })
-                }
+                if (!associationCharter) return
+                const uploadedCharter = charterDocuments.value
+                    .find(obj => obj.document === associationCharter.id && obj.association === association.id)
+                const charterStatus = initCharterStatus(association.isSite, association.charterStatus, associationCharter, uploadedCharter)
+                data.charters.push({
+                    charterId: associationCharter.id,
+                    charterName: charters.map(x => x.name).join(' + '),
+                    charterStatus: charterStatus.charterStatus
+                })
             } else {
                 charters.forEach(charter => {
-                    if (charter.processType !== 'CHARTER_ASSOCIATION') {
-                        const uploadedCharter = charterDocuments.value.find(obj => obj.document === charter.id && obj.association === association.id)
-                        const charterStatus = initCharterStatus(association.isSite, association.charterStatus, charter, uploadedCharter)
-                        data.charters.push({
-                            charterId: charter.id,
-                            charterName: charter.name,
-                            charterStatus: charterStatus.charterStatus
-                        })
-                    }
+                    if (charter.processType === 'CHARTER_ASSOCIATION') return
+                    const uploadedCharter = charterDocuments.value
+                        .find(obj => obj.document === charter.id && obj.association === association.id)
+                    const charterStatus = initCharterStatus(association.isSite, association.charterStatus, charter, uploadedCharter)
+                    data.charters.push({
+                        charterId: charter.id,
+                        charterName: charter.name,
+                        charterStatus: charterStatus.charterStatus
+                    })
                 })
             }
             associationCharters.value.push(data)
@@ -148,43 +147,42 @@ export default function () {
         charterDocuments.value.forEach(uploadedCharter => {
             const association = associationStore.associations.find(association => association.id === uploadedCharter.association)
             const document = documents.value.find(doc => doc.id === uploadedCharter.document)
-            if (document && association) {
-                if (document.processType === charterType && uploadedCharter.association === association.id) {
-                    if (document.processType === 'CHARTER_ASSOCIATION') {
-                        if (document.acronym === ASSOCIATION_CHARTER) {
-                            charterAssociationStatus = initCharterStatus(association.isSite, association.charterStatus, document, uploadedCharter).charterStatus
-                            if (charterAssociationStatus === 'PROCESSING') {
-                                processingCharters.value.push({
-                                    associationId: association.id,
-                                    associationName: association.name,
-                                    institution: association.institution.acronym,
-                                    charterId: document.id,
-                                    charterName: charterAssociationName,
-                                    uploadedDate: uploadedCharter.uploadDate as string,
-                                    charterStatus: charterAssociationStatus
-                                })
-                            }
-                        }
-                    } else {
-                        const charterStatus = initCharterStatus(association.isSite, association.charterStatus, document, uploadedCharter)
-                        if (charterStatus?.charterStatus === 'PROCESSING') {
-                            processingCharters.value.push({
-                                associationId: association.id,
-                                associationName: association.name,
-                                institution: association.institution.acronym,
-                                charterId: document.id,
-                                charterName: document.name,
-                                uploadedDate: uploadedCharter.uploadDate as string,
-                                charterStatus: charterStatus.charterStatus
-                            })
-                        }
-                    }
-                }
+            if (!association || !document) return
+            if (document.processType !== charterType || uploadedCharter.association !== association.id) return
+            if (document.processType === 'CHARTER_ASSOCIATION') {
+                if (document.acronym !== ASSOCIATION_CHARTER) return
+                charterAssociationStatus = initCharterStatus(association.isSite, association.charterStatus, document, uploadedCharter).charterStatus
+                if (charterAssociationStatus !== 'PROCESSING') return
+                processingCharters.value.push({
+                    associationId: association.id,
+                    associationName: association.name,
+                    institution: association.institution.acronym,
+                    charterId: document.id,
+                    charterName: charterAssociationName,
+                    uploadedDate: uploadedCharter.uploadDate as string,
+                    charterStatus: charterAssociationStatus
+                })
+            } else {
+                const charterStatus = initCharterStatus(association.isSite, association.charterStatus, document, uploadedCharter)
+                if (charterStatus?.charterStatus !== 'PROCESSING') return
+                processingCharters.value.push({
+                    associationId: association.id,
+                    associationName: association.name,
+                    institution: association.institution.acronym,
+                    charterId: document.id,
+                    charterName: document.name,
+                    uploadedDate: uploadedCharter.uploadDate as string,
+                    charterStatus: charterStatus.charterStatus
+                })
             }
         })
     }
 
-    const initCharterStatus = (isSite: boolean, associationCharterStatus: AssociationCharterStatus | undefined, document: Document, uploadedCharter: DocumentUpload | undefined) => {
+    const initCharterStatus = (
+        isSite: boolean,
+        associationCharterStatus: AssociationCharterStatus | undefined,
+        document: Document,
+        uploadedCharter: DocumentUpload | undefined) => {
         let charterStatus: CharterStatus = 'NO_CHARTER'
         let validatedDate = ''
         let expirationDate = ''
@@ -199,13 +197,11 @@ export default function () {
                 formatedExpirationDate = new Date(uploadedCharter.calculatedExpirationDate)
             }
             // If the charter is the association charter, we can determine its status by the association's charter status
-            if (document.processType === 'CHARTER_ASSOCIATION') {
-                if (associationCharterStatus) {
-                    charterStatus = initAssociationCharterStatus(associationCharterStatus, isSite)
-                    if (validatedDate && (charterStatus === 'PROCESSING')) {
-                        validatedDate = ''
-                        expirationDate = ''
-                    }
+            if (document.processType === 'CHARTER_ASSOCIATION' && associationCharterStatus) {
+                charterStatus = initAssociationCharterStatus(associationCharterStatus, isSite)
+                if (validatedDate && (charterStatus === 'PROCESSING')) {
+                    validatedDate = ''
+                    expirationDate = ''
                 }
             }
             // If the document has been validated, we calculate its expiration date

@@ -38,25 +38,25 @@ export const useUserManagerStore = defineStore('userManagerStore', {
     actions: {
         async getUsers(status: 'all' | 'validated' | 'unvalidated' | string) {
             const {hasPerm} = useSecurity()
-            if (hasPerm('view_user')) {
-                const {axiosAuthenticated} = useAxios()
-                const userStore = useUserStore()
+            if (!hasPerm('view_user')) return
 
-                const urlString = '/users/?'
-                const urlArray = []
+            const {axiosAuthenticated} = useAxios()
+            const userStore = useUserStore()
 
-                if (userStore.userInstitutions?.length !== 0) {
-                    let institutions = 'institutions='
-                    institutions += userStore.userInstitutions?.join(',')
-                    if (hasPerm('view_user_misc')) institutions += ','
-                    urlArray.push(institutions)
-                }
+            const urlString = '/users/?'
+            const urlArray = []
 
-                if (status === 'validated') urlArray.push('is_validated_by_admin=true')
-                else if (status === 'unvalidated') urlArray.push('is_validated_by_admin=false')
-
-                this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data
+            if (userStore.userInstitutions?.length !== 0) {
+                let institutions = 'institutions='
+                institutions += userStore.userInstitutions?.join(',')
+                if (hasPerm('view_user_misc')) institutions += ','
+                urlArray.push(institutions)
             }
+
+            if (status === 'validated') urlArray.push('is_validated_by_admin=true')
+            else if (status === 'unvalidated') urlArray.push('is_validated_by_admin=false')
+
+            this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data
         },
 
         async getUserDetail(id: number) {

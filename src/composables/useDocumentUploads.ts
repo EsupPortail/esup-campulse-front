@@ -3,7 +3,6 @@ import type {Document, DocumentProcessType, ProcessDocument, UploadedProcessDocu
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharters'
-import type {AxiosInstance} from 'axios'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
 
@@ -27,30 +26,18 @@ export default function () {
     const initProcessDocuments = (filterByFund?: boolean, funds?: number[]) => {
         processDocuments.value = []
         documents.value.forEach((document) => {
-            let initDocument = false
-            if (!filterByFund) {
-                initDocument = true
-            } else {
-                if (funds?.length && document.fund) {
-                    if (funds?.includes(document.fund)) {
-                        initDocument = true
-                    }
-                } else {
-                    initDocument = true
-                }
-            }
-            if (initDocument) {
-                processDocuments.value.push({
-                    document: document.id,
-                    acronym: document.acronym,
-                    isMultiple: document.isMultiple,
-                    description: document.description,
-                    pathFile: document.isMultiple ? [] : undefined,
-                    isRequiredInProcess: document.isRequiredInProcess,
-                    mimeTypes: document.mimeTypes,
-                    pathTemplate: document.pathTemplate
-                })
-            }
+            const initDocument = !filterByFund || funds?.includes(document?.fund)
+            if (!initDocument) return
+            processDocuments.value.push({
+                document: document.id,
+                acronym: document.acronym,
+                isMultiple: document.isMultiple,
+                description: document.description,
+                pathFile: document.isMultiple ? [] : undefined,
+                isRequiredInProcess: document.isRequiredInProcess,
+                mimeTypes: document.mimeTypes,
+                pathTemplate: document.pathTemplate
+            })
         })
     }
 
@@ -58,14 +45,13 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         projectStore.projectDocuments.forEach((document) => {
-            if (documentIds.includes(document.document)) {
-                documentUploads.value.push({
-                    id: document.id as number,
-                    document: document.document,
-                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
-                    name: document.name as string
-                })
-            }
+            if (!documentIds.includes(document.document)) return
+            documentUploads.value.push({
+                id: document.id as number,
+                document: document.document,
+                pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                name: document.name as string
+            })
         })
     }
 
@@ -74,14 +60,13 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         charterDocuments.value.forEach((document) => {
-            if (documentIds.includes(document.document)) {
-                documentUploads.value.push({
-                    id: document.id as number,
-                    document: document.document,
-                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
-                    name: document.name as string
-                })
-            }
+            if (!documentIds.includes(document.document)) return
+            documentUploads.value.push({
+                id: document.id as number,
+                document: document.document,
+                pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                name: document.name as string
+            })
         })
     }
 
@@ -89,14 +74,13 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         userManagerStore.userDocuments.forEach((document) => {
-            if (documentIds.includes(document.document)) {
-                documentUploads.value.push({
-                    id: document.id as number,
-                    document: document.document,
-                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
-                    name: document.name as string
-                })
-            }
+            if (!documentIds.includes(document.document)) return
+            documentUploads.value.push({
+                id: document.id as number,
+                document: document.document,
+                pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                name: document.name as string
+            })
         })
     }
 
@@ -104,14 +88,13 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         userStore.userDocuments.forEach((document) => {
-            if (documentIds.includes(document.document)) {
-                documentUploads.value.push({
-                    id: document.id as number,
-                    document: document.document,
-                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
-                    name: document.name as string
-                })
-            }
+            if (!documentIds.includes(document.document)) return
+            documentUploads.value.push({
+                id: document.id as number,
+                document: document.document,
+                pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                name: document.name as string
+            })
         })
     }
 
@@ -158,28 +141,25 @@ export default function () {
 
     // Post document uploads
     async function uploadDocuments(associationId: number | undefined, username: string | undefined, publicRequest: boolean) {
-        let instance = axiosAuthenticated as AxiosInstance
-        if (publicRequest) instance = axiosPublic as AxiosInstance
-        for (let i = 0; i < processDocuments.value.length; i++) {
+        const instance = publicRequest ? axiosPublic : axiosAuthenticated
 
-            if (processDocuments.value[i].pathFile) {
+        for (const document of processDocuments.value) {
 
-                if (processDocuments.value[i].isMultiple) {
-                    const files = processDocuments.value[i].pathFile as Blob[] | []
+            if (!document.pathFile) return
 
-                    for (let j = 0; j < files.length; j++) {
-                        const documentUpload = new DocumentUpload(files[j], associationId, username,
-                            processDocuments.value[i].document as number)
-                        const documentData = documentUpload.formData()
-                        await instance.post('/documents/uploads', documentData)
-                    }
-                } else {
-                    const file = processDocuments.value[i].pathFile as Blob
-                    const documentUpload = new DocumentUpload(file, associationId, username,
-                        processDocuments.value[i].document as number)
+            if (document.isMultiple) {
+                const files = document.pathFile as Blob[] | []
+
+                for (const file of files) {
+                    const documentUpload = new DocumentUpload(file, associationId, username, document.document as number)
                     const documentData = documentUpload.formData()
                     await instance.post('/documents/uploads', documentData)
                 }
+            } else {
+                const file = document.pathFile as Blob
+                const documentUpload = new DocumentUpload(file, associationId, username, document.document as number)
+                const documentData = documentUpload.formData()
+                await instance.post('/documents/uploads', documentData)
             }
         }
     }

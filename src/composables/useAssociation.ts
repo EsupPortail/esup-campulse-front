@@ -30,35 +30,30 @@ export default function () {
     }
 
     function checkHasPresident(association: AssociationRole) {
-        if (association.options) {
-            association.options[0].disable = false
-            const associationDetail = associationStore.associationNames.find(obj => obj.id === association.id)
-            if (associationDetail) {
-                if (associationDetail.hasPresident) {
-                    association.options[0].disable = true
-                    if (association.role === 'isPresident') {
-                        const model = newAssociations.value.find(obj => obj.id === association.id)
-                        if (model) model.role = 'isMember'
-                    }
-                }
-            }
+        if (!association.options) return
+        association.options[0].disable = false
+        const associationDetail = associationStore.associationNames.find(obj => obj.id === association.id)
+        if (!associationDetail?.hasPresident) return
+        association.options[0].disable = true
+        if (association.role === 'isPresident') {
+            const model = newAssociations.value.find(obj => obj.id === association.id)
+            if (model) model.role = 'isMember'
         }
     }
 
     // Commented in component since issue is not clear
     function checkHasStudentCertificate(association: AssociationRole) {
-        if (association.options) {
-            // If new user has not uploaded a student certificate
-            // He/she cannot join an association as an office member
-            if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
-                association.options.forEach(association => {
-                    if (association.isInOffice) association.disable = true
-                })
-            } else {
-                association.options.forEach(association => {
-                    if (association.isInOffice) association.disable = false
-                })
-            }
+        if (!association.options) return
+        // If new user has not uploaded a student certificate
+        // He/she cannot join an association as an office member
+        if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
+            association.options.forEach(association => {
+                if (association.isInOffice) association.disable = true
+            })
+        } else {
+            association.options.forEach(association => {
+                if (association.isInOffice) association.disable = false
+            })
         }
     }
 
@@ -150,7 +145,8 @@ export default function () {
 
     async function updateAssociation() {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
+        const url = `/associations/${associationStore.association?.id}`
+        await axiosAuthenticated.patch(url, changedData)
     }
 
     async function changeAssociationLogo(newLogo: undefined | File, deleteLogoData: null | object) {

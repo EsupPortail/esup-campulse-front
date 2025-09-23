@@ -91,22 +91,25 @@ describe('useDocumentUploads', () => {
                     description: doc.description,
                     pathFile: doc.isMultiple ? [] : undefined,
                     isRequiredInProcess: doc.isRequiredInProcess,
-                    mimeTypes: doc.mimeTypes
+                    mimeTypes: doc.mimeTypes,
+                    pathTemplate: doc.pathTemplate
                 })))
             })
         })
         describe('if we filter by fund', () => {
             it('should initialize documents and pathFiles based on funds', () => {
                 initProcessDocuments(true, [1])
-                expect(processDocuments.value).toEqual(_documents.map(doc => ({
+                expect(processDocuments.value).toEqual([_documents[2]].map(doc => ({
                     document: doc.id,
                     acronym: doc.acronym,
                     isMultiple: doc.isMultiple,
                     description: doc.description,
                     pathFile: doc.isMultiple ? [] : undefined,
                     isRequiredInProcess: doc.isRequiredInProcess,
-                    mimeTypes: doc.mimeTypes
+                    mimeTypes: doc.mimeTypes,
+                    pathTemplate: doc.pathTemplate
                 })))
+
             })
         })
     })

@@ -11,54 +11,36 @@ export default function () {
     const {filterizeSearch} = useUtility()
 
     function advancedSearch(settings: AssociationSearch) {
-        if (associationStore.associations.length > 0 &&
-            (settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)) {
-            let matches: Association[] = []
-            if (settings.name) {
-                matches = associationStore.associations.filter(association => {
-                    return filterizeSearch(association.name).includes(filterizeSearch(settings.name))
-                })
-            }
-            if (settings.acronym) {
-                // checking if a search has already been made
-                // If so, we filter on current matches, if not, we filter in store
-                if (matches.length) {
-                    const newMatches = matches.filter(association => {
-                        return filterizeSearch(association.acronym).includes(filterizeSearch(settings.acronym))
-                    })
-                    matches = [...newMatches]
-                } else {
-                    matches = associationStore.associations.filter(association => {
-                        return filterizeSearch(association.acronym).includes(filterizeSearch(settings.acronym))
-                    })
-                }
-            }
-            if (settings.institution) {
-                if (matches.length) {
-                    const newMatches = matches.filter(association => association.institution.id === settings.institution)
-                    matches = [...newMatches]
-                } else {
-                    matches = associationStore.associations.filter(association => association.institution.id === settings.institution)
-                }
-            }
-            if (settings.institutionComponent) {
-                if (matches.length) {
-                    const newMatches = matches.filter(association => association.institutionComponent.id === settings.institutionComponent)
-                    matches = [...newMatches]
-                } else {
-                    matches = associationStore.associations.filter(association => association.institutionComponent.id === settings.institutionComponent)
-                }
-            }
-            if (settings.activityField) {
-                if (matches.length) {
-                    const newMatches = matches.filter(association => association.activityField.id === settings.activityField)
-                    matches = [...newMatches]
-                } else {
-                    matches = associationStore.associations.filter(association => association.activityField.id === settings.activityField)
-                }
-            }
-            return matches
+        const hasSettings: boolean = !!(settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)
+        if (!associationStore.associations.length || !hasSettings) return
+        let matches: Association[] = []
+        if (settings.name) {
+            const term = filterizeSearch(settings.name)
+            matches = associationStore.associations.filter(association => {
+                return filterizeSearch(association.name).includes(term)
+            })
         }
+        if (settings.acronym) {
+            // checking if a search has already been made
+            // If so, we filter on current matches, if not, we filter in store
+            const term = filterizeSearch(settings.acronym)
+            matches = (matches.length ? matches : associationStore.associations).filter(association => {
+                return filterizeSearch(association.acronym).includes(term)
+            })
+        }
+        if (settings.institution) {
+            matches = (matches.length ? matches : associationStore.associations)
+                .filter(association => association.institution.id === settings.institution)
+        }
+        if (settings.institutionComponent) {
+            matches = (matches.length ? matches : associationStore.associations)
+                .filter(association => association.institutionComponent.id === settings.institutionComponent)
+        }
+        if (settings.activityField) {
+            matches = (matches.length ? matches : associationStore.associations)
+                .filter(association => association.activityField.id === settings.activityField)
+        }
+        return matches
     }
 
     async function simpleAssociationSearch(query: string, forDirectory: boolean): Promise<Association[]> {
