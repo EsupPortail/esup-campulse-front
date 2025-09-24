@@ -79,10 +79,10 @@ export default function () {
     const initProjectBasicInfos = () => {
         const {formatDate} = useUtility()
         projectId.value = projectStore.project?.manualIdentifier
-        projectProcessingDate.value = formatDate(projectStore.project?.processingDate as string)?.split('-').reverse().join('/')
+        projectProcessingDate.value = formatDate(projectStore.project?.processingDate as string).split('-').reverse().join('/')
         projectBasicInfos.value.name = projectStore.project?.name as string
-        projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
-        projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
+        projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string)
+        projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string)
         projectBasicInfos.value.plannedLocation = projectStore.project?.plannedLocation as string
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null

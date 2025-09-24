@@ -4,7 +4,6 @@ import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useAxios} from '@/composables/useAxios'
 import type {Group, GroupCodeLiteralName, SelectGroupLabel} from '#/groups'
 import i18n from '@/plugins/i18n'
-import type {UserGroup} from '#/user'
 import {useUserStore} from '@/stores/useUserStore'
 import useCommissions from '@/composables/useCommissions'
 import useSecurity from '@/composables/useSecurity'
@@ -137,13 +136,13 @@ export default function () {
 
     const initGroupPermToJoinAssociation = (groupArray: number[]) => {
         let perm = false
-        if (groups.value?.length) {
-            for (const group of groupArray) {
-                const groupDetail = groups.value?.find(obj => obj.id === group)
-                if (canJoinAssociationGroups.includes(groupDetail?.name)) {
-                    perm = true
-                    break
-                }
+        if (!groups.value?.length) return
+        for (const group of groupArray) {
+            const groupDetail = groups.value?.find(obj => obj.id === group)
+            const canJoinAssociation = canJoinAssociationGroups.includes(groupDetail?.name)
+            if (canJoinAssociation) {
+                perm = true
+                break
             }
         }
         groupCanJoinAssociation.value = perm
@@ -154,11 +153,12 @@ export default function () {
 
     const initStaffStatus = () => {
         let perm = false
-        const userGroups = userStore.user?.groups
 
-        for (let i = 0; i < (userGroups?.length as number); i++) {
-            const g = groups.value?.find(obj => obj.id === (userGroups?.[i] as UserGroup).groupId)
-            if (g && !g.isPublic) {
+        if (!userStore.user) return
+
+        for (const userGroup of userStore.user.groups) {
+            const group = groups.value?.find(obj => obj.id === userGroup.groupId)
+            if (!group?.isPublic) {
                 perm = true
                 break
             }
@@ -169,11 +169,10 @@ export default function () {
     watch(() => userStore.user?.groups.length, initStaffStatus)
 
     const initIsMemberFund = () => {
-        let perm = false
         const userGroups = userStore.user?.groups
+        const memberFundGroup = groups.value.find(g => g.name === MEMBER_FUND)?.id
 
-        if (userGroups?.find(g => g.groupId === (groups.value.find(g => g.name === MEMBER_FUND))?.id)) perm = true
-        isMemberFund.value = perm
+        isMemberFund.value = !!userGroups?.find(userGroup => userGroup.groupId === memberFundGroup)
     }
 
     watch(() => userStore.user?.groups.length, initIsMemberFund)
@@ -226,25 +225,25 @@ export default function () {
 
     // To test
     const initCommissionMemberSelection = () => {
-        if (commissionGroup.value) {
-            commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.value?.id)
-        }
+        if (!commissionGroup.value) return
+        commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.value?.id)
     }
     watch(() => newGroups.value, initCommissionMemberSelection)
 
-    const studentGroups = ref<Group[] | undefined>(groups.value.filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC'))
+    const studentGroups = ref<Group[] | undefined>(groups.value
+        .filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC'))
     watch(() => groups.value, () => {
-        studentGroups.value = groups.value.filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC')
+        studentGroups.value = groups.value
+            .filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC')
     })
 
     // To test
     const initStudentGroupSelection = () => {
         studentGroupIsSelected.value = false
-        if (studentGroups.value?.length) {
-            studentGroups.value?.forEach(group => {
-                if (newGroups.value.includes(group.id)) studentGroupIsSelected.value = true
-            })
-        }
+        if (!studentGroups.value?.length) return
+        studentGroups.value?.forEach(group => {
+            if (newGroups.value.includes(group.id)) studentGroupIsSelected.value = true
+        })
     }
     watch(() => newGroups.value, initStudentGroupSelection)
 

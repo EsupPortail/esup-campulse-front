@@ -188,19 +188,19 @@ const initAssociationCharter = () => {
 
                         <!--
 <div
-    v-if="association?.presidentPhone"
-    class="display-row"
+v-if="association?.presidentPhone"
+class="display-row"
 >
-    <dt>{{ t('association.labels.president-phone') }}</dt>
-    <dd></dd>
+<dt>{{ t('association.labels.president-phone') }}</dt>
+<dd></dd>
 </div>
 
 <div
-    v-if="association?.presidentEmail"
-    class="display-row"
+v-if="association?.presidentEmail"
+class="display-row"
 >
-    <dt>{{ t('association.labels.president-email') }}</dt>
-    <dd></dd>
+<dt>{{ t('association.labels.president-email') }}</dt>
+<dd></dd>
 </div>
 -->
 
@@ -209,7 +209,7 @@ const initAssociationCharter = () => {
                             class="display-row"
                         >
                             <dt>{{ t('association.labels.charter-date') }}</dt>
-                            <dd>{{ formatDate(association?.charterDate)?.split('-').reverse().join('/') }}</dd>
+                            <dd>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</dd>
                         </div>
 
                         <div
@@ -217,7 +217,7 @@ const initAssociationCharter = () => {
                             class="display-row"
                         >
                             <dt>{{ t('association.labels.last-goa') }}</dt>
-                            <dd>{{ formatDate(association?.lastGoaDate)?.split('-').reverse().join('/') }}</dd>
+                            <dd>{{ formatDate(association?.lastGoaDate).split('-').reverse().join('/') }}</dd>
                         </div>
 
                         <div

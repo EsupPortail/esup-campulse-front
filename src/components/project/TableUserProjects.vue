@@ -15,9 +15,9 @@ import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 
 const importedProps = defineProps<{
-    projects: ProjectList[],
-    title: string,
-    associationId: number | null
+  projects: ProjectList[],
+  title: string,
+  associationId: number | null
 }>()
 
 const projectStore = useProjectStore()
@@ -169,7 +169,7 @@ const columns = ref<QTableProps['columns']>([
                     :props="props"
                     headers="commissionDate"
                 >
-                    {{ formatDate(props.row.commission?.commissionDate)?.split('-').reverse().join('/') }}
+                    {{ formatDate(props.row.commission?.commissionDate).split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
                     key="status"

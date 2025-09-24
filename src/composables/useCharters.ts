@@ -67,8 +67,8 @@ export default function () {
                     documentId: document.id
                 }],
                 pathFile: uploadedCharter?.pathFile ?? '',
-                validatedDate: formatDate(charterStatus.validatedDate)?.split('-').reverse().join('/'),
-                expirationDate: formatDate(charterStatus.expirationDate)?.split('-').reverse().join('/'),
+                validatedDate: formatDate(charterStatus.validatedDate).split('-').reverse().join('/'),
+                expirationDate: formatDate(charterStatus.expirationDate).split('-').reverse().join('/'),
                 charterStatus: charterStatus.charterStatus,
                 mimeTypes: document.mimeTypes
             })
@@ -93,8 +93,8 @@ export default function () {
             documentName: associationCharterDocuments.map(document => document.name).join(' + '),
             pathTemplate: pathTemplates,
             pathFile: uploadedCharter?.pathFile ?? '',
-            validatedDate: formatDate(charterStatus.validatedDate)?.split('-').reverse().join('/'),
-            expirationDate: formatDate(charterStatus.expirationDate)?.split('-').reverse().join('/'),
+            validatedDate: formatDate(charterStatus.validatedDate).split('-').reverse().join('/'),
+            expirationDate: formatDate(charterStatus.expirationDate).split('-').reverse().join('/'),
             charterStatus: charterStatus.charterStatus
         })
     }
@@ -191,9 +191,9 @@ export default function () {
         const todayDate = new Date()
         todayDate.setHours(0, 0, 0, 0)
         if (uploadedCharter) {
-            validatedDate = formatDate(uploadedCharter.validatedDate) ?? ''
+            validatedDate = formatDate(uploadedCharter.validatedDate)
             if (uploadedCharter.calculatedExpirationDate) {
-                expirationDate = formatDate(uploadedCharter.calculatedExpirationDate) ?? ''
+                expirationDate = formatDate(uploadedCharter.calculatedExpirationDate)
                 formatedExpirationDate = new Date(uploadedCharter.calculatedExpirationDate)
             }
             // If the charter is the association charter, we can determine its status by the association's charter status

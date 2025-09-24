@@ -82,8 +82,8 @@ const initValues = () => {
     association.value.presidentNames = associationStore.association?.presidentNames as string
     association.value.presidentPhone = associationStore.association?.presidentPhone as string
     association.value.presidentEmail = associationStore.association?.presidentEmail as string
-    association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
-    association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
+    association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string)
+    association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string)
     association.value.institution = associationStore.association?.institution?.id
     association.value.institutionComponent = associationStore.association?.institutionComponent?.id
     association.value.activityField = associationStore.association?.activityField?.id
