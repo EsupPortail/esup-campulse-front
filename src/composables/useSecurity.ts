@@ -87,7 +87,7 @@ export default function () {
     }
 
     const initNewUserData = () => {
-        newUser.isCas = userStore.newUser?.isCas as boolean
+        newUser.isCas = userStore.newUser?.isCas ?? false as boolean
         newUser.firstName = userStore.newUser?.firstName as string
         newUser.lastName = userStore.newUser?.lastName as string
         newUser.email = userStore.newUser?.email as string
@@ -103,6 +103,7 @@ export default function () {
         const {userFunds} = useCommissions()
 
         const gifus: UserGroupRegister[] = groupsToRegister(null)
+        const associations = associationsToRegister(newAssociations.value, null)
 
         const user = {
             email: newUser.email,
@@ -110,7 +111,7 @@ export default function () {
             lastName: newUser.lastName,
             phone: newUser.phone,
             gifus,
-            associations: associationsToRegister(newAssociations.value, null)
+            associations
         }
 
         await axiosPublic.post('/users/auth/registration/', user)
@@ -122,11 +123,12 @@ export default function () {
         const {userFunds} = useCommissions()
 
         const gifus: UserGroupRegister[] = groupsToRegister(null)
+        const associations = associationsToRegister(newAssociations.value, null)
 
         const user = {
             phone: newUser.phone,
             gifus,
-            associations: associationsToRegister(newAssociations.value, null)
+            associations
         }
 
         await axiosAuthenticated.patch('/users/auth/registration/cas/', user)
@@ -179,16 +181,6 @@ export default function () {
         return groups
     }
 
-    async function userGroupsRegister(user: number) {
-        const {newGroups} = useUserGroups()
-        if (!newGroups.value.length) return
-        const {userFunds} = useCommissions()
-        for (const group of groupsToRegister(user)) {
-            await axiosAuthenticated.post('/users/groups/', group)
-        }
-        userFunds.value = []
-    }
-
     async function register() {
         if (userStore.isCas) {
             await userCASRegister()
@@ -197,16 +189,24 @@ export default function () {
         }
     }
 
-    // TODO refactor this with new route?
     async function addUserAsManager() {
-        const {newAssociationsUser} = useUserAssociations()
-        await userLocalRegisterAsManager(newUser)
-        await userGroupsRegister()
-        if (newAssociationsUser.value) {
-            let username = newUser.email
-            if (newUser.isCas) username = newUser.username
-            await userAssociationsRegister(username)
+        const {newAssociations} = useUserAssociations()
+
+        const gifus: UserGroupRegister[] = groupsToRegister(null)
+        const associations = associationsToRegister(newAssociations.value, null)
+
+        const user = {
+            isCas: newUser.isCas,
+            username: newUser.username,
+            email: newUser.email,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            phone: newUser.phone,
+            gifus,
+            associations
         }
+
+        await axiosAuthenticated.post('/users/', user)
     }
 
     const CASUsers = ref<CASUser[]>([])
@@ -232,10 +232,6 @@ export default function () {
         if (userStore.newUser && userStore.isCas && route.query.ticket) {
             await userStore.loadCASUser(route.query.ticket as string)
         }
-    }
-
-    async function userLocalRegisterAsManager(newUser: UserRegister) {
-        await axiosAuthenticated.post('/users/', newUser)
     }
 
     async function verifyEmail(key: string) {
@@ -279,8 +275,6 @@ export default function () {
         resendEmail,
         passwordReset,
         passwordResetConfirm,
-        userGroupsRegister,
-        userLocalRegisterAsManager,
         hasPerm,
         userAssociationsRegister,
         initNewUserData,
