@@ -5,12 +5,11 @@ import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {_tokens} from '~/fixtures/tokens.mock'
-import {_CASUsers, _institutionManager, _institutionStudent, _newUser,} from '~/fixtures/user.mock'
+import {_associationRole, _CASUsers, _institutionManager, _institutionStudent,} from '~/fixtures/user.mock'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
 import useUserAssociations from '../useUserAssociations'
-import useCommissions from '../useCommissions'
 
 
 config.global.plugins = [
@@ -37,20 +36,18 @@ describe('useSecurity', () => {
         userLocalRegister,
         userCASRegister,
         userAssociationsRegister,
-        userGroupsRegister,
         getUsersFromCAS,
         verifyEmail,
         resendEmail,
         passwordReset,
         passwordResetConfirm,
-        userLocalRegisterAsManager,
+        addUserAsManager,
         CASUserOptions,
         initCASUserOptions,
         checkPasswordStrength
     } = useSecurity()
     const {axiosAuthenticated, axiosPublic} = useAxios()
     const {groups, newGroups} = useUserGroups()
-    const {userFunds} = useCommissions()
     const {newAssociations} = useUserAssociations()
 
     beforeEach(() => {
@@ -149,33 +146,32 @@ describe('useSecurity', () => {
         })
     })
 
-    /*describe('userAssociationRegister', () => {
+    describe('userAssociationRegister', () => {
         const {newAssociations} = useUserAssociations()
-        newAssociations.value = [_associationRole]
-        const data = {
-            user: 'user',
-            association: _associationRole.id,
-            isPresident: _associationRole.role === 'isPresident',
-            isVicePresident: _associationRole.role === 'isVicePresident',
-            isSecretary: _associationRole.role === 'isSecretary',
-            isTreasurer: _associationRole.role === 'isTreasurer'
-        }
-        describe('if request is public', () => {
-            it('should post every new association with public instance when registering', async () => {
-                await userAssociationsRegister(true, 'user')
-                expect(axiosPublic.post).toHaveBeenCalledOnce()
-                expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/associations/', data)
-            })
+
+        beforeEach(() => {
+            newAssociations.value = [_associationRole]
         })
 
-        describe('if request is private', () => {
-            it('should post every new association with auth instance when registered by manager', async () => {
-                await userAssociationsRegister(false, 'user')
-                expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/associations/', data)
-            })
+        afterEach(() => {
+            newAssociations.value = []
         })
-    })*/
+
+        it('should post every new association with auth instance when registered by manager', async () => {
+            const data = {
+                user: 1,
+                association: _associationRole.id,
+                isPresident: _associationRole.role === 'isPresident',
+                isVicePresident: _associationRole.role === 'isVicePresident',
+                isSecretary: _associationRole.role === 'isSecretary',
+                isTreasurer: _associationRole.role === 'isTreasurer'
+            }
+
+            await userAssociationsRegister(1)
+            expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/associations/', [data])
+        })
+    })
 
     describe('getUsersFromCAS', () => {
         it('should get users from CAS via the API', async () => {
@@ -205,11 +201,32 @@ describe('useSecurity', () => {
         })
     })
 
-    describe('userLocalRegisterAsManager', () => {
+    describe('addUserAsManager', () => {
         it('should post once on /users/ with newUser as data', async () => {
-            await userLocalRegisterAsManager(_newUser)
+            const {newAssociations} = useUserAssociations()
+
+            const user = {
+                isCas: newUser.isCas,
+                username: newUser.username,
+                email: newUser.email,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                phone: newUser.phone,
+                gifus: [],
+                associations: newAssociations.value.map((association) => {
+                    return {
+                        association: association.id,
+                        isPresident: association.role === 'isPresident',
+                        isSecretary: association.role === 'isSecretary',
+                        isTreasurer: association.role === 'isTreasurer',
+                        isVicePresident: association.role === 'isVicePresident'
+                    }
+                })
+            }
+
+            await addUserAsManager()
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/', _newUser)
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/', user)
         })
     })
 

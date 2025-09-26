@@ -409,22 +409,49 @@ export const _associationRole: AssociationRole = {
 
 export const _associationMembers: AssociationMember[] = [
     {
-        id: _institutionManager.id,
-        firstName: _institutionManager.firstName,
-        lastName: _institutionManager.lastName,
-        role: 'Présidente ou président de l\'association',
+        id: 1,
+        firstName: 'John',
+        lastName: 'Doe',
+        role: 'isPresident',
         canBePresidentFrom: null,
         canBePresidentTo: null,
-        isValidatedByAdmin: _userAssociations[0].isValidatedByAdmin as boolean
+        isValidatedByAdmin: true
     },
     {
-        id: _institutionStudent.id,
-        firstName: _institutionStudent.firstName,
-        lastName: _institutionStudent.lastName,
-        role: 'Autre membre de l\'association',
+        id: 2,
+        firstName: 'Jane',
+        lastName: 'Doe',
+        role: 'isSecretary',
         canBePresidentFrom: null,
         canBePresidentTo: null,
-        isValidatedByAdmin: _userAssociations[4].isValidatedByAdmin as boolean
+        isValidatedByAdmin: true
+    },
+    {
+        id: 3,
+        firstName: 'David',
+        lastName: 'Doe',
+        role: 'isTreasurer',
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true
+    },
+    {
+        id: 4,
+        firstName: 'Frank',
+        lastName: 'Doe',
+        role: 'isVicePresident',
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true
+    },
+    {
+        id: 5,
+        firstName: 'Gwen',
+        lastName: 'Doe',
+        role: 'isMember',
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isValidatedByAdmin: true
     }
 ]
 
