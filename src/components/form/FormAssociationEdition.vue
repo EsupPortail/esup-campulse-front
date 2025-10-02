@@ -578,12 +578,17 @@ async function onChangeLogo(action: string) {
 @import '@/assets/styles/dashboard.scss';
 @import "@/assets/_variables.scss";
 
-.address-fields div {
+.address-fields > div {
   display: flex;
   gap: 1rem;
+  width: $fullSize;
 
-  * {
+  & > * {
     width: $fullSize;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
   }
 }
 
