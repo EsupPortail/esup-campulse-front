@@ -163,7 +163,7 @@ const columns: QTableProps['columns'] = [
                                         v-for="(association, index) in props.row.associations"
                                         :key="index"
                                     >
-                                        <QChip>{{ association.name }}</QChip>
+                                        <QChip>{{ association.acronym ?? (association.name.slice(0, 20).trim() + '...') }}</QChip>
                                     </li>
                                 </ul>
                             </QTd>
@@ -244,10 +244,10 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/variables.scss';
 
 ul {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 ul > li {
-    list-style: none;
+  list-style: none;
 }
 </style>
