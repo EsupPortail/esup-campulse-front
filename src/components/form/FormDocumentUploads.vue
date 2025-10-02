@@ -26,7 +26,6 @@ const {
     initManagedUserDocumentUploads,
     initUserDocumentUploads,
     MAX_FILE_SIZE,
-    MAX_FILES,
     MAX_TITLE_LENGTH
 } = useDocumentUploads()
 const {acceptedFormats} = useDocuments()
@@ -179,7 +178,7 @@ const documentIsSelected = (document: ProcessDocument, val: File | File[]): bool
     // Control field and throw error
     if (documentIsRequired && documentIsNotSelected) {
     // Field must have a val
-        const hasValue: boolean = document.isMultiple ? !!(val as File[]).length : !!val
+        const hasValue: boolean = document.maxUploads > 1 ? !!(val as File[]).length : !!val
         // If there is a val
         // Field is valid
         if (hasValue) {
@@ -206,9 +205,9 @@ const documentIsSelected = (document: ProcessDocument, val: File | File[]): bool
 const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): boolean => {
     // If there is a file (or a group of file)
     // We must control each file's name length
-    const hasValue: boolean = document.isMultiple ? !!(val as File[])?.length : !!val
+    const hasValue: boolean = document.maxUploads > 1 ? !!(val as File[])?.length : !!val
     if (hasValue) {
-        if (document.isMultiple) {
+        if (document.maxUploads > 1) {
             // Throw error if any file's name length is greater than MAX_TITLE_LENGTH
             return !((val as File[]).find(obj => obj.name.length >= MAX_TITLE_LENGTH))
         } else {
@@ -259,11 +258,10 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
                 :data-test="document.acronym + '-file'"
                 :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
                 :max-file-size="MAX_FILE_SIZE"
-                :max-files="((document.isMultiple ? MAX_FILES : 1) - documentUploads.filter(obj => obj.document === document.document).length)"
+                :max-files="document.maxUploads - documentUploads.filter(obj => obj.document === document.document).length"
                 :max-total-size="MAX_FILE_SIZE * 10"
-                :multiple="document.isMultiple"
-                :readonly="document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length >= MAX_FILES ||
-                    !document.isMultiple && documentUploads.filter(obj => obj.document === document.document).length === 1"
+                :multiple="document.maxUploads > 1"
+                :readonly="documentUploads.filter(obj => obj.document === document.document).length >= document.maxUploads"
                 :rules="[
                     val => documentIsSelected(document, val) || t('forms.select-document') + ' ' + t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.',
                     val => fileTitleLengthIsValid(document, val) || t('notifications.negative.error-title-length')
@@ -283,7 +281,7 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
                         {{
                             props.process === 'registration' ? t('forms.student-certificate-hint') :
                             (t('project.document-hint')
-                                + (document.isMultiple ? (' ' + t('project.document-hint-multiple')) : '') + ' ' +
+                                + (document.maxUploads > 1 ? (' ' + t('project.document-hint-multiple')) : '') + ' ' +
                                 t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.')
                         }}
                     </p>

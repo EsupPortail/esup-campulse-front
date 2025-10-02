@@ -13,7 +13,6 @@ const processDocuments = ref<ProcessDocument[]>([])
 const documentUploads = ref<UploadedProcessDocument[]>([])
 
 const MAX_FILE_SIZE = 8 * 1048576
-const MAX_FILES = 10
 const MAX_TITLE_LENGTH = 100
 
 export default function () {
@@ -26,18 +25,19 @@ export default function () {
     const initProcessDocuments = (filterByFund?: boolean, funds?: number[]) => {
         processDocuments.value = []
         documents.value.forEach((document) => {
-            const initDocument = !filterByFund || funds?.includes(document?.fund)
-            if (!initDocument) return
-            processDocuments.value.push({
-                document: document.id,
-                acronym: document.acronym,
-                isMultiple: document.isMultiple,
-                description: document.description,
-                pathFile: document.isMultiple ? [] : undefined,
-                isRequiredInProcess: document.isRequiredInProcess,
-                mimeTypes: document.mimeTypes,
-                pathTemplate: document.pathTemplate
-            })
+            const initDocument = !filterByFund || !funds?.length || !document.fund || funds.includes(document.fund)
+            if (initDocument) {
+                processDocuments.value.push({
+                    document: document.id,
+                    acronym: document.acronym,
+                    maxUploads: document.maxUploads,
+                    description: document.description,
+                    pathFile: document.maxUploads > 1 ? [] : undefined,
+                    isRequiredInProcess: document.isRequiredInProcess,
+                    mimeTypes: document.mimeTypes,
+                    pathTemplate: document.pathTemplate
+                })
+            }
         })
     }
 
@@ -147,7 +147,7 @@ export default function () {
 
             if (!document.pathFile) return
 
-            if (document.isMultiple) {
+            if (document.maxUploads > 1) {
                 const files = document.pathFile as Blob[] | []
 
                 for (const file of files) {
@@ -202,7 +202,6 @@ export default function () {
         getStudentCertificate,
         initManagedUserDocumentUploads,
         initUserDocumentUploads,
-        MAX_FILES,
         MAX_FILE_SIZE,
         MAX_TITLE_LENGTH
     }

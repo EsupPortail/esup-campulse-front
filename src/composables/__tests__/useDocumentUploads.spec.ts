@@ -87,9 +87,9 @@ describe('useDocumentUploads', () => {
                 expect(processDocuments.value).toEqual(_documents.map(doc => ({
                     document: doc.id,
                     acronym: doc.acronym,
-                    isMultiple: doc.isMultiple,
+                    maxUploads: doc.maxUploads,
                     description: doc.description,
-                    pathFile: doc.isMultiple ? [] : undefined,
+                    pathFile: doc.maxUploads > 1 ? [] : undefined,
                     isRequiredInProcess: doc.isRequiredInProcess,
                     mimeTypes: doc.mimeTypes,
                     pathTemplate: doc.pathTemplate
@@ -99,12 +99,12 @@ describe('useDocumentUploads', () => {
         describe('if we filter by fund', () => {
             it('should initialize documents and pathFiles based on funds', () => {
                 initProcessDocuments(true, [1])
-                expect(processDocuments.value).toEqual([_documents[2]].map(doc => ({
+                expect(processDocuments.value).toEqual(_documents.map(doc => ({
                     document: doc.id,
                     acronym: doc.acronym,
-                    isMultiple: doc.isMultiple,
+                    maxUploads: doc.maxUploads,
                     description: doc.description,
-                    pathFile: doc.isMultiple ? [] : undefined,
+                    pathFile: doc.maxUploads > 1 ? [] : undefined,
                     isRequiredInProcess: doc.isRequiredInProcess,
                     mimeTypes: doc.mimeTypes,
                     pathTemplate: doc.pathTemplate
