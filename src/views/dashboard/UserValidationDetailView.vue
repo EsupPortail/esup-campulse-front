@@ -65,7 +65,7 @@ async function onValidateUser() {
     if (groupChoiceIsValid.value) {
         try {
             await validateUser()
-            await uploadDocuments(undefined, userManagerStore.user?.username, false)
+            await uploadDocuments(null, userManagerStore.user?.id)
             await router.push({name: 'ValidateUsers'})
             notify({
                 type: 'positive',

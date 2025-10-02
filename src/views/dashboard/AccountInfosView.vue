@@ -45,7 +45,7 @@ async function onUpdateUserInfos() {
                 message: t('notifications.warning.no-modifications-found')
             })
         }*/
-        await uploadDocuments(undefined, userStore.user?.username, false)
+        await uploadDocuments(null, userStore.user?.id)
         initProcessDocuments()
         await userStore.getUserDocuments()
         initUserDocumentUploads()

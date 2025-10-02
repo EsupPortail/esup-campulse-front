@@ -33,7 +33,7 @@ const {
 const {groupChoiceIsValid, groupCanJoinAssociation, isStaff, studentGroupIsSelected} = useUserGroups()
 const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
-const {uploadDocuments, processDocuments} = useDocumentUploads()
+const {processDocuments, uploadRegistrationDocuments} = useDocumentUploads()
 
 const isLDAPEnabled: boolean = import.meta.env.VITE_APP_OPEN_LDAP === 'true'
 const hasConsent = ref<boolean>(false)
@@ -72,7 +72,7 @@ async function onRegister() {
         try {
             if (isStaff.value) {
                 await addUserAsManager()
-                await uploadDocuments(undefined, newUser.username, false)
+                await uploadRegistrationDocuments(newUser.username)
                 // Reinitialize processDocuments to avoid persistance of non valid documents
                 processDocuments.value = []
                 notify({
@@ -88,7 +88,7 @@ async function onRegister() {
                 newUser.phone = ''
             } else {
                 await register()
-                await uploadDocuments(undefined, newUser.username, true)
+                await uploadRegistrationDocuments(newUser.username)
                 await router.push({name: 'RegistrationSuccessful'})
             }
         } catch (error) {

@@ -118,10 +118,10 @@ export default function () {
         document: string
         project: string
 
-        constructor(file: Blob, associationId: number | undefined, username: string | undefined, document: number) {
+        constructor(file: Blob, associationId: number | null, user: number | null, document: number) {
             this.file = file
             this.association = associationId ? associationId.toString() : ''
-            this.user = username ?? ''
+            this.user = user ? user.toString() : ''
             this.document = document.toString()
             this.project = projectStore.project?.id.toString() as string
         }
@@ -139,10 +139,28 @@ export default function () {
         }
     }
 
-    // Post document uploads
-    async function uploadDocuments(associationId: number | undefined, username: string | undefined, publicRequest: boolean) {
-        const instance = publicRequest ? axiosPublic : axiosAuthenticated
+    class RegistrationDocumentUpload {
+        file: Blob
+        user: string
+        document: string
 
+        constructor(file: Blob, user: string, document: number) {
+            this.file = file
+            this.user = user
+            this.document = document.toString()
+        }
+
+        formData() {
+            const newForm = new FormData()
+            newForm.append('pathFile', this.file)
+            newForm.append('document', this.document)
+            newForm.append('user', this.user)
+            return newForm
+        }
+    }
+
+    // Post document uploads
+    async function uploadDocuments(associationId: number | null, user: number | null) {
         for (const document of processDocuments.value) {
 
             if (!document.pathFile) return
@@ -151,16 +169,29 @@ export default function () {
                 const files = document.pathFile as Blob[] | []
 
                 for (const file of files) {
-                    const documentUpload = new DocumentUpload(file, associationId, username, document.document as number)
+                    const documentUpload = new DocumentUpload(file, associationId, user, document.document as number)
                     const documentData = documentUpload.formData()
-                    await instance.post('/documents/uploads', documentData)
+                    await axiosAuthenticated.post('/documents/uploads', documentData)
                 }
             } else {
                 const file = document.pathFile as Blob
-                const documentUpload = new DocumentUpload(file, associationId, username, document.document as number)
+                const documentUpload = new DocumentUpload(file, associationId, user, document.document as number)
                 const documentData = documentUpload.formData()
-                await instance.post('/documents/uploads', documentData)
+                await axiosAuthenticated.post('/documents/uploads', documentData)
             }
+        }
+    }
+
+    // Post registration document uploads
+    async function uploadRegistrationDocuments(user: string) {
+        for (const document of processDocuments.value) {
+
+            if (!document.pathFile) return
+
+            const file = document.pathFile as Blob
+            const documentUpload = new RegistrationDocumentUpload(file, user, document.document as number)
+            const documentData = documentUpload.formData()
+            await axiosPublic.post('/documents/uploads/registration', documentData)
         }
     }
 
@@ -197,12 +228,14 @@ export default function () {
         deleteDocumentUpload,
         getFile,
         DocumentUpload,
+        RegistrationDocumentUpload,
         createUploadedFileLink,
         initCharterDocumentUploads,
         getStudentCertificate,
         initManagedUserDocumentUploads,
         initUserDocumentUploads,
         MAX_FILE_SIZE,
-        MAX_TITLE_LENGTH
+        MAX_TITLE_LENGTH,
+        uploadRegistrationDocuments
     }
 }

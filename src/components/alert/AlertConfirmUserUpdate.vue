@@ -54,7 +54,7 @@ async function onValidateChanges() {
 
         await updateUserGroups()
 
-        await uploadDocuments(undefined, userManagerStore.user?.username, false)
+        await uploadDocuments(null, userManagerStore.user?.id)
         initProcessDocuments()
         await userManagerStore.getUserDocuments()
         initManagedUserDocumentUploads()
