@@ -793,7 +793,7 @@
     "review-validate": "Valider le bilan",
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des financeurs liées à votre demande afin que votre dossier soit complet.",
     "status": {
-      "archived": "Archivé",
+      "archived": "Terminé",
       "cancelled": "Annulé",
       "draft": "Brouillon",
       "draft-processed": "En attente de modification par le demandeur",
