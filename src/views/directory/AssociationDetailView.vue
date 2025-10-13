@@ -58,14 +58,15 @@ const initAssociationCharter = () => {
     if (association.value) {
         const charterDate = formatDate(association.value?.charterDate)
         if (charterDate) {
-            const splitCharterDate = charterDate.split('-').reverse()
-            const expirationDate = `${splitCharterDate[0]}/${splitCharterDate[1]}/${(parseInt(splitCharterDate[2]) + 1).toString()}`
-            switch (association.value?.charterStatus) {
+            //const splitCharterDate = charterDate.split('-').reverse()
+            //const expirationDate = `${splitCharterDate[0]}/${splitCharterDate[1]}/${(parseInt(splitCharterDate[2]) + 1).toString()}`
+            const charterStatus = association.value?.charterStatus
+            switch (charterStatus) {
             case 'CHARTER_VALIDATED':
-                str = t('charter.association-charter-status.validated', {expirationDate: expirationDate})
+                str = t('charter.association-charter-status.validated', {expirationDate: charterDate})
                 break
             case 'CHARTER_EXPIRED':
-                str = t('charter.association-charter-status.expired', {expirationDate: expirationDate})
+                str = t('charter.association-charter-status.expired', {expirationDate: charterDate})
                 break
             case 'CHARTER_PROCESSING':
                 str = t('charter.association-charter-status.processing')
