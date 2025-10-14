@@ -58,8 +58,6 @@ const initAssociationCharter = () => {
     if (association.value) {
         const charterDate = formatDate(association.value?.charterDate)
         if (charterDate) {
-            //const splitCharterDate = charterDate.split('-').reverse()
-            //const expirationDate = `${splitCharterDate[0]}/${splitCharterDate[1]}/${(parseInt(splitCharterDate[2]) + 1).toString()}`
             const charterStatus = association.value?.charterStatus
             switch (charterStatus) {
             case 'CHARTER_VALIDATED':
@@ -105,7 +103,6 @@ const initAssociationCharter = () => {
                     >
                         {{ association?.name }}{{ t('colon') }}{{ association?.acronym }}
                     </p>
-                    <!--<p>{{ t('association.labels.charter-validity') }}</p>-->
                     <p>{{ associationCharterStatus }}</p>
                     <p
                         v-if="association?.socialObject"
@@ -186,25 +183,6 @@ const initAssociationCharter = () => {
                             <dt>{{ t('association.labels.president-name') }}</dt>
                             <dd itemprop="name">{{ association?.presidentNames }}</dd>
                         </div>
-
-                        <!--
-<div
-v-if="association?.presidentPhone"
-class="display-row"
->
-<dt>{{ t('association.labels.president-phone') }}</dt>
-<dd></dd>
-</div>
-
-<div
-v-if="association?.presidentEmail"
-class="display-row"
->
-<dt>{{ t('association.labels.president-email') }}</dt>
-<dd></dd>
-</div>
--->
-
                         <div
                             v-if="association?.charterDate"
                             class="display-row"

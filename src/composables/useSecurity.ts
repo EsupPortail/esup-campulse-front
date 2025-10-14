@@ -153,7 +153,7 @@ export default function () {
         const {newAssociations} = useUserAssociations()
         for (const association of newAssociations.value) {
             if (idsAssociations.indexOf(association.id) === -1)
-                await axiosAuthenticated.post('/users/associations/', associationsToRegister([association], user))
+                await axiosAuthenticated.post('/users/associations/', associationsToRegister([association], user)[0])
             idsAssociations.push(association.id)
         }
     }
