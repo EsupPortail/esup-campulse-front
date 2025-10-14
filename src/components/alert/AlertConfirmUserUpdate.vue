@@ -45,15 +45,12 @@ async function onValidateChanges() {
     loading.show()
     try {
         initInfosToPatch(userManagerStore.user)
-
-        if (!Object.entries(infosToPatch).length) return
-        await updateUserInfos(userManagerStore.user, true)
-
+        if (Object.entries(infosToPatch).length) {
+            await updateUserInfos(userManagerStore.user, true)
+        }
         updateUserAssociations(true)
         await userAssociationsRegister(userManagerStore.user?.id)
-
         await updateUserGroups()
-
         await uploadDocuments(null, userManagerStore.user?.id)
         initProcessDocuments()
         await userManagerStore.getUserDocuments()
