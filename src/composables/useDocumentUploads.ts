@@ -35,7 +35,8 @@ export default function () {
                     pathFile: document.maxUploads > 1 ? [] : undefined,
                     isRequiredInProcess: document.isRequiredInProcess,
                     mimeTypes: document.mimeTypes,
-                    pathTemplate: document.pathTemplate
+                    pathTemplate: document.pathTemplate,
+                    processType: document.processType
                 })
             }
         })

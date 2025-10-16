@@ -68,7 +68,8 @@ export interface ProcessDocument {
     isRequiredInProcess?: boolean,
     mimeTypes?: MimeType[],
     name?: string,
-    pathTemplate?: string | undefined
+    pathTemplate?: string | undefined,
+    processType?: DocumentProcessType
 }
 
 export interface UploadedProcessDocument {

@@ -62,7 +62,7 @@ export default function () {
 
         userAssociations.value.forEach(async function (association) {
             // If we need to delete the association
-            if (association.id && association.deleteAssociation) {
+            if (association.deleteAssociation) {
                 await deleteUserAssociation(userId, association.id)
                 // Reactively remove the deleted item from interface
                 if (!editedByStaff) {
@@ -73,10 +73,11 @@ export default function () {
             // If we need to update the association
             else {
                 // We search for the corresponding association in store
-
                 const storeAssociation = instance.userAssociations.find(obj => obj.association?.id === association.id)
                 // We set a boolean to track changes
                 let hasChanges = false
+                // Has role helper
+                const hasRole = storeAssociation?.isPresident || storeAssociation?.isSecretary || storeAssociation?.isTreasurer || storeAssociation?.isVicePresident
                 // We compare the 2 objects
                 if (storeAssociation?.canBePresidentFrom !== association.canBePresidentFrom) hasChanges = true
                 if (storeAssociation?.canBePresidentTo !== association.canBePresidentTo) hasChanges = true
@@ -85,9 +86,9 @@ export default function () {
                 else if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
                 else if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
                 else if (storeAssociation?.isVicePresident && association.role !== 'isVicePresident') hasChanges = true
-                else if (association.role !== 'isMember') hasChanges = true
+                else if (!hasRole && association.role !== 'isMember') hasChanges = true
 
-                if (hasChanges && association.id) {
+                if (hasChanges) {
                     const infosToPatch = {
                         isPresident: association.role === 'isPresident',
                         canBePresidentFrom: association.canBePresidentFrom ? association.canBePresidentFrom : null,
