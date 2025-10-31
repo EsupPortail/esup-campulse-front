@@ -92,7 +92,8 @@ describe('useDocumentUploads', () => {
                     pathFile: doc.maxUploads > 1 ? [] : undefined,
                     isRequiredInProcess: doc.isRequiredInProcess,
                     mimeTypes: doc.mimeTypes,
-                    pathTemplate: doc.pathTemplate
+                    pathTemplate: doc.pathTemplate,
+                    processType: doc.processType
                 })))
             })
         })
@@ -107,7 +108,8 @@ describe('useDocumentUploads', () => {
                     pathFile: doc.maxUploads > 1 ? [] : undefined,
                     isRequiredInProcess: doc.isRequiredInProcess,
                     mimeTypes: doc.mimeTypes,
-                    pathTemplate: doc.pathTemplate
+                    pathTemplate: doc.pathTemplate,
+                    processType: doc.processType
                 })))
 
             })

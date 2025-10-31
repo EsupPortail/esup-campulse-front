@@ -169,7 +169,7 @@ describe('useSecurity', () => {
 
             await userAssociationsRegister(1)
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/associations/', [data])
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/associations/', data)
         })
     })
 
