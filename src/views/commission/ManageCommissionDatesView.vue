@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {onMounted, ref} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import {QForm, useQuasar} from 'quasar'
 import useCommissions from '@/composables/useCommissions'
 import useUtility from '@/composables/useUtility'
@@ -181,6 +181,11 @@ function checkCommissionDates(isNew: boolean, commissionId?: number) {
         commission.datesAreLegal = fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)
     }
 }
+
+const canSubmitNewCommission = computed<boolean>(() => {
+    console.log(newCommission.value, !newCommission.value.datesAreLegal, !newCommission.value.funds?.length, !newCommission.value.name)
+    return !newCommission.value.datesAreLegal || !newCommission.value.funds?.length || !newCommission.value.name
+})
 </script>
 
 <template>
@@ -377,7 +382,7 @@ function checkCommissionDates(isNew: boolean, commissionId?: number) {
                     />
                     <div class="flex-btn">
                         <QBtn
-                            :disable="!newCommission.datesAreLegal || !newCommission.funds?.length || !newCommission.name"
+                            :disable="canSubmitNewCommission"
                             :label="t('add')"
                             class="btn-lg"
                             color="commission"
