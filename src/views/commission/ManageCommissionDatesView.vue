@@ -183,8 +183,7 @@ function checkCommissionDates(isNew: boolean, commissionId?: number) {
 }
 
 const canSubmitNewCommission = computed<boolean>(() => {
-    console.log(newCommission.value, !newCommission.value.datesAreLegal, !newCommission.value.funds?.length, !newCommission.value.name)
-    return !newCommission.value.datesAreLegal || !newCommission.value.funds?.length || !newCommission.value.name
+    return newCommission.value.datesAreLegal && !!newCommission.value.funds?.length && !!newCommission.value.name
 })
 </script>
 
@@ -382,7 +381,7 @@ const canSubmitNewCommission = computed<boolean>(() => {
                     />
                     <div class="flex-btn">
                         <QBtn
-                            :disable="canSubmitNewCommission"
+                            :disable="!canSubmitNewCommission"
                             :label="t('add')"
                             class="btn-lg"
                             color="commission"
