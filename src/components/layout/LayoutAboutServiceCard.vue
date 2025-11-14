@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 
 const props = defineProps<{
-    header?: string,
-    body?: string,
-    cssClass: string
+  header?: string,
+  body?: string,
+  cssClass: string
 }>()
 </script>
 
@@ -33,6 +33,16 @@ const props = defineProps<{
 @import '@/assets/styles/home.scss';
 
 h3 {
-    text-align: left;
+  text-align: center;
+}
+
+section > div {
+  flex-direction: row !important;
+  height: 100%;
+  width: 100%;
+}
+
+.flex-column {
+  width: 100%;
 }
 </style>
