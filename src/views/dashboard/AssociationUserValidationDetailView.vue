@@ -26,7 +26,6 @@ const route = useRoute()
 
 onMounted(async () => {
     loading.show()
-    await userManagerStore.getUserDetail(parseInt(route.params.userId as string))
     await onGetUserAssociations()
     await associationStore.getInstitutions()
     initAssociationMember()
@@ -56,7 +55,7 @@ async function onGetUserAssociations() {
 
 async function onValidateAssociationUser() {
     try {
-        const userId = userManagerStore.user?.id
+        const userId = associationUser.value?.user.id
         const associationId = associationUser.value?.association.id
         await patchUserAssociations(userId, associationId as number, {isValidatedByAdmin: true})
         await router.push({name: 'ValidateAssociationUsers'})
@@ -76,7 +75,7 @@ async function onValidateAssociationUser() {
 
 async function onDeleteAssociationUser() {
     try {
-        const userId = userManagerStore.user?.id
+        const userId = associationUser.value?.user.id
         const associationId = associationUser.value?.association.id
         await deleteUserAssociation(userId, associationId as number)
         await router.push({name: 'ValidateAssociationUsers'})
@@ -107,15 +106,15 @@ async function onDeleteAssociationUser() {
                     <div class="flex-column">
                         <div class="display-row">
                             <h3>{{ t('user.first-name') }}</h3>
-                            <p>{{ userManagerStore.user?.firstName }}</p>
+                            <p>{{ associationUser?.user.firstName }}</p>
                         </div>
                         <div class="display-row">
                             <h3>{{ t('user.last-name') }}</h3>
-                            <p>{{ userManagerStore.user?.lastName }}</p>
+                            <p>{{ associationUser?.user.lastName }}</p>
                         </div>
                         <div class="display-row">
                             <h3>{{ t('user.email') }}</h3>
-                            <p>{{ userManagerStore.user?.email }}</p>
+                            <p>TODO</p>
                         </div>
                     </div>
                 </div>

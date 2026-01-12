@@ -158,7 +158,7 @@ export default function () {
         associationMembers.value = associationStore.associationUsers
             .filter(associationUser => withPresident || associationUser.user.id !== userStore.user?.id)
             .map(associationUser => ({
-                id: associationUser.id,
+                id: associationUser.user.id,
                 firstName: associationUser.user.firstName,
                 lastName: associationUser.user.lastName,
                 role: getAssociationUserRole(associationUser),
@@ -192,7 +192,7 @@ export default function () {
         const response = await axiosAuthenticated.get<UserAssociation[]>(url)
         associationMembers.value = response.data.map((userAssociation) => {
             return {
-                id: userAssociation.id,
+                id: userAssociation.user.id,
                 firstName: userAssociation.user.firstName,
                 lastName: userAssociation.user.lastName,
                 associationId: userAssociation.association.id,
