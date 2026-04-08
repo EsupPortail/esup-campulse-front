@@ -5,6 +5,7 @@ import type {Content} from '#/index'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import DOMPurify from 'dompurify'
 
 const contentStore = useContentStore()
 const {loading, notify} = useQuasar()
@@ -47,7 +48,7 @@ const initContent = () => {
         <div class="dashboard-section-container">
             <div
                 class="container flex-column"
-                v-html="privacyPolicy?.body"
+                v-html="DOMPurify.sanitize(privacyPolicy?.body)"
             >
             </div>
         </div>

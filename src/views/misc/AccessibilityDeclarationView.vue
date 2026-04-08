@@ -5,6 +5,7 @@ import type {Content} from '#/index'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
+import DOMPurify from 'dompurify'
 
 const contentStore = useContentStore()
 const {loading, notify} = useQuasar()
@@ -47,7 +48,7 @@ const initContent = () => {
         <div class="dashboard-section-container">
             <div
                 class="container flex-column"
-                v-html="accessibilityDeclaration?.body"
+                v-html="DOMPurify.sanitize(accessibilityDeclaration?.body)"
             >
             </div>
         </div>
@@ -62,14 +63,14 @@ const initContent = () => {
 @import '@/assets/_variables.scss';
 
 .dashboard-section h2 {
-    padding: 1.5rem 0 1.5rem 0;
+  padding: 1.5rem 0 1.5rem 0;
 }
 
 h2 > p {
-    line-height: normal;
+  line-height: normal;
 }
 
 :deep(p) {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 </style>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import DOMPurify from 'dompurify'
+
 const props = defineProps<{
     color: 'charter' | 'commission'
     icon: string,
@@ -11,7 +13,7 @@ const props = defineProps<{
 <template>
     <div class="page-card flex-column">
         <div>
-            <p v-html="props.text"></p>
+            <p v-html="DOMPurify.sanitize(props.text)"></p>
         </div>
         <div class="flex-row-center">
             <QBtn

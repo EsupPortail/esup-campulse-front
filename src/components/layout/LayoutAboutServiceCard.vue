@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import DOMPurify from 'dompurify'
 
 const props = defineProps<{
   header?: string,
@@ -19,10 +20,10 @@ const props = defineProps<{
                     <i class="bi bi-filter-circle"></i>
                 </div>
 
-                <h3 v-html="props.header"></h3>
+                <h3 v-html="DOMPurify.sanitize(props.header)"></h3>
 
                 <div class="section-content">
-                    <p v-html="props.body"></p>
+                    <p v-html="DOMPurify.sanitize(props.body)"></p>
                 </div>
             </div>
         </div>

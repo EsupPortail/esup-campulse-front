@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import DOMPurify from 'dompurify'
+
 defineProps({
     title: String,
     description: String,
@@ -15,8 +17,8 @@ defineProps({
                 <i class="bi bi-info-circle"></i>
             </div>
             <div>
-                <h3><strong v-html="title"></strong></h3>
-                <p v-html="description"></p>
+                <h3><strong v-html="DOMPurify.sanitize(title)"></strong></h3>
+                <p v-html="DOMPurify.sanitize(description)"></p>
             </div>
         </div>
     </div>
