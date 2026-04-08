@@ -56,7 +56,7 @@ async function onGetAssociationDetail() {
 const initAssociationCharter = () => {
     let str = t('charter.association-charter-status.no-charter')
     if (association.value) {
-        const charterDate = formatDate(association.value?.charterDate)
+        const charterDate = formatDate(association.value?.charterDate).split('-').reverse().join('/')
         if (charterDate) {
             const charterStatus = association.value?.charterStatus
             switch (charterStatus) {
