@@ -47,8 +47,9 @@ const state = reactive<UseAxiosState>({
                 if (refreshTokenExpired()) {
                     await router.push({name: 'Logout'})
                 }
+            } else {
+                return Promise.reject(error)
             }
-            return Promise.reject(error)
         })
         return _axios
     },
