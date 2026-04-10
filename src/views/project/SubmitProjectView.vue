@@ -19,7 +19,7 @@ import ProjectComments from '@/components/project/ProjectComments.vue'
 import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vue'
 import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
-import type {AssociationUserDetail} from '#/user'
+import type {UserAssociation} from '#/user'
 
 const {t} = useI18n()
 const {
@@ -122,9 +122,9 @@ watch(() => step.value === 3, async () => {
     await onGetProjectBudget()
     loading.hide()
 })
-watch(() => step.value === 4, async () => {
+watch(() => step.value === 4, () => {
     loading.show()
-    await onGetProjectGoals()
+    onGetProjectGoals()
     loading.hide()
 })
 
@@ -145,7 +145,7 @@ watch(() => projectId.value, () => {
     projectReEdition.value = !!projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)
 })
 
-const associationUser = ref<AssociationUserDetail | undefined>()
+const associationUser = ref<UserAssociation | undefined>()
 
 watch(() => userStore.userAssociations, () => {
     associationUser.value = userStore.userAssociations
@@ -408,10 +408,8 @@ async function onUploadDocuments(nextStep: number) {
     if (projectStore.project) {
         try {
             await uploadDocuments(
-                applicant.value === 'association' ? associationId.value : undefined,
-                applicant.value === 'user' ? userStore.user?.username : undefined,
-                false
-            )
+                applicant.value === 'association' ? associationId.value : null,
+                applicant.value === 'user' ? userStore.user?.id : null)
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -794,7 +792,9 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
-                                :rules="[val => val && val.length > 1 || t('forms.required-project-amount-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-audience'), 
+                                         val => val !== '0' || t('forms.required-project-amount-all-audience-not-null'),
+                                         val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 data-test="amount-all-audience-input"

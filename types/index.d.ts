@@ -2,11 +2,12 @@ interface ContentStore {
     content: Content | undefined,
     contents: Content[],
     logos: Logo[],
-    CSSClasses: string[]
+    CSSClasses: string[],
+    stats: Stats | undefined
 }
 
 interface SelectLabel {
-    value: number,
+    value: number | string,
     label: string
 }
 
@@ -50,6 +51,12 @@ export interface Logo {
     row: number,
     column: number,
     visible: boolean
+}
+
+export interface Stats {
+    associationCount: number,
+    nextCommissionDate: string,
+    lastCharterUpdate: string
 }
 
 type ContentCode =

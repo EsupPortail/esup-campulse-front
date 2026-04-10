@@ -33,7 +33,7 @@ const {
 const {groupChoiceIsValid, groupCanJoinAssociation, isStaff, studentGroupIsSelected} = useUserGroups()
 const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
-const {uploadDocuments, processDocuments} = useDocumentUploads()
+const {processDocuments, uploadRegistrationDocuments} = useDocumentUploads()
 
 const isLDAPEnabled: boolean = import.meta.env.VITE_APP_OPEN_LDAP === 'true'
 const hasConsent = ref<boolean>(false)
@@ -66,52 +66,51 @@ async function onLoadCASUser() {
 
 // Register newUser
 async function onRegister() {
+    if (!groupChoiceIsValid.value) return
     loading.show()
-    if (groupChoiceIsValid.value) {
-        if (isStaff.value || hasConsent.value) {
-            try {
-                if (isStaff.value) {
-                    await addUserAsManager()
-                    await uploadDocuments(undefined, newUser.username, false)
-                    // Reinitialize processDocuments to avoid persistance of non valid documents
-                    processDocuments.value = []
+    if (isStaff.value || hasConsent.value) {
+        try {
+            if (isStaff.value) {
+                await addUserAsManager()
+                await uploadRegistrationDocuments(newUser.username)
+                // Reinitialize processDocuments to avoid persistance of non valid documents
+                processDocuments.value = []
+                notify({
+                    type: 'positive',
+                    message: t('notifications.positive.account-created')
+                })
+                await router.push({name: 'Dashboard'})
+                newUser.isCas = false
+                newUser.firstName = ''
+                newUser.lastName = ''
+                newUser.username = ''
+                newUser.email = ''
+                newUser.phone = ''
+            } else {
+                await register()
+                await uploadRegistrationDocuments(newUser.username)
+                await router.push({name: 'RegistrationSuccessful'})
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                if (error.response.data.email) {
                     notify({
-                        type: 'positive',
-                        message: t('notifications.positive.account-created')
+                        type: 'negative',
+                        message: t('notifications.negative.email-used')
                     })
-                    await router.push({name: 'Dashboard'})
-                    newUser.isCas = false
-                    newUser.firstName = ''
-                    newUser.lastName = ''
-                    newUser.username = ''
-                    newUser.email = ''
-                    newUser.phone = ''
                 } else {
-                    await register()
-                    await uploadDocuments(undefined, newUser.username, true)
-                    await router.push({name: 'RegistrationSuccessful'})
-                }
-            } catch (error) {
-                if (axios.isAxiosError(error) && error.response) {
-                    if (error.response.data.email) {
-                        notify({
-                            type: 'negative',
-                            message: t('notifications.negative.email-used')
-                        })
-                    } else {
-                        notify({
-                            type: 'negative',
-                            message: await catchHTTPError(error.response)
-                        })
-                    }
+                    notify({
+                        type: 'negative',
+                        message: await catchHTTPError(error.response)
+                    })
                 }
             }
-        } else {
-            notify({
-                type: 'negative',
-                message: t('notifications.negative.need-gdpr-consent')
-            })
         }
+    } else {
+        notify({
+            type: 'negative',
+            message: t('notifications.negative.need-gdpr-consent')
+        })
     }
     loading.hide()
 }

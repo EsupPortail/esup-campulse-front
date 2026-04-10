@@ -3,7 +3,6 @@ import type {Document, DocumentProcessType, ProcessDocument, UploadedProcessDocu
 import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharters'
-import type {AxiosInstance} from 'axios'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {useUserStore} from '@/stores/useUserStore'
 
@@ -14,7 +13,6 @@ const processDocuments = ref<ProcessDocument[]>([])
 const documentUploads = ref<UploadedProcessDocument[]>([])
 
 const MAX_FILE_SIZE = 8 * 1048576
-const MAX_FILES = 10
 const MAX_TITLE_LENGTH = 100
 
 export default function () {
@@ -27,28 +25,18 @@ export default function () {
     const initProcessDocuments = (filterByFund?: boolean, funds?: number[]) => {
         processDocuments.value = []
         documents.value.forEach((document) => {
-            let initDocument = false
-            if (!filterByFund) {
-                initDocument = true
-            } else {
-                if (funds?.length && document.fund) {
-                    if (funds?.includes(document.fund)) {
-                        initDocument = true
-                    }
-                } else {
-                    initDocument = true
-                }
-            }
+            const initDocument = !filterByFund || !funds?.length || !document.fund || funds.includes(document.fund)
             if (initDocument) {
                 processDocuments.value.push({
                     document: document.id,
                     acronym: document.acronym,
-                    isMultiple: document.isMultiple,
+                    maxUploads: document.maxUploads,
                     description: document.description,
-                    pathFile: document.isMultiple ? [] : undefined,
+                    pathFile: document.maxUploads > 1 ? [] : undefined,
                     isRequiredInProcess: document.isRequiredInProcess,
                     mimeTypes: document.mimeTypes,
-                    pathTemplate: document.pathTemplate
+                    pathTemplate: document.pathTemplate,
+                    processType: document.processType
                 })
             }
         })
@@ -58,14 +46,13 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         projectStore.projectDocuments.forEach((document) => {
-            if (documentIds.includes(document.document)) {
-                documentUploads.value.push({
-                    id: document.id as number,
-                    document: document.document,
-                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
-                    name: document.name as string
-                })
-            }
+            if (!documentIds.includes(document.document)) return
+            documentUploads.value.push({
+                id: document.id as number,
+                document: document.document,
+                pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                name: document.name as string
+            })
         })
     }
 
@@ -74,14 +61,13 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         charterDocuments.value.forEach((document) => {
-            if (documentIds.includes(document.document)) {
-                documentUploads.value.push({
-                    id: document.id as number,
-                    document: document.document,
-                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
-                    name: document.name as string
-                })
-            }
+            if (!documentIds.includes(document.document)) return
+            documentUploads.value.push({
+                id: document.id as number,
+                document: document.document,
+                pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                name: document.name as string
+            })
         })
     }
 
@@ -89,14 +75,13 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         userManagerStore.userDocuments.forEach((document) => {
-            if (documentIds.includes(document.document)) {
-                documentUploads.value.push({
-                    id: document.id as number,
-                    document: document.document,
-                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
-                    name: document.name as string
-                })
-            }
+            if (!documentIds.includes(document.document)) return
+            documentUploads.value.push({
+                id: document.id as number,
+                document: document.document,
+                pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                name: document.name as string
+            })
         })
     }
 
@@ -104,14 +89,13 @@ export default function () {
         documentUploads.value = []
         const documentIds = processDocuments.value.map((document) => (document.document))
         userStore.userDocuments.forEach((document) => {
-            if (documentIds.includes(document.document)) {
-                documentUploads.value.push({
-                    id: document.id as number,
-                    document: document.document,
-                    pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
-                    name: document.name as string
-                })
-            }
+            if (!documentIds.includes(document.document)) return
+            documentUploads.value.push({
+                id: document.id as number,
+                document: document.document,
+                pathFile: import.meta.env.VITE_APP_BASE_URL + document.pathFile as string,
+                name: document.name as string
+            })
         })
     }
 
@@ -135,10 +119,10 @@ export default function () {
         document: string
         project: string
 
-        constructor(file: Blob, associationId: number | undefined, username: string | undefined, document: number) {
+        constructor(file: Blob, associationId: number | null, user: number | null, document: number) {
             this.file = file
             this.association = associationId ? associationId.toString() : ''
-            this.user = username ?? ''
+            this.user = user ? user.toString() : ''
             this.document = document.toString()
             this.project = projectStore.project?.id.toString() as string
         }
@@ -156,31 +140,59 @@ export default function () {
         }
     }
 
+    class RegistrationDocumentUpload {
+        file: Blob
+        user: string
+        document: string
+
+        constructor(file: Blob, user: string, document: number) {
+            this.file = file
+            this.user = user
+            this.document = document.toString()
+        }
+
+        formData() {
+            const newForm = new FormData()
+            newForm.append('pathFile', this.file)
+            newForm.append('document', this.document)
+            newForm.append('user', this.user)
+            return newForm
+        }
+    }
+
     // Post document uploads
-    async function uploadDocuments(associationId: number | undefined, username: string | undefined, publicRequest: boolean) {
-        let instance = axiosAuthenticated as AxiosInstance
-        if (publicRequest) instance = axiosPublic as AxiosInstance
-        for (let i = 0; i < processDocuments.value.length; i++) {
+    async function uploadDocuments(associationId: number | null, user: number | null) {
+        for (const document of processDocuments.value) {
 
-            if (processDocuments.value[i].pathFile) {
+            if (!document.pathFile) return
 
-                if (processDocuments.value[i].isMultiple) {
-                    const files = processDocuments.value[i].pathFile as Blob[] | []
+            if (document.maxUploads > 1) {
+                const files = document.pathFile as Blob[] | []
 
-                    for (let j = 0; j < files.length; j++) {
-                        const documentUpload = new DocumentUpload(files[j], associationId, username,
-                            processDocuments.value[i].document as number)
-                        const documentData = documentUpload.formData()
-                        await instance.post('/documents/uploads', documentData)
-                    }
-                } else {
-                    const file = processDocuments.value[i].pathFile as Blob
-                    const documentUpload = new DocumentUpload(file, associationId, username,
-                        processDocuments.value[i].document as number)
+                for (const file of files) {
+                    const documentUpload = new DocumentUpload(file, associationId, user, document.document as number)
                     const documentData = documentUpload.formData()
-                    await instance.post('/documents/uploads', documentData)
+                    await axiosAuthenticated.post('/documents/uploads', documentData)
                 }
+            } else {
+                const file = document.pathFile as Blob
+                const documentUpload = new DocumentUpload(file, associationId, user, document.document as number)
+                const documentData = documentUpload.formData()
+                await axiosAuthenticated.post('/documents/uploads', documentData)
             }
+        }
+    }
+
+    // Post registration document uploads
+    async function uploadRegistrationDocuments(user: string) {
+        for (const document of processDocuments.value) {
+
+            if (!document.pathFile) return
+
+            const file = document.pathFile as Blob
+            const documentUpload = new RegistrationDocumentUpload(file, user, document.document as number)
+            const documentData = documentUpload.formData()
+            await axiosPublic.post('/documents/uploads/registration', documentData)
         }
     }
 
@@ -217,13 +229,14 @@ export default function () {
         deleteDocumentUpload,
         getFile,
         DocumentUpload,
+        RegistrationDocumentUpload,
         createUploadedFileLink,
         initCharterDocumentUploads,
         getStudentCertificate,
         initManagedUserDocumentUploads,
         initUserDocumentUploads,
-        MAX_FILES,
         MAX_FILE_SIZE,
-        MAX_TITLE_LENGTH
+        MAX_TITLE_LENGTH,
+        uploadRegistrationDocuments
     }
 }

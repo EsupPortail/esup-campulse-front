@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
 import {useRoute} from 'vue-router'
 import CharterRecapAssociationInfos from '@/components/charter/CharterRecapAssociationInfos.vue'
 import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
-import {watch} from 'vue'
 import useCharters from '@/composables/useCharters'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import router from '@/router'
@@ -29,9 +28,9 @@ const associationId = ref<number>()
 const comment = ref('')
 
 interface ActionOption {
-    value: Action,
-    label: string,
-    icon: Icon,
+  value: Action,
+  label: string,
+  icon: Icon,
 }
 
 type Action = 'validate' | 'reject' | 'return' | ''
@@ -102,8 +101,8 @@ onMounted(async () => {
 async function onValidateCharter() {
     loading.show()
     try {
-        // We upload new documents if needed
-        await uploadDocuments(associationId.value, undefined, false)
+    // We upload new documents if needed
+        await uploadDocuments(associationId.value, null)
         // We update our document uploads
         await getCharterDocuments(associationId.value)
         initCharterDocumentUploads()

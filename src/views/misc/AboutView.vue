@@ -141,16 +141,20 @@ const initContent = () => {
 
 .home-section {
 
-    &.home-section-cape,
-    &.home-section-annuaire,
-    &.home-section-charte {
-        background-image: none;
-    }
+  &.home-section-cape,
+  &.home-section-annuaire,
+  &.home-section-charte {
+    background-image: none;
+  }
+}
+
+.flex-row-center > * {
+  flex: 1;
 }
 
 @media screen and (max-width: $breakpoint-lg) {
-    .flex-row-center {
-        flex-direction: column;
-    }
+  .flex-row-center {
+    flex-direction: column;
+  }
 }
 </style>

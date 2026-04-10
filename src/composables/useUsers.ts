@@ -43,30 +43,19 @@ export default function () {
     const {updateUserGroups} = useUserGroups()
     const {filterizeSearch} = useUtility()
 
-    /**
-     * The function `validateUser` calls the function `updateUserGroups` and then calls the function `validateUser` on
-     * the `userManagerStore`
-     * When validating a user, we can update its groups and need to patch it to set isValidatedByAdmin to true.
-     */
     async function validateUser() {
         await updateUserGroups()
         await userManagerStore.validateUser()
     }
 
-    /**
-     * If the user is in a group that is not public, then managers can't edit the user
-     * @param {UserGroup[]} userGroups - UserGroup[] - this is the array of UserGroup objects that are associated with the
-     * user.
-     * @returns A boolean value.
-     */
     function canEditUser(userGroups: UserGroup[]): boolean {
         const {groups} = useUserGroups()
         let perm = false
         if (userGroups.length && groups.value.length) {
             perm = true
-            for (let i = 0; i < userGroups.length; i++) {
-                const g = groups.value.find(obj => obj.id === userGroups[i].groupId)
-                if (g && !g.isPublic) {
+            for (const userGroup of userGroups) {
+                const group = groups.value.find(obj => obj.id === userGroup.groupId)
+                if (!group?.isPublic) {
                     perm = false
                     break
                 }
@@ -75,30 +64,19 @@ export default function () {
         return perm
     }
 
-    /**
-     * It takes a user object, compares it to the user object in the form, and if there are differences, it sends a patch
-     * request to the server with the differences
-     * @param {User} user - User: the user to update
-     * @param editedByStaff
-     */
     async function updateUserInfos(user: User | undefined, editedByStaff: boolean) {
-        if (Object.keys(infosToPatch).length) {
-            let store: UserStore | UserManagerStore = useUserStore()
-            let url = '/users/auth/user/'
-            if (editedByStaff) {
-                store = userManagerStore
-                url = `/users/${user?.id}`
-            }
-            const {axiosAuthenticated} = useAxios()
-            store.user = (await axiosAuthenticated.patch(url, infosToPatch)).data
+        const hasInfosToPatch = Object.keys(infosToPatch).length
+        if (!hasInfosToPatch) return
+        let store: UserStore | UserManagerStore = useUserStore()
+        let url = '/users/auth/user/'
+        if (editedByStaff) {
+            store = userManagerStore
+            url = `/users/${user?.id}`
         }
+        const {axiosAuthenticated} = useAxios()
+        store.user = (await axiosAuthenticated.patch(url, infosToPatch)).data
     }
 
-    /**
-     * It deletes all the properties of the infosToPatch object, then it checks if the userToUpdate object has a different
-     * value for each property, and if so, it adds the property to the infosToPatch object
-     * @param {User | undefined} user - User | undefined: The user to update.
-     */
     function initInfosToPatch(user: User | undefined) {
         for (const key of Object.keys(infosToPatch)) {
             delete infosToPatch[key as keyof typeof infosToPatch]
@@ -114,51 +92,35 @@ export default function () {
         if (userToUpdate.value.country !== user?.country) infosToPatch.country = userToUpdate.value.country
     }
 
-    /**
-     * It filters the users in the store based on the search settings on the front end
-     * @param {UserSearch} settings - UserSearch
-     * @returns An array of users that match the search criteria
-     */
     function advancedSearch(settings: UserSearch) {
-        if (userManagerStore.users.length > 0 && (settings.firstName || settings.lastName || settings.email || settings.association)) {
-            let matches: User[] = []
-            if (settings.firstName) {
-                matches = userManagerStore.users.filter(user => {
-                    return filterizeSearch(user.firstName).includes(filterizeSearch(settings.firstName))
-                })
-            }
-            if (settings.lastName) {
-                // checking if a search has already been made
-                // If so, we filter on current matches, if not, we filter in store
-                if (matches.length) {
-                    const newMatches = matches.filter(user => {
-                        return filterizeSearch(user.lastName).includes(filterizeSearch(user.lastName))
-                    })
-                    matches = [...newMatches]
-                } else {
-                    matches = userManagerStore.users.filter(user => {
-                        return filterizeSearch(user.lastName).includes(filterizeSearch(settings.lastName))
-                    })
-                }
-            }
-            if (settings.email) {
-                if (matches.length) {
-                    const newMatches = matches.filter(user => user.email === settings.email)
-                    matches = [...newMatches]
-                } else {
-                    matches = userManagerStore.users.filter(user => user.email === settings.email)
-                }
-            }
-            if (settings.association) {
-                if (matches.length) {
-                    const newMatches = matches.filter(user => user.associations.map(association => association.id).includes(settings.association as number))
-                    matches = [...newMatches]
-                } else {
-                    matches = userManagerStore.users.filter(user => user.associations.map(association => association.id).includes(settings.association as number))
-                }
-            }
-            return matches
+        const hasSettings: boolean = !!(settings.firstName || settings.lastName || settings.email || settings.association)
+        if (!userManagerStore.users.length || !hasSettings) return
+        let matches: User[] = []
+        if (settings.firstName) {
+            const term = filterizeSearch(settings.firstName)
+            matches = userManagerStore.users.filter(user => {
+                return filterizeSearch(user.firstName).includes(term)
+            })
         }
+        if (settings.lastName) {
+            // checking if a search has already been made
+            // If so, we filter on current matches, if not, we filter in store
+            const term = filterizeSearch(settings.lastName)
+            matches = (matches.length ? matches : userManagerStore.users).filter(user => {
+                return filterizeSearch(user.lastName).includes(term)
+            })
+        }
+        if (settings.email) {
+            matches = (matches.length ? matches : userManagerStore.users).filter(user => {
+                return user.email === settings.email
+            })
+        }
+        if (settings.association) {
+            matches = (matches.length ? matches : userManagerStore.users).filter(user => {
+                return user.associations.map(association => association.id).includes(settings.association)
+            })
+        }
+        return matches
     }
 
     return {

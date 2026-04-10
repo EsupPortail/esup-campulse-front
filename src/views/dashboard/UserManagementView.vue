@@ -163,7 +163,7 @@ const columns: QTableProps['columns'] = [
                                         v-for="(association, index) in props.row.associations"
                                         :key="index"
                                     >
-                                        <QChip>{{ association.name }}</QChip>
+                                        <QChip>{{ association.acronym ?? (association.name.slice(0, 20).trim() + '...') }}</QChip>
                                     </li>
                                 </ul>
                             </QTd>
@@ -232,53 +232,6 @@ const columns: QTableProps['columns'] = [
                             </QTd>
                         </QTr>
                     </template>
-                    <template v-slot:pagination="scope">
-                        {{
-                            t('table.results-amount', {
-                                firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
-                                lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
-                                amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
-                            })
-                        }}
-                        <QBtn
-                            v-if="scope.pagesNumber > 2"
-                            :aria-label="t('table.first-page')"
-                            :disable="scope.isFirstPage"
-                            color="grey-8"
-                            dense
-                            flat
-                            icon="bi-chevron-double-left"
-                            @click="scope.firstPage"
-                        />
-                        <QBtn
-                            :aria-label="t('table.previous-page')"
-                            :disable="scope.isFirstPage"
-                            color="grey-8"
-                            dense
-                            flat
-                            icon="bi-chevron-left"
-                            @click="scope.prevPage"
-                        />
-                        <QBtn
-                            :aria-label="t('table.next-page')"
-                            :disable="scope.isLastPage"
-                            color="grey-8"
-                            dense
-                            flat
-                            icon="bi-chevron-right"
-                            @click="scope.nextPage"
-                        />
-                        <QBtn
-                            v-if="scope.pagesNumber > 2"
-                            :aria-label="t('table.last-page')"
-                            :disable="scope.isLastPage"
-                            color="grey-8"
-                            dense
-                            flat
-                            icon="bi-chevron-double-right"
-                            @click="scope.lastPage"
-                        />
-                    </template>
                 </QTable>
             </div>
         </div>
@@ -291,10 +244,10 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/variables.scss';
 
 ul {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 ul > li {
-    list-style: none;
+  list-style: none;
 }
 </style>

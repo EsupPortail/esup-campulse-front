@@ -38,13 +38,19 @@ const {catchHTTPError} = useErrors()
 onMounted(async () => {
     loading.show()
     await onGetGroups()
-    onInitGroupLabels()
-    await onGetCommissions()
+    await onInitGroupLabels()
     initStudentGroupSelection()
     loading.hide()
 })
 
 watch(() => userManagerStore.user, initUserFunds)
+
+// Get funds only if commissionMemberIsSelected
+watch(() => commissionMemberIsSelected.value, async () => {
+    loading.show()
+    await onGetFunds()
+    loading.hide()
+})
 
 // Used to clean newGroups value
 onUnmounted(() => {
@@ -64,7 +70,7 @@ async function onGetGroups() {
     }
 }
 
-async function onGetCommissions() {
+async function onGetFunds() {
     try {
         await getFunds()
         initFundsLabels()

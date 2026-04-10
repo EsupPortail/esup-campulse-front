@@ -4,18 +4,16 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import router from '@/router'
 import {onMounted} from 'vue'
-import useUserAssociations from '@/composables/useUserAssociations'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 
 const userStore = useUserStore()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {getUserAssociations} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    device?: 'mobile' | 'desktop'
+  device?: 'mobile' | 'desktop'
 }>()
 
 async function onLogOut() {
@@ -40,7 +38,7 @@ async function onLogOut() {
 
 const initUserAssociations = async () => {
     if (userStore.user?.associations.length && !userStore.userAssociations.length && props.device !== 'mobile') {
-        await getUserAssociations(userStore.user?.id as number, false)
+        await userStore.getUserAssociations()
     }
 }
 
@@ -125,27 +123,27 @@ onMounted(async () => {
 @import "@/assets/_variables.scss";
 
 .q-btn-dropdown {
-    font-size: 1.8rem;
+  font-size: 1.8rem;
 }
 
 .q-list {
-    max-width: 30rem;
-    width: $fullSize;
+  max-width: 30rem;
+  width: $fullSize;
 }
 
 .q-btn__content > span > * {
-    padding: 0 0.5rem;
+  padding: 0 0.5rem;
 }
 
 p {
-    margin-bottom: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 ul {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 li {
-    list-style-type: none;
+  list-style-type: none;
 }
 </style>

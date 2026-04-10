@@ -18,7 +18,7 @@ const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    route: RouteRecordName
+  route: RouteRecordName
 }>()
 
 const emit = defineEmits(['updatePage'])
@@ -27,6 +27,8 @@ watch(() => associationStore.associations, () => {
     associations.value = associationStore.associations
 })
 
+const expanded = ref<boolean>(false)
+
 const settings = ref<AssociationSearch>({
     search: '',
     name: '',
@@ -34,6 +36,29 @@ const settings = ref<AssociationSearch>({
     institution: null,
     institutionComponent: null,
     activityField: null
+})
+
+async function getLabels() {
+    loading.show()
+    try {
+        await associationStore.getInstitutions()
+        await associationStore.getInstitutionComponents()
+        await associationStore.getActivityFields()
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            notify({
+                type: 'negative',
+                message: await catchHTTPError(error.response)
+            })
+        }
+    }
+    loading.hide()
+}
+
+watch(expanded, () => {
+    if (expanded.value) {
+        getLabels()
+    }
 })
 
 async function onSearch() {
@@ -143,6 +168,7 @@ async function clearSearch() {
             @submit.prevent="onAdvancedSearch"
         >
             <QExpansionItem
+                v-model="expanded"
                 :label="t('advanced-search')"
                 header-class="text-association"
             >
@@ -225,6 +251,6 @@ async function clearSearch() {
 @import "@/assets/_variables.scss";
 
 .flex-row-center > * {
-    width: $fullSize;
+  width: $fullSize;
 }
 </style>

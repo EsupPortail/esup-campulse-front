@@ -27,11 +27,11 @@ const {catchHTTPError} = useErrors()
 const {getFunds, getCommissionFunds} = useCommissions()
 
 const props = defineProps<{
-    commissionId: number,
-    commissionName: string,
-    projectStatus: 'all' | 'validated' | 'archived',
-    title: string,
-    flat: boolean
+  commissionId: number,
+  commissionName: string,
+  projectStatus: 'all' | 'validated' | 'archived',
+  title: string,
+  flat: boolean
 }>()
 
 const isLoaded = ref<boolean>(false)
@@ -59,10 +59,10 @@ const isSite = (association: number | null) => {
 const initProjects = () => {
     if (props.projectStatus === 'validated') {
         projects.value = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_VALIDATED'
-            || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
+        || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else if (props.projectStatus === 'archived') {
         projects.value = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
-            || obj.projectStatus === 'PROJECT_CANCELED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
+        || obj.projectStatus === 'PROJECT_CANCELED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else {
         projects.value = projectStore.managedProjects
     }
@@ -228,7 +228,7 @@ const columns: QTableProps['columns'] = [
                     :props="props"
                     headers="lastModifiedDate"
                 >
-                    {{ formatDate(props.row.editionDate)?.split('-').reverse().join('/') }}
+                    {{ formatDate(props.row.editionDate).split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
                     key="funds"
@@ -269,53 +269,6 @@ const columns: QTableProps['columns'] = [
                 </QTd>
             </QTr>
         </template>
-        <template v-slot:pagination="scope">
-            {{
-                t('table.results-amount', {
-                    firstResult: scope.pagination.rowsPerPage * (scope.pagination.page - 1) + 1,
-                    lastResult: scope.pagination.rowsPerPage * scope.pagination.page,
-                    amountResults: scope.pagination.rowsPerPage * scope.pagesNumber
-                })
-            }}
-            <QBtn
-                v-if="scope.pagesNumber > 2"
-                :aria-label="t('table.first-page')"
-                :disable="scope.isFirstPage"
-                color="grey-8"
-                dense
-                flat
-                icon="bi-chevron-double-left"
-                @click="scope.firstPage"
-            />
-            <QBtn
-                :aria-label="t('table.previous-page')"
-                :disable="scope.isFirstPage"
-                color="grey-8"
-                dense
-                flat
-                icon="bi-chevron-left"
-                @click="scope.prevPage"
-            />
-            <QBtn
-                :aria-label="t('table.next-page')"
-                :disable="scope.isLastPage"
-                color="grey-8"
-                dense
-                flat
-                icon="bi-chevron-right"
-                @click="scope.nextPage"
-            />
-            <QBtn
-                v-if="scope.pagesNumber > 2"
-                :aria-label="t('table.last-page')"
-                :disable="scope.isLastPage"
-                color="grey-8"
-                dense
-                flat
-                icon="bi-chevron-double-right"
-                @click="scope.lastPage"
-            />
-        </template>
     </QTable>
     <CommissionExport
         :commission-id="props.commissionId"
@@ -330,6 +283,6 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/styles/forms.scss';
 
 section {
-    padding: 0 1rem
+  padding: 0 1rem
 }
 </style>

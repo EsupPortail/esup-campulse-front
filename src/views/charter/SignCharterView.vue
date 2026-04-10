@@ -71,8 +71,8 @@ const initEditedAssociation = () => {
     editedAssociation.value.country = associationStore.association?.country
     editedAssociation.value.phone = associationStore.association?.phone
     editedAssociation.value.email = associationStore.association?.email
-    editedAssociation.value.institutionComponent = associationStore.association?.institutionComponent
-    editedAssociation.value.activityField = associationStore.association?.activityField
+    editedAssociation.value.institutionComponent = associationStore.association?.institutionComponent.id
+    editedAssociation.value.activityField = associationStore.association?.activityField.id
     editedAssociation.value.siret = associationStore.association?.siret
 }
 watch(() => associationStore.association, initEditedAssociation)
@@ -128,7 +128,7 @@ async function onPatchAssociation() {
 async function onUploadDocuments(nextStep: number) {
     loading.show()
     try {
-        await uploadDocuments(associationId.value, undefined, false)
+        await uploadDocuments(associationId.value, null)
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -173,10 +173,12 @@ async function onSignCharter() {
                     v-model="step"
                     active-color="charter-bold"
                     animated
+                    data-test="form-stepper"
                 >
                     <QStep
                         :name="1"
                         :title="t('charter.site.sign-form.association-infos-update')"
+                        data-test="charter-step"
                         icon="bi-pencil"
                     >
                         <QForm @submit="onPatchAssociation">
@@ -326,6 +328,7 @@ async function onSignCharter() {
                                     :label="t('continue')"
                                     class="btn-lg"
                                     color="charter"
+                                    data-test="continue-button"
                                     icon="bi-check-lg"
                                     text-color="charter"
                                     type="submit"
@@ -337,6 +340,7 @@ async function onSignCharter() {
                     <QStep
                         :name="2"
                         :title="t('charter.site.sign-form.documents-upload')"
+                        data-test="charter-step"
                         icon="bi-file-earmark"
                     >
                         <QForm @submit="onUploadDocuments(3)">
@@ -350,6 +354,7 @@ async function onSignCharter() {
                                     :label="t('back')"
                                     class="btn-lg"
                                     color="charter"
+                                    data-test="back-button"
                                     icon="bi-chevron-left"
                                     text-color="charter"
                                     @click="step = step - 1"
@@ -358,6 +363,7 @@ async function onSignCharter() {
                                     :label="t('continue')"
                                     class="btn-lg"
                                     color="charter"
+                                    data-test="continue-button"
                                     icon="bi-check-lg"
                                     text-color="charter"
                                     type="submit"
@@ -369,6 +375,7 @@ async function onSignCharter() {
                     <QStep
                         :name="3"
                         :title="t('recap')"
+                        data-test="charter-step"
                         icon="bi-check-lg"
                     >
                         <QForm @submit="onSignCharter">
@@ -382,6 +389,7 @@ async function onSignCharter() {
                                     :label="t('back')"
                                     class="btn-lg"
                                     color="charter"
+                                    data-test="back-button"
                                     icon="bi-chevron-left"
                                     text-color="charter"
                                     @click="step = step - 1"
@@ -390,6 +398,7 @@ async function onSignCharter() {
                                     :label="t('charter.sign')"
                                     class="btn-lg"
                                     color="charter"
+                                    data-test="continue-button"
                                     icon="bi-check-lg"
                                     text-color="charter"
                                     type="submit"
@@ -409,10 +418,10 @@ async function onSignCharter() {
 @import '@/assets/_variables.scss';
 
 .q-field {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 .flex-row > * {
-    width: $fullSize;
+  width: $fullSize;
 }
 </style>

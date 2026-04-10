@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {Content, ContentCode, ContentStore, EditableContent, Logo} from '#/index'
+import type {Content, ContentCode, ContentStore, EditableContent, Logo, Stats} from '#/index'
 import {useAxios} from '@/composables/useAxios'
 
 export const useContentStore = defineStore('contentStore', {
@@ -7,7 +7,8 @@ export const useContentStore = defineStore('contentStore', {
         content: undefined,
         contents: [],
         logos: [],
-        CSSClasses: ['home-section-annuaire', 'home-section-charte', 'home-section-cape']
+        CSSClasses: ['home-section-annuaire', 'home-section-charte', 'home-section-cape'],
+        stats: undefined
     }),
 
     actions: {
@@ -30,12 +31,8 @@ export const useContentStore = defineStore('contentStore', {
         },
         async getContentsByCode(codes: ContentCode[]) {
             const {axiosPublic} = useAxios()
-            this.contents = []
-            for (const code of codes) {
-                const url = `/contents/?code=${code}`
-                const content = (await axiosPublic.get<Content[]>(url)).data[0]
-                this.contents.push(content)
-            }
+            const url = `/contents/?codes=${codes.join(',')}`
+            this.contents = (await axiosPublic.get<Content[]>(url)).data
         },
         async patchContent(content: EditableContent) {
             const {axiosAuthenticated} = useAxios()
@@ -58,11 +55,16 @@ export const useContentStore = defineStore('contentStore', {
             }
         },
         async getLogos() {
-            if (!this.logos.length) {
-                const {axiosPublic} = useAxios()
-                const url = '/contents/logos'
-                this.logos = (await axiosPublic.get<Logo[]>(url)).data
-            }
+            if (this.logos.length) return
+            const {axiosPublic} = useAxios()
+            const url = '/contents/logos'
+            this.logos = (await axiosPublic.get<Logo[]>(url)).data
         },
+
+        async getStats() {
+            const {axiosPublic} = useAxios()
+            const url = '/stats/'
+            this.stats = (await axiosPublic.get<Stats>(url)).data
+        }
     }
 })

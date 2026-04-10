@@ -1,6 +1,12 @@
-type check:
-  image: node:lts
-  stage: test
+image: node:lts
+
+stages:
+  - lint_typecheck
+  - unit_test
+  - sonarqube_check
+
+lint_typecheck:
+  stage: lint_typecheck
   tags:
     - cluster
   only:
@@ -10,9 +16,8 @@ type check:
     - npm run lint
     - npm run typecheck
 
-unit test:
-  image: node:lts
-  stage: test
+unit_test:
+  stage: unit_test
   tags:
     - cluster
   only:
@@ -22,3 +27,27 @@ unit test:
     - npm run test:unit:coverage
   coverage: /All files\s*\|\s*([\d\.]+)/
 
+sonarqube_check:
+  stage: sonarqube_check
+  image:
+    name: sonarsource/sonar-scanner-cli:11
+    entrypoint: [ "" ]
+  tags:
+    - cluster
+  before_script:
+    - echo "no script for me"
+
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+
+  script:
+    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
+  allow_failure: true
+  needs:
+    - job: unit_test
+      artifacts: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'main'
+    - if: $CI_COMMIT_BRANCH == 'develop'

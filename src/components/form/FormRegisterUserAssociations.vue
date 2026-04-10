@@ -27,7 +27,6 @@ const {catchHTTPError} = useErrors()
 
 onMounted(async () => {
     loading.show()
-    await loadAssociations()
     initTitle()
     newAssociations.value = []
     loading.hide()
@@ -85,6 +84,15 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
         checkAssociationAuthorization(association)
     })
 })
+
+async function onAddAssociation() {
+    loading.show()
+    if (!newAssociations.value.length) {
+        await loadAssociations()
+    }
+    addAssociation()
+    loading.hide()
+}
 
 </script>
 
@@ -173,7 +181,7 @@ watch(() => processDocuments.value[0]?.pathFile, () => {
                     data-test="add-association-button"
                     icon="bi-plus-circle"
                     outline
-                    @click="addAssociation"
+                    @click="onAddAssociation"
                 />
             </div>
         </QCardSection>

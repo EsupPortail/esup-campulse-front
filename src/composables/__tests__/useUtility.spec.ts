@@ -18,8 +18,8 @@ describe('useUtility', () => {
             expect(formatDate('2022-10-27 13:45:35.000000 +00:00')).not.toEqual('2022-10-28')
         })
 
-        it('should return nothing if no date in arg', () => {
-            expect(formatDate('')).toBeUndefined()
+        it('should return empty string if no date in arg', () => {
+            expect(formatDate('')).toEqual('')
         })
     })
 

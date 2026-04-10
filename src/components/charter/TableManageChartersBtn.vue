@@ -92,6 +92,7 @@ async function onOptionClick(option: Option) {
             :label="t('manage')"
             class="text-charter"
             outline
+            :data-test="`manage-${props.charter.documentAcronym}-button`"
         >
             <QList>
                 <QItem

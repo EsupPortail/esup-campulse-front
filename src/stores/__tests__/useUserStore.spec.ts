@@ -1,12 +1,6 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {
-    _institutionManager,
-    _institutionStudent,
-    _newUser,
-    _userAssociationDetail,
-    _userGroups
-} from '~/fixtures/user.mock'
+import {_institutionManager, _institutionStudent, _newUser, _userAssociations, _userGroups} from '~/fixtures/user.mock'
 import {_tokens, tokenMock} from '~/fixtures/tokens.mock'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
@@ -15,7 +9,7 @@ import {useAxios} from '@/composables/useAxios'
 import useSecurity from '@/composables/useSecurity'
 import type {AxiosResponse} from 'axios'
 import type {DocumentProcessType} from '#/documents'
-import {_documentUploads} from '../../../tests/fixtures/project.mock'
+import {_documentUploads} from '~/fixtures/project.mock'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -284,11 +278,11 @@ describe('User store', () => {
             userStore.userAssociations = []
         })
         it('should return true if isPresident', () => {
-            userStore.userAssociations = [_userAssociationDetail]
+            userStore.userAssociations = _userAssociations
             expect(userStore.hasPresidentStatus(1)).toBeTruthy()
         })
         it('should return false if is President', () => {
-            userStore.userAssociations = [_userAssociationDetail]
+            userStore.userAssociations = _userAssociations
             userStore.userAssociations[0].isPresident = false
             expect(userStore.hasPresidentStatus(1)).toBeFalsy()
         })

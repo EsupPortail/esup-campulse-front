@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import router from '@/router'
 import useUserAssociations from '@/composables/useUserAssociations'
-import type {AssociationUserDetail} from '#/user'
+import type {UserAssociation} from '#/user'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
@@ -14,7 +14,6 @@ import axios from 'axios'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {
-    getUserAssociations,
     associationRoleOptions,
     getAssociationUserRole,
     patchUserAssociations,
@@ -27,14 +26,13 @@ const route = useRoute()
 
 onMounted(async () => {
     loading.show()
-    await userManagerStore.getUserDetail(parseInt(route.params.userId as string))
     await onGetUserAssociations()
     await associationStore.getInstitutions()
     initAssociationMember()
     loading.hide()
 })
 
-const associationUser = ref<AssociationUserDetail | undefined>()
+const associationUser = ref<UserAssociation | undefined>()
 
 const initAssociationMember = () => {
     associationUser.value = userManagerStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.associationId as string))
@@ -44,7 +42,7 @@ watch(() => userManagerStore.userAssociations.length, initAssociationMember)
 // Get user associations
 async function onGetUserAssociations() {
     try {
-        await getUserAssociations(parseInt(route.params.userId as string), true)
+        await userManagerStore.getUserAssociations(parseInt(route.params.userId as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -57,7 +55,7 @@ async function onGetUserAssociations() {
 
 async function onValidateAssociationUser() {
     try {
-        const userId = userManagerStore.user?.id
+        const userId = associationUser.value?.user.id
         const associationId = associationUser.value?.association.id
         await patchUserAssociations(userId, associationId as number, {isValidatedByAdmin: true})
         await router.push({name: 'ValidateAssociationUsers'})
@@ -77,7 +75,7 @@ async function onValidateAssociationUser() {
 
 async function onDeleteAssociationUser() {
     try {
-        const userId = userManagerStore.user?.id
+        const userId = associationUser.value?.user.id
         const associationId = associationUser.value?.association.id
         await deleteUserAssociation(userId, associationId as number)
         await router.push({name: 'ValidateAssociationUsers'})
@@ -108,15 +106,15 @@ async function onDeleteAssociationUser() {
                     <div class="flex-column">
                         <div class="display-row">
                             <h3>{{ t('user.first-name') }}</h3>
-                            <p>{{ userManagerStore.user?.firstName }}</p>
+                            <p>{{ associationUser?.user.firstName }}</p>
                         </div>
                         <div class="display-row">
                             <h3>{{ t('user.last-name') }}</h3>
-                            <p>{{ userManagerStore.user?.lastName }}</p>
+                            <p>{{ associationUser?.user.lastName }}</p>
                         </div>
                         <div class="display-row">
                             <h3>{{ t('user.email') }}</h3>
-                            <p>{{ userManagerStore.user?.email }}</p>
+                            <p>TODO</p>
                         </div>
                     </div>
                 </div>

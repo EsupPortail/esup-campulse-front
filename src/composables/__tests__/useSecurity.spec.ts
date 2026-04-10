@@ -5,17 +5,11 @@ import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {_tokens} from '~/fixtures/tokens.mock'
-import {
-    _associationRole, _CASUsers,
-    _institutionManager,
-    _institutionStudent,
-    _newUser,
-} from '~/fixtures/user.mock'
+import {_associationRole, _CASUsers, _institutionManager, _institutionStudent,} from '~/fixtures/user.mock'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
 import {_groups} from '~/fixtures/group.mock'
 import useUserAssociations from '../useUserAssociations'
-import useCommissions from '../useCommissions'
 
 
 config.global.plugins = [
@@ -42,20 +36,19 @@ describe('useSecurity', () => {
         userLocalRegister,
         userCASRegister,
         userAssociationsRegister,
-        userGroupsRegister,
         getUsersFromCAS,
         verifyEmail,
         resendEmail,
         passwordReset,
         passwordResetConfirm,
-        userLocalRegisterAsManager,
+        addUserAsManager,
         CASUserOptions,
         initCASUserOptions,
         checkPasswordStrength
     } = useSecurity()
     const {axiosAuthenticated, axiosPublic} = useAxios()
     const {groups, newGroups} = useUserGroups()
-    const {userFunds} = useCommissions()
+    const {newAssociations} = useUserAssociations()
 
     beforeEach(() => {
         userStore = useUserStore()
@@ -108,121 +101,75 @@ describe('useSecurity', () => {
 
     describe('userLocalRegister', () => {
         it('should call API once on /users/auth/registration/ with newUser as data', async () => {
+            const {newAssociations} = useUserAssociations()
+
+            const user = {
+                email: newUser.email,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                phone: newUser.phone,
+                gifus: [],
+                associations: newAssociations.value.map((association) => {
+                    return {
+                        association: association.id,
+                        isPresident: association.role === 'isPresident',
+                        isSecretary: association.role === 'isSecretary',
+                        isTreasurer: association.role === 'isTreasurer',
+                        isVicePresident: association.role === 'isVicePresident'
+                    }
+                })
+            }
+
             await userLocalRegister()
             expect(axiosPublic.post).toHaveBeenCalledOnce()
-            expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/auth/registration/', newUser)
+            expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/auth/registration/', user)
         })
     })
 
     describe('userCASRegister', () => {
         it('should call API once on /users/auth/user/ with new info to patch', async () => {
-            await userCASRegister('new info to patch')
+            await userCASRegister()
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/users/auth/user/', {phone: 'new info to patch'})
+            expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/users/auth/registration/cas/', {
+                phone: newUser.phone,
+                gifus: [],
+                associations: newAssociations.value.map((association) => {
+                    return {
+                        association: association.id,
+                        isPresident: association.role === 'isPresident',
+                        isSecretary: association.role === 'isSecretary',
+                        isTreasurer: association.role === 'isTreasurer',
+                        isVicePresident: association.role === 'isVicePresident'
+                    }
+                })
+            })
         })
     })
 
     describe('userAssociationRegister', () => {
         const {newAssociations} = useUserAssociations()
-        newAssociations.value = [_associationRole]
-        const data = {
-            user: 'user',
-            association: _associationRole.id,
-            isPresident: _associationRole.role === 'isPresident',
-            isVicePresident: _associationRole.role === 'isVicePresident',
-            isSecretary: _associationRole.role === 'isSecretary',
-            isTreasurer: _associationRole.role === 'isTreasurer'
-        }
-        describe('if request is public', () => {
-            it('should post every new association with public instance when registering', async () => {
-                await userAssociationsRegister(true, 'user')
-                expect(axiosPublic.post).toHaveBeenCalledOnce()
-                expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/associations/', data)
-            })
-        })
 
-        describe('if request is private', () => {
-            it('should post every new association with auth instance when registered by manager', async () => {
-                await userAssociationsRegister(false, 'user')
-                expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
-                expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/associations/', data)
-            })
+        beforeEach(() => {
+            newAssociations.value = [_associationRole]
         })
-    })
-
-    describe('userGroupsRegister', () => {
-        const {newGroups} = useUserGroups()
 
         afterEach(() => {
-            newGroups.value = []
+            newAssociations.value = []
         })
 
-        describe('if student groups', () => {
-            let data = {}
+        it('should post every new association with auth instance when registered by manager', async () => {
+            const data = {
+                user: 1,
+                association: _associationRole.id,
+                isPresident: _associationRole.role === 'isPresident',
+                isVicePresident: _associationRole.role === 'isVicePresident',
+                isSecretary: _associationRole.role === 'isSecretary',
+                isTreasurer: _associationRole.role === 'isTreasurer'
+            }
 
-            beforeEach(() => {
-                newGroups.value = [1, 2]
-                data = {
-                    user: newUser.username,
-                    group: 2,
-                    institution: null,
-                    fund: null
-                }
-            })
-
-            afterEach(() => {
-                newGroups.value = []
-            })
-
-            describe('if public request (register)', () => {
-                it('should post new groups with public instance when registering', async () => {
-                    await userGroupsRegister(true)
-                    expect(axiosPublic.post).toHaveBeenCalledTimes(newGroups.value.length)
-                    expect(axiosPublic.post).toHaveBeenLastCalledWith('/users/groups/', data)
-                })
-            })
-            describe('if private request (registered by manager)', () => {
-                it('should post new groups with auth instance when registered by manager', async () => {
-                    await userGroupsRegister(false)
-                    expect(axiosAuthenticated.post).toHaveBeenCalledTimes(newGroups.value.length)
-                    expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/', data)
-                })
-            })
-        })
-
-        describe('if commission group', () => {
-            let data = {}
-
-            beforeEach(() => {
-                newGroups.value = [4]
-                data = {
-                    user: newUser.username,
-                    group: 4,
-                    institution: null,
-                    fund: 3
-                }
-                userFunds.value = [1, 2, 3]
-            })
-
-            afterEach(() => {
-                newGroups.value = []
-                userFunds.value = []
-            })
-
-            describe('if public request (register)', () => {
-                it('should post new groups with public instance when registering', async () => {
-                    await userGroupsRegister(true)
-                    expect(axiosPublic.post).toHaveBeenCalledTimes(3)
-                    expect(axiosPublic.post).toHaveBeenCalledWith('/users/groups/', data)
-                })
-            })
-            describe('if private request (registered by manager)', () => {
-                it('should post new groups with auth instance when registered by manager', async () => {
-                    await userGroupsRegister(false)
-                    expect(axiosAuthenticated.post).toHaveBeenCalledTimes(3)
-                    expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/users/groups/', data)
-                })
-            })
+            await userAssociationsRegister(1)
+            expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/associations/', data)
         })
     })
 
@@ -254,11 +201,32 @@ describe('useSecurity', () => {
         })
     })
 
-    describe('userLocalRegisterAsManager', () => {
+    describe('addUserAsManager', () => {
         it('should post once on /users/ with newUser as data', async () => {
-            await userLocalRegisterAsManager(_newUser)
+            const {newAssociations} = useUserAssociations()
+
+            const user = {
+                isCas: newUser.isCas,
+                username: newUser.username,
+                email: newUser.email,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                phone: newUser.phone,
+                gifus: [],
+                associations: newAssociations.value.map((association) => {
+                    return {
+                        association: association.id,
+                        isPresident: association.role === 'isPresident',
+                        isSecretary: association.role === 'isSecretary',
+                        isTreasurer: association.role === 'isTreasurer',
+                        isVicePresident: association.role === 'isVicePresident'
+                    }
+                })
+            }
+
+            await addUserAsManager()
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/', _newUser)
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/users/', user)
         })
     })
 

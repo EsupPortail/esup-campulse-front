@@ -8,6 +8,7 @@ import type {Content, ContentCode} from '#/index'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
+import DOMPurify from 'dompurify'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -112,8 +113,8 @@ onMounted(async () => {
                 </li>
             </ul>
         </QToolbar>
-        <p v-html="footerContent?.body"></p>
-        <p v-html="footerContent?.footer"></p>
+        <p v-html="DOMPurify.sanitize(footerContent?.body)"></p>
+        <p v-html="DOMPurify.sanitize(footerContent?.footer)"></p>
     </QFooter>
 </template>
 
