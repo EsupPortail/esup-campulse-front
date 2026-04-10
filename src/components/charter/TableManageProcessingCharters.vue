@@ -95,7 +95,7 @@ const columns: QTableProps['columns'] = [
                     :props="props"
                     headers="uploadedDate"
                 >
-                    {{ formatDate(props.row.uploadedDate)?.split('-').reverse().join('/') }}
+                    {{ formatDate(props.row.uploadedDate).split('-').reverse().join('/') }}
                 </QTd>
                 <QTd
                     key="charterStatus"
@@ -127,11 +127,11 @@ const columns: QTableProps['columns'] = [
 @import "@/assets/styles/dashboard.scss";
 
 ul {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 ul li {
-    list-style: none;
-    text-align: right;
+  list-style: none;
+  text-align: right;
 }
 </style>

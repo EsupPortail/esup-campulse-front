@@ -108,16 +108,10 @@ describe('useDirectory', () => {
             const mockedAxios = vi.mocked(axiosPublic, true)
             mockedAxios.get.mockResolvedValueOnce({data: _associations})
 
-            associationStore.getInstitutions = vi.fn()
-            associationStore.getInstitutionComponents = vi.fn()
-            associationStore.getActivityFields = vi.fn()
-            associationStore.getAssociationsSubDetails = vi.fn()
-
             await simpleAssociationSearch('query', true)
 
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/associations/?is_public=true&search=query')
-            expect(associationStore.getAssociationsSubDetails).toHaveBeenCalledOnce()
         })
     })
 })

@@ -4,7 +4,8 @@ import type {
     ProjectBudget,
     ProjectCategory,
     ProjectCommissionFund,
-    ProjectGoals, ProjectList,
+    ProjectGoals,
+    ProjectList,
     ProjectReview
 } from '#/project'
 import type {DocumentUpload} from '#/documents'

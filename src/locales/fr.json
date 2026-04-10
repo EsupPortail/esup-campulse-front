@@ -476,6 +476,7 @@
     "required-password": "Veuillez saisir votre mot de passe.",
     "required-phone": "Veuillez saisir un numéro de téléphone valide.",
     "required-project-activities": "Veuillez lister les activités prévues.",
+    "required-project-amount-all-audience-not-null": "Le nombre de personnes ne peut être égal à 0.",
     "required-project-amount-asked-previous": "Veuillez indiquer le montant demandé à ce fonds à la précédente édition.",
     "required-project-amount-audience": "Veuillez indiquer le nombre de personnes attendues au total.",
     "required-project-amount-earned-previous": "Veuillez indiquer le montant obtenu via ce fonds à la précédente édition.",

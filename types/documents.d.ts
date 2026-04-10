@@ -4,7 +4,7 @@ export interface Document {
     acronym: string,
     description: string,
     contact: string,
-    isMultiple: boolean,
+    maxUploads: number,
     isRequiredInProcess: boolean,
     daysBeforeExpiration: string,
     expirationDay: string,
@@ -64,11 +64,12 @@ export interface ProcessDocument {
     pathFile: File | File[] | undefined | [],
     document?: number,
     description?: string,
-    isMultiple?: boolean,
+    maxUploads?: number,
     isRequiredInProcess?: boolean,
     mimeTypes?: MimeType[],
     name?: string,
-    pathTemplate?: string | undefined
+    pathTemplate?: string | undefined,
+    processType?: DocumentProcessType
 }
 
 export interface UploadedProcessDocument {

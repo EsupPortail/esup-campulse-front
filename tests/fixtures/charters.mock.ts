@@ -133,7 +133,3 @@ export const _projectFundCharters: AssociationCharter[] = [
         ]
     }
 ]
-
-
-
-

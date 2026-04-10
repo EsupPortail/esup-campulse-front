@@ -8,7 +8,6 @@ import {useRoute} from 'vue-router'
 import router from '@/router'
 import FormUserGroups from '@/components/form/FormUserGroups.vue'
 import useUserGroups from '@/composables/useUserGroups'
-import useUserAssociations from '@/composables/useUserAssociations'
 import useErrors from '@/composables/useErrors'
 import axios from 'axios'
 import useDocumentUploads from '@/composables/useDocumentUploads'
@@ -19,7 +18,6 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {validateUser} = useUsers()
 const {newGroups, groupChoiceIsValid, studentGroupIsSelected} = useUserGroups()
-const {getUserAssociations} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 const {uploadDocuments} = useDocumentUploads()
 
@@ -51,7 +49,7 @@ async function onGetUser() {
 // Get user associations
 async function onGetUserAssociations() {
     try {
-        await getUserAssociations(parseInt(route.params.id as string), true)
+        await userManagerStore.getUserAssociations(parseInt(route.params.id as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -67,7 +65,7 @@ async function onValidateUser() {
     if (groupChoiceIsValid.value) {
         try {
             await validateUser()
-            await uploadDocuments(undefined, userManagerStore.user?.username, false)
+            await uploadDocuments(null, userManagerStore.user?.id)
             await router.push({name: 'ValidateUsers'})
             notify({
                 type: 'positive',

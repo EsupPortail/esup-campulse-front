@@ -36,28 +36,27 @@ export default function () {
     const {formatDate} = useUtility()
 
     const initProjectReview = () => {
-        if (projectStore.projectReview && projectStore.project) {
-            projectId.value = projectStore.project?.manualIdentifier
-            projectReview.value.id = projectStore.projectReview.id
-            projectReview.value.name = projectStore.projectReview.name
-            projectReview.value.outcome = projectStore.projectReview.outcome ?
-                projectStore.projectReview.outcome.toString() : '0'
-            projectReview.value.income = projectStore.projectReview.income ?
-                projectStore.projectReview.income.toString() : '0'
-            projectReview.value.association = projectStore.projectReview.association
-            projectReview.value.user = projectStore.projectReview.user
-            projectReview.value.realStartDate = formatDate(projectStore.projectReview.realStartDate ?
-                projectStore.projectReview.realStartDate : projectStore.projectReview.plannedStartDate as string) as string
-            projectReview.value.realEndDate = formatDate(projectStore.projectReview.realEndDate ?
-                projectStore.projectReview.realEndDate : projectStore.projectReview.plannedEndDate as string) as string
-            projectReview.value.realLocation = projectStore.projectReview.realLocation ?
-                projectStore.projectReview.realLocation : projectStore.projectReview.plannedLocation as string
-            projectReview.value.review = projectStore.projectReview.review
-            projectReview.value.impactStudents = projectStore.projectReview.impactStudents
-            projectReview.value.description = projectStore.projectReview.description
-            projectReview.value.difficulties = projectStore.projectReview.difficulties
-            projectReview.value.improvements = projectStore.projectReview.improvements
-        }
+        if (!projectStore.projectReview || !projectStore.project) return
+        projectId.value = projectStore.project?.manualIdentifier
+        projectReview.value.id = projectStore.projectReview.id
+        projectReview.value.name = projectStore.projectReview.name
+        projectReview.value.outcome = projectStore.projectReview.outcome ?
+            projectStore.projectReview.outcome.toString() : '0'
+        projectReview.value.income = projectStore.projectReview.income ?
+            projectStore.projectReview.income.toString() : '0'
+        projectReview.value.association = projectStore.projectReview.association
+        projectReview.value.user = projectStore.projectReview.user
+        projectReview.value.realStartDate = formatDate(projectStore.projectReview.realStartDate ?
+            projectStore.projectReview.realStartDate : projectStore.projectReview.plannedStartDate as string) as string
+        projectReview.value.realEndDate = formatDate(projectStore.projectReview.realEndDate ?
+            projectStore.projectReview.realEndDate : projectStore.projectReview.plannedEndDate as string) as string
+        projectReview.value.realLocation = projectStore.projectReview.realLocation ?
+            projectStore.projectReview.realLocation : projectStore.projectReview.plannedLocation as string
+        projectReview.value.review = projectStore.projectReview.review
+        projectReview.value.impactStudents = projectStore.projectReview.impactStudents
+        projectReview.value.description = projectStore.projectReview.description
+        projectReview.value.difficulties = projectStore.projectReview.difficulties
+        projectReview.value.improvements = projectStore.projectReview.improvements
     }
 
     async function patchProjectReview() {
@@ -66,20 +65,18 @@ export default function () {
         const dates = ['realStartDate', 'realEndDate']
         const privateFields = ['id', 'association', 'user', 'name', 'associationUser']
         for (const [key, value] of Object.entries(projectReview.value)) {
-            if (!privateFields.includes(key)) {
-                if (numbers.includes(key)) {
-                    if (parseInt(value as string) !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
-                        projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: parseInt(value as string)})
-                    }
-                } else if (dates.includes(key)) {
-                    if (value !== formatDate(projectStore.projectReview?.[key as keyof typeof projectStore.projectReview] as string)) {
-                        projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: value + 'T00:00:00.000Z'})
-                    }
-                } else {
-                    if (value !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
-                        projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: value})
-                    }
+            const keyIsPrivate = privateFields.includes(key)
+            if (keyIsPrivate) continue
+            if (numbers.includes(key)) {
+                if (parseInt(value as string) !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
+                    projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: parseInt(value as string)})
                 }
+            } else if (dates.includes(key)) {
+                if (value !== formatDate(projectStore.projectReview?.[key as keyof typeof projectStore.projectReview] as string)) {
+                    projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: value + 'T00:00:00.000Z'})
+                }
+            } else if (value !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
+                projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: value})
             }
         }
         // API call

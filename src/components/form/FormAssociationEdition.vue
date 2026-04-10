@@ -82,11 +82,11 @@ const initValues = () => {
     association.value.presidentNames = associationStore.association?.presidentNames as string
     association.value.presidentPhone = associationStore.association?.presidentPhone as string
     association.value.presidentEmail = associationStore.association?.presidentEmail as string
-    association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string) as string
-    association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string) as string
-    association.value.institution = associationStore.institutionLabels.find(({value}) => value === associationStore.association?.institution)?.value
-    association.value.institutionComponent = associationStore.institutionComponentLabels.find(({value}) => value === associationStore.association?.institutionComponent)?.value
-    association.value.activityField = associationStore.activityFieldLabels.find(({value}) => value === associationStore.association?.activityField)?.value
+    association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string)
+    association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string)
+    association.value.institution = associationStore.association?.institution?.id
+    association.value.institutionComponent = associationStore.association?.institutionComponent?.id
+    association.value.activityField = associationStore.association?.activityField?.id
     association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed ? associationStore.association.amountMembersAllowed.toString() : '0'
     association.value.isPublic = associationStore.association?.isPublic as boolean
     association.value.studentCount = associationStore.association?.studentCount ? associationStore.association.studentCount.toString() : '0'
@@ -578,25 +578,30 @@ async function onChangeLogo(action: string) {
 @import '@/assets/styles/dashboard.scss';
 @import "@/assets/_variables.scss";
 
-.address-fields div {
-    display: flex;
-    gap: 1rem;
+.address-fields > div {
+  display: flex;
+  gap: 1rem;
+  width: $fullSize;
 
-    * {
-        width: $fullSize;
-    }
+  & > * {
+    width: $fullSize;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
+  }
 }
 
 .q-separator {
-    margin: 0.5rem 0 1rem 0;
+  margin: 0.5rem 0 1rem 0;
 }
 
 .flex-column {
-    gap: 1.5rem;
+  gap: 1.5rem;
 }
 
 .dashboard-section h2 {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 </style>

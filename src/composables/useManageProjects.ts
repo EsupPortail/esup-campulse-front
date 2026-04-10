@@ -22,23 +22,24 @@ export default function () {
         await getFunds()
         await getCommissionFunds()
         projectCommissionFunds.forEach(projectCommissionFund => {
-            if (userStore.userFunds?.includes(commissionFunds.value
-                .find(obj => obj.id === projectCommissionFund.commissionFund)?.fund)) {
-                if (projectCommissionFund.isValidatedByAdmin === null ||
-                    projectCommissionFund.isValidatedByAdmin && action !== 'validate' ||
-                    !projectCommissionFund.isValidatedByAdmin && action !== 'reject') {
-                    projectCommissionFundLabels.value.push({
-                        value: projectCommissionFund.commissionFund as number,
-                        label: funds.value.find(obj => obj.id ===
-                            (commissionFunds.value.find(obj => obj.id === projectCommissionFund.commissionFund)?.fund))?.acronym as string,
-                    })
-                }
+            const fund = commissionFunds.value.find(obj => obj.id === projectCommissionFund.commissionFund)?.fund
+            const isMemberOfFund = userStore.userFunds?.includes(fund)
+            if (!isMemberOfFund) return
+            const isValidatedByAdmin = projectCommissionFund.isValidatedByAdmin
+            if (isValidatedByAdmin === null ||
+                isValidatedByAdmin && action !== 'validate' ||
+                !isValidatedByAdmin && action !== 'reject') {
+                projectCommissionFundLabels.value.push({
+                    value: projectCommissionFund.commissionFund as number,
+                    label: funds.value.find(obj => obj.id === fund)?.acronym as string,
+                })
             }
         })
     }
 
     async function validateProjectCommissionFund(project: number, commissionFund: number) {
-        await axiosAuthenticated.patch(`/projects/${project}/commission_funds/${commissionFund}`, {
+        const url = `/projects/${project}/commission_funds/${commissionFund}`
+        await axiosAuthenticated.patch(url, {
             commissionFundId: commissionFund,
             projectId: project,
             isValidatedByAdmin: true
@@ -46,23 +47,25 @@ export default function () {
     }
 
     async function rejectProjectCommissionFund(project: number, commissionFund: number) {
-        await axiosAuthenticated.patch(`/projects/${project}/commission_funds/${commissionFund}`, {
+        const url = `/projects/${project}/commission_funds/${commissionFund}`
+        await axiosAuthenticated.patch(url, {
             commissionFundId: commissionFund,
             projectId: project,
             isValidatedByAdmin: false
         })
     }
 
-    const canManageProjectCommissionFund = (commissionFund: number) => {
-        let perm = false
-        if (userStore.user?.groups.find(obj => obj.institutionId === funds.value
-            .find(obj => obj.id === commissionFunds.value
-                .find(obj => obj.id === commissionFund)?.fund)?.institution)) perm = true
-        return perm
+    const canManageProjectCommissionFund = (commissionFund: number): boolean => {
+        const fund = commissionFunds.value.find(obj => obj.id === commissionFund)?.fund
+        const fundInstitution = funds.value.find(obj => obj.id === fund)?.institution
+        const isMemberOfFundInstitution = userStore.user?.groups
+            .find(obj => obj.institutionId === fundInstitution)
+        return !!isMemberOfFundInstitution
     }
 
     async function patchAmountAsked(project: number, commissionFund: number, amountEarned: number) {
-        await axiosAuthenticated.patch(`/projects/${project}/commission_funds/${commissionFund}`, {
+        const url = `/projects/${project}/commission_funds/${commissionFund}`
+        await axiosAuthenticated.patch(url, {
             projectId: project,
             commissionFundId: commissionFund,
             amountEarned

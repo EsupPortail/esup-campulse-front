@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+import DOMPurify from 'dompurify'
 
 const props = defineProps<{
-    header?: string,
-    /*label: string,
-    code: string,*/
-    body?: string,
-    cssClass: string
+  header?: string,
+  /*label: string,
+  code: string,*/
+  body?: string,
+  cssClass: string
 }>()
 </script>
 
@@ -19,11 +20,11 @@ const props = defineProps<{
 
             <div class="section-title">
                 <div class="section-info">
-                    <h3 v-html="props.header"></h3>
+                    <h3 v-html="DOMPurify.sanitize(props.header)"></h3>
                 </div>
             </div>
             <div class="section-content">
-                <p v-html="props.body"></p>
+                <p v-html="DOMPurify.sanitize(props.body)"></p>
             </div>
         </div>
     </section>

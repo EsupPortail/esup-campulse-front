@@ -3,9 +3,9 @@ import type {
     Project,
     ProjectCategory,
     ProjectCategoryName,
+    ProjectCommissionFund,
     ProjectList,
     ProjectReview,
-    ProjectCommissionFund,
     ProjectStatus,
     ProjectStore
 } from '#/project'
@@ -67,15 +67,15 @@ export const useProjectStore = defineStore('projectStore', {
     },
     actions: {
         async getProjectCategoryNames() {
-            if (!this.projectCategoryNames.length) {
-                const {axiosPublic} = useAxios()
-                this.projectCategoryNames = (await axiosPublic.get<ProjectCategoryName[]>('/projects/categories/names')).data
-            }
+            if (this.projectCategoryNames.length) return
+            const {axiosPublic} = useAxios()
+            this.projectCategoryNames = (await axiosPublic.get<ProjectCategoryName[]>('/projects/categories/names')).data
         },
 
         async getProjectCategories() {
             const {axiosAuthenticated} = useAxios()
-            this.projectCategories = (await axiosAuthenticated.get<ProjectCategory[]>(`/projects/${this.project?.id}/categories`)).data
+            const url = `/projects/${this.project?.id}/categories`
+            this.projectCategories = (await axiosAuthenticated.get<ProjectCategory[]>(url)).data
         },
 
         async getProjectDetail(id: number) {
@@ -97,7 +97,8 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getProjectDocuments() {
             const {axiosAuthenticated} = useAxios()
-            this.projectDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(`/documents/uploads?project_id=${this.project?.id}`)).data
+            const url = `/documents/uploads?project_id=${this.project?.id}`
+            this.projectDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
         },
 
         async getManagedProjects(commission: number | undefined) {
@@ -119,12 +120,14 @@ export const useProjectStore = defineStore('projectStore', {
 
         async getAssociationProjects(associationId: number) {
             const {axiosAuthenticated} = useAxios()
-            this.selfProjects = (await axiosAuthenticated.get<ProjectList[]>(`/projects/?association_id=${associationId}`)).data
+            const url = `/projects/?association_id=${associationId}`
+            this.selfProjects = (await axiosAuthenticated.get<ProjectList[]>(url)).data
         },
 
         async getProjectReview(projectId: number) {
             const {axiosAuthenticated} = useAxios()
-            this.projectReview = (await axiosAuthenticated.get<ProjectReview>(`/projects/${projectId}/review`)).data
+            const url = `/projects/${projectId}/review`
+            this.projectReview = (await axiosAuthenticated.get<ProjectReview>(url)).data
         },
 
         async getProjectPdf(id: number) {
@@ -147,16 +150,15 @@ export const useProjectStore = defineStore('projectStore', {
 
         async patchProjectStatus(projectStatus: ProjectStatus) {
             const {axiosAuthenticated} = useAxios()
-            if (this.project && this.project.projectStatus !== projectStatus) {
-                await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
-                this.project.projectStatus = projectStatus
-            }
+            if (this.project?.projectStatus === projectStatus) return
+            await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
+            this.project.projectStatus = projectStatus
         },
 
         async patchProjectCommissionFund(oldCommissionFund: number, newCommissionFund: number) {
             const {axiosAuthenticated} = useAxios()
-            await axiosAuthenticated.patch(`/projects/${this.project?.id}/commission_funds/${oldCommissionFund}`,
-                {projectId: this.project?.id, newCommissionFundId: newCommissionFund})
+            const url = `/projects/${this.project?.id}/commission_funds/${oldCommissionFund}`
+            await axiosAuthenticated.patch(url, {projectId: this.project?.id, newCommissionFundId: newCommissionFund})
         },
 
         searchProjectByManualIdentifier(manualIdentifier: string) {

@@ -55,11 +55,10 @@ export const useContentStore = defineStore('contentStore', {
             }
         },
         async getLogos() {
-            if (!this.logos.length) {
-                const {axiosPublic} = useAxios()
-                const url = '/contents/logos'
-                this.logos = (await axiosPublic.get<Logo[]>(url)).data
-            }
+            if (this.logos.length) return
+            const {axiosPublic} = useAxios()
+            const url = '/contents/logos'
+            this.logos = (await axiosPublic.get<Logo[]>(url)).data
         },
 
         async getStats() {

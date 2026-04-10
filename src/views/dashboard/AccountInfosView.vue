@@ -26,7 +26,6 @@ const {catchHTTPError} = useErrors()
 const {
     newAssociations,
     updateUserAssociations,
-    getUserAssociations,
     initUserAssociations,
     userAssociations
 } = useUserAssociations()
@@ -46,7 +45,7 @@ async function onUpdateUserInfos() {
                 message: t('notifications.warning.no-modifications-found')
             })
         }*/
-        await uploadDocuments(undefined, userStore.user?.username, false)
+        await uploadDocuments(null, userStore.user?.id)
         initProcessDocuments()
         await userStore.getUserDocuments()
         initUserDocumentUploads()
@@ -68,10 +67,10 @@ async function onUpdateUserInfos() {
 async function onUpdateUserAssociations() {
     loading.show()
     try {
-        await updateUserAssociations(false)
-        await userAssociationsRegister(false, userStore.user?.username)
+        updateUserAssociations(false)
+        await userAssociationsRegister(userStore.user?.id)
         newAssociations.value = []
-        await getUserAssociations(userStore.user?.id, false)
+        await userStore.getUserAssociations()
         initUserAssociations(false)
         notify({
             type: 'positive',

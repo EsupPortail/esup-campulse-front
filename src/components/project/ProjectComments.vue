@@ -26,7 +26,7 @@ const {hasPerm} = useSecurity()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
-    project: number | undefined
+  project: number | undefined
 }>()
 
 const open = ref<boolean>(false)
@@ -121,7 +121,7 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
                             t('project.comments.comment-metadata',
                               {
                                   user: comment.user.firstName + ' ' + comment.user.lastName,
-                                  date: formatDate(comment.creationDate)?.split('-').reverse().join('/'),
+                                  date: formatDate(comment.creationDate).split('-').reverse().join('/'),
                                   hour: new Date(comment.creationDate).getHours(),
                                   minutes: new Date(comment.creationDate).getMinutes() < 10 ? '0' + new
                                       Date(comment.creationDate).getMinutes() : new Date(comment.creationDate).getMinutes()
@@ -176,10 +176,10 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
 @import "@/assets/_variables.scss";
 
 .comment-row > div {
-    align-items: flex-start;
+  align-items: flex-start;
 }
 
 .disabled-comment-row {
-    border-color: $textColor2 !important;
+  border-color: $textColor2 !important;
 }
 </style>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import DOMPurify from 'dompurify'
+
 defineProps({
     title: String,
     description: String,
@@ -42,12 +44,12 @@ defineProps({
                 </h2>
 
                 <div class="section-info">
-                    <p v-html="infoContent"></p>
+                    <p v-html="DOMPurify.sanitize(infoContent)"></p>
                 </div>
             </div>
 
             <div class="section-content">
-                <p v-html="description"></p>
+                <p v-html="DOMPurify.sanitize(description)"></p>
                 <div class="section-buttons">
                     <RouterLink :to="link">
                         {{ buttonLabel }} <i
@@ -65,6 +67,6 @@ defineProps({
 @import '@/assets/styles/home.scss';
 
 h2 {
-    line-height: 1.4;
+  line-height: 1.4;
 }
 </style>

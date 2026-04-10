@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {onMounted, ref} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import {QForm, useQuasar} from 'quasar'
 import useCommissions from '@/composables/useCommissions'
 import useUtility from '@/composables/useUtility'
@@ -96,10 +96,10 @@ async function onUpdateCommission(commission: UpdateCommission) {
     loading.show()
     try {
         if (commission.newName !== commission.oldName
-            || commission.newCommissionDate !== commission.oldCommissionDate
-            || commission.newSubmissionDate !== commission.oldSubmissionDate
-            || commission.newIsOpenToProjects !== commission.oldIsOpenToProjects
-            || !arraysAreEqual(commission.newFunds, commission.oldFunds)) {
+        || commission.newCommissionDate !== commission.oldCommissionDate
+        || commission.newSubmissionDate !== commission.oldSubmissionDate
+        || commission.newIsOpenToProjects !== commission.oldIsOpenToProjects
+        || !arraysAreEqual(commission.newFunds, commission.oldFunds)) {
             await updateCommission(commission)
             await onGetCommissions()
             notify({
@@ -169,6 +169,22 @@ const onClearValues = () => {
     newCommission.value.funds = []
     newCommission.value.isOpenToProjects = false
 }
+
+function checkCommissionDates(isNew: boolean, commissionId?: number) {
+    if (isNew) {
+        newCommission.value.datesAreLegal = fromDateIsAnterior(newCommission.value.submissionDate, newCommission.value.commissionDate, false)
+    } else if (!commissionId) {
+        return
+    } else {
+        const commission = updateCommissions.value.find(obj => obj.id === commissionId)
+        if (!commission) return
+        commission.datesAreLegal = fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)
+    }
+}
+
+const canSubmitNewCommission = computed<boolean>(() => {
+    return newCommission.value.datesAreLegal && !!newCommission.value.funds?.length && !!newCommission.value.name
+})
 </script>
 
 <template>
@@ -257,8 +273,7 @@ const onClearValues = () => {
                                 min="1970-01-01"
                                 reactive-rules
                                 type="date"
-                                @update:model-value="() => commission.datesAreLegal =
-                                    fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)"
+                                @update:model-value="checkCommissionDates(false, commission.id)"
                             />
                             <QSelect
                                 v-model="commission.newFunds"
@@ -328,8 +343,7 @@ const onClearValues = () => {
                         min="1970-01-01"
                         reactive-rules
                         type="date"
-                        @update:model-value="() => newCommission.datesAreLegal =
-                            fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
+                        @update:model-value="checkCommissionDates(true)"
                     />
                     <QInput
                         v-model="newCommission.submissionDate"
@@ -345,8 +359,7 @@ const onClearValues = () => {
                         min="1970-01-01"
                         reactive-rules
                         type="date"
-                        @update:model-value="() => newCommission.datesAreLegal =
-                            fromDateIsAnterior(newCommission.submissionDate, newCommission.commissionDate, false)"
+                        @update:model-value="checkCommissionDates(true)"
                     />
                     <QSelect
                         v-model="newCommission.funds"
@@ -368,7 +381,7 @@ const onClearValues = () => {
                     />
                     <div class="flex-btn">
                         <QBtn
-                            :disable="!newCommission.datesAreLegal || !newCommission.funds?.length || !newCommission.name"
+                            :disable="!canSubmitNewCommission"
                             :label="t('add')"
                             class="btn-lg"
                             color="commission"
@@ -385,17 +398,4 @@ const onClearValues = () => {
 <style lang="scss" scoped>
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/styles/forms.scss";
-
-/*
-.flex-btn {
-  display: flex;
-  gap: 1rem;
-  margin: -0.5rem 0 0.5rem 0;
-}
-
-.q-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}*/
 </style>

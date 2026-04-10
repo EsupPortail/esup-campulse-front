@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
@@ -9,7 +9,7 @@ import type {UpdateCommission} from '#/commissions'
 import useUtility from '@/composables/useUtility'
 
 const props = defineProps<{
-    commission: UpdateCommission
+  commission: UpdateCommission
 }>()
 
 const {t} = useI18n()
@@ -36,16 +36,21 @@ async function onOpenDeleteAlert() {
     }
     loading.hide()
 }
+
+const canUpdate = computed<boolean>(() => {
+    return props.commission.datesAreLegal &&
+      (props.commission.newName !== props.commission.oldName
+          || props.commission.newCommissionDate !== props.commission.oldCommissionDate
+          || props.commission.newSubmissionDate !== props.commission.oldSubmissionDate
+          || props.commission.newIsOpenToProjects !== props.commission.oldIsOpenToProjects
+          || !arraysAreEqual(props.commission.oldFunds, props.commission.newFunds))
+})
 </script>
 
 <template>
     <div class="flex-row padding-bottom">
         <QBtn
-            :disable="!commission.datesAreLegal && commission.newName === commission.oldName
-                && commission.newCommissionDate === commission.oldCommissionDate
-                && commission.newSubmissionDate === commission.oldSubmissionDate
-                && commission.newIsOpenToProjects === commission.oldIsOpenToProjects
-                && arraysAreEqual(commission.oldFunds, commission.newFunds)"
+            :disable="!canUpdate"
             :label="t('update')"
             class="btn-lg"
             color="commission"
@@ -133,6 +138,6 @@ async function onOpenDeleteAlert() {
 @import "@/assets/styles/forms.scss";
 
 .q-card {
-    padding: 1rem
+  padding: 1rem
 }
 </style>

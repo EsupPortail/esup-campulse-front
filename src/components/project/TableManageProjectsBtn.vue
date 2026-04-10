@@ -25,12 +25,12 @@ const userStore = useUserStore()
 const {createUploadedFileLink} = useDocumentUploads()
 
 const props = defineProps<{
-    projectId: number,
-    projectName: string,
-    projectStatus: ProjectStatus,
-    isSite: boolean | undefined,
-    projectCommissionFunds: ProjectCommissionFund[],
-    budgetFile: string | null,
+  projectId: number,
+  projectName: string,
+  projectStatus: ProjectStatus,
+  isSite: boolean | undefined,
+  projectCommissionFunds: ProjectCommissionFund[],
+  budgetFile: string | null,
 }>()
 
 const emit = defineEmits(['refreshProjects'])
@@ -41,13 +41,13 @@ const changeCommission = ref<boolean>(false)
 
 
 interface Option {
-    icon: 'bi-eye' | 'bi-cash-stack' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-file-earmark-zip' | 'bi-signpost' | 'bi-piggy-bank',
-    label: string,
-    to?: {
-        name: 'ViewProject' | 'ManageProject' | 'ViewProjectReview' | 'ManageProjectReview',
-        params: { projectId: number }
-    }
-    action?: 'updateProjectDates' | 'download-pdf' | 'download-review-pdf' | 'download-budget' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
+  icon: 'bi-eye' | 'bi-cash-stack' | 'bi-check-lg' | 'bi-calendar' | 'bi-filetype-pdf' | 'bi-file-earmark-zip' | 'bi-signpost' | 'bi-piggy-bank',
+  label: string,
+  to?: {
+    name: 'ViewProject' | 'ManageProject' | 'ViewProjectReview' | 'ManageProjectReview',
+    params: { projectId: number }
+  }
+  action?: 'updateProjectDates' | 'download-pdf' | 'download-review-pdf' | 'download-budget' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
 }
 
 const canChangeProject = () => {
@@ -71,7 +71,7 @@ const initOptions = () => {
 
     // Manage project
     if (props.projectStatus === 'PROJECT_PROCESSING' &&
-        hasPerm('change_project_as_validator') && canChangeProject()) {
+      hasPerm('change_project_as_validator') && canChangeProject()) {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process'),
@@ -80,7 +80,7 @@ const initOptions = () => {
     }
 
     if ((props.projectStatus !== 'PROJECT_DRAFT')) {
-        // View project
+    // View project
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view'),
@@ -88,11 +88,13 @@ const initOptions = () => {
         })
 
         // Download project budget file
-        options.value.push({
-            icon: 'bi-cash-stack',
-            label: t('project.download-budget'),
-            action: 'download-budget'
-        })
+        if (props.budgetFile) {
+            options.value.push({
+                icon: 'bi-cash-stack',
+                label: t('project.download-budget'),
+                action: 'download-budget'
+            })
+        }
 
         // Download project files
         options.value.push({
@@ -111,7 +113,7 @@ const initOptions = () => {
 
     // Give money $$$
     if (props.projectStatus === 'PROJECT_VALIDATED' &&
-        hasPerm('change_projectcommissionfund_as_validator')) {
+      hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
             icon: 'bi-piggy-bank',
             label: t('project.edit-commission-funds-amounts'),
@@ -121,11 +123,11 @@ const initOptions = () => {
 
     // Update project dates
     if ((props.projectStatus === 'PROJECT_DRAFT_PROCESSED' ||
-            props.projectStatus === 'PROJECT_PROCESSING' ||
-            props.projectStatus === 'PROJECT_VALIDATED' ||
-            props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-            props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
-        hasPerm('change_project_as_validator')) {
+          props.projectStatus === 'PROJECT_PROCESSING' ||
+          props.projectStatus === 'PROJECT_VALIDATED' ||
+          props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
+          props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
+      hasPerm('change_project_as_validator')) {
         options.value.push({
             icon: 'bi-calendar',
             label: t('project.edit-dates'),
@@ -135,8 +137,8 @@ const initOptions = () => {
 
     // Change commission
     if ((props.projectStatus === 'PROJECT_PROCESSING' ||
-            props.projectStatus === 'PROJECT_VALIDATED') &&
-        hasPerm('change_projectcommissionfund_as_validator')) {
+          props.projectStatus === 'PROJECT_VALIDATED') &&
+      hasPerm('change_projectcommissionfund_as_validator')) {
         options.value.push({
             icon: 'bi-signpost',
             label: t('project.change-commission'),
@@ -146,7 +148,7 @@ const initOptions = () => {
 
     // Manage review
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' &&
-        hasPerm('change_project_as_validator') && canChangeProject()) {
+      hasPerm('change_project_as_validator') && canChangeProject()) {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process-review'),
@@ -156,8 +158,8 @@ const initOptions = () => {
 
 
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
-        || props.projectStatus === 'PROJECT_CANCELED') {
-        // View review
+      || props.projectStatus === 'PROJECT_CANCELED') {
+    // View review
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),

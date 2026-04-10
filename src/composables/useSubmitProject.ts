@@ -1,10 +1,5 @@
 import {ref, watch} from 'vue'
-import type {
-    ProjectBasicInfos,
-    ProjectBudget,
-    ProjectCommissionFund,
-    ProjectGoals
-} from '#/project'
+import type {ProjectBasicInfos, ProjectBudget, ProjectCommissionFund, ProjectGoals} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtility'
 import {useAxios} from '@/composables/useAxios'
@@ -12,9 +7,7 @@ import {useUserStore} from '@/stores/useUserStore'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import useCommissions from '@/composables/useCommissions'
 import type {SelectLabel} from '#/index'
-import type {User} from '#/user'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useUserAssociations from '@/composables/useUserAssociations'
 
 const projectId = ref<string | undefined>()
 
@@ -80,17 +73,16 @@ export default function () {
     const {processDocuments} = useDocumentUploads()
     const {initChosenCommissionFundsLabels, commissionFunds} = useCommissions()
     const associationStore = useAssociationStore()
-    const {getAssociationUsersNames} = useUserAssociations()
 
 
     // INIT DATA
     const initProjectBasicInfos = () => {
         const {formatDate} = useUtility()
         projectId.value = projectStore.project?.manualIdentifier
-        projectProcessingDate.value = formatDate(projectStore.project?.processingDate as string)?.split('-').reverse().join('/')
+        projectProcessingDate.value = formatDate(projectStore.project?.processingDate as string).split('-').reverse().join('/')
         projectBasicInfos.value.name = projectStore.project?.name as string
-        projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string) as string
-        projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string) as string
+        projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string)
+        projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string)
         projectBasicInfos.value.plannedLocation = projectStore.project?.plannedLocation as string
         projectBasicInfos.value.user = projectStore.project?.user as number | null
         projectBasicInfos.value.association = projectStore.project?.association as number | null
@@ -99,18 +91,11 @@ export default function () {
     }
 
     const initProjectAssociationUsersLabels = async (associationId: number) => {
-        projectAssociationUsersLabels.value = []
-        const userNames: User[] = await getAssociationUsersNames(associationId)
         await associationStore.getAssociationUsers(associationId)
-        associationStore.associationUsers.forEach(function (associationUser) {
-            const member = userNames.find(obj => obj.id === associationUser.user)
-            if (member && associationUser.id) {
-                projectAssociationUsersLabels.value.push({
-                    value: associationUser.id,
-                    label: member.firstName + ' ' + member.lastName
-                })
-            }
-        })
+        projectAssociationUsersLabels.value = associationStore.associationUsers.map(associationUser => ({
+            value: associationUser.id,
+            label: associationUser.user.firstName + ' ' + associationUser.user.lastName
+        }))
     }
 
     const initProjectCategories = () => {
@@ -199,9 +184,8 @@ export default function () {
         else projectBasicInfos.value.user = userStore.user?.id as number
         let dataToPost = {}
         for (const [key, value] of Object.entries(projectBasicInfos.value)) {
-            if (value) {
-                dataToPost = Object.assign(dataToPost, {[key]: value + (key.includes('Date') ? 'T00:00:00.000Z' : '')})
-            }
+            if (!value) continue
+            dataToPost = Object.assign(dataToPost, {[key]: value + (key.includes('Date') ? 'T00:00:00.000Z' : '')})
         }
         projectStore.project = (await axiosAuthenticated.post('/projects/', dataToPost)).data
     }
@@ -210,43 +194,43 @@ export default function () {
     async function updateProjectCommission() {
         const oldCommissionFunds: number[] = projectStore.projectCommissionFunds.map(x => x.commissionFund)
         const newCommissionFunds: number[] = projectCommissionFunds.value as number[]
-        if (!arraysAreEqual(oldCommissionFunds, newCommissionFunds)) {
-            const commissionFundsToDelete = oldCommissionFunds.filter(x => newCommissionFunds.indexOf(x) === -1)
-            for (let i = 0; i < commissionFundsToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/projects/${projectStore.project?.id}/commission_funds/${commissionFundsToDelete[i]}`)
-            }
-            const commissionFundsToPost = newCommissionFunds.filter(x => oldCommissionFunds.indexOf(x) === -1)
-            for (let i = 0; i < commissionFundsToPost.length; i++) {
-                await axiosAuthenticated.post('/projects/commission_funds',
-                    {
-                        project: projectStore.project?.id,
-                        commissionFund: commissionFundsToPost[i]
-                    }
-                )
-            }
+        if (arraysAreEqual(oldCommissionFunds, newCommissionFunds)) return
+        const commissionFundsToDelete = oldCommissionFunds.filter(x => newCommissionFunds.indexOf(x) === -1)
+        for (const commissionFund of commissionFundsToDelete) {
+            const url = `/projects/${projectStore.project?.id}/commission_funds/${commissionFund}`
+            await axiosAuthenticated.delete(url)
+        }
+        const commissionFundsToPost = newCommissionFunds.filter(x => oldCommissionFunds.indexOf(x) === -1)
+        for (const commissionFund of commissionFundsToPost) {
+            await axiosAuthenticated.post('/projects/commission_funds',
+                {
+                    project: projectStore.project?.id,
+                    commissionFund
+                }
+            )
         }
     }
 
     async function updateProjectCategories() {
         const oldCategories = projectStore.projectCategories.map(cat => cat.category)
         const newCategories = projectCategories.value
-        if (!arraysAreEqual(oldCategories, newCategories)) {
-            let categoriesToPost = newCategories.filter(x => oldCategories.indexOf(x) === -1)
-            categoriesToPost = categoriesToPost.filter((element, index) => {
-                return categoriesToPost.indexOf(element) === index
-            })
-            for (let i = 0; i < categoriesToPost.length; i++) {
-                await axiosAuthenticated.post('/projects/categories',
-                    {
-                        project: projectStore.project?.id,
-                        category: categoriesToPost[i]
-                    }
-                )
-            }
-            const categoriesToDelete = oldCategories.filter(x => newCategories.indexOf(x) === -1)
-            for (let i = 0; i < categoriesToDelete.length; i++) {
-                await axiosAuthenticated.delete(`/projects/${projectStore.project?.id}/categories/${categoriesToDelete[i]}`)
-            }
+        if (arraysAreEqual(oldCategories, newCategories)) return
+        let categoriesToPost = newCategories.filter(x => oldCategories.indexOf(x) === -1)
+        categoriesToPost = categoriesToPost.filter((element, index) => {
+            return categoriesToPost.indexOf(element) === index
+        })
+        for (const category of categoriesToPost) {
+            await axiosAuthenticated.post('/projects/categories',
+                {
+                    project: projectStore.project?.id,
+                    category
+                }
+            )
+        }
+        const categoriesToDelete = oldCategories.filter(x => newCategories.indexOf(x) === -1)
+        for (const category of categoriesToDelete) {
+            const url = `/projects/${projectStore.project?.id}/categories/${category}`
+            await axiosAuthenticated.delete(url)
         }
     }
 
@@ -302,11 +286,11 @@ export default function () {
     }
 
     async function patchProjectCommissionFunds(isFirstEdition: boolean) {
-        for (let i = 0; i < projectCommissionFundsDetail.value.length; i++) {
+        for (const projectCommissionFund of projectCommissionFundsDetail.value) {
             let dataToPatch = {}
             const oldCommissionFund = projectStore.projectCommissionFunds
-                .find(obj => obj.id === projectCommissionFundsDetail.value[i].id)
-            const newCommissionFund = projectCommissionFundsDetail.value[i]
+                .find(obj => obj.id === projectCommissionFund.id)
+            const newCommissionFund = projectCommissionFund
             newCommissionFund.isFirstEdition = isFirstEdition
 
             const numbers = ['amountAskedPreviousEdition', 'amountEarnedPreviousEdition', 'amountAsked']
@@ -332,7 +316,7 @@ export default function () {
                 }
             }
             if (Object.entries(dataToPatch).length) {
-                const url = `/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFundsDetail.value[i].commissionFund}`
+                const url = `/projects/${projectStore.project?.id}/commission_funds/${projectCommissionFund.commissionFund}`
                 await axiosAuthenticated.patch(url, dataToPatch)
             }
         }
@@ -345,13 +329,15 @@ export default function () {
                 dataToPatch = Object.assign(dataToPatch, {[key]: value})
             }
         }
-        if (Object.entries(dataToPatch).length) {
-            projectStore.project = (await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}`, dataToPatch)).data
-        }
+        const hasDataToPatch: boolean = !!Object.entries(dataToPatch).length
+        if (!hasDataToPatch) return
+        const url = `/projects/${projectStore.project?.id}`
+        projectStore.project = (await axiosAuthenticated.patch(url, dataToPatch)).data
     }
 
     async function submitProject() {
-        await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}/status`, {projectStatus: 'PROJECT_PROCESSING'})
+        const url = `/projects/${projectStore.project?.id}/status`
+        await axiosAuthenticated.patch(url, {projectStatus: 'PROJECT_PROCESSING'})
     }
 
     async function deleteProject(id: number) {

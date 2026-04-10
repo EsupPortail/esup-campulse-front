@@ -23,58 +23,40 @@ export default function () {
     const {newAssociations} = useUserAssociations()
     const {processDocuments} = useDocumentUploads()
 
-    /**
-     * It creates an association with the name provided as a parameter
-     * @param newAssociation
-     */
+
     async function createAssociation(newAssociation: NewAssociation) {
         const {axiosAuthenticated} = useAxios()
         await axiosAuthenticated.post('/associations/', newAssociation)
     }
 
-    /**
-     * If the association has a president, then disable the president role and remove the president role from the
-     * association
-     * @param {AssociationRole} association - AssociationRole - this is the association that is being checked
-     */
     function checkHasPresident(association: AssociationRole) {
-        if (association.options) {
-            association.options[0].disable = false
-            const associationDetail = associationStore.associationNames.find(obj => obj.id === association.id)
-            if (associationDetail) {
-                if (associationDetail.hasPresident) {
-                    association.options[0].disable = true
-                    if (association.role === 'isPresident') {
-                        const model = newAssociations.value.find(obj => obj.id === association.id)
-                        if (model) model.role = 'isMember'
-                    }
-                }
-            }
+        if (!association.options) return
+        association.options[0].disable = false
+        const associationDetail = associationStore.associationNames.find(obj => obj.id === association.id)
+        if (!associationDetail?.hasPresident) return
+        association.options[0].disable = true
+        if (association.role === 'isPresident') {
+            const model = newAssociations.value.find(obj => obj.id === association.id)
+            if (model) model.role = 'isMember'
         }
     }
 
     // Commented in component since issue is not clear
     function checkHasStudentCertificate(association: AssociationRole) {
-        if (association.options) {
-            // If new user has not uploaded a student certificate
-            // He/she cannot join an association as an office member
-            if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
-                association.options.forEach(association => {
-                    if (association.isInOffice) association.disable = true
-                })
-            } else {
-                association.options.forEach(association => {
-                    if (association.isInOffice) association.disable = false
-                })
-            }
+        if (!association.options) return
+        // If new user has not uploaded a student certificate
+        // He/she cannot join an association as an office member
+        if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
+            association.options.forEach(association => {
+                if (association.isInOffice) association.disable = true
+            })
+        } else {
+            association.options.forEach(association => {
+                if (association.isInOffice) association.disable = false
+            })
         }
     }
 
-    /**
-     * It adds a new network to the associationSocialNetworks array.
-     *
-     * It works with the 'Remove Network' function below.
-     */
     function addNetwork() {
         const newNetwork: AssociationSocialNetwork = {
             type: '',
@@ -87,12 +69,6 @@ export default function () {
         associationSocialNetworks.value?.splice(index, 1)
     }
 
-
-    /**
-     * It checks if the data of an association has been modified by a member or a manager and returns the changed data
-     * @param {EditedAssociation} association - EditedAssociation
-     * @returns an object with the keys of the changed data and the values of the changed data.
-     */
     function checkChanges(association: EditedAssociation) {
         changedData = {}
         const {formatDate} = useUtility()
@@ -112,11 +88,11 @@ export default function () {
                 }
             }
             // Check institution, component and field
-            else if (key == 'institution' && value !== associationStore.association?.institution) {
+            else if (key == 'institution' && value !== associationStore.association?.institution?.id) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'institutionComponent' && value !== associationStore.association?.institutionComponent) {
+            } else if (key == 'institutionComponent' && value !== associationStore.association?.institutionComponent?.id) {
                 changedData = Object.assign(changedData, {[key]: value})
-            } else if (key == 'activityField' && value !== associationStore.association?.activityField) {
+            } else if (key == 'activityField' && value !== associationStore.association?.activityField?.id) {
                 changedData = Object.assign(changedData, {[key]: value})
             }
             // Check date
@@ -167,12 +143,10 @@ export default function () {
         }
     }
 
-    /**
-     * It updates the association in the database with the data that has been changed in the form
-     */
     async function updateAssociation() {
         const {axiosAuthenticated} = useAxios()
-        await axiosAuthenticated.patch(`/associations/${associationStore.association?.id}`, changedData)
+        const url = `/associations/${associationStore.association?.id}`
+        await axiosAuthenticated.patch(url, changedData)
     }
 
     async function changeAssociationLogo(newLogo: undefined | File, deleteLogoData: null | object) {

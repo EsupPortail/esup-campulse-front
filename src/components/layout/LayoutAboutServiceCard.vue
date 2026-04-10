@@ -1,9 +1,10 @@
 <script lang="ts" setup>
+import DOMPurify from 'dompurify'
 
 const props = defineProps<{
-    header?: string,
-    body?: string,
-    cssClass: string
+  header?: string,
+  body?: string,
+  cssClass: string
 }>()
 </script>
 
@@ -19,10 +20,10 @@ const props = defineProps<{
                     <i class="bi bi-filter-circle"></i>
                 </div>
 
-                <h3 v-html="props.header"></h3>
+                <h3 v-html="DOMPurify.sanitize(props.header)"></h3>
 
                 <div class="section-content">
-                    <p v-html="props.body"></p>
+                    <p v-html="DOMPurify.sanitize(props.body)"></p>
                 </div>
             </div>
         </div>
@@ -33,6 +34,16 @@ const props = defineProps<{
 @import '@/assets/styles/home.scss';
 
 h3 {
-    text-align: left;
+  text-align: center;
+}
+
+section > div {
+  flex-direction: row !important;
+  height: 100%;
+  width: 100%;
+}
+
+.flex-column {
+  width: 100%;
 }
 </style>

@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, LocalLogin, User, UserStore} from '#/user'
+import type {CasLogin, LocalLogin, User, UserAssociation, UserStore} from '#/user'
 import useSecurity from '@/composables/useSecurity'
 import {useAxios} from '@/composables/useAxios'
 import useUserGroups from '@/composables/useUserGroups'
@@ -44,18 +44,15 @@ export const useUserStore = defineStore('userStore', {
         }
     },
     actions: {
-        /**
-         * It takes an url and a data object, and then it makes a post request to the url with the data object
-         * @param {string} url - The url to send the request to.
-         * @param {LocalLogin | CasLogin} data - LocalLogin | CasLogin
-         */
+
         async logIn(url: string, data: LocalLogin | CasLogin) {
             const {axiosPublic} = useAxios()
             const {newUser, setTokens} = useSecurity()
             const response = await axiosPublic.post(url, data)
             const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
+            const hasGroups = !!user.groups.length
             // User account is complete
-            if (user.groups.length) {
+            if (hasGroups) {
                 // If user is validated by admin
                 if (user.isValidatedByAdmin) {
                     setTokens(access, refresh)
@@ -78,6 +75,7 @@ export const useUserStore = defineStore('userStore', {
                 throw new Error('USER_ACCOUNT_NOT_COMPLETE')
             }
         },
+
         logOut() {
             const {removeTokens} = useSecurity()
             const {isStaff} = useUserGroups()
@@ -85,45 +83,37 @@ export const useUserStore = defineStore('userStore', {
             this.unLoadUser()
             isStaff.value = undefined
         },
-        /**
-         * It gets the user data from the server, and if the user is validated by the admin, it sets the user data to the
-         * user variable, and if the user is not validated by the admin, it sets the user data to the newUser variable
-         */
+
         async getUser() {
             const {axiosAuthenticated} = useAxios()
             const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
             if (user.isValidatedByAdmin) {
                 this.user = user
-            } else {
-                // Specific case for CAS user data which can persist until complete registration
-                if (user.isCas) {
-                    this.newUser = {
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        isCas: true,
-                        username: user.username,
-                        email: user.email,
-                        phone: user.phone as string
-                    }
-                } else {
-                    await this.logOut()
+            } else if (user.isCas) {
+                this.newUser = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    isCas: true,
+                    username: user.username,
+                    email: user.email,
+                    phone: user.phone as string
                 }
+            } else {
+                this.logOut()
             }
         },
+
         unLoadUser() {
             this.user = undefined
             this.userAssociations = []
         },
+
         unLoadNewUser() {
             const {removeTokens} = useSecurity()
             removeTokens()
             this.newUser = undefined
         },
-        /**
-         * It sends a POST request to the backend with the CAS ticket and the service URL, and then it sets the tokens and
-         * the user
-         * @param {string} ticket - the ticket returned by CAS
-         */
+
         async loadCASUser(ticket: string) {
             const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
             const {axiosPublic} = useAxios()
@@ -141,36 +131,42 @@ export const useUserStore = defineStore('userStore', {
             }
         },
 
-        /**
-         * It checks if the user is president of the association.
-         * @param {number} associationId - number - The id of the association you want to check
-         * @returns A boolean value.
-         */
+        async getUserAssociations() {
+            const {axiosAuthenticated} = useAxios()
+
+            const url = `/users/${this.user?.id}/associations/`
+
+            const response = await axiosAuthenticated.get<UserAssociation[]>(url)
+            this.userAssociations = response.data
+        },
+
         hasPresidentStatus(associationId: number): boolean {
-            let perm = false
-            if (this.userAssociations.length && associationId) {
-                const association = this.userAssociations.find(obj => obj.association.id === associationId)
-                if (association?.isPresident) {
-                    perm = true
-                } else if ((association?.canBePresidentFrom) || (association?.canBePresidentTo)) {
-                    const today = new Date()
-                    today.setHours(0, 0, 0, 0)
-                    let canBePresidentFrom = today
-                    if (association?.canBePresidentFrom) {
-                        canBePresidentFrom = new Date(association?.canBePresidentFrom)
-                        canBePresidentFrom.setHours(0, 0, 0, 0)
-                    }
-                    let canBePresidentTo = today
-                    if (association?.canBePresidentTo) {
-                        canBePresidentTo = new Date(association?.canBePresidentTo)
-                        canBePresidentTo.setHours(0, 0, 0, 0)
-                    }
-                    if ((canBePresidentFrom <= today) && (canBePresidentTo >= today)) {
-                        perm = true
-                    }
+            if (!this.userAssociations.length || !associationId) return false
+
+            const association = this.userAssociations.find(obj => obj.association.id === associationId)
+            if (!association) return false
+
+            if (association.isPresident) {
+                return true
+            } else if (association.canBePresidentFrom || association.canBePresidentTo) {
+                const today = new Date()
+                today.setHours(0, 0, 0, 0)
+                let canBePresidentFrom = today
+                if (association.canBePresidentFrom) {
+                    canBePresidentFrom = new Date(association.canBePresidentFrom)
+                    canBePresidentFrom.setHours(0, 0, 0, 0)
                 }
+                let canBePresidentTo = today
+                if (association.canBePresidentTo) {
+                    canBePresidentTo = new Date(association.canBePresidentTo)
+                    canBePresidentTo.setHours(0, 0, 0, 0)
+                }
+                if ((canBePresidentFrom <= today) && (canBePresidentTo >= today)) {
+                    return true
+                }
+            } else {
+                return false
             }
-            return perm
         },
 
         async getUserDocuments(processTypes?: DocumentProcessType[]) {

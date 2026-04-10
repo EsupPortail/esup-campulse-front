@@ -9,7 +9,7 @@ export default function () {
 
     const {axiosPublic, axiosAuthenticated} = useAxios()
 
-    const libraryProcesses = ['CHARTER_ASSOCIATION', 'CHARTER_ASSOCIATION_INSTITUTION', 'CHARTER_PROJECT_FUND', 'DOCUMENT_PROJECT', 'NO_PROCESS']
+    const libraryProcesses = ['CHARTER_ASSOCIATION', 'CHARTER_PROJECT_FUND', 'DOCUMENT_PROJECT', 'NO_PROCESS']
 
     const mimeTypesLabels = [
         {
@@ -75,7 +75,8 @@ export default function () {
     }
 
     async function getLibraryDocuments() {
-        documents.value = (await axiosPublic.get<Document[]>(`/documents/?process_types=${libraryProcesses.join(',')}`)).data
+        const url = `/documents/?process_types=${libraryProcesses.join(',')}`
+        documents.value = (await axiosPublic.get<Document[]>(url)).data
     }
 
     async function getDocumentByAcronym(acronym: string) {

@@ -16,7 +16,6 @@ today.setHours(0, 0, 0, 0)
 const {
     userAssociations,
     associationRoleOptions,
-    getUserAssociations,
     initUserAssociations
 } = useUserAssociations()
 const {catchHTTPError} = useErrors()
@@ -30,7 +29,7 @@ onMounted(async () => {
 // Load userAssociations
 async function onGetUserAssociations() {
     try {
-        await getUserAssociations(userStore.user?.id, false)
+        await userStore.getUserAssociations()
         initUserAssociations(false)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -106,6 +105,6 @@ async function onGetUserAssociations() {
 @import '@/assets/styles/associations.scss';
 
 ul {
-    margin-left: 1.5rem;
+  margin-left: 1.5rem;
 }
 </style>

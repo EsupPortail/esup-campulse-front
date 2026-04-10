@@ -7,7 +7,7 @@ interface ContentStore {
 }
 
 interface SelectLabel {
-    value: number,
+    value: number | string,
     label: string
 }
 

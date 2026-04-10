@@ -1,6 +1,53 @@
-import type {Association, AssociationSearch, AssociationSocialNetwork, EditedAssociation} from '#/association'
-import type {UserAssociation} from '#/user'
+import type {
+    Association,
+    AssociationSearch,
+    AssociationSocialNetwork,
+    EditedAssociation,
+    Institution
+} from '#/association'
 
+
+export const _institutions: Institution[] = [
+    {
+        id: 1,
+        name: 'Université de Strasbourg',
+        acronym: 'Unistra'
+    },
+    {
+        id: 2,
+        name: 'Université de Haute Alsace',
+        acronym: 'UHA'
+    }
+]
+
+export const _institutionComponents = [
+    {
+        id: 1,
+        name: 'Faculté de Médecine',
+        institution: 1
+    },
+    {
+        id: 2,
+        name: 'Faculté des Langues',
+        institution: 1
+    }
+]
+
+
+export const _activityFields = [
+    {
+        id: 1,
+        name: 'Sciences'
+    },
+    {
+        id: 2,
+        name: 'Culture'
+    },
+    {
+        id: 3,
+        name: 'Musique'
+    },
+]
 
 export const _association: Association = {
     canSubmitProjects: true,
@@ -39,9 +86,9 @@ export const _association: Association = {
             location: 'https://mastodon.social'
         }
     ],
-    institution: 1,
-    institutionComponent: 1,
-    activityField: 1
+    institution: _institutions[0],
+    institutionComponent: _institutionComponents[0],
+    activityField: _activityFields[0]
 }
 
 export const _editedAssociation: EditedAssociation = {
@@ -100,9 +147,9 @@ export const _associations: Association[] = [
         isEnabled: true,
         isPublic: true,
         isSite: true,
-        institution: 1,
-        institutionComponent: 1,
-        activityField: 1,
+        institution: _institutions[0],
+        institutionComponent: _institutionComponents[0],
+        activityField: _activityFields[0],
         canSubmitProjects: true,
         charterStatus: 'CHARTER_DRAFT',
         charterDate: '',
@@ -117,22 +164,13 @@ export const _associations: Association[] = [
         isEnabled: true,
         isPublic: false,
         isSite: true,
-        institution: 2,
-        institutionComponent: 2,
-        activityField: 2,
+        institution: _institutions[1],
+        institutionComponent: _institutionComponents[1],
+        activityField: _activityFields[1],
         canSubmitProjects: true,
         charterStatus: 'CHARTER_DRAFT',
         charterDate: '',
         amountMembersAllowed: 4
-    }
-]
-
-export const _userAssociation: UserAssociation[] = [
-    {
-        id: 1,
-        name: 'Association',
-        isSite: true,
-        institution: 1
     }
 ]
 
@@ -203,68 +241,15 @@ export const _associationSocialNetworks: AssociationSocialNetwork[] = [
     }
 ]
 
-export const _institutions = [
-    {
-        id: 1,
-        name: 'Université de Strasbourg',
-        acronym: 'Unistra',
-        email: 'contact@unistra.fr',
-    },
-    {
-        id: 2,
-        name: 'Université de Haute Alsace',
-        acronym: 'UHA',
-        email: 'contact@uha.fr',
-    }
-]
-
 export const _institutionLabels = _institutions.map(institution => ({
     value: institution.id,
     label: `${institution.acronym} (${institution.name})`
 }))
 
-export const _institutionComponents = [
-    {
-        id: 1,
-        name: 'Faculté de Médecine',
-        institution: {
-            id: 1,
-            name: 'Université de Strasbourg',
-            acronym: 'Unistra',
-            email: 'contact@unistra.fr'
-        }
-    },
-    {
-        id: 2,
-        name: 'Faculté des Langues',
-        institution: {
-            id: 1,
-            name: 'Université de Strasbourg',
-            acronym: 'Unistra',
-            email: 'contact@unistra.fr'
-        }
-    }
-]
-
 export const _institutionComponentLabels = _institutionComponents.map(component => ({
     value: component.id,
     label: component.name
 }))
-
-export const _activityFields = [
-    {
-        id: 1,
-        name: 'Sciences'
-    },
-    {
-        id: 2,
-        name: 'Culture'
-    },
-    {
-        id: 3,
-        name: 'Musique'
-    },
-]
 
 export const _activityFieldLabels = _activityFields.map(field => ({
     value: field.id,

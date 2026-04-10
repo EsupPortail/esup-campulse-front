@@ -19,19 +19,19 @@ export default function () {
     }
 
     async function postNewProjectComment(project: number, comment: { text: string, isVisible: boolean }) {
-        if (comment.text) {
-            const data = {
-                project,
-                isVisible: comment.isVisible,
-                text: comment.text,
-                user: userStore.user?.id
-            }
-            await axiosAuthenticated.post('/projects/comments', data)
+        if (!comment.text) return
+        const data = {
+            project,
+            isVisible: comment.isVisible,
+            text: comment.text,
+            user: userStore.user?.id
         }
+        await axiosAuthenticated.post('/projects/comments', data)
     }
 
     async function patchProjectComment(projectId: number, comment: { id: number, text: string, isVisible: boolean }) {
-        await axiosAuthenticated.patch(`/projects/${projectId}/comments/${comment.id}`, {
+        const url = `/projects/${projectId}/comments/${comment.id}`
+        await axiosAuthenticated.patch(url, {
             text: comment.text,
             isVisible: comment.isVisible
         })
