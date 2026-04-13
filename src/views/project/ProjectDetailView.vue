@@ -43,11 +43,11 @@ onMounted(async () => {
 async function onGetProjectDetail() {
     try {
         await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
-        //await projectStore.getProjectCommissionFunds(false, undefined)
         initProjectBasicInfos()
         initProjectBudget()
         initProjectGoals()
     } catch (error) {
+        console.log('error', error)
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
             notify({

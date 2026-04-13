@@ -1,17 +1,20 @@
 import type {DocumentUpload} from '#/documents'
 import type {Commission} from '#/commissions'
+import type {UserAssociation, UserAssociationDetail} from '#/user'
 
 export interface Project {
     id: number,
     name: string,
+    manualIdentifier: string,
     plannedStartDate: string,
     plannedEndDate: string,
     plannedLocation: string,
-    user: number | null,
-    association: number | null,
-    associationUser: number | null,
+    user: UserAssociation['user'],
+    association: UserAssociationDetail,
+    associationUser: UserAssociation,
     partnerAssociation: string,
     categories?: ProjectCategoryName[],
+    commissions: Commission[],
     budgetPreviousEdition: number,
     targetAudience: string,
     amountStudentsAudience: number,
@@ -29,20 +32,20 @@ export interface Project {
     creationDate: string,
     editionDate: string,
     processingDate?: string,
-    manualIdentifier: string,
+    budgetFile: string,
 }
 
 export interface ProjectList {
     id: number,
     name: string,
-    association: number | null,
-    user: number | null,
-    associationUser: number | null,
+    association: string | null,
+    user: string | null,
+    associationUser: string | null,
     editionDate: string,
     plannedEndDate: string,
     plannedLocation: string,
     projectStatus: ProjectStatus,
-    commission: Commission,
+    commission?: Commission,
     manualIdentifier: string,
     budgetFile: string | null
 }
@@ -153,8 +156,8 @@ export interface ProjectComment {
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
-    selfProjects: ProjectList[],
-    managedProjects: ProjectList[],
+    selfProjects: Project[],
+    managedProjects: Project[],
     projectCategories: ProjectCategory[],
     projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],

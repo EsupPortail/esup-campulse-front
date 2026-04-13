@@ -176,7 +176,7 @@ const canUpdateProject = async () => {
         if (associationUser.value?.association?.canSubmitProjects) {
             if (hasPresidentStatus.value) {
                 canUpdateProject = true
-            } else if (projectStore.project?.associationUser === associationUser.value?.id) {
+            } else if (projectStore.project?.associationUser?.id === associationUser.value?.id) {
                 canUpdateProject = true
             }
         }
@@ -792,7 +792,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountAllAudience"
                                 :label="t('project.target-all-amount') + ' *'"
-                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-audience'), 
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-audience'),
                                          val => val !== '0' || t('forms.required-project-amount-all-audience-not-null'),
                                          val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"

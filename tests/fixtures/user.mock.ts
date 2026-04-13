@@ -4,6 +4,7 @@ import type {
     AssociationUser,
     User,
     UserAssociation,
+    UserAssociationDetail,
     UserGroup,
     UserRegister
 } from '#/user'
@@ -183,6 +184,18 @@ export const _usersNames = _users.map(
         label: user.firstName + ' ' + user.lastName
     })
 )
+
+export const _userAssociationDetail: UserAssociationDetail = {
+    id: 1,
+    name: 'Association super',
+    acronym: 'SUPASSO',
+    email: 'asso@mail.tld',
+    isEnabled: true,
+    isPublic: true,
+    isSite: true,
+    institution: 1,
+    canSubmitProjects: true,
+}
 
 export const _associationUser: AssociationUser[] = [
     {

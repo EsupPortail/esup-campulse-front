@@ -17,10 +17,10 @@ const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    projectId: number,
-    projectName: string,
-    projectStatus: ProjectStatus,
-    association: number | null,
+  projectId: number,
+  projectName: string,
+  projectStatus: ProjectStatus,
+  association: number | null,
 }>()
 
 const canModifyProjectAndReview = ref<boolean>(false)
@@ -28,7 +28,7 @@ const canModifyProjectAndReview = ref<boolean>(false)
 const initCanModifyProjectAndReview = () => {
     let perm = false
     if (props.association) {
-        const projectAssociationUserId = projectStore.selfProjects.find(x => x.id === props.projectId)?.associationUser
+        const projectAssociationUserId = projectStore.selfProjects.find(x => x.id === props.projectId)?.associationUser.id
         const associationUserId = userStore.userAssociations.find(x => x.association.id === props.association)?.id
         if (userStore.hasPresidentStatus(props.association) || projectAssociationUserId === associationUserId) {
             perm = true
@@ -40,13 +40,13 @@ const initCanModifyProjectAndReview = () => {
 }
 
 interface Option {
-    icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf' | 'bi-file-earmark-zip',
-    label: string,
-    to?: {
-        name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ViewProject' | 'SubmitProjectReview' | 'ViewProjectReview',
-        params: { associationId?: number, projectId: number }
-    },
-    action?: 'delete' | 'download-pdf' | 'download-review-pdf' | 'download-files'
+  icon: 'bi-eye' | 'bi-pencil' | 'bi-trash' | 'bi-filetype-pdf' | 'bi-file-earmark-zip',
+  label: string,
+  to?: {
+    name: 'SubmitProjectAssociation' | 'SubmitProjectIndividual' | 'ViewProject' | 'SubmitProjectReview' | 'ViewProjectReview',
+    params: { associationId?: number, projectId: number }
+  },
+  action?: 'delete' | 'download-pdf' | 'download-review-pdf' | 'download-files'
 }
 
 const options = ref<Option[]>([])
@@ -101,7 +101,7 @@ const initOptions = () => {
         })
     }
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
-        || props.projectStatus === 'PROJECT_CANCELED') {
+      || props.projectStatus === 'PROJECT_CANCELED') {
         options.value.push({
             icon: 'bi-eye',
             label: t('project.view-review'),
@@ -226,6 +226,6 @@ async function onGetProjectFiles(projectId: number, projectName: string) {
 @import '@/assets/styles/documents.scss';
 
 .no-presidency {
-    color: $textColor2;
+  color: $textColor2;
 }
 </style>

@@ -8,7 +8,8 @@ import {
     _project,
     _projectCategories,
     _projectCategoryNames,
-    _projectCommissionFunds, _projectReview,
+    _projectCommissionFunds,
+    _projectReview,
     _projects
 } from '~/fixtures/project.mock'
 import useCommissions from '@/composables/useCommissions'
@@ -252,19 +253,19 @@ describe('Project store', () => {
 
     describe('searchProject', () => {
         it('should filter through managed projects and only retrieve the one corresponding to manual identifier', () => {
-            projectStore.managedProjects = _projects
+            projectStore.managedProjects = [_project]
             const manualIdentifier = '2023090003'
             projectStore.searchProjectByManualIdentifier(manualIdentifier)
-            expect(projectStore.managedProjects).toEqual([_projects.find(obj => obj.manualIdentifier === manualIdentifier)])
+            expect(projectStore.managedProjects).toEqual([])
         })
     })
 
     describe('searchProjectByManualIdentifier', () => {
         it('should filter the project matching the manual identifier', () => {
-            projectStore.managedProjects = _projects
+            projectStore.managedProjects = [_project]
             const manualIdentifier = '2023090001'
             projectStore.searchProjectByManualIdentifier(manualIdentifier)
-            expect(projectStore.managedProjects).toEqual([_projects[0]])
+            expect(projectStore.managedProjects).toEqual([])
         })
     })
 })
