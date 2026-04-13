@@ -40,6 +40,9 @@ onMounted(async () => {
     await onGetGroups()
     await onInitGroupLabels()
     initStudentGroupSelection()
+    if (commissionMemberIsSelected.value) {
+        await onGetFunds()
+    }
     loading.hide()
 })
 
@@ -87,7 +90,7 @@ async function onGetFunds() {
 
 async function onInitGroupLabels() {
     try {
-        // Init group labels
+    // Init group labels
         let privacy = false
         if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) privacy = true
         await initGroupLabels(privacy)
