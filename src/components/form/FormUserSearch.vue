@@ -16,6 +16,10 @@ const {advancedSearch} = useUsers()
 const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
 
+const props = defineProps<{
+  routeName: string
+}>()
+
 
 const emit = defineEmits(['advancedSearch', 'getUsers'])
 
@@ -58,7 +62,7 @@ function filterAssociations(val: string, update: (cb: () => void) => void) {
 async function onSearch() {
     loading.show()
     try {
-        await userManagerStore.searchUsers(settings.value.search)
+        await userManagerStore.searchUsers(settings.value.search, props.routeName === 'ValidateUsers' ? 'unvalidated' : '')
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

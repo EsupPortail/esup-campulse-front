@@ -2,7 +2,7 @@
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useProjectStore} from '@/stores/useProjectStore'
-import type {ProjectList} from '#/project'
+import type {Project} from '#/project'
 import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
@@ -15,7 +15,7 @@ import useSecurity from '@/composables/useSecurity'
 import {useUserStore} from '@/stores/useUserStore'
 
 const importedProps = defineProps<{
-  projects: ProjectList[],
+  projects: Project[],
   title: string,
   associationId: number | null
 }>()

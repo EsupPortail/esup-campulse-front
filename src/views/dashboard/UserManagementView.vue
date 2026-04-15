@@ -103,6 +103,7 @@ const columns: QTableProps['columns'] = [
         <div class="dashboard-section-container">
             <div class="container-lg">
                 <FormUserSearch
+                    :route-name="route.name as string"
                     @advanced-search="(result) => users = result"
                     @get-users="onGetUsers"
                 />
