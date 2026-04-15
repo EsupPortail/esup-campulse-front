@@ -1,9 +1,18 @@
 <script lang="ts" setup>
 import DOMPurify from 'dompurify'
+import {computed} from 'vue'
 
-defineProps({
-    title: String,
-    description: String,
+const props = defineProps<{
+  title: string,
+  description: string,
+}>()
+
+const sanitizedTitle = computed(() => {
+    return DOMPurify.sanitize(props.title)
+})
+
+const sanitizedDescription = computed(() => {
+    return DOMPurify.sanitize(props.description)
 })
 </script>
 
@@ -17,8 +26,8 @@ defineProps({
                 <i class="bi bi-info-circle"></i>
             </div>
             <div>
-                <h3><strong v-html="DOMPurify.sanitize(title)"></strong></h3>
-                <p v-html="DOMPurify.sanitize(description)"></p>
+                <h3><strong v-html="sanitizedTitle"></strong></h3>
+                <p v-html="sanitizedDescription"></p>
             </div>
         </div>
     </div>
@@ -29,7 +38,7 @@ defineProps({
 @import "@/assets/_variables.scss";
 
 .flex-row {
-    align-items: start;
-    gap: 2rem;
+  align-items: start;
+  gap: 2rem;
 }
 </style>

@@ -1,21 +1,24 @@
 <script lang="ts" setup>
 import DOMPurify from 'dompurify'
+import {computed} from 'vue'
 
-defineProps({
-    title: String,
-    description: String,
-    imagePath: String,
-    imageAlt: String,
-    link: {
-        type: String,
-        required: true
-    },
-    cssClass: String,
-    buttonLabel: String,
-    infoContent: String,
-    titleLine1: String,
-    titleLine2: String,
-    iconClass: String
+const props = defineProps<{
+  description: string,
+  link: string,
+  cssClass: string,
+  buttonLabel: string,
+  infoContent: string,
+  titleLine1: string,
+  titleLine2: string,
+  iconClass: string
+}>()
+
+const sanitizedInfoContent = computed(() => {
+    return DOMPurify.sanitize(props.infoContent)
+})
+
+const sanitizedDescription = computed(() => {
+    return DOMPurify.sanitize(props.description)
 })
 </script>
 
@@ -44,12 +47,12 @@ defineProps({
                 </h2>
 
                 <div class="section-info">
-                    <p v-html="DOMPurify.sanitize(infoContent)"></p>
+                    <p v-html="sanitizedInfoContent"></p>
                 </div>
             </div>
 
             <div class="section-content">
-                <p v-html="DOMPurify.sanitize(description)"></p>
+                <p v-html="sanitizedDescription"></p>
                 <div class="section-buttons">
                     <RouterLink :to="link">
                         {{ buttonLabel }} <i

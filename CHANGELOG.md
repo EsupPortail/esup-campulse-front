@@ -1,5 +1,49 @@
 # Changelog
 
+## 1.3.1 (avril 2026)
+
+- Correction d'un problème de réactivité dans l'affichage des contenus de la page d'accueil
+
+## 1.3.0-cleanup (avril 2026)
+
+- Supprimer le processType CHARTER_ASSOCIATION_INSTITUTION
+- Ajouter la désinfection DOM pour v-html
+- L'identifiant de l'association devient l'identifiant utilisateur dans les routes userAssociations
+- Correction : amountAllAudience doit être supérieur à 0
+- Corriger le problème de flexbox sur la vue contact
+- Refactoriser les règles des dates de mise à jour des commissions dans les propriétés calculées
+- Refactoriser la mise à jour réactive du modèle en ligne dans la modification des commissions
+- Un seul document sur deux est désormais nécessaire pour la gestion et l'inscription des utilisateurs
+- Corriger updateUserAssociations
+- CharterDate devient maintenant la date d'expiration de la charte
+- Corriger la condition loadCasUser pour déclencher le POST
+- Changer le statut du projet "archivé" en "terminé"
+- Corriger l'affichage des champs d'adresse dans l'édition de l'association
+- Utiliser l'acronyme de l'association ou le nom tronqué dans la gestion des utilisateurs
+- La route de téléchargement de documents prend désormais l'ID utilisateur et est privée
+- La propriété isMultiple des documents devient maxUploads
+- Refactoriser l'ajout d'un utilisateur en tant que gestionnaire
+- Optimiser les composables
+- Nettoyer la logique du code
+- Corriger la redirection vers la connexion après la déconnexion via l'intercepteur axios
+- Ajouter une condition sur le téléchargement du fichier budget
+- Refactoriser la récupération de l'association (suppression des sous-informations)
+- Refactoriser user / userManagement / userAssociations
+- Supprimer les requêtes publiques pour l'association d'utilisateur et l'inscription de groupe
+- Refactoriser la route /users/associations
+- Mettre à jour les types des liens d'association utilisateur
+- Refactoriser l'inscription CAS
+- Refactoriser le GET userAssociations
+- Refactoriser l'inscription locale de l'utilisateur
+- Supprimer les statistiques de la page d'accueil
+- Supprimer le code de pagination inutile ou défectueux
+- Ajouter l'attribut data-test au tableau de gestion des chartes
+- Ajouter des attributs data-test pour la gestion des chartes
+- Affichage conditionnel des noms de fonds et d'associations sur la vue d'inscription
+- Ajouter des attributs data-test pour les tests E2E
+- Configurer Sonarqube pour le projet
+- Refactoriser la fonction getContents et ajouter des conditions pour les contenus manquants
+
 ## 1.2.8 (mai 2025)
 
 - Inverser l'ordre des onglets de commission dans la gestion des projets
