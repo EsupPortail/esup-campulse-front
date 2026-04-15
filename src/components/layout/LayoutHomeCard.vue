@@ -13,11 +13,11 @@ const props = defineProps<{
   iconClass: string
 }>()
 
-const infoContent = computed(() => {
+const sanitizedInfoContent = computed(() => {
     return DOMPurify.sanitize(props.infoContent)
 })
 
-const description = computed(() => {
+const sanitizedDescription = computed(() => {
     return DOMPurify.sanitize(props.description)
 })
 </script>
@@ -47,12 +47,12 @@ const description = computed(() => {
                 </h2>
 
                 <div class="section-info">
-                    <p v-html="infoContent"></p>
+                    <p v-html="sanitizedInfoContent"></p>
                 </div>
             </div>
 
             <div class="section-content">
-                <p v-html="description"></p>
+                <p v-html="sanitizedDescription"></p>
                 <div class="section-buttons">
                     <RouterLink :to="link">
                         {{ buttonLabel }} <i
