@@ -4,10 +4,10 @@ import HomeBanner from '@/components/layout/LayoutHomeBanner.vue'
 import {useContentStore} from '@/stores/useContentStore'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import {onMounted, ref} from 'vue'
+import {computed, onMounted} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
-import type {Content} from '#/index'
+
 
 const contentStore = useContentStore()
 const {notify, loading} = useQuasar()
@@ -17,25 +17,17 @@ const {catchHTTPError} = useErrors()
 onMounted(async () => {
     loading.show()
     await onGetContents()
-    initContent()
     loading.hide()
 })
-
-const homeAssociation = ref<Content>()
-const homeCharter = ref<Content>()
-const homeProject = ref<Content>()
-const homeInfo = ref<Content>()
 
 function findContentObject(code: string) {
     return contentStore.contents.find(obj => obj.code === code)
 }
 
-const initContent = () => {
-    homeAssociation.value = findContentObject('HOME_ASSOCIATION')
-    homeProject.value = findContentObject('HOME_PROJECT')
-    homeCharter.value = findContentObject('HOME_CHARTER')
-    homeInfo.value = findContentObject('HOME_INFO')
-}
+const homeAssociation = computed(() => findContentObject('HOME_ASSOCIATION'))
+const homeProject = computed(() => findContentObject('HOME_PROJECT'))
+const homeCharter = computed(() => findContentObject('HOME_CHARTER'))
+const homeInfo = computed(() => findContentObject('HOME_INFO'))
 
 async function onGetContents() {
     try {
