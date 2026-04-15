@@ -1,6 +1,6 @@
 import {fileURLToPath, URL} from 'url'
 import {defineConfig, loadEnv} from 'vite'
-import {resolve, dirname} from 'node:path'
+import {dirname, resolve} from 'node:path'
 import {quasar, transformAssetUrls} from '@quasar/vite-plugin'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
@@ -52,7 +52,12 @@ export default defineConfig(({command, mode}) => {
                 },
             },
             server: {
+                host: true,
                 port: 3000,
+                strictPort: true,
+                watch: {
+                    usePolling: true,
+                },
             },
             test: {
                 environment: 'jsdom',
