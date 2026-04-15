@@ -55,7 +55,6 @@ function reverseDate(date: string) {
 
 <template>
     <div>
-        {{ homeInfo ?? 'undefined' }}
         <HomeBanner
             id="home-info-panel"
             :description="homeInfo?.body ?? ''"
