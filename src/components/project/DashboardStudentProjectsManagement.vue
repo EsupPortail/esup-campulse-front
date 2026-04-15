@@ -29,7 +29,7 @@ const tabs = ref<Tabs[]>([])
 const initTabs = () => {
     tabs.value = []
     if (hasPerm('add_project_association')) {
-        userStore.userAssociations.forEach(association => {
+        userStore.userAssociations.filter(association => association.isValidatedByAdmin).forEach(association => {
             tabs.value.push({
                 label: t('project.projects-of') + ' ' + association.association.name,
                 name: association.association.name,
