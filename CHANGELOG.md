@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1 (avril 2026)
+
+- Correction d'un problème de réactivité dans l'affichage des contenus de la page d'accueil
+
 ## 1.3.0-cleanup (avril 2026)
 
 - Supprimer le processType CHARTER_ASSOCIATION_INSTITUTION
