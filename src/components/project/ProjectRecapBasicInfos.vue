@@ -35,7 +35,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
                 {{
                     applicant === 'association' ? `${projectStore.project?.association.acronym}
                 (${projectStore.project?.association.name})` :
-                    `${projectStore.project?.user.firstName} ${projectStore.project?.user.lastName}`
+                    `${projectStore.project?.user?.firstName} ${projectStore.project?.user?.lastName}`
                 }}
             </p>
         </div>
@@ -137,7 +137,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
             </h4>
             <p>
                 {{
-                    `${projectStore.project?.associationUser?.user.firstName} ${projectStore.project?.associationUser?.user.lastName}`
+                    `${projectStore.project?.associationUser?.user?.firstName} ${projectStore.project?.associationUser?.user?.lastName}`
                 }}
             </p>
         </div>
