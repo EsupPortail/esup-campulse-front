@@ -6,10 +6,12 @@ import type {
     ProjectCommissionFund,
     ProjectGoals,
     ProjectList,
-    ProjectReview
+    ProjectReview,
 } from '#/project'
 import type {DocumentUpload} from '#/documents'
 import {_currentYear} from './dates.mock'
+import {_userAssociation, _userAssociationDetail} from '~/fixtures/user.mock'
+import {_commissions} from '~/fixtures/commissions.mock'
 
 export const _project: Project = {
     id: 1,
@@ -18,8 +20,9 @@ export const _project: Project = {
     plannedEndDate: '2023-10-26T20:00:00+02:00',
     plannedLocation: '16 rue René Descartes, 67000 Strasbourg, FRANCE',
     user: null,
-    association: 1,
-    associationUser: 1,
+    association: _userAssociationDetail,
+    associationUser: _userAssociation,
+    commissions: _commissions,
     partnerAssociation: 'Personne',
     budgetPreviousEdition: 1000,
     targetAudience: 'Une centaine d\'étudiants.',
@@ -38,7 +41,8 @@ export const _project: Project = {
     creationDate: '2023-06-01',
     editionDate: '2023-06-02',
     processingDate: '2023-06-02',
-    manualIdentifier: '20230001'
+    manualIdentifier: '20230001',
+    budgetFile: 'file',
 }
 
 export const _projects: ProjectList[] = [
@@ -46,119 +50,77 @@ export const _projects: ProjectList[] = [
         id: 1,
         name: 'Projet associatif de porteur de projet individuel',
         association: null,
-        user: 9,
+        user: 'Tarte en Pion',
         editionDate: '2023-03-15T11:18:47+01:00',
         projectStatus: 'PROJECT_DRAFT',
-        associationUser: 1,
+        associationUser: null,
         plannedEndDate: '2023-09-30',
         plannedLocation: 'Strasbourg',
-        commission: {
-            id: 1,
-            submissionDate: '',
-            commissionDate: '',
-            isOpenToProjects: true,
-            name: ''
-        },
         manualIdentifier: '2023090001',
         budgetFile: null
     },
     {
         id: 2,
         name: 'Projet associatif porté par une association',
-        association: 2,
+        association: 'Association super',
         user: null,
         editionDate: '2023-03-14T11:18:47+01:00',
         projectStatus: 'PROJECT_DRAFT',
-        associationUser: 1,
+        associationUser: 'Tarte au chocolat',
         plannedEndDate: '2023-09-30',
         plannedLocation: 'Strasbourg',
-        commission: {
-            id: 1,
-            submissionDate: '',
-            commissionDate: '',
-            isOpenToProjects: true,
-            name: ''
-        },
         manualIdentifier: '2023090002',
         budgetFile: null
     },
     {
         id: 3,
         name: 'test',
-        association: 2,
+        association: 'Association vraiment super',
         user: null,
         editionDate: '2023-04-26T14:27:42.938670+02:00',
         projectStatus: 'PROJECT_DRAFT',
-        associationUser: 1,
+        associationUser: 'Tarte au citron',
         plannedEndDate: '2023-09-30',
         plannedLocation: 'Strasbourg',
-        commission: {
-            id: 1,
-            submissionDate: '',
-            commissionDate: '',
-            isOpenToProjects: true,
-            name: ''
-        },
         manualIdentifier: '2023090003',
         budgetFile: null
     },
     {
         id: 4,
         name: 'test',
-        association: 2,
+        association: 'Association vraiment trop trop super',
         user: null,
         editionDate: '2023-04-26T14:28:59.408076+02:00',
         projectStatus: 'PROJECT_DRAFT',
-        associationUser: 1,
+        associationUser: 'Tarte aux fraises',
         plannedEndDate: '2023-09-30',
         plannedLocation: 'Strasbourg',
-        commission: {
-            id: 1,
-            submissionDate: '',
-            commissionDate: '',
-            isOpenToProjects: true,
-            name: ''
-        },
         manualIdentifier: '2023090004',
         budgetFile: null
     },
     {
         id: 5,
         name: 'test',
-        association: 2,
+        association: 'Association géniale',
         user: null,
         editionDate: '2023-04-28T11:06:52.944326+02:00',
         projectStatus: 'PROJECT_DRAFT',
-        associationUser: 1,
+        associationUser: 'Tarte tatin',
         plannedEndDate: '2023-09-30',
         plannedLocation: 'Strasbourg',
-        commission: {
-            id: 1,
-            submissionDate: '',
-            commissionDate: '',
-            isOpenToProjects: true,
-            name: ''
-        },
         manualIdentifier: '2023090005',
         budgetFile: null
     },
     {
         id: 6,
         name: 'test',
-        association: 2,
+        association: 'Association bof',
         user: null,
         editionDate: '2023-04-28T11:07:42.336557+02:00',
         projectStatus: 'PROJECT_DRAFT',
-        associationUser: 1,
+        associationUser: 'Tarte au fromage blanc',
         plannedEndDate: '2023-09-30',
         plannedLocation: 'Strasbourg',
-        commission: {
-            id: 1,
-            submissionDate: '',
-            commissionDate: '',
-            isOpenToProjects: true,
-            name: ''
-        },
         manualIdentifier: '2023090006',
         budgetFile: null
     }

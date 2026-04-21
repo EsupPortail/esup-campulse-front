@@ -130,7 +130,7 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             const {axiosAuthenticated} = useAxios()
             await axiosAuthenticated.delete(`/users/${this.user?.id}`)
         },
-        async searchUsers(searchQuery: string) {
+        async searchUsers(searchQuery: string, status?: 'validated' | 'unvalidated' | '') {
             if (!searchQuery) return
 
             const {hasPerm} = useSecurity()
@@ -150,6 +150,10 @@ export const useUserManagerStore = defineStore('userManagerStore', {
                 institutions += userStore.userInstitutions?.join(',')
                 if (hasPerm('view_user_misc')) institutions += ','
                 urlArray.push(institutions)
+            }
+
+            if (status) {
+                urlArray.push(`is_validated_by_admin=${status === 'validated'}`)
             }
 
             this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data

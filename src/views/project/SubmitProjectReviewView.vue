@@ -101,8 +101,8 @@ async function onUploadDocuments(nextStep: number) {
     if (projectStore.project) {
         try {
             await uploadDocuments(
-                projectStore.project.association ?? null,
-                projectStore.project.user ?? null)
+                projectStore.project.association?.id ?? null,
+                projectStore.project.user?.id ?? null)
             step.value = nextStep
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {

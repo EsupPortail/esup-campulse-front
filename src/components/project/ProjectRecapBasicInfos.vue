@@ -1,84 +1,25 @@
 <script lang="ts" setup>
 import useSubmitProject from '@/composables/useSubmitProject'
 import {useI18n} from 'vue-i18n'
-import axios from 'axios'
-import {useQuasar} from 'quasar'
-import {onMounted, ref} from 'vue'
-import useErrors from '@/composables/useErrors'
+import {ref} from 'vue'
 import ProjectRecapCategories from '@/components/project/ProjectRecapCategories.vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import useCharters from '@/composables/useCharters'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useProjectStore} from '@/stores/useProjectStore'
 
 const {
     projectBasicInfos,
     projectId,
     projectProcessingDate,
-    initProjectAssociationUsersLabels,
-    projectAssociationUsersLabels
 } = useSubmitProject()
 const {t} = useI18n()
-const {notify, loading} = useQuasar()
-const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
-const userManagerStore = useUserManagerStore()
+const projectStore = useProjectStore()
 const {initAssociationCharterStatus} = useCharters()
 
 const applicant = ref<'association' | 'user'>(projectBasicInfos.value.association ? 'association' : 'user')
 
-onMounted(async () => {
-    loading.show()
-    await onGetAssociationUsers()
-    await onGetAssociationDetails()
-    await onGetUser()
-    loading.hide()
-})
-
-async function onGetAssociationUsers() {
-    try {
-        if (projectBasicInfos.value.associationUser && applicant.value === 'association') {
-            await initProjectAssociationUsersLabels(projectBasicInfos.value.association as number)
-        }
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
-    }
-}
-
-async function onGetAssociationDetails() {
-    if (applicant.value === 'association') {
-        try {
-            await associationStore.getAssociationDetail(projectBasicInfos.value.association as number, false)
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                notify({
-                    type: 'negative',
-                    message: await catchHTTPError(error.response)
-                })
-            }
-        }
-    }
-}
-
-async function onGetUser() {
-    if (applicant.value === 'user') {
-        try {
-            await userManagerStore.getUserDetail(projectBasicInfos.value.user as number)
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                notify({
-                    type: 'negative',
-                    message: await catchHTTPError(error.response)
-                })
-            }
-        }
-    }
-}
 </script>
 
 <template>
@@ -92,9 +33,9 @@ async function onGetUser() {
             </h4>
             <p>
                 {{
-                    applicant === 'association' ? `${associationStore.association?.acronym}
-                (${associationStore.association?.name})` :
-                    `${userManagerStore.user?.firstName} ${userManagerStore.user?.lastName}`
+                    applicant === 'association' ? `${projectStore.project?.association.acronym}
+                (${projectStore.project?.association.name})` :
+                    `${projectStore.project?.user?.firstName} ${projectStore.project?.user?.lastName}`
                 }}
             </p>
         </div>
@@ -194,7 +135,11 @@ async function onGetUser() {
             >
                 {{ t('project.association-user') }}
             </h4>
-            <p>{{ projectAssociationUsersLabels.find(x => x.value === projectBasicInfos.associationUser)?.label }}</p>
+            <p>
+                {{
+                    `${projectStore.project?.associationUser?.user?.firstName} ${projectStore.project?.associationUser?.user?.lastName}`
+                }}
+            </p>
         </div>
 
         <div

@@ -4,7 +4,6 @@ import type {
     ProjectCategory,
     ProjectCategoryName,
     ProjectCommissionFund,
-    ProjectList,
     ProjectReview,
     ProjectStatus,
     ProjectStore
@@ -110,18 +109,18 @@ export const useProjectStore = defineStore('projectStore', {
             urlArray.push(`project_statuses=${statuses}`)
             if (commission) urlArray.push(`commission_id=${commission}`)
             if (urlArray.length) urlString += '?' + urlArray.join('&')
-            this.managedProjects = (await axiosAuthenticated.get<ProjectList[]>(urlString)).data
+            this.managedProjects = (await axiosAuthenticated.get<Project[]>(urlString)).data
         },
 
         async getAllProjects() {
             const {axiosAuthenticated} = useAxios()
-            this.selfProjects = (await axiosAuthenticated.get<ProjectList[]>('/projects/')).data
+            this.selfProjects = (await axiosAuthenticated.get<Project[]>('/projects/')).data
         },
 
         async getAssociationProjects(associationId: number) {
             const {axiosAuthenticated} = useAxios()
             const url = `/projects/?association_id=${associationId}`
-            this.selfProjects = (await axiosAuthenticated.get<ProjectList[]>(url)).data
+            this.selfProjects = (await axiosAuthenticated.get<Project[]>(url)).data
         },
 
         async getProjectReview(projectId: number) {

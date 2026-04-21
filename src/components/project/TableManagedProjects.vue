@@ -5,8 +5,7 @@ import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import type {ProjectList} from '#/project'
+import type {Project, ProjectList} from '#/project'
 import axios from 'axios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
@@ -20,7 +19,6 @@ import CommissionExport from '@/components/commissions/CommissionExport.vue'
 const {t} = useI18n()
 const {formatDate} = useUtility()
 const associationStore = useAssociationStore()
-const userManagerStore = useUserManagerStore()
 const projectStore = useProjectStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -40,16 +38,6 @@ const projects = ref<ProjectList[]>([])
 
 const selected = ref<QTableProps['selected']>([])
 
-const applicant = (association: number | null, user: number | null) => {
-    if (association) {
-        const obj = associationStore.associations.find(x => x.id === association)
-        if (obj) return obj.acronym
-    } else {
-        const userObj = userManagerStore.users.find(obj => obj.id === user)
-        if (userObj) return `${userObj.firstName} ${userObj.lastName}`
-    }
-}
-
 const isSite = (association: number | null) => {
     if (!association) return false
     const obj = associationStore.associations.find(x => x.id === association)
@@ -57,15 +45,29 @@ const isSite = (association: number | null) => {
 }
 
 const initProjects = () => {
+    let factory: Project[] = []
     if (props.projectStatus === 'validated') {
-        projects.value = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_VALIDATED'
+        factory = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_VALIDATED'
         || obj.projectStatus === 'PROJECT_REVIEW_PROCESSING' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else if (props.projectStatus === 'archived') {
-        projects.value = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
+        factory = projectStore.managedProjects.filter(obj => obj.projectStatus === 'PROJECT_REJECTED'
         || obj.projectStatus === 'PROJECT_CANCELED' || obj.projectStatus === 'PROJECT_REVIEW_VALIDATED')
     } else {
-        projects.value = projectStore.managedProjects
+        factory = projectStore.managedProjects
     }
+    projects.value = factory.map(p => ({
+        id: p.id,
+        name: p.name,
+        association: p.association ? p.association.acronym : '',
+        user: p.user ? `${p.user.firstName} ${p.user.lastName} ` : '',
+        associationUser: p.associationUser ? `${p.associationUser.user.firstName} ${p.associationUser.user.lastName}` : '',
+        editionDate: p.editionDate,
+        plannedEndDate: p.plannedEndDate,
+        plannedLocation: p.plannedLocation,
+        projectStatus: p.projectStatus,
+        manualIdentifier: p.manualIdentifier,
+        budgetFile: p.budgetFile
+    }))
 }
 
 watch(() => projectStore.managedProjects, initProjects)
@@ -73,7 +75,6 @@ watch(() => projectStore.managedProjects, initProjects)
 onMounted(async () => {
     loading.show()
     await onGetProjects()
-    await onGetApplicants()
     initProjects()
     isLoaded.value = true
     loading.hide()
@@ -85,26 +86,6 @@ async function onGetProjects() {
         await projectStore.getProjectCommissionFunds(true, props.commissionId)
         await getCommissionFunds()
         await getFunds()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
-    }
-}
-
-async function onGetApplicants() {
-    try {
-        if (projectStore.managedProjects.length) {
-            if (projectStore.managedProjects.find(obj => obj.association !== null)) {
-                await associationStore.getAssociations(false)
-            }
-            if (projectStore.managedProjects.find(obj => obj.user !== null)) {
-                await userManagerStore.getUsers('validated')
-            }
-        }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -129,7 +110,7 @@ const columns: QTableProps['columns'] = [
         name: 'applicant',
         align: 'left',
         label: t('project.applicant'),
-        field: row => applicant(row.association, row.user),
+        field: row => row.association || row.user,
         sortable: true,
         format: val => `${val}`
     },
@@ -221,7 +202,7 @@ const columns: QTableProps['columns'] = [
                     :props="props"
                     headers="applicant"
                 >
-                    {{ applicant(props.row.association, props.row.user) }}
+                    {{ props.row.association || props.row.user }}
                 </QTd>
                 <QTd
                     key="lastModifiedDate"

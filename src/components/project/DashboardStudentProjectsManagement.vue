@@ -29,7 +29,7 @@ const tabs = ref<Tabs[]>([])
 const initTabs = () => {
     tabs.value = []
     if (hasPerm('add_project_association')) {
-        userStore.userAssociations.forEach(association => {
+        userStore.userAssociations.filter(association => association.isValidatedByAdmin).forEach(association => {
             tabs.value.push({
                 label: t('project.projects-of') + ' ' + association.association.name,
                 name: association.association.name,
@@ -229,8 +229,8 @@ watch(() => tab.value, initCanSubmitProjects)
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?
-                                                projectStore.selfProjects.filter(project => project.association === tab.association) :
-                                                projectStore.selfProjects.filter(project => project.user === userStore.user?.id)"
+                                                projectStore.selfProjects.filter(project => project.association.id === tab.association) :
+                                                projectStore.selfProjects.filter(project => project.user.id === userStore.user?.id)"
                                             :title="t('project.all-projects')"
                                         />
                                     </QTabPanel>
@@ -238,9 +238,9 @@ watch(() => tab.value, initCanSubmitProjects)
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?
-                                                projectStore.selfProjects.filter(project => project.association === tab.association
+                                                projectStore.selfProjects.filter(project => project.association.id === tab.association
                                                     && project.projectStatus === 'PROJECT_REVIEW_VALIDATED') :
-                                                projectStore.selfProjects.filter(project => project.user === userStore.user?.id
+                                                projectStore.selfProjects.filter(project => project.user.id === userStore.user?.id
                                                     && project.projectStatus === 'PROJECT_REVIEW_VALIDATED')"
                                             :title="t('project.validated-projects')"
                                         />
@@ -249,9 +249,9 @@ watch(() => tab.value, initCanSubmitProjects)
                                         <TableUserProjects
                                             :association-id="tab.association"
                                             :projects="tab.association ?
-                                                projectStore.selfProjects.filter(project => project.association === tab.association &&
+                                                projectStore.selfProjects.filter(project => project.association.id === tab.association &&
                                                     (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELED')) :
-                                                projectStore.selfProjects.filter(project => project.user === userStore.user?.id &&
+                                                projectStore.selfProjects.filter(project => project.user.id === userStore.user?.id &&
                                                     (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELED'))"
                                             :title="t('project.rejected-projects')"
                                         />

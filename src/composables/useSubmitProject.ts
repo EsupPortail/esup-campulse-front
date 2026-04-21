@@ -84,9 +84,9 @@ export default function () {
         projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string)
         projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string)
         projectBasicInfos.value.plannedLocation = projectStore.project?.plannedLocation as string
-        projectBasicInfos.value.user = projectStore.project?.user as number | null
-        projectBasicInfos.value.association = projectStore.project?.association as number | null
-        projectBasicInfos.value.associationUser = projectStore.project?.associationUser as number | null
+        projectBasicInfos.value.user = projectStore.project?.user?.id as number | null
+        projectBasicInfos.value.association = projectStore.project?.association?.id as number | null
+        projectBasicInfos.value.associationUser = projectStore.project?.associationUser?.id as number | null
         projectBasicInfos.value.partnerAssociation = projectStore.project?.partnerAssociation as string
     }
 
@@ -249,10 +249,9 @@ export default function () {
         if (projectBasicInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
             dataToPatch = Object.assign(dataToPatch, {['plannedLocation']: projectBasicInfos.value.plannedLocation})
         }
-        if (projectBasicInfos.value.associationUser !== projectStore.project?.associationUser) {
+        if (projectBasicInfos.value.associationUser !== projectStore.project?.associationUser.id) {
             dataToPatch = Object.assign(dataToPatch, {['associationUser']: projectBasicInfos.value.associationUser})
         }
-
         if (Object.entries(dataToPatch).length) {
             projectStore.project = (await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}`, dataToPatch)).data
         }
