@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2 (avril 2026)
+
+- Correction du responsable de projet dans un projet d'association manquant
+- Les étudiants peuvent uniquement voir les projets des associations dont ils sont membres et validés
+- Ajout d'un Dockerfile pour lancer le front avec Docker
+
 ## 1.3.1 (avril 2026)
 
 - Correction d'un problème de réactivité dans l'affichage des contenus de la page d'accueil
