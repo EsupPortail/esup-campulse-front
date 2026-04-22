@@ -46,14 +46,18 @@ export const useAssociationStore = defineStore('associationStore', {
                 })))
         },
         institutionComponentLabels: (state: AssociationStore) => {
-            return state.institutionComponents.map((
+            const institutionComponents = state.institutionComponents.length ?
+                state.institutionComponents : [state.association?.institutionComponent]
+            return institutionComponents.map((
                 institutionComponent => ({
                     value: institutionComponent.id,
                     label: institutionComponent.name
                 })))
         },
         activityFieldLabels: (state: AssociationStore) => {
-            return state.activityFields.map((
+            const activityFields = state.activityFields.length ?
+                state.activityFields : [state.association?.activityField]
+            return activityFields.map((
                 activityField => ({
                     value: activityField.id,
                     label: activityField.name
