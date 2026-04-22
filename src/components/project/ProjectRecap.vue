@@ -10,7 +10,7 @@ import InfoVerifyDocuments from '@/components/infoPanel/InfoVerifyDocuments.vue'
 const {t} = useI18n()
 
 const props = defineProps<{
-    view: 'submitProject' | 'projectDetail'
+  view: 'submitProject' | 'projectDetail'
 }>()
 
 const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
@@ -23,11 +23,11 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
         @submit.prevent="emit('submitProject')"
     >
         <!--        <h3
-                    v-if="props.view === 'submitProject'"
-                    class="title-2"
-                >
-                    {{ t('recap') }}
-                </h3>-->
+                v-if="props.view === 'submitProject'"
+                class="title-2"
+            >
+                {{ t('recap') }}
+            </h3>-->
 
         <div class="flex-column">
             <!-- BASIC INFOS -->
@@ -82,7 +82,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
             <div
                 class="flex-row-space-between padding-top padding-bottom"
             >
-                <h3>{{ t('project.goals') }}</h3>
+                <h3>{{ t('project.goals-title') }}</h3>
                 <QBtn
                     v-if="props.view === 'submitProject'"
                     :label="t('modify')"

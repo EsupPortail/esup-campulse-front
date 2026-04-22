@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.3 (avril 2026)
+
+- Correction du titre des objectifs d'un projet
+- Correction des labels de composantes et domaines d'activité dans la signature des chartes
+- Ajout d'un fallback en cas de projet non possédé dans la liste côté étudiant
+
 ## 1.3.2 (avril 2026)
 
 - Correction du responsable de projet dans un projet d'association manquant

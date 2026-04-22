@@ -160,7 +160,7 @@ const columns = ref<QTableProps['columns']>([
                     headers="projectAssociationUser"
                 >
                     {{
-                        hasPerm('add_project_association') ? projectAssociationUser(props.row.associationUser.id) :
+                        hasPerm('add_project_association') ? projectAssociationUser(props.row.associationUser?.id) :
                         userStore.user?.firstName + ' ' + userStore.user?.lastName
                     }}
                 </QTd>

@@ -9,7 +9,7 @@ const {t} = useI18n()
 <template>
     <div class="flex-column">
         <div class="display-row">
-            <h4 :data-test="t('project.goals-title')">{{ t('project.goals-title') }}</h4>
+            <h4 :data-test="t('project.goals-title')">{{ t('project.goals') }}</h4>
             <p>{{ projectGoals.goals }}</p>
         </div>
 
