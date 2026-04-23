@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.4 (avril 2026)
+
+- Correction des labels de composantes et domaines d'activité, dans le cas où le chargement est différé
+
 ## 1.3.3 (avril 2026)
 
 - Correction du titre des objectifs d'un projet

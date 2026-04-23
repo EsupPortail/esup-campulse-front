@@ -50,8 +50,8 @@ export const useAssociationStore = defineStore('associationStore', {
                 state.institutionComponents : [state.association?.institutionComponent]
             return institutionComponents.map((
                 institutionComponent => ({
-                    value: institutionComponent.id,
-                    label: institutionComponent.name
+                    value: institutionComponent?.id,
+                    label: institutionComponent?.name
                 })))
         },
         activityFieldLabels: (state: AssociationStore) => {
@@ -59,8 +59,8 @@ export const useAssociationStore = defineStore('associationStore', {
                 state.activityFields : [state.association?.activityField]
             return activityFields.map((
                 activityField => ({
-                    value: activityField.id,
-                    label: activityField.name
+                    value: activityField?.id,
+                    label: activityField?.name
                 })))
         }
     },
