@@ -164,7 +164,7 @@ export default function () {
     async function uploadDocuments(associationId: number | null, user: number | null) {
         for (const document of processDocuments.value) {
 
-            if (!document.pathFile) return
+            if (!document.pathFile) continue
 
             if (document.maxUploads > 1) {
                 const files = document.pathFile as Blob[] | []
