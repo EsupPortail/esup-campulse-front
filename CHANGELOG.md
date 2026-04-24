@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.5 (avril)
+
+- Correction d'un bug qui empêchait la soumission de documents en cas de modification (chartes et projets)
+
 ## 1.3.4 (avril 2026)
 
 - Correction des labels de composantes et domaines d'activité, dans le cas où le chargement est différé
