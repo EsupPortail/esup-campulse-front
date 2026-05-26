@@ -71,8 +71,8 @@ const initEditedAssociation = () => {
     editedAssociation.value.country = associationStore.association?.country
     editedAssociation.value.phone = associationStore.association?.phone
     editedAssociation.value.email = associationStore.association?.email
-    editedAssociation.value.institutionComponent = associationStore.association?.institutionComponent.id
-    editedAssociation.value.activityField = associationStore.association?.activityField.id
+    editedAssociation.value.institutionComponent = associationStore.association?.institutionComponent?.id
+    editedAssociation.value.activityField = associationStore.association?.activityField?.id
     editedAssociation.value.siret = associationStore.association?.siret
 }
 watch(() => associationStore.association, initEditedAssociation)

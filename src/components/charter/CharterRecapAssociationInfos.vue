@@ -65,11 +65,11 @@ async function onGetAssociationDetails() {
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.institution-component') }}</p>
-            <p>{{ associationStore.association?.institutionComponent.name }}</p>
+            <p>{{ associationStore.association?.institutionComponent?.name }}</p>
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.activity-field') }}</p>
-            <p>{{ associationStore.association?.activityField.name }}</p>
+            <p>{{ associationStore.association?.activityField?.name }}</p>
         </div>
         <div class="display-row">
             <p class="row-title">{{ t('association.labels.address') }}</p>
