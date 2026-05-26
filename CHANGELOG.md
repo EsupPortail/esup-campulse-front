@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.6 (mai)
+
+- Ajout d'un fallback au cas où la composante et le domaine d'activité manquent lors de la signature d'une charte
+
 ## 1.3.5 (avril)
 
 - Correction d'un bug qui empêchait la soumission de documents en cas de modification (chartes et projets)
