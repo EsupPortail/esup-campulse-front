@@ -230,7 +230,7 @@ export default function () {
     async function loadCASUser() {
         const route = useRoute()
         // For aborted CAS registration or regular CAS registration
-        if ((userStore.newUser && userStore.isCas) || route.query.ticket) {
+        if (route.query.ticket) { // FIX 05/26: delete other condition || (userStore.newUser && userStore.isCas)
             await userStore.loadCASUser(route.query.ticket as string)
         }
     }
