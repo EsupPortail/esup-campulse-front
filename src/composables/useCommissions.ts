@@ -35,17 +35,23 @@ export default function () {
         }))
     }
 
-    const initChosenCommissionFundsLabels = (commission: number, isSite: boolean) => {
-        fundsLabels.value = []
-        commissionFunds.value.filter(obj => obj.commission === commission).forEach(commissionFund => {
-            const fund = funds.value.find(obj => obj.id === commissionFund.fund)
-            if (isSite || (!isSite && !fund?.isSite))
-                fundsLabels.value.push({
-                    value: commissionFund.id,
-                    label: fund?.acronym as string,
-                    fund: fund?.id
-                })
-        })
+    const initChosenCommissionFundsLabels = (commissionId: number, isSite: boolean) => {
+        const labels: SelectLabelFund[] = []
+
+        commissionFunds.value
+            .filter(obj => obj.commission === commissionId)
+            .forEach(commissionFund => {
+                const fund = funds.value.find(obj => obj.id === commissionFund.fund)
+
+                if (isSite || (!isSite && !fund?.isSite)) {
+                    labels.push({
+                        value: commissionFund.id,
+                        label: fund?.acronym,
+                        fund: fund?.id
+                    })
+                }
+            })
+        fundsLabels.value = labels
     }
 
     const initUserFunds = () => {
