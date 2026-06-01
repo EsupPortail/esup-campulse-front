@@ -92,15 +92,11 @@ async function onGetCommissionDates() {
 async function onChangeCommission() {
     loading.show()
     try {
-        if (projectStore.projectCommissionFunds.length) {
-            for (const x of projectStore.projectCommissionFunds) {
-                const oldCommissionFund = commissionFunds.value.find(y => y.id === x.commissionFund)
-                const fund = funds.value.find(y => y.id === oldCommissionFund?.fund)
-                const newCommissionFund = fundsLabels.value.find(y => y.fund === fund?.id)
-                if (oldCommissionFund && newCommissionFund && projectCommissionFunds.value.includes(newCommissionFund.value)) {
-                    await projectStore.patchProjectCommissionFund(oldCommissionFund.id, newCommissionFund.value)
-                }
-            }
+        for (const x of projectStore.projectCommissionFunds) {
+            const oldCommissionFund = commissionFunds.value.find(y => y.id === x.commissionFund)
+            const fund = funds.value.find(y => y.id === oldCommissionFund?.fund)
+            const newCommissionFund = fundsLabels.value.find(y => y.fund === fund?.id)
+            await projectStore.patchProjectCommissionFund(oldCommissionFund.id, newCommissionFund.value)
         }
         emit('closeDialog')
         emit('refreshProjects')
