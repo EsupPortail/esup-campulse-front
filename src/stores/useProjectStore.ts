@@ -157,7 +157,7 @@ export const useProjectStore = defineStore('projectStore', {
         async patchProjectCommissionFund(oldCommissionFund: number, newCommissionFund: number) {
             const {axiosAuthenticated} = useAxios()
             const url = `/projects/${this.project?.id}/commission_funds/${oldCommissionFund}`
-            await axiosAuthenticated.patch(url, {projectId: this.project?.id, newCommissionFundId: newCommissionFund})
+            await axiosAuthenticated.patch(url, {newCommissionFundId: newCommissionFund})
         },
 
         searchProjectByManualIdentifier(manualIdentifier: string) {

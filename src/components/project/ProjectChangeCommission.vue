@@ -24,7 +24,6 @@ const projectStore = useProjectStore()
 const {
     projectCommission,
     projectCommissionFunds,
-    updateProjectCommission
 } = useSubmitProject()
 
 const {
@@ -35,6 +34,7 @@ const {
     initChosenCommissionFundsLabels,
     commissionLabels,
     fundsLabels,
+    funds,
     initChangeCommissionLabels
 } = useCommissions()
 
@@ -65,27 +65,25 @@ async function onGetCommissionDates() {
             getCommissionFunds()
         ])
 
+        // Initialize commission
         const firstProjectFund = projectStore.projectCommissionFunds[0]
         if (!firstProjectFund) return
-
         const matchedCommission = commissionFunds.value.find(obj => obj.id === firstProjectFund.commissionFund)
         projectCommission.value = matchedCommission?.commission as number
+        if (!projectCommission.value) return
 
-        if (projectCommission.value) {
-            initChosenCommissionFundsLabels(projectCommission.value, props.isSite)
-            projectCommissionFunds.value = projectStore.projectCommissionFunds.map(x => x.commissionFund)
+        // Initialize commission funds
+        initChosenCommissionFundsLabels(projectCommission.value, props.isSite)
+        projectCommissionFunds.value = projectStore.projectCommissionFunds.map(x => x.commissionFund)
 
-            const chosenFunds = fundsLabels.value
-                .filter(x => projectCommissionFunds.value.includes(x.value) && x.fund)
-                .map(x => x.fund as number)
+        const chosenFunds = fundsLabels.value
+            .filter(x => projectCommissionFunds.value.includes(x.value) && x.fund)
+            .map(x => x.fund as number)
 
-            possibleFunds.value = [...chosenFunds]
+        possibleFunds.value = [...chosenFunds]
 
-            projectCommissionFunds.value = [...possibleFunds.value]
-
-            await getCommissionsForManagers(undefined, undefined, undefined, props.isSite ? undefined : false, true, chosenFunds)
-            initChangeCommissionLabels(projectCommission.value)
-        }
+        await getCommissionsForManagers(undefined, undefined, undefined, props.isSite ? undefined : false, true, chosenFunds)
+        initChangeCommissionLabels(projectCommission.value)
     } catch (error) {
         await handleError(error)
     }
@@ -94,7 +92,16 @@ async function onGetCommissionDates() {
 async function onChangeCommission() {
     loading.show()
     try {
-        await updateProjectCommission()
+        if (projectStore.projectCommissionFunds.length) {
+            for (const x of projectStore.projectCommissionFunds) {
+                const oldCommissionFund = commissionFunds.value.find(y => y.id === x.commissionFund)
+                const fund = funds.value.find(y => y.id === oldCommissionFund?.fund)
+                const newCommissionFund = fundsLabels.value.find(y => y.fund === fund?.id)
+                if (oldCommissionFund && newCommissionFund && projectCommissionFunds.value.includes(newCommissionFund.value)) {
+                    await projectStore.patchProjectCommissionFund(oldCommissionFund.id, newCommissionFund.value)
+                }
+            }
+        }
         emit('closeDialog')
         emit('refreshProjects')
         notify({
