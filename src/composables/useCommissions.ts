@@ -113,10 +113,21 @@ export default function () {
         }))
     }
 
-    const initChangeCommissionLabels = (currentCommission: number) => {
+    const initChangeCommissionLabels = (currentCommission: number, possibleFunds: number[]) => {
         commissionLabels.value = []
         commissions.value.forEach(commission => {
-            if (commission.isOpenToProjects || commission.id === currentCommission) {
+            if (!commission.isOpenToProjects) return
+
+            const isCurrentCommission = commission.id === currentCommission
+            let hasAllPossibleFunds = true
+
+            for (const fund of possibleFunds) {
+                const hasCommissionFund = commissionFunds.value
+                    .find(commissionFund => commissionFund.commission === currentCommission && commissionFund.fund === fund)
+                if (!hasCommissionFund) hasAllPossibleFunds = false
+            }
+
+            if (hasAllPossibleFunds || isCurrentCommission) {
                 commissionLabels.value.push({
                     value: commission.id,
                     label: commission.name + ' ('

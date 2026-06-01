@@ -83,7 +83,7 @@ async function onGetCommissionDates() {
         possibleFunds.value = [...chosenFunds]
 
         await getCommissionsForManagers(undefined, undefined, undefined, props.isSite ? undefined : false, true, chosenFunds)
-        initChangeCommissionLabels(projectCommission.value)
+        initChangeCommissionLabels(projectCommission.value, possibleFunds.value)
     } catch (error) {
         await handleError(error)
     }
