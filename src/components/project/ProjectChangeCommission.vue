@@ -24,6 +24,7 @@ const projectStore = useProjectStore()
 const {
     projectCommission,
     projectCommissionFunds,
+    updateProjectCommission
 } = useSubmitProject()
 
 const {
@@ -34,7 +35,6 @@ const {
     initChosenCommissionFundsLabels,
     commissionLabels,
     fundsLabels,
-    funds,
     initChangeCommissionLabels
 } = useCommissions()
 
@@ -94,16 +94,7 @@ async function onGetCommissionDates() {
 async function onChangeCommission() {
     loading.show()
     try {
-        if (projectStore.projectCommissionFunds.length) {
-            for (const x of projectStore.projectCommissionFunds) {
-                const oldCommissionFund = commissionFunds.value.find(y => y.id === x.commissionFund)
-                const fund = funds.value.find(y => y.id === oldCommissionFund?.fund)
-                const newCommissionFund = fundsLabels.value.find(y => y.fund === fund?.id)
-                if (oldCommissionFund && newCommissionFund && projectCommissionFunds.value.includes(newCommissionFund.value)) {
-                    await projectStore.patchProjectCommissionFund(oldCommissionFund.id, newCommissionFund.value)
-                }
-            }
-        }
+        await updateProjectCommission()
         emit('closeDialog')
         emit('refreshProjects')
         notify({
@@ -202,7 +193,7 @@ async function handleError(error: unknown) {
                             icon="bi-x-lg"
                         />
                         <QBtn
-                            :disable="!commissionLabels.length || !projectCommissionFunds.length || (commissionLabels.length === 1 && commissionLabels[0].value === projectCommission)"
+                            :disable="!commissionLabels.length || !projectCommissionFunds.length || commissionLabels.length === 1 || commissionLabels[0].value === projectCommission"
                             :label="t('validate')"
                             class="btn-lg"
                             color="commission"

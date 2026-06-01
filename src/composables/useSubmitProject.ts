@@ -373,6 +373,6 @@ export default function () {
         projectFunds,
         initProjectFunds,
         projectId,
-        projectProcessingDate
+        projectProcessingDate,
     }
 }
