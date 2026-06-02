@@ -35,7 +35,7 @@ const state = reactive<UseAxiosState>({
             error => Promise.reject(error)
         )
 
-        _axios.interceptors.response.use(response => {
+        /*_axios.interceptors.response.use(response => {
             return response
         }, async function (error) {
             if (error.response?.status === 401) {
@@ -47,10 +47,10 @@ const state = reactive<UseAxiosState>({
                 if (refreshTokenExpired()) {
                     await router.push({name: 'Logout'})
                 }
-            } else {
-                return Promise.reject(error)
             }
-        })
+            return Promise.reject(error)
+        })*/
+
         return _axios
     },
 })
