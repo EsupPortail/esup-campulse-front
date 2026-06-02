@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.7 (juin)
+
+- Correction du module de déplacement de projet dans une nouvelle commission
+- Correction du module de création de compte CAS abandonnée
+- Correction du filtre sur le contenu de l'annuaire
+
 ## 1.3.6 (mai)
 
 - Ajout d'un fallback au cas où la composante et le domaine d'activité manquent lors de la signature d'une charte
