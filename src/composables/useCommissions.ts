@@ -124,7 +124,6 @@ export default function () {
             for (const fund of possibleFunds) {
                 const hasCommissionFund = commissionFunds.value
                     .find(commissionFund => commissionFund.commission === commission.id && commissionFund.fund === fund)
-                console.log(hasCommissionFund)
                 if (!hasCommissionFund) hasAllPossibleFunds = false
             }
 
