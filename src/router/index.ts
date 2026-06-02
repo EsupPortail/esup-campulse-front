@@ -14,6 +14,10 @@ const router = createRouter({
 const colorVariant = ref<string>('')
 
 router.beforeEach(async (to) => {
+    if (to.name === 'Logout' || to.name === 'Login') {
+        return
+    }
+
     const userStore = useUserStore()
     const {initStaffStatus, isStaff, getGroups, initIsMemberFund} = useUserGroups()
     const {hasPerm} = useSecurity()
@@ -43,7 +47,7 @@ router.beforeEach(async (to) => {
         try {
             await userStore.getUser()
         } catch (error) {
-            await router.push({name: 'Logout'})
+            return {name: 'Logout'}
         }
     }
 
