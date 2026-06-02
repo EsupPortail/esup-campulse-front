@@ -56,7 +56,7 @@ async function onCancelAbortedCasRegistration() {
                     <QBtn
                         v-close-popup
                         :label="t('alerts.aborted-cas-registration.finish')"
-                        :to="{name: 'Registration'}"
+                        :to="{name: 'CASRegistration'}"
                         class="btn-lg"
                         color="association"
                         icon="bi-check-lg"

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import useAssociation from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
@@ -12,6 +12,7 @@ import {useRoute} from 'vue-router'
 import {useContentStore} from '@/stores/useContentStore'
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import DirectoryImage from '@/assets/img/directory-image.jpg'
+import type {Content} from '#/index'
 
 const associationStore = useAssociationStore()
 const contentStore = useContentStore()
@@ -89,6 +90,10 @@ async function getContents() {
     }
 }
 
+const contentFirstBlock = computed<Content | undefined>(() => {
+    return contentStore.contents.find(content => content.code === 'ASSOCIATION_HOME_FIRST_BLOCK')
+})
+
 </script>
 
 <template>
@@ -97,8 +102,8 @@ async function getContents() {
             <div class="content">
                 <LayoutImageText
                     :img="DirectoryImage"
-                    :text="contentStore.contents[0]?.body"
-                    :title="contentStore.contents[0]?.header"
+                    :text="contentFirstBlock?.body"
+                    :title="contentFirstBlock?.header"
                 />
             </div>
         </div>

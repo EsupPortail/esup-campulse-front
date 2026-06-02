@@ -245,7 +245,6 @@ describe('Project store', () => {
             const url = `/projects/${projectStore.project?.id}/commission_funds/1`
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith(url, {
-                projectId: projectStore.project?.id,
                 newCommissionFundId: 2
             })
         })

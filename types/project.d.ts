@@ -46,6 +46,7 @@ export interface ProjectList {
     plannedLocation: string,
     projectStatus: ProjectStatus,
     commission?: Commission,
+    commissionFunds?: ProjectCommissionFund[],
     manualIdentifier: string,
     budgetFile: string | null
 }

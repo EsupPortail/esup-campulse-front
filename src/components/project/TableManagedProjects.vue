@@ -38,10 +38,13 @@ const projects = ref<ProjectList[]>([])
 
 const selected = ref<QTableProps['selected']>([])
 
-const isSite = (association: number | null) => {
-    if (!association) return false
+const isSite = (association: number | null): boolean => {
+    if (!association) {
+        return false
+    }
     const obj = associationStore.associations.find(x => x.id === association)
     if (obj) return obj.isSite
+    return false
 }
 
 const initProjects = () => {
@@ -59,6 +62,7 @@ const initProjects = () => {
         id: p.id,
         name: p.name,
         association: p.association ? p.association.acronym : '',
+        associationId: p.association ? p.association.id : null,
         user: p.user ? `${p.user.firstName} ${p.user.lastName} ` : '',
         associationUser: p.associationUser ? `${p.associationUser.user.firstName} ${p.associationUser.user.lastName}` : '',
         editionDate: p.editionDate,
@@ -66,7 +70,8 @@ const initProjects = () => {
         plannedLocation: p.plannedLocation,
         projectStatus: p.projectStatus,
         manualIdentifier: p.manualIdentifier,
-        budgetFile: p.budgetFile
+        budgetFile: p.budgetFile,
+        commissionFunds: projectStore.projectCommissionFunds.filter(x => x.project === p.id)
     }))
 }
 
@@ -82,6 +87,7 @@ onMounted(async () => {
 
 async function onGetProjects() {
     try {
+        await associationStore.getAssociations(false)
         await projectStore.getManagedProjects(props.commissionId)
         await projectStore.getProjectCommissionFunds(true, props.commissionId)
         await getCommissionFunds()
@@ -217,7 +223,7 @@ const columns: QTableProps['columns'] = [
                 >
                     <ProjectFundValidationIndicator
                         v-if="isLoaded"
-                        :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
+                        :project-commission-funds="props.row.commissionFunds"
                     />
                 </QTd>
                 <QTd
@@ -239,8 +245,8 @@ const columns: QTableProps['columns'] = [
                         <TableManageProjectsBtn
                             v-if="isLoaded"
                             :budget-file="props.row.budgetFile"
-                            :is-site="isSite(props.row.association)"
-                            :project-commission-funds="projectStore.projectCommissionFunds.filter(x => x.project === props.row.id)"
+                            :is-site="isSite(props.row.associationId)"
+                            :project-commission-funds="props.row.commissionFunds"
                             :project-id="props.row.id"
                             :project-name="props.row.name"
                             :project-status="props.row.projectStatus"

@@ -28,7 +28,7 @@ const props = defineProps<{
   projectId: number,
   projectName: string,
   projectStatus: ProjectStatus,
-  isSite: boolean | undefined,
+  isSite: boolean,
   projectCommissionFunds: ProjectCommissionFund[],
   budgetFile: string | null,
 }>()
