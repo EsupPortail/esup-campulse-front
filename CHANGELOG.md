@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 (juin)
+
+- Optimisation de le gestion des refresh tokens
+
 ## 1.3.7 (juin)
 
 - Correction du module de déplacement de projet dans une nouvelle commission
