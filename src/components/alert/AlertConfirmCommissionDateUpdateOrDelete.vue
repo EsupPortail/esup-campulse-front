@@ -38,7 +38,7 @@ async function onOpenDeleteAlert() {
 }
 
 const canUpdate = computed<boolean>(() => {
-    return props.commission.datesAreLegal &&
+    return props.commission.datesAreLegal && props.commission.newFunds.length > 0 &&
       (props.commission.newName !== props.commission.oldName
           || props.commission.newCommissionDate !== props.commission.oldCommissionDate
           || props.commission.newSubmissionDate !== props.commission.oldSubmissionDate

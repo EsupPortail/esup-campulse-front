@@ -28,7 +28,7 @@ export interface UpdateCommission {
     newCommissionDate: string,
     oldSubmissionDate: string,
     newSubmissionDate: string,
-    datesAreLegal: boolean | undefined,
+    datesAreLegal: boolean,
     oldFunds: number[],
     newFunds: number[],
     oldIsOpenToProjects: boolean,
@@ -39,29 +39,11 @@ export interface UpdateCommission {
 export interface NewCommission {
     commissionDate: string,
     submissionDate: string,
-    datesAreLegal: boolean | undefined,
+    datesAreLegal: boolean,
     commission: number | null,
     funds: number[],
     isOpenToProjects: boolean,
     name: string
-}
-
-export interface SelectCommissionDateLabel {
-    value: number,
-    label: string,
-    commission: number
-}
-
-export interface ProjectCommissionFund {
-    id: number,
-    project: number,
-    commissionFund: number,
-    isFirstEdition: boolean,
-    amountAskedPreviousEdition: number | string,
-    amountEarnedPreviousEdition: number | string,
-    amountAsked: number | string,
-    amountEarned: number | string,
-    isValidatedByAdmin: boolean
 }
 
 interface SelectLabelFund {
