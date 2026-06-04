@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.1 (juin)
+
+- Correction de la typo au niveau du message d'erreur lorsqu'on tente de créer un compte local avec une adresse mail
+  rattachée au domaine de l'établissement
+- Les étudiants CASifiés n'ont plus à renseigner de justificatifs de scolarité dans leur espace personnel
+- Ajout du champ "acronym" sur le POST d'un nouveau document
+- Correction de la création et de l'édition de commission
+
 ## 1.4.0 (juin)
 
 - Optimisation de le gestion des refresh tokens
