@@ -1,5 +1,5 @@
 import {createTestingPinia} from '@pinia/testing'
-import {afterEach, beforeEach, describe, vi, it, expect} from 'vitest'
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
@@ -46,10 +46,8 @@ describe('useDocuments', () => {
     const mockedPublicAxios = vi.mocked(axiosPublic, true)
 
     const name = 'document'
+    const acronym = 'acronym'
     const file = new File([], 'file')
-    const newDocument = new FormData()
-    newDocument.append('name', name)
-    newDocument.append('pathTemplate', file)
 
     describe('getLibraryDocuments', () => {
         it('should get documents of the library processes', async () => {
@@ -62,13 +60,25 @@ describe('useDocuments', () => {
     })
     describe('postNewDocument', () => {
         it('should post a new document', async () => {
-            await postNewDocument(name, file)
+            const data = {
+                name,
+                acronym,
+                file
+            }
+            const newDocument = new FormData()
+            newDocument.append('name', name)
+            newDocument.append('acronym', acronym)
+            newDocument.append('pathTemplate', file)
+            await postNewDocument(data)
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.post).toHaveBeenCalledWith('/documents/', newDocument)
         })
     })
     describe('patchDocument', () => {
         it('should patch document', async () => {
+            const newDocument = new FormData()
+            newDocument.append('name', name)
+            newDocument.append('pathTemplate', file)
             await patchDocument(1, name, file)
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/documents/1', newDocument)

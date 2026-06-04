@@ -144,7 +144,9 @@ onMounted(() => {
                                 :edited-by-staff="false"
                                 :user="userStore.user"
                             />
-                            <div v-if="!isStaff && (hasPerm('add_project_user') || hasPerm('add_project_association'))">
+                            <div
+                                v-if="!isStaff && !userStore.isCas && (hasPerm('add_project_user') || hasPerm('add_project_association'))"
+                            >
                                 <hgroup>
                                     <h3>{{ t('forms.student-status-document') }}</h3>
                                     <p>{{ t('forms.student-status-document-hint') }}</p>

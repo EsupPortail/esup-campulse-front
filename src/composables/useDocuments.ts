@@ -1,5 +1,5 @@
 import {ref} from 'vue'
-import type {Document, MimeType} from '#/documents'
+import type {Document, MimeType, NewDocument} from '#/documents'
 import {useAxios} from '@/composables/useAxios'
 
 
@@ -83,11 +83,12 @@ export default function () {
         documents.value = (await axiosPublic.get<Document[]>(`/documents/?acronym=${acronym}`)).data
     }
 
-    async function postNewDocument(name: string, file: File) {
-        const newDocument = new FormData()
-        newDocument.append('name', name)
-        newDocument.append('pathTemplate', file)
-        await axiosAuthenticated.post('/documents/', newDocument)
+    async function postNewDocument(newDocument: NewDocument) {
+        const formData = new FormData()
+        formData.append('name', newDocument.name)
+        formData.append('acronym', newDocument.acronym)
+        formData.append('pathTemplate', newDocument.file)
+        await axiosAuthenticated.post('/documents/', formData)
     }
 
     async function patchDocument(id: number, name: string, file: File) {

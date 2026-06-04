@@ -82,7 +82,7 @@ const initDates = () => {
             newCommissionDate: commission.commissionDate,
             oldSubmissionDate: commission.submissionDate,
             newSubmissionDate: commission.submissionDate,
-            datesAreLegal: undefined,
+            datesAreLegal: true,
             oldFunds: commissionFunds.value.filter(obj => obj.commission === commission.id).map(fund => fund.fund),
             newFunds: commissionFunds.value.filter(obj => obj.commission === commission.id).map(fund => fund.fund),
             oldIsOpenToProjects: commission.isOpenToProjects,
@@ -164,21 +164,30 @@ const onClearValues = () => {
     newCommission.value.commission = null
     newCommission.value.commissionDate = ''
     newCommission.value.submissionDate = ''
-    newCommission.value.datesAreLegal = undefined
+    newCommission.value.datesAreLegal = true
     newCommission.value.name = ''
     newCommission.value.funds = []
     newCommission.value.isOpenToProjects = false
 }
 
-function checkCommissionDates(isNew: boolean, commissionId?: number) {
+function checkCommissionDates(isNew: boolean, commissionId?: number): void {
     if (isNew) {
-        newCommission.value.datesAreLegal = fromDateIsAnterior(newCommission.value.submissionDate, newCommission.value.commissionDate, false)
-    } else if (!commissionId) {
+        const {submissionDate, commissionDate} = newCommission.value
+        newCommission.value.datesAreLegal = fromDateIsAnterior(submissionDate, commissionDate, false)
         return
-    } else {
-        const commission = updateCommissions.value.find(obj => obj.id === commissionId)
-        if (!commission) return
+    }
+
+    if (commissionId === undefined || commissionId === null) {
+        newCommission.value.datesAreLegal = false
+        return
+    }
+
+    const commission = updateCommissions.value.find(obj => obj.id === commissionId)
+
+    if (commission) {
         commission.datesAreLegal = fromDateIsAnterior(commission.newSubmissionDate, commission.newCommissionDate, true)
+    } else {
+        newCommission.value.datesAreLegal = false
     }
 }
 
@@ -257,6 +266,7 @@ const canSubmitNewCommission = computed<boolean>(() => {
                                 min="1970-01-01"
                                 reactive-rules
                                 type="date"
+                                @update:model-value="checkCommissionDates(false, commission.id)"
                             />
                             <QInput
                                 v-model="commission.newSubmissionDate"

@@ -82,6 +82,7 @@ export interface UploadedProcessDocument {
 export interface LibraryDocument {
     id: number,
     name: string,
+    acronym: string,
     path: string | undefined,
     size: number,
     newName: string,
@@ -90,4 +91,10 @@ export interface LibraryDocument {
     mimeTypes: MimeType[],
     open: boolean,
     canUpdateDocument: boolean
+}
+
+export interface NewDocument {
+    name: string,
+    acronym: string,
+    file: undefined | File
 }

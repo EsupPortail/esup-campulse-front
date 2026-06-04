@@ -5,7 +5,7 @@ import {QForm, useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import {useI18n} from 'vue-i18n'
-import type {LibraryDocument} from '#/documents'
+import type {LibraryDocument, NewDocument} from '#/documents'
 import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useCommissions from '@/composables/useCommissions'
@@ -31,13 +31,9 @@ onMounted(async () => {
     loading.hide()
 })
 
-interface NewDocument {
-    name: string,
-    file: undefined | File
-}
-
 const newDocument = ref<NewDocument>({
     name: '',
+    acronym: '',
     file: undefined
 })
 
@@ -70,6 +66,7 @@ const initLibraryDocuments = () => {
             list.push({
                 id: document.id,
                 name: document.name,
+                acronym: document.acronym,
                 path: document.pathTemplate,
                 size: document.size,
                 newName: document.name ?? '',
@@ -129,7 +126,7 @@ const initManagerFunds = () => {
 async function onUploadNewDocument() {
     loading.show()
     try {
-        await postNewDocument(newDocument.value.name, newDocument.value.file as File)
+        await postNewDocument(newDocument.value)
         newDocumentForm.value.reset()
         await onGetLibraryDocuments()
         notify({
@@ -149,6 +146,7 @@ async function onUploadNewDocument() {
 
 const onClearValues = () => {
     newDocument.value.name = ''
+    newDocument.value.acronym = ''
     newDocument.value.file = undefined
 }
 
@@ -175,6 +173,15 @@ const onClearValues = () => {
                         v-model="newDocument.name"
                         :label="t('documents.choose-name')"
                         :rules="[val => val && val.length > 0 || t('forms.required-document-name')]"
+                        clearable
+                        color="dashboard"
+                        filled
+                    />
+
+                    <QInput
+                        v-model="newDocument.acronym"
+                        :label="t('documents.choose-acronym')"
+                        :rules="[val => val && val.length > 0 || t('forms.required-document-acronym')]"
                         clearable
                         color="dashboard"
                         filled

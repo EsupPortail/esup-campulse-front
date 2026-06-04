@@ -13,7 +13,7 @@ const {catchHTTPError} = useErrors()
 const {patchDocument, deleteDocument, acceptedFormats} = useDocuments()
 
 const props = defineProps<{
-    libraryDocuments: LibraryDocument[]
+  libraryDocuments: LibraryDocument[]
 }>()
 
 const emit = defineEmits(['getLibraryDocuments'])
@@ -131,7 +131,10 @@ async function onDeleteDocument(documentId: number) {
                         filled
                         for="pathFile"
                     >
-                        <template v-slot:hint>
+                        <template
+                            v-if="document.processType !== 'NO_PROCESS'"
+                            v-slot:hint
+                        >
                             <p aria-describedby="pathFile">
                                 {{
                                     t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.'

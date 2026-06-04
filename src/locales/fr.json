@@ -377,6 +377,7 @@
     "charters": "Chartes",
     "choose-file": "Choisir un document",
     "choose-name": "Nom du document",
+    "choose-acronym": "Acronyme du document",
     "no-document-to-show": "Aucun document à afficher.",
     "no-process-library": "Documents de la bibliothèque",
     "other-documents": "Autres documents",
@@ -415,7 +416,7 @@
     "create-account": "Créer un compte",
     "delete-association": "Supprimer",
     "email": "Adresse mail",
-    "error-university-mail-domain": "Cette adresse provient de l'@:university-name, veuillez passer par le formulaire CAS pour vous inscrire.",
+    "error-university-mail-domain": "Cette adresse provient de l'@:university-name : veuillez passer par le formulaire CAS pour vous inscrire.",
     "first-name": "Prénom",
     "gdpr-consent": "L'Université de Strasbourg (Direction du Numérique et Service de la Vie Universitaire) et le Crous Strasbourg traitent les données recueillies pour vous permettre d'utiliser cette application. Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous aux conditions générales d'utilisation et à la politique de confidentialité de la plate-forme. En cochant cette case, vous reconnaissez avoir pris connaissance du contenu de ces deux documents et en accepter les conditions sans réserve.",
     "gdpr-title": "Gestion des données personnelles",
@@ -462,6 +463,7 @@
     "required-commission-name": "Veuillez nommer la commission.",
     "required-commission-submission-date": "Veuillez dater le jour de fin de dépôt des projets.",
     "required-country": "Veuillez saisir le pays.",
+    "required-document-acronym": "Veuillez renseigner un acronyme de document public.",
     "required-document-file": "Veuillez téléverser un document.",
     "required-document-name": "Veuillez renseigner un nom de document public.",
     "required-email": "Veuillez renseigner une adresse mail valide.",
@@ -830,7 +832,7 @@
     "register-success": "Demande d'inscription réussie",
     "register-verify-email": "Adresse e-mail vérifiée",
     "registration-ok": "Votre demande d'inscription a bien été prise en compte. Consultez votre boîte mail pour vérifier votre adresse mail.",
-    "registration-ok-cas": "Votre demande d'inscription a bien été prise en compte. Vous pouvez dès à présent vous connecter avec vos identifiants CAS."
+    "registration-ok-cas": "Votre demande d'inscription a bien été prise en compte. Elle sera validée par un gestionnaire dans les meilleurs délais."
   },
   "rejected": "Rejeté",
   "required": "obligatoire",
