@@ -13,6 +13,8 @@ const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
 const openMenu = ref<boolean>(false)
 
 export default function () {
+    const kebabize = (str: string) => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? '-' : '') + $.toLowerCase())
+
     function formatDate(date: string): string {
         if (!date) return ''
         const timeStamp = Date.parse(date)
@@ -86,6 +88,7 @@ export default function () {
         phoneRegex,
         dynamicTitle,
         filterizeSearch,
-        openMenu
+        openMenu,
+        kebabize
     }
 }

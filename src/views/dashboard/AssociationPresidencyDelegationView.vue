@@ -11,12 +11,14 @@ import useErrors from '@/composables/useErrors'
 import {useUserStore} from '@/stores/useUserStore'
 import router from '@/router'
 import InfoPresidencyDelegation from '@/components/infoPanel/InfoPresidencyDelegation.vue'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const route = useRoute()
 const {initAssociationMembers, associationMembers} = useUserAssociations()
 const {catchHTTPError} = useErrors()
+const {kebabize} = useUtility()
 const userStore = useUserStore()
 
 onMounted(async () => {
@@ -174,7 +176,7 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 headers="role"
                             >
-                                {{ props.row.role }}
+                                {{ t(`dashboard.association-user.${kebabize(props.row.role ?? '')}`) }}
                             </QTd>
                             <QTd
                                 key="isValidatedByAdmin"
