@@ -641,7 +641,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 :label="t('project.commission-funds-choice') + ' *'"
                                 :options="fundsLabels"
                                 :readonly="!projectCommission"
-                                :rules="[val => val || t('forms.select-project-commission-member')]"
+                                :rules="[val => val.length || t('forms.select-project-commission-member')]"
                                 clearable
                                 color="commission"
                                 data-test="commission-funds-select"
