@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.2 (juin 2026)
+
+- Correction d'un bug persistant au niveau du déplacement de projet dans une nouvelle commission
+- Ajout d'une traduction manquante : rôle d'un membre d'association dans la délégation de présidence
+- Correction de messages liés dans i18n
+
 ## 1.4.1 (juin 2026)
 
 - Correction de la typo au niveau du message d'erreur lorsqu'on tente de créer un compte local avec une adresse mail
