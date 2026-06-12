@@ -486,7 +486,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBasicInfos.name"
                                 :label="t('project.name') + ' *'"
-                                :rules="[val => val && val.length > 0 || t('forms.required-project-name')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-name'),
+                                         val => val && val.length < 100 || t('forms.project-name-under-100')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"
@@ -497,7 +498,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBasicInfos.plannedStartDate"
                                 :label="t('project.planned-start-date') + ' *'"
-                                :rules="[val => val && val.length > 0 || t('forms.required-project-startdate'), val => val && datesAreLegal || t('forms.legal-dates')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-startdate'),
+                                         val => val && datesAreLegal || t('forms.legal-dates')]"
                                 aria-required="true"
                                 clearable
                                 color="commission"

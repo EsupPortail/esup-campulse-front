@@ -445,6 +445,7 @@
     "passwords-are-not-equal": "Les deux mots de passe ne sont pas identiques.",
     "phone": "Numéro de téléphone",
     "project-comment-hint": "Si la demande est refusée ou retournée au porteur de projet, précisez-en la raison (documents manquants, projet inapproprié...)",
+    "project-name-under-100": "Le nom du projet doit faire moins de 100 caractères.",
     "repeat-email": "Répéter l'adresse mail",
     "repeat-new-password": "Répéter le nouveau mot de passe",
     "required-address": "Veuillez saisir l'adresse postale.",
