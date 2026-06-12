@@ -1,6 +1,12 @@
 # Changelog
 
-## 1.4.1 (juin)
+## 1.4.2 (juin 2026)
+
+- Correction d'un bug persistant au niveau du déplacement de projet dans une nouvelle commission
+- Ajout d'une traduction manquante : rôle d'un membre d'association dans la délégation de présidence
+- Correction de messages liés dans i18n
+
+## 1.4.1 (juin 2026)
 
 - Correction de la typo au niveau du message d'erreur lorsqu'on tente de créer un compte local avec une adresse mail
   rattachée au domaine de l'établissement
@@ -8,21 +14,21 @@
 - Ajout du champ "acronym" sur le POST d'un nouveau document
 - Correction de la création et de l'édition de commission
 
-## 1.4.0 (juin)
+## 1.4.0 (juin 2026)
 
 - Optimisation de le gestion des refresh tokens
 
-## 1.3.7 (juin)
+## 1.3.7 (juin 2026)
 
 - Correction du module de déplacement de projet dans une nouvelle commission
 - Correction du module de création de compte CAS abandonnée
 - Correction du filtre sur le contenu de l'annuaire
 
-## 1.3.6 (mai)
+## 1.3.6 (mai 2026)
 
 - Ajout d'un fallback au cas où la composante et le domaine d'activité manquent lors de la signature d'une charte
 
-## 1.3.5 (avril)
+## 1.3.5 (avril 2026)
 
 - Correction d'un bug qui empêchait la soumission de documents en cas de modification (chartes et projets)
 

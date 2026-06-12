@@ -65,7 +65,7 @@ async function onGetCommissionDates() {
             getCommissionFunds()
         ])
 
-        // Initialize commission
+        // Initialize project commission
         const firstProjectFund = projectStore.projectCommissionFunds[0]
         if (!firstProjectFund) return
         const matchedCommission = commissionFunds.value.find(obj => obj.id === firstProjectFund.commissionFund)
@@ -82,6 +82,7 @@ async function onGetCommissionDates() {
 
         possibleFunds.value = [...chosenFunds]
 
+        // Initialize commissions
         await getCommissionsForManagers(undefined, undefined, undefined, props.isSite ? undefined : false, true, chosenFunds)
         initChangeCommissionLabels(projectCommission.value, possibleFunds.value)
     } catch (error) {
