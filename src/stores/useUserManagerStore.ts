@@ -1,7 +1,6 @@
 import {defineStore} from 'pinia'
 import type {User, UserAssociation, UserGroupRegister, UserManagerStore, UserNames} from '#/user'
 import {useAxios} from '@/composables/useAxios'
-import {useUserStore} from '@/stores/useUserStore'
 import useSecurity from '@/composables/useSecurity'
 import useUserGroups from '@/composables/useUserGroups'
 import useCommissions from '@/composables/useCommissions'
@@ -41,17 +40,9 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             if (!hasPerm('view_user')) return
 
             const {axiosAuthenticated} = useAxios()
-            const userStore = useUserStore()
 
             const urlString = '/users/?'
             const urlArray = []
-
-            if (userStore.userInstitutions?.length !== 0) {
-                let institutions = 'institutions='
-                institutions += userStore.userInstitutions?.join(',')
-                if (hasPerm('view_user_misc')) institutions += ','
-                urlArray.push(institutions)
-            }
 
             if (status === 'validated') urlArray.push('is_validated_by_admin=true')
             else if (status === 'unvalidated') urlArray.push('is_validated_by_admin=false')
@@ -138,19 +129,10 @@ export const useUserManagerStore = defineStore('userManagerStore', {
 
             const {axiosAuthenticated} = useAxios()
 
-            const userStore = useUserStore()
-
             const urlString = '/users/?'
             const urlArray = []
 
             urlArray.push(`search=${searchQuery}`)
-
-            if (userStore.userInstitutions?.length) {
-                let institutions = 'institutions='
-                institutions += userStore.userInstitutions?.join(',')
-                if (hasPerm('view_user_misc')) institutions += ','
-                urlArray.push(institutions)
-            }
 
             if (status) {
                 urlArray.push(`is_validated_by_admin=${status === 'validated'}`)
