@@ -278,7 +278,7 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
                 counter
                 filled
                 for="pathFile"
-                reactive-rules
+                lazy-rules
                 use-chips
                 @rejected="onDocumentRejected"
             >
