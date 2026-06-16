@@ -165,29 +165,33 @@ export const useAssociationStore = defineStore('associationStore', {
 
         async patchEnabledAssociation(isEnabled: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const response = await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
-            this.association = response.data
+            await axiosAuthenticated.patch(`/associations/${associationId}`, {isEnabled})
+            this.association.isEnabled = isEnabled
         },
 
         async patchPublicAssociation(isPublic: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const response = await axiosAuthenticated.patch(`/associations/${associationId}`, {isPublic})
-            this.association = response.data
+            await axiosAuthenticated.patch(`/associations/${associationId}`, {isPublic})
+            this.association.isPublic = isPublic
         },
+
         async patchSiteAssociation(isSite: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const response = await axiosAuthenticated.patch(`/associations/${associationId}`, {isSite})
-            this.association = response.data
+            await axiosAuthenticated.patch(`/associations/${associationId}`, {isSite})
+            this.association.isSite = isSite
         },
+
         async patchCanSubmitProjects(canSubmitProjects: boolean, associationId: number | undefined) {
             const {axiosAuthenticated} = useAxios()
-            const response = await axiosAuthenticated.patch(`/associations/${associationId}`, {canSubmitProjects})
-            this.association = response.data
+            await axiosAuthenticated.patch(`/associations/${associationId}`, {canSubmitProjects})
+            this.association.canSubmitProjects = canSubmitProjects
         },
+
         async getAssociationUsers(associationId: number) {
             const {axiosAuthenticated} = useAxios()
             this.associationUsers = (await axiosAuthenticated.get<UserAssociation[]>(`/associations/${associationId}/users`)).data
         },
+
         async getAssociationDocuments(processTypes?: DocumentProcessType[]) {
             const {axiosAuthenticated} = useAxios()
             let url = `/documents/uploads?association_id=${this.association?.id}`
@@ -196,6 +200,7 @@ export const useAssociationStore = defineStore('associationStore', {
             }
             this.associationDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
         },
+
         async export(associations: number[], format: string) {
             const {axiosAuthenticated} = useAxios()
             const url = `/associations/export?associations=${associations.join(',')}&mode=${format}`
