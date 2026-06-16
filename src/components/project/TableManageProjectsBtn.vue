@@ -50,7 +50,14 @@ interface Option {
   action?: 'updateProjectDates' | 'download-pdf' | 'download-review-pdf' | 'download-budget' | 'download-files' | 'changeCommission' | 'editCommissionFundsAmounts'
 }
 
-const canChangeProject = () => {
+const myProjectCommissionFunds = (projectCommissionFunds: ProjectCommissionFund[]): ProjectCommissionFund[] => {
+    const myInstitutions = userStore.userInstitutions
+    const myFunds = funds.value.filter(fund => myInstitutions.includes(fund.institution)).map(fund => fund.id)
+    const myCommissionFunds = commissionFunds.value.filter(commissionFund => myFunds.includes(commissionFund.fund)).map(commissionFund => commissionFund.id)
+    return projectCommissionFunds.filter(projectCommissionFund => myCommissionFunds.includes(projectCommissionFund.commissionFund))
+}
+
+const canChangeProject = (): boolean => {
     let perm = false
     const institutions: number[] = []
     props.projectCommissionFunds.forEach(projectCommissionFund => {
@@ -62,6 +69,14 @@ const canChangeProject = () => {
         if (group && group.institutionId && institutions.includes(group.institutionId)) perm = true
     })
     return perm
+}
+
+const canChangeReview = (): boolean => {
+    if (!canChangeProject()) return false
+    const myProjectCommissionFundCount = myProjectCommissionFunds(props.projectCommissionFunds).length
+    const myProjectCommissionFundAtZeroCount = myProjectCommissionFunds(props.projectCommissionFunds)
+        .filter(projectCommissionFund => projectCommissionFund.amountEarned === 0).length
+    return myProjectCommissionFundCount > myProjectCommissionFundAtZeroCount
 }
 
 const options = ref<Option[]>([])
@@ -148,14 +163,13 @@ const initOptions = () => {
 
     // Manage review
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' &&
-      hasPerm('change_project_as_validator') && canChangeProject()) {
+      hasPerm('change_project_as_validator') && canChangeReview()) {
         options.value.push({
             icon: 'bi-check-lg',
             label: t('project.process-review'),
             to: {name: 'ManageProjectReview', params: {projectId: props.projectId}}
         })
     }
-
 
     if (props.projectStatus === 'PROJECT_REVIEW_PROCESSING' || props.projectStatus === 'PROJECT_REVIEW_VALIDATED'
       || props.projectStatus === 'PROJECT_CANCELED') {
