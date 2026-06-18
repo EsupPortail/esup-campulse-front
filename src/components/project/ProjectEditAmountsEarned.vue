@@ -23,10 +23,10 @@ const {getFundLabel} = useCommissions()
 const emit = defineEmits(['closeDialog', 'refreshProjects'])
 
 const props = defineProps<{
-    openDialog: boolean,
-    project: number,
-    projectName: string,
-    projectCommissionFunds: ProjectCommissionFund[]
+  openDialog: boolean,
+  project: number,
+  projectName: string,
+  projectCommissionFunds: ProjectCommissionFund[]
 }>()
 
 const openRef = toRefs(props).openDialog
@@ -51,19 +51,19 @@ watch(() => open.value, () => {
 })
 
 interface EditProjectCommissionFund {
-    commissionFundId: number,
-    fundLabel: string,
-    amountAsked: number | string,
-    amountAskedPreviousEdition: number | string,
-    amountEarned: number | string | null,
-    amountEarnedPreviousEdition: number | string,
-    isFirstEdition: boolean,
-    comment: {
-        text: string,
-        isVisible: boolean
-    },
-    needComment: boolean,
-    amountEarnedIsValidatedByAdmin: boolean
+  commissionFundId: number,
+  fundLabel: string,
+  amountAsked: number | string,
+  amountAskedPreviousEdition: number | string,
+  amountEarned: number | string | null,
+  amountEarnedPreviousEdition: number | string,
+  isFirstEdition: boolean,
+  comment: {
+    text: string,
+    isVisible: boolean
+  },
+  needComment: boolean,
+  amountEarnedIsValidatedByAdmin: boolean
 }
 
 const editProjectCommissionFunds = ref<EditProjectCommissionFund[]>([])
@@ -72,7 +72,7 @@ const initValues = () => {
     editProjectCommissionFunds.value = []
     props.projectCommissionFunds.forEach(projectCommissionFund => {
         if (projectCommissionFund.isValidatedByAdmin
-            && canManageProjectCommissionFund(projectCommissionFund.commissionFund)) {
+        && canManageProjectCommissionFund(projectCommissionFund.commissionFund)) {
             editProjectCommissionFunds.value.push({
                 commissionFundId: projectCommissionFund.commissionFund,
                 fundLabel: getFundLabel(projectCommissionFund.commissionFund) ?? '',
@@ -115,6 +115,12 @@ async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectC
         }
     }
     loading.hide()
+}
+
+function updateAmountEarned(projectCommissionFund: EditProjectCommissionFund) {
+    const amountIsZero = projectCommissionFund.amountEarned === '0'
+    projectCommissionFund.needComment = amountIsZero
+    projectCommissionFund.comment.isVisible = amountIsZero
 }
 </script>
 
@@ -192,8 +198,7 @@ async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectC
                                         lazy-rules
                                         min="0"
                                         type="number"
-                                        @update:model-value="projectCommissionFund.amountEarned === '0' ?
-                                            projectCommissionFund.needComment = true : projectCommissionFund.needComment = false"
+                                        @update:model-value="updateAmountEarned(projectCommissionFund)"
                                     />
                                     <QInput
                                         v-model="projectCommissionFund.comment.text"
@@ -215,7 +220,7 @@ async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectC
                                     />
                                     <QToggle
                                         v-model="projectCommissionFund.comment.isVisible"
-                                        :disable="!projectCommissionFund.comment.text"
+                                        :disable="!projectCommissionFund.comment.text || projectCommissionFund.amountEarned === '0'"
                                         :label="t('forms.comment-visibility')"
                                         color="commission"
                                     />
@@ -253,10 +258,10 @@ async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectC
 @import '@/assets/_variables.scss';
 
 .q-card {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .flex-row > * {
-    width: $fullSize;
+  width: $fullSize;
 }
 </style>
