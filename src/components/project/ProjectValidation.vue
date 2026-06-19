@@ -39,6 +39,7 @@ const onOpenDialog = async (action: Action, icon: Icon) => {
     loading.show()
     selectedAction.value = action
     selectedIcon.value = icon
+    newComment.value.isVisible = ['return', 'reject'].includes(action)
     open.value = true
     selectedProjectCommissionFunds.value = []
     if (selectedAction.value === 'validate' || selectedAction.value === 'reject') {
@@ -201,9 +202,8 @@ async function onUpdateProjectStatus() {
                         type="textarea"
                     />
                     <QToggle
-                        v-if="selectedAction !== 'return'"
                         v-model="newComment.isVisible"
-                        :disable="!newComment.text"
+                        :disable="!newComment.text || ['return', 'reject'].includes(selectedAction)"
                         :label="t('forms.comment-visibility')"
                         color="commission"
                     />
