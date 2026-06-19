@@ -116,9 +116,10 @@ export default function () {
     const initChangeCommissionLabels = (currentCommission: number, possibleFunds: number[]) => {
         commissionLabels.value = []
         commissions.value.forEach(commission => {
-            if (!commission.isOpenToProjects) return
-
             const isCurrentCommission = commission.id === currentCommission
+
+            if (!commission.isOpenToProjects && !isCurrentCommission) return
+
             let hasAllPossibleFunds = true
 
             for (const fund of possibleFunds) {

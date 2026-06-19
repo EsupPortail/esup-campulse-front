@@ -53,7 +53,7 @@ async function onSiteAssociation() {
             <QCardSection class="row items-center">
                 <p class="q-ml-sm">
                     {{
-                        !associationStore.association?.isPublic ? t('alerts.confirm-association-site') : t('alerts.confirm-association-unsite')
+                        !associationStore.association?.isSite ? t('alerts.confirm-association-site') : t('alerts.confirm-association-unsite')
                     }}
                 </p>
                 <div class="flex-row padding-top">

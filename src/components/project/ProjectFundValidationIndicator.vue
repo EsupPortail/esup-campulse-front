@@ -5,7 +5,7 @@ import useUtility from '@/composables/useUtility'
 import {useI18n} from 'vue-i18n'
 
 const props = defineProps<{
-    projectCommissionFunds: ProjectCommissionFund[]
+  projectCommissionFunds: ProjectCommissionFund[]
 }>()
 
 const {t} = useI18n()
@@ -29,6 +29,16 @@ const {CURRENCY} = useUtility()
                 class="form-state form-state-cape"
             >
                 <span
+                    v-if="commissionFund.amountEarned === 0"
+                    class="form-state-icon form-state-red"
+                >
+                    <i
+                        :aria-label="t('rejected')"
+                        class="bi bi-x"
+                    ></i>
+                </span>
+                <span
+                    v-else
                     class="form-state-icon form-state-green"
                 >
                     <i
@@ -75,11 +85,11 @@ const {CURRENCY} = useUtility()
 @import "@/assets/styles/dashboard.scss";
 
 ul {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 li {
-    list-style: none;
-    white-space: nowrap;
+  list-style: none;
+  white-space: nowrap;
 }
 </style>

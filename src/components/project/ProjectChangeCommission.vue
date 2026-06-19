@@ -45,13 +45,18 @@ const open = computed({
     }
 })
 
+const isLoaded = ref<boolean>(false)
+
 watch(() => props.openDialog, async (isOpen) => {
     if (isOpen) {
         loading.show()
         await onGetCommissionDates()
+        isLoaded.value = true
         loading.hide()
     }
 })
+
+const oldProjectCommission = ref<number>()
 
 const possibleFunds = ref<number[]>([])
 
@@ -65,11 +70,12 @@ async function onGetCommissionDates() {
             getCommissionFunds()
         ])
 
-        // Initialize commission
+        // Initialize project commission
         const firstProjectFund = projectStore.projectCommissionFunds[0]
         if (!firstProjectFund) return
         const matchedCommission = commissionFunds.value.find(obj => obj.id === firstProjectFund.commissionFund)
         projectCommission.value = matchedCommission?.commission as number
+        oldProjectCommission.value = projectCommission.value
         if (!projectCommission.value) return
 
         // Initialize commission funds
@@ -82,6 +88,9 @@ async function onGetCommissionDates() {
 
         possibleFunds.value = [...chosenFunds]
 
+        onReInitProjectCommissionFunds(oldProjectCommission.value)
+
+        // Initialize commissions
         await getCommissionsForManagers(undefined, undefined, undefined, props.isSite ? undefined : false, true, chosenFunds)
         initChangeCommissionLabels(projectCommission.value, possibleFunds.value)
     } catch (error) {
@@ -134,6 +143,10 @@ async function handleError(error: unknown) {
         })
     }
 }
+
+const canChangeCommission = computed<boolean>(() => {
+    return projectCommission.value !== oldProjectCommission.value
+})
 </script>
 
 <template>
@@ -143,7 +156,7 @@ async function handleError(error: unknown) {
                 <h3>{{ t('project.change-commission') }}</h3>
 
                 <div
-                    v-if="!commissionLabels.length || (commissionLabels.length === 1 && commissionLabels[0].value === projectCommission)"
+                    v-if="isLoaded && commissionLabels.length < 2"
                     class="info-panel info-panel-warning"
                 >
                     <i
@@ -196,7 +209,7 @@ async function handleError(error: unknown) {
                             icon="bi-x-lg"
                         />
                         <QBtn
-                            :disable="!commissionLabels.length || !projectCommissionFunds.length || commissionLabels.length === 1 || commissionLabels[0].value === projectCommission"
+                            :disable="!canChangeCommission"
                             :label="t('validate')"
                             class="btn-lg"
                             color="commission"
