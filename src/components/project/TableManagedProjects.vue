@@ -9,7 +9,7 @@ import type {Project, ProjectList} from '#/project'
 import axios from 'axios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useErrors'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted, ref} from 'vue'
 import TableManageProjectsBtn from '@/components/project/TableManageProjectsBtn.vue'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
 import useCommissions from '@/composables/useCommissions'
@@ -75,12 +75,9 @@ const initProjects = () => {
     }))
 }
 
-watch(() => projectStore.managedProjects, initProjects)
-
 onMounted(async () => {
     loading.show()
     await onGetProjects()
-    initProjects()
     isLoaded.value = true
     loading.hide()
 })
@@ -92,6 +89,7 @@ async function onGetProjects() {
         await projectStore.getProjectCommissionFunds(true, props.commissionId)
         await getCommissionFunds()
         await getFunds()
+        initProjects()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
