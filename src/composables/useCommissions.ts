@@ -90,6 +90,11 @@ export default function () {
         commissions.value = (await axiosPublic.get<Commission[]>(urlString)).data
     }
 
+    async function getCommissionsToPostponeProject(projectId: number) {
+        const url = `/commissions/?to_postpone_project=${projectId}`
+        commissions.value = (await axiosPublic.get<Commission[]>(url)).data
+    }
+
     async function getCommissionsForStudents(isOpenToProjects: boolean | undefined, isSite: boolean | undefined) {
         let urlString = '/commissions/'
         const urlArray = []
@@ -111,31 +116,6 @@ export default function () {
             label: commission.name + ' ('
                 + commission.commissionDate.split('-').reverse().join('/') + ')'
         }))
-    }
-
-    const initChangeCommissionLabels = (currentCommission: number, possibleFunds: number[]) => {
-        commissionLabels.value = []
-        commissions.value.forEach(commission => {
-            const isCurrentCommission = commission.id === currentCommission
-
-            if (!commission.isOpenToProjects && !isCurrentCommission) return
-
-            let hasAllPossibleFunds = true
-
-            for (const fund of possibleFunds) {
-                const hasCommissionFund = commissionFunds.value
-                    .find(commissionFund => commissionFund.commission === commission.id && commissionFund.fund === fund)
-                if (!hasCommissionFund) hasAllPossibleFunds = false
-            }
-
-            if (hasAllPossibleFunds || isCurrentCommission) {
-                commissionLabels.value.push({
-                    value: commission.id,
-                    label: commission.name + ' ('
-                        + commission.commissionDate.split('-').reverse().join('/') + ')'
-                })
-            }
-        })
     }
 
     async function getNextCommission() {
@@ -230,6 +210,6 @@ export default function () {
         getNextCommission,
         getCommissionExport,
         getFundLabel,
-        initChangeCommissionLabels
+        getCommissionsToPostponeProject
     }
 }
