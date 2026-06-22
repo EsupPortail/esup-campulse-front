@@ -60,8 +60,6 @@ onMounted(async () => {
     initFieldColor()
 })
 
-const isDirty = ref<boolean>(false)
-
 // GET PROJECT DOCUMENTS
 async function onGetDocuments() {
     loading.show()
@@ -169,7 +167,6 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
 // FORM VALIDATION RULES
 // Must select document
 const documentIsSelected = (document: ProcessDocument, val: File | File[]): boolean => {
-    if (!isDirty.value) return true
     // Only one document is required in these processes
     const userProcesses = ['registration', 'account-management', 'user-management']
     // Document is required in process if document itself is required or if process is registration, account-management, user-management
@@ -283,7 +280,6 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
                 for="pathFile"
                 reactive-rules
                 use-chips
-                @blur="isDirty = true"
                 @rejected="onDocumentRejected"
             >
                 <template v-slot:hint>
