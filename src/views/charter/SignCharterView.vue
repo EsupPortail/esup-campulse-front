@@ -90,6 +90,8 @@ async function onGetAssociationDetails() {
     if (associationId.value) {
         try {
             await associationStore.getAssociationDetail(associationId.value, false)
+            await associationStore.getInstitutionComponents()
+            await associationStore.getActivityFields()
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
