@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
 import useSubmitProject from '@/composables/useSubmitProject'
@@ -191,21 +191,13 @@ const canUpdateProject = async () => {
 }
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
-const datesAreLegal = ref<boolean>(true)
-watch(() => projectBasicInfos.value.plannedStartDate, () => {
-    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate, true)
-})
-watch(() => projectBasicInfos.value.plannedEndDate, () => {
-    datesAreLegal.value = fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate, true)
+const datesAreLegal = computed<boolean>(() => {
+    return fromDateIsAnterior(projectBasicInfos.value.plannedStartDate, projectBasicInfos.value.plannedEndDate, true)
 })
 
 // CHECKING IF PROJECT AUDIENCE AMOUNT NUMBERS ARE POSSIBLE
-const correctAudienceAmount = ref<boolean>(false)
-watch(() => projectBudget.value.amountStudentsAudience, () => {
-    correctAudienceAmount.value = parseInt(projectBudget.value.amountStudentsAudience as string) <= parseInt(projectBudget.value.amountAllAudience as string)
-})
-watch(() => projectBudget.value.amountAllAudience, () => {
-    correctAudienceAmount.value = parseInt(projectBudget.value.amountStudentsAudience as string) <= parseInt(projectBudget.value.amountAllAudience as string)
+const correctAudienceAmount = computed<boolean>(() => {
+    return parseInt(projectBudget.value.amountStudentsAudience as string) <= parseInt(projectBudget.value.amountAllAudience as string)
 })
 
 // GET DATA FOR STEP 1
@@ -780,7 +772,8 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                             <QInput
                                 v-model="projectBudget.amountStudentsAudience"
                                 :label="t('project.target-students-amount') + ' *'"
-                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-students-audience'), val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
+                                :rules="[val => val && val.length > 0 || t('forms.required-project-amount-students-audience'),
+                                         val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
                                 aria-required="true"
                                 color="commission"
                                 data-test="amount-students-audience-input"
