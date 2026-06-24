@@ -349,11 +349,12 @@ describe('Association store', () => {
         it('should patch on /associations/id with isEnabled boolean value and update association data in store', async () => {
             const {axiosAuthenticated} = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
-            mockedAxios.patch.mockResolvedValueOnce({data: _association})
+            mockedAxios.patch.mockResolvedValueOnce({})
+            associationStore.association = _association
             await associationStore.patchEnabledAssociation(true, 1)
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/associations/1', {isEnabled: true})
-            expect(associationStore.association).toEqual(_association)
+            expect(associationStore.association!.isEnabled).toBeTruthy()
         })
     })
 
@@ -361,11 +362,12 @@ describe('Association store', () => {
         it('should on /association/id with isPublic boolean value and update association data in store', async () => {
             const {axiosAuthenticated} = useAxios()
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
-            mockedAxios.patch.mockResolvedValueOnce({data: _association})
+            mockedAxios.patch.mockResolvedValueOnce({})
+            associationStore.association = _association
             await associationStore.patchPublicAssociation(true, 1)
             expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
             expect(axiosAuthenticated.patch).toHaveBeenCalledWith('/associations/1', {isPublic: true})
-            expect(associationStore.association).toEqual(_association)
+            expect(associationStore.association!.isPublic).toBeTruthy()
         })
     })
 

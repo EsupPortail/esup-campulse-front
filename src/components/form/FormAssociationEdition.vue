@@ -344,10 +344,8 @@ async function onChangeLogo(action: string) {
                     />
                     <QSelect
                         v-model="association.activityField"
-                        :label="t('association.labels.activity-field') + ' *'"
+                        :label="t('association.labels.activity-field')"
                         :options="associationStore.activityFieldLabels"
-                        :rules="[val => val || t('forms.required-association-activity-field')]"
-                        aria-required="true"
                         clearable
                         emit-value
                         filled

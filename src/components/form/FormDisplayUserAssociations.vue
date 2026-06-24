@@ -60,7 +60,7 @@ async function onGetUserAssociations() {
                     <li>
                         {{ t('dashboard.association-user.my-role') }}{{ t('colon') }}<span>{{
                             associationRoleOptions.find(obj => obj.value === association.role)?.label ??
-                                t('dashboard.association-user.member')
+                                t('dashboard.association-user.is-member')
                         }}</span>
                     </li>
                     <li>

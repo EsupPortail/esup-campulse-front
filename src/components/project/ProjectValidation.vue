@@ -39,6 +39,7 @@ const onOpenDialog = async (action: Action, icon: Icon) => {
     loading.show()
     selectedAction.value = action
     selectedIcon.value = icon
+    newComment.value.isVisible = ['return', 'reject'].includes(action)
     open.value = true
     selectedProjectCommissionFunds.value = []
     if (selectedAction.value === 'validate' || selectedAction.value === 'reject') {
@@ -73,9 +74,14 @@ async function onUpdateProjectStatus() {
     try {
         if (projectStore.project) {
             let projectStatus: ProjectStatus | '' = ''
-            if (selectedAction.value === 'validate') projectStatus = 'PROJECT_VALIDATED'
-            else if (selectedAction.value === 'return') projectStatus = 'PROJECT_DRAFT_PROCESSED'
-            else projectStatus = 'PROJECT_REJECTED'
+            if (selectedAction.value === 'validate') {
+                projectStatus = 'PROJECT_VALIDATED'
+            } else if (selectedAction.value === 'return') {
+                projectStatus = 'PROJECT_DRAFT_PROCESSED'
+                newComment.value.isVisible = true
+            } else {
+                projectStatus = 'PROJECT_REJECTED'
+            }
 
             await postNewProjectComment(projectStore.project.id, newComment.value)
 
@@ -197,7 +203,7 @@ async function onUpdateProjectStatus() {
                     />
                     <QToggle
                         v-model="newComment.isVisible"
-                        :disable="!newComment.text"
+                        :disable="!newComment.text || ['return', 'reject'].includes(selectedAction)"
                         :label="t('forms.comment-visibility')"
                         color="commission"
                     />
@@ -247,12 +253,12 @@ async function onUpdateProjectStatus() {
 @import "@/assets/_variables.scss";
 
 .q-card {
-    padding: 1rem;
-    max-width: 60rem;
-    width: $fullSize;
+  padding: 1rem;
+  max-width: 60rem;
+  width: $fullSize;
 }
 
 .q-form.flex-column {
-    gap: 2rem;
+  gap: 2rem;
 }
 </style>

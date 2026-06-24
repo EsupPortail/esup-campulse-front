@@ -30,15 +30,15 @@ export default function () {
         }
         if (settings.institution) {
             matches = (matches.length ? matches : associationStore.associations)
-                .filter(association => association.institution.id === settings.institution)
+                .filter(association => association.institution?.id === settings.institution)
         }
         if (settings.institutionComponent) {
             matches = (matches.length ? matches : associationStore.associations)
-                .filter(association => association.institutionComponent.id === settings.institutionComponent)
+                .filter(association => association.institutionComponent?.id === settings.institutionComponent)
         }
         if (settings.activityField) {
             matches = (matches.length ? matches : associationStore.associations)
-                .filter(association => association.activityField.id === settings.activityField)
+                .filter(association => association.activityField?.id === settings.activityField)
         }
         return matches
     }

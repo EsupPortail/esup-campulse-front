@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.4.3 (juin 2026)
+
+### Corrections (Bug Fixes)
+
+- Récupération de `institutionComponents` et `activityFields` pour la vue `signCharter`
+- Correction de la recherche dans l'annuaire (gestion des cas où les institutions, les composants ou les domaines
+  d'activité sont indéfinis)
+- Correction de l'utilisation de `isPublic` au lieu de `isSite` dans la boîte de dialogue de modification du paramètre
+  `isSite`
+- Les fonds de la commission sont désormais obligatoires pour soumettre un projet
+-
+
+### Améliorations de l'expérience utilisateur (UX)
+
+- Le commentaire est désormais obligatoire lors du renvoi ou du rejet d'un projet
+- Le commentaire est obligatoire lors de l'attribution de 0€ à un projet
+- Le nom du projet est désormais limité à 99 caractères ou moins
+- Un projet avec 0€ est désormais marqué comme annulé par le fonds
+
+### Changements liés à l'API
+
+- Nouveau filtre 'toPostponeProject' sur la route GET de la commission
+-
+
+### Refactoring
+
+- Rafraîchissement du projet et de toutes ses données après l'attribution de fonds
+
 ## 1.4.2 (juin 2026)
 
 - Correction d'un bug persistant au niveau du déplacement de projet dans une nouvelle commission

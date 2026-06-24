@@ -27,15 +27,14 @@ const {
 } = useSubmitProject()
 
 const {
-    getCommissionsForManagers,
     getFunds,
     getCommissionFunds,
     commissionFunds,
-    initChosenCommissionFundsLabels,
     commissionLabels,
     fundsLabels,
     funds,
-    initChangeCommissionLabels
+    initCommissionLabels,
+    getCommissionsToPostponeProject
 } = useCommissions()
 
 const open = computed({
@@ -45,46 +44,48 @@ const open = computed({
     }
 })
 
+const isLoaded = ref<boolean>(false)
+
 watch(() => props.openDialog, async (isOpen) => {
     if (isOpen) {
         loading.show()
         await onGetCommissionDates()
+        isLoaded.value = true
         loading.hide()
     }
 })
 
-const possibleFunds = ref<number[]>([])
+const initFundLabels = () => {
+    const originalCommissionFunds = projectStore.projectCommissionFunds.map(projectCommissionFund => projectCommissionFund.commissionFund)
+    const originalFunds = commissionFunds.value
+        .filter(commissionFund => originalCommissionFunds.includes(commissionFund.id))
+        .map(commissionFund => commissionFund.fund)
+
+    projectCommissionFunds.value = commissionFunds.value
+        .filter(commissionFund => commissionFund.commission === projectCommission.value && originalFunds.includes(commissionFund.fund))
+        .map(commissionFund => commissionFund.id)
+
+    fundsLabels.value = projectCommissionFunds.value.map(projectCommissionFund => {
+        const commissionFund = commissionFunds.value.find(commissionFund => commissionFund.id === projectCommissionFund)
+        const fund = funds.value.find(fund => fund.id === commissionFund.fund)
+        return {
+            value: projectCommissionFund,
+            label: fund?.acronym
+        }
+    })
+}
 
 async function onGetCommissionDates() {
     try {
-        await projectStore.getProjectDetail(props.project)
-
         await Promise.all([
+            await projectStore.getProjectDetail(props.project),
+            getCommissionsToPostponeProject(props.project),
             projectStore.getProjectCommissionFunds(false, props.project),
             getFunds(),
             getCommissionFunds()
         ])
-
-        // Initialize project commission
-        const firstProjectFund = projectStore.projectCommissionFunds[0]
-        if (!firstProjectFund) return
-        const matchedCommission = commissionFunds.value.find(obj => obj.id === firstProjectFund.commissionFund)
-        projectCommission.value = matchedCommission?.commission as number
-        if (!projectCommission.value) return
-
-        // Initialize commission funds
-        initChosenCommissionFundsLabels(projectCommission.value, props.isSite)
-        projectCommissionFunds.value = projectStore.projectCommissionFunds.map(x => x.commissionFund)
-
-        const chosenFunds = fundsLabels.value
-            .filter(x => projectCommissionFunds.value.includes(x.value) && x.fund)
-            .map(x => x.fund as number)
-
-        possibleFunds.value = [...chosenFunds]
-
-        // Initialize commissions
-        await getCommissionsForManagers(undefined, undefined, undefined, props.isSite ? undefined : false, true, chosenFunds)
-        initChangeCommissionLabels(projectCommission.value, possibleFunds.value)
+        initCommissionLabels()
+        initFundLabels()
     } catch (error) {
         await handleError(error)
     }
@@ -112,21 +113,6 @@ async function onChangeCommission() {
     }
 }
 
-const onReInitProjectCommissionFunds = (newCommissionId: number | null) => {
-    projectCommission.value = newCommissionId
-
-    if (!newCommissionId) {
-        projectCommissionFunds.value = []
-        fundsLabels.value = []
-        return
-    }
-
-    initChosenCommissionFundsLabels(newCommissionId, props.isSite)
-    fundsLabels.value = fundsLabels.value.filter(option => possibleFunds.value.includes(option.fund))
-
-    projectCommissionFunds.value = fundsLabels.value.map(option => option.value)
-}
-
 async function handleError(error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
         notify({
@@ -144,7 +130,7 @@ async function handleError(error: unknown) {
                 <h3>{{ t('project.change-commission') }}</h3>
 
                 <div
-                    v-if="!commissionLabels.length || (commissionLabels.length === 1 && commissionLabels[0].value === projectCommission)"
+                    v-if="isLoaded && commissionLabels.length < 2"
                     class="info-panel info-panel-warning"
                 >
                     <i
@@ -167,7 +153,7 @@ async function handleError(error: unknown) {
                         filled
                         lazy-rules
                         map-options
-                        @update:model-value="onReInitProjectCommissionFunds"
+                        @update:model-value="initFundLabels()"
                     />
 
                     <QSelect
@@ -197,7 +183,7 @@ async function handleError(error: unknown) {
                             icon="bi-x-lg"
                         />
                         <QBtn
-                            :disable="!commissionLabels.length || !projectCommissionFunds.length || commissionLabels.length === 1 || commissionLabels[0].value === projectCommission"
+                            :disable="!projectCommission"
                             :label="t('validate')"
                             class="btn-lg"
                             color="commission"

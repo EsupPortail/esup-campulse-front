@@ -196,16 +196,14 @@ const columns: QTableProps['columns'] = [
                                 :props="props"
                                 headers="institution"
                             >
-                                {{ associationStore.institutions.find(obj => obj.id === props.row.institution)?.name }}
+                                {{ props.row.institution?.name }}
                             </QTd>
                             <QTd
                                 key="activityField"
                                 :props="props"
                                 headers="activityField"
                             >
-                                {{
-                                    associationStore.activityFields.find(obj => obj.id === props.row.activityField)?.name
-                                }}
+                                {{ props.row.activityField?.name }}
                             </QTd>
                             <QTd
                                 key="status"
@@ -344,25 +342,25 @@ const columns: QTableProps['columns'] = [
 @import '@/assets/variables.scss';
 
 .q-table tr th:first-child {
-    text-align: left;
+  text-align: left;
 }
 
 .button-container {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 @media screen and (max-width: $breakpoint-lg) {
-    .flex-row-space-between {
-        flex-direction: column;
+  .flex-row-space-between {
+    flex-direction: column;
 
-        h2 {
-            padding-bottom: 0;
-        }
-
-        .q-btn {
-            margin: 1rem;
-        }
+    h2 {
+      padding-bottom: 0;
     }
+
+    .q-btn {
+      margin: 1rem;
+    }
+  }
 }
 </style>

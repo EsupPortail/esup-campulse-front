@@ -1,12 +1,6 @@
 import {createPinia, setActivePinia} from 'pinia'
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {
-    _institutionManager,
-    _institutionStudent,
-    _memberFund,
-    _users,
-    _usersNames
-} from '~/fixtures/user.mock'
+import {_institutionManager, _institutionStudent, _memberFund, _users, _usersNames} from '~/fixtures/user.mock'
 import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useUserStore} from '@/stores/useUserStore'
@@ -72,21 +66,11 @@ describe('UserManagerStore', () => {
             userStore.user = undefined
         })
 
-        describe('if user is linked to institutions', () => {
-            it('should call API once on /users/?institutions if user is linked to institutions', async () => {
-                await userManagerStore.getUsers('all')
-                expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                const url = `/users/?institutions=${userStore.userInstitutions?.join(',')},`
-                expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-                expect(userManagerStore.users).toEqual(_users)
-            })
-        })
-
         describe('if we want to get only validated users', () => {
             it('should call API once on /users/is_validated_by_admin=true', async () => {
                 await userManagerStore.getUsers('validated')
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                const url = `/users/?institutions=${userStore.userInstitutions?.join(',')},&is_validated_by_admin=true`
+                const url = '/users/?is_validated_by_admin=true'
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
                 expect(userManagerStore.users).toEqual(_users)
             })
@@ -96,7 +80,7 @@ describe('UserManagerStore', () => {
             it('should call API once on /users/is_validated_by_admin=false', async () => {
                 await userManagerStore.getUsers('unvalidated')
                 expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-                const url = `/users/?institutions=${userStore.userInstitutions?.join(',')},&is_validated_by_admin=false`
+                const url = '/users/?is_validated_by_admin=false'
                 expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
                 expect(userManagerStore.users).toEqual(_users)
             })
