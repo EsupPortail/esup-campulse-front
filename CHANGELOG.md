@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.4 (juin 2026)
+
+- Correction d'un ID de fond manquant au niveau du déplacement d'un projet dans une nouvelle commission
+
 ## 1.4.3 (juin 2026)
 
 ### Corrections (Bug Fixes)
