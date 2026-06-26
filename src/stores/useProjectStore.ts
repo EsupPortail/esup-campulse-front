@@ -162,6 +162,12 @@ export const useProjectStore = defineStore('projectStore', {
 
         searchProjectByManualIdentifier(manualIdentifier: string) {
             this.managedProjects = this.managedProjects.filter(obj => obj.manualIdentifier === manualIdentifier)
+        },
+
+        async postponeProject(projectId: number, newCommissionId: number) {
+            const {axiosAuthenticated} = useAxios()
+            const url = `/projects/${projectId}/postpone`
+            await axiosAuthenticated.patch(url, {newCommissionId})
         }
     }
 
