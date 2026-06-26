@@ -70,7 +70,8 @@ const initFundLabels = () => {
         const fund = funds.value.find(fund => fund.id === commissionFund.fund)
         return {
             value: projectCommissionFund,
-            label: fund?.acronym
+            label: fund?.acronym,
+            fund: fund?.id
         }
     })
 }
@@ -94,13 +95,8 @@ async function onGetCommissionDates() {
 async function onChangeCommission() {
     loading.show()
     try {
-        for (const x of projectStore.projectCommissionFunds) {
-            const oldCommissionFund = commissionFunds.value.find(y => y.id === x.commissionFund)
-            const fund = funds.value.find(y => y.id === oldCommissionFund?.fund)
-            const newCommissionFund = fundsLabels.value.find(y => y.fund === fund?.id)
-            await projectStore.patchProjectCommissionFund(oldCommissionFund.id, newCommissionFund.value)
-        }
-        emit('closeDialog')
+        await projectStore.postponeProject(props.project, projectCommission.value)
+        projectCommission.value = null
         emit('refreshProjects')
         notify({
             type: 'positive',
@@ -140,7 +136,7 @@ async function handleError(error: unknown) {
                     <p>{{ t('project.change-commission-info') }}</p>
                 </div>
 
-                <QForm @submit="onChangeCommission">
+                <QForm @submit="onChangeCommission()">
                     <QSelect
                         v-model="projectCommission"
                         :hint="t('project.commission-choice-hint')"
@@ -183,6 +179,7 @@ async function handleError(error: unknown) {
                             icon="bi-x-lg"
                         />
                         <QBtn
+                            v-close-popup
                             :disable="!projectCommission"
                             :label="t('validate')"
                             class="btn-lg"
