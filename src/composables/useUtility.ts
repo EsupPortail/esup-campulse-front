@@ -1,5 +1,6 @@
 import type {RouteLocationMatched, RouteParams} from 'vue-router'
 import {ref} from 'vue'
+import type {AxiosResponse} from 'axios'
 
 // Used to display dynamic title on certain pages like association detail
 const dynamicTitle = ref<string | undefined>(undefined)
@@ -78,6 +79,37 @@ export default function () {
         return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     }
 
+    function openDocument(response: AxiosResponse<ArrayBuffer>) {
+        console.log(response)
+        const data = response.data
+        const type = response.headers['content-type']
+        const disposition = response.headers['content-disposition']
+        const blob = new Blob([data])
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = fileName(disposition, type)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+    }
+
+    const fileName = (disposition: string | undefined, type: string | undefined): string => {
+        const detectedExtension = type ? type.split('/')[1]?.split(';')[0] : 'bin'
+        const defaultName = `document.${detectedExtension}`
+        if (!disposition) return defaultName
+        const utf8Match = disposition.match(/filename\*=utf-8''([^;\n]*)/i)
+        if (utf8Match && utf8Match[1]) {
+            return decodeURIComponent(utf8Match[1])
+        }
+        const classicMatch = disposition.match(/filename=(['"]?)([^'"\n]*)\1?/)
+        if (classicMatch && classicMatch[2]) {
+            return decodeURIComponent(classicMatch[2])
+        }
+        return defaultName
+    }
+
     return {
         formatDate,
         arraysAreEqual,
@@ -89,6 +121,8 @@ export default function () {
         dynamicTitle,
         filterizeSearch,
         openMenu,
-        kebabize
+        kebabize,
+        openDocument,
+        fileName,
     }
 }

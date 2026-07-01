@@ -8,18 +8,20 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {initCharters, patchCharterDocument} = useCharters()
 const {catchHTTPError} = useErrors()
 const {getFile} = useDocumentUploads()
+const {openDocument} = useUtility()
 const associationStore = useAssociationStore()
 
 const props = defineProps<{
-    openValidate: boolean,
-    charter: ManageCharter,
-    associationId: number
+  openValidate: boolean,
+  charter: ManageCharter,
+  associationId: number
 }>()
 
 const emit = defineEmits(['closeDialog'])
@@ -46,13 +48,8 @@ onMounted(initCharterDocument)
 
 async function onDownloadCharter() {
     const charter = props.charter
-    const file = await getFile(charter.pathFile as string)
-    const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(file)
-    link.download = charter.documentName as string
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
+    const response = await getFile(charter.pathFile as string)
+    openDocument(response)
 }
 
 const comment = ref('')
@@ -165,7 +162,7 @@ async function onValidateCharter(action: 'validate' | 'reject') {
 @import '@/assets/styles/forms.scss';
 
 .q-card {
-    max-width: 91rem;
-    width: 100%;
+  max-width: 91rem;
+  width: 100%;
 }
 </style>

@@ -8,6 +8,7 @@ import type {Association} from '#/association'
 import useSecurity from '@/composables/useSecurity'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
@@ -16,6 +17,7 @@ const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
+const {openDocument} = useUtility()
 
 const emit = defineEmits(['updateSelectedAssociations'])
 
@@ -112,19 +114,15 @@ async function onConfirmChanges(emailType: string) {
         if (props.selectedAssociations?.length) {
             try {
                 const associationIds = props.selectedAssociations.map(x => x.id)
-                const file = await associationStore.export(associationIds, (switches.value === 'csv-export') ? 'csv' : 'xlsx')
+                const response = await associationStore.export(associationIds, (switches.value === 'csv-export') ? 'csv' : 'xlsx')
+                openDocument(response)
                 const message = (switches.value === 'csv-export') ? t('notifications.positive.csv-export-associations') : t('notifications.positive.xlsx-export-associations')
                 notify({
                     type: 'positive',
                     message,
                     html: true
                 })
-                const link = document.createElement('a')
-                link.href = window.URL.createObjectURL(new Blob([file]))
-                link.download = (switches.value === 'csv-export') ? `${t('association.csv-name')}.csv` : `${t('association.csv-name')}.xlsx`
-                document.body.appendChild(link)
-                link.click()
-                link.remove()
+                openDocument(response)
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
                     notify({
@@ -332,10 +330,10 @@ async function onConfirmChanges(emailType: string) {
 @import '@/assets/variables.scss';
 
 p {
-    font-size: 1.8rem;
+  font-size: 1.8rem;
 }
 
 li {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 </style>

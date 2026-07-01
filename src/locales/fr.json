@@ -56,7 +56,6 @@
     "confirm-disable": "Voulez-vous vraiment désactiver cette association ?",
     "confirm-enable": "Voulez-vous vraiment activer cette association ?",
     "contact": "Contacter l'association",
-    "csv-name": "Export-Associations",
     "delete": "Supprimer",
     "delete-association": "Supprimer l'association",
     "disable": "Désactiver",
@@ -201,7 +200,6 @@
       "validate": "Valider la charte",
       "view": "Voir la charte"
     },
-    "pdf-name": "Récapitulatif-Signature-Charte-",
     "processing-charters": "Chartes à valider",
     "project-fund": {
       "title": "Chartes de subventionnement"
@@ -251,7 +249,6 @@
     "date": "Date de commission",
     "dates": "Dates de commission",
     "export-csv": "Exporter en CSV",
-    "export-name": "Export-Projets-",
     "export-pdf": "Exporter en PDF",
     "export-xlsx": "Exporter au format Excel",
     "funds": "Financeurs",
@@ -737,7 +734,6 @@
     "document-hint": "Cliquez sur le champ pour ajouter un document.",
     "document-hint-multiple": "Vous pouvez sélectionner plusieurs documents.",
     "documents": "Documents",
-    "documents-name": "Documents-Demande-Subvention-",
     "download-budget": "Télécharger le budget prévisionnel",
     "download-files": "Télécharger tous les documents déposés",
     "download-recap": "Télécharger le @:project.recap au format PDF",

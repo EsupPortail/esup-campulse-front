@@ -18,11 +18,13 @@ import ProjectValidation from '@/components/project/ProjectValidation.vue'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import useSecurity from '@/composables/useSecurity'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
+import useUtility from '@/composables/useUtility'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {hasPerm} = useSecurity()
+const {openDocument} = useUtility()
 const projectStore = useProjectStore()
 const {
     initProjectBasicInfos,
@@ -61,13 +63,9 @@ async function onGetProjectDetail() {
 async function onGetProjectPdf() {
     loading.show()
     try {
-        const file = await projectStore.getProjectPdf(parseInt(route.params.projectId as string))
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('project.pdf-name')}${encodeURI(projectStore.project?.name as string)}.pdf`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        const projectId = parseInt(route.params.projectId as string)
+        const response = await projectStore.getProjectPdf(projectId)
+        openDocument(response)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

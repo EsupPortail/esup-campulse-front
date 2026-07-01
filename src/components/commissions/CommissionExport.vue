@@ -5,29 +5,26 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import useCommissions from '@/composables/useCommissions'
 import type {ProjectList} from '#/project'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {getCommissionExport} = useCommissions()
+const {openDocument} = useUtility()
 
 const props = defineProps<{
-    commissionId: number,
-    commissionName: string,
-    selected: ProjectList[] | undefined
+  commissionId: number,
+  commissionName: string,
+  selected: ProjectList[] | undefined
 }>()
 
 async function onExportCommission(mode: 'csv' | 'pdf' | 'xlsx') {
     loading.show()
     try {
         const projects = props.selected?.map(project => project.id)
-        const file = await getCommissionExport(props.commissionId, mode, projects)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('commission.export-name')}${encodeURI(props.commissionName)}.${mode}`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        const response = await getCommissionExport(props.commissionId, mode, projects)
+        openDocument(response)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

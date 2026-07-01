@@ -9,12 +9,14 @@ import ProjectDelete from '@/components/project/ProjectDelete.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useErrors'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const userStore = useUserStore()
 const projectStore = useProjectStore()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
+const {openDocument} = useUtility()
 
 const props = defineProps<{
   projectId: number,
@@ -130,25 +132,20 @@ async function onOptionClick(option: Option) {
         if (option.action === 'delete') {
             openDelete.value = true
         } else if (option.action === 'download-pdf') {
-            await onGetProjectPdf(props.projectId, props.projectName, false)
+            await onGetProjectPdf(props.projectId, false)
         } else if (option.action === 'download-review-pdf') {
-            await onGetProjectPdf(props.projectId, props.projectName, true)
+            await onGetProjectPdf(props.projectId, true)
         } else if (option.action === 'download-files') {
-            await onGetProjectFiles(props.projectId, props.projectName)
+            await onGetProjectFiles(props.projectId)
         }
     }
 }
 
-async function onGetProjectPdf(projectId: number, projectName: string, isReview: boolean) {
+async function onGetProjectPdf(projectId: number, isReview: boolean) {
     loading.show()
     try {
-        const file = !isReview ? await projectStore.getProjectPdf(projectId) : await projectStore.getProjectReviewPdf(projectId)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        const response = !isReview ? await projectStore.getProjectPdf(projectId) : await projectStore.getProjectReviewPdf(projectId)
+        openDocument(response)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -160,16 +157,11 @@ async function onGetProjectPdf(projectId: number, projectName: string, isReview:
     loading.hide()
 }
 
-async function onGetProjectFiles(projectId: number, projectName: string) {
+async function onGetProjectFiles(projectId: number) {
     loading.show()
     try {
-        const file = await projectStore.getProjectFiles(projectId)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('project.documents-name')}${encodeURI(projectName)}.zip`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        const response = await projectStore.getProjectFiles(projectId)
+        openDocument(response)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

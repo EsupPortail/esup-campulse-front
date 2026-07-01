@@ -204,7 +204,7 @@ export const useAssociationStore = defineStore('associationStore', {
         async export(associations: number[], format: string) {
             const {axiosAuthenticated} = useAxios()
             const url = `/associations/export?associations=${associations.join(',')}&mode=${format}`
-            return (await axiosAuthenticated.get<Blob>(url, {responseType: 'blob'})).data
+            return await axiosAuthenticated.get(url, {responseType: 'arraybuffer'})
         }
     }
 })

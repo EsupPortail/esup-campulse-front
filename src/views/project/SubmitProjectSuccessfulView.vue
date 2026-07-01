@@ -7,12 +7,14 @@ import {useI18n} from 'vue-i18n'
 import router from '@/router'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
+import useUtility from '@/composables/useUtility'
 
 const projectStore = useProjectStore()
 const route = useRoute()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
+const {openDocument} = useUtility()
 
 onMounted(async () => {
     loading.show()
@@ -37,13 +39,9 @@ async function onGetProjectDetail() {
 async function onGetProjectPdf() {
     loading.show()
     try {
-        const file = await projectStore.getProjectPdf(parseInt(route.params.projectId as string))
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('project.pdf-name')}${encodeURI(projectStore.project?.name as string)}.pdf`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        const projectId = parseInt(route.params.projectId as string)
+        const response = await projectStore.getProjectPdf(projectId)
+        openDocument(response)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -96,21 +94,21 @@ async function onGetProjectPdf() {
 @import '@/assets/_variables.scss';
 
 i {
-    color: $commissionColor;
-    font-size: 5rem;
+  color: $commissionColor;
+  font-size: 5rem;
 }
 
 .project-recap {
-    text-align: center;
-    padding: 3rem 0 3rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+  text-align: center;
+  padding: 3rem 0 3rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 
-    .flex-btn-group {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-    }
+  .flex-btn-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
 }
 </style>
