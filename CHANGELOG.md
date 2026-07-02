@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.5 (juillet 2026)
+
+- Page de maintenance activable depuis le script de déploiement
+- Correction de l'accès d'un président à l'ensemble des projets de son association
+
 ## 1.4.4 (juin 2026)
 
 - Correction d'un ID de fond manquant au niveau du déplacement d'un projet dans une nouvelle commission
