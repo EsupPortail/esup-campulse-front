@@ -23,22 +23,22 @@ const props = defineProps<{
   association: number | null,
 }>()
 
-const canModifyProjectAndReview = ref<boolean>(false)
-
-const initCanModifyProjectAndReview = () => {
-    let perm = false
+const canModifyProjectAndReview = (): boolean => {
     if (props.association) {
+        if (userStore.hasPresidentStatus(props.association)) {
+            return true
+        }
         const projectAssociationUserId = projectStore.selfProjects.find(x => x.id === props.projectId)?.associationUser?.id
         if (projectAssociationUserId) {
             const associationUserId = userStore.userAssociations.find(x => x.association.id === props.association)?.id
-            if (userStore.hasPresidentStatus(props.association) || projectAssociationUserId === associationUserId) {
-                perm = true
+            if (projectAssociationUserId === associationUserId) {
+                return true
             }
         }
+        return false
     } else {
-        perm = true
+        return true
     }
-    canModifyProjectAndReview.value = perm
 }
 
 interface Option {
@@ -55,9 +55,8 @@ const options = ref<Option[]>([])
 
 const initOptions = () => {
     options.value = []
-    initCanModifyProjectAndReview()
     if ((props.projectStatus === 'PROJECT_DRAFT') || (props.projectStatus === 'PROJECT_DRAFT_PROCESSED')) {
-        if (canModifyProjectAndReview.value) {
+        if (canModifyProjectAndReview()) {
             options.value.push({
                 icon: 'bi-pencil',
                 label: t('project.modify'),
@@ -75,7 +74,7 @@ const initOptions = () => {
         }
     }
     if (props.projectStatus === 'PROJECT_REVIEW_DRAFT') {
-        if (canModifyProjectAndReview.value) {
+        if (canModifyProjectAndReview()) {
             options.value.push({
                 icon: 'bi-pencil',
                 label: t('project.modify-review'),

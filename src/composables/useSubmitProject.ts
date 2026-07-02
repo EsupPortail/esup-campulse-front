@@ -249,7 +249,7 @@ export default function () {
         if (projectBasicInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
             dataToPatch = Object.assign(dataToPatch, {['plannedLocation']: projectBasicInfos.value.plannedLocation})
         }
-        if (projectBasicInfos.value.associationUser !== projectStore.project?.associationUser.id) {
+        if (projectBasicInfos.value.associationUser !== projectStore.project?.associationUser?.id) {
             dataToPatch = Object.assign(dataToPatch, {['associationUser']: projectBasicInfos.value.associationUser})
         }
         if (Object.entries(dataToPatch).length) {

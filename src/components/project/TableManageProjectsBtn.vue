@@ -66,7 +66,9 @@ const canChangeProject = (): boolean => {
         if (fund) institutions.push(fund.institution)
     })
     userStore.user?.groups.forEach(group => {
-        if (group && group.institutionId && institutions.includes(group.institutionId)) perm = true
+        if (group && group.institutionId && institutions.includes(group.institutionId)) {
+            perm = true
+        }
     })
     return perm
 }
@@ -137,11 +139,8 @@ const initOptions = () => {
     }
 
     // Update project dates
-    if ((props.projectStatus === 'PROJECT_DRAFT_PROCESSED' ||
-          props.projectStatus === 'PROJECT_PROCESSING' ||
-          props.projectStatus === 'PROJECT_VALIDATED' ||
-          props.projectStatus === 'PROJECT_REVIEW_DRAFT' ||
-          props.projectStatus === 'PROJECT_REVIEW_PROCESSING') &&
+    if (['PROJECT_DRAFT_PROCESSED', 'PROJECT_PROCESSING', 'PROJECT_VALIDATED',
+        'PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_PROCESSING'].includes(props.projectStatus) &&
       hasPerm('change_project_as_validator')) {
         options.value.push({
             icon: 'bi-calendar',
