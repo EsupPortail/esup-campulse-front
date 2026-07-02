@@ -4,7 +4,7 @@ set -e
 PROJECT="plan-a-front"
 
 if [ ! $# -ge 2 ]; then
-  echo "👉 Usage: $0 branch/tag goal [--update-nginx-conf] [--update-apache-conf]    IRL: $0 feature/introduce_bug prod"
+  echo "👉 Usage: $0 branch/tag goal [--update-nginx-conf] [--update-apache-conf] [--maintenance]"
   exit 1
 fi
 
@@ -135,8 +135,19 @@ cd "$TEMP"
 echo "🔀 Cloning repository on target tag/branch"
 git clone -b "$1" --single-branch "$REPOSITORY" "$WORKING_DIR"
 cd "$WORKING_DIR"
-echo
-# Get last commit id
+
+for i in "$@"; do
+  if [ "$i" == "--maintenance" ]; then
+      echo "🚀 Deploying maintenance page"
+      for j in "${TARGET[@]}"; do
+          echo "Scp files to $j"
+          ssh -q "$j" mkdir -p $DEST_PATH
+          rsync -avzhe ssh --progress --delete "maintenance/" "$j:$DEST_PATH"
+      done
+      exit 0
+  fi
+done
+
 echo "🏗 Installing npm dependencies"
 npm ci
 echo "📦 Packaging stuff"
