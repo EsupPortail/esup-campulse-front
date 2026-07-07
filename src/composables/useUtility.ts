@@ -80,7 +80,6 @@ export default function () {
     }
 
     function openDocument(response: AxiosResponse<ArrayBuffer>) {
-        console.log(response)
         const data = response.data
         const type = response.headers['content-type']
         const disposition = response.headers['content-disposition']
