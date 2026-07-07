@@ -175,6 +175,7 @@ async function onAddAssociation() {
                 <QBtn
                     v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
                         (routeName === 'ManageAccount' && newAssociations.length === 0)"
+                    :disable="newAssociations.filter(association => !association.id).length > 0"
                     :label="t('forms.add-association')"
                     class="btn-lg"
                     color="dashboard"
