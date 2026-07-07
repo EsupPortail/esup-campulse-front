@@ -147,7 +147,7 @@ async function onDeleteDocumentUpload(documentId: number) {
 // CREATE LINK TO VIEW FILE
 async function onGetFile(uploadedDocument: UploadedProcessDocument) {
     try {
-        const file = await getFile(uploadedDocument.pathFile as string)
+        const file = (await getFile(uploadedDocument.pathFile as string)).data
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(file)
         link.download = uploadedDocument.name as string

@@ -204,12 +204,12 @@ export default function () {
     }
 
     async function getFile(pathFile: string) {
-        return (await axiosAuthenticated.get(pathFile, {responseType: 'blob'})).data
+        return await axiosAuthenticated.get(pathFile, {responseType: 'arraybuffer'})
     }
 
     // Generate link to uploaded doc with authentification
     async function createUploadedFileLink(pathFile: string, name: string) {
-        const file = await getFile(pathFile)
+        const file = (await getFile(pathFile)).data
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(file)
         link.download = name

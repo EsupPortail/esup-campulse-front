@@ -14,6 +14,7 @@ import ProjectChangeCommission from '@/components/project/ProjectChangeCommissio
 import useCommissions from '@/composables/useCommissions'
 import useDocumentUploads from '@/composables/useDocumentUploads'
 import {useUserStore} from '@/stores/useUserStore'
+import useUtility from '@/composables/useUtility'
 
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
@@ -23,6 +24,7 @@ const {catchHTTPError} = useErrors()
 const {commissionFunds, funds} = useCommissions()
 const userStore = useUserStore()
 const {createUploadedFileLink} = useDocumentUploads()
+const {openDocument} = useUtility()
 
 const props = defineProps<{
   projectId: number,
@@ -199,29 +201,24 @@ async function onOptionClick(option: Option) {
         } else if (option.action === 'changeCommission') {
             changeCommission.value = true
         } else if (option.action === 'download-pdf') {
-            await onGetProjectPdf(props.projectId, props.projectName, false)
+            await onGetProjectPdf(props.projectId, false)
         } else if (option.action === 'download-review-pdf') {
-            await onGetProjectPdf(props.projectId, props.projectName, true)
+            await onGetProjectPdf(props.projectId, true)
         } else if (option.action === 'download-budget') {
             await onGetProjectBudget(props.budgetFile, props.projectName)
         } else if (option.action === 'download-files') {
-            await onGetProjectFiles(props.projectId, props.projectName)
+            await onGetProjectFiles(props.projectId)
         } else {
             editCommissionFundsAmounts.value = true
         }
     }
 }
 
-async function onGetProjectPdf(projectId: number, projectName: string, isReview: boolean) {
+async function onGetProjectPdf(projectId: number, isReview: boolean) {
     loading.show()
     try {
-        const file = !isReview ? await projectStore.getProjectPdf(projectId) : await projectStore.getProjectReviewPdf(projectId)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('project.pdf-name')}${encodeURI(projectName)}.pdf`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        const response = !isReview ? await projectStore.getProjectPdf(projectId) : await projectStore.getProjectReviewPdf(projectId)
+        openDocument(response)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -250,16 +247,11 @@ async function onGetProjectBudget(budgetFile: string | null, projectName: string
     loading.hide()
 }
 
-async function onGetProjectFiles(projectId: number, projectName: string) {
+async function onGetProjectFiles(projectId: number) {
     loading.show()
     try {
-        const file = await projectStore.getProjectFiles(projectId)
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(new Blob([file]))
-        link.download = `${t('project.documents-name')}${encodeURI(projectName)}.zip`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        const response = await projectStore.getProjectFiles(projectId)
+        openDocument(response)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
