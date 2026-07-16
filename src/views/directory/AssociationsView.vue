@@ -8,7 +8,6 @@ import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
-import {useRoute} from 'vue-router'
 import {useContentStore} from '@/stores/useContentStore'
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import DirectoryImage from '@/assets/img/directory-image.jpg'
@@ -20,13 +19,15 @@ const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {associations} = useAssociation()
-const route = useRoute()
+
+const isLoaded = ref<boolean>(false)
 
 onMounted(async function () {
     loading.show()
     await associationStore.getAssociations(true)
     associations.value = associationStore.associations
     await getContents()
+    isLoaded.value = true
     loading.hide()
 })
 
@@ -110,8 +111,7 @@ const contentFirstBlock = computed<Content | undefined>(() => {
 
         <div class="association-search">
             <FormAssociationSearch
-                v-if="route.name"
-                :route="route.name"
+                v-if="isLoaded"
                 @update-page="currentPage = 1"
             />
         </div>

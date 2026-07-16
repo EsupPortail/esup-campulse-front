@@ -49,7 +49,6 @@ async function onGetProjectDetail() {
         initProjectBudget()
         initProjectGoals()
     } catch (error) {
-        console.log('error', error)
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
             notify({
