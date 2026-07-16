@@ -115,7 +115,6 @@ async function onSearch() {
 function onAdvancedSearch() {
     updateQueries()
     associations.value = advancedSearch(settings.value)
-    console.log(associations.value)
 }
 
 // A function that clears the search,
