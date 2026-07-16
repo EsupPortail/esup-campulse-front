@@ -59,7 +59,7 @@ watch(() => pages.value, () => {
         associations.value.length : currentPage.value * associationsPerPage
 })
 const associationsOnPage = ref([...associations.value.slice(startIndex.value, endIndex.value)])
-watch(() => associations.value.length, () => {
+watch(() => associations.value, () => {
     associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
 })
 watch(() => startIndex.value, () => {

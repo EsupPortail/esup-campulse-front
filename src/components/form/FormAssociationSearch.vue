@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type {Association, AssociationSearch} from '#/association'
+import type {AssociationSearch} from '#/association'
 import {onMounted, ref, watch} from 'vue'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
@@ -114,7 +114,8 @@ async function onSearch() {
 
 function onAdvancedSearch() {
     updateQueries()
-    associations.value = advancedSearch(settings.value) as Association[] ?? associationStore.associations
+    associations.value = advancedSearch(settings.value)
+    console.log(associations.value)
 }
 
 // A function that clears the search,

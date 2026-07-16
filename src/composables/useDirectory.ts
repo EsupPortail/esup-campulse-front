@@ -10,9 +10,9 @@ export default function () {
     const userStore = useUserStore()
     const {filterizeSearch} = useUtility()
 
-    function advancedSearch(settings: AssociationSearch) {
+    function advancedSearch(settings: AssociationSearch): Association[] {
         const hasSettings: boolean = !!(settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)
-        if (!associationStore.associations.length || !hasSettings) return
+        if (!associationStore.associations.length || !hasSettings) return []
         let matches: Association[] = []
         if (settings.name) {
             const term = filterizeSearch(settings.name)
