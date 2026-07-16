@@ -7,12 +7,14 @@ import useErrors from '@/composables/useErrors'
 import useAssociation from '@/composables/useAssociation'
 import {onMounted, ref} from 'vue'
 import {useUserStore} from '@/stores/useUserStore'
+import useUtility from '@/composables/useUtility'
 
 const {getAssociationPdfExport} = useAssociation()
 const route = useRoute()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
+const {openDocument} = useUtility()
 
 const associationId = ref<number>()
 const associationName = ref<string>('')
@@ -30,13 +32,8 @@ async function onGetAssociationPdfExport() {
     if (associationId.value && associationName.value) {
         loading.show()
         try {
-            const file = await getAssociationPdfExport(associationId.value)
-            const link = document.createElement('a')
-            link.href = window.URL.createObjectURL(new Blob([file]))
-            link.download = `${t('charter.pdf-name')}${encodeURI(associationName.value)}.pdf`
-            document.body.appendChild(link)
-            link.click()
-            link.remove()
+            const response = await getAssociationPdfExport(associationId.value)
+            openDocument(response)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
@@ -91,15 +88,15 @@ async function onGetAssociationPdfExport() {
 @import '@/assets/_variables.scss';
 
 i {
-    color: $charterColor;
-    font-size: 5rem;
+  color: $charterColor;
+  font-size: 5rem;
 }
 
 .recap {
-    text-align: center;
-    padding: 3rem 0 3rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+  text-align: center;
+  padding: 3rem 0 3rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 </style>

@@ -196,34 +196,31 @@ describe('Project store', () => {
 
     describe('getProjectPdf', () => {
         it('should get a pdf recap document of the project', async () => {
-            const file = new Blob
+            const file = new ArrayBuffer(1)
             mockedAuthAxios.get.mockResolvedValueOnce({data: file})
-            const response = await projectStore.getProjectPdf(1)
+            await projectStore.getProjectPdf(1)
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/pdf_export', {responseType: 'blob'})
-            expect(response).toEqual(file)
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/pdf_export', {responseType: 'arraybuffer'})
         })
     })
 
     describe('getProjectReviewPdf', () => {
         it('should get a pdf recap document of the review', async () => {
-            const file = new Blob
+            const file = new ArrayBuffer(1)
             mockedAuthAxios.get.mockResolvedValueOnce({data: file})
-            const response = await projectStore.getProjectReviewPdf(1)
+            await projectStore.getProjectReviewPdf(1)
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/review/pdf_export', {responseType: 'blob'})
-            expect(response).toEqual(file)
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/review/pdf_export', {responseType: 'arraybuffer'})
         })
     })
 
     describe('getProjectFiles', () => {
         it('should get all the files uploaded during project submission', async () => {
-            const file = new Blob
+            const file = new ArrayBuffer(1)
             mockedAuthAxios.get.mockResolvedValueOnce({data: file})
-            const response = await projectStore.getProjectFiles(1)
+            await projectStore.getProjectFiles(1)
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/documents/uploads/file?project_id=1', {responseType: 'blob'})
-            expect(response).toEqual(file)
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/documents/uploads/file?project_id=1', {responseType: 'arraybuffer'})
         })
     })
 

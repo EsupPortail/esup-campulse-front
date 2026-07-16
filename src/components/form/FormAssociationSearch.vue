@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import type {Association, AssociationSearch} from '#/association'
-import {ref, watch} from 'vue'
+import type {AssociationSearch} from '#/association'
+import {onMounted, ref, watch} from 'vue'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useI18n} from 'vue-i18n'
 import useAssociation from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
-import type {RouteRecordName} from 'vue-router'
 import axios from 'axios'
+import {useRoute} from 'vue-router'
 import useErrors from '@/composables/useErrors'
+import router from '@/router'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const {t} = useI18n()
@@ -16,10 +17,7 @@ const associationStore = useAssociationStore()
 const {associations} = useAssociation()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
-
-const props = defineProps<{
-  route: RouteRecordName
-}>()
+const route = useRoute()
 
 const emit = defineEmits(['updatePage'])
 
@@ -36,6 +34,26 @@ const settings = ref<AssociationSearch>({
     institution: null,
     institutionComponent: null,
     activityField: null
+})
+
+onMounted(() => {
+    settings.value.search = route.query.search as string || ''
+
+    if (settings.value.search) {
+        onSearch()
+    }
+
+    settings.value.name = route.query.name as string || ''
+    settings.value.acronym = route.query.acronym as string || ''
+    settings.value.institution = parseInt(route.query.institution as string) || null
+    settings.value.institutionComponent = parseInt(route.query.component as string) || null
+    settings.value.activityField = parseInt(route.query.field as string) || null
+
+    if (settings.value.name || settings.value.acronym || settings.value.institution
+      || settings.value.institutionComponent || settings.value.activityField) {
+        expanded.value = true
+        onAdvancedSearch()
+    }
 })
 
 async function getLabels() {
@@ -61,15 +79,26 @@ watch(expanded, () => {
     }
 })
 
+function updateQueries() {
+    router.replace({
+        query: {
+            search: settings.value.search || undefined,
+            name: settings.value.name || undefined,
+            acronym: settings.value.acronym || undefined,
+            institution: settings.value.institution?.toString() || undefined,
+            component: settings.value.institutionComponent?.toString() || undefined,
+            field: settings.value.activityField?.toString() || undefined
+        }
+    })
+}
+
 async function onSearch() {
     loading.show()
+    updateQueries()
     try {
-        let isPublic = true
-        if (props.route === 'ManageAssociations') {
-            isPublic = false
-        }
+        const isPublic = route.name !== 'ManageAssociations'
         associations.value = await simpleAssociationSearch(settings.value.search, isPublic)
-        if (props.route === 'Associations') {
+        if (route.name === 'Associations') {
             emit('updatePage')
         }
     } catch (error) {
@@ -84,28 +113,31 @@ async function onSearch() {
 }
 
 function onAdvancedSearch() {
-    loading.show()
-    associations.value = advancedSearch(settings.value) as Association[] ?? associationStore.associations
-    loading.hide()
+    updateQueries()
+    associations.value = advancedSearch(settings.value)
 }
 
 // A function that clears the search,
 // for API search it re-gets associations, for front search it looks back in store
 async function clearSearch() {
     loading.show()
+    settings.value = {
+        search: '',
+        name: '',
+        acronym: '',
+        institution: null,
+        institutionComponent: null,
+        activityField: null
+    }
+    updateQueries()
     try {
-        settings.value = {
-            search: '',
-            name: '',
-            acronym: '',
-            institution: null,
-            institutionComponent: null,
-            activityField: null
-        }
-        if (props.route === 'Associations') {
+        if (route.name === 'Associations') {
             await associationStore.getAssociations(true)
             emit('updatePage')
-        } else if (props.route === 'ManageAssociations') await associationStore.getManagedAssociations()
+        } else if (route.name === 'ManageAssociations') {
+            await associationStore.getManagedAssociations()
+        }
+        associations.value = associationStore.associations
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

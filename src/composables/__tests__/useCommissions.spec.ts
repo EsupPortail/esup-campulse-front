@@ -226,7 +226,7 @@ describe('useCommissions', () => {
     })
     describe('getCommissionExport', () => {
         it('should download an export of a commission depending on mode', async () => {
-            const file = new Blob
+            const file = new ArrayBuffer(1)
             mockedAuthAxios.get.mockResolvedValueOnce({data: file})
             const commissionId = 1
             const mode = 'csv'
@@ -234,7 +234,7 @@ describe('useCommissions', () => {
             const url = `/commissions/${commissionId}/export?mode=${mode}&project_ids=${projects?.join(',')}`
             await getCommissionExport(commissionId, mode, projects)
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith(url, {responseType: 'blob'})
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith(url, {responseType: 'arraybuffer'})
         })
     })
 })

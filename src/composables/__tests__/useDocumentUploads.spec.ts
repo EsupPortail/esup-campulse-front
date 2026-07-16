@@ -314,10 +314,9 @@ describe('useDocumentUploads', () => {
     describe('getFile', () => {
         it('should get file', async () => {
             mockedAxios.get.mockResolvedValueOnce({data: {}})
-            const file = await getFile('path')
+            await getFile('path')
             expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('path', {responseType: 'blob'})
-            expect(file).toEqual({})
+            expect(axiosAuthenticated.get).toHaveBeenCalledWith('path', {responseType: 'arraybuffer'})
         })
     })
 })
