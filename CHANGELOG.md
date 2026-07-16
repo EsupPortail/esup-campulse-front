@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.0 (juillet 2026)
+
+- Correction d'un bug dans la recherche avancée de l'annuaire
+- Intégration des champs de recherche de l'annuaire dans l'URL
+- Suppression de Gravitee pour l'environnement de test
+- Ajout d'un garde-fou pour éviter l'ajout d'un rôle de membre d'association incomplet à un étudiant
+
 ## 1.4.5 (juillet 2026)
 
 - Page de maintenance activable depuis le script de déploiement
