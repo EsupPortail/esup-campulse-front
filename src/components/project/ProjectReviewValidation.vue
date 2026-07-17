@@ -29,10 +29,8 @@ const onOpenDialog = (action: Action, icon: Icon) => {
 }
 
 watch(() => open.value, () => {
-    if (open.value === false) {
-        newComment.value.text = ''
-        newComment.value.isVisible = false
-    }
+    newComment.value.text = ''
+    newComment.value.isVisible = true
 })
 
 async function onUpdateProjectStatus() {
@@ -46,8 +44,6 @@ async function onUpdateProjectStatus() {
             if (projectStatus) await projectStore.patchProjectStatus(projectStatus)
             await getProjectComments(projectStore.project.id)
             open.value = false
-            newComment.value.text = ''
-            newComment.value.isVisible = false
             let message = ''
             switch (selectedAction.value) {
             case 'validate':
@@ -113,9 +109,9 @@ async function onUpdateProjectStatus() {
                     />
                     <QToggle
                         v-model="newComment.isVisible"
-                        :disable="!newComment.text"
                         :label="t('forms.comment-visibility')"
                         color="commission"
+                        disable
                     />
                     <div class="flex-row-center padding-top">
                         <QBtn
@@ -154,10 +150,10 @@ async function onUpdateProjectStatus() {
 @import "@/assets/styles/dashboard.scss";
 
 .q-card {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .q-form.flex-column {
-    gap: 2rem;
+  gap: 2rem;
 }
 </style>
