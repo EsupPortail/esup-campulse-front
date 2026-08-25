@@ -6,7 +6,6 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import {
     _documentUploads,
     _project,
-    _projectCategories,
     _projectCategoryNames,
     _projectCommissionFunds,
     _projectReview,
@@ -38,7 +37,6 @@ describe('Project store', () => {
         vi.restoreAllMocks()
         projectStore.project = undefined
         projectStore.projectCategoryNames = []
-        projectStore.projectCategories = []
         projectStore.projectCommissionFunds = []
         projectStore.managedProjects = []
         projectStore.selfProjects = []
@@ -79,17 +77,6 @@ describe('Project store', () => {
             expect(axiosPublic.get).toHaveBeenCalledOnce()
             expect(axiosPublic.get).toHaveBeenCalledWith('/projects/categories/names')
             expect(projectStore.projectCategoryNames).toEqual(_projectCategoryNames)
-        })
-    })
-
-    describe('getProjectCategories', () => {
-        it('should make an API call (GET) and store data', async () => {
-            projectStore.project = _project
-            mockedAuthAxios.get.mockResolvedValueOnce({data: _projectCategories})
-            await projectStore.getProjectCategories()
-            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/categories')
-            expect(projectStore.projectCategories).toEqual(_projectCategories)
         })
     })
 

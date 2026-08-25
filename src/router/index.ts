@@ -71,8 +71,9 @@ router.beforeEach(async (to) => {
     }
 
     // Restrict a certain type of member only
-    if (to.meta.projectBearersOnly && (!hasPerm('add_project')
-        && !hasPerm('change_project_as_bearer'))) return {name: '404'}
+    if (to.meta.projectBearersOnly &&
+        !(hasPerm('add_project') || hasPerm('change_project') || hasPerm('change_project_as_bearer'))
+    ) return {name: '404'}
     if (to.meta.staffOnly && !isStaff.value) return {name: '404'}
     if (to.meta.associationMembersOnly && !userStore.isAssociationMember) return {name: '404'}
 

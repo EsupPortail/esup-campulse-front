@@ -28,7 +28,7 @@ const projectBasicInfos = ref<ProjectBasicInfos>(
 
 const projectAssociationUsersLabels = ref<SelectLabel[]>([])
 
-const projectCategories = ref<number[]>([])
+const projectCategory = ref<number | null>(null)
 
 const projectBudget = ref<ProjectBudget>(
     {
@@ -88,6 +88,7 @@ export default function () {
         projectBasicInfos.value.association = projectStore.project?.association?.id as number | null
         projectBasicInfos.value.associationUser = projectStore.project?.associationUser?.id as number | null
         projectBasicInfos.value.partnerAssociation = projectStore.project?.partnerAssociation as string
+        projectCategory.value = projectStore.project?.categories[0]?.id ?? null
     }
 
     const initProjectAssociationUsersLabels = async (associationId: number) => {
@@ -96,11 +97,6 @@ export default function () {
             value: associationUser.id,
             label: associationUser.user.firstName + ' ' + associationUser.user.lastName
         }))
-    }
-
-    const initProjectCategories = () => {
-        projectCategories.value = projectStore.projectCategories
-            .map(category => category.category) as number[]
     }
 
     const reInitProjectCommissionFunds = (isSite: boolean) => {
@@ -149,7 +145,7 @@ export default function () {
         projectBasicInfos.value.association = null
         projectBasicInfos.value.associationUser = null
         projectBasicInfos.value.partnerAssociation = ''
-        projectCategories.value = []
+        projectCategory.value = null
         projectCommission.value = null
         projectCommissionFunds.value = []
         projectBudget.value.targetAudience = ''
@@ -211,27 +207,17 @@ export default function () {
         }
     }
 
-    async function updateProjectCategories() {
-        const oldCategories = projectStore.projectCategories.map(cat => cat.category)
-        const newCategories = projectCategories.value
-        if (arraysAreEqual(oldCategories, newCategories)) return
-        let categoriesToPost = newCategories.filter(x => oldCategories.indexOf(x) === -1)
-        categoriesToPost = categoriesToPost.filter((element, index) => {
-            return categoriesToPost.indexOf(element) === index
+    async function updateProjectCategory() {
+        const oldCategory = projectStore.project?.categories[0].id
+        const newCategory = projectCategory.value
+        if (oldCategory === newCategory) return
+        const deleteUrl = `/projects/${projectStore.project?.id}/categories/${oldCategory}`
+        await axiosAuthenticated.delete(deleteUrl)
+        const postUrl = '/projects/categories'
+        await axiosAuthenticated.post(postUrl, {
+            project: projectStore.project?.id,
+            category: newCategory,
         })
-        for (const category of categoriesToPost) {
-            await axiosAuthenticated.post('/projects/categories',
-                {
-                    project: projectStore.project?.id,
-                    category
-                }
-            )
-        }
-        const categoriesToDelete = oldCategories.filter(x => newCategories.indexOf(x) === -1)
-        for (const category of categoriesToDelete) {
-            const url = `/projects/${projectStore.project?.id}/categories/${category}`
-            await axiosAuthenticated.delete(url)
-        }
     }
 
     // PATCHES
@@ -350,12 +336,11 @@ export default function () {
         projectCommission,
         initProjectBasicInfos,
         postNewProject,
-        projectCategories,
-        initProjectCategories,
+        projectCategory,
         updateProjectCommission,
         initProjectGoals,
         projectGoals,
-        updateProjectCategories,
+        updateProjectCategory,
         patchProjectBasicInfos,
         initProjectBudget,
         patchProjectBudget,

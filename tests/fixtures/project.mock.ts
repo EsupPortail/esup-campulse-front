@@ -2,7 +2,6 @@ import type {
     Project,
     ProjectBasicInfos,
     ProjectBudget,
-    ProjectCategory,
     ProjectCommissionFund,
     ProjectGoals,
     ProjectList,
@@ -23,6 +22,10 @@ export const _project: Project = {
     association: _userAssociationDetail,
     associationUser: _userAssociation,
     commissions: _commissions,
+    categories: [{
+        id: 1,
+        name: 'category'
+    }],
     partnerAssociation: 'Personne',
     budgetPreviousEdition: 1000,
     targetAudience: 'Une centaine d\'étudiants.',
@@ -174,24 +177,6 @@ export const _projectCategoryNames = [
     {
         id: 12,
         name: 'Sport'
-    }
-]
-
-export const _projectCategories: ProjectCategory[] = [
-    {
-        id: 1,
-        project: 1,
-        category: 1
-    },
-    {
-        id: 2,
-        project: 1,
-        category: 2
-    },
-    {
-        id: 3,
-        project: 1,
-        category: 3
     }
 ]
 
