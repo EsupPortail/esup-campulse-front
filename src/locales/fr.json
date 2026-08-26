@@ -484,7 +484,7 @@
     "required-project-audience": "Veuillez indiquer le public cible.",
     "required-project-budget": "Veuillez remplir le montant demandé pour ce financeur.",
     "required-project-budget-previous": "Veuillez indiquer le budget de l'édition précédente.",
-    "required-project-categories": "Veuillez remplir la/les catégorie(s) du projet.",
+    "required-project-categories": "Veuillez remplir une catégorie de projet.",
     "required-project-commission-fund": "Veuillez sélectionner une demande de fonds liée à une commission.",
     "required-project-description": "Veuillez résumer le déroulement du projet.",
     "required-project-difficulties": "Veuillez indiquer les difficultés rencontrées.",
@@ -703,7 +703,7 @@
     "budget": "Budget",
     "budget-previous-edition": "Budget réel du projet (dépenses) pour l'édition précédente",
     "cannot-submit-projects": "L'association n'est pas habilitée à soumettre de nouveaux projets.",
-    "categories": "Catégories",
+    "categories": "Catégorie",
     "change-commission": "Déplacer le projet dans une autre commission",
     "change-commission-info": "Le projet ne peut être déplacé car aucune autre commission proposant les financeurs choisis n'est ouverte pour le moment.",
     "comments": {
