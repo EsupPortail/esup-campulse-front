@@ -209,13 +209,16 @@ export default function () {
 
     // Generate link to uploaded doc with authentification
     async function createUploadedFileLink(pathFile: string, name: string) {
-        const file = (await getFile(pathFile)).data
+        const data = (await getFile(pathFile)).data
+        const blob = new Blob([data])
+        const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(file)
+        link.href = url
         link.download = name
         document.body.appendChild(link)
         link.click()
-        link.remove()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
     }
 
     return {

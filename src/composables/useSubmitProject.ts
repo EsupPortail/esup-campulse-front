@@ -208,16 +208,20 @@ export default function () {
     }
 
     async function updateProjectCategory() {
-        const oldCategory = projectStore.project?.categories[0].id
+        const oldCategory = projectStore.project?.categories[0]?.id
         const newCategory = projectCategory.value
         if (oldCategory === newCategory) return
-        const deleteUrl = `/projects/${projectStore.project?.id}/categories/${oldCategory}`
-        await axiosAuthenticated.delete(deleteUrl)
-        const postUrl = '/projects/categories'
-        await axiosAuthenticated.post(postUrl, {
-            project: projectStore.project?.id,
-            category: newCategory,
-        })
+        if (oldCategory) {
+            const deleteUrl = `/projects/${projectStore.project?.id}/categories/${oldCategory}`
+            await axiosAuthenticated.delete(deleteUrl)
+        }
+        if (newCategory) {
+            const postUrl = '/projects/categories'
+            await axiosAuthenticated.post(postUrl, {
+                project: projectStore.project?.id,
+                category: newCategory,
+            })
+        }
     }
 
     // PATCHES
