@@ -17,7 +17,7 @@ const {
     processDocuments,
     documentUploads,
     deleteDocumentUpload,
-    getFile,
+    createUploadedFileLink,
     initProjectDocumentUploads,
     initProcessDocuments,
     getDocuments,
@@ -147,13 +147,7 @@ async function onDeleteDocumentUpload(documentId: number) {
 // CREATE LINK TO VIEW FILE
 async function onGetFile(uploadedDocument: UploadedProcessDocument) {
     try {
-        const file = (await getFile(uploadedDocument.pathFile as string)).data
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(file)
-        link.download = uploadedDocument.name as string
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
