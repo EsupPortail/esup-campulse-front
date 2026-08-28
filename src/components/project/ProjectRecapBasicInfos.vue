@@ -51,7 +51,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
                 {{ t('charter.status.title') }}
             </h4>
             <CharterStatusIndicator
-                :charter-status="initAssociationCharterStatus(associationStore.association?.charterStatus, associationStore.association?.isSite ?? false)"
+                :charter-status="initAssociationCharterStatus(associationStore.association?.charterStatus)"
             />
         </div>
 

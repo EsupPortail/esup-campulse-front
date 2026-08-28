@@ -198,7 +198,7 @@ export default function () {
             }
             // If the charter is the association charter, we can determine its status by the association's charter status
             if (document.processType === 'CHARTER_ASSOCIATION' && associationCharterStatus) {
-                charterStatus = initAssociationCharterStatus(associationCharterStatus, isSite)
+                charterStatus = initAssociationCharterStatus(associationCharterStatus)
                 if (validatedDate && (charterStatus === 'PROCESSING')) {
                     validatedDate = ''
                     expirationDate = ''
@@ -228,22 +228,20 @@ export default function () {
         }
     }
 
-    const initAssociationCharterStatus = (charterStatus: AssociationCharterStatus | undefined, isSite: boolean) => {
-        if (!isSite && charterStatus !== 'CHARTER_PROCESSING') {
-            return 'NOT_SITE'
-        } else {
-            switch (charterStatus) {
-            case 'CHARTER_PROCESSING':
-                return 'PROCESSING'
-            case 'CHARTER_VALIDATED':
-                return 'VALIDATED'
-            case 'CHARTER_REJECTED':
-                return 'REJECTED'
-            case 'CHARTER_DRAFT':
-                return 'RETURNED'
-            default:
-                return 'EXPIRED'
-            }
+    const initAssociationCharterStatus = (charterStatus: AssociationCharterStatus | undefined) => {
+        switch (charterStatus) {
+        case 'CHARTER_PROCESSING':
+            return 'PROCESSING'
+        case 'CHARTER_VALIDATED':
+            return 'VALIDATED'
+        case 'CHARTER_REJECTED':
+            return 'REJECTED'
+        case 'CHARTER_DRAFT':
+            return 'RETURNED'
+        case 'CHARTER_DRAFT_PROCESSED':
+            return 'RETURNED'
+        default:
+            return 'EXPIRED'
         }
     }
 
