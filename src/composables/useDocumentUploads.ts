@@ -209,8 +209,9 @@ export default function () {
 
     // Generate link to uploaded doc with authentification
     async function createUploadedFileLink(pathFile: string, name: string) {
-        const data = (await getFile(pathFile)).data
-        const blob = new Blob([data])
+        const response = await getFile(pathFile)
+        const contentType = response.headers['content-type']
+        const blob = new Blob([response.data], {type: contentType})
         const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = url
