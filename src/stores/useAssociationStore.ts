@@ -88,7 +88,7 @@ export const useAssociationStore = defineStore('associationStore', {
             this.associations = response.data
         },
 
-        async getAssociationNames(publicRequest: boolean, allowNewUsers: boolean) {
+        async getAssociationNames(publicRequest: boolean, allowNewUsers: boolean, isEnabled?: boolean) {
             const {axiosPublic} = useAxios()
             const userStore = useUserStore()
             const {isStaff} = useUserGroups()
@@ -101,6 +101,7 @@ export const useAssociationStore = defineStore('associationStore', {
                 urlArray.push(`institutions=${userStore.userInstitutions?.join(',')}`)
             }
             if (allowNewUsers) urlArray.push('allow_new_users=true')
+            if (isEnabled) urlArray.push('is_enabled=true')
 
             if (urlArray.length > 0) {
                 urlString += '?'
