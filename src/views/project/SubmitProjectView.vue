@@ -841,12 +841,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + '-amount-asked-input'"
                                     :label="funds.find(obj => obj.id === (commissionFunds
                                         .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
-                                    :rules="[val => val && val.length > 0 || t('forms.required-project-budget')]"
+                                    :rules="[
+                                        val => val && val.length > 0 || t('forms.required-project-budget'),
+                                        val => val && val > 0 || t('forms.greater-than-zero')
+                                    ]"
                                     :shadow-text="` ${CURRENCY}`"
                                     color="commission"
                                     filled
                                     inputmode="numeric"
-                                    min="0"
                                     type="number"
                                 />
                             </section>
