@@ -54,9 +54,9 @@ interface Option {
 
 const myProjectCommissionFunds = (projectCommissionFunds: ProjectCommissionFund[]): ProjectCommissionFund[] => {
     const myInstitutions = userStore.userInstitutions
-    const myFunds = funds.value.filter(fund => myInstitutions.includes(fund.institution)).map(fund => fund.id)
-    const myCommissionFunds = commissionFunds.value.filter(commissionFund => myFunds.includes(commissionFund.fund)).map(commissionFund => commissionFund.id)
-    return projectCommissionFunds.filter(projectCommissionFund => myCommissionFunds.includes(projectCommissionFund.commissionFund))
+    const myFunds = new Set<number>(funds.value.filter(fund => myInstitutions.includes(fund.institution)).map(fund => fund.id))
+    const myCommissionFunds = new Set<number>(commissionFunds.value.filter(commissionFund => myFunds.has(commissionFund.fund)).map(commissionFund => commissionFund.id))
+    return projectCommissionFunds.filter(projectCommissionFund => myCommissionFunds.has(projectCommissionFund.commissionFund))
 }
 
 const canChangeProject = (): boolean => {
