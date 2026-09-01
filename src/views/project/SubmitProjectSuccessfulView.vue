@@ -24,7 +24,7 @@ onMounted(async () => {
 
 async function onGetProjectDetail() {
     try {
-        await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
+        await projectStore.getProjectDetail(Number.parseInt(route.params.projectId as string))
     } catch (error) {
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
@@ -39,7 +39,7 @@ async function onGetProjectDetail() {
 async function onGetProjectPdf() {
     loading.show()
     try {
-        const projectId = parseInt(route.params.projectId as string)
+        const projectId = Number.parseInt(route.params.projectId as string)
         const response = await projectStore.getProjectPdf(projectId)
         openDocument(response)
     } catch (error) {

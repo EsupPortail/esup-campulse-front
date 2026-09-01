@@ -10,7 +10,7 @@ import axios from 'axios'
 import useErrors from '@/composables/useErrors'
 
 const props = defineProps<{
-    member: AssociationMember
+  member: AssociationMember
 }>()
 
 const memberRef = toRefs(props).member
@@ -52,7 +52,7 @@ async function onDelegatePresidency(activate: boolean) {
                 canBePresidentFrom: activate ? delegation.from : null,
                 canBePresidentTo: activate && delegation.to !== '' ? delegation.to : null
             }
-            const associationId = parseInt(route.params.id as string)
+            const associationId = Number.parseInt(route.params.id as string)
             await patchUserAssociations(memberRef.value.id, associationId, dataToPatch)
 
             await initAssociationMembers(associationId, false)

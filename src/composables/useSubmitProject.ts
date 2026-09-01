@@ -252,15 +252,15 @@ export default function () {
         for (const [key, value] of Object.entries(projectBudget.value)) {
             const numbers = ['amountStudentsAudience', 'amountAllAudience', 'ticketPrice', 'studentTicketPrice', 'individualCost']
             if (numbers.includes(key)) {
-                if (parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
-                    dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
+                if (Number.parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
+                    dataToPatch = Object.assign(dataToPatch, {[key]: Number.parseInt(value as string)})
                 }
             } else if (key === 'budgetPreviousEdition') {
                 if (isFirstEdition && projectStore.project && projectStore.project.budgetPreviousEdition > 0) {
                     dataToPatch = Object.assign(dataToPatch, {[key]: 0})
                 } else {
-                    if (parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
-                        dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
+                    if (Number.parseInt(value as string) !== projectStore.project?.[key as keyof typeof projectStore.project]) {
+                        dataToPatch = Object.assign(dataToPatch, {[key]: Number.parseInt(value as string)})
                     }
                 }
             } else {
@@ -294,8 +294,8 @@ export default function () {
                     dataToPatch = Object.assign(dataToPatch, {[key]: isFirstEdition})
                 }*/ else {
                     if (numbers.includes(key)) {
-                        if (parseInt(value as string) !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
-                            dataToPatch = Object.assign(dataToPatch, {[key]: parseInt(value as string)})
+                        if (Number.parseInt(value as string) !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {
+                            dataToPatch = Object.assign(dataToPatch, {[key]: Number.parseInt(value as string)})
                         }
                     } else {
                         if (value !== oldCommissionFund?.[key as keyof typeof oldCommissionFund]) {

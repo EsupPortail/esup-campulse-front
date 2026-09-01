@@ -79,7 +79,7 @@ watch(() => associationStore.association, initEditedAssociation)
 
 onMounted(async () => {
     loading.show()
-    associationId.value = parseInt(route.params.associationId as string)
+    associationId.value = Number.parseInt(route.params.associationId as string)
     associationName.value = userStore.userAssociations.find(obj => obj.association.id === associationId.value)?.association.name
     await onGetAssociationDetails()
     loading.hide()

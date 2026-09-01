@@ -38,7 +38,7 @@ onMounted(async () => {
 // Load user
 async function onGetUser() {
     try {
-        await userManagerStore.getUserDetail(parseInt(route.params.id as string))
+        await userManagerStore.getUserDetail(Number.parseInt(route.params.id as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -168,11 +168,11 @@ onBeforeRouteLeave((to, from, next) => {
                     icon="bi-box-arrow-left"
                 />
                 <!--                <AlertLeaveEdition
-                                    :open-alert="openAlert"
-                                    :text="t('alerts.leave-user-edition')"
-                                    @closeAlert="openAlert = !openAlert"
-                                    @leaveEdition="onLeaveEdition"
-                                />-->
+                            :open-alert="openAlert"
+                            :text="t('alerts.leave-user-edition')"
+                            @closeAlert="openAlert = !openAlert"
+                            @leaveEdition="onLeaveEdition"
+                        />-->
                 <AlertConfirmUserUpdate
                     v-if="groupChoiceIsValid"
                     :confirmation="confirmation"

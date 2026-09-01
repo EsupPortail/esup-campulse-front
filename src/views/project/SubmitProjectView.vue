@@ -73,7 +73,7 @@ const route = useRoute()
 onMounted(async () => {
     loading.show()
     // We get project detail
-    projectId.value = parseInt(route.params.projectId as string)
+    projectId.value = Number.parseInt(route.params.projectId as string)
     // We set if it is a new project
     newProject.value = !projectId.value
     // We get project detail
@@ -132,7 +132,7 @@ watch(() => step.value === 4, () => {
 // REFS
 const applicant = ref<'association' | 'user' | undefined>(route.name === 'SubmitProjectAssociation' ? 'association' : 'user')
 
-const associationId = ref<number>(parseInt(route.params.associationId as string))
+const associationId = ref<number>(Number.parseInt(route.params.associationId as string))
 
 const projectId = ref<number>()
 watch(() => projectId.value, () => {
@@ -197,7 +197,7 @@ const datesAreLegal = computed<boolean>(() => {
 
 // CHECKING IF PROJECT AUDIENCE AMOUNT NUMBERS ARE POSSIBLE
 const correctAudienceAmount = computed<boolean>(() => {
-    return parseInt(projectBudget.value.amountStudentsAudience as string) <= parseInt(projectBudget.value.amountAllAudience as string)
+    return Number.parseInt(projectBudget.value.amountStudentsAudience as string) <= Number.parseInt(projectBudget.value.amountAllAudience as string)
 })
 
 // GET DATA FOR STEP 1
@@ -302,7 +302,7 @@ async function onSubmitBasicInfos(nextStep: number) {
     loading.show()
     try {
         if (newProject.value && !newProjectPosted.value) {
-            await postNewProject(parseInt(route.params.associationId as string))
+            await postNewProject(Number.parseInt(route.params.associationId as string))
             newProjectPosted.value = true
         } else {
             await patchProjectBasicInfos()

@@ -35,14 +35,14 @@ onMounted(async () => {
 const associationUser = ref<UserAssociation | undefined>()
 
 const initAssociationMember = () => {
-    associationUser.value = userManagerStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.associationId as string))
+    associationUser.value = userManagerStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.associationId as string))
 }
 watch(() => userManagerStore.userAssociations.length, initAssociationMember)
 
 // Get user associations
 async function onGetUserAssociations() {
     try {
-        await userManagerStore.getUserAssociations(parseInt(route.params.userId as string))
+        await userManagerStore.getUserAssociations(Number.parseInt(route.params.userId as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

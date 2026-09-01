@@ -65,8 +65,8 @@ watch(() => projectReview.value.realEndDate, checkIfDatesAreLegal)
 // Get project review and infos about the project (project commission dates...)
 async function onGetProjectReview() {
     try {
-        await projectStore.getProjectDetail(parseInt(route.params.projectId as string))
-        await projectStore.getProjectReview(parseInt(route.params.projectId as string))
+        await projectStore.getProjectDetail(Number.parseInt(route.params.projectId as string))
+        await projectStore.getProjectReview(Number.parseInt(route.params.projectId as string))
         initProjectReview()
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
