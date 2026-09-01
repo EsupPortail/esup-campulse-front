@@ -162,14 +162,18 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
 // Must select document
 const documentIsSelected = (document: ProcessDocument, val: File | File[]): boolean => {
     // Only one document is required in these processes
-    const userProcesses = ['registration', 'account-management', 'user-management']
+    const userProcesses = new Set<string>(['registration', 'account-management', 'user-management'])
     // Document is required in process if document itself is required or if process is registration, account-management, user-management
-    const documentIsRequired: boolean = document.isRequiredInProcess || userProcesses.includes(props.process)
+    const documentIsRequired: boolean = document.isRequiredInProcess || userProcesses.has(props.process)
     // No document of this type has already been selected during previous processes
     let documentIsSelected: boolean
-    if (userProcesses.includes(props.process)) {
-        const userDocuments = processDocuments.value.filter(obj => obj.processType === 'DOCUMENT_USER').map(obj => obj.document)
-        documentIsSelected = !!documentUploads.value.find(obj => userDocuments.includes(obj.document))
+    if (userProcesses.has(props.process)) {
+        const userDocuments = new Set<number>(
+            processDocuments.value
+                .filter(obj => obj.processType === 'DOCUMENT_USER')
+                .map(obj => obj.document)
+        )
+        documentIsSelected = !!documentUploads.value.find(obj => userDocuments.has(obj.document))
     } else {
         documentIsSelected = !!documentUploads.value.filter(obj => obj.document === document.document).length
     }
@@ -185,7 +189,7 @@ const documentIsSelected = (document: ProcessDocument, val: File | File[]): bool
             return true
         }
         // There is no val, but we are in the case of a process where only one document is required
-        else if (userProcesses.includes(props.process)) {
+        else if (userProcesses.has(props.process)) {
             // If there is another document in process
             // Field is valid
             return !!(processDocuments.value.filter(x => x.pathFile).length)
