@@ -35,17 +35,17 @@ onMounted(async () => {
 const associationName = ref<string>('')
 
 const initAssociationName = () => {
-    const association = userStore.user?.associations.find(obj => obj.id === parseInt(route.params.id as string))
+    const association = userStore.user?.associations.find(obj => obj.id === Number.parseInt(route.params.id as string))
     if (association) associationName.value = association.name
 }
 
 const isAuthorized = () => {
-    return userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.id as string))?.isPresident
+    return userStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.id as string))?.isPresident
 }
 
 async function onGetAssociationUsers() {
     try {
-        const associationId = parseInt(route.params.id as string)
+        const associationId = Number.parseInt(route.params.id as string)
         await initAssociationMembers(associationId, false)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

@@ -68,8 +68,8 @@ export default function () {
             const keyIsPrivate = privateFields.includes(key)
             if (keyIsPrivate) continue
             if (numbers.includes(key)) {
-                if (parseInt(value as string) !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
-                    projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: parseInt(value as string)})
+                if (Number.parseInt(value as string) !== projectStore.projectReview?.[key as keyof typeof projectStore.projectReview]) {
+                    projectReviewDataToPatch = Object.assign(projectReviewDataToPatch, {[key]: Number.parseInt(value as string)})
                 }
             } else if (dates.includes(key)) {
                 if (value !== formatDate(projectStore.projectReview?.[key as keyof typeof projectStore.projectReview] as string)) {

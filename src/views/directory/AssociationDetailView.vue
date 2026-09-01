@@ -42,7 +42,7 @@ const hasLogo = computed(() => {
 
 async function onGetAssociationDetail() {
     try {
-        await associationStore.getAssociationDetail(parseInt(route.params.id as string), true)
+        await associationStore.getAssociationDetail(Number.parseInt(route.params.id as string), true)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

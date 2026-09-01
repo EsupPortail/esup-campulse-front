@@ -52,7 +52,7 @@ watch(() => charterDocuments.value, initComment)
 
 onMounted(async () => {
     loading.show()
-    associationId.value = parseInt(route.params.associationId as string)
+    associationId.value = Number.parseInt(route.params.associationId as string)
     await onGetAssociationDetail()
     dynamicTitle.value = `${associationStore.association?.name} - ${t('breadcrumbs.association-charter-detail')}`
     loading.hide()

@@ -19,7 +19,7 @@ const isLoaded = ref(false)
 
 async function onGetContent() {
     try {
-        await contentStore.getContent(parseInt(route.params.id as string))
+        await contentStore.getContent(Number.parseInt(route.params.id as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

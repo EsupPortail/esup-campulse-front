@@ -34,7 +34,7 @@ onMounted(async () => {
 
 async function onGetProjectReviewDetail() {
     try {
-        const projectId = parseInt(route.params.projectId as string)
+        const projectId = Number.parseInt(route.params.projectId as string)
         await projectStore.getProjectDetail(projectId)
         await projectStore.getProjectReview(projectId)
         initProjectReview()

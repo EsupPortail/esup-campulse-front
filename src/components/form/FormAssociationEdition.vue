@@ -413,7 +413,7 @@ async function onChangeLogo(action: string) {
                         v-if="hasPerm('change_association_all_fields')"
                         v-model="association.amountMembersAllowed"
                         :label="t('association.labels.amount-members-allowed')"
-                        :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
+                        :rules="[val => Number.parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
                         bottom-slots
                         clearable
                         filled
