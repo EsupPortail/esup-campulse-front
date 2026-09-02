@@ -13,17 +13,17 @@ const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
 
 const openMenu = ref<boolean>(false)
 
+function formatDate(date: string): string {
+    if (!date) return ''
+    const timeStamp = Date.parse(date)
+    const formatDate = new Date(timeStamp)
+    const month = formatDate.getMonth() + 1
+    const day = formatDate.getDate()
+    return formatDate.getFullYear() + '-' + (month > 9 ? month : '0' + month) + '-' + (day > 9 ? day : '0' + day)
+}
+
 export default function () {
     const kebabize = (str: string) => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? '-' : '') + $.toLowerCase())
-
-    function formatDate(date: string): string {
-        if (!date) return ''
-        const timeStamp = Date.parse(date)
-        const formatDate = new Date(timeStamp)
-        const month = formatDate.getMonth() + 1
-        const day = formatDate.getDate()
-        return formatDate.getFullYear() + '-' + (month > 9 ? month : '0' + month) + '-' + (day > 9 ? day : '0' + day)
-    }
 
     // To test
     function fromDateIsAnterior(from: string, to: string, enablePastDate: boolean) {
@@ -88,9 +88,7 @@ export default function () {
         const link = document.createElement('a')
         link.href = url
         link.download = fileName(disposition, type)
-        document.body.appendChild(link)
         link.click()
-        document.body.removeChild(link)
         URL.revokeObjectURL(url)
     }
 
@@ -99,11 +97,11 @@ export default function () {
         const defaultName = `document.${detectedExtension}`
         if (!disposition) return defaultName
         const utf8Match = disposition.match(/filename\*=utf-8''([^;\n]*)/i)
-        if (utf8Match && utf8Match[1]) {
+        if (utf8Match?.[1]) {
             return decodeURIComponent(utf8Match[1])
         }
         const classicMatch = disposition.match(/filename=(['"]?)([^'"\n]*)\1?/)
-        if (classicMatch && classicMatch[2]) {
+        if (classicMatch?.[2]) {
             return decodeURIComponent(classicMatch[2])
         }
         return defaultName
