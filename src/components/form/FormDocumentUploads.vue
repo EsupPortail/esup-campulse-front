@@ -173,9 +173,9 @@ const documentIsSelected = (document: ProcessDocument, val: File | File[]): bool
                 .filter(obj => obj.processType === 'DOCUMENT_USER')
                 .map(obj => obj.document)
         )
-        documentIsSelected = !!documentUploads.value.find(obj => userDocuments.has(obj.document))
+        documentIsSelected = documentUploads.value.some(obj => userDocuments.has(obj.document))
     } else {
-        documentIsSelected = !!documentUploads.value.filter(obj => obj.document === document.document).length
+        documentIsSelected = documentUploads.value.some(obj => obj.document === document.document)
     }
     // If document is required
     // And no previous document of this type has been selected

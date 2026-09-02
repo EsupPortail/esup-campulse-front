@@ -75,8 +75,6 @@ function clearOptions() {
 function checkAssociationAuthorization(association: AssociationRole) {
     updateRegisterRoleInAssociation()
     checkHasPresident(association)
-    // Commented since all local students must upload a student card
-    //checkHasStudentCertificate(association)
 }
 
 watch(() => processDocuments.value[0]?.pathFile, () => {
@@ -163,8 +161,7 @@ async function onAddAssociation() {
 
             <div class="flex-row">
                 <QBtn
-                    v-if="(newAssociations.length > 0 && newAssociations[0].id) &&
-                        routeName === 'ManageAccount'"
+                    v-if="newAssociations?.[0].id && routeName === 'ManageAccount'"
                     :label="t('validate')"
                     class="btn-lg"
                     color="dashboard"
@@ -174,8 +171,8 @@ async function onAddAssociation() {
                 />
                 <QBtn
                     v-if="(route.name !== 'ManageAccount' && newAssociations.length < (5 - userAssociations.length)) ||
-                        (routeName === 'ManageAccount' && newAssociations.length === 0)"
-                    :disable="newAssociations.filter(association => !association.id).length > 0"
+                        (routeName === 'ManageAccount' && !newAssociations.length)"
+                    :disable="newAssociations.some(association => !association.id)"
                     :label="t('forms.add-association')"
                     class="btn-lg"
                     color="dashboard"
