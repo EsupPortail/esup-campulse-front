@@ -26,7 +26,7 @@ async function onPublishAssociation() {
             type: 'positive',
             message: positiveMessage
         })
-    } catch (e) {
+    } catch {
         notify({
             type: 'negative',
             message: negativeMessage

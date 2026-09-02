@@ -213,7 +213,7 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
     if (hasValue) {
         if (document.maxUploads > 1) {
             // Throw error if any file's name length is greater than MAX_TITLE_LENGTH
-            return !((val as File[]).find(obj => obj.name.length >= MAX_TITLE_LENGTH))
+            return !((val as File[]).some(obj => obj.name.length >= MAX_TITLE_LENGTH))
         } else {
             // Throw error if file's name length is greater than MAX_TITLE_LENGTH
             return (val as File).name.length <= MAX_TITLE_LENGTH

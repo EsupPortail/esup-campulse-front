@@ -129,13 +129,13 @@ describe('useUserGroups', () => {
 
         it('should set isStaff to false if the user is not a member of at least one private group', async () => {
             userStore.user = _institutionStudent
-            await initStaffStatus()
+            initStaffStatus()
             expect(isStaff.value).toBeFalsy()
         })
 
         it('should set isStaff to true if the user is a member of at least one private group', async () => {
             userStore.user = _institutionManager
-            await initStaffStatus()
+            initStaffStatus()
             expect(isStaff.value).toBeTruthy()
         })
     })

@@ -77,7 +77,7 @@ describe('useSubmitProject', () => {
     describe('postNewProject', () => {
         beforeEach(() => {
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
-            projectBasicInfos.value = JSON.parse(JSON.stringify(_projectBasicInfos))
+            projectBasicInfos.value = structuredClone(_projectBasicInfos)
             mockedAxios.post.mockResolvedValueOnce({data: {}})
         })
 
@@ -135,7 +135,7 @@ describe('useSubmitProject', () => {
         it('should patch updated infos', async () => {
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.patch.mockResolvedValueOnce({data: {}})
-            projectBasicInfos.value = JSON.parse(JSON.stringify(_projectBasicInfos))
+            projectBasicInfos.value = structuredClone(_projectBasicInfos)
             projectBasicInfos.value.associationUser = 2
             projectStore.project = _project
             await patchProjectBasicInfos()
@@ -166,7 +166,7 @@ describe('useSubmitProject', () => {
     describe('patchProjectBudget', () => {
         beforeEach(() => {
             projectStore.project = _project
-            projectBudget.value = JSON.parse(JSON.stringify(_projectBudget))
+            projectBudget.value = structuredClone(_projectBudget)
             const mockedAxios = vi.mocked(axiosAuthenticated, true)
             mockedAxios.patch.mockResolvedValueOnce({data: {}})
         })
@@ -204,7 +204,7 @@ describe('useSubmitProject', () => {
     })
     describe('patchProjectCommissionFunds', () => {
         beforeEach(() => {
-            projectCommissionFundsDetail.value = JSON.parse(JSON.stringify(_updatedProjectCommissionFunds))
+            projectCommissionFundsDetail.value = structuredClone(_updatedProjectCommissionFunds)
             projectStore.projectCommissionFunds = _projectCommissionFunds
             projectStore.project = _project
         })

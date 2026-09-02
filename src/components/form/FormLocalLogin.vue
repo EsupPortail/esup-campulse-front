@@ -21,7 +21,7 @@ async function onLogIn() {
             type: 'positive',
             message: t('notifications.positive.login-success')
         })
-    } catch (e) {
+    } catch {
         notify({
             type: 'negative',
             message: t('notifications.negative.unknown-credentials')
@@ -79,8 +79,6 @@ async function onLogIn() {
                 data-test="register-button"
             />
         </div>
-        <!-- <QBtn :label="t('forms.reset-password')" class="q-sm" color="primary" flat to="/password-reset"/>
-        <QBtn :label="t('forms.resend-email')" class="q-sm" color="primary" flat to="/register-resend-email"/> -->
 
         <div class="login-links">
             <RouterLink
@@ -89,7 +87,7 @@ async function onLogIn() {
             >
                 <span class="icon icon-mentions"></span>{{ t('forms.reset-password') }}
             </RouterLink>
-            <br />
+            <br/>
             <RouterLink
                 class="login-link"
                 to="/register-resend-email"

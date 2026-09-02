@@ -114,7 +114,7 @@ describe('useAssociation', () => {
     describe('checkSocialNetworks', () => {
         beforeEach(() => {
             associationStore.association = _association
-            associationStore.association.socialNetworks = JSON.parse(JSON.stringify(_associationSocialNetworks))
+            associationStore.association.socialNetworks = structuredClone(_associationSocialNetworks)
         })
 
         afterEach(() => {
@@ -130,14 +130,14 @@ describe('useAssociation', () => {
             })
 
             it('if arrays are not the same, f.e. type has changed', () => {
-                associationSocialNetworks.value = JSON.parse(JSON.stringify(_associationSocialNetworks))
+                associationSocialNetworks.value = structuredClone(_associationSocialNetworks)
                 associationSocialNetworks.value[0].type = 'Instagram'
                 checkSocialNetworks()
                 expect(changedData).toEqual({socialNetworks: associationSocialNetworks.value})
             })
 
             it('if arrays are not the same, f.e. location has changed', () => {
-                associationSocialNetworks.value = JSON.parse(JSON.stringify(_associationSocialNetworks))
+                associationSocialNetworks.value = structuredClone(_associationSocialNetworks)
                 associationSocialNetworks.value[0].location = 'https://piaile.fr'
                 checkSocialNetworks()
                 expect(changedData).toEqual({socialNetworks: associationSocialNetworks.value})
@@ -164,7 +164,7 @@ describe('useAssociation', () => {
 
     describe('checkChanges', () => {
         beforeEach(() => {
-            associationStore.association = JSON.parse(JSON.stringify(_association))
+            associationStore.association = structuredClone(_association)
         })
 
         afterEach(() => {
@@ -204,7 +204,7 @@ describe('useAssociation', () => {
         })
 
         it('should return an empty object if no changed infos', () => {
-            (associationStore.association as Association).socialNetworks = JSON.parse(JSON.stringify(_associationSocialNetworks))
+            (associationStore.association as Association).socialNetworks = structuredClone(_associationSocialNetworks)
             associationSocialNetworks.value = _associationSocialNetworks
             expect(checkChanges(_nonEditedAssociation)).toEqual({})
         })
