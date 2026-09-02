@@ -217,7 +217,7 @@ async function onOptionClick(option: Option) {
 async function onGetProjectPdf(projectId: number, isReview: boolean) {
     loading.show()
     try {
-        const response = !isReview ? await projectStore.getProjectPdf(projectId) : await projectStore.getProjectReviewPdf(projectId)
+        const response = isReview ? await projectStore.getProjectReviewPdf(projectId) : await projectStore.getProjectPdf(projectId)
         openDocument(response)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
