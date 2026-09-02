@@ -35,10 +35,10 @@ export const useContentStore = defineStore('contentStore', {
             const newContents = (await axiosPublic.get<Content[]>(url)).data
             newContents.forEach(newItem => {
                 const index = this.contents.findIndex(c => c.code === newItem.code)
-                if (index !== -1) {
-                    this.contents[index] = newItem
-                } else {
+                if (index === -1) {
                     this.contents.push(newItem)
+                } else {
+                    this.contents[index] = newItem
                 }
             })
         },
