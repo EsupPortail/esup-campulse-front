@@ -20,6 +20,10 @@ const newAssociationsUser = ref<AssociationUser[]>([])
 // Used for presidency delegation and association management
 const associationMembers = ref<AssociationMember[]>([])
 
+function getAssociationUserRole(user: AssociationUser | UserAssociation) {
+    return user.isPresident ? 'isPresident' : user.isSecretary ? 'isSecretary' : user.isTreasurer ? 'isTreasurer' :
+        user.isVicePresident ? 'isVicePresident' : 'isMember'
+}
 
 export default function () {
 
@@ -74,19 +78,16 @@ export default function () {
             else {
                 // We search for the corresponding association in store
                 const storeAssociation = instance.userAssociations.find(obj => obj.association?.id === association.id)
-                // We set a boolean to track changes
-                let hasChanges = false
                 // Has role helper
                 const hasRole = storeAssociation?.isPresident || storeAssociation?.isSecretary || storeAssociation?.isTreasurer || storeAssociation?.isVicePresident
-                // We compare the 2 objects
-                if (storeAssociation?.canBePresidentFrom !== association.canBePresidentFrom) hasChanges = true
-                if (storeAssociation?.canBePresidentTo !== association.canBePresidentTo) hasChanges = true
-
-                if (storeAssociation?.isPresident && association.role !== 'isPresident') hasChanges = true
-                else if (storeAssociation?.isSecretary && association.role !== 'isSecretary') hasChanges = true
-                else if (storeAssociation?.isTreasurer && association.role !== 'isTreasurer') hasChanges = true
-                else if (storeAssociation?.isVicePresident && association.role !== 'isVicePresident') hasChanges = true
-                else if (!hasRole && association.role !== 'isMember') hasChanges = true
+                // We set a boolean to track changes
+                const hasChanges: boolean = (storeAssociation?.canBePresidentFrom !== association.canBePresidentFrom)
+                    || (storeAssociation?.canBePresidentTo !== association.canBePresidentTo)
+                    || (storeAssociation?.isPresident && association.role !== 'isPresident')
+                    || (storeAssociation?.isSecretary && association.role !== 'isSecretary')
+                    || (storeAssociation?.isTreasurer && association.role !== 'isTreasurer')
+                    || (storeAssociation?.isVicePresident && association.role !== 'isVicePresident')
+                    || (!hasRole && association.role !== 'isMember')
 
                 if (hasChanges) {
                     const infosToPatch = {
@@ -140,11 +141,6 @@ export default function () {
             })
         })
         return newAssociationsUser.value
-    }
-
-    function getAssociationUserRole(user: AssociationUser | UserAssociation) {
-        return user.isPresident ? 'isPresident' : user.isSecretary ? 'isSecretary' : user.isTreasurer ? 'isTreasurer' :
-            user.isVicePresident ? 'isVicePresident' : 'isMember'
     }
 
     async function getAssociationUsersNames(associationId: number) {
