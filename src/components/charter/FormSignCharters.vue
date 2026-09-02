@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
-import {toRefs, watch} from 'vue'
+import {ref, toRefs, watch} from 'vue'
 import type {AssociationCharterStatus, ManageCharter} from '#/charters'
 import {useI18n} from 'vue-i18n'
 import useCharters from '@/composables/useCharters'
@@ -18,11 +17,11 @@ const {MAX_FILE_SIZE} = useDocumentUploads()
 const {acceptedFormats} = useDocuments()
 
 const props = defineProps<{
-    openSign: boolean,
-    charter: ManageCharter,
-    associationId: number,
-    associationCharterStatus?: AssociationCharterStatus,
-    isSite: boolean
+  openSign: boolean,
+  charter: ManageCharter,
+  associationId: number,
+  associationCharterStatus?: AssociationCharterStatus,
+  isSite: boolean
 }>()
 
 const emit = defineEmits(['closeDialog'])
@@ -120,19 +119,19 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
                             :label="t('cancel')"
                             class="btn-lg"
                             color="charter"
+                            data-test="cancel-button"
                             icon="bi-chevron-left"
                             text-color="charter"
                             @click="open = false"
-                            data-test="cancel-button"
                         />
                         <QBtn
                             :label="t('charter.sign')"
                             class="btn-lg"
                             color="charter"
+                            data-test="sign-button"
                             icon="bi-check-lg"
                             text-color="charter"
                             type="submit"
-                            data-test="sign-button"
                         />
                     </div>
                 </QForm>

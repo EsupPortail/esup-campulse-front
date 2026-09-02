@@ -70,10 +70,10 @@ onBeforeRouteLeave((to, from, next) => {
     // We open pop-up if manager has nos validated changes and manager is auth (to prevent pop-up to open on logout)
     if (!hasValidated.value && userStore.isAuth) {
         openAlert.value = true
-        if (!leaveEdition.value) {
-            next(false)
-        } else {
+        if (leaveEdition.value) {
             next(true)
+        } else {
+            next(false)
         }
     } else {
         next(true)
@@ -168,11 +168,11 @@ onBeforeRouteLeave((to, from, next) => {
                     icon="bi-box-arrow-left"
                 />
                 <!--                <AlertLeaveEdition
-                            :open-alert="openAlert"
-                            :text="t('alerts.leave-user-edition')"
-                            @closeAlert="openAlert = !openAlert"
-                            @leaveEdition="onLeaveEdition"
-                        />-->
+                    :open-alert="openAlert"
+                    :text="t('alerts.leave-user-edition')"
+                    @closeAlert="openAlert = !openAlert"
+                    @leaveEdition="onLeaveEdition"
+                />-->
                 <AlertConfirmUserUpdate
                     v-if="groupChoiceIsValid"
                     :confirmation="confirmation"

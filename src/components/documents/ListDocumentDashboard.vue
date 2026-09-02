@@ -7,7 +7,7 @@ const {t} = useI18n()
 const {createUploadedFileLink} = useDocumentUploads()
 
 const props = defineProps<{
-    documents: DocumentUpload[],
+  documents: DocumentUpload[],
 }>()
 
 async function onDownloadDocument(documentId: number | undefined) {
@@ -29,7 +29,6 @@ async function onDownloadDocument(documentId: number | undefined) {
                 <h4 class="library-document">
                     <span>
                         <strong>{{ document?.name }}</strong>
-                        <!--<em>{{ Math.floor(document?.size / 1000) + ' kb' }}</em>-->
                     </span>
                 </h4>
                 <button

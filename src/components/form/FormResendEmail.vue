@@ -29,24 +29,6 @@ async function resend() {
 </script>
 
 <template>
-    <!--<div class="instructions">
-        <QBanner
-                v-if="!isResend"
-                class="bg-grey-3"
-        >
-            <template v-slot:avatar>
-                <QIcon
-                        color="primary"
-                        name="bi-info-circle"
-                        size="md"
-                />
-            </template>
-            <strong>{{ t("forms.resend-email-cas") }}</strong>
-            <template v-slot:action>
-            </template>
-        </QBanner>
-        <p v-if="isResend">{{ t("forms.resend-email-ok") }}</p>
-    </div>-->
     <QForm
         v-if="!isResend"
         class="q-gutter-md"
@@ -99,30 +81,6 @@ async function resend() {
 @import '@/assets/styles/forms.scss';
 
 strong {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
-
-/*
-.instructions {
-  font-size: 1.2em;
-
-  p {
-    text-align: center;
-  }
-}
-
-.q-form, .instructions {
-  max-width: 720px;
-  width: $fullSize;
-  margin: auto;
-}
-
-fieldset {
-  padding-top: 30px;
-  border: none;
-}
-
-.q-btn {
-  margin-top: 10px;
-}*/
 </style>

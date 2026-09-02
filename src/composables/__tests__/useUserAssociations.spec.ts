@@ -104,7 +104,7 @@ describe('useUserAssociations', () => {
 
             it('should patch userAssociations if there are changes', async () => {
                 userAssociations.value[0].deleteAssociation = false
-                userManagerStore.userAssociations = JSON.parse(JSON.stringify(_userAssociations))
+                userManagerStore.userAssociations = structuredClone(_userAssociations)
                 userManagerStore.userAssociations[0].isPresident = false
                 userManagerStore.userAssociations[0].isSecretary = true
                 updateUserAssociations(true)
@@ -134,7 +134,7 @@ describe('useUserAssociations', () => {
 
             it('should patch userAssociations if there are changes', async () => {
                 userAssociations.value[0].deleteAssociation = false
-                userStore.userAssociations = JSON.parse(JSON.stringify(_userAssociations))
+                userStore.userAssociations = structuredClone(_userAssociations)
                 userStore.userAssociations[0].isPresident = false
                 userStore.userAssociations[0].isSecretary = true
                 updateUserAssociations(false)
@@ -202,7 +202,7 @@ describe('useUserAssociations', () => {
         })
 
         it('should return an array of association users based on newAssociations', () => {
-            newAssociations.value = JSON.parse(JSON.stringify([_associationRole]))
+            newAssociations.value = structuredClone([_associationRole])
             updateRegisterRoleInAssociation()
             expect(newAssociationsUser.value).toEqual([
                 {
@@ -241,7 +241,7 @@ describe('useUserAssociations', () => {
     describe('initAssociationMembers', () => {
         it('should get associationUsers and init them as members', async () => {
             const spy = vi.spyOn(associationStore, 'getAssociationUsers')
-            associationStore.associationUsers = JSON.parse(JSON.stringify(_userAssociations))
+            associationStore.associationUsers = structuredClone(_userAssociations)
             await initAssociationMembers(1, false)
             expect(spy).toHaveBeenCalledOnce()
             expect(associationMembers.value).toEqual(_associationMembers)
@@ -252,7 +252,7 @@ describe('useUserAssociations', () => {
     describe('initUserAssociations', () => {
         describe('if edited by staff', () => {
             it('should init a the associations of a user with his/her role and role options', () => {
-                userManagerStore.userAssociations = JSON.parse(JSON.stringify(_userAssociations))
+                userManagerStore.userAssociations = structuredClone(_userAssociations)
                 initUserAssociations(true)
                 expect(userAssociations.value).toEqual(_userAssociations.map(association => ({
                     id: association.association.id,

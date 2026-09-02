@@ -58,9 +58,10 @@ async function onGetAssociationUsers() {
 }
 
 function reverseDate(date: string | null) {
-    if (!date) return '-'
-    else {
+    if (date) {
         return date.split('-').reverse().join('/')
+    } else {
+        return '-'
     }
 }
 

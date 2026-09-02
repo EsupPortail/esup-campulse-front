@@ -15,8 +15,8 @@ const {hasPerm} = useSecurity()
 const {t} = useI18n()
 
 const props = defineProps<{
-    editedByStaff: boolean,
-    user: User
+  editedByStaff: boolean,
+  user: User
 }>()
 
 const userRef = toRefs(props).user
@@ -75,7 +75,6 @@ onMounted(() => {
             filled
             lazy-rules
         />
-        <!-- @focus="() => { variant = Variant.Home }" -->
         <QInput
             v-model="userToUpdate.lastName"
             :disable="!!props.user?.isCas"
@@ -173,11 +172,9 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import '@/assets/_variables.scss';
 @import '@/assets/styles/forms.scss';
-@import '@/assets/_variables.scss';
-
 
 q-input:focus {
-    color: red;
-    background-color: yellow;
+  color: red;
+  background-color: yellow;
 }
 </style>

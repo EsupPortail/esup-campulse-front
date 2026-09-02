@@ -2,7 +2,6 @@
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
-import type {AssociationSocialNetwork} from '#/association'
 import {onMounted, watch} from 'vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
@@ -14,7 +13,7 @@ const associationStore = useAssociationStore()
 
 const initValues = () => {
     // Social networks are stored in useAssociation composable, so we can add and remove items
-    associationSocialNetworks.value = JSON.parse(JSON.stringify(associationStore.association?.socialNetworks as AssociationSocialNetwork[]))
+    associationSocialNetworks.value = structuredClone(associationStore.association?.socialNetworks)
 }
 watch(() => associationStore.association, initValues)
 
@@ -30,14 +29,14 @@ onMounted(initValues)
         <div class="flex-row">
             <QInput
                 v-model="socialNetwork.type"
+                :for="'socialNetworkType-' + index"
                 :label="t('association.labels.social-network-type') + ' *'"
                 :rules="[val => val && val.length > 0 || t('forms.required-association-socials')]"
                 aria-required="true"
+                bottom-slots
                 clearable
                 filled
                 lazy-rules
-                bottom-slots
-                :for="'socialNetworkType-' + index"
             >
                 <template v-slot:hint>
                     <p :aria-describedby="'socialNetworkType-' + index">{{ t('forms.social-network-type-hint') }}</p>
@@ -45,15 +44,15 @@ onMounted(initValues)
             </QInput>
             <QInput
                 v-model="socialNetwork.location"
+                :for="'socialNetworkLocation-' + index"
                 :label="t('association.labels.social-network-location') + ' *'"
                 :rules="[val => val && val.length > 0 && urlRegex.test(val) || t('forms.required-valid-url')]"
                 aria-required="true"
+                bottom-slots
                 clearable
                 filled
                 lazy-rules
                 type="url"
-                bottom-slots
-                :for="'socialNetworkLocation-' + index"
             >
                 <template v-slot:hint>
                     <p :aria-describedby="'socialNetworkLocation-' + index">{{ t('forms.social-network-location-hint') }}</p>

@@ -30,13 +30,13 @@ async function onEnableAssociation() {
         negativeMessage = t('notifications.negative.disable-association-error')
     }
     try {
-        await associationStore.patchEnabledAssociation(!isEnabled.value as boolean, associationStore.association?.id)
+        await associationStore.patchEnabledAssociation(!isEnabled.value, associationStore.association?.id)
         emit('hasValidated')
         notify({
             type: 'positive',
             message: positiveMessage
         })
-    } catch (e) {
+    } catch {
         notify({
             type: 'negative',
             message: negativeMessage
