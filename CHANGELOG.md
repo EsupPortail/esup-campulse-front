@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.6.0 (septembre 2026)
+
+- Les montants demandés dans le cadre des demandes de financement doivent être supérieurs à zéro.
+- Ajout d'un nouveau statut pour les chartes : DRAFT_PROCESSED.
+- Les associations doivent être actives pour qu'on puisse s'y inscrire.
+- Une composante devient liée à un établissement.
+- Les projets n'ont désormais plus qu'une catégorie (support conservé pour les anciens projets).
+- Le commentaire devient obligatoire pour renvoyer un bilan pour modification.
+
 ## 1.5.0 (juillet 2026)
 
 - Correction d'un bug dans la recherche avancée de l'annuaire
